@@ -11,7 +11,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -102,18 +101,6 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"bool_rules": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"const": schema.BoolAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `Const specifies that this field must be exactly the specified value`,
-										},
-									},
-									Description: `BoolRules describes the constraints applied to ` + "`" + `bool` + "`" + ` values`,
-								},
 								"checkbox_field": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -124,15 +111,17 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 									Optional:    true,
 									Description: `The defaultValue field.`,
 								},
+								"toggle_field": schema.SingleNestedAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The ToggleField message.`,
+								},
 							},
 							MarkdownDescription: `The BoolField message.` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - checkboxField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - rules`,
+								`  - toggleField`,
 						},
 						"description": schema.StringAttribute{
 							Computed:    true,
@@ -159,92 +148,16 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 									Optional:    true,
 									Description: `The FileInputField message.`,
 								},
-								"max_file_size": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The maxFileSize field.` + "\n" +
-										`This field is part of the ` + "`" + `_max_file_size` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.form.v1.FileField` + "`" + ` for more details.`,
-								},
 							},
 							MarkdownDescription: `The FileField message.` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - fileInputField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - maxFileSize`,
+								`  - fileInputField`,
 						},
 						"int64_field": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"default_value": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The defaultValue field.` + "\n" +
-										`This field is part of the ` + "`" + `_default_value` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.form.v1.Int64Field` + "`" + ` for more details.`,
-								},
-								"int64_rules": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"const": schema.StringAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `Const specifies that this field must be exactly the specified value`,
-										},
-										"gt": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Gt specifies that this field must be greater than the specified value,` + "\n" +
-												` exclusive. If the value of Gt is larger than a specified Lt or Lte, the` + "\n" +
-												` range is reversed.`,
-										},
-										"gte": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Gte specifies that this field must be greater than or equal to the` + "\n" +
-												` specified value, inclusive. If the value of Gte is larger than a` + "\n" +
-												` specified Lt or Lte, the range is reversed.`,
-										},
-										"ignore_empty": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `IgnoreEmpty specifies that the validation rules of this field should be` + "\n" +
-												` evaluated only if the field is not empty`,
-										},
-										"in": schema.ListAttribute{
-											Computed:    true,
-											Optional:    true,
-											ElementType: types.StringType,
-											MarkdownDescription: `In specifies that this field must be equal to one of the specified` + "\n" +
-												` values`,
-										},
-										"lt": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Lt specifies that this field must be less than the specified value,` + "\n" +
-												` exclusive`,
-										},
-										"lte": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Lte specifies that this field must be less than or equal to the` + "\n" +
-												` specified value, inclusive`,
-										},
-										"not_in": schema.ListAttribute{
-											Computed:    true,
-											Optional:    true,
-											ElementType: types.StringType,
-											MarkdownDescription: `NotIn specifies that this field cannot be equal to one of the specified` + "\n" +
-												` values`,
-										},
-									},
-									Description: `Int64Rules describes the constraints applied to ` + "`" + `int64` + "`" + ` values`,
-								},
 								"number_field": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
@@ -276,15 +189,7 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 							MarkdownDescription: `The Int64Field message.` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - numberField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - defaultValue` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - rules`,
+								`  - numberField`,
 						},
 						"name": schema.StringAttribute{
 							Computed:    true,
@@ -309,6 +214,52 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 									Computed:    true,
 									Optional:    true,
 									Description: `The placeholder field.`,
+								},
+								"picker_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_resource_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"app_id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The appId field.`,
+												},
+												"resource_type_id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The resourceTypeId field.`,
+												},
+											},
+											Description: `The AppResourceFilter message.`,
+										},
+										"app_user_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"app_id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The appId field.`,
+												},
+											},
+											Description: `The AppUserFilter message.`,
+										},
+										"c1_user_filter": schema.SingleNestedAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The C1UserFilter message.`,
+										},
+									},
+									MarkdownDescription: `The PickerField message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named type. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - appUserPicker` + "\n" +
+										`  - resourcePicker` + "\n" +
+										`  - c1UserPicker`,
 								},
 								"select_field": schema.SingleNestedAttribute{
 									Computed: true,
@@ -339,217 +290,6 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 									},
 									Description: `The SelectField message.`,
 								},
-								"string_rules": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"address": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Address specifies that the field must be either a valid hostname as` + "\n" +
-												` defined by RFC 1034 (which does not support internationalized domain` + "\n" +
-												` names or IDNs), or it can be a valid IP (v4 or v6).` + "\n" +
-												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.`,
-										},
-										"const": schema.StringAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `Const specifies that this field must be exactly the specified value`,
-										},
-										"contains": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Contains specifies that this field must have the specified substring` + "\n" +
-												` anywhere in the string.`,
-										},
-										"email": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Email specifies that the field must be a valid email address as` + "\n" +
-												` defined by RFC 5322` + "\n" +
-												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.`,
-										},
-										"hostname": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Hostname specifies that the field must be a valid hostname as` + "\n" +
-												` defined by RFC 1034. This constraint does not support` + "\n" +
-												` internationalized domain names (IDNs).` + "\n" +
-												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.`,
-										},
-										"ignore_empty": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `IgnoreEmpty specifies that the validation rules of this field should be` + "\n" +
-												` evaluated only if the field is not empty`,
-										},
-										"in": schema.ListAttribute{
-											Computed:    true,
-											Optional:    true,
-											ElementType: types.StringType,
-											MarkdownDescription: `In specifies that this field must be equal to one of the specified` + "\n" +
-												` values`,
-										},
-										"ip": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Ip specifies that the field must be a valid IP (v4 or v6) address.` + "\n" +
-												` Valid IPv6 addresses should not include surrounding square brackets.` + "\n" +
-												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.`,
-										},
-										"ipv4": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Ipv4 specifies that the field must be a valid IPv4 address.` + "\n" +
-												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.`,
-										},
-										"ipv6": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Ipv6 specifies that the field must be a valid IPv6 address. Valid` + "\n" +
-												` IPv6 addresses should not include surrounding square brackets.` + "\n" +
-												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.`,
-										},
-										"len_bytes": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `LenBytes specifies that this field must be the specified number of bytes` + "\n" +
-												` at a minimum`,
-										},
-										"length": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Len specifies that this field must be the specified number of` + "\n" +
-												` characters (Unicode code points). Note that the number of` + "\n" +
-												` characters may differ from the number of bytes in the string.`,
-										},
-										"max_bytes": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `MaxBytes specifies that this field must be the specified number of bytes` + "\n" +
-												` at a maximum`,
-										},
-										"max_len": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `MaxLen specifies that this field must be the specified number of` + "\n" +
-												` characters (Unicode code points) at a maximum. Note that the number of` + "\n" +
-												` characters may differ from the number of bytes in the string.`,
-										},
-										"min_bytes": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `MinBytes specifies that this field must be the specified number of bytes` + "\n" +
-												` at a minimum`,
-										},
-										"min_len": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `MinLen specifies that this field must be the specified number of` + "\n" +
-												` characters (Unicode code points) at a minimum. Note that the number of` + "\n" +
-												` characters may differ from the number of bytes in the string.`,
-										},
-										"not_contains": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `NotContains specifies that this field cannot have the specified substring` + "\n" +
-												` anywhere in the string.`,
-										},
-										"not_in": schema.ListAttribute{
-											Computed:    true,
-											Optional:    true,
-											ElementType: types.StringType,
-											MarkdownDescription: `NotIn specifies that this field cannot be equal to one of the specified` + "\n" +
-												` values`,
-										},
-										"pattern": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Pattern specifes that this field must match against the specified` + "\n" +
-												` regular expression (RE2 syntax). The included expression should elide` + "\n" +
-												` any delimiters.`,
-										},
-										"prefix": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Prefix specifies that this field must have the specified substring at` + "\n" +
-												` the beginning of the string.`,
-										},
-										"strict": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `This applies to regexes HTTP_HEADER_NAME and HTTP_HEADER_VALUE to enable` + "\n" +
-												` strict header validation.` + "\n" +
-												` By default, this is true, and HTTP header validations are RFC-compliant.` + "\n" +
-												` Setting to false will enable a looser validations that only disallows` + "\n" +
-												` \r\n\0 characters, which can be used to bypass header matching rules.`,
-										},
-										"suffix": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Suffix specifies that this field must have the specified substring at` + "\n" +
-												` the end of the string.`,
-										},
-										"uri": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Uri specifies that the field must be a valid, absolute URI as defined` + "\n" +
-												` by RFC 3986` + "\n" +
-												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.`,
-										},
-										"uri_ref": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `UriRef specifies that the field must be a valid URI as defined by RFC` + "\n" +
-												` 3986 and may be relative or absolute.` + "\n" +
-												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.`,
-										},
-										"uuid": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Uuid specifies that the field must be a valid UUID as defined by` + "\n" +
-												` RFC 4122` + "\n" +
-												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.`,
-										},
-										"well_known_regex": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `WellKnownRegex specifies a common well known pattern defined as a regex.` + "\n" +
-												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.` + "\n" +
-												`must be one of ["UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"UNKNOWN",
-													"HTTP_HEADER_NAME",
-													"HTTP_HEADER_VALUE",
-												),
-											},
-										},
-									},
-									MarkdownDescription: `StringRules describe the constraints applied to ` + "`" + `string` + "`" + ` values` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named well_known. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - email` + "\n" +
-										`  - hostname` + "\n" +
-										`  - ip` + "\n" +
-										`  - ipv4` + "\n" +
-										`  - ipv6` + "\n" +
-										`  - uri` + "\n" +
-										`  - uriRef` + "\n" +
-										`  - address` + "\n" +
-										`  - uuid` + "\n" +
-										`  - wellKnownRegex`,
-								},
 								"text_field": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
@@ -569,10 +309,7 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 								`  - textField` + "\n" +
 								`  - passwordField` + "\n" +
 								`  - selectField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - rules`,
+								`  - pickerField`,
 						},
 					},
 				},

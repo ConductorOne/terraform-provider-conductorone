@@ -68,18 +68,17 @@ func (r *RequestSchemaResourceModel) RefreshFromSharedForm(ctx context.Context, 
 					fields.BoolField = nil
 				} else {
 					fields.BoolField = &tfTypes.BoolField{}
-					if fieldsItem.BoolField.BoolRules == nil {
-						fields.BoolField.BoolRules = nil
-					} else {
-						fields.BoolField.BoolRules = &tfTypes.BoolRules{}
-						fields.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem.BoolField.BoolRules.Const)
-					}
 					if fieldsItem.BoolField.CheckboxField == nil {
 						fields.BoolField.CheckboxField = nil
 					} else {
 						fields.BoolField.CheckboxField = &tfTypes.CheckboxField{}
 					}
 					fields.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem.BoolField.DefaultValue)
+					if fieldsItem.BoolField.ToggleField == nil {
+						fields.BoolField.ToggleField = nil
+					} else {
+						fields.BoolField.ToggleField = &tfTypes.ToggleField{}
+					}
 				}
 				fields.Description = types.StringPointerValue(fieldsItem.Description)
 				fields.DisplayName = types.StringPointerValue(fieldsItem.DisplayName)
@@ -98,36 +97,11 @@ func (r *RequestSchemaResourceModel) RefreshFromSharedForm(ctx context.Context, 
 					} else {
 						fields.FileField.FileInputField = &tfTypes.FileInputField{}
 					}
-					fields.FileField.MaxFileSize = types.StringPointerValue(fieldsItem.FileField.MaxFileSize)
 				}
 				if fieldsItem.Int64Field == nil {
 					fields.Int64Field = nil
 				} else {
 					fields.Int64Field = &tfTypes.Int64Field{}
-					fields.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem.Int64Field.DefaultValue)
-					if fieldsItem.Int64Field.Int64Rules == nil {
-						fields.Int64Field.Int64Rules = nil
-					} else {
-						fields.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
-						fields.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Const)
-						fields.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Gt)
-						fields.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Gte)
-						fields.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.Int64Field.Int64Rules.IgnoreEmpty)
-						if fieldsItem.Int64Field.Int64Rules.In != nil {
-							fields.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem.Int64Field.Int64Rules.In))
-							for _, v := range fieldsItem.Int64Field.Int64Rules.In {
-								fields.Int64Field.Int64Rules.In = append(fields.Int64Field.Int64Rules.In, types.StringValue(v))
-							}
-						}
-						fields.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lt)
-						fields.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lte)
-						if fieldsItem.Int64Field.Int64Rules.NotIn != nil {
-							fields.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem.Int64Field.Int64Rules.NotIn))
-							for _, v := range fieldsItem.Int64Field.Int64Rules.NotIn {
-								fields.Int64Field.Int64Rules.NotIn = append(fields.Int64Field.Int64Rules.NotIn, types.StringValue(v))
-							}
-						}
-					}
 					if fieldsItem.Int64Field.NumberField == nil {
 						fields.Int64Field.NumberField = nil
 					} else {
@@ -167,49 +141,27 @@ func (r *RequestSchemaResourceModel) RefreshFromSharedForm(ctx context.Context, 
 							}
 						}
 					}
-					if fieldsItem.StringField.StringRules == nil {
-						fields.StringField.StringRules = nil
+					if fieldsItem.StringField.PickerField == nil {
+						fields.StringField.PickerField = nil
 					} else {
-						fields.StringField.StringRules = &tfTypes.StringRules{}
-						fields.StringField.StringRules.Address = types.BoolPointerValue(fieldsItem.StringField.StringRules.Address)
-						fields.StringField.StringRules.Const = types.StringPointerValue(fieldsItem.StringField.StringRules.Const)
-						fields.StringField.StringRules.Contains = types.StringPointerValue(fieldsItem.StringField.StringRules.Contains)
-						fields.StringField.StringRules.Email = types.BoolPointerValue(fieldsItem.StringField.StringRules.Email)
-						fields.StringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem.StringField.StringRules.Hostname)
-						fields.StringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.StringField.StringRules.IgnoreEmpty)
-						if fieldsItem.StringField.StringRules.In != nil {
-							fields.StringField.StringRules.In = make([]types.String, 0, len(fieldsItem.StringField.StringRules.In))
-							for _, v := range fieldsItem.StringField.StringRules.In {
-								fields.StringField.StringRules.In = append(fields.StringField.StringRules.In, types.StringValue(v))
-							}
-						}
-						fields.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem.StringField.StringRules.IP)
-						fields.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem.StringField.StringRules.Ipv4)
-						fields.StringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem.StringField.StringRules.Ipv6)
-						fields.StringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.LenBytes)
-						fields.StringField.StringRules.Length = types.StringPointerValue(fieldsItem.StringField.StringRules.Length)
-						fields.StringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.MaxBytes)
-						fields.StringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem.StringField.StringRules.MaxLen)
-						fields.StringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.MinBytes)
-						fields.StringField.StringRules.MinLen = types.StringPointerValue(fieldsItem.StringField.StringRules.MinLen)
-						fields.StringField.StringRules.NotContains = types.StringPointerValue(fieldsItem.StringField.StringRules.NotContains)
-						if fieldsItem.StringField.StringRules.NotIn != nil {
-							fields.StringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem.StringField.StringRules.NotIn))
-							for _, v := range fieldsItem.StringField.StringRules.NotIn {
-								fields.StringField.StringRules.NotIn = append(fields.StringField.StringRules.NotIn, types.StringValue(v))
-							}
-						}
-						fields.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem.StringField.StringRules.Pattern)
-						fields.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem.StringField.StringRules.Prefix)
-						fields.StringField.StringRules.Strict = types.BoolPointerValue(fieldsItem.StringField.StringRules.Strict)
-						fields.StringField.StringRules.Suffix = types.StringPointerValue(fieldsItem.StringField.StringRules.Suffix)
-						fields.StringField.StringRules.URI = types.BoolPointerValue(fieldsItem.StringField.StringRules.URI)
-						fields.StringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem.StringField.StringRules.URIRef)
-						fields.StringField.StringRules.UUID = types.BoolPointerValue(fieldsItem.StringField.StringRules.UUID)
-						if fieldsItem.StringField.StringRules.WellKnownRegex != nil {
-							fields.StringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem.StringField.StringRules.WellKnownRegex))
+						fields.StringField.PickerField = &tfTypes.PickerField{}
+						if fieldsItem.StringField.PickerField.AppResourceFilter == nil {
+							fields.StringField.PickerField.AppResourceFilter = nil
 						} else {
-							fields.StringField.StringRules.WellKnownRegex = types.StringNull()
+							fields.StringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
+							fields.StringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppResourceFilter.AppID)
+							fields.StringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppResourceFilter.ResourceTypeID)
+						}
+						if fieldsItem.StringField.PickerField.AppUserFilter == nil {
+							fields.StringField.PickerField.AppUserFilter = nil
+						} else {
+							fields.StringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
+							fields.StringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppUserFilter.AppID)
+						}
+						if fieldsItem.StringField.PickerField.C1UserFilter == nil {
+							fields.StringField.PickerField.C1UserFilter = nil
+						} else {
+							fields.StringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
 						}
 					}
 					if fieldsItem.StringField.TextField == nil {
@@ -338,22 +290,14 @@ func (r *RequestSchemaResourceModel) ToSharedForm(ctx context.Context) (*shared.
 				} else {
 					defaultValue = nil
 				}
-				var boolRules *shared.BoolRules
-				if fieldsItem.BoolField.BoolRules != nil {
-					constVar := new(bool)
-					if !fieldsItem.BoolField.BoolRules.Const.IsUnknown() && !fieldsItem.BoolField.BoolRules.Const.IsNull() {
-						*constVar = fieldsItem.BoolField.BoolRules.Const.ValueBool()
-					} else {
-						constVar = nil
-					}
-					boolRules = &shared.BoolRules{
-						Const: constVar,
-					}
+				var toggleField *shared.ToggleField
+				if fieldsItem.BoolField.ToggleField != nil {
+					toggleField = &shared.ToggleField{}
 				}
 				boolField = &shared.BoolField{
 					CheckboxField: checkboxField,
 					DefaultValue:  defaultValue,
-					BoolRules:     boolRules,
+					ToggleField:   toggleField,
 				}
 			}
 			description1 := new(string)
@@ -381,26 +325,13 @@ func (r *RequestSchemaResourceModel) ToSharedForm(ctx context.Context) (*shared.
 				if fieldsItem.FileField.FileInputField != nil {
 					fileInputField = &shared.FileInputField{}
 				}
-				maxFileSize := new(string)
-				if !fieldsItem.FileField.MaxFileSize.IsUnknown() && !fieldsItem.FileField.MaxFileSize.IsNull() {
-					*maxFileSize = fieldsItem.FileField.MaxFileSize.ValueString()
-				} else {
-					maxFileSize = nil
-				}
 				fileField = &shared.FileField{
 					AcceptedFileTypes: acceptedFileTypes,
 					FileInputField:    fileInputField,
-					MaxFileSize:       maxFileSize,
 				}
 			}
 			var int64Field *shared.Int64Field
 			if fieldsItem.Int64Field != nil {
-				defaultValue1 := new(string)
-				if !fieldsItem.Int64Field.DefaultValue.IsUnknown() && !fieldsItem.Int64Field.DefaultValue.IsNull() {
-					*defaultValue1 = fieldsItem.Int64Field.DefaultValue.ValueString()
-				} else {
-					defaultValue1 = nil
-				}
 				var numberField *shared.NumberField
 				if fieldsItem.Int64Field.NumberField != nil {
 					maxValue := new(string)
@@ -433,74 +364,9 @@ func (r *RequestSchemaResourceModel) ToSharedForm(ctx context.Context) (*shared.
 				} else {
 					placeholder = nil
 				}
-				var int64Rules *shared.Int64Rules
-				if fieldsItem.Int64Field.Int64Rules != nil {
-					constVar1 := new(string)
-					if !fieldsItem.Int64Field.Int64Rules.Const.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.Const.IsNull() {
-						*constVar1 = fieldsItem.Int64Field.Int64Rules.Const.ValueString()
-					} else {
-						constVar1 = nil
-					}
-					gt := new(string)
-					if !fieldsItem.Int64Field.Int64Rules.Gt.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.Gt.IsNull() {
-						*gt = fieldsItem.Int64Field.Int64Rules.Gt.ValueString()
-					} else {
-						gt = nil
-					}
-					gte := new(string)
-					if !fieldsItem.Int64Field.Int64Rules.Gte.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.Gte.IsNull() {
-						*gte = fieldsItem.Int64Field.Int64Rules.Gte.ValueString()
-					} else {
-						gte = nil
-					}
-					ignoreEmpty := new(bool)
-					if !fieldsItem.Int64Field.Int64Rules.IgnoreEmpty.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.IgnoreEmpty.IsNull() {
-						*ignoreEmpty = fieldsItem.Int64Field.Int64Rules.IgnoreEmpty.ValueBool()
-					} else {
-						ignoreEmpty = nil
-					}
-					var in []string
-					if fieldsItem.Int64Field.Int64Rules.In != nil {
-						in = make([]string, 0, len(fieldsItem.Int64Field.Int64Rules.In))
-						for _, inItem := range fieldsItem.Int64Field.Int64Rules.In {
-							in = append(in, inItem.ValueString())
-						}
-					}
-					lt := new(string)
-					if !fieldsItem.Int64Field.Int64Rules.Lt.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.Lt.IsNull() {
-						*lt = fieldsItem.Int64Field.Int64Rules.Lt.ValueString()
-					} else {
-						lt = nil
-					}
-					lte := new(string)
-					if !fieldsItem.Int64Field.Int64Rules.Lte.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.Lte.IsNull() {
-						*lte = fieldsItem.Int64Field.Int64Rules.Lte.ValueString()
-					} else {
-						lte = nil
-					}
-					var notIn []string
-					if fieldsItem.Int64Field.Int64Rules.NotIn != nil {
-						notIn = make([]string, 0, len(fieldsItem.Int64Field.Int64Rules.NotIn))
-						for _, notInItem := range fieldsItem.Int64Field.Int64Rules.NotIn {
-							notIn = append(notIn, notInItem.ValueString())
-						}
-					}
-					int64Rules = &shared.Int64Rules{
-						Const:       constVar1,
-						Gt:          gt,
-						Gte:         gte,
-						IgnoreEmpty: ignoreEmpty,
-						In:          in,
-						Lt:          lt,
-						Lte:         lte,
-						NotIn:       notIn,
-					}
-				}
 				int64Field = &shared.Int64Field{
-					DefaultValue: defaultValue1,
-					NumberField:  numberField,
-					Placeholder:  placeholder,
-					Int64Rules:   int64Rules,
+					NumberField: numberField,
+					Placeholder: placeholder,
 				}
 			}
 			name1 := new(string)
@@ -527,195 +393,7 @@ func (r *RequestSchemaResourceModel) ToSharedForm(ctx context.Context) (*shared.
 				} else {
 					placeholder1 = nil
 				}
-				var stringRules *shared.StringRules
-				if fieldsItem.StringField.StringRules != nil {
-					address := new(bool)
-					if !fieldsItem.StringField.StringRules.Address.IsUnknown() && !fieldsItem.StringField.StringRules.Address.IsNull() {
-						*address = fieldsItem.StringField.StringRules.Address.ValueBool()
-					} else {
-						address = nil
-					}
-					constVar2 := new(string)
-					if !fieldsItem.StringField.StringRules.Const.IsUnknown() && !fieldsItem.StringField.StringRules.Const.IsNull() {
-						*constVar2 = fieldsItem.StringField.StringRules.Const.ValueString()
-					} else {
-						constVar2 = nil
-					}
-					contains := new(string)
-					if !fieldsItem.StringField.StringRules.Contains.IsUnknown() && !fieldsItem.StringField.StringRules.Contains.IsNull() {
-						*contains = fieldsItem.StringField.StringRules.Contains.ValueString()
-					} else {
-						contains = nil
-					}
-					email := new(bool)
-					if !fieldsItem.StringField.StringRules.Email.IsUnknown() && !fieldsItem.StringField.StringRules.Email.IsNull() {
-						*email = fieldsItem.StringField.StringRules.Email.ValueBool()
-					} else {
-						email = nil
-					}
-					hostname := new(bool)
-					if !fieldsItem.StringField.StringRules.Hostname.IsUnknown() && !fieldsItem.StringField.StringRules.Hostname.IsNull() {
-						*hostname = fieldsItem.StringField.StringRules.Hostname.ValueBool()
-					} else {
-						hostname = nil
-					}
-					ignoreEmpty1 := new(bool)
-					if !fieldsItem.StringField.StringRules.IgnoreEmpty.IsUnknown() && !fieldsItem.StringField.StringRules.IgnoreEmpty.IsNull() {
-						*ignoreEmpty1 = fieldsItem.StringField.StringRules.IgnoreEmpty.ValueBool()
-					} else {
-						ignoreEmpty1 = nil
-					}
-					var in1 []string
-					if fieldsItem.StringField.StringRules.In != nil {
-						in1 = make([]string, 0, len(fieldsItem.StringField.StringRules.In))
-						for _, inItem1 := range fieldsItem.StringField.StringRules.In {
-							in1 = append(in1, inItem1.ValueString())
-						}
-					}
-					ip := new(bool)
-					if !fieldsItem.StringField.StringRules.IP.IsUnknown() && !fieldsItem.StringField.StringRules.IP.IsNull() {
-						*ip = fieldsItem.StringField.StringRules.IP.ValueBool()
-					} else {
-						ip = nil
-					}
-					ipv4 := new(bool)
-					if !fieldsItem.StringField.StringRules.Ipv4.IsUnknown() && !fieldsItem.StringField.StringRules.Ipv4.IsNull() {
-						*ipv4 = fieldsItem.StringField.StringRules.Ipv4.ValueBool()
-					} else {
-						ipv4 = nil
-					}
-					ipv6 := new(bool)
-					if !fieldsItem.StringField.StringRules.Ipv6.IsUnknown() && !fieldsItem.StringField.StringRules.Ipv6.IsNull() {
-						*ipv6 = fieldsItem.StringField.StringRules.Ipv6.ValueBool()
-					} else {
-						ipv6 = nil
-					}
-					length := new(string)
-					if !fieldsItem.StringField.StringRules.Length.IsUnknown() && !fieldsItem.StringField.StringRules.Length.IsNull() {
-						*length = fieldsItem.StringField.StringRules.Length.ValueString()
-					} else {
-						length = nil
-					}
-					lenBytes := new(string)
-					if !fieldsItem.StringField.StringRules.LenBytes.IsUnknown() && !fieldsItem.StringField.StringRules.LenBytes.IsNull() {
-						*lenBytes = fieldsItem.StringField.StringRules.LenBytes.ValueString()
-					} else {
-						lenBytes = nil
-					}
-					maxBytes := new(string)
-					if !fieldsItem.StringField.StringRules.MaxBytes.IsUnknown() && !fieldsItem.StringField.StringRules.MaxBytes.IsNull() {
-						*maxBytes = fieldsItem.StringField.StringRules.MaxBytes.ValueString()
-					} else {
-						maxBytes = nil
-					}
-					maxLen := new(string)
-					if !fieldsItem.StringField.StringRules.MaxLen.IsUnknown() && !fieldsItem.StringField.StringRules.MaxLen.IsNull() {
-						*maxLen = fieldsItem.StringField.StringRules.MaxLen.ValueString()
-					} else {
-						maxLen = nil
-					}
-					minBytes := new(string)
-					if !fieldsItem.StringField.StringRules.MinBytes.IsUnknown() && !fieldsItem.StringField.StringRules.MinBytes.IsNull() {
-						*minBytes = fieldsItem.StringField.StringRules.MinBytes.ValueString()
-					} else {
-						minBytes = nil
-					}
-					minLen := new(string)
-					if !fieldsItem.StringField.StringRules.MinLen.IsUnknown() && !fieldsItem.StringField.StringRules.MinLen.IsNull() {
-						*minLen = fieldsItem.StringField.StringRules.MinLen.ValueString()
-					} else {
-						minLen = nil
-					}
-					notContains := new(string)
-					if !fieldsItem.StringField.StringRules.NotContains.IsUnknown() && !fieldsItem.StringField.StringRules.NotContains.IsNull() {
-						*notContains = fieldsItem.StringField.StringRules.NotContains.ValueString()
-					} else {
-						notContains = nil
-					}
-					var notIn1 []string
-					if fieldsItem.StringField.StringRules.NotIn != nil {
-						notIn1 = make([]string, 0, len(fieldsItem.StringField.StringRules.NotIn))
-						for _, notInItem1 := range fieldsItem.StringField.StringRules.NotIn {
-							notIn1 = append(notIn1, notInItem1.ValueString())
-						}
-					}
-					pattern := new(string)
-					if !fieldsItem.StringField.StringRules.Pattern.IsUnknown() && !fieldsItem.StringField.StringRules.Pattern.IsNull() {
-						*pattern = fieldsItem.StringField.StringRules.Pattern.ValueString()
-					} else {
-						pattern = nil
-					}
-					prefix := new(string)
-					if !fieldsItem.StringField.StringRules.Prefix.IsUnknown() && !fieldsItem.StringField.StringRules.Prefix.IsNull() {
-						*prefix = fieldsItem.StringField.StringRules.Prefix.ValueString()
-					} else {
-						prefix = nil
-					}
-					strict := new(bool)
-					if !fieldsItem.StringField.StringRules.Strict.IsUnknown() && !fieldsItem.StringField.StringRules.Strict.IsNull() {
-						*strict = fieldsItem.StringField.StringRules.Strict.ValueBool()
-					} else {
-						strict = nil
-					}
-					suffix := new(string)
-					if !fieldsItem.StringField.StringRules.Suffix.IsUnknown() && !fieldsItem.StringField.StringRules.Suffix.IsNull() {
-						*suffix = fieldsItem.StringField.StringRules.Suffix.ValueString()
-					} else {
-						suffix = nil
-					}
-					uri := new(bool)
-					if !fieldsItem.StringField.StringRules.URI.IsUnknown() && !fieldsItem.StringField.StringRules.URI.IsNull() {
-						*uri = fieldsItem.StringField.StringRules.URI.ValueBool()
-					} else {
-						uri = nil
-					}
-					uriRef := new(bool)
-					if !fieldsItem.StringField.StringRules.URIRef.IsUnknown() && !fieldsItem.StringField.StringRules.URIRef.IsNull() {
-						*uriRef = fieldsItem.StringField.StringRules.URIRef.ValueBool()
-					} else {
-						uriRef = nil
-					}
-					uuid := new(bool)
-					if !fieldsItem.StringField.StringRules.UUID.IsUnknown() && !fieldsItem.StringField.StringRules.UUID.IsNull() {
-						*uuid = fieldsItem.StringField.StringRules.UUID.ValueBool()
-					} else {
-						uuid = nil
-					}
-					wellKnownRegex := new(shared.WellKnownRegex)
-					if !fieldsItem.StringField.StringRules.WellKnownRegex.IsUnknown() && !fieldsItem.StringField.StringRules.WellKnownRegex.IsNull() {
-						*wellKnownRegex = shared.WellKnownRegex(fieldsItem.StringField.StringRules.WellKnownRegex.ValueString())
-					} else {
-						wellKnownRegex = nil
-					}
-					stringRules = &shared.StringRules{
-						Address:        address,
-						Const:          constVar2,
-						Contains:       contains,
-						Email:          email,
-						Hostname:       hostname,
-						IgnoreEmpty:    ignoreEmpty1,
-						In:             in1,
-						IP:             ip,
-						Ipv4:           ipv4,
-						Ipv6:           ipv6,
-						Length:         length,
-						LenBytes:       lenBytes,
-						MaxBytes:       maxBytes,
-						MaxLen:         maxLen,
-						MinBytes:       minBytes,
-						MinLen:         minLen,
-						NotContains:    notContains,
-						NotIn:          notIn1,
-						Pattern:        pattern,
-						Prefix:         prefix,
-						Strict:         strict,
-						Suffix:         suffix,
-						URI:            uri,
-						URIRef:         uriRef,
-						UUID:           uuid,
-						WellKnownRegex: wellKnownRegex,
-					}
-				}
+
 				var selectField *shared.SelectField
 				if fieldsItem.StringField.SelectField != nil {
 					var optionsVar []shared.SelectOption
@@ -756,11 +434,54 @@ func (r *RequestSchemaResourceModel) ToSharedForm(ctx context.Context) (*shared.
 						Multiline: multiline,
 					}
 				}
+				var pickerField *shared.PickerField
+				if fieldsItem.StringField.PickerField != nil {
+					var appUserFilter *shared.AppUserFilter
+					if fieldsItem.StringField.PickerField.AppUserFilter != nil {
+						appID := new(string)
+						if !fieldsItem.StringField.PickerField.AppUserFilter.AppID.IsUnknown() && !fieldsItem.StringField.PickerField.AppUserFilter.AppID.IsNull() {
+							*appID = fieldsItem.StringField.PickerField.AppUserFilter.AppID.ValueString()
+						} else {
+							appID = nil
+						}
+						appUserFilter = &shared.AppUserFilter{
+							AppID: appID,
+						}
+					}
+					var c1UserFilter *shared.C1UserFilter
+					if fieldsItem.StringField.PickerField.C1UserFilter != nil {
+						c1UserFilter = &shared.C1UserFilter{}
+					}
+					var appResourceFilter *shared.AppResourceFilter
+					if fieldsItem.StringField.PickerField.AppResourceFilter != nil {
+						appID2 := new(string)
+						if !fieldsItem.StringField.PickerField.AppResourceFilter.AppID.IsUnknown() && !fieldsItem.StringField.PickerField.AppResourceFilter.AppID.IsNull() {
+							*appID2 = fieldsItem.StringField.PickerField.AppResourceFilter.AppID.ValueString()
+						} else {
+							appID2 = nil
+						}
+						resourceTypeID := new(string)
+						if !fieldsItem.StringField.PickerField.AppResourceFilter.ResourceTypeID.IsUnknown() && !fieldsItem.StringField.PickerField.AppResourceFilter.ResourceTypeID.IsNull() {
+							*resourceTypeID = fieldsItem.StringField.PickerField.AppResourceFilter.ResourceTypeID.ValueString()
+						} else {
+							resourceTypeID = nil
+						}
+						appResourceFilter = &shared.AppResourceFilter{
+							AppID:          appID2,
+							ResourceTypeID: resourceTypeID,
+						}
+					}
+					pickerField = &shared.PickerField{
+						AppUserFilter:     appUserFilter,
+						C1UserFilter:      c1UserFilter,
+						AppResourceFilter: appResourceFilter,
+					}
+				}
 				stringField = &shared.StringField{
 					DefaultValue:  defaultValue2,
 					PasswordField: passwordField,
+					PickerField:   pickerField,
 					Placeholder:   placeholder1,
-					StringRules:   stringRules,
 					SelectField:   selectField,
 					TextField:     textField,
 				}
@@ -849,22 +570,14 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 				} else {
 					defaultValue = nil
 				}
-				var boolRules *shared.BoolRules
-				if fieldsItem.BoolField.BoolRules != nil {
-					constVar := new(bool)
-					if !fieldsItem.BoolField.BoolRules.Const.IsUnknown() && !fieldsItem.BoolField.BoolRules.Const.IsNull() {
-						*constVar = fieldsItem.BoolField.BoolRules.Const.ValueBool()
-					} else {
-						constVar = nil
-					}
-					boolRules = &shared.BoolRules{
-						Const: constVar,
-					}
+				var toggleField *shared.ToggleField
+				if fieldsItem.BoolField.ToggleField != nil {
+					toggleField = &shared.ToggleField{}
 				}
 				boolField = &shared.BoolField{
 					CheckboxField: checkboxField,
 					DefaultValue:  defaultValue,
-					BoolRules:     boolRules,
+					ToggleField:   toggleField,
 				}
 			}
 			description1 := new(string)
@@ -892,26 +605,13 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 				if fieldsItem.FileField.FileInputField != nil {
 					fileInputField = &shared.FileInputField{}
 				}
-				maxFileSize := new(string)
-				if !fieldsItem.FileField.MaxFileSize.IsUnknown() && !fieldsItem.FileField.MaxFileSize.IsNull() {
-					*maxFileSize = fieldsItem.FileField.MaxFileSize.ValueString()
-				} else {
-					maxFileSize = nil
-				}
 				fileField = &shared.FileField{
 					AcceptedFileTypes: acceptedFileTypes,
 					FileInputField:    fileInputField,
-					MaxFileSize:       maxFileSize,
 				}
 			}
 			var int64Field *shared.Int64Field
 			if fieldsItem.Int64Field != nil {
-				defaultValue1 := new(string)
-				if !fieldsItem.Int64Field.DefaultValue.IsUnknown() && !fieldsItem.Int64Field.DefaultValue.IsNull() {
-					*defaultValue1 = fieldsItem.Int64Field.DefaultValue.ValueString()
-				} else {
-					defaultValue1 = nil
-				}
 				var numberField *shared.NumberField
 				if fieldsItem.Int64Field.NumberField != nil {
 					maxValue := new(string)
@@ -944,74 +644,9 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 				} else {
 					placeholder = nil
 				}
-				var int64Rules *shared.Int64Rules
-				if fieldsItem.Int64Field.Int64Rules != nil {
-					constVar1 := new(string)
-					if !fieldsItem.Int64Field.Int64Rules.Const.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.Const.IsNull() {
-						*constVar1 = fieldsItem.Int64Field.Int64Rules.Const.ValueString()
-					} else {
-						constVar1 = nil
-					}
-					gt := new(string)
-					if !fieldsItem.Int64Field.Int64Rules.Gt.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.Gt.IsNull() {
-						*gt = fieldsItem.Int64Field.Int64Rules.Gt.ValueString()
-					} else {
-						gt = nil
-					}
-					gte := new(string)
-					if !fieldsItem.Int64Field.Int64Rules.Gte.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.Gte.IsNull() {
-						*gte = fieldsItem.Int64Field.Int64Rules.Gte.ValueString()
-					} else {
-						gte = nil
-					}
-					ignoreEmpty := new(bool)
-					if !fieldsItem.Int64Field.Int64Rules.IgnoreEmpty.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.IgnoreEmpty.IsNull() {
-						*ignoreEmpty = fieldsItem.Int64Field.Int64Rules.IgnoreEmpty.ValueBool()
-					} else {
-						ignoreEmpty = nil
-					}
-					var in []string
-					if fieldsItem.Int64Field.Int64Rules.In != nil {
-						in = make([]string, 0, len(fieldsItem.Int64Field.Int64Rules.In))
-						for _, inItem := range fieldsItem.Int64Field.Int64Rules.In {
-							in = append(in, inItem.ValueString())
-						}
-					}
-					lt := new(string)
-					if !fieldsItem.Int64Field.Int64Rules.Lt.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.Lt.IsNull() {
-						*lt = fieldsItem.Int64Field.Int64Rules.Lt.ValueString()
-					} else {
-						lt = nil
-					}
-					lte := new(string)
-					if !fieldsItem.Int64Field.Int64Rules.Lte.IsUnknown() && !fieldsItem.Int64Field.Int64Rules.Lte.IsNull() {
-						*lte = fieldsItem.Int64Field.Int64Rules.Lte.ValueString()
-					} else {
-						lte = nil
-					}
-					var notIn []string
-					if fieldsItem.Int64Field.Int64Rules.NotIn != nil {
-						notIn = make([]string, 0, len(fieldsItem.Int64Field.Int64Rules.NotIn))
-						for _, notInItem := range fieldsItem.Int64Field.Int64Rules.NotIn {
-							notIn = append(notIn, notInItem.ValueString())
-						}
-					}
-					int64Rules = &shared.Int64Rules{
-						Const:       constVar1,
-						Gt:          gt,
-						Gte:         gte,
-						IgnoreEmpty: ignoreEmpty,
-						In:          in,
-						Lt:          lt,
-						Lte:         lte,
-						NotIn:       notIn,
-					}
-				}
 				int64Field = &shared.Int64Field{
-					DefaultValue: defaultValue1,
-					NumberField:  numberField,
-					Placeholder:  placeholder,
-					Int64Rules:   int64Rules,
+					NumberField: numberField,
+					Placeholder: placeholder,
 				}
 			}
 			name := new(string)
@@ -1038,195 +673,7 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 				} else {
 					placeholder1 = nil
 				}
-				var stringRules *shared.StringRules
-				if fieldsItem.StringField.StringRules != nil {
-					address := new(bool)
-					if !fieldsItem.StringField.StringRules.Address.IsUnknown() && !fieldsItem.StringField.StringRules.Address.IsNull() {
-						*address = fieldsItem.StringField.StringRules.Address.ValueBool()
-					} else {
-						address = nil
-					}
-					constVar2 := new(string)
-					if !fieldsItem.StringField.StringRules.Const.IsUnknown() && !fieldsItem.StringField.StringRules.Const.IsNull() {
-						*constVar2 = fieldsItem.StringField.StringRules.Const.ValueString()
-					} else {
-						constVar2 = nil
-					}
-					contains := new(string)
-					if !fieldsItem.StringField.StringRules.Contains.IsUnknown() && !fieldsItem.StringField.StringRules.Contains.IsNull() {
-						*contains = fieldsItem.StringField.StringRules.Contains.ValueString()
-					} else {
-						contains = nil
-					}
-					email := new(bool)
-					if !fieldsItem.StringField.StringRules.Email.IsUnknown() && !fieldsItem.StringField.StringRules.Email.IsNull() {
-						*email = fieldsItem.StringField.StringRules.Email.ValueBool()
-					} else {
-						email = nil
-					}
-					hostname := new(bool)
-					if !fieldsItem.StringField.StringRules.Hostname.IsUnknown() && !fieldsItem.StringField.StringRules.Hostname.IsNull() {
-						*hostname = fieldsItem.StringField.StringRules.Hostname.ValueBool()
-					} else {
-						hostname = nil
-					}
-					ignoreEmpty1 := new(bool)
-					if !fieldsItem.StringField.StringRules.IgnoreEmpty.IsUnknown() && !fieldsItem.StringField.StringRules.IgnoreEmpty.IsNull() {
-						*ignoreEmpty1 = fieldsItem.StringField.StringRules.IgnoreEmpty.ValueBool()
-					} else {
-						ignoreEmpty1 = nil
-					}
-					var in1 []string
-					if fieldsItem.StringField.StringRules.In != nil {
-						in1 = make([]string, 0, len(fieldsItem.StringField.StringRules.In))
-						for _, inItem1 := range fieldsItem.StringField.StringRules.In {
-							in1 = append(in1, inItem1.ValueString())
-						}
-					}
-					ip := new(bool)
-					if !fieldsItem.StringField.StringRules.IP.IsUnknown() && !fieldsItem.StringField.StringRules.IP.IsNull() {
-						*ip = fieldsItem.StringField.StringRules.IP.ValueBool()
-					} else {
-						ip = nil
-					}
-					ipv4 := new(bool)
-					if !fieldsItem.StringField.StringRules.Ipv4.IsUnknown() && !fieldsItem.StringField.StringRules.Ipv4.IsNull() {
-						*ipv4 = fieldsItem.StringField.StringRules.Ipv4.ValueBool()
-					} else {
-						ipv4 = nil
-					}
-					ipv6 := new(bool)
-					if !fieldsItem.StringField.StringRules.Ipv6.IsUnknown() && !fieldsItem.StringField.StringRules.Ipv6.IsNull() {
-						*ipv6 = fieldsItem.StringField.StringRules.Ipv6.ValueBool()
-					} else {
-						ipv6 = nil
-					}
-					length := new(string)
-					if !fieldsItem.StringField.StringRules.Length.IsUnknown() && !fieldsItem.StringField.StringRules.Length.IsNull() {
-						*length = fieldsItem.StringField.StringRules.Length.ValueString()
-					} else {
-						length = nil
-					}
-					lenBytes := new(string)
-					if !fieldsItem.StringField.StringRules.LenBytes.IsUnknown() && !fieldsItem.StringField.StringRules.LenBytes.IsNull() {
-						*lenBytes = fieldsItem.StringField.StringRules.LenBytes.ValueString()
-					} else {
-						lenBytes = nil
-					}
-					maxBytes := new(string)
-					if !fieldsItem.StringField.StringRules.MaxBytes.IsUnknown() && !fieldsItem.StringField.StringRules.MaxBytes.IsNull() {
-						*maxBytes = fieldsItem.StringField.StringRules.MaxBytes.ValueString()
-					} else {
-						maxBytes = nil
-					}
-					maxLen := new(string)
-					if !fieldsItem.StringField.StringRules.MaxLen.IsUnknown() && !fieldsItem.StringField.StringRules.MaxLen.IsNull() {
-						*maxLen = fieldsItem.StringField.StringRules.MaxLen.ValueString()
-					} else {
-						maxLen = nil
-					}
-					minBytes := new(string)
-					if !fieldsItem.StringField.StringRules.MinBytes.IsUnknown() && !fieldsItem.StringField.StringRules.MinBytes.IsNull() {
-						*minBytes = fieldsItem.StringField.StringRules.MinBytes.ValueString()
-					} else {
-						minBytes = nil
-					}
-					minLen := new(string)
-					if !fieldsItem.StringField.StringRules.MinLen.IsUnknown() && !fieldsItem.StringField.StringRules.MinLen.IsNull() {
-						*minLen = fieldsItem.StringField.StringRules.MinLen.ValueString()
-					} else {
-						minLen = nil
-					}
-					notContains := new(string)
-					if !fieldsItem.StringField.StringRules.NotContains.IsUnknown() && !fieldsItem.StringField.StringRules.NotContains.IsNull() {
-						*notContains = fieldsItem.StringField.StringRules.NotContains.ValueString()
-					} else {
-						notContains = nil
-					}
-					var notIn1 []string
-					if fieldsItem.StringField.StringRules.NotIn != nil {
-						notIn1 = make([]string, 0, len(fieldsItem.StringField.StringRules.NotIn))
-						for _, notInItem1 := range fieldsItem.StringField.StringRules.NotIn {
-							notIn1 = append(notIn1, notInItem1.ValueString())
-						}
-					}
-					pattern := new(string)
-					if !fieldsItem.StringField.StringRules.Pattern.IsUnknown() && !fieldsItem.StringField.StringRules.Pattern.IsNull() {
-						*pattern = fieldsItem.StringField.StringRules.Pattern.ValueString()
-					} else {
-						pattern = nil
-					}
-					prefix := new(string)
-					if !fieldsItem.StringField.StringRules.Prefix.IsUnknown() && !fieldsItem.StringField.StringRules.Prefix.IsNull() {
-						*prefix = fieldsItem.StringField.StringRules.Prefix.ValueString()
-					} else {
-						prefix = nil
-					}
-					strict := new(bool)
-					if !fieldsItem.StringField.StringRules.Strict.IsUnknown() && !fieldsItem.StringField.StringRules.Strict.IsNull() {
-						*strict = fieldsItem.StringField.StringRules.Strict.ValueBool()
-					} else {
-						strict = nil
-					}
-					suffix := new(string)
-					if !fieldsItem.StringField.StringRules.Suffix.IsUnknown() && !fieldsItem.StringField.StringRules.Suffix.IsNull() {
-						*suffix = fieldsItem.StringField.StringRules.Suffix.ValueString()
-					} else {
-						suffix = nil
-					}
-					uri := new(bool)
-					if !fieldsItem.StringField.StringRules.URI.IsUnknown() && !fieldsItem.StringField.StringRules.URI.IsNull() {
-						*uri = fieldsItem.StringField.StringRules.URI.ValueBool()
-					} else {
-						uri = nil
-					}
-					uriRef := new(bool)
-					if !fieldsItem.StringField.StringRules.URIRef.IsUnknown() && !fieldsItem.StringField.StringRules.URIRef.IsNull() {
-						*uriRef = fieldsItem.StringField.StringRules.URIRef.ValueBool()
-					} else {
-						uriRef = nil
-					}
-					uuid := new(bool)
-					if !fieldsItem.StringField.StringRules.UUID.IsUnknown() && !fieldsItem.StringField.StringRules.UUID.IsNull() {
-						*uuid = fieldsItem.StringField.StringRules.UUID.ValueBool()
-					} else {
-						uuid = nil
-					}
-					wellKnownRegex := new(shared.WellKnownRegex)
-					if !fieldsItem.StringField.StringRules.WellKnownRegex.IsUnknown() && !fieldsItem.StringField.StringRules.WellKnownRegex.IsNull() {
-						*wellKnownRegex = shared.WellKnownRegex(fieldsItem.StringField.StringRules.WellKnownRegex.ValueString())
-					} else {
-						wellKnownRegex = nil
-					}
-					stringRules = &shared.StringRules{
-						Address:        address,
-						Const:          constVar2,
-						Contains:       contains,
-						Email:          email,
-						Hostname:       hostname,
-						IgnoreEmpty:    ignoreEmpty1,
-						In:             in1,
-						IP:             ip,
-						Ipv4:           ipv4,
-						Ipv6:           ipv6,
-						Length:         length,
-						LenBytes:       lenBytes,
-						MaxBytes:       maxBytes,
-						MaxLen:         maxLen,
-						MinBytes:       minBytes,
-						MinLen:         minLen,
-						NotContains:    notContains,
-						NotIn:          notIn1,
-						Pattern:        pattern,
-						Prefix:         prefix,
-						Strict:         strict,
-						Suffix:         suffix,
-						URI:            uri,
-						URIRef:         uriRef,
-						UUID:           uuid,
-						WellKnownRegex: wellKnownRegex,
-					}
-				}
+
 				var selectField *shared.SelectField
 				if fieldsItem.StringField.SelectField != nil {
 					var optionsVar []shared.SelectOption
@@ -1267,11 +714,54 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 						Multiline: multiline,
 					}
 				}
+				var pickerField *shared.PickerField
+				if fieldsItem.StringField.PickerField != nil {
+					var appUserFilter *shared.AppUserFilter
+					if fieldsItem.StringField.PickerField.AppUserFilter != nil {
+						appID := new(string)
+						if !fieldsItem.StringField.PickerField.AppUserFilter.AppID.IsUnknown() && !fieldsItem.StringField.PickerField.AppUserFilter.AppID.IsNull() {
+							*appID = fieldsItem.StringField.PickerField.AppUserFilter.AppID.ValueString()
+						} else {
+							appID = nil
+						}
+						appUserFilter = &shared.AppUserFilter{
+							AppID: appID,
+						}
+					}
+					var c1UserFilter *shared.C1UserFilter
+					if fieldsItem.StringField.PickerField.C1UserFilter != nil {
+						c1UserFilter = &shared.C1UserFilter{}
+					}
+					var appResourceFilter *shared.AppResourceFilter
+					if fieldsItem.StringField.PickerField.AppResourceFilter != nil {
+						appID2 := new(string)
+						if !fieldsItem.StringField.PickerField.AppResourceFilter.AppID.IsUnknown() && !fieldsItem.StringField.PickerField.AppResourceFilter.AppID.IsNull() {
+							*appID2 = fieldsItem.StringField.PickerField.AppResourceFilter.AppID.ValueString()
+						} else {
+							appID2 = nil
+						}
+						resourceTypeID := new(string)
+						if !fieldsItem.StringField.PickerField.AppResourceFilter.ResourceTypeID.IsUnknown() && !fieldsItem.StringField.PickerField.AppResourceFilter.ResourceTypeID.IsNull() {
+							*resourceTypeID = fieldsItem.StringField.PickerField.AppResourceFilter.ResourceTypeID.ValueString()
+						} else {
+							resourceTypeID = nil
+						}
+						appResourceFilter = &shared.AppResourceFilter{
+							AppID:          appID2,
+							ResourceTypeID: resourceTypeID,
+						}
+					}
+					pickerField = &shared.PickerField{
+						AppUserFilter:     appUserFilter,
+						C1UserFilter:      c1UserFilter,
+						AppResourceFilter: appResourceFilter,
+					}
+				}
 				stringField = &shared.StringField{
 					DefaultValue:  defaultValue2,
 					PasswordField: passwordField,
+					PickerField:   pickerField,
 					Placeholder:   placeholder1,
-					StringRules:   stringRules,
 					SelectField:   selectField,
 					TextField:     textField,
 				}
