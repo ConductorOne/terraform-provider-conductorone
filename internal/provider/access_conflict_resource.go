@@ -30,17 +30,17 @@ type AccessConflictResource struct {
 
 // AccessConflictResourceModel describes the resource data model.
 type AccessConflictResourceModel struct {
-	ConflictMonitorDeleteRequest *tfTypes.ConflictMonitorDeleteRequest `tfsdk:"conflict_monitor_delete_request"`
-	CreatedAt                    types.String                          `tfsdk:"created_at"`
-	DeletedAt                    types.String                          `tfsdk:"-"`
-	Description                  types.String                          `tfsdk:"description"`
-	DisplayName                  types.String                          `tfsdk:"display_name"`
-	Enabled                      types.Bool                            `tfsdk:"enabled"`
-	EntitlementSetAID            types.String                          `tfsdk:"entitlement_set_a_id"`
-	EntitlementSetBID            types.String                          `tfsdk:"entitlement_set_b_id"`
-	ID                           types.String                          `tfsdk:"id"`
-	NotificationConfig           *tfTypes.NotificationConfig1          `tfsdk:"notification_config"`
-	UpdatedAt                    types.String                          `tfsdk:"updated_at"`
+	AccessConflictNotificationConfig *tfTypes.AccessConflictNotificationConfig `tfsdk:"access_conflict_notification_config"`
+	ConflictMonitorDeleteRequest     *tfTypes.ConflictMonitorDeleteRequest     `tfsdk:"conflict_monitor_delete_request"`
+	CreatedAt                        types.String                              `tfsdk:"created_at"`
+	DeletedAt                        types.String                              `tfsdk:"-"`
+	Description                      types.String                              `tfsdk:"description"`
+	DisplayName                      types.String                              `tfsdk:"display_name"`
+	Enabled                          types.Bool                                `tfsdk:"enabled"`
+	EntitlementSetAID                types.String                              `tfsdk:"entitlement_set_a_id"`
+	EntitlementSetBID                types.String                              `tfsdk:"entitlement_set_b_id"`
+	ID                               types.String                              `tfsdk:"id"`
+	UpdatedAt                        types.String                              `tfsdk:"updated_at"`
 }
 
 func (r *AccessConflictResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -51,39 +51,7 @@ func (r *AccessConflictResource) Schema(ctx context.Context, req resource.Schema
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AccessConflict Resource",
 		Attributes: map[string]schema.Attribute{
-			"conflict_monitor_delete_request": schema.SingleNestedAttribute{
-				Optional:    true,
-				Description: `The ConflictMonitorDeleteRequest message.`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The description field.`,
-			},
-			"display_name": schema.StringAttribute{
-				Required:    true,
-				Description: `The displayName field.`,
-			},
-			"enabled": schema.BoolAttribute{
-				Computed:    true,
-				Description: `The enabled field.`,
-			},
-			"entitlement_set_a_id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The entitlementSetAId field.`,
-			},
-			"entitlement_set_b_id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The entitlementSetBId field.`,
-			},
-			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The id field.`,
-			},
-			"notification_config": schema.SingleNestedAttribute{
+			"access_conflict_notification_config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
@@ -129,6 +97,38 @@ func (r *AccessConflictResource) Schema(ctx context.Context, req resource.Schema
 					},
 				},
 				Description: `The NotificationConfig message.`,
+			},
+			"conflict_monitor_delete_request": schema.SingleNestedAttribute{
+				Optional:    true,
+				Description: `The ConflictMonitorDeleteRequest message.`,
+			},
+			"created_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The description field.`,
+			},
+			"display_name": schema.StringAttribute{
+				Required:    true,
+				Description: `The displayName field.`,
+			},
+			"enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The enabled field.`,
+			},
+			"entitlement_set_a_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The entitlementSetAId field.`,
+			},
+			"entitlement_set_b_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The entitlementSetBId field.`,
+			},
+			"id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The id field.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

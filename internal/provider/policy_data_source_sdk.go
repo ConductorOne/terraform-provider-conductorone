@@ -42,7 +42,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 					if stepsItem.Action == nil {
 						steps.Action = nil
 					} else {
-						steps.Action = &tfTypes.Action1{}
+						steps.Action = &tfTypes.Action{}
 						if stepsItem.Action.ActionTargetAutomation == nil {
 							steps.Action.ActionTargetAutomation = nil
 						} else {
@@ -392,11 +392,11 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							steps.Approval.WebhookApproval.WebhookID = types.StringPointerValue(stepsItem.Approval.WebhookApproval.WebhookID)
 						}
 					}
-					if stepsItem.Form == nil {
-						steps.Form = jsontypes.NewNormalizedNull()
+					if stepsItem.PolicyForm == nil {
+						steps.PolicyForm = jsontypes.NewNormalizedNull()
 					} else {
-						formResult, _ := json.Marshal(stepsItem.Form)
-						steps.Form = jsontypes.NewNormalizedValue(string(formResult))
+						policyFormResult, _ := json.Marshal(stepsItem.PolicyForm)
+						steps.PolicyForm = jsontypes.NewNormalizedValue(string(policyFormResult))
 					}
 					if stepsItem.Provision == nil {
 						steps.Provision = nil

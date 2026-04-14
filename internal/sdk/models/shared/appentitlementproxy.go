@@ -8,9 +8,6 @@ import (
 )
 
 // The AppEntitlementProxy message.
-//
-// This message contains a oneof named _implicit. Only a single field of the following list may be set at a time:
-//   - implicit
 type AppEntitlementProxy struct {
 	CreatedAt  *time.Time `json:"createdAt,omitempty"`
 	DeletedAt  *time.Time `json:"deletedAt,omitempty"`

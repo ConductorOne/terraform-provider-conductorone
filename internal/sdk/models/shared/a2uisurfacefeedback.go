@@ -43,6 +43,8 @@ func (e *Sentiment) UnmarshalJSON(data []byte) error {
 type A2UISurfaceFeedback struct {
 	// The actionName field.
 	ActionName *string `json:"actionName,omitempty"`
+	// The componentsSnapshot field.
+	ComponentsSnapshot *string `json:"componentsSnapshot,omitempty"`
 	// The conversationId field.
 	ConversationID *string    `json:"conversationId,omitempty"`
 	CreatedAt      *time.Time `json:"createdAt,omitempty"`
@@ -76,6 +78,13 @@ func (a *A2UISurfaceFeedback) GetActionName() *string {
 		return nil
 	}
 	return a.ActionName
+}
+
+func (a *A2UISurfaceFeedback) GetComponentsSnapshot() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ComponentsSnapshot
 }
 
 func (a *A2UISurfaceFeedback) GetConversationID() *string {

@@ -13,6 +13,7 @@ type FunctionsServiceCreateFunctionRequestFunctionType string
 const (
 	FunctionsServiceCreateFunctionRequestFunctionTypeFunctionTypeUnspecified FunctionsServiceCreateFunctionRequestFunctionType = "FUNCTION_TYPE_UNSPECIFIED"
 	FunctionsServiceCreateFunctionRequestFunctionTypeFunctionTypeAny         FunctionsServiceCreateFunctionRequestFunctionType = "FUNCTION_TYPE_ANY"
+	FunctionsServiceCreateFunctionRequestFunctionTypeFunctionTypeCodeMode    FunctionsServiceCreateFunctionRequestFunctionType = "FUNCTION_TYPE_CODE_MODE"
 )
 
 func (e FunctionsServiceCreateFunctionRequestFunctionType) ToPointer() *FunctionsServiceCreateFunctionRequestFunctionType {
@@ -27,6 +28,8 @@ func (e *FunctionsServiceCreateFunctionRequestFunctionType) UnmarshalJSON(data [
 	case "FUNCTION_TYPE_UNSPECIFIED":
 		fallthrough
 	case "FUNCTION_TYPE_ANY":
+		fallthrough
+	case "FUNCTION_TYPE_CODE_MODE":
 		*e = FunctionsServiceCreateFunctionRequestFunctionType(v)
 		return nil
 	default:

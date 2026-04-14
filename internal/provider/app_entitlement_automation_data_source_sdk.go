@@ -68,6 +68,7 @@ func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlemen
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.ManagedByRequestCatalogID = types.StringPointerValue(resp.ManagedByRequestCatalogID)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 

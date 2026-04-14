@@ -20,6 +20,37 @@ resource "conductorone_automation" "my_automation" {
           id     = "...my_id..."
         }
       }
+      automations_task_action = {
+        close_action = {
+          use_subject_user = true
+          user_id_cel      = "...my_user_id_cel..."
+          user_ref = {
+            id = "...my_id..."
+          }
+        }
+        reassign_action = {
+          assignee_user_id_cel = "...my_assignee_user_id_cel..."
+          subject_user_id_cel  = "...my_subject_user_id_cel..."
+          use_subject_user     = true
+          user_ref = {
+            id = "...my_id..."
+          }
+          user_ref1 = {
+            id = "...my_id..."
+          }
+        }
+        task_types = [
+          "TASK_TYPE_REVOKE"
+        ]
+        task_user_relation = "TASK_USER_RELATION_UNSPECIFIED"
+      }
+      automations_webhook = {
+        payload = {
+          # ...
+        }
+        webhook_id     = "...my_webhook_id..."
+        webhook_id_cel = "...my_webhook_id_cel..."
+      }
       call_function = {
         args = {
           key = "value"
@@ -42,7 +73,8 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
-        user_id_cel = "...my_user_id_cel..."
+        password_cel = "...my_password_cel..."
+        user_id_cel  = "...my_user_id_cel..."
         user_properties = {
           display_name_cel      = "...my_display_name_cel..."
           email_cel             = "...my_email_cel..."
@@ -157,6 +189,17 @@ resource "conductorone_automation" "my_automation" {
         ]
       }
       generate_password = {
+        generate_password_policy = {
+          custom_characters          = "...my_custom_characters..."
+          excluded_characters        = "...my_excluded_characters..."
+          max_character_count        = 9
+          min_character_count        = 0
+          no_restrictions            = false
+          require_lowercase          = false
+          require_numbers            = true
+          require_special_characters = false
+          require_uppercase          = false
+        }
         password_policy_id = "...my_password_policy_id..."
       }
       grant_entitlements = {
@@ -263,29 +306,17 @@ resource "conductorone_automation" "my_automation" {
       skip_if_true_cel  = "...my_skip_if_true_cel..."
       step_display_name = "...my_step_display_name..."
       step_name         = "...my_step_name..."
-      task_action = {
-        close_action = {
-          use_subject_user = false
-          user_id_cel      = "...my_user_id_cel..."
-          user_ref = {
-            id = "...my_id..."
-          }
-        }
-        reassign_action = {
-          assignee_user_id_cel = "...my_assignee_user_id_cel..."
-          subject_user_id_cel  = "...my_subject_user_id_cel..."
-          use_subject_user     = false
-          user_ref = {
-            id = "...my_id..."
-          }
-          user_ref1 = {
-            id = "...my_id..."
-          }
-        }
-        task_types = [
-          "TASK_TYPE_REVOKE"
-        ]
-        task_user_relation = "TASK_USER_RELATION_ASSIGNEE"
+      store_credential = {
+        app_id_cel          = "...my_app_id_cel..."
+        auth_type           = "STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL"
+        credential_cel      = "...my_credential_cel..."
+        expiry              = "...my_expiry..."
+        label_cel           = "...my_label_cel..."
+        max_views           = 9
+        recipient_cel       = "...my_recipient_cel..."
+        recipient_email_cel = "...my_recipient_email_cel..."
+        ttl                 = "...my_ttl..."
+        vault_type          = "STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED"
       }
       unenroll_from_all_access_profiles = {
         catalog_ids = [
@@ -312,15 +343,11 @@ resource "conductorone_automation" "my_automation" {
       wait_for_duration = {
         duration = "...my_duration..."
       }
-      webhook = {
-        payload = {
-          # ...
-        }
-        webhook_id     = "...my_webhook_id..."
-        webhook_id_cel = "...my_webhook_id_cel..."
-      }
     }
   ]
+  automations_delete_automation_request = {
+    # ...
+  }
   description  = "...my_description..."
   display_name = "...my_display_name..."
   draft_automation_steps = [
@@ -337,6 +364,37 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
+      }
+      automations_task_action = {
+        close_action = {
+          use_subject_user = false
+          user_id_cel      = "...my_user_id_cel..."
+          user_ref = {
+            id = "...my_id..."
+          }
+        }
+        reassign_action = {
+          assignee_user_id_cel = "...my_assignee_user_id_cel..."
+          subject_user_id_cel  = "...my_subject_user_id_cel..."
+          use_subject_user     = true
+          user_ref = {
+            id = "...my_id..."
+          }
+          user_ref1 = {
+            id = "...my_id..."
+          }
+        }
+        task_types = [
+          "TASK_TYPE_REVOKE"
+        ]
+        task_user_relation = "TASK_USER_RELATION_UNSPECIFIED"
+      }
+      automations_webhook = {
+        payload = {
+          # ...
+        }
+        webhook_id     = "...my_webhook_id..."
+        webhook_id_cel = "...my_webhook_id_cel..."
       }
       call_function = {
         args = {
@@ -360,7 +418,8 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
-        user_id_cel = "...my_user_id_cel..."
+        password_cel = "...my_password_cel..."
+        user_id_cel  = "...my_user_id_cel..."
         user_properties = {
           display_name_cel      = "...my_display_name_cel..."
           email_cel             = "...my_email_cel..."
@@ -475,6 +534,17 @@ resource "conductorone_automation" "my_automation" {
         ]
       }
       generate_password = {
+        generate_password_policy = {
+          custom_characters          = "...my_custom_characters..."
+          excluded_characters        = "...my_excluded_characters..."
+          max_character_count        = 5
+          min_character_count        = 8
+          no_restrictions            = false
+          require_lowercase          = true
+          require_numbers            = false
+          require_special_characters = false
+          require_uppercase          = false
+        }
         password_policy_id = "...my_password_policy_id..."
       }
       grant_entitlements = {
@@ -581,29 +651,17 @@ resource "conductorone_automation" "my_automation" {
       skip_if_true_cel  = "...my_skip_if_true_cel..."
       step_display_name = "...my_step_display_name..."
       step_name         = "...my_step_name..."
-      task_action = {
-        close_action = {
-          use_subject_user = false
-          user_id_cel      = "...my_user_id_cel..."
-          user_ref = {
-            id = "...my_id..."
-          }
-        }
-        reassign_action = {
-          assignee_user_id_cel = "...my_assignee_user_id_cel..."
-          subject_user_id_cel  = "...my_subject_user_id_cel..."
-          use_subject_user     = false
-          user_ref = {
-            id = "...my_id..."
-          }
-          user_ref1 = {
-            id = "...my_id..."
-          }
-        }
-        task_types = [
-          "TASK_TYPE_UNSPECIFIED"
-        ]
-        task_user_relation = "TASK_USER_RELATION_UNSPECIFIED"
+      store_credential = {
+        app_id_cel          = "...my_app_id_cel..."
+        auth_type           = "STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL"
+        credential_cel      = "...my_credential_cel..."
+        expiry              = "...my_expiry..."
+        label_cel           = "...my_label_cel..."
+        max_views           = 2
+        recipient_cel       = "...my_recipient_cel..."
+        recipient_email_cel = "...my_recipient_email_cel..."
+        ttl                 = "...my_ttl..."
+        vault_type          = "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT"
       }
       unenroll_from_all_access_profiles = {
         catalog_ids = [
@@ -629,13 +687,6 @@ resource "conductorone_automation" "my_automation" {
       }
       wait_for_duration = {
         duration = "...my_duration..."
-      }
-      webhook = {
-        payload = {
-          # ...
-        }
-        webhook_id     = "...my_webhook_id..."
-        webhook_id_cel = "...my_webhook_id_cel..."
       }
     }
   ]
@@ -796,6 +847,9 @@ resource "conductorone_automation" "my_automation" {
       }
       webhook_automation_trigger = {
         listener_id = "...my_listener_id..."
+        webhook_listener_auth_capability_url = {
+          # ...
+        }
         webhook_listener_auth_hmac = {
           # ...
         }
@@ -964,6 +1018,9 @@ resource "conductorone_automation" "my_automation" {
       }
       webhook_automation_trigger = {
         listener_id = "...my_listener_id..."
+        webhook_listener_auth_capability_url = {
+          # ...
+        }
         webhook_listener_auth_hmac = {
           # ...
         }

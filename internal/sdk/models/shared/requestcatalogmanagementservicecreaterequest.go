@@ -108,6 +108,8 @@ type RequestCatalogManagementServiceCreateRequest struct {
 	DisplayName string `json:"displayName"`
 	// Defines how to handle the request policies of the entitlements in the catalog during enrollment.
 	EnrollmentBehavior *RequestCatalogManagementServiceCreateRequestEnrollmentBehavior `json:"enrollmentBehavior,omitempty"`
+	// The ID of the grant policy for access requests in this catalog.
+	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// Whether or not the new catalog should be created as published.
 	Published *bool `json:"published,omitempty"`
 	// Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
@@ -139,6 +141,13 @@ func (r *RequestCatalogManagementServiceCreateRequest) GetEnrollmentBehavior() *
 		return nil
 	}
 	return r.EnrollmentBehavior
+}
+
+func (r *RequestCatalogManagementServiceCreateRequest) GetGrantPolicyID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.GrantPolicyID
 }
 
 func (r *RequestCatalogManagementServiceCreateRequest) GetPublished() *bool {

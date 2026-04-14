@@ -17,6 +17,17 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AccessReviewColumnConfig == nil {
+			r.AccessReviewColumnConfig = nil
+		} else {
+			r.AccessReviewColumnConfig = &tfTypes.AccessReviewColumnConfig{}
+			if resp.AccessReviewColumnConfig.Columns != nil {
+				r.AccessReviewColumnConfig.Columns = make([]types.String, 0, len(resp.AccessReviewColumnConfig.Columns))
+				for _, v := range resp.AccessReviewColumnConfig.Columns {
+					r.AccessReviewColumnConfig.Columns = append(r.AccessReviewColumnConfig.Columns, types.StringValue(string(v)))
+				}
+			}
+		}
 		if resp.AccessReviewExclusionScope == nil {
 			r.AccessReviewExclusionScope = nil
 		} else {
@@ -334,6 +345,12 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 		} else {
 			r.BindingObjectSetup = &tfTypes.BindingObjectSetup{}
 		}
+		if resp.CampaignInsights == nil {
+			r.CampaignInsights = nil
+		} else {
+			r.CampaignInsights = &tfTypes.CampaignInsights{}
+			r.CampaignInsights.Markdown = types.StringPointerValue(resp.CampaignInsights.Markdown)
+		}
 		r.ClosedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ClosedAt))
 		r.CompletionDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CompletionDate))
 		r.ConnectorSourcesFrozenAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ConnectorSourcesFrozenAt))
@@ -505,11 +522,6 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReviewView(ctx contex
 				}
 			}
 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
-		} else {
-			r.Delete = types.BoolNull()
-			r.Edit = types.BoolNull()
-			r.Extra = nil
-			r.Read = types.BoolNull()
 		}
 		r.CreatedByUserPath = types.StringPointerValue(resp.CreatedByUserPath)
 		r.PolicyPath = types.StringPointerValue(resp.PolicyPath)
@@ -622,11 +634,36 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 	if r.BindingObjectSetup != nil {
 		bindingObjectSetup = &shared.BindingObjectSetup{}
 	}
+	var campaignInsights *shared.CampaignInsights
+	if r.CampaignInsights != nil {
+		markdown := new(string)
+		if !r.CampaignInsights.Markdown.IsUnknown() && !r.CampaignInsights.Markdown.IsNull() {
+			*markdown = r.CampaignInsights.Markdown.ValueString()
+		} else {
+			markdown = nil
+		}
+		campaignInsights = &shared.CampaignInsights{
+			Markdown: markdown,
+		}
+	}
 	closedAt := new(time.Time)
 	if !r.ClosedAt.IsUnknown() && !r.ClosedAt.IsNull() {
 		*closedAt, _ = time.Parse(time.RFC3339Nano, r.ClosedAt.ValueString())
 	} else {
 		closedAt = nil
+	}
+	var accessReviewColumnConfig *shared.AccessReviewColumnConfig
+	if r.AccessReviewColumnConfig != nil {
+		var columns []shared.Columns
+		if r.AccessReviewColumnConfig.Columns != nil {
+			columns = make([]shared.Columns, 0, len(r.AccessReviewColumnConfig.Columns))
+			for _, columnsItem := range r.AccessReviewColumnConfig.Columns {
+				columns = append(columns, shared.Columns(columnsItem.ValueString()))
+			}
+		}
+		accessReviewColumnConfig = &shared.AccessReviewColumnConfig{
+			Columns: columns,
+		}
 	}
 	completionDate := new(time.Time)
 	if !r.CompletionDate.IsUnknown() && !r.CompletionDate.IsNull() {
@@ -1301,7 +1338,9 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 		AutoResolve:                    autoResolve,
 		AutoStartCampaign:              autoStartCampaign,
 		BindingObjectSetup:             bindingObjectSetup,
+		CampaignInsights:               campaignInsights,
 		ClosedAt:                       closedAt,
+		AccessReviewColumnConfig:       accessReviewColumnConfig,
 		CompletionDate:                 completionDate,
 		ConnectorSourcesFrozenAt:       connectorSourcesFrozenAt,
 		CreatedByID:                    createdByID,

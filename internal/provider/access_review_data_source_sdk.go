@@ -16,6 +16,17 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AccessReviewColumnConfig == nil {
+			r.AccessReviewColumnConfig = nil
+		} else {
+			r.AccessReviewColumnConfig = &tfTypes.AccessReviewColumnConfig{}
+			if resp.AccessReviewColumnConfig.Columns != nil {
+				r.AccessReviewColumnConfig.Columns = make([]types.String, 0, len(resp.AccessReviewColumnConfig.Columns))
+				for _, v := range resp.AccessReviewColumnConfig.Columns {
+					r.AccessReviewColumnConfig.Columns = append(r.AccessReviewColumnConfig.Columns, types.StringValue(string(v)))
+				}
+			}
+		}
 		if resp.AccessReviewExclusionScope == nil {
 			r.AccessReviewExclusionScope = nil
 		} else {
@@ -333,6 +344,12 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 		} else {
 			r.BindingObjectSetup = &tfTypes.BindingObjectSetup{}
 		}
+		if resp.CampaignInsights == nil {
+			r.CampaignInsights = nil
+		} else {
+			r.CampaignInsights = &tfTypes.CampaignInsights{}
+			r.CampaignInsights.Markdown = types.StringPointerValue(resp.CampaignInsights.Markdown)
+		}
 		r.ClosedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ClosedAt))
 		r.CompletionDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CompletionDate))
 		r.ConnectorSourcesFrozenAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ConnectorSourcesFrozenAt))
@@ -470,11 +487,6 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReviewView(ctx cont
 				}
 			}
 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
-		} else {
-			r.Delete = types.BoolNull()
-			r.Edit = types.BoolNull()
-			r.Extra = nil
-			r.Read = types.BoolNull()
 		}
 		r.CreatedByUserPath = types.StringPointerValue(resp.CreatedByUserPath)
 		r.PolicyPath = types.StringPointerValue(resp.PolicyPath)

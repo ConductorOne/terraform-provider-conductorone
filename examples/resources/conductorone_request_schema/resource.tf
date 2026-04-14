@@ -39,9 +39,6 @@ resource "conductorone_request_schema" "my_request_schema" {
         show_to_user      = false
       }
       bool_field = {
-        bool_rules = {
-          const = false
-        }
         checkbox_field = {
           # ...
         }
@@ -59,24 +56,8 @@ resource "conductorone_request_schema" "my_request_schema" {
         file_input_field = {
           # ...
         }
-        max_file_size = "...my_max_file_size..."
       }
       int64_field = {
-        default_value = "...my_default_value..."
-        int64_rules = {
-          const        = "...my_const..."
-          gt           = "...my_gt..."
-          gte          = "...my_gte..."
-          ignore_empty = true
-          in = [
-            "..."
-          ]
-          lt  = "...my_lt..."
-          lte = "...my_lte..."
-          not_in = [
-            "..."
-          ]
-        }
         number_field = {
           max_value = "...my_max_value..."
           min_value = "...my_min_value..."
@@ -124,40 +105,13 @@ resource "conductorone_request_schema" "my_request_schema" {
           ]
           type = "SELECT_TYPE_RADIO"
         }
-        string_rules = {
-          address      = false
-          const        = "...my_const..."
-          contains     = "...my_contains..."
-          email        = true
-          hostname     = false
-          ignore_empty = false
-          in = [
-            "..."
-          ]
-          ip           = true
-          ipv4         = false
-          ipv6         = true
-          len_bytes    = "...my_len_bytes..."
-          length       = "...my_length..."
-          max_bytes    = "...my_max_bytes..."
-          max_len      = "...my_max_len..."
-          min_bytes    = "...my_min_bytes..."
-          min_len      = "...my_min_len..."
-          not_contains = "...my_not_contains..."
-          not_in = [
-            "..."
-          ]
-          pattern          = "...my_pattern..."
-          prefix           = "...my_prefix..."
-          strict           = true
-          suffix           = "...my_suffix..."
-          uri              = false
-          uri_ref          = true
-          uuid             = false
-          well_known_regex = "HTTP_HEADER_NAME"
-        }
         text_field = {
           multiline = false
+        }
+      }
+      string_map_field = {
+        default_value = {
+          key = "value"
         }
       }
       user_provider_config = {

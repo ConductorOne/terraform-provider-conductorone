@@ -35,7 +35,7 @@ generation:
   persistentEdits: {}
   versioningStrategy: automatic
 terraform:
-  version: 1.7.16
+  version: 1.7.17
   additionalActions: []
   additionalDataSources: []
   additionalDependencies: {}
@@ -59,6 +59,7 @@ terraform:
   enableTypeDeduplication: false
   environmentVariables: []
   excludeEmptyObjectSchemas: false
+  forwardCompatibleEnumsByDefault: false
   includeEmptyObjects: false
   inferUnionDiscriminators: false
   packageName: conductorone

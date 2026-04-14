@@ -6,18 +6,11 @@ package shared
 //
 // This message contains a oneof named view. Only a single field of the following list may be set at a time:
 //   - fileInputField
-//
-// This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:
-//   - maxFileSize
 type FileField struct {
 	// The acceptedFileTypes field.
 	AcceptedFileTypes []string `json:"acceptedFileTypes,omitempty"`
 	// The FileInputField message.
 	FileInputField *FileInputField `json:"fileInputField,omitempty"`
-	// The maxFileSize field.
-	// This field is part of the `_max_file_size` oneof.
-	// See the documentation for `c1.api.form.v1.FileField` for more details.
-	MaxFileSize *string `json:"maxFileSize,omitempty"`
 }
 
 func (f *FileField) GetAcceptedFileTypes() []string {
@@ -32,11 +25,4 @@ func (f *FileField) GetFileInputField() *FileInputField {
 		return nil
 	}
 	return f.FileInputField
-}
-
-func (f *FileField) GetMaxFileSize() *string {
-	if f == nil {
-		return nil
-	}
-	return f.MaxFileSize
 }

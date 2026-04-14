@@ -12,6 +12,5 @@ type StringField struct {
 	PickerField   *PickerField   `tfsdk:"picker_field"`
 	Placeholder   types.String   `tfsdk:"placeholder"`
 	SelectField   *SelectField   `tfsdk:"select_field"`
-	StringRules   *StringRules   `tfsdk:"string_rules"`
 	TextField     *TextField     `tfsdk:"text_field"`
 }

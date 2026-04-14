@@ -7,11 +7,11 @@ import (
 )
 
 type PolicyStep struct {
-	Accept    *Accept              `tfsdk:"accept"`
-	Action    *Action1             `tfsdk:"action"`
-	Approval  *Approval            `tfsdk:"approval" tfPlanOnly:"true"`
-	Form      jsontypes.Normalized `tfsdk:"form"`
-	Provision *Provision           `tfsdk:"provision"`
-	Reject    *Reject              `tfsdk:"reject"`
-	Wait      *Wait                `tfsdk:"wait"`
+	Accept     *Accept              `tfsdk:"accept"`
+	Action     *Action              `tfsdk:"action"`
+	Approval   *Approval            `tfsdk:"approval" tfPlanOnly:"true"`
+	PolicyForm jsontypes.Normalized `tfsdk:"policy_form"`
+	Provision  *Provision           `tfsdk:"provision"`
+	Reject     *Reject              `tfsdk:"reject"`
+	Wait       *Wait                `tfsdk:"wait"`
 }

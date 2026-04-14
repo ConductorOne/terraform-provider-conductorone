@@ -1,4 +1,9 @@
 resource "conductorone_access_review_template" "my_access_review_template" {
+  access_review_column_config = {
+    columns = [
+      "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_CHILDREN"
+    ]
+  }
   access_review_duration = "...my_access_review_duration..."
   access_review_scope_v2 = {
     account_criteria_scope = {

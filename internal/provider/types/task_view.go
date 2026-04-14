@@ -16,6 +16,7 @@ type TaskView struct {
 	EntitlementsPath     types.String `tfsdk:"entitlements_path"`
 	IdentityUserPath     types.String `tfsdk:"identity_user_path"`
 	InsightsPath         types.String `tfsdk:"insights_path"`
+	ResourceBindingsPath types.String `tfsdk:"resource_bindings_path"`
 	StepApproversPath    types.String `tfsdk:"step_approvers_path"`
 	Task                 *Task        `tfsdk:"task"`
 	UserPath             types.String `tfsdk:"user_path"`

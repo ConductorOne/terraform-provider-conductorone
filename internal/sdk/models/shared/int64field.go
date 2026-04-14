@@ -6,30 +6,11 @@ package shared
 //
 // This message contains a oneof named view. Only a single field of the following list may be set at a time:
 //   - numberField
-//
-// This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:
-//   - defaultValue
-//
-// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-//   - rules
 type Int64Field struct {
-	// The defaultValue field.
-	// This field is part of the `_default_value` oneof.
-	// See the documentation for `c1.api.form.v1.Int64Field` for more details.
-	DefaultValue *string `json:"defaultValue,omitempty"`
 	// The NumberField message.
 	NumberField *NumberField `json:"numberField,omitempty"`
 	// The placeholder field.
 	Placeholder *string `json:"placeholder,omitempty"`
-	// Int64Rules describes the constraints applied to `int64` values
-	Int64Rules *Int64Rules `json:"rules,omitempty"`
-}
-
-func (i *Int64Field) GetDefaultValue() *string {
-	if i == nil {
-		return nil
-	}
-	return i.DefaultValue
 }
 
 func (i *Int64Field) GetNumberField() *NumberField {
@@ -44,11 +25,4 @@ func (i *Int64Field) GetPlaceholder() *string {
 		return nil
 	}
 	return i.Placeholder
-}
-
-func (i *Int64Field) GetInt64Rules() *Int64Rules {
-	if i == nil {
-		return nil
-	}
-	return i.Int64Rules
 }

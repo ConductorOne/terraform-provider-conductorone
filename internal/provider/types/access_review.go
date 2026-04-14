@@ -7,6 +7,7 @@ import (
 )
 
 type AccessReview struct {
+	AccessReviewColumnConfig       *AccessReviewColumnConfig   `tfsdk:"access_review_column_config"`
 	AccessReviewExclusionScope     *AccessReviewExclusionScope `tfsdk:"access_review_exclusion_scope"`
 	AccessReviewInclusionScope     *AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
 	AccessReviewScope              *AccessReviewScope          `tfsdk:"access_review_scope"`
@@ -19,6 +20,7 @@ type AccessReview struct {
 	AutoResolve                    types.Bool                  `tfsdk:"auto_resolve"`
 	AutoStartCampaign              types.Bool                  `tfsdk:"auto_start_campaign"`
 	BindingObjectSetup             *BindingObjectSetup         `tfsdk:"binding_object_setup"`
+	CampaignInsights               *CampaignInsights           `tfsdk:"campaign_insights"`
 	ClosedAt                       types.String                `tfsdk:"closed_at"`
 	CompletionDate                 types.String                `tfsdk:"completion_date"`
 	ConnectorSourcesFrozenAt       types.String                `tfsdk:"connector_sources_frozen_at"`

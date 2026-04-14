@@ -80,6 +80,7 @@ const (
 	DefaultViewAccessReviewViewTypeByApp        DefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_APP"
 	DefaultViewAccessReviewViewTypeByUser       DefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_USER"
 	DefaultViewAccessReviewViewTypeUnstructured DefaultView = "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED"
+	DefaultViewAccessReviewViewTypeByResource   DefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE"
 )
 
 func (e DefaultView) ToPointer() *DefaultView {
@@ -98,6 +99,8 @@ func (e *DefaultView) UnmarshalJSON(data []byte) error {
 	case "ACCESS_REVIEW_VIEW_TYPE_BY_USER":
 		fallthrough
 	case "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED":
+		fallthrough
+	case "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE":
 		*e = DefaultView(v)
 		return nil
 	default:
@@ -221,11 +224,15 @@ type AccessReview struct {
 	// Auto-start configuration
 	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
 	// The BindingObjectSetup message.
-	BindingObjectSetup       *BindingObjectSetup `json:"bindings,omitempty"`
-	ClosedAt                 *time.Time          `json:"closedAt,omitempty"`
-	CompletionDate           *time.Time          `json:"completionDate,omitempty"`
-	ConnectorSourcesFrozenAt *time.Time          `json:"connectorSourcesFrozenAt,omitempty"`
-	CreatedAt                *time.Time          `json:"createdAt,omitempty"`
+	BindingObjectSetup *BindingObjectSetup `json:"bindings,omitempty"`
+	// AI-generated campaign insights (markdown). Read-only; set by backend when campaign is closed.
+	CampaignInsights *CampaignInsights `json:"campaignInsights,omitempty"`
+	ClosedAt         *time.Time        `json:"closedAt,omitempty"`
+	// Configuration for which columns are visible in the reviewer task list.
+	AccessReviewColumnConfig *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
+	CompletionDate           *time.Time                `json:"completionDate,omitempty"`
+	ConnectorSourcesFrozenAt *time.Time                `json:"connectorSourcesFrozenAt,omitempty"`
+	CreatedAt                *time.Time                `json:"createdAt,omitempty"`
 	// The createdById field.
 	CreatedByID *string `json:"createdById,omitempty"`
 	// the default view that reviewers will see when they complete their access reviews
@@ -377,11 +384,25 @@ func (a *AccessReview) GetBindingObjectSetup() *BindingObjectSetup {
 	return a.BindingObjectSetup
 }
 
+func (a *AccessReview) GetCampaignInsights() *CampaignInsights {
+	if a == nil {
+		return nil
+	}
+	return a.CampaignInsights
+}
+
 func (a *AccessReview) GetClosedAt() *time.Time {
 	if a == nil {
 		return nil
 	}
 	return a.ClosedAt
+}
+
+func (a *AccessReview) GetAccessReviewColumnConfig() *AccessReviewColumnConfig {
+	if a == nil {
+		return nil
+	}
+	return a.AccessReviewColumnConfig
 }
 
 func (a *AccessReview) GetCompletionDate() *time.Time {
@@ -603,10 +624,14 @@ type AccessReviewInput struct {
 	// Auto-start configuration
 	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
 	// The BindingObjectSetup message.
-	BindingObjectSetup       *BindingObjectSetup `json:"bindings,omitempty"`
-	ClosedAt                 *time.Time          `json:"closedAt,omitempty"`
-	CompletionDate           *time.Time          `json:"completionDate,omitempty"`
-	ConnectorSourcesFrozenAt *time.Time          `json:"connectorSourcesFrozenAt,omitempty"`
+	BindingObjectSetup *BindingObjectSetup `json:"bindings,omitempty"`
+	// AI-generated campaign insights (markdown). Read-only; set by backend when campaign is closed.
+	CampaignInsights *CampaignInsights `json:"campaignInsights,omitempty"`
+	ClosedAt         *time.Time        `json:"closedAt,omitempty"`
+	// Configuration for which columns are visible in the reviewer task list.
+	AccessReviewColumnConfig *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
+	CompletionDate           *time.Time                `json:"completionDate,omitempty"`
+	ConnectorSourcesFrozenAt *time.Time                `json:"connectorSourcesFrozenAt,omitempty"`
 	// The createdById field.
 	CreatedByID *string `json:"createdById,omitempty"`
 	// the default view that reviewers will see when they complete their access reviews
@@ -757,11 +782,25 @@ func (a *AccessReviewInput) GetBindingObjectSetup() *BindingObjectSetup {
 	return a.BindingObjectSetup
 }
 
+func (a *AccessReviewInput) GetCampaignInsights() *CampaignInsights {
+	if a == nil {
+		return nil
+	}
+	return a.CampaignInsights
+}
+
 func (a *AccessReviewInput) GetClosedAt() *time.Time {
 	if a == nil {
 		return nil
 	}
 	return a.ClosedAt
+}
+
+func (a *AccessReviewInput) GetAccessReviewColumnConfig() *AccessReviewColumnConfig {
+	if a == nil {
+		return nil
+	}
+	return a.AccessReviewColumnConfig
 }
 
 func (a *AccessReviewInput) GetCompletionDate() *time.Time {

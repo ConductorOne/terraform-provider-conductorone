@@ -2,28 +2,28 @@
 
 package shared
 
-// Action represents what happens when a component is activated (e.g., button click).
+// The Action message.
 //
-// This message contains a oneof named action_type. Only a single field of the following list may be set at a time:
-//   - event
-//   - functionCall
+// This message contains a oneof named target. Only a single field of the following list may be set at a time:
+//   - automation
+//   - batonResourceAction
 type Action struct {
-	// ServerEvent triggers a server-side action.
-	ServerEvent *ServerEvent `json:"event,omitempty"`
-	// FunctionCall represents a client-side function invocation.
-	FunctionCall *FunctionCall `json:"functionCall,omitempty"`
+	// ActionTargetAutomation targets automation templates for policy actions.
+	ActionTargetAutomation *ActionTargetAutomation `json:"automation,omitempty"`
+	// ActionTargetResource targets resource actions for policy actions.
+	ActionTargetBatonResourceAction *ActionTargetBatonResourceAction `json:"batonResourceAction,omitempty"`
 }
 
-func (a *Action) GetServerEvent() *ServerEvent {
+func (a *Action) GetActionTargetAutomation() *ActionTargetAutomation {
 	if a == nil {
 		return nil
 	}
-	return a.ServerEvent
+	return a.ActionTargetAutomation
 }
 
-func (a *Action) GetFunctionCall() *FunctionCall {
+func (a *Action) GetActionTargetBatonResourceAction() *ActionTargetBatonResourceAction {
 	if a == nil {
 		return nil
 	}
-	return a.FunctionCall
+	return a.ActionTargetBatonResourceAction
 }

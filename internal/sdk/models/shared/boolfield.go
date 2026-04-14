@@ -7,16 +7,11 @@ package shared
 // This message contains a oneof named view. Only a single field of the following list may be set at a time:
 //   - checkboxField
 //   - toggleField
-//
-// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-//   - rules
 type BoolField struct {
 	// The CheckboxField message.
 	CheckboxField *CheckboxField `json:"checkboxField,omitempty"`
 	// The defaultValue field.
 	DefaultValue *bool `json:"defaultValue,omitempty"`
-	// BoolRules describes the constraints applied to `bool` values
-	BoolRules *BoolRules `json:"rules,omitempty"`
 	// The ToggleField message.
 	ToggleField *ToggleField `json:"toggleField,omitempty"`
 }
@@ -33,13 +28,6 @@ func (b *BoolField) GetDefaultValue() *bool {
 		return nil
 	}
 	return b.DefaultValue
-}
-
-func (b *BoolField) GetBoolRules() *BoolRules {
-	if b == nil {
-		return nil
-	}
-	return b.BoolRules
 }
 
 func (b *BoolField) GetToggleField() *ToggleField {

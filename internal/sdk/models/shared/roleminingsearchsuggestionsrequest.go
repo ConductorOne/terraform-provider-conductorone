@@ -39,19 +39,19 @@ func (e *MatchTypes) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type States string
+type RoleMiningSearchSuggestionsRequestStates string
 
 const (
-	StatesSuggestionStateUnspecified States = "SUGGESTION_STATE_UNSPECIFIED"
-	StatesSuggestionStateNew         States = "SUGGESTION_STATE_NEW"
-	StatesSuggestionStateDismissed   States = "SUGGESTION_STATE_DISMISSED"
-	StatesSuggestionStateAccepted    States = "SUGGESTION_STATE_ACCEPTED"
+	RoleMiningSearchSuggestionsRequestStatesSuggestionStateUnspecified RoleMiningSearchSuggestionsRequestStates = "SUGGESTION_STATE_UNSPECIFIED"
+	RoleMiningSearchSuggestionsRequestStatesSuggestionStateNew         RoleMiningSearchSuggestionsRequestStates = "SUGGESTION_STATE_NEW"
+	RoleMiningSearchSuggestionsRequestStatesSuggestionStateDismissed   RoleMiningSearchSuggestionsRequestStates = "SUGGESTION_STATE_DISMISSED"
+	RoleMiningSearchSuggestionsRequestStatesSuggestionStateAccepted    RoleMiningSearchSuggestionsRequestStates = "SUGGESTION_STATE_ACCEPTED"
 )
 
-func (e States) ToPointer() *States {
+func (e RoleMiningSearchSuggestionsRequestStates) ToPointer() *RoleMiningSearchSuggestionsRequestStates {
 	return &e
 }
-func (e *States) UnmarshalJSON(data []byte) error {
+func (e *RoleMiningSearchSuggestionsRequestStates) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -64,10 +64,10 @@ func (e *States) UnmarshalJSON(data []byte) error {
 	case "SUGGESTION_STATE_DISMISSED":
 		fallthrough
 	case "SUGGESTION_STATE_ACCEPTED":
-		*e = States(v)
+		*e = RoleMiningSearchSuggestionsRequestStates(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for States: %v", v)
+		return fmt.Errorf("invalid value for RoleMiningSearchSuggestionsRequestStates: %v", v)
 	}
 }
 
@@ -84,7 +84,7 @@ type RoleMiningSearchSuggestionsRequest struct {
 	// Text search — matches against suggested_name, description, and cohort filter values.
 	Query *string `json:"query,omitempty"`
 	// Filter by suggestion state.
-	States []States `json:"states,omitempty"`
+	States []RoleMiningSearchSuggestionsRequestStates `json:"states,omitempty"`
 }
 
 func (r *RoleMiningSearchSuggestionsRequest) GetCohortTypes() []string {
@@ -122,7 +122,7 @@ func (r *RoleMiningSearchSuggestionsRequest) GetQuery() *string {
 	return r.Query
 }
 
-func (r *RoleMiningSearchSuggestionsRequest) GetStates() []States {
+func (r *RoleMiningSearchSuggestionsRequest) GetStates() []RoleMiningSearchSuggestionsRequestStates {
 	if r == nil {
 		return nil
 	}

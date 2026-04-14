@@ -16,6 +16,17 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AccessReviewColumnConfig == nil {
+			r.AccessReviewColumnConfig = nil
+		} else {
+			r.AccessReviewColumnConfig = &tfTypes.AccessReviewColumnConfig{}
+			if resp.AccessReviewColumnConfig.Columns != nil {
+				r.AccessReviewColumnConfig.Columns = make([]types.String, 0, len(resp.AccessReviewColumnConfig.Columns))
+				for _, v := range resp.AccessReviewColumnConfig.Columns {
+					r.AccessReviewColumnConfig.Columns = append(r.AccessReviewColumnConfig.Columns, types.StringValue(string(v)))
+				}
+			}
+		}
 		r.AccessReviewDuration = types.StringPointerValue(resp.AccessReviewDuration)
 		if resp.AccessReviewInclusionScope == nil {
 			r.AccessReviewInclusionScope = nil

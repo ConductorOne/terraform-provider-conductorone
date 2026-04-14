@@ -8,8 +8,8 @@ import (
 )
 
 type C1APIAutomationsV1AutomationServiceDeleteAutomationRequest struct {
-	ID                      string                          `pathParam:"style=simple,explode=false,name=id"`
-	DeleteAutomationRequest *shared.DeleteAutomationRequest `request:"mediaType=application/json"`
+	ID                                 string                                     `pathParam:"style=simple,explode=false,name=id"`
+	AutomationsDeleteAutomationRequest *shared.AutomationsDeleteAutomationRequest `request:"mediaType=application/json"`
 }
 
 func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationRequest) GetID() string {
@@ -19,11 +19,11 @@ func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationRequest) GetID() str
 	return c.ID
 }
 
-func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationRequest) GetDeleteAutomationRequest() *shared.DeleteAutomationRequest {
+func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationRequest) GetAutomationsDeleteAutomationRequest() *shared.AutomationsDeleteAutomationRequest {
 	if c == nil {
 		return nil
 	}
-	return c.DeleteAutomationRequest
+	return c.AutomationsDeleteAutomationRequest
 }
 
 type C1APIAutomationsV1AutomationServiceDeleteAutomationResponse struct {
@@ -34,7 +34,7 @@ type C1APIAutomationsV1AutomationServiceDeleteAutomationResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successful response
-	DeleteAutomationResponse *shared.DeleteAutomationResponse
+	AutomationsDeleteAutomationResponse *shared.AutomationsDeleteAutomationResponse
 }
 
 func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetContentType() string {
@@ -58,9 +58,9 @@ func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetRawResp
 	return c.RawResponse
 }
 
-func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetDeleteAutomationResponse() *shared.DeleteAutomationResponse {
+func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetAutomationsDeleteAutomationResponse() *shared.AutomationsDeleteAutomationResponse {
 	if c == nil {
 		return nil
 	}
-	return c.DeleteAutomationResponse
+	return c.AutomationsDeleteAutomationResponse
 }

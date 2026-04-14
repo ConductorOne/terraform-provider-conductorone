@@ -28,6 +28,17 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 					list.AccessReview = nil
 				} else {
 					list.AccessReview = &tfTypes.AccessReview{}
+					if listItem.AccessReview.AccessReviewColumnConfig == nil {
+						list.AccessReview.AccessReviewColumnConfig = nil
+					} else {
+						list.AccessReview.AccessReviewColumnConfig = &tfTypes.AccessReviewColumnConfig{}
+						if listItem.AccessReview.AccessReviewColumnConfig.Columns != nil {
+							list.AccessReview.AccessReviewColumnConfig.Columns = make([]types.String, 0, len(listItem.AccessReview.AccessReviewColumnConfig.Columns))
+							for _, v := range listItem.AccessReview.AccessReviewColumnConfig.Columns {
+								list.AccessReview.AccessReviewColumnConfig.Columns = append(list.AccessReview.AccessReviewColumnConfig.Columns, types.StringValue(string(v)))
+							}
+						}
+					}
 					if listItem.AccessReview.AccessReviewExclusionScope == nil {
 						list.AccessReview.AccessReviewExclusionScope = nil
 					} else {
@@ -344,6 +355,12 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 						list.AccessReview.BindingObjectSetup = nil
 					} else {
 						list.AccessReview.BindingObjectSetup = &tfTypes.BindingObjectSetup{}
+					}
+					if listItem.AccessReview.CampaignInsights == nil {
+						list.AccessReview.CampaignInsights = nil
+					} else {
+						list.AccessReview.CampaignInsights = &tfTypes.CampaignInsights{}
+						list.AccessReview.CampaignInsights.Markdown = types.StringPointerValue(listItem.AccessReview.CampaignInsights.Markdown)
 					}
 					list.AccessReview.ClosedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AccessReview.ClosedAt))
 					list.AccessReview.CompletionDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AccessReview.CompletionDate))

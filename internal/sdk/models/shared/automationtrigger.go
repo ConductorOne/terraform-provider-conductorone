@@ -62,6 +62,7 @@ type AutomationTrigger struct {
 	// This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:
 	//   - jwt
 	//   - hmac
+	//   - capabilityUrl
 	//
 	WebhookAutomationTrigger *WebhookAutomationTrigger `json:"webhook,omitempty"`
 }

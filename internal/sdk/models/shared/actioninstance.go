@@ -61,7 +61,7 @@ type ActionInstance struct {
 	//   - automation
 	//   - batonResourceAction
 	//
-	Action *Action1 `json:"action,omitempty"`
+	Action *Action `json:"action,omitempty"`
 	// The ActionTargetAutomationInstance message.
 	ActionTargetAutomationInstance *ActionTargetAutomationInstance `json:"automation,omitempty"`
 	// The ActionTargetBatonResourceActionInstance message.
@@ -78,7 +78,7 @@ type ActionInstance struct {
 	ActionOutcomeSuccess *ActionOutcomeSuccess `json:"success,omitempty"`
 }
 
-func (a *ActionInstance) GetAction() *Action1 {
+func (a *ActionInstance) GetAction() *Action {
 	if a == nil {
 		return nil
 	}

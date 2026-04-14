@@ -32,6 +32,7 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 			r.TaskView.EntitlementsPath = types.StringPointerValue(resp.TaskView.EntitlementsPath)
 			r.TaskView.IdentityUserPath = types.StringPointerValue(resp.TaskView.IdentityUserPath)
 			r.TaskView.InsightsPath = types.StringPointerValue(resp.TaskView.InsightsPath)
+			r.TaskView.ResourceBindingsPath = types.StringPointerValue(resp.TaskView.ResourceBindingsPath)
 			r.TaskView.StepApproversPath = types.StringPointerValue(resp.TaskView.StepApproversPath)
 			if resp.TaskView.Task == nil {
 				r.TaskView.Task = nil
@@ -165,12 +166,6 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 								fields.BoolField = nil
 							} else {
 								fields.BoolField = &tfTypes.BoolField{}
-								if fieldsItem.BoolField.BoolRules == nil {
-									fields.BoolField.BoolRules = nil
-								} else {
-									fields.BoolField.BoolRules = &tfTypes.BoolRules{}
-									fields.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem.BoolField.BoolRules.Const)
-								}
 								if fieldsItem.BoolField.CheckboxField == nil {
 									fields.BoolField.CheckboxField = nil
 								} else {
@@ -200,36 +195,11 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 								} else {
 									fields.FileField.FileInputField = &tfTypes.FileInputField{}
 								}
-								fields.FileField.MaxFileSize = types.StringPointerValue(fieldsItem.FileField.MaxFileSize)
 							}
 							if fieldsItem.Int64Field == nil {
 								fields.Int64Field = nil
 							} else {
 								fields.Int64Field = &tfTypes.Int64Field{}
-								fields.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem.Int64Field.DefaultValue)
-								if fieldsItem.Int64Field.Int64Rules == nil {
-									fields.Int64Field.Int64Rules = nil
-								} else {
-									fields.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
-									fields.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Const)
-									fields.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Gt)
-									fields.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Gte)
-									fields.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.Int64Field.Int64Rules.IgnoreEmpty)
-									if fieldsItem.Int64Field.Int64Rules.In != nil {
-										fields.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem.Int64Field.Int64Rules.In))
-										for _, v := range fieldsItem.Int64Field.Int64Rules.In {
-											fields.Int64Field.Int64Rules.In = append(fields.Int64Field.Int64Rules.In, types.StringValue(v))
-										}
-									}
-									fields.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lt)
-									fields.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lte)
-									if fieldsItem.Int64Field.Int64Rules.NotIn != nil {
-										fields.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem.Int64Field.Int64Rules.NotIn))
-										for _, v := range fieldsItem.Int64Field.Int64Rules.NotIn {
-											fields.Int64Field.Int64Rules.NotIn = append(fields.Int64Field.Int64Rules.NotIn, types.StringValue(v))
-										}
-									}
-								}
 								if fieldsItem.Int64Field.NumberField == nil {
 									fields.Int64Field.NumberField = nil
 								} else {
@@ -317,56 +287,22 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										fields.StringField.SelectField.Type = types.StringNull()
 									}
 								}
-								if fieldsItem.StringField.StringRules == nil {
-									fields.StringField.StringRules = nil
-								} else {
-									fields.StringField.StringRules = &tfTypes.StringRules{}
-									fields.StringField.StringRules.Address = types.BoolPointerValue(fieldsItem.StringField.StringRules.Address)
-									fields.StringField.StringRules.Const = types.StringPointerValue(fieldsItem.StringField.StringRules.Const)
-									fields.StringField.StringRules.Contains = types.StringPointerValue(fieldsItem.StringField.StringRules.Contains)
-									fields.StringField.StringRules.Email = types.BoolPointerValue(fieldsItem.StringField.StringRules.Email)
-									fields.StringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem.StringField.StringRules.Hostname)
-									fields.StringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.StringField.StringRules.IgnoreEmpty)
-									if fieldsItem.StringField.StringRules.In != nil {
-										fields.StringField.StringRules.In = make([]types.String, 0, len(fieldsItem.StringField.StringRules.In))
-										for _, v := range fieldsItem.StringField.StringRules.In {
-											fields.StringField.StringRules.In = append(fields.StringField.StringRules.In, types.StringValue(v))
-										}
-									}
-									fields.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem.StringField.StringRules.IP)
-									fields.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem.StringField.StringRules.Ipv4)
-									fields.StringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem.StringField.StringRules.Ipv6)
-									fields.StringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.LenBytes)
-									fields.StringField.StringRules.Length = types.StringPointerValue(fieldsItem.StringField.StringRules.Length)
-									fields.StringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.MaxBytes)
-									fields.StringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem.StringField.StringRules.MaxLen)
-									fields.StringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.MinBytes)
-									fields.StringField.StringRules.MinLen = types.StringPointerValue(fieldsItem.StringField.StringRules.MinLen)
-									fields.StringField.StringRules.NotContains = types.StringPointerValue(fieldsItem.StringField.StringRules.NotContains)
-									if fieldsItem.StringField.StringRules.NotIn != nil {
-										fields.StringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem.StringField.StringRules.NotIn))
-										for _, v := range fieldsItem.StringField.StringRules.NotIn {
-											fields.StringField.StringRules.NotIn = append(fields.StringField.StringRules.NotIn, types.StringValue(v))
-										}
-									}
-									fields.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem.StringField.StringRules.Pattern)
-									fields.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem.StringField.StringRules.Prefix)
-									fields.StringField.StringRules.Strict = types.BoolPointerValue(fieldsItem.StringField.StringRules.Strict)
-									fields.StringField.StringRules.Suffix = types.StringPointerValue(fieldsItem.StringField.StringRules.Suffix)
-									fields.StringField.StringRules.URI = types.BoolPointerValue(fieldsItem.StringField.StringRules.URI)
-									fields.StringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem.StringField.StringRules.URIRef)
-									fields.StringField.StringRules.UUID = types.BoolPointerValue(fieldsItem.StringField.StringRules.UUID)
-									if fieldsItem.StringField.StringRules.WellKnownRegex != nil {
-										fields.StringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem.StringField.StringRules.WellKnownRegex))
-									} else {
-										fields.StringField.StringRules.WellKnownRegex = types.StringNull()
-									}
-								}
 								if fieldsItem.StringField.TextField == nil {
 									fields.StringField.TextField = nil
 								} else {
 									fields.StringField.TextField = &tfTypes.TextField{}
 									fields.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem.StringField.TextField.Multiline)
+								}
+							}
+							if fieldsItem.StringMapField == nil {
+								fields.StringMapField = nil
+							} else {
+								fields.StringMapField = &tfTypes.StringMapField{}
+								if len(fieldsItem.StringMapField.DefaultValue) > 0 {
+									fields.StringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem.StringMapField.DefaultValue))
+									for key, value := range fieldsItem.StringMapField.DefaultValue {
+										fields.StringMapField.DefaultValue[key] = types.StringValue(value)
+									}
 								}
 							}
 							if fieldsItem.UserProviderConfig == nil {
@@ -418,7 +354,7 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 								if historyItem.ActionInstance.Action == nil {
 									history.ActionInstance.Action = nil
 								} else {
-									history.ActionInstance.Action = &tfTypes.Action1{}
+									history.ActionInstance.Action = &tfTypes.Action{}
 									if historyItem.ActionInstance.Action.ActionTargetAutomation == nil {
 										history.ActionInstance.Action.ActionTargetAutomation = nil
 									} else {
@@ -807,35 +743,35 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 								} else {
 									history.ApprovalInstance.EscalationInstance = &tfTypes.EscalationInstance{}
 									history.ApprovalInstance.EscalationInstance.AlreadyEscalated = types.BoolPointerValue(historyItem.ApprovalInstance.EscalationInstance.AlreadyEscalated)
-									if historyItem.ApprovalInstance.EscalationInstance.CancelTicket == nil {
-										history.ApprovalInstance.EscalationInstance.CancelTicket = nil
-									} else {
-										history.ApprovalInstance.EscalationInstance.CancelTicket = &tfTypes.CancelTicket{}
-									}
 									history.ApprovalInstance.EscalationInstance.EscalationComment = types.StringPointerValue(historyItem.ApprovalInstance.EscalationInstance.EscalationComment)
-									history.ApprovalInstance.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.EscalationInstance.ExpiresAt))
-									if historyItem.ApprovalInstance.EscalationInstance.ReassignToApprovers == nil {
-										history.ApprovalInstance.EscalationInstance.ReassignToApprovers = nil
+									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket == nil {
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = nil
 									} else {
-										history.ApprovalInstance.EscalationInstance.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
-										if historyItem.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds != nil {
-											history.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(historyItem.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds))
-											for _, v := range historyItem.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds {
-												history.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = append(history.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds, types.StringValue(v))
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = &tfTypes.EscalationInstanceCancelTicket{}
+									}
+									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers == nil {
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = nil
+									} else {
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = &tfTypes.EscalationInstanceReassignToApprovers{}
+										if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds != nil {
+											history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = make([]types.String, 0, len(historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds))
+											for _, v := range historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds {
+												history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = append(history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds, types.StringValue(v))
 											}
 										}
 									}
-									if historyItem.ApprovalInstance.EscalationInstance.ReplacePolicy == nil {
-										history.ApprovalInstance.EscalationInstance.ReplacePolicy = nil
+									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy == nil {
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = nil
 									} else {
-										history.ApprovalInstance.EscalationInstance.ReplacePolicy = &tfTypes.ReplacePolicy{}
-										history.ApprovalInstance.EscalationInstance.ReplacePolicy.PolicyID = types.StringPointerValue(historyItem.ApprovalInstance.EscalationInstance.ReplacePolicy.PolicyID)
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = &tfTypes.EscalationInstanceReplacePolicy{}
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID = types.StringPointerValue(historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID)
 									}
-									if historyItem.ApprovalInstance.EscalationInstance.SkipStep == nil {
-										history.ApprovalInstance.EscalationInstance.SkipStep = nil
+									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep == nil {
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = nil
 									} else {
-										history.ApprovalInstance.EscalationInstance.SkipStep = &tfTypes.SkipStep{}
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = &tfTypes.EscalationInstanceSkipStep{}
 									}
+									history.ApprovalInstance.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.EscalationInstance.ExpiresAt))
 								}
 								if historyItem.ApprovalInstance.ReassignedAction == nil {
 									history.ApprovalInstance.ReassignedAction = nil
@@ -971,12 +907,6 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												fields1.BoolField = nil
 											} else {
 												fields1.BoolField = &tfTypes.BoolField{}
-												if fieldsItem1.BoolField.BoolRules == nil {
-													fields1.BoolField.BoolRules = nil
-												} else {
-													fields1.BoolField.BoolRules = &tfTypes.BoolRules{}
-													fields1.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem1.BoolField.BoolRules.Const)
-												}
 												if fieldsItem1.BoolField.CheckboxField == nil {
 													fields1.BoolField.CheckboxField = nil
 												} else {
@@ -1006,36 +936,11 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												} else {
 													fields1.FileField.FileInputField = &tfTypes.FileInputField{}
 												}
-												fields1.FileField.MaxFileSize = types.StringPointerValue(fieldsItem1.FileField.MaxFileSize)
 											}
 											if fieldsItem1.Int64Field == nil {
 												fields1.Int64Field = nil
 											} else {
 												fields1.Int64Field = &tfTypes.Int64Field{}
-												fields1.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem1.Int64Field.DefaultValue)
-												if fieldsItem1.Int64Field.Int64Rules == nil {
-													fields1.Int64Field.Int64Rules = nil
-												} else {
-													fields1.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
-													fields1.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Const)
-													fields1.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Gt)
-													fields1.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Gte)
-													fields1.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem1.Int64Field.Int64Rules.IgnoreEmpty)
-													if fieldsItem1.Int64Field.Int64Rules.In != nil {
-														fields1.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem1.Int64Field.Int64Rules.In))
-														for _, v := range fieldsItem1.Int64Field.Int64Rules.In {
-															fields1.Int64Field.Int64Rules.In = append(fields1.Int64Field.Int64Rules.In, types.StringValue(v))
-														}
-													}
-													fields1.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Lt)
-													fields1.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Lte)
-													if fieldsItem1.Int64Field.Int64Rules.NotIn != nil {
-														fields1.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem1.Int64Field.Int64Rules.NotIn))
-														for _, v := range fieldsItem1.Int64Field.Int64Rules.NotIn {
-															fields1.Int64Field.Int64Rules.NotIn = append(fields1.Int64Field.Int64Rules.NotIn, types.StringValue(v))
-														}
-													}
-												}
 												if fieldsItem1.Int64Field.NumberField == nil {
 													fields1.Int64Field.NumberField = nil
 												} else {
@@ -1123,56 +1028,22 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														fields1.StringField.SelectField.Type = types.StringNull()
 													}
 												}
-												if fieldsItem1.StringField.StringRules == nil {
-													fields1.StringField.StringRules = nil
-												} else {
-													fields1.StringField.StringRules = &tfTypes.StringRules{}
-													fields1.StringField.StringRules.Address = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Address)
-													fields1.StringField.StringRules.Const = types.StringPointerValue(fieldsItem1.StringField.StringRules.Const)
-													fields1.StringField.StringRules.Contains = types.StringPointerValue(fieldsItem1.StringField.StringRules.Contains)
-													fields1.StringField.StringRules.Email = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Email)
-													fields1.StringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Hostname)
-													fields1.StringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem1.StringField.StringRules.IgnoreEmpty)
-													if fieldsItem1.StringField.StringRules.In != nil {
-														fields1.StringField.StringRules.In = make([]types.String, 0, len(fieldsItem1.StringField.StringRules.In))
-														for _, v := range fieldsItem1.StringField.StringRules.In {
-															fields1.StringField.StringRules.In = append(fields1.StringField.StringRules.In, types.StringValue(v))
-														}
-													}
-													fields1.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem1.StringField.StringRules.IP)
-													fields1.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Ipv4)
-													fields1.StringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Ipv6)
-													fields1.StringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem1.StringField.StringRules.LenBytes)
-													fields1.StringField.StringRules.Length = types.StringPointerValue(fieldsItem1.StringField.StringRules.Length)
-													fields1.StringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem1.StringField.StringRules.MaxBytes)
-													fields1.StringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem1.StringField.StringRules.MaxLen)
-													fields1.StringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem1.StringField.StringRules.MinBytes)
-													fields1.StringField.StringRules.MinLen = types.StringPointerValue(fieldsItem1.StringField.StringRules.MinLen)
-													fields1.StringField.StringRules.NotContains = types.StringPointerValue(fieldsItem1.StringField.StringRules.NotContains)
-													if fieldsItem1.StringField.StringRules.NotIn != nil {
-														fields1.StringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem1.StringField.StringRules.NotIn))
-														for _, v := range fieldsItem1.StringField.StringRules.NotIn {
-															fields1.StringField.StringRules.NotIn = append(fields1.StringField.StringRules.NotIn, types.StringValue(v))
-														}
-													}
-													fields1.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem1.StringField.StringRules.Pattern)
-													fields1.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem1.StringField.StringRules.Prefix)
-													fields1.StringField.StringRules.Strict = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Strict)
-													fields1.StringField.StringRules.Suffix = types.StringPointerValue(fieldsItem1.StringField.StringRules.Suffix)
-													fields1.StringField.StringRules.URI = types.BoolPointerValue(fieldsItem1.StringField.StringRules.URI)
-													fields1.StringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem1.StringField.StringRules.URIRef)
-													fields1.StringField.StringRules.UUID = types.BoolPointerValue(fieldsItem1.StringField.StringRules.UUID)
-													if fieldsItem1.StringField.StringRules.WellKnownRegex != nil {
-														fields1.StringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem1.StringField.StringRules.WellKnownRegex))
-													} else {
-														fields1.StringField.StringRules.WellKnownRegex = types.StringNull()
-													}
-												}
 												if fieldsItem1.StringField.TextField == nil {
 													fields1.StringField.TextField = nil
 												} else {
 													fields1.StringField.TextField = &tfTypes.TextField{}
 													fields1.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem1.StringField.TextField.Multiline)
+												}
+											}
+											if fieldsItem1.StringMapField == nil {
+												fields1.StringMapField = nil
+											} else {
+												fields1.StringMapField = &tfTypes.StringMapField{}
+												if len(fieldsItem1.StringMapField.DefaultValue) > 0 {
+													fields1.StringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem1.StringMapField.DefaultValue))
+													for key1, value1 := range fieldsItem1.StringMapField.DefaultValue {
+														fields1.StringMapField.DefaultValue[key1] = types.StringValue(value1)
+													}
 												}
 											}
 											if fieldsItem1.UserProviderConfig == nil {
@@ -1579,7 +1450,7 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 							if nextItem.Action == nil {
 								next.Action = nil
 							} else {
-								next.Action = &tfTypes.Action1{}
+								next.Action = &tfTypes.Action{}
 								if nextItem.Action.ActionTargetAutomation == nil {
 									next.Action.ActionTargetAutomation = nil
 								} else {
@@ -1887,11 +1758,11 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 									next.Approval.WebhookApproval.WebhookID = types.StringPointerValue(nextItem.Approval.WebhookApproval.WebhookID)
 								}
 							}
-							if nextItem.Form == nil {
-								next.Form = jsontypes.NewNormalizedNull()
+							if nextItem.PolicyForm == nil {
+								next.PolicyForm = jsontypes.NewNormalizedNull()
 							} else {
-								formResult, _ := json.Marshal(nextItem.Form)
-								next.Form = jsontypes.NewNormalizedValue(string(formResult))
+								policyFormResult, _ := json.Marshal(nextItem.PolicyForm)
+								next.PolicyForm = jsontypes.NewNormalizedValue(string(policyFormResult))
 							}
 							if nextItem.Provision == nil {
 								next.Provision = nil
@@ -2165,7 +2036,7 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										if stepsItem.Action == nil {
 											steps.Action = nil
 										} else {
-											steps.Action = &tfTypes.Action1{}
+											steps.Action = &tfTypes.Action{}
 											if stepsItem.Action.ActionTargetAutomation == nil {
 												steps.Action.ActionTargetAutomation = nil
 											} else {
@@ -2473,11 +2344,11 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												steps.Approval.WebhookApproval.WebhookID = types.StringPointerValue(stepsItem.Approval.WebhookApproval.WebhookID)
 											}
 										}
-										if stepsItem.Form == nil {
-											steps.Form = jsontypes.NewNormalizedNull()
+										if stepsItem.PolicyForm == nil {
+											steps.PolicyForm = jsontypes.NewNormalizedNull()
 										} else {
-											formResult1, _ := json.Marshal(stepsItem.Form)
-											steps.Form = jsontypes.NewNormalizedValue(string(formResult1))
+											policyFormResult1, _ := json.Marshal(stepsItem.PolicyForm)
+											steps.PolicyForm = jsontypes.NewNormalizedValue(string(policyFormResult1))
 										}
 										if stepsItem.Provision == nil {
 											steps.Provision = nil
@@ -2776,7 +2647,7 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action == nil {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action = &tfTypes.Action1{}
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action = &tfTypes.Action{}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation == nil {
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation = nil
 								} else {
@@ -3165,35 +3036,35 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 							} else {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance = &tfTypes.EscalationInstance{}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.AlreadyEscalated = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.AlreadyEscalated)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.CancelTicket == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.CancelTicket = nil
-								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.CancelTicket = &tfTypes.CancelTicket{}
-								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationComment = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationComment)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ExpiresAt))
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers = nil
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds, types.StringValue(v))
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = &tfTypes.EscalationInstanceCancelTicket{}
+								}
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = nil
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = &tfTypes.EscalationInstanceReassignToApprovers{}
+									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds != nil {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds))
+										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds {
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds, types.StringValue(v))
 										}
 									}
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy = nil
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy = &tfTypes.ReplacePolicy{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy.PolicyID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy.PolicyID)
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = &tfTypes.EscalationInstanceReplacePolicy{}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID)
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.SkipStep == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.SkipStep = nil
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.SkipStep = &tfTypes.SkipStep{}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = &tfTypes.EscalationInstanceSkipStep{}
 								}
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ExpiresAt))
 							}
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction == nil {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction = nil
@@ -3329,12 +3200,6 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											fields2.BoolField = nil
 										} else {
 											fields2.BoolField = &tfTypes.BoolField{}
-											if fieldsItem2.BoolField.BoolRules == nil {
-												fields2.BoolField.BoolRules = nil
-											} else {
-												fields2.BoolField.BoolRules = &tfTypes.BoolRules{}
-												fields2.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem2.BoolField.BoolRules.Const)
-											}
 											if fieldsItem2.BoolField.CheckboxField == nil {
 												fields2.BoolField.CheckboxField = nil
 											} else {
@@ -3364,36 +3229,11 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											} else {
 												fields2.FileField.FileInputField = &tfTypes.FileInputField{}
 											}
-											fields2.FileField.MaxFileSize = types.StringPointerValue(fieldsItem2.FileField.MaxFileSize)
 										}
 										if fieldsItem2.Int64Field == nil {
 											fields2.Int64Field = nil
 										} else {
 											fields2.Int64Field = &tfTypes.Int64Field{}
-											fields2.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem2.Int64Field.DefaultValue)
-											if fieldsItem2.Int64Field.Int64Rules == nil {
-												fields2.Int64Field.Int64Rules = nil
-											} else {
-												fields2.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
-												fields2.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Const)
-												fields2.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Gt)
-												fields2.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Gte)
-												fields2.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem2.Int64Field.Int64Rules.IgnoreEmpty)
-												if fieldsItem2.Int64Field.Int64Rules.In != nil {
-													fields2.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem2.Int64Field.Int64Rules.In))
-													for _, v := range fieldsItem2.Int64Field.Int64Rules.In {
-														fields2.Int64Field.Int64Rules.In = append(fields2.Int64Field.Int64Rules.In, types.StringValue(v))
-													}
-												}
-												fields2.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Lt)
-												fields2.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Lte)
-												if fieldsItem2.Int64Field.Int64Rules.NotIn != nil {
-													fields2.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem2.Int64Field.Int64Rules.NotIn))
-													for _, v := range fieldsItem2.Int64Field.Int64Rules.NotIn {
-														fields2.Int64Field.Int64Rules.NotIn = append(fields2.Int64Field.Int64Rules.NotIn, types.StringValue(v))
-													}
-												}
-											}
 											if fieldsItem2.Int64Field.NumberField == nil {
 												fields2.Int64Field.NumberField = nil
 											} else {
@@ -3481,56 +3321,22 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													fields2.StringField.SelectField.Type = types.StringNull()
 												}
 											}
-											if fieldsItem2.StringField.StringRules == nil {
-												fields2.StringField.StringRules = nil
-											} else {
-												fields2.StringField.StringRules = &tfTypes.StringRules{}
-												fields2.StringField.StringRules.Address = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Address)
-												fields2.StringField.StringRules.Const = types.StringPointerValue(fieldsItem2.StringField.StringRules.Const)
-												fields2.StringField.StringRules.Contains = types.StringPointerValue(fieldsItem2.StringField.StringRules.Contains)
-												fields2.StringField.StringRules.Email = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Email)
-												fields2.StringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Hostname)
-												fields2.StringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem2.StringField.StringRules.IgnoreEmpty)
-												if fieldsItem2.StringField.StringRules.In != nil {
-													fields2.StringField.StringRules.In = make([]types.String, 0, len(fieldsItem2.StringField.StringRules.In))
-													for _, v := range fieldsItem2.StringField.StringRules.In {
-														fields2.StringField.StringRules.In = append(fields2.StringField.StringRules.In, types.StringValue(v))
-													}
-												}
-												fields2.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem2.StringField.StringRules.IP)
-												fields2.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Ipv4)
-												fields2.StringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Ipv6)
-												fields2.StringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem2.StringField.StringRules.LenBytes)
-												fields2.StringField.StringRules.Length = types.StringPointerValue(fieldsItem2.StringField.StringRules.Length)
-												fields2.StringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem2.StringField.StringRules.MaxBytes)
-												fields2.StringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem2.StringField.StringRules.MaxLen)
-												fields2.StringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem2.StringField.StringRules.MinBytes)
-												fields2.StringField.StringRules.MinLen = types.StringPointerValue(fieldsItem2.StringField.StringRules.MinLen)
-												fields2.StringField.StringRules.NotContains = types.StringPointerValue(fieldsItem2.StringField.StringRules.NotContains)
-												if fieldsItem2.StringField.StringRules.NotIn != nil {
-													fields2.StringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem2.StringField.StringRules.NotIn))
-													for _, v := range fieldsItem2.StringField.StringRules.NotIn {
-														fields2.StringField.StringRules.NotIn = append(fields2.StringField.StringRules.NotIn, types.StringValue(v))
-													}
-												}
-												fields2.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem2.StringField.StringRules.Pattern)
-												fields2.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem2.StringField.StringRules.Prefix)
-												fields2.StringField.StringRules.Strict = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Strict)
-												fields2.StringField.StringRules.Suffix = types.StringPointerValue(fieldsItem2.StringField.StringRules.Suffix)
-												fields2.StringField.StringRules.URI = types.BoolPointerValue(fieldsItem2.StringField.StringRules.URI)
-												fields2.StringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem2.StringField.StringRules.URIRef)
-												fields2.StringField.StringRules.UUID = types.BoolPointerValue(fieldsItem2.StringField.StringRules.UUID)
-												if fieldsItem2.StringField.StringRules.WellKnownRegex != nil {
-													fields2.StringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem2.StringField.StringRules.WellKnownRegex))
-												} else {
-													fields2.StringField.StringRules.WellKnownRegex = types.StringNull()
-												}
-											}
 											if fieldsItem2.StringField.TextField == nil {
 												fields2.StringField.TextField = nil
 											} else {
 												fields2.StringField.TextField = &tfTypes.TextField{}
 												fields2.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem2.StringField.TextField.Multiline)
+											}
+										}
+										if fieldsItem2.StringMapField == nil {
+											fields2.StringMapField = nil
+										} else {
+											fields2.StringMapField = &tfTypes.StringMapField{}
+											if len(fieldsItem2.StringMapField.DefaultValue) > 0 {
+												fields2.StringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem2.StringMapField.DefaultValue))
+												for key2, value2 := range fieldsItem2.StringMapField.DefaultValue {
+													fields2.StringMapField.DefaultValue[key2] = types.StringValue(value2)
+												}
 											}
 										}
 										if fieldsItem2.UserProviderConfig == nil {
@@ -3995,6 +3801,19 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 							r.TaskView.Task.TaskType.TaskTypeCertify.Outcome = types.StringNull()
 						}
 						r.TaskView.Task.TaskType.TaskTypeCertify.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeCertify.OutcomeTime))
+					}
+					if resp.TaskView.Task.TaskType.TaskTypeFinding == nil {
+						r.TaskView.Task.TaskType.TaskTypeFinding = nil
+					} else {
+						r.TaskView.Task.TaskType.TaskTypeFinding = &tfTypes.TaskTypeFinding{}
+						r.TaskView.Task.TaskType.TaskTypeFinding.FindingID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeFinding.FindingID)
+						r.TaskView.Task.TaskType.TaskTypeFinding.FindingType = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeFinding.FindingType)
+						if resp.TaskView.Task.TaskType.TaskTypeFinding.Outcome != nil {
+							r.TaskView.Task.TaskType.TaskTypeFinding.Outcome = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeFinding.Outcome))
+						} else {
+							r.TaskView.Task.TaskType.TaskTypeFinding.Outcome = types.StringNull()
+						}
+						r.TaskView.Task.TaskType.TaskTypeFinding.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeFinding.OutcomeTime))
 					}
 					if resp.TaskView.Task.TaskType.TaskTypeGrant == nil {
 						r.TaskView.Task.TaskType.TaskTypeGrant = nil

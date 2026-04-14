@@ -80,6 +80,7 @@ const (
 	AccessReviewTemplateDefaultViewAccessReviewViewTypeByApp        AccessReviewTemplateDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_APP"
 	AccessReviewTemplateDefaultViewAccessReviewViewTypeByUser       AccessReviewTemplateDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_USER"
 	AccessReviewTemplateDefaultViewAccessReviewViewTypeUnstructured AccessReviewTemplateDefaultView = "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED"
+	AccessReviewTemplateDefaultViewAccessReviewViewTypeByResource   AccessReviewTemplateDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE"
 )
 
 func (e AccessReviewTemplateDefaultView) ToPointer() *AccessReviewTemplateDefaultView {
@@ -98,6 +99,8 @@ func (e *AccessReviewTemplateDefaultView) UnmarshalJSON(data []byte) error {
 	case "ACCESS_REVIEW_VIEW_TYPE_BY_USER":
 		fallthrough
 	case "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED":
+		fallthrough
+	case "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE":
 		*e = AccessReviewTemplateDefaultView(v)
 		return nil
 	default:
@@ -155,8 +158,10 @@ type AccessReviewTemplate struct {
 	AutoGenerateReport *bool `json:"autoGenerateReport,omitempty"`
 	// Auto-start configuration
 	//  next_scheduled_campaign_at will be used as the scheduled start date
-	AutoStartCampaign *bool      `json:"autoStartCampaign,omitempty"`
-	CreatedAt         *time.Time `json:"createdAt,omitempty"`
+	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
+	// Configuration for which columns are visible in the reviewer task list.
+	AccessReviewColumnConfig *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
+	CreatedAt                *time.Time                `json:"createdAt,omitempty"`
 	// The defaultView field.
 	DefaultView *AccessReviewTemplateDefaultView `json:"defaultView,omitempty"`
 	DeletedAt   *time.Time                       `json:"deletedAt,omitempty"`
@@ -286,6 +291,13 @@ func (a *AccessReviewTemplate) GetAutoStartCampaign() *bool {
 		return nil
 	}
 	return a.AutoStartCampaign
+}
+
+func (a *AccessReviewTemplate) GetAccessReviewColumnConfig() *AccessReviewColumnConfig {
+	if a == nil {
+		return nil
+	}
+	return a.AccessReviewColumnConfig
 }
 
 func (a *AccessReviewTemplate) GetCreatedAt() *time.Time {
@@ -453,6 +465,8 @@ type AccessReviewTemplateInput struct {
 	// Auto-start configuration
 	//  next_scheduled_campaign_at will be used as the scheduled start date
 	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
+	// Configuration for which columns are visible in the reviewer task list.
+	AccessReviewColumnConfig *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	// The defaultView field.
 	DefaultView *AccessReviewTemplateDefaultView `json:"defaultView,omitempty"`
 	// The description field.
@@ -580,6 +594,13 @@ func (a *AccessReviewTemplateInput) GetAutoStartCampaign() *bool {
 		return nil
 	}
 	return a.AutoStartCampaign
+}
+
+func (a *AccessReviewTemplateInput) GetAccessReviewColumnConfig() *AccessReviewColumnConfig {
+	if a == nil {
+		return nil
+	}
+	return a.AccessReviewColumnConfig
 }
 
 func (a *AccessReviewTemplateInput) GetDefaultView() *AccessReviewTemplateDefaultView {

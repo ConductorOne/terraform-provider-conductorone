@@ -95,11 +95,12 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 			"function_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The functionType field. must be one of ["FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY"]`,
+				Description: `The functionType field. must be one of ["FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"FUNCTION_TYPE_UNSPECIFIED",
 						"FUNCTION_TYPE_ANY",
+						"FUNCTION_TYPE_CODE_MODE",
 					),
 				},
 			},

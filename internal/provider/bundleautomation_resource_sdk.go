@@ -38,6 +38,19 @@ func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx co
 			r.BundleAutomationLastRunState = nil
 		} else {
 			r.BundleAutomationLastRunState = &tfTypes.BundleAutomationLastRunState{}
+			if resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState == nil {
+				r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState = nil
+			} else {
+				r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState = &tfTypes.BundleAutomationCelEvaluationState{}
+				r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.ErrorMessage = types.StringPointerValue(resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.ErrorMessage)
+				r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.LastEvaluatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.LastEvaluatedAt))
+				r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.MatchedUsers = types.StringPointerValue(resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.MatchedUsers)
+				if resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.Status != nil {
+					r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.Status = types.StringValue(string(*resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.Status))
+				} else {
+					r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.Status = types.StringNull()
+				}
+			}
 			r.BundleAutomationLastRunState.ErrorMessage = types.StringPointerValue(resp.BundleAutomationLastRunState.ErrorMessage)
 			r.BundleAutomationLastRunState.LastRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationLastRunState.LastRunAt))
 			if resp.BundleAutomationLastRunState.Status != nil {
@@ -45,6 +58,12 @@ func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx co
 			} else {
 				r.BundleAutomationLastRunState.Status = types.StringNull()
 			}
+		}
+		if resp.BundleAutomationRuleCEL == nil {
+			r.BundleAutomationRuleCEL = nil
+		} else {
+			r.BundleAutomationRuleCEL = &tfTypes.BundleAutomationRuleCEL{}
+			r.BundleAutomationRuleCEL.Expression = types.StringPointerValue(resp.BundleAutomationRuleCEL.Expression)
 		}
 		if resp.BundleAutomationRuleEntitlement == nil {
 			r.BundleAutomationRuleEntitlement = nil
@@ -152,6 +171,18 @@ func (r *BundleAutomationResourceModel) ToOperationsC1APIRequestcatalogV1Request
 func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ctx context.Context) (*shared.CreateBundleAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	var bundleAutomationRuleCEL *shared.BundleAutomationRuleCEL
+	if r.BundleAutomationRuleCEL != nil {
+		expression := new(string)
+		if !r.BundleAutomationRuleCEL.Expression.IsUnknown() && !r.BundleAutomationRuleCEL.Expression.IsNull() {
+			*expression = r.BundleAutomationRuleCEL.Expression.ValueString()
+		} else {
+			expression = nil
+		}
+		bundleAutomationRuleCEL = &shared.BundleAutomationRuleCEL{
+			Expression: expression,
+		}
+	}
 	createTasks := new(bool)
 	if !r.CreateTasks.IsUnknown() && !r.CreateTasks.IsNull() {
 		*createTasks = r.CreateTasks.ValueBool()
@@ -199,6 +230,7 @@ func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ct
 		}
 	}
 	out := shared.CreateBundleAutomationRequest{
+		BundleAutomationRuleCEL:         bundleAutomationRuleCEL,
 		CreateTasks:                     createTasks,
 		DisableCircuitBreaker:           disableCircuitBreaker,
 		Enabled:                         enabled,
@@ -219,6 +251,18 @@ func (r *BundleAutomationResourceModel) ToSharedDeleteBundleAutomationRequest(ct
 func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx context.Context) (*shared.SetBundleAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	var bundleAutomationRuleCEL *shared.BundleAutomationRuleCEL
+	if r.BundleAutomationRuleCEL != nil {
+		expression := new(string)
+		if !r.BundleAutomationRuleCEL.Expression.IsUnknown() && !r.BundleAutomationRuleCEL.Expression.IsNull() {
+			*expression = r.BundleAutomationRuleCEL.Expression.ValueString()
+		} else {
+			expression = nil
+		}
+		bundleAutomationRuleCEL = &shared.BundleAutomationRuleCEL{
+			Expression: expression,
+		}
+	}
 	createTasks := new(bool)
 	if !r.CreateTasks.IsUnknown() && !r.CreateTasks.IsNull() {
 		*createTasks = r.CreateTasks.ValueBool()
@@ -266,6 +310,7 @@ func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx c
 		}
 	}
 	out := shared.SetBundleAutomationRequest{
+		BundleAutomationRuleCEL:         bundleAutomationRuleCEL,
 		CreateTasks:                     createTasks,
 		DisableCircuitBreaker:           disableCircuitBreaker,
 		Enabled:                         enabled,

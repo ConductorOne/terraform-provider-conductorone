@@ -29,7 +29,7 @@ type WebhooksDataSource struct {
 
 // WebhooksDataSourceModel describes the data model.
 type WebhooksDataSourceModel struct {
-	List          []tfTypes.Webhook1   `tfsdk:"list"`
+	List          []tfTypes.Webhook    `tfsdk:"list"`
 	NextPageToken types.String         `tfsdk:"next_page_token"`
 	PageSize      types.Int32          `tfsdk:"page_size"`
 	PageToken     types.String         `tfsdk:"page_token"`

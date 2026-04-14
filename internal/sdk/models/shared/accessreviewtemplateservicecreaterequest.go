@@ -78,6 +78,7 @@ const (
 	AccessReviewTemplateServiceCreateRequestDefaultViewAccessReviewViewTypeByApp        AccessReviewTemplateServiceCreateRequestDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_APP"
 	AccessReviewTemplateServiceCreateRequestDefaultViewAccessReviewViewTypeByUser       AccessReviewTemplateServiceCreateRequestDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_USER"
 	AccessReviewTemplateServiceCreateRequestDefaultViewAccessReviewViewTypeUnstructured AccessReviewTemplateServiceCreateRequestDefaultView = "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED"
+	AccessReviewTemplateServiceCreateRequestDefaultViewAccessReviewViewTypeByResource   AccessReviewTemplateServiceCreateRequestDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE"
 )
 
 func (e AccessReviewTemplateServiceCreateRequestDefaultView) ToPointer() *AccessReviewTemplateServiceCreateRequestDefaultView {
@@ -96,6 +97,8 @@ func (e *AccessReviewTemplateServiceCreateRequestDefaultView) UnmarshalJSON(data
 	case "ACCESS_REVIEW_VIEW_TYPE_BY_USER":
 		fallthrough
 	case "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED":
+		fallthrough
+	case "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE":
 		*e = AccessReviewTemplateServiceCreateRequestDefaultView(v)
 		return nil
 	default:
@@ -149,6 +152,8 @@ type AccessReviewTemplateServiceCreateRequest struct {
 	AutoGenerateReport *bool `json:"autoGenerateReport,omitempty"`
 	// The autoStartCampaign field.
 	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
+	// Configuration for which columns are visible in the reviewer task list.
+	AccessReviewColumnConfig *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	// The defaultView field.
 	DefaultView *AccessReviewTemplateServiceCreateRequestDefaultView `json:"defaultView,omitempty"`
 	// The description field.
@@ -258,6 +263,13 @@ func (a *AccessReviewTemplateServiceCreateRequest) GetAutoStartCampaign() *bool 
 		return nil
 	}
 	return a.AutoStartCampaign
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetAccessReviewColumnConfig() *AccessReviewColumnConfig {
+	if a == nil {
+		return nil
+	}
+	return a.AccessReviewColumnConfig
 }
 
 func (a *AccessReviewTemplateServiceCreateRequest) GetDefaultView() *AccessReviewTemplateServiceCreateRequestDefaultView {

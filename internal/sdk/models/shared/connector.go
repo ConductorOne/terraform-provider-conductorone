@@ -48,7 +48,8 @@ type Connector struct {
 	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Config *Config `json:"config,omitempty"`
+	Config          *Config    `json:"config,omitempty"`
+	ConfigUpdatedAt *time.Time `json:"configUpdatedAt,omitempty"`
 	// The connectorApiVersion field.
 	ConnectorAPIVersion *int64 `json:"connectorApiVersion,omitempty"`
 	// The ConnectorSyncCronSchedule message.
@@ -122,6 +123,13 @@ func (c *Connector) GetConfig() *Config {
 		return nil
 	}
 	return c.Config
+}
+
+func (c *Connector) GetConfigUpdatedAt() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.ConfigUpdatedAt
 }
 
 func (c *Connector) GetConnectorAPIVersion() *int64 {

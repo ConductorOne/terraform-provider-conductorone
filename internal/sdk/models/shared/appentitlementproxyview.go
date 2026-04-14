@@ -5,10 +5,6 @@ package shared
 // The AppEntitlementProxyView message.
 type AppEntitlementProxyView struct {
 	// The AppEntitlementProxy message.
-	//
-	// This message contains a oneof named _implicit. Only a single field of the following list may be set at a time:
-	//   - implicit
-	//
 	AppEntitlementProxy *AppEntitlementProxy `json:"appProxyEntitlement,omitempty"`
 }
 

@@ -36,6 +36,7 @@ type AccessReviewTemplateResource struct {
 
 // AccessReviewTemplateResourceModel describes the resource data model.
 type AccessReviewTemplateResourceModel struct {
+	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig   `tfsdk:"access_review_column_config"`
 	AccessReviewDuration           types.String                        `tfsdk:"access_review_duration"`
 	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
 	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
@@ -74,6 +75,20 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AccessReviewTemplate Resource",
 		Attributes: map[string]schema.Attribute{
+			"access_review_column_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"columns": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
+							` If empty, the default column set for the campaign's default_view is used.`,
+					},
+				},
+				Description: `Configuration for which columns are visible in the reviewer task list.`,
+			},
 			"access_review_duration": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
@@ -532,13 +547,14 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			"default_view": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The defaultView field. must be one of ["ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED"]`,
+				Description: `The defaultView field. must be one of ["ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED", "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED",
 						"ACCESS_REVIEW_VIEW_TYPE_BY_APP",
 						"ACCESS_REVIEW_VIEW_TYPE_BY_USER",
 						"ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED",
+						"ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE",
 					),
 				},
 			},

@@ -6,7 +6,10 @@ package shared
 //
 // This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
 //   - entitlements
+//   - cel
 type SetBundleAutomationRequest struct {
+	// The BundleAutomationRuleCEL message.
+	BundleAutomationRuleCEL *BundleAutomationRuleCEL `json:"cel,omitempty"`
 	// The createTasks field.
 	CreateTasks *bool `json:"createTasks,omitempty"`
 	// The disableCircuitBreaker field.
@@ -15,6 +18,13 @@ type SetBundleAutomationRequest struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// The BundleAutomationRuleEntitlement message.
 	BundleAutomationRuleEntitlement *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
+}
+
+func (s *SetBundleAutomationRequest) GetBundleAutomationRuleCEL() *BundleAutomationRuleCEL {
+	if s == nil {
+		return nil
+	}
+	return s.BundleAutomationRuleCEL
 }
 
 func (s *SetBundleAutomationRequest) GetCreateTasks() *bool {

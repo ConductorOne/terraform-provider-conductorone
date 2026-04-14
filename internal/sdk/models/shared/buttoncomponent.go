@@ -48,7 +48,7 @@ type ButtonComponent struct {
 	//   - event
 	//   - functionCall
 	//
-	Action *Action `json:"action,omitempty"`
+	A2uiAction *A2uiAction `json:"action,omitempty"`
 	// The checks field.
 	Checks []ValidationCheck `json:"checks,omitempty"`
 	// DynamicBool can be a literal value, a JSON pointer path, or a function call.
@@ -71,11 +71,11 @@ type ButtonComponent struct {
 	Variant *Variant `json:"variant,omitempty"`
 }
 
-func (b *ButtonComponent) GetAction() *Action {
+func (b *ButtonComponent) GetA2uiAction() *A2uiAction {
 	if b == nil {
 		return nil
 	}
-	return b.Action
+	return b.A2uiAction
 }
 
 func (b *ButtonComponent) GetChecks() []ValidationCheck {

@@ -18,16 +18,16 @@ type EscalationInstance struct {
 	// The alreadyEscalated field.
 	AlreadyEscalated *bool `json:"alreadyEscalated,omitempty"`
 	// The CancelTicket message.
-	CancelTicket *CancelTicket `json:"cancelTicket,omitempty"`
+	EscalationInstanceCancelTicket *EscalationInstanceCancelTicket `json:"cancelTicket,omitempty"`
 	// The escalationComment field.
 	EscalationComment *string    `json:"escalationComment,omitempty"`
 	ExpiresAt         *time.Time `json:"expiresAt,omitempty"`
 	// The ReassignToApprovers message.
-	ReassignToApprovers *ReassignToApprovers `json:"reassignToApprovers,omitempty"`
+	EscalationInstanceReassignToApprovers *EscalationInstanceReassignToApprovers `json:"reassignToApprovers,omitempty"`
 	// The ReplacePolicy message.
-	ReplacePolicy *ReplacePolicy `json:"replacePolicy,omitempty"`
+	EscalationInstanceReplacePolicy *EscalationInstanceReplacePolicy `json:"replacePolicy,omitempty"`
 	// The SkipStep message.
-	SkipStep *SkipStep `json:"skipStep,omitempty"`
+	EscalationInstanceSkipStep *EscalationInstanceSkipStep `json:"skipStep,omitempty"`
 }
 
 func (e EscalationInstance) MarshalJSON() ([]byte, error) {
@@ -48,11 +48,11 @@ func (e *EscalationInstance) GetAlreadyEscalated() *bool {
 	return e.AlreadyEscalated
 }
 
-func (e *EscalationInstance) GetCancelTicket() *CancelTicket {
+func (e *EscalationInstance) GetEscalationInstanceCancelTicket() *EscalationInstanceCancelTicket {
 	if e == nil {
 		return nil
 	}
-	return e.CancelTicket
+	return e.EscalationInstanceCancelTicket
 }
 
 func (e *EscalationInstance) GetEscalationComment() *string {
@@ -69,23 +69,23 @@ func (e *EscalationInstance) GetExpiresAt() *time.Time {
 	return e.ExpiresAt
 }
 
-func (e *EscalationInstance) GetReassignToApprovers() *ReassignToApprovers {
+func (e *EscalationInstance) GetEscalationInstanceReassignToApprovers() *EscalationInstanceReassignToApprovers {
 	if e == nil {
 		return nil
 	}
-	return e.ReassignToApprovers
+	return e.EscalationInstanceReassignToApprovers
 }
 
-func (e *EscalationInstance) GetReplacePolicy() *ReplacePolicy {
+func (e *EscalationInstance) GetEscalationInstanceReplacePolicy() *EscalationInstanceReplacePolicy {
 	if e == nil {
 		return nil
 	}
-	return e.ReplacePolicy
+	return e.EscalationInstanceReplacePolicy
 }
 
-func (e *EscalationInstance) GetSkipStep() *SkipStep {
+func (e *EscalationInstance) GetEscalationInstanceSkipStep() *EscalationInstanceSkipStep {
 	if e == nil {
 		return nil
 	}
-	return e.SkipStep
+	return e.EscalationInstanceSkipStep
 }

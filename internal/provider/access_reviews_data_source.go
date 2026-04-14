@@ -61,6 +61,18 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 						"access_review": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
+								"access_review_column_config": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"columns": schema.ListAttribute{
+											Computed:    true,
+											ElementType: types.StringType,
+											MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
+												` If empty, the default column set for the campaign's default_view is used.`,
+										},
+									},
+									Description: `Configuration for which columns are visible in the reviewer task list.`,
+								},
 								"access_review_exclusion_scope": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
@@ -442,6 +454,16 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 								"binding_object_setup": schema.SingleNestedAttribute{
 									Computed:    true,
 									Description: `The BindingObjectSetup message.`,
+								},
+								"campaign_insights": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"markdown": schema.StringAttribute{
+											Computed:    true,
+											Description: `The markdown field.`,
+										},
+									},
+									Description: `AI-generated campaign insights (markdown). Read-only; set by backend when campaign is closed.`,
 								},
 								"closed_at": schema.StringAttribute{
 									Computed: true,

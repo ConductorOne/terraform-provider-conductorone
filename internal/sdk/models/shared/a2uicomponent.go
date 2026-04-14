@@ -22,15 +22,34 @@ package shared
 //   - c1StatusIndicator
 //   - c1CodeBlock
 //   - c1ResourcePicker
+//   - c1DurationPicker
+//   - c1TodoList
+//   - c1SlackNotifications
+//   - c1MsTeamsNotifications
+//   - c1ConnectorSyncProgress
 type A2UIComponent struct {
 	// ButtonComponent triggers actions.
 	ButtonComponent *ButtonComponent `json:"button,omitempty"`
 	// C1CodeBlockComponent displays code with syntax highlighting.
 	C1CodeBlockComponent *C1CodeBlockComponent `json:"c1CodeBlock,omitempty"`
+	// C1ConnectorSyncProgressComponent renders a live connector sync status card.
+	//  Subscribes to WebSocket updates for real-time sync lifecycle status.
+	C1ConnectorSyncProgressComponent *C1ConnectorSyncProgressComponent `json:"c1ConnectorSyncProgress,omitempty"`
+	// C1DurationPickerComponent is the access-request duration picker (presets + custom with number/unit).
+	//  Value is duration in seconds bound to the given path.
+	C1DurationPickerComponent *C1DurationPickerComponent `json:"c1DurationPicker,omitempty"`
+	// C1MSTeamsNotificationsComponent renders a self-contained Microsoft Teams integration card.
+	//  Fetches status and consent URLs via frontend API calls.
+	C1MSTeamsNotificationsComponent *C1MSTeamsNotificationsComponent `json:"c1MsTeamsNotifications,omitempty"`
 	// C1ResourcePickerComponent allows selecting C1 resources.
 	C1ResourcePickerComponent *C1ResourcePickerComponent `json:"c1ResourcePicker,omitempty"`
+	// C1SlackNotificationsComponent renders a self-contained Slack integration card.
+	//  Fetches status and OAuth URLs via frontend API calls.
+	C1SlackNotificationsComponent *C1SlackNotificationsComponent `json:"c1SlackNotifications,omitempty"`
 	// C1StatusIndicatorComponent shows agent progress status.
 	C1StatusIndicatorComponent *C1StatusIndicatorComponent `json:"c1StatusIndicator,omitempty"`
+	// C1TodoListComponent renders a phase/step checklist with progress tracking.
+	C1TodoListComponent *C1TodoListComponent `json:"c1TodoList,omitempty"`
 	// CardComponent is a container with styling.
 	CardComponent *CardComponent `json:"card,omitempty"`
 	// CheckBoxComponent is a boolean checkbox.
@@ -73,6 +92,27 @@ func (a *A2UIComponent) GetC1CodeBlockComponent() *C1CodeBlockComponent {
 	return a.C1CodeBlockComponent
 }
 
+func (a *A2UIComponent) GetC1ConnectorSyncProgressComponent() *C1ConnectorSyncProgressComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1ConnectorSyncProgressComponent
+}
+
+func (a *A2UIComponent) GetC1DurationPickerComponent() *C1DurationPickerComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1DurationPickerComponent
+}
+
+func (a *A2UIComponent) GetC1MSTeamsNotificationsComponent() *C1MSTeamsNotificationsComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1MSTeamsNotificationsComponent
+}
+
 func (a *A2UIComponent) GetC1ResourcePickerComponent() *C1ResourcePickerComponent {
 	if a == nil {
 		return nil
@@ -80,11 +120,25 @@ func (a *A2UIComponent) GetC1ResourcePickerComponent() *C1ResourcePickerComponen
 	return a.C1ResourcePickerComponent
 }
 
+func (a *A2UIComponent) GetC1SlackNotificationsComponent() *C1SlackNotificationsComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1SlackNotificationsComponent
+}
+
 func (a *A2UIComponent) GetC1StatusIndicatorComponent() *C1StatusIndicatorComponent {
 	if a == nil {
 		return nil
 	}
 	return a.C1StatusIndicatorComponent
+}
+
+func (a *A2UIComponent) GetC1TodoListComponent() *C1TodoListComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1TodoListComponent
 }
 
 func (a *A2UIComponent) GetCardComponent() *CardComponent {

@@ -162,7 +162,7 @@ func (s *Automation) ListAutomations(ctx context.Context, opts ...operations.Opt
 
 // CreateAutomation - Create Automation
 // Invokes the c1.api.automations.v1.AutomationService.CreateAutomation method.
-func (s *Automation) CreateAutomation(ctx context.Context, request *shared.CreateAutomationRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceCreateAutomationResponse, error) {
+func (s *Automation) CreateAutomation(ctx context.Context, request *shared.AutomationsCreateAutomationRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceCreateAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -272,12 +272,12 @@ func (s *Automation) CreateAutomation(ctx context.Context, request *shared.Creat
 				return nil, err
 			}
 
-			var out shared.CreateAutomationResponse1
+			var out shared.AutomationsCreateAutomationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAutomationResponse = &out
+			res.AutomationsCreateAutomationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -331,7 +331,7 @@ func (s *Automation) DeleteAutomation(ctx context.Context, request operations.C1
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteAutomationRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AutomationsDeleteAutomationRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -409,12 +409,12 @@ func (s *Automation) DeleteAutomation(ctx context.Context, request operations.C1
 				return nil, err
 			}
 
-			var out shared.DeleteAutomationResponse
+			var out shared.AutomationsDeleteAutomationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.DeleteAutomationResponse = &out
+			res.AutomationsDeleteAutomationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

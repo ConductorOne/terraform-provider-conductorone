@@ -9,9 +9,6 @@ package shared
 //   - passwordField
 //   - selectField
 //   - pickerField
-//
-// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-//   - rules
 type StringField struct {
 	// The defaultValue field.
 	DefaultValue *string `json:"defaultValue,omitempty"`
@@ -27,21 +24,6 @@ type StringField struct {
 	PickerField *PickerField `json:"pickerField,omitempty"`
 	// The placeholder field.
 	Placeholder *string `json:"placeholder,omitempty"`
-	// StringRules describe the constraints applied to `string` values
-	//
-	// This message contains a oneof named well_known. Only a single field of the following list may be set at a time:
-	//   - email
-	//   - hostname
-	//   - ip
-	//   - ipv4
-	//   - ipv6
-	//   - uri
-	//   - uriRef
-	//   - address
-	//   - uuid
-	//   - wellKnownRegex
-	//
-	StringRules *StringRules `json:"rules,omitempty"`
 	// The SelectField message.
 	SelectField *SelectField `json:"selectField,omitempty"`
 	// The TextField message.
@@ -74,13 +56,6 @@ func (s *StringField) GetPlaceholder() *string {
 		return nil
 	}
 	return s.Placeholder
-}
-
-func (s *StringField) GetStringRules() *StringRules {
-	if s == nil {
-		return nil
-	}
-	return s.StringRules
 }
 
 func (s *StringField) GetSelectField() *SelectField {

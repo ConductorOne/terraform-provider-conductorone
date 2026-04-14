@@ -29,6 +29,7 @@ type AccessReviewTemplateDataSource struct {
 
 // AccessReviewTemplateDataSourceModel describes the data model.
 type AccessReviewTemplateDataSourceModel struct {
+	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig   `tfsdk:"access_review_column_config"`
 	AccessReviewDuration           types.String                        `tfsdk:"access_review_duration"`
 	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
 	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
@@ -69,6 +70,18 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 		MarkdownDescription: "AccessReviewTemplate DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"access_review_column_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"columns": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
+							` If empty, the default column set for the campaign's default_view is used.`,
+					},
+				},
+				Description: `Configuration for which columns are visible in the reviewer task list.`,
+			},
 			"access_review_duration": schema.StringAttribute{
 				Computed: true,
 			},

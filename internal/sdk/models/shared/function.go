@@ -15,6 +15,7 @@ type FunctionType string
 const (
 	FunctionTypeFunctionTypeUnspecified FunctionType = "FUNCTION_TYPE_UNSPECIFIED"
 	FunctionTypeFunctionTypeAny         FunctionType = "FUNCTION_TYPE_ANY"
+	FunctionTypeFunctionTypeCodeMode    FunctionType = "FUNCTION_TYPE_CODE_MODE"
 )
 
 func (e FunctionType) ToPointer() *FunctionType {
@@ -29,6 +30,8 @@ func (e *FunctionType) UnmarshalJSON(data []byte) error {
 	case "FUNCTION_TYPE_UNSPECIFIED":
 		fallthrough
 	case "FUNCTION_TYPE_ANY":
+		fallthrough
+	case "FUNCTION_TYPE_CODE_MODE":
 		*e = FunctionType(v)
 		return nil
 	default:

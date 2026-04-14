@@ -82,6 +82,9 @@ type ConductoroneAPI struct {
 	RequestCatalogManagement             *RequestCatalogManagement
 	ConnectorCatalog                     *ConnectorCatalog
 	Directory                            *Directory
+	Finding                              *Finding
+	FindingRoutingRule                   *FindingRoutingRule
+	FindingSearch                        *FindingSearch
 	Functions                            *Functions
 	FunctionsInvocation                  *FunctionsInvocation
 	FunctionsInvocationSearch            *FunctionsInvocationSearch
@@ -92,10 +95,10 @@ type ConductoroneAPI struct {
 	PolicyValidate                       *PolicyValidate
 	RequestSchema                        *RequestSchema
 	RoleMiningManagement                 *RoleMiningManagement
+	AutomationExecutionSearch            *AutomationExecutionSearch
 	AppResourceSearch                    *AppResourceSearch
 	AppSearch                            *AppSearch
 	AttributeSearch                      *AttributeSearch
-	AutomationExecutionSearch            *AutomationExecutionSearch
 	AutomationSearch                     *AutomationSearch
 	FunctionsSearch                      *FunctionsSearch
 	ExternalClientSearch                 *ExternalClientSearch
@@ -117,6 +120,7 @@ type ConductoroneAPI struct {
 	OrgDomain                            *OrgDomain
 	OrgNotificationSettings              *OrgNotificationSettings
 	UserNotificationSettings             *UserNotificationSettings
+	OnboardingSettings                   *OnboardingSettings
 	SessionSettings                      *SessionSettings
 	SystemLog                            *SystemLog
 	Export                               *Export
@@ -214,9 +218,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.7.16",
+		SDKVersion: "1.7.17",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.7.16 2.755.6 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.7.17 2.755.6 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{
@@ -273,6 +277,9 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.RequestCatalogManagement = newRequestCatalogManagement(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConnectorCatalog = newConnectorCatalog(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Directory = newDirectory(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Finding = newFinding(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.FindingRoutingRule = newFindingRoutingRule(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.FindingSearch = newFindingSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Functions = newFunctions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FunctionsInvocation = newFunctionsInvocation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FunctionsInvocationSearch = newFunctionsInvocationSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -283,10 +290,10 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.PolicyValidate = newPolicyValidate(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.RequestSchema = newRequestSchema(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.RoleMiningManagement = newRoleMiningManagement(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AutomationExecutionSearch = newAutomationExecutionSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppResourceSearch = newAppResourceSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppSearch = newAppSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AttributeSearch = newAttributeSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.AutomationExecutionSearch = newAutomationExecutionSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AutomationSearch = newAutomationSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FunctionsSearch = newFunctionsSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ExternalClientSearch = newExternalClientSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -308,6 +315,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.OrgDomain = newOrgDomain(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.OrgNotificationSettings = newOrgNotificationSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.UserNotificationSettings = newUserNotificationSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.OnboardingSettings = newOnboardingSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SessionSettings = newSessionSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemLog = newSystemLog(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Export = newExport(sdk, sdk.sdkConfiguration, sdk.hooks)

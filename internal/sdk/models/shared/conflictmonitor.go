@@ -24,8 +24,8 @@ type ConflictMonitor struct {
 	// The id field.
 	ID *string `json:"id,omitempty"`
 	// The NotificationConfig message.
-	NotificationConfig *NotificationConfig1 `json:"notificationConfig,omitempty"`
-	UpdatedAt          *time.Time           `json:"updatedAt,omitempty"`
+	AccessConflictNotificationConfig *AccessConflictNotificationConfig `json:"notificationConfig,omitempty"`
+	UpdatedAt                        *time.Time                        `json:"updatedAt,omitempty"`
 }
 
 func (c ConflictMonitor) MarshalJSON() ([]byte, error) {
@@ -95,11 +95,11 @@ func (c *ConflictMonitor) GetID() *string {
 	return c.ID
 }
 
-func (c *ConflictMonitor) GetNotificationConfig() *NotificationConfig1 {
+func (c *ConflictMonitor) GetAccessConflictNotificationConfig() *AccessConflictNotificationConfig {
 	if c == nil {
 		return nil
 	}
-	return c.NotificationConfig
+	return c.AccessConflictNotificationConfig
 }
 
 func (c *ConflictMonitor) GetUpdatedAt() *time.Time {

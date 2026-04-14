@@ -36,6 +36,7 @@ type AccessProfileDataSourceModel struct {
 	DisplayName                     types.String                                                 `tfsdk:"display_name"`
 	EnrollmentBehavior              types.String                                                 `tfsdk:"enrollment_behavior"`
 	Expanded                        []tfTypes.RequestCatalogManagementServiceGetResponseExpanded `tfsdk:"expanded"`
+	GrantPolicyID                   types.String                                                 `tfsdk:"grant_policy_id"`
 	ID                              types.String                                                 `tfsdk:"id"`
 	Published                       types.Bool                                                   `tfsdk:"published"`
 	RequestBundle                   types.Bool                                                   `tfsdk:"request_bundle"`
@@ -84,6 +85,11 @@ func (r *AccessProfileDataSource) Schema(ctx context.Context, req datasource.Sch
 					Attributes: map[string]schema.Attribute{},
 				},
 				Description: `List of serialized related objects.`,
+			},
+			"grant_policy_id": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `The ID of the policy to use for access requests in this catalog.` + "\n" +
+					` This is different from the catalog AppEntitlement's grant_policy_id, which is used for catalog membership grants.`,
 			},
 			"id": schema.StringAttribute{
 				Required: true,

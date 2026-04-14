@@ -25,6 +25,7 @@ package shared
 //   - generatePassword
 //   - evaluateExpressions
 //   - setCredential
+//   - storeCredential
 type AutomationStep struct {
 	// The AccountLifecycleAction message.
 	//
@@ -129,13 +130,16 @@ type AutomationStep struct {
 	StepDisplayName *string `json:"stepDisplayName,omitempty"`
 	// The stepName field.
 	StepName *string `json:"stepName,omitempty"`
+	// StoreCredential stores a credential from GeneratePassword in a vault.
+	//  Supports Paper Vault (SSO/email) and App Vault (entitlement-bound).
+	StoreCredential *StoreCredential `json:"storeCredential,omitempty"`
 	// The TaskAction message.
 	//
 	// This message contains a oneof named action. Only a single field of the following list may be set at a time:
 	//   - close
 	//   - reassign
 	//
-	TaskAction *TaskAction `json:"taskAction,omitempty"`
+	AutomationsTaskAction *AutomationsTaskAction `json:"taskAction,omitempty"`
 	// The UnenrollFromAllAccessProfiles message.
 	UnenrollFromAllAccessProfiles *UnenrollFromAllAccessProfiles `json:"unenrollFromAllAccessProfiles,omitempty"`
 	// The UpdateUser message.
@@ -158,7 +162,7 @@ type AutomationStep struct {
 	//   - webhookId
 	//   - webhookIdCel
 	//
-	Webhook *Webhook `json:"webhook,omitempty"`
+	AutomationsWebhook *AutomationsWebhook `json:"webhook,omitempty"`
 }
 
 func (a *AutomationStep) GetAccountLifecycleAction() *AccountLifecycleAction {
@@ -287,11 +291,18 @@ func (a *AutomationStep) GetStepName() *string {
 	return a.StepName
 }
 
-func (a *AutomationStep) GetTaskAction() *TaskAction {
+func (a *AutomationStep) GetStoreCredential() *StoreCredential {
 	if a == nil {
 		return nil
 	}
-	return a.TaskAction
+	return a.StoreCredential
+}
+
+func (a *AutomationStep) GetAutomationsTaskAction() *AutomationsTaskAction {
+	if a == nil {
+		return nil
+	}
+	return a.AutomationsTaskAction
 }
 
 func (a *AutomationStep) GetUnenrollFromAllAccessProfiles() *UnenrollFromAllAccessProfiles {
@@ -315,9 +326,9 @@ func (a *AutomationStep) GetWaitForDuration() *WaitForDuration {
 	return a.WaitForDuration
 }
 
-func (a *AutomationStep) GetWebhook() *Webhook {
+func (a *AutomationStep) GetAutomationsWebhook() *AutomationsWebhook {
 	if a == nil {
 		return nil
 	}
-	return a.Webhook
+	return a.AutomationsWebhook
 }

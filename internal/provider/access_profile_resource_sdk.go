@@ -25,6 +25,7 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context
 		} else {
 			r.EnrollmentBehavior = types.StringNull()
 		}
+		r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Published = types.BoolPointerValue(resp.Published)
 		r.RequestBundle = types.BoolPointerValue(resp.RequestBundle)
@@ -159,6 +160,12 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 	} else {
 		enrollmentBehavior = nil
 	}
+	grantPolicyID := new(string)
+	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
+		*grantPolicyID = r.GrantPolicyID.ValueString()
+	} else {
+		grantPolicyID = nil
+	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueString()
@@ -200,6 +207,7 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 		Description:                     description,
 		DisplayName:                     displayName,
 		EnrollmentBehavior:              enrollmentBehavior,
+		GrantPolicyID:                   grantPolicyID,
 		ID:                              id,
 		Published:                       published,
 		RequestBundle:                   requestBundle,
@@ -228,6 +236,12 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 		*enrollmentBehavior = shared.RequestCatalogManagementServiceCreateRequestEnrollmentBehavior(r.EnrollmentBehavior.ValueString())
 	} else {
 		enrollmentBehavior = nil
+	}
+	grantPolicyID := new(string)
+	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
+		*grantPolicyID = r.GrantPolicyID.ValueString()
+	} else {
+		grantPolicyID = nil
 	}
 	published := new(bool)
 	if !r.Published.IsUnknown() && !r.Published.IsNull() {
@@ -263,6 +277,7 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 		Description:                     description,
 		DisplayName:                     displayName,
 		EnrollmentBehavior:              enrollmentBehavior,
+		GrantPolicyID:                   grantPolicyID,
 		Published:                       published,
 		RequestBundle:                   requestBundle,
 		UnenrollmentBehavior:            unenrollmentBehavior,

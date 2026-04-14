@@ -29,6 +29,7 @@ type AccessReviewDataSource struct {
 
 // AccessReviewDataSourceModel describes the data model.
 type AccessReviewDataSourceModel struct {
+	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig                `tfsdk:"access_review_column_config"`
 	AccessReviewExclusionScope     *tfTypes.AccessReviewExclusionScope              `tfsdk:"access_review_exclusion_scope"`
 	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope              `tfsdk:"access_review_inclusion_scope"`
 	AccessReviewScope              *tfTypes.AccessReviewScope                       `tfsdk:"access_review_scope"`
@@ -41,6 +42,7 @@ type AccessReviewDataSourceModel struct {
 	AutoResolve                    types.Bool                                       `tfsdk:"auto_resolve"`
 	AutoStartCampaign              types.Bool                                       `tfsdk:"auto_start_campaign"`
 	BindingObjectSetup             *tfTypes.BindingObjectSetup                      `tfsdk:"binding_object_setup"`
+	CampaignInsights               *tfTypes.CampaignInsights                        `tfsdk:"campaign_insights"`
 	ClosedAt                       types.String                                     `tfsdk:"closed_at"`
 	CompletionDate                 types.String                                     `tfsdk:"completion_date"`
 	ConnectorSourcesFrozenAt       types.String                                     `tfsdk:"connector_sources_frozen_at"`
@@ -86,6 +88,18 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 		MarkdownDescription: "AccessReview DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"access_review_column_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"columns": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
+							` If empty, the default column set for the campaign's default_view is used.`,
+					},
+				},
+				Description: `Configuration for which columns are visible in the reviewer task list.`,
+			},
 			"access_review_exclusion_scope": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
@@ -467,6 +481,16 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 			"binding_object_setup": schema.SingleNestedAttribute{
 				Computed:    true,
 				Description: `The BindingObjectSetup message.`,
+			},
+			"campaign_insights": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"markdown": schema.StringAttribute{
+						Computed:    true,
+						Description: `The markdown field.`,
+					},
+				},
+				Description: `AI-generated campaign insights (markdown). Read-only; set by backend when campaign is closed.`,
 			},
 			"closed_at": schema.StringAttribute{
 				Computed: true,

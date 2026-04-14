@@ -113,6 +113,8 @@ type ExternalClientInfo struct {
 	// User-provided custom name (defaults to client_name if not set)
 	DisplayName *string    `json:"displayName,omitempty"`
 	LastUsedAt  *time.Time `json:"lastUsedAt,omitempty"`
+	// MCP client record ID for AI governance tracking. May be empty for legacy grants.
+	McpClientID *string `json:"mcpClientId,omitempty"`
 	// Role IDs granted to this client - frontend can fetch display names via SearchRoles
 	RoleIds []string `json:"roleIds,omitempty"`
 	// The user who approved this external client (always populated)
@@ -175,6 +177,13 @@ func (e *ExternalClientInfo) GetLastUsedAt() *time.Time {
 		return nil
 	}
 	return e.LastUsedAt
+}
+
+func (e *ExternalClientInfo) GetMcpClientID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.McpClientID
 }
 
 func (e *ExternalClientInfo) GetRoleIds() []string {

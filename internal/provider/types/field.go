@@ -18,5 +18,6 @@ type Field struct {
 	Required             types.Bool            `tfsdk:"required"`
 	SharedProviderConfig *SharedProviderConfig `tfsdk:"shared_provider_config"`
 	StringField          *StringField          `tfsdk:"string_field"`
+	StringMapField       *StringMapField       `tfsdk:"string_map_field"`
 	UserProviderConfig   *UserProviderConfig   `tfsdk:"user_provider_config"`
 }

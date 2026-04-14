@@ -35,23 +35,25 @@ type AutomationResource struct {
 
 // AutomationResourceModel describes the resource data model.
 type AutomationResourceModel struct {
-	AppID                        types.String                          `tfsdk:"app_id"`
-	AutomationContext            *tfTypes.AutomationContext            `tfsdk:"automation_context"`
-	AutomationSteps              []tfTypes.AutomationStep              `tfsdk:"automation_steps"`
-	CreatedAt                    types.String                          `tfsdk:"created_at"`
-	CurrentVersion               types.String                          `tfsdk:"current_version"`
-	Description                  types.String                          `tfsdk:"description"`
-	DisabledReasonCircuitBreaker *tfTypes.DisabledReasonCircuitBreaker `tfsdk:"disabled_reason_circuit_breaker"`
-	DisplayName                  types.String                          `tfsdk:"display_name"`
-	DraftAutomationSteps         []tfTypes.AutomationStep              `tfsdk:"draft_automation_steps"`
-	DraftTriggers                []tfTypes.AutomationTrigger           `tfsdk:"draft_triggers"`
-	Enabled                      types.Bool                            `tfsdk:"enabled"`
-	ID                           types.String                          `tfsdk:"id"`
-	IsDraft                      types.Bool                            `tfsdk:"is_draft"`
-	LastExecutedAt               types.String                          `tfsdk:"last_executed_at"`
-	PrimaryTriggerType           types.String                          `tfsdk:"primary_trigger_type"`
-	Triggers                     []tfTypes.AutomationTrigger           `tfsdk:"triggers"`
-	WebhookHmacSecret            types.String                          `tfsdk:"webhook_hmac_secret"`
+	AppID                              types.String                                `tfsdk:"app_id"`
+	AutomationContext                  *tfTypes.AutomationContext                  `tfsdk:"automation_context"`
+	AutomationsDeleteAutomationRequest *tfTypes.AutomationsDeleteAutomationRequest `tfsdk:"automations_delete_automation_request"`
+	AutomationSteps                    []tfTypes.AutomationStep                    `tfsdk:"automation_steps"`
+	CreatedAt                          types.String                                `tfsdk:"created_at"`
+	CurrentVersion                     types.String                                `tfsdk:"current_version"`
+	Description                        types.String                                `tfsdk:"description"`
+	DisabledReasonCircuitBreaker       *tfTypes.DisabledReasonCircuitBreaker       `tfsdk:"disabled_reason_circuit_breaker"`
+	DisplayName                        types.String                                `tfsdk:"display_name"`
+	DraftAutomationSteps               []tfTypes.AutomationStep                    `tfsdk:"draft_automation_steps"`
+	DraftTriggers                      []tfTypes.AutomationTrigger                 `tfsdk:"draft_triggers"`
+	Enabled                            types.Bool                                  `tfsdk:"enabled"`
+	ID                                 types.String                                `tfsdk:"id"`
+	IsDraft                            types.Bool                                  `tfsdk:"is_draft"`
+	LastExecutedAt                     types.String                                `tfsdk:"last_executed_at"`
+	PrimaryTriggerType                 types.String                                `tfsdk:"primary_trigger_type"`
+	Triggers                           []tfTypes.AutomationTrigger                 `tfsdk:"triggers"`
+	WebhookCapabilityURL               types.String                                `tfsdk:"webhook_capability_url"`
+	WebhookHmacSecret                  types.String                                `tfsdk:"webhook_hmac_secret"`
 }
 
 func (r *AutomationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -136,6 +138,158 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - accountRef` + "\n" +
 								`  - accountInContext`,
 						},
+						"automations_task_action": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"close_action": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"use_subject_user": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `If true, the step will use the subject user of the automation as the subject.`,
+										},
+										"user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The userIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.CloseAction` + "`" + ` for more details.`,
+										},
+										"user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+									},
+									MarkdownDescription: `The CloseAction message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - userIdCel` + "\n" +
+										`  - userRef`,
+								},
+								"reassign_action": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"assignee_user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The assigneeUserIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
+										},
+										"subject_user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The subjectUserIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
+										},
+										"use_subject_user": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `If true, the step will use the subject user of the automation as the subject.`,
+										},
+										"user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+										"user_ref1": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+									},
+									MarkdownDescription: `The ReassignAction message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - assigneeUserIdCel` + "\n" +
+										`  - assigneeUserRef` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - subjectUserIdCel` + "\n" +
+										`  - subjectUserRef`,
+								},
+								"task_types": schema.ListAttribute{
+									Computed:    true,
+									Optional:    true,
+									ElementType: types.StringType,
+									Description: `The taskTypes field.`,
+								},
+								"task_user_relation": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The taskUserRelation field. must be one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
+									Validators: []validator.String{
+										stringvalidator.OneOf(
+											"TASK_USER_RELATION_UNSPECIFIED",
+											"TASK_USER_RELATION_ASSIGNEE",
+											"TASK_USER_RELATION_SUBJECT",
+										),
+									},
+								},
+							},
+							MarkdownDescription: `The TaskAction message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named action. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - close` + "\n" +
+								`  - reassign`,
+						},
+						"automations_webhook": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"payload": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"webhook_id": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The webhookId field.` + "\n" +
+										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
+								},
+								"webhook_id_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The webhookIdCel field.` + "\n" +
+										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
+								},
+							},
+							MarkdownDescription: `The Webhook message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - webhookId` + "\n" +
+								`  - webhookIdCel`,
+						},
 						"call_function": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -215,6 +369,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The ConnectorRef message.`,
+								},
+								"password_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression referencing a GeneratePassword step output (e.g. "genStep.password").` + "\n" +
+										` When set, the resolved password is encrypted for the connector and sent as CredentialOptions.EncryptedPassword.`,
 								},
 								"user_id_cel": schema.StringAttribute{
 									Computed: true,
@@ -638,10 +798,74 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
+								"generate_password_policy": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"custom_characters": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The customCharacters field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"excluded_characters": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The excludedCharacters field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"max_character_count": schema.Int32Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The maxCharacterCount field.`,
+										},
+										"min_character_count": schema.Int32Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The minCharacterCount field.`,
+										},
+										"no_restrictions": schema.BoolAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The noRestrictions field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"require_lowercase": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireLowercase field.`,
+										},
+										"require_numbers": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireNumbers field.`,
+										},
+										"require_special_characters": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireSpecialCharacters field.`,
+										},
+										"require_uppercase": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireUppercase field.`,
+										},
+									},
+									MarkdownDescription: `GeneratePasswordPolicy defines inline password generation rules.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named character_rules. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - noRestrictions` + "\n" +
+										`  - customCharacters` + "\n" +
+										`  - excludedCharacters`,
+								},
 								"password_policy_id": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The ID of the password policy to use for generating the password.`,
+									Computed:           true,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `Deprecated: password policy ID lookup is no longer used.`,
 								},
 							},
 							Description: `The GeneratePassword message.`,
@@ -1049,128 +1273,75 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Optional:    true,
 							Description: `The stepName field.`,
 						},
-						"task_action": schema.SingleNestedAttribute{
+						"store_credential": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"close_action": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"use_subject_user": schema.BoolAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The userIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.CloseAction` + "`" + ` for more details.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-									},
-									MarkdownDescription: `The CloseAction message.` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - userIdCel` + "\n" +
-										`  - userRef`,
-								},
-								"reassign_action": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"assignee_user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The assigneeUserIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
-										},
-										"subject_user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The subjectUserIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
-										},
-										"use_subject_user": schema.BoolAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-										"user_ref1": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-									},
-									MarkdownDescription: `The ReassignAction message.` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - assigneeUserIdCel` + "\n" +
-										`  - assigneeUserRef` + "\n" +
-										`` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - subjectUserIdCel` + "\n" +
-										`  - subjectUserRef`,
-								},
-								"task_types": schema.ListAttribute{
+								"app_id_cel": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									ElementType: types.StringType,
-									Description: `The taskTypes field.`,
+									Description: `CEL expression that resolves to app ID (App Vault only)`,
 								},
-								"task_user_relation": schema.StringAttribute{
+								"auth_type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The taskUserRelation field. must be one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
+									Description: `Authentication type for the paper vault recipient (Paper Vault only). must be one of ["STORE_CREDENTIAL_AUTH_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_AUTH_TYPE_SSO_INTERNAL", "STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL"]`,
 									Validators: []validator.String{
 										stringvalidator.OneOf(
-											"TASK_USER_RELATION_UNSPECIFIED",
-											"TASK_USER_RELATION_ASSIGNEE",
-											"TASK_USER_RELATION_SUBJECT",
+											"STORE_CREDENTIAL_AUTH_TYPE_UNSPECIFIED",
+											"STORE_CREDENTIAL_AUTH_TYPE_SSO_INTERNAL",
+											"STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL",
+										),
+									},
+								},
+								"credential_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression that resolves to the encrypted credential from GeneratePassword`,
+								},
+								"expiry": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"label_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Optional display label for the vault`,
+								},
+								"max_views": schema.Int64Attribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Maximum number of views (0 = unlimited, default 1) (Paper Vault only)`,
+								},
+								"recipient_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)`,
+								},
+								"recipient_email_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)`,
+								},
+								"ttl": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"vault_type": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Vault type selector (default: PAPER_VAULT for backward compatibility). must be one of ["STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT", "STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT"]`,
+									Validators: []validator.String{
+										stringvalidator.OneOf(
+											"STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED",
+											"STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT",
+											"STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT",
 										),
 									},
 								},
 							},
-							MarkdownDescription: `The TaskAction message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named action. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - close` + "\n" +
-								`  - reassign`,
+							MarkdownDescription: `StoreCredential stores a credential from GeneratePassword in a vault.` + "\n" +
+								` Supports Paper Vault (SSO/email) and App Vault (entitlement-bound).`,
 						},
 						"unenroll_from_all_access_profiles": schema.SingleNestedAttribute{
 							Computed: true,
@@ -1291,38 +1462,13 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The WaitForDuration message.`,
 						},
-						"webhook": schema.SingleNestedAttribute{
-							Computed: true,
-							Optional: true,
-							Attributes: map[string]schema.Attribute{
-								"payload": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-								},
-								"webhook_id": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The webhookId field.` + "\n" +
-										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
-								},
-								"webhook_id_cel": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The webhookIdCel field.` + "\n" +
-										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
-								},
-							},
-							MarkdownDescription: `The Webhook message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - webhookId` + "\n" +
-								`  - webhookIdCel`,
-						},
 					},
 				},
 				Description: `The automationSteps field.`,
+			},
+			"automations_delete_automation_request": schema.SingleNestedAttribute{
+				Optional:    true,
+				Description: `The DeleteAutomationRequest message.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -1403,6 +1549,158 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - accountRef` + "\n" +
 								`  - accountInContext`,
 						},
+						"automations_task_action": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"close_action": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"use_subject_user": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `If true, the step will use the subject user of the automation as the subject.`,
+										},
+										"user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The userIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.CloseAction` + "`" + ` for more details.`,
+										},
+										"user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+									},
+									MarkdownDescription: `The CloseAction message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - userIdCel` + "\n" +
+										`  - userRef`,
+								},
+								"reassign_action": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"assignee_user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The assigneeUserIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
+										},
+										"subject_user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The subjectUserIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
+										},
+										"use_subject_user": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `If true, the step will use the subject user of the automation as the subject.`,
+										},
+										"user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+										"user_ref1": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+									},
+									MarkdownDescription: `The ReassignAction message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - assigneeUserIdCel` + "\n" +
+										`  - assigneeUserRef` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - subjectUserIdCel` + "\n" +
+										`  - subjectUserRef`,
+								},
+								"task_types": schema.ListAttribute{
+									Computed:    true,
+									Optional:    true,
+									ElementType: types.StringType,
+									Description: `The taskTypes field.`,
+								},
+								"task_user_relation": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The taskUserRelation field. must be one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
+									Validators: []validator.String{
+										stringvalidator.OneOf(
+											"TASK_USER_RELATION_UNSPECIFIED",
+											"TASK_USER_RELATION_ASSIGNEE",
+											"TASK_USER_RELATION_SUBJECT",
+										),
+									},
+								},
+							},
+							MarkdownDescription: `The TaskAction message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named action. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - close` + "\n" +
+								`  - reassign`,
+						},
+						"automations_webhook": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"payload": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"webhook_id": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The webhookId field.` + "\n" +
+										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
+								},
+								"webhook_id_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The webhookIdCel field.` + "\n" +
+										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
+								},
+							},
+							MarkdownDescription: `The Webhook message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - webhookId` + "\n" +
+								`  - webhookIdCel`,
+						},
 						"call_function": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -1482,6 +1780,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The ConnectorRef message.`,
+								},
+								"password_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression referencing a GeneratePassword step output (e.g. "genStep.password").` + "\n" +
+										` When set, the resolved password is encrypted for the connector and sent as CredentialOptions.EncryptedPassword.`,
 								},
 								"user_id_cel": schema.StringAttribute{
 									Computed: true,
@@ -1905,10 +2209,74 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
+								"generate_password_policy": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"custom_characters": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The customCharacters field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"excluded_characters": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The excludedCharacters field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"max_character_count": schema.Int32Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The maxCharacterCount field.`,
+										},
+										"min_character_count": schema.Int32Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The minCharacterCount field.`,
+										},
+										"no_restrictions": schema.BoolAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The noRestrictions field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"require_lowercase": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireLowercase field.`,
+										},
+										"require_numbers": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireNumbers field.`,
+										},
+										"require_special_characters": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireSpecialCharacters field.`,
+										},
+										"require_uppercase": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireUppercase field.`,
+										},
+									},
+									MarkdownDescription: `GeneratePasswordPolicy defines inline password generation rules.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named character_rules. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - noRestrictions` + "\n" +
+										`  - customCharacters` + "\n" +
+										`  - excludedCharacters`,
+								},
 								"password_policy_id": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The ID of the password policy to use for generating the password.`,
+									Computed:           true,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `Deprecated: password policy ID lookup is no longer used.`,
 								},
 							},
 							Description: `The GeneratePassword message.`,
@@ -2316,128 +2684,75 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Optional:    true,
 							Description: `The stepName field.`,
 						},
-						"task_action": schema.SingleNestedAttribute{
+						"store_credential": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"close_action": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"use_subject_user": schema.BoolAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The userIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.CloseAction` + "`" + ` for more details.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-									},
-									MarkdownDescription: `The CloseAction message.` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - userIdCel` + "\n" +
-										`  - userRef`,
-								},
-								"reassign_action": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"assignee_user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The assigneeUserIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
-										},
-										"subject_user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The subjectUserIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
-										},
-										"use_subject_user": schema.BoolAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-										"user_ref1": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-									},
-									MarkdownDescription: `The ReassignAction message.` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - assigneeUserIdCel` + "\n" +
-										`  - assigneeUserRef` + "\n" +
-										`` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - subjectUserIdCel` + "\n" +
-										`  - subjectUserRef`,
-								},
-								"task_types": schema.ListAttribute{
+								"app_id_cel": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									ElementType: types.StringType,
-									Description: `The taskTypes field.`,
+									Description: `CEL expression that resolves to app ID (App Vault only)`,
 								},
-								"task_user_relation": schema.StringAttribute{
+								"auth_type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The taskUserRelation field. must be one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
+									Description: `Authentication type for the paper vault recipient (Paper Vault only). must be one of ["STORE_CREDENTIAL_AUTH_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_AUTH_TYPE_SSO_INTERNAL", "STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL"]`,
 									Validators: []validator.String{
 										stringvalidator.OneOf(
-											"TASK_USER_RELATION_UNSPECIFIED",
-											"TASK_USER_RELATION_ASSIGNEE",
-											"TASK_USER_RELATION_SUBJECT",
+											"STORE_CREDENTIAL_AUTH_TYPE_UNSPECIFIED",
+											"STORE_CREDENTIAL_AUTH_TYPE_SSO_INTERNAL",
+											"STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL",
+										),
+									},
+								},
+								"credential_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression that resolves to the encrypted credential from GeneratePassword`,
+								},
+								"expiry": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"label_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Optional display label for the vault`,
+								},
+								"max_views": schema.Int64Attribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Maximum number of views (0 = unlimited, default 1) (Paper Vault only)`,
+								},
+								"recipient_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)`,
+								},
+								"recipient_email_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)`,
+								},
+								"ttl": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"vault_type": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Vault type selector (default: PAPER_VAULT for backward compatibility). must be one of ["STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT", "STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT"]`,
+									Validators: []validator.String{
+										stringvalidator.OneOf(
+											"STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED",
+											"STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT",
+											"STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT",
 										),
 									},
 								},
 							},
-							MarkdownDescription: `The TaskAction message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named action. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - close` + "\n" +
-								`  - reassign`,
+							MarkdownDescription: `StoreCredential stores a credential from GeneratePassword in a vault.` + "\n" +
+								` Supports Paper Vault (SSO/email) and App Vault (entitlement-bound).`,
 						},
 						"unenroll_from_all_access_profiles": schema.SingleNestedAttribute{
 							Computed: true,
@@ -2557,35 +2872,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								},
 							},
 							Description: `The WaitForDuration message.`,
-						},
-						"webhook": schema.SingleNestedAttribute{
-							Computed: true,
-							Optional: true,
-							Attributes: map[string]schema.Attribute{
-								"payload": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-								},
-								"webhook_id": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The webhookId field.` + "\n" +
-										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
-								},
-								"webhook_id_cel": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The webhookIdCel field.` + "\n" +
-										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
-								},
-							},
-							MarkdownDescription: `The Webhook message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - webhookId` + "\n" +
-								`  - webhookIdCel`,
 						},
 					},
 				},
@@ -3250,6 +3536,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `Optional existing listener ID (hidden field from frontend)`,
 								},
+								"webhook_listener_auth_capability_url": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `Capability URL authentication: the URL itself contains an unguessable token that acts` + "\n" +
+										` as the credential. This is simpler to integrate but less secure than JWT or HMAC because` + "\n" +
+										` the token can leak via server logs, referrer headers, and URL sharing.` + "\n" +
+										` See https://www.w3.org/TR/capability-urls/ for background.`,
+								},
 								"webhook_listener_auth_hmac": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -3272,7 +3566,8 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`` + "\n" +
 								`This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - jwt` + "\n" +
-								`  - hmac`,
+								`  - hmac` + "\n" +
+								`  - capabilityUrl`,
 						},
 					},
 				},
@@ -3958,6 +4253,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `Optional existing listener ID (hidden field from frontend)`,
 								},
+								"webhook_listener_auth_capability_url": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `Capability URL authentication: the URL itself contains an unguessable token that acts` + "\n" +
+										` as the credential. This is simpler to integrate but less secure than JWT or HMAC because` + "\n" +
+										` the token can leak via server logs, referrer headers, and URL sharing.` + "\n" +
+										` See https://www.w3.org/TR/capability-urls/ for background.`,
+								},
 								"webhook_listener_auth_hmac": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -3980,11 +4283,18 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`` + "\n" +
 								`This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - jwt` + "\n" +
-								`  - hmac`,
+								`  - hmac` + "\n" +
+								`  - capabilityUrl`,
 						},
 					},
 				},
 				Description: `The triggers field.`,
+			},
+			"webhook_capability_url": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `One-time absolute webhook URL for capability URL authentication, shown once at creation time.` + "\n" +
+					` Contains the full URL including the embedded token (e.g. https://tenant.conductorone.com/api/v1/webhooks/incoming/{id}/t/{token}).` + "\n" +
+					` Populated only when the webhook trigger uses capability URL authentication.`,
 			},
 			"webhook_hmac_secret": schema.StringAttribute{
 				Computed:    true,
@@ -4032,7 +4342,7 @@ func (r *AutomationResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreateAutomationRequest(ctx)
+	request, requestDiags := data.ToSharedAutomationsCreateAutomationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -4054,11 +4364,48 @@ func (r *AutomationResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateAutomationResponse != nil) {
+	if !(res.AutomationsCreateAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreateAutomationResponse1(ctx, res.CreateAutomationResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAutomationsCreateAutomationResponse(ctx, res.AutomationsCreateAutomationResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsC1APIAutomationsV1AutomationServiceGetAutomationRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.Automation.GetAutomation(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.GetAutomationResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAutomationResponse(ctx, res1.GetAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

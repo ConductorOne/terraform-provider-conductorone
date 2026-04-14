@@ -72,7 +72,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 						if stepsItem.Action == nil {
 							steps.Action = nil
 						} else {
-							steps.Action = &tfTypes.Action1{}
+							steps.Action = &tfTypes.Action{}
 							if stepsItem.Action.ActionTargetAutomation == nil {
 								steps.Action.ActionTargetAutomation = nil
 							} else {
@@ -380,11 +380,11 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Approval.WebhookApproval.WebhookID = types.StringPointerValue(stepsItem.Approval.WebhookApproval.WebhookID)
 							}
 						}
-						if stepsItem.Form == nil {
-							steps.Form = jsontypes.NewNormalizedNull()
+						if stepsItem.PolicyForm == nil {
+							steps.PolicyForm = jsontypes.NewNormalizedNull()
 						} else {
-							formResult, _ := json.Marshal(stepsItem.Form)
-							steps.Form = jsontypes.NewNormalizedValue(string(formResult))
+							policyFormResult, _ := json.Marshal(stepsItem.PolicyForm)
+							steps.PolicyForm = jsontypes.NewNormalizedValue(string(policyFormResult))
 						}
 						if stepsItem.Provision == nil {
 							steps.Provision = nil
@@ -770,7 +770,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						AcceptMessage: acceptMessage,
 					}
 				}
-				var action *shared.Action1
+				var action *shared.Action
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action != nil {
 					var actionTargetAutomation *shared.ActionTargetAutomation
 					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation != nil {
@@ -796,7 +796,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							BatonResourceActionID: batonResourceActionID,
 						}
 					}
-					action = &shared.Action1{
+					action = &shared.Action{
 						ActionTargetAutomation:          actionTargetAutomation,
 						ActionTargetBatonResourceAction: actionTargetBatonResourceAction,
 					}
@@ -1429,9 +1429,9 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						WebhookApproval:           webhookApproval,
 					}
 				}
-				var form interface{}
-				if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.IsNull() {
-					_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.ValueString()), &form)
+				var policyForm interface{}
+				if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.IsNull() {
+					_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.ValueString()), &policyForm)
 				}
 				var provision *shared.Provision
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision != nil {
@@ -1946,13 +1946,13 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					}
 				}
 				steps = append(steps, shared.PolicyStepInput{
-					Accept:    accept,
-					Action:    action,
-					Approval:  approval,
-					Form:      form,
-					Provision: provision,
-					Reject:    reject,
-					Wait:      wait,
+					Accept:     accept,
+					Action:     action,
+					Approval:   approval,
+					PolicyForm: policyForm,
+					Provision:  provision,
+					Reject:     reject,
+					Wait:       wait,
 				})
 			}
 		}
@@ -2064,7 +2064,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						AcceptMessage: acceptMessage,
 					}
 				}
-				var action *shared.Action1
+				var action *shared.Action
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action != nil {
 					var actionTargetAutomation *shared.ActionTargetAutomation
 					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation != nil {
@@ -2090,7 +2090,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							BatonResourceActionID: batonResourceActionID,
 						}
 					}
-					action = &shared.Action1{
+					action = &shared.Action{
 						ActionTargetAutomation:          actionTargetAutomation,
 						ActionTargetBatonResourceAction: actionTargetBatonResourceAction,
 					}
@@ -2723,9 +2723,9 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						WebhookApproval:           webhookApproval,
 					}
 				}
-				var form interface{}
-				if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.IsNull() {
-					_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.ValueString()), &form)
+				var policyForm interface{}
+				if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.IsNull() {
+					_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.ValueString()), &policyForm)
 				}
 				var provision *shared.Provision
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision != nil {
@@ -3240,13 +3240,13 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					}
 				}
 				steps = append(steps, shared.PolicyStepInput{
-					Accept:    accept,
-					Action:    action,
-					Approval:  approval,
-					Form:      form,
-					Provision: provision,
-					Reject:    reject,
-					Wait:      wait,
+					Accept:     accept,
+					Action:     action,
+					Approval:   approval,
+					PolicyForm: policyForm,
+					Provision:  provision,
+					Reject:     reject,
+					Wait:       wait,
 				})
 			}
 		}

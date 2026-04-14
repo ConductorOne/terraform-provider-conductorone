@@ -10,11 +10,14 @@ package shared
 //   - certify
 //   - offboarding
 //   - action
+//   - finding
 type TaskType struct {
 	// The TaskTypeAction message.
 	TaskTypeAction *TaskTypeAction `json:"action,omitempty"`
 	// The TaskTypeCertify message indicates that a task is a certify task and all related details.
 	TaskTypeCertify *TaskTypeCertify `json:"certify,omitempty"`
+	// The TaskTypeFinding message.
+	TaskTypeFinding *TaskTypeFinding `json:"finding,omitempty"`
 	// The TaskTypeGrant message indicates that a task is a grant task and all related details.
 	TaskTypeGrant *TaskTypeGrant `json:"grant,omitempty"`
 	// The TaskTypeOffboarding message.
@@ -35,6 +38,13 @@ func (t *TaskType) GetTaskTypeCertify() *TaskTypeCertify {
 		return nil
 	}
 	return t.TaskTypeCertify
+}
+
+func (t *TaskType) GetTaskTypeFinding() *TaskTypeFinding {
+	if t == nil {
+		return nil
+	}
+	return t.TaskTypeFinding
 }
 
 func (t *TaskType) GetTaskTypeGrant() *TaskTypeGrant {

@@ -31,6 +31,7 @@ type BundleAutomationDataSource struct {
 type BundleAutomationDataSourceModel struct {
 	BundleAutomationCircuitBreaker  *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"bundle_automation_circuit_breaker"`
 	BundleAutomationLastRunState    *tfTypes.BundleAutomationLastRunState    `tfsdk:"bundle_automation_last_run_state"`
+	BundleAutomationRuleCEL         *tfTypes.BundleAutomationRuleCEL         `tfsdk:"bundle_automation_rule_cel"`
 	BundleAutomationRuleEntitlement *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"bundle_automation_rule_entitlement"`
 	CreatedAt                       types.String                             `tfsdk:"created_at"`
 	CreateTasks                     types.Bool                               `tfsdk:"create_tasks"`
@@ -83,6 +84,27 @@ func (r *BundleAutomationDataSource) Schema(ctx context.Context, req datasource.
 			"bundle_automation_last_run_state": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"bundle_automation_cel_evaluation_state": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"error_message": schema.StringAttribute{
+								Computed:    true,
+								Description: `The errorMessage field.`,
+							},
+							"last_evaluated_at": schema.StringAttribute{
+								Computed: true,
+							},
+							"matched_users": schema.StringAttribute{
+								Computed:    true,
+								Description: `The matchedUsers field.`,
+							},
+							"status": schema.StringAttribute{
+								Computed:    true,
+								Description: `The status field.`,
+							},
+						},
+						Description: `The BundleAutomationCelEvaluationState message.`,
+					},
 					"error_message": schema.StringAttribute{
 						Computed:    true,
 						Description: `The errorMessage field.`,
@@ -96,6 +118,16 @@ func (r *BundleAutomationDataSource) Schema(ctx context.Context, req datasource.
 					},
 				},
 				Description: `The BundleAutomationLastRunState message.`,
+			},
+			"bundle_automation_rule_cel": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"expression": schema.StringAttribute{
+						Computed:    true,
+						Description: `The expression field.`,
+					},
+				},
+				Description: `The BundleAutomationRuleCEL message.`,
 			},
 			"bundle_automation_rule_entitlement": schema.SingleNestedAttribute{
 				Computed: true,

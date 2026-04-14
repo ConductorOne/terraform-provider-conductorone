@@ -38,6 +38,7 @@ func (r *RequestCatalogsDataSourceModel) RefreshFromSharedRequestCatalogManageme
 					} else {
 						list.RequestCatalog.EnrollmentBehavior = types.StringNull()
 					}
+					list.RequestCatalog.GrantPolicyID = types.StringPointerValue(listItem.RequestCatalog.GrantPolicyID)
 					list.RequestCatalog.ID = types.StringPointerValue(listItem.RequestCatalog.ID)
 					list.RequestCatalog.Published = types.BoolPointerValue(listItem.RequestCatalog.Published)
 					list.RequestCatalog.RequestBundle = types.BoolPointerValue(listItem.RequestCatalog.RequestBundle)

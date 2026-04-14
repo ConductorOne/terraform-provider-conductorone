@@ -22,6 +22,8 @@ type TaskView struct {
 	IdentityUserPath *string `json:"identityUserPath,omitempty"`
 	// JSONPATH expression indicating the location of the Insights objects in the expanded array
 	InsightsPath *string `json:"insightsPath,omitempty"`
+	// JSONPATH expression indicating the location of the EntitlementScopeBindingList object in the expanded array.
+	ResourceBindingsPath *string `json:"resourceBindingsPath,omitempty"`
 	// JSONPATH expression indicating the location of the StepApproverUsers objects in the expanded array
 	StepApproversPath *string `json:"stepApproversPath,omitempty"`
 	// A fully-fleged task object. Includes its policy, references to external apps, its type, its processing history, and more.
@@ -91,6 +93,13 @@ func (t *TaskView) GetInsightsPath() *string {
 		return nil
 	}
 	return t.InsightsPath
+}
+
+func (t *TaskView) GetResourceBindingsPath() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ResourceBindingsPath
 }
 
 func (t *TaskView) GetStepApproversPath() *string {

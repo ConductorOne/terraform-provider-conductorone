@@ -17,6 +17,17 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AccessReviewColumnConfig == nil {
+			r.AccessReviewColumnConfig = nil
+		} else {
+			r.AccessReviewColumnConfig = &tfTypes.AccessReviewColumnConfig{}
+			if resp.AccessReviewColumnConfig.Columns != nil {
+				r.AccessReviewColumnConfig.Columns = make([]types.String, 0, len(resp.AccessReviewColumnConfig.Columns))
+				for _, v := range resp.AccessReviewColumnConfig.Columns {
+					r.AccessReviewColumnConfig.Columns = append(r.AccessReviewColumnConfig.Columns, types.StringValue(string(v)))
+				}
+			}
+		}
 		r.AccessReviewDuration = types.StringPointerValue(resp.AccessReviewDuration)
 		if resp.AccessReviewInclusionScope == nil {
 			r.AccessReviewInclusionScope = nil
@@ -498,6 +509,19 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		*autoStartCampaign = r.AutoStartCampaign.ValueBool()
 	} else {
 		autoStartCampaign = nil
+	}
+	var accessReviewColumnConfig *shared.AccessReviewColumnConfig
+	if r.AccessReviewColumnConfig != nil {
+		var columns []shared.Columns
+		if r.AccessReviewColumnConfig.Columns != nil {
+			columns = make([]shared.Columns, 0, len(r.AccessReviewColumnConfig.Columns))
+			for _, columnsItem := range r.AccessReviewColumnConfig.Columns {
+				columns = append(columns, shared.Columns(columnsItem.ValueString()))
+			}
+		}
+		accessReviewColumnConfig = &shared.AccessReviewColumnConfig{
+			Columns: columns,
+		}
 	}
 	defaultView := new(shared.AccessReviewTemplateDefaultView)
 	if !r.DefaultView.IsUnknown() && !r.DefaultView.IsNull() {
@@ -1077,6 +1101,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		AutoCloseDecision:              autoCloseDecision,
 		AutoGenerateReport:             autoGenerateReport,
 		AutoStartCampaign:              autoStartCampaign,
+		AccessReviewColumnConfig:       accessReviewColumnConfig,
 		DefaultView:                    defaultView,
 		Description:                    description,
 		DisplayName:                    displayName,
@@ -1138,6 +1163,19 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		*autoStartCampaign = r.AutoStartCampaign.ValueBool()
 	} else {
 		autoStartCampaign = nil
+	}
+	var accessReviewColumnConfig *shared.AccessReviewColumnConfig
+	if r.AccessReviewColumnConfig != nil {
+		var columns []shared.Columns
+		if r.AccessReviewColumnConfig.Columns != nil {
+			columns = make([]shared.Columns, 0, len(r.AccessReviewColumnConfig.Columns))
+			for _, columnsItem := range r.AccessReviewColumnConfig.Columns {
+				columns = append(columns, shared.Columns(columnsItem.ValueString()))
+			}
+		}
+		accessReviewColumnConfig = &shared.AccessReviewColumnConfig{
+			Columns: columns,
+		}
 	}
 	defaultView := new(shared.AccessReviewTemplateServiceCreateRequestDefaultView)
 	if !r.DefaultView.IsUnknown() && !r.DefaultView.IsNull() {
@@ -1612,6 +1650,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		AutoCloseDecision:              autoCloseDecision,
 		AutoGenerateReport:             autoGenerateReport,
 		AutoStartCampaign:              autoStartCampaign,
+		AccessReviewColumnConfig:       accessReviewColumnConfig,
 		DefaultView:                    defaultView,
 		Description:                    description,
 		DisplayName:                    displayName,

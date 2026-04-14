@@ -15,7 +15,7 @@ type C1APIAutomationsV1AutomationServiceCreateAutomationResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successful response
-	CreateAutomationResponse *shared.CreateAutomationResponse1
+	AutomationsCreateAutomationResponse *shared.AutomationsCreateAutomationResponse
 }
 
 func (c *C1APIAutomationsV1AutomationServiceCreateAutomationResponse) GetContentType() string {
@@ -39,9 +39,9 @@ func (c *C1APIAutomationsV1AutomationServiceCreateAutomationResponse) GetRawResp
 	return c.RawResponse
 }
 
-func (c *C1APIAutomationsV1AutomationServiceCreateAutomationResponse) GetCreateAutomationResponse() *shared.CreateAutomationResponse1 {
+func (c *C1APIAutomationsV1AutomationServiceCreateAutomationResponse) GetAutomationsCreateAutomationResponse() *shared.AutomationsCreateAutomationResponse {
 	if c == nil {
 		return nil
 	}
-	return c.CreateAutomationResponse
+	return c.AutomationsCreateAutomationResponse
 }

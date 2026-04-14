@@ -2,6 +2,47 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+// TextFieldComponentVariant - The variant field.
+type TextFieldComponentVariant string
+
+const (
+	TextFieldComponentVariantTextFieldVariantUnspecified TextFieldComponentVariant = "TEXT_FIELD_VARIANT_UNSPECIFIED"
+	TextFieldComponentVariantTextFieldVariantShortText   TextFieldComponentVariant = "TEXT_FIELD_VARIANT_SHORT_TEXT"
+	TextFieldComponentVariantTextFieldVariantLongText    TextFieldComponentVariant = "TEXT_FIELD_VARIANT_LONG_TEXT"
+	TextFieldComponentVariantTextFieldVariantNumber      TextFieldComponentVariant = "TEXT_FIELD_VARIANT_NUMBER"
+	TextFieldComponentVariantTextFieldVariantObscured    TextFieldComponentVariant = "TEXT_FIELD_VARIANT_OBSCURED"
+)
+
+func (e TextFieldComponentVariant) ToPointer() *TextFieldComponentVariant {
+	return &e
+}
+func (e *TextFieldComponentVariant) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "TEXT_FIELD_VARIANT_UNSPECIFIED":
+		fallthrough
+	case "TEXT_FIELD_VARIANT_SHORT_TEXT":
+		fallthrough
+	case "TEXT_FIELD_VARIANT_LONG_TEXT":
+		fallthrough
+	case "TEXT_FIELD_VARIANT_NUMBER":
+		fallthrough
+	case "TEXT_FIELD_VARIANT_OBSCURED":
+		*e = TextFieldComponentVariant(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for TextFieldComponentVariant: %v", v)
+	}
+}
+
 // TextFieldComponent is a text input field.
 type TextFieldComponent struct {
 	// The checks field.
@@ -14,8 +55,6 @@ type TextFieldComponent struct {
 	//   - call
 	//
 	DynamicString *DynamicString `json:"label,omitempty"`
-	// The multiline field.
-	Multiline *bool `json:"multiline,omitempty"`
 	// DynamicString can be a literal value, a JSON pointer path, or a function call.
 	//
 	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
@@ -32,6 +71,8 @@ type TextFieldComponent struct {
 	//   - call
 	//
 	DynamicString2 *DynamicString `json:"value,omitempty"`
+	// The variant field.
+	Variant *TextFieldComponentVariant `json:"variant,omitempty"`
 }
 
 func (t *TextFieldComponent) GetChecks() []*FunctionCall {
@@ -48,13 +89,6 @@ func (t *TextFieldComponent) GetDynamicString() *DynamicString {
 	return t.DynamicString
 }
 
-func (t *TextFieldComponent) GetMultiline() *bool {
-	if t == nil {
-		return nil
-	}
-	return t.Multiline
-}
-
 func (t *TextFieldComponent) GetDynamicString1() *DynamicString {
 	if t == nil {
 		return nil
@@ -67,4 +101,11 @@ func (t *TextFieldComponent) GetDynamicString2() *DynamicString {
 		return nil
 	}
 	return t.DynamicString2
+}
+
+func (t *TextFieldComponent) GetVariant() *TextFieldComponentVariant {
+	if t == nil {
+		return nil
+	}
+	return t.Variant
 }

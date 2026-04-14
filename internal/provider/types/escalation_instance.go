@@ -7,11 +7,11 @@ import (
 )
 
 type EscalationInstance struct {
-	AlreadyEscalated    types.Bool           `tfsdk:"already_escalated"`
-	CancelTicket        *CancelTicket        `tfsdk:"cancel_ticket"`
-	EscalationComment   types.String         `tfsdk:"escalation_comment"`
-	ExpiresAt           types.String         `tfsdk:"expires_at"`
-	ReassignToApprovers *ReassignToApprovers `tfsdk:"reassign_to_approvers"`
-	ReplacePolicy       *ReplacePolicy       `tfsdk:"replace_policy"`
-	SkipStep            *SkipStep            `tfsdk:"skip_step"`
+	AlreadyEscalated                      types.Bool                             `tfsdk:"already_escalated"`
+	EscalationComment                     types.String                           `tfsdk:"escalation_comment"`
+	EscalationInstanceCancelTicket        *EscalationInstanceCancelTicket        `tfsdk:"escalation_instance_cancel_ticket"`
+	EscalationInstanceReassignToApprovers *EscalationInstanceReassignToApprovers `tfsdk:"escalation_instance_reassign_to_approvers"`
+	EscalationInstanceReplacePolicy       *EscalationInstanceReplacePolicy       `tfsdk:"escalation_instance_replace_policy"`
+	EscalationInstanceSkipStep            *EscalationInstanceSkipStep            `tfsdk:"escalation_instance_skip_step"`
+	ExpiresAt                             types.String                           `tfsdk:"expires_at"`
 }

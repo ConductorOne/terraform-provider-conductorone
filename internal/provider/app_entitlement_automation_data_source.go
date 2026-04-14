@@ -40,6 +40,7 @@ type AppEntitlementAutomationDataSourceModel struct {
 	DeletedAt                               types.String                                     `tfsdk:"deleted_at"`
 	Description                             types.String                                     `tfsdk:"description"`
 	DisplayName                             types.String                                     `tfsdk:"display_name"`
+	ManagedByRequestCatalogID               types.String                                     `tfsdk:"managed_by_request_catalog_id"`
 	UpdatedAt                               types.String                                     `tfsdk:"updated_at"`
 }
 
@@ -136,6 +137,11 @@ func (r *AppEntitlementAutomationDataSource) Schema(ctx context.Context, req dat
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The display name of the app entitlement.`,
+			},
+			"managed_by_request_catalog_id": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `When set, this automation is managed by an access profile's bundle automation.` + "\n" +
+					` Read-only. Not settable via this API.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
