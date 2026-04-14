@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_miro Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_miro Resource - conductorone"
 subcategory: ""
 description: |-
   Miro Integration Resource

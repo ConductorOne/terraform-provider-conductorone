@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_sumo_logic Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_sumo_logic Resource - conductorone"
 subcategory: ""
 description: |-
   Sumo_logic Integration Resource

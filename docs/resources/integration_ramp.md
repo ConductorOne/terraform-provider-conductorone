@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_ramp Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_ramp Resource - conductorone"
 subcategory: ""
 description: |-
   Ramp Integration Resource

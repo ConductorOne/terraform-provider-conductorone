@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_rootly Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_rootly Resource - conductorone"
 subcategory: ""
 description: |-
   Rootly Integration Resource

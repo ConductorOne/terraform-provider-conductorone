@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_automation Resource - terraform-provider-conductorone"
+page_title: "conductorone_app_entitlement_automation Resource - conductorone"
 subcategory: ""
 description: |-
   AppEntitlementAutomation Resource
@@ -69,6 +69,8 @@ resource "conductorone_app_entitlement_automation" "my_app_entitlement_automatio
 ### Read-Only
 
 - `created_at` (String)
+- `managed_by_request_catalog_id` (String) When set, this automation is managed by an access profile's bundle automation.
+ Read-only. Not settable via this API.
 - `updated_at` (String)
 
 <a id="nestedatt--app_entitlement_automation_last_run_status"></a>

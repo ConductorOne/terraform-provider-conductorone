@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_pandadoc Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_pandadoc Resource - conductorone"
 subcategory: ""
 description: |-
   Pandadoc Integration Resource

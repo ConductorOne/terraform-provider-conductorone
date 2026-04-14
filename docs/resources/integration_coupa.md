@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_coupa Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_coupa Resource - conductorone"
 subcategory: ""
 description: |-
   Coupa Integration Resource

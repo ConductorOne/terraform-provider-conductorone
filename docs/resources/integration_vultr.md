@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_vultr Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_vultr Resource - conductorone"
 subcategory: ""
 description: |-
   Vultr Integration Resource

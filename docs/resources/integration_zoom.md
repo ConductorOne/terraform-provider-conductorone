@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_zoom Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_zoom Resource - conductorone"
 subcategory: ""
 description: |-
   Zoom Integration Resource

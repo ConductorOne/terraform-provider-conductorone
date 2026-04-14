@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_access_profile Data Source - terraform-provider-conductorone"
+page_title: "conductorone_access_profile Data Source - conductorone"
 subcategory: ""
 description: |-
   AccessProfile DataSource
@@ -31,6 +31,8 @@ data "conductorone_access_profile" "my_access_profile" {
 - `display_name` (String) The display name of the request catalog.
 - `enrollment_behavior` (String) Defines how to handle the request policies of the entitlements in the catalog during enrollment.
 - `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
+- `grant_policy_id` (String) The ID of the policy to use for access requests in this catalog.
+ This is different from the catalog AppEntitlement's grant_policy_id, which is used for catalog membership grants.
 - `id` (String) The ID of this resource.
 - `published` (Boolean) Whether or not this catalog is published.
 - `request_bundle` (Boolean) Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.

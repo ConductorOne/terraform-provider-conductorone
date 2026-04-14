@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement Data Source - terraform-provider-conductorone"
+page_title: "conductorone_app_entitlement Data Source - conductorone"
 subcategory: ""
 description: |-
   AppEntitlement DataSource

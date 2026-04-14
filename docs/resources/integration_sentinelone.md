@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_sentinelone Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_sentinelone Resource - conductorone"
 subcategory: ""
 description: |-
   Sentinelone Integration Resource

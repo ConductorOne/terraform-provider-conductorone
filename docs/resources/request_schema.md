@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_request_schema Resource - terraform-provider-conductorone"
+page_title: "conductorone_request_schema Resource - conductorone"
 subcategory: ""
 description: |-
   RequestSchema Resource
@@ -56,9 +56,6 @@ resource "conductorone_request_schema" "my_request_schema" {
         show_to_user      = false
       }
       bool_field = {
-        bool_rules = {
-          const = false
-        }
         checkbox_field = {
           # ...
         }
@@ -76,24 +73,8 @@ resource "conductorone_request_schema" "my_request_schema" {
         file_input_field = {
           # ...
         }
-        max_file_size = "...my_max_file_size..."
       }
       int64_field = {
-        default_value = "...my_default_value..."
-        int64_rules = {
-          const        = "...my_const..."
-          gt           = "...my_gt..."
-          gte          = "...my_gte..."
-          ignore_empty = true
-          in = [
-            "..."
-          ]
-          lt  = "...my_lt..."
-          lte = "...my_lte..."
-          not_in = [
-            "..."
-          ]
-        }
         number_field = {
           max_value = "...my_max_value..."
           min_value = "...my_min_value..."
@@ -141,40 +122,13 @@ resource "conductorone_request_schema" "my_request_schema" {
           ]
           type = "SELECT_TYPE_RADIO"
         }
-        string_rules = {
-          address      = false
-          const        = "...my_const..."
-          contains     = "...my_contains..."
-          email        = true
-          hostname     = false
-          ignore_empty = false
-          in = [
-            "..."
-          ]
-          ip           = true
-          ipv4         = false
-          ipv6         = true
-          len_bytes    = "...my_len_bytes..."
-          length       = "...my_length..."
-          max_bytes    = "...my_max_bytes..."
-          max_len      = "...my_max_len..."
-          min_bytes    = "...my_min_bytes..."
-          min_len      = "...my_min_len..."
-          not_contains = "...my_not_contains..."
-          not_in = [
-            "..."
-          ]
-          pattern          = "...my_pattern..."
-          prefix           = "...my_prefix..."
-          strict           = true
-          suffix           = "...my_suffix..."
-          uri              = false
-          uri_ref          = true
-          uuid             = false
-          well_known_regex = "HTTP_HEADER_NAME"
-        }
         text_field = {
           multiline = false
+        }
+      }
+      string_map_field = {
+        default_value = {
+          key = "value"
         }
       }
       user_provider_config = {
@@ -211,32 +165,17 @@ Optional:
 
 This message contains a oneof named view. Only a single field of the following list may be set at a time:
   - checkboxField
-
-
-This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-  - rules (see [below for nested schema](#nestedatt--fields--bool_field))
+  - toggleField (see [below for nested schema](#nestedatt--fields--bool_field))
 - `description` (String) The description field.
 - `display_name` (String) The displayName field.
 - `file_field` (Attributes) The FileField message.
 
 This message contains a oneof named view. Only a single field of the following list may be set at a time:
-  - fileInputField
-
-
-This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:
-  - maxFileSize (see [below for nested schema](#nestedatt--fields--file_field))
+  - fileInputField (see [below for nested schema](#nestedatt--fields--file_field))
 - `int64_field` (Attributes) The Int64Field message.
 
 This message contains a oneof named view. Only a single field of the following list may be set at a time:
-  - numberField
-
-
-This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:
-  - defaultValue
-
-
-This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-  - rules (see [below for nested schema](#nestedatt--fields--int64_field))
+  - numberField (see [below for nested schema](#nestedatt--fields--int64_field))
 - `name` (String) The name field.
 - `string_field` (Attributes) The StringField message.
 
@@ -244,30 +183,23 @@ This message contains a oneof named view. Only a single field of the following l
   - textField
   - passwordField
   - selectField
-
-
-This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-  - rules (see [below for nested schema](#nestedatt--fields--string_field))
+  - pickerField (see [below for nested schema](#nestedatt--fields--string_field))
 
 <a id="nestedatt--fields--bool_field"></a>
 ### Nested Schema for `fields.bool_field`
 
 Optional:
 
-- `bool_rules` (Attributes) BoolRules describes the constraints applied to `bool` values (see [below for nested schema](#nestedatt--fields--bool_field--bool_rules))
 - `checkbox_field` (Attributes) The CheckboxField message. (see [below for nested schema](#nestedatt--fields--bool_field--checkbox_field))
 - `default_value` (Boolean) The defaultValue field.
-
-<a id="nestedatt--fields--bool_field--bool_rules"></a>
-### Nested Schema for `fields.bool_field.bool_rules`
-
-Optional:
-
-- `const` (Boolean) Const specifies that this field must be exactly the specified value
-
+- `toggle_field` (Attributes) The ToggleField message. (see [below for nested schema](#nestedatt--fields--bool_field--toggle_field))
 
 <a id="nestedatt--fields--bool_field--checkbox_field"></a>
 ### Nested Schema for `fields.bool_field.checkbox_field`
+
+
+<a id="nestedatt--fields--bool_field--toggle_field"></a>
+### Nested Schema for `fields.bool_field.toggle_field`
 
 
 
@@ -278,9 +210,6 @@ Optional:
 
 - `accepted_file_types` (List of String) The acceptedFileTypes field.
 - `file_input_field` (Attributes) The FileInputField message. (see [below for nested schema](#nestedatt--fields--file_field--file_input_field))
-- `max_file_size` (String) The maxFileSize field.
-This field is part of the `_max_file_size` oneof.
-See the documentation for `c1.api.form.v1.FileField` for more details.
 
 <a id="nestedatt--fields--file_field--file_input_field"></a>
 ### Nested Schema for `fields.file_field.file_input_field`
@@ -292,36 +221,8 @@ See the documentation for `c1.api.form.v1.FileField` for more details.
 
 Optional:
 
-- `default_value` (String) The defaultValue field.
-This field is part of the `_default_value` oneof.
-See the documentation for `c1.api.form.v1.Int64Field` for more details.
-- `int64_rules` (Attributes) Int64Rules describes the constraints applied to `int64` values (see [below for nested schema](#nestedatt--fields--int64_field--int64_rules))
 - `number_field` (Attributes) The NumberField message. (see [below for nested schema](#nestedatt--fields--int64_field--number_field))
 - `placeholder` (String) The placeholder field.
-
-<a id="nestedatt--fields--int64_field--int64_rules"></a>
-### Nested Schema for `fields.int64_field.int64_rules`
-
-Optional:
-
-- `const` (String) Const specifies that this field must be exactly the specified value
-- `gt` (String) Gt specifies that this field must be greater than the specified value,
- exclusive. If the value of Gt is larger than a specified Lt or Lte, the
- range is reversed.
-- `gte` (String) Gte specifies that this field must be greater than or equal to the
- specified value, inclusive. If the value of Gte is larger than a
- specified Lt or Lte, the range is reversed.
-- `ignore_empty` (Boolean) IgnoreEmpty specifies that the validation rules of this field should be
- evaluated only if the field is not empty
-- `in` (List of String) In specifies that this field must be equal to one of the specified
- values
-- `lt` (String) Lt specifies that this field must be less than the specified value,
- exclusive
-- `lte` (String) Lte specifies that this field must be less than or equal to the
- specified value, inclusive
-- `not_in` (List of String) NotIn specifies that this field cannot be equal to one of the specified
- values
-
 
 <a id="nestedatt--fields--int64_field--number_field"></a>
 ### Nested Schema for `fields.int64_field.number_field`
@@ -341,25 +242,49 @@ Optional:
 
 - `default_value` (String) The defaultValue field.
 - `password_field` (Attributes) The PasswordField message. (see [below for nested schema](#nestedatt--fields--string_field--password_field))
+- `picker_field` (Attributes) The PickerField message.
+
+This message contains a oneof named type. Only a single field of the following list may be set at a time:
+  - appUserPicker
+  - resourcePicker
+  - c1UserPicker (see [below for nested schema](#nestedatt--fields--string_field--picker_field))
 - `placeholder` (String) The placeholder field.
 - `select_field` (Attributes) The SelectField message. (see [below for nested schema](#nestedatt--fields--string_field--select_field))
-- `string_rules` (Attributes) StringRules describe the constraints applied to `string` values
-
-This message contains a oneof named well_known. Only a single field of the following list may be set at a time:
-  - email
-  - hostname
-  - ip
-  - ipv4
-  - ipv6
-  - uri
-  - uriRef
-  - address
-  - uuid
-  - wellKnownRegex (see [below for nested schema](#nestedatt--fields--string_field--string_rules))
 - `text_field` (Attributes) The TextField message. (see [below for nested schema](#nestedatt--fields--string_field--text_field))
 
 <a id="nestedatt--fields--string_field--password_field"></a>
 ### Nested Schema for `fields.string_field.password_field`
+
+
+<a id="nestedatt--fields--string_field--picker_field"></a>
+### Nested Schema for `fields.string_field.picker_field`
+
+Optional:
+
+- `app_resource_filter` (Attributes) The AppResourceFilter message. (see [below for nested schema](#nestedatt--fields--string_field--picker_field--app_resource_filter))
+- `app_user_filter` (Attributes) The AppUserFilter message. (see [below for nested schema](#nestedatt--fields--string_field--picker_field--app_user_filter))
+- `c1_user_filter` (Attributes) The C1UserFilter message. (see [below for nested schema](#nestedatt--fields--string_field--picker_field--c1_user_filter))
+
+<a id="nestedatt--fields--string_field--picker_field--app_resource_filter"></a>
+### Nested Schema for `fields.string_field.picker_field.app_resource_filter`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `resource_type_id` (String) The resourceTypeId field.
+
+
+<a id="nestedatt--fields--string_field--picker_field--app_user_filter"></a>
+### Nested Schema for `fields.string_field.picker_field.app_user_filter`
+
+Optional:
+
+- `app_id` (String) The appId field.
+
+
+<a id="nestedatt--fields--string_field--picker_field--c1_user_filter"></a>
+### Nested Schema for `fields.string_field.picker_field.c1_user_filter`
+
 
 
 <a id="nestedatt--fields--string_field--select_field"></a>
@@ -377,92 +302,6 @@ Optional:
 - `display_name` (String) The displayName field.
 - `value` (String) The value field.
 
-
-
-<a id="nestedatt--fields--string_field--string_rules"></a>
-### Nested Schema for `fields.string_field.string_rules`
-
-Optional:
-
-- `address` (Boolean) Address specifies that the field must be either a valid hostname as
- defined by RFC 1034 (which does not support internationalized domain
- names or IDNs), or it can be a valid IP (v4 or v6).
-This field is part of the `well_known` oneof.
-See the documentation for `validate.StringRules` for more details.
-- `const` (String) Const specifies that this field must be exactly the specified value
-- `contains` (String) Contains specifies that this field must have the specified substring
- anywhere in the string.
-- `email` (Boolean) Email specifies that the field must be a valid email address as
- defined by RFC 5322
-This field is part of the `well_known` oneof.
-See the documentation for `validate.StringRules` for more details.
-- `hostname` (Boolean) Hostname specifies that the field must be a valid hostname as
- defined by RFC 1034. This constraint does not support
- internationalized domain names (IDNs).
-This field is part of the `well_known` oneof.
-See the documentation for `validate.StringRules` for more details.
-- `ignore_empty` (Boolean) IgnoreEmpty specifies that the validation rules of this field should be
- evaluated only if the field is not empty
-- `in` (List of String) In specifies that this field must be equal to one of the specified
- values
-- `ip` (Boolean) Ip specifies that the field must be a valid IP (v4 or v6) address.
- Valid IPv6 addresses should not include surrounding square brackets.
-This field is part of the `well_known` oneof.
-See the documentation for `validate.StringRules` for more details.
-- `ipv4` (Boolean) Ipv4 specifies that the field must be a valid IPv4 address.
-This field is part of the `well_known` oneof.
-See the documentation for `validate.StringRules` for more details.
-- `ipv6` (Boolean) Ipv6 specifies that the field must be a valid IPv6 address. Valid
- IPv6 addresses should not include surrounding square brackets.
-This field is part of the `well_known` oneof.
-See the documentation for `validate.StringRules` for more details.
-- `len_bytes` (String) LenBytes specifies that this field must be the specified number of bytes
- at a minimum
-- `length` (String) Len specifies that this field must be the specified number of
- characters (Unicode code points). Note that the number of
- characters may differ from the number of bytes in the string.
-- `max_bytes` (String) MaxBytes specifies that this field must be the specified number of bytes
- at a maximum
-- `max_len` (String) MaxLen specifies that this field must be the specified number of
- characters (Unicode code points) at a maximum. Note that the number of
- characters may differ from the number of bytes in the string.
-- `min_bytes` (String) MinBytes specifies that this field must be the specified number of bytes
- at a minimum
-- `min_len` (String) MinLen specifies that this field must be the specified number of
- characters (Unicode code points) at a minimum. Note that the number of
- characters may differ from the number of bytes in the string.
-- `not_contains` (String) NotContains specifies that this field cannot have the specified substring
- anywhere in the string.
-- `not_in` (List of String) NotIn specifies that this field cannot be equal to one of the specified
- values
-- `pattern` (String) Pattern specifes that this field must match against the specified
- regular expression (RE2 syntax). The included expression should elide
- any delimiters.
-- `prefix` (String) Prefix specifies that this field must have the specified substring at
- the beginning of the string.
-- `strict` (Boolean) This applies to regexes HTTP_HEADER_NAME and HTTP_HEADER_VALUE to enable
- strict header validation.
- By default, this is true, and HTTP header validations are RFC-compliant.
- Setting to false will enable a looser validations that only disallows
- \r\n\0 characters, which can be used to bypass header matching rules.
-- `suffix` (String) Suffix specifies that this field must have the specified substring at
- the end of the string.
-- `uri` (Boolean) Uri specifies that the field must be a valid, absolute URI as defined
- by RFC 3986
-This field is part of the `well_known` oneof.
-See the documentation for `validate.StringRules` for more details.
-- `uri_ref` (Boolean) UriRef specifies that the field must be a valid URI as defined by RFC
- 3986 and may be relative or absolute.
-This field is part of the `well_known` oneof.
-See the documentation for `validate.StringRules` for more details.
-- `uuid` (Boolean) Uuid specifies that the field must be a valid UUID as defined by
- RFC 4122
-This field is part of the `well_known` oneof.
-See the documentation for `validate.StringRules` for more details.
-- `well_known_regex` (String) WellKnownRegex specifies a common well known pattern defined as a regex.
-This field is part of the `well_known` oneof.
-See the documentation for `validate.StringRules` for more details.
-must be one of ["UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE"]
 
 
 <a id="nestedatt--fields--string_field--text_field"></a>

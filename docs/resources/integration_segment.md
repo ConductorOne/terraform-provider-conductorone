@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_segment Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_segment Resource - conductorone"
 subcategory: ""
 description: |-
   Segment Integration Resource

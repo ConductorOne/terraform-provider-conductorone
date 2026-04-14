@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_access_conflict Resource - terraform-provider-conductorone"
+page_title: "conductorone_access_conflict Resource - conductorone"
 subcategory: ""
 description: |-
   AccessConflict Resource
@@ -16,12 +16,7 @@ When creating a `access_conflict` resource you must provide a `display_name`.
 
 ```terraform
 resource "conductorone_access_conflict" "my_access_conflict" {
-  conflict_monitor_delete_request = {
-    # ...
-  }
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
-  notification_config = {
+  access_conflict_notification_config = {
     email_notifications = {
       enabled = false
       identity_user_ids = [
@@ -31,9 +26,14 @@ resource "conductorone_access_conflict" "my_access_conflict" {
     slack_notifications = {
       channel_id   = "...my_channel_id..."
       channel_name = "...my_channel_name..."
-      enabled      = true
+      enabled      = false
     }
   }
+  conflict_monitor_delete_request = {
+    # ...
+  }
+  description  = "...my_description..."
+  display_name = "...my_display_name..."
 }
 ```
 
@@ -46,9 +46,9 @@ resource "conductorone_access_conflict" "my_access_conflict" {
 
 ### Optional
 
+- `access_conflict_notification_config` (Attributes) The NotificationConfig message. (see [below for nested schema](#nestedatt--access_conflict_notification_config))
 - `conflict_monitor_delete_request` (Attributes) The ConflictMonitorDeleteRequest message. (see [below for nested schema](#nestedatt--conflict_monitor_delete_request))
 - `description` (String) The description field.
-- `notification_config` (Attributes) The NotificationConfig message. (see [below for nested schema](#nestedatt--notification_config))
 
 ### Read-Only
 
@@ -59,20 +59,16 @@ resource "conductorone_access_conflict" "my_access_conflict" {
 - `id` (String) The id field.
 - `updated_at` (String)
 
-<a id="nestedatt--conflict_monitor_delete_request"></a>
-### Nested Schema for `conflict_monitor_delete_request`
-
-
-<a id="nestedatt--notification_config"></a>
-### Nested Schema for `notification_config`
+<a id="nestedatt--access_conflict_notification_config"></a>
+### Nested Schema for `access_conflict_notification_config`
 
 Optional:
 
-- `email_notifications` (Attributes) The EmailNotifications message. (see [below for nested schema](#nestedatt--notification_config--email_notifications))
-- `slack_notifications` (Attributes) The SlackNotifications message. (see [below for nested schema](#nestedatt--notification_config--slack_notifications))
+- `email_notifications` (Attributes) The EmailNotifications message. (see [below for nested schema](#nestedatt--access_conflict_notification_config--email_notifications))
+- `slack_notifications` (Attributes) The SlackNotifications message. (see [below for nested schema](#nestedatt--access_conflict_notification_config--slack_notifications))
 
-<a id="nestedatt--notification_config--email_notifications"></a>
-### Nested Schema for `notification_config.email_notifications`
+<a id="nestedatt--access_conflict_notification_config--email_notifications"></a>
+### Nested Schema for `access_conflict_notification_config.email_notifications`
 
 Optional:
 
@@ -80,11 +76,16 @@ Optional:
 - `identity_user_ids` (List of String) The identityUserIds field.
 
 
-<a id="nestedatt--notification_config--slack_notifications"></a>
-### Nested Schema for `notification_config.slack_notifications`
+<a id="nestedatt--access_conflict_notification_config--slack_notifications"></a>
+### Nested Schema for `access_conflict_notification_config.slack_notifications`
 
 Optional:
 
 - `channel_id` (String) The channelId field.
 - `channel_name` (String) The channelName field.
 - `enabled` (Boolean) The enabled field.
+
+
+
+<a id="nestedatt--conflict_monitor_delete_request"></a>
+### Nested Schema for `conflict_monitor_delete_request`

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_baton Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_baton Resource - conductorone"
 subcategory: ""
 description: |-
   Baton Integration Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_incident_io Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_incident_io Resource - conductorone"
 subcategory: ""
 description: |-
   Incident_io Integration Resource

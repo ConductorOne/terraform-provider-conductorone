@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_freshdesk Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_freshdesk Resource - conductorone"
 subcategory: ""
 description: |-
   Freshdesk Integration Resource

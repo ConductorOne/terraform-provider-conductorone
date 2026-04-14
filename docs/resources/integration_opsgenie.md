@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_opsgenie Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_opsgenie Resource - conductorone"
 subcategory: ""
 description: |-
   Opsgenie Integration Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_workato Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_workato Resource - conductorone"
 subcategory: ""
 description: |-
   Workato Integration Resource

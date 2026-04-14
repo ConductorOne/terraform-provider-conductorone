@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_new_relic Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_new_relic Resource - conductorone"
 subcategory: ""
 description: |-
   New_relic Integration Resource

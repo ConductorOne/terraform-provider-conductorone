@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_dropbox Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_dropbox Resource - conductorone"
 subcategory: ""
 description: |-
   Dropbox Integration Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_teamcity Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_teamcity Resource - conductorone"
 subcategory: ""
 description: |-
   Teamcity Integration Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_policy Data Source - terraform-provider-conductorone"
+page_title: "conductorone_policy Data Source - conductorone"
 subcategory: ""
 description: |-
   Policy DataSource
@@ -107,7 +107,7 @@ This message contains a oneof named typ. Only a single field of the following li
   - webhook
   - resourceOwners
   - agent (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
-- `form` (String) The Form message. Parsed as JSON.
+- `policy_form` (String) The Form message. Parsed as JSON.
 - `provision` (Attributes) The provision step references a provision policy for this step. (see [below for nested schema](#nestedatt--policy_steps--steps--provision))
 - `reject` (Attributes) This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--reject))
 - `wait` (Attributes) Define a Wait step for a policy to wait on a condition to be met.
