@@ -399,7 +399,8 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 							"user_ids": schema.ListAttribute{
 								Computed:    true,
 								ElementType: types.StringType,
-								Description: `An array of users that are required to provision during this step.`,
+								MarkdownDescription: `An array of users that are required to provision during this step.` + "\n" +
+									` Deprecated: Use assignee field instead for dynamic provisioner assignment.`,
 							},
 						},
 						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
