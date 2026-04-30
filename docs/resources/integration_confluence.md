@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_confluence Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_confluence Resource - conductorone"
 subcategory: ""
 description: |-
   Confluence Integration Resource

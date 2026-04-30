@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_webhook Resource - terraform-provider-conductorone"
+page_title: "conductorone_webhook Resource - conductorone"
 subcategory: ""
 description: |-
   Webhook Resource

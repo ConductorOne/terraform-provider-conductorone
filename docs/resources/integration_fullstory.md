@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_fullstory Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_fullstory Resource - conductorone"
 subcategory: ""
 description: |-
   Fullstory Integration Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_redis_enterprise Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_redis_enterprise Resource - conductorone"
 subcategory: ""
 description: |-
   Redis_enterprise Integration Resource

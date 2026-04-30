@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_azure_infrastructure Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_azure_infrastructure Resource - conductorone"
 subcategory: ""
 description: |-
   Azure_infrastructure Integration Resource

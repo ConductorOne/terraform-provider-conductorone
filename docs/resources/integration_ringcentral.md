@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_ringcentral Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_ringcentral Resource - conductorone"
 subcategory: ""
 description: |-
   Ringcentral Integration Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_azure_devops Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_azure_devops Resource - conductorone"
 subcategory: ""
 description: |-
   Azure_devops Integration Resource

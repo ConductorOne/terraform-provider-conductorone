@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_access_profile Resource - terraform-provider-conductorone"
+page_title: "conductorone_access_profile Resource - conductorone"
 subcategory: ""
 description: |-
   AccessProfile Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_cloudflare_zero_trust Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_cloudflare_zero_trust Resource - conductorone"
 subcategory: ""
 description: |-
   Cloudflare_zero_trust Integration Resource

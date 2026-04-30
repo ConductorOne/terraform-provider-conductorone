@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_grafana Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_grafana Resource - conductorone"
 subcategory: ""
 description: |-
   Grafana Integration Resource

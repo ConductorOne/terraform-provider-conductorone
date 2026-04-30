@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_box Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_box Resource - conductorone"
 subcategory: ""
 description: |-
   Box Integration Resource

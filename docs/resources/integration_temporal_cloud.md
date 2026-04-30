@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_temporal_cloud Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_temporal_cloud Resource - conductorone"
 subcategory: ""
 description: |-
   Temporal_cloud Integration Resource

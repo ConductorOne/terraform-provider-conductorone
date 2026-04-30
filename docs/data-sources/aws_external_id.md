@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_aws_external_id Data Source - terraform-provider-conductorone"
+page_title: "conductorone_aws_external_id Data Source - conductorone"
 subcategory: ""
 description: |-
   AwsExternalID DataSource
