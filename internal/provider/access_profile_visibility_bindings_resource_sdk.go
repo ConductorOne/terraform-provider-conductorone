@@ -4,8 +4,8 @@ package provider
 
 import (
 	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 )
 

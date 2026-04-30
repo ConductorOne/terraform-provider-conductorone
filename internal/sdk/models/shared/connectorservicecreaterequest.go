@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 )
 
 // ConnectorServiceCreateRequestConfig - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.

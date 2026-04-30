@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/uhttp"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/uhttp"
 )
 
 const (

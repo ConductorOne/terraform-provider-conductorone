@@ -1,4 +1,4 @@
-module github.com/conductorone/terraform-provider-conductorone
+module github.com/conductorone/terraform-provider-conductorone/v2
 
 go 1.25.8
 

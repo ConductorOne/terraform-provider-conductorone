@@ -13,7 +13,7 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/oauth2"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/uhttp"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/uhttp"
 )
 
 const c1TenantDomain = ".conductor.one"

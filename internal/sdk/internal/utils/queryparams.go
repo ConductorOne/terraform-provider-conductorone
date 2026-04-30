@@ -12,8 +12,8 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/optionalnullable"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/types"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/optionalnullable"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/types"
 )
 
 func PopulateQueryParams(_ context.Context, req *http.Request, queryParams interface{}, globals interface{}) error {

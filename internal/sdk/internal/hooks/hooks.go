@@ -5,7 +5,7 @@ package hooks
 import (
 	"context"
 	"errors"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/config"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/config"
 	"net/http"
 )
 

@@ -14,7 +14,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/types"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/types"
 )
 
 func MarshalJSON(v interface{}, tag reflect.StructTag, topLevel bool) ([]byte, error) {

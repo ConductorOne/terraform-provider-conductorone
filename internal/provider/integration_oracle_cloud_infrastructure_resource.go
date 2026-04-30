@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/models/operations"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/validators"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
