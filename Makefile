@@ -125,5 +125,5 @@ install-hooks:
 	@echo "      Install: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8"
 
 .PHONY: generate
-generate: fmt
-	cd tools && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir .. --provider-name conductorone
+generate:
+	cd tools && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir .. --provider-name conductorone --rendered-provider-name terraform-provider-conductorone
