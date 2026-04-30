@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/v2/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"

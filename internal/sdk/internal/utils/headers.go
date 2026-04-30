@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/optionalnullable"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/optionalnullable"
 )
 
 func PopulateHeaders(_ context.Context, req *http.Request, headers interface{}, globals interface{}) {

@@ -4,8 +4,8 @@ package operations
 
 import (
 	"errors"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/retry"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/retry"
 	"time"
 )
 

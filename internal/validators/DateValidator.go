@@ -4,7 +4,7 @@ package validators
 
 import (
 	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/types"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/types"
 	"github.com/hashicorp/terraform-plugin-framework-validators/helpers/validatordiag"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 )

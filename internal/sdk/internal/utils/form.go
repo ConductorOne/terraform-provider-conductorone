@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/optionalnullable"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/types"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/optionalnullable"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/types"
 )
 
 func populateForm(paramName string, explode bool, objType reflect.Type, objValue reflect.Value, delimiter string, defaultValue *string, getFieldName func(reflect.StructField) string) url.Values {

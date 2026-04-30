@@ -21,7 +21,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 
-	tfReflect "github.com/conductorone/terraform-provider-conductorone/internal/provider/reflect"
+	tfReflect "github.com/conductorone/terraform-provider-conductorone/v2/internal/provider/reflect"
 )
 
 func debugResponse(response *http.Response) string {

@@ -5,9 +5,9 @@ package provider
 import (
 	"context"
 	"fmt"
-	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/v2/internal/provider/types"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
+	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/v2/internal/validators/objectvalidators"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"

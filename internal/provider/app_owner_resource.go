@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	speakeasy_listplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/listplanmodifier"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	speakeasy_listplanmodifier "github.com/conductorone/terraform-provider-conductorone/v2/internal/planmodifiers/listplanmodifier"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"

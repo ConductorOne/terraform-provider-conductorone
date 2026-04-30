@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/models/shared"
 	"net/http"
 )
 

@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/retry"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/retry"
 	"io"
 	"math"
 	"math/rand"

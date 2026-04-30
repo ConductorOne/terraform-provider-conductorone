@@ -1,8 +1,8 @@
 package provider
 
 import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/models/shared"
 )
 
 const (
