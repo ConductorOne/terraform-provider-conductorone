@@ -26,6 +26,9 @@ func (c *C1APIAppV1ConnectorServiceCreateDelegatedRequest) GetConnectorServiceCr
 	return c.ConnectorServiceCreateDelegatedRequest
 }
 
+// #region class-body-c1apiappv1connectorservicecreatedelegatedrequest
+// #endregion class-body-c1apiappv1connectorservicecreatedelegatedrequest
+
 type C1APIAppV1ConnectorServiceCreateDelegatedResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1ConnectorServiceCreateDelegatedResponse) GetConnectorServiceC
 	}
 	return c.ConnectorServiceCreateResponse
 }
+
+// #region class-body-c1apiappv1connectorservicecreatedelegatedresponse
+// #endregion class-body-c1apiappv1connectorservicecreatedelegatedresponse

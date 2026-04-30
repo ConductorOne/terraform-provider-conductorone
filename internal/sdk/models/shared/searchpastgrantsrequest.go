@@ -2,19 +2,19 @@
 
 package shared
 
-// The SearchPastGrantsRequest message.
+// SearchPastGrantsRequest - The request message for searching historical grants.
 type SearchPastGrantsRequest struct {
-	// The appEntitlementRefs field.
+	// A list of entitlement references to restrict the search to.
 	AppEntitlementRefs []AppEntitlementRef `json:"appEntitlementRefs,omitempty"`
-	// The appIds field.
+	// A list of app IDs to restrict the search to.
 	AppIds []string `json:"appIds,omitempty"`
-	// The appUserRefs field.
+	// A list of app user references to restrict the search to.
 	AppUserRefs []AppUserRef `json:"appUserRefs,omitempty"`
 	// The AppEntitlementUserBindingExpandHistoryMask message.
 	AppEntitlementUserBindingExpandHistoryMask *AppEntitlementUserBindingExpandHistoryMask `json:"expandMask,omitempty"`
-	// The pageSize field.
+	// The maximum number of results to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
+	// The token for fetching the next page of results.
 	PageToken *string `json:"pageToken,omitempty"`
 }
 

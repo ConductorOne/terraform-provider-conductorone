@@ -25,6 +25,7 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context
 		} else {
 			r.EnrollmentBehavior = types.StringNull()
 		}
+		r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Published = types.BoolPointerValue(resp.Published)
 		r.RequestBundle = types.BoolPointerValue(resp.RequestBundle)
@@ -50,6 +51,8 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalogManagementSe
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		diags.Append(r.RefreshFromSharedRequestCatalogView(ctx, resp.RequestCatalogView)...)
 
@@ -83,16 +86,8 @@ func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCat
 	var id string
 	id = r.ID.ValueString()
 
-	requestCatalogManagementServiceDeleteRequest, requestCatalogManagementServiceDeleteRequestDiags := r.ToSharedRequestCatalogManagementServiceDeleteRequest(ctx)
-	diags.Append(requestCatalogManagementServiceDeleteRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest{
 		ID: id,
-		RequestCatalogManagementServiceDeleteRequest: requestCatalogManagementServiceDeleteRequest,
 	}
 
 	return &out, diags
@@ -159,6 +154,12 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 	} else {
 		enrollmentBehavior = nil
 	}
+	grantPolicyID := new(string)
+	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
+		*grantPolicyID = r.GrantPolicyID.ValueString()
+	} else {
+		grantPolicyID = nil
+	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueString()
@@ -200,6 +201,7 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 		Description:                     description,
 		DisplayName:                     displayName,
 		EnrollmentBehavior:              enrollmentBehavior,
+		GrantPolicyID:                   grantPolicyID,
 		ID:                              id,
 		Published:                       published,
 		RequestBundle:                   requestBundle,
@@ -228,6 +230,12 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 		*enrollmentBehavior = shared.RequestCatalogManagementServiceCreateRequestEnrollmentBehavior(r.EnrollmentBehavior.ValueString())
 	} else {
 		enrollmentBehavior = nil
+	}
+	grantPolicyID := new(string)
+	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
+		*grantPolicyID = r.GrantPolicyID.ValueString()
+	} else {
+		grantPolicyID = nil
 	}
 	published := new(bool)
 	if !r.Published.IsUnknown() && !r.Published.IsNull() {
@@ -263,6 +271,7 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 		Description:                     description,
 		DisplayName:                     displayName,
 		EnrollmentBehavior:              enrollmentBehavior,
+		GrantPolicyID:                   grantPolicyID,
 		Published:                       published,
 		RequestBundle:                   requestBundle,
 		UnenrollmentBehavior:            unenrollmentBehavior,

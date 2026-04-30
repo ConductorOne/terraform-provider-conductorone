@@ -14,7 +14,7 @@ type C1APISystemlogV1ExportsSearchServiceSearchResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// ExportsSearchServiceSearchResponse is the response for searching system log exports.
 	ExportsSearchServiceSearchResponse *shared.ExportsSearchServiceSearchResponse
 }
 
@@ -45,3 +45,6 @@ func (c *C1APISystemlogV1ExportsSearchServiceSearchResponse) GetExportsSearchSer
 	}
 	return c.ExportsSearchServiceSearchResponse
 }
+
+// #region class-body-c1apisystemlogv1exportssearchservicesearchresponse
+// #endregion class-body-c1apisystemlogv1exportssearchservicesearchresponse

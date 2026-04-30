@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_cloudamqp Resource - conductorone"
+page_title: "conductorone_integration_cloudamqp Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Cloudamqp Integration Resource

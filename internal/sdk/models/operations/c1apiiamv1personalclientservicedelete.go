@@ -26,6 +26,9 @@ func (c *C1APIIamV1PersonalClientServiceDeleteRequest) GetPersonalClientServiceD
 	return c.PersonalClientServiceDeleteRequest
 }
 
+// #region class-body-c1apiiamv1personalclientservicedeleterequest
+// #endregion class-body-c1apiiamv1personalclientservicedeleterequest
+
 type C1APIIamV1PersonalClientServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIIamV1PersonalClientServiceDeleteResponse) GetPersonalClientService
 	}
 	return c.PersonalClientServiceDeleteResponse
 }
+
+// #region class-body-c1apiiamv1personalclientservicedeleteresponse
+// #endregion class-body-c1apiiamv1personalclientservicedeleteresponse

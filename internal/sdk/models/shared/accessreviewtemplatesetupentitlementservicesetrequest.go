@@ -4,7 +4,7 @@ package shared
 
 // The AccessReviewTemplateSetupEntitlementServiceSetRequest message.
 type AccessReviewTemplateSetupEntitlementServiceSetRequest struct {
-	// The entitlements field.
+	// The entitlements to include in the template. Replaces all previously selected entitlements.
 	Entitlements []AccessReviewTemplateSetupEntitlementInput `json:"entitlements,omitempty"`
 	// The AccessReviewTemplateSetupEntitlementExpandMask message.
 	AccessReviewTemplateSetupEntitlementExpandMask *AccessReviewTemplateSetupEntitlementExpandMask `json:"expandMask,omitempty"`

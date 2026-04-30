@@ -2,7 +2,7 @@
 
 package shared
 
-// The CreateManuallyManagedAppResourceResponse message.
+// CreateManuallyManagedAppResourceResponse - The response message for creating a manually managed app resource.
 type CreateManuallyManagedAppResourceResponse struct {
 	// The app resource message is a single resource that can have entitlements.
 	//

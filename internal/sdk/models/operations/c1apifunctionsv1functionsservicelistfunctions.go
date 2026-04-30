@@ -45,3 +45,6 @@ func (c *C1APIFunctionsV1FunctionsServiceListFunctionsResponse) GetFunctionsServ
 	}
 	return c.FunctionsServiceListFunctionsResponse
 }
+
+// #region class-body-c1apifunctionsv1functionsservicelistfunctionsresponse
+// #endregion class-body-c1apifunctionsv1functionsservicelistfunctionsresponse

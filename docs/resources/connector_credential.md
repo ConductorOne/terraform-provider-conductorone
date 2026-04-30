@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_connector_credential Resource - conductorone"
+page_title: "conductorone_connector_credential Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   ConnectorCredential Resource

@@ -3,5 +3,33 @@
 package shared
 
 // TaskTypeActionInput - The TaskTypeAction message.
+//
+// This message contains a oneof named target_object. Only a single field of the following list may be set at a time:
+//   - scopeRole
 type TaskTypeActionInput struct {
+	// ActionInstance is the API mirror of the internal immutable snapshot of an
+	//  Action captured on a TaskTypeAction at ticket-creation time.
+	//
+	// This message contains a oneof named target_ref. Only a single field of the following list may be set at a time:
+	//   - connectorActionRef
+	//
+	TaskActionInstance *TaskActionInstanceInput `json:"actionInstance,omitempty"`
+	// Scope-role variant of TaskTypeAction.target_object. The UI uses the
+	//  embedded identifiers to build links and title strings without a separate
+	//  Action fetch.
+	ScopeRole *ScopeRoleInput `json:"scopeRole,omitempty"`
+}
+
+func (t *TaskTypeActionInput) GetTaskActionInstance() *TaskActionInstanceInput {
+	if t == nil {
+		return nil
+	}
+	return t.TaskActionInstance
+}
+
+func (t *TaskTypeActionInput) GetScopeRole() *ScopeRoleInput {
+	if t == nil {
+		return nil
+	}
+	return t.ScopeRole
 }

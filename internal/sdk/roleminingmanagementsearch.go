@@ -31,7 +31,7 @@ func newRoleMiningManagementSearch(rootSDK *ConductoroneAPI, sdkConfig config.SD
 }
 
 // Search
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementSearchService.Search method.
+// Search role mining suggestions by name, description, or cohort filter values with optional state and type filters.
 func (s *RoleMiningManagementSearch) Search(ctx context.Context, request *shared.RoleMiningSearchSuggestionsRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

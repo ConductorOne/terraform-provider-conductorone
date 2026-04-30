@@ -2,11 +2,11 @@
 
 package shared
 
-// The TestAccountProvisionPolicyResponse message.
+// TestAccountProvisionPolicyResponse is the response for testing an account provision policy.
 type TestAccountProvisionPolicyResponse struct {
-	// The type field.
+	// The data type of the computed result value.
 	Type *string `json:"type,omitempty"`
-	// The value field.
+	// The computed result value of the CEL expression evaluation.
 	Value *string `json:"value,omitempty"`
 }
 

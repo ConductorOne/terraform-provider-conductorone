@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_pagerduty Resource - conductorone"
+page_title: "conductorone_integration_pagerduty Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Pagerduty Integration Resource

@@ -45,3 +45,6 @@ func (c *C1APISystemlogV1ExportServiceCreateResponse) GetExportServiceCreateResp
 	}
 	return c.ExportServiceCreateResponse
 }
+
+// #region class-body-c1apisystemlogv1exportservicecreateresponse
+// #endregion class-body-c1apisystemlogv1exportservicecreateresponse

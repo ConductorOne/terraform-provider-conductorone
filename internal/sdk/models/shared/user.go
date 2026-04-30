@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e DirectoryStatus) ToPointer() *DirectoryStatus {
 	return &e
 }
-func (e *DirectoryStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DirectoryStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "UNKNOWN", "ENABLED", "DISABLED", "DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "UNKNOWN":
-		fallthrough
-	case "ENABLED":
-		fallthrough
-	case "DISABLED":
-		fallthrough
-	case "DELETED":
-		*e = DirectoryStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DirectoryStatus: %v", v)
-	}
+	return false
 }
 
 // Origin - The origin of the user, describing who owns the user's lifecycle.
@@ -55,24 +45,16 @@ const (
 func (e Origin) ToPointer() *Origin {
 	return &e
 }
-func (e *Origin) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Origin) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "USER_ORIGIN_UNSPECIFIED", "USER_ORIGIN_DIRECTORY", "USER_ORIGIN_LOCAL", "USER_ORIGIN_SYSTEM":
+			return true
+		}
 	}
-	switch v {
-	case "USER_ORIGIN_UNSPECIFIED":
-		fallthrough
-	case "USER_ORIGIN_DIRECTORY":
-		fallthrough
-	case "USER_ORIGIN_LOCAL":
-		fallthrough
-	case "USER_ORIGIN_SYSTEM":
-		*e = Origin(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Origin: %v", v)
-	}
+	return false
 }
 
 type Profile struct {
@@ -91,24 +73,16 @@ const (
 func (e UserStatus1) ToPointer() *UserStatus1 {
 	return &e
 }
-func (e *UserStatus1) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UserStatus1) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "UNKNOWN", "ENABLED", "DISABLED", "DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "UNKNOWN":
-		fallthrough
-	case "ENABLED":
-		fallthrough
-	case "DISABLED":
-		fallthrough
-	case "DELETED":
-		*e = UserStatus1(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UserStatus1: %v", v)
-	}
+	return false
 }
 
 // Type - The type of the user.
@@ -125,26 +99,16 @@ const (
 func (e Type) ToPointer() *Type {
 	return &e
 }
-func (e *Type) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Type) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "USER_TYPE_UNSPECIFIED", "USER_TYPE_SYSTEM", "USER_TYPE_HUMAN", "USER_TYPE_SERVICE", "USER_TYPE_AGENT":
+			return true
+		}
 	}
-	switch v {
-	case "USER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "USER_TYPE_SYSTEM":
-		fallthrough
-	case "USER_TYPE_HUMAN":
-		fallthrough
-	case "USER_TYPE_SERVICE":
-		fallthrough
-	case "USER_TYPE_AGENT":
-		*e = Type(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Type: %v", v)
-	}
+	return false
 }
 
 // The User object provides all of the details for an user, as well as some configuration.

@@ -2,6 +2,6 @@
 
 package shared
 
-// The RequestSchemaServiceDeleteResponse message.
+// RequestSchemaServiceDeleteResponse - The response message for deleting a request schema.
 type RequestSchemaServiceDeleteResponse struct {
 }

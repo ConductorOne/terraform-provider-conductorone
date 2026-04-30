@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_greenhouse Resource - conductorone"
+page_title: "conductorone_integration_greenhouse Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Greenhouse Integration Resource

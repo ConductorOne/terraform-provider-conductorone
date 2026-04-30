@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_aws_v2 Resource - conductorone"
+page_title: "conductorone_integration_aws_v2 Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Aws_v2 Integration Resource

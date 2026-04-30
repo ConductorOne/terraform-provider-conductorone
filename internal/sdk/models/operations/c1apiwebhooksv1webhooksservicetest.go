@@ -26,6 +26,9 @@ func (c *C1APIWebhooksV1WebhooksServiceTestRequest) GetWebhooksServiceTestReques
 	return c.WebhooksServiceTestRequest
 }
 
+// #region class-body-c1apiwebhooksv1webhooksservicetestrequest
+// #endregion class-body-c1apiwebhooksv1webhooksservicetestrequest
+
 type C1APIWebhooksV1WebhooksServiceTestResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIWebhooksV1WebhooksServiceTestResponse) GetWebhooksServiceTestRespo
 	}
 	return c.WebhooksServiceTestResponse
 }
+
+// #region class-body-c1apiwebhooksv1webhooksservicetestresponse
+// #endregion class-body-c1apiwebhooksv1webhooksservicetestresponse

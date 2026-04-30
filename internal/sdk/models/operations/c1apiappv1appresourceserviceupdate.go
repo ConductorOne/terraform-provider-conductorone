@@ -42,6 +42,9 @@ func (c *C1APIAppV1AppResourceServiceUpdateRequest) GetAppResourceServiceUpdateR
 	return c.AppResourceServiceUpdateRequest
 }
 
+// #region class-body-c1apiappv1appresourceserviceupdaterequest
+// #endregion class-body-c1apiappv1appresourceserviceupdaterequest
+
 type C1APIAppV1AppResourceServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -49,7 +52,7 @@ type C1APIAppV1AppResourceServiceUpdateResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for updating an app resource.
 	AppResourceServiceUpdateResponse *shared.AppResourceServiceUpdateResponse
 }
 
@@ -80,3 +83,6 @@ func (c *C1APIAppV1AppResourceServiceUpdateResponse) GetAppResourceServiceUpdate
 	}
 	return c.AppResourceServiceUpdateResponse
 }
+
+// #region class-body-c1apiappv1appresourceserviceupdateresponse
+// #endregion class-body-c1apiappv1appresourceserviceupdateresponse

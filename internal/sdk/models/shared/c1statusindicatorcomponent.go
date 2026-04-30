@@ -65,3 +65,6 @@ func (c *C1StatusIndicatorComponent) GetDynamicString2() *DynamicString {
 	}
 	return c.DynamicString2
 }
+
+// #region class-body-c1statusindicatorcomponent
+// #endregion class-body-c1statusindicatorcomponent

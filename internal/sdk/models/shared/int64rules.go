@@ -86,3 +86,6 @@ func (i *Int64Rules) GetNotIn() []string {
 	}
 	return i.NotIn
 }
+
+// #region class-body-int64rules
+// #endregion class-body-int64rules

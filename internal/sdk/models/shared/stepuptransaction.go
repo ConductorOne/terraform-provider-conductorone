@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -25,24 +23,16 @@ const (
 func (e StepUpTransactionState) ToPointer() *StepUpTransactionState {
 	return &e
 }
-func (e *StepUpTransactionState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *StepUpTransactionState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "STEP_UP_TRANSACTION_STATE_UNSPECIFIED", "STEP_UP_TRANSACTION_STATE_PENDING", "STEP_UP_TRANSACTION_STATE_VERIFIED", "STEP_UP_TRANSACTION_STATE_ERROR":
+			return true
+		}
 	}
-	switch v {
-	case "STEP_UP_TRANSACTION_STATE_UNSPECIFIED":
-		fallthrough
-	case "STEP_UP_TRANSACTION_STATE_PENDING":
-		fallthrough
-	case "STEP_UP_TRANSACTION_STATE_VERIFIED":
-		fallthrough
-	case "STEP_UP_TRANSACTION_STATE_ERROR":
-		*e = StepUpTransactionState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for StepUpTransactionState: %v", v)
-	}
+	return false
 }
 
 // StepUpTransaction represents a record of a step-up authentication attempt

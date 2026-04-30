@@ -31,7 +31,7 @@ func newExportsSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguratio
 }
 
 // Search
-// Invokes the c1.api.systemlog.v1.ExportsSearchService.Search method.
+// Search for system log exports matching the specified filters.
 func (s *ExportsSearch) Search(ctx context.Context, request *shared.ExportsSearchServiceSearchRequest, opts ...operations.Option) (*operations.C1APISystemlogV1ExportsSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

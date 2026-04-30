@@ -3,8 +3,8 @@
 package types
 
 type PolicyInstance struct {
-	History            []PolicyStepInstance `tfsdk:"history"`
-	Next               []PolicyStep         `tfsdk:"next"`
 	Policy             *Policy              `tfsdk:"policy"`
 	PolicyStepInstance *PolicyStepInstance  `tfsdk:"policy_step_instance"`
+	History            []PolicyStepInstance `tfsdk:"history"`
+	Next               []PolicyStep         `tfsdk:"next"`
 }

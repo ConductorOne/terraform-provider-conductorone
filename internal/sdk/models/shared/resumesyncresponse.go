@@ -2,6 +2,6 @@
 
 package shared
 
-// The ResumeSyncResponse message.
+// ResumeSyncResponse - Empty response body. Status code indicates success.
 type ResumeSyncResponse struct {
 }

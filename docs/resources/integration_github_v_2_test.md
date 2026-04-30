@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_github_v_2_test Resource - conductorone"
+page_title: "conductorone_integration_github_v_2_test Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Github_v_2_test Integration Resource

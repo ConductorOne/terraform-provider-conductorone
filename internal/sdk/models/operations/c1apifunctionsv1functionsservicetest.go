@@ -26,6 +26,9 @@ func (c *C1APIFunctionsV1FunctionsServiceTestRequest) GetFunctionsServiceTestReq
 	return c.FunctionsServiceTestRequest
 }
 
+// #region class-body-c1apifunctionsv1functionsservicetestrequest
+// #endregion class-body-c1apifunctionsv1functionsservicetestrequest
+
 type C1APIFunctionsV1FunctionsServiceTestResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIFunctionsV1FunctionsServiceTestResponse) GetFunctionsServiceTestRe
 	}
 	return c.FunctionsServiceTestResponse
 }
+
+// #region class-body-c1apifunctionsv1functionsservicetestresponse
+// #endregion class-body-c1apifunctionsv1functionsservicetestresponse

@@ -18,6 +18,9 @@ func (c *C1APIAppV1AppUsageControlsServiceGetRequest) GetAppID() string {
 	return c.AppID
 }
 
+// #region class-body-c1apiappv1appusagecontrolsservicegetrequest
+// #endregion class-body-c1apiappv1appusagecontrolsservicegetrequest
+
 type C1APIAppV1AppUsageControlsServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIAppV1AppUsageControlsServiceGetResponse) GetGetAppUsageControlsRes
 	}
 	return c.GetAppUsageControlsResponse
 }
+
+// #region class-body-c1apiappv1appusagecontrolsservicegetresponse
+// #endregion class-body-c1apiappv1appusagecontrolsservicegetresponse

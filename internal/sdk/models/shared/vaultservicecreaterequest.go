@@ -2,21 +2,21 @@
 
 package shared
 
-// The VaultServiceCreateRequest message.
+// VaultServiceCreateRequest is the request message for creating a new vault.
 //
 // This message contains a oneof named vault. Only a single field of the following list may be set at a time:
 //   - groupAuthzVault
 //   - magicVault
 type VaultServiceCreateRequest struct {
-	// The description field.
+	// A free-text description of the vault's purpose or configuration.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// The human-readable name for the new vault.
 	DisplayName string `json:"displayName"`
-	// The GroupAuthzVault message.
+	// GroupAuthzVault configures a vault that uses group-based authorization to control access to stored credentials.
 	GroupAuthzVault *GroupAuthzVault `json:"groupAuthzVault,omitempty"`
-	// The MagicVault message.
+	// MagicVault configures a vault that grants time-limited credential access via magic links.
 	MagicVault *MagicVault `json:"magicVault,omitempty"`
-	// The ownerIds field.
+	// The IDs of users to assign as owners of this vault.
 	OwnerIds []string `json:"ownerIds,omitempty"`
 }
 

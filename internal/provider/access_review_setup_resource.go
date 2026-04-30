@@ -9,7 +9,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/v2/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -64,14 +63,7 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 							"account_domain": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The accountDomain field. must be one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"APP_USER_DOMAIN_UNSPECIFIED",
-										"APP_USER_DOMAIN_EXTERNAL",
-										"APP_USER_DOMAIN_TRUSTED",
-									),
-								},
+								Description: `The accountDomain field. possible known values include one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]`,
 							},
 							"account_types": schema.ListAttribute{
 								Computed:    true,
@@ -192,16 +184,7 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 									"filter_type": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The filterType field. must be one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED",
-												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL",
-												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL",
-												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC",
-												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC",
-											),
-										},
+										Description: `The filterType field. possible known values include one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]`,
 									},
 									"included_access_profile_ids": schema.ListAttribute{
 										Computed:    true,
@@ -238,26 +221,12 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 							"source_filter": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The sourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"GRANT_SOURCE_FILTER_UNSPECIFIED",
-										"GRANT_SOURCE_FILTER_DIRECT",
-										"GRANT_SOURCE_FILTER_INHERITED",
-									),
-								},
+								Description: `The sourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 							},
 							"type_filter": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The typeFilter field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"GRANT_FILTER_TYPE_UNSPECIFIED",
-										"GRANT_FILTER_TYPE_PERMANENT",
-										"GRANT_FILTER_TYPE_TEMPORARY",
-									),
-								},
+								Description: `The typeFilter field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 							},
 						},
 						MarkdownDescription: `The GrantsByCriteriaScope message.` + "\n" +
@@ -423,22 +392,22 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 					Attributes: map[string]schema.Attribute{
 						"app_entitlement_id": schema.StringAttribute{
 							Optional:    true,
-							Description: `The appEntitlementId field.`,
+							Description: `The ID of the entitlement.`,
 						},
 						"app_id": schema.StringAttribute{
 							Optional:    true,
-							Description: `The appId field.`,
+							Description: `The ID of the application that owns the entitlement.`,
 						},
 					},
 				},
-				Description: `The entitlements field.`,
+				Description: `The entitlements to include in the campaign. Replaces all previously selected entitlements.`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{},
 				},
-				Description: `The expanded field.`,
+				Description: `Related objects requested via the expand mask.`,
 			},
 			"list": schema.ListNestedAttribute{
 				Computed: true,
@@ -449,44 +418,44 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 							Attributes: map[string]schema.Attribute{
 								"access_review_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The accessReviewId field.`,
+									Description: `The ID of the access review campaign this entitlement belongs to.`,
 								},
 								"app_entitlement_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The appEntitlementId field.`,
+									Description: `The ID of the entitlement being reviewed.`,
 								},
 								"app_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The appId field.`,
+									Description: `The ID of the application that owns the entitlement.`,
 								},
 								"app_resource_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The appResourceId field.`,
+									Description: `The ID of the specific resource associated with this entitlement, if applicable.`,
 								},
 								"app_resource_type_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The appResourceTypeId field.`,
+									Description: `The ID of the resource type associated with this entitlement, if applicable.`,
 								},
 								"created_at": schema.StringAttribute{
 									Computed: true,
 								},
 								"custom_policy_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The customPolicyId field.`,
+									Description: `An override policy ID for this specific entitlement. Populated when use_policy_override is enabled on the campaign.`,
 								},
 								"policy_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The policyId field.`,
+									Description: `The ID of the review policy applied to this entitlement. Defaults to the campaign policy.`,
 								},
 								"tenant_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The tenantId field.`,
+									Description: `The tenant that owns this setup entitlement.`,
 								},
 								"updated_at": schema.StringAttribute{
 									Computed: true,
 								},
 							},
-							Description: `The AccessReviewSetupEntitlement message.`,
+							Description: `An entitlement that has been selected for inclusion in an access review campaign during setup.`,
 						},
 						"app_path": schema.StringAttribute{
 							Computed:    true,
@@ -502,7 +471,7 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 				},
-				Description: `The list field.`,
+				Description: `The current list of setup entitlements for the campaign.`,
 			},
 		},
 	}
@@ -573,43 +542,6 @@ func (r *AccessReviewSetupResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewSetupEntitlementAndScopeServiceSetResponse(ctx, res.AccessReviewSetupEntitlementAndScopeServiceSetResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAccessreviewV1AccessReviewSetupEntitlementServiceGetCampaignScopeAndEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AccessReviewSetupEntitlement.GetCampaignScopeAndEntitlements(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.AccessReviewSetupEntitlementAndScopeServiceSetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewSetupEntitlementAndScopeServiceSetResponse(ctx, res1.AccessReviewSetupEntitlementAndScopeServiceSetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -724,43 +656,6 @@ func (r *AccessReviewSetupResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewSetupEntitlementAndScopeServiceSetResponse(ctx, res.AccessReviewSetupEntitlementAndScopeServiceSetResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAccessreviewV1AccessReviewSetupEntitlementServiceGetCampaignScopeAndEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AccessReviewSetupEntitlement.GetCampaignScopeAndEntitlements(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.AccessReviewSetupEntitlementAndScopeServiceSetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewSetupEntitlementAndScopeServiceSetResponse(ctx, res1.AccessReviewSetupEntitlementAndScopeServiceSetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

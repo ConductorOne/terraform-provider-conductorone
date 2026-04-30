@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type AppEntitlementSearchServiceSearchGrantsRequestPurpose string
 
 const (
@@ -19,24 +14,16 @@ const (
 func (e AppEntitlementSearchServiceSearchGrantsRequestPurpose) ToPointer() *AppEntitlementSearchServiceSearchGrantsRequestPurpose {
 	return &e
 }
-func (e *AppEntitlementSearchServiceSearchGrantsRequestPurpose) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppEntitlementSearchServiceSearchGrantsRequestPurpose) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
+			return true
+		}
 	}
-	switch v {
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
-		*e = AppEntitlementSearchServiceSearchGrantsRequestPurpose(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppEntitlementSearchServiceSearchGrantsRequestPurpose: %v", v)
-	}
+	return false
 }
 
 // The AppEntitlementSearchServiceSearchGrantsRequest message.
@@ -47,6 +34,8 @@ type AppEntitlementSearchServiceSearchGrantsRequest struct {
 	AppUserIds []string `json:"appUserIds,omitempty"`
 	// Search for grants of an entitlement
 	EntitlementRefs []AppEntitlementRef `json:"entitlementRefs,omitempty"`
+	// Filter for entitlements whose slug is in this list (e.g. "enrollment" for access profiles)
+	EntitlementSlugs []string `json:"entitlementSlugs,omitempty"`
 	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
@@ -80,6 +69,13 @@ func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetEntitlementRefs() []
 		return nil
 	}
 	return a.EntitlementRefs
+}
+
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetEntitlementSlugs() []string {
+	if a == nil {
+		return nil
+	}
+	return a.EntitlementSlugs
 }
 
 func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetPageSize() *int {

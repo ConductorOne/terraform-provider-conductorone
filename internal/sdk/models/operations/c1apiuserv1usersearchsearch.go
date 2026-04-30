@@ -47,3 +47,6 @@ func (c *C1APIUserV1UserSearchSearchResponse) GetSearchUsersResponse() *shared.S
 	}
 	return c.SearchUsersResponse
 }
+
+// #region class-body-c1apiuserv1usersearchsearchresponse
+// #endregion class-body-c1apiuserv1usersearchsearchresponse

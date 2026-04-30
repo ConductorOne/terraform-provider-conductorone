@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_request_schema_entitlement_binding Resource - conductorone"
+page_title: "conductorone_request_schema_entitlement_binding Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   RequestSchemaEntitlementBinding Resource
@@ -30,7 +30,7 @@ resource "conductorone_request_schema_entitlement_binding" "my_request_schema_en
 ### Optional
 
 - `app_entitlement_ref` (Attributes) The AppEntitlementRef message. Requires replacement if changed. (see [below for nested schema](#nestedatt--app_entitlement_ref))
-- `request_schema_id` (String) The requestSchemaId field. Requires replacement if changed.
+- `request_schema_id` (String) The unique identifier of the request schema to bind the entitlement to. Requires replacement if changed.
 
 <a id="nestedatt--app_entitlement_ref"></a>
 ### Nested Schema for `app_entitlement_ref`

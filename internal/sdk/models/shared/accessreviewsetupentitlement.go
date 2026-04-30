@@ -7,25 +7,25 @@ import (
 	"time"
 )
 
-// The AccessReviewSetupEntitlement message.
+// AccessReviewSetupEntitlement - An entitlement that has been selected for inclusion in an access review campaign during setup.
 type AccessReviewSetupEntitlement struct {
-	// The accessReviewId field.
+	// The ID of the access review campaign this entitlement belongs to.
 	AccessReviewID *string `json:"accessReviewId,omitempty"`
-	// The appEntitlementId field.
+	// The ID of the entitlement being reviewed.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
-	// The appId field.
+	// The ID of the application that owns the entitlement.
 	AppID *string `json:"appId,omitempty"`
-	// The appResourceId field.
+	// The ID of the specific resource associated with this entitlement, if applicable.
 	AppResourceID *string `json:"appResourceId,omitempty"`
-	// The appResourceTypeId field.
+	// The ID of the resource type associated with this entitlement, if applicable.
 	AppResourceTypeID *string    `json:"appResourceTypeId,omitempty"`
 	CreatedAt         *time.Time `json:"createdAt,omitempty"`
-	// The customPolicyId field.
+	// An override policy ID for this specific entitlement. Populated when use_policy_override is enabled on the campaign.
 	CustomPolicyID *string    `json:"customPolicyId,omitempty"`
 	DeletedAt      *time.Time `json:"deletedAt,omitempty"`
-	// The policyId field.
+	// The ID of the review policy applied to this entitlement. Defaults to the campaign policy.
 	PolicyID *string `json:"policyId,omitempty"`
-	// The tenantId field.
+	// The tenant that owns this setup entitlement.
 	TenantID  *string    `json:"tenantId,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }

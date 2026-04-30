@@ -26,6 +26,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitle
 	return c.RequestCatalogManagementServiceRemoveAccessEntitlementsRequest
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementserviceremoveaccessentitlementsrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementserviceremoveaccessentitlementsrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitle
 	}
 	return c.RequestCatalogManagementServiceRemoveAccessEntitlementsResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementserviceremoveaccessentitlementsresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementserviceremoveaccessentitlementsresponse

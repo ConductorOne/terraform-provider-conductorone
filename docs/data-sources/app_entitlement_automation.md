@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_automation Data Source - conductorone"
+page_title: "conductorone_app_entitlement_automation Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppEntitlementAutomation DataSource
@@ -28,8 +28,8 @@ data "conductorone_app_entitlement_automation" "my_app_entitlement_automation" {
 
 ### Required
 
-- `app_entitlement_id` (String)
-- `app_id` (String)
+- `app_entitlement_id` (String) The unique ID for the App Entitlement.
+- `app_id` (String) The ID of the app that is associated with the app entitlement.
 
 ### Read-Only
 
@@ -42,6 +42,8 @@ data "conductorone_app_entitlement_automation" "my_app_entitlement_automation" {
 - `deleted_at` (String)
 - `description` (String) The description of the app entitlement.
 - `display_name` (String) The display name of the app entitlement.
+- `managed_by_request_catalog_id` (String) When set, this automation is managed by an access profile's bundle automation.
+ Read-only. Not settable via this API.
 - `updated_at` (String)
 
 <a id="nestedatt--app_entitlement_automation_last_run_status"></a>

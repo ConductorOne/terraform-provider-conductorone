@@ -30,8 +30,148 @@ func newRoleMiningManagement(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfi
 	}
 }
 
+// CreateAccessProfileFromCohort - Create Access Profile From Cohort
+// CreateAccessProfileFromCohort creates an access profile from a cohort definition,
+//
+//	adds the specified entitlements, and sets up dynamic membership automation using
+//	a CEL expression derived from the profile filters.
+func (s *RoleMiningManagement) CreateAccessProfileFromCohort(ctx context.Context, request *shared.CreateAccessProfileFromCohortRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceCreateAccessProfileFromCohortResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := url.JoinPath(baseURL, "/api/v1/role-mining/access-profiles")
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "c1.api.role_mining_management.v1.RoleMiningManagementService.CreateAccessProfileFromCohort",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceCreateAccessProfileFromCohortResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.CreateAccessProfileFromCohortResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.CreateAccessProfileFromCohortResponse = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
 // GetRoleMiningConfig - Get Role Mining Config
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.GetRoleMiningConfig method.
+// Retrieve the current role mining configuration, including cohort hints and threshold settings.
 func (s *RoleMiningManagement) GetRoleMiningConfig(ctx context.Context, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceGetRoleMiningConfigResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -161,7 +301,7 @@ func (s *RoleMiningManagement) GetRoleMiningConfig(ctx context.Context, opts ...
 }
 
 // UpdateRoleMiningConfig - Update Role Mining Config
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.UpdateRoleMiningConfig method.
+// Update the role mining configuration, such as cohort hints, max suggestions, and minimum cohort size.
 func (s *RoleMiningManagement) UpdateRoleMiningConfig(ctx context.Context, request *shared.UpdateRoleMiningConfigRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceUpdateRoleMiningConfigResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -297,8 +437,275 @@ func (s *RoleMiningManagement) UpdateRoleMiningConfig(ctx context.Context, reque
 
 }
 
+// GetCustomAnalysisResult - Get Custom Analysis Result
+// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.GetCustomAnalysisResult method.
+func (s *RoleMiningManagement) GetCustomAnalysisResult(ctx context.Context, request operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceGetCustomAnalysisResultRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceGetCustomAnalysisResultResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/role-mining/custom-analysis/{id}", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "c1.api.role_mining_management.v1.RoleMiningManagementService.GetCustomAnalysisResult",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceGetCustomAnalysisResultResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.GetCustomAnalysisResultResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.GetCustomAnalysisResultResponse = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
+// TriggerCustomAnalysis - Trigger Custom Analysis
+// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.TriggerCustomAnalysis method.
+func (s *RoleMiningManagement) TriggerCustomAnalysis(ctx context.Context, request *shared.TriggerCustomAnalysisRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceTriggerCustomAnalysisResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := url.JoinPath(baseURL, "/api/v1/role-mining/custom-analysis/trigger")
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "c1.api.role_mining_management.v1.RoleMiningManagementService.TriggerCustomAnalysis",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceTriggerCustomAnalysisResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.TriggerCustomAnalysisResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.TriggerCustomAnalysisResponse = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
 // ListRuns - List Runs
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.ListRuns method.
+// List role mining analysis runs in reverse chronological order.
 func (s *RoleMiningManagement) ListRuns(ctx context.Context, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceListRunsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -428,7 +835,7 @@ func (s *RoleMiningManagement) ListRuns(ctx context.Context, opts ...operations.
 }
 
 // GetLatestRun - Get Latest Run
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.GetLatestRun method.
+// Retrieve the most recent role mining analysis run, including its status and results summary.
 func (s *RoleMiningManagement) GetLatestRun(ctx context.Context, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceGetLatestRunResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -558,7 +965,7 @@ func (s *RoleMiningManagement) GetLatestRun(ctx context.Context, opts ...operati
 }
 
 // ListSuggestions - List Suggestions
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.ListSuggestions method.
+// List role suggestions generated by analysis runs, optionally filtered by state.
 func (s *RoleMiningManagement) ListSuggestions(ctx context.Context, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceListSuggestionsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -688,7 +1095,7 @@ func (s *RoleMiningManagement) ListSuggestions(ctx context.Context, opts ...oper
 }
 
 // GetSuggestion - Get Suggestion
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.GetSuggestion method.
+// Retrieve a single role suggestion by ID, including its cohort filters, entitlements, and confidence score.
 func (s *RoleMiningManagement) GetSuggestion(ctx context.Context, request operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceGetSuggestionRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceGetSuggestionResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -818,7 +1225,7 @@ func (s *RoleMiningManagement) GetSuggestion(ctx context.Context, request operat
 }
 
 // UpdateSuggestionState - Update Suggestion State
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.UpdateSuggestionState method.
+// Transition a role suggestion to a new state, such as accepted, rejected, or dismissed.
 func (s *RoleMiningManagement) UpdateSuggestionState(ctx context.Context, request operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceUpdateSuggestionStateRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceUpdateSuggestionStateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -954,8 +1361,145 @@ func (s *RoleMiningManagement) UpdateSuggestionState(ctx context.Context, reques
 
 }
 
+// SearchCohortUsers - Search Cohort Users
+// Search for users that belong to a suggestion's cohort, with optional additional profile filters.
+func (s *RoleMiningManagement) SearchCohortUsers(ctx context.Context, request operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceSearchCohortUsersRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceSearchCohortUsersResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/role-mining/suggestions/{suggestion_id}/users", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "c1.api.role_mining_management.v1.RoleMiningManagementService.SearchCohortUsers",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "SearchCohortUsersRequest", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceSearchCohortUsersResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.SearchCohortUsersResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.SearchCohortUsersResponse = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
 // TriggerAnalysis - Trigger Analysis
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.TriggerAnalysis method.
+// Start a new role mining analysis job that scans existing access patterns to generate role suggestions.
 func (s *RoleMiningManagement) TriggerAnalysis(ctx context.Context, request *shared.TriggerAnalysisRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceTriggerAnalysisResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

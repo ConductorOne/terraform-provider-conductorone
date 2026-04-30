@@ -168,7 +168,7 @@ func (s *StepUpProvider) Search(ctx context.Context, request *shared.SearchStepU
 }
 
 // List
-// Invokes the c1.api.stepup.v1.StepUpProviderService.List method.
+// List returns all step-up authentication providers configured for the tenant.
 func (s *StepUpProvider) List(ctx context.Context, opts ...operations.Option) (*operations.C1APIStepupV1StepUpProviderServiceListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -298,7 +298,7 @@ func (s *StepUpProvider) List(ctx context.Context, opts ...operations.Option) (*
 }
 
 // Create
-// Invokes the c1.api.stepup.v1.StepUpProviderService.Create method.
+// Create registers a new step-up authentication provider for the tenant.
 func (s *StepUpProvider) Create(ctx context.Context, request *shared.CreateStepUpProviderRequest, opts ...operations.Option) (*operations.C1APIStepupV1StepUpProviderServiceCreateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -435,7 +435,7 @@ func (s *StepUpProvider) Create(ctx context.Context, request *shared.CreateStepU
 }
 
 // Delete
-// Invokes the c1.api.stepup.v1.StepUpProviderService.Delete method.
+// Delete removes a step-up authentication provider from the tenant.
 func (s *StepUpProvider) Delete(ctx context.Context, request operations.C1APIStepupV1StepUpProviderServiceDeleteRequest, opts ...operations.Option) (*operations.C1APIStepupV1StepUpProviderServiceDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -572,7 +572,7 @@ func (s *StepUpProvider) Delete(ctx context.Context, request operations.C1APISte
 }
 
 // Get
-// Invokes the c1.api.stepup.v1.StepUpProviderService.Get method.
+// Get retrieves a single step-up authentication provider by its ID.
 func (s *StepUpProvider) Get(ctx context.Context, request operations.C1APIStepupV1StepUpProviderServiceGetRequest, opts ...operations.Option) (*operations.C1APIStepupV1StepUpProviderServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -702,7 +702,7 @@ func (s *StepUpProvider) Get(ctx context.Context, request operations.C1APIStepup
 }
 
 // Update
-// Invokes the c1.api.stepup.v1.StepUpProviderService.Update method.
+// Update modifies an existing step-up authentication provider's configuration. Use the update mask to specify which fields to change.
 func (s *StepUpProvider) Update(ctx context.Context, request operations.C1APIStepupV1StepUpProviderServiceUpdateRequest, opts ...operations.Option) (*operations.C1APIStepupV1StepUpProviderServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -839,7 +839,7 @@ func (s *StepUpProvider) Update(ctx context.Context, request operations.C1APISte
 }
 
 // UpdateSecret - Update Secret
-// Invokes the c1.api.stepup.v1.StepUpProviderService.UpdateSecret method.
+// UpdateSecret rotates the client secret for a step-up authentication provider without modifying other settings.
 func (s *StepUpProvider) UpdateSecret(ctx context.Context, request operations.C1APIStepupV1StepUpProviderServiceUpdateSecretRequest, opts ...operations.Option) (*operations.C1APIStepupV1StepUpProviderServiceUpdateSecretResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -976,7 +976,7 @@ func (s *StepUpProvider) UpdateSecret(ctx context.Context, request operations.C1
 }
 
 // Test
-// Invokes the c1.api.stepup.v1.StepUpProviderService.Test method.
+// Test initiates a test authentication flow against a step-up provider and returns a redirect URL for the caller to complete verification.
 func (s *StepUpProvider) Test(ctx context.Context, request operations.C1APIStepupV1StepUpProviderServiceTestRequest, opts ...operations.Option) (*operations.C1APIStepupV1StepUpProviderServiceTestResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

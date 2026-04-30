@@ -45,3 +45,6 @@ func (c *C1APITaskV1TaskSearchServiceSearchResponse) GetTaskSearchResponse() *sh
 	}
 	return c.TaskSearchResponse
 }
+
+// #region class-body-c1apitaskv1tasksearchservicesearchresponse
+// #endregion class-body-c1apitaskv1tasksearchservicesearchresponse

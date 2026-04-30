@@ -45,3 +45,6 @@ func (c *C1APITaskV1TaskAuditListResponse) GetTaskAuditListResponse() *shared.Ta
 	}
 	return c.TaskAuditListResponse
 }
+
+// #region class-body-c1apitaskv1taskauditlistresponse
+// #endregion class-body-c1apitaskv1taskauditlistresponse

@@ -4,9 +4,9 @@ package shared
 
 // The SearchAutomationTemplateVersionsResponse message.
 type SearchAutomationTemplateVersionsResponse struct {
-	// The list field.
+	// The page of template versions matching the search criteria.
 	List []AutomationTemplateVersion `json:"list,omitempty"`
-	// The nextPageToken field.
+	// Token to retrieve the next page of results, empty when no more results exist.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

@@ -4,7 +4,7 @@ package shared
 
 // The GetAWSExternalIDResponse message.
 type GetAWSExternalIDResponse struct {
-	// The AWSExternalID message.
+	// AWSExternalID contains the tenant's external ID for AWS IAM role trust policies.
 	AWSExternalID *AWSExternalID `json:"awsExternalId,omitempty"`
 }
 

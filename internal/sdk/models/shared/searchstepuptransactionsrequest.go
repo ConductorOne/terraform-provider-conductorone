@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e SearchStepUpTransactionsRequestState) ToPointer() *SearchStepUpTransactionsRequestState {
 	return &e
 }
-func (e *SearchStepUpTransactionsRequestState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SearchStepUpTransactionsRequestState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "STEP_UP_TRANSACTION_STATE_UNSPECIFIED", "STEP_UP_TRANSACTION_STATE_PENDING", "STEP_UP_TRANSACTION_STATE_VERIFIED", "STEP_UP_TRANSACTION_STATE_ERROR":
+			return true
+		}
 	}
-	switch v {
-	case "STEP_UP_TRANSACTION_STATE_UNSPECIFIED":
-		fallthrough
-	case "STEP_UP_TRANSACTION_STATE_PENDING":
-		fallthrough
-	case "STEP_UP_TRANSACTION_STATE_VERIFIED":
-		fallthrough
-	case "STEP_UP_TRANSACTION_STATE_ERROR":
-		*e = SearchStepUpTransactionsRequestState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SearchStepUpTransactionsRequestState: %v", v)
-	}
+	return false
 }
 
 // TargetType - The targetType field.
@@ -54,22 +44,16 @@ const (
 func (e TargetType) ToPointer() *TargetType {
 	return &e
 }
-func (e *TargetType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TargetType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TARGET_TYPE_UNSPECIFIED", "TARGET_TYPE_TICKET", "TARGET_TYPE_TEST":
+			return true
+		}
 	}
-	switch v {
-	case "TARGET_TYPE_UNSPECIFIED":
-		fallthrough
-	case "TARGET_TYPE_TICKET":
-		fallthrough
-	case "TARGET_TYPE_TEST":
-		*e = TargetType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TargetType: %v", v)
-	}
+	return false
 }
 
 // SearchStepUpTransactionsRequest - Request message for searching step-up transactions

@@ -2,9 +2,9 @@
 
 package shared
 
-// The OrgNotificationSettings message.
+// OrgNotificationSettings contains organization-wide notification channel configurations and default preferences.
 type OrgNotificationSettings struct {
-	// The ChannelSettings message.
+	// ChannelSettings groups notification preferences for all supported channels.
 	ChannelSettings *ChannelSettings `json:"channelSettings,omitempty"`
 }
 

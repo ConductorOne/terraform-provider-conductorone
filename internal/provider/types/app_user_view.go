@@ -7,8 +7,8 @@ import (
 )
 
 type AppUserView struct {
-	AppPath          types.String `tfsdk:"app_path"`
 	AppUser          *AppUser     `tfsdk:"app_user"`
+	AppPath          types.String `tfsdk:"app_path"`
 	IdentityUserPath types.String `tfsdk:"identity_user_path"`
 	LastUsagePath    types.String `tfsdk:"last_usage_path"`
 }

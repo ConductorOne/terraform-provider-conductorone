@@ -14,7 +14,7 @@ type C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlemen
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// Represents the association of an app entitlement with one side (A or B) of a conflict monitor.
 	AppEntitlementMonitorBinding *shared.AppEntitlementMonitorBinding
 }
 
@@ -45,3 +45,6 @@ func (c *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitl
 	}
 	return c.AppEntitlementMonitorBinding
 }
+
+// #region class-body-c1apiaccessconflictv1appentitlementmonitorbindingservicecreateappentitlementmonitorbindingresponse
+// #endregion class-body-c1apiaccessconflictv1appentitlementmonitorbindingservicecreateappentitlementmonitorbindingresponse

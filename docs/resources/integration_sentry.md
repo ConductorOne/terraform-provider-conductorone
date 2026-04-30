@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_sentry Resource - conductorone"
+page_title: "conductorone_integration_sentry Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Sentry Integration Resource

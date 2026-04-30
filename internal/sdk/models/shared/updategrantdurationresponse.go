@@ -2,7 +2,7 @@
 
 package shared
 
-// The UpdateGrantDurationResponse message.
+// UpdateGrantDurationResponse - The response message for updating the duration of a grant.
 type UpdateGrantDurationResponse struct {
 	// The AppEntitlementUserBinding represents the relationship that gives an app user access to an app entitlement
 	AppEntitlementUserBinding *AppEntitlementUserBinding `json:"binding,omitempty"`

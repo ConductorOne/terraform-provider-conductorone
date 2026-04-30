@@ -42,6 +42,9 @@ func (c *C1APIAppV1AppEntitlementsProxyGetRequest) GetDstAppEntitlementID() stri
 	return c.DstAppEntitlementID
 }
 
+// #region class-body-c1apiappv1appentitlementsproxygetrequest
+// #endregion class-body-c1apiappv1appentitlementsproxygetrequest
+
 type C1APIAppV1AppEntitlementsProxyGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -49,7 +52,7 @@ type C1APIAppV1AppEntitlementsProxyGetResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for getting a specific entitlement proxy binding.
 	GetAppEntitlementProxyResponse *shared.GetAppEntitlementProxyResponse
 }
 
@@ -80,3 +83,6 @@ func (c *C1APIAppV1AppEntitlementsProxyGetResponse) GetGetAppEntitlementProxyRes
 	}
 	return c.GetAppEntitlementProxyResponse
 }
+
+// #region class-body-c1apiappv1appentitlementsproxygetresponse
+// #endregion class-body-c1apiappv1appentitlementsproxygetresponse

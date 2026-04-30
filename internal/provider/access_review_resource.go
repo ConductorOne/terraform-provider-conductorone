@@ -9,7 +9,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/v2/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -37,52 +36,56 @@ type AccessReviewResource struct {
 
 // AccessReviewResourceModel describes the resource data model.
 type AccessReviewResourceModel struct {
-	AccessReviewExclusionScope     *tfTypes.AccessReviewExclusionScope `tfsdk:"access_review_exclusion_scope"`
-	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
-	AccessReviewScope              *tfTypes.AccessReviewScope          `tfsdk:"access_review_scope"`
-	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
-	AccessReviewTemplateID         types.String                        `tfsdk:"access_review_template_id"`
-	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
-	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
-	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
-	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
-	AutoResolve                    types.Bool                          `tfsdk:"auto_resolve"`
-	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
-	BindingObjectSetup             *tfTypes.BindingObjectSetup         `tfsdk:"binding_object_setup"`
-	ClosedAt                       types.String                        `tfsdk:"closed_at"`
-	CompletionDate                 types.String                        `tfsdk:"completion_date"`
-	ConnectorSourcesFrozenAt       types.String                        `tfsdk:"connector_sources_frozen_at"`
-	CreatedAt                      types.String                        `tfsdk:"created_at"`
-	CreatedByID                    types.String                        `tfsdk:"created_by_id"`
-	CreatedByUserPath              types.String                        `tfsdk:"created_by_user_path"`
-	DefaultView                    types.String                        `tfsdk:"default_view"`
-	Delete                         types.Bool                          `tfsdk:"delete"`
-	Description                    types.String                        `tfsdk:"description"`
-	DisplayName                    types.String                        `tfsdk:"display_name"`
-	DuplicateFrom                  types.String                        `tfsdk:"duplicate_from"`
-	Edit                           types.Bool                          `tfsdk:"edit"`
-	ExemptCertifiedAccessConflicts types.Bool                          `tfsdk:"exempt_certified_access_conflicts"`
-	Expanded                       []tfTypes.Expanded                  `tfsdk:"expanded"`
-	ExpectedTicketCount            types.Int32                         `tfsdk:"expected_ticket_count"`
-	Extra                          map[string]types.Bool               `tfsdk:"extra"`
-	HasAccuracySupport             types.Bool                          `tfsdk:"has_accuracy_support"`
-	ID                             types.String                        `tfsdk:"id"`
-	MultiAppSetup                  *tfTypes.MultiAppSetup              `tfsdk:"multi_app_setup"`
-	NotificationConfig             *tfTypes.NotificationConfig         `tfsdk:"notification_config"`
-	OwnerIds                       []types.String                      `tfsdk:"owner_ids"`
-	PolicyID                       types.String                        `tfsdk:"policy_id"`
-	PolicyPath                     types.String                        `tfsdk:"policy_path"`
-	Read                           types.Bool                          `tfsdk:"read"`
-	ReviewInstructions             types.String                        `tfsdk:"review_instructions"`
-	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig      `tfsdk:"review_signature_config"`
-	ScheduledStartDate             types.String                        `tfsdk:"scheduled_start_date"`
-	ScopeType                      types.String                        `tfsdk:"scope_type"`
-	ScopingVersion                 types.String                        `tfsdk:"scoping_version"`
-	SingleAppSetup                 *tfTypes.SingleAppSetup             `tfsdk:"single_app_setup"`
-	StartedAt                      types.String                        `tfsdk:"started_at"`
-	State                          types.String                        `tfsdk:"state"`
-	UpdatedAt                      types.String                        `tfsdk:"updated_at"`
-	UsePolicyOverride              types.Bool                          `tfsdk:"use_policy_override"`
+	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig       `tfsdk:"access_review_column_config"`
+	AccessReviewExclusionScope     *tfTypes.AccessReviewExclusionScope     `tfsdk:"access_review_exclusion_scope"`
+	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope     `tfsdk:"access_review_inclusion_scope"`
+	AccessReviewNotificationConfig *tfTypes.AccessReviewNotificationConfig `tfsdk:"access_review_notification_config"`
+	AccessReviewScope              *tfTypes.AccessReviewScope              `tfsdk:"access_review_scope"`
+	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2            `tfsdk:"access_review_scope_v2"`
+	AccessReviewTemplateID         types.String                            `tfsdk:"access_review_template_id"`
+	AccuracyIssueAction            types.String                            `tfsdk:"accuracy_issue_action"`
+	AutoCloseCampaign              types.Bool                              `tfsdk:"auto_close_campaign"`
+	AutoCloseDecision              types.String                            `tfsdk:"auto_close_decision"`
+	AutoGenerateReport             types.Bool                              `tfsdk:"auto_generate_report"`
+	AutoResolve                    types.Bool                              `tfsdk:"auto_resolve"`
+	AutoStartCampaign              types.Bool                              `tfsdk:"auto_start_campaign"`
+	BindingObjectSetup             *tfTypes.BindingObjectSetup             `tfsdk:"binding_object_setup"`
+	CampaignHealthSnapshot         *tfTypes.CampaignHealthSnapshot         `tfsdk:"campaign_health_snapshot"`
+	CampaignInsights               *tfTypes.CampaignInsights               `tfsdk:"campaign_insights"`
+	ClosedAt                       types.String                            `tfsdk:"closed_at"`
+	CompletionDate                 types.String                            `tfsdk:"completion_date"`
+	ConnectorSourcesFrozenAt       types.String                            `tfsdk:"connector_sources_frozen_at"`
+	CreatedAt                      types.String                            `tfsdk:"created_at"`
+	CreatedByID                    types.String                            `tfsdk:"created_by_id"`
+	CreatedByUserPath              types.String                            `tfsdk:"created_by_user_path"`
+	DefaultView                    types.String                            `tfsdk:"default_view"`
+	Delete                         types.Bool                              `tfsdk:"delete"`
+	Description                    types.String                            `tfsdk:"description"`
+	DisplayName                    types.String                            `tfsdk:"display_name"`
+	DuplicateFrom                  types.String                            `tfsdk:"duplicate_from"`
+	Edit                           types.Bool                              `tfsdk:"edit"`
+	ErrorState                     types.String                            `tfsdk:"error_state"`
+	ExemptCertifiedAccessConflicts types.Bool                              `tfsdk:"exempt_certified_access_conflicts"`
+	Expanded                       []tfTypes.Expanded                      `tfsdk:"expanded"`
+	ExpectedTicketCount            types.Int32                             `tfsdk:"expected_ticket_count"`
+	Extra                          map[string]types.Bool                   `tfsdk:"extra"`
+	HasAccuracySupport             types.Bool                              `tfsdk:"has_accuracy_support"`
+	ID                             types.String                            `tfsdk:"id"`
+	MultiAppSetup                  *tfTypes.MultiAppSetup                  `tfsdk:"multi_app_setup"`
+	OwnerIds                       []types.String                          `tfsdk:"owner_ids"`
+	PolicyID                       types.String                            `tfsdk:"policy_id"`
+	PolicyPath                     types.String                            `tfsdk:"policy_path"`
+	Read                           types.Bool                              `tfsdk:"read"`
+	ReviewInstructions             types.String                            `tfsdk:"review_instructions"`
+	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig          `tfsdk:"review_signature_config"`
+	ScheduledStartDate             types.String                            `tfsdk:"scheduled_start_date"`
+	ScopeType                      types.String                            `tfsdk:"scope_type"`
+	ScopingVersion                 types.String                            `tfsdk:"scoping_version"`
+	SingleAppSetup                 *tfTypes.SingleAppSetup                 `tfsdk:"single_app_setup"`
+	StartedAt                      types.String                            `tfsdk:"started_at"`
+	State                          types.String                            `tfsdk:"state"`
+	UpdatedAt                      types.String                            `tfsdk:"updated_at"`
+	UsePolicyOverride              types.Bool                              `tfsdk:"use_policy_override"`
 }
 
 func (r *AccessReviewResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,6 +96,18 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AccessReview Resource",
 		Attributes: map[string]schema.Attribute{
+			"access_review_column_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"columns": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
+							` If empty, the default column set for the campaign's default_view is used.`,
+					},
+				},
+				Description: `Configuration for which columns are visible in the reviewer task list.`,
+			},
 			"access_review_exclusion_scope": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
@@ -164,6 +179,28 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 				Description: `The AccessReviewInclusionScope message.`,
 			},
+			"access_review_notification_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"send_close": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send a notification when the campaign is closed.`,
+					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send a notification when the campaign is started.`,
+					},
+					"send_reminders": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
+					},
+				},
+				Description: `Controls which email notifications are sent during the access review lifecycle.`,
+			},
 			"access_review_scope": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
@@ -191,14 +228,7 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 							"account_domain": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The accountDomain field. must be one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"APP_USER_DOMAIN_UNSPECIFIED",
-										"APP_USER_DOMAIN_EXTERNAL",
-										"APP_USER_DOMAIN_TRUSTED",
-									),
-								},
+								Description: `The accountDomain field. possible known values include one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]`,
 							},
 							"account_types": schema.ListAttribute{
 								Computed:    true,
@@ -319,16 +349,7 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 									"filter_type": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The filterType field. must be one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED",
-												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL",
-												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL",
-												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC",
-												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC",
-											),
-										},
+										Description: `The filterType field. possible known values include one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]`,
 									},
 									"included_access_profile_ids": schema.ListAttribute{
 										Computed:    true,
@@ -365,26 +386,12 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 							"source_filter": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The sourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"GRANT_SOURCE_FILTER_UNSPECIFIED",
-										"GRANT_SOURCE_FILTER_DIRECT",
-										"GRANT_SOURCE_FILTER_INHERITED",
-									),
-								},
+								Description: `The sourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 							},
 							"type_filter": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The typeFilter field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"GRANT_FILTER_TYPE_UNSPECIFIED",
-										"GRANT_FILTER_TYPE_PERMANENT",
-										"GRANT_FILTER_TYPE_TEMPORARY",
-									),
-								},
+								Description: `The typeFilter field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 							},
 						},
 						MarkdownDescription: `The GrantsByCriteriaScope message.` + "\n" +
@@ -556,7 +563,7 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"auto_resolve": schema.BoolAttribute{
 				Computed:    true,
-				Description: `The autoResolve field.`,
+				Description: `When true, selections are automatically resolved if the entitlement grant no longer exists.`,
 			},
 			"auto_start_campaign": schema.BoolAttribute{
 				Computed:    true,
@@ -565,6 +572,29 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			"binding_object_setup": schema.SingleNestedAttribute{
 				Computed:    true,
 				Description: `The BindingObjectSetup message.`,
+			},
+			"campaign_health_snapshot": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"checked_at": schema.StringAttribute{
+						Computed: true,
+					},
+					"phantom_locked_count": schema.Int32Attribute{
+						Computed:    true,
+						Description: `Number of pending actions locked by terminal (dead) submissions.`,
+					},
+				},
+				Description: `Campaign health snapshot. Read-only; updated by backend maintenance processors.`,
+			},
+			"campaign_insights": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"markdown": schema.StringAttribute{
+						Computed:    true,
+						Description: `The markdown field.`,
+					},
+				},
+				Description: `AI-generated campaign insights (markdown). Read-only; set by backend when campaign is closed.`,
 			},
 			"closed_at": schema.StringAttribute{
 				Computed: true,
@@ -584,7 +614,7 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"created_by_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The createdById field.`,
+				Description: `The ID of the user who created this campaign.`,
 			},
 			"created_by_user_path": schema.StringAttribute{
 				Computed:    true,
@@ -601,23 +631,28 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description field.`,
+				Description: `An optional description providing context about the campaign.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The displayName field.`,
+				Description: `The display name for the new campaign.`,
 			},
 			"duplicate_from": schema.StringAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The duplicateFrom field. Requires replacement if changed.`,
+				Description: `The ID of an existing campaign to copy scope and entitlement configuration from. Optional. Requires replacement if changed.`,
 			},
 			"edit": schema.BoolAttribute{
 				Computed:    true,
 				Description: `The edit field.`,
+			},
+			"error_state": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `Error state set when a prepare action fails with a recoverable condition.` + "\n" +
+					` Cleared when the campaign scope is changed.`,
 			},
 			"exempt_certified_access_conflicts": schema.BoolAttribute{
 				Computed:    true,
@@ -628,11 +663,11 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{},
 				},
-				Description: `The expanded field.`,
+				Description: `Related objects requested via the expand mask.`,
 			},
 			"expected_ticket_count": schema.Int32Attribute{
 				Computed:    true,
-				Description: `The expectedTicketCount field.`,
+				Description: `The estimated number of review tasks that will be generated when the campaign starts.`,
 			},
 			"extra": schema.MapAttribute{
 				Computed:    true,
@@ -641,11 +676,11 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"has_accuracy_support": schema.BoolAttribute{
 				Computed:    true,
-				Description: `The hasAccuracySupport field.`,
+				Description: `Whether the connectors in this campaign support accuracy checking.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The id field.`,
+				Description: `The unique identifier of this access review campaign.`,
 			},
 			"multi_app_setup": schema.SingleNestedAttribute{
 				Computed: true,
@@ -698,40 +733,18 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 				Description: `The MultiAppSetup message.`,
 			},
-			"notification_config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"send_close": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The sendClose field.`,
-					},
-					"send_kickoff": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The sendKickoff field.`,
-					},
-					"send_reminders": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The sendReminders field.`,
-					},
-				},
-				Description: `The NotificationConfig message.`,
-			},
 			"owner_ids": schema.ListAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				ElementType: types.StringType,
-				Description: `The ownerIds field. Requires replacement if changed.`,
+				Description: `The IDs of the users who own and manage this campaign. At least one owner is required. Requires replacement if changed.`,
 			},
 			"policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The policyId field.`,
+				Description: `The ID of the review policy that governs task assignment and resolution.`,
 			},
 			"policy_path": schema.StringAttribute{
 				Computed:    true,
@@ -743,7 +756,7 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"review_instructions": schema.StringAttribute{
 				Computed:    true,
-				Description: `The reviewInstructions field.`,
+				Description: `Optional instructions displayed to reviewers when completing their review tasks.`,
 			},
 			"review_signature_config": schema.SingleNestedAttribute{
 				Computed: true,
@@ -773,19 +786,11 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			"scope_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED",
-						"ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS",
-						"ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS",
-						"ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE",
-					),
-				},
+				Description: `The type of scoping method for the campaign (e.g., by entitlements, by access conflicts, or by resource). possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"]`,
 			},
 			"scoping_version": schema.StringAttribute{
 				Computed:    true,
-				Description: `The scopingVersion field.`,
+				Description: `Internal version counter incremented when the campaign scope changes.`,
 			},
 			"single_app_setup": schema.SingleNestedAttribute{
 				Computed: true,
@@ -802,7 +807,7 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"state": schema.StringAttribute{
 				Computed:    true,
-				Description: `The state field.`,
+				Description: `The current lifecycle state of the campaign (e.g., draft, open, closed).`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -881,43 +886,6 @@ func (r *AccessReviewResource) Create(ctx context.Context, req resource.CreateRe
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewServiceCreateResponse(ctx, res.AccessReviewServiceCreateResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAccessreviewV1AccessReviewServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AccessReview.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.AccessReviewServiceGetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewServiceGetResponse(ctx, res1.AccessReviewServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -1042,43 +1010,6 @@ func (r *AccessReviewResource) Update(ctx context.Context, req resource.UpdateRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIAccessreviewV1AccessReviewServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AccessReview.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.AccessReviewServiceGetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewServiceGetResponse(ctx, res1.AccessReviewServiceGetResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1120,7 +1051,10 @@ func (r *AccessReviewResource) Delete(ctx context.Context, req resource.DeleteRe
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

@@ -26,6 +26,9 @@ func (c *C1APIAppV1AppsUpdateRequest) GetUpdateAppRequest() *shared.UpdateAppReq
 	return c.UpdateAppRequest
 }
 
+// #region class-body-c1apiappv1appsupdaterequest
+// #endregion class-body-c1apiappv1appsupdaterequest
+
 type C1APIAppV1AppsUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1AppsUpdateResponse) GetUpdateAppResponse() *shared.UpdateAppR
 	}
 	return c.UpdateAppResponse
 }
+
+// #region class-body-c1apiappv1appsupdateresponse
+// #endregion class-body-c1apiappv1appsupdateresponse

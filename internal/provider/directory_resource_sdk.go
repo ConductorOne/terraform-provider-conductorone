@@ -54,12 +54,16 @@ func (r *DirectoryResourceModel) RefreshFromSharedDirectoryServiceCreateResponse
 
 							r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = append(r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases, matchCases)
 						}
+					} else {
+						r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = nil
 					}
 				}
 				r.DirectoryView.Directory.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DirectoryView.Directory.UpdatedAt))
 			}
 		}
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -108,12 +112,16 @@ func (r *DirectoryResourceModel) RefreshFromSharedDirectoryServiceGetResponse(ct
 
 							r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = append(r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases, matchCases)
 						}
+					} else {
+						r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = nil
 					}
 				}
 				r.DirectoryView.Directory.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DirectoryView.Directory.UpdatedAt))
 			}
 		}
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -162,12 +170,16 @@ func (r *DirectoryResourceModel) RefreshFromSharedDirectoryServiceUpdateResponse
 
 							r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = append(r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases, matchCases)
 						}
+					} else {
+						r.DirectoryView.Directory.DirectoryMergeConfig.MatchCases = nil
 					}
 				}
 				r.DirectoryView.Directory.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DirectoryView.Directory.UpdatedAt))
 			}
 		}
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 

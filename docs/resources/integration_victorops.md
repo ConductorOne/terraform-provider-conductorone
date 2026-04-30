@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_victorops Resource - conductorone"
+page_title: "conductorone_integration_victorops Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Victorops Integration Resource

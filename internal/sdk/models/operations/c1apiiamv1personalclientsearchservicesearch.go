@@ -45,3 +45,6 @@ func (c *C1APIIamV1PersonalClientSearchServiceSearchResponse) GetPersonalClientS
 	}
 	return c.PersonalClientSearchServiceSearchResponse
 }
+
+// #region class-body-c1apiiamv1personalclientsearchservicesearchresponse
+// #endregion class-body-c1apiiamv1personalclientsearchservicesearchresponse

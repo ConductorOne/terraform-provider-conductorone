@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGr
 	return c.IdentityUserID
 }
 
+// #region class-body-c1apiappv1appentitlementuserbindingservicelistappusersforidentitywithgrantrequest
+// #endregion class-body-c1apiappv1appentitlementuserbindingservicelistappusersforidentitywithgrantrequest
+
 type C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGrantResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppEntitlementUserBindingServiceListAppUsersForIdentityWithGr
 	}
 	return c.ListAppUsersForIdentityWithGrantResponse
 }
+
+// #region class-body-c1apiappv1appentitlementuserbindingservicelistappusersforidentitywithgrantresponse
+// #endregion class-body-c1apiappv1appentitlementuserbindingservicelistappusersforidentitywithgrantresponse

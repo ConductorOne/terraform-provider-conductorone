@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app Resource - conductorone"
+page_title: "conductorone_app Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   App Resource
@@ -18,6 +18,12 @@ NOTE: To control appOwners you must use the `conductorone_app_owner` resource.
 
 ```terraform
 resource "conductorone_app" "my_app" {
+  app_entitlement_owner_refs = [
+    {
+      app_id = "...my_app_id..."
+      id     = "...my_id..."
+    }
+  ]
   certify_policy_id                      = "...my_certify_policy_id..."
   description                            = "...my_description..."
   display_name                           = "...my_display_name..."
@@ -39,10 +45,11 @@ resource "conductorone_app" "my_app" {
 
 ### Optional
 
+- `app_entitlement_owner_refs` (Attributes List) Sets entitlement owners on the app. Requires replacement if changed. (see [below for nested schema](#nestedatt--app_entitlement_owner_refs))
 - `certify_policy_id` (String) Creates the app with this certify policy.
 - `description` (String) Creates the app with this description.
 - `grant_policy_id` (String) Creates the app with this grant policy.
-- `identity_matching` (String) Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM"]
+- `identity_matching` (String) Define the app user identity matching strategy for this app. possible known values include one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM"]
 - `instructions` (String) Instructions shown to users in the access request form when requesting access for this app.
 - `monthly_cost_usd` (Number) Creates the app with this monthly cost per seat.
 - `revoke_policy_id` (String) Creates the app with this revoke policy.
@@ -50,6 +57,8 @@ resource "conductorone_app" "my_app" {
 
 ### Read-Only
 
+- `access_model` (String) How this app models access. Derived during uplift from the app's resource type traits.
+ Sparse ACL feature.
 - `app_account_id` (String) The ID of the Account named by AccountName.
 - `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
 - `app_user_mapper` (Attributes) AppUserMapper configures custom account mapping for uplift. (see [below for nested schema](#nestedatt--app_user_mapper))
@@ -63,6 +72,15 @@ resource "conductorone_app" "my_app" {
 - `parent_app_id` (String) The ID of the app that created this app, if any.
 - `updated_at` (String)
 - `user_count` (String) The number of users with grants to this app.
+
+<a id="nestedatt--app_entitlement_owner_refs"></a>
+### Nested Schema for `app_entitlement_owner_refs`
+
+Optional:
+
+- `app_id` (String) The appId field. Requires replacement if changed.
+- `id` (String) The id field. Requires replacement if changed.
+
 
 <a id="nestedatt--app_user_mapper"></a>
 ### Nested Schema for `app_user_mapper`

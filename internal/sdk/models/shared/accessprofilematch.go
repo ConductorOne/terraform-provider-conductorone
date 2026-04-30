@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // MatchType - The matchType field.
 type MatchType string
 
@@ -20,24 +15,16 @@ const (
 func (e MatchType) ToPointer() *MatchType {
 	return &e
 }
-func (e *MatchType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MatchType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_PROFILE_MATCH_TYPE_UNSPECIFIED", "ACCESS_PROFILE_MATCH_TYPE_EXACT", "ACCESS_PROFILE_MATCH_TYPE_SUPERSET", "ACCESS_PROFILE_MATCH_TYPE_PARTIAL":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_PROFILE_MATCH_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_PROFILE_MATCH_TYPE_EXACT":
-		fallthrough
-	case "ACCESS_PROFILE_MATCH_TYPE_SUPERSET":
-		fallthrough
-	case "ACCESS_PROFILE_MATCH_TYPE_PARTIAL":
-		*e = MatchType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MatchType: %v", v)
-	}
+	return false
 }
 
 // The AccessProfileMatch message.

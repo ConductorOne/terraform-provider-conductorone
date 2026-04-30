@@ -16,6 +16,8 @@ type ChoicePickerComponent struct {
 	DynamicString *DynamicString `json:"label,omitempty"`
 	// The multiSelect field.
 	MultiSelect *bool `json:"multiSelect,omitempty"`
+	// The required field.
+	Required *bool `json:"required,omitempty"`
 	// DynamicString can be a literal value, a JSON pointer path, or a function call.
 	//
 	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
@@ -45,6 +47,13 @@ func (c *ChoicePickerComponent) GetMultiSelect() *bool {
 		return nil
 	}
 	return c.MultiSelect
+}
+
+func (c *ChoicePickerComponent) GetRequired() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Required
 }
 
 func (c *ChoicePickerComponent) GetDynamicString1() *DynamicString {

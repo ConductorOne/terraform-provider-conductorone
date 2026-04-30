@@ -58,7 +58,8 @@ func (r *RiskLevelDataSource) Schema(ctx context.Context, req datasource.SchemaR
 				Computed: true,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The ID of the AttributeValue.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
