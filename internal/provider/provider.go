@@ -43,7 +43,7 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 			"The provider supports multiple authentication methods. When more than one is configured, " +
 			"the following priority order applies (highest priority first):\n\n" +
 			"1. **`CONDUCTORONE_ACCESS_TOKEN`** env var -- static bearer token (overrides all other auth)\n" +
-			"2. **`oidc_token`** attribute / **`CONDUCTORONE_OIDC_TOKEN`** / **`TFC_WORKLOAD_IDENTITY_TOKEN`** env -- workload federation (RFC 8693 token exchange)\n" +
+			"2. **`oidc_token`** attribute / **`CONDUCTORONE_OIDC_TOKEN`** / **`TFC_WORKLOAD_IDENTITY_TOKEN_CONDUCTORONE`** / **`TFC_WORKLOAD_IDENTITY_TOKEN_C1`** / **`TFC_WORKLOAD_IDENTITY_TOKEN`** env -- workload federation (RFC 8693 token exchange)\n" +
 			"3. **`client_id`** + **`client_secret`** attributes / **`CONDUCTORONE_CLIENT_ID`** + **`CONDUCTORONE_CLIENT_SECRET`** env -- API credentials (Ed25519 JWT assertion)\n\n" +
 			"For each attribute, the provider attribute value takes precedence over the corresponding environment variable.",
 		Attributes: map[string]schema.Attribute{
@@ -70,7 +70,7 @@ func (p *ConductoroneProvider) Schema(ctx context.Context, req provider.SchemaRe
 			},
 			"oidc_token": schema.StringAttribute{
 				MarkdownDescription: "OIDC token for workload federation authentication (RFC 8693 token exchange). " +
-					"Auto-detected from `CONDUCTORONE_OIDC_TOKEN` or `TFC_WORKLOAD_IDENTITY_TOKEN` environment variables.",
+					"Auto-detected from `CONDUCTORONE_OIDC_TOKEN`, `TFC_WORKLOAD_IDENTITY_TOKEN_CONDUCTORONE`, `TFC_WORKLOAD_IDENTITY_TOKEN_C1`, or `TFC_WORKLOAD_IDENTITY_TOKEN` environment variables.",
 				Optional:  true,
 				Sensitive: true,
 			},
@@ -105,10 +105,16 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 		tenantDomain = os.Getenv(sdk.EnvTenantDomain)
 	}
 
-	// OIDC token fallback chain: attribute > CONDUCTORONE_OIDC_TOKEN > TFC_WORKLOAD_IDENTITY_TOKEN
+	// OIDC token fallback chain: attribute > CONDUCTORONE_OIDC_TOKEN > TFC tagged tokens > TFC generic token
 	oidcToken := data.OIDCToken.ValueString()
 	if oidcToken == "" {
 		oidcToken = os.Getenv(sdk.EnvOIDCToken)
+	}
+	if oidcToken == "" {
+		oidcToken = os.Getenv(sdk.EnvTFCWorkloadIdentityTokenConductorOne)
+	}
+	if oidcToken == "" {
+		oidcToken = os.Getenv(sdk.EnvTFCWorkloadIdentityTokenC1)
 	}
 	if oidcToken == "" {
 		oidcToken = os.Getenv(sdk.EnvTFCWorkloadIdentityToken)
@@ -134,7 +140,7 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 
 	// Auth priority (highest wins):
 	//   1. CONDUCTORONE_ACCESS_TOKEN env var -- static bearer token
-	//   2. oidc_token / CONDUCTORONE_OIDC_TOKEN / TFC_WORKLOAD_IDENTITY_TOKEN -- workload federation
+	//   2. oidc_token / CONDUCTORONE_OIDC_TOKEN / TFC_WORKLOAD_IDENTITY_TOKEN_{CONDUCTORONE,C1} / TFC_WORKLOAD_IDENTITY_TOKEN -- workload federation
 	//   3. client_id + client_secret -- Ed25519 JWT assertion
 	var client *sdk.ConductoroneAPI
 	var err error
@@ -147,7 +153,7 @@ func (p *ConductoroneProvider) Configure(ctx context.Context, req provider.Confi
 		if clientID == "" {
 			resp.Diagnostics.AddError(
 				"Missing client_id",
-				fmt.Sprintf("client_id is required when using OIDC token authentication (oidc_token, %s, or %s)", sdk.EnvOIDCToken, sdk.EnvTFCWorkloadIdentityToken),
+				fmt.Sprintf("client_id is required when using OIDC token authentication (oidc_token, %s, %s, %s, or %s)", sdk.EnvOIDCToken, sdk.EnvTFCWorkloadIdentityTokenConductorOne, sdk.EnvTFCWorkloadIdentityTokenC1, sdk.EnvTFCWorkloadIdentityToken),
 			)
 			return
 		}
