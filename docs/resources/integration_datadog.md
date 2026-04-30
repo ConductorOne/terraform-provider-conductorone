@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_datadog Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_datadog Resource - conductorone"
 subcategory: ""
 description: |-
   Datadog Integration Resource

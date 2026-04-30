@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_request_schema_entitlement_binding Resource - terraform-provider-conductorone"
+page_title: "conductorone_request_schema_entitlement_binding Resource - conductorone"
 subcategory: ""
 description: |-
   RequestSchemaEntitlementBinding Resource

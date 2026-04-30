@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_concur Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_concur Resource - conductorone"
 subcategory: ""
 description: |-
   Concur Integration Resource

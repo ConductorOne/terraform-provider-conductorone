@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_databricks Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_databricks Resource - conductorone"
 subcategory: ""
 description: |-
   Databricks Integration Resource

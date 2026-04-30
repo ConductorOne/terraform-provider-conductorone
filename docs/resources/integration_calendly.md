@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_calendly Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_calendly Resource - conductorone"
 subcategory: ""
 description: |-
   Calendly Integration Resource

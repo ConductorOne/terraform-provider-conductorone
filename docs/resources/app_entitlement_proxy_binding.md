@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_proxy_binding Resource - terraform-provider-conductorone"
+page_title: "conductorone_app_entitlement_proxy_binding Resource - conductorone"
 subcategory: ""
 description: |-
   AppEntitlementProxyBinding Resource

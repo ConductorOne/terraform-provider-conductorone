@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_resource Resource - terraform-provider-conductorone"
+page_title: "conductorone_app_resource Resource - conductorone"
 subcategory: ""
 description: |-
   AppResource Resource

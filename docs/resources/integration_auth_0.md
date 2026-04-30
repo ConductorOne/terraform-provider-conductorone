@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_auth_0 Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_auth_0 Resource - conductorone"
 subcategory: ""
 description: |-
   Auth_0 Integration Resource

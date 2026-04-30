@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_couchdb Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_couchdb Resource - conductorone"
 subcategory: ""
 description: |-
   Couchdb Integration Resource

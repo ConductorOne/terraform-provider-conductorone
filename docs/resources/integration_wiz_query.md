@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_wiz_query Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_wiz_query Resource - conductorone"
 subcategory: ""
 description: |-
   Wiz_query Integration Resource

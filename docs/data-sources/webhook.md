@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_webhook Data Source - terraform-provider-conductorone"
+page_title: "conductorone_webhook Data Source - conductorone"
 subcategory: ""
 description: |-
   Webhook DataSource

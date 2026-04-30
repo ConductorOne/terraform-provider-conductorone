@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_custom_app_entitlement Resource - terraform-provider-conductorone"
+page_title: "conductorone_custom_app_entitlement Resource - conductorone"
 subcategory: ""
 description: |-
   CustomAppEntitlement Resource

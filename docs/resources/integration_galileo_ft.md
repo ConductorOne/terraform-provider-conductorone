@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_galileo_ft Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_galileo_ft Resource - conductorone"
 subcategory: ""
 description: |-
   Galileo_ft Integration Resource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_cloudflare_v2 Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_cloudflare_v2 Resource - conductorone"
 subcategory: ""
 description: |-
   Cloudflare_v2 Integration Resource

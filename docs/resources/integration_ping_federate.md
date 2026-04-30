@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_ping_federate Resource - terraform-provider-conductorone"
+page_title: "conductorone_integration_ping_federate Resource - conductorone"
 subcategory: ""
 description: |-
   Ping_federate Integration Resource
