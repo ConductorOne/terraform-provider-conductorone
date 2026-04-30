@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,22 +19,16 @@ const (
 func (e SecretType) ToPointer() *SecretType {
 	return &e
 }
-func (e *SecretType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SecretType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_TYPE_UNSPECIFIED", "SECRET_TYPE_TEXT", "SECRET_TYPE_FILE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_TYPE_UNSPECIFIED":
-		fallthrough
-	case "SECRET_TYPE_TEXT":
-		fallthrough
-	case "SECRET_TYPE_FILE":
-		*e = SecretType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SecretType: %v", v)
-	}
+	return false
 }
 
 // SharingMode - Filter by sharing mode (optional)
@@ -51,22 +43,16 @@ const (
 func (e SharingMode) ToPointer() *SharingMode {
 	return &e
 }
-func (e *SharingMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SharingMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PAPER_VAULT_SHARING_MODE_UNSPECIFIED", "PAPER_VAULT_SHARING_MODE_INTERNAL", "PAPER_VAULT_SHARING_MODE_EXTERNAL":
+			return true
+		}
 	}
-	switch v {
-	case "PAPER_VAULT_SHARING_MODE_UNSPECIFIED":
-		fallthrough
-	case "PAPER_VAULT_SHARING_MODE_INTERNAL":
-		fallthrough
-	case "PAPER_VAULT_SHARING_MODE_EXTERNAL":
-		*e = SharingMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SharingMode: %v", v)
-	}
+	return false
 }
 
 // SortBy - Sort order
@@ -83,26 +69,16 @@ const (
 func (e SortBy) ToPointer() *SortBy {
 	return &e
 }
-func (e *SortBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SortBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SEARCH_SORT_BY_UNSPECIFIED", "SEARCH_SORT_BY_CREATED_DESC", "SEARCH_SORT_BY_CREATED_ASC", "SEARCH_SORT_BY_EXPIRES_ASC", "SEARCH_SORT_BY_NAME_ASC":
+			return true
+		}
 	}
-	switch v {
-	case "SEARCH_SORT_BY_UNSPECIFIED":
-		fallthrough
-	case "SEARCH_SORT_BY_CREATED_DESC":
-		fallthrough
-	case "SEARCH_SORT_BY_CREATED_ASC":
-		fallthrough
-	case "SEARCH_SORT_BY_EXPIRES_ASC":
-		fallthrough
-	case "SEARCH_SORT_BY_NAME_ASC":
-		*e = SortBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SortBy: %v", v)
-	}
+	return false
 }
 
 type Statuses string
@@ -119,28 +95,16 @@ const (
 func (e Statuses) ToPointer() *Statuses {
 	return &e
 }
-func (e *Statuses) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Statuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_STATUS_UNSPECIFIED", "SECRET_STATUS_ACTIVE", "SECRET_STATUS_EXPIRED", "SECRET_STATUS_BURNED", "SECRET_STATUS_REVOKED", "SECRET_STATUS_DATA_DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_STATUS_UNSPECIFIED":
-		fallthrough
-	case "SECRET_STATUS_ACTIVE":
-		fallthrough
-	case "SECRET_STATUS_EXPIRED":
-		fallthrough
-	case "SECRET_STATUS_BURNED":
-		fallthrough
-	case "SECRET_STATUS_REVOKED":
-		fallthrough
-	case "SECRET_STATUS_DATA_DELETED":
-		*e = Statuses(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Statuses: %v", v)
-	}
+	return false
 }
 
 // PaperSecretAdminServiceSearchRequest - Admin search request - can filter by any user's secrets.

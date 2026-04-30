@@ -14,7 +14,7 @@ type C1APIPolicyV1AccountProvisionPolicyTestTestResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// TestAccountProvisionPolicyResponse is the response for testing an account provision policy.
 	TestAccountProvisionPolicyResponse *shared.TestAccountProvisionPolicyResponse
 }
 
@@ -45,3 +45,6 @@ func (c *C1APIPolicyV1AccountProvisionPolicyTestTestResponse) GetTestAccountProv
 	}
 	return c.TestAccountProvisionPolicyResponse
 }
+
+// #region class-body-c1apipolicyv1accountprovisionpolicytesttestresponse
+// #endregion class-body-c1apipolicyv1accountprovisionpolicytesttestresponse

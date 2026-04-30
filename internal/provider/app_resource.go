@@ -7,11 +7,13 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/v2/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -32,29 +34,31 @@ type AppResource struct {
 
 // AppResourceModel describes the resource data model.
 type AppResourceModel struct {
-	AppAccountID                        types.String           `tfsdk:"app_account_id"`
-	AppAccountName                      types.String           `tfsdk:"app_account_name"`
-	AppUserMapper                       *tfTypes.AppUserMapper `tfsdk:"app_user_mapper"`
-	CertifyPolicyID                     types.String           `tfsdk:"certify_policy_id"`
-	ConnectorVersion                    types.Int64            `tfsdk:"connector_version"`
-	CreatedAt                           types.String           `tfsdk:"created_at"`
-	DefaultRequestCatalogID             types.String           `tfsdk:"default_request_catalog_id"`
-	DeletedAt                           types.String           `tfsdk:"-"`
-	Description                         types.String           `tfsdk:"description"`
-	DisplayName                         types.String           `tfsdk:"display_name"`
-	EnableConnectorSourcedOwnership     types.Bool             `tfsdk:"enable_connector_sourced_ownership"`
-	GrantPolicyID                       types.String           `tfsdk:"grant_policy_id"`
-	ID                                  types.String           `tfsdk:"id"`
-	IdentityMatching                    types.String           `tfsdk:"identity_matching"`
-	Instructions                        types.String           `tfsdk:"instructions"`
-	IsDirectory                         types.Bool             `tfsdk:"is_directory"`
-	IsManuallyManaged                   types.Bool             `tfsdk:"is_manually_managed"`
-	MonthlyCostUsd                      types.Int32            `tfsdk:"monthly_cost_usd"`
-	ParentAppID                         types.String           `tfsdk:"parent_app_id"`
-	RevokePolicyID                      types.String           `tfsdk:"revoke_policy_id"`
-	StrictAccessEntitlementProvisioning types.Bool             `tfsdk:"strict_access_entitlement_provisioning"`
-	UpdatedAt                           types.String           `tfsdk:"updated_at"`
-	UserCount                           types.String           `tfsdk:"user_count"`
+	AccessModel                         types.String                `tfsdk:"access_model"`
+	AppAccountID                        types.String                `tfsdk:"app_account_id"`
+	AppAccountName                      types.String                `tfsdk:"app_account_name"`
+	AppEntitlementOwnerRefs             []tfTypes.AppEntitlementRef `tfsdk:"app_entitlement_owner_refs"`
+	AppUserMapper                       *tfTypes.AppUserMapper      `tfsdk:"app_user_mapper"`
+	CertifyPolicyID                     types.String                `tfsdk:"certify_policy_id"`
+	ConnectorVersion                    types.Int64                 `tfsdk:"connector_version"`
+	CreatedAt                           types.String                `tfsdk:"created_at"`
+	DefaultRequestCatalogID             types.String                `tfsdk:"default_request_catalog_id"`
+	DeletedAt                           types.String                `tfsdk:"-"`
+	Description                         types.String                `tfsdk:"description"`
+	DisplayName                         types.String                `tfsdk:"display_name"`
+	EnableConnectorSourcedOwnership     types.Bool                  `tfsdk:"enable_connector_sourced_ownership"`
+	GrantPolicyID                       types.String                `tfsdk:"grant_policy_id"`
+	ID                                  types.String                `tfsdk:"id"`
+	IdentityMatching                    types.String                `tfsdk:"identity_matching"`
+	Instructions                        types.String                `tfsdk:"instructions"`
+	IsDirectory                         types.Bool                  `tfsdk:"is_directory"`
+	IsManuallyManaged                   types.Bool                  `tfsdk:"is_manually_managed"`
+	MonthlyCostUsd                      types.Int32                 `tfsdk:"monthly_cost_usd"`
+	ParentAppID                         types.String                `tfsdk:"parent_app_id"`
+	RevokePolicyID                      types.String                `tfsdk:"revoke_policy_id"`
+	StrictAccessEntitlementProvisioning types.Bool                  `tfsdk:"strict_access_entitlement_provisioning"`
+	UpdatedAt                           types.String                `tfsdk:"updated_at"`
+	UserCount                           types.String                `tfsdk:"user_count"`
 }
 
 func (r *AppResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,6 +69,11 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "App Resource",
 		Attributes: map[string]schema.Attribute{
+			"access_model": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `How this app models access. Derived during uplift from the app's resource type traits.` + "\n" +
+					` Sparse ACL feature.`,
+			},
 			"app_account_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the Account named by AccountName.`,
@@ -72,6 +81,34 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"app_account_name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.`,
+			},
+			"app_entitlement_owner_refs": schema.ListNestedAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				NestedObject: schema.NestedAttributeObject{
+					PlanModifiers: []planmodifier.Object{
+						objectplanmodifier.RequiresReplaceIfConfigured(),
+					},
+					Attributes: map[string]schema.Attribute{
+						"app_id": schema.StringAttribute{
+							Optional: true,
+							PlanModifiers: []planmodifier.String{
+								stringplanmodifier.RequiresReplaceIfConfigured(),
+							},
+							Description: `The appId field. Requires replacement if changed.`,
+						},
+						"id": schema.StringAttribute{
+							Optional: true,
+							PlanModifiers: []planmodifier.String{
+								stringplanmodifier.RequiresReplaceIfConfigured(),
+							},
+							Description: `The id field. Requires replacement if changed.`,
+						},
+					},
+				},
+				Description: `Sets entitlement owners on the app. Requires replacement if changed.`,
 			},
 			"app_user_mapper": schema.SingleNestedAttribute{
 				Computed: true,
@@ -136,15 +173,7 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"identity_matching": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Define the app user identity matching strategy for this app. must be one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"APP_USER_IDENTITY_MATCHING_UNSPECIFIED",
-						"APP_USER_IDENTITY_MATCHING_STRICT",
-						"APP_USER_IDENTITY_MATCHING_DISPLAY_NAME",
-						"APP_USER_IDENTITY_MATCHING_CUSTOM",
-					),
-				},
+				Description: `Define the app user identity matching strategy for this app. possible known values include one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM"]`,
 			},
 			"instructions": schema.StringAttribute{
 				Computed:    true,
@@ -254,43 +283,6 @@ func (r *AppResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppResponse(ctx, res.CreateAppResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppsGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Apps.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.GetAppResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetAppResponse(ctx, res1.GetAppResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -420,43 +412,6 @@ func (r *AppResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppsGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Apps.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.GetAppResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetAppResponse(ctx, res1.GetAppResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -498,7 +453,10 @@ func (r *AppResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

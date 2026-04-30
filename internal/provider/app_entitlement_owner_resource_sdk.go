@@ -19,6 +19,8 @@ func (r *AppEntitlementOwnerResourceModel) RefreshFromSharedListAppEntitlementOw
 			for _, v := range resp.UserIds {
 				r.UserIds = append(r.UserIds, types.StringValue(v))
 			}
+		} else {
+			r.UserIds = nil
 		}
 	}
 
@@ -34,17 +36,9 @@ func (r *AppEntitlementOwnerResourceModel) ToOperationsC1APIAppV1AppEntitlementO
 	var entitlementID string
 	entitlementID = r.EntitlementID.ValueString()
 
-	deleteAppEntitlementOwnersRequest, deleteAppEntitlementOwnersRequestDiags := r.ToSharedDeleteAppEntitlementOwnersRequest(ctx)
-	diags.Append(deleteAppEntitlementOwnersRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIAppV1AppEntitlementOwnersDeleteRequest{
-		AppID:                             appID,
-		EntitlementID:                     entitlementID,
-		DeleteAppEntitlementOwnersRequest: deleteAppEntitlementOwnersRequest,
+		AppID:         appID,
+		EntitlementID: entitlementID,
 	}
 
 	return &out, diags

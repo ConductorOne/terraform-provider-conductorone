@@ -2,7 +2,7 @@
 
 package shared
 
-// The ChannelSettings message.
+// ChannelSettings groups notification preferences for all supported channels.
 type ChannelSettings struct {
 	// The EmailChannelSettings message.
 	EmailChannelSettings *EmailChannelSettings `json:"email,omitempty"`

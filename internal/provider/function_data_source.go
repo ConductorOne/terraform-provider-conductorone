@@ -46,6 +46,7 @@ type FunctionDataSourceModel struct {
 	ScopedRoleIds            []types.String          `tfsdk:"scoped_role_ids"`
 	Secret                   map[string]types.String `tfsdk:"secret"`
 	UpdatedAt                types.String            `tfsdk:"updated_at"`
+	UseSpn                   types.Bool              `tfsdk:"use_spn"`
 }
 
 // Metadata returns the data source type name.
@@ -136,6 +137,15 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+			},
+			"use_spn": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `FN-347 transition flag. When true, the function authenticates to c1-api` + "\n" +
+					` as user:<sp_id> via the AssumeIdentity token exchange using its` + "\n" +
+					` ServicePrincipalBinding; when false, it authenticates as` + "\n" +
+					` function:<id>. Read-only from clients: set by CreateFunction (when the` + "\n" +
+					` tenant has completed the FunctionsToSPN migration) and by the migration` + "\n" +
+					` itself, never by UpdateFunction. Retired once all functions are on SPN.`,
 			},
 		},
 	}

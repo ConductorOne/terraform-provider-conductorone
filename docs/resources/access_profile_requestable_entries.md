@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_access_profile_requestable_entries Resource - conductorone"
+page_title: "conductorone_access_profile_requestable_entries Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AccessProfileRequestableEntries Resource
@@ -20,6 +20,7 @@ resource "conductorone_access_profile" "my_access_profile" {
   description                       = "...my_description..."
   display_name                      = "...my_display_name..."
   enrollment_behavior               = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED"
+  grant_policy_id                   = "...my_grant_policy_id..."
   published                         = false
   request_bundle                    = false
   unenrollment_behavior             = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED"

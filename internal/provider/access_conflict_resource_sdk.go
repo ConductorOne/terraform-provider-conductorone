@@ -16,6 +16,33 @@ func (r *AccessConflictResourceModel) RefreshFromSharedConflictMonitor(ctx conte
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AccessConflictNotificationConfig == nil {
+			r.AccessConflictNotificationConfig = nil
+		} else {
+			r.AccessConflictNotificationConfig = &tfTypes.AccessConflictNotificationConfig{}
+			if resp.AccessConflictNotificationConfig.EmailNotifications == nil {
+				r.AccessConflictNotificationConfig.EmailNotifications = nil
+			} else {
+				r.AccessConflictNotificationConfig.EmailNotifications = &tfTypes.EmailNotifications{}
+				r.AccessConflictNotificationConfig.EmailNotifications.Enabled = types.BoolPointerValue(resp.AccessConflictNotificationConfig.EmailNotifications.Enabled)
+				if resp.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds != nil {
+					r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds = make([]types.String, 0, len(resp.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds))
+					for _, v := range resp.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds {
+						r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds = append(r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds, types.StringValue(v))
+					}
+				} else {
+					r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds = nil
+				}
+			}
+			if resp.AccessConflictNotificationConfig.SlackNotifications == nil {
+				r.AccessConflictNotificationConfig.SlackNotifications = nil
+			} else {
+				r.AccessConflictNotificationConfig.SlackNotifications = &tfTypes.SlackNotifications{}
+				r.AccessConflictNotificationConfig.SlackNotifications.ChannelID = types.StringPointerValue(resp.AccessConflictNotificationConfig.SlackNotifications.ChannelID)
+				r.AccessConflictNotificationConfig.SlackNotifications.ChannelName = types.StringPointerValue(resp.AccessConflictNotificationConfig.SlackNotifications.ChannelName)
+				r.AccessConflictNotificationConfig.SlackNotifications.Enabled = types.BoolPointerValue(resp.AccessConflictNotificationConfig.SlackNotifications.Enabled)
+			}
+		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
@@ -24,31 +51,6 @@ func (r *AccessConflictResourceModel) RefreshFromSharedConflictMonitor(ctx conte
 		r.EntitlementSetAID = types.StringPointerValue(resp.EntitlementSetAID)
 		r.EntitlementSetBID = types.StringPointerValue(resp.EntitlementSetBID)
 		r.ID = types.StringPointerValue(resp.ID)
-		if resp.NotificationConfig == nil {
-			r.NotificationConfig = nil
-		} else {
-			r.NotificationConfig = &tfTypes.NotificationConfig1{}
-			if resp.NotificationConfig.EmailNotifications == nil {
-				r.NotificationConfig.EmailNotifications = nil
-			} else {
-				r.NotificationConfig.EmailNotifications = &tfTypes.EmailNotifications{}
-				r.NotificationConfig.EmailNotifications.Enabled = types.BoolPointerValue(resp.NotificationConfig.EmailNotifications.Enabled)
-				if resp.NotificationConfig.EmailNotifications.IdentityUserIds != nil {
-					r.NotificationConfig.EmailNotifications.IdentityUserIds = make([]types.String, 0, len(resp.NotificationConfig.EmailNotifications.IdentityUserIds))
-					for _, v := range resp.NotificationConfig.EmailNotifications.IdentityUserIds {
-						r.NotificationConfig.EmailNotifications.IdentityUserIds = append(r.NotificationConfig.EmailNotifications.IdentityUserIds, types.StringValue(v))
-					}
-				}
-			}
-			if resp.NotificationConfig.SlackNotifications == nil {
-				r.NotificationConfig.SlackNotifications = nil
-			} else {
-				r.NotificationConfig.SlackNotifications = &tfTypes.SlackNotifications{}
-				r.NotificationConfig.SlackNotifications.ChannelID = types.StringPointerValue(resp.NotificationConfig.SlackNotifications.ChannelID)
-				r.NotificationConfig.SlackNotifications.ChannelName = types.StringPointerValue(resp.NotificationConfig.SlackNotifications.ChannelName)
-				r.NotificationConfig.SlackNotifications.Enabled = types.BoolPointerValue(resp.NotificationConfig.SlackNotifications.Enabled)
-			}
-		}
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
@@ -119,21 +121,21 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorCreateRequest(ctx c
 	var displayName string
 	displayName = r.DisplayName.ValueString()
 
-	var notificationConfig *shared.NotificationConfig1
-	if r.NotificationConfig != nil {
+	var accessConflictNotificationConfig *shared.AccessConflictNotificationConfig
+	if r.AccessConflictNotificationConfig != nil {
 		var emailNotifications *shared.EmailNotifications
-		if r.NotificationConfig.EmailNotifications != nil {
+		if r.AccessConflictNotificationConfig.EmailNotifications != nil {
 			enabled := new(bool)
-			if !r.NotificationConfig.EmailNotifications.Enabled.IsUnknown() && !r.NotificationConfig.EmailNotifications.Enabled.IsNull() {
-				*enabled = r.NotificationConfig.EmailNotifications.Enabled.ValueBool()
+			if !r.AccessConflictNotificationConfig.EmailNotifications.Enabled.IsUnknown() && !r.AccessConflictNotificationConfig.EmailNotifications.Enabled.IsNull() {
+				*enabled = r.AccessConflictNotificationConfig.EmailNotifications.Enabled.ValueBool()
 			} else {
 				enabled = nil
 			}
 			var identityUserIds []string
-			if r.NotificationConfig.EmailNotifications.IdentityUserIds != nil {
-				identityUserIds = make([]string, 0, len(r.NotificationConfig.EmailNotifications.IdentityUserIds))
-				for identityUserIdsIndex := range r.NotificationConfig.EmailNotifications.IdentityUserIds {
-					identityUserIds = append(identityUserIds, r.NotificationConfig.EmailNotifications.IdentityUserIds[identityUserIdsIndex].ValueString())
+			if r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds != nil {
+				identityUserIds = make([]string, 0, len(r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds))
+				for identityUserIdsIndex := range r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds {
+					identityUserIds = append(identityUserIds, r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds[identityUserIdsIndex].ValueString())
 				}
 			}
 			emailNotifications = &shared.EmailNotifications{
@@ -142,22 +144,22 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorCreateRequest(ctx c
 			}
 		}
 		var slackNotifications *shared.SlackNotifications
-		if r.NotificationConfig.SlackNotifications != nil {
+		if r.AccessConflictNotificationConfig.SlackNotifications != nil {
 			channelID := new(string)
-			if !r.NotificationConfig.SlackNotifications.ChannelID.IsUnknown() && !r.NotificationConfig.SlackNotifications.ChannelID.IsNull() {
-				*channelID = r.NotificationConfig.SlackNotifications.ChannelID.ValueString()
+			if !r.AccessConflictNotificationConfig.SlackNotifications.ChannelID.IsUnknown() && !r.AccessConflictNotificationConfig.SlackNotifications.ChannelID.IsNull() {
+				*channelID = r.AccessConflictNotificationConfig.SlackNotifications.ChannelID.ValueString()
 			} else {
 				channelID = nil
 			}
 			channelName := new(string)
-			if !r.NotificationConfig.SlackNotifications.ChannelName.IsUnknown() && !r.NotificationConfig.SlackNotifications.ChannelName.IsNull() {
-				*channelName = r.NotificationConfig.SlackNotifications.ChannelName.ValueString()
+			if !r.AccessConflictNotificationConfig.SlackNotifications.ChannelName.IsUnknown() && !r.AccessConflictNotificationConfig.SlackNotifications.ChannelName.IsNull() {
+				*channelName = r.AccessConflictNotificationConfig.SlackNotifications.ChannelName.ValueString()
 			} else {
 				channelName = nil
 			}
 			enabled1 := new(bool)
-			if !r.NotificationConfig.SlackNotifications.Enabled.IsUnknown() && !r.NotificationConfig.SlackNotifications.Enabled.IsNull() {
-				*enabled1 = r.NotificationConfig.SlackNotifications.Enabled.ValueBool()
+			if !r.AccessConflictNotificationConfig.SlackNotifications.Enabled.IsUnknown() && !r.AccessConflictNotificationConfig.SlackNotifications.Enabled.IsNull() {
+				*enabled1 = r.AccessConflictNotificationConfig.SlackNotifications.Enabled.ValueBool()
 			} else {
 				enabled1 = nil
 			}
@@ -167,15 +169,15 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorCreateRequest(ctx c
 				Enabled:     enabled1,
 			}
 		}
-		notificationConfig = &shared.NotificationConfig1{
+		accessConflictNotificationConfig = &shared.AccessConflictNotificationConfig{
 			EmailNotifications: emailNotifications,
 			SlackNotifications: slackNotifications,
 		}
 	}
 	out := shared.ConflictMonitorCreateRequest{
-		Description:        description,
-		DisplayName:        displayName,
-		NotificationConfig: notificationConfig,
+		Description:                      description,
+		DisplayName:                      displayName,
+		AccessConflictNotificationConfig: accessConflictNotificationConfig,
 	}
 
 	return &out, diags
@@ -204,21 +206,21 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorUpdateRequest(ctx c
 	} else {
 		displayName = nil
 	}
-	var notificationConfig *shared.NotificationConfig1
-	if r.NotificationConfig != nil {
+	var accessConflictNotificationConfig *shared.AccessConflictNotificationConfig
+	if r.AccessConflictNotificationConfig != nil {
 		var emailNotifications *shared.EmailNotifications
-		if r.NotificationConfig.EmailNotifications != nil {
+		if r.AccessConflictNotificationConfig.EmailNotifications != nil {
 			enabled := new(bool)
-			if !r.NotificationConfig.EmailNotifications.Enabled.IsUnknown() && !r.NotificationConfig.EmailNotifications.Enabled.IsNull() {
-				*enabled = r.NotificationConfig.EmailNotifications.Enabled.ValueBool()
+			if !r.AccessConflictNotificationConfig.EmailNotifications.Enabled.IsUnknown() && !r.AccessConflictNotificationConfig.EmailNotifications.Enabled.IsNull() {
+				*enabled = r.AccessConflictNotificationConfig.EmailNotifications.Enabled.ValueBool()
 			} else {
 				enabled = nil
 			}
 			var identityUserIds []string
-			if r.NotificationConfig.EmailNotifications.IdentityUserIds != nil {
-				identityUserIds = make([]string, 0, len(r.NotificationConfig.EmailNotifications.IdentityUserIds))
-				for identityUserIdsIndex := range r.NotificationConfig.EmailNotifications.IdentityUserIds {
-					identityUserIds = append(identityUserIds, r.NotificationConfig.EmailNotifications.IdentityUserIds[identityUserIdsIndex].ValueString())
+			if r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds != nil {
+				identityUserIds = make([]string, 0, len(r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds))
+				for identityUserIdsIndex := range r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds {
+					identityUserIds = append(identityUserIds, r.AccessConflictNotificationConfig.EmailNotifications.IdentityUserIds[identityUserIdsIndex].ValueString())
 				}
 			}
 			emailNotifications = &shared.EmailNotifications{
@@ -227,22 +229,22 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorUpdateRequest(ctx c
 			}
 		}
 		var slackNotifications *shared.SlackNotifications
-		if r.NotificationConfig.SlackNotifications != nil {
+		if r.AccessConflictNotificationConfig.SlackNotifications != nil {
 			channelID := new(string)
-			if !r.NotificationConfig.SlackNotifications.ChannelID.IsUnknown() && !r.NotificationConfig.SlackNotifications.ChannelID.IsNull() {
-				*channelID = r.NotificationConfig.SlackNotifications.ChannelID.ValueString()
+			if !r.AccessConflictNotificationConfig.SlackNotifications.ChannelID.IsUnknown() && !r.AccessConflictNotificationConfig.SlackNotifications.ChannelID.IsNull() {
+				*channelID = r.AccessConflictNotificationConfig.SlackNotifications.ChannelID.ValueString()
 			} else {
 				channelID = nil
 			}
 			channelName := new(string)
-			if !r.NotificationConfig.SlackNotifications.ChannelName.IsUnknown() && !r.NotificationConfig.SlackNotifications.ChannelName.IsNull() {
-				*channelName = r.NotificationConfig.SlackNotifications.ChannelName.ValueString()
+			if !r.AccessConflictNotificationConfig.SlackNotifications.ChannelName.IsUnknown() && !r.AccessConflictNotificationConfig.SlackNotifications.ChannelName.IsNull() {
+				*channelName = r.AccessConflictNotificationConfig.SlackNotifications.ChannelName.ValueString()
 			} else {
 				channelName = nil
 			}
 			enabled1 := new(bool)
-			if !r.NotificationConfig.SlackNotifications.Enabled.IsUnknown() && !r.NotificationConfig.SlackNotifications.Enabled.IsNull() {
-				*enabled1 = r.NotificationConfig.SlackNotifications.Enabled.ValueBool()
+			if !r.AccessConflictNotificationConfig.SlackNotifications.Enabled.IsUnknown() && !r.AccessConflictNotificationConfig.SlackNotifications.Enabled.IsNull() {
+				*enabled1 = r.AccessConflictNotificationConfig.SlackNotifications.Enabled.ValueBool()
 			} else {
 				enabled1 = nil
 			}
@@ -252,15 +254,15 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorUpdateRequest(ctx c
 				Enabled:     enabled1,
 			}
 		}
-		notificationConfig = &shared.NotificationConfig1{
+		accessConflictNotificationConfig = &shared.AccessConflictNotificationConfig{
 			EmailNotifications: emailNotifications,
 			SlackNotifications: slackNotifications,
 		}
 	}
 	out := shared.ConflictMonitorUpdateRequest{
-		Description:        description,
-		DisplayName:        displayName,
-		NotificationConfig: notificationConfig,
+		Description:                      description,
+		DisplayName:                      displayName,
+		AccessConflictNotificationConfig: accessConflictNotificationConfig,
 	}
 
 	return &out, diags

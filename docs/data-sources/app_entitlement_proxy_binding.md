@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_proxy_binding Data Source - conductorone"
+page_title: "conductorone_app_entitlement_proxy_binding Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppEntitlementProxyBinding DataSource
@@ -32,18 +32,18 @@ data "conductorone_app_entitlement_proxy_binding" "my_app_entitlement_proxy_bind
 
 ### Required
 
-- `dst_app_entitlement_id` (String)
-- `dst_app_id` (String)
-- `src_app_entitlement_id` (String)
-- `src_app_id` (String)
+- `dst_app_entitlement_id` (String) The ID of the destination (child) entitlement.
+- `dst_app_id` (String) The ID of the app that owns the destination entitlement.
+- `src_app_entitlement_id` (String) The ID of the source (parent) entitlement.
+- `src_app_id` (String) The ID of the app that owns the source entitlement.
 
 ### Read-Only
 
 - `created_at` (String)
 - `deleted_at` (String)
 - `disabled_at` (String)
-- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
-- `system_builtin` (Boolean) The systemBuiltin field.
+- `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
+- `system_builtin` (Boolean) If true, this binding was created by the system and cannot be removed by the user.
 - `updated_at` (String)
 
 <a id="nestedatt--expanded"></a>

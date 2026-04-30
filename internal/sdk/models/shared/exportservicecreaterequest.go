@@ -9,7 +9,7 @@ package shared
 type ExportServiceCreateRequest struct {
 	// The ExportToDatasource message.
 	ExportToDatasource *ExportToDatasource `json:"datasource,omitempty"`
-	// The display name of the new policy.
+	// The display name of the new system log exporter.
 	DisplayName *string `json:"displayName,omitempty"`
 }
 

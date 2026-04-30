@@ -4,7 +4,7 @@ package shared
 
 // The GetStepUpProviderResponse message.
 type GetStepUpProviderResponse struct {
-	// The StepUpProvider message.
+	// StepUpProvider represents a configured step-up authentication integration (e.g., Duo, custom OIDC).
 	//
 	// This message contains a oneof named settings. Only a single field of the following list may be set at a time:
 	//   - oauth2

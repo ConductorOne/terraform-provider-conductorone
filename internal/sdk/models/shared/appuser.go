@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e AppUserType) ToPointer() *AppUserType {
 	return &e
 }
-func (e *AppUserType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppUserType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_TYPE_USER":
-		fallthrough
-	case "APP_USER_TYPE_SERVICE_ACCOUNT":
-		fallthrough
-	case "APP_USER_TYPE_SYSTEM_ACCOUNT":
-		*e = AppUserType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppUserType: %v", v)
-	}
+	return false
 }
 
 type AppUserProfile struct {

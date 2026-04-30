@@ -7,6 +7,7 @@ import (
 )
 
 type AppEntitlement struct {
+	ProvisionPolicy                *ProvisionPolicy             `tfsdk:"provision_policy"`
 	Alias                          types.String                 `tfsdk:"alias"`
 	AppID                          types.String                 `tfsdk:"app_id"`
 	AppResourceID                  types.String                 `tfsdk:"app_resource_id"`
@@ -19,10 +20,11 @@ type AppEntitlement struct {
 	DeprovisionerPolicy            *DeprovisionerPolicy         `tfsdk:"deprovisioner_policy"`
 	Description                    types.String                 `tfsdk:"description"`
 	DisplayName                    types.String                 `tfsdk:"display_name"`
-	DurationGrant                  types.String                 `tfsdk:"duration_grant" tfPlanOnly:"true"`
-	DurationUnset                  *AppEntitlementDurationUnset `tfsdk:"duration_unset" tfPlanOnly:"true"`
+	DurationGrant                  types.String                 `tfsdk:"duration_grant"`
+	DurationUnset                  *AppEntitlementDurationUnset `tfsdk:"duration_unset"`
 	EmergencyGrantEnabled          types.Bool                   `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID         types.String                 `tfsdk:"emergency_grant_policy_id"`
+	ExternalID                     types.String                 `tfsdk:"external_id"`
 	GrantCount                     types.String                 `tfsdk:"grant_count"`
 	GrantPolicyID                  types.String                 `tfsdk:"grant_policy_id"`
 	ID                             types.String                 `tfsdk:"id"`
@@ -30,7 +32,6 @@ type AppEntitlement struct {
 	IsManuallyManaged              types.Bool                   `tfsdk:"is_manually_managed"`
 	MatchBatonID                   types.String                 `tfsdk:"match_baton_id"`
 	OverrideAccessRequestsDefaults types.Bool                   `tfsdk:"override_access_requests_defaults"`
-	ProvisionPolicy                *ProvisionPolicy             `tfsdk:"provision_policy"`
 	Purpose                        types.String                 `tfsdk:"purpose"`
 	RequestSchemaID                types.String                 `tfsdk:"request_schema_id"`
 	RevokePolicyID                 types.String                 `tfsdk:"revoke_policy_id"`

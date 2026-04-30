@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_aws_external_id Data Source - conductorone"
+page_title: "conductorone_aws_external_id Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AwsExternalID DataSource
@@ -23,4 +23,4 @@ data "conductorone_aws_external_id" "my_aws_external_id" {
 
 ### Read-Only
 
-- `external_id` (String) The externalId field.
+- `external_id` (String) The external ID value to include in the AWS IAM role trust policy condition.

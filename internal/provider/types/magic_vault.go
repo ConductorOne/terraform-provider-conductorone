@@ -7,6 +7,6 @@ import (
 )
 
 type MagicVault struct {
-	AllowedViews       types.Int64 `tfsdk:"allowed_views"`
 	AllowUnauthedViews types.Bool  `tfsdk:"allow_unauthed_views"`
+	AllowedViews       types.Int64 `tfsdk:"allowed_views"`
 }

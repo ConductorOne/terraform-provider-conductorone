@@ -30,7 +30,7 @@ func newAppResource(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration,
 }
 
 // List
-// Invokes the c1.api.app.v1.AppResourceService.List method.
+// List app resources for a given app and optionally filter by resource type.
 func (s *AppResource) List(ctx context.Context, request operations.C1APIAppV1AppResourceServiceListRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceServiceListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -82,7 +82,7 @@ func (s *AppResource) List(ctx context.Context, request operations.C1APIAppV1App
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -164,7 +164,7 @@ func (s *AppResource) List(ctx context.Context, request operations.C1APIAppV1App
 }
 
 // CreateManuallyManagedAppResource - Create Manually Managed App Resource
-// Invokes the c1.api.app.v1.AppResourceService.CreateManuallyManagedAppResource method.
+// Create a manually managed app resource tracked directly by ConductorOne under an existing resource type.
 func (s *AppResource) CreateManuallyManagedAppResource(ctx context.Context, request operations.C1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -301,7 +301,7 @@ func (s *AppResource) CreateManuallyManagedAppResource(ctx context.Context, requ
 }
 
 // DeleteManuallyManagedAppResource - Delete Manually Managed App Resource
-// Invokes the c1.api.app.v1.AppResourceService.DeleteManuallyManagedAppResource method.
+// Delete a manually managed app resource and its associated entitlements from an app.
 func (s *AppResource) DeleteManuallyManagedAppResource(ctx context.Context, request operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -425,6 +425,8 @@ func (s *AppResource) DeleteManuallyManagedAppResource(ctx context.Context, requ
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -438,7 +440,7 @@ func (s *AppResource) DeleteManuallyManagedAppResource(ctx context.Context, requ
 }
 
 // Get
-// Invokes the c1.api.app.v1.AppResourceService.Get method.
+// Retrieve a single app resource by its app, resource type, and resource ID.
 func (s *AppResource) Get(ctx context.Context, request operations.C1APIAppV1AppResourceServiceGetRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -556,6 +558,7 @@ func (s *AppResource) Get(ctx context.Context, request operations.C1APIAppV1AppR
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -569,7 +572,7 @@ func (s *AppResource) Get(ctx context.Context, request operations.C1APIAppV1AppR
 }
 
 // Update
-// Invokes the c1.api.app.v1.AppResourceService.Update method.
+// Update an app resource's fields. Only the fields specified in the update mask are modified.
 func (s *AppResource) Update(ctx context.Context, request operations.C1APIAppV1AppResourceServiceUpdateRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

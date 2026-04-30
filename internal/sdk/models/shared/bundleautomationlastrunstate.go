@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -23,30 +21,22 @@ const (
 func (e BundleAutomationLastRunStateStatus) ToPointer() *BundleAutomationLastRunStateStatus {
 	return &e
 }
-func (e *BundleAutomationLastRunStateStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BundleAutomationLastRunStateStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED", "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS", "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE", "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS", "BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL":
+			return true
+		}
 	}
-	switch v {
-	case "BUNDLE_AUTOMATION_RUN_STATUS_UNSPECIFIED":
-		fallthrough
-	case "BUNDLE_AUTOMATION_RUN_STATUS_SUCCESS":
-		fallthrough
-	case "BUNDLE_AUTOMATION_RUN_STATUS_FAILURE":
-		fallthrough
-	case "BUNDLE_AUTOMATION_RUN_STATUS_IN_PROGRESS":
-		fallthrough
-	case "BUNDLE_AUTOMATION_RUN_STATUS_WAITING_FOR_APPROVAL":
-		*e = BundleAutomationLastRunStateStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BundleAutomationLastRunStateStatus: %v", v)
-	}
+	return false
 }
 
 // The BundleAutomationLastRunState message.
 type BundleAutomationLastRunState struct {
+	// The BundleAutomationCelEvaluationState message.
+	BundleAutomationCelEvaluationState *BundleAutomationCelEvaluationState `json:"celEvaluation,omitempty"`
 	// The errorMessage field.
 	ErrorMessage *string    `json:"errorMessage,omitempty"`
 	LastRunAt    *time.Time `json:"lastRunAt,omitempty"`
@@ -63,6 +53,13 @@ func (b *BundleAutomationLastRunState) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (b *BundleAutomationLastRunState) GetBundleAutomationCelEvaluationState() *BundleAutomationCelEvaluationState {
+	if b == nil {
+		return nil
+	}
+	return b.BundleAutomationCelEvaluationState
 }
 
 func (b *BundleAutomationLastRunState) GetErrorMessage() *string {

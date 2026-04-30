@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ClientIDMetadataDocumentPolicy - Policy for metadata document client_id URLs.
 type ClientIDMetadataDocumentPolicy string
 
@@ -20,47 +15,39 @@ const (
 func (e ClientIDMetadataDocumentPolicy) ToPointer() *ClientIDMetadataDocumentPolicy {
 	return &e
 }
-func (e *ClientIDMetadataDocumentPolicy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientIDMetadataDocumentPolicy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CLIENT_ID_METADATA_DOCUMENT_POLICY_UNSPECIFIED", "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOW_ALL", "CLIENT_ID_METADATA_DOCUMENT_POLICY_REQUESTABLE", "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOWLIST_ONLY":
+			return true
+		}
 	}
-	switch v {
-	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_UNSPECIFIED":
-		fallthrough
-	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOW_ALL":
-		fallthrough
-	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_REQUESTABLE":
-		fallthrough
-	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOWLIST_ONLY":
-		*e = ClientIDMetadataDocumentPolicy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientIDMetadataDocumentPolicy: %v", v)
-	}
+	return false
 }
 
-// The SessionSettings message.
+// SessionSettings configures session security for the tenant, including timeouts and per-role IP restrictions.
 type SessionSettings struct {
 	// Policy ID for REQUESTABLE mode approval routing.
 	ClientIDApprovalRequestPolicyID *string `json:"clientIdApprovalRequestPolicyId,omitempty"`
 	// Policy for metadata document client_id URLs.
 	ClientIDMetadataDocumentPolicy *ClientIDMetadataDocumentPolicy `json:"clientIdMetadataDocumentPolicy,omitempty"`
-	// The CIDRRestriction message.
+	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
 	CIDRRestriction *CIDRRestriction `json:"connectorSource,omitempty"`
-	// The CIDRRestriction message.
+	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
 	CIDRRestriction1 *CIDRRestriction `json:"externalClientSource,omitempty"`
 	// Enable external client registration (OAuth 2.0 DCR) for MCP clients
 	//  like Claude Desktop, Cursor, and other AI assistants.
 	ExternalClientsEnabled *bool   `json:"externalClientsEnabled,omitempty"`
 	MaxSessionLength       *string `json:"maxSessionLength,omitempty"`
-	// The CIDRRestriction message.
+	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
 	CIDRRestriction2 *CIDRRestriction `json:"pccAdminSource,omitempty"`
-	// The CIDRRestriction message.
+	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
 	CIDRRestriction3 *CIDRRestriction `json:"pccUserSource,omitempty"`
-	// The CIDRRestriction message.
+	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
 	CIDRRestriction4 *CIDRRestriction `json:"ssoAdminSource,omitempty"`
-	// The CIDRRestriction message.
+	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
 	CIDRRestriction5 *CIDRRestriction `json:"ssoUserSource,omitempty"`
 }
 

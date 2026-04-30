@@ -9,9 +9,6 @@ package shared
 //   - passwordField
 //   - selectField
 //   - pickerField
-//
-// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-//   - rules
 type StringField struct {
 	// The defaultValue field.
 	DefaultValue *string `json:"defaultValue,omitempty"`

@@ -2,11 +2,11 @@
 
 package shared
 
-// The AppUserServiceListCredentialsResponse message.
+// AppUserServiceListCredentialsResponse - The response message for listing credentials of an app user.
 type AppUserServiceListCredentialsResponse struct {
-	// The list field.
+	// The list of credential results.
 	List []AppUserCredential `json:"list,omitempty"`
-	// The nextPageToken field.
+	// The token for fetching the next page of results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

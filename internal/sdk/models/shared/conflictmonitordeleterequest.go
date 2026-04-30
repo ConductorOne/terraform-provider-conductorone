@@ -2,6 +2,6 @@
 
 package shared
 
-// The ConflictMonitorDeleteRequest message.
+// ConflictMonitorDeleteRequest - The request message for deleting a conflict monitor.
 type ConflictMonitorDeleteRequest struct {
 }

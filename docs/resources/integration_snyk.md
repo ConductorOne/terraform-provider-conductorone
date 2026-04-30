@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_snyk Resource - conductorone"
+page_title: "conductorone_integration_snyk Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Snyk Integration Resource

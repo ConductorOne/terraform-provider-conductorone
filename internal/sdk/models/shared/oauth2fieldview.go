@@ -5,3 +5,6 @@ package shared
 // The Oauth2FieldView message.
 type Oauth2FieldView struct {
 }
+
+// #region class-body-oauth2fieldview
+// #endregion class-body-oauth2fieldview

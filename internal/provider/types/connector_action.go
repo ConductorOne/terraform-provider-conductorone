@@ -7,8 +7,8 @@ import (
 )
 
 type ConnectorAction struct {
+	ConnectorRef   *ConnectorRef `tfsdk:"connector_ref"`
 	ActionName     types.String  `tfsdk:"action_name"`
 	ArgsTemplate   *ArgsTemplate `tfsdk:"args_template"`
-	ConnectorRef   *ConnectorRef `tfsdk:"connector_ref"`
 	ResourceTypeID types.String  `tfsdk:"resource_type_id"`
 }

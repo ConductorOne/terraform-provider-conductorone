@@ -83,7 +83,7 @@ func (s *RequestCatalogManagement) List(ctx context.Context, request operations.
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -302,7 +302,7 @@ func (s *RequestCatalogManagement) Create(ctx context.Context, request *shared.R
 }
 
 // ListAllEntitlementIdsPerApp - List All Entitlement Ids Per App
-// Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ListAllEntitlementIdsPerApp method.
+// List all requestable entitlement IDs in a catalog without pagination.
 func (s *RequestCatalogManagement) ListAllEntitlementIdsPerApp(ctx context.Context, request operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppRequest, opts ...operations.Option) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -420,6 +420,7 @@ func (s *RequestCatalogManagement) ListAllEntitlementIdsPerApp(ctx context.Conte
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -485,7 +486,7 @@ func (s *RequestCatalogManagement) ListEntitlementsPerCatalog(ctx context.Contex
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -567,7 +568,7 @@ func (s *RequestCatalogManagement) ListEntitlementsPerCatalog(ctx context.Contex
 }
 
 // UpdateAppEntitlements - Update App Entitlements
-// Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.UpdateAppEntitlements method.
+// Replace the full set of requestable entitlements in a catalog with the provided list.
 func (s *RequestCatalogManagement) UpdateAppEntitlements(ctx context.Context, request operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest, opts ...operations.Option) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -828,6 +829,8 @@ func (s *RequestCatalogManagement) RemoveAppEntitlements(ctx context.Context, re
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -1102,6 +1105,8 @@ func (s *RequestCatalogManagement) DeleteRequestableEntry(ctx context.Context, r
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -1382,7 +1387,7 @@ func (s *RequestCatalogManagement) CreateRequestableEntry(ctx context.Context, r
 }
 
 // RemoveAccessEntitlements - Remove Access Entitlements
-// Remove visibility bindings (access entitlements) to a catalog.
+// Remove visibility bindings (access entitlements) from a catalog.
 func (s *RequestCatalogManagement) RemoveAccessEntitlements(ctx context.Context, request operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsRequest, opts ...operations.Option) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAccessEntitlementsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1506,6 +1511,8 @@ func (s *RequestCatalogManagement) RemoveAccessEntitlements(ctx context.Context,
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -1708,7 +1715,7 @@ func (s *RequestCatalogManagement) ListEntitlementsForAccess(ctx context.Context
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -1914,6 +1921,8 @@ func (s *RequestCatalogManagement) Delete(ctx context.Context, request operation
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -2045,6 +2054,7 @@ func (s *RequestCatalogManagement) Get(ctx context.Context, request operations.C
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -2195,7 +2205,7 @@ func (s *RequestCatalogManagement) Update(ctx context.Context, request operation
 }
 
 // DeleteBundleAutomation - Delete Bundle Automation
-// Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.DeleteBundleAutomation method.
+// Delete the bundle automation rule for a catalog, stopping automatic membership syncing.
 func (s *RequestCatalogManagement) DeleteBundleAutomation(ctx context.Context, request operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationRequest, opts ...operations.Option) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2319,6 +2329,8 @@ func (s *RequestCatalogManagement) DeleteBundleAutomation(ctx context.Context, r
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -2450,6 +2462,7 @@ func (s *RequestCatalogManagement) GetBundleAutomation(ctx context.Context, requ
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -2463,7 +2476,7 @@ func (s *RequestCatalogManagement) GetBundleAutomation(ctx context.Context, requ
 }
 
 // SetBundleAutomation - Set Bundle Automation
-// Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.SetBundleAutomation method.
+// Create or update the bundle automation rule for a catalog that automatically syncs catalog membership.
 func (s *RequestCatalogManagement) SetBundleAutomation(ctx context.Context, request operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationRequest, opts ...operations.Option) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceSetBundleAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2600,7 +2613,7 @@ func (s *RequestCatalogManagement) SetBundleAutomation(ctx context.Context, requ
 }
 
 // CreateBundleAutomation - Create Bundle Automation
-// Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.CreateBundleAutomation method.
+// Create a new bundle automation rule for a catalog that automatically syncs catalog membership from a query.
 func (s *RequestCatalogManagement) CreateBundleAutomation(ctx context.Context, request operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationRequest, opts ...operations.Option) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceCreateBundleAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2737,7 +2750,7 @@ func (s *RequestCatalogManagement) CreateBundleAutomation(ctx context.Context, r
 }
 
 // ResumePausedBundleAutomation - Resume Paused Bundle Automation
-// Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ResumePausedBundleAutomation method.
+// Resume a bundle automation that was paused by the circuit breaker after detecting excessive membership changes.
 func (s *RequestCatalogManagement) ResumePausedBundleAutomation(ctx context.Context, request operations.C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationRequest, opts ...operations.Option) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceResumePausedBundleAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2874,7 +2887,7 @@ func (s *RequestCatalogManagement) ResumePausedBundleAutomation(ctx context.Cont
 }
 
 // ForceRunBundleAutomation - Force Run Bundle Automation
-// Invokes the c1.api.requestcatalog.v1.RequestCatalogManagementService.ForceRunBundleAutomation method.
+// Trigger an immediate execution of a catalog's bundle automation, bypassing the normal schedule.
 func (s *RequestCatalogManagement) ForceRunBundleAutomation(ctx context.Context, request operations.C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationRequest, opts ...operations.Option) (*operations.C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

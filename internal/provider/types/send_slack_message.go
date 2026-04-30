@@ -10,4 +10,7 @@ type SendSlackMessage struct {
 	Body           types.String `tfsdk:"body"`
 	ChannelName    types.String `tfsdk:"channel_name"`
 	ChannelNameCel types.String `tfsdk:"channel_name_cel"`
+	UseSubjectUser types.Bool   `tfsdk:"use_subject_user"`
+	UserIdsCel     types.String `tfsdk:"user_ids_cel"`
+	UserRefs       []UserRef    `tfsdk:"user_refs"`
 }

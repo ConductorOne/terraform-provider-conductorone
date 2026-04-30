@@ -2,11 +2,11 @@
 
 package shared
 
-// The ConnectorScheduleCron message.
+// ConnectorScheduleCron - A cron-based schedule definition for connector syncs.
 type ConnectorScheduleCron struct {
-	// The cronSpec field.
+	// The cron expression defining the sync schedule.
 	CronSpec *string `json:"cronSpec,omitempty"`
-	// The timezone field.
+	// The IANA timezone name for the cron schedule (e.g., "America/Los_Angeles").
 	Timezone *string `json:"timezone,omitempty"`
 }
 

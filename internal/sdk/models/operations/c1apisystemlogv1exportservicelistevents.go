@@ -26,6 +26,9 @@ func (c *C1APISystemlogV1ExportServiceListEventsRequest) GetExportServiceListEve
 	return c.ExportServiceListEventsRequest
 }
 
+// #region class-body-c1apisystemlogv1exportservicelisteventsrequest
+// #endregion class-body-c1apisystemlogv1exportservicelisteventsrequest
+
 type C1APISystemlogV1ExportServiceListEventsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -33,7 +36,7 @@ type C1APISystemlogV1ExportServiceListEventsResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// ExportServiceListEventsResponse is the response containing audit events for an export.
 	ExportServiceListEventsResponse *shared.ExportServiceListEventsResponse
 }
 
@@ -64,3 +67,6 @@ func (c *C1APISystemlogV1ExportServiceListEventsResponse) GetExportServiceListEv
 	}
 	return c.ExportServiceListEventsResponse
 }
+
+// #region class-body-c1apisystemlogv1exportservicelisteventsresponse
+// #endregion class-body-c1apisystemlogv1exportservicelisteventsresponse

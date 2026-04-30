@@ -9,8 +9,8 @@ import (
 type ReassignedByErrorAction struct {
 	Description     types.String `tfsdk:"description"`
 	ErrorCode       types.String `tfsdk:"error_code"`
-	ErroredAt       types.String `tfsdk:"errored_at"`
 	ErrorUserID     types.String `tfsdk:"error_user_id"`
+	ErroredAt       types.String `tfsdk:"errored_at"`
 	NewPolicyStepID types.String `tfsdk:"new_policy_step_id"`
 	ReassignedAt    types.String `tfsdk:"reassigned_at"`
 }

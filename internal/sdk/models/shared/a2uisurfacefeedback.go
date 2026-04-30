@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,28 +19,24 @@ const (
 func (e Sentiment) ToPointer() *Sentiment {
 	return &e
 }
-func (e *Sentiment) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Sentiment) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "A2UI_SURFACE_FEEDBACK_SENTIMENT_UNSPECIFIED", "A2UI_SURFACE_FEEDBACK_SENTIMENT_POSITIVE", "A2UI_SURFACE_FEEDBACK_SENTIMENT_NEGATIVE":
+			return true
+		}
 	}
-	switch v {
-	case "A2UI_SURFACE_FEEDBACK_SENTIMENT_UNSPECIFIED":
-		fallthrough
-	case "A2UI_SURFACE_FEEDBACK_SENTIMENT_POSITIVE":
-		fallthrough
-	case "A2UI_SURFACE_FEEDBACK_SENTIMENT_NEGATIVE":
-		*e = Sentiment(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Sentiment: %v", v)
-	}
+	return false
 }
 
 // A2UISurfaceFeedback represents user feedback for a surface.
 type A2UISurfaceFeedback struct {
 	// The actionName field.
 	ActionName *string `json:"actionName,omitempty"`
+	// The componentsSnapshot field.
+	ComponentsSnapshot *string `json:"componentsSnapshot,omitempty"`
 	// The conversationId field.
 	ConversationID *string    `json:"conversationId,omitempty"`
 	CreatedAt      *time.Time `json:"createdAt,omitempty"`
@@ -76,6 +70,13 @@ func (a *A2UISurfaceFeedback) GetActionName() *string {
 		return nil
 	}
 	return a.ActionName
+}
+
+func (a *A2UISurfaceFeedback) GetComponentsSnapshot() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ComponentsSnapshot
 }
 
 func (a *A2UISurfaceFeedback) GetConversationID() *string {
@@ -133,3 +134,6 @@ func (a *A2UISurfaceFeedback) GetText() *string {
 	}
 	return a.Text
 }
+
+// #region class-body-a2uisurfacefeedback
+// #endregion class-body-a2uisurfacefeedback

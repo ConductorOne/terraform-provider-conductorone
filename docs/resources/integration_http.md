@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_http Resource - conductorone"
+page_title: "conductorone_integration_http Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Http Integration Resource

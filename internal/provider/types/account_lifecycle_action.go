@@ -9,6 +9,6 @@ import (
 type AccountLifecycleAction struct {
 	AccountInContext *AccountInContext `tfsdk:"account_in_context"`
 	AccountRef       *AccountRef       `tfsdk:"account_ref"`
-	ActionName       types.String      `tfsdk:"action_name"`
 	ConnectorRef     *ConnectorRef     `tfsdk:"connector_ref"`
+	ActionName       types.String      `tfsdk:"action_name"`
 }

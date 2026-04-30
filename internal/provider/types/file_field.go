@@ -7,7 +7,7 @@ import (
 )
 
 type FileField struct {
-	AcceptedFileTypes []types.String  `tfsdk:"accepted_file_types"`
 	FileInputField    *FileInputField `tfsdk:"file_input_field"`
+	AcceptedFileTypes []types.String  `tfsdk:"accepted_file_types"`
 	MaxFileSize       types.String    `tfsdk:"max_file_size"`
 }

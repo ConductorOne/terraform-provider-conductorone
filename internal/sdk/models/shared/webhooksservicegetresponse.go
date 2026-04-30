@@ -5,10 +5,10 @@ package shared
 // The WebhooksServiceGetResponse message.
 type WebhooksServiceGetResponse struct {
 	// The Webhook message.
-	Webhook *Webhook1 `json:"webhook,omitempty"`
+	Webhook *Webhook `json:"webhook,omitempty"`
 }
 
-func (w *WebhooksServiceGetResponse) GetWebhook() *Webhook1 {
+func (w *WebhooksServiceGetResponse) GetWebhook() *Webhook {
 	if w == nil {
 		return nil
 	}

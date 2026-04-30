@@ -4,7 +4,7 @@ package shared
 
 // The TriggerAnalysisResponse message.
 type TriggerAnalysisResponse struct {
-	// The runId field.
+	// The ID of the newly created analysis run.
 	RunID *string `json:"runId,omitempty"`
 }
 

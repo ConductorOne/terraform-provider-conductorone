@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_mongodb_atlas Resource - conductorone"
+page_title: "conductorone_integration_mongodb_atlas Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Mongodb_atlas Integration Resource

@@ -4,7 +4,7 @@ package shared
 
 // The AccessReviewSetScopeByResourceTypeRequest message.
 type AccessReviewSetScopeByResourceTypeRequest struct {
-	// The resourceTypeSelections field.
+	// The resource types to include in the campaign scope. Replaces all previously selected resource types.
 	ResourceTypeSelections []ResourceTypeIDRef `json:"resourceTypeSelections,omitempty"`
 	// The AccessReviewScopeV2 message.
 	//

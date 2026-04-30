@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -23,26 +21,16 @@ const (
 func (e TaskTypeOffboardingOutcome) ToPointer() *TaskTypeOffboardingOutcome {
 	return &e
 }
-func (e *TaskTypeOffboardingOutcome) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskTypeOffboardingOutcome) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "OFFBOARDING_OUTCOME_UNSPECIFIED", "OFFBOARDING_OUTCOME_IN_PROGRESS", "OFFBOARDING_OUTCOME_DONE", "OFFBOARDING_OUTCOME_ERROR", "OFFBOARDING_OUTCOME_CANCELLED":
+			return true
+		}
 	}
-	switch v {
-	case "OFFBOARDING_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "OFFBOARDING_OUTCOME_IN_PROGRESS":
-		fallthrough
-	case "OFFBOARDING_OUTCOME_DONE":
-		fallthrough
-	case "OFFBOARDING_OUTCOME_ERROR":
-		fallthrough
-	case "OFFBOARDING_OUTCOME_CANCELLED":
-		*e = TaskTypeOffboardingOutcome(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskTypeOffboardingOutcome: %v", v)
-	}
+	return false
 }
 
 // The TaskTypeOffboarding message.

@@ -14,7 +14,7 @@ type EmailChannelSettings struct {
 	CompletionPreference *CompletionPreference `json:"completion,omitempty"`
 	// The ConnectorIssuesPreference message.
 	ConnectorIssuesPreference *ConnectorIssuesPreference `json:"connectorIssues,omitempty"`
-	// The DigestPreference message.
+	// DigestPreference controls whether summary digest notifications are sent and how often.
 	DigestPreference *DigestPreference `json:"digest,omitempty"`
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`

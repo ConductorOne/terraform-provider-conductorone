@@ -42,6 +42,9 @@ func (c *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest) G
 	return c.RemoveGrantDurationRequest
 }
 
+// #region class-body-c1apiappv1appentitlementuserbindingserviceremovegrantdurationrequest
+// #endregion class-body-c1apiappv1appentitlementuserbindingserviceremovegrantdurationrequest
+
 type C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -49,7 +52,7 @@ type C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse struc
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for removing the expiration time from a grant.
 	RemoveGrantDurationResponse *shared.RemoveGrantDurationResponse
 }
 
@@ -80,3 +83,6 @@ func (c *C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse) 
 	}
 	return c.RemoveGrantDurationResponse
 }
+
+// #region class-body-c1apiappv1appentitlementuserbindingserviceremovegrantdurationresponse
+// #endregion class-body-c1apiappv1appentitlementuserbindingserviceremovegrantdurationresponse

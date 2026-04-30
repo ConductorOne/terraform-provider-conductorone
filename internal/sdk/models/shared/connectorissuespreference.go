@@ -6,6 +6,8 @@ package shared
 type ConnectorIssuesPreference struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// The locked field.
+	Locked *bool `json:"locked,omitempty"`
 }
 
 func (c *ConnectorIssuesPreference) GetEnabled() *bool {
@@ -13,4 +15,11 @@ func (c *ConnectorIssuesPreference) GetEnabled() *bool {
 		return nil
 	}
 	return c.Enabled
+}
+
+func (c *ConnectorIssuesPreference) GetLocked() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Locked
 }

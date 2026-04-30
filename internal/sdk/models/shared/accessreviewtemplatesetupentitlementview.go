@@ -4,7 +4,7 @@ package shared
 
 // The AccessReviewTemplateSetupEntitlementView message.
 type AccessReviewTemplateSetupEntitlementView struct {
-	// The AccessReviewTemplateSetupEntitlement message.
+	// An entitlement that has been selected for inclusion in an access review template's scope.
 	AccessReviewTemplateSetupEntitlement *AccessReviewTemplateSetupEntitlement `json:"accessReviewTemplateEntitlement,omitempty"`
 	// The appPath field.
 	AppPath *string `json:"appPath,omitempty"`

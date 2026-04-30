@@ -18,6 +18,9 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceListTrustsRequest) Ge
 	return c.ServicePrincipalID
 }
 
+// #region class-body-c1apiworkloadfederationv1workloadfederationservicelisttrustsrequest
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationservicelisttrustsrequest
+
 type C1APIWorkloadFederationV1WorkloadFederationServiceListTrustsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceListTrustsResponse) G
 	}
 	return c.WorkloadFederationServiceListTrustsResponse
 }
+
+// #region class-body-c1apiworkloadfederationv1workloadfederationservicelisttrustsresponse
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationservicelisttrustsresponse

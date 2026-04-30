@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -23,22 +21,16 @@ const (
 func (e ReferenceStrength) ToPointer() *ReferenceStrength {
 	return &e
 }
-func (e *ReferenceStrength) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ReferenceStrength) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_REASON_REFERENCE_STRENGTH_UNSPECIFIED", "GRANT_REASON_REFERENCE_STRENGTH_WEAK", "GRANT_REASON_REFERENCE_STRENGTH_STRONG":
+			return true
+		}
 	}
-	switch v {
-	case "GRANT_REASON_REFERENCE_STRENGTH_UNSPECIFIED":
-		fallthrough
-	case "GRANT_REASON_REFERENCE_STRENGTH_WEAK":
-		fallthrough
-	case "GRANT_REASON_REFERENCE_STRENGTH_STRONG":
-		*e = ReferenceStrength(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ReferenceStrength: %v", v)
-	}
+	return false
 }
 
 // The GrantReason message.

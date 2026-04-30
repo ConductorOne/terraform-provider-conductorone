@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_duo Resource - conductorone"
+page_title: "conductorone_integration_duo Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Duo Integration Resource

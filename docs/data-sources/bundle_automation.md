@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_bundle_automation Data Source - conductorone"
+page_title: "conductorone_bundle_automation Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   BundleAutomation DataSource
@@ -26,12 +26,13 @@ data "conductorone_bundle_automation" "my_bundleautomation" {
 
 ### Required
 
-- `request_catalog_id` (String)
+- `request_catalog_id` (String) The requestCatalogId field.
 
 ### Read-Only
 
 - `bundle_automation_circuit_breaker` (Attributes) The BundleAutomationCircuitBreaker message. (see [below for nested schema](#nestedatt--bundle_automation_circuit_breaker))
 - `bundle_automation_last_run_state` (Attributes) The BundleAutomationLastRunState message. (see [below for nested schema](#nestedatt--bundle_automation_last_run_state))
+- `bundle_automation_rule_cel` (Attributes) The BundleAutomationRuleCEL message. (see [below for nested schema](#nestedatt--bundle_automation_rule_cel))
 - `bundle_automation_rule_entitlement` (Attributes) The BundleAutomationRuleEntitlement message. (see [below for nested schema](#nestedatt--bundle_automation_rule_entitlement))
 - `create_tasks` (Boolean) The createTasks field.
 - `created_at` (String)
@@ -65,9 +66,29 @@ Read-Only:
 
 Read-Only:
 
+- `bundle_automation_cel_evaluation_state` (Attributes) The BundleAutomationCelEvaluationState message. (see [below for nested schema](#nestedatt--bundle_automation_last_run_state--bundle_automation_cel_evaluation_state))
 - `error_message` (String) The errorMessage field.
 - `last_run_at` (String)
 - `status` (String) The status field.
+
+<a id="nestedatt--bundle_automation_last_run_state--bundle_automation_cel_evaluation_state"></a>
+### Nested Schema for `bundle_automation_last_run_state.bundle_automation_cel_evaluation_state`
+
+Read-Only:
+
+- `error_message` (String) The errorMessage field.
+- `last_evaluated_at` (String)
+- `matched_users` (String) The matchedUsers field.
+- `status` (String) The status field.
+
+
+
+<a id="nestedatt--bundle_automation_rule_cel"></a>
+### Nested Schema for `bundle_automation_rule_cel`
+
+Read-Only:
+
+- `expression` (String) The expression field.
 
 
 <a id="nestedatt--bundle_automation_rule_entitlement"></a>

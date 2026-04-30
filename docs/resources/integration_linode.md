@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_linode Resource - conductorone"
+page_title: "conductorone_integration_linode Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Linode Integration Resource

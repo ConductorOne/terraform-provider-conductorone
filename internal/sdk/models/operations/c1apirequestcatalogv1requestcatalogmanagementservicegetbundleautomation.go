@@ -18,6 +18,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomation
 	return c.RequestCatalogID
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetbundleautomationrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetbundleautomationrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetBundleAutomation
 	}
 	return c.BundleAutomation
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetbundleautomationresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetbundleautomationresponse

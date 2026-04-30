@@ -82,7 +82,7 @@ func (s *AppEntitlements) List(ctx context.Context, request operations.C1APIAppV
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -164,7 +164,7 @@ func (s *AppEntitlements) List(ctx context.Context, request operations.C1APIAppV
 }
 
 // Create
-// Invokes the c1.api.app.v1.AppEntitlements.Create method.
+// Create a new app entitlement for an app. This is used to define a custom permission, group, or role within the app.
 func (s *AppEntitlements) Create(ctx context.Context, request operations.C1APIAppV1AppEntitlementsCreateRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsCreateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -301,7 +301,7 @@ func (s *AppEntitlements) Create(ctx context.Context, request operations.C1APIAp
 }
 
 // AddManuallyManagedMembers - Add Manually Managed Members
-// Invokes the c1.api.app.v1.AppEntitlements.AddManuallyManagedMembers method.
+// Add users as manually managed members of an app entitlement. These memberships are tracked directly by ConductorOne rather than synced from the app.
 func (s *AppEntitlements) AddManuallyManagedMembers(ctx context.Context, request operations.C1APIAppV1AppEntitlementsAddManuallyManagedMembersRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -438,7 +438,7 @@ func (s *AppEntitlements) AddManuallyManagedMembers(ctx context.Context, request
 }
 
 // DeleteAutomation - Delete Automation
-// Invokes the c1.api.app.v1.AppEntitlements.DeleteAutomation method.
+// Delete the automation rule for an app entitlement.
 func (s *AppEntitlements) DeleteAutomation(ctx context.Context, request operations.C1APIAppV1AppEntitlementsDeleteAutomationRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsDeleteAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -471,7 +471,7 @@ func (s *AppEntitlements) DeleteAutomation(ctx context.Context, request operatio
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteAutomationRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AppDeleteAutomationRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -549,12 +549,12 @@ func (s *AppEntitlements) DeleteAutomation(ctx context.Context, request operatio
 				return nil, err
 			}
 
-			var out shared.DeleteAutomationResponse
+			var out shared.AppDeleteAutomationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.DeleteAutomationResponse = &out
+			res.AppDeleteAutomationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -562,6 +562,8 @@ func (s *AppEntitlements) DeleteAutomation(ctx context.Context, request operatio
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -575,7 +577,7 @@ func (s *AppEntitlements) DeleteAutomation(ctx context.Context, request operatio
 }
 
 // GetAutomation - Get Automation
-// Invokes the c1.api.app.v1.AppEntitlements.GetAutomation method.
+// Get the automation rule for an app entitlement.
 func (s *AppEntitlements) GetAutomation(ctx context.Context, request operations.C1APIAppV1AppEntitlementsGetAutomationRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsGetAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -693,6 +695,7 @@ func (s *AppEntitlements) GetAutomation(ctx context.Context, request operations.
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -706,7 +709,7 @@ func (s *AppEntitlements) GetAutomation(ctx context.Context, request operations.
 }
 
 // CreateAutomation - Create Automation
-// Invokes the c1.api.app.v1.AppEntitlements.CreateAutomation method.
+// Create an automation rule for an app entitlement. Automations automatically provision or revoke access based on defined conditions.
 func (s *AppEntitlements) CreateAutomation(ctx context.Context, request operations.C1APIAppV1AppEntitlementsCreateAutomationRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsCreateAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -739,7 +742,7 @@ func (s *AppEntitlements) CreateAutomation(ctx context.Context, request operatio
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAutomationRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AppCreateAutomationRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -817,12 +820,12 @@ func (s *AppEntitlements) CreateAutomation(ctx context.Context, request operatio
 				return nil, err
 			}
 
-			var out shared.CreateAutomationResponse
+			var out shared.AppCreateAutomationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAutomationResponse = &out
+			res.AppCreateAutomationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -843,7 +846,7 @@ func (s *AppEntitlements) CreateAutomation(ctx context.Context, request operatio
 }
 
 // RemoveAutomationExclusion - Remove Automation Exclusion
-// Invokes the c1.api.app.v1.AppEntitlements.RemoveAutomationExclusion method.
+// Remove users from the automation exclusion list for an app entitlement.
 func (s *AppEntitlements) RemoveAutomationExclusion(ctx context.Context, request operations.C1APIAppV1AppEntitlementsRemoveAutomationExclusionRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsRemoveAutomationExclusionResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -980,7 +983,7 @@ func (s *AppEntitlements) RemoveAutomationExclusion(ctx context.Context, request
 }
 
 // ListAutomationExclusions - List Automation Exclusions
-// Invokes the c1.api.app.v1.AppEntitlements.ListAutomationExclusions method.
+// List users who are excluded from the automation rule for an app entitlement.
 func (s *AppEntitlements) ListAutomationExclusions(ctx context.Context, request operations.C1APIAppV1AppEntitlementsListAutomationExclusionsRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsListAutomationExclusionsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1110,7 +1113,7 @@ func (s *AppEntitlements) ListAutomationExclusions(ctx context.Context, request 
 }
 
 // AddAutomationExclusion - Add Automation Exclusion
-// Invokes the c1.api.app.v1.AppEntitlements.AddAutomationExclusion method.
+// Add users to the automation exclusion list for an app entitlement. Excluded users are not affected by the automation rule.
 func (s *AppEntitlements) AddAutomationExclusion(ctx context.Context, request operations.C1APIAppV1AppEntitlementsAddAutomationExclusionRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsAddAutomationExclusionResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1247,7 +1250,7 @@ func (s *AppEntitlements) AddAutomationExclusion(ctx context.Context, request op
 }
 
 // UpdateAutomation - Update Automation
-// Invokes the c1.api.app.v1.AppEntitlements.UpdateAutomation method.
+// Update the automation rule for an app entitlement, including its display name, description, and conditions.
 func (s *AppEntitlements) UpdateAutomation(ctx context.Context, request operations.C1APIAppV1AppEntitlementsUpdateAutomationRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsUpdateAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1384,7 +1387,7 @@ func (s *AppEntitlements) UpdateAutomation(ctx context.Context, request operatio
 }
 
 // RemoveEntitlementMembership - Remove Entitlement Membership
-// Invokes the c1.api.app.v1.AppEntitlements.RemoveEntitlementMembership method.
+// Remove a user from a ConductorOne-managed entitlement (catalog, group, or profile type). For access profiles, this creates a revoke task to deprovision access.
 func (s *AppEntitlements) RemoveEntitlementMembership(ctx context.Context, request operations.C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1575,7 +1578,7 @@ func (s *AppEntitlements) ListUsers(ctx context.Context, request operations.C1AP
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -1657,7 +1660,7 @@ func (s *AppEntitlements) ListUsers(ctx context.Context, request operations.C1AP
 }
 
 // Delete
-// Invokes the c1.api.app.v1.AppEntitlements.Delete method.
+// Delete an app entitlement by ID.
 func (s *AppEntitlements) Delete(ctx context.Context, request operations.C1APIAppV1AppEntitlementsDeleteRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1781,6 +1784,8 @@ func (s *AppEntitlements) Delete(ctx context.Context, request operations.C1APIAp
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -1912,6 +1917,7 @@ func (s *AppEntitlements) Get(ctx context.Context, request operations.C1APIAppV1
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -2114,7 +2120,7 @@ func (s *AppEntitlements) ListForAppResource(ctx context.Context, request operat
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -2248,7 +2254,7 @@ func (s *AppEntitlements) ListForAppUser(ctx context.Context, request operations
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 

@@ -6,11 +6,11 @@ package shared
 type GetAppEntitlementProxyResponseExpanded struct {
 }
 
-// The GetAppEntitlementProxyResponse message.
+// GetAppEntitlementProxyResponse - The response message for getting a specific entitlement proxy binding.
 type GetAppEntitlementProxyResponse struct {
 	// The AppEntitlementProxyView message.
 	AppEntitlementProxyView *AppEntitlementProxyView `json:"appProxyEntitlementView,omitempty"`
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []GetAppEntitlementProxyResponseExpanded `json:"expanded,omitempty"`
 }
 

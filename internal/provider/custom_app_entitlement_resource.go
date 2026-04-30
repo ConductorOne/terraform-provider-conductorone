@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/v2/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/v2/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
@@ -52,12 +53,13 @@ type CustomAppEntitlementResourceModel struct {
 	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy                      `tfsdk:"deprovisioner_policy"`
 	Description                    types.String                                      `tfsdk:"description"`
 	DisplayName                    types.String                                      `tfsdk:"display_name"`
-	DurationGrant                  types.String                                      `tfsdk:"duration_grant" tfPlanOnly:"true"`
-	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset" tfPlanOnly:"true"`
+	DurationGrant                  types.String                                      `tfsdk:"duration_grant"`
+	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset"`
 	Edit                           types.Bool                                        `tfsdk:"edit"`
 	EmergencyGrantEnabled          types.Bool                                        `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID         types.String                                      `tfsdk:"emergency_grant_policy_id"`
 	Expanded                       []tfTypes.GetAppEntitlementResponseExpanded       `tfsdk:"expanded"`
+	ExternalID                     types.String                                      `tfsdk:"external_id"`
 	Extra                          map[string]types.Bool                             `tfsdk:"extra"`
 	GrantCount                     types.String                                      `tfsdk:"grant_count"`
 	GrantPolicyID                  types.String                                      `tfsdk:"grant_policy_id"`
@@ -89,10 +91,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"alias": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The alias field.`,
+				Description: `A unique alias for the entitlement, used for programmatic lookups and Cone.`,
 			},
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The ID of the app that is associated with the app entitlement.`,
 			},
 			"app_resource_id": schema.StringAttribute{
 				Computed: true,
@@ -101,7 +104,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The appResourceId field. Requires replacement if changed.`,
+				Description: `The ID of the resource that this entitlement belongs to. Requires replacement if changed.`,
 			},
 			"app_resource_type_id": schema.StringAttribute{
 				Computed: true,
@@ -110,18 +113,18 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The appResourceTypeId field. Requires replacement if changed.`,
+				Description: `The ID of the resource type that this entitlement belongs to. Requires replacement if changed.`,
 			},
 			"certify_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The certifyPolicyId field.`,
+				Description: `The ID of the policy to use for certification tasks.`,
 			},
 			"compliance_framework_value_ids": schema.ListAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The complianceFrameworkValueIds field.`,
+				Description: `The IDs of compliance frameworks to associate with this entitlement (e.g., SOX, HIPAA).`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -433,15 +436,17 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description field.`,
+				Description: `The description of the new entitlement.`,
 			},
 			"display_name": schema.StringAttribute{
 				Required:    true,
-				Description: `The displayName field.`,
+				Description: `The display name of the new entitlement.`,
 			},
 			"duration_grant": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseConfigValue(),
+				},
 				Validators: []validator.String{
 					stringvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("duration_unset"),
@@ -449,8 +454,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"duration_unset": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.UseConfigValue(),
+				},
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("duration_grant"),
@@ -464,19 +471,24 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"emergency_grant_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The emergencyGrantEnabled field.`,
+				Description: `Whether emergency grant requests are enabled for this entitlement.`,
 			},
 			"emergency_grant_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The emergencyGrantPolicyId field.`,
+				Description: `The ID of the policy to use for emergency grant tasks. Required if emergency_grant_enabled is true.`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{},
 				},
-				Description: `The expanded field.`,
+				Description: `List of serialized related objects.`,
+			},
+			"external_id": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `The upstream product's native external ID for this entitlement (e.g. an Okta group ID).` + "\n" +
+					` Populated from the connector's external ID during sync.`,
 			},
 			"extra": schema.MapAttribute{
 				Computed:    true,
@@ -490,7 +502,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"grant_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The grantPolicyId field.`,
+				Description: `The ID of the policy to use for grant request tasks.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -515,7 +527,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"override_access_requests_defaults": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The overrideAccessRequestsDefaults field.`,
+				Description: `Whether to override the app-level access request defaults for this entitlement.`,
 			},
 			"provision_policy": schema.SingleNestedAttribute{
 				Computed: true,
@@ -919,15 +931,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"purpose": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED",
-						"APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT",
-						"APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION",
-						"APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP",
-					),
-				},
+				Description: `The purpose of the entitlement (e.g., assignment, permission, ownership). possible known values include one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]`,
 			},
 			"read": schema.BoolAttribute{
 				Computed:    true,
@@ -940,17 +944,17 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The revokePolicyId field.`,
+				Description: `The ID of the policy to use for revoke request tasks.`,
 			},
 			"risk_level_value_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The riskLevelValueId field.`,
+				Description: `The ID of the risk level to assign to this entitlement.`,
 			},
 			"slug": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The slug field.`,
+				Description: `A short label describing the permission the entitlement grants (e.g., "Admin", "Read").`,
 			},
 			"source_connector_ids": schema.MapAttribute{
 				Computed:    true,
@@ -1162,43 +1166,6 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppEntitlementsGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AppEntitlements.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.GetAppEntitlementResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetAppEntitlementResponse(ctx, res1.GetAppEntitlementResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1240,7 +1207,10 @@ func (r *CustomAppEntitlementResource) Delete(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1261,12 +1231,12 @@ func (r *CustomAppEntitlementResource) ImportState(ctx context.Context, req reso
 	}
 
 	if len(data.AppID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), data.AppID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

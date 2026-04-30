@@ -18,6 +18,9 @@ func (c *C1APIAccessreviewV1AccessReviewTemplateServiceGetRequest) GetID() strin
 	return c.ID
 }
 
+// #region class-body-c1apiaccessreviewv1accessreviewtemplateservicegetrequest
+// #endregion class-body-c1apiaccessreviewv1accessreviewtemplateservicegetrequest
+
 type C1APIAccessreviewV1AccessReviewTemplateServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIAccessreviewV1AccessReviewTemplateServiceGetResponse) GetAccessRev
 	}
 	return c.AccessReviewTemplateServiceGetResponse
 }
+
+// #region class-body-c1apiaccessreviewv1accessreviewtemplateservicegetresponse
+// #endregion class-body-c1apiaccessreviewv1accessreviewtemplateservicegetresponse

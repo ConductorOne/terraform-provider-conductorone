@@ -8,6 +8,8 @@ import (
 
 type AutomationStep struct {
 	AccountLifecycleAction        *AccountLifecycleAction        `tfsdk:"account_lifecycle_action"`
+	AutomationsTaskAction         *AutomationsTaskAction         `tfsdk:"automations_task_action"`
+	AutomationsWebhook            *AutomationsWebhook            `tfsdk:"automations_webhook"`
 	CallFunction                  *CallFunction                  `tfsdk:"call_function"`
 	ConnectorAction               *ConnectorAction               `tfsdk:"connector_action"`
 	ConnectorCreateAccount        *ConnectorCreateAccount        `tfsdk:"connector_create_account"`
@@ -22,12 +24,11 @@ type AutomationStep struct {
 	SendEmail                     *SendEmail                     `tfsdk:"send_email"`
 	SendSlackMessage              *SendSlackMessage              `tfsdk:"send_slack_message"`
 	SetCredential                 *SetCredential                 `tfsdk:"set_credential"`
-	SkipIfTrueCel                 types.String                   `tfsdk:"skip_if_true_cel"`
-	StepDisplayName               types.String                   `tfsdk:"step_display_name"`
-	StepName                      types.String                   `tfsdk:"step_name"`
-	TaskAction                    *TaskAction                    `tfsdk:"task_action"`
+	StoreCredential               *StoreCredential               `tfsdk:"store_credential"`
 	UnenrollFromAllAccessProfiles *UnenrollFromAllAccessProfiles `tfsdk:"unenroll_from_all_access_profiles"`
 	UpdateUser                    *UpdateUser                    `tfsdk:"update_user"`
 	WaitForDuration               *WaitForDuration               `tfsdk:"wait_for_duration"`
-	Webhook                       *Webhook                       `tfsdk:"webhook"`
+	SkipIfTrueCel                 types.String                   `tfsdk:"skip_if_true_cel"`
+	StepDisplayName               types.String                   `tfsdk:"step_display_name"`
+	StepName                      types.String                   `tfsdk:"step_name"`
 }

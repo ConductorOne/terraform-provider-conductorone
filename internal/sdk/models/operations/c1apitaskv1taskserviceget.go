@@ -18,6 +18,9 @@ func (c *C1APITaskV1TaskServiceGetRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apitaskv1taskservicegetrequest
+// #endregion class-body-c1apitaskv1taskservicegetrequest
+
 type C1APITaskV1TaskServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APITaskV1TaskServiceGetResponse) GetTaskServiceGetResponse() *shared.
 	}
 	return c.TaskServiceGetResponse
 }
+
+// #region class-body-c1apitaskv1taskservicegetresponse
+// #endregion class-body-c1apitaskv1taskservicegetresponse

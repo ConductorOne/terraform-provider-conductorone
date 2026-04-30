@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type AccessReviewInclusionScopeAppUserStatuses string
 
 const (
@@ -19,24 +14,16 @@ const (
 func (e AccessReviewInclusionScopeAppUserStatuses) ToPointer() *AccessReviewInclusionScopeAppUserStatuses {
 	return &e
 }
-func (e *AccessReviewInclusionScopeAppUserStatuses) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewInclusionScopeAppUserStatuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_STATUS_UNSPECIFIED", "APP_USER_STATUS_ENABLED", "APP_USER_STATUS_DISABLED", "APP_USER_STATUS_DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_STATUS_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_STATUS_ENABLED":
-		fallthrough
-	case "APP_USER_STATUS_DISABLED":
-		fallthrough
-	case "APP_USER_STATUS_DELETED":
-		*e = AccessReviewInclusionScopeAppUserStatuses(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewInclusionScopeAppUserStatuses: %v", v)
-	}
+	return false
 }
 
 type AccessReviewInclusionScopeAppUserTypes string
@@ -51,24 +38,16 @@ const (
 func (e AccessReviewInclusionScopeAppUserTypes) ToPointer() *AccessReviewInclusionScopeAppUserTypes {
 	return &e
 }
-func (e *AccessReviewInclusionScopeAppUserTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewInclusionScopeAppUserTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_TYPE_USER":
-		fallthrough
-	case "APP_USER_TYPE_SERVICE_ACCOUNT":
-		fallthrough
-	case "APP_USER_TYPE_SYSTEM_ACCOUNT":
-		*e = AccessReviewInclusionScopeAppUserTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewInclusionScopeAppUserTypes: %v", v)
-	}
+	return false
 }
 
 type UserStatuses string
@@ -83,24 +62,16 @@ const (
 func (e UserStatuses) ToPointer() *UserStatuses {
 	return &e
 }
-func (e *UserStatuses) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UserStatuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "USER_UNKNOWN", "USER_ENABLED", "USER_DISABLED", "USER_DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "USER_UNKNOWN":
-		fallthrough
-	case "USER_ENABLED":
-		fallthrough
-	case "USER_DISABLED":
-		fallthrough
-	case "USER_DELETED":
-		*e = UserStatuses(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UserStatuses: %v", v)
-	}
+	return false
 }
 
 // The AccessReviewInclusionScope message.

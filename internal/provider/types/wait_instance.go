@@ -7,16 +7,16 @@ import (
 )
 
 type WaitInstance struct {
-	CommentOnFirstWait    types.String           `tfsdk:"comment_on_first_wait"`
-	CommentOnTimeout      types.String           `tfsdk:"comment_on_timeout"`
 	ConditionSucceeded    *ConditionSucceeded    `tfsdk:"condition_succeeded"`
 	ConditionTimedOut     *ConditionTimedOut     `tfsdk:"condition_timed_out"`
-	Name                  types.String           `tfsdk:"name"`
 	SkippedAction         *SkippedAction         `tfsdk:"skipped_action"`
+	WaitConditionInstance *WaitConditionInstance `tfsdk:"wait_condition_instance"`
+	WaitUntilTimeInstance *WaitUntilTimeInstance `tfsdk:"wait_until_time_instance"`
+	CommentOnFirstWait    types.String           `tfsdk:"comment_on_first_wait"`
+	CommentOnTimeout      types.String           `tfsdk:"comment_on_timeout"`
+	Name                  types.String           `tfsdk:"name"`
 	StartedWaitingAt      types.String           `tfsdk:"started_waiting_at"`
 	State                 types.String           `tfsdk:"state"`
 	Timeout               types.String           `tfsdk:"timeout"`
 	TimeoutDuration       types.String           `tfsdk:"timeout_duration"`
-	WaitConditionInstance *WaitConditionInstance `tfsdk:"wait_condition_instance"`
-	WaitUntilTimeInstance *WaitUntilTimeInstance `tfsdk:"wait_until_time_instance"`
 }

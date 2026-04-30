@@ -11,7 +11,10 @@ import (
 //
 // This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
 //   - entitlements
+//   - cel
 type BundleAutomation struct {
+	// The BundleAutomationRuleCEL message.
+	BundleAutomationRuleCEL *BundleAutomationRuleCEL `json:"cel,omitempty"`
 	// The BundleAutomationCircuitBreaker message.
 	BundleAutomationCircuitBreaker *BundleAutomationCircuitBreaker `json:"circuitBreaker,omitempty"`
 	// The createTasks field.
@@ -42,6 +45,13 @@ func (b *BundleAutomation) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (b *BundleAutomation) GetBundleAutomationRuleCEL() *BundleAutomationRuleCEL {
+	if b == nil {
+		return nil
+	}
+	return b.BundleAutomationRuleCEL
 }
 
 func (b *BundleAutomation) GetBundleAutomationCircuitBreaker() *BundleAutomationCircuitBreaker {

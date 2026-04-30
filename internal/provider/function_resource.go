@@ -7,14 +7,12 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/v2/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -54,6 +52,7 @@ type FunctionResourceModel struct {
 	ScopedRoleIds                         []types.String                                 `tfsdk:"scoped_role_ids"`
 	Secret                                map[string]types.String                        `tfsdk:"secret"`
 	UpdatedAt                             types.String                                   `tfsdk:"updated_at"`
+	UseSpn                                types.Bool                                     `tfsdk:"use_spn"`
 }
 
 func (r *FunctionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -73,7 +72,7 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The commitMessage field. Requires replacement if changed.`,
+				Description: `The commit message describing the initial code submission. Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -81,12 +80,12 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description field.`,
+				Description: `A description of what the function does.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The displayName field.`,
+				Description: `The human-readable name for the function.`,
 			},
 			"function_id": schema.StringAttribute{
 				Computed:    true,
@@ -95,13 +94,7 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 			"function_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The functionType field. must be one of ["FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"FUNCTION_TYPE_UNSPECIFIED",
-						"FUNCTION_TYPE_ANY",
-					),
-				},
+				Description: `The type of function to create, controlling its execution environment and capabilities. possible known values include one of ["FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE"]`,
 			},
 			"functions_service_delete_function_request": schema.SingleNestedAttribute{
 				Optional:    true,
@@ -121,7 +114,7 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 					mapplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				ElementType: types.StringType,
-				Description: `The initialContent field. Requires replacement if changed.`,
+				Description: `Map of filename to file content for the initial code commit. Requires replacement if changed.`,
 			},
 			"is_draft": schema.BoolAttribute{
 				Computed:    true,
@@ -157,6 +150,15 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+			},
+			"use_spn": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `FN-347 transition flag. When true, the function authenticates to c1-api` + "\n" +
+					` as user:<sp_id> via the AssumeIdentity token exchange using its` + "\n" +
+					` ServicePrincipalBinding; when false, it authenticates as` + "\n" +
+					` function:<id>. Read-only from clients: set by CreateFunction (when the` + "\n" +
+					` tenant has completed the FunctionsToSPN migration) and by the migration` + "\n" +
+					` itself, never by UpdateFunction. Retired once all functions are on SPN.`,
 			},
 		},
 	}
@@ -227,43 +229,6 @@ func (r *FunctionResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedFunctionsServiceCreateFunctionResponse(ctx, res.FunctionsServiceCreateFunctionResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIFunctionsV1FunctionsServiceGetFunctionRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Functions.GetFunction(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.FunctionsServiceGetFunctionResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedFunctionsServiceGetFunctionResponse(ctx, res1.FunctionsServiceGetFunctionResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -393,43 +358,6 @@ func (r *FunctionResource) Update(ctx context.Context, req resource.UpdateReques
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIFunctionsV1FunctionsServiceGetFunctionRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Functions.GetFunction(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.FunctionsServiceGetFunctionResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedFunctionsServiceGetFunctionResponse(ctx, res1.FunctionsServiceGetFunctionResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -471,7 +399,10 @@ func (r *FunctionResource) Delete(ctx context.Context, req resource.DeleteReques
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

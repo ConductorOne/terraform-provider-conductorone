@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlements Data Source - conductorone"
+page_title: "conductorone_app_entitlements Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppEntitlements DataSource
@@ -107,27 +107,27 @@ data "conductorone_app_entitlements" "my_app_entitlements" {
 - `alias` (String) Search for app entitlements that have this alias (exact match).
 - `app_ids` (List of String) Search for app entitlements contained in any of these apps.
 - `app_user_ids` (List of String) Search for app entitlements that are granted to any of these app user ids.
-- `compliance_framework_ids` (List of String) Search for app entitlements that are part of these compliace frameworks.
-- `display_name` (String) The displayName field.
+- `compliance_framework_ids` (List of String) Search for app entitlements that are part of these compliance frameworks.
+- `display_name` (String) Filter results to entitlements with this exact display name.
 - `exclude_app_ids` (List of String) Exclude app entitlements from the results that are in these app IDs.
-- `exclude_app_user_ids` (List of String) Exclude app entitlements from the results that these app users have granted.
-- `exclude_immutable` (Boolean) The excludeImmutable field.
-- `exclude_resource_type_ids` (List of String) The excludeResourceTypeIds field.
-- `excluded_entitlement_refs` (Attributes List) The excludedEntitlementRefs field. (see [below for nested schema](#nestedatt--excluded_entitlement_refs))
+- `exclude_app_user_ids` (List of String) Exclude entitlements from results that are granted to any of these app users.
+- `exclude_immutable` (Boolean) If true, exclude immutable entitlements (e.g., system-managed entitlements that cannot be modified).
+- `exclude_resource_type_ids` (List of String) Exclude entitlements with any of these resource type IDs from results.
+- `excluded_entitlement_refs` (Attributes List) Exclude these specific entitlements from results. (see [below for nested schema](#nestedatt--excluded_entitlement_refs))
 - `include_deleted` (Boolean) Include deleted app entitlements, this includes app entitlements that have a deleted parent object (app, app resource, app resource type)
-- `is_automated` (Boolean) The isAutomated field.
-- `membership_type` (List of String) The membershipType field.
-- `only_get_expiring` (Boolean) Restrict results to only those who have expiring app entitlement user bindings.
+- `is_automated` (Boolean) If true, restrict results to entitlements that have an automation rule configured.
+- `membership_type` (List of String) Filter results to entitlements where the user has any of these membership types (e.g., member, owner, admin).
+- `only_get_expiring` (Boolean) If true, restrict results to entitlements that have at least one expiring grant.
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 - `page_token` (String) The pageToken field.
 - `policy_refs` (Attributes List) Search for app entitlements that use any of these policies. (see [below for nested schema](#nestedatt--policy_refs))
 - `query` (String) Query the app entitlements with a fuzzy search on display name and description.
-- `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))
+- `refs` (Attributes List) Filter results to only these specific entitlements. (see [below for nested schema](#nestedatt--refs))
 - `resource_ids` (List of String) Search for app entitlements that belongs to these resources.
-- `resource_trait_ids` (List of String) The resourceTraitIds field.
+- `resource_trait_ids` (List of String) Filter results to entitlements whose resource types have any of these trait IDs.
 - `resource_type_ids` (List of String) Search for app entitlements that are for items with resources types that have matching names. Example names are "group", "role", and "app".
 - `risk_level_ids` (List of String) Search for app entitlements with these risk levels.
-- `source_connector_id` (String) The sourceConnectorId field.
+- `source_connector_id` (String) Filter results to entitlements synced from this connector.
 
 ### Read-Only
 
@@ -214,12 +214,14 @@ This message contains a oneof named typ. Only a single field of the following li
 - `duration_unset` (Attributes) (see [below for nested schema](#nestedatt--list--app_entitlement--duration_unset))
 - `emergency_grant_enabled` (Boolean) This enables tasks to be created in an emergency and use a selected emergency access policy.
 - `emergency_grant_policy_id` (String) The ID of the policy that will be used for emergency access grant tasks.
+- `external_id` (String) The upstream product's native external ID for this entitlement (e.g. an Okta group ID).
+ Populated from the connector's external ID during sync.
 - `grant_count` (String) The amount of grants open for this entitlement
 - `grant_policy_id` (String) The ID of the policy that will be used for grant tickets related to the app entitlement.
 - `id` (String) The unique ID for the App Entitlement.
 - `is_automation_enabled` (Boolean) Flag to indicate whether automation (for adding users to entitlement based on rules) has been enabled.
 - `is_manually_managed` (Boolean) Flag to indicate if the app entitlement is manually managed.
-- `match_baton_id` (String) The matchBatonId field.
+- `match_baton_id` (String) An identifier used to match this entitlement to a connector-synced entitlement during sync.
 - `override_access_requests_defaults` (Boolean) Flag to indicate if the app-level access request settings have been overridden for the entitlement
 - `provision_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 
@@ -232,10 +234,10 @@ This message contains a oneof named typ. Only a single field of the following li
   - externalTicket
   - unconfigured
   - action (see [below for nested schema](#nestedatt--list--app_entitlement--provision_policy))
-- `purpose` (String) The purpose field.
+- `purpose` (String) The purpose of this entitlement (e.g., assignment, permission, ownership).
 - `request_schema_id` (String) The ID of the request schema associated with this app entitlement.
 - `revoke_policy_id` (String) The ID of the policy that will be used for revoke tickets related to the app entitlement
-- `risk_level_value_id` (String) The riskLevelValueId field.
+- `risk_level_value_id` (String) The ID of the risk level assigned to this entitlement.
 - `slug` (String) The slug is displayed as an oval next to the name in the frontend of C1, it tells you what permission the entitlement grants. See https://www.conductorone.com/docs/product/admin/entitlements/
 - `source_connector_ids` (Map of String) Map to tell us which connector the entitlement came from.
 - `system_builtin` (Boolean) This field indicates if this is a system builtin entitlement.

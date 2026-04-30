@@ -91,11 +91,11 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 			"compliance_framework_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `Search for app entitlements that are part of these compliace frameworks.`,
+				Description: `Search for app entitlements that are part of these compliance frameworks.`,
 			},
 			"display_name": schema.StringAttribute{
 				Optional:    true,
-				Description: `The displayName field.`,
+				Description: `Filter results to entitlements with this exact display name.`,
 			},
 			"exclude_app_ids": schema.ListAttribute{
 				Optional:    true,
@@ -105,16 +105,16 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 			"exclude_app_user_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `Exclude app entitlements from the results that these app users have granted.`,
+				Description: `Exclude entitlements from results that are granted to any of these app users.`,
 			},
 			"exclude_immutable": schema.BoolAttribute{
 				Optional:    true,
-				Description: `The excludeImmutable field.`,
+				Description: `If true, exclude immutable entitlements (e.g., system-managed entitlements that cannot be modified).`,
 			},
 			"exclude_resource_type_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The excludeResourceTypeIds field.`,
+				Description: `Exclude entitlements with any of these resource type IDs from results.`,
 			},
 			"excluded_entitlement_refs": schema.ListNestedAttribute{
 				Optional: true,
@@ -130,7 +130,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 						},
 					},
 				},
-				Description: `The excludedEntitlementRefs field.`,
+				Description: `Exclude these specific entitlements from results.`,
 			},
 			"include_deleted": schema.BoolAttribute{
 				Optional:    true,
@@ -138,7 +138,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 			},
 			"is_automated": schema.BoolAttribute{
 				Optional:    true,
-				Description: `The isAutomated field.`,
+				Description: `If true, restrict results to entitlements that have an automation rule configured.`,
 			},
 			"list": schema.ListNestedAttribute{
 				Computed: true,
@@ -523,6 +523,11 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 									Computed:    true,
 									Description: `The ID of the policy that will be used for emergency access grant tasks.`,
 								},
+								"external_id": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `The upstream product's native external ID for this entitlement (e.g. an Okta group ID).` + "\n" +
+										` Populated from the connector's external ID during sync.`,
+								},
 								"grant_count": schema.StringAttribute{
 									Computed:    true,
 									Description: `The amount of grants open for this entitlement`,
@@ -545,7 +550,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 								},
 								"match_baton_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The matchBatonId field.`,
+									Description: `An identifier used to match this entitlement to a connector-synced entitlement during sync.`,
 								},
 								"override_access_requests_defaults": schema.BoolAttribute{
 									Computed:    true,
@@ -849,7 +854,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 								},
 								"purpose": schema.StringAttribute{
 									Computed:    true,
-									Description: `The purpose field.`,
+									Description: `The purpose of this entitlement (e.g., assignment, permission, ownership).`,
 								},
 								"request_schema_id": schema.StringAttribute{
 									Computed:    true,
@@ -861,7 +866,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 								},
 								"risk_level_value_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The riskLevelValueId field.`,
+									Description: `The ID of the risk level assigned to this entitlement.`,
 								},
 								"slug": schema.StringAttribute{
 									Computed:    true,
@@ -893,7 +898,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 			"membership_type": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The membershipType field.`,
+				Description: `Filter results to entitlements where the user has any of these membership types (e.g., member, owner, admin).`,
 			},
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
@@ -901,7 +906,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 			},
 			"only_get_expiring": schema.BoolAttribute{
 				Optional:    true,
-				Description: `Restrict results to only those who have expiring app entitlement user bindings.`,
+				Description: `If true, restrict results to entitlements that have at least one expiring grant.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,
@@ -941,7 +946,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 						},
 					},
 				},
-				Description: `The refs field.`,
+				Description: `Filter results to only these specific entitlements.`,
 			},
 			"resource_ids": schema.ListAttribute{
 				Optional:    true,
@@ -951,7 +956,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 			"resource_trait_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The resourceTraitIds field.`,
+				Description: `Filter results to entitlements whose resource types have any of these trait IDs.`,
 			},
 			"resource_type_ids": schema.ListAttribute{
 				Optional:    true,
@@ -965,7 +970,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 			},
 			"source_connector_id": schema.StringAttribute{
 				Optional:    true,
-				Description: `The sourceConnectorId field.`,
+				Description: `Filter results to entitlements synced from this connector.`,
 			},
 		},
 	}

@@ -31,7 +31,7 @@ func newAutomationExecution(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfig
 }
 
 // ListAutomationExecutions - List Automation Executions
-// Invokes the c1.api.automations.v1.AutomationExecutionService.ListAutomationExecutions method.
+// List all automation executions in the tenant with pagination support.
 func (s *AutomationExecution) ListAutomationExecutions(ctx context.Context, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationExecutionServiceListAutomationExecutionsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -161,7 +161,7 @@ func (s *AutomationExecution) ListAutomationExecutions(ctx context.Context, opts
 }
 
 // GetAutomationExecution - Get Automation Execution
-// Invokes the c1.api.automations.v1.AutomationExecutionService.GetAutomationExecution method.
+// Retrieve a single automation execution by its unique identifier, with optional expanded related objects.
 func (s *AutomationExecution) GetAutomationExecution(ctx context.Context, request operations.C1APIAutomationsV1AutomationExecutionServiceGetAutomationExecutionRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationExecutionServiceGetAutomationExecutionResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

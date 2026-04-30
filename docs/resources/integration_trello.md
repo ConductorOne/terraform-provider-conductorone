@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_trello Resource - conductorone"
+page_title: "conductorone_integration_trello Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Trello Integration Resource

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // AccountDomain - The accountDomain field.
 type AccountDomain string
 
@@ -19,22 +14,16 @@ const (
 func (e AccountDomain) ToPointer() *AccountDomain {
 	return &e
 }
-func (e *AccountDomain) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccountDomain) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_DOMAIN_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_DOMAIN_EXTERNAL":
-		fallthrough
-	case "APP_USER_DOMAIN_TRUSTED":
-		*e = AccountDomain(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccountDomain: %v", v)
-	}
+	return false
 }
 
 type AccountTypes string
@@ -49,24 +38,16 @@ const (
 func (e AccountTypes) ToPointer() *AccountTypes {
 	return &e
 }
-func (e *AccountTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccountTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_TYPE_USER":
-		fallthrough
-	case "APP_USER_TYPE_SERVICE_ACCOUNT":
-		fallthrough
-	case "APP_USER_TYPE_SYSTEM_ACCOUNT":
-		*e = AccountTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccountTypes: %v", v)
-	}
+	return false
 }
 
 type AppUserStatuses string
@@ -81,24 +62,16 @@ const (
 func (e AppUserStatuses) ToPointer() *AppUserStatuses {
 	return &e
 }
-func (e *AppUserStatuses) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppUserStatuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_STATUS_UNSPECIFIED", "APP_USER_STATUS_ENABLED", "APP_USER_STATUS_DISABLED", "APP_USER_STATUS_DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_STATUS_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_STATUS_ENABLED":
-		fallthrough
-	case "APP_USER_STATUS_DISABLED":
-		fallthrough
-	case "APP_USER_STATUS_DELETED":
-		*e = AppUserStatuses(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppUserStatuses: %v", v)
-	}
+	return false
 }
 
 // The AccountCriteriaScope message.

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_resource_type Data Source - conductorone"
+page_title: "conductorone_app_resource_type Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppResourceType DataSource
@@ -56,7 +56,7 @@ data "conductorone_app_resource_type" "my_app_resource_type" {
 
 - `app_ids` (List of String) A list of app IDs to restrict the search by.
 - `app_user_ids` (List of String) A list of app user IDs to restrict the search by.
-- `display_name` (String) Exact match on display name
+- `display_name` (String) The display name of the app resource type.
 - `exclude_resource_type_ids` (List of String) A list of resource type IDs to exclude from the search.
 - `exclude_resource_type_trait_ids` (List of String) A list of resource type trait IDs to exclude from the search.
 - `page_size` (Number) The pageSize where 10 <= pageSize <= 100, default 25.

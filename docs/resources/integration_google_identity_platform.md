@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_google_identity_platform Resource - conductorone"
+page_title: "conductorone_integration_google_identity_platform Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Google_identity_platform Integration Resource

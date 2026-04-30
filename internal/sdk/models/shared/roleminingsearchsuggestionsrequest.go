@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type MatchTypes string
 
 const (
@@ -19,56 +14,40 @@ const (
 func (e MatchTypes) ToPointer() *MatchTypes {
 	return &e
 }
-func (e *MatchTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MatchTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_PROFILE_MATCH_TYPE_UNSPECIFIED", "ACCESS_PROFILE_MATCH_TYPE_EXACT", "ACCESS_PROFILE_MATCH_TYPE_SUPERSET", "ACCESS_PROFILE_MATCH_TYPE_PARTIAL":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_PROFILE_MATCH_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_PROFILE_MATCH_TYPE_EXACT":
-		fallthrough
-	case "ACCESS_PROFILE_MATCH_TYPE_SUPERSET":
-		fallthrough
-	case "ACCESS_PROFILE_MATCH_TYPE_PARTIAL":
-		*e = MatchTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MatchTypes: %v", v)
-	}
+	return false
 }
 
-type States string
+type RoleMiningSearchSuggestionsRequestStates string
 
 const (
-	StatesSuggestionStateUnspecified States = "SUGGESTION_STATE_UNSPECIFIED"
-	StatesSuggestionStateNew         States = "SUGGESTION_STATE_NEW"
-	StatesSuggestionStateDismissed   States = "SUGGESTION_STATE_DISMISSED"
-	StatesSuggestionStateAccepted    States = "SUGGESTION_STATE_ACCEPTED"
+	RoleMiningSearchSuggestionsRequestStatesSuggestionStateUnspecified RoleMiningSearchSuggestionsRequestStates = "SUGGESTION_STATE_UNSPECIFIED"
+	RoleMiningSearchSuggestionsRequestStatesSuggestionStateNew         RoleMiningSearchSuggestionsRequestStates = "SUGGESTION_STATE_NEW"
+	RoleMiningSearchSuggestionsRequestStatesSuggestionStateDismissed   RoleMiningSearchSuggestionsRequestStates = "SUGGESTION_STATE_DISMISSED"
+	RoleMiningSearchSuggestionsRequestStatesSuggestionStateAccepted    RoleMiningSearchSuggestionsRequestStates = "SUGGESTION_STATE_ACCEPTED"
 )
 
-func (e States) ToPointer() *States {
+func (e RoleMiningSearchSuggestionsRequestStates) ToPointer() *RoleMiningSearchSuggestionsRequestStates {
 	return &e
 }
-func (e *States) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RoleMiningSearchSuggestionsRequestStates) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SUGGESTION_STATE_UNSPECIFIED", "SUGGESTION_STATE_NEW", "SUGGESTION_STATE_DISMISSED", "SUGGESTION_STATE_ACCEPTED":
+			return true
+		}
 	}
-	switch v {
-	case "SUGGESTION_STATE_UNSPECIFIED":
-		fallthrough
-	case "SUGGESTION_STATE_NEW":
-		fallthrough
-	case "SUGGESTION_STATE_DISMISSED":
-		fallthrough
-	case "SUGGESTION_STATE_ACCEPTED":
-		*e = States(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for States: %v", v)
-	}
+	return false
 }
 
 // The RoleMiningSearchSuggestionsRequest message.
@@ -77,14 +56,14 @@ type RoleMiningSearchSuggestionsRequest struct {
 	CohortTypes []string `json:"cohortTypes,omitempty"`
 	// Filter by match type against existing access profiles.
 	MatchTypes []MatchTypes `json:"matchTypes,omitempty"`
-	// The pageSize field.
+	// Maximum number of suggestions to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
+	// Pagination token from a previous response.
 	PageToken *string `json:"pageToken,omitempty"`
 	// Text search — matches against suggested_name, description, and cohort filter values.
 	Query *string `json:"query,omitempty"`
 	// Filter by suggestion state.
-	States []States `json:"states,omitempty"`
+	States []RoleMiningSearchSuggestionsRequestStates `json:"states,omitempty"`
 }
 
 func (r *RoleMiningSearchSuggestionsRequest) GetCohortTypes() []string {
@@ -122,7 +101,7 @@ func (r *RoleMiningSearchSuggestionsRequest) GetQuery() *string {
 	return r.Query
 }
 
-func (r *RoleMiningSearchSuggestionsRequest) GetStates() []States {
+func (r *RoleMiningSearchSuggestionsRequest) GetStates() []RoleMiningSearchSuggestionsRequestStates {
 	if r == nil {
 		return nil
 	}

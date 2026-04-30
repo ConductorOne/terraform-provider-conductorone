@@ -31,7 +31,7 @@ func newAppUser(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, hoo
 }
 
 // List
-// Invokes the c1.api.app.v1.AppUserService.List method.
+// List app user accounts within a specific app, with pagination support.
 func (s *AppUser) List(ctx context.Context, request operations.C1APIAppV1AppUserServiceListRequest, opts ...operations.Option) (*operations.C1APIAppV1AppUserServiceListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -83,7 +83,7 @@ func (s *AppUser) List(ctx context.Context, request operations.C1APIAppV1AppUser
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -165,7 +165,7 @@ func (s *AppUser) List(ctx context.Context, request operations.C1APIAppV1AppUser
 }
 
 // ListAppUserCredentials - List App User Credentials
-// Invokes the c1.api.app.v1.AppUserService.ListAppUserCredentials method.
+// List credentials associated with a specific app user account.
 func (s *AppUser) ListAppUserCredentials(ctx context.Context, request operations.C1APIAppV1AppUserServiceListAppUserCredentialsRequest, opts ...operations.Option) (*operations.C1APIAppV1AppUserServiceListAppUserCredentialsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -217,7 +217,7 @@ func (s *AppUser) ListAppUserCredentials(ctx context.Context, request operations
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -299,7 +299,7 @@ func (s *AppUser) ListAppUserCredentials(ctx context.Context, request operations
 }
 
 // ListAppUsersForUser - List App Users For User
-// Invokes the c1.api.app.v1.AppUserService.ListAppUsersForUser method.
+// List app user accounts within a specific app that are correlated to a given C1 user.
 func (s *AppUser) ListAppUsersForUser(ctx context.Context, request operations.C1APIAppV1AppUserServiceListAppUsersForUserRequest, opts ...operations.Option) (*operations.C1APIAppV1AppUserServiceListAppUsersForUserResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -351,7 +351,7 @@ func (s *AppUser) ListAppUsersForUser(ctx context.Context, request operations.C1
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
