@@ -6,10 +6,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -69,14 +67,7 @@ func (r *AppEntitlementMonitorBindingDataSource) Schema(ctx context.Context, req
 			"entitlement_group": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The entitlementGroup field. must be one of ["ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"ENTITLEMENT_GROUP_UNSPECIFIED",
-						"ENTITLEMENT_GROUP_A",
-						"ENTITLEMENT_GROUP_B",
-					),
-				},
+				Description: `The entitlementGroup field. possible known values include one of ["ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]`,
 			},
 			"monitor_id": schema.StringAttribute{
 				Computed:    true,

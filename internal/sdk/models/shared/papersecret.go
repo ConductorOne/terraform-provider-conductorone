@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -23,26 +21,16 @@ const (
 func (e InputFormat) ToPointer() *InputFormat {
 	return &e
 }
-func (e *InputFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *InputFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_INPUT_FORMAT_UNSPECIFIED", "SECRET_INPUT_FORMAT_PLAINTEXT", "SECRET_INPUT_FORMAT_JSON", "SECRET_INPUT_FORMAT_YAML", "SECRET_INPUT_FORMAT_KEY_VALUE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_INPUT_FORMAT_UNSPECIFIED":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_PLAINTEXT":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_JSON":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_YAML":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_KEY_VALUE":
-		*e = InputFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for InputFormat: %v", v)
-	}
+	return false
 }
 
 // PaperSecretSecretType - The secretType field.
@@ -57,22 +45,16 @@ const (
 func (e PaperSecretSecretType) ToPointer() *PaperSecretSecretType {
 	return &e
 }
-func (e *PaperSecretSecretType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretSecretType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_TYPE_UNSPECIFIED", "SECRET_TYPE_TEXT", "SECRET_TYPE_FILE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_TYPE_UNSPECIFIED":
-		fallthrough
-	case "SECRET_TYPE_TEXT":
-		fallthrough
-	case "SECRET_TYPE_FILE":
-		*e = PaperSecretSecretType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretSecretType: %v", v)
-	}
+	return false
 }
 
 // PaperSecretSharingMode - From PaperVault
@@ -87,22 +69,16 @@ const (
 func (e PaperSecretSharingMode) ToPointer() *PaperSecretSharingMode {
 	return &e
 }
-func (e *PaperSecretSharingMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretSharingMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PAPER_VAULT_SHARING_MODE_UNSPECIFIED", "PAPER_VAULT_SHARING_MODE_INTERNAL", "PAPER_VAULT_SHARING_MODE_EXTERNAL":
+			return true
+		}
 	}
-	switch v {
-	case "PAPER_VAULT_SHARING_MODE_UNSPECIFIED":
-		fallthrough
-	case "PAPER_VAULT_SHARING_MODE_INTERNAL":
-		fallthrough
-	case "PAPER_VAULT_SHARING_MODE_EXTERNAL":
-		*e = PaperSecretSharingMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretSharingMode: %v", v)
-	}
+	return false
 }
 
 // PaperSecretStatus - Computed status
@@ -120,28 +96,16 @@ const (
 func (e PaperSecretStatus) ToPointer() *PaperSecretStatus {
 	return &e
 }
-func (e *PaperSecretStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_STATUS_UNSPECIFIED", "SECRET_STATUS_ACTIVE", "SECRET_STATUS_EXPIRED", "SECRET_STATUS_BURNED", "SECRET_STATUS_REVOKED", "SECRET_STATUS_DATA_DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_STATUS_UNSPECIFIED":
-		fallthrough
-	case "SECRET_STATUS_ACTIVE":
-		fallthrough
-	case "SECRET_STATUS_EXPIRED":
-		fallthrough
-	case "SECRET_STATUS_BURNED":
-		fallthrough
-	case "SECRET_STATUS_REVOKED":
-		fallthrough
-	case "SECRET_STATUS_DATA_DELETED":
-		*e = PaperSecretStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretStatus: %v", v)
-	}
+	return false
 }
 
 // PaperSecret is the API view of a secret (combines Vault + PaperVault fields).

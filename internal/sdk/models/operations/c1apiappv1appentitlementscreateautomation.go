@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetCreateAutomationRe
 	return c.CreateAutomationRequest
 }
 
+// #region class-body-c1apiappv1appentitlementscreateautomationrequest
+// #endregion class-body-c1apiappv1appentitlementscreateautomationrequest
+
 type C1APIAppV1AppEntitlementsCreateAutomationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppEntitlementsCreateAutomationResponse) GetCreateAutomationR
 	}
 	return c.CreateAutomationResponse
 }
+
+// #region class-body-c1apiappv1appentitlementscreateautomationresponse
+// #endregion class-body-c1apiappv1appentitlementscreateautomationresponse

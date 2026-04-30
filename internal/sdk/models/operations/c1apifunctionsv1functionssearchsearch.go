@@ -45,3 +45,6 @@ func (c *C1APIFunctionsV1FunctionsSearchSearchResponse) GetFunctionsSearchRespon
 	}
 	return c.FunctionsSearchResponse
 }
+
+// #region class-body-c1apifunctionsv1functionssearchsearchresponse
+// #endregion class-body-c1apifunctionsv1functionssearchsearchresponse

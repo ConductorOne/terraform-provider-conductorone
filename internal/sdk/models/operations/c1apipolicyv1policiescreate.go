@@ -45,3 +45,6 @@ func (c *C1APIPolicyV1PoliciesCreateResponse) GetCreatePolicyResponse() *shared.
 	}
 	return c.CreatePolicyResponse
 }
+
+// #region class-body-c1apipolicyv1policiescreateresponse
+// #endregion class-body-c1apipolicyv1policiescreateresponse

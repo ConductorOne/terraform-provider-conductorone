@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app Data Source - conductorone"
+page_title: "conductorone_app Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   App DataSource
@@ -46,7 +46,7 @@ data "conductorone_app" "my_app" {
 ### Optional
 
 - `app_ids` (List of String) A list of app IDs to restrict the search to.
-- `display_name` (String) Search for apps with a case insensitive match on the display name.
+- `display_name` (String) The app's display name.
 - `exclude_app_ids` (List of String) A list of app IDs to remove from the results.
 - `only_directories` (Boolean) Only return apps which are directories
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)

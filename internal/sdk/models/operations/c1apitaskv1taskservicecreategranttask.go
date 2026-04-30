@@ -45,3 +45,6 @@ func (c *C1APITaskV1TaskServiceCreateGrantTaskResponse) GetTaskServiceCreateGran
 	}
 	return c.TaskServiceCreateGrantResponse
 }
+
+// #region class-body-c1apitaskv1taskservicecreategranttaskresponse
+// #endregion class-body-c1apitaskv1taskservicecreategranttaskresponse

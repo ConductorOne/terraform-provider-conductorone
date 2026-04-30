@@ -150,7 +150,8 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 				Description: `The enabled field.`,
 			},
 			"request_catalog_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The requestCatalogId field.`,
 			},
 			"tenant_id": schema.StringAttribute{
 				Computed:    true,
@@ -398,7 +399,10 @@ func (r *BundleAutomationResource) Delete(ctx context.Context, req resource.Dele
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

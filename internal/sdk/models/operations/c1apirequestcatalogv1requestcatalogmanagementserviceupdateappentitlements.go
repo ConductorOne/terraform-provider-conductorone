@@ -26,6 +26,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlemen
 	return c.RequestCatalogManagementServiceUpdateAppEntitlementsRequest
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementserviceupdateappentitlementsrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementserviceupdateappentitlementsrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlemen
 	}
 	return c.RequestCatalogManagementServiceUpdateAppEntitlementsResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementserviceupdateappentitlementsresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementserviceupdateappentitlementsresponse

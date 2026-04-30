@@ -26,6 +26,9 @@ func (c *C1APISecretsV1PaperSecretAdminServiceRevokeRequest) GetPaperSecretAdmin
 	return c.PaperSecretAdminServiceRevokeRequest
 }
 
+// #region class-body-c1apisecretsv1papersecretadminservicerevokerequest
+// #endregion class-body-c1apisecretsv1papersecretadminservicerevokerequest
+
 type C1APISecretsV1PaperSecretAdminServiceRevokeResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APISecretsV1PaperSecretAdminServiceRevokeResponse) GetPaperSecretAdmi
 	}
 	return c.PaperSecretAdminServiceRevokeResponse
 }
+
+// #region class-body-c1apisecretsv1papersecretadminservicerevokeresponse
+// #endregion class-body-c1apisecretsv1papersecretadminservicerevokeresponse

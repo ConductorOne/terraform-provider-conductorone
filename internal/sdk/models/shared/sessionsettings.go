@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ClientIDMetadataDocumentPolicy - Policy for metadata document client_id URLs.
 type ClientIDMetadataDocumentPolicy string
 
@@ -20,24 +15,16 @@ const (
 func (e ClientIDMetadataDocumentPolicy) ToPointer() *ClientIDMetadataDocumentPolicy {
 	return &e
 }
-func (e *ClientIDMetadataDocumentPolicy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientIDMetadataDocumentPolicy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CLIENT_ID_METADATA_DOCUMENT_POLICY_UNSPECIFIED", "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOW_ALL", "CLIENT_ID_METADATA_DOCUMENT_POLICY_REQUESTABLE", "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOWLIST_ONLY":
+			return true
+		}
 	}
-	switch v {
-	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_UNSPECIFIED":
-		fallthrough
-	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOW_ALL":
-		fallthrough
-	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_REQUESTABLE":
-		fallthrough
-	case "CLIENT_ID_METADATA_DOCUMENT_POLICY_ALLOWLIST_ONLY":
-		*e = ClientIDMetadataDocumentPolicy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientIDMetadataDocumentPolicy: %v", v)
-	}
+	return false
 }
 
 // The SessionSettings message.

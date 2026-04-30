@@ -61,6 +61,8 @@ func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx 
 
 					r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
 				}
+			} else {
+				r.BundleAutomationRuleEntitlement.EntitlementRefs = nil
 			}
 		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))

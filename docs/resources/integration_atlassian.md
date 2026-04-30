@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_atlassian Resource - conductorone"
+page_title: "conductorone_integration_atlassian Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Atlassian Integration Resource

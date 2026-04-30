@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ActionInstanceState - The current state of the action execution.
 type ActionInstanceState string
 
@@ -21,26 +16,16 @@ const (
 func (e ActionInstanceState) ToPointer() *ActionInstanceState {
 	return &e
 }
-func (e *ActionInstanceState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ActionInstanceState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACTION_INSTANCE_STATE_UNSPECIFIED", "ACTION_INSTANCE_STATE_INIT", "ACTION_INSTANCE_STATE_RUNNING", "ACTION_INSTANCE_STATE_DONE", "ACTION_INSTANCE_STATE_ERROR":
+			return true
+		}
 	}
-	switch v {
-	case "ACTION_INSTANCE_STATE_UNSPECIFIED":
-		fallthrough
-	case "ACTION_INSTANCE_STATE_INIT":
-		fallthrough
-	case "ACTION_INSTANCE_STATE_RUNNING":
-		fallthrough
-	case "ACTION_INSTANCE_STATE_DONE":
-		fallthrough
-	case "ACTION_INSTANCE_STATE_ERROR":
-		*e = ActionInstanceState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ActionInstanceState: %v", v)
-	}
+	return false
 }
 
 // The ActionInstance message.

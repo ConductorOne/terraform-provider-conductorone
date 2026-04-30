@@ -11,10 +11,10 @@ type PolicyStepInstance struct {
 	ActionInstance     *ActionInstance    `tfsdk:"action_instance"`
 	ApprovalInstance   *ApprovalInstance  `tfsdk:"approval_instance"`
 	FormInstance       *FormInstance      `tfsdk:"form_instance"`
-	ID                 types.String       `tfsdk:"id"`
-	PolicyGenerationID types.String       `tfsdk:"policy_generation_id"`
 	ProvisionInstance  *ProvisionInstance `tfsdk:"provision_instance"`
 	RejectInstance     *RejectInstance    `tfsdk:"reject_instance"`
-	State              types.String       `tfsdk:"state"`
 	WaitInstance       *WaitInstance      `tfsdk:"wait_instance"`
+	ID                 types.String       `tfsdk:"id"`
+	PolicyGenerationID types.String       `tfsdk:"policy_generation_id"`
+	State              types.String       `tfsdk:"state"`
 }

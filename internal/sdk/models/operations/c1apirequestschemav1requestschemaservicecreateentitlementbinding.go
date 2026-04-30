@@ -45,3 +45,6 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceCreateEntitlementBindingRespons
 	}
 	return c.RequestSchemaServiceCreateEntitlementBindingResponse
 }
+
+// #region class-body-c1apirequestschemav1requestschemaservicecreateentitlementbindingresponse
+// #endregion class-body-c1apirequestschemav1requestschemaservicecreateentitlementbindingresponse

@@ -45,3 +45,6 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceCreateResponse) GetRequestSchem
 	}
 	return c.RequestSchemaServiceCreateResponse
 }
+
+// #region class-body-c1apirequestschemav1requestschemaservicecreateresponse
+// #endregion class-body-c1apirequestschemav1requestschemaservicecreateresponse

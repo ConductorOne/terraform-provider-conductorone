@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -23,26 +21,16 @@ const (
 func (e PaperSecretServiceGetContentResponseInputFormat) ToPointer() *PaperSecretServiceGetContentResponseInputFormat {
 	return &e
 }
-func (e *PaperSecretServiceGetContentResponseInputFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceGetContentResponseInputFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_INPUT_FORMAT_UNSPECIFIED", "SECRET_INPUT_FORMAT_PLAINTEXT", "SECRET_INPUT_FORMAT_JSON", "SECRET_INPUT_FORMAT_YAML", "SECRET_INPUT_FORMAT_KEY_VALUE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_INPUT_FORMAT_UNSPECIFIED":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_PLAINTEXT":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_JSON":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_YAML":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_KEY_VALUE":
-		*e = PaperSecretServiceGetContentResponseInputFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceGetContentResponseInputFormat: %v", v)
-	}
+	return false
 }
 
 // PaperSecretServiceGetContentResponseSecretType - Secret metadata
@@ -57,22 +45,16 @@ const (
 func (e PaperSecretServiceGetContentResponseSecretType) ToPointer() *PaperSecretServiceGetContentResponseSecretType {
 	return &e
 }
-func (e *PaperSecretServiceGetContentResponseSecretType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceGetContentResponseSecretType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_TYPE_UNSPECIFIED", "SECRET_TYPE_TEXT", "SECRET_TYPE_FILE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_TYPE_UNSPECIFIED":
-		fallthrough
-	case "SECRET_TYPE_TEXT":
-		fallthrough
-	case "SECRET_TYPE_FILE":
-		*e = PaperSecretServiceGetContentResponseSecretType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceGetContentResponseSecretType: %v", v)
-	}
+	return false
 }
 
 // The PaperSecretServiceGetContentResponse message.

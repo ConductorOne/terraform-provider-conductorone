@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/objectplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
@@ -14,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -145,8 +147,10 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											`  - batonResourceAction`,
 									},
 									"approval": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
+										PlanModifiers: []planmodifier.Object{
+											speakeasy_objectplanmodifier.UseConfigValue(),
+										},
 										Attributes: map[string]schema.Attribute{
 											"agent_approval": schema.SingleNestedAttribute{
 												Computed: true,
@@ -155,28 +159,12 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													"agent_failure_action": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `The action to take if the agent fails to approve, deny, or reassign the task. must be one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED",
-																"APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS",
-																"APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS",
-																"APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP",
-															),
-														},
+														Description: `The action to take if the agent fails to approve, deny, or reassign the task. possible known values include one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]`,
 													},
 													"agent_mode": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"APPROVAL_AGENT_MODE_UNSPECIFIED",
-																"APPROVAL_AGENT_MODE_FULL_CONTROL",
-																"APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY",
-																"APPROVAL_AGENT_MODE_COMMENT_ONLY",
-															),
-														},
+														Description: `The mode of the agent, full control, change policy only, or comment only. possible known values include one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]`,
 													},
 													"agent_user_id": schema.StringAttribute{
 														Computed:    true,
@@ -1407,17 +1395,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"policy_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The enum of the policy type. must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"POLICY_TYPE_UNSPECIFIED",
-						"POLICY_TYPE_GRANT",
-						"POLICY_TYPE_REVOKE",
-						"POLICY_TYPE_CERTIFY",
-						"POLICY_TYPE_ACCESS_REQUEST",
-						"POLICY_TYPE_PROVISION",
-					),
-				},
+				Description: `The enum of the policy type. possible known values include one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]`,
 			},
 			"post_actions": schema.ListNestedAttribute{
 				Computed: true,
@@ -1672,43 +1650,6 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIPolicyV1PoliciesGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Policies.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.GetPolicyResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetPolicyResponse(ctx, res1.GetPolicyResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1750,7 +1691,10 @@ func (r *PolicyResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

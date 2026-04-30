@@ -171,19 +171,11 @@ func (s *PolicySearch) Search(ctx context.Context, request *shared.SearchPolicie
 				return nil, nil
 			}
 		}
+		request.PageToken = &nCVal
 
 		return s.Search(
 			ctx,
-			&shared.SearchPoliciesRequest{
-				DisplayName:      request.DisplayName,
-				ExcludePolicyIds: request.ExcludePolicyIds,
-				IncludeDeleted:   request.IncludeDeleted,
-				PageSize:         request.PageSize,
-				PageToken:        &nCVal,
-				PolicyTypes:      request.PolicyTypes,
-				Query:            request.Query,
-				Refs:             request.Refs,
-			},
+			request,
 		)
 	}
 

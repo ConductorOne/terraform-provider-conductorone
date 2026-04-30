@@ -26,6 +26,9 @@ func (c *C1APISecretsV1PaperSecretServiceSetTextContentRequest) GetPaperSecretSe
 	return c.PaperSecretServiceSetTextContentRequest
 }
 
+// #region class-body-c1apisecretsv1papersecretservicesettextcontentrequest
+// #endregion class-body-c1apisecretsv1papersecretservicesettextcontentrequest
+
 type C1APISecretsV1PaperSecretServiceSetTextContentResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APISecretsV1PaperSecretServiceSetTextContentResponse) GetPaperSecretS
 	}
 	return c.PaperSecretServiceSetTextContentResponse
 }
+
+// #region class-body-c1apisecretsv1papersecretservicesettextcontentresponse
+// #endregion class-body-c1apisecretsv1papersecretservicesettextcontentresponse

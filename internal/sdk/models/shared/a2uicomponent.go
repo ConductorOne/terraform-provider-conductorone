@@ -177,3 +177,6 @@ func (a *A2UIComponent) GetWeight() *int {
 	}
 	return a.Weight
 }
+
+// #region class-body-a2uicomponent
+// #endregion class-body-a2uicomponent

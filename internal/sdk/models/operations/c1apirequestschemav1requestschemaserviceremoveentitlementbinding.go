@@ -45,3 +45,6 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceRemoveEntitlementBindingRespons
 	}
 	return c.RequestSchemaServiceRemoveEntitlementBindingResponse
 }
+
+// #region class-body-c1apirequestschemav1requestschemaserviceremoveentitlementbindingresponse
+// #endregion class-body-c1apirequestschemav1requestschemaserviceremoveentitlementbindingresponse

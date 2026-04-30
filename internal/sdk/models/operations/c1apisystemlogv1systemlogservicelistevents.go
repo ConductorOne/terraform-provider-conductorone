@@ -45,3 +45,6 @@ func (c *C1APISystemlogV1SystemLogServiceListEventsResponse) GetSystemLogService
 	}
 	return c.SystemLogServiceListEventsResponse
 }
+
+// #region class-body-c1apisystemlogv1systemlogservicelisteventsresponse
+// #endregion class-body-c1apisystemlogv1systemlogservicelisteventsresponse

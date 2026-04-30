@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,22 +19,16 @@ const (
 func (e RequestSchemaJustificationVisibility) ToPointer() *RequestSchemaJustificationVisibility {
 	return &e
 }
-func (e *RequestSchemaJustificationVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestSchemaJustificationVisibility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "JUSTIFICATION_VISIBILITY_UNSPECIFIED", "JUSTIFICATION_VISIBILITY_SHOW", "JUSTIFICATION_VISIBILITY_HIDE":
+			return true
+		}
 	}
-	switch v {
-	case "JUSTIFICATION_VISIBILITY_UNSPECIFIED":
-		fallthrough
-	case "JUSTIFICATION_VISIBILITY_SHOW":
-		fallthrough
-	case "JUSTIFICATION_VISIBILITY_HIDE":
-		*e = RequestSchemaJustificationVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestSchemaJustificationVisibility: %v", v)
-	}
+	return false
 }
 
 // The RequestSchema message.

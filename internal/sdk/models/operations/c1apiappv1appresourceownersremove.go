@@ -42,6 +42,9 @@ func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetRemoveAppResourceOwnerRequ
 	return c.RemoveAppResourceOwnerRequest
 }
 
+// #region class-body-c1apiappv1appresourceownersremoverequest
+// #endregion class-body-c1apiappv1appresourceownersremoverequest
+
 type C1APIAppV1AppResourceOwnersRemoveResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -80,3 +83,6 @@ func (c *C1APIAppV1AppResourceOwnersRemoveResponse) GetRemoveAppResourceOwnerRes
 	}
 	return c.RemoveAppResourceOwnerResponse
 }
+
+// #region class-body-c1apiappv1appresourceownersremoveresponse
+// #endregion class-body-c1apiappv1appresourceownersremoveresponse

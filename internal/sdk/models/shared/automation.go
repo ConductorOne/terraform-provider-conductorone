@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -31,42 +29,16 @@ const (
 func (e PrimaryTriggerType) ToPointer() *PrimaryTriggerType {
 	return &e
 }
-func (e *PrimaryTriggerType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PrimaryTriggerType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_USER_PROFILE_CHANGE", "TRIGGER_TYPE_APP_USER_CREATE", "TRIGGER_TYPE_APP_USER_UPDATE", "TRIGGER_TYPE_UNUSED_ACCESS", "TRIGGER_TYPE_USER_CREATED", "TRIGGER_TYPE_GRANT_FOUND", "TRIGGER_TYPE_GRANT_DELETED", "TRIGGER_TYPE_WEBHOOK", "TRIGGER_TYPE_SCHEDULE", "TRIGGER_TYPE_FORM", "TRIGGER_TYPE_SCHEDULE_APP_USER", "TRIGGER_TYPE_ACCESS_CONFLICT":
+			return true
+		}
 	}
-	switch v {
-	case "TRIGGER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "TRIGGER_TYPE_USER_PROFILE_CHANGE":
-		fallthrough
-	case "TRIGGER_TYPE_APP_USER_CREATE":
-		fallthrough
-	case "TRIGGER_TYPE_APP_USER_UPDATE":
-		fallthrough
-	case "TRIGGER_TYPE_UNUSED_ACCESS":
-		fallthrough
-	case "TRIGGER_TYPE_USER_CREATED":
-		fallthrough
-	case "TRIGGER_TYPE_GRANT_FOUND":
-		fallthrough
-	case "TRIGGER_TYPE_GRANT_DELETED":
-		fallthrough
-	case "TRIGGER_TYPE_WEBHOOK":
-		fallthrough
-	case "TRIGGER_TYPE_SCHEDULE":
-		fallthrough
-	case "TRIGGER_TYPE_FORM":
-		fallthrough
-	case "TRIGGER_TYPE_SCHEDULE_APP_USER":
-		fallthrough
-	case "TRIGGER_TYPE_ACCESS_CONFLICT":
-		*e = PrimaryTriggerType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PrimaryTriggerType: %v", v)
-	}
+	return false
 }
 
 // The Automation message.

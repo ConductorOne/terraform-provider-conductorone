@@ -68,10 +68,12 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 					` Must be one of the builtin access config IDs or empty.`,
 			},
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The app that this resource belongs to.`,
 			},
 			"app_resource_type_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The resource type that this resource is.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -112,7 +114,8 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				Description: `The number of grants to this resource.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The id of the resource.`,
 			},
 			"match_baton_id": schema.StringAttribute{
 				Computed:    true,

@@ -45,3 +45,6 @@ func (c *C1APIAppV1AppUserServiceSearchResponse) GetAppUserServiceSearchResponse
 	}
 	return c.AppUserServiceSearchResponse
 }
+
+// #region class-body-c1apiappv1appuserservicesearchresponse
+// #endregion class-body-c1apiappv1appuserservicesearchresponse

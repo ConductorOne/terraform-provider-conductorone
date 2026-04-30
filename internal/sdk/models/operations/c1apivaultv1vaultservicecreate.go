@@ -45,3 +45,6 @@ func (c *C1APIVaultV1VaultServiceCreateResponse) GetVaultServiceCreateResponse()
 	}
 	return c.VaultServiceCreateResponse
 }
+
+// #region class-body-c1apivaultv1vaultservicecreateresponse
+// #endregion class-body-c1apivaultv1vaultservicecreateresponse

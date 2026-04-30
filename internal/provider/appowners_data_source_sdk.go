@@ -40,12 +40,16 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 
 						list.DepartmentSources = append(list.DepartmentSources, departmentSources)
 					}
+				} else {
+					list.DepartmentSources = nil
 				}
 				if listItem.DirectoryIds != nil {
 					list.DirectoryIds = make([]types.String, 0, len(listItem.DirectoryIds))
 					for _, v := range listItem.DirectoryIds {
 						list.DirectoryIds = append(list.DirectoryIds, types.StringValue(v))
 					}
+				} else {
+					list.DirectoryIds = nil
 				}
 				if listItem.DirectoryStatus != nil {
 					list.DirectoryStatus = types.StringValue(string(*listItem.DirectoryStatus))
@@ -66,6 +70,8 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 
 						list.DirectoryStatusSources = append(list.DirectoryStatusSources, directoryStatusSources)
 					}
+				} else {
+					list.DirectoryStatusSources = nil
 				}
 				list.DisplayName = types.StringPointerValue(listItem.DisplayName)
 				list.Email = types.StringPointerValue(listItem.Email)
@@ -74,6 +80,8 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 					for _, v := range listItem.Emails {
 						list.Emails = append(list.Emails, types.StringValue(v))
 					}
+				} else {
+					list.Emails = nil
 				}
 				if listItem.EmailSources != nil {
 					list.EmailSources = []tfTypes.UserAttributeMappingSource{}
@@ -89,12 +97,16 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 
 						list.EmailSources = append(list.EmailSources, emailSources)
 					}
+				} else {
+					list.EmailSources = nil
 				}
 				if listItem.EmployeeIds != nil {
 					list.EmployeeIds = make([]types.String, 0, len(listItem.EmployeeIds))
 					for _, v := range listItem.EmployeeIds {
 						list.EmployeeIds = append(list.EmployeeIds, types.StringValue(v))
 					}
+				} else {
+					list.EmployeeIds = nil
 				}
 				if listItem.EmployeeIDSources != nil {
 					list.EmployeeIDSources = []tfTypes.UserAttributeMappingSource{}
@@ -110,6 +122,8 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 
 						list.EmployeeIDSources = append(list.EmployeeIDSources, employeeIDSources)
 					}
+				} else {
+					list.EmployeeIDSources = nil
 				}
 				list.EmploymentStatus = types.StringPointerValue(listItem.EmploymentStatus)
 				if listItem.EmploymentStatusSources != nil {
@@ -126,6 +140,8 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 
 						list.EmploymentStatusSources = append(list.EmploymentStatusSources, employmentStatusSources)
 					}
+				} else {
+					list.EmploymentStatusSources = nil
 				}
 				list.EmploymentType = types.StringPointerValue(listItem.EmploymentType)
 				if listItem.EmploymentTypeSources != nil {
@@ -142,6 +158,8 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 
 						list.EmploymentTypeSources = append(list.EmploymentTypeSources, employmentTypeSources)
 					}
+				} else {
+					list.EmploymentTypeSources = nil
 				}
 				list.ID = types.StringPointerValue(listItem.ID)
 				list.JobTitle = types.StringPointerValue(listItem.JobTitle)
@@ -159,12 +177,16 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 
 						list.JobTitleSources = append(list.JobTitleSources, jobTitleSources)
 					}
+				} else {
+					list.JobTitleSources = nil
 				}
 				if listItem.ManagerIds != nil {
 					list.ManagerIds = make([]types.String, 0, len(listItem.ManagerIds))
 					for _, v := range listItem.ManagerIds {
 						list.ManagerIds = append(list.ManagerIds, types.StringValue(v))
 					}
+				} else {
+					list.ManagerIds = nil
 				}
 				if listItem.ManagerSources != nil {
 					list.ManagerSources = []tfTypes.UserAttributeMappingSource{}
@@ -180,6 +202,8 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 
 						list.ManagerSources = append(list.ManagerSources, managerSources)
 					}
+				} else {
+					list.ManagerSources = nil
 				}
 				if listItem.Origin != nil {
 					list.Origin = types.StringValue(string(*listItem.Origin))
@@ -196,6 +220,8 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 					for _, v := range listItem.RoleIds {
 						list.RoleIds = append(list.RoleIds, types.StringValue(v))
 					}
+				} else {
+					list.RoleIds = nil
 				}
 				if listItem.Status != nil {
 					list.Status = types.StringValue(string(*listItem.Status))
@@ -214,6 +240,8 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 					for _, v := range listItem.Usernames {
 						list.Usernames = append(list.Usernames, types.StringValue(v))
 					}
+				} else {
+					list.Usernames = nil
 				}
 				if listItem.UsernameSources != nil {
 					list.UsernameSources = []tfTypes.UserAttributeMappingSource{}
@@ -229,10 +257,14 @@ func (r *AppOwnersDataSourceModel) RefreshFromSharedListAppOwnersResponse(ctx co
 
 						list.UsernameSources = append(list.UsernameSources, usernameSources)
 					}
+				} else {
+					list.UsernameSources = nil
 				}
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

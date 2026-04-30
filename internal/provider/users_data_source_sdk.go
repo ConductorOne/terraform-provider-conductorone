@@ -16,6 +16,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		if resp.List != nil {
 			if r.List == nil {
@@ -53,6 +55,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 
 							list.User.DepartmentSources = append(list.User.DepartmentSources, departmentSources)
 						}
+					} else {
+						list.User.DepartmentSources = nil
 					}
 					if listItem.User.DirectoryIds != nil {
 						if list.User.DirectoryIds == nil {
@@ -61,6 +65,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 						for _, v := range listItem.User.DirectoryIds {
 							list.User.DirectoryIds = append(list.User.DirectoryIds, types.StringValue(v))
 						}
+					} else {
+						list.User.DirectoryIds = nil
 					}
 					if listItem.User.DirectoryStatus != nil {
 						list.User.DirectoryStatus = types.StringValue(string(*listItem.User.DirectoryStatus))
@@ -83,6 +89,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 
 							list.User.DirectoryStatusSources = append(list.User.DirectoryStatusSources, directoryStatusSources)
 						}
+					} else {
+						list.User.DirectoryStatusSources = nil
 					}
 					list.User.DisplayName = types.StringPointerValue(listItem.User.DisplayName)
 					list.User.Email = types.StringPointerValue(listItem.User.Email)
@@ -93,6 +101,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 						for _, v := range listItem.User.Emails {
 							list.User.Emails = append(list.User.Emails, types.StringValue(v))
 						}
+					} else {
+						list.User.Emails = nil
 					}
 					if listItem.User.EmailSources != nil {
 						if list.User.EmailSources == nil {
@@ -110,6 +120,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 
 							list.User.EmailSources = append(list.User.EmailSources, emailSources)
 						}
+					} else {
+						list.User.EmailSources = nil
 					}
 					if listItem.User.EmployeeIds != nil {
 						if list.User.EmployeeIds == nil {
@@ -118,6 +130,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 						for _, v := range listItem.User.EmployeeIds {
 							list.User.EmployeeIds = append(list.User.EmployeeIds, types.StringValue(v))
 						}
+					} else {
+						list.User.EmployeeIds = nil
 					}
 					if listItem.User.EmployeeIDSources != nil {
 						if list.User.EmployeeIDSources == nil {
@@ -135,6 +149,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 
 							list.User.EmployeeIDSources = append(list.User.EmployeeIDSources, employeeIDSources)
 						}
+					} else {
+						list.User.EmployeeIDSources = nil
 					}
 					list.User.EmploymentStatus = types.StringPointerValue(listItem.User.EmploymentStatus)
 					if listItem.User.EmploymentStatusSources != nil {
@@ -153,6 +169,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 
 							list.User.EmploymentStatusSources = append(list.User.EmploymentStatusSources, employmentStatusSources)
 						}
+					} else {
+						list.User.EmploymentStatusSources = nil
 					}
 					list.User.EmploymentType = types.StringPointerValue(listItem.User.EmploymentType)
 					if listItem.User.EmploymentTypeSources != nil {
@@ -171,6 +189,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 
 							list.User.EmploymentTypeSources = append(list.User.EmploymentTypeSources, employmentTypeSources)
 						}
+					} else {
+						list.User.EmploymentTypeSources = nil
 					}
 					list.User.ID = types.StringPointerValue(listItem.User.ID)
 					list.User.JobTitle = types.StringPointerValue(listItem.User.JobTitle)
@@ -190,6 +210,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 
 							list.User.JobTitleSources = append(list.User.JobTitleSources, jobTitleSources)
 						}
+					} else {
+						list.User.JobTitleSources = nil
 					}
 					if listItem.User.ManagerIds != nil {
 						if list.User.ManagerIds == nil {
@@ -198,6 +220,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 						for _, v := range listItem.User.ManagerIds {
 							list.User.ManagerIds = append(list.User.ManagerIds, types.StringValue(v))
 						}
+					} else {
+						list.User.ManagerIds = nil
 					}
 					if listItem.User.ManagerSources != nil {
 						if list.User.ManagerSources == nil {
@@ -215,6 +239,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 
 							list.User.ManagerSources = append(list.User.ManagerSources, managerSources)
 						}
+					} else {
+						list.User.ManagerSources = nil
 					}
 					if listItem.User.Origin != nil {
 						list.User.Origin = types.StringValue(string(*listItem.User.Origin))
@@ -233,6 +259,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 						for _, v := range listItem.User.RoleIds {
 							list.User.RoleIds = append(list.User.RoleIds, types.StringValue(v))
 						}
+					} else {
+						list.User.RoleIds = nil
 					}
 					if listItem.User.Status != nil {
 						list.User.Status = types.StringValue(string(*listItem.User.Status))
@@ -253,6 +281,8 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 						for _, v := range listItem.User.Usernames {
 							list.User.Usernames = append(list.User.Usernames, types.StringValue(v))
 						}
+					} else {
+						list.User.Usernames = nil
 					}
 					if listItem.User.UsernameSources != nil {
 						if list.User.UsernameSources == nil {
@@ -270,11 +300,15 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 
 							list.User.UsernameSources = append(list.User.UsernameSources, usernameSources)
 						}
+					} else {
+						list.User.UsernameSources = nil
 					}
 				}
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

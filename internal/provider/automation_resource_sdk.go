@@ -129,6 +129,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.CreateAccessReview.UserRefs = append(automationSteps.CreateAccessReview.UserRefs, userRefs)
 						}
+					} else {
+						automationSteps.CreateAccessReview.UserRefs = nil
 					}
 					automationSteps.CreateAccessReview.UseSubjectUser = types.BoolPointerValue(automationStepsItem.CreateAccessReview.UseSubjectUser)
 				}
@@ -147,6 +149,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.CreateRevokeTasks.AppEntitlementRefs = append(automationSteps.CreateRevokeTasks.AppEntitlementRefs, appEntitlementRefs)
 						}
+					} else {
+						automationSteps.CreateRevokeTasks.AppEntitlementRefs = nil
 					}
 					automationSteps.CreateRevokeTasks.AppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasks.AppEntitlementRefsCel)
 					if automationStepsItem.CreateRevokeTasks.ExcludedAppEntitlementRefs != nil {
@@ -160,6 +164,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs = append(automationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs)
 						}
+					} else {
+						automationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs = nil
 					}
 					automationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasks.ExcludedAppEntitlementRefsCel)
 					automationSteps.CreateRevokeTasks.RevokeAll = types.BoolPointerValue(automationStepsItem.CreateRevokeTasks.RevokeAll)
@@ -185,24 +191,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
 					if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionList == nil {
@@ -220,6 +234,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								automationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs1)
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
 					if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionListCel == nil {
@@ -247,24 +263,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = nil
 						}
 					}
 					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionList == nil {
@@ -282,6 +306,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								automationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs1)
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = nil
 						}
 					}
 					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionListCel == nil {
@@ -315,6 +341,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.EvaluateExpressions.Expressions = append(automationSteps.EvaluateExpressions.Expressions, expressions)
 						}
+					} else {
+						automationSteps.EvaluateExpressions.Expressions = nil
 					}
 				}
 				if automationStepsItem.GeneratePassword == nil {
@@ -336,18 +364,24 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds {
 								automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = nil
 						}
 						if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
 							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
 								automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
 						if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
 							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds))
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds {
 								automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
 					if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionList == nil {
@@ -365,6 +399,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								automationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs2)
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
 					if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionListCel == nil {
@@ -387,18 +423,24 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds {
 								automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = nil
 						}
 						if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds))
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds {
 								automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 						}
 						if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds != nil {
 							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds))
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds {
 								automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = nil
 						}
 					}
 					if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionList == nil {
@@ -416,6 +458,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								automationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs2)
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = nil
 						}
 					}
 					if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionListCel == nil {
@@ -493,6 +537,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.SendEmail.UserRefs = append(automationSteps.SendEmail.UserRefs, userRefs1)
 						}
+					} else {
+						automationSteps.SendEmail.UserRefs = nil
 					}
 					automationSteps.SendEmail.UseSubjectUser = types.BoolPointerValue(automationStepsItem.SendEmail.UseSubjectUser)
 				}
@@ -563,6 +609,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						for _, v := range automationStepsItem.TaskAction.TaskTypes {
 							automationSteps.TaskAction.TaskTypes = append(automationSteps.TaskAction.TaskTypes, types.StringValue(string(v)))
 						}
+					} else {
+						automationSteps.TaskAction.TaskTypes = nil
 					}
 					if automationStepsItem.TaskAction.TaskUserRelation != nil {
 						automationSteps.TaskAction.TaskUserRelation = types.StringValue(string(*automationStepsItem.TaskAction.TaskUserRelation))
@@ -579,6 +627,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						for _, v := range automationStepsItem.UnenrollFromAllAccessProfiles.CatalogIds {
 							automationSteps.UnenrollFromAllAccessProfiles.CatalogIds = append(automationSteps.UnenrollFromAllAccessProfiles.CatalogIds, types.StringValue(v))
 						}
+					} else {
+						automationSteps.UnenrollFromAllAccessProfiles.CatalogIds = nil
 					}
 					automationSteps.UnenrollFromAllAccessProfiles.CatalogIdsCel = types.StringPointerValue(automationStepsItem.UnenrollFromAllAccessProfiles.CatalogIdsCel)
 					automationSteps.UnenrollFromAllAccessProfiles.UserIdsCel = types.StringPointerValue(automationStepsItem.UnenrollFromAllAccessProfiles.UserIdsCel)
@@ -592,6 +642,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.UnenrollFromAllAccessProfiles.UserRefs = append(automationSteps.UnenrollFromAllAccessProfiles.UserRefs, userRefs2)
 						}
+					} else {
+						automationSteps.UnenrollFromAllAccessProfiles.UserRefs = nil
 					}
 					automationSteps.UnenrollFromAllAccessProfiles.UseSubjectUser = types.BoolPointerValue(automationStepsItem.UnenrollFromAllAccessProfiles.UseSubjectUser)
 				}
@@ -635,6 +687,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 				r.AutomationSteps = append(r.AutomationSteps, automationSteps)
 			}
+		} else {
+			r.AutomationSteps = nil
 		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CurrentVersion = types.StringPointerValue(resp.CurrentVersion)
@@ -746,6 +800,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftAutomationSteps.CreateAccessReview.UserRefs = append(draftAutomationSteps.CreateAccessReview.UserRefs, userRefs3)
 						}
+					} else {
+						draftAutomationSteps.CreateAccessReview.UserRefs = nil
 					}
 					draftAutomationSteps.CreateAccessReview.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.CreateAccessReview.UseSubjectUser)
 				}
@@ -764,6 +820,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftAutomationSteps.CreateRevokeTasks.AppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasks.AppEntitlementRefs, appEntitlementRefs3)
 						}
+					} else {
+						draftAutomationSteps.CreateRevokeTasks.AppEntitlementRefs = nil
 					}
 					draftAutomationSteps.CreateRevokeTasks.AppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasks.AppEntitlementRefsCel)
 					if draftAutomationStepsItem.CreateRevokeTasks.ExcludedAppEntitlementRefs != nil {
@@ -777,6 +835,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftAutomationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs3)
 						}
+					} else {
+						draftAutomationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs = nil
 					}
 					draftAutomationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasks.ExcludedAppEntitlementRefsCel)
 					draftAutomationSteps.CreateRevokeTasks.RevokeAll = types.BoolPointerValue(draftAutomationStepsItem.CreateRevokeTasks.RevokeAll)
@@ -802,24 +862,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
 					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionList == nil {
@@ -837,6 +905,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs4)
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
 					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionListCel == nil {
@@ -864,24 +934,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = nil
 						}
 					}
 					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionList == nil {
@@ -899,6 +977,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs4)
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = nil
 						}
 					}
 					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionListCel == nil {
@@ -932,6 +1012,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftAutomationSteps.EvaluateExpressions.Expressions = append(draftAutomationSteps.EvaluateExpressions.Expressions, expressions1)
 						}
+					} else {
+						draftAutomationSteps.EvaluateExpressions.Expressions = nil
 					}
 				}
 				if draftAutomationStepsItem.GeneratePassword == nil {
@@ -953,18 +1035,24 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = nil
 						}
 						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
 							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
 						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
 							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds))
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
 					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionList == nil {
@@ -982,6 +1070,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs5)
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
 					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionListCel == nil {
@@ -1004,18 +1094,24 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = nil
 						}
 						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds))
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 						}
 						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds != nil {
 							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds))
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = nil
 						}
 					}
 					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionList == nil {
@@ -1033,6 +1129,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs5)
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = nil
 						}
 					}
 					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionListCel == nil {
@@ -1110,6 +1208,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftAutomationSteps.SendEmail.UserRefs = append(draftAutomationSteps.SendEmail.UserRefs, userRefs4)
 						}
+					} else {
+						draftAutomationSteps.SendEmail.UserRefs = nil
 					}
 					draftAutomationSteps.SendEmail.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.SendEmail.UseSubjectUser)
 				}
@@ -1180,6 +1280,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						for _, v := range draftAutomationStepsItem.TaskAction.TaskTypes {
 							draftAutomationSteps.TaskAction.TaskTypes = append(draftAutomationSteps.TaskAction.TaskTypes, types.StringValue(string(v)))
 						}
+					} else {
+						draftAutomationSteps.TaskAction.TaskTypes = nil
 					}
 					if draftAutomationStepsItem.TaskAction.TaskUserRelation != nil {
 						draftAutomationSteps.TaskAction.TaskUserRelation = types.StringValue(string(*draftAutomationStepsItem.TaskAction.TaskUserRelation))
@@ -1196,6 +1298,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						for _, v := range draftAutomationStepsItem.UnenrollFromAllAccessProfiles.CatalogIds {
 							draftAutomationSteps.UnenrollFromAllAccessProfiles.CatalogIds = append(draftAutomationSteps.UnenrollFromAllAccessProfiles.CatalogIds, types.StringValue(v))
 						}
+					} else {
+						draftAutomationSteps.UnenrollFromAllAccessProfiles.CatalogIds = nil
 					}
 					draftAutomationSteps.UnenrollFromAllAccessProfiles.CatalogIdsCel = types.StringPointerValue(draftAutomationStepsItem.UnenrollFromAllAccessProfiles.CatalogIdsCel)
 					draftAutomationSteps.UnenrollFromAllAccessProfiles.UserIdsCel = types.StringPointerValue(draftAutomationStepsItem.UnenrollFromAllAccessProfiles.UserIdsCel)
@@ -1209,6 +1313,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftAutomationSteps.UnenrollFromAllAccessProfiles.UserRefs = append(draftAutomationSteps.UnenrollFromAllAccessProfiles.UserRefs, userRefs5)
 						}
+					} else {
+						draftAutomationSteps.UnenrollFromAllAccessProfiles.UserRefs = nil
 					}
 					draftAutomationSteps.UnenrollFromAllAccessProfiles.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.UnenrollFromAllAccessProfiles.UseSubjectUser)
 				}
@@ -1252,6 +1358,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 				r.DraftAutomationSteps = append(r.DraftAutomationSteps, draftAutomationSteps)
 			}
+		} else {
+			r.DraftAutomationSteps = nil
 		}
 		if resp.DraftTriggers != nil {
 			r.DraftTriggers = []tfTypes.AutomationTrigger{}
@@ -1278,6 +1386,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								draftTriggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = append(draftTriggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs, conflictMonitorRefs)
 							}
+						} else {
+							draftTriggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = nil
 						}
 					}
 				}
@@ -1329,24 +1439,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
 									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
 							}
 							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 							}
 							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
 								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
 									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
 							}
 							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
 								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
 								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
 									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
 							}
 						}
 						if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
@@ -1364,6 +1482,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs6)
 								}
+							} else {
+								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
 							}
 						}
 						if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
@@ -1426,24 +1546,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
 									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
 							}
 							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 							}
 							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
 								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
 									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
 							}
 							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
 								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
 								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
 									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
 							}
 						}
 						if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
@@ -1461,6 +1589,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs7)
 								}
+							} else {
+								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
 							}
 						}
 						if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
@@ -1529,6 +1659,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftTriggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = append(draftTriggers.UsageBasedRevocationTrigger.ExcludedGroupRefs, excludedGroupRefs)
 						}
+					} else {
+						draftTriggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = nil
 					}
 					if draftTriggersItem.UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
 						draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs = []tfTypes.UserRef{}
@@ -1540,6 +1672,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs = append(draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs, excludedUserRefs)
 						}
+					} else {
+						draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs = nil
 					}
 					draftTriggers.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity = types.BoolPointerValue(draftTriggersItem.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity)
 					if draftTriggersItem.UsageBasedRevocationTrigger.RunDelayed == nil {
@@ -1558,6 +1692,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						for _, v := range draftTriggersItem.UsageBasedRevocationTrigger.TargetedAppUserTypes {
 							draftTriggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = append(draftTriggers.UsageBasedRevocationTrigger.TargetedAppUserTypes, types.StringValue(string(v)))
 						}
+					} else {
+						draftTriggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = nil
 					}
 					if draftTriggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
 						draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = []tfTypes.AppEntitlementRef{}
@@ -1570,6 +1706,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = append(draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs, targetedEntitlementRefs)
 						}
+					} else {
+						draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = nil
 					}
 					draftTriggers.UsageBasedRevocationTrigger.UnusedForDays = types.Int64PointerValue(draftTriggersItem.UsageBasedRevocationTrigger.UnusedForDays)
 				}
@@ -1605,6 +1743,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 				r.DraftTriggers = append(r.DraftTriggers, draftTriggers)
 			}
+		} else {
+			r.DraftTriggers = nil
 		}
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -1640,6 +1780,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								triggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = append(triggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs, conflictMonitorRefs1)
 							}
+						} else {
+							triggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = nil
 						}
 					}
 				}
@@ -1691,24 +1833,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
 									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
 							}
 							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 							}
 							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
 								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
 									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
 							}
 							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
 								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
 								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
 									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
 							}
 						}
 						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
@@ -1726,6 +1876,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs8)
 								}
+							} else {
+								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
 							}
 						}
 						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
@@ -1788,24 +1940,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
 									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
 							}
 							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 							}
 							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
 								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
 									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
 							}
 							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
 								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
 								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
 									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
 							}
 						}
 						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
@@ -1823,6 +1983,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs9)
 								}
+							} else {
+								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
 							}
 						}
 						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
@@ -1891,6 +2053,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							triggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = append(triggers.UsageBasedRevocationTrigger.ExcludedGroupRefs, excludedGroupRefs1)
 						}
+					} else {
+						triggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = nil
 					}
 					if triggersItem.UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
 						triggers.UsageBasedRevocationTrigger.ExcludedUserRefs = []tfTypes.UserRef{}
@@ -1902,6 +2066,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							triggers.UsageBasedRevocationTrigger.ExcludedUserRefs = append(triggers.UsageBasedRevocationTrigger.ExcludedUserRefs, excludedUserRefs1)
 						}
+					} else {
+						triggers.UsageBasedRevocationTrigger.ExcludedUserRefs = nil
 					}
 					triggers.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity = types.BoolPointerValue(triggersItem.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity)
 					if triggersItem.UsageBasedRevocationTrigger.RunDelayed == nil {
@@ -1920,6 +2086,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						for _, v := range triggersItem.UsageBasedRevocationTrigger.TargetedAppUserTypes {
 							triggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = append(triggers.UsageBasedRevocationTrigger.TargetedAppUserTypes, types.StringValue(string(v)))
 						}
+					} else {
+						triggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = nil
 					}
 					if triggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
 						triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = []tfTypes.AppEntitlementRef{}
@@ -1932,6 +2100,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = append(triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs, targetedEntitlementRefs1)
 						}
+					} else {
+						triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = nil
 					}
 					triggers.UsageBasedRevocationTrigger.UnusedForDays = types.Int64PointerValue(triggersItem.UsageBasedRevocationTrigger.UnusedForDays)
 				}
@@ -1967,6 +2137,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 				r.Triggers = append(r.Triggers, triggers)
 			}
+		} else {
+			r.Triggers = nil
 		}
 		r.WebhookHmacSecret = types.StringPointerValue(resp.WebhookHmacSecret)
 	}

@@ -42,6 +42,8 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 
 							list.AppUserMapper.MappingCases = append(list.AppUserMapper.MappingCases, mappingCases)
 						}
+					} else {
+						list.AppUserMapper.MappingCases = nil
 					}
 				}
 				list.CertifyPolicyID = types.StringPointerValue(listItem.CertifyPolicyID)
@@ -71,6 +73,8 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

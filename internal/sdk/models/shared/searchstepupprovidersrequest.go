@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ProviderType - The providerType field.
 type ProviderType string
 
@@ -19,22 +14,16 @@ const (
 func (e ProviderType) ToPointer() *ProviderType {
 	return &e
 }
-func (e *ProviderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProviderType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PROVIDER_TYPE_UNSPECIFIED", "PROVIDER_TYPE_OAUTH2", "PROVIDER_TYPE_MICROSOFT":
+			return true
+		}
 	}
-	switch v {
-	case "PROVIDER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "PROVIDER_TYPE_OAUTH2":
-		fallthrough
-	case "PROVIDER_TYPE_MICROSOFT":
-		*e = ProviderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProviderType: %v", v)
-	}
+	return false
 }
 
 // SearchStepUpProvidersRequest - Request message for searching step-up providers

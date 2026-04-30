@@ -45,3 +45,6 @@ func (c *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceGetAppEntitleme
 	}
 	return c.AppEntitlementMonitorBinding
 }
+
+// #region class-body-c1apiaccessconflictv1appentitlementmonitorbindingservicegetappentitlementmonitorbindingresponse
+// #endregion class-body-c1apiaccessconflictv1appentitlementmonitorbindingservicegetappentitlementmonitorbindingresponse

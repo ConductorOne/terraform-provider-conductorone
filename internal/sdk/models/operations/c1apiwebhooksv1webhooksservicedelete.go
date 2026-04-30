@@ -26,6 +26,9 @@ func (c *C1APIWebhooksV1WebhooksServiceDeleteRequest) GetWebhooksServiceDeleteRe
 	return c.WebhooksServiceDeleteRequest
 }
 
+// #region class-body-c1apiwebhooksv1webhooksservicedeleterequest
+// #endregion class-body-c1apiwebhooksv1webhooksservicedeleterequest
+
 type C1APIWebhooksV1WebhooksServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIWebhooksV1WebhooksServiceDeleteResponse) GetWebhooksServiceDeleteR
 	}
 	return c.WebhooksServiceDeleteResponse
 }
+
+// #region class-body-c1apiwebhooksv1webhooksservicedeleteresponse
+// #endregion class-body-c1apiwebhooksv1webhooksservicedeleteresponse

@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppResourceServiceGetRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apiappv1appresourceservicegetrequest
+// #endregion class-body-c1apiappv1appresourceservicegetrequest
+
 type C1APIAppV1AppResourceServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppResourceServiceGetResponse) GetAppResourceServiceGetRespon
 	}
 	return c.AppResourceServiceGetResponse
 }
+
+// #region class-body-c1apiappv1appresourceservicegetresponse
+// #endregion class-body-c1apiappv1appresourceservicegetresponse

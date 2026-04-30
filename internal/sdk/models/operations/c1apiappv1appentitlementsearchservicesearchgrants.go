@@ -45,3 +45,6 @@ func (c *C1APIAppV1AppEntitlementSearchServiceSearchGrantsResponse) GetAppEntitl
 	}
 	return c.AppEntitlementSearchServiceSearchGrantsResponse
 }
+
+// #region class-body-c1apiappv1appentitlementsearchservicesearchgrantsresponse
+// #endregion class-body-c1apiappv1appentitlementsearchservicesearchgrantsresponse

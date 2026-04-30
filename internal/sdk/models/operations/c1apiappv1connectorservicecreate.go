@@ -26,6 +26,9 @@ func (c *C1APIAppV1ConnectorServiceCreateRequest) GetConnectorServiceCreateReque
 	return c.ConnectorServiceCreateRequest
 }
 
+// #region class-body-c1apiappv1connectorservicecreaterequest
+// #endregion class-body-c1apiappv1connectorservicecreaterequest
+
 type C1APIAppV1ConnectorServiceCreateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1ConnectorServiceCreateResponse) GetConnectorServiceCreateResp
 	}
 	return c.ConnectorServiceCreateResponse
 }
+
+// #region class-body-c1apiappv1connectorservicecreateresponse
+// #endregion class-body-c1apiappv1connectorservicecreateresponse

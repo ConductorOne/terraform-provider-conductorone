@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -20,20 +18,16 @@ const (
 func (e FunctionType) ToPointer() *FunctionType {
 	return &e
 }
-func (e *FunctionType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FunctionType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY":
+			return true
+		}
 	}
-	switch v {
-	case "FUNCTION_TYPE_UNSPECIFIED":
-		fallthrough
-	case "FUNCTION_TYPE_ANY":
-		*e = FunctionType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FunctionType: %v", v)
-	}
+	return false
 }
 
 // Function represents a customer-provided code extension in the API

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -45,70 +43,16 @@ const (
 func (e ActionType) ToPointer() *ActionType {
 	return &e
 }
-func (e *ActionType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ActionType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_ACTION_TYPE_UNSPECIFIED", "TASK_ACTION_TYPE_CLOSE", "TASK_ACTION_TYPE_APPROVE", "TASK_ACTION_TYPE_DENY", "TASK_ACTION_TYPE_COMMENT", "TASK_ACTION_TYPE_DELETE", "TASK_ACTION_TYPE_REASSIGN", "TASK_ACTION_TYPE_RESTART", "TASK_ACTION_TYPE_SEND_REMINDER", "TASK_ACTION_TYPE_PROVISION_COMPLETE", "TASK_ACTION_TYPE_PROVISION_CANCELLED", "TASK_ACTION_TYPE_PROVISION_ERRORED", "TASK_ACTION_TYPE_ROLLBACK_SKIPPED", "TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED", "TASK_ACTION_TYPE_HARD_RESET", "TASK_ACTION_TYPE_ESCALATE_TO_EMERGENCY_ACCESS", "TASK_ACTION_TYPE_CHANGE_POLICY", "TASK_ACTION_TYPE_RECALCULATE_DENIAL_FROM_BASE_POLICY_DECISIONS", "TASK_ACTION_TYPE_SET_INSIGHTS_AND_RECOMMENDATION", "TASK_ACTION_TYPE_SET_ANALYSIS_ID", "TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST", "TASK_ACTION_TYPE_PROCESS_NOW", "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP", "TASK_ACTION_TYPE_SKIP_STEP", "TASK_ACTION_TYPE_ROLLBACK_CANCELLED", "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA", "TASK_ACTION_TYPE_UPDATE_GRANT_DURATION":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_ACTION_TYPE_UNSPECIFIED":
-		fallthrough
-	case "TASK_ACTION_TYPE_CLOSE":
-		fallthrough
-	case "TASK_ACTION_TYPE_APPROVE":
-		fallthrough
-	case "TASK_ACTION_TYPE_DENY":
-		fallthrough
-	case "TASK_ACTION_TYPE_COMMENT":
-		fallthrough
-	case "TASK_ACTION_TYPE_DELETE":
-		fallthrough
-	case "TASK_ACTION_TYPE_REASSIGN":
-		fallthrough
-	case "TASK_ACTION_TYPE_RESTART":
-		fallthrough
-	case "TASK_ACTION_TYPE_SEND_REMINDER":
-		fallthrough
-	case "TASK_ACTION_TYPE_PROVISION_COMPLETE":
-		fallthrough
-	case "TASK_ACTION_TYPE_PROVISION_CANCELLED":
-		fallthrough
-	case "TASK_ACTION_TYPE_PROVISION_ERRORED":
-		fallthrough
-	case "TASK_ACTION_TYPE_ROLLBACK_SKIPPED":
-		fallthrough
-	case "TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED":
-		fallthrough
-	case "TASK_ACTION_TYPE_HARD_RESET":
-		fallthrough
-	case "TASK_ACTION_TYPE_ESCALATE_TO_EMERGENCY_ACCESS":
-		fallthrough
-	case "TASK_ACTION_TYPE_CHANGE_POLICY":
-		fallthrough
-	case "TASK_ACTION_TYPE_RECALCULATE_DENIAL_FROM_BASE_POLICY_DECISIONS":
-		fallthrough
-	case "TASK_ACTION_TYPE_SET_INSIGHTS_AND_RECOMMENDATION":
-		fallthrough
-	case "TASK_ACTION_TYPE_SET_ANALYSIS_ID":
-		fallthrough
-	case "TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST":
-		fallthrough
-	case "TASK_ACTION_TYPE_PROCESS_NOW":
-		fallthrough
-	case "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP":
-		fallthrough
-	case "TASK_ACTION_TYPE_SKIP_STEP":
-		fallthrough
-	case "TASK_ACTION_TYPE_ROLLBACK_CANCELLED":
-		fallthrough
-	case "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA":
-		fallthrough
-	case "TASK_ACTION_TYPE_UPDATE_GRANT_DURATION":
-		*e = ActionType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ActionType: %v", v)
-	}
+	return false
 }
 
 // TaskAction1 - The TaskAction message.
@@ -194,3 +138,6 @@ func (t *TaskAction1) GetUserID() *string {
 	}
 	return t.UserID
 }
+
+// #region class-body-taskaction1
+// #endregion class-body-taskaction1

@@ -32,12 +32,16 @@ func (r *RoleDataSourceModel) RefreshFromSharedListRolesResponse(ctx context.Con
 					for _, v := range listItem.Permissions {
 						list.Permissions = append(list.Permissions, types.StringValue(v))
 					}
+				} else {
+					list.Permissions = nil
 				}
 				if listItem.ServiceRoles != nil {
 					list.ServiceRoles = make([]types.String, 0, len(listItem.ServiceRoles))
 					for _, v := range listItem.ServiceRoles {
 						list.ServiceRoles = append(list.ServiceRoles, types.StringValue(v))
 					}
+				} else {
+					list.ServiceRoles = nil
 				}
 				list.SystemAPIOnly = types.BoolPointerValue(listItem.SystemAPIOnly)
 				list.SystemBuiltin = types.BoolPointerValue(listItem.SystemBuiltin)
@@ -45,6 +49,8 @@ func (r *RoleDataSourceModel) RefreshFromSharedListRolesResponse(ctx context.Con
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

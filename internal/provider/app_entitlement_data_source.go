@@ -47,8 +47,8 @@ type AppEntitlementDataSourceModel struct {
 	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy         `tfsdk:"deprovisioner_policy"`
 	Description                    types.String                         `tfsdk:"description"`
 	DisplayName                    types.String                         `tfsdk:"display_name"`
-	DurationGrant                  types.String                         `tfsdk:"duration_grant" tfPlanOnly:"true"`
-	DurationUnset                  *tfTypes.AppEntitlementDurationUnset `tfsdk:"duration_unset" tfPlanOnly:"true"`
+	DurationGrant                  types.String                         `tfsdk:"duration_grant"`
+	DurationUnset                  *tfTypes.AppEntitlementDurationUnset `tfsdk:"duration_unset"`
 	Edit                           types.Bool                           `tfsdk:"edit"`
 	EmergencyGrantEnabled          types.Bool                           `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID         types.String                         `tfsdk:"emergency_grant_policy_id"`
@@ -110,7 +110,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"alias": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Search for app entitlements that have this alias (exact match).`,
+				Description: `The alias of the app entitlement used by Cone. Also exact-match queryable.`,
 			},
 			"app_id": schema.StringAttribute{
 				Computed:    true,
@@ -465,7 +465,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The displayName field.`,
+				Description: `The display name of the app entitlement.`,
 			},
 			"duration_grant": schema.StringAttribute{
 				Computed: true,
@@ -1042,26 +1042,6 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 
 	if resp.Diagnostics.HasError() {
 		return
-	}
-	for {
-		var err error
-
-		res, err = res.Next()
-
-		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
-			return
-		}
-
-		if res == nil {
-			break
-		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx, res.AppEntitlementSearchServiceSearchResponse)...)
-
-		if resp.Diagnostics.HasError() {
-			return
-		}
 	}
 
 	// Save updated data into Terraform state

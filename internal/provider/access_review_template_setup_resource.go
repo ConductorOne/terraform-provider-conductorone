@@ -9,7 +9,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -61,14 +60,7 @@ func (r *AccessReviewTemplateSetupResource) Schema(ctx context.Context, req reso
 							"account_domain": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The accountDomain field. must be one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"APP_USER_DOMAIN_UNSPECIFIED",
-										"APP_USER_DOMAIN_EXTERNAL",
-										"APP_USER_DOMAIN_TRUSTED",
-									),
-								},
+								Description: `The accountDomain field. possible known values include one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]`,
 							},
 							"account_types": schema.ListAttribute{
 								Computed:    true,
@@ -189,16 +181,7 @@ func (r *AccessReviewTemplateSetupResource) Schema(ctx context.Context, req reso
 									"filter_type": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The filterType field. must be one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED",
-												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL",
-												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL",
-												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC",
-												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC",
-											),
-										},
+										Description: `The filterType field. possible known values include one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]`,
 									},
 									"included_access_profile_ids": schema.ListAttribute{
 										Computed:    true,
@@ -235,26 +218,12 @@ func (r *AccessReviewTemplateSetupResource) Schema(ctx context.Context, req reso
 							"source_filter": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The sourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"GRANT_SOURCE_FILTER_UNSPECIFIED",
-										"GRANT_SOURCE_FILTER_DIRECT",
-										"GRANT_SOURCE_FILTER_INHERITED",
-									),
-								},
+								Description: `The sourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 							},
 							"type_filter": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The typeFilter field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"GRANT_FILTER_TYPE_UNSPECIFIED",
-										"GRANT_FILTER_TYPE_PERMANENT",
-										"GRANT_FILTER_TYPE_TEMPORARY",
-									),
-								},
+								Description: `The typeFilter field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 							},
 						},
 						MarkdownDescription: `The GrantsByCriteriaScope message.` + "\n" +
@@ -583,43 +552,6 @@ func (r *AccessReviewTemplateSetupResource) Create(ctx context.Context, req reso
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceGetScopeAndEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AccessReviewTemplateSetupEntitlement.GetScopeAndEntitlements(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.AccessReviewTemplateSetupEntitlementServiceSetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewTemplateSetupEntitlementServiceSetResponse(ctx, res1.AccessReviewTemplateSetupEntitlementServiceSetResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -724,43 +656,6 @@ func (r *AccessReviewTemplateSetupResource) Update(ctx context.Context, req reso
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewTemplateSetupEntitlementServiceSetResponse(ctx, res.AccessReviewTemplateSetupEntitlementServiceSetResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceGetScopeAndEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AccessReviewTemplateSetupEntitlement.GetScopeAndEntitlements(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.AccessReviewTemplateSetupEntitlementServiceSetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewTemplateSetupEntitlementServiceSetResponse(ctx, res1.AccessReviewTemplateSetupEntitlementServiceSetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

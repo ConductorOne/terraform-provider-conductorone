@@ -26,6 +26,9 @@ func (c *C1APIVaultV1VaultServiceUpdateRequest) GetVaultServiceUpdateRequest() *
 	return c.VaultServiceUpdateRequest
 }
 
+// #region class-body-c1apivaultv1vaultserviceupdaterequest
+// #endregion class-body-c1apivaultv1vaultserviceupdaterequest
+
 type C1APIVaultV1VaultServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIVaultV1VaultServiceUpdateResponse) GetVaultServiceUpdateResponse()
 	}
 	return c.VaultServiceUpdateResponse
 }
+
+// #region class-body-c1apivaultv1vaultserviceupdateresponse
+// #endregion class-body-c1apivaultv1vaultserviceupdateresponse

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e ScopeType) ToPointer() *ScopeType {
 	return &e
 }
-func (e *ScopeType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ScopeType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
-		*e = ScopeType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ScopeType: %v", v)
-	}
+	return false
 }
 
 // The AccessReviewServiceCreateRequest message.

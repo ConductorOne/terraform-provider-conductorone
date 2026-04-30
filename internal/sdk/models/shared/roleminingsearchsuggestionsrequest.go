@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type MatchTypes string
 
 const (
@@ -19,24 +14,16 @@ const (
 func (e MatchTypes) ToPointer() *MatchTypes {
 	return &e
 }
-func (e *MatchTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MatchTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_PROFILE_MATCH_TYPE_UNSPECIFIED", "ACCESS_PROFILE_MATCH_TYPE_EXACT", "ACCESS_PROFILE_MATCH_TYPE_SUPERSET", "ACCESS_PROFILE_MATCH_TYPE_PARTIAL":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_PROFILE_MATCH_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_PROFILE_MATCH_TYPE_EXACT":
-		fallthrough
-	case "ACCESS_PROFILE_MATCH_TYPE_SUPERSET":
-		fallthrough
-	case "ACCESS_PROFILE_MATCH_TYPE_PARTIAL":
-		*e = MatchTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MatchTypes: %v", v)
-	}
+	return false
 }
 
 type States string
@@ -51,24 +38,16 @@ const (
 func (e States) ToPointer() *States {
 	return &e
 }
-func (e *States) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *States) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SUGGESTION_STATE_UNSPECIFIED", "SUGGESTION_STATE_NEW", "SUGGESTION_STATE_DISMISSED", "SUGGESTION_STATE_ACCEPTED":
+			return true
+		}
 	}
-	switch v {
-	case "SUGGESTION_STATE_UNSPECIFIED":
-		fallthrough
-	case "SUGGESTION_STATE_NEW":
-		fallthrough
-	case "SUGGESTION_STATE_DISMISSED":
-		fallthrough
-	case "SUGGESTION_STATE_ACCEPTED":
-		*e = States(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for States: %v", v)
-	}
+	return false
 }
 
 // The RoleMiningSearchSuggestionsRequest message.

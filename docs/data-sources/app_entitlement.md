@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement Data Source - conductorone"
+page_title: "conductorone_app_entitlement Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppEntitlement DataSource
@@ -104,11 +104,11 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
 ### Optional
 
 - `access_review_id` (String) Search for app entitlements that are being reviewed as part of this access review campaign.
-- `alias` (String) Search for app entitlements that have this alias (exact match).
+- `alias` (String) The alias of the app entitlement used by Cone. Also exact-match queryable.
 - `app_ids` (List of String) Search for app entitlements contained in any of these apps.
 - `app_user_ids` (List of String) Search for app entitlements that are granted to any of these app user ids.
 - `compliance_framework_ids` (List of String) Search for app entitlements that are part of these compliace frameworks.
-- `display_name` (String) The displayName field.
+- `display_name` (String) The display name of the app entitlement.
 - `exclude_app_ids` (List of String) Exclude app entitlements from the results that are in these app IDs.
 - `exclude_app_user_ids` (List of String) Exclude app entitlements from the results that these app users have granted.
 - `exclude_immutable` (Boolean) The excludeImmutable field.

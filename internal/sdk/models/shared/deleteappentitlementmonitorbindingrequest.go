@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // EntitlementGroup - The entitlementGroup field.
 type EntitlementGroup string
 
@@ -19,22 +14,16 @@ const (
 func (e EntitlementGroup) ToPointer() *EntitlementGroup {
 	return &e
 }
-func (e *EntitlementGroup) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EntitlementGroup) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B":
+			return true
+		}
 	}
-	switch v {
-	case "ENTITLEMENT_GROUP_UNSPECIFIED":
-		fallthrough
-	case "ENTITLEMENT_GROUP_A":
-		fallthrough
-	case "ENTITLEMENT_GROUP_B":
-		*e = EntitlementGroup(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EntitlementGroup: %v", v)
-	}
+	return false
 }
 
 // The DeleteAppEntitlementMonitorBindingRequest message.

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // CreateAppRequestIdentityMatching - Define the app user identity matching strategy for this app.
 type CreateAppRequestIdentityMatching string
 
@@ -20,24 +15,16 @@ const (
 func (e CreateAppRequestIdentityMatching) ToPointer() *CreateAppRequestIdentityMatching {
 	return &e
 }
-func (e *CreateAppRequestIdentityMatching) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreateAppRequestIdentityMatching) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_IDENTITY_MATCHING_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_IDENTITY_MATCHING_STRICT":
-		fallthrough
-	case "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME":
-		fallthrough
-	case "APP_USER_IDENTITY_MATCHING_CUSTOM":
-		*e = CreateAppRequestIdentityMatching(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateAppRequestIdentityMatching: %v", v)
-	}
+	return false
 }
 
 // The CreateAppRequest message is used to create a new app.

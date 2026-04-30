@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // FunctionsServiceCreateFunctionRequestFunctionType - The functionType field.
 type FunctionsServiceCreateFunctionRequestFunctionType string
 
@@ -18,20 +13,16 @@ const (
 func (e FunctionsServiceCreateFunctionRequestFunctionType) ToPointer() *FunctionsServiceCreateFunctionRequestFunctionType {
 	return &e
 }
-func (e *FunctionsServiceCreateFunctionRequestFunctionType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FunctionsServiceCreateFunctionRequestFunctionType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY":
+			return true
+		}
 	}
-	switch v {
-	case "FUNCTION_TYPE_UNSPECIFIED":
-		fallthrough
-	case "FUNCTION_TYPE_ANY":
-		*e = FunctionsServiceCreateFunctionRequestFunctionType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FunctionsServiceCreateFunctionRequestFunctionType: %v", v)
-	}
+	return false
 }
 
 // The FunctionsServiceCreateFunctionRequest message.

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -52,8 +53,8 @@ type CustomAppEntitlementResourceModel struct {
 	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy                      `tfsdk:"deprovisioner_policy"`
 	Description                    types.String                                      `tfsdk:"description"`
 	DisplayName                    types.String                                      `tfsdk:"display_name"`
-	DurationGrant                  types.String                                      `tfsdk:"duration_grant" tfPlanOnly:"true"`
-	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset" tfPlanOnly:"true"`
+	DurationGrant                  types.String                                      `tfsdk:"duration_grant"`
+	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset"`
 	Edit                           types.Bool                                        `tfsdk:"edit"`
 	EmergencyGrantEnabled          types.Bool                                        `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID         types.String                                      `tfsdk:"emergency_grant_policy_id"`
@@ -92,7 +93,8 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				Description: `The alias field.`,
 			},
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The ID of the app that is associated with the app entitlement.`,
 			},
 			"app_resource_id": schema.StringAttribute{
 				Computed: true,
@@ -440,8 +442,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				Description: `The displayName field.`,
 			},
 			"duration_grant": schema.StringAttribute{
-				Computed: true,
 				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseConfigValue(),
+				},
 				Validators: []validator.String{
 					stringvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("duration_unset"),
@@ -449,8 +453,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"duration_unset": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.UseConfigValue(),
+				},
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("duration_grant"),
@@ -476,7 +482,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{},
 				},
-				Description: `The expanded field.`,
+				Description: `List of serialized related objects.`,
 			},
 			"extra": schema.MapAttribute{
 				Computed:    true,
@@ -919,15 +925,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			"purpose": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED",
-						"APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT",
-						"APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION",
-						"APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP",
-					),
-				},
+				Description: `The purpose field. possible known values include one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]`,
 			},
 			"read": schema.BoolAttribute{
 				Computed:    true,
@@ -1162,43 +1160,6 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppEntitlementsGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AppEntitlements.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.GetAppEntitlementResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetAppEntitlementResponse(ctx, res1.GetAppEntitlementResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1240,7 +1201,10 @@ func (r *CustomAppEntitlementResource) Delete(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1261,12 +1225,12 @@ func (r *CustomAppEntitlementResource) ImportState(ctx context.Context, req reso
 	}
 
 	if len(data.AppID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), data.AppID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

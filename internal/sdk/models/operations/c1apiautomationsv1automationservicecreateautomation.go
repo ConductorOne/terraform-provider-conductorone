@@ -45,3 +45,6 @@ func (c *C1APIAutomationsV1AutomationServiceCreateAutomationResponse) GetCreateA
 	}
 	return c.CreateAutomationResponse
 }
+
+// #region class-body-c1apiautomationsv1automationservicecreateautomationresponse
+// #endregion class-body-c1apiautomationsv1automationservicecreateautomationresponse

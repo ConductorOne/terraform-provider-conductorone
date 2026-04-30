@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type CreateAppEntitlementRequestDurationUnset struct {
 }
 
@@ -23,24 +18,16 @@ const (
 func (e CreateAppEntitlementRequestPurpose) ToPointer() *CreateAppEntitlementRequestPurpose {
 	return &e
 }
-func (e *CreateAppEntitlementRequestPurpose) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreateAppEntitlementRequestPurpose) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
+			return true
+		}
 	}
-	switch v {
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
-		*e = CreateAppEntitlementRequestPurpose(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateAppEntitlementRequestPurpose: %v", v)
-	}
+	return false
 }
 
 // The CreateAppEntitlementRequest message.

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // CreatePolicyRequestPolicyType - The enum of the policy type.
 type CreatePolicyRequestPolicyType string
 
@@ -22,28 +17,16 @@ const (
 func (e CreatePolicyRequestPolicyType) ToPointer() *CreatePolicyRequestPolicyType {
 	return &e
 }
-func (e *CreatePolicyRequestPolicyType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreatePolicyRequestPolicyType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION":
+			return true
+		}
 	}
-	switch v {
-	case "POLICY_TYPE_UNSPECIFIED":
-		fallthrough
-	case "POLICY_TYPE_GRANT":
-		fallthrough
-	case "POLICY_TYPE_REVOKE":
-		fallthrough
-	case "POLICY_TYPE_CERTIFY":
-		fallthrough
-	case "POLICY_TYPE_ACCESS_REQUEST":
-		fallthrough
-	case "POLICY_TYPE_PROVISION":
-		*e = CreatePolicyRequestPolicyType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreatePolicyRequestPolicyType: %v", v)
-	}
+	return false
 }
 
 // The CreatePolicyRequest message is used to create a new policy.

@@ -33,6 +33,8 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 
 				r.AppUserMapper.MappingCases = append(r.AppUserMapper.MappingCases, mappingCases)
 			}
+		} else {
+			r.AppUserMapper.MappingCases = nil
 		}
 	}
 	r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)

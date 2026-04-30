@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceUpdateGrantDurationRequest) GetTaskActions
 	return c.TaskActionsServiceUpdateGrantDurationRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsserviceupdategrantdurationrequest
+// #endregion class-body-c1apitaskv1taskactionsserviceupdategrantdurationrequest
+
 type C1APITaskV1TaskActionsServiceUpdateGrantDurationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceUpdateGrantDurationResponse) GetTaskServic
 	}
 	return c.TaskServiceActionResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsserviceupdategrantdurationresponse
+// #endregion class-body-c1apitaskv1taskactionsserviceupdategrantdurationresponse

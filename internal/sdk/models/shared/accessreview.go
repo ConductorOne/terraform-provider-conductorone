@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,22 +19,16 @@ const (
 func (e AccuracyIssueAction) ToPointer() *AccuracyIssueAction {
 	return &e
 }
-func (e *AccuracyIssueAction) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccuracyIssueAction) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT":
+			return true
+		}
 	}
-	switch v {
-	case "ACCURACY_ISSUE_ACTION_UNSPECIFIED":
-		fallthrough
-	case "ACCURACY_ISSUE_ACTION_CONTINUE":
-		fallthrough
-	case "ACCURACY_ISSUE_ACTION_WAIT":
-		*e = AccuracyIssueAction(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccuracyIssueAction: %v", v)
-	}
+	return false
 }
 
 // AutoCloseDecision - The autoCloseDecision field.
@@ -52,24 +44,16 @@ const (
 func (e AutoCloseDecision) ToPointer() *AutoCloseDecision {
 	return &e
 }
-func (e *AutoCloseDecision) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AutoCloseDecision) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION":
+			return true
+		}
 	}
-	switch v {
-	case "CLOSE_DECISION_UNSPECIFIED":
-		fallthrough
-	case "CLOSE_DECISION_REVOKED":
-		fallthrough
-	case "CLOSE_DECISION_SKIP":
-		fallthrough
-	case "CLOSE_DECISION_NO_ACTION":
-		*e = AutoCloseDecision(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AutoCloseDecision: %v", v)
-	}
+	return false
 }
 
 // DefaultView - the default view that reviewers will see when they complete their access reviews
@@ -85,24 +69,16 @@ const (
 func (e DefaultView) ToPointer() *DefaultView {
 	return &e
 }
-func (e *DefaultView) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DefaultView) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_REVIEW_VIEW_TYPE_BY_APP":
-		fallthrough
-	case "ACCESS_REVIEW_VIEW_TYPE_BY_USER":
-		fallthrough
-	case "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED":
-		*e = DefaultView(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DefaultView: %v", v)
-	}
+	return false
 }
 
 // AccessReviewScopeType - this sets the scope type for the access review
@@ -118,24 +94,16 @@ const (
 func (e AccessReviewScopeType) ToPointer() *AccessReviewScopeType {
 	return &e
 }
-func (e *AccessReviewScopeType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewScopeType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
-		*e = AccessReviewScopeType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewScopeType: %v", v)
-	}
+	return false
 }
 
 // AccessReviewState - The state field.
@@ -160,42 +128,16 @@ const (
 func (e AccessReviewState) ToPointer() *AccessReviewState {
 	return &e
 }
-func (e *AccessReviewState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_REVIEW_STATE_UNSPECIFIED", "ACCESS_REVIEW_STATE_OPEN", "ACCESS_REVIEW_STATE_CLOSED", "ACCESS_REVIEW_STATE_PENDING", "ACCESS_REVIEW_STATE_REVIEW", "ACCESS_REVIEW_STATE_PREPARING", "ACCESS_REVIEW_STATE_STARTING", "ACCESS_REVIEW_STATE_DRAFT", "ACCESS_REVIEW_STATE_DELETING", "ACCESS_REVIEW_STATE_DELETED", "ACCESS_REVIEW_STATE_RESETTING_POLICIES", "ACCESS_REVIEW_STATE_COPYING_SETUP_ENTITLEMENTS", "ACCESS_REVIEW_STATE_COPYING_RESOURCE_TYPE_SELECTIONS":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_REVIEW_STATE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_OPEN":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_CLOSED":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_PENDING":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_REVIEW":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_PREPARING":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_STARTING":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_DRAFT":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_DELETING":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_DELETED":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_RESETTING_POLICIES":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_COPYING_SETUP_ENTITLEMENTS":
-		fallthrough
-	case "ACCESS_REVIEW_STATE_COPYING_RESOURCE_TYPE_SELECTIONS":
-		*e = AccessReviewState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewState: %v", v)
-	}
+	return false
 }
 
 // The AccessReview message.

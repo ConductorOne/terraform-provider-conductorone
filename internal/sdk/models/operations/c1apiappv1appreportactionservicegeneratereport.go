@@ -26,6 +26,9 @@ func (c *C1APIAppV1AppReportActionServiceGenerateReportRequest) GetAppActionsSer
 	return c.AppActionsServiceGenerateReportRequest
 }
 
+// #region class-body-c1apiappv1appreportactionservicegeneratereportrequest
+// #endregion class-body-c1apiappv1appreportactionservicegeneratereportrequest
+
 type C1APIAppV1AppReportActionServiceGenerateReportResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1AppReportActionServiceGenerateReportResponse) GetAppActionsSe
 	}
 	return c.AppActionsServiceGenerateReportResponse
 }
+
+// #region class-body-c1apiappv1appreportactionservicegeneratereportresponse
+// #endregion class-body-c1apiappv1appreportactionservicegeneratereportresponse

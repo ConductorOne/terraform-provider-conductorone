@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_proxy_binding Resource - conductorone"
+page_title: "conductorone_app_entitlement_proxy_binding Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppEntitlementProxyBinding Resource
@@ -28,10 +28,10 @@ resource "conductorone_app_entitlement_proxy_binding" "my_app_entitlement_proxy_
 
 ### Required
 
-- `dst_app_entitlement_id` (String) Requires replacement if changed.
-- `dst_app_id` (String) Requires replacement if changed.
-- `src_app_entitlement_id` (String) Requires replacement if changed.
-- `src_app_id` (String) Requires replacement if changed.
+- `dst_app_entitlement_id` (String) The dstAppEntitlementId field. Requires replacement if changed.
+- `dst_app_id` (String) The dstAppId field. Requires replacement if changed.
+- `src_app_entitlement_id` (String) The srcAppEntitlementId field. Requires replacement if changed.
+- `src_app_id` (String) The srcAppId field. Requires replacement if changed.
 
 ### Read-Only
 

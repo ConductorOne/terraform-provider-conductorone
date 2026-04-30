@@ -45,3 +45,6 @@ func (c *C1APIAppV1AppsCreateResponse) GetCreateAppResponse() *shared.CreateAppR
 	}
 	return c.CreateAppResponse
 }
+
+// #region class-body-c1apiappv1appscreateresponse
+// #endregion class-body-c1apiappv1appscreateresponse

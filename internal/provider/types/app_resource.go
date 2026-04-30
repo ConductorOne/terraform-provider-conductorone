@@ -7,6 +7,7 @@ import (
 )
 
 type AppResource struct {
+	SecretTrait             *SecretTrait        `tfsdk:"secret_trait"`
 	AccessConfigID          types.String        `tfsdk:"access_config_id"`
 	AppID                   types.String        `tfsdk:"app_id"`
 	AppResourceTypeID       types.String        `tfsdk:"app_resource_type_id"`
@@ -20,6 +21,5 @@ type AppResource struct {
 	ParentAppResourceID     types.String        `tfsdk:"parent_app_resource_id"`
 	ParentAppResourceTypeID types.String        `tfsdk:"parent_app_resource_type_id"`
 	Profile                 *AppResourceProfile `tfsdk:"profile"`
-	SecretTrait             *SecretTrait        `tfsdk:"secret_trait"`
 	UpdatedAt               types.String        `tfsdk:"updated_at"`
 }

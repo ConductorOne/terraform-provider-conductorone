@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -26,26 +24,16 @@ const (
 func (e Outcome) ToPointer() *Outcome {
 	return &e
 }
-func (e *Outcome) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Outcome) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACTION_OUTCOME_UNSPECIFIED", "ACTION_OUTCOME_SUCCESS", "ACTION_OUTCOME_DENIED", "ACTION_OUTCOME_ERROR", "ACTION_OUTCOME_CANCELLED":
+			return true
+		}
 	}
-	switch v {
-	case "ACTION_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "ACTION_OUTCOME_SUCCESS":
-		fallthrough
-	case "ACTION_OUTCOME_DENIED":
-		fallthrough
-	case "ACTION_OUTCOME_ERROR":
-		fallthrough
-	case "ACTION_OUTCOME_CANCELLED":
-		*e = Outcome(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Outcome: %v", v)
-	}
+	return false
 }
 
 // The TaskTypeAction message.

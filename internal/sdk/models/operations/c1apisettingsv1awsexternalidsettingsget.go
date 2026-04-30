@@ -45,3 +45,6 @@ func (c *C1APISettingsV1AWSExternalIDSettingsGetResponse) GetGetAWSExternalIDRes
 	}
 	return c.GetAWSExternalIDResponse
 }
+
+// #region class-body-c1apisettingsv1awsexternalidsettingsgetresponse
+// #endregion class-body-c1apisettingsv1awsexternalidsettingsgetresponse

@@ -67,7 +67,7 @@ func (r *AppEntitlementProxyBindingResource) Schema(ctx context.Context, req res
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `The dstAppEntitlementId field. Requires replacement if changed.`,
 			},
 			"dst_app_id": schema.StringAttribute{
 				Required: true,
@@ -75,7 +75,7 @@ func (r *AppEntitlementProxyBindingResource) Schema(ctx context.Context, req res
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `The dstAppId field. Requires replacement if changed.`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
@@ -90,7 +90,7 @@ func (r *AppEntitlementProxyBindingResource) Schema(ctx context.Context, req res
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `The srcAppEntitlementId field. Requires replacement if changed.`,
 			},
 			"src_app_id": schema.StringAttribute{
 				Required: true,
@@ -98,7 +98,7 @@ func (r *AppEntitlementProxyBindingResource) Schema(ctx context.Context, req res
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `The srcAppId field. Requires replacement if changed.`,
 			},
 			"system_builtin": schema.BoolAttribute{
 				Computed:    true,
@@ -176,43 +176,6 @@ func (r *AppEntitlementProxyBindingResource) Create(ctx context.Context, req res
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppEntitlementProxyResponse(ctx, res.CreateAppEntitlementProxyResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppEntitlementsProxyGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AppEntitlementsProxy.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.GetAppEntitlementProxyResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetAppEntitlementProxyResponse(ctx, res1.GetAppEntitlementProxyResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -347,7 +310,10 @@ func (r *AppEntitlementProxyBindingResource) Delete(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -370,22 +336,22 @@ func (r *AppEntitlementProxyBindingResource) ImportState(ctx context.Context, re
 	}
 
 	if len(data.DstAppEntitlementID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field dst_app_entitlement_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field dst_app_entitlement_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("dst_app_entitlement_id"), data.DstAppEntitlementID)...)
 	if len(data.DstAppID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field dst_app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field dst_app_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("dst_app_id"), data.DstAppID)...)
 	if len(data.SrcAppEntitlementID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field src_app_entitlement_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field src_app_entitlement_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("src_app_entitlement_id"), data.SrcAppEntitlementID)...)
 	if len(data.SrcAppID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field src_app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field src_app_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("src_app_id"), data.SrcAppID)...)

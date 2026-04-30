@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceRequest) Ge
 	return c.CreateManuallyManagedAppResourceRequest
 }
 
+// #region class-body-c1apiappv1appresourceservicecreatemanuallymanagedappresourcerequest
+// #endregion class-body-c1apiappv1appresourceservicecreatemanuallymanagedappresourcerequest
+
 type C1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppResourceServiceCreateManuallyManagedAppResourceResponse) G
 	}
 	return c.CreateManuallyManagedAppResourceResponse
 }
+
+// #region class-body-c1apiappv1appresourceservicecreatemanuallymanagedappresourceresponse
+// #endregion class-body-c1apiappv1appresourceservicecreatemanuallymanagedappresourceresponse

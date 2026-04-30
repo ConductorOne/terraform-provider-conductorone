@@ -45,3 +45,6 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceSearchTrustsResponse)
 	}
 	return c.WorkloadFederationServiceSearchTrustsResponse
 }
+
+// #region class-body-c1apiworkloadfederationv1workloadfederationservicesearchtrustsresponse
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationservicesearchtrustsresponse

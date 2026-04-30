@@ -7,9 +7,9 @@ import (
 )
 
 type App struct {
+	AppUserMapper                       *AppUserMapper `tfsdk:"app_user_mapper"`
 	AppAccountID                        types.String   `tfsdk:"app_account_id"`
 	AppAccountName                      types.String   `tfsdk:"app_account_name"`
-	AppUserMapper                       *AppUserMapper `tfsdk:"app_user_mapper"`
 	CertifyPolicyID                     types.String   `tfsdk:"certify_policy_id"`
 	ConnectorVersion                    types.Int64    `tfsdk:"connector_version"`
 	CreatedAt                           types.String   `tfsdk:"created_at"`

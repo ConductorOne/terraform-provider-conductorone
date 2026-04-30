@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -23,26 +21,16 @@ const (
 func (e ApprovalInstanceState) ToPointer() *ApprovalInstanceState {
 	return &e
 }
-func (e *ApprovalInstanceState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ApprovalInstanceState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APPROVAL_INSTANCE_STATE_UNSPECIFIED", "APPROVAL_INSTANCE_STATE_INIT", "APPROVAL_INSTANCE_STATE_SENDING_NOTIFICATIONS", "APPROVAL_INSTANCE_STATE_WAITING", "APPROVAL_INSTANCE_STATE_DONE":
+			return true
+		}
 	}
-	switch v {
-	case "APPROVAL_INSTANCE_STATE_UNSPECIFIED":
-		fallthrough
-	case "APPROVAL_INSTANCE_STATE_INIT":
-		fallthrough
-	case "APPROVAL_INSTANCE_STATE_SENDING_NOTIFICATIONS":
-		fallthrough
-	case "APPROVAL_INSTANCE_STATE_WAITING":
-		fallthrough
-	case "APPROVAL_INSTANCE_STATE_DONE":
-		*e = ApprovalInstanceState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ApprovalInstanceState: %v", v)
-	}
+	return false
 }
 
 // ApprovalInstance - The approval instance object describes the way a policy step should be approved as well as its outcomes and state.

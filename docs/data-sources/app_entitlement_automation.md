@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_automation Data Source - conductorone"
+page_title: "conductorone_app_entitlement_automation Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppEntitlementAutomation DataSource
@@ -28,8 +28,8 @@ data "conductorone_app_entitlement_automation" "my_app_entitlement_automation" {
 
 ### Required
 
-- `app_entitlement_id` (String)
-- `app_id` (String)
+- `app_entitlement_id` (String) The unique ID for the App Entitlement.
+- `app_id` (String) The ID of the app that is associated with the app entitlement.
 
 ### Read-Only
 

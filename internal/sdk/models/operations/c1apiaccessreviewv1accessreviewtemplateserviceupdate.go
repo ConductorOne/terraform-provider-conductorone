@@ -26,6 +26,9 @@ func (c *C1APIAccessreviewV1AccessReviewTemplateServiceUpdateRequest) GetAccessR
 	return c.AccessReviewTemplateServiceUpdateRequest
 }
 
+// #region class-body-c1apiaccessreviewv1accessreviewtemplateserviceupdaterequest
+// #endregion class-body-c1apiaccessreviewv1accessreviewtemplateserviceupdaterequest
+
 type C1APIAccessreviewV1AccessReviewTemplateServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAccessreviewV1AccessReviewTemplateServiceUpdateResponse) GetAccess
 	}
 	return c.AccessReviewTemplateServiceUpdateResponse
 }
+
+// #region class-body-c1apiaccessreviewv1accessreviewtemplateserviceupdateresponse
+// #endregion class-body-c1apiaccessreviewv1accessreviewtemplateserviceupdateresponse

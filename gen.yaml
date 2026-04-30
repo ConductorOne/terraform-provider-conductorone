@@ -17,8 +17,8 @@ generation:
     requestResponseComponentNamesFeb2024: true
     securityFeb2025: false
     sharedErrorComponentsApr2025: false
-    nameOverrideFeb2026: false
     sharedNestedComponentsJan2026: false
+    nameOverrideFeb2026: false
   auth:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
@@ -26,16 +26,16 @@ generation:
   schemas:
     allOfMergeStrategy: shallowMerge
   requestBodyFieldName: ""
+  versioningStrategy: automatic
   mockServer:
     disabled: true
+  persistentEdits: {}
   tests:
     generateTests: true
     generateNewTests: false
     skipResponseBodyAssertions: false
-  persistentEdits: {}
-  versioningStrategy: automatic
 terraform:
-  version: 1.7.16
+  version: 1.8.0
   additionalActions: []
   additionalDataSources: []
   additionalDependencies: {}
@@ -44,6 +44,7 @@ terraform:
   additionalListResources: []
   additionalProviderAttributes:
     httpHeaders: ""
+    tlsSkipVerify: ""
   additionalResources:
     - importAlias: AppEntitlement
       importLocation: /conductorone/internal/provider/app_entitlement_resource.go
@@ -59,11 +60,12 @@ terraform:
   enableTypeDeduplication: false
   environmentVariables: []
   excludeEmptyObjectSchemas: false
+  forwardCompatibleEnumsByDefault: false
   includeEmptyObjects: false
   inferUnionDiscriminators: false
   packageName: conductorone
   preApplyUnionDiscriminators: false
+  providerTypeNameOverride: ""
   respectRequiredFields: false
   respectTitlesForPrimitiveUnionMembers: false
-  unionDeserializationStrategy: populated-fields
   unionStrategy: populated-fields

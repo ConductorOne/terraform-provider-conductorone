@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_formal Resource - conductorone"
+page_title: "conductorone_integration_formal Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Formal Integration Resource

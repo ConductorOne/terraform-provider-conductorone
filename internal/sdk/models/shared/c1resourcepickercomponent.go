@@ -53,3 +53,6 @@ func (c *C1ResourcePickerComponent) GetDynamicString1() *DynamicString {
 	}
 	return c.DynamicString1
 }
+
+// #region class-body-c1resourcepickercomponent
+// #endregion class-body-c1resourcepickercomponent

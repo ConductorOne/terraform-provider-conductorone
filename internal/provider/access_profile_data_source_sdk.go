@@ -50,6 +50,8 @@ func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalogManagement
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		diags.Append(r.RefreshFromSharedRequestCatalogView(ctx, resp.RequestCatalogView)...)
 

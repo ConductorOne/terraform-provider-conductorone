@@ -34,6 +34,9 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceUpdateTrustRequest) G
 	return c.WorkloadFederationServiceUpdateTrustRequest
 }
 
+// #region class-body-c1apiworkloadfederationv1workloadfederationserviceupdatetrustrequest
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationserviceupdatetrustrequest
+
 type C1APIWorkloadFederationV1WorkloadFederationServiceUpdateTrustResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceUpdateTrustResponse) 
 	}
 	return c.WorkloadFederationServiceUpdateTrustResponse
 }
+
+// #region class-body-c1apiworkloadfederationv1workloadfederationserviceupdatetrustresponse
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationserviceupdatetrustresponse

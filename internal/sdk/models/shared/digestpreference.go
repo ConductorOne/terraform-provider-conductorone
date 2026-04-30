@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // DayOfWeek - The dayOfWeek field.
 type DayOfWeek string
 
@@ -24,32 +19,16 @@ const (
 func (e DayOfWeek) ToPointer() *DayOfWeek {
 	return &e
 }
-func (e *DayOfWeek) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DayOfWeek) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "WEEKDAY_UNSPECIFIED", "WEEKDAY_MONDAY", "WEEKDAY_TUESDAY", "WEEKDAY_WEDNESDAY", "WEEKDAY_THURSDAY", "WEEKDAY_FRIDAY", "WEEKDAY_SATURDAY", "WEEKDAY_SUNDAY":
+			return true
+		}
 	}
-	switch v {
-	case "WEEKDAY_UNSPECIFIED":
-		fallthrough
-	case "WEEKDAY_MONDAY":
-		fallthrough
-	case "WEEKDAY_TUESDAY":
-		fallthrough
-	case "WEEKDAY_WEDNESDAY":
-		fallthrough
-	case "WEEKDAY_THURSDAY":
-		fallthrough
-	case "WEEKDAY_FRIDAY":
-		fallthrough
-	case "WEEKDAY_SATURDAY":
-		fallthrough
-	case "WEEKDAY_SUNDAY":
-		*e = DayOfWeek(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DayOfWeek: %v", v)
-	}
+	return false
 }
 
 // DigestPreferenceFrequency - The frequency field.
@@ -64,22 +43,16 @@ const (
 func (e DigestPreferenceFrequency) ToPointer() *DigestPreferenceFrequency {
 	return &e
 }
-func (e *DigestPreferenceFrequency) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DigestPreferenceFrequency) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DIGEST_FREQUENCY_UNSPECIFIED", "DIGEST_FREQUENCY_DAILY", "DIGEST_FREQUENCY_WEEKLY":
+			return true
+		}
 	}
-	switch v {
-	case "DIGEST_FREQUENCY_UNSPECIFIED":
-		fallthrough
-	case "DIGEST_FREQUENCY_DAILY":
-		fallthrough
-	case "DIGEST_FREQUENCY_WEEKLY":
-		*e = DigestPreferenceFrequency(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DigestPreferenceFrequency: %v", v)
-	}
+	return false
 }
 
 // The DigestPreference message.

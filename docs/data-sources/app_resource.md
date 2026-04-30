@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_resource Data Source - conductorone"
+page_title: "conductorone_app_resource Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppResource DataSource
@@ -30,8 +30,9 @@ data "conductorone_app_resource" "my_app_resource" {
 
 ### Required
 
-- `app_id` (String)
-- `app_resource_type_id` (String)
+- `app_id` (String) The app that this resource belongs to.
+- `app_resource_type_id` (String) The resource type that this resource is.
+- `id` (String) The id of the resource.
 
 ### Read-Only
 
@@ -46,7 +47,6 @@ data "conductorone_app_resource" "my_app_resource" {
 - `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
 - `extra` (Map of Boolean) The extra field.
 - `grant_count` (String) The number of grants to this resource.
-- `id` (String) The ID of this resource.
 - `match_baton_id` (String) The matchBatonId field.
 - `parent_app_resource_id` (String) The parent resource id, if this resource is a child of another resource.
 - `parent_app_resource_type_id` (String) The parent resource type id, if this resource is a child of another resource.

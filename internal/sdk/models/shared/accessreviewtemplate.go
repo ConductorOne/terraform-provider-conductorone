@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,22 +19,16 @@ const (
 func (e AccessReviewTemplateAccuracyIssueAction) ToPointer() *AccessReviewTemplateAccuracyIssueAction {
 	return &e
 }
-func (e *AccessReviewTemplateAccuracyIssueAction) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewTemplateAccuracyIssueAction) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT":
+			return true
+		}
 	}
-	switch v {
-	case "ACCURACY_ISSUE_ACTION_UNSPECIFIED":
-		fallthrough
-	case "ACCURACY_ISSUE_ACTION_CONTINUE":
-		fallthrough
-	case "ACCURACY_ISSUE_ACTION_WAIT":
-		*e = AccessReviewTemplateAccuracyIssueAction(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewTemplateAccuracyIssueAction: %v", v)
-	}
+	return false
 }
 
 // AccessReviewTemplateAutoCloseDecision - The autoCloseDecision field.
@@ -52,24 +44,16 @@ const (
 func (e AccessReviewTemplateAutoCloseDecision) ToPointer() *AccessReviewTemplateAutoCloseDecision {
 	return &e
 }
-func (e *AccessReviewTemplateAutoCloseDecision) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewTemplateAutoCloseDecision) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION":
+			return true
+		}
 	}
-	switch v {
-	case "CLOSE_DECISION_UNSPECIFIED":
-		fallthrough
-	case "CLOSE_DECISION_REVOKED":
-		fallthrough
-	case "CLOSE_DECISION_SKIP":
-		fallthrough
-	case "CLOSE_DECISION_NO_ACTION":
-		*e = AccessReviewTemplateAutoCloseDecision(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewTemplateAutoCloseDecision: %v", v)
-	}
+	return false
 }
 
 // AccessReviewTemplateDefaultView - The defaultView field.
@@ -85,24 +69,16 @@ const (
 func (e AccessReviewTemplateDefaultView) ToPointer() *AccessReviewTemplateDefaultView {
 	return &e
 }
-func (e *AccessReviewTemplateDefaultView) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewTemplateDefaultView) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_REVIEW_VIEW_TYPE_BY_APP":
-		fallthrough
-	case "ACCESS_REVIEW_VIEW_TYPE_BY_USER":
-		fallthrough
-	case "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED":
-		*e = AccessReviewTemplateDefaultView(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewTemplateDefaultView: %v", v)
-	}
+	return false
 }
 
 // AccessReviewTemplateScopeType - The scopeType field.
@@ -118,24 +94,16 @@ const (
 func (e AccessReviewTemplateScopeType) ToPointer() *AccessReviewTemplateScopeType {
 	return &e
 }
-func (e *AccessReviewTemplateScopeType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewTemplateScopeType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
-		*e = AccessReviewTemplateScopeType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewTemplateScopeType: %v", v)
-	}
+	return false
 }
 
 // The AccessReviewTemplate message.

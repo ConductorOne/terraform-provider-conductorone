@@ -18,6 +18,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		if resp.TaskView == nil {
 			r.TaskView = nil
@@ -42,15 +44,21 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 					for _, v := range resp.TaskView.Task.Actions {
 						r.TaskView.Task.Actions = append(r.TaskView.Task.Actions, types.StringValue(string(v)))
 					}
+				} else {
+					r.TaskView.Task.Actions = nil
 				}
 				r.TaskView.Task.AnalysisID = types.StringPointerValue(resp.TaskView.Task.AnalysisID)
 				if resp.TaskView.Task.Annotations != nil {
+				} else {
+					r.TaskView.Task.Annotations = nil
 				}
 				if resp.TaskView.Task.ApproverIds != nil {
 					r.TaskView.Task.ApproverIds = make([]types.String, 0, len(resp.TaskView.Task.ApproverIds))
 					for _, v := range resp.TaskView.Task.ApproverIds {
 						r.TaskView.Task.ApproverIds = append(r.TaskView.Task.ApproverIds, types.StringValue(v))
 					}
+				} else {
+					r.TaskView.Task.ApproverIds = nil
 				}
 				r.TaskView.Task.CommentCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.TaskView.Task.CommentCount))
 				r.TaskView.Task.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.CreatedAt))
@@ -80,6 +88,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 						r.TaskView.Task.ExternalRefs = append(r.TaskView.Task.ExternalRefs, externalRefs)
 					}
+				} else {
+					r.TaskView.Task.ExternalRefs = nil
 				}
 				if resp.TaskView.Task.Form == nil {
 					r.TaskView.Task.Form = nil
@@ -99,12 +109,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 								for _, v := range fieldGroupsItem.Fields {
 									fieldGroups.Fields = append(fieldGroups.Fields, types.StringValue(v))
 								}
+							} else {
+								fieldGroups.Fields = nil
 							}
 							fieldGroups.HelpText = types.StringPointerValue(fieldGroupsItem.HelpText)
 							fieldGroups.Name = types.StringPointerValue(fieldGroupsItem.Name)
 
 							r.TaskView.Task.Form.FieldGroups = append(r.TaskView.Task.Form.FieldGroups, fieldGroups)
 						}
+					} else {
+						r.TaskView.Task.Form.FieldGroups = nil
 					}
 					if resp.TaskView.Task.Form.FieldRelationships != nil {
 						r.TaskView.Task.Form.FieldRelationships = []tfTypes.FieldRelationship{}
@@ -126,6 +140,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 									for _, v := range fieldRelationshipsItem.DependentOn.DependencyFieldNames {
 										fieldRelationships.DependentOn.DependencyFieldNames = append(fieldRelationships.DependentOn.DependencyFieldNames, types.StringValue(v))
 									}
+								} else {
+									fieldRelationships.DependentOn.DependencyFieldNames = nil
 								}
 							}
 							if fieldRelationshipsItem.FieldNames != nil {
@@ -133,6 +149,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 								for _, v := range fieldRelationshipsItem.FieldNames {
 									fieldRelationships.FieldNames = append(fieldRelationships.FieldNames, types.StringValue(v))
 								}
+							} else {
+								fieldRelationships.FieldNames = nil
 							}
 							if fieldRelationshipsItem.MutuallyExclusive == nil {
 								fieldRelationships.MutuallyExclusive = nil
@@ -147,6 +165,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 							r.TaskView.Task.Form.FieldRelationships = append(r.TaskView.Task.Form.FieldRelationships, fieldRelationships)
 						}
+					} else {
+						r.TaskView.Task.Form.FieldRelationships = nil
 					}
 					if resp.TaskView.Task.Form.Fields != nil {
 						r.TaskView.Task.Form.Fields = []tfTypes.Field{}
@@ -194,6 +214,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 									for _, v := range fieldsItem.FileField.AcceptedFileTypes {
 										fields.FileField.AcceptedFileTypes = append(fields.FileField.AcceptedFileTypes, types.StringValue(v))
 									}
+								} else {
+									fields.FileField.AcceptedFileTypes = nil
 								}
 								if fieldsItem.FileField.FileInputField == nil {
 									fields.FileField.FileInputField = nil
@@ -220,6 +242,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range fieldsItem.Int64Field.Int64Rules.In {
 											fields.Int64Field.Int64Rules.In = append(fields.Int64Field.Int64Rules.In, types.StringValue(v))
 										}
+									} else {
+										fields.Int64Field.Int64Rules.In = nil
 									}
 									fields.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lt)
 									fields.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lte)
@@ -228,6 +252,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range fieldsItem.Int64Field.Int64Rules.NotIn {
 											fields.Int64Field.Int64Rules.NotIn = append(fields.Int64Field.Int64Rules.NotIn, types.StringValue(v))
 										}
+									} else {
+										fields.Int64Field.Int64Rules.NotIn = nil
 									}
 								}
 								if fieldsItem.Int64Field.NumberField == nil {
@@ -310,6 +336,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											fields.StringField.SelectField.Options = append(fields.StringField.SelectField.Options, optionsVar)
 										}
+									} else {
+										fields.StringField.SelectField.Options = nil
 									}
 									if fieldsItem.StringField.SelectField.Type != nil {
 										fields.StringField.SelectField.Type = types.StringValue(string(*fieldsItem.StringField.SelectField.Type))
@@ -332,6 +360,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range fieldsItem.StringField.StringRules.In {
 											fields.StringField.StringRules.In = append(fields.StringField.StringRules.In, types.StringValue(v))
 										}
+									} else {
+										fields.StringField.StringRules.In = nil
 									}
 									fields.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem.StringField.StringRules.IP)
 									fields.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem.StringField.StringRules.Ipv4)
@@ -348,6 +378,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range fieldsItem.StringField.StringRules.NotIn {
 											fields.StringField.StringRules.NotIn = append(fields.StringField.StringRules.NotIn, types.StringValue(v))
 										}
+									} else {
+										fields.StringField.StringRules.NotIn = nil
 									}
 									fields.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem.StringField.StringRules.Pattern)
 									fields.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem.StringField.StringRules.Prefix)
@@ -378,6 +410,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 							r.TaskView.Task.Form.Fields = append(r.TaskView.Task.Form.Fields, fields)
 						}
+					} else {
+						r.TaskView.Task.Form.Fields = nil
 					}
 					r.TaskView.Task.Form.Name = types.StringPointerValue(resp.TaskView.Task.Form.Name)
 				}
@@ -387,6 +421,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 					for _, v := range resp.TaskView.Task.InsightIds {
 						r.TaskView.Task.InsightIds = append(r.TaskView.Task.InsightIds, types.StringValue(v))
 					}
+				} else {
+					r.TaskView.Task.InsightIds = nil
 				}
 				r.TaskView.Task.NumericID = types.StringPointerValue(resp.TaskView.Task.NumericID)
 				if resp.TaskView.Task.Origin != nil {
@@ -505,12 +541,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range historyItem.ApprovalInstance.Approval.AgentApproval.PolicyIds {
 												history.ApprovalInstance.Approval.AgentApproval.PolicyIds = append(history.ApprovalInstance.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.AgentApproval.PolicyIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds != nil {
 											history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds {
 												history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = append(history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = nil
 										}
 									}
 									history.ApprovalInstance.Approval.AllowDelegation = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AllowDelegation)
@@ -519,6 +559,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range historyItem.ApprovalInstance.Approval.AllowedReassignees {
 											history.ApprovalInstance.Approval.AllowedReassignees = append(history.ApprovalInstance.Approval.AllowedReassignees, types.StringValue(v))
 										}
+									} else {
+										history.ApprovalInstance.Approval.AllowedReassignees = nil
 									}
 									history.ApprovalInstance.Approval.AllowReassignment = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AllowReassignment)
 									if historyItem.ApprovalInstance.Approval.AppGroupApproval == nil {
@@ -540,12 +582,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 												history.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds)
 											}
+										} else {
+											history.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers)
@@ -575,12 +621,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 												history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds1)
 											}
+										} else {
+											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
@@ -605,6 +655,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												for _, v := range historyItem.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds {
 													history.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = append(history.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
 												}
+											} else {
+												history.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
 											}
 										}
 										if historyItem.ApprovalInstance.Approval.Escalation.ReplacePolicy == nil {
@@ -630,12 +682,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range historyItem.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds {
 												history.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = append(history.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.ExpressionApproval.Expressions != nil {
 											history.ApprovalInstance.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ExpressionApproval.Expressions))
 											for _, v := range historyItem.ApprovalInstance.Approval.ExpressionApproval.Expressions {
 												history.ApprovalInstance.Approval.ExpressionApproval.Expressions = append(history.ApprovalInstance.Approval.ExpressionApproval.Expressions, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ExpressionApproval.Expressions = nil
 										}
 										history.ApprovalInstance.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.Fallback)
 										if historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds != nil {
@@ -649,12 +705,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 												history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds2)
 											}
+										} else {
+											history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers)
@@ -669,6 +729,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range historyItem.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds {
 												history.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = append(history.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = nil
 										}
 										history.ApprovalInstance.Approval.ManagerApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.Fallback)
 										if historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds != nil {
@@ -682,12 +744,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 												history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds3)
 											}
+										} else {
+											history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers)
@@ -713,12 +779,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 												history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds4)
 											}
+										} else {
+											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
@@ -732,6 +802,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range historyItem.ApprovalInstance.Approval.SelfApproval.AssignedUserIds {
 												history.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = append(history.ApprovalInstance.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = nil
 										}
 										history.ApprovalInstance.Approval.SelfApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.SelfApproval.Fallback)
 										if historyItem.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds != nil {
@@ -745,12 +817,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 												history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds5)
 											}
+										} else {
+											history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled)
 									}
@@ -765,6 +841,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range historyItem.ApprovalInstance.Approval.UserApproval.UserIds {
 												history.ApprovalInstance.Approval.UserApproval.UserIds = append(history.ApprovalInstance.Approval.UserApproval.UserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.UserApproval.UserIds = nil
 										}
 									}
 									if historyItem.ApprovalInstance.Approval.WebhookApproval == nil {
@@ -790,6 +868,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											history.ApprovalInstance.ApprovedAction.Entitlements = append(history.ApprovalInstance.ApprovedAction.Entitlements, entitlements)
 										}
+									} else {
+										history.ApprovalInstance.ApprovedAction.Entitlements = nil
 									}
 									history.ApprovalInstance.ApprovedAction.StepUpTransactionID = types.StringPointerValue(historyItem.ApprovalInstance.ApprovedAction.StepUpTransactionID)
 									history.ApprovalInstance.ApprovedAction.UserID = types.StringPointerValue(historyItem.ApprovalInstance.ApprovedAction.UserID)
@@ -823,6 +903,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range historyItem.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds {
 												history.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = append(history.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = nil
 										}
 									}
 									if historyItem.ApprovalInstance.EscalationInstance.ReplacePolicy == nil {
@@ -905,12 +987,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												for _, v := range fieldGroupsItem1.Fields {
 													fieldGroups1.Fields = append(fieldGroups1.Fields, types.StringValue(v))
 												}
+											} else {
+												fieldGroups1.Fields = nil
 											}
 											fieldGroups1.HelpText = types.StringPointerValue(fieldGroupsItem1.HelpText)
 											fieldGroups1.Name = types.StringPointerValue(fieldGroupsItem1.Name)
 
 											history.FormInstance.Form.FieldGroups = append(history.FormInstance.Form.FieldGroups, fieldGroups1)
 										}
+									} else {
+										history.FormInstance.Form.FieldGroups = nil
 									}
 									if historyItem.FormInstance.Form.FieldRelationships != nil {
 										history.FormInstance.Form.FieldRelationships = []tfTypes.FieldRelationship{}
@@ -932,6 +1018,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range fieldRelationshipsItem1.DependentOn.DependencyFieldNames {
 														fieldRelationships1.DependentOn.DependencyFieldNames = append(fieldRelationships1.DependentOn.DependencyFieldNames, types.StringValue(v))
 													}
+												} else {
+													fieldRelationships1.DependentOn.DependencyFieldNames = nil
 												}
 											}
 											if fieldRelationshipsItem1.FieldNames != nil {
@@ -939,6 +1027,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												for _, v := range fieldRelationshipsItem1.FieldNames {
 													fieldRelationships1.FieldNames = append(fieldRelationships1.FieldNames, types.StringValue(v))
 												}
+											} else {
+												fieldRelationships1.FieldNames = nil
 											}
 											if fieldRelationshipsItem1.MutuallyExclusive == nil {
 												fieldRelationships1.MutuallyExclusive = nil
@@ -953,6 +1043,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											history.FormInstance.Form.FieldRelationships = append(history.FormInstance.Form.FieldRelationships, fieldRelationships1)
 										}
+									} else {
+										history.FormInstance.Form.FieldRelationships = nil
 									}
 									if historyItem.FormInstance.Form.Fields != nil {
 										history.FormInstance.Form.Fields = []tfTypes.Field{}
@@ -1000,6 +1092,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range fieldsItem1.FileField.AcceptedFileTypes {
 														fields1.FileField.AcceptedFileTypes = append(fields1.FileField.AcceptedFileTypes, types.StringValue(v))
 													}
+												} else {
+													fields1.FileField.AcceptedFileTypes = nil
 												}
 												if fieldsItem1.FileField.FileInputField == nil {
 													fields1.FileField.FileInputField = nil
@@ -1026,6 +1120,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range fieldsItem1.Int64Field.Int64Rules.In {
 															fields1.Int64Field.Int64Rules.In = append(fields1.Int64Field.Int64Rules.In, types.StringValue(v))
 														}
+													} else {
+														fields1.Int64Field.Int64Rules.In = nil
 													}
 													fields1.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Lt)
 													fields1.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Lte)
@@ -1034,6 +1130,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range fieldsItem1.Int64Field.Int64Rules.NotIn {
 															fields1.Int64Field.Int64Rules.NotIn = append(fields1.Int64Field.Int64Rules.NotIn, types.StringValue(v))
 														}
+													} else {
+														fields1.Int64Field.Int64Rules.NotIn = nil
 													}
 												}
 												if fieldsItem1.Int64Field.NumberField == nil {
@@ -1116,6 +1214,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 															fields1.StringField.SelectField.Options = append(fields1.StringField.SelectField.Options, optionsVar1)
 														}
+													} else {
+														fields1.StringField.SelectField.Options = nil
 													}
 													if fieldsItem1.StringField.SelectField.Type != nil {
 														fields1.StringField.SelectField.Type = types.StringValue(string(*fieldsItem1.StringField.SelectField.Type))
@@ -1138,6 +1238,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range fieldsItem1.StringField.StringRules.In {
 															fields1.StringField.StringRules.In = append(fields1.StringField.StringRules.In, types.StringValue(v))
 														}
+													} else {
+														fields1.StringField.StringRules.In = nil
 													}
 													fields1.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem1.StringField.StringRules.IP)
 													fields1.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Ipv4)
@@ -1154,6 +1256,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range fieldsItem1.StringField.StringRules.NotIn {
 															fields1.StringField.StringRules.NotIn = append(fields1.StringField.StringRules.NotIn, types.StringValue(v))
 														}
+													} else {
+														fields1.StringField.StringRules.NotIn = nil
 													}
 													fields1.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem1.StringField.StringRules.Pattern)
 													fields1.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem1.StringField.StringRules.Prefix)
@@ -1184,6 +1288,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											history.FormInstance.Form.Fields = append(history.FormInstance.Form.Fields, fields1)
 										}
+									} else {
+										history.FormInstance.Form.Fields = nil
 									}
 									history.FormInstance.Form.Name = types.StringPointerValue(historyItem.FormInstance.Form.Name)
 								}
@@ -1254,6 +1360,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											history.ProvisionInstance.CompletedAction.Entitlements = append(history.ProvisionInstance.CompletedAction.Entitlements, entitlements1)
 										}
+									} else {
+										history.ProvisionInstance.CompletedAction.Entitlements = nil
 									}
 									history.ProvisionInstance.CompletedAction.UserID = types.StringPointerValue(historyItem.ProvisionInstance.CompletedAction.UserID)
 								}
@@ -1315,6 +1423,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 													}
 												}
 												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -1367,6 +1477,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 													}
 												}
 												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -1379,6 +1491,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 													}
 												}
 												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -1391,12 +1505,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 													}
 													if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 													}
 												}
 												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -1411,6 +1529,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 													}
 												}
 												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -1423,6 +1543,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 													}
 												}
 												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -1435,6 +1557,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 													}
 												}
 											}
@@ -1443,6 +1567,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds {
 													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 												}
+											} else {
+												history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
 											}
 										}
 										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.MultiStep == nil {
@@ -1563,6 +1689,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 							r.TaskView.Task.PolicyInstance.History = append(r.TaskView.Task.PolicyInstance.History, history)
 						}
+					} else {
+						r.TaskView.Task.PolicyInstance.History = nil
 					}
 					if resp.TaskView.Task.PolicyInstance.Next != nil {
 						r.TaskView.Task.PolicyInstance.Next = []tfTypes.PolicyStep{}
@@ -1618,12 +1746,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range nextItem.Approval.AgentApproval.PolicyIds {
 											next.Approval.AgentApproval.PolicyIds = append(next.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.AgentApproval.PolicyIds = nil
 									}
 									if nextItem.Approval.AgentApproval.ReassignToUserIds != nil {
 										next.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(nextItem.Approval.AgentApproval.ReassignToUserIds))
 										for _, v := range nextItem.Approval.AgentApproval.ReassignToUserIds {
 											next.Approval.AgentApproval.ReassignToUserIds = append(next.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.AgentApproval.ReassignToUserIds = nil
 									}
 								}
 								next.Approval.AllowDelegation = types.BoolPointerValue(nextItem.Approval.AllowDelegation)
@@ -1632,6 +1764,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 									for _, v := range nextItem.Approval.AllowedReassignees {
 										next.Approval.AllowedReassignees = append(next.Approval.AllowedReassignees, types.StringValue(v))
 									}
+								} else {
+									next.Approval.AllowedReassignees = nil
 								}
 								next.Approval.AllowReassignment = types.BoolPointerValue(nextItem.Approval.AllowReassignment)
 								if nextItem.Approval.AppGroupApproval == nil {
@@ -1653,12 +1787,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											next.Approval.AppGroupApproval.FallbackGroupIds = append(next.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds6)
 										}
+									} else {
+										next.Approval.AppGroupApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.AppGroupApproval.FallbackUserIds != nil {
 										next.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.AppGroupApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.AppGroupApproval.FallbackUserIds {
 											next.Approval.AppGroupApproval.FallbackUserIds = append(next.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.AppGroupApproval.FallbackUserIds = nil
 									}
 									next.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 									next.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.AppGroupApproval.RequireDistinctApprovers)
@@ -1688,12 +1826,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											next.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(next.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds7)
 										}
+									} else {
+										next.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 										next.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
 											next.Approval.EntitlementOwnerApproval.FallbackUserIds = append(next.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
 									}
 									next.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 									next.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
@@ -1718,6 +1860,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range nextItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
 												next.Approval.Escalation.ReassignToApprovers.ApproverIds = append(next.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
 											}
+										} else {
+											next.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
 										}
 									}
 									if nextItem.Approval.Escalation.ReplacePolicy == nil {
@@ -1743,12 +1887,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range nextItem.Approval.ExpressionApproval.AssignedUserIds {
 											next.Approval.ExpressionApproval.AssignedUserIds = append(next.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ExpressionApproval.AssignedUserIds = nil
 									}
 									if nextItem.Approval.ExpressionApproval.Expressions != nil {
 										next.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(nextItem.Approval.ExpressionApproval.Expressions))
 										for _, v := range nextItem.Approval.ExpressionApproval.Expressions {
 											next.Approval.ExpressionApproval.Expressions = append(next.Approval.ExpressionApproval.Expressions, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ExpressionApproval.Expressions = nil
 									}
 									next.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.Fallback)
 									if nextItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
@@ -1762,12 +1910,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											next.Approval.ExpressionApproval.FallbackGroupIds = append(next.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds8)
 										}
+									} else {
+										next.Approval.ExpressionApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.ExpressionApproval.FallbackUserIds != nil {
 										next.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ExpressionApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.ExpressionApproval.FallbackUserIds {
 											next.Approval.ExpressionApproval.FallbackUserIds = append(next.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ExpressionApproval.FallbackUserIds = nil
 									}
 									next.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 									next.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.RequireDistinctApprovers)
@@ -1782,6 +1934,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range nextItem.Approval.ManagerApproval.AssignedUserIds {
 											next.Approval.ManagerApproval.AssignedUserIds = append(next.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ManagerApproval.AssignedUserIds = nil
 									}
 									next.Approval.ManagerApproval.Fallback = types.BoolPointerValue(nextItem.Approval.ManagerApproval.Fallback)
 									if nextItem.Approval.ManagerApproval.FallbackGroupIds != nil {
@@ -1795,12 +1949,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											next.Approval.ManagerApproval.FallbackGroupIds = append(next.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds9)
 										}
+									} else {
+										next.Approval.ManagerApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.ManagerApproval.FallbackUserIds != nil {
 										next.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ManagerApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.ManagerApproval.FallbackUserIds {
 											next.Approval.ManagerApproval.FallbackUserIds = append(next.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ManagerApproval.FallbackUserIds = nil
 									}
 									next.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
 									next.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ManagerApproval.RequireDistinctApprovers)
@@ -1826,12 +1984,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											next.Approval.ResourceOwnerApproval.FallbackGroupIds = append(next.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds10)
 										}
+									} else {
+										next.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 										next.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ResourceOwnerApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.ResourceOwnerApproval.FallbackUserIds {
 											next.Approval.ResourceOwnerApproval.FallbackUserIds = append(next.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ResourceOwnerApproval.FallbackUserIds = nil
 									}
 									next.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 									next.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
@@ -1845,6 +2007,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range nextItem.Approval.SelfApproval.AssignedUserIds {
 											next.Approval.SelfApproval.AssignedUserIds = append(next.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.SelfApproval.AssignedUserIds = nil
 									}
 									next.Approval.SelfApproval.Fallback = types.BoolPointerValue(nextItem.Approval.SelfApproval.Fallback)
 									if nextItem.Approval.SelfApproval.FallbackGroupIds != nil {
@@ -1858,12 +2022,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											next.Approval.SelfApproval.FallbackGroupIds = append(next.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds11)
 										}
+									} else {
+										next.Approval.SelfApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.SelfApproval.FallbackUserIds != nil {
 										next.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.SelfApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.SelfApproval.FallbackUserIds {
 											next.Approval.SelfApproval.FallbackUserIds = append(next.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.SelfApproval.FallbackUserIds = nil
 									}
 									next.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.SelfApproval.IsGroupFallbackEnabled)
 								}
@@ -1878,6 +2046,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range nextItem.Approval.UserApproval.UserIds {
 											next.Approval.UserApproval.UserIds = append(next.Approval.UserApproval.UserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.UserApproval.UserIds = nil
 									}
 								}
 								if nextItem.Approval.WebhookApproval == nil {
@@ -1940,6 +2110,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 														next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 												}
 											}
 											next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -1992,6 +2164,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -2004,6 +2178,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -2016,12 +2192,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 												}
 												if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 												}
 											}
 											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -2036,6 +2216,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 												}
 											}
 											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -2048,6 +2230,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -2060,6 +2244,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 												}
 											}
 										}
@@ -2068,6 +2254,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
 												next.Provision.ProvisionPolicy.ManualProvision.UserIds = append(next.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 											}
+										} else {
+											next.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
 										}
 									}
 									if nextItem.Provision.ProvisionPolicy.MultiStep == nil {
@@ -2136,6 +2324,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 							r.TaskView.Task.PolicyInstance.Next = append(r.TaskView.Task.PolicyInstance.Next, next)
 						}
+					} else {
+						r.TaskView.Task.PolicyInstance.Next = nil
 					}
 					if resp.TaskView.Task.PolicyInstance.Policy == nil {
 						r.TaskView.Task.PolicyInstance.Policy = nil
@@ -2204,12 +2394,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range stepsItem.Approval.AgentApproval.PolicyIds {
 														steps.Approval.AgentApproval.PolicyIds = append(steps.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.AgentApproval.PolicyIds = nil
 												}
 												if stepsItem.Approval.AgentApproval.ReassignToUserIds != nil {
 													steps.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.ReassignToUserIds))
 													for _, v := range stepsItem.Approval.AgentApproval.ReassignToUserIds {
 														steps.Approval.AgentApproval.ReassignToUserIds = append(steps.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.AgentApproval.ReassignToUserIds = nil
 												}
 											}
 											steps.Approval.AllowDelegation = types.BoolPointerValue(stepsItem.Approval.AllowDelegation)
@@ -2218,6 +2412,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												for _, v := range stepsItem.Approval.AllowedReassignees {
 													steps.Approval.AllowedReassignees = append(steps.Approval.AllowedReassignees, types.StringValue(v))
 												}
+											} else {
+												steps.Approval.AllowedReassignees = nil
 											}
 											steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
 											if stepsItem.Approval.AppGroupApproval == nil {
@@ -2239,12 +2435,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 														steps.Approval.AppGroupApproval.FallbackGroupIds = append(steps.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds12)
 													}
+												} else {
+													steps.Approval.AppGroupApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
 													steps.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
 														steps.Approval.AppGroupApproval.FallbackUserIds = append(steps.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.AppGroupApproval.FallbackUserIds = nil
 												}
 												steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 												steps.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers)
@@ -2274,12 +2474,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 														steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(steps.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds13)
 													}
+												} else {
+													steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 													steps.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
 														steps.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
 												}
 												steps.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 												steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
@@ -2304,6 +2508,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
 															steps.Approval.Escalation.ReassignToApprovers.ApproverIds = append(steps.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
 														}
+													} else {
+														steps.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
 													}
 												}
 												if stepsItem.Approval.Escalation.ReplacePolicy == nil {
@@ -2329,12 +2535,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range stepsItem.Approval.ExpressionApproval.AssignedUserIds {
 														steps.Approval.ExpressionApproval.AssignedUserIds = append(steps.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ExpressionApproval.AssignedUserIds = nil
 												}
 												if stepsItem.Approval.ExpressionApproval.Expressions != nil {
 													steps.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.Expressions))
 													for _, v := range stepsItem.Approval.ExpressionApproval.Expressions {
 														steps.Approval.ExpressionApproval.Expressions = append(steps.Approval.ExpressionApproval.Expressions, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ExpressionApproval.Expressions = nil
 												}
 												steps.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.Fallback)
 												if stepsItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
@@ -2348,12 +2558,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 														steps.Approval.ExpressionApproval.FallbackGroupIds = append(steps.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds14)
 													}
+												} else {
+													steps.Approval.ExpressionApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.ExpressionApproval.FallbackUserIds != nil {
 													steps.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
 														steps.Approval.ExpressionApproval.FallbackUserIds = append(steps.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ExpressionApproval.FallbackUserIds = nil
 												}
 												steps.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 												steps.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
@@ -2368,6 +2582,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range stepsItem.Approval.ManagerApproval.AssignedUserIds {
 														steps.Approval.ManagerApproval.AssignedUserIds = append(steps.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ManagerApproval.AssignedUserIds = nil
 												}
 												steps.Approval.ManagerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.Fallback)
 												if stepsItem.Approval.ManagerApproval.FallbackGroupIds != nil {
@@ -2381,12 +2597,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 														steps.Approval.ManagerApproval.FallbackGroupIds = append(steps.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds15)
 													}
+												} else {
+													steps.Approval.ManagerApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.ManagerApproval.FallbackUserIds != nil {
 													steps.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
 														steps.Approval.ManagerApproval.FallbackUserIds = append(steps.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ManagerApproval.FallbackUserIds = nil
 												}
 												steps.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
 												steps.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
@@ -2412,12 +2632,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 														steps.Approval.ResourceOwnerApproval.FallbackGroupIds = append(steps.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds16)
 													}
+												} else {
+													steps.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 													steps.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
 														steps.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ResourceOwnerApproval.FallbackUserIds = nil
 												}
 												steps.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 												steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
@@ -2431,6 +2655,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range stepsItem.Approval.SelfApproval.AssignedUserIds {
 														steps.Approval.SelfApproval.AssignedUserIds = append(steps.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.SelfApproval.AssignedUserIds = nil
 												}
 												steps.Approval.SelfApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.SelfApproval.Fallback)
 												if stepsItem.Approval.SelfApproval.FallbackGroupIds != nil {
@@ -2444,12 +2670,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 														steps.Approval.SelfApproval.FallbackGroupIds = append(steps.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds17)
 													}
+												} else {
+													steps.Approval.SelfApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.SelfApproval.FallbackUserIds != nil {
 													steps.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.SelfApproval.FallbackUserIds {
 														steps.Approval.SelfApproval.FallbackUserIds = append(steps.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.SelfApproval.FallbackUserIds = nil
 												}
 												steps.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.SelfApproval.IsGroupFallbackEnabled)
 											}
@@ -2464,6 +2694,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range stepsItem.Approval.UserApproval.UserIds {
 														steps.Approval.UserApproval.UserIds = append(steps.Approval.UserApproval.UserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.UserApproval.UserIds = nil
 												}
 											}
 											if stepsItem.Approval.WebhookApproval == nil {
@@ -2526,6 +2758,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 																	steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 															}
 														}
 														steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -2578,6 +2812,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 															}
 														}
 														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -2590,6 +2826,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 															}
 														}
 														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -2602,12 +2840,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 															}
 															if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 															}
 														}
 														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -2622,6 +2864,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 															}
 														}
 														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -2634,6 +2878,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 															}
 														}
 														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -2646,6 +2892,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 															}
 														}
 													}
@@ -2654,6 +2902,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 														for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
 															steps.Provision.ProvisionPolicy.ManualProvision.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 														}
+													} else {
+														steps.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
 													}
 												}
 												if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
@@ -2722,6 +2972,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 										policyStepsResult.Steps = append(policyStepsResult.Steps, steps)
 									}
+								} else {
+									policyStepsResult.Steps = nil
 								}
 
 								r.TaskView.Task.PolicyInstance.Policy.PolicySteps[policyStepsKey] = policyStepsResult
@@ -2742,6 +2994,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 								r.TaskView.Task.PolicyInstance.Policy.PostActions = append(r.TaskView.Task.PolicyInstance.Policy.PostActions, postActions)
 							}
+						} else {
+							r.TaskView.Task.PolicyInstance.Policy.PostActions = nil
 						}
 						r.TaskView.Task.PolicyInstance.Policy.ReassignTasksToDelegates = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.Policy.ReassignTasksToDelegates)
 						if resp.TaskView.Task.PolicyInstance.Policy.Rules != nil {
@@ -2755,6 +3009,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 								r.TaskView.Task.PolicyInstance.Policy.Rules = append(r.TaskView.Task.PolicyInstance.Policy.Rules, rules)
 							}
+						} else {
+							r.TaskView.Task.PolicyInstance.Policy.Rules = nil
 						}
 						r.TaskView.Task.PolicyInstance.Policy.SystemBuiltin = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.Policy.SystemBuiltin)
 						r.TaskView.Task.PolicyInstance.Policy.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.UpdatedAt))
@@ -2863,12 +3119,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = nil
 									}
 								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowDelegation = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowDelegation)
@@ -2877,6 +3137,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 									for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees, types.StringValue(v))
 									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees = nil
 								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowReassignment)
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval == nil {
@@ -2898,12 +3160,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds18)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers)
@@ -2933,12 +3199,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds19)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
@@ -2963,6 +3233,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds {
 												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
 											}
+										} else {
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
 										}
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReplacePolicy == nil {
@@ -2988,12 +3260,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Fallback)
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds != nil {
@@ -3007,12 +3283,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds20)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers)
@@ -3027,6 +3307,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.Fallback)
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds != nil {
@@ -3040,12 +3322,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds21)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers)
@@ -3071,12 +3357,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds22)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
@@ -3090,6 +3380,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.Fallback)
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds != nil {
@@ -3103,12 +3395,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds23)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled)
 								}
@@ -3123,6 +3419,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds = nil
 									}
 								}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.WebhookApproval == nil {
@@ -3148,6 +3446,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements, entitlements2)
 									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements = nil
 								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.StepUpTransactionID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.StepUpTransactionID)
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.UserID)
@@ -3181,6 +3481,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = nil
 									}
 								}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy == nil {
@@ -3263,12 +3565,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range fieldGroupsItem2.Fields {
 												fieldGroups2.Fields = append(fieldGroups2.Fields, types.StringValue(v))
 											}
+										} else {
+											fieldGroups2.Fields = nil
 										}
 										fieldGroups2.HelpText = types.StringPointerValue(fieldGroupsItem2.HelpText)
 										fieldGroups2.Name = types.StringPointerValue(fieldGroupsItem2.Name)
 
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldGroups = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldGroups, fieldGroups2)
 									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldGroups = nil
 								}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldRelationships != nil {
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldRelationships = []tfTypes.FieldRelationship{}
@@ -3290,6 +3596,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												for _, v := range fieldRelationshipsItem2.DependentOn.DependencyFieldNames {
 													fieldRelationships2.DependentOn.DependencyFieldNames = append(fieldRelationships2.DependentOn.DependencyFieldNames, types.StringValue(v))
 												}
+											} else {
+												fieldRelationships2.DependentOn.DependencyFieldNames = nil
 											}
 										}
 										if fieldRelationshipsItem2.FieldNames != nil {
@@ -3297,6 +3605,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range fieldRelationshipsItem2.FieldNames {
 												fieldRelationships2.FieldNames = append(fieldRelationships2.FieldNames, types.StringValue(v))
 											}
+										} else {
+											fieldRelationships2.FieldNames = nil
 										}
 										if fieldRelationshipsItem2.MutuallyExclusive == nil {
 											fieldRelationships2.MutuallyExclusive = nil
@@ -3311,6 +3621,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldRelationships = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldRelationships, fieldRelationships2)
 									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldRelationships = nil
 								}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Fields != nil {
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Fields = []tfTypes.Field{}
@@ -3358,6 +3670,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												for _, v := range fieldsItem2.FileField.AcceptedFileTypes {
 													fields2.FileField.AcceptedFileTypes = append(fields2.FileField.AcceptedFileTypes, types.StringValue(v))
 												}
+											} else {
+												fields2.FileField.AcceptedFileTypes = nil
 											}
 											if fieldsItem2.FileField.FileInputField == nil {
 												fields2.FileField.FileInputField = nil
@@ -3384,6 +3698,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range fieldsItem2.Int64Field.Int64Rules.In {
 														fields2.Int64Field.Int64Rules.In = append(fields2.Int64Field.Int64Rules.In, types.StringValue(v))
 													}
+												} else {
+													fields2.Int64Field.Int64Rules.In = nil
 												}
 												fields2.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Lt)
 												fields2.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Lte)
@@ -3392,6 +3708,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range fieldsItem2.Int64Field.Int64Rules.NotIn {
 														fields2.Int64Field.Int64Rules.NotIn = append(fields2.Int64Field.Int64Rules.NotIn, types.StringValue(v))
 													}
+												} else {
+													fields2.Int64Field.Int64Rules.NotIn = nil
 												}
 											}
 											if fieldsItem2.Int64Field.NumberField == nil {
@@ -3474,6 +3792,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 														fields2.StringField.SelectField.Options = append(fields2.StringField.SelectField.Options, optionsVar2)
 													}
+												} else {
+													fields2.StringField.SelectField.Options = nil
 												}
 												if fieldsItem2.StringField.SelectField.Type != nil {
 													fields2.StringField.SelectField.Type = types.StringValue(string(*fieldsItem2.StringField.SelectField.Type))
@@ -3496,6 +3816,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range fieldsItem2.StringField.StringRules.In {
 														fields2.StringField.StringRules.In = append(fields2.StringField.StringRules.In, types.StringValue(v))
 													}
+												} else {
+													fields2.StringField.StringRules.In = nil
 												}
 												fields2.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem2.StringField.StringRules.IP)
 												fields2.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Ipv4)
@@ -3512,6 +3834,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range fieldsItem2.StringField.StringRules.NotIn {
 														fields2.StringField.StringRules.NotIn = append(fields2.StringField.StringRules.NotIn, types.StringValue(v))
 													}
+												} else {
+													fields2.StringField.StringRules.NotIn = nil
 												}
 												fields2.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem2.StringField.StringRules.Pattern)
 												fields2.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem2.StringField.StringRules.Prefix)
@@ -3542,6 +3866,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Fields = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Fields, fields2)
 									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Fields = nil
 								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Name = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Name)
 							}
@@ -3612,6 +3938,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements, entitlements3)
 									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements = nil
 								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.UserID)
 							}
@@ -3673,6 +4001,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 												}
 											}
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -3725,6 +4055,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -3737,6 +4069,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -3749,12 +4083,16 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 												}
 												if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 												}
 											}
 											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -3769,6 +4107,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 												}
 											}
 											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -3781,6 +4121,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -3793,6 +4135,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 												}
 											}
 										}
@@ -3801,6 +4145,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds {
 												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 											}
+										} else {
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
 										}
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep == nil {
@@ -3946,6 +4292,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 
 						r.TaskView.Task.RevocationTargets = append(r.TaskView.Task.RevocationTargets, revocationTargets)
 					}
+				} else {
+					r.TaskView.Task.RevocationTargets = nil
 				}
 				if resp.TaskView.Task.State != nil {
 					r.TaskView.Task.State = types.StringValue(string(*resp.TaskView.Task.State))
@@ -3957,6 +4305,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 					for _, v := range resp.TaskView.Task.StepApproverIds {
 						r.TaskView.Task.StepApproverIds = append(r.TaskView.Task.StepApproverIds, types.StringValue(v))
 					}
+				} else {
+					r.TaskView.Task.StepApproverIds = nil
 				}
 				if resp.TaskView.Task.TaskType == nil {
 					r.TaskView.Task.TaskType = nil

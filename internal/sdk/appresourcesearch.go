@@ -171,21 +171,11 @@ func (s *AppResourceSearch) SearchAppResourceTypes(ctx context.Context, request 
 				return nil, nil
 			}
 		}
+		request.PageToken = &nCVal
 
 		return s.SearchAppResourceTypes(
 			ctx,
-			&shared.SearchAppResourceTypesRequest{
-				AppIds:                      request.AppIds,
-				AppUserIds:                  request.AppUserIds,
-				DisplayName:                 request.DisplayName,
-				ExcludeResourceTypeIds:      request.ExcludeResourceTypeIds,
-				ExcludeResourceTypeTraitIds: request.ExcludeResourceTypeTraitIds,
-				PageSize:                    request.PageSize,
-				PageToken:                   &nCVal,
-				Query:                       request.Query,
-				ResourceTypeIds:             request.ResourceTypeIds,
-				ResourceTypeTraitIds:        request.ResourceTypeTraitIds,
-			},
+			request,
 		)
 	}
 
@@ -361,24 +351,11 @@ func (s *AppResourceSearch) SearchAppResources(ctx context.Context, request *sha
 				return nil, nil
 			}
 		}
+		request.PageToken = &nCVal
 
 		return s.SearchAppResources(
 			ctx,
-			&shared.SearchAppResourcesRequest{
-				AppID:                          request.AppID,
-				AppUserIds:                     request.AppUserIds,
-				ExcludeDeletedResourceBindings: request.ExcludeDeletedResourceBindings,
-				ExcludeResourceIds:             request.ExcludeResourceIds,
-				ExcludeResourceTypeTraitIds:    request.ExcludeResourceTypeTraitIds,
-				OwnerUserIds:                   request.OwnerUserIds,
-				PageSize:                       request.PageSize,
-				PageToken:                      &nCVal,
-				Query:                          request.Query,
-				Refs:                           request.Refs,
-				ResourceIds:                    request.ResourceIds,
-				ResourceTypeIds:                request.ResourceTypeIds,
-				ResourceTypeTraitIds:           request.ResourceTypeTraitIds,
-			},
+			request,
 		)
 	}
 

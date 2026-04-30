@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,22 +19,16 @@ const (
 func (e BundleAutomationCircuitBreakerState) ToPointer() *BundleAutomationCircuitBreakerState {
 	return &e
 }
-func (e *BundleAutomationCircuitBreakerState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BundleAutomationCircuitBreakerState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CIRCUIT_BREAKER_STATE_UNSPECIFIED", "CIRCUIT_BREAKER_STATE_TRIGGERED", "CIRCUIT_BREAKER_STATE_BYPASS":
+			return true
+		}
 	}
-	switch v {
-	case "CIRCUIT_BREAKER_STATE_UNSPECIFIED":
-		fallthrough
-	case "CIRCUIT_BREAKER_STATE_TRIGGERED":
-		fallthrough
-	case "CIRCUIT_BREAKER_STATE_BYPASS":
-		*e = BundleAutomationCircuitBreakerState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BundleAutomationCircuitBreakerState: %v", v)
-	}
+	return false
 }
 
 // The BundleAutomationCircuitBreaker message.

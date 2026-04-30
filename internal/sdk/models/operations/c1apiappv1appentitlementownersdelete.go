@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppEntitlementOwnersDeleteRequest) GetDeleteAppEntitlementOwn
 	return c.DeleteAppEntitlementOwnersRequest
 }
 
+// #region class-body-c1apiappv1appentitlementownersdeleterequest
+// #endregion class-body-c1apiappv1appentitlementownersdeleterequest
+
 type C1APIAppV1AppEntitlementOwnersDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppEntitlementOwnersDeleteResponse) GetDeleteAppEntitlementOw
 	}
 	return c.DeleteAppEntitlementOwnersResponse
 }
+
+// #region class-body-c1apiappv1appentitlementownersdeleteresponse
+// #endregion class-body-c1apiappv1appentitlementownersdeleteresponse

@@ -26,6 +26,9 @@ func (c *C1APIServicePrincipalV1ServicePrincipalServiceUpdateRequest) GetService
 	return c.ServicePrincipalServiceUpdateRequest
 }
 
+// #region class-body-c1apiserviceprincipalv1serviceprincipalserviceupdaterequest
+// #endregion class-body-c1apiserviceprincipalv1serviceprincipalserviceupdaterequest
+
 type C1APIServicePrincipalV1ServicePrincipalServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIServicePrincipalV1ServicePrincipalServiceUpdateResponse) GetServic
 	}
 	return c.ServicePrincipalServiceUpdateResponse
 }
+
+// #region class-body-c1apiserviceprincipalv1serviceprincipalserviceupdateresponse
+// #endregion class-body-c1apiserviceprincipalv1serviceprincipalserviceupdateresponse

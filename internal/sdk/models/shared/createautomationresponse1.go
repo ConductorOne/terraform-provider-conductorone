@@ -18,3 +18,6 @@ func (c *CreateAutomationResponse1) GetAutomation() *Automation {
 	}
 	return c.Automation
 }
+
+// #region class-body-createautomationresponse1
+// #endregion class-body-createautomationresponse1

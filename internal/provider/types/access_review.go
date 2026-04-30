@@ -11,6 +11,11 @@ type AccessReview struct {
 	AccessReviewInclusionScope     *AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
 	AccessReviewScope              *AccessReviewScope          `tfsdk:"access_review_scope"`
 	AccessReviewScopeV2            *AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
+	BindingObjectSetup             *BindingObjectSetup         `tfsdk:"binding_object_setup"`
+	MultiAppSetup                  *MultiAppSetup              `tfsdk:"multi_app_setup"`
+	NotificationConfig             *NotificationConfig         `tfsdk:"notification_config"`
+	ReviewSignatureConfig          *ReviewSignatureConfig      `tfsdk:"review_signature_config"`
+	SingleAppSetup                 *SingleAppSetup             `tfsdk:"single_app_setup"`
 	AccessReviewTemplateID         types.String                `tfsdk:"access_review_template_id"`
 	AccuracyIssueAction            types.String                `tfsdk:"accuracy_issue_action"`
 	AutoCloseCampaign              types.Bool                  `tfsdk:"auto_close_campaign"`
@@ -18,7 +23,6 @@ type AccessReview struct {
 	AutoGenerateReport             types.Bool                  `tfsdk:"auto_generate_report"`
 	AutoResolve                    types.Bool                  `tfsdk:"auto_resolve"`
 	AutoStartCampaign              types.Bool                  `tfsdk:"auto_start_campaign"`
-	BindingObjectSetup             *BindingObjectSetup         `tfsdk:"binding_object_setup"`
 	ClosedAt                       types.String                `tfsdk:"closed_at"`
 	CompletionDate                 types.String                `tfsdk:"completion_date"`
 	ConnectorSourcesFrozenAt       types.String                `tfsdk:"connector_sources_frozen_at"`
@@ -31,15 +35,11 @@ type AccessReview struct {
 	ExpectedTicketCount            types.Int32                 `tfsdk:"expected_ticket_count"`
 	HasAccuracySupport             types.Bool                  `tfsdk:"has_accuracy_support"`
 	ID                             types.String                `tfsdk:"id"`
-	MultiAppSetup                  *MultiAppSetup              `tfsdk:"multi_app_setup"`
-	NotificationConfig             *NotificationConfig         `tfsdk:"notification_config"`
 	PolicyID                       types.String                `tfsdk:"policy_id"`
 	ReviewInstructions             types.String                `tfsdk:"review_instructions"`
-	ReviewSignatureConfig          *ReviewSignatureConfig      `tfsdk:"review_signature_config"`
 	ScheduledStartDate             types.String                `tfsdk:"scheduled_start_date"`
 	ScopeType                      types.String                `tfsdk:"scope_type"`
 	ScopingVersion                 types.String                `tfsdk:"scoping_version"`
-	SingleAppSetup                 *SingleAppSetup             `tfsdk:"single_app_setup"`
 	StartedAt                      types.String                `tfsdk:"started_at"`
 	State                          types.String                `tfsdk:"state"`
 	UpdatedAt                      types.String                `tfsdk:"updated_at"`

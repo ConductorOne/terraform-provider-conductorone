@@ -33,6 +33,8 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 
 					r.AppUserMapper.MappingCases = append(r.AppUserMapper.MappingCases, mappingCases)
 				}
+			} else {
+				r.AppUserMapper.MappingCases = nil
 			}
 		}
 		r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
@@ -115,16 +117,8 @@ func (r *AppResourceModel) ToOperationsC1APIAppV1AppsDeleteRequest(ctx context.C
 	var id string
 	id = r.ID.ValueString()
 
-	deleteAppRequest, deleteAppRequestDiags := r.ToSharedDeleteAppRequest(ctx)
-	diags.Append(deleteAppRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIAppV1AppsDeleteRequest{
-		ID:               id,
-		DeleteAppRequest: deleteAppRequest,
+		ID: id,
 	}
 
 	return &out, diags

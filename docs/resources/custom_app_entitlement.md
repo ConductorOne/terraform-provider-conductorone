@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_custom_app_entitlement Resource - conductorone"
+page_title: "conductorone_custom_app_entitlement Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   CustomAppEntitlement Resource
@@ -143,7 +143,7 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
 
 ### Required
 
-- `app_id` (String)
+- `app_id` (String) The ID of the app that is associated with the app entitlement.
 - `display_name` (String) The displayName field.
 
 ### Optional
@@ -172,7 +172,7 @@ This message contains a oneof named typ. Only a single field of the following li
   - externalTicket
   - unconfigured
   - action (see [below for nested schema](#nestedatt--provision_policy))
-- `purpose` (String) The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]
+- `purpose` (String) The purpose field. possible known values include one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]
 - `revoke_policy_id` (String) The revokePolicyId field.
 - `risk_level_value_id` (String) The riskLevelValueId field.
 - `slug` (String) The slug field.
@@ -194,7 +194,7 @@ This message contains a oneof named typ. Only a single field of the following li
   - unconfigured
   - action (see [below for nested schema](#nestedatt--deprovisioner_policy))
 - `edit` (Boolean) The edit field.
-- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
+- `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
 - `extra` (Map of Boolean) The extra field.
 - `grant_count` (String) The amount of grants open for this entitlement
 - `id` (String) The unique ID for the App Entitlement.

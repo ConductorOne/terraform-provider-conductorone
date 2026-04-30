@@ -50,6 +50,8 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalogManagementSe
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		diags.Append(r.RefreshFromSharedRequestCatalogView(ctx, resp.RequestCatalogView)...)
 
@@ -83,16 +85,8 @@ func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCat
 	var id string
 	id = r.ID.ValueString()
 
-	requestCatalogManagementServiceDeleteRequest, requestCatalogManagementServiceDeleteRequestDiags := r.ToSharedRequestCatalogManagementServiceDeleteRequest(ctx)
-	diags.Append(requestCatalogManagementServiceDeleteRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequest{
 		ID: id,
-		RequestCatalogManagementServiceDeleteRequest: requestCatalogManagementServiceDeleteRequest,
 	}
 
 	return &out, diags

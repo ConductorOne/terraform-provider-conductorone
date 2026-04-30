@@ -30,10 +30,10 @@ type AppEntitlementAutomationDataSource struct {
 // AppEntitlementAutomationDataSourceModel describes the data model.
 type AppEntitlementAutomationDataSourceModel struct {
 	AppEntitlementAutomationLastRunStatus   *tfTypes.AppEntitlementAutomationLastRunStatus   `tfsdk:"app_entitlement_automation_last_run_status"`
-	AppEntitlementAutomationRuleBasic       *tfTypes.AppEntitlementAutomationRuleBasic       `tfsdk:"app_entitlement_automation_rule_basic" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleCEL         *tfTypes.AppEntitlementAutomationRuleCEL         `tfsdk:"app_entitlement_automation_rule_cel" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleEntitlement *tfTypes.AppEntitlementAutomationRuleEntitlement `tfsdk:"app_entitlement_automation_rule_entitlement" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleNone        *tfTypes.AppEntitlementAutomationRuleNone        `tfsdk:"app_entitlement_automation_rule_none" tfPlanOnly:"true"`
+	AppEntitlementAutomationRuleBasic       *tfTypes.AppEntitlementAutomationRuleBasic       `tfsdk:"app_entitlement_automation_rule_basic"`
+	AppEntitlementAutomationRuleCEL         *tfTypes.AppEntitlementAutomationRuleCEL         `tfsdk:"app_entitlement_automation_rule_cel"`
+	AppEntitlementAutomationRuleEntitlement *tfTypes.AppEntitlementAutomationRuleEntitlement `tfsdk:"app_entitlement_automation_rule_entitlement"`
+	AppEntitlementAutomationRuleNone        *tfTypes.AppEntitlementAutomationRuleNone        `tfsdk:"app_entitlement_automation_rule_none"`
 	AppEntitlementID                        types.String                                     `tfsdk:"app_entitlement_id"`
 	AppID                                   types.String                                     `tfsdk:"app_id"`
 	CreatedAt                               types.String                                     `tfsdk:"created_at"`
@@ -118,10 +118,12 @@ func (r *AppEntitlementAutomationDataSource) Schema(ctx context.Context, req dat
 				Description: `The AppEntitlementAutomationRuleNone message.`,
 			},
 			"app_entitlement_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The unique ID for the App Entitlement.`,
 			},
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The ID of the app that is associated with the app entitlement.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

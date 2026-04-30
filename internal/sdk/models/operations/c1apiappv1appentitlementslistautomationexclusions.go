@@ -26,6 +26,9 @@ func (c *C1APIAppV1AppEntitlementsListAutomationExclusionsRequest) GetAppEntitle
 	return c.AppEntitlementID
 }
 
+// #region class-body-c1apiappv1appentitlementslistautomationexclusionsrequest
+// #endregion class-body-c1apiappv1appentitlementslistautomationexclusionsrequest
+
 type C1APIAppV1AppEntitlementsListAutomationExclusionsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1AppEntitlementsListAutomationExclusionsResponse) GetListAutom
 	}
 	return c.ListAutomationExclusionsResponse
 }
+
+// #region class-body-c1apiappv1appentitlementslistautomationexclusionsresponse
+// #endregion class-body-c1apiappv1appentitlementslistautomationexclusionsresponse

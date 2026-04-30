@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceHardResetRequest) GetTaskActionsServiceHar
 	return c.TaskActionsServiceHardResetRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsservicehardresetrequest
+// #endregion class-body-c1apitaskv1taskactionsservicehardresetrequest
+
 type C1APITaskV1TaskActionsServiceHardResetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceHardResetResponse) GetTaskActionsServiceHa
 	}
 	return c.TaskActionsServiceHardResetResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsservicehardresetresponse
+// #endregion class-body-c1apitaskv1taskactionsservicehardresetresponse

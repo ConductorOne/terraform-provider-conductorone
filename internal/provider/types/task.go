@@ -7,6 +7,9 @@ import (
 )
 
 type Task struct {
+	Form               *Form                  `tfsdk:"form"`
+	PolicyInstance     *PolicyInstance        `tfsdk:"policy_instance"`
+	TaskType           *TaskType              `tfsdk:"task_type"`
 	Actions            []types.String         `tfsdk:"actions"`
 	AnalysisID         types.String           `tfsdk:"analysis_id"`
 	Annotations        []Annotations          `tfsdk:"annotations"`
@@ -20,19 +23,16 @@ type Task struct {
 	DisplayName        types.String           `tfsdk:"display_name"`
 	EmergencyAccess    types.Bool             `tfsdk:"emergency_access"`
 	ExternalRefs       []ExternalRef          `tfsdk:"external_refs"`
-	Form               *Form                  `tfsdk:"form"`
 	ID                 types.String           `tfsdk:"id"`
 	InsightIds         []types.String         `tfsdk:"insight_ids"`
 	NumericID          types.String           `tfsdk:"numeric_id"`
 	Origin             types.String           `tfsdk:"origin"`
 	PolicyGenerationID types.String           `tfsdk:"policy_generation_id"`
-	PolicyInstance     *PolicyInstance        `tfsdk:"policy_instance"`
 	Processing         types.String           `tfsdk:"processing"`
 	Recommendation     types.String           `tfsdk:"recommendation"`
 	RevocationTargets  []TaskRevocationTarget `tfsdk:"revocation_targets"`
 	State              types.String           `tfsdk:"state"`
 	StepApproverIds    []types.String         `tfsdk:"step_approver_ids"`
-	TaskType           *TaskType              `tfsdk:"task_type"`
 	UpdatedAt          types.String           `tfsdk:"updated_at"`
 	UserID             types.String           `tfsdk:"user_id"`
 }

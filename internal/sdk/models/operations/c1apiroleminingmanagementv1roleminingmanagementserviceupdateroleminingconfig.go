@@ -45,3 +45,6 @@ func (c *C1APIRoleMiningManagementV1RoleMiningManagementServiceUpdateRoleMiningC
 	}
 	return c.UpdateRoleMiningConfigResponse
 }
+
+// #region class-body-c1apiroleminingmanagementv1roleminingmanagementserviceupdateroleminingconfigresponse
+// #endregion class-body-c1apiroleminingmanagementv1roleminingmanagementserviceupdateroleminingconfigresponse

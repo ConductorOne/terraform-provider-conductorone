@@ -62,10 +62,12 @@ func (r *AppEntitlementProxyBindingDataSource) Schema(ctx context.Context, req d
 				Computed: true,
 			},
 			"dst_app_entitlement_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The dstAppEntitlementId field.`,
 			},
 			"dst_app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The dstAppId field.`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
@@ -75,10 +77,12 @@ func (r *AppEntitlementProxyBindingDataSource) Schema(ctx context.Context, req d
 				Description: `The expanded field.`,
 			},
 			"src_app_entitlement_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The srcAppEntitlementId field.`,
 			},
 			"src_app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The srcAppId field.`,
 			},
 			"system_builtin": schema.BoolAttribute{
 				Computed:    true,

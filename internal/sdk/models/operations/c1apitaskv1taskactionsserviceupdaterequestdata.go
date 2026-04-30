@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceUpdateRequestDataRequest) GetTaskActionsSe
 	return c.TaskActionsServiceUpdateRequestDataRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsserviceupdaterequestdatarequest
+// #endregion class-body-c1apitaskv1taskactionsserviceupdaterequestdatarequest
+
 type C1APITaskV1TaskActionsServiceUpdateRequestDataResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceUpdateRequestDataResponse) GetTaskServiceA
 	}
 	return c.TaskServiceActionResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsserviceupdaterequestdataresponse
+// #endregion class-body-c1apitaskv1taskactionsserviceupdaterequestdataresponse

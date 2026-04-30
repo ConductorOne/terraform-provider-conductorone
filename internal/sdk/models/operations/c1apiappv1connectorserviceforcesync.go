@@ -34,6 +34,9 @@ func (c *C1APIAppV1ConnectorServiceForceSyncRequest) GetForceSyncRequest() *shar
 	return c.ForceSyncRequest
 }
 
+// #region class-body-c1apiappv1connectorserviceforcesyncrequest
+// #endregion class-body-c1apiappv1connectorserviceforcesyncrequest
+
 type C1APIAppV1ConnectorServiceForceSyncResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1ConnectorServiceForceSyncResponse) GetForceSyncResponse() *sh
 	}
 	return c.ForceSyncResponse
 }
+
+// #region class-body-c1apiappv1connectorserviceforcesyncresponse
+// #endregion class-body-c1apiappv1connectorserviceforcesyncresponse

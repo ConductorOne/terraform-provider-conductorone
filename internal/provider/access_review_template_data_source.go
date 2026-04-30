@@ -434,7 +434,8 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 				Description: `The exemptCertifiedAccessConflicts field.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The id field.`,
 			},
 			"is_campaign_schedule_enabled": schema.BoolAttribute{
 				Computed:    true,

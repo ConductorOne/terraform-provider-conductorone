@@ -14,3 +14,6 @@ func (a *A2UIServiceListSurfacesResponse) GetSurfaces() []A2UISurface {
 	}
 	return a.Surfaces
 }
+
+// #region class-body-a2uiservicelistsurfacesresponse
+// #endregion class-body-a2uiservicelistsurfacesresponse

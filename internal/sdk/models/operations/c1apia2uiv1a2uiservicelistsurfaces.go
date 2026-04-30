@@ -18,6 +18,9 @@ func (c *C1APIA2uiV1A2UIServiceListSurfacesRequest) GetConversationID() string {
 	return c.ConversationID
 }
 
+// #region class-body-c1apia2uiv1a2uiservicelistsurfacesrequest
+// #endregion class-body-c1apia2uiv1a2uiservicelistsurfacesrequest
+
 type C1APIA2uiV1A2UIServiceListSurfacesResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIA2uiV1A2UIServiceListSurfacesResponse) GetA2UIServiceListSurfacesR
 	}
 	return c.A2UIServiceListSurfacesResponse
 }
+
+// #region class-body-c1apia2uiv1a2uiservicelistsurfacesresponse
+// #endregion class-body-c1apia2uiv1a2uiservicelistsurfacesresponse

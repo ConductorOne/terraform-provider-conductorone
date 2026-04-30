@@ -26,6 +26,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateRequest) GetR
 	return c.RequestCatalogManagementServiceUpdateRequest
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementserviceupdaterequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementserviceupdaterequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceUpdateResponse) Get
 	}
 	return c.RequestCatalogManagementServiceGetResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementserviceupdateresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementserviceupdateresponse

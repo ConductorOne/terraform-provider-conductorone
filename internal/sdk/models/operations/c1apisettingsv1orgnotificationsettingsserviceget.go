@@ -45,3 +45,6 @@ func (c *C1APISettingsV1OrgNotificationSettingsServiceGetResponse) GetGetOrgNoti
 	}
 	return c.GetOrgNotificationSettingsResponse
 }
+
+// #region class-body-c1apisettingsv1orgnotificationsettingsservicegetresponse
+// #endregion class-body-c1apisettingsv1orgnotificationsettingsservicegetresponse

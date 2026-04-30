@@ -10,7 +10,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_int64validators "github.com/conductorone/terraform-provider-conductorone/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -1156,14 +1155,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								"task_user_relation": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The taskUserRelation field. must be one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"TASK_USER_RELATION_UNSPECIFIED",
-											"TASK_USER_RELATION_ASSIGNEE",
-											"TASK_USER_RELATION_SUBJECT",
-										),
-									},
+									Description: `The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
 								},
 							},
 							MarkdownDescription: `The TaskAction message.` + "\n" +
@@ -1258,15 +1250,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									MarkdownDescription: `The userStatusEnum field.` + "\n" +
 										`This field is part of the ` + "`" + `user_status` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.automations.v1.UpdateUser` + "`" + ` for more details.` + "\n" +
-										`must be one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"UNKNOWN",
-											"ENABLED",
-											"DISABLED",
-											"DELETED",
-										),
-									},
+										`possible known values include one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
 								},
 							},
 							MarkdownDescription: `The UpdateUser message.` + "\n" +
@@ -2423,14 +2407,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								"task_user_relation": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The taskUserRelation field. must be one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"TASK_USER_RELATION_UNSPECIFIED",
-											"TASK_USER_RELATION_ASSIGNEE",
-											"TASK_USER_RELATION_SUBJECT",
-										),
-									},
+									Description: `The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
 								},
 							},
 							MarkdownDescription: `The TaskAction message.` + "\n" +
@@ -2525,15 +2502,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									MarkdownDescription: `The userStatusEnum field.` + "\n" +
 										`This field is part of the ` + "`" + `user_status` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.automations.v1.UpdateUser` + "`" + ` for more details.` + "\n" +
-										`must be one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"UNKNOWN",
-											"ENABLED",
-											"DISABLED",
-											"DELETED",
-										),
-									},
+										`possible known values include one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
 								},
 							},
 							MarkdownDescription: `The UpdateUser message.` + "\n" +
@@ -2716,15 +2685,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"account_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"APP_USER_TYPE_UNSPECIFIED",
-															"APP_USER_TYPE_USER",
-															"APP_USER_TYPE_SERVICE_ACCOUNT",
-															"APP_USER_TYPE_SYSTEM_ACCOUNT",
-														),
-													},
+													Description: `The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
 												},
 											},
 											Description: `The AccountFilter message.`,
@@ -2813,39 +2774,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"grant_filter_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_FILTER_TYPE_UNSPECIFIED",
-															"GRANT_FILTER_TYPE_PERMANENT",
-															"GRANT_FILTER_TYPE_TEMPORARY",
-														),
-													},
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 												},
 												"grant_justification_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_JUSTIFICATION_TYPE_UNSPECIFIED",
-															"GRANT_JUSTIFICATION_TYPE_ALL",
-															"GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE",
-															"GRANT_JUSTIFICATION_TYPE_DIRECT",
-														),
-													},
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
 												},
 												"grant_source_filter": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_SOURCE_FILTER_UNSPECIFIED",
-															"GRANT_SOURCE_FILTER_DIRECT",
-															"GRANT_SOURCE_FILTER_INHERITED",
-														),
-													},
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 												},
 											},
 											Description: `The GrantFilter message.`,
@@ -2877,15 +2816,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"account_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"APP_USER_TYPE_UNSPECIFIED",
-															"APP_USER_TYPE_USER",
-															"APP_USER_TYPE_SERVICE_ACCOUNT",
-															"APP_USER_TYPE_SYSTEM_ACCOUNT",
-														),
-													},
+													Description: `The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
 												},
 											},
 											Description: `The AccountFilter message.`,
@@ -2974,39 +2905,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"grant_filter_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_FILTER_TYPE_UNSPECIFIED",
-															"GRANT_FILTER_TYPE_PERMANENT",
-															"GRANT_FILTER_TYPE_TEMPORARY",
-														),
-													},
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 												},
 												"grant_justification_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_JUSTIFICATION_TYPE_UNSPECIFIED",
-															"GRANT_JUSTIFICATION_TYPE_ALL",
-															"GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE",
-															"GRANT_JUSTIFICATION_TYPE_DIRECT",
-														),
-													},
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
 												},
 												"grant_source_filter": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_SOURCE_FILTER_UNSPECIFIED",
-															"GRANT_SOURCE_FILTER_DIRECT",
-															"GRANT_SOURCE_FILTER_INHERITED",
-														),
-													},
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 												},
 											},
 											Description: `The GrantFilter message.`,
@@ -3424,15 +3333,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"account_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"APP_USER_TYPE_UNSPECIFIED",
-															"APP_USER_TYPE_USER",
-															"APP_USER_TYPE_SERVICE_ACCOUNT",
-															"APP_USER_TYPE_SYSTEM_ACCOUNT",
-														),
-													},
+													Description: `The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
 												},
 											},
 											Description: `The AccountFilter message.`,
@@ -3521,39 +3422,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"grant_filter_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_FILTER_TYPE_UNSPECIFIED",
-															"GRANT_FILTER_TYPE_PERMANENT",
-															"GRANT_FILTER_TYPE_TEMPORARY",
-														),
-													},
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 												},
 												"grant_justification_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_JUSTIFICATION_TYPE_UNSPECIFIED",
-															"GRANT_JUSTIFICATION_TYPE_ALL",
-															"GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE",
-															"GRANT_JUSTIFICATION_TYPE_DIRECT",
-														),
-													},
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
 												},
 												"grant_source_filter": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_SOURCE_FILTER_UNSPECIFIED",
-															"GRANT_SOURCE_FILTER_DIRECT",
-															"GRANT_SOURCE_FILTER_INHERITED",
-														),
-													},
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 												},
 											},
 											Description: `The GrantFilter message.`,
@@ -3585,15 +3464,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"account_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"APP_USER_TYPE_UNSPECIFIED",
-															"APP_USER_TYPE_USER",
-															"APP_USER_TYPE_SERVICE_ACCOUNT",
-															"APP_USER_TYPE_SYSTEM_ACCOUNT",
-														),
-													},
+													Description: `The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
 												},
 											},
 											Description: `The AccountFilter message.`,
@@ -3682,39 +3553,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"grant_filter_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_FILTER_TYPE_UNSPECIFIED",
-															"GRANT_FILTER_TYPE_PERMANENT",
-															"GRANT_FILTER_TYPE_TEMPORARY",
-														),
-													},
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 												},
 												"grant_justification_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_JUSTIFICATION_TYPE_UNSPECIFIED",
-															"GRANT_JUSTIFICATION_TYPE_ALL",
-															"GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE",
-															"GRANT_JUSTIFICATION_TYPE_DIRECT",
-														),
-													},
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
 												},
 												"grant_source_filter": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_SOURCE_FILTER_UNSPECIFIED",
-															"GRANT_SOURCE_FILTER_DIRECT",
-															"GRANT_SOURCE_FILTER_INHERITED",
-														),
-													},
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 												},
 											},
 											Description: `The GrantFilter message.`,
@@ -4183,43 +4032,6 @@ func (r *AutomationResource) Update(ctx context.Context, req resource.UpdateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIAutomationsV1AutomationServiceGetAutomationRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Automation.GetAutomation(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.GetAutomationResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetAutomationResponse(ctx, res1.GetAutomationResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -4261,7 +4073,10 @@ func (r *AutomationResource) Delete(ctx context.Context, req resource.DeleteRequ
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

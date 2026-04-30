@@ -42,6 +42,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequestableEn
 	return c.RequestCatalogManagementServiceDeleteRequestableEntryRequest
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicedeleterequestableentryrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicedeleterequestableentryrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequestableEntryResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -80,3 +83,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteRequestableEn
 	}
 	return c.RequestCatalogManagementServiceDeleteRequestableEntryResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicedeleterequestableentryresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicedeleterequestableentryresponse

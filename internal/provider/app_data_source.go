@@ -133,7 +133,7 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Search for apps with a case insensitive match on the display name.`,
+				Description: `The app's display name.`,
 			},
 			"enable_connector_sourced_ownership": schema.BoolAttribute{
 				Computed:    true,
@@ -297,26 +297,6 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 
 	if resp.Diagnostics.HasError() {
 		return
-	}
-	for {
-		var err error
-
-		res, err = res.Next()
-
-		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
-			return
-		}
-
-		if res == nil {
-			break
-		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppsResponse(ctx, res.SearchAppsResponse)...)
-
-		if resp.Diagnostics.HasError() {
-			return
-		}
 	}
 
 	// Save updated data into Terraform state

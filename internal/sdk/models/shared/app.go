@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e IdentityMatching) ToPointer() *IdentityMatching {
 	return &e
 }
-func (e *IdentityMatching) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IdentityMatching) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_IDENTITY_MATCHING_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_IDENTITY_MATCHING_STRICT":
-		fallthrough
-	case "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME":
-		fallthrough
-	case "APP_USER_IDENTITY_MATCHING_CUSTOM":
-		*e = IdentityMatching(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IdentityMatching: %v", v)
-	}
+	return false
 }
 
 // The App object provides all of the details for an app, as well as some configuration.

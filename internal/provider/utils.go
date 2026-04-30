@@ -89,7 +89,6 @@ func refreshPlan(ctx context.Context, plan types.Object, target any) diag.Diagno
 	diags.Append(tfReflect.Into(ctx, obj, val, target, tfReflect.Options{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
-		SourceType:              tfReflect.SourceTypePlan,
 	}, path.Empty())...)
 
 	return diags
@@ -142,7 +141,7 @@ func (t *providerHttpTransport) RoundTrip(req *http.Request) (*http.Response, er
 	// Decompose the request bytes in a message (HTTP body) and fields (HTTP headers), then log it
 	fields, err := decomposeRequestForLogging(req)
 	if err != nil {
-		tflog.Error(ctx, "Failed to parse request bytes for logging", []map[string]interface{}{{
+		tflog.Error(ctx, "Failed to parse request bytes for logging", []map[string]interface{}{map[string]interface{}{
 			"error": err,
 		}}...)
 	} else {
@@ -158,7 +157,7 @@ func (t *providerHttpTransport) RoundTrip(req *http.Request) (*http.Response, er
 	// Decompose the response bytes in a message (HTTP body) and fields (HTTP headers), then log it
 	fields, err = decomposeResponseForLogging(res)
 	if err != nil {
-		tflog.Error(ctx, "Failed to parse response bytes for logging", []map[string]interface{}{{
+		tflog.Error(ctx, "Failed to parse response bytes for logging", []map[string]interface{}{map[string]interface{}{
 			"error": err,
 		}}...)
 	} else {

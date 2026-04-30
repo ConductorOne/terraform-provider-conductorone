@@ -60,6 +60,8 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceServiceGetRespons
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -77,6 +79,8 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceServiceUpdateResp
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -97,11 +101,6 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceView(ctx context.
 				}
 			}
 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
-		} else {
-			r.Delete = types.BoolNull()
-			r.Edit = types.BoolNull()
-			r.Extra = nil
-			r.Read = types.BoolNull()
 		}
 		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
 
@@ -124,12 +123,6 @@ func (r *AppResourceResourceModel) RefreshFromSharedCreateManuallyManagedAppReso
 			return diags
 		}
 
-		// CreateManuallyManagedAppResourceResponse contains AppResource (not AppResourceView),
-		// so ActorObjectPermissions fields are not available. Set them to null explicitly.
-		r.Delete = types.BoolNull()
-		r.Edit = types.BoolNull()
-		r.Extra = nil
-		r.Read = types.BoolNull()
 	}
 
 	return diags
@@ -172,18 +165,10 @@ func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceDelet
 	var id string
 	id = r.ID.ValueString()
 
-	deleteManuallyManagedAppResourceRequest, deleteManuallyManagedAppResourceRequestDiags := r.ToSharedDeleteManuallyManagedAppResourceRequest(ctx)
-	diags.Append(deleteManuallyManagedAppResourceRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest{
-		AppID:                                   appID,
-		AppResourceTypeID:                       appResourceTypeID,
-		ID:                                      id,
-		DeleteManuallyManagedAppResourceRequest: deleteManuallyManagedAppResourceRequest,
+		AppID:             appID,
+		AppResourceTypeID: appResourceTypeID,
+		ID:                id,
 	}
 
 	return &out, diags

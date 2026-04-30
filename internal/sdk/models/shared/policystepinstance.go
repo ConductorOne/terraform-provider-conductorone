@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // PolicyStepInstanceState - The state of the step, which is either active or done.
 type PolicyStepInstanceState string
 
@@ -19,22 +14,16 @@ const (
 func (e PolicyStepInstanceState) ToPointer() *PolicyStepInstanceState {
 	return &e
 }
-func (e *PolicyStepInstanceState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PolicyStepInstanceState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "POLICY_STEP_STATE_UNSPECIFIED", "POLICY_STEP_STATE_ACTIVE", "POLICY_STEP_STATE_DONE":
+			return true
+		}
 	}
-	switch v {
-	case "POLICY_STEP_STATE_UNSPECIFIED":
-		fallthrough
-	case "POLICY_STEP_STATE_ACTIVE":
-		fallthrough
-	case "POLICY_STEP_STATE_DONE":
-		*e = PolicyStepInstanceState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PolicyStepInstanceState: %v", v)
-	}
+	return false
 }
 
 // PolicyStepInstance - The policy step instance includes a reference to an instance of a policy step that tracks state and has a unique ID.

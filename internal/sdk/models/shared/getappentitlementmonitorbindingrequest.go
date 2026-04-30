@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // GetAppEntitlementMonitorBindingRequestEntitlementGroup - The entitlementGroup field.
 type GetAppEntitlementMonitorBindingRequestEntitlementGroup string
 
@@ -19,22 +14,16 @@ const (
 func (e GetAppEntitlementMonitorBindingRequestEntitlementGroup) ToPointer() *GetAppEntitlementMonitorBindingRequestEntitlementGroup {
 	return &e
 }
-func (e *GetAppEntitlementMonitorBindingRequestEntitlementGroup) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GetAppEntitlementMonitorBindingRequestEntitlementGroup) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B":
+			return true
+		}
 	}
-	switch v {
-	case "ENTITLEMENT_GROUP_UNSPECIFIED":
-		fallthrough
-	case "ENTITLEMENT_GROUP_A":
-		fallthrough
-	case "ENTITLEMENT_GROUP_B":
-		*e = GetAppEntitlementMonitorBindingRequestEntitlementGroup(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GetAppEntitlementMonitorBindingRequestEntitlementGroup: %v", v)
-	}
+	return false
 }
 
 // The GetAppEntitlementMonitorBindingRequest message.

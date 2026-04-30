@@ -55,6 +55,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 						for _, v := range listItem.AppEntitlement.ComplianceFrameworkValueIds {
 							list.AppEntitlement.ComplianceFrameworkValueIds = append(list.AppEntitlement.ComplianceFrameworkValueIds, types.StringValue(v))
 						}
+					} else {
+						list.AppEntitlement.ComplianceFrameworkValueIds = nil
 					}
 					list.AppEntitlement.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppEntitlement.CreatedAt))
 					list.AppEntitlement.DefaultValuesApplied = types.BoolPointerValue(listItem.AppEntitlement.DefaultValuesApplied)
@@ -103,6 +105,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 											list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 									}
 								}
 								list.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -157,6 +161,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 									}
 								}
 								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -171,6 +177,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 									}
 								}
 								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -185,6 +193,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 									}
 									if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 										if list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds == nil {
@@ -193,6 +203,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 									}
 								}
 								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -209,6 +221,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 									}
 								}
 								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -223,6 +237,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 									}
 								}
 								if listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -237,6 +253,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 											list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 									}
 								}
 							}
@@ -247,6 +265,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 								for _, v := range listItem.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds {
 									list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds = append(list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds, types.StringValue(v))
 								}
+							} else {
+								list.AppEntitlement.DeprovisionerPolicy.ManualProvision.UserIds = nil
 							}
 						}
 						if listItem.AppEntitlement.DeprovisionerPolicy.MultiStep == nil {
@@ -328,6 +348,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 											list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 									}
 								}
 								list.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -382,6 +404,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 									}
 								}
 								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -396,6 +420,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 									}
 								}
 								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -410,6 +436,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 									}
 									if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 										if list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds == nil {
@@ -418,6 +446,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 									}
 								}
 								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -434,6 +464,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 									}
 								}
 								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -448,6 +480,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 									}
 								}
 								if listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -462,6 +496,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 										for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 											list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 										}
+									} else {
+										list.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 									}
 								}
 							}
@@ -472,6 +508,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 								for _, v := range listItem.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds {
 									list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds = append(list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 								}
+							} else {
+								list.AppEntitlement.ProvisionPolicy.ManualProvision.UserIds = nil
 							}
 						}
 						if listItem.AppEntitlement.ProvisionPolicy.MultiStep == nil {
@@ -513,6 +551,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

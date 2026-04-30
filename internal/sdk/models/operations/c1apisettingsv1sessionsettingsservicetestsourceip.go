@@ -45,3 +45,6 @@ func (c *C1APISettingsV1SessionSettingsServiceTestSourceIPResponse) GetTestSourc
 	}
 	return c.TestSourceIPResponse
 }
+
+// #region class-body-c1apisettingsv1sessionsettingsservicetestsourceipresponse
+// #endregion class-body-c1apisettingsv1sessionsettingsservicetestsourceipresponse

@@ -45,3 +45,6 @@ func (c *C1APIRoleMiningManagementV1RoleMiningManagementServiceGetLatestRunRespo
 	}
 	return c.GetLatestRunResponse
 }
+
+// #region class-body-c1apiroleminingmanagementv1roleminingmanagementservicegetlatestrunresponse
+// #endregion class-body-c1apiroleminingmanagementv1roleminingmanagementservicegetlatestrunresponse

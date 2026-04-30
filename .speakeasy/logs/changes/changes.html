@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>SDK Changelog - terraform</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --text-secondary: #666666;
+            --code-bg: #f4f4f4;
+            --border-color: #e0e0e0;
+            --added-color: #22863a;
+            --removed-color: #cb2431;
+            --changed-color: #6f42c1;
+            --breaking-color: #d73a49;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --text-color: #e6e6e6;
+                --text-secondary: #a0a0a0;
+                --code-bg: #2d2d2d;
+                --border-color: #404040;
+                --added-color: #85e89d;
+                --removed-color: #f97583;
+                --changed-color: #b392f0;
+                --breaking-color: #f97583;
+            }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.7;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        code {
+            background: var(--code-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        h2 {
+            color: var(--text-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-top: 32px;
+        }
+        ul {
+            padding-left: 24px;
+            list-style-type: disc;
+            list-style-position: outside;
+        }
+        ul ul {
+            padding-left: 28px;
+            margin-top: 6px;
+            margin-bottom: 6px;
+            list-style-type: circle;
+        }
+        li {
+            margin: 10px 0;
+            display: list-item;
+        }
+        li li {
+            margin: 4px 0;
+            color: var(--text-secondary);
+            display: list-item;
+        }
+        li li code {
+            font-size: 0.85em;
+        }
+        /* Ensure nested list items always show bullets */
+        ul > li {
+            list-style: disc;
+        }
+        ul ul > li {
+            list-style: circle;
+        }
+        strong {
+            font-weight: 600;
+        }
+        /* Semantic coloring for change types */
+        strong:contains('Added'), li:has(strong:contains('Added')) strong:first-of-type {
+            color: var(--added-color);
+        }
+        /* Warning emoji styling */
+        li {
+            list-style-position: outside;
+        }
+    </style>
+</head>
+<body><h2 id="terraform-sdk-changes">Terraform SDK Changes:</h2>
+
+<ul>
+<li><code>conductoroneAPI.AutomationSearch.SearchAutomationTemplateVersions()</code>: <code>response.list[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>automationSteps[].GeneratePassword.passwordPolicyId</code> <strong>Added</strong></li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefsCel</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefs</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].SetCredential</code> <strong>Added</strong></li>
+<li><code>triggers[].FormTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>triggers[].GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>triggers[].ManualAutomationTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>conductoroneAPI.AutomationSearch.SearchAutomations()</code>: <code>response.list[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>automationSteps[].GeneratePassword.passwordPolicyId</code> <strong>Added</strong></li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefsCel</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefs</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].SetCredential</code> <strong>Added</strong></li>
+<li><code>draftTriggers[].FormTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].ManualAutomationTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>conductoroneAPI.Automation.ListAutomations()</code>: <code>response.list[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>automationSteps[].GeneratePassword.passwordPolicyId</code> <strong>Added</strong></li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefsCel</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefs</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].SetCredential</code> <strong>Added</strong></li>
+<li><code>draftTriggers[].FormTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].ManualAutomationTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>conductoroneAPI.Automation.CreateAutomation()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>automationSteps[].GeneratePassword.passwordPolicyId</code> <strong>Added</strong></li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefsCel</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefs</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].SetCredential</code> <strong>Added</strong></li>
+<li><code>draftTriggers[].FormTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].ManualAutomationTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>response.Automation</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>automationSteps[].GeneratePassword.passwordPolicyId</code> <strong>Added</strong></li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefsCel</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefs</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].SetCredential</code> <strong>Added</strong></li>
+<li><code>draftTriggers[].FormTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].ManualAutomationTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.Automation.GetAutomation()</code>: <code>response.Automation</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>automationSteps[].GeneratePassword.passwordPolicyId</code> <strong>Added</strong></li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefsCel</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefs</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].SetCredential</code> <strong>Added</strong></li>
+<li><code>draftTriggers[].FormTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].ManualAutomationTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>conductoroneAPI.Automation.UpdateAutomation()</code>:
+
+<ul>
+<li><code>request.UpdateAutomationRequest.Automation</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>automationSteps[].GeneratePassword.passwordPolicyId</code> <strong>Added</strong></li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefsCel</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefs</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].SetCredential</code> <strong>Added</strong></li>
+<li><code>draftTriggers[].FormTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].ManualAutomationTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>response.Automation</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>automationSteps[].GeneratePassword.passwordPolicyId</code> <strong>Added</strong></li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefsCel</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].GrantEntitlements.appEntitlementRefs</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>automationSteps[].SetCredential</code> <strong>Added</strong></li>
+<li><code>draftTriggers[].FormTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].GrantDeletedTrigger.GrantTriggerFilter.EntitlementFilter</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>draftTriggers[].ManualAutomationTrigger</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.AccessReviewTemplateSetupEntitlement.SetScopeByResourceType()</code>:
+
+<ul>
+<li><code>request.AccessReviewTemplateSetScopeByResourceTypeRequest.AccessReviewScopeV2</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>ResourceSelectionScope</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.Apps.Get()</code>: <code>response.App</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppUserMapper</code> <strong>Added</strong></li>
+<li><code>appOwners[].origin</code> <strong>Added</strong></li>
+<li><code>identityMatching.enum(APP_USER_IDENTITY_MATCHING_CUSTOM)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.A2UI.CreateSurfaceFeedback()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.AccessReviewSetupEntitlement.GetCampaignScopeAndEntitlements()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.AccessReviewTemplateSetupEntitlement.GetScopeAndEntitlements()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Functions.Test()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.FunctionsInvocationSearch.Search()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.RoleMiningManagement.GetRoleMiningConfig()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.RoleMiningManagement.UpdateRoleMiningConfig()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.RoleMiningManagement.ListRuns()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.RoleMiningManagement.GetLatestRun()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.RoleMiningManagement.ListSuggestions()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.RoleMiningManagement.GetSuggestion()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.RoleMiningManagement.UpdateSuggestionState()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.RoleMiningManagement.TriggerAnalysis()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.RoleMiningManagementSearch.Search()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecretAdmin.Search()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecretAdmin.SearchAuditEvents()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecretAdmin.Revoke()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecretAdmin.Get()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecret.SearchAuditEvents()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecret.SearchMySecrets()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecret.Revoke()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecret.Get()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecret.SetTextContent()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecret.GetContent()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecret.GetByShareCode()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecret.CreateExternal()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.PaperSecret.CreateInternal()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.SearchTrusts()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.ListTrusts()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.CreateTrust()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.DeleteTrust()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.GetTrust()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.UpdateTrust()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.TestToken()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.ListProviders()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.CreateProvider()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.DeleteProvider()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.GetProvider()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.UpdateProvider()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.WorkloadFederation.TestCEL()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Principal.List()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Principal.Create()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Principal.Delete()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Principal.Get()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Principal.Update()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Principal.ListCredentials()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Principal.CreateCredential()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Principal.RevokeCredential()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Principal.GetCredential()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Principal.UpdateCredential()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.OrgNotificationSettings.Get()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.OrgNotificationSettings.Update()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.UserNotificationSettings.Get()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.UserNotificationSettings.Update()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.AccessReview.Create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.AccessReviewView.AccessReview</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.AccessReview.Get()</code>: <code>response.AccessReviewView.AccessReview</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.AccessReview.Update()</code>:
+
+<ul>
+<li><code>request.AccessReviewServiceUpdateRequest.AccessReview</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.AccessReviewView.AccessReview</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.AccessReview.List()</code>: <code>response.list[].AccessReview</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.AccessReviewSetupEntitlement.SetCampaignScopeAndEntitlements()</code>:
+
+<ul>
+<li><code>request.AccessReviewSetupEntitlementAndScopeServiceSetRequest.AccessReviewScopeV2</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>ResourceSelectionScope</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.AccessReviewScopeV2</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>ResourceSelectionScope</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.AccessReviewSetupEntitlement.SetCampaignScopeByResourceType()</code>:
+
+<ul>
+<li><code>request.AccessReviewSetScopeByResourceTypeRequest.AccessReviewScopeV2</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>ResourceSelectionScope</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.AccessReviewTemplate.Create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>RecurrenceRule</code> <strong>Added</strong></li>
+<li><code>ReviewSignatureConfig</code> <strong>Added</strong></li>
+<li><code>accuracyIssueAction</code> <strong>Added</strong></li>
+<li><code>autoCloseCampaign</code> <strong>Added</strong></li>
+<li><code>autoCloseDecision</code> <strong>Added</strong></li>
+<li><code>autoGenerateReport</code> <strong>Added</strong></li>
+<li><code>autoStartCampaign</code> <strong>Added</strong></li>
+<li><code>defaultView</code> <strong>Added</strong></li>
+<li><code>exemptCertifiedAccessConflicts</code> <strong>Added</strong></li>
+<li><code>isCampaignScheduleEnabled</code> <strong>Added</strong></li>
+<li><code>reviewInstructions</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+<li><code>usePolicyOverride</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.AccessReviewTemplate</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.AccessReviewTemplate.Get()</code>: <code>response.AccessReviewTemplate</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.Apps.Create()</code>:
+
+<ul>
+<li><code>request.identityMatching.enum(APP_USER_IDENTITY_MATCHING_CUSTOM)</code> <strong>Added</strong></li>
+<li><code>response.App</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppUserMapper</code> <strong>Added</strong></li>
+<li><code>appOwners[].origin</code> <strong>Added</strong></li>
+<li><code>identityMatching.enum(APP_USER_IDENTITY_MATCHING_CUSTOM)</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.AccessReviewTemplateSetupEntitlement.SetScopeAndEntitlements()</code>:
+
+<ul>
+<li><code>request.AccessReviewTemplateSetupEntitlementServiceSetRequest.AccessReviewScopeV2</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>ResourceSelectionScope</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.AccessReviewScopeV2</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>ResourceSelectionScope</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.A2UI.SubmitAction()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Apps.List()</code>: <code>response.list[]</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppUserMapper</code> <strong>Added</strong></li>
+<li><code>appOwners[].origin</code> <strong>Added</strong></li>
+<li><code>identityMatching.enum(APP_USER_IDENTITY_MATCHING_CUSTOM)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.AccessReviewTemplate.Update()</code>:
+
+<ul>
+<li><code>request.AccessReviewTemplateServiceUpdateRequest.AccessReviewTemplate</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.AccessReviewTemplate</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.complianceFrameworkAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.AppSelectionCriteriaScope.riskLevelAttributeValueIds</code> <strong>Added</strong></li>
+<li><code>AccessReviewScopeV2.ResourceSelectionScope</code> <strong>Added</strong></li>
+<li><code>scopeType.enum(ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE)</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.A2UI.ListSurfaceFeedback()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.Directory.Create()</code>:
+
+<ul>
+<li><code>request.DirectoryMergeConfig</code> <strong>Added</strong></li>
+<li><code>response.DirectoryView.Directory.DirectoryMergeConfig</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.Connector.List()</code>:  <code>response.list[].Connector.connectorApiVersion</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Connector.CreateDelegated()</code>:  <code>response.ConnectorView.Connector.connectorApiVersion</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Connector.Get()</code>:  <code>response.ConnectorView.Connector.connectorApiVersion</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Connector.Update()</code>:  <code>response.ConnectorView.Connector.connectorApiVersion</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Connector.Create()</code>:  <code>response.ConnectorView.Connector.connectorApiVersion</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Connector.UpdateDelegated()</code>:  <code>response.ConnectorView.Connector.connectorApiVersion</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlements.List()</code>:  <code>response.list[].AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlements.Create()</code>:
+
+<ul>
+<li><code>request.CreateAppEntitlementRequest.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>response.AppEntitlementView.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.AppEntitlements.AddManuallyManagedMembers()</code>:  <code>response.bulkActionId</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlements.ListAutomationExclusions()</code>:  <code>response.list[].User.origin</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlements.Get()</code>:  <code>response.AppEntitlementView.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlements.Update()</code>:
+
+<ul>
+<li><code>request.UpdateAppEntitlementRequest.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>response.AppEntitlementView.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.AppEntitlements.ListForAppResource()</code>:  <code>response.list[].AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlements.ListForAppUser()</code>:  <code>response.list[].AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlementSearch.SearchAppEntitlementsWithExpired()</code>:  <code>response.list[].User.origin</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlementSearch.SearchAppEntitlementsForAppUser()</code>:  <code>response.list[].AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.A2UI.ListSurfaces()</code>: <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlementSearch.Search()</code>:  <code>response.list[].AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlementSearch.SearchGrants()</code>:  <code>response.list[].AppEntitlementView.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppEntitlementOwners.List()</code>:  <code>response.list[].origin</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppOwners.List()</code>:  <code>response.list[].origin</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.AppResourceOwners.List()</code>:  <code>response.list[].origin</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.RequestCatalogManagement.ListEntitlementsPerCatalog()</code>:  <code>response.list[].AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.RequestCatalogManagement.ListEntitlementsForAccess()</code>:  <code>response.list[].AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Directory.List()</code>:  <code>response.list[].Directory.DirectoryMergeConfig</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Apps.Update()</code>:
+
+<ul>
+<li><code>request.UpdateAppRequest.App</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppUserMapper</code> <strong>Added</strong></li>
+<li><code>identityMatching.enum(APP_USER_IDENTITY_MATCHING_CUSTOM)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.App</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppUserMapper</code> <strong>Added</strong></li>
+<li><code>appOwners[].origin</code> <strong>Added</strong></li>
+<li><code>identityMatching.enum(APP_USER_IDENTITY_MATCHING_CUSTOM)</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.Directory.Get()</code>:  <code>response.DirectoryView.Directory.DirectoryMergeConfig</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Directory.Update()</code>:
+
+<ul>
+<li><code>request.DirectoryServiceUpdateRequest.DirectoryMergeConfig</code> <strong>Added</strong></li>
+<li><code>response.DirectoryView.Directory.DirectoryMergeConfig</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.Policies.List()</code>:  <code>response.list[].policySteps.Map&lt;PolicySteps&gt;.steps[].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Policies.Create()</code>:
+
+<ul>
+<li><code>request.policySteps.Map&lt;PolicySteps&gt;.steps[].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>response.Policy.policySteps.Map&lt;PolicySteps&gt;.steps[].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.Policies.Get()</code>:  <code>response.Policy.policySteps.Map&lt;PolicySteps&gt;.steps[].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Policies.Update()</code>:
+
+<ul>
+<li><code>request.UpdatePolicyRequest.Policy.policySteps.Map&lt;PolicySteps&gt;.steps[].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>response.Policy.policySteps.Map&lt;PolicySteps&gt;.steps[].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.RequestSchema.Create()</code>: <code>request</code> <strong>Changed</strong>
+
+<ul>
+<li><code>fieldGroups</code> <strong>Added</strong></li>
+<li><code>fieldRelationships</code> <strong>Added</strong></li>
+<li><code>justificationVisibility</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.AppSearch.Search()</code>: <code>response.list[]</code> <strong>Changed</strong>
+
+<ul>
+<li><code>AppUserMapper</code> <strong>Added</strong></li>
+<li><code>appOwners[].origin</code> <strong>Added</strong></li>
+<li><code>identityMatching.enum(APP_USER_IDENTITY_MATCHING_CUSTOM)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.ExternalClientSearch.Search()</code>:
+
+<ul>
+<li><code>request.clientIdUrls</code> <strong>Added</strong></li>
+<li><code>response.list[]</code> <strong>Changed</strong>
+
+<ul>
+<li><code>clientIdType</code> <strong>Added</strong></li>
+<li><code>verifiedDomain</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.PolicySearch.Search()</code>:  <code>response.list[].policySteps.Map&lt;PolicySteps&gt;.steps[].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.RequestCatalogSearch.SearchEntitlements()</code>:  <code>response.list[].AppEntitlementView.AppEntitlement.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.TaskSearch.Search()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong>
+
+<ul>
+<li><code>excludeApplicationIds</code> <strong>Added</strong></li>
+<li><code>requireApprovalReason</code> <strong>Added</strong></li>
+<li><code>requireDenialReason</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.list[]</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.UserSearch.Search()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong>
+
+<ul>
+<li><code>delegateStatus</code> <strong>Added</strong></li>
+<li><code>delegatedUserIds</code> <strong>Added</strong></li>
+<li><code>excludeOrigins</code> <strong>Added</strong></li>
+<li><code>isDelegate</code> <strong>Added</strong></li>
+<li><code>origins</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.list[].User.origin</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.WebhooksSearch.Search()</code>:  <code>response.list[].callbackTimeout</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.SessionSettings.Get()</code>: <code>response.SessionSettings</code> <strong>Changed</strong>
+
+<ul>
+<li><code>clientIdApprovalRequestPolicyId</code> <strong>Added</strong></li>
+<li><code>clientIdMetadataDocumentPolicy</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.SessionSettings.Update()</code>:
+
+<ul>
+<li><code>request.SessionSettings</code> <strong>Changed</strong>
+
+<ul>
+<li><code>clientIdApprovalRequestPolicyId</code> <strong>Added</strong></li>
+<li><code>clientIdMetadataDocumentPolicy</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.SessionSettings</code> <strong>Changed</strong>
+
+<ul>
+<li><code>clientIdApprovalRequestPolicyId</code> <strong>Added</strong></li>
+<li><code>clientIdMetadataDocumentPolicy</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>conductoroneAPI.SystemLog.ListEvents()</code>:
+
+<ul>
+<li><code>request.untilEventUid</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskAudit.List()</code>: <code>response.list[]</code> <strong>Changed</strong>
+
+<ul>
+<li><code>TaskAuditNewTaskCreatedFrom.originalTaskType</code> <strong>Added</strong></li>
+<li><code>TaskAuditPolicyApprovalReassigned.users[].origin</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.Task.CreateGrantTask()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.Task.CreateOffboardingTask()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.Task.CreateRevokeTask()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.Task.Get()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.Approve()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.ApproveWithStepUp()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.Close()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.Comment()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.Deny()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.EscalateToEmergencyAccess()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.ProcessNow()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.Reassign()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.HardReset()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.Restart()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.SkipStep()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.UpdateGrantDuration()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.TaskActions.UpdateRequestData()</code>: <code>response.TaskView</code> <strong>Changed</strong>
+
+<ul>
+<li><code>Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment</code> <strong>Added</strong></li>
+<li><code>Task.approverIds</code> <strong>Added</strong></li>
+<li><code>Task.revocationTargets</code> <strong>Added</strong></li>
+<li><code>approversPath</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.User.List()</code>:  <code>response.list[].User.origin</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.User.Get()</code>:  <code>response.UserView.User.origin</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Webhooks.List()</code>:  <code>response.list[].callbackTimeout</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Webhooks.Create()</code>:
+
+<ul>
+<li><code>request.callbackTimeout</code> <strong>Added</strong></li>
+<li><code>response.Webhook.callbackTimeout</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>conductoroneAPI.Webhooks.Get()</code>:  <code>response.Webhook.callbackTimeout</code> <strong>Added</strong></li>
+<li><code>conductoroneAPI.Webhooks.Update()</code>:
+
+<ul>
+<li><code>request.WebhooksServiceUpdateRequest.Webhook.callbackTimeout</code> <strong>Added</strong></li>
+<li><code>response.Webhook.callbackTimeout</code> <strong>Added</strong></li>
+</ul></li>
+</ul>
+</body>
+</html>

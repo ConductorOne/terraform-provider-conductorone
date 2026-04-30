@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_jira_cloud Resource - conductorone"
+page_title: "conductorone_integration_jira_cloud Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Jira_cloud Integration Resource

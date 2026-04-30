@@ -23,3 +23,6 @@ func (n *NotificationConfig1) GetSlackNotifications() *SlackNotifications {
 	}
 	return n.SlackNotifications
 }
+
+// #region class-body-notificationconfig1
+// #endregion class-body-notificationconfig1

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e RoleMiningManagementRunStatus) ToPointer() *RoleMiningManagementRunStatus {
 	return &e
 }
-func (e *RoleMiningManagementRunStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RoleMiningManagementRunStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "RUN_STATUS_UNSPECIFIED", "RUN_STATUS_RUNNING", "RUN_STATUS_COMPLETED", "RUN_STATUS_FAILED":
+			return true
+		}
 	}
-	switch v {
-	case "RUN_STATUS_UNSPECIFIED":
-		fallthrough
-	case "RUN_STATUS_RUNNING":
-		fallthrough
-	case "RUN_STATUS_COMPLETED":
-		fallthrough
-	case "RUN_STATUS_FAILED":
-		*e = RoleMiningManagementRunStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RoleMiningManagementRunStatus: %v", v)
-	}
+	return false
 }
 
 // TriggerType - The triggerType field.
@@ -55,24 +45,16 @@ const (
 func (e TriggerType) ToPointer() *TriggerType {
 	return &e
 }
-func (e *TriggerType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TriggerType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_MANUAL", "TRIGGER_TYPE_UPLIFT_COMPLETION", "TRIGGER_TYPE_SCHEDULED":
+			return true
+		}
 	}
-	switch v {
-	case "TRIGGER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "TRIGGER_TYPE_MANUAL":
-		fallthrough
-	case "TRIGGER_TYPE_UPLIFT_COMPLETION":
-		fallthrough
-	case "TRIGGER_TYPE_SCHEDULED":
-		*e = TriggerType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TriggerType: %v", v)
-	}
+	return false
 }
 
 // The RoleMiningManagementRun message.

@@ -171,19 +171,11 @@ func (s *AppSearch) Search(ctx context.Context, request *shared.SearchAppsReques
 				return nil, nil
 			}
 		}
+		request.PageToken = &nCVal
 
 		return s.Search(
 			ctx,
-			&shared.SearchAppsRequest{
-				AppIds:          request.AppIds,
-				DisplayName:     request.DisplayName,
-				ExcludeAppIds:   request.ExcludeAppIds,
-				OnlyDirectories: request.OnlyDirectories,
-				PageSize:        request.PageSize,
-				PageToken:       &nCVal,
-				PolicyRefs:      request.PolicyRefs,
-				Query:           request.Query,
-			},
+			request,
 		)
 	}
 

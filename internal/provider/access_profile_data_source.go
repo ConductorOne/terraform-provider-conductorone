@@ -86,7 +86,8 @@ func (r *AccessProfileDataSource) Schema(ctx context.Context, req datasource.Sch
 				Description: `List of serialized related objects.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The id of the request catalog.`,
 			},
 			"published": schema.BoolAttribute{
 				Computed:    true,

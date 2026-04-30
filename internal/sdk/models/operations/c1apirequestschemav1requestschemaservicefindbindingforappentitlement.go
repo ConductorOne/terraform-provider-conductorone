@@ -45,3 +45,6 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceFindBindingForAppEntitlementRes
 	}
 	return c.RequestSchemaServiceFindBindingForAppEntitlementResponse
 }
+
+// #region class-body-c1apirequestschemav1requestschemaservicefindbindingforappentitlementresponse
+// #endregion class-body-c1apirequestschemav1requestschemaservicefindbindingforappentitlementresponse

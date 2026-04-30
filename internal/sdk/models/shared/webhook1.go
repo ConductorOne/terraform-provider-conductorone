@@ -89,3 +89,6 @@ func (w *Webhook1) GetURL() *string {
 	}
 	return w.URL
 }
+
+// #region class-body-webhook1
+// #endregion class-body-webhook1

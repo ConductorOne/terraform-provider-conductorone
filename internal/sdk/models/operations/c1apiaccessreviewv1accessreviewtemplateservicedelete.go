@@ -26,6 +26,9 @@ func (c *C1APIAccessreviewV1AccessReviewTemplateServiceDeleteRequest) GetAccessR
 	return c.AccessReviewTemplateServiceDeleteRequest
 }
 
+// #region class-body-c1apiaccessreviewv1accessreviewtemplateservicedeleterequest
+// #endregion class-body-c1apiaccessreviewv1accessreviewtemplateservicedeleterequest
+
 type C1APIAccessreviewV1AccessReviewTemplateServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAccessreviewV1AccessReviewTemplateServiceDeleteResponse) GetAccess
 	}
 	return c.AccessReviewTemplateServiceDeleteResponse
 }
+
+// #region class-body-c1apiaccessreviewv1accessreviewtemplateservicedeleteresponse
+// #endregion class-body-c1apiaccessreviewv1accessreviewtemplateservicedeleteresponse

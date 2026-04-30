@@ -16,6 +16,8 @@ func (r *UserDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.C
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		if len(resp.List) == 0 {
 			diags.AddError("Unexpected response from API", "Missing response body array data.")
@@ -58,6 +60,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 
 				r.DepartmentSources = append(r.DepartmentSources, departmentSources)
 			}
+		} else {
+			r.DepartmentSources = nil
 		}
 		if resp.DirectoryIds != nil {
 			if r.DirectoryIds == nil {
@@ -66,6 +70,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			for _, v := range resp.DirectoryIds {
 				r.DirectoryIds = append(r.DirectoryIds, types.StringValue(v))
 			}
+		} else {
+			r.DirectoryIds = nil
 		}
 		if resp.DirectoryStatus != nil {
 			r.DirectoryStatus = types.StringValue(string(*resp.DirectoryStatus))
@@ -88,6 +94,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 
 				r.DirectoryStatusSources = append(r.DirectoryStatusSources, directoryStatusSources)
 			}
+		} else {
+			r.DirectoryStatusSources = nil
 		}
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		r.Email = types.StringPointerValue(resp.Email)
@@ -98,6 +106,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			for _, v := range resp.Emails {
 				r.Emails = append(r.Emails, types.StringValue(v))
 			}
+		} else {
+			r.Emails = nil
 		}
 		if resp.EmailSources != nil {
 			if r.EmailSources == nil {
@@ -115,6 +125,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 
 				r.EmailSources = append(r.EmailSources, emailSources)
 			}
+		} else {
+			r.EmailSources = nil
 		}
 		if resp.EmployeeIds != nil {
 			if r.EmployeeIds == nil {
@@ -123,6 +135,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			for _, v := range resp.EmployeeIds {
 				r.EmployeeIds = append(r.EmployeeIds, types.StringValue(v))
 			}
+		} else {
+			r.EmployeeIds = nil
 		}
 		if resp.EmployeeIDSources != nil {
 			if r.EmployeeIDSources == nil {
@@ -140,6 +154,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 
 				r.EmployeeIDSources = append(r.EmployeeIDSources, employeeIDSources)
 			}
+		} else {
+			r.EmployeeIDSources = nil
 		}
 		r.EmploymentStatus = types.StringPointerValue(resp.EmploymentStatus)
 		if resp.EmploymentStatusSources != nil {
@@ -158,6 +174,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 
 				r.EmploymentStatusSources = append(r.EmploymentStatusSources, employmentStatusSources)
 			}
+		} else {
+			r.EmploymentStatusSources = nil
 		}
 		r.EmploymentType = types.StringPointerValue(resp.EmploymentType)
 		if resp.EmploymentTypeSources != nil {
@@ -176,6 +194,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 
 				r.EmploymentTypeSources = append(r.EmploymentTypeSources, employmentTypeSources)
 			}
+		} else {
+			r.EmploymentTypeSources = nil
 		}
 		r.ID = types.StringPointerValue(resp.ID)
 		r.JobTitle = types.StringPointerValue(resp.JobTitle)
@@ -195,6 +215,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 
 				r.JobTitleSources = append(r.JobTitleSources, jobTitleSources)
 			}
+		} else {
+			r.JobTitleSources = nil
 		}
 		if resp.ManagerIds != nil {
 			if r.ManagerIds == nil {
@@ -203,6 +225,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			for _, v := range resp.ManagerIds {
 				r.ManagerIds = append(r.ManagerIds, types.StringValue(v))
 			}
+		} else {
+			r.ManagerIds = nil
 		}
 		if resp.ManagerSources != nil {
 			if r.ManagerSources == nil {
@@ -220,6 +244,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 
 				r.ManagerSources = append(r.ManagerSources, managerSources)
 			}
+		} else {
+			r.ManagerSources = nil
 		}
 		if resp.Origin != nil {
 			r.Origin = types.StringValue(string(*resp.Origin))
@@ -238,6 +264,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			for _, v := range resp.RoleIds {
 				r.RoleIds = append(r.RoleIds, types.StringValue(v))
 			}
+		} else {
+			r.RoleIds = nil
 		}
 		if resp.Status != nil {
 			r.Status = types.StringValue(string(*resp.Status))
@@ -258,6 +286,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 			for _, v := range resp.Usernames {
 				r.Usernames = append(r.Usernames, types.StringValue(v))
 			}
+		} else {
+			r.Usernames = nil
 		}
 		if resp.UsernameSources != nil {
 			if r.UsernameSources == nil {
@@ -275,6 +305,8 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 
 				r.UsernameSources = append(r.UsernameSources, usernameSources)
 			}
+		} else {
+			r.UsernameSources = nil
 		}
 	}
 

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // JustificationVisibility - The justificationVisibility field.
 type JustificationVisibility string
 
@@ -19,22 +14,16 @@ const (
 func (e JustificationVisibility) ToPointer() *JustificationVisibility {
 	return &e
 }
-func (e *JustificationVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *JustificationVisibility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "JUSTIFICATION_VISIBILITY_UNSPECIFIED", "JUSTIFICATION_VISIBILITY_SHOW", "JUSTIFICATION_VISIBILITY_HIDE":
+			return true
+		}
 	}
-	switch v {
-	case "JUSTIFICATION_VISIBILITY_UNSPECIFIED":
-		fallthrough
-	case "JUSTIFICATION_VISIBILITY_SHOW":
-		fallthrough
-	case "JUSTIFICATION_VISIBILITY_HIDE":
-		*e = JustificationVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for JustificationVisibility: %v", v)
-	}
+	return false
 }
 
 // The RequestSchemaServiceCreateRequest message.

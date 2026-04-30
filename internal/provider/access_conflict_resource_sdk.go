@@ -38,6 +38,8 @@ func (r *AccessConflictResourceModel) RefreshFromSharedConflictMonitor(ctx conte
 					for _, v := range resp.NotificationConfig.EmailNotifications.IdentityUserIds {
 						r.NotificationConfig.EmailNotifications.IdentityUserIds = append(r.NotificationConfig.EmailNotifications.IdentityUserIds, types.StringValue(v))
 					}
+				} else {
+					r.NotificationConfig.EmailNotifications.IdentityUserIds = nil
 				}
 			}
 			if resp.NotificationConfig.SlackNotifications == nil {

@@ -18,6 +18,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest) GetID()
 	return c.ID
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetResponse) GetReq
 	}
 	return c.RequestCatalogManagementServiceGetResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetresponse

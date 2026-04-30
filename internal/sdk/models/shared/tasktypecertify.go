@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -24,28 +22,16 @@ const (
 func (e TaskTypeCertifyOutcome) ToPointer() *TaskTypeCertifyOutcome {
 	return &e
 }
-func (e *TaskTypeCertifyOutcome) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskTypeCertifyOutcome) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CERTIFY_OUTCOME_UNSPECIFIED", "CERTIFY_OUTCOME_CERTIFIED", "CERTIFY_OUTCOME_DECERTIFIED", "CERTIFY_OUTCOME_ERROR", "CERTIFY_OUTCOME_CANCELLED", "CERTIFY_OUTCOME_WAIT_TIMED_OUT":
+			return true
+		}
 	}
-	switch v {
-	case "CERTIFY_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "CERTIFY_OUTCOME_CERTIFIED":
-		fallthrough
-	case "CERTIFY_OUTCOME_DECERTIFIED":
-		fallthrough
-	case "CERTIFY_OUTCOME_ERROR":
-		fallthrough
-	case "CERTIFY_OUTCOME_CANCELLED":
-		fallthrough
-	case "CERTIFY_OUTCOME_WAIT_TIMED_OUT":
-		*e = TaskTypeCertifyOutcome(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskTypeCertifyOutcome: %v", v)
-	}
+	return false
 }
 
 // The TaskTypeCertify message indicates that a task is a certify task and all related details.

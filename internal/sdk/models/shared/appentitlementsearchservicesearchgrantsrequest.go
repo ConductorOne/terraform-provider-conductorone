@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type AppEntitlementSearchServiceSearchGrantsRequestPurpose string
 
 const (
@@ -19,24 +14,16 @@ const (
 func (e AppEntitlementSearchServiceSearchGrantsRequestPurpose) ToPointer() *AppEntitlementSearchServiceSearchGrantsRequestPurpose {
 	return &e
 }
-func (e *AppEntitlementSearchServiceSearchGrantsRequestPurpose) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppEntitlementSearchServiceSearchGrantsRequestPurpose) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
+			return true
+		}
 	}
-	switch v {
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
-		*e = AppEntitlementSearchServiceSearchGrantsRequestPurpose(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppEntitlementSearchServiceSearchGrantsRequestPurpose: %v", v)
-	}
+	return false
 }
 
 // The AppEntitlementSearchServiceSearchGrantsRequest message.

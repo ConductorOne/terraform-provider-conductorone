@@ -18,6 +18,9 @@ func (c *C1APIUserV1UserServiceGetUserProfileTypesRequest) GetUserID() string {
 	return c.UserID
 }
 
+// #region class-body-c1apiuserv1userservicegetuserprofiletypesrequest
+// #endregion class-body-c1apiuserv1userservicegetuserprofiletypesrequest
+
 type C1APIUserV1UserServiceGetUserProfileTypesResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIUserV1UserServiceGetUserProfileTypesResponse) GetGetUserProfileTyp
 	}
 	return c.GetUserProfileTypesResponse
 }
+
+// #region class-body-c1apiuserv1userservicegetuserprofiletypesresponse
+// #endregion class-body-c1apiuserv1userservicegetuserprofiletypesresponse

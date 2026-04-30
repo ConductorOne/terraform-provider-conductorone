@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ResourceType - The resourceType field.
 type ResourceType string
 
@@ -24,32 +19,16 @@ const (
 func (e ResourceType) ToPointer() *ResourceType {
 	return &e
 }
-func (e *ResourceType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResourceType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT", "PROFILE_TYPE":
+			return true
+		}
 	}
-	switch v {
-	case "ROLE":
-		fallthrough
-	case "GROUP":
-		fallthrough
-	case "LICENSE":
-		fallthrough
-	case "PROJECT":
-		fallthrough
-	case "CATALOG":
-		fallthrough
-	case "CUSTOM":
-		fallthrough
-	case "VAULT":
-		fallthrough
-	case "PROFILE_TYPE":
-		*e = ResourceType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResourceType: %v", v)
-	}
+	return false
 }
 
 // The CreateManuallyManagedResourceTypeRequest message.

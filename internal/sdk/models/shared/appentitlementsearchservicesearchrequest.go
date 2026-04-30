@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type MembershipType string
 
 const (
@@ -20,26 +15,16 @@ const (
 func (e MembershipType) ToPointer() *MembershipType {
 	return &e
 }
-func (e *MembershipType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MembershipType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_UNSPECIFIED", "APP_ENTITLEMENT_MEMBERSHIP_TYPE_MEMBER", "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER", "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION", "APP_ENTITLEMENT_MEMBERSHIP_TYPE_ADMIN":
+			return true
+		}
 	}
-	switch v {
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_UNSPECIFIED":
-		fallthrough
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_MEMBER":
-		fallthrough
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER":
-		fallthrough
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION":
-		fallthrough
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_ADMIN":
-		*e = MembershipType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MembershipType: %v", v)
-	}
+	return false
 }
 
 // AppEntitlementSearchServiceSearchRequest - Search app entitlements by a variety of filters.

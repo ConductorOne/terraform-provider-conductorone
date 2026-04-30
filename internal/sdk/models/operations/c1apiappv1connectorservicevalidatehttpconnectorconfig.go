@@ -45,3 +45,6 @@ func (c *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetEdito
 	}
 	return c.EditorValidateResponse
 }
+
+// #region class-body-c1apiappv1connectorservicevalidatehttpconnectorconfigresponse
+// #endregion class-body-c1apiappv1connectorservicevalidatehttpconnectorconfigresponse

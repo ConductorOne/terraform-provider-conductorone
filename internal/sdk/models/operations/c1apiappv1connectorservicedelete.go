@@ -34,6 +34,9 @@ func (c *C1APIAppV1ConnectorServiceDeleteRequest) GetConnectorServiceDeleteReque
 	return c.ConnectorServiceDeleteRequest
 }
 
+// #region class-body-c1apiappv1connectorservicedeleterequest
+// #endregion class-body-c1apiappv1connectorservicedeleterequest
+
 type C1APIAppV1ConnectorServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1ConnectorServiceDeleteResponse) GetConnectorServiceDeleteResp
 	}
 	return c.ConnectorServiceDeleteResponse
 }
+
+// #region class-body-c1apiappv1connectorservicedeleteresponse
+// #endregion class-body-c1apiappv1connectorservicedeleteresponse

@@ -18,6 +18,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementI
 	return c.CatalogID
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistallentitlementidsperapprequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistallentitlementidsperapprequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementIdsPerAppResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListAllEntitlementI
 	}
 	return c.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistallentitlementidsperappresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistallentitlementidsperappresponse

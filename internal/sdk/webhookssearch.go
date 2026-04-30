@@ -171,15 +171,11 @@ func (s *WebhooksSearch) Search(ctx context.Context, request *shared.WebhooksSea
 				return nil, nil
 			}
 		}
+		request.PageToken = &nCVal
 
 		return s.Search(
 			ctx,
-			&shared.WebhooksSearchRequest{
-				PageSize:  request.PageSize,
-				PageToken: &nCVal,
-				Query:     request.Query,
-				Refs:      request.Refs,
-			},
+			request,
 		)
 	}
 

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -26,32 +24,16 @@ const (
 func (e WebhookInstanceState) ToPointer() *WebhookInstanceState {
 	return &e
 }
-func (e *WebhookInstanceState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WebhookInstanceState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "WEBHOOK_STATE_UNSPECIFIED", "WEBHOOK_STATE_PENDING", "WEBHOOK_STATE_RUNNING", "WEBHOOK_STATE_ERROR", "WEBHOOK_STATE_WAITING_CALLBACK", "WEBHOOK_STATE_PROCESS_RESPONSE", "WEBHOOK_STATE_SUCCESS", "WEBHOOK_STATE_FATAL_ERROR":
+			return true
+		}
 	}
-	switch v {
-	case "WEBHOOK_STATE_UNSPECIFIED":
-		fallthrough
-	case "WEBHOOK_STATE_PENDING":
-		fallthrough
-	case "WEBHOOK_STATE_RUNNING":
-		fallthrough
-	case "WEBHOOK_STATE_ERROR":
-		fallthrough
-	case "WEBHOOK_STATE_WAITING_CALLBACK":
-		fallthrough
-	case "WEBHOOK_STATE_PROCESS_RESPONSE":
-		fallthrough
-	case "WEBHOOK_STATE_SUCCESS":
-		fallthrough
-	case "WEBHOOK_STATE_FATAL_ERROR":
-		*e = WebhookInstanceState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WebhookInstanceState: %v", v)
-	}
+	return false
 }
 
 // The WebhookInstance message.

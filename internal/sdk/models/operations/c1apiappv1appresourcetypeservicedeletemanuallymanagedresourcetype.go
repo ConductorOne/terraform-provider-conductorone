@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeReques
 	return c.DeleteManuallyManagedResourceTypeRequest
 }
 
+// #region class-body-c1apiappv1appresourcetypeservicedeletemanuallymanagedresourcetyperequest
+// #endregion class-body-c1apiappv1appresourcetypeservicedeletemanuallymanagedresourcetyperequest
+
 type C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRespon
 	}
 	return c.DeleteManuallyManagedResourceTypeResponse
 }
+
+// #region class-body-c1apiappv1appresourcetypeservicedeletemanuallymanagedresourcetyperesponse
+// #endregion class-body-c1apiappv1appresourcetypeservicedeletemanuallymanagedresourcetyperesponse

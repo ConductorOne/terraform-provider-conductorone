@@ -45,3 +45,6 @@ func (c *C1APIServicePrincipalV1ServicePrincipalServiceListResponse) GetServiceP
 	}
 	return c.ServicePrincipalServiceListResponse
 }
+
+// #region class-body-c1apiserviceprincipalv1serviceprincipalservicelistresponse
+// #endregion class-body-c1apiserviceprincipalv1serviceprincipalservicelistresponse

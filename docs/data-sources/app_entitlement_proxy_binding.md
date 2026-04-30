@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_entitlement_proxy_binding Data Source - conductorone"
+page_title: "conductorone_app_entitlement_proxy_binding Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppEntitlementProxyBinding DataSource
@@ -32,10 +32,10 @@ data "conductorone_app_entitlement_proxy_binding" "my_app_entitlement_proxy_bind
 
 ### Required
 
-- `dst_app_entitlement_id` (String)
-- `dst_app_id` (String)
-- `src_app_entitlement_id` (String)
-- `src_app_id` (String)
+- `dst_app_entitlement_id` (String) The dstAppEntitlementId field.
+- `dst_app_id` (String) The dstAppId field.
+- `src_app_entitlement_id` (String) The srcAppEntitlementId field.
+- `src_app_id` (String) The srcAppId field.
 
 ### Read-Only
 

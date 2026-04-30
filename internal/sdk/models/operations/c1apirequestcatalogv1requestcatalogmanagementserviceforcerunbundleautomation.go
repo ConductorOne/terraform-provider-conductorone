@@ -26,6 +26,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutom
 	return c.ForceRunBundleAutomationRequest
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomationrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomationrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutom
 	}
 	return c.ForceRunBundleAutomationResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomationresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomationresponse

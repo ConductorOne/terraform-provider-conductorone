@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppResourceOwnersListOwnerIDsRequest) GetResourceID() string 
 	return c.ResourceID
 }
 
+// #region class-body-c1apiappv1appresourceownerslistowneridsrequest
+// #endregion class-body-c1apiappv1appresourceownerslistowneridsrequest
+
 type C1APIAppV1AppResourceOwnersListOwnerIDsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppResourceOwnersListOwnerIDsResponse) GetListAppResourceOwne
 	}
 	return c.ListAppResourceOwnerIDsResponse
 }
+
+// #region class-body-c1apiappv1appresourceownerslistowneridsresponse
+// #endregion class-body-c1apiappv1appresourceownerslistowneridsresponse

@@ -7,7 +7,7 @@ import (
 )
 
 type WebhookAutomationTrigger struct {
-	ListenerID              types.String             `tfsdk:"listener_id"`
 	WebhookListenerAuthHMAC *WebhookListenerAuthHMAC `tfsdk:"webhook_listener_auth_hmac"`
 	WebhookListenerAuthJWT  *WebhookListenerAuthJWT  `tfsdk:"webhook_listener_auth_jwt"`
+	ListenerID              types.String             `tfsdk:"listener_id"`
 }

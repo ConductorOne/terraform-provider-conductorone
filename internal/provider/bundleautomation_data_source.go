@@ -138,7 +138,8 @@ func (r *BundleAutomationDataSource) Schema(ctx context.Context, req datasource.
 				Description: `The enabled field.`,
 			},
 			"request_catalog_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The requestCatalogId field.`,
 			},
 			"tenant_id": schema.StringAttribute{
 				Computed:    true,

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_freshservice Resource - conductorone"
+page_title: "conductorone_integration_freshservice Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Freshservice Integration Resource

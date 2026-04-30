@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type ExecutionStepStates string
 
 const (
@@ -25,36 +20,16 @@ const (
 func (e ExecutionStepStates) ToPointer() *ExecutionStepStates {
 	return &e
 }
-func (e *ExecutionStepStates) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ExecutionStepStates) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AUTOMATION_EXECUTION_STATE_UNSPECIFIED", "AUTOMATION_EXECUTION_STATE_PENDING", "AUTOMATION_EXECUTION_STATE_CREATING", "AUTOMATION_EXECUTION_STATE_GET_STEP", "AUTOMATION_EXECUTION_STATE_PROCESS_STEP", "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP", "AUTOMATION_EXECUTION_STATE_DONE", "AUTOMATION_EXECUTION_STATE_ERROR", "AUTOMATION_EXECUTION_STATE_TERMINATE", "AUTOMATION_EXECUTION_STATE_WAITING":
+			return true
+		}
 	}
-	switch v {
-	case "AUTOMATION_EXECUTION_STATE_UNSPECIFIED":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_PENDING":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_CREATING":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_GET_STEP":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_PROCESS_STEP":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_DONE":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_ERROR":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_TERMINATE":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_WAITING":
-		*e = ExecutionStepStates(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ExecutionStepStates: %v", v)
-	}
+	return false
 }
 
 // The SearchAutomationExecutionsRequest message.

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e SuggestionState) ToPointer() *SuggestionState {
 	return &e
 }
-func (e *SuggestionState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SuggestionState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SUGGESTION_STATE_UNSPECIFIED", "SUGGESTION_STATE_NEW", "SUGGESTION_STATE_DISMISSED", "SUGGESTION_STATE_ACCEPTED":
+			return true
+		}
 	}
-	switch v {
-	case "SUGGESTION_STATE_UNSPECIFIED":
-		fallthrough
-	case "SUGGESTION_STATE_NEW":
-		fallthrough
-	case "SUGGESTION_STATE_DISMISSED":
-		fallthrough
-	case "SUGGESTION_STATE_ACCEPTED":
-		*e = SuggestionState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SuggestionState: %v", v)
-	}
+	return false
 }
 
 // The RoleMiningManagementSuggestion message.

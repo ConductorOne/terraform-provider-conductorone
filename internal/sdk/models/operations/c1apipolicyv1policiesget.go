@@ -18,6 +18,9 @@ func (c *C1APIPolicyV1PoliciesGetRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apipolicyv1policiesgetrequest
+// #endregion class-body-c1apipolicyv1policiesgetrequest
+
 type C1APIPolicyV1PoliciesGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIPolicyV1PoliciesGetResponse) GetGetPolicyResponse() *shared.GetPol
 	}
 	return c.GetPolicyResponse
 }
+
+// #region class-body-c1apipolicyv1policiesgetresponse
+// #endregion class-body-c1apipolicyv1policiesgetresponse

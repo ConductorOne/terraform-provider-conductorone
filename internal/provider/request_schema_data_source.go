@@ -649,7 +649,8 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 				Description: `The fields field.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The id field.`,
 			},
 			"justification_visibility": schema.StringAttribute{
 				Computed:    true,

@@ -18,6 +18,9 @@ func (c *C1APIAccessconflictV1AccessConflictServiceGetMonitorRequest) GetID() st
 	return c.ID
 }
 
+// #region class-body-c1apiaccessconflictv1accessconflictservicegetmonitorrequest
+// #endregion class-body-c1apiaccessconflictv1accessconflictservicegetmonitorrequest
+
 type C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIAccessconflictV1AccessConflictServiceGetMonitorResponse) GetConfli
 	}
 	return c.ConflictMonitor
 }
+
+// #region class-body-c1apiaccessconflictv1accessconflictservicegetmonitorresponse
+// #endregion class-body-c1apiaccessconflictv1accessconflictservicegetmonitorresponse

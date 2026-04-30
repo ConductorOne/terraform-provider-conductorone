@@ -45,3 +45,6 @@ func (c *C1APIIntegrationConnectorV1ConnectorCatalogServiceConfigurationSchemaRe
 	}
 	return c.ConnectorCatalogServiceConfigurationSchemaResponse
 }
+
+// #region class-body-c1apiintegrationconnectorv1connectorcatalogserviceconfigurationschemaresponse
+// #endregion class-body-c1apiintegrationconnectorv1connectorcatalogserviceconfigurationschemaresponse

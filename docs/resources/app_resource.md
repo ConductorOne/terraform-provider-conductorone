@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_resource Resource - conductorone"
+page_title: "conductorone_app_resource Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppResource Resource
@@ -29,8 +29,8 @@ resource "conductorone_app_resource" "my_app_resource" {
 
 ### Required
 
-- `app_id` (String)
-- `app_resource_type_id` (String) Requires replacement if changed.
+- `app_id` (String) The app that this resource belongs to.
+- `app_resource_type_id` (String) The resource type that this resource is. Requires replacement if changed.
 - `display_name` (String) The displayName field.
 
 ### Optional

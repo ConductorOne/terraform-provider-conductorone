@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,22 +19,16 @@ const (
 func (e ClientIDType) ToPointer() *ClientIDType {
 	return &e
 }
-func (e *ClientIDType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientIDType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CLIENT_ID_TYPE_UNSPECIFIED", "CLIENT_ID_TYPE_DCR", "CLIENT_ID_TYPE_METADATA_URL":
+			return true
+		}
 	}
-	switch v {
-	case "CLIENT_ID_TYPE_UNSPECIFIED":
-		fallthrough
-	case "CLIENT_ID_TYPE_DCR":
-		fallthrough
-	case "CLIENT_ID_TYPE_METADATA_URL":
-		*e = ClientIDType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientIDType: %v", v)
-	}
+	return false
 }
 
 // WellKnownClient - The wellKnownClient field.
@@ -61,42 +53,16 @@ const (
 func (e WellKnownClient) ToPointer() *WellKnownClient {
 	return &e
 }
-func (e *WellKnownClient) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WellKnownClient) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "WELL_KNOWN_CLIENT_UNSPECIFIED", "WELL_KNOWN_CLIENT_UNKNOWN", "WELL_KNOWN_CLIENT_CLAUDE_AI", "WELL_KNOWN_CLIENT_CLAUDE_DESKTOP", "WELL_KNOWN_CLIENT_CLAUDE_CODE", "WELL_KNOWN_CLIENT_MCP_INSPECTOR", "WELL_KNOWN_CLIENT_CHATGPT", "WELL_KNOWN_CLIENT_VSCODE", "WELL_KNOWN_CLIENT_CURSOR", "WELL_KNOWN_CLIENT_WINDSURF", "WELL_KNOWN_CLIENT_ZED", "WELL_KNOWN_CLIENT_JETBRAINS", "WELL_KNOWN_CLIENT_DOCKER_MCP_TOOLKIT":
+			return true
+		}
 	}
-	switch v {
-	case "WELL_KNOWN_CLIENT_UNSPECIFIED":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_UNKNOWN":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_CLAUDE_AI":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_CLAUDE_DESKTOP":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_CLAUDE_CODE":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_MCP_INSPECTOR":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_CHATGPT":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_VSCODE":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_CURSOR":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_WINDSURF":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_ZED":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_JETBRAINS":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_DOCKER_MCP_TOOLKIT":
-		*e = WellKnownClient(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WellKnownClient: %v", v)
-	}
+	return false
 }
 
 // ExternalClientInfo provides information about an approved external client.

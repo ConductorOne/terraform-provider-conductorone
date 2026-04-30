@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_airbyte Resource - conductorone"
+page_title: "conductorone_integration_airbyte Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Airbyte Integration Resource

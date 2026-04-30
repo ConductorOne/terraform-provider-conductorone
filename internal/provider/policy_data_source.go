@@ -76,7 +76,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Search for policies with a case insensitive match on the display name.`,
+				Description: `The display name of the Policy.`,
 			},
 			"exclude_policy_ids": schema.ListAttribute{
 				Optional:    true,
@@ -1162,26 +1162,6 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 
 	if resp.Diagnostics.HasError() {
 		return
-	}
-	for {
-		var err error
-
-		res, err = res.Next()
-
-		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
-			return
-		}
-
-		if res == nil {
-			break
-		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedSearchPoliciesResponse(ctx, res.SearchPoliciesResponse)...)
-
-		if resp.Diagnostics.HasError() {
-			return
-		}
 	}
 
 	// Save updated data into Terraform state

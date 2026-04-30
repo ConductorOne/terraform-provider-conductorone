@@ -26,6 +26,9 @@ func (c *C1APISystemlogV1ExportServiceListEventsRequest) GetExportServiceListEve
 	return c.ExportServiceListEventsRequest
 }
 
+// #region class-body-c1apisystemlogv1exportservicelisteventsrequest
+// #endregion class-body-c1apisystemlogv1exportservicelisteventsrequest
+
 type C1APISystemlogV1ExportServiceListEventsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APISystemlogV1ExportServiceListEventsResponse) GetExportServiceListEv
 	}
 	return c.ExportServiceListEventsResponse
 }
+
+// #region class-body-c1apisystemlogv1exportservicelisteventsresponse
+// #endregion class-body-c1apisystemlogv1exportservicelisteventsresponse

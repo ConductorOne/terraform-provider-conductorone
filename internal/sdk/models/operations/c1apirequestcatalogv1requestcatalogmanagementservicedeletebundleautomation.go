@@ -26,6 +26,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomat
 	return c.DeleteBundleAutomationRequest
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicedeletebundleautomationrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicedeletebundleautomationrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceDeleteBundleAutomat
 	}
 	return c.DeleteBundleAutomationResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicedeletebundleautomationresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicedeletebundleautomationresponse

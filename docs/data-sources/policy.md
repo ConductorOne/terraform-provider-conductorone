@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_policy Data Source - conductorone"
+page_title: "conductorone_policy Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Policy DataSource
@@ -44,7 +44,7 @@ data "conductorone_policy" "my_policy" {
 
 ### Optional
 
-- `display_name` (String) Search for policies with a case insensitive match on the display name.
+- `display_name` (String) The display name of the Policy.
 - `exclude_policy_ids` (List of String) The policy IDs to exclude from the search.
 - `include_deleted` (Boolean) The includeDeleted field.
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)

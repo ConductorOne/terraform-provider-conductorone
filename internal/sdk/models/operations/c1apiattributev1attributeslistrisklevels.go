@@ -26,6 +26,9 @@ func (c *C1APIAttributeV1AttributesListRiskLevelsRequest) GetPageToken() *string
 	return c.PageToken
 }
 
+// #region class-body-c1apiattributev1attributeslistrisklevelsrequest
+// #endregion class-body-c1apiattributev1attributeslistrisklevelsrequest
+
 type C1APIAttributeV1AttributesListRiskLevelsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAttributeV1AttributesListRiskLevelsResponse) GetListRiskLevelsResp
 	}
 	return c.ListRiskLevelsResponse
 }
+
+// #region class-body-c1apiattributev1attributeslistrisklevelsresponse
+// #endregion class-body-c1apiattributev1attributeslistrisklevelsresponse

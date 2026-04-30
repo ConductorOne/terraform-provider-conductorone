@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -44,70 +42,16 @@ const (
 func (e Actions) ToPointer() *Actions {
 	return &e
 }
-func (e *Actions) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Actions) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_ACTION_TYPE_UNSPECIFIED", "TASK_ACTION_TYPE_CLOSE", "TASK_ACTION_TYPE_APPROVE", "TASK_ACTION_TYPE_DENY", "TASK_ACTION_TYPE_COMMENT", "TASK_ACTION_TYPE_DELETE", "TASK_ACTION_TYPE_REASSIGN", "TASK_ACTION_TYPE_RESTART", "TASK_ACTION_TYPE_SEND_REMINDER", "TASK_ACTION_TYPE_PROVISION_COMPLETE", "TASK_ACTION_TYPE_PROVISION_CANCELLED", "TASK_ACTION_TYPE_PROVISION_ERRORED", "TASK_ACTION_TYPE_ROLLBACK_SKIPPED", "TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED", "TASK_ACTION_TYPE_HARD_RESET", "TASK_ACTION_TYPE_ESCALATE_TO_EMERGENCY_ACCESS", "TASK_ACTION_TYPE_CHANGE_POLICY", "TASK_ACTION_TYPE_RECALCULATE_DENIAL_FROM_BASE_POLICY_DECISIONS", "TASK_ACTION_TYPE_SET_INSIGHTS_AND_RECOMMENDATION", "TASK_ACTION_TYPE_SET_ANALYSIS_ID", "TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST", "TASK_ACTION_TYPE_PROCESS_NOW", "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP", "TASK_ACTION_TYPE_SKIP_STEP", "TASK_ACTION_TYPE_ROLLBACK_CANCELLED", "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA", "TASK_ACTION_TYPE_UPDATE_GRANT_DURATION":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_ACTION_TYPE_UNSPECIFIED":
-		fallthrough
-	case "TASK_ACTION_TYPE_CLOSE":
-		fallthrough
-	case "TASK_ACTION_TYPE_APPROVE":
-		fallthrough
-	case "TASK_ACTION_TYPE_DENY":
-		fallthrough
-	case "TASK_ACTION_TYPE_COMMENT":
-		fallthrough
-	case "TASK_ACTION_TYPE_DELETE":
-		fallthrough
-	case "TASK_ACTION_TYPE_REASSIGN":
-		fallthrough
-	case "TASK_ACTION_TYPE_RESTART":
-		fallthrough
-	case "TASK_ACTION_TYPE_SEND_REMINDER":
-		fallthrough
-	case "TASK_ACTION_TYPE_PROVISION_COMPLETE":
-		fallthrough
-	case "TASK_ACTION_TYPE_PROVISION_CANCELLED":
-		fallthrough
-	case "TASK_ACTION_TYPE_PROVISION_ERRORED":
-		fallthrough
-	case "TASK_ACTION_TYPE_ROLLBACK_SKIPPED":
-		fallthrough
-	case "TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED":
-		fallthrough
-	case "TASK_ACTION_TYPE_HARD_RESET":
-		fallthrough
-	case "TASK_ACTION_TYPE_ESCALATE_TO_EMERGENCY_ACCESS":
-		fallthrough
-	case "TASK_ACTION_TYPE_CHANGE_POLICY":
-		fallthrough
-	case "TASK_ACTION_TYPE_RECALCULATE_DENIAL_FROM_BASE_POLICY_DECISIONS":
-		fallthrough
-	case "TASK_ACTION_TYPE_SET_INSIGHTS_AND_RECOMMENDATION":
-		fallthrough
-	case "TASK_ACTION_TYPE_SET_ANALYSIS_ID":
-		fallthrough
-	case "TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST":
-		fallthrough
-	case "TASK_ACTION_TYPE_PROCESS_NOW":
-		fallthrough
-	case "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP":
-		fallthrough
-	case "TASK_ACTION_TYPE_SKIP_STEP":
-		fallthrough
-	case "TASK_ACTION_TYPE_ROLLBACK_CANCELLED":
-		fallthrough
-	case "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA":
-		fallthrough
-	case "TASK_ACTION_TYPE_UPDATE_GRANT_DURATION":
-		*e = Actions(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Actions: %v", v)
-	}
+	return false
 }
 
 // Annotations - Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
@@ -140,44 +84,16 @@ const (
 func (e TaskOrigin) ToPointer() *TaskOrigin {
 	return &e
 }
-func (e *TaskOrigin) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskOrigin) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_ORIGIN_UNSPECIFIED", "TASK_ORIGIN_PROFILE_MEMBERSHIP_AUTOMATION", "TASK_ORIGIN_SLACK", "TASK_ORIGIN_API", "TASK_ORIGIN_JIRA", "TASK_ORIGIN_COPILOT", "TASK_ORIGIN_WEBAPP", "TASK_ORIGIN_TIME_REVOKE", "TASK_ORIGIN_NON_USAGE_REVOKE", "TASK_ORIGIN_PROFILE_MEMBERSHIP_MANUAL", "TASK_ORIGIN_PROFILE_MEMBERSHIP", "TASK_ORIGIN_AUTOMATION", "TASK_ORIGIN_ACCESS_REVIEW", "TASK_ORIGIN_CASCADE_DELETE":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_ORIGIN_UNSPECIFIED":
-		fallthrough
-	case "TASK_ORIGIN_PROFILE_MEMBERSHIP_AUTOMATION":
-		fallthrough
-	case "TASK_ORIGIN_SLACK":
-		fallthrough
-	case "TASK_ORIGIN_API":
-		fallthrough
-	case "TASK_ORIGIN_JIRA":
-		fallthrough
-	case "TASK_ORIGIN_COPILOT":
-		fallthrough
-	case "TASK_ORIGIN_WEBAPP":
-		fallthrough
-	case "TASK_ORIGIN_TIME_REVOKE":
-		fallthrough
-	case "TASK_ORIGIN_NON_USAGE_REVOKE":
-		fallthrough
-	case "TASK_ORIGIN_PROFILE_MEMBERSHIP_MANUAL":
-		fallthrough
-	case "TASK_ORIGIN_PROFILE_MEMBERSHIP":
-		fallthrough
-	case "TASK_ORIGIN_AUTOMATION":
-		fallthrough
-	case "TASK_ORIGIN_ACCESS_REVIEW":
-		fallthrough
-	case "TASK_ORIGIN_CASCADE_DELETE":
-		*e = TaskOrigin(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskOrigin: %v", v)
-	}
+	return false
 }
 
 // Processing - The processing state of a task as defined by the `processing_enum`
@@ -193,24 +109,16 @@ const (
 func (e Processing) ToPointer() *Processing {
 	return &e
 }
-func (e *Processing) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Processing) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_PROCESSING_TYPE_UNSPECIFIED", "TASK_PROCESSING_TYPE_PROCESSING", "TASK_PROCESSING_TYPE_WAITING", "TASK_PROCESSING_TYPE_DONE":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_PROCESSING_TYPE_UNSPECIFIED":
-		fallthrough
-	case "TASK_PROCESSING_TYPE_PROCESSING":
-		fallthrough
-	case "TASK_PROCESSING_TYPE_WAITING":
-		fallthrough
-	case "TASK_PROCESSING_TYPE_DONE":
-		*e = Processing(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Processing: %v", v)
-	}
+	return false
 }
 
 // Recommendation - The recommendation field.
@@ -226,24 +134,16 @@ const (
 func (e Recommendation) ToPointer() *Recommendation {
 	return &e
 }
-func (e *Recommendation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Recommendation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "INSIGHT_RECOMMENDATION_UNSPECIFIED", "INSIGHT_RECOMMENDATION_APPROVE", "INSIGHT_RECOMMENDATION_DENY", "INSIGHT_RECOMMENDATION_REVIEW":
+			return true
+		}
 	}
-	switch v {
-	case "INSIGHT_RECOMMENDATION_UNSPECIFIED":
-		fallthrough
-	case "INSIGHT_RECOMMENDATION_APPROVE":
-		fallthrough
-	case "INSIGHT_RECOMMENDATION_DENY":
-		fallthrough
-	case "INSIGHT_RECOMMENDATION_REVIEW":
-		*e = Recommendation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Recommendation: %v", v)
-	}
+	return false
 }
 
 // TaskState - The current state of the task as defined by the `state_enum`
@@ -258,22 +158,16 @@ const (
 func (e TaskState) ToPointer() *TaskState {
 	return &e
 }
-func (e *TaskState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_STATE_UNSPECIFIED", "TASK_STATE_OPEN", "TASK_STATE_CLOSED":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_STATE_UNSPECIFIED":
-		fallthrough
-	case "TASK_STATE_OPEN":
-		fallthrough
-	case "TASK_STATE_CLOSED":
-		*e = TaskState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskState: %v", v)
-	}
+	return false
 }
 
 // Task - A fully-fleged task object. Includes its policy, references to external apps, its type, its processing history, and more.

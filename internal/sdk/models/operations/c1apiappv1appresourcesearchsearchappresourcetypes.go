@@ -47,3 +47,6 @@ func (c *C1APIAppV1AppResourceSearchSearchAppResourceTypesResponse) GetSearchApp
 	}
 	return c.SearchAppResourceTypesResponse
 }
+
+// #region class-body-c1apiappv1appresourcesearchsearchappresourcetypesresponse
+// #endregion class-body-c1apiappv1appresourcesearchsearchappresourcetypesresponse

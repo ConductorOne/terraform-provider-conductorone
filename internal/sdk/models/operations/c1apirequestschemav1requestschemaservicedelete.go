@@ -26,6 +26,9 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceDeleteRequest) GetRequestSchema
 	return c.RequestSchemaServiceDeleteRequest
 }
 
+// #region class-body-c1apirequestschemav1requestschemaservicedeleterequest
+// #endregion class-body-c1apirequestschemav1requestschemaservicedeleterequest
+
 type C1APIRequestSchemaV1RequestSchemaServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceDeleteResponse) GetRequestSchem
 	}
 	return c.RequestSchemaServiceDeleteResponse
 }
+
+// #region class-body-c1apirequestschemav1requestschemaservicedeleteresponse
+// #endregion class-body-c1apirequestschemav1requestschemaservicedeleteresponse

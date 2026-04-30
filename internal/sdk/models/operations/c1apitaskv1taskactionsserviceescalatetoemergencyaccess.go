@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessRequest) GetTaskA
 	return c.TaskActionsServiceEscalateToEmergencyAccessRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsserviceescalatetoemergencyaccessrequest
+// #endregion class-body-c1apitaskv1taskactionsserviceescalatetoemergencyaccessrequest
+
 type C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessResponse) GetTask
 	}
 	return c.TaskServiceActionResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsserviceescalatetoemergencyaccessresponse
+// #endregion class-body-c1apitaskv1taskactionsserviceescalatetoemergencyaccessresponse

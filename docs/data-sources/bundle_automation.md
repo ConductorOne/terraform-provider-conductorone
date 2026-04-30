@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_bundle_automation Data Source - conductorone"
+page_title: "conductorone_bundle_automation Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   BundleAutomation DataSource
@@ -26,7 +26,7 @@ data "conductorone_bundle_automation" "my_bundleautomation" {
 
 ### Required
 
-- `request_catalog_id` (String)
+- `request_catalog_id` (String) The requestCatalogId field.
 
 ### Read-Only
 

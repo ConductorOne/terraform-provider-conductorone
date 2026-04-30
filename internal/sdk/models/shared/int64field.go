@@ -52,3 +52,6 @@ func (i *Int64Field) GetInt64Rules() *Int64Rules {
 	}
 	return i.Int64Rules
 }
+
+// #region class-body-int64field
+// #endregion class-body-int64field

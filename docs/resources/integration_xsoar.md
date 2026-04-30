@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_xsoar Resource - conductorone"
+page_title: "conductorone_integration_xsoar Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Xsoar Integration Resource

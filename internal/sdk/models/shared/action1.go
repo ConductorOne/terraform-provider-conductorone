@@ -27,3 +27,6 @@ func (a *Action1) GetActionTargetBatonResourceAction() *ActionTargetBatonResourc
 	}
 	return a.ActionTargetBatonResourceAction
 }
+
+// #region class-body-action1
+// #endregion class-body-action1

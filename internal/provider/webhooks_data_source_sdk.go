@@ -34,6 +34,8 @@ func (r *WebhooksDataSourceModel) RefreshFromSharedWebhooksSearchResponse(ctx co
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

@@ -42,6 +42,9 @@ func (c *C1APIAppV1AppEntitlementUserBindingServiceUpdateGrantDurationRequest) G
 	return c.UpdateGrantDurationRequest
 }
 
+// #region class-body-c1apiappv1appentitlementuserbindingserviceupdategrantdurationrequest
+// #endregion class-body-c1apiappv1appentitlementuserbindingserviceupdategrantdurationrequest
+
 type C1APIAppV1AppEntitlementUserBindingServiceUpdateGrantDurationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -80,3 +83,6 @@ func (c *C1APIAppV1AppEntitlementUserBindingServiceUpdateGrantDurationResponse) 
 	}
 	return c.UpdateGrantDurationResponse
 }
+
+// #region class-body-c1apiappv1appentitlementuserbindingserviceupdategrantdurationresponse
+// #endregion class-body-c1apiappv1appentitlementuserbindingserviceupdategrantdurationresponse

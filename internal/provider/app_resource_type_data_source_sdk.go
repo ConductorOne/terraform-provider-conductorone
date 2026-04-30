@@ -25,6 +25,8 @@ func (r *AppResourceTypeDataSourceModel) RefreshFromSharedAppResourceType(ctx co
 		for _, v := range resp.TraitIds {
 			r.TraitIds = append(r.TraitIds, types.StringValue(v))
 		}
+	} else {
+		r.TraitIds = nil
 	}
 	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 

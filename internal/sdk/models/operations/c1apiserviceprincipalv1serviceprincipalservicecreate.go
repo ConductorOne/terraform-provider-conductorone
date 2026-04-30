@@ -45,3 +45,6 @@ func (c *C1APIServicePrincipalV1ServicePrincipalServiceCreateResponse) GetServic
 	}
 	return c.ServicePrincipalServiceCreateResponse
 }
+
+// #region class-body-c1apiserviceprincipalv1serviceprincipalservicecreateresponse
+// #endregion class-body-c1apiserviceprincipalv1serviceprincipalservicecreateresponse

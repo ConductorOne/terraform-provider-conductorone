@@ -55,6 +55,8 @@ func (r *AppEntitlementAutomationDataSourceModel) RefreshFromSharedAppEntitlemen
 
 					r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = append(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
 				}
+			} else {
+				r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = nil
 			}
 		}
 		if resp.AppEntitlementAutomationRuleNone == nil {

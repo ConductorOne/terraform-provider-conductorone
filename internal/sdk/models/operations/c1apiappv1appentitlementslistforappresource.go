@@ -50,6 +50,9 @@ func (c *C1APIAppV1AppEntitlementsListForAppResourceRequest) GetPageToken() *str
 	return c.PageToken
 }
 
+// #region class-body-c1apiappv1appentitlementslistforappresourcerequest
+// #endregion class-body-c1apiappv1appentitlementslistforappresourcerequest
+
 type C1APIAppV1AppEntitlementsListForAppResourceResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -88,3 +91,6 @@ func (c *C1APIAppV1AppEntitlementsListForAppResourceResponse) GetListAppEntitlem
 	}
 	return c.ListAppEntitlementsResponse
 }
+
+// #region class-body-c1apiappv1appentitlementslistforappresourceresponse
+// #endregion class-body-c1apiappv1appentitlementslistforappresourceresponse

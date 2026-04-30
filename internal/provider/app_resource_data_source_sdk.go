@@ -59,6 +59,8 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceServiceGetRespo
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -79,11 +81,6 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceView(ctx contex
 				}
 			}
 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
-		} else {
-			r.Delete = types.BoolNull()
-			r.Edit = types.BoolNull()
-			r.Extra = nil
-			r.Read = types.BoolNull()
 		}
 		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
 

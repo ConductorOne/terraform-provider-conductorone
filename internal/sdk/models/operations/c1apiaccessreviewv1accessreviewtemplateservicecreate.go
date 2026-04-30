@@ -45,3 +45,6 @@ func (c *C1APIAccessreviewV1AccessReviewTemplateServiceCreateResponse) GetAccess
 	}
 	return c.AccessReviewTemplateServiceCreateResponse
 }
+
+// #region class-body-c1apiaccessreviewv1accessreviewtemplateservicecreateresponse
+// #endregion class-body-c1apiaccessreviewv1accessreviewtemplateservicecreateresponse

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_resource_type Resource - conductorone"
+page_title: "conductorone_app_resource_type Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppResourceType Resource
@@ -27,14 +27,14 @@ resource "conductorone_app_resource_type" "my_app_resource_type" {
 
 ### Required
 
-- `app_id` (String)
+- `app_id` (String) The ID of the app that is associated with the app resource type
 - `display_name` (String) The displayName field.
-- `resource_type` (String) The resourceType field. must be one of ["ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT", "PROFILE_TYPE"]; Requires replacement if changed.
+- `resource_type` (String) The resourceType field. possible known values include one of ["ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT", "PROFILE_TYPE"]; Requires replacement if changed.
 
 ### Read-Only
 
 - `created_at` (String)
-- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
+- `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
 - `id` (String) The unique ID for the app resource type.
 - `trait_ids` (List of String) Associated trait ids
 - `updated_at` (String)

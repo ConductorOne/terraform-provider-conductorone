@@ -18,6 +18,9 @@ func (c *C1APIVaultV1VaultServiceGetRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apivaultv1vaultservicegetrequest
+// #endregion class-body-c1apivaultv1vaultservicegetrequest
+
 type C1APIVaultV1VaultServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIVaultV1VaultServiceGetResponse) GetVaultServiceGetResponse() *shar
 	}
 	return c.VaultServiceGetResponse
 }
+
+// #region class-body-c1apivaultv1vaultservicegetresponse
+// #endregion class-body-c1apivaultv1vaultservicegetresponse

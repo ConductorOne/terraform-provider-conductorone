@@ -45,3 +45,6 @@ func (c *C1APITaskV1TaskServiceCreateOffboardingTaskResponse) GetTaskServiceCrea
 	}
 	return c.TaskServiceCreateOffboardingResponse
 }
+
+// #region class-body-c1apitaskv1taskservicecreateoffboardingtaskresponse
+// #endregion class-body-c1apitaskv1taskservicecreateoffboardingtaskresponse

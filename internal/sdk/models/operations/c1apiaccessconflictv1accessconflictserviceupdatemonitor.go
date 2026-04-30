@@ -26,6 +26,9 @@ func (c *C1APIAccessconflictV1AccessConflictServiceUpdateMonitorRequest) GetConf
 	return c.ConflictMonitorUpdateRequest
 }
 
+// #region class-body-c1apiaccessconflictv1accessconflictserviceupdatemonitorrequest
+// #endregion class-body-c1apiaccessconflictv1accessconflictserviceupdatemonitorrequest
+
 type C1APIAccessconflictV1AccessConflictServiceUpdateMonitorResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAccessconflictV1AccessConflictServiceUpdateMonitorResponse) GetCon
 	}
 	return c.ConflictMonitor
 }
+
+// #region class-body-c1apiaccessconflictv1accessconflictserviceupdatemonitorresponse
+// #endregion class-body-c1apiaccessconflictv1accessconflictserviceupdatemonitorresponse

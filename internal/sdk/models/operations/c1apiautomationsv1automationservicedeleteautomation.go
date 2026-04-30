@@ -26,6 +26,9 @@ func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationRequest) GetDeleteAu
 	return c.DeleteAutomationRequest
 }
 
+// #region class-body-c1apiautomationsv1automationservicedeleteautomationrequest
+// #endregion class-body-c1apiautomationsv1automationservicedeleteautomationrequest
+
 type C1APIAutomationsV1AutomationServiceDeleteAutomationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAutomationsV1AutomationServiceDeleteAutomationResponse) GetDeleteA
 	}
 	return c.DeleteAutomationResponse
 }
+
+// #region class-body-c1apiautomationsv1automationservicedeleteautomationresponse
+// #endregion class-body-c1apiautomationsv1automationservicedeleteautomationresponse

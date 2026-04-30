@@ -3,8 +3,8 @@
 package shared
 
 type Security struct {
-	BearerAuth string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
-	Oauth      string `security:"scheme,type=oauth2,name=Authorization"`
+	BearerAuth string `security:"scheme,type=http,subtype=bearer,composite,name=Authorization"`
+	Oauth      string `security:"scheme,type=oauth2,composite,name=Authorization"`
 }
 
 func (s *Security) GetBearerAuth() string {

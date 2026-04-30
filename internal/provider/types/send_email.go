@@ -10,7 +10,7 @@ type SendEmail struct {
 	Body           types.String `tfsdk:"body"`
 	Subject        types.String `tfsdk:"subject"`
 	Title          types.String `tfsdk:"title"`
+	UseSubjectUser types.Bool   `tfsdk:"use_subject_user"`
 	UserIdsCel     types.String `tfsdk:"user_ids_cel"`
 	UserRefs       []UserRef    `tfsdk:"user_refs"`
-	UseSubjectUser types.Bool   `tfsdk:"use_subject_user"`
 }

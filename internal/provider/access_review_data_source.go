@@ -533,7 +533,8 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 				Description: `The hasAccuracySupport field.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The id field.`,
 			},
 			"multi_app_setup": schema.SingleNestedAttribute{
 				Computed: true,

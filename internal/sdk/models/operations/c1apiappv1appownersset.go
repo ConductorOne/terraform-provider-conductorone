@@ -26,6 +26,9 @@ func (c *C1APIAppV1AppOwnersSetRequest) GetSetAppOwnersRequest() *shared.SetAppO
 	return c.SetAppOwnersRequest
 }
 
+// #region class-body-c1apiappv1appownerssetrequest
+// #endregion class-body-c1apiappv1appownerssetrequest
+
 type C1APIAppV1AppOwnersSetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1AppOwnersSetResponse) GetSetAppOwnersResponse() *shared.SetAp
 	}
 	return c.SetAppOwnersResponse
 }
+
+// #region class-body-c1apiappv1appownerssetresponse
+// #endregion class-body-c1apiappv1appownerssetresponse

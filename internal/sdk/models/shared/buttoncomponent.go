@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // Variant - The variant field.
 type Variant string
 
@@ -20,24 +15,16 @@ const (
 func (e Variant) ToPointer() *Variant {
 	return &e
 }
-func (e *Variant) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Variant) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BUTTON_VARIANT_UNSPECIFIED", "BUTTON_VARIANT_PRIMARY", "BUTTON_VARIANT_SECONDARY", "BUTTON_VARIANT_TEXT":
+			return true
+		}
 	}
-	switch v {
-	case "BUTTON_VARIANT_UNSPECIFIED":
-		fallthrough
-	case "BUTTON_VARIANT_PRIMARY":
-		fallthrough
-	case "BUTTON_VARIANT_SECONDARY":
-		fallthrough
-	case "BUTTON_VARIANT_TEXT":
-		*e = Variant(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Variant: %v", v)
-	}
+	return false
 }
 
 // ButtonComponent triggers actions.

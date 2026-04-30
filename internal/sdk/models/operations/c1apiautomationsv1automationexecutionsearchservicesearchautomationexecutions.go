@@ -45,3 +45,6 @@ func (c *C1APIAutomationsV1AutomationExecutionSearchServiceSearchAutomationExecu
 	}
 	return c.SearchAutomationExecutionsResponse
 }
+
+// #region class-body-c1apiautomationsv1automationexecutionsearchservicesearchautomationexecutionsresponse
+// #endregion class-body-c1apiautomationsv1automationexecutionsearchservicesearchautomationexecutionsresponse

@@ -32,6 +32,8 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 			for _, v := range resp.OutboundNetworkAllowlist {
 				r.OutboundNetworkAllowlist = append(r.OutboundNetworkAllowlist, types.StringValue(v))
 			}
+		} else {
+			r.OutboundNetworkAllowlist = nil
 		}
 		r.PublishedCommitID = types.StringPointerValue(resp.PublishedCommitID)
 		if resp.ScopedRoleIds != nil {
@@ -39,6 +41,8 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 			for _, v := range resp.ScopedRoleIds {
 				r.ScopedRoleIds = append(r.ScopedRoleIds, types.StringValue(v))
 			}
+		} else {
+			r.ScopedRoleIds = nil
 		}
 		if len(resp.Secret) > 0 {
 			r.Secret = make(map[string]types.String, len(resp.Secret))

@@ -183,3 +183,6 @@ func (a *AccessReviewScopeV2) GetUserCriteriaScope() *UserCriteriaScope {
 	}
 	return a.UserCriteriaScope
 }
+
+// #region class-body-accessreviewscopev2
+// #endregion class-body-accessreviewscopev2

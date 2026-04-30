@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_risk_level Resource - conductorone"
+page_title: "conductorone_risk_level Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   RiskLevel Resource

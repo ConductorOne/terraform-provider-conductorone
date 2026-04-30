@@ -45,3 +45,6 @@ func (c *C1APIRoleMiningManagementV1RoleMiningManagementSearchServiceSearchRespo
 	}
 	return c.RoleMiningSearchSuggestionsResponse
 }
+
+// #region class-body-c1apiroleminingmanagementv1roleminingmanagementsearchservicesearchresponse
+// #endregion class-body-c1apiroleminingmanagementv1roleminingmanagementsearchservicesearchresponse

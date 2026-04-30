@@ -26,6 +26,9 @@ func (c *C1APIUserV1UserServiceSetExpiringUserDelegationBindingByAdminRequest) G
 	return c.SetExpiringUserDelegationBindingByAdminRequest
 }
 
+// #region class-body-c1apiuserv1userservicesetexpiringuserdelegationbindingbyadminrequest
+// #endregion class-body-c1apiuserv1userservicesetexpiringuserdelegationbindingbyadminrequest
+
 type C1APIUserV1UserServiceSetExpiringUserDelegationBindingByAdminResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIUserV1UserServiceSetExpiringUserDelegationBindingByAdminResponse) 
 	}
 	return c.SetExpiringUserDelegationBindingByAdminResponse
 }
+
+// #region class-body-c1apiuserv1userservicesetexpiringuserdelegationbindingbyadminresponse
+// #endregion class-body-c1apiuserv1userservicesetexpiringuserdelegationbindingbyadminresponse
