@@ -5,8 +5,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/v2/internal/planmodifiers/stringplanmodifier"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"

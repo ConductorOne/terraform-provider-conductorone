@@ -4,7 +4,7 @@ package config
 
 import (
 	"context"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/retry"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/retry"
 	"net/http"
 	"time"
 )

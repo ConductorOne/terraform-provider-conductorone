@@ -15,7 +15,7 @@ import (
 	"reflect"
 	"regexp"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/optionalnullable"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/optionalnullable"
 )
 
 const (

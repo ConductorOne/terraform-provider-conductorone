@@ -7,11 +7,11 @@ package sdk
 import (
 	"context"
 	"fmt"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/config"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/hooks"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/retry"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/config"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/hooks"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/models/shared"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/retry"
 	"net/http"
 	"time"
 )

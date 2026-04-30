@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/optionalnullable"
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/types"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/optionalnullable"
+	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/types"
 )
 
 func GenerateURL(_ context.Context, serverURL, path string, pathParams interface{}, globals interface{}) (string, error) {
