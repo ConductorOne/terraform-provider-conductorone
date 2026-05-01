@@ -2,12 +2,7 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// EntitlementGroup - The entitlementGroup field.
+// EntitlementGroup - Which side of the conflict monitor (A or B) the binding belongs to.
 type EntitlementGroup string
 
 const (
@@ -19,33 +14,27 @@ const (
 func (e EntitlementGroup) ToPointer() *EntitlementGroup {
 	return &e
 }
-func (e *EntitlementGroup) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EntitlementGroup) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B":
+			return true
+		}
 	}
-	switch v {
-	case "ENTITLEMENT_GROUP_UNSPECIFIED":
-		fallthrough
-	case "ENTITLEMENT_GROUP_A":
-		fallthrough
-	case "ENTITLEMENT_GROUP_B":
-		*e = EntitlementGroup(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EntitlementGroup: %v", v)
-	}
+	return false
 }
 
-// The DeleteAppEntitlementMonitorBindingRequest message.
+// DeleteAppEntitlementMonitorBindingRequest - The request message for deleting an app entitlement monitor binding.
 type DeleteAppEntitlementMonitorBindingRequest struct {
-	// The appEntitlementId field.
+	// The unique identifier of the app entitlement to unbind.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
-	// The appId field.
+	// The unique identifier of the application containing the entitlement.
 	AppID *string `json:"appId,omitempty"`
-	// The entitlementGroup field.
+	// Which side of the conflict monitor (A or B) the binding belongs to.
 	EntitlementGroup *EntitlementGroup `json:"entitlementGroup,omitempty"`
-	// The monitorId field.
+	// The unique identifier of the conflict monitor.
 	MonitorID *string `json:"monitorId,omitempty"`
 }
 

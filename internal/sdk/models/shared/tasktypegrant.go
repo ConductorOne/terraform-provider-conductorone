@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -24,28 +22,16 @@ const (
 func (e TaskTypeGrantOutcome) ToPointer() *TaskTypeGrantOutcome {
 	return &e
 }
-func (e *TaskTypeGrantOutcome) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskTypeGrantOutcome) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_OUTCOME_UNSPECIFIED", "GRANT_OUTCOME_GRANTED", "GRANT_OUTCOME_DENIED", "GRANT_OUTCOME_ERROR", "GRANT_OUTCOME_CANCELLED", "GRANT_OUTCOME_WAIT_TIMED_OUT":
+			return true
+		}
 	}
-	switch v {
-	case "GRANT_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "GRANT_OUTCOME_GRANTED":
-		fallthrough
-	case "GRANT_OUTCOME_DENIED":
-		fallthrough
-	case "GRANT_OUTCOME_ERROR":
-		fallthrough
-	case "GRANT_OUTCOME_CANCELLED":
-		fallthrough
-	case "GRANT_OUTCOME_WAIT_TIMED_OUT":
-		*e = TaskTypeGrantOutcome(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskTypeGrantOutcome: %v", v)
-	}
+	return false
 }
 
 // The TaskTypeGrant message indicates that a task is a grant task and all related details.

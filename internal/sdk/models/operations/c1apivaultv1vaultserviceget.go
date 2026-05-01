@@ -18,6 +18,9 @@ func (c *C1APIVaultV1VaultServiceGetRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apivaultv1vaultservicegetrequest
+// #endregion class-body-c1apivaultv1vaultservicegetrequest
+
 type C1APIVaultV1VaultServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -25,7 +28,7 @@ type C1APIVaultV1VaultServiceGetResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// VaultServiceGetResponse is the response message containing the requested vault.
 	VaultServiceGetResponse *shared.VaultServiceGetResponse
 }
 
@@ -56,3 +59,6 @@ func (c *C1APIVaultV1VaultServiceGetResponse) GetVaultServiceGetResponse() *shar
 	}
 	return c.VaultServiceGetResponse
 }
+
+// #region class-body-c1apivaultv1vaultservicegetresponse
+// #endregion class-body-c1apivaultv1vaultservicegetresponse

@@ -72,7 +72,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 						if stepsItem.Action == nil {
 							steps.Action = nil
 						} else {
-							steps.Action = &tfTypes.Action1{}
+							steps.Action = &tfTypes.Action{}
 							if stepsItem.Action.ActionTargetAutomation == nil {
 								steps.Action.ActionTargetAutomation = nil
 							} else {
@@ -84,6 +84,11 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 							} else {
 								steps.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
 								steps.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(stepsItem.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+							}
+							if stepsItem.Action.ActionTargetClientIDApproval == nil {
+								steps.Action.ActionTargetClientIDApproval = nil
+							} else {
+								steps.Action.ActionTargetClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
 							}
 						}
 						if stepsItem.Approval == nil {
@@ -111,12 +116,16 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									for _, v := range stepsItem.Approval.AgentApproval.PolicyIds {
 										steps.Approval.AgentApproval.PolicyIds = append(steps.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.AgentApproval.PolicyIds = nil
 								}
 								if stepsItem.Approval.AgentApproval.ReassignToUserIds != nil {
 									steps.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.ReassignToUserIds))
 									for _, v := range stepsItem.Approval.AgentApproval.ReassignToUserIds {
 										steps.Approval.AgentApproval.ReassignToUserIds = append(steps.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.AgentApproval.ReassignToUserIds = nil
 								}
 							}
 							steps.Approval.AllowDelegation = types.BoolPointerValue(stepsItem.Approval.AllowDelegation)
@@ -125,6 +134,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								for _, v := range stepsItem.Approval.AllowedReassignees {
 									steps.Approval.AllowedReassignees = append(steps.Approval.AllowedReassignees, types.StringValue(v))
 								}
+							} else {
+								steps.Approval.AllowedReassignees = nil
 							}
 							steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
 							if stepsItem.Approval.AppGroupApproval == nil {
@@ -146,12 +157,16 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 
 										steps.Approval.AppGroupApproval.FallbackGroupIds = append(steps.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds)
 									}
+								} else {
+									steps.Approval.AppGroupApproval.FallbackGroupIds = nil
 								}
 								if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
 									steps.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
 										steps.Approval.AppGroupApproval.FallbackUserIds = append(steps.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.AppGroupApproval.FallbackUserIds = nil
 								}
 								steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 								steps.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers)
@@ -181,12 +196,16 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 
 										steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(steps.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds1)
 									}
+								} else {
+									steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
 								}
 								if stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 									steps.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
 										steps.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
 								}
 								steps.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 								steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
@@ -211,6 +230,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 										for _, v := range stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
 											steps.Approval.Escalation.ReassignToApprovers.ApproverIds = append(steps.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
 										}
+									} else {
+										steps.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
 									}
 								}
 								if stepsItem.Approval.Escalation.ReplacePolicy == nil {
@@ -236,12 +257,16 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									for _, v := range stepsItem.Approval.ExpressionApproval.AssignedUserIds {
 										steps.Approval.ExpressionApproval.AssignedUserIds = append(steps.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.ExpressionApproval.AssignedUserIds = nil
 								}
 								if stepsItem.Approval.ExpressionApproval.Expressions != nil {
 									steps.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.Expressions))
 									for _, v := range stepsItem.Approval.ExpressionApproval.Expressions {
 										steps.Approval.ExpressionApproval.Expressions = append(steps.Approval.ExpressionApproval.Expressions, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.ExpressionApproval.Expressions = nil
 								}
 								steps.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.Fallback)
 								if stepsItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
@@ -255,12 +280,16 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 
 										steps.Approval.ExpressionApproval.FallbackGroupIds = append(steps.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds2)
 									}
+								} else {
+									steps.Approval.ExpressionApproval.FallbackGroupIds = nil
 								}
 								if stepsItem.Approval.ExpressionApproval.FallbackUserIds != nil {
 									steps.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
 										steps.Approval.ExpressionApproval.FallbackUserIds = append(steps.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.ExpressionApproval.FallbackUserIds = nil
 								}
 								steps.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 								steps.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
@@ -275,6 +304,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									for _, v := range stepsItem.Approval.ManagerApproval.AssignedUserIds {
 										steps.Approval.ManagerApproval.AssignedUserIds = append(steps.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.ManagerApproval.AssignedUserIds = nil
 								}
 								steps.Approval.ManagerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.Fallback)
 								if stepsItem.Approval.ManagerApproval.FallbackGroupIds != nil {
@@ -288,12 +319,16 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 
 										steps.Approval.ManagerApproval.FallbackGroupIds = append(steps.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds3)
 									}
+								} else {
+									steps.Approval.ManagerApproval.FallbackGroupIds = nil
 								}
 								if stepsItem.Approval.ManagerApproval.FallbackUserIds != nil {
 									steps.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
 										steps.Approval.ManagerApproval.FallbackUserIds = append(steps.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.ManagerApproval.FallbackUserIds = nil
 								}
 								steps.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
 								steps.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
@@ -319,12 +354,16 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 
 										steps.Approval.ResourceOwnerApproval.FallbackGroupIds = append(steps.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds4)
 									}
+								} else {
+									steps.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
 								}
 								if stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 									steps.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
 										steps.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.ResourceOwnerApproval.FallbackUserIds = nil
 								}
 								steps.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 								steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
@@ -338,6 +377,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									for _, v := range stepsItem.Approval.SelfApproval.AssignedUserIds {
 										steps.Approval.SelfApproval.AssignedUserIds = append(steps.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.SelfApproval.AssignedUserIds = nil
 								}
 								steps.Approval.SelfApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.SelfApproval.Fallback)
 								if stepsItem.Approval.SelfApproval.FallbackGroupIds != nil {
@@ -351,12 +392,16 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 
 										steps.Approval.SelfApproval.FallbackGroupIds = append(steps.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds5)
 									}
+								} else {
+									steps.Approval.SelfApproval.FallbackGroupIds = nil
 								}
 								if stepsItem.Approval.SelfApproval.FallbackUserIds != nil {
 									steps.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
 									for _, v := range stepsItem.Approval.SelfApproval.FallbackUserIds {
 										steps.Approval.SelfApproval.FallbackUserIds = append(steps.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.SelfApproval.FallbackUserIds = nil
 								}
 								steps.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.SelfApproval.IsGroupFallbackEnabled)
 							}
@@ -371,6 +416,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									for _, v := range stepsItem.Approval.UserApproval.UserIds {
 										steps.Approval.UserApproval.UserIds = append(steps.Approval.UserApproval.UserIds, types.StringValue(v))
 									}
+								} else {
+									steps.Approval.UserApproval.UserIds = nil
 								}
 							}
 							if stepsItem.Approval.WebhookApproval == nil {
@@ -380,11 +427,11 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Approval.WebhookApproval.WebhookID = types.StringPointerValue(stepsItem.Approval.WebhookApproval.WebhookID)
 							}
 						}
-						if stepsItem.Form == nil {
-							steps.Form = jsontypes.NewNormalizedNull()
+						if stepsItem.PolicyForm == nil {
+							steps.PolicyForm = jsontypes.NewNormalizedNull()
 						} else {
-							formResult, _ := json.Marshal(stepsItem.Form)
-							steps.Form = jsontypes.NewNormalizedValue(string(formResult))
+							policyFormResult, _ := json.Marshal(stepsItem.PolicyForm)
+							steps.PolicyForm = jsontypes.NewNormalizedValue(string(policyFormResult))
 						}
 						if stepsItem.Provision == nil {
 							steps.Provision = nil
@@ -433,6 +480,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 												for _, v := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 													steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 												}
+											} else {
+												steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 											}
 										}
 										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -485,6 +534,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 												}
+											} else {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 											}
 										}
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -497,6 +548,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 												}
+											} else {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 											}
 										}
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -509,12 +562,16 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 												}
+											} else {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 											}
 											if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
 												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 												}
+											} else {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 											}
 										}
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -529,6 +586,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 												}
+											} else {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 											}
 										}
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -541,6 +600,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 												}
+											} else {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 											}
 										}
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -553,6 +614,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 												}
+											} else {
+												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 											}
 										}
 									}
@@ -561,6 +624,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 										for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
 											steps.Provision.ProvisionPolicy.ManualProvision.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 										}
+									} else {
+										steps.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
 									}
 								}
 								if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
@@ -629,6 +694,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 
 						policyStepsResult.Steps = append(policyStepsResult.Steps, steps)
 					}
+				} else {
+					policyStepsResult.Steps = nil
 				}
 
 				r.PolicySteps[policyStepsKey] = policyStepsResult
@@ -649,6 +716,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 
 				r.PostActions = append(r.PostActions, postActions)
 			}
+		} else {
+			r.PostActions = nil
 		}
 		r.ReassignTasksToDelegates = types.BoolPointerValue(resp.ReassignTasksToDelegates)
 		if resp.Rules != nil {
@@ -662,6 +731,8 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 
 				r.Rules = append(r.Rules, rules)
 			}
+		} else {
+			r.Rules = nil
 		}
 		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
@@ -691,16 +762,8 @@ func (r *PolicyResourceModel) ToOperationsC1APIPolicyV1PoliciesDeleteRequest(ctx
 	var id string
 	id = r.ID.ValueString()
 
-	deletePolicyRequest, deletePolicyRequestDiags := r.ToSharedDeletePolicyRequest(ctx)
-	diags.Append(deletePolicyRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIPolicyV1PoliciesDeleteRequest{
-		ID:                  id,
-		DeletePolicyRequest: deletePolicyRequest,
+		ID: id,
 	}
 
 	return &out, diags
@@ -770,7 +833,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						AcceptMessage: acceptMessage,
 					}
 				}
-				var action *shared.Action1
+				var action *shared.Action
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action != nil {
 					var actionTargetAutomation *shared.ActionTargetAutomation
 					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation != nil {
@@ -796,9 +859,14 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							BatonResourceActionID: batonResourceActionID,
 						}
 					}
-					action = &shared.Action1{
+					var actionTargetClientIDApproval *shared.ActionTargetClientIDApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetClientIDApproval != nil {
+						actionTargetClientIDApproval = &shared.ActionTargetClientIDApproval{}
+					}
+					action = &shared.Action{
 						ActionTargetAutomation:          actionTargetAutomation,
 						ActionTargetBatonResourceAction: actionTargetBatonResourceAction,
+						ActionTargetClientIDApproval:    actionTargetClientIDApproval,
 					}
 				}
 				var approval *shared.ApprovalInput
@@ -1429,9 +1497,9 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						WebhookApproval:           webhookApproval,
 					}
 				}
-				var form interface{}
-				if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.IsNull() {
-					_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.ValueString()), &form)
+				var policyForm interface{}
+				if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.IsNull() {
+					_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.ValueString()), &policyForm)
 				}
 				var provision *shared.Provision
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision != nil {
@@ -1946,13 +2014,13 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					}
 				}
 				steps = append(steps, shared.PolicyStepInput{
-					Accept:    accept,
-					Action:    action,
-					Approval:  approval,
-					Form:      form,
-					Provision: provision,
-					Reject:    reject,
-					Wait:      wait,
+					Accept:     accept,
+					Action:     action,
+					Approval:   approval,
+					PolicyForm: policyForm,
+					Provision:  provision,
+					Reject:     reject,
+					Wait:       wait,
 				})
 			}
 		}
@@ -2064,7 +2132,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						AcceptMessage: acceptMessage,
 					}
 				}
-				var action *shared.Action1
+				var action *shared.Action
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action != nil {
 					var actionTargetAutomation *shared.ActionTargetAutomation
 					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation != nil {
@@ -2090,9 +2158,14 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							BatonResourceActionID: batonResourceActionID,
 						}
 					}
-					action = &shared.Action1{
+					var actionTargetClientIDApproval *shared.ActionTargetClientIDApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetClientIDApproval != nil {
+						actionTargetClientIDApproval = &shared.ActionTargetClientIDApproval{}
+					}
+					action = &shared.Action{
 						ActionTargetAutomation:          actionTargetAutomation,
 						ActionTargetBatonResourceAction: actionTargetBatonResourceAction,
+						ActionTargetClientIDApproval:    actionTargetClientIDApproval,
 					}
 				}
 				var approval *shared.ApprovalInput
@@ -2723,9 +2796,9 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						WebhookApproval:           webhookApproval,
 					}
 				}
-				var form interface{}
-				if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.IsNull() {
-					_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Form.ValueString()), &form)
+				var policyForm interface{}
+				if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.IsNull() {
+					_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].PolicyForm.ValueString()), &policyForm)
 				}
 				var provision *shared.Provision
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision != nil {
@@ -3240,13 +3313,13 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					}
 				}
 				steps = append(steps, shared.PolicyStepInput{
-					Accept:    accept,
-					Action:    action,
-					Approval:  approval,
-					Form:      form,
-					Provision: provision,
-					Reject:    reject,
-					Wait:      wait,
+					Accept:     accept,
+					Action:     action,
+					Approval:   approval,
+					PolicyForm: policyForm,
+					Provision:  provision,
+					Reject:     reject,
+					Wait:       wait,
 				})
 			}
 		}

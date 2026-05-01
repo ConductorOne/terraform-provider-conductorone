@@ -2,6 +2,6 @@
 
 package shared
 
-// The RemoveAppResourceOwnerResponse message.
+// RemoveAppResourceOwnerResponse - The empty response message for removing an owner from an app resource.
 type RemoveAppResourceOwnerResponse struct {
 }

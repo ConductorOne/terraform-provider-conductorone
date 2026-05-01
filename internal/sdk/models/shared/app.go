@@ -3,11 +3,36 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
+
+// AccessModel - How this app models access. Derived during uplift from the app's resource type traits.
+//
+//	Sparse ACL feature.
+type AccessModel string
+
+const (
+	AccessModelAppAccessModelUnspecified AccessModel = "APP_ACCESS_MODEL_UNSPECIFIED"
+	AccessModelAppAccessModelClassic     AccessModel = "APP_ACCESS_MODEL_CLASSIC"
+	AccessModelAppAccessModelHybrid      AccessModel = "APP_ACCESS_MODEL_HYBRID"
+	AccessModelAppAccessModelSparse      AccessModel = "APP_ACCESS_MODEL_SPARSE"
+)
+
+func (e AccessModel) ToPointer() *AccessModel {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessModel) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ACCESS_MODEL_UNSPECIFIED", "APP_ACCESS_MODEL_CLASSIC", "APP_ACCESS_MODEL_HYBRID", "APP_ACCESS_MODEL_SPARSE":
+			return true
+		}
+	}
+	return false
+}
 
 // IdentityMatching - The identityMatching field.
 type IdentityMatching string
@@ -22,28 +47,23 @@ const (
 func (e IdentityMatching) ToPointer() *IdentityMatching {
 	return &e
 }
-func (e *IdentityMatching) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IdentityMatching) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_IDENTITY_MATCHING_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_IDENTITY_MATCHING_STRICT":
-		fallthrough
-	case "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME":
-		fallthrough
-	case "APP_USER_IDENTITY_MATCHING_CUSTOM":
-		*e = IdentityMatching(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IdentityMatching: %v", v)
-	}
+	return false
 }
 
 // The App object provides all of the details for an app, as well as some configuration.
 type App struct {
+	// How this app models access. Derived during uplift from the app's resource type traits.
+	//  Sparse ACL feature.
+	AccessModel *AccessModel `json:"accessModel,omitempty"`
 	// The ID of the Account named by AccountName.
 	AppAccountID *string `json:"appAccountId,omitempty"`
 	// The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
@@ -105,6 +125,13 @@ func (a *App) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *App) GetAccessModel() *AccessModel {
+	if a == nil {
+		return nil
+	}
+	return a.AccessModel
 }
 
 func (a *App) GetAppAccountID() *string {
@@ -298,6 +325,9 @@ func (a *App) GetUserCount() *string {
 
 // AppInput - The App object provides all of the details for an app, as well as some configuration.
 type AppInput struct {
+	// How this app models access. Derived during uplift from the app's resource type traits.
+	//  Sparse ACL feature.
+	AccessModel *AccessModel `json:"accessModel,omitempty"`
 	// AppUserMapper configures custom account mapping for uplift.
 	AppUserMapper *AppUserMapper `json:"appUserMapper,omitempty"`
 	// The ID of the Certify Policy associated with this App.
@@ -328,6 +358,13 @@ type AppInput struct {
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
 	// The strictAccessEntitlementProvisioning field.
 	StrictAccessEntitlementProvisioning *bool `json:"strictAccessEntitlementProvisioning,omitempty"`
+}
+
+func (a *AppInput) GetAccessModel() *AccessModel {
+	if a == nil {
+		return nil
+	}
+	return a.AccessModel
 }
 
 func (a *AppInput) GetAppUserMapper() *AppUserMapper {

@@ -7,12 +7,10 @@ import (
 	"fmt"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/v2/internal/planmodifiers/stringplanmodifier"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -57,7 +55,7 @@ func (r *AppEntitlementMonitorBindingResource) Schema(ctx context.Context, req r
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The appEntitlementId field. Requires replacement if changed.`,
+				Description: `The unique identifier of the app entitlement to bind. Requires replacement if changed.`,
 			},
 			"app_id": schema.StringAttribute{
 				Computed: true,
@@ -66,7 +64,7 @@ func (r *AppEntitlementMonitorBindingResource) Schema(ctx context.Context, req r
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The appId field. Requires replacement if changed.`,
+				Description: `The unique identifier of the application containing the entitlement. Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -78,14 +76,7 @@ func (r *AppEntitlementMonitorBindingResource) Schema(ctx context.Context, req r
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The entitlementGroup field. must be one of ["ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]; Requires replacement if changed.`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"ENTITLEMENT_GROUP_UNSPECIFIED",
-						"ENTITLEMENT_GROUP_A",
-						"ENTITLEMENT_GROUP_B",
-					),
-				},
+				Description: `Which side of the conflict monitor (A or B) to place this entitlement in. possible known values include one of ["ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]; Requires replacement if changed.`,
 			},
 			"monitor_id": schema.StringAttribute{
 				Computed: true,
@@ -94,7 +85,7 @@ func (r *AppEntitlementMonitorBindingResource) Schema(ctx context.Context, req r
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The monitorId field. Requires replacement if changed.`,
+				Description: `The unique identifier of the conflict monitor to bind the entitlement to. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -302,7 +293,10 @@ func (r *AppEntitlementMonitorBindingResource) Delete(ctx context.Context, req r
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

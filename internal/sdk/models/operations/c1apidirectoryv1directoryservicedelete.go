@@ -26,6 +26,9 @@ func (c *C1APIDirectoryV1DirectoryServiceDeleteRequest) GetDirectoryServiceDelet
 	return c.DirectoryServiceDeleteRequest
 }
 
+// #region class-body-c1apidirectoryv1directoryservicedeleterequest
+// #endregion class-body-c1apidirectoryv1directoryservicedeleterequest
+
 type C1APIDirectoryV1DirectoryServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIDirectoryV1DirectoryServiceDeleteResponse) GetDirectoryServiceDele
 	}
 	return c.DirectoryServiceDeleteResponse
 }
+
+// #region class-body-c1apidirectoryv1directoryservicedeleteresponse
+// #endregion class-body-c1apidirectoryv1directoryservicedeleteresponse

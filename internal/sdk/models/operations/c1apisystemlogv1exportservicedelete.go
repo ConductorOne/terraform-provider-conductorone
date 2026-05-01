@@ -26,6 +26,9 @@ func (c *C1APISystemlogV1ExportServiceDeleteRequest) GetExportServiceDeleteReque
 	return c.ExportServiceDeleteRequest
 }
 
+// #region class-body-c1apisystemlogv1exportservicedeleterequest
+// #endregion class-body-c1apisystemlogv1exportservicedeleterequest
+
 type C1APISystemlogV1ExportServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APISystemlogV1ExportServiceDeleteResponse) GetExportServiceDeleteResp
 	}
 	return c.ExportServiceDeleteResponse
 }
+
+// #region class-body-c1apisystemlogv1exportservicedeleteresponse
+// #endregion class-body-c1apisystemlogv1exportservicedeleteresponse

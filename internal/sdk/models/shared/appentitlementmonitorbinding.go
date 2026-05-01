@@ -3,13 +3,11 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
 
-// AppEntitlementMonitorBindingEntitlementGroup - The entitlementGroup field.
+// AppEntitlementMonitorBindingEntitlementGroup - Which side of the conflict monitor (A or B) this entitlement is assigned to.
 type AppEntitlementMonitorBindingEntitlementGroup string
 
 const (
@@ -21,35 +19,29 @@ const (
 func (e AppEntitlementMonitorBindingEntitlementGroup) ToPointer() *AppEntitlementMonitorBindingEntitlementGroup {
 	return &e
 }
-func (e *AppEntitlementMonitorBindingEntitlementGroup) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppEntitlementMonitorBindingEntitlementGroup) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B":
+			return true
+		}
 	}
-	switch v {
-	case "ENTITLEMENT_GROUP_UNSPECIFIED":
-		fallthrough
-	case "ENTITLEMENT_GROUP_A":
-		fallthrough
-	case "ENTITLEMENT_GROUP_B":
-		*e = AppEntitlementMonitorBindingEntitlementGroup(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppEntitlementMonitorBindingEntitlementGroup: %v", v)
-	}
+	return false
 }
 
-// The AppEntitlementMonitorBinding message.
+// AppEntitlementMonitorBinding - Represents the association of an app entitlement with one side (A or B) of a conflict monitor.
 type AppEntitlementMonitorBinding struct {
-	// The appEntitlementId field.
+	// The unique identifier of the bound app entitlement.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
-	// The appId field.
+	// The unique identifier of the application containing the entitlement.
 	AppID     *string    `json:"appId,omitempty"`
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
-	// The entitlementGroup field.
+	// Which side of the conflict monitor (A or B) this entitlement is assigned to.
 	EntitlementGroup *AppEntitlementMonitorBindingEntitlementGroup `json:"entitlementGroup,omitempty"`
-	// The monitorId field.
+	// The unique identifier of the conflict monitor this binding belongs to.
 	MonitorID *string    `json:"monitorId,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }

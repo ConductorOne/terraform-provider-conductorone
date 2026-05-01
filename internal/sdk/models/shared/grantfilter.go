@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // GrantFilterType - The grantFilterType field.
 type GrantFilterType string
 
@@ -19,22 +14,16 @@ const (
 func (e GrantFilterType) ToPointer() *GrantFilterType {
 	return &e
 }
-func (e *GrantFilterType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GrantFilterType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY":
+			return true
+		}
 	}
-	switch v {
-	case "GRANT_FILTER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "GRANT_FILTER_TYPE_PERMANENT":
-		fallthrough
-	case "GRANT_FILTER_TYPE_TEMPORARY":
-		*e = GrantFilterType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GrantFilterType: %v", v)
-	}
+	return false
 }
 
 // GrantJustificationType - The grantJustificationType field.
@@ -50,24 +39,16 @@ const (
 func (e GrantJustificationType) ToPointer() *GrantJustificationType {
 	return &e
 }
-func (e *GrantJustificationType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GrantJustificationType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT":
+			return true
+		}
 	}
-	switch v {
-	case "GRANT_JUSTIFICATION_TYPE_UNSPECIFIED":
-		fallthrough
-	case "GRANT_JUSTIFICATION_TYPE_ALL":
-		fallthrough
-	case "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE":
-		fallthrough
-	case "GRANT_JUSTIFICATION_TYPE_DIRECT":
-		*e = GrantJustificationType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GrantJustificationType: %v", v)
-	}
+	return false
 }
 
 // GrantSourceFilter - The grantSourceFilter field.
@@ -82,22 +63,16 @@ const (
 func (e GrantSourceFilter) ToPointer() *GrantSourceFilter {
 	return &e
 }
-func (e *GrantSourceFilter) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GrantSourceFilter) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED":
+			return true
+		}
 	}
-	switch v {
-	case "GRANT_SOURCE_FILTER_UNSPECIFIED":
-		fallthrough
-	case "GRANT_SOURCE_FILTER_DIRECT":
-		fallthrough
-	case "GRANT_SOURCE_FILTER_INHERITED":
-		*e = GrantSourceFilter(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GrantSourceFilter: %v", v)
-	}
+	return false
 }
 
 // The GrantFilter message.

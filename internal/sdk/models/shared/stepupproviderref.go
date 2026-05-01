@@ -2,9 +2,9 @@
 
 package shared
 
-// The StepUpProviderRef message.
+// StepUpProviderRef is a lightweight reference to a step-up authentication provider.
 type StepUpProviderRef struct {
-	// The id field.
+	// The unique identifier of the step-up provider.
 	ID *string `json:"id,omitempty"`
 }
 

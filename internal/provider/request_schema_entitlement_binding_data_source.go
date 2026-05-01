@@ -63,7 +63,7 @@ func (r *RequestSchemaEntitlementBindingDataSource) Schema(ctx context.Context, 
 			},
 			"request_schema_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The requestSchemaId field.`,
+				Description: `The unique identifier of the request schema bound to this entitlement, if any.`,
 			},
 		},
 	}

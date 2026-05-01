@@ -53,7 +53,8 @@ func (r *ConnectorCredentialDataSource) Schema(ctx context.Context, req datasour
 
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The appId of the app the connector is attached to.`,
 			},
 			"client_id": schema.StringAttribute{
 				Computed:    true,
@@ -65,7 +66,8 @@ func (r *ConnectorCredentialDataSource) Schema(ctx context.Context, req datasour
 				Description: `The client secret of the ConnectorCredential. It's only returned on creation.`,
 			},
 			"connector_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The connectorId of the connector the credential is associated with.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -81,7 +83,8 @@ func (r *ConnectorCredentialDataSource) Schema(ctx context.Context, req datasour
 				Computed: true,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The id of the ConnectorCredential.`,
 			},
 			"last_used_at": schema.StringAttribute{
 				Computed: true,

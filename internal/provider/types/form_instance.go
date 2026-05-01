@@ -7,11 +7,11 @@ import (
 )
 
 type FormInstance struct {
-	Data                *FormInstanceData    `tfsdk:"data"`
 	Form                *Form                `tfsdk:"form"`
 	FormCompletedAction *FormCompletedAction `tfsdk:"form_completed_action"`
 	ReassignedAction    *ReassignedAction    `tfsdk:"reassigned_action"`
 	RestartAction       *RestartAction       `tfsdk:"restart_action"`
 	SkippedAction       *SkippedAction       `tfsdk:"skipped_action"`
+	Data                *FormInstanceData    `tfsdk:"data"`
 	State               types.String         `tfsdk:"state"`
 }

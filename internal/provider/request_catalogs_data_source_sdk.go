@@ -17,6 +17,8 @@ func (r *RequestCatalogsDataSourceModel) RefreshFromSharedRequestCatalogManageme
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		if resp.List != nil {
 			r.List = []tfTypes.RequestCatalogView{}
@@ -38,6 +40,7 @@ func (r *RequestCatalogsDataSourceModel) RefreshFromSharedRequestCatalogManageme
 					} else {
 						list.RequestCatalog.EnrollmentBehavior = types.StringNull()
 					}
+					list.RequestCatalog.GrantPolicyID = types.StringPointerValue(listItem.RequestCatalog.GrantPolicyID)
 					list.RequestCatalog.ID = types.StringPointerValue(listItem.RequestCatalog.ID)
 					list.RequestCatalog.Published = types.BoolPointerValue(listItem.RequestCatalog.Published)
 					list.RequestCatalog.RequestBundle = types.BoolPointerValue(listItem.RequestCatalog.RequestBundle)
@@ -57,6 +60,8 @@ func (r *RequestCatalogsDataSourceModel) RefreshFromSharedRequestCatalogManageme
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

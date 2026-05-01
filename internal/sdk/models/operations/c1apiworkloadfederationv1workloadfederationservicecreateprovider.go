@@ -45,3 +45,6 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceCreateProviderRespons
 	}
 	return c.WorkloadFederationServiceCreateProviderResponse
 }
+
+// #region class-body-c1apiworkloadfederationv1workloadfederationservicecreateproviderresponse
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationservicecreateproviderresponse

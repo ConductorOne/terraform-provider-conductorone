@@ -7,9 +7,9 @@ package shared
 // This message contains a oneof named resp. Only a single field of the following list may be set at a time:
 //   - json
 type FunctionsServiceInvokeResponse struct {
-	// The invocationId field.
+	// The ID of the created invocation, used to track execution status and retrieve results.
 	InvocationID *string `json:"invocationId,omitempty"`
-	// The json field.
+	// Deprecated. The JSON-encoded output returned by the function.
 	// This field is part of the `resp` oneof.
 	// See the documentation for `c1.api.functions.v1.FunctionsServiceInvokeResponse` for more details.
 	//

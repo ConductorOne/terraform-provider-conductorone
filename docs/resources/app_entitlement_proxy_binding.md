@@ -28,17 +28,17 @@ resource "conductorone_app_entitlement_proxy_binding" "my_app_entitlement_proxy_
 
 ### Required
 
-- `dst_app_entitlement_id` (String) Requires replacement if changed.
-- `dst_app_id` (String) Requires replacement if changed.
-- `src_app_entitlement_id` (String) Requires replacement if changed.
-- `src_app_id` (String) Requires replacement if changed.
+- `dst_app_entitlement_id` (String) The ID of the destination (child) entitlement. Requires replacement if changed.
+- `dst_app_id` (String) The ID of the app that owns the destination entitlement. Requires replacement if changed.
+- `src_app_entitlement_id` (String) The ID of the source (parent) entitlement. Requires replacement if changed.
+- `src_app_id` (String) The ID of the app that owns the source entitlement. Requires replacement if changed.
 
 ### Read-Only
 
 - `created_at` (String)
 - `disabled_at` (String)
-- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
-- `system_builtin` (Boolean) The systemBuiltin field.
+- `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
+- `system_builtin` (Boolean) If true, this binding was created by the system and cannot be removed by the user.
 - `updated_at` (String)
 
 <a id="nestedatt--expanded"></a>

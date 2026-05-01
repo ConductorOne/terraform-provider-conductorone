@@ -3,13 +3,11 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
 
-// RoleMiningManagementRunStatus - The status field.
+// RoleMiningManagementRunStatus - Current execution status of this run (e.g., running, completed, failed).
 type RoleMiningManagementRunStatus string
 
 const (
@@ -22,27 +20,19 @@ const (
 func (e RoleMiningManagementRunStatus) ToPointer() *RoleMiningManagementRunStatus {
 	return &e
 }
-func (e *RoleMiningManagementRunStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RoleMiningManagementRunStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "RUN_STATUS_UNSPECIFIED", "RUN_STATUS_RUNNING", "RUN_STATUS_COMPLETED", "RUN_STATUS_FAILED":
+			return true
+		}
 	}
-	switch v {
-	case "RUN_STATUS_UNSPECIFIED":
-		fallthrough
-	case "RUN_STATUS_RUNNING":
-		fallthrough
-	case "RUN_STATUS_COMPLETED":
-		fallthrough
-	case "RUN_STATUS_FAILED":
-		*e = RoleMiningManagementRunStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RoleMiningManagementRunStatus: %v", v)
-	}
+	return false
 }
 
-// TriggerType - The triggerType field.
+// TriggerType - How this run was initiated (e.g., manual, scheduled).
 type TriggerType string
 
 const (
@@ -50,50 +40,43 @@ const (
 	TriggerTypeTriggerTypeManual           TriggerType = "TRIGGER_TYPE_MANUAL"
 	TriggerTypeTriggerTypeUpliftCompletion TriggerType = "TRIGGER_TYPE_UPLIFT_COMPLETION"
 	TriggerTypeTriggerTypeScheduled        TriggerType = "TRIGGER_TYPE_SCHEDULED"
+	TriggerTypeTriggerTypeDirectoryMerge   TriggerType = "TRIGGER_TYPE_DIRECTORY_MERGE"
 )
 
 func (e TriggerType) ToPointer() *TriggerType {
 	return &e
 }
-func (e *TriggerType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TriggerType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_MANUAL", "TRIGGER_TYPE_UPLIFT_COMPLETION", "TRIGGER_TYPE_SCHEDULED", "TRIGGER_TYPE_DIRECTORY_MERGE":
+			return true
+		}
 	}
-	switch v {
-	case "TRIGGER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "TRIGGER_TYPE_MANUAL":
-		fallthrough
-	case "TRIGGER_TYPE_UPLIFT_COMPLETION":
-		fallthrough
-	case "TRIGGER_TYPE_SCHEDULED":
-		*e = TriggerType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TriggerType: %v", v)
-	}
+	return false
 }
 
 // The RoleMiningManagementRun message.
 type RoleMiningManagementRun struct {
-	// The cohortsAnalyzed field.
+	// Number of user cohorts evaluated during the analysis.
 	CohortsAnalyzed *int       `json:"cohortsAnalyzed,omitempty"`
 	CompletedAt     *time.Time `json:"completedAt,omitempty"`
 	CreatedAt       *time.Time `json:"createdAt,omitempty"`
-	// The errorMessage field.
+	// Error message if the run failed, empty on success.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
-	// The id field.
+	// Unique identifier for this analysis run.
 	ID *string `json:"id,omitempty"`
-	// The status field.
+	// Current execution status of this run (e.g., running, completed, failed).
 	Status *RoleMiningManagementRunStatus `json:"status,omitempty"`
-	// The suggestionsGenerated field.
+	// Number of role suggestions produced by this run.
 	SuggestionsGenerated *int `json:"suggestionsGenerated,omitempty"`
-	// The totalUsers field.
+	// Total number of users evaluated during the analysis.
 	TotalUsers *int `json:"totalUsers,omitempty"`
-	// The triggerDetail field.
+	// Additional detail about the trigger, such as the user or schedule that initiated the run.
 	TriggerDetail *string `json:"triggerDetail,omitempty"`
-	// The triggerType field.
+	// How this run was initiated (e.g., manual, scheduled).
 	TriggerType *TriggerType `json:"triggerType,omitempty"`
 	UpdatedAt   *time.Time   `json:"updatedAt,omitempty"`
 }

@@ -25,6 +25,7 @@ func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(ctx conte
 		} else {
 			r.EnrollmentBehavior = types.StringNull()
 		}
+		r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Published = types.BoolPointerValue(resp.Published)
 		r.RequestBundle = types.BoolPointerValue(resp.RequestBundle)
@@ -50,6 +51,8 @@ func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalogManagement
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		diags.Append(r.RefreshFromSharedRequestCatalogView(ctx, resp.RequestCatalogView)...)
 

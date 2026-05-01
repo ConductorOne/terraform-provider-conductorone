@@ -15,7 +15,7 @@ type C1APIPolicyV1PolicyValidateValidateCELResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successful response
-	EditorValidateResponse *shared.EditorValidateResponse
+	PolicyEditorValidateResponse *shared.PolicyEditorValidateResponse
 }
 
 func (c *C1APIPolicyV1PolicyValidateValidateCELResponse) GetContentType() string {
@@ -39,9 +39,12 @@ func (c *C1APIPolicyV1PolicyValidateValidateCELResponse) GetRawResponse() *http.
 	return c.RawResponse
 }
 
-func (c *C1APIPolicyV1PolicyValidateValidateCELResponse) GetEditorValidateResponse() *shared.EditorValidateResponse {
+func (c *C1APIPolicyV1PolicyValidateValidateCELResponse) GetPolicyEditorValidateResponse() *shared.PolicyEditorValidateResponse {
 	if c == nil {
 		return nil
 	}
-	return c.EditorValidateResponse
+	return c.PolicyEditorValidateResponse
 }
+
+// #region class-body-c1apipolicyv1policyvalidatevalidatecelresponse
+// #endregion class-body-c1apipolicyv1policyvalidatevalidatecelresponse

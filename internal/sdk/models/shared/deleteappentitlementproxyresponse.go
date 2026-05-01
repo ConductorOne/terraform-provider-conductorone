@@ -2,6 +2,6 @@
 
 package shared
 
-// The DeleteAppEntitlementProxyResponse message.
+// DeleteAppEntitlementProxyResponse - The empty response message for deleting an entitlement proxy binding.
 type DeleteAppEntitlementProxyResponse struct {
 }

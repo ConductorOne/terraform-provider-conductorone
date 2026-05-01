@@ -316,7 +316,7 @@ func (r *AccessReviewSetupDataSource) Schema(ctx context.Context, req datasource
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{},
 				},
-				Description: `The expanded field.`,
+				Description: `Related objects requested via the expand mask.`,
 			},
 			"list": schema.ListNestedAttribute{
 				Computed: true,
@@ -327,44 +327,44 @@ func (r *AccessReviewSetupDataSource) Schema(ctx context.Context, req datasource
 							Attributes: map[string]schema.Attribute{
 								"access_review_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The accessReviewId field.`,
+									Description: `The ID of the access review campaign this entitlement belongs to.`,
 								},
 								"app_entitlement_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The appEntitlementId field.`,
+									Description: `The ID of the entitlement being reviewed.`,
 								},
 								"app_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The appId field.`,
+									Description: `The ID of the application that owns the entitlement.`,
 								},
 								"app_resource_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The appResourceId field.`,
+									Description: `The ID of the specific resource associated with this entitlement, if applicable.`,
 								},
 								"app_resource_type_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The appResourceTypeId field.`,
+									Description: `The ID of the resource type associated with this entitlement, if applicable.`,
 								},
 								"created_at": schema.StringAttribute{
 									Computed: true,
 								},
 								"custom_policy_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The customPolicyId field.`,
+									Description: `An override policy ID for this specific entitlement. Populated when use_policy_override is enabled on the campaign.`,
 								},
 								"policy_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The policyId field.`,
+									Description: `The ID of the review policy applied to this entitlement. Defaults to the campaign policy.`,
 								},
 								"tenant_id": schema.StringAttribute{
 									Computed:    true,
-									Description: `The tenantId field.`,
+									Description: `The tenant that owns this setup entitlement.`,
 								},
 								"updated_at": schema.StringAttribute{
 									Computed: true,
 								},
 							},
-							Description: `The AccessReviewSetupEntitlement message.`,
+							Description: `An entitlement that has been selected for inclusion in an access review campaign during setup.`,
 						},
 						"app_path": schema.StringAttribute{
 							Computed:    true,
@@ -380,7 +380,7 @@ func (r *AccessReviewSetupDataSource) Schema(ctx context.Context, req datasource
 						},
 					},
 				},
-				Description: `The list field.`,
+				Description: `The current list of setup entitlements for the campaign.`,
 			},
 		},
 	}

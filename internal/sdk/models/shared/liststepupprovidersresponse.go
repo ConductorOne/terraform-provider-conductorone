@@ -4,9 +4,9 @@ package shared
 
 // The ListStepUpProvidersResponse message.
 type ListStepUpProvidersResponse struct {
-	// The list field.
+	// The list of step-up authentication providers.
 	List []StepUpProvider `json:"list,omitempty"`
-	// The nextPageToken field.
+	// A token to retrieve the next page of results, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

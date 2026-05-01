@@ -2,9 +2,9 @@
 
 package shared
 
-// The RequestSchemaServiceUpdateResponse message.
+// RequestSchemaServiceUpdateResponse - The response message for updating a request schema.
 type RequestSchemaServiceUpdateResponse struct {
-	// The RequestSchema message.
+	// A request schema defines a form template that users fill out when requesting access.
 	RequestSchema *RequestSchema `json:"requestSchema,omitempty"`
 }
 

@@ -29,8 +29,8 @@ data "conductorone_risk_levels" "my_risk_levels" {
 
 ### Read-Only
 
-- `list` (Attributes List) The list field. (see [below for nested schema](#nestedatt--list))
-- `next_page_token` (String) The nextPageToken field.
+- `list` (Attributes List) The list of risk level attribute values. (see [below for nested schema](#nestedatt--list))
+- `next_page_token` (String) The token to retrieve the next page of results, or empty if there are no more results.
 
 <a id="nestedatt--list"></a>
 ### Nested Schema for `list`

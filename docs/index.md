@@ -22,13 +22,16 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.7.16"
+      version = "2.0.0-alpha.1"
     }
   }
 }
 
 provider "conductorone" {
-  # Configuration options
+  bearer_auth   = "<YOUR_BEARER_AUTH>" # Required
+  oauth         = "<YOUR_OAUTH>"       # Required
+  server_url    = "..."                # Optional
+  tenant_domain = "..."                # Optional
 }
 ```
 

@@ -2,7 +2,7 @@
 
 package shared
 
-// The ConnectorCatalogServiceConfigurationSchemaResponse message.
+// ConnectorCatalogServiceConfigurationSchemaResponse is the response containing the connector's configuration schema.
 type ConnectorCatalogServiceConfigurationSchemaResponse struct {
 	// A form is a collection of fields to be filled out by a user
 	Form *Form `json:"formSchema,omitempty"`

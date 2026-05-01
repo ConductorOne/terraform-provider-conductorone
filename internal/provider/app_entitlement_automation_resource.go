@@ -40,16 +40,17 @@ type AppEntitlementAutomationResource struct {
 // AppEntitlementAutomationResourceModel describes the resource data model.
 type AppEntitlementAutomationResourceModel struct {
 	AppEntitlementAutomationLastRunStatus   *tfTypes.AppEntitlementAutomationLastRunStatus   `tfsdk:"app_entitlement_automation_last_run_status"`
-	AppEntitlementAutomationRuleBasic       *tfTypes.AppEntitlementAutomationRuleBasic       `tfsdk:"app_entitlement_automation_rule_basic" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleCEL         *tfTypes.AppEntitlementAutomationRuleCEL         `tfsdk:"app_entitlement_automation_rule_cel" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleEntitlement *tfTypes.AppEntitlementAutomationRuleEntitlement `tfsdk:"app_entitlement_automation_rule_entitlement" tfPlanOnly:"true"`
-	AppEntitlementAutomationRuleNone        *tfTypes.AppEntitlementAutomationRuleNone        `tfsdk:"app_entitlement_automation_rule_none" tfPlanOnly:"true"`
+	AppEntitlementAutomationRuleBasic       *tfTypes.AppEntitlementAutomationRuleBasic       `tfsdk:"app_entitlement_automation_rule_basic"`
+	AppEntitlementAutomationRuleCEL         *tfTypes.AppEntitlementAutomationRuleCEL         `tfsdk:"app_entitlement_automation_rule_cel"`
+	AppEntitlementAutomationRuleEntitlement *tfTypes.AppEntitlementAutomationRuleEntitlement `tfsdk:"app_entitlement_automation_rule_entitlement"`
+	AppEntitlementAutomationRuleNone        *tfTypes.AppEntitlementAutomationRuleNone        `tfsdk:"app_entitlement_automation_rule_none"`
 	AppEntitlementID                        types.String                                     `tfsdk:"app_entitlement_id"`
 	AppID                                   types.String                                     `tfsdk:"app_id"`
 	CreatedAt                               types.String                                     `tfsdk:"created_at"`
 	DeletedAt                               types.String                                     `tfsdk:"-"`
 	Description                             types.String                                     `tfsdk:"description"`
 	DisplayName                             types.String                                     `tfsdk:"display_name"`
+	ManagedByRequestCatalogID               types.String                                     `tfsdk:"managed_by_request_catalog_id"`
 	UpdatedAt                               types.String                                     `tfsdk:"updated_at"`
 }
 
@@ -93,8 +94,10 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				Description: `The AppEntitlementAutomationLastRunStatus message. Requires replacement if changed.`,
 			},
 			"app_entitlement_automation_rule_basic": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.UseConfigValue(),
+				},
 				Attributes: map[string]schema.Attribute{
 					"expression": schema.StringAttribute{
 						Computed:    true,
@@ -112,8 +115,10 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"app_entitlement_automation_rule_cel": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.UseConfigValue(),
+				},
 				Attributes: map[string]schema.Attribute{
 					"expression": schema.StringAttribute{
 						Computed:    true,
@@ -131,8 +136,10 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"app_entitlement_automation_rule_entitlement": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.UseConfigValue(),
+				},
 				Attributes: map[string]schema.Attribute{
 					"entitlement_refs": schema.ListNestedAttribute{
 						Computed: true,
@@ -167,8 +174,10 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"app_entitlement_automation_rule_none": schema.SingleNestedAttribute{
-				Computed:    true,
-				Optional:    true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.UseConfigValue(),
+				},
 				Description: `The AppEntitlementAutomationRuleNone message.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
@@ -179,10 +188,12 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"app_entitlement_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The unique ID for the App Entitlement.`,
 			},
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The ID of the app that is associated with the app entitlement.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -196,6 +207,11 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				Computed:    true,
 				Optional:    true,
 				Description: `The display name of the app entitlement.`,
+			},
+			"managed_by_request_catalog_id": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `When set, this automation is managed by an access profile's bundle automation.` + "\n" +
+					` Read-only. Not settable via this API.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -264,11 +280,11 @@ func (r *AppEntitlementAutomationResource) Create(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateAutomationResponse != nil) {
+	if !(res.AppCreateAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreateAutomationResponse(ctx, res.CreateAutomationResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppCreateAutomationResponse(ctx, res.AppCreateAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -398,43 +414,6 @@ func (r *AppEntitlementAutomationResource) Update(ctx context.Context, req resou
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIAppV1AppEntitlementsGetAutomationRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AppEntitlements.GetAutomation(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.AppEntitlementServiceGetAutomationResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementServiceGetAutomationResponse(ctx, res1.AppEntitlementServiceGetAutomationResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -476,7 +455,10 @@ func (r *AppEntitlementAutomationResource) Delete(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -497,12 +479,12 @@ func (r *AppEntitlementAutomationResource) ImportState(ctx context.Context, req 
 	}
 
 	if len(data.AppEntitlementID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field app_entitlement_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field app_entitlement_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_entitlement_id"), data.AppEntitlementID)...)
 	if len(data.AppID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), data.AppID)...)

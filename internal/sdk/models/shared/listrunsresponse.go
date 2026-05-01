@@ -4,9 +4,9 @@ package shared
 
 // The ListRunsResponse message.
 type ListRunsResponse struct {
-	// The list field.
+	// The list of role mining analysis runs.
 	List []RoleMiningManagementRun `json:"list,omitempty"`
-	// The nextPageToken field.
+	// Token to retrieve the next page of results, empty if no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

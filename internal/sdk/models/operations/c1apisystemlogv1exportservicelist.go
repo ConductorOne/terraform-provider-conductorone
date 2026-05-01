@@ -26,6 +26,9 @@ func (c *C1APISystemlogV1ExportServiceListRequest) GetPageToken() *string {
 	return c.PageToken
 }
 
+// #region class-body-c1apisystemlogv1exportservicelistrequest
+// #endregion class-body-c1apisystemlogv1exportservicelistrequest
+
 type C1APISystemlogV1ExportServiceListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APISystemlogV1ExportServiceListResponse) GetExportServiceListResponse
 	}
 	return c.ExportServiceListResponse
 }
+
+// #region class-body-c1apisystemlogv1exportservicelistresponse
+// #endregion class-body-c1apisystemlogv1exportservicelistresponse

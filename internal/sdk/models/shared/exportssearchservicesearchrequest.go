@@ -2,7 +2,7 @@
 
 package shared
 
-// The ExportsSearchServiceSearchRequest message.
+// ExportsSearchServiceSearchRequest is the request for searching system log exports.
 type ExportsSearchServiceSearchRequest struct {
 	// Search for system log exporters with a case insensitive match on the display name.
 	DisplayName *string `json:"displayName,omitempty"`

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type AppUserDomains string
 
 const (
@@ -18,22 +13,16 @@ const (
 func (e AppUserDomains) ToPointer() *AppUserDomains {
 	return &e
 }
-func (e *AppUserDomains) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppUserDomains) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_DOMAIN_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_DOMAIN_EXTERNAL":
-		fallthrough
-	case "APP_USER_DOMAIN_TRUSTED":
-		*e = AppUserDomains(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppUserDomains: %v", v)
-	}
+	return false
 }
 
 type AppUserServiceSearchRequestAppUserStatuses string
@@ -48,24 +37,16 @@ const (
 func (e AppUserServiceSearchRequestAppUserStatuses) ToPointer() *AppUserServiceSearchRequestAppUserStatuses {
 	return &e
 }
-func (e *AppUserServiceSearchRequestAppUserStatuses) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppUserServiceSearchRequestAppUserStatuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "STATUS_UNSPECIFIED", "STATUS_ENABLED", "STATUS_DISABLED", "STATUS_DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "STATUS_UNSPECIFIED":
-		fallthrough
-	case "STATUS_ENABLED":
-		fallthrough
-	case "STATUS_DISABLED":
-		fallthrough
-	case "STATUS_DELETED":
-		*e = AppUserServiceSearchRequestAppUserStatuses(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppUserServiceSearchRequestAppUserStatuses: %v", v)
-	}
+	return false
 }
 
 type AppUserServiceSearchRequestAppUserTypes string
@@ -80,24 +61,16 @@ const (
 func (e AppUserServiceSearchRequestAppUserTypes) ToPointer() *AppUserServiceSearchRequestAppUserTypes {
 	return &e
 }
-func (e *AppUserServiceSearchRequestAppUserTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppUserServiceSearchRequestAppUserTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_TYPE_USER":
-		fallthrough
-	case "APP_USER_TYPE_SERVICE_ACCOUNT":
-		fallthrough
-	case "APP_USER_TYPE_SYSTEM_ACCOUNT":
-		*e = AppUserServiceSearchRequestAppUserTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppUserServiceSearchRequestAppUserTypes: %v", v)
-	}
+	return false
 }
 
 // AppUserServiceSearchRequest - Search App users based on filters specified in the request body

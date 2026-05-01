@@ -26,6 +26,9 @@ func (c *C1APIWebhooksV1WebhooksServiceUpdateRequest) GetWebhooksServiceUpdateRe
 	return c.WebhooksServiceUpdateRequest
 }
 
+// #region class-body-c1apiwebhooksv1webhooksserviceupdaterequest
+// #endregion class-body-c1apiwebhooksv1webhooksserviceupdaterequest
+
 type C1APIWebhooksV1WebhooksServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIWebhooksV1WebhooksServiceUpdateResponse) GetWebhooksServiceUpdateR
 	}
 	return c.WebhooksServiceUpdateResponse
 }
+
+// #region class-body-c1apiwebhooksv1webhooksserviceupdateresponse
+// #endregion class-body-c1apiwebhooksv1webhooksserviceupdateresponse

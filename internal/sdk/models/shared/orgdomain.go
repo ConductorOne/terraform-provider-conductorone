@@ -7,13 +7,13 @@ import (
 	"time"
 )
 
-// The OrgDomain message.
+// OrgDomain represents a verified email domain associated with the tenant.
 type OrgDomain struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
-	// The domain field.
+	// The verified domain name (e.g., "example.com").
 	Domain *string `json:"domain,omitempty"`
-	// The id field.
+	// The unique identifier of the domain record.
 	ID        *string    `json:"id,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }

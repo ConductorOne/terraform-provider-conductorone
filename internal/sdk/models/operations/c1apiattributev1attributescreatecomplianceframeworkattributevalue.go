@@ -45,3 +45,6 @@ func (c *C1APIAttributeV1AttributesCreateComplianceFrameworkAttributeValueRespon
 	}
 	return c.CreateComplianceFrameworkAttributeValueResponse
 }
+
+// #region class-body-c1apiattributev1attributescreatecomplianceframeworkattributevalueresponse
+// #endregion class-body-c1apiattributev1attributescreatecomplianceframeworkattributevalueresponse

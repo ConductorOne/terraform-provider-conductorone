@@ -23,6 +23,7 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.ExternalID = types.StringPointerValue(resp.ExternalID)
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
@@ -59,6 +60,8 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceServiceGetRespo
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 

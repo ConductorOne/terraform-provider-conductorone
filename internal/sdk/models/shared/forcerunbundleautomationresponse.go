@@ -2,6 +2,6 @@
 
 package shared
 
-// The ForceRunBundleAutomationResponse message.
+// ForceRunBundleAutomationResponse - The response message for triggering a bundle automation run.
 type ForceRunBundleAutomationResponse struct {
 }

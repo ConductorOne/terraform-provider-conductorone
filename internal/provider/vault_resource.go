@@ -61,20 +61,20 @@ func (r *VaultResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description field.`,
+				Description: `A free-text description of the vault's purpose or configuration.`,
 			},
 			"display_name": schema.StringAttribute{
 				Required:    true,
-				Description: `The displayName field.`,
+				Description: `The human-readable name for the new vault.`,
 			},
 			"group_authz_vault": schema.SingleNestedAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The GroupAuthzVault message.`,
+				Description: `GroupAuthzVault configures a vault that uses group-based authorization to control access to stored credentials.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The id field.`,
+				Description: `The unique identifier of the vault.`,
 			},
 			"magic_vault": schema.SingleNestedAttribute{
 				Computed: true,
@@ -83,15 +83,15 @@ func (r *VaultResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 					"allow_unauthed_views": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The allowUnauthedViews field.`,
+						Description: `Controls whether unauthenticated users can view credentials via a magic link.`,
 					},
 					"allowed_views": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The allowedViews field.`,
+						Description: `The maximum number of times a credential in this vault may be viewed.`,
 					},
 				},
-				Description: `The MagicVault message.`,
+				Description: `MagicVault configures a vault that grants time-limited credential access via magic links.`,
 			},
 			"owner_ids": schema.ListAttribute{
 				Optional: true,
@@ -99,7 +99,7 @@ func (r *VaultResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				ElementType: types.StringType,
-				Description: `The ownerIds field. Requires replacement if changed.`,
+				Description: `The IDs of users to assign as owners of this vault. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -173,43 +173,6 @@ func (r *VaultResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedVaultServiceCreateResponse(ctx, res.VaultServiceCreateResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIVaultV1VaultServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Vault.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.VaultServiceGetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedVaultServiceGetResponse(ctx, res1.VaultServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -339,43 +302,6 @@ func (r *VaultResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIVaultV1VaultServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Vault.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.VaultServiceGetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedVaultServiceGetResponse(ctx, res1.VaultServiceGetResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -417,7 +343,10 @@ func (r *VaultResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

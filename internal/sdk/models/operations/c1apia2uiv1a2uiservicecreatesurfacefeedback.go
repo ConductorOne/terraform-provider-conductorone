@@ -26,6 +26,9 @@ func (c *C1APIA2uiV1A2UIServiceCreateSurfaceFeedbackRequest) GetA2UIServiceCreat
 	return c.A2UIServiceCreateSurfaceFeedbackRequest
 }
 
+// #region class-body-c1apia2uiv1a2uiservicecreatesurfacefeedbackrequest
+// #endregion class-body-c1apia2uiv1a2uiservicecreatesurfacefeedbackrequest
+
 type C1APIA2uiV1A2UIServiceCreateSurfaceFeedbackResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIA2uiV1A2UIServiceCreateSurfaceFeedbackResponse) GetA2UIServiceCrea
 	}
 	return c.A2UIServiceCreateSurfaceFeedbackResponse
 }
+
+// #region class-body-c1apia2uiv1a2uiservicecreatesurfacefeedbackresponse
+// #endregion class-body-c1apia2uiv1a2uiservicecreatesurfacefeedbackresponse

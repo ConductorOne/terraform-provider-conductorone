@@ -2,11 +2,11 @@
 
 package shared
 
-// The RequestSchemaServiceCreateEntitlementBindingResponse message.
+// RequestSchemaServiceCreateEntitlementBindingResponse - The response message for creating a single entitlement binding.
 type RequestSchemaServiceCreateEntitlementBindingResponse struct {
 	// The AppEntitlementRef message.
 	AppEntitlementRef *AppEntitlementRef `json:"entitlementRef,omitempty"`
-	// The requestSchemaId field.
+	// The unique identifier of the request schema the entitlement was bound to.
 	RequestSchemaID *string `json:"requestSchemaId,omitempty"`
 }
 

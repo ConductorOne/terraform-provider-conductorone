@@ -14,7 +14,7 @@ type C1APIIntegrationConnectorV1ConnectorCatalogServiceConfigurationSchemaRespon
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// ConnectorCatalogServiceConfigurationSchemaResponse is the response containing the connector's configuration schema.
 	ConnectorCatalogServiceConfigurationSchemaResponse *shared.ConnectorCatalogServiceConfigurationSchemaResponse
 }
 
@@ -45,3 +45,6 @@ func (c *C1APIIntegrationConnectorV1ConnectorCatalogServiceConfigurationSchemaRe
 	}
 	return c.ConnectorCatalogServiceConfigurationSchemaResponse
 }
+
+// #region class-body-c1apiintegrationconnectorv1connectorcatalogserviceconfigurationschemaresponse
+// #endregion class-body-c1apiintegrationconnectorv1connectorcatalogserviceconfigurationschemaresponse

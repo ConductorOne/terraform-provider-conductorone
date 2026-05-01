@@ -7,10 +7,8 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/v2/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -67,14 +65,7 @@ func (r *UsersDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 		Attributes: map[string]schema.Attribute{
 			"delegate_status": schema.StringAttribute{
 				Optional:    true,
-				Description: `Filter for users based on their delegate status. must be one of ["DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"DELEGATE_STATUS_UNSPECIFIED",
-						"DELEGATE_STATUS_HAS_DELEGATE",
-						"DELEGATE_STATUS_NO_DELEGATE",
-					),
-				},
+				Description: `Filter for users based on their delegate status. possible known values include one of ["DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE"]`,
 			},
 			"delegated_user_ids": schema.ListAttribute{
 				Optional:    true,

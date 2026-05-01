@@ -5,11 +5,11 @@ package shared
 type ExportServiceListEventsResponseList struct {
 }
 
-// The ExportServiceListEventsResponse message.
+// ExportServiceListEventsResponse is the response containing audit events for an export.
 type ExportServiceListEventsResponse struct {
 	// List contains an array of JSON OCSF events.
 	List []ExportServiceListEventsResponseList `json:"list,omitempty"`
-	// The nextPageToken field.
+	// The token to retrieve the next page of results, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

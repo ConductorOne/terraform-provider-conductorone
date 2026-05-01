@@ -7,7 +7,12 @@ import (
 )
 
 type Webhook struct {
-	Payload      *Payload     `tfsdk:"payload"`
-	WebhookID    types.String `tfsdk:"webhook_id"`
-	WebhookIDCel types.String `tfsdk:"webhook_id_cel"`
+	CallbackTimeout types.String `tfsdk:"callback_timeout"`
+	CreatedAt       types.String `tfsdk:"created_at"`
+	DeletedAt       types.String `tfsdk:"deleted_at"`
+	Description     types.String `tfsdk:"description"`
+	DisplayName     types.String `tfsdk:"display_name"`
+	ID              types.String `tfsdk:"id"`
+	UpdatedAt       types.String `tfsdk:"updated_at"`
+	URL             types.String `tfsdk:"url"`
 }

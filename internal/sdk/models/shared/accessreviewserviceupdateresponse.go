@@ -10,7 +10,7 @@ type AccessReviewServiceUpdateResponseExpanded struct {
 type AccessReviewServiceUpdateResponse struct {
 	// The AccessReviewView message.
 	AccessReviewView *AccessReviewView `json:"accessReview,omitempty"`
-	// The expanded field.
+	// Related objects requested via the expand mask.
 	Expanded []AccessReviewServiceUpdateResponseExpanded `json:"expanded,omitempty"`
 }
 

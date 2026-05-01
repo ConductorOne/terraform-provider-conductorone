@@ -3,13 +3,11 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
 
-// ScopeType - The scopeType field.
+// ScopeType - The type of scoping method for the campaign (e.g., by entitlements, by access conflicts, or by resource).
 type ScopeType string
 
 const (
@@ -17,47 +15,40 @@ const (
 	ScopeTypeAccessReviewScopeTypeByEntitlements    ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS"
 	ScopeTypeAccessReviewScopeTypeByAccessConflicts ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
 	ScopeTypeAccessReviewScopeTypeByResource        ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
+	ScopeTypeAccessReviewScopeTypeByInheritance     ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"
 )
 
 func (e ScopeType) ToPointer() *ScopeType {
 	return &e
 }
-func (e *ScopeType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ScopeType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
-		*e = ScopeType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ScopeType: %v", v)
-	}
+	return false
 }
 
 // The AccessReviewServiceCreateRequest message.
 type AccessReviewServiceCreateRequest struct {
 	CompletionDate *time.Time `json:"completionDate,omitempty"`
-	// The description field.
+	// An optional description providing context about the campaign.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// The display name for the new campaign.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The duplicateFrom field.
+	// The ID of an existing campaign to copy scope and entitlement configuration from. Optional.
 	DuplicateFrom *string `json:"duplicateFrom,omitempty"`
-	// The NotificationConfig message.
-	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
-	// The ownerIds field.
+	// Controls which email notifications are sent during the access review lifecycle.
+	AccessReviewNotificationConfig *AccessReviewNotificationConfig `json:"notificationConfig,omitempty"`
+	// The IDs of the users who own and manage this campaign. At least one owner is required.
 	OwnerIds []string `json:"ownerIds,omitempty"`
-	// The policyId field.
+	// The ID of the review policy that governs task assignment and resolution.
 	PolicyID *string `json:"policyId,omitempty"`
-	// The scopeType field.
+	// The type of scoping method for the campaign (e.g., by entitlements, by access conflicts, or by resource).
 	ScopeType *ScopeType `json:"scopeType,omitempty"`
 	// The AccessReviewScopeV2 message.
 	//
@@ -136,11 +127,11 @@ func (a *AccessReviewServiceCreateRequest) GetDuplicateFrom() *string {
 	return a.DuplicateFrom
 }
 
-func (a *AccessReviewServiceCreateRequest) GetNotificationConfig() *NotificationConfig {
+func (a *AccessReviewServiceCreateRequest) GetAccessReviewNotificationConfig() *AccessReviewNotificationConfig {
 	if a == nil {
 		return nil
 	}
-	return a.NotificationConfig
+	return a.AccessReviewNotificationConfig
 }
 
 func (a *AccessReviewServiceCreateRequest) GetOwnerIds() []string {

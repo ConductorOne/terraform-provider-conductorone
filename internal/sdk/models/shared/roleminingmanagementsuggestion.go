@@ -3,13 +3,11 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
 
-// SuggestionState - The suggestionState field.
+// SuggestionState - Current workflow state of this suggestion (e.g., pending, accepted, dismissed).
 type SuggestionState string
 
 const (
@@ -22,60 +20,52 @@ const (
 func (e SuggestionState) ToPointer() *SuggestionState {
 	return &e
 }
-func (e *SuggestionState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SuggestionState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SUGGESTION_STATE_UNSPECIFIED", "SUGGESTION_STATE_NEW", "SUGGESTION_STATE_DISMISSED", "SUGGESTION_STATE_ACCEPTED":
+			return true
+		}
 	}
-	switch v {
-	case "SUGGESTION_STATE_UNSPECIFIED":
-		fallthrough
-	case "SUGGESTION_STATE_NEW":
-		fallthrough
-	case "SUGGESTION_STATE_DISMISSED":
-		fallthrough
-	case "SUGGESTION_STATE_ACCEPTED":
-		*e = SuggestionState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SuggestionState: %v", v)
-	}
+	return false
 }
 
 // The RoleMiningManagementSuggestion message.
 type RoleMiningManagementSuggestion struct {
-	// The avgCoverage field.
+	// Average fraction of suggested entitlements held by each user in the cohort.
 	AvgCoverage *float64 `json:"avgCoverage,omitempty"`
-	// The cohortFilters field.
+	// The profile filters that define which users belong to this cohort.
 	CohortFilters []ProfileFilter `json:"cohortFilters,omitempty"`
-	// The cohortSize field.
+	// Total number of users in the cohort matching the profile filters.
 	CohortSize *int `json:"cohortSize,omitempty"`
-	// The confidence field.
+	// Overall confidence score for this suggestion, from 0.0 to 1.0.
 	Confidence *float64   `json:"confidence,omitempty"`
 	CreatedAt  *time.Time `json:"createdAt,omitempty"`
-	// The createdCatalogId field.
+	// The ID of the access profile created when this suggestion was accepted, empty if not yet accepted.
 	CreatedCatalogID *string `json:"createdCatalogId,omitempty"`
-	// The description field.
+	// A human-readable description of the proposed role and the cohort it serves.
 	Description *string `json:"description,omitempty"`
-	// The dimensionCount field.
+	// Number of distinct attribute dimensions used to define the cohort.
 	DimensionCount *int `json:"dimensionCount,omitempty"`
-	// The entitlements field.
+	// The entitlements that are commonly held by users in this cohort.
 	Entitlements []CohortEntitlement `json:"entitlements,omitempty"`
-	// The existingProfileMatches field.
+	// Existing access profiles that overlap with this suggestion.
 	ExistingProfileMatches []AccessProfileMatch `json:"existingProfileMatches,omitempty"`
-	// The id field.
+	// Unique identifier for this suggestion.
 	ID *string `json:"id,omitempty"`
-	// The insights field.
+	// Human-readable insights explaining why this role was suggested.
 	Insights        []string   `json:"insights,omitempty"`
 	LastGeneratedAt *time.Time `json:"lastGeneratedAt,omitempty"`
-	// The runId field.
+	// The ID of the analysis run that produced this suggestion.
 	RunID *string `json:"runId,omitempty"`
-	// The suggestedName field.
+	// The suggested display name for the proposed role.
 	SuggestedName *string `json:"suggestedName,omitempty"`
-	// The suggestionState field.
+	// Current workflow state of this suggestion (e.g., pending, accepted, dismissed).
 	SuggestionState *SuggestionState `json:"suggestionState,omitempty"`
 	UpdatedAt       *time.Time       `json:"updatedAt,omitempty"`
-	// The usersWithAll field.
+	// Number of users in the cohort that hold all of the suggested entitlements.
 	UsersWithAll *int `json:"usersWithAll,omitempty"`
 }
 

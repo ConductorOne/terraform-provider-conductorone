@@ -26,6 +26,9 @@ func (c *C1APIStepupV1StepUpProviderServiceUpdateRequest) GetUpdateStepUpProvide
 	return c.UpdateStepUpProviderRequest
 }
 
+// #region class-body-c1apistepupv1stepupproviderserviceupdaterequest
+// #endregion class-body-c1apistepupv1stepupproviderserviceupdaterequest
+
 type C1APIStepupV1StepUpProviderServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIStepupV1StepUpProviderServiceUpdateResponse) GetUpdateStepUpProvid
 	}
 	return c.UpdateStepUpProviderResponse
 }
+
+// #region class-body-c1apistepupv1stepupproviderserviceupdateresponse
+// #endregion class-body-c1apistepupv1stepupproviderserviceupdateresponse
