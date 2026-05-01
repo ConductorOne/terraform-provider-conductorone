@@ -58,4 +58,6 @@ In `app_resource_resource_sdk.go` there is also a `RefreshFromSharedCreateManual
 
 ### Status
 
-**Upstream issue NOT yet filed.** No public reference found in `speakeasy-api/*` repos as of 2026-04-30. The generator template lives in the private `speakeasy-api/openapi-generation` repo. Robert applied the same hand-patch in [PR #184](https://github.com/ConductorOne/terraform-provider-conductorone/pull/184) (2026-02-26) without filing upstream; we should file an issue with our reproduction so future regens stop needing the manual patch.
+Filed upstream as [speakeasy-api/speakeasy#2031](https://github.com/speakeasy-api/speakeasy/issues/2031) on 2026-04-30 with a minimal repro and our reproduction history. The generator template lives in the private `speakeasy-api/openapi-generation` repo, so the public CLI repo is the only place we can file. Robert previously applied the same hand-patch in [PR #184](https://github.com/ConductorOne/terraform-provider-conductorone/pull/184) (2026-02-26) without filing upstream; the patch ritual continues until the upstream issue is fixed.
+
+We confirmed `terraform.respectRequiredFields: true` in `gen.yaml` does NOT fix this — that flag improves nullable handling for ordinary nested struct fields but does not affect the flatten-promotion case. Documented in the upstream issue.
