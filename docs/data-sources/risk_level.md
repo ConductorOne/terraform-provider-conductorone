@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_risk_level Data Source - conductorone"
+page_title: "conductorone_risk_level Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   RiskLevel DataSource

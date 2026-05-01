@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_app_resources Data Source - conductorone"
+page_title: "conductorone_app_resources Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AppResources DataSource

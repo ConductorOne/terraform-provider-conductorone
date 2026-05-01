@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_fluid_topics Resource - conductorone"
+page_title: "conductorone_integration_fluid_topics Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Fluid_topics Integration Resource

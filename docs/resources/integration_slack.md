@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_slack Resource - conductorone"
+page_title: "conductorone_integration_slack Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Slack Integration Resource

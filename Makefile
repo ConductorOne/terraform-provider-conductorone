@@ -124,6 +124,9 @@ install-hooks:
 	@echo "Note: golangci-lint v1.x (>= v1.63.0) is required for 'make lint' to work."
 	@echo "      Install: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8"
 
+# --provider-name matches what Speakeasy's CI uses (filepath.Base of the
+# checkout dir = "terraform-provider-conductorone"), so make generate produces
+# the same page_title regardless of local worktree name.
 .PHONY: generate
 generate:
-	cd tools && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir .. --provider-name conductorone --rendered-provider-name terraform-provider-conductorone
+	cd tools && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir .. --provider-name terraform-provider-conductorone

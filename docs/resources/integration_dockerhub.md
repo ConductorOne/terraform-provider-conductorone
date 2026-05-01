@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_dockerhub Resource - conductorone"
+page_title: "conductorone_integration_dockerhub Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Dockerhub Integration Resource

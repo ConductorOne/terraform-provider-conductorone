@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_torq Resource - conductorone"
+page_title: "conductorone_integration_torq Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Torq Integration Resource

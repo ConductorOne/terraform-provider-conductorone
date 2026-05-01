@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_elastic Resource - conductorone"
+page_title: "conductorone_integration_elastic Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Elastic Integration Resource

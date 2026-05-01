@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_access_conflict Resource - conductorone"
+page_title: "conductorone_access_conflict Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AccessConflict Resource

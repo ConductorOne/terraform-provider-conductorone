@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_sendgrid Resource - conductorone"
+page_title: "conductorone_integration_sendgrid Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Sendgrid Integration Resource

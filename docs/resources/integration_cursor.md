@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_cursor Resource - conductorone"
+page_title: "conductorone_integration_cursor Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Cursor Integration Resource

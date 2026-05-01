@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_sharepoint Resource - conductorone"
+page_title: "conductorone_integration_sharepoint Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Sharepoint Integration Resource
