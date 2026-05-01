@@ -34,11 +34,16 @@ func TestPaginationUsesAssignment(t *testing.T) {
 	}
 }
 
-// TestPlanOnlyFieldsAreComputed verifies that fields with tfPlanOnly:"true"
-// have Computed: true in their schema definitions.
+// TestPlanOnlyFieldsAreComputed verifies that fields annotated
+// x-speakeasy-terraform-plan-only: true preserve plan-only behavior in
+// their generated schema blocks.
 //
-// Regression: Speakeasy 1.661.0+ drops Computed: true for plan-only fields,
-// causing perpetual diffs on every terraform plan.
+// Background: Speakeasy 1.661.0–1.677.x dropped `Computed: true` on these
+// fields, causing perpetual diffs. Upstream fix shipped in v1.678.1 via
+// speakeasy-api/speakeasy#1770, which switched the implementation to an
+// attribute-defined plan modifier (UseConfigValue) instead of `Computed: true`.
+// Either pattern is acceptable for our purposes — both prevent the perpetual
+// diff. The test fails only if neither is present.
 func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 	data, err := os.ReadFile("custom_app_entitlement_resource.go")
 	if err != nil {
@@ -47,7 +52,6 @@ func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 	content := string(data)
 
 	// Fields annotated with x-speakeasy-terraform-plan-only: true in overlay.yaml.
-	// Their schema blocks must include Computed: true.
 	planOnlyFields := []string{
 		"provision_policy",
 		"duration_grant",
@@ -62,11 +66,13 @@ func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 		if idx == -1 {
 			continue
 		}
-		// Computed: true should appear within the next 200 chars of the schema definition.
-		end := min(idx+200, len(content))
+		// Either marker should appear within the next 300 chars of the schema definition.
+		end := min(idx+300, len(content))
 		window := content[idx:end]
-		if !strings.Contains(window, "Computed:") {
-			t.Errorf("field %q: schema block missing Computed: true (perpetual diff regression)", field)
+		hasComputed := strings.Contains(window, "Computed:")
+		hasUseConfigValue := strings.Contains(window, "UseConfigValue()")
+		if !hasComputed && !hasUseConfigValue {
+			t.Errorf("field %q: schema block missing both Computed: true and UseConfigValue() plan modifier (perpetual diff regression)", field)
 		}
 	}
 }
