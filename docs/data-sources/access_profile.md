@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_access_profile Data Source - conductorone"
+page_title: "conductorone_access_profile Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   AccessProfile DataSource

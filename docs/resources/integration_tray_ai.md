@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_tray_ai Resource - conductorone"
+page_title: "conductorone_integration_tray_ai Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Tray_ai Integration Resource

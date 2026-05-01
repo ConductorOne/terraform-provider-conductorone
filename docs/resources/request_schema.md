@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_request_schema Resource - conductorone"
+page_title: "conductorone_request_schema Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   RequestSchema Resource

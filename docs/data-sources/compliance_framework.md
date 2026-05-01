@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_compliance_framework Data Source - conductorone"
+page_title: "conductorone_compliance_framework Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   ComplianceFramework DataSource

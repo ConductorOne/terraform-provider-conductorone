@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_fastly Resource - conductorone"
+page_title: "conductorone_integration_fastly Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Fastly Integration Resource

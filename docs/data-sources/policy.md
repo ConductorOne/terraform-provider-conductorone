@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_policy Data Source - conductorone"
+page_title: "conductorone_policy Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Policy DataSource

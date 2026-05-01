@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_bundle_automation Data Source - conductorone"
+page_title: "conductorone_bundle_automation Data Source - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   BundleAutomation DataSource

@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_zoho_people Resource - conductorone"
+page_title: "conductorone_integration_zoho_people Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Zoho_people Integration Resource

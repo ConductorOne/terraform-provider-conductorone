@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_tenable_vm Resource - conductorone"
+page_title: "conductorone_integration_tenable_vm Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Tenable_vm Integration Resource

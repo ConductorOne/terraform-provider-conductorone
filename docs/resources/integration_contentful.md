@@ -1,5 +1,5 @@
 ---
-page_title: "conductorone_integration_contentful Resource - conductorone"
+page_title: "conductorone_integration_contentful Resource - terraform-provider-conductorone"
 subcategory: ""
 description: |-
   Contentful Integration Resource
