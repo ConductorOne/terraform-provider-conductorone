@@ -175,6 +175,16 @@ resource "conductorone_request_schema" "my_request_schema" {
         }
         text_field = {
           multiline = false
+          suffix    = "...my_suffix..."
+        }
+      }
+      string_map_field = {
+        default_value = {
+          key = "value"
+        }
+        string_map_rules = {
+          is_required    = false
+          validate_empty = false
         }
       }
       user_provider_config = {

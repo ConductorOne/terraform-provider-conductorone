@@ -2,12 +2,12 @@
 
 package shared
 
-// The UpdateConnectorScheduleRequest message.
+// The UpdateConnectorScheduleRequest message contains the fields required to update a connector's sync schedule.
 //
 // This message contains a oneof named schedule. Only a single field of the following list may be set at a time:
 //   - cron
 type UpdateConnectorScheduleRequest struct {
-	// The ConnectorScheduleCron message.
+	// A cron-based schedule definition for connector syncs.
 	ConnectorScheduleCron *ConnectorScheduleCron `json:"cron,omitempty"`
 }
 

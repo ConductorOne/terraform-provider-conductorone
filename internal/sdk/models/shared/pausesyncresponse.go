@@ -2,6 +2,6 @@
 
 package shared
 
-// The PauseSyncResponse message.
+// PauseSyncResponse - Empty response body. Status code indicates success.
 type PauseSyncResponse struct {
 }

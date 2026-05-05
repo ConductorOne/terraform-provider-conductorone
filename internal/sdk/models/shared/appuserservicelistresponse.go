@@ -6,13 +6,13 @@ package shared
 type AppUserServiceListResponseExpanded struct {
 }
 
-// The AppUserServiceListResponse message.
+// AppUserServiceListResponse - The response message for listing app users.
 type AppUserServiceListResponse struct {
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []AppUserServiceListResponseExpanded `json:"expanded,omitempty"`
-	// The list field.
+	// The list of app user results.
 	List []AppUserView `json:"list,omitempty"`
-	// The nextPageToken field.
+	// The token for fetching the next page of results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

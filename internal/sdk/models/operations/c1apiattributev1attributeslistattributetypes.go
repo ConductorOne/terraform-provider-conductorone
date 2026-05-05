@@ -26,6 +26,9 @@ func (c *C1APIAttributeV1AttributesListAttributeTypesRequest) GetPageToken() *st
 	return c.PageToken
 }
 
+// #region class-body-c1apiattributev1attributeslistattributetypesrequest
+// #endregion class-body-c1apiattributev1attributeslistattributetypesrequest
+
 type C1APIAttributeV1AttributesListAttributeTypesResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAttributeV1AttributesListAttributeTypesResponse) GetListAttributeT
 	}
 	return c.ListAttributeTypesResponse
 }
+
+// #region class-body-c1apiattributev1attributeslistattributetypesresponse
+// #endregion class-body-c1apiattributev1attributeslistattributetypesresponse

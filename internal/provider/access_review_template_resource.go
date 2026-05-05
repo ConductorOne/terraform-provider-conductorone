@@ -9,7 +9,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/v2/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -36,34 +35,35 @@ type AccessReviewTemplateResource struct {
 
 // AccessReviewTemplateResourceModel describes the resource data model.
 type AccessReviewTemplateResourceModel struct {
-	AccessReviewDuration           types.String                        `tfsdk:"access_review_duration"`
-	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
-	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
-	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
-	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
-	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
-	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
-	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
-	CreatedAt                      types.String                        `tfsdk:"created_at"`
-	DefaultView                    types.String                        `tfsdk:"default_view"`
-	DeletedAt                      types.String                        `tfsdk:"-"`
-	Description                    types.String                        `tfsdk:"description"`
-	DisplayName                    types.String                        `tfsdk:"display_name"`
-	ExemptCertifiedAccessConflicts types.Bool                          `tfsdk:"exempt_certified_access_conflicts"`
-	ID                             types.String                        `tfsdk:"id"`
-	IsCampaignScheduleEnabled      types.Bool                          `tfsdk:"is_campaign_schedule_enabled"`
-	NextScheduledCampaignAt        types.String                        `tfsdk:"next_scheduled_campaign_at"`
-	NotificationConfig             *tfTypes.NotificationConfig         `tfsdk:"notification_config"`
-	Occurrences                    types.Int32                         `tfsdk:"occurrences"`
-	OwnerIds                       []types.String                      `tfsdk:"owner_ids"`
-	PolicyID                       types.String                        `tfsdk:"policy_id"`
-	RecurrenceRule                 *tfTypes.RecurrenceRule             `tfsdk:"recurrence_rule"`
-	ReviewInstructions             types.String                        `tfsdk:"review_instructions"`
-	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig      `tfsdk:"review_signature_config"`
-	ScopeType                      types.String                        `tfsdk:"scope_type"`
-	SlackChannel                   *tfTypes.SlackChannel               `tfsdk:"slack_channel"`
-	UpdatedAt                      types.String                        `tfsdk:"updated_at"`
-	UsePolicyOverride              types.Bool                          `tfsdk:"use_policy_override"`
+	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig       `tfsdk:"access_review_column_config"`
+	AccessReviewDuration           types.String                            `tfsdk:"access_review_duration"`
+	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope     `tfsdk:"access_review_inclusion_scope"`
+	AccessReviewNotificationConfig *tfTypes.AccessReviewNotificationConfig `tfsdk:"access_review_notification_config"`
+	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2            `tfsdk:"access_review_scope_v2"`
+	AccuracyIssueAction            types.String                            `tfsdk:"accuracy_issue_action"`
+	AutoCloseCampaign              types.Bool                              `tfsdk:"auto_close_campaign"`
+	AutoCloseDecision              types.String                            `tfsdk:"auto_close_decision"`
+	AutoGenerateReport             types.Bool                              `tfsdk:"auto_generate_report"`
+	AutoStartCampaign              types.Bool                              `tfsdk:"auto_start_campaign"`
+	CreatedAt                      types.String                            `tfsdk:"created_at"`
+	DefaultView                    types.String                            `tfsdk:"default_view"`
+	DeletedAt                      types.String                            `tfsdk:"-"`
+	Description                    types.String                            `tfsdk:"description"`
+	DisplayName                    types.String                            `tfsdk:"display_name"`
+	ExemptCertifiedAccessConflicts types.Bool                              `tfsdk:"exempt_certified_access_conflicts"`
+	ID                             types.String                            `tfsdk:"id"`
+	IsCampaignScheduleEnabled      types.Bool                              `tfsdk:"is_campaign_schedule_enabled"`
+	NextScheduledCampaignAt        types.String                            `tfsdk:"next_scheduled_campaign_at"`
+	Occurrences                    types.Int32                             `tfsdk:"occurrences"`
+	OwnerIds                       []types.String                          `tfsdk:"owner_ids"`
+	PolicyID                       types.String                            `tfsdk:"policy_id"`
+	RecurrenceRule                 *tfTypes.RecurrenceRule                 `tfsdk:"recurrence_rule"`
+	ReviewInstructions             types.String                            `tfsdk:"review_instructions"`
+	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig          `tfsdk:"review_signature_config"`
+	ScopeType                      types.String                            `tfsdk:"scope_type"`
+	SlackChannel                   *tfTypes.SlackChannel                   `tfsdk:"slack_channel"`
+	UpdatedAt                      types.String                            `tfsdk:"updated_at"`
+	UsePolicyOverride              types.Bool                              `tfsdk:"use_policy_override"`
 }
 
 func (r *AccessReviewTemplateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -74,6 +74,20 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AccessReviewTemplate Resource",
 		Attributes: map[string]schema.Attribute{
+			"access_review_column_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"columns": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
+							` If empty, the default column set for the campaign's default_view is used.`,
+					},
+				},
+				Description: `Configuration for which columns are visible in the reviewer task list.`,
+			},
 			"access_review_duration": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
@@ -133,6 +147,28 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 				},
 				Description: `The AccessReviewInclusionScope message.`,
 			},
+			"access_review_notification_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"send_close": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send a notification when the campaign is closed.`,
+					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send a notification when the campaign is started.`,
+					},
+					"send_reminders": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
+					},
+				},
+				Description: `Controls which email notifications are sent during the access review lifecycle.`,
+			},
 			"access_review_scope_v2": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -144,14 +180,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 							"account_domain": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The accountDomain field. must be one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"APP_USER_DOMAIN_UNSPECIFIED",
-										"APP_USER_DOMAIN_EXTERNAL",
-										"APP_USER_DOMAIN_TRUSTED",
-									),
-								},
+								Description: `The accountDomain field. possible known values include one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]`,
 							},
 							"account_types": schema.ListAttribute{
 								Computed:    true,
@@ -272,16 +301,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 									"filter_type": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The filterType field. must be one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED",
-												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL",
-												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL",
-												"ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC",
-												"ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC",
-											),
-										},
+										Description: `The filterType field. possible known values include one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]`,
 									},
 									"included_access_profile_ids": schema.ListAttribute{
 										Computed:    true,
@@ -318,26 +338,12 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 							"source_filter": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The sourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"GRANT_SOURCE_FILTER_UNSPECIFIED",
-										"GRANT_SOURCE_FILTER_DIRECT",
-										"GRANT_SOURCE_FILTER_INHERITED",
-									),
-								},
+								Description: `The sourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 							},
 							"type_filter": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The typeFilter field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"GRANT_FILTER_TYPE_UNSPECIFIED",
-										"GRANT_FILTER_TYPE_PERMANENT",
-										"GRANT_FILTER_TYPE_TEMPORARY",
-									),
-								},
+								Description: `The typeFilter field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 							},
 						},
 						MarkdownDescription: `The GrantsByCriteriaScope message.` + "\n" +
@@ -489,14 +495,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			"accuracy_issue_action": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The accuracyIssueAction field. must be one of ["ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"ACCURACY_ISSUE_ACTION_UNSPECIFIED",
-						"ACCURACY_ISSUE_ACTION_CONTINUE",
-						"ACCURACY_ISSUE_ACTION_WAIT",
-					),
-				},
+				Description: `The accuracyIssueAction field. possible known values include one of ["ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT"]`,
 			},
 			"auto_close_campaign": schema.BoolAttribute{
 				Computed:    true,
@@ -506,15 +505,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			"auto_close_decision": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The autoCloseDecision field. must be one of ["CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"CLOSE_DECISION_UNSPECIFIED",
-						"CLOSE_DECISION_REVOKED",
-						"CLOSE_DECISION_SKIP",
-						"CLOSE_DECISION_NO_ACTION",
-					),
-				},
+				Description: `The autoCloseDecision field. possible known values include one of ["CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION"]`,
 			},
 			"auto_generate_report": schema.BoolAttribute{
 				Computed:    true,
@@ -532,25 +523,17 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			"default_view": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The defaultView field. must be one of ["ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED",
-						"ACCESS_REVIEW_VIEW_TYPE_BY_APP",
-						"ACCESS_REVIEW_VIEW_TYPE_BY_USER",
-						"ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED",
-					),
-				},
+				Description: `The defaultView field. possible known values include one of ["ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED", "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE"]`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description field.`,
+				Description: `An optional description providing context about the template.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The displayName field.`,
+				Description: `The display name for the new template.`,
 			},
 			"exempt_certified_access_conflicts": schema.BoolAttribute{
 				Computed:    true,
@@ -559,7 +542,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The id field.`,
+				Description: `The unique identifier of this template.`,
 			},
 			"is_campaign_schedule_enabled": schema.BoolAttribute{
 				Computed:    true,
@@ -569,31 +552,9 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			"next_scheduled_campaign_at": schema.StringAttribute{
 				Computed: true,
 			},
-			"notification_config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"send_close": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The sendClose field.`,
-					},
-					"send_kickoff": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The sendKickoff field.`,
-					},
-					"send_reminders": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The sendReminders field.`,
-					},
-				},
-				Description: `The NotificationConfig message.`,
-			},
 			"occurrences": schema.Int32Attribute{
 				Computed:    true,
-				Description: `The occurrences field.`,
+				Description: `The number of campaigns that have been created from this template.`,
 			},
 			"owner_ids": schema.ListAttribute{
 				Optional: true,
@@ -601,12 +562,12 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				ElementType: types.StringType,
-				Description: `The ownerIds field. Requires replacement if changed.`,
+				Description: `The IDs of the users who own this template. At least one owner is required. Requires replacement if changed.`,
 			},
 			"policy_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The policyId field.`,
+				Description: `The ID of the default review policy for campaigns created from this template.`,
 			},
 			"recurrence_rule": schema.SingleNestedAttribute{
 				Computed: true,
@@ -622,17 +583,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 					"frequency": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The frequency field. must be one of ["FREQUENCY_UNSPECIFIED", "FREQUENCY_NONE", "FREQUENCY_DAILY", "FREQUENCY_WEEKLY", "FREQUENCY_MONTHLY", "FREQUENCY_YEARLY"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"FREQUENCY_UNSPECIFIED",
-								"FREQUENCY_NONE",
-								"FREQUENCY_DAILY",
-								"FREQUENCY_WEEKLY",
-								"FREQUENCY_MONTHLY",
-								"FREQUENCY_YEARLY",
-							),
-						},
+						Description: `The frequency field. possible known values include one of ["FREQUENCY_UNSPECIFIED", "FREQUENCY_NONE", "FREQUENCY_DAILY", "FREQUENCY_WEEKLY", "FREQUENCY_MONTHLY", "FREQUENCY_YEARLY"]`,
 					},
 					"interval": schema.Int32Attribute{
 						Computed:    true,
@@ -695,15 +646,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 			"scope_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED",
-						"ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS",
-						"ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS",
-						"ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE",
-					),
-				},
+				Description: `The scopeType field. possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"]`,
 			},
 			"slack_channel": schema.SingleNestedAttribute{
 				Computed: true,
@@ -796,43 +739,6 @@ func (r *AccessReviewTemplateResource) Create(ctx context.Context, req resource.
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewTemplateServiceCreateResponse(ctx, res.AccessReviewTemplateServiceCreateResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIAccessreviewV1AccessReviewTemplateServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AccessReviewTemplate.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.AccessReviewTemplateServiceGetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewTemplateServiceGetResponse(ctx, res1.AccessReviewTemplateServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -962,43 +868,6 @@ func (r *AccessReviewTemplateResource) Update(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIAccessreviewV1AccessReviewTemplateServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AccessReviewTemplate.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.AccessReviewTemplateServiceGetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAccessReviewTemplateServiceGetResponse(ctx, res1.AccessReviewTemplateServiceGetResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1040,7 +909,10 @@ func (r *AccessReviewTemplateResource) Delete(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

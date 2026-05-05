@@ -4,9 +4,9 @@ package shared
 
 // The ListOrgDomainsResponse message.
 type ListOrgDomainsResponse struct {
-	// The list field.
+	// The list of verified domains.
 	List []OrgDomain `json:"list,omitempty"`
-	// The nextPageToken field.
+	// A token to retrieve the next page of results, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

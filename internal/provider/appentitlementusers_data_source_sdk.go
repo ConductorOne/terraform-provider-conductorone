@@ -17,6 +17,8 @@ func (r *AppEntitlementUsersDataSourceModel) RefreshFromSharedListAppEntitlement
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		if resp.List != nil {
 			r.List = []tfTypes.AppEntitlementUserView{}
@@ -61,12 +63,16 @@ func (r *AppEntitlementUsersDataSourceModel) RefreshFromSharedListAppEntitlement
 							for _, v := range listItem.AppUserView.AppUser.Emails {
 								list.AppUserView.AppUser.Emails = append(list.AppUserView.AppUser.Emails, types.StringValue(v))
 							}
+						} else {
+							list.AppUserView.AppUser.Emails = nil
 						}
 						if listItem.AppUserView.AppUser.EmployeeIds != nil {
 							list.AppUserView.AppUser.EmployeeIds = make([]types.String, 0, len(listItem.AppUserView.AppUser.EmployeeIds))
 							for _, v := range listItem.AppUserView.AppUser.EmployeeIds {
 								list.AppUserView.AppUser.EmployeeIds = append(list.AppUserView.AppUser.EmployeeIds, types.StringValue(v))
 							}
+						} else {
+							list.AppUserView.AppUser.EmployeeIds = nil
 						}
 						list.AppUserView.AppUser.ID = types.StringPointerValue(listItem.AppUserView.AppUser.ID)
 						list.AppUserView.AppUser.IdentityUserID = types.StringPointerValue(listItem.AppUserView.AppUser.IdentityUserID)
@@ -83,6 +89,8 @@ func (r *AppEntitlementUsersDataSourceModel) RefreshFromSharedListAppEntitlement
 							for _, v := range listItem.AppUserView.AppUser.Usernames {
 								list.AppUserView.AppUser.Usernames = append(list.AppUserView.AppUser.Usernames, types.StringValue(v))
 							}
+						} else {
+							list.AppUserView.AppUser.Usernames = nil
 						}
 					}
 					list.AppUserView.IdentityUserPath = types.StringPointerValue(listItem.AppUserView.IdentityUserPath)
@@ -99,11 +107,15 @@ func (r *AppEntitlementUsersDataSourceModel) RefreshFromSharedListAppEntitlement
 
 						list.GrantSources = append(list.GrantSources, grantSources)
 					}
+				} else {
+					list.GrantSources = nil
 				}
 				list.OriginatingTicketID = types.StringPointerValue(listItem.OriginatingTicketID)
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

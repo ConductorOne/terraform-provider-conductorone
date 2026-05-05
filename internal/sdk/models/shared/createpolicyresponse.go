@@ -4,7 +4,10 @@ package shared
 
 // The CreatePolicyResponse message contains the created policy object.
 type CreatePolicyResponse struct {
-	// A policy describes the behavior of the ConductorOne system when processing a task. You can describe the type, approvers, fallback behavior, and escalation processes.
+	// A policy defines a workflow (sequence of steps) that runs when processing
+	//  access requests, reviews, or revocations. Policies support conditional
+	//  routing: different conditions can trigger different step sequences, with a
+	//  baseline fallback.
 	Policy *Policy `json:"policy,omitempty"`
 }
 

@@ -42,6 +42,9 @@ func (c *C1APIAppV1ConnectorServiceConfirmSyncValidRequest) GetConfirmSyncValidR
 	return c.ConfirmSyncValidRequest
 }
 
+// #region class-body-c1apiappv1connectorserviceconfirmsyncvalidrequest
+// #endregion class-body-c1apiappv1connectorserviceconfirmsyncvalidrequest
+
 type C1APIAppV1ConnectorServiceConfirmSyncValidResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -49,7 +52,7 @@ type C1APIAppV1ConnectorServiceConfirmSyncValidResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// Empty response body. Status code indicates success.
 	ConfirmSyncValidResponse *shared.ConfirmSyncValidResponse
 }
 
@@ -80,3 +83,6 @@ func (c *C1APIAppV1ConnectorServiceConfirmSyncValidResponse) GetConfirmSyncValid
 	}
 	return c.ConfirmSyncValidResponse
 }
+
+// #region class-body-c1apiappv1connectorserviceconfirmsyncvalidresponse
+// #endregion class-body-c1apiappv1connectorserviceconfirmsyncvalidresponse

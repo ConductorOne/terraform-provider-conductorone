@@ -4,7 +4,7 @@ package shared
 
 // The TaskAuditViewRef message.
 type TaskAuditViewRef struct {
-	// The id field.
+	// The ID of the audit event.
 	ID *string `json:"id,omitempty"`
 }
 

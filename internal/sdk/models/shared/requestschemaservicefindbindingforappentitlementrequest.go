@@ -2,7 +2,7 @@
 
 package shared
 
-// The RequestSchemaServiceFindBindingForAppEntitlementRequest message.
+// RequestSchemaServiceFindBindingForAppEntitlementRequest - The request message for finding which request schema is bound to a given app entitlement.
 type RequestSchemaServiceFindBindingForAppEntitlementRequest struct {
 	// The AppEntitlementRef message.
 	AppEntitlementRef *AppEntitlementRef `json:"entitlementRef,omitempty"`

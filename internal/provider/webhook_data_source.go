@@ -66,31 +66,31 @@ func (r *WebhookDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
-				Description: `The description field.`,
+				Description: `An optional description of the webhook's purpose.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The displayName field.`,
+				Description: `The human-readable name of the webhook.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The id field.`,
+				Description: `The unique identifier of the webhook.`,
 			},
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
-				Description: `The nextPageToken field.`,
+				Description: `A token to retrieve the next page of results, or empty if there are no more results.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,
-				Description: `The pageSize field.`,
+				Description: `The maximum number of webhooks to return per page.`,
 			},
 			"page_token": schema.StringAttribute{
 				Optional:    true,
-				Description: `The pageToken field.`,
+				Description: `The pagination token from a previous search response to fetch the next page.`,
 			},
 			"query": schema.StringAttribute{
 				Optional:    true,
-				Description: `The query field.`,
+				Description: `A text query to match against webhook names and descriptions.`,
 			},
 			"refs": schema.ListNestedAttribute{
 				Optional: true,
@@ -98,18 +98,18 @@ func (r *WebhookDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
 							Optional:    true,
-							Description: `The id field.`,
+							Description: `The ID of the referenced webhook.`,
 						},
 					},
 				},
-				Description: `The refs field.`,
+				Description: `Optional set of webhook references to restrict the search to specific webhooks.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 			},
 			"url": schema.StringAttribute{
 				Computed:    true,
-				Description: `The url field.`,
+				Description: `The destination URL that receives event notification HTTP callbacks.`,
 			},
 		},
 	}
@@ -183,26 +183,6 @@ func (r *WebhookDataSource) Read(ctx context.Context, req datasource.ReadRequest
 
 	if resp.Diagnostics.HasError() {
 		return
-	}
-	for {
-		var err error
-
-		res, err = res.Next()
-
-		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
-			return
-		}
-
-		if res == nil {
-			break
-		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedWebhooksSearchResponse(ctx, res.WebhooksSearchResponse)...)
-
-		if resp.Diagnostics.HasError() {
-			return
-		}
 	}
 
 	// Save updated data into Terraform state

@@ -7,23 +7,20 @@ import (
 	"time"
 )
 
-// The AppEntitlementProxy message.
-//
-// This message contains a oneof named _implicit. Only a single field of the following list may be set at a time:
-//   - implicit
+// AppEntitlementProxy - An entitlement proxy binding that defines a hierarchical relationship between two entitlements.
 type AppEntitlementProxy struct {
 	CreatedAt  *time.Time `json:"createdAt,omitempty"`
 	DeletedAt  *time.Time `json:"deletedAt,omitempty"`
 	DisabledAt *time.Time `json:"disabledAt,omitempty"`
-	// The dstAppEntitlementId field.
+	// The ID of the destination (child) entitlement.
 	DstAppEntitlementID *string `json:"dstAppEntitlementId,omitempty"`
-	// The dstAppId field.
+	// The ID of the app that owns the destination entitlement.
 	DstAppID *string `json:"dstAppId,omitempty"`
-	// The srcAppEntitlementId field.
+	// The ID of the source (parent) entitlement.
 	SrcAppEntitlementID *string `json:"srcAppEntitlementId,omitempty"`
-	// The srcAppId field.
+	// The ID of the app that owns the source entitlement.
 	SrcAppID *string `json:"srcAppId,omitempty"`
-	// The systemBuiltin field.
+	// If true, this binding was created by the system and cannot be removed by the user.
 	SystemBuiltin *bool      `json:"systemBuiltin,omitempty"`
 	UpdatedAt     *time.Time `json:"updatedAt,omitempty"`
 }

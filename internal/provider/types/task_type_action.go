@@ -7,8 +7,12 @@ import (
 )
 
 type TaskTypeAction struct {
-	ActionID    types.String `tfsdk:"action_id"`
-	FormValues  *FormValues  `tfsdk:"form_values"`
-	Outcome     types.String `tfsdk:"outcome"`
-	OutcomeTime types.String `tfsdk:"outcome_time"`
+	ScopeRole          *ScopeRole          `tfsdk:"scope_role"`
+	TaskActionInstance *TaskActionInstance `tfsdk:"task_action_instance"`
+	ActionID           types.String        `tfsdk:"action_id"`
+	DisplayName        types.String        `tfsdk:"display_name"`
+	FormValues         *FormValues         `tfsdk:"form_values"`
+	Outcome            types.String        `tfsdk:"outcome"`
+	OutcomeTime        types.String        `tfsdk:"outcome_time"`
+	Type               types.String        `tfsdk:"type"`
 }

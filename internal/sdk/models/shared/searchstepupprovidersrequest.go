@@ -2,39 +2,28 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// ProviderType - The providerType field.
-type ProviderType string
+// SearchStepUpProvidersRequestProviderType - The providerType field.
+type SearchStepUpProvidersRequestProviderType string
 
 const (
-	ProviderTypeProviderTypeUnspecified ProviderType = "PROVIDER_TYPE_UNSPECIFIED"
-	ProviderTypeProviderTypeOauth2      ProviderType = "PROVIDER_TYPE_OAUTH2"
-	ProviderTypeProviderTypeMicrosoft   ProviderType = "PROVIDER_TYPE_MICROSOFT"
+	SearchStepUpProvidersRequestProviderTypeProviderTypeUnspecified SearchStepUpProvidersRequestProviderType = "PROVIDER_TYPE_UNSPECIFIED"
+	SearchStepUpProvidersRequestProviderTypeProviderTypeOauth2      SearchStepUpProvidersRequestProviderType = "PROVIDER_TYPE_OAUTH2"
+	SearchStepUpProvidersRequestProviderTypeProviderTypeMicrosoft   SearchStepUpProvidersRequestProviderType = "PROVIDER_TYPE_MICROSOFT"
 )
 
-func (e ProviderType) ToPointer() *ProviderType {
+func (e SearchStepUpProvidersRequestProviderType) ToPointer() *SearchStepUpProvidersRequestProviderType {
 	return &e
 }
-func (e *ProviderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SearchStepUpProvidersRequestProviderType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PROVIDER_TYPE_UNSPECIFIED", "PROVIDER_TYPE_OAUTH2", "PROVIDER_TYPE_MICROSOFT":
+			return true
+		}
 	}
-	switch v {
-	case "PROVIDER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "PROVIDER_TYPE_OAUTH2":
-		fallthrough
-	case "PROVIDER_TYPE_MICROSOFT":
-		*e = ProviderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProviderType: %v", v)
-	}
+	return false
 }
 
 // SearchStepUpProvidersRequest - Request message for searching step-up providers
@@ -44,10 +33,10 @@ type SearchStepUpProvidersRequest struct {
 	// Token for pagination
 	PageToken *string `json:"pageToken,omitempty"`
 	// The providerType field.
-	ProviderType *ProviderType `json:"providerType,omitempty"`
+	ProviderType *SearchStepUpProvidersRequestProviderType `json:"providerType,omitempty"`
 	// Filter by name (partial match)
 	Query *string `json:"query,omitempty"`
-	// The refs field.
+	// Filter to specific providers by their references.
 	Refs []StepUpProviderRef `json:"refs,omitempty"`
 }
 
@@ -65,7 +54,7 @@ func (s *SearchStepUpProvidersRequest) GetPageToken() *string {
 	return s.PageToken
 }
 
-func (s *SearchStepUpProvidersRequest) GetProviderType() *ProviderType {
+func (s *SearchStepUpProvidersRequest) GetProviderType() *SearchStepUpProvidersRequestProviderType {
 	if s == nil {
 		return nil
 	}

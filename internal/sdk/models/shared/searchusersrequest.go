@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // DelegateStatus - Filter for users based on their delegate status.
 type DelegateStatus string
 
@@ -19,22 +14,16 @@ const (
 func (e DelegateStatus) ToPointer() *DelegateStatus {
 	return &e
 }
-func (e *DelegateStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DelegateStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE":
+			return true
+		}
 	}
-	switch v {
-	case "DELEGATE_STATUS_UNSPECIFIED":
-		fallthrough
-	case "DELEGATE_STATUS_HAS_DELEGATE":
-		fallthrough
-	case "DELEGATE_STATUS_NO_DELEGATE":
-		*e = DelegateStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DelegateStatus: %v", v)
-	}
+	return false
 }
 
 type ExcludeOrigins string
@@ -49,24 +38,16 @@ const (
 func (e ExcludeOrigins) ToPointer() *ExcludeOrigins {
 	return &e
 }
-func (e *ExcludeOrigins) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ExcludeOrigins) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "USER_ORIGIN_UNSPECIFIED", "USER_ORIGIN_DIRECTORY", "USER_ORIGIN_LOCAL", "USER_ORIGIN_SYSTEM":
+			return true
+		}
 	}
-	switch v {
-	case "USER_ORIGIN_UNSPECIFIED":
-		fallthrough
-	case "USER_ORIGIN_DIRECTORY":
-		fallthrough
-	case "USER_ORIGIN_LOCAL":
-		fallthrough
-	case "USER_ORIGIN_SYSTEM":
-		*e = ExcludeOrigins(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ExcludeOrigins: %v", v)
-	}
+	return false
 }
 
 type ExcludeTypes string
@@ -82,26 +63,16 @@ const (
 func (e ExcludeTypes) ToPointer() *ExcludeTypes {
 	return &e
 }
-func (e *ExcludeTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ExcludeTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "USER_TYPE_UNSPECIFIED", "USER_TYPE_SYSTEM", "USER_TYPE_HUMAN", "USER_TYPE_SERVICE", "USER_TYPE_AGENT":
+			return true
+		}
 	}
-	switch v {
-	case "USER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "USER_TYPE_SYSTEM":
-		fallthrough
-	case "USER_TYPE_HUMAN":
-		fallthrough
-	case "USER_TYPE_SERVICE":
-		fallthrough
-	case "USER_TYPE_AGENT":
-		*e = ExcludeTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ExcludeTypes: %v", v)
-	}
+	return false
 }
 
 type Origins string
@@ -116,24 +87,16 @@ const (
 func (e Origins) ToPointer() *Origins {
 	return &e
 }
-func (e *Origins) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Origins) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "USER_ORIGIN_UNSPECIFIED", "USER_ORIGIN_DIRECTORY", "USER_ORIGIN_LOCAL", "USER_ORIGIN_SYSTEM":
+			return true
+		}
 	}
-	switch v {
-	case "USER_ORIGIN_UNSPECIFIED":
-		fallthrough
-	case "USER_ORIGIN_DIRECTORY":
-		fallthrough
-	case "USER_ORIGIN_LOCAL":
-		fallthrough
-	case "USER_ORIGIN_SYSTEM":
-		*e = Origins(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Origins: %v", v)
-	}
+	return false
 }
 
 type SearchUsersRequestUserStatuses string
@@ -148,24 +111,16 @@ const (
 func (e SearchUsersRequestUserStatuses) ToPointer() *SearchUsersRequestUserStatuses {
 	return &e
 }
-func (e *SearchUsersRequestUserStatuses) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SearchUsersRequestUserStatuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "UNKNOWN", "ENABLED", "DISABLED", "DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "UNKNOWN":
-		fallthrough
-	case "ENABLED":
-		fallthrough
-	case "DISABLED":
-		fallthrough
-	case "DELETED":
-		*e = SearchUsersRequestUserStatuses(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SearchUsersRequestUserStatuses: %v", v)
-	}
+	return false
 }
 
 // SearchUsersRequest - Search for users based on some filters.

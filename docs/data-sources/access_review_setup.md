@@ -61,8 +61,8 @@ This message contains a oneof named access_conflicts_scope. Only a single field 
 
 This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
   - resourceSelection (see [below for nested schema](#nestedatt--access_review_scope_v2))
-- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
-- `list` (Attributes List) The list field. (see [below for nested schema](#nestedatt--list))
+- `expanded` (Attributes List) Related objects requested via the expand mask. (see [below for nested schema](#nestedatt--expanded))
+- `list` (Attributes List) The current list of setup entitlements for the campaign. (see [below for nested schema](#nestedatt--list))
 
 <a id="nestedatt--access_review_scope_v2"></a>
 ### Nested Schema for `access_review_scope_v2`
@@ -254,7 +254,7 @@ Read-Only:
 
 Read-Only:
 
-- `access_review_setup_entitlement` (Attributes) The AccessReviewSetupEntitlement message. (see [below for nested schema](#nestedatt--list--access_review_setup_entitlement))
+- `access_review_setup_entitlement` (Attributes) An entitlement that has been selected for inclusion in an access review campaign during setup. (see [below for nested schema](#nestedatt--list--access_review_setup_entitlement))
 - `app_path` (String) The appPath field.
 - `entitlement_path` (String) The entitlementPath field.
 - `policy_path` (String) The policyPath field.
@@ -264,13 +264,13 @@ Read-Only:
 
 Read-Only:
 
-- `access_review_id` (String) The accessReviewId field.
-- `app_entitlement_id` (String) The appEntitlementId field.
-- `app_id` (String) The appId field.
-- `app_resource_id` (String) The appResourceId field.
-- `app_resource_type_id` (String) The appResourceTypeId field.
+- `access_review_id` (String) The ID of the access review campaign this entitlement belongs to.
+- `app_entitlement_id` (String) The ID of the entitlement being reviewed.
+- `app_id` (String) The ID of the application that owns the entitlement.
+- `app_resource_id` (String) The ID of the specific resource associated with this entitlement, if applicable.
+- `app_resource_type_id` (String) The ID of the resource type associated with this entitlement, if applicable.
 - `created_at` (String)
-- `custom_policy_id` (String) The customPolicyId field.
-- `policy_id` (String) The policyId field.
-- `tenant_id` (String) The tenantId field.
+- `custom_policy_id` (String) An override policy ID for this specific entitlement. Populated when use_policy_override is enabled on the campaign.
+- `policy_id` (String) The ID of the review policy applied to this entitlement. Defaults to the campaign policy.
+- `tenant_id` (String) The tenant that owns this setup entitlement.
 - `updated_at` (String)

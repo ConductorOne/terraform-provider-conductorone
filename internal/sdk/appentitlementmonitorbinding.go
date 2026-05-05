@@ -31,7 +31,7 @@ func newAppEntitlementMonitorBinding(rootSDK *ConductoroneAPI, sdkConfig config.
 }
 
 // DeleteAppEntitlementMonitorBinding - Delete App Entitlement Monitor Binding
-// Invokes the c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.DeleteAppEntitlementMonitorBinding method.
+// Remove an app entitlement from a conflict monitor's entitlement set.
 func (s *AppEntitlementMonitorBinding) DeleteAppEntitlementMonitorBinding(ctx context.Context, request *shared.DeleteAppEntitlementMonitorBindingRequest, opts ...operations.Option) (*operations.C1APIAccessconflictV1AppEntitlementMonitorBindingServiceDeleteAppEntitlementMonitorBindingResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -155,6 +155,8 @@ func (s *AppEntitlementMonitorBinding) DeleteAppEntitlementMonitorBinding(ctx co
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -168,7 +170,7 @@ func (s *AppEntitlementMonitorBinding) DeleteAppEntitlementMonitorBinding(ctx co
 }
 
 // CreateAppEntitlementMonitorBinding - Create App Entitlement Monitor Binding
-// Invokes the c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.CreateAppEntitlementMonitorBinding method.
+// Bind an app entitlement to one side (A or B) of a conflict monitor.
 func (s *AppEntitlementMonitorBinding) CreateAppEntitlementMonitorBinding(ctx context.Context, request *shared.CreateAppEntitlementMonitorBindingRequest, opts ...operations.Option) (*operations.C1APIAccessconflictV1AppEntitlementMonitorBindingServiceCreateAppEntitlementMonitorBindingResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -305,7 +307,7 @@ func (s *AppEntitlementMonitorBinding) CreateAppEntitlementMonitorBinding(ctx co
 }
 
 // GetAppEntitlementMonitorBinding - Get App Entitlement Monitor Binding
-// Invokes the c1.api.accessconflict.v1.AppEntitlementMonitorBindingService.GetAppEntitlementMonitorBinding method.
+// Retrieve a single binding that associates an app entitlement with one side of a conflict monitor.
 func (s *AppEntitlementMonitorBinding) GetAppEntitlementMonitorBinding(ctx context.Context, request *shared.GetAppEntitlementMonitorBindingRequest, opts ...operations.Option) (*operations.C1APIAccessconflictV1AppEntitlementMonitorBindingServiceGetAppEntitlementMonitorBindingResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -430,6 +432,7 @@ func (s *AppEntitlementMonitorBinding) GetAppEntitlementMonitorBinding(ctx conte
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

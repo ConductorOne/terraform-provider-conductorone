@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// The Vault message.
+// Vault represents an external secret storage integration used to store connector credentials securely.
 //
 // This message contains a oneof named vault. Only a single field of the following list may be set at a time:
 //   - groupAuthzVault
@@ -16,15 +16,15 @@ type Vault struct {
 	CreatedAt                    *time.Time `json:"createdAt,omitempty"`
 	CredentialExpirationDuration *string    `json:"credentialExpirationDuration,omitempty"`
 	DeletedAt                    *time.Time `json:"deletedAt,omitempty"`
-	// The description field.
+	// A free-text description of the vault's purpose or configuration.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// The human-readable name of the vault.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The GroupAuthzVault message.
+	// GroupAuthzVault configures a vault that uses group-based authorization to control access to stored credentials.
 	GroupAuthzVault *GroupAuthzVault `json:"groupAuthzVault,omitempty"`
-	// The id field.
+	// The unique identifier of the vault.
 	ID *string `json:"id,omitempty"`
-	// The MagicVault message.
+	// MagicVault configures a vault that grants time-limited credential access via magic links.
 	MagicVault *MagicVault `json:"magicVault,omitempty"`
 	UpdatedAt  *time.Time  `json:"updatedAt,omitempty"`
 }

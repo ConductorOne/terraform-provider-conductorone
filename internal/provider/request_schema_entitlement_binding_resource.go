@@ -82,7 +82,7 @@ func (r *RequestSchemaEntitlementBindingResource) Schema(ctx context.Context, re
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The requestSchemaId field. Requires replacement if changed.`,
+				Description: `The unique identifier of the request schema to bind the entitlement to. Requires replacement if changed.`,
 			},
 		},
 	}
@@ -282,7 +282,10 @@ func (r *RequestSchemaEntitlementBindingResource) Delete(ctx context.Context, re
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

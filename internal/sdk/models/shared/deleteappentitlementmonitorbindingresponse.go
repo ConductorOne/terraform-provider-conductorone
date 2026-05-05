@@ -2,6 +2,6 @@
 
 package shared
 
-// The DeleteAppEntitlementMonitorBindingResponse message.
+// DeleteAppEntitlementMonitorBindingResponse - The response message for deleting an app entitlement monitor binding.
 type DeleteAppEntitlementMonitorBindingResponse struct {
 }

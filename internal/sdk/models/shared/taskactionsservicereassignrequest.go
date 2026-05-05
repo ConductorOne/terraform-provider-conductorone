@@ -2,13 +2,13 @@
 
 package shared
 
-// The TaskActionsServiceReassignRequest message.
+// The TaskActionsServiceReassignRequest object lets you reassign a task's current policy step to different users.
 type TaskActionsServiceReassignRequest struct {
-	// The comment field.
+	// An optional comment attached to the reassignment.
 	Comment *string `json:"comment,omitempty"`
-	// The newStepUserIds field.
+	// The IDs of the users to reassign the current policy step to. Must be from the allowed reassignees list.
 	NewStepUserIds []string `json:"newStepUserIds,omitempty"`
-	// The policyStepId field.
+	// The ID of the current policy step to reassign. Must match the task's active step.
 	PolicyStepID *string `json:"policyStepId,omitempty"`
 }
 

@@ -34,6 +34,9 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceTestTokenRequest) Get
 	return c.WorkloadFederationServiceTestTokenRequest
 }
 
+// #region class-body-c1apiworkloadfederationv1workloadfederationservicetesttokenrequest
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationservicetesttokenrequest
+
 type C1APIWorkloadFederationV1WorkloadFederationServiceTestTokenResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceTestTokenResponse) Ge
 	}
 	return c.WorkloadFederationServiceTestTokenResponse
 }
+
+// #region class-body-c1apiworkloadfederationv1workloadfederationservicetesttokenresponse
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationservicetesttokenresponse

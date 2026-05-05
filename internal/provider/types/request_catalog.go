@@ -13,6 +13,7 @@ type RequestCatalog struct {
 	Description                     types.String `tfsdk:"description"`
 	DisplayName                     types.String `tfsdk:"display_name"`
 	EnrollmentBehavior              types.String `tfsdk:"enrollment_behavior"`
+	GrantPolicyID                   types.String `tfsdk:"grant_policy_id"`
 	ID                              types.String `tfsdk:"id"`
 	Published                       types.Bool   `tfsdk:"published"`
 	RequestBundle                   types.Bool   `tfsdk:"request_bundle"`

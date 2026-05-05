@@ -4,7 +4,7 @@ package shared
 
 // The UpdateStepUpProviderSecretRequest message.
 type UpdateStepUpProviderSecretRequest struct {
-	// The clientSecret field.
+	// The new OAuth2 client secret. Write-only; never returned in responses.
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
 

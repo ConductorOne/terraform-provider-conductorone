@@ -7,11 +7,9 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/v2/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -39,6 +37,7 @@ type AccessProfileResourceModel struct {
 	DisplayName                     types.String                                                 `tfsdk:"display_name"`
 	EnrollmentBehavior              types.String                                                 `tfsdk:"enrollment_behavior"`
 	Expanded                        []tfTypes.RequestCatalogManagementServiceGetResponseExpanded `tfsdk:"expanded"`
+	GrantPolicyID                   types.String                                                 `tfsdk:"grant_policy_id"`
 	ID                              types.String                                                 `tfsdk:"id"`
 	Published                       types.Bool                                                   `tfsdk:"published"`
 	RequestBundle                   types.Bool                                                   `tfsdk:"request_bundle"`
@@ -75,14 +74,7 @@ func (r *AccessProfileResource) Schema(ctx context.Context, req resource.SchemaR
 			"enrollment_behavior": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Defines how to handle the request policies of the entitlements in the catalog during enrollment. must be one of ["REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED",
-						"REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY",
-						"REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY",
-					),
-				},
+				Description: `Defines how to handle the request policies of the entitlements in the catalog during enrollment. possible known values include one of ["REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY"]`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
@@ -90,6 +82,11 @@ func (r *AccessProfileResource) Schema(ctx context.Context, req resource.SchemaR
 					Attributes: map[string]schema.Attribute{},
 				},
 				Description: `List of serialized related objects.`,
+			},
+			"grant_policy_id": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The ID of the grant policy for access requests in this catalog.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -108,27 +105,12 @@ func (r *AccessProfileResource) Schema(ctx context.Context, req resource.SchemaR
 			"unenrollment_behavior": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Defines how to handle the revocation of the entitlements in the catalog during unenrollment. must be one of ["REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED",
-						"REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS",
-						"REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL",
-						"REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED",
-					),
-				},
+				Description: `Defines how to handle the revocation of the entitlements in the catalog during unenrollment. possible known values include one of ["REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED"]`,
 			},
 			"unenrollment_entitlement_behavior": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment. must be one of ["REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS", "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED",
-						"REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS",
-						"REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE",
-					),
-				},
+				Description: `Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment. possible known values include one of ["REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS", "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE"]`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -336,43 +318,6 @@ func (r *AccessProfileResource) Update(ctx context.Context, req resource.UpdateR
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.RequestCatalogManagement.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.RequestCatalogManagementServiceGetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestCatalogManagementServiceGetResponse(ctx, res1.RequestCatalogManagementServiceGetResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -414,7 +359,10 @@ func (r *AccessProfileResource) Delete(ctx context.Context, req resource.DeleteR
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

@@ -2,6 +2,6 @@
 
 package shared
 
-// The ForceSyncResponse message.
+// ForceSyncResponse - Empty response body. Status code indicates success.
 type ForceSyncResponse struct {
 }

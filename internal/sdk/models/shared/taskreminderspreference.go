@@ -6,6 +6,8 @@ package shared
 type TaskRemindersPreference struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// The locked field.
+	Locked *bool `json:"locked,omitempty"`
 }
 
 func (t *TaskRemindersPreference) GetEnabled() *bool {
@@ -13,4 +15,11 @@ func (t *TaskRemindersPreference) GetEnabled() *bool {
 		return nil
 	}
 	return t.Enabled
+}
+
+func (t *TaskRemindersPreference) GetLocked() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Locked
 }

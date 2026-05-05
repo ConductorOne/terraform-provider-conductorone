@@ -201,6 +201,18 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 						Computed:    true,
 						Description: `JSONPATH expression indicating the location of the Insights objects in the expanded array`,
 					},
+					"resource_bindings_path": schema.StringAttribute{
+						Computed:    true,
+						Description: `JSONPATH expression indicating the location of the EntitlementScopeBindingList object in the expanded array.`,
+					},
+					"role_resource_path": schema.StringAttribute{
+						Computed:    true,
+						Description: `JSONPATH expression indicating the location of the role AppResource for a scope-role action task in the expanded array.`,
+					},
+					"scope_resource_path": schema.StringAttribute{
+						Computed:    true,
+						Description: `JSONPATH expression indicating the location of the scope AppResource for a scope-role action task in the expanded array.`,
+					},
 					"step_approvers_path": schema.StringAttribute{
 						Computed:    true,
 						Description: `JSONPATH expression indicating the location of the StepApproverUsers objects in the expanded array`,
@@ -396,11 +408,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 														`` + "\n" +
 														`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 														`  - checkboxField` + "\n" +
-														`  - toggleField` + "\n" +
-														`` + "\n" +
-														`` + "\n" +
-														`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - rules`,
+														`  - toggleField`,
 												},
 												"description": schema.StringAttribute{
 													Computed:    true,
@@ -423,29 +431,21 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 															Description: `The FileInputField message.`,
 														},
 														"max_file_size": schema.StringAttribute{
-															Computed: true,
-															MarkdownDescription: `The maxFileSize field.` + "\n" +
-																`This field is part of the ` + "`" + `_max_file_size` + "`" + ` oneof.` + "\n" +
-																`See the documentation for ` + "`" + `c1.api.form.v1.FileField` + "`" + ` for more details.`,
+															Computed:    true,
+															Description: `The maxFileSize field.`,
 														},
 													},
 													MarkdownDescription: `The FileField message.` + "\n" +
 														`` + "\n" +
 														`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - fileInputField` + "\n" +
-														`` + "\n" +
-														`` + "\n" +
-														`This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - maxFileSize`,
+														`  - fileInputField`,
 												},
 												"int64_field": schema.SingleNestedAttribute{
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
 														"default_value": schema.StringAttribute{
-															Computed: true,
-															MarkdownDescription: `The defaultValue field.` + "\n" +
-																`This field is part of the ` + "`" + `_default_value` + "`" + ` oneof.` + "\n" +
-																`See the documentation for ` + "`" + `c1.api.form.v1.Int64Field` + "`" + ` for more details.`,
+															Computed:    true,
+															Description: `The defaultValue field.`,
 														},
 														"int64_rules": schema.SingleNestedAttribute{
 															Computed: true,
@@ -522,15 +522,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 													MarkdownDescription: `The Int64Field message.` + "\n" +
 														`` + "\n" +
 														`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - numberField` + "\n" +
-														`` + "\n" +
-														`` + "\n" +
-														`This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - defaultValue` + "\n" +
-														`` + "\n" +
-														`` + "\n" +
-														`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - rules`,
+														`  - numberField`,
 												},
 												"name": schema.StringAttribute{
 													Computed:    true,
@@ -839,6 +831,10 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Computed:    true,
 																	Description: `The multiline field.`,
 																},
+																"suffix": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `Static text displayed as an end adornment (e.g. ".example.com" for domain fields).`,
+																},
 															},
 															Description: `The TextField message.`,
 														},
@@ -849,11 +845,32 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 														`  - textField` + "\n" +
 														`  - passwordField` + "\n" +
 														`  - selectField` + "\n" +
-														`  - pickerField` + "\n" +
-														`` + "\n" +
-														`` + "\n" +
-														`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - rules`,
+														`  - pickerField`,
+												},
+												"string_map_field": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"default_value": schema.MapAttribute{
+															Computed:    true,
+															ElementType: types.StringType,
+															Description: `The defaultValue field.`,
+														},
+														"string_map_rules": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"is_required": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `The isRequired field.`,
+																},
+																"validate_empty": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `The validateEmpty field.`,
+																},
+															},
+															Description: `The StringMapRules message.`,
+														},
+													},
+													Description: `The StringMapField message.`,
 												},
 												"user_provider_config": schema.SingleNestedAttribute{
 													Computed: true,
@@ -914,121 +931,6 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 													},
 													MarkdownDescription: `This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.` + "\n" +
 														` The instance is just a marker for it being copied into an active policy.`,
-												},
-												"action_instance": schema.SingleNestedAttribute{
-													Computed: true,
-													Attributes: map[string]schema.Attribute{
-														"action": schema.SingleNestedAttribute{
-															Computed: true,
-															Attributes: map[string]schema.Attribute{
-																"action_target_automation": schema.SingleNestedAttribute{
-																	Computed: true,
-																	Attributes: map[string]schema.Attribute{
-																		"automation_template_id": schema.StringAttribute{
-																			Computed:    true,
-																			Description: `The automationTemplateId field.`,
-																		},
-																	},
-																	Description: `ActionTargetAutomation targets automation templates for policy actions.`,
-																},
-																"action_target_baton_resource_action": schema.SingleNestedAttribute{
-																	Computed: true,
-																	Attributes: map[string]schema.Attribute{
-																		"baton_resource_action_id": schema.StringAttribute{
-																			Computed:    true,
-																			Description: `The batonResourceActionId field.`,
-																		},
-																	},
-																	Description: `ActionTargetResource targets resource actions for policy actions.`,
-																},
-															},
-															MarkdownDescription: `The Action message.` + "\n" +
-																`` + "\n" +
-																`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
-																`  - automation` + "\n" +
-																`  - batonResourceAction`,
-														},
-														"action_outcome_cancelled": schema.SingleNestedAttribute{
-															Computed: true,
-															Attributes: map[string]schema.Attribute{
-																"outcome_time": schema.StringAttribute{
-																	Computed: true,
-																},
-															},
-															Description: `The ActionOutcomeCancelled message.`,
-														},
-														"action_outcome_denied": schema.SingleNestedAttribute{
-															Computed: true,
-															Attributes: map[string]schema.Attribute{
-																"outcome_time": schema.StringAttribute{
-																	Computed: true,
-																},
-															},
-															Description: `The ActionOutcomeDenied message.`,
-														},
-														"action_outcome_error": schema.SingleNestedAttribute{
-															Computed: true,
-															Attributes: map[string]schema.Attribute{
-																"error_code": schema.StringAttribute{
-																	Computed:    true,
-																	Description: `The errorCode field.`,
-																},
-																"error_message": schema.StringAttribute{
-																	Computed:    true,
-																	Description: `The errorMessage field.`,
-																},
-																"outcome_time": schema.StringAttribute{
-																	Computed: true,
-																},
-															},
-															Description: `The ActionOutcomeError message.`,
-														},
-														"action_outcome_success": schema.SingleNestedAttribute{
-															Computed: true,
-															Attributes: map[string]schema.Attribute{
-																"outcome_time": schema.StringAttribute{
-																	Computed: true,
-																},
-															},
-															Description: `The ActionOutcomeSuccess message.`,
-														},
-														"action_target_automation_instance": schema.SingleNestedAttribute{
-															Computed: true,
-															Attributes: map[string]schema.Attribute{
-																"automation_execution_id": schema.StringAttribute{
-																	Computed:    true,
-																	Description: `The automationExecutionId field.`,
-																},
-															},
-															Description: `The ActionTargetAutomationInstance message.`,
-														},
-														"action_target_baton_resource_action_instance": schema.SingleNestedAttribute{
-															Computed: true,
-															Attributes: map[string]schema.Attribute{
-																"baton_action_invocation_id": schema.StringAttribute{
-																	Computed:    true,
-																	Description: `The batonActionInvocationId field.`,
-																},
-															},
-															Description: `The ActionTargetBatonResourceActionInstance message.`,
-														},
-														"state": schema.StringAttribute{
-															Computed:    true,
-															Description: `The current state of the action execution.`,
-														},
-													},
-													MarkdownDescription: `The ActionInstance message.` + "\n" +
-														`` + "\n" +
-														`This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - automation` + "\n" +
-														`  - batonResourceActionInstance` + "\n" +
-														`` + "\n" +
-														`` + "\n" +
-														`This message contains a oneof named outcome. Only a single field of the following list may be set at a time:` + "\n" +
-														`  - success` + "\n" +
-														`  - denied` + "\n" +
-														`  - error` + "\n" +
-														`  - cancelled`,
 												},
 												"approval_instance": schema.SingleNestedAttribute{
 													Computed: true,
@@ -1547,18 +1449,15 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	Computed:    true,
 																	Description: `The alreadyEscalated field.`,
 																},
-																"cancel_ticket": schema.SingleNestedAttribute{
-																	Computed:    true,
-																	Description: `The CancelTicket message.`,
-																},
 																"escalation_comment": schema.StringAttribute{
 																	Computed:    true,
 																	Description: `The escalationComment field.`,
 																},
-																"expires_at": schema.StringAttribute{
-																	Computed: true,
+																"escalation_instance_cancel_ticket": schema.SingleNestedAttribute{
+																	Computed:    true,
+																	Description: `The CancelTicket message.`,
 																},
-																"reassign_to_approvers": schema.SingleNestedAttribute{
+																"escalation_instance_reassign_to_approvers": schema.SingleNestedAttribute{
 																	Computed: true,
 																	Attributes: map[string]schema.Attribute{
 																		"approver_ids": schema.ListAttribute{
@@ -1569,7 +1468,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	},
 																	Description: `The ReassignToApprovers message.`,
 																},
-																"replace_policy": schema.SingleNestedAttribute{
+																"escalation_instance_replace_policy": schema.SingleNestedAttribute{
 																	Computed: true,
 																	Attributes: map[string]schema.Attribute{
 																		"policy_id": schema.StringAttribute{
@@ -1579,9 +1478,12 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	},
 																	Description: `The ReplacePolicy message.`,
 																},
-																"skip_step": schema.SingleNestedAttribute{
+																"escalation_instance_skip_step": schema.SingleNestedAttribute{
 																	Computed:    true,
 																	Description: `The SkipStep message.`,
+																},
+																"expires_at": schema.StringAttribute{
+																	Computed: true,
 																},
 															},
 															MarkdownDescription: `The EscalationInstance message.` + "\n" +
@@ -1813,11 +1715,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																					`` + "\n" +
 																					`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 																					`  - checkboxField` + "\n" +
-																					`  - toggleField` + "\n" +
-																					`` + "\n" +
-																					`` + "\n" +
-																					`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-																					`  - rules`,
+																					`  - toggleField`,
 																			},
 																			"description": schema.StringAttribute{
 																				Computed:    true,
@@ -1840,29 +1738,21 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																						Description: `The FileInputField message.`,
 																					},
 																					"max_file_size": schema.StringAttribute{
-																						Computed: true,
-																						MarkdownDescription: `The maxFileSize field.` + "\n" +
-																							`This field is part of the ` + "`" + `_max_file_size` + "`" + ` oneof.` + "\n" +
-																							`See the documentation for ` + "`" + `c1.api.form.v1.FileField` + "`" + ` for more details.`,
+																						Computed:    true,
+																						Description: `The maxFileSize field.`,
 																					},
 																				},
 																				MarkdownDescription: `The FileField message.` + "\n" +
 																					`` + "\n" +
 																					`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-																					`  - fileInputField` + "\n" +
-																					`` + "\n" +
-																					`` + "\n" +
-																					`This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:` + "\n" +
-																					`  - maxFileSize`,
+																					`  - fileInputField`,
 																			},
 																			"int64_field": schema.SingleNestedAttribute{
 																				Computed: true,
 																				Attributes: map[string]schema.Attribute{
 																					"default_value": schema.StringAttribute{
-																						Computed: true,
-																						MarkdownDescription: `The defaultValue field.` + "\n" +
-																							`This field is part of the ` + "`" + `_default_value` + "`" + ` oneof.` + "\n" +
-																							`See the documentation for ` + "`" + `c1.api.form.v1.Int64Field` + "`" + ` for more details.`,
+																						Computed:    true,
+																						Description: `The defaultValue field.`,
 																					},
 																					"int64_rules": schema.SingleNestedAttribute{
 																						Computed: true,
@@ -1939,15 +1829,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																				MarkdownDescription: `The Int64Field message.` + "\n" +
 																					`` + "\n" +
 																					`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-																					`  - numberField` + "\n" +
-																					`` + "\n" +
-																					`` + "\n" +
-																					`This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:` + "\n" +
-																					`  - defaultValue` + "\n" +
-																					`` + "\n" +
-																					`` + "\n" +
-																					`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-																					`  - rules`,
+																					`  - numberField`,
 																			},
 																			"name": schema.StringAttribute{
 																				Computed:    true,
@@ -2256,6 +2138,10 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																								Computed:    true,
 																								Description: `The multiline field.`,
 																							},
+																							"suffix": schema.StringAttribute{
+																								Computed:    true,
+																								Description: `Static text displayed as an end adornment (e.g. ".example.com" for domain fields).`,
+																							},
 																						},
 																						Description: `The TextField message.`,
 																					},
@@ -2266,11 +2152,32 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																					`  - textField` + "\n" +
 																					`  - passwordField` + "\n" +
 																					`  - selectField` + "\n" +
-																					`  - pickerField` + "\n" +
-																					`` + "\n" +
-																					`` + "\n" +
-																					`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-																					`  - rules`,
+																					`  - pickerField`,
+																			},
+																			"string_map_field": schema.SingleNestedAttribute{
+																				Computed: true,
+																				Attributes: map[string]schema.Attribute{
+																					"default_value": schema.MapAttribute{
+																						Computed:    true,
+																						ElementType: types.StringType,
+																						Description: `The defaultValue field.`,
+																					},
+																					"string_map_rules": schema.SingleNestedAttribute{
+																						Computed: true,
+																						Attributes: map[string]schema.Attribute{
+																							"is_required": schema.BoolAttribute{
+																								Computed:    true,
+																								Description: `The isRequired field.`,
+																							},
+																							"validate_empty": schema.BoolAttribute{
+																								Computed:    true,
+																								Description: `The validateEmpty field.`,
+																							},
+																						},
+																						Description: `The StringMapRules message.`,
+																					},
+																				},
+																				Description: `The StringMapField message.`,
 																			},
 																			"user_provider_config": schema.SingleNestedAttribute{
 																				Computed: true,
@@ -2373,6 +2280,139 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 												"id": schema.StringAttribute{
 													Computed:    true,
 													Description: `The ID of the PolicyStepInstance. This is required by many action submission endpoints to indicate what step you're approving.`,
+												},
+												"policy_action_instance": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"action": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"action_target_automation": schema.SingleNestedAttribute{
+																	Computed: true,
+																	Attributes: map[string]schema.Attribute{
+																		"automation_template_id": schema.StringAttribute{
+																			Computed:    true,
+																			Description: `The automationTemplateId field.`,
+																		},
+																	},
+																	Description: `ActionTargetAutomation targets automation templates for policy actions.`,
+																},
+																"action_target_baton_resource_action": schema.SingleNestedAttribute{
+																	Computed: true,
+																	Attributes: map[string]schema.Attribute{
+																		"baton_resource_action_id": schema.StringAttribute{
+																			Computed:    true,
+																			Description: `The batonResourceActionId field.`,
+																		},
+																	},
+																	Description: `ActionTargetResource targets resource actions for policy actions.`,
+																},
+																"action_target_client_id_approval": schema.SingleNestedAttribute{
+																	Computed: true,
+																	MarkdownDescription: `ActionTargetClientIdApproval targets administrator review of an external` + "\n" +
+																		` OAuth client registration (CIMD or DCR) for policy actions.`,
+																},
+															},
+															MarkdownDescription: `The Action message.` + "\n" +
+																`` + "\n" +
+																`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
+																`  - automation` + "\n" +
+																`  - batonResourceAction` + "\n" +
+																`  - clientIdApproval`,
+														},
+														"action_outcome_cancelled": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"outcome_time": schema.StringAttribute{
+																	Computed: true,
+																},
+															},
+															Description: `The ActionOutcomeCancelled message.`,
+														},
+														"action_outcome_denied": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"outcome_time": schema.StringAttribute{
+																	Computed: true,
+																},
+															},
+															Description: `The ActionOutcomeDenied message.`,
+														},
+														"action_outcome_error": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"error_code": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The errorCode field.`,
+																},
+																"error_message": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The errorMessage field.`,
+																},
+																"outcome_time": schema.StringAttribute{
+																	Computed: true,
+																},
+															},
+															Description: `The ActionOutcomeError message.`,
+														},
+														"action_outcome_success": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"outcome_time": schema.StringAttribute{
+																	Computed: true,
+																},
+															},
+															Description: `The ActionOutcomeSuccess message.`,
+														},
+														"action_target_automation_instance": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"automation_execution_id": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The automationExecutionId field.`,
+																},
+															},
+															Description: `The ActionTargetAutomationInstance message.`,
+														},
+														"action_target_baton_resource_action_instance": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"baton_action_invocation_id": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The batonActionInvocationId field.`,
+																},
+															},
+															Description: `The ActionTargetBatonResourceActionInstance message.`,
+														},
+														"action_target_client_id_approval_instance": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"client_id_url": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The clientIdUrl field.`,
+																},
+															},
+															MarkdownDescription: `ActionTargetClientIdApprovalInstance carries the registration key of the` + "\n" +
+																` external OAuth client that is being reviewed.`,
+														},
+														"state": schema.StringAttribute{
+															Computed:    true,
+															Description: `The current state of the action execution.`,
+														},
+													},
+													MarkdownDescription: `The ActionInstance message.` + "\n" +
+														`` + "\n" +
+														`This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:` + "\n" +
+														`  - automation` + "\n" +
+														`  - batonResourceActionInstance` + "\n" +
+														`  - clientIdApprovalInstance` + "\n" +
+														`` + "\n" +
+														`` + "\n" +
+														`This message contains a oneof named outcome. Only a single field of the following list may be set at a time:` + "\n" +
+														`  - success` + "\n" +
+														`  - denied` + "\n" +
+														`  - error` + "\n" +
+														`  - cancelled`,
 												},
 												"policy_generation_id": schema.StringAttribute{
 													Computed:    true,
@@ -3004,12 +3044,18 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 															},
 															Description: `ActionTargetResource targets resource actions for policy actions.`,
 														},
+														"action_target_client_id_approval": schema.SingleNestedAttribute{
+															Computed: true,
+															MarkdownDescription: `ActionTargetClientIdApproval targets administrator review of an external` + "\n" +
+																` OAuth client registration (CIMD or DCR) for policy actions.`,
+														},
 													},
 													MarkdownDescription: `The Action message.` + "\n" +
 														`` + "\n" +
 														`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
 														`  - automation` + "\n" +
-														`  - batonResourceAction`,
+														`  - batonResourceAction` + "\n" +
+														`  - clientIdApproval`,
 												},
 												"approval": schema.SingleNestedAttribute{
 													Computed: true,
@@ -3469,7 +3515,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 														`  - resourceOwners` + "\n" +
 														`  - agent`,
 												},
-												"form": schema.StringAttribute{
+												"policy_form": schema.StringAttribute{
 													CustomType:  jsontypes.NormalizedType{},
 													Computed:    true,
 													Description: `The Form message. Parsed as JSON.`,
@@ -3937,12 +3983,18 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																				},
 																				Description: `ActionTargetResource targets resource actions for policy actions.`,
 																			},
+																			"action_target_client_id_approval": schema.SingleNestedAttribute{
+																				Computed: true,
+																				MarkdownDescription: `ActionTargetClientIdApproval targets administrator review of an external` + "\n" +
+																					` OAuth client registration (CIMD or DCR) for policy actions.`,
+																			},
 																		},
 																		MarkdownDescription: `The Action message.` + "\n" +
 																			`` + "\n" +
 																			`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
 																			`  - automation` + "\n" +
-																			`  - batonResourceAction`,
+																			`  - batonResourceAction` + "\n" +
+																			`  - clientIdApproval`,
 																	},
 																	"approval": schema.SingleNestedAttribute{
 																		Computed: true,
@@ -4402,7 +4454,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																			`  - resourceOwners` + "\n" +
 																			`  - agent`,
 																	},
-																	"form": schema.StringAttribute{
+																	"policy_form": schema.StringAttribute{
 																		CustomType:  jsontypes.NormalizedType{},
 																		Computed:    true,
 																		Description: `The Form message. Parsed as JSON.`,
@@ -4809,15 +4861,21 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																	},
 																},
 															},
-															Description: `An array of policy steps indicating the processing flow of a policy. These steps are oneOfs, and only one property may be set for each array index at a time.`,
+															MarkdownDescription: `Ordered array of steps. Each step is a oneof -- exactly one step type is` + "\n" +
+																` set per entry. Steps execute sequentially.`,
 														},
 													},
 												},
-												Description: `A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set.`,
+												MarkdownDescription: `A map from string keys to step sequences. One entry is always the baseline,` + "\n" +
+													` keyed by the lowercased policy_type (e.g., "grant", "revoke", "certify").` + "\n" +
+													` Additional entries have opaque keys (UUIDs) and are referenced by the rules` + "\n" +
+													` array for conditional routing. If no conditional rules are configured, only` + "\n" +
+													` the baseline entry exists.`,
 											},
 											"policy_type": schema.StringAttribute{
-												Computed:    true,
-												Description: `Indicates the type of this policy. Can also be used to get the value from policySteps.`,
+												Computed: true,
+												MarkdownDescription: `The type of this policy (grant, revoke, or certify). The lowercased type` + "\n" +
+													` name (e.g., "grant") is also the key for the baseline entry in policy_steps.`,
 											},
 											"post_actions": schema.ListNestedAttribute{
 												Computed: true,
@@ -4825,35 +4883,39 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 													Attributes: map[string]schema.Attribute{
 														"certify_remediate_immediately": schema.BoolAttribute{
 															Computed: true,
-															MarkdownDescription: `ONLY valid when used in a CERTIFY Ticket Type:` + "\n" +
-																` Causes any deprovision or change in a grant to be applied when Certify Ticket is closed.` + "\n" +
+															MarkdownDescription: `Only valid on certify policies. When true, any revocations resulting from` + "\n" +
+																` the certification are applied immediately when the campaign task closes.` + "\n" +
 																`This field is part of the ` + "`" + `action` + "`" + ` oneof.` + "\n" +
 																`See the documentation for ` + "`" + `c1.api.policy.v1.PolicyPostActions` + "`" + ` for more details.`,
 														},
 													},
 												},
-												Description: `An array of actions (ordered) to take place after a policy completes processing.`,
+												Description: `Ordered actions to execute after the policy completes processing.`,
 											},
 											"reassign_tasks_to_delegates": schema.BoolAttribute{
 												Computed:           true,
 												DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-												Description:        `Deprecated. Use setting in policy step instead`,
+												Description:        `This field is no longer used. Configure delegate reassignment in the policy step instead.`,
 											},
 											"rules": schema.ListNestedAttribute{
 												Computed: true,
 												NestedObject: schema.NestedAttributeObject{
 													Attributes: map[string]schema.Attribute{
 														"condition": schema.StringAttribute{
-															Computed:    true,
-															Description: `The condition field.`,
+															Computed: true,
+															MarkdownDescription: `A CEL expression that is evaluated against the request context. If it` + "\n" +
+																` returns true, the step sequence identified by policy_key is used.`,
 														},
 														"policy_key": schema.StringAttribute{
-															Computed:    true,
-															Description: `This is a reference to a list of policy steps from ` + "`" + `policy_steps` + "`" + ``,
+															Computed: true,
+															MarkdownDescription: `A key into the policy's policy_steps map identifying which step sequence` + "\n" +
+																` to execute when this rule's condition matches.`,
 														},
 													},
 												},
-												Description: `The rules field.`,
+												MarkdownDescription: `Ordered conditional routing rules. Evaluated top-to-bottom; the first` + "\n" +
+													` matching rule selects a step sequence from policy_steps. If no rule matches` + "\n" +
+													` (or if this array is empty), the baseline entry in policy_steps is used.`,
 											},
 											"system_builtin": schema.BoolAttribute{
 												Computed:    true,
@@ -4863,7 +4925,10 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 												Computed: true,
 											},
 										},
-										Description: `A policy describes the behavior of the ConductorOne system when processing a task. You can describe the type, approvers, fallback behavior, and escalation processes.`,
+										MarkdownDescription: `A policy defines a workflow (sequence of steps) that runs when processing` + "\n" +
+											` access requests, reviews, or revocations. Policies support conditional` + "\n" +
+											` routing: different conditions can trigger different step sequences, with a` + "\n" +
+											` baseline fallback.`,
 									},
 									"policy_step_instance": schema.SingleNestedAttribute{
 										Computed: true,
@@ -4878,121 +4943,6 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 												},
 												MarkdownDescription: `This policy step indicates that a ticket should have an approved outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.` + "\n" +
 													` The instance is just a marker for it being copied into an active policy.`,
-											},
-											"action_instance": schema.SingleNestedAttribute{
-												Computed: true,
-												Attributes: map[string]schema.Attribute{
-													"action": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"action_target_automation": schema.SingleNestedAttribute{
-																Computed: true,
-																Attributes: map[string]schema.Attribute{
-																	"automation_template_id": schema.StringAttribute{
-																		Computed:    true,
-																		Description: `The automationTemplateId field.`,
-																	},
-																},
-																Description: `ActionTargetAutomation targets automation templates for policy actions.`,
-															},
-															"action_target_baton_resource_action": schema.SingleNestedAttribute{
-																Computed: true,
-																Attributes: map[string]schema.Attribute{
-																	"baton_resource_action_id": schema.StringAttribute{
-																		Computed:    true,
-																		Description: `The batonResourceActionId field.`,
-																	},
-																},
-																Description: `ActionTargetResource targets resource actions for policy actions.`,
-															},
-														},
-														MarkdownDescription: `The Action message.` + "\n" +
-															`` + "\n" +
-															`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
-															`  - automation` + "\n" +
-															`  - batonResourceAction`,
-													},
-													"action_outcome_cancelled": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"outcome_time": schema.StringAttribute{
-																Computed: true,
-															},
-														},
-														Description: `The ActionOutcomeCancelled message.`,
-													},
-													"action_outcome_denied": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"outcome_time": schema.StringAttribute{
-																Computed: true,
-															},
-														},
-														Description: `The ActionOutcomeDenied message.`,
-													},
-													"action_outcome_error": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"error_code": schema.StringAttribute{
-																Computed:    true,
-																Description: `The errorCode field.`,
-															},
-															"error_message": schema.StringAttribute{
-																Computed:    true,
-																Description: `The errorMessage field.`,
-															},
-															"outcome_time": schema.StringAttribute{
-																Computed: true,
-															},
-														},
-														Description: `The ActionOutcomeError message.`,
-													},
-													"action_outcome_success": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"outcome_time": schema.StringAttribute{
-																Computed: true,
-															},
-														},
-														Description: `The ActionOutcomeSuccess message.`,
-													},
-													"action_target_automation_instance": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"automation_execution_id": schema.StringAttribute{
-																Computed:    true,
-																Description: `The automationExecutionId field.`,
-															},
-														},
-														Description: `The ActionTargetAutomationInstance message.`,
-													},
-													"action_target_baton_resource_action_instance": schema.SingleNestedAttribute{
-														Computed: true,
-														Attributes: map[string]schema.Attribute{
-															"baton_action_invocation_id": schema.StringAttribute{
-																Computed:    true,
-																Description: `The batonActionInvocationId field.`,
-															},
-														},
-														Description: `The ActionTargetBatonResourceActionInstance message.`,
-													},
-													"state": schema.StringAttribute{
-														Computed:    true,
-														Description: `The current state of the action execution.`,
-													},
-												},
-												MarkdownDescription: `The ActionInstance message.` + "\n" +
-													`` + "\n" +
-													`This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:` + "\n" +
-													`  - automation` + "\n" +
-													`  - batonResourceActionInstance` + "\n" +
-													`` + "\n" +
-													`` + "\n" +
-													`This message contains a oneof named outcome. Only a single field of the following list may be set at a time:` + "\n" +
-													`  - success` + "\n" +
-													`  - denied` + "\n" +
-													`  - error` + "\n" +
-													`  - cancelled`,
 											},
 											"approval_instance": schema.SingleNestedAttribute{
 												Computed: true,
@@ -5511,18 +5461,15 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																Computed:    true,
 																Description: `The alreadyEscalated field.`,
 															},
-															"cancel_ticket": schema.SingleNestedAttribute{
-																Computed:    true,
-																Description: `The CancelTicket message.`,
-															},
 															"escalation_comment": schema.StringAttribute{
 																Computed:    true,
 																Description: `The escalationComment field.`,
 															},
-															"expires_at": schema.StringAttribute{
-																Computed: true,
+															"escalation_instance_cancel_ticket": schema.SingleNestedAttribute{
+																Computed:    true,
+																Description: `The CancelTicket message.`,
 															},
-															"reassign_to_approvers": schema.SingleNestedAttribute{
+															"escalation_instance_reassign_to_approvers": schema.SingleNestedAttribute{
 																Computed: true,
 																Attributes: map[string]schema.Attribute{
 																	"approver_ids": schema.ListAttribute{
@@ -5533,7 +5480,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 																Description: `The ReassignToApprovers message.`,
 															},
-															"replace_policy": schema.SingleNestedAttribute{
+															"escalation_instance_replace_policy": schema.SingleNestedAttribute{
 																Computed: true,
 																Attributes: map[string]schema.Attribute{
 																	"policy_id": schema.StringAttribute{
@@ -5543,9 +5490,12 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 																Description: `The ReplacePolicy message.`,
 															},
-															"skip_step": schema.SingleNestedAttribute{
+															"escalation_instance_skip_step": schema.SingleNestedAttribute{
 																Computed:    true,
 																Description: `The SkipStep message.`,
+															},
+															"expires_at": schema.StringAttribute{
+																Computed: true,
 															},
 														},
 														MarkdownDescription: `The EscalationInstance message.` + "\n" +
@@ -5777,11 +5727,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																				`` + "\n" +
 																				`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 																				`  - checkboxField` + "\n" +
-																				`  - toggleField` + "\n" +
-																				`` + "\n" +
-																				`` + "\n" +
-																				`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-																				`  - rules`,
+																				`  - toggleField`,
 																		},
 																		"description": schema.StringAttribute{
 																			Computed:    true,
@@ -5804,29 +5750,21 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																					Description: `The FileInputField message.`,
 																				},
 																				"max_file_size": schema.StringAttribute{
-																					Computed: true,
-																					MarkdownDescription: `The maxFileSize field.` + "\n" +
-																						`This field is part of the ` + "`" + `_max_file_size` + "`" + ` oneof.` + "\n" +
-																						`See the documentation for ` + "`" + `c1.api.form.v1.FileField` + "`" + ` for more details.`,
+																					Computed:    true,
+																					Description: `The maxFileSize field.`,
 																				},
 																			},
 																			MarkdownDescription: `The FileField message.` + "\n" +
 																				`` + "\n" +
 																				`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-																				`  - fileInputField` + "\n" +
-																				`` + "\n" +
-																				`` + "\n" +
-																				`This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:` + "\n" +
-																				`  - maxFileSize`,
+																				`  - fileInputField`,
 																		},
 																		"int64_field": schema.SingleNestedAttribute{
 																			Computed: true,
 																			Attributes: map[string]schema.Attribute{
 																				"default_value": schema.StringAttribute{
-																					Computed: true,
-																					MarkdownDescription: `The defaultValue field.` + "\n" +
-																						`This field is part of the ` + "`" + `_default_value` + "`" + ` oneof.` + "\n" +
-																						`See the documentation for ` + "`" + `c1.api.form.v1.Int64Field` + "`" + ` for more details.`,
+																					Computed:    true,
+																					Description: `The defaultValue field.`,
 																				},
 																				"int64_rules": schema.SingleNestedAttribute{
 																					Computed: true,
@@ -5903,15 +5841,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																			MarkdownDescription: `The Int64Field message.` + "\n" +
 																				`` + "\n" +
 																				`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-																				`  - numberField` + "\n" +
-																				`` + "\n" +
-																				`` + "\n" +
-																				`This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:` + "\n" +
-																				`  - defaultValue` + "\n" +
-																				`` + "\n" +
-																				`` + "\n" +
-																				`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-																				`  - rules`,
+																				`  - numberField`,
 																		},
 																		"name": schema.StringAttribute{
 																			Computed:    true,
@@ -6220,6 +6150,10 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																							Computed:    true,
 																							Description: `The multiline field.`,
 																						},
+																						"suffix": schema.StringAttribute{
+																							Computed:    true,
+																							Description: `Static text displayed as an end adornment (e.g. ".example.com" for domain fields).`,
+																						},
 																					},
 																					Description: `The TextField message.`,
 																				},
@@ -6230,11 +6164,32 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																				`  - textField` + "\n" +
 																				`  - passwordField` + "\n" +
 																				`  - selectField` + "\n" +
-																				`  - pickerField` + "\n" +
-																				`` + "\n" +
-																				`` + "\n" +
-																				`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-																				`  - rules`,
+																				`  - pickerField`,
+																		},
+																		"string_map_field": schema.SingleNestedAttribute{
+																			Computed: true,
+																			Attributes: map[string]schema.Attribute{
+																				"default_value": schema.MapAttribute{
+																					Computed:    true,
+																					ElementType: types.StringType,
+																					Description: `The defaultValue field.`,
+																				},
+																				"string_map_rules": schema.SingleNestedAttribute{
+																					Computed: true,
+																					Attributes: map[string]schema.Attribute{
+																						"is_required": schema.BoolAttribute{
+																							Computed:    true,
+																							Description: `The isRequired field.`,
+																						},
+																						"validate_empty": schema.BoolAttribute{
+																							Computed:    true,
+																							Description: `The validateEmpty field.`,
+																						},
+																					},
+																					Description: `The StringMapRules message.`,
+																				},
+																			},
+																			Description: `The StringMapField message.`,
 																		},
 																		"user_provider_config": schema.SingleNestedAttribute{
 																			Computed: true,
@@ -6337,6 +6292,139 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 											"id": schema.StringAttribute{
 												Computed:    true,
 												Description: `The ID of the PolicyStepInstance. This is required by many action submission endpoints to indicate what step you're approving.`,
+											},
+											"policy_action_instance": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"action": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"action_target_automation": schema.SingleNestedAttribute{
+																Computed: true,
+																Attributes: map[string]schema.Attribute{
+																	"automation_template_id": schema.StringAttribute{
+																		Computed:    true,
+																		Description: `The automationTemplateId field.`,
+																	},
+																},
+																Description: `ActionTargetAutomation targets automation templates for policy actions.`,
+															},
+															"action_target_baton_resource_action": schema.SingleNestedAttribute{
+																Computed: true,
+																Attributes: map[string]schema.Attribute{
+																	"baton_resource_action_id": schema.StringAttribute{
+																		Computed:    true,
+																		Description: `The batonResourceActionId field.`,
+																	},
+																},
+																Description: `ActionTargetResource targets resource actions for policy actions.`,
+															},
+															"action_target_client_id_approval": schema.SingleNestedAttribute{
+																Computed: true,
+																MarkdownDescription: `ActionTargetClientIdApproval targets administrator review of an external` + "\n" +
+																	` OAuth client registration (CIMD or DCR) for policy actions.`,
+															},
+														},
+														MarkdownDescription: `The Action message.` + "\n" +
+															`` + "\n" +
+															`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
+															`  - automation` + "\n" +
+															`  - batonResourceAction` + "\n" +
+															`  - clientIdApproval`,
+													},
+													"action_outcome_cancelled": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"outcome_time": schema.StringAttribute{
+																Computed: true,
+															},
+														},
+														Description: `The ActionOutcomeCancelled message.`,
+													},
+													"action_outcome_denied": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"outcome_time": schema.StringAttribute{
+																Computed: true,
+															},
+														},
+														Description: `The ActionOutcomeDenied message.`,
+													},
+													"action_outcome_error": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"error_code": schema.StringAttribute{
+																Computed:    true,
+																Description: `The errorCode field.`,
+															},
+															"error_message": schema.StringAttribute{
+																Computed:    true,
+																Description: `The errorMessage field.`,
+															},
+															"outcome_time": schema.StringAttribute{
+																Computed: true,
+															},
+														},
+														Description: `The ActionOutcomeError message.`,
+													},
+													"action_outcome_success": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"outcome_time": schema.StringAttribute{
+																Computed: true,
+															},
+														},
+														Description: `The ActionOutcomeSuccess message.`,
+													},
+													"action_target_automation_instance": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"automation_execution_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The automationExecutionId field.`,
+															},
+														},
+														Description: `The ActionTargetAutomationInstance message.`,
+													},
+													"action_target_baton_resource_action_instance": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"baton_action_invocation_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The batonActionInvocationId field.`,
+															},
+														},
+														Description: `The ActionTargetBatonResourceActionInstance message.`,
+													},
+													"action_target_client_id_approval_instance": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"client_id_url": schema.StringAttribute{
+																Computed:    true,
+																Description: `The clientIdUrl field.`,
+															},
+														},
+														MarkdownDescription: `ActionTargetClientIdApprovalInstance carries the registration key of the` + "\n" +
+															` external OAuth client that is being reviewed.`,
+													},
+													"state": schema.StringAttribute{
+														Computed:    true,
+														Description: `The current state of the action execution.`,
+													},
+												},
+												MarkdownDescription: `The ActionInstance message.` + "\n" +
+													`` + "\n" +
+													`This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:` + "\n" +
+													`  - automation` + "\n" +
+													`  - batonResourceActionInstance` + "\n" +
+													`  - clientIdApprovalInstance` + "\n" +
+													`` + "\n" +
+													`` + "\n" +
+													`This message contains a oneof named outcome. Only a single field of the following list may be set at a time:` + "\n" +
+													`  - success` + "\n" +
+													`  - denied` + "\n" +
+													`  - error` + "\n" +
+													`  - cancelled`,
 											},
 											"policy_generation_id": schema.StringAttribute{
 												Computed:    true,
@@ -6989,8 +7077,17 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
 											"action_id": schema.StringAttribute{
-												Computed:    true,
-												Description: `The ID of the action to execute.`,
+												Computed: true,
+												MarkdownDescription: `The ID of the admin-authored action to execute. Empty for synthesized` + "\n" +
+													` action tickets (e.g. scope-role grants) — those carry dispatch` + "\n" +
+													` configuration on action_instance and target_object instead.`,
+											},
+											"display_name": schema.StringAttribute{
+												Computed: true,
+												MarkdownDescription: `Display label captured on the action snapshot at ticket-creation time.` + "\n" +
+													` Stable under admin renames to a referenced Action row and populated for` + "\n" +
+													` synthesized tickets that have no Action row at all. UI reads this to` + "\n" +
+													` render the task title without an Action fetch.`,
 											},
 											"form_values": schema.SingleNestedAttribute{
 												Computed: true,
@@ -7002,8 +7099,80 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 											"outcome_time": schema.StringAttribute{
 												Computed: true,
 											},
+											"scope_role": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The IaaS/sparse-ACL app the (scope, role) pair lives on.`,
+													},
+													"role_resource_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The roleResourceId field.`,
+													},
+													"role_resource_type_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The roleResourceTypeId field.`,
+													},
+													"scope_resource_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The scopeResourceId field.`,
+													},
+													"scope_resource_type_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The scopeResourceTypeId field.`,
+													},
+												},
+												MarkdownDescription: `Scope-role variant of TaskTypeAction.target_object. The UI uses the` + "\n" +
+													` embedded identifiers to build links and title strings without a separate` + "\n" +
+													` Action fetch.`,
+											},
+											"task_action_instance": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"connector_action_ref": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"app_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The app whose connector handles the operation.`,
+															},
+															"connector_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The connector that will execute the Grant / Revoke.`,
+															},
+															"operation": schema.StringAttribute{
+																Computed:    true,
+																Description: `Which connector RPC this dispatches to.`,
+															},
+														},
+														MarkdownDescription: `ConnectorActionRef describes dispatch through a connector's built-in` + "\n" +
+															` GrantManagerService Grant / Revoke RPC — i.e. the default connector` + "\n" +
+															` operation, used for synthesized tickets like scope-role requests.`,
+													},
+													"display_name": schema.StringAttribute{
+														Computed: true,
+														MarkdownDescription: `Display label at ticket-creation time. Same value as` + "\n" +
+															` TaskTypeAction.display_name; repeated here so clients that walk the` + "\n" +
+															` instance see a self-contained view.`,
+													},
+												},
+												MarkdownDescription: `ActionInstance is the API mirror of the internal immutable snapshot of an` + "\n" +
+													` Action captured on a TaskTypeAction at ticket-creation time.` + "\n" +
+													`` + "\n" +
+													`This message contains a oneof named target_ref. Only a single field of the following list may be set at a time:` + "\n" +
+													`  - connectorActionRef`,
+											},
+											"type": schema.StringAttribute{
+												Computed: true,
+												MarkdownDescription: `Flavor of action the ticket represents — mirrors the snapshot's` + "\n" +
+													` target_ref variant.`,
+											},
 										},
-										Description: `The TaskTypeAction message.`,
+										MarkdownDescription: `The TaskTypeAction message.` + "\n" +
+											`` + "\n" +
+											`This message contains a oneof named target_object. Only a single field of the following list may be set at a time:` + "\n" +
+											`  - scopeRole`,
 									},
 									"task_type_certify": schema.SingleNestedAttribute{
 										Computed: true,
@@ -7041,6 +7210,27 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 											},
 										},
 										Description: `The TaskTypeCertify message indicates that a task is a certify task and all related details.`,
+									},
+									"task_type_finding": schema.SingleNestedAttribute{
+										Computed: true,
+										Attributes: map[string]schema.Attribute{
+											"finding_id": schema.StringAttribute{
+												Computed:    true,
+												Description: `Reference to the source finding.`,
+											},
+											"finding_type": schema.StringAttribute{
+												Computed:    true,
+												Description: `The finding type discriminator.`,
+											},
+											"outcome": schema.StringAttribute{
+												Computed:    true,
+												Description: `The outcome field.`,
+											},
+											"outcome_time": schema.StringAttribute{
+												Computed: true,
+											},
+										},
+										Description: `The TaskTypeFinding message.`,
 									},
 									"task_type_grant": schema.SingleNestedAttribute{
 										Computed: true,
@@ -7211,7 +7401,8 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 									`  - revoke` + "\n" +
 									`  - certify` + "\n" +
 									`  - offboarding` + "\n" +
-									`  - action`,
+									`  - action` + "\n" +
+									`  - finding`,
 							},
 							"updated_at": schema.StringAttribute{
 								Computed: true,

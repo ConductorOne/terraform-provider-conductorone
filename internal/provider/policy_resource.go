@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/v2/internal/planmodifiers/objectplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/v2/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/v2/internal/validators/objectvalidators"
@@ -14,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -137,16 +139,25 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 												Description: `ActionTargetResource targets resource actions for policy actions.`,
 											},
+											"action_target_client_id_approval": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												MarkdownDescription: `ActionTargetClientIdApproval targets administrator review of an external` + "\n" +
+													` OAuth client registration (CIMD or DCR) for policy actions.`,
+											},
 										},
 										MarkdownDescription: `The Action message.` + "\n" +
 											`` + "\n" +
 											`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
 											`  - automation` + "\n" +
-											`  - batonResourceAction`,
+											`  - batonResourceAction` + "\n" +
+											`  - clientIdApproval`,
 									},
 									"approval": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
+										PlanModifiers: []planmodifier.Object{
+											speakeasy_objectplanmodifier.UseConfigValue(),
+										},
 										Attributes: map[string]schema.Attribute{
 											"agent_approval": schema.SingleNestedAttribute{
 												Computed: true,
@@ -155,28 +166,12 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													"agent_failure_action": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `The action to take if the agent fails to approve, deny, or reassign the task. must be one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED",
-																"APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS",
-																"APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS",
-																"APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP",
-															),
-														},
+														Description: `The action to take if the agent fails to approve, deny, or reassign the task. possible known values include one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]`,
 													},
 													"agent_mode": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"APPROVAL_AGENT_MODE_UNSPECIFIED",
-																"APPROVAL_AGENT_MODE_FULL_CONTROL",
-																"APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY",
-																"APPROVAL_AGENT_MODE_COMMENT_ONLY",
-															),
-														},
+														Description: `The mode of the agent, full control, change policy only, or comment only. possible known values include one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]`,
 													},
 													"agent_user_id": schema.StringAttribute{
 														Computed:    true,
@@ -841,7 +836,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											}...),
 										},
 									},
-									"form": schema.StringAttribute{
+									"policy_form": schema.StringAttribute{
 										CustomType:  jsontypes.NormalizedType{},
 										Computed:    true,
 										Optional:    true,
@@ -1398,26 +1393,19 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 									},
 								},
 							},
-							Description: `An array of policy steps indicating the processing flow of a policy. These steps are oneOfs, and only one property may be set for each array index at a time.`,
+							MarkdownDescription: `Ordered array of steps. Each step is a oneof -- exactly one step type is` + "\n" +
+								` set per entry. Steps execute sequentially.`,
 						},
 					},
 				},
-				Description: `The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples.`,
+				MarkdownDescription: `Step sequences for this policy. The map must include a baseline entry keyed` + "\n" +
+					` by the lowercased policy type (e.g., "grant"). Additional entries with` + "\n" +
+					` opaque keys can be added for conditional routing via the rules array.`,
 			},
 			"policy_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The enum of the policy type. must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"POLICY_TYPE_UNSPECIFIED",
-						"POLICY_TYPE_GRANT",
-						"POLICY_TYPE_REVOKE",
-						"POLICY_TYPE_CERTIFY",
-						"POLICY_TYPE_ACCESS_REQUEST",
-						"POLICY_TYPE_PROVISION",
-					),
-				},
+				Description: `The type of policy to create (grant, revoke, or certify). possible known values include one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]`,
 			},
 			"post_actions": schema.ListNestedAttribute{
 				Computed: true,
@@ -1430,20 +1418,20 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 						"certify_remediate_immediately": schema.BoolAttribute{
 							Computed: true,
 							Optional: true,
-							MarkdownDescription: `ONLY valid when used in a CERTIFY Ticket Type:` + "\n" +
-								` Causes any deprovision or change in a grant to be applied when Certify Ticket is closed.` + "\n" +
+							MarkdownDescription: `Only valid on certify policies. When true, any revocations resulting from` + "\n" +
+								` the certification are applied immediately when the campaign task closes.` + "\n" +
 								`This field is part of the ` + "`" + `action` + "`" + ` oneof.` + "\n" +
 								`See the documentation for ` + "`" + `c1.api.policy.v1.PolicyPostActions` + "`" + ` for more details.`,
 						},
 					},
 				},
-				Description: `Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately.`,
+				Description: `Ordered actions to execute after the policy completes processing.`,
 			},
 			"reassign_tasks_to_delegates": schema.BoolAttribute{
 				Computed:           true,
 				Optional:           true,
 				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-				Description:        `Deprecated. Use setting in policy step instead`,
+				Description:        `This field is no longer used. Configure delegate reassignment in the policy step instead.`,
 			},
 			"rules": schema.ListNestedAttribute{
 				Computed: true,
@@ -1454,18 +1442,20 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					},
 					Attributes: map[string]schema.Attribute{
 						"condition": schema.StringAttribute{
-							Computed:    true,
-							Optional:    true,
-							Description: `The condition field.`,
+							Computed: true,
+							Optional: true,
+							MarkdownDescription: `A CEL expression that is evaluated against the request context. If it` + "\n" +
+								` returns true, the step sequence identified by policy_key is used.`,
 						},
 						"policy_key": schema.StringAttribute{
-							Computed:    true,
-							Optional:    true,
-							Description: `This is a reference to a list of policy steps from ` + "`" + `policy_steps` + "`" + ``,
+							Computed: true,
+							Optional: true,
+							MarkdownDescription: `A key into the policy's policy_steps map identifying which step sequence` + "\n" +
+								` to execute when this rule's condition matches.`,
 						},
 					},
 				},
-				Description: `The rules field.`,
+				Description: `Conditional routing rules. See the Policy message for details on evaluation order.`,
 			},
 			"system_builtin": schema.BoolAttribute{
 				Computed:    true,
@@ -1672,43 +1662,6 @@ func (r *PolicyResource) Update(ctx context.Context, req resource.UpdateRequest,
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIPolicyV1PoliciesGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Policies.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.GetPolicyResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetPolicyResponse(ctx, res1.GetPolicyResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -1750,7 +1703,10 @@ func (r *PolicyResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

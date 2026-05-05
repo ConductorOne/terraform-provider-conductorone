@@ -4,7 +4,7 @@ package shared
 
 // The AccessReviewView message.
 type AccessReviewView struct {
-	// The AccessReview message.
+	// An access review campaign (also called a certification campaign) that verifies whether users still need their access entitlements.
 	//
 	// This message contains a oneof named setup_metadata. Only a single field of the following list may be set at a time:
 	//   - singleApp

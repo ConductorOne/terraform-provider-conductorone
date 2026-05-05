@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppOwnersListRequest) GetPageToken() *string {
 	return c.PageToken
 }
 
+// #region class-body-c1apiappv1appownerslistrequest
+// #endregion class-body-c1apiappv1appownerslistrequest
+
 type C1APIAppV1AppOwnersListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppOwnersListResponse) GetListAppOwnersResponse() *shared.Lis
 	}
 	return c.ListAppOwnersResponse
 }
+
+// #region class-body-c1apiappv1appownerslistresponse
+// #endregion class-body-c1apiappv1appownerslistresponse

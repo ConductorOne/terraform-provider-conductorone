@@ -83,7 +83,7 @@ func (s *Connector) List(ctx context.Context, request operations.C1APIAppV1Conne
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -302,7 +302,7 @@ func (s *Connector) CreateDelegated(ctx context.Context, request operations.C1AP
 }
 
 // ConfirmSyncValid - Confirm Sync Valid
-// Invokes the c1.api.app.v1.ConnectorService.ConfirmSyncValid method.
+// Confirm that a sync which errored due to a data drop is valid, overriding the error and triggering a new sync. Only applicable when the sync status is ERRORED_NO_DATA.
 func (s *Connector) ConfirmSyncValid(ctx context.Context, request operations.C1APIAppV1ConnectorServiceConfirmSyncValidRequest, opts ...operations.Option) (*operations.C1APIAppV1ConnectorServiceConfirmSyncValidResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -557,6 +557,7 @@ func (s *Connector) GetCredentials(ctx context.Context, request operations.C1API
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -694,6 +695,8 @@ func (s *Connector) RevokeCredential(ctx context.Context, request operations.C1A
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -707,7 +710,7 @@ func (s *Connector) RevokeCredential(ctx context.Context, request operations.C1A
 }
 
 // ForceSync - Force Sync
-// Invokes the c1.api.app.v1.ConnectorService.ForceSync method.
+// Trigger an immediate sync for a connector. The sync is queued and may not start instantly.
 func (s *Connector) ForceSync(ctx context.Context, request operations.C1APIAppV1ConnectorServiceForceSyncRequest, opts ...operations.Option) (*operations.C1APIAppV1ConnectorServiceForceSyncResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -844,7 +847,7 @@ func (s *Connector) ForceSync(ctx context.Context, request operations.C1APIAppV1
 }
 
 // PauseSync - Pause Sync
-// Invokes the c1.api.app.v1.ConnectorService.PauseSync method.
+// Pause syncing and provisioning for a connector. No new syncs or grant/revoke operations will run until the connector is resumed.
 func (s *Connector) PauseSync(ctx context.Context, request operations.C1APIAppV1ConnectorServicePauseSyncRequest, opts ...operations.Option) (*operations.C1APIAppV1ConnectorServicePauseSyncResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -981,7 +984,7 @@ func (s *Connector) PauseSync(ctx context.Context, request operations.C1APIAppV1
 }
 
 // ResumeSync - Resume Sync
-// Invokes the c1.api.app.v1.ConnectorService.ResumeSync method.
+// Resume syncing and provisioning for a connector that was previously paused. Clears the paused state and triggers a new sync.
 func (s *Connector) ResumeSync(ctx context.Context, request operations.C1APIAppV1ConnectorServiceResumeSyncRequest, opts ...operations.Option) (*operations.C1APIAppV1ConnectorServiceResumeSyncResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1118,7 +1121,7 @@ func (s *Connector) ResumeSync(ctx context.Context, request operations.C1APIAppV
 }
 
 // UpdateConnectorSchedule - Update Connector Schedule
-// Invokes the c1.api.app.v1.ConnectorService.UpdateConnectorSchedule method.
+// Update the sync schedule for a connector.
 func (s *Connector) UpdateConnectorSchedule(ctx context.Context, request operations.C1APIAppV1ConnectorServiceUpdateConnectorScheduleRequest, opts ...operations.Option) (*operations.C1APIAppV1ConnectorServiceUpdateConnectorScheduleResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -2200,8 +2203,8 @@ func (s *Connector) RotateCredential(ctx context.Context, request *shared.Connec
 }
 
 // ValidateHTTPConnectorConfig - Validate Http Connector Config
-// Invokes the c1.api.app.v1.ConnectorService.ValidateHTTPConnectorConfig method.
-func (s *Connector) ValidateHTTPConnectorConfig(ctx context.Context, request *shared.EditorValidateRequest, opts ...operations.Option) (*operations.C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse, error) {
+// Validate an HTTP connector configuration and return any diagnostics or errors found.
+func (s *Connector) ValidateHTTPConnectorConfig(ctx context.Context, request *shared.AppEditorValidateRequest, opts ...operations.Option) (*operations.C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -2311,12 +2314,12 @@ func (s *Connector) ValidateHTTPConnectorConfig(ctx context.Context, request *sh
 				return nil, err
 			}
 
-			var out shared.EditorValidateResponse
+			var out shared.AppEditorValidateResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.EditorValidateResponse = &out
+			res.AppEditorValidateResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

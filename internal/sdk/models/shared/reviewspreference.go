@@ -6,6 +6,8 @@ package shared
 type ReviewsPreference struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// The locked field.
+	Locked *bool `json:"locked,omitempty"`
 }
 
 func (r *ReviewsPreference) GetEnabled() *bool {
@@ -13,4 +15,11 @@ func (r *ReviewsPreference) GetEnabled() *bool {
 		return nil
 	}
 	return r.Enabled
+}
+
+func (r *ReviewsPreference) GetLocked() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.Locked
 }

@@ -31,7 +31,7 @@ func newTaskAudit(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, h
 }
 
 // List
-// Invokes the c1.api.task.v1.TaskAudit.List method.
+// List audit trail events for a task.
 func (s *TaskAudit) List(ctx context.Context, request *shared.TaskAuditListRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskAuditListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

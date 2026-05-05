@@ -26,6 +26,9 @@ func (c *C1APIIamV1RolesUpdateRequest) GetUpdateRoleRequest() *shared.UpdateRole
 	return c.UpdateRoleRequest
 }
 
+// #region class-body-c1apiiamv1rolesupdaterequest
+// #endregion class-body-c1apiiamv1rolesupdaterequest
+
 type C1APIIamV1RolesUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIIamV1RolesUpdateResponse) GetUpdateRolesResponse() *shared.UpdateR
 	}
 	return c.UpdateRolesResponse
 }
+
+// #region class-body-c1apiiamv1rolesupdateresponse
+// #endregion class-body-c1apiiamv1rolesupdateresponse

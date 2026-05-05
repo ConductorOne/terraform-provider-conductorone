@@ -45,3 +45,6 @@ func (c *C1APIAttributeV1AttributeSearchSearchAttributeValuesResponse) GetSearch
 	}
 	return c.SearchAttributeValuesResponse
 }
+
+// #region class-body-c1apiattributev1attributesearchsearchattributevaluesresponse
+// #endregion class-body-c1apiattributev1attributesearchsearchattributevaluesresponse

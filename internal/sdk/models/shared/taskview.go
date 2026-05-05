@@ -22,6 +22,12 @@ type TaskView struct {
 	IdentityUserPath *string `json:"identityUserPath,omitempty"`
 	// JSONPATH expression indicating the location of the Insights objects in the expanded array
 	InsightsPath *string `json:"insightsPath,omitempty"`
+	// JSONPATH expression indicating the location of the EntitlementScopeBindingList object in the expanded array.
+	ResourceBindingsPath *string `json:"resourceBindingsPath,omitempty"`
+	// JSONPATH expression indicating the location of the role AppResource for a scope-role action task in the expanded array.
+	RoleResourcePath *string `json:"roleResourcePath,omitempty"`
+	// JSONPATH expression indicating the location of the scope AppResource for a scope-role action task in the expanded array.
+	ScopeResourcePath *string `json:"scopeResourcePath,omitempty"`
 	// JSONPATH expression indicating the location of the StepApproverUsers objects in the expanded array
 	StepApproversPath *string `json:"stepApproversPath,omitempty"`
 	// A fully-fleged task object. Includes its policy, references to external apps, its type, its processing history, and more.
@@ -91,6 +97,27 @@ func (t *TaskView) GetInsightsPath() *string {
 		return nil
 	}
 	return t.InsightsPath
+}
+
+func (t *TaskView) GetResourceBindingsPath() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ResourceBindingsPath
+}
+
+func (t *TaskView) GetRoleResourcePath() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RoleResourcePath
+}
+
+func (t *TaskView) GetScopeResourcePath() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ScopeResourcePath
 }
 
 func (t *TaskView) GetStepApproversPath() *string {

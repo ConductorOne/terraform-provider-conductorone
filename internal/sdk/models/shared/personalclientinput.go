@@ -10,6 +10,7 @@ import (
 // PersonalClientInput - The PersonalClient message contains information about a presonal client credential.
 type PersonalClientInput struct {
 	// If set, only allows the CIDRs in the array to use the credential.
+	//  Accepts IPv4 (e.g. 10.0.0.0/24) or IPv6 (e.g. 2001:db8::/32) CIDRs.
 	AllowSourceCidr []string `json:"allowSourceCidr,omitempty"`
 	// The display name of the personal client credential.
 	DisplayName *string    `json:"displayName,omitempty"`

@@ -4,7 +4,7 @@ package shared
 
 // The AccessReviewSetupEntitlementView message.
 type AccessReviewSetupEntitlementView struct {
-	// The AccessReviewSetupEntitlement message.
+	// An entitlement that has been selected for inclusion in an access review campaign during setup.
 	AccessReviewSetupEntitlement *AccessReviewSetupEntitlement `json:"accessReviewEntitlement,omitempty"`
 	// The appPath field.
 	AppPath *string `json:"appPath,omitempty"`

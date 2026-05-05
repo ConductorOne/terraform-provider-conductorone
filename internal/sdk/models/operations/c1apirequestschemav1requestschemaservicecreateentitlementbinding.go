@@ -14,7 +14,7 @@ type C1APIRequestSchemaV1RequestSchemaServiceCreateEntitlementBindingResponse st
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for creating a single entitlement binding.
 	RequestSchemaServiceCreateEntitlementBindingResponse *shared.RequestSchemaServiceCreateEntitlementBindingResponse
 }
 
@@ -45,3 +45,6 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceCreateEntitlementBindingRespons
 	}
 	return c.RequestSchemaServiceCreateEntitlementBindingResponse
 }
+
+// #region class-body-c1apirequestschemav1requestschemaservicecreateentitlementbindingresponse
+// #endregion class-body-c1apirequestschemav1requestschemaservicecreateentitlementbindingresponse

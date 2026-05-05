@@ -3,13 +3,11 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
 
-// RequestSchemaJustificationVisibility - The justificationVisibility field.
+// RequestSchemaJustificationVisibility - Controls whether the justification field is shown or hidden on the request form.
 type RequestSchemaJustificationVisibility string
 
 const (
@@ -21,33 +19,27 @@ const (
 func (e RequestSchemaJustificationVisibility) ToPointer() *RequestSchemaJustificationVisibility {
 	return &e
 }
-func (e *RequestSchemaJustificationVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestSchemaJustificationVisibility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "JUSTIFICATION_VISIBILITY_UNSPECIFIED", "JUSTIFICATION_VISIBILITY_SHOW", "JUSTIFICATION_VISIBILITY_HIDE":
+			return true
+		}
 	}
-	switch v {
-	case "JUSTIFICATION_VISIBILITY_UNSPECIFIED":
-		fallthrough
-	case "JUSTIFICATION_VISIBILITY_SHOW":
-		fallthrough
-	case "JUSTIFICATION_VISIBILITY_HIDE":
-		*e = RequestSchemaJustificationVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestSchemaJustificationVisibility: %v", v)
-	}
+	return false
 }
 
-// The RequestSchema message.
+// RequestSchema - A request schema defines a form template that users fill out when requesting access.
 type RequestSchema struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 	// A form is a collection of fields to be filled out by a user
 	Form *Form `json:"form,omitempty"`
-	// The id field.
+	// The unique identifier of this request schema.
 	ID *string `json:"id,omitempty"`
-	// The justificationVisibility field.
+	// Controls whether the justification field is shown or hidden on the request form.
 	JustificationVisibility *RequestSchemaJustificationVisibility `json:"justificationVisibility,omitempty"`
 }
 

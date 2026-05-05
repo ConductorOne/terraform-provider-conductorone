@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e AppEntitlementAutomationLastRunStatusStatus) ToPointer() *AppEntitlementAutomationLastRunStatusStatus {
 	return &e
 }
-func (e *AppEntitlementAutomationLastRunStatusStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppEntitlementAutomationLastRunStatusStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED", "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS":
+			return true
+		}
 	}
-	switch v {
-	case "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_UNSPECIFIED":
-		fallthrough
-	case "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_SUCCESS":
-		fallthrough
-	case "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_FAILED":
-		fallthrough
-	case "APP_ENTITLEMENT_AUTOMATION_RUN_STATUS_IN_PROGRESS":
-		*e = AppEntitlementAutomationLastRunStatusStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppEntitlementAutomationLastRunStatusStatus: %v", v)
-	}
+	return false
 }
 
 // The AppEntitlementAutomationLastRunStatus message.

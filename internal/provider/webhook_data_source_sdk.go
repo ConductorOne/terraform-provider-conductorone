@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *WebhookDataSourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
+func (r *WebhookDataSourceModel) RefreshFromSharedWebhook(ctx context.Context, resp *shared.Webhook) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	r.CallbackTimeout = types.StringPointerValue(resp.CallbackTimeout)
@@ -34,7 +34,7 @@ func (r *WebhookDataSourceModel) RefreshFromSharedWebhooksSearchResponse(ctx con
 			return diags
 		}
 
-		diags.Append(r.RefreshFromSharedWebhook1(ctx, &resp.List[0])...)
+		diags.Append(r.RefreshFromSharedWebhook(ctx, &resp.List[0])...)
 
 		if diags.HasError() {
 			return diags

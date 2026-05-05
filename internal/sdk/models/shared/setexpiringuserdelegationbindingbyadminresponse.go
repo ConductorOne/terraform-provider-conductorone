@@ -2,7 +2,7 @@
 
 package shared
 
-// The SetExpiringUserDelegationBindingByAdminResponse message.
+// SetExpiringUserDelegationBindingByAdminResponse is the response containing the created or updated delegation binding.
 type SetExpiringUserDelegationBindingByAdminResponse struct {
 	// The ExpiringUserDelegationBinding message.
 	ExpiringUserDelegationBinding *ExpiringUserDelegationBinding `json:"item,omitempty"`

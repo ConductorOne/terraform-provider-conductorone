@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceCloseRequest) GetTaskActionsServiceCloseRe
 	return c.TaskActionsServiceCloseRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsservicecloserequest
+// #endregion class-body-c1apitaskv1taskactionsservicecloserequest
+
 type C1APITaskV1TaskActionsServiceCloseResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceCloseResponse) GetTaskActionsServiceCloseR
 	}
 	return c.TaskActionsServiceCloseResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsservicecloseresponse
+// #endregion class-body-c1apitaskv1taskactionsservicecloseresponse

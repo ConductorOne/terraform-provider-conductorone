@@ -2,11 +2,11 @@
 
 package shared
 
-// ResourceTypeIDRef - The ResourceTypeIdRef message.
+// ResourceTypeIDRef - A reference to a resource type within an application.
 type ResourceTypeIDRef struct {
-	// The appId field.
+	// The ID of the application that owns the resource type.
 	AppID *string `json:"appId,omitempty"`
-	// The resourceTypeId field.
+	// The ID of the resource type.
 	ResourceTypeID *string `json:"resourceTypeId,omitempty"`
 }
 

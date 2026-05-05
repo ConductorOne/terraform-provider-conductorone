@@ -45,3 +45,6 @@ func (c *C1APISettingsV1OrgDomainServiceUpdateResponse) GetUpdateOrgDomainRespon
 	}
 	return c.UpdateOrgDomainResponse
 }
+
+// #region class-body-c1apisettingsv1orgdomainserviceupdateresponse
+// #endregion class-body-c1apisettingsv1orgdomainserviceupdateresponse

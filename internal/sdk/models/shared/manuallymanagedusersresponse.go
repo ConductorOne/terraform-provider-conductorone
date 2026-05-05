@@ -4,9 +4,9 @@ package shared
 
 // The ManuallyManagedUsersResponse message.
 type ManuallyManagedUsersResponse struct {
-	// The bulkActionId field.
+	// The ID of the bulk action created to process the membership additions.
 	BulkActionID *string `json:"bulkActionId,omitempty"`
-	// The failedUsersErrorMap field.
+	// A map of user IDs to error messages for users that could not be added.
 	FailedUsersErrorMap map[string]string `json:"failedUsersErrorMap,omitempty"`
 }
 

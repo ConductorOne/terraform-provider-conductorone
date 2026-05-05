@@ -7,9 +7,9 @@ type ConfigSchema struct {
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Optional. Metadata for displaying fields in the UI.
-	FieldGroups []FieldGroup `json:"fieldGroups,omitempty"`
+	FieldGroups []ConnectorFieldGroup `json:"fieldGroups,omitempty"`
 	// The fields field.
-	Fields []Field `json:"fields,omitempty"`
+	Fields []ConnectorField `json:"fields,omitempty"`
 	// The helpUrl field.
 	HelpURL *string `json:"helpUrl,omitempty"`
 	// The iconUrl field.
@@ -31,14 +31,14 @@ func (c *ConfigSchema) GetDisplayName() *string {
 	return c.DisplayName
 }
 
-func (c *ConfigSchema) GetFieldGroups() []FieldGroup {
+func (c *ConfigSchema) GetFieldGroups() []ConnectorFieldGroup {
 	if c == nil {
 		return nil
 	}
 	return c.FieldGroups
 }
 
-func (c *ConfigSchema) GetFields() []Field {
+func (c *ConfigSchema) GetFields() []ConnectorField {
 	if c == nil {
 		return nil
 	}

@@ -6,10 +6,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -53,12 +51,12 @@ func (r *AppEntitlementMonitorBindingDataSource) Schema(ctx context.Context, req
 			"app_entitlement_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The appEntitlementId field.`,
+				Description: `The unique identifier of the bound app entitlement.`,
 			},
 			"app_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The appId field.`,
+				Description: `The unique identifier of the application containing the entitlement.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -69,19 +67,12 @@ func (r *AppEntitlementMonitorBindingDataSource) Schema(ctx context.Context, req
 			"entitlement_group": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The entitlementGroup field. must be one of ["ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"ENTITLEMENT_GROUP_UNSPECIFIED",
-						"ENTITLEMENT_GROUP_A",
-						"ENTITLEMENT_GROUP_B",
-					),
-				},
+				Description: `Which side of the conflict monitor (A or B) this entitlement is assigned to. possible known values include one of ["ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]`,
 			},
 			"monitor_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The monitorId field.`,
+				Description: `The unique identifier of the conflict monitor this binding belongs to.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

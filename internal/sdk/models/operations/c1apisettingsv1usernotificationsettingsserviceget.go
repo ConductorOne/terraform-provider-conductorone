@@ -45,3 +45,6 @@ func (c *C1APISettingsV1UserNotificationSettingsServiceGetResponse) GetGetUserNo
 	}
 	return c.GetUserNotificationSettingsResponse
 }
+
+// #region class-body-c1apisettingsv1usernotificationsettingsservicegetresponse
+// #endregion class-body-c1apisettingsv1usernotificationsettingsservicegetresponse

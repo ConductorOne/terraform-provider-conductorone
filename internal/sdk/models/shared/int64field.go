@@ -6,16 +6,8 @@ package shared
 //
 // This message contains a oneof named view. Only a single field of the following list may be set at a time:
 //   - numberField
-//
-// This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:
-//   - defaultValue
-//
-// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-//   - rules
 type Int64Field struct {
 	// The defaultValue field.
-	// This field is part of the `_default_value` oneof.
-	// See the documentation for `c1.api.form.v1.Int64Field` for more details.
 	DefaultValue *string `json:"defaultValue,omitempty"`
 	// The NumberField message.
 	NumberField *NumberField `json:"numberField,omitempty"`
@@ -52,3 +44,6 @@ func (i *Int64Field) GetInt64Rules() *Int64Rules {
 	}
 	return i.Int64Rules
 }
+
+// #region class-body-int64field
+// #endregion class-body-int64field

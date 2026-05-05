@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -24,28 +22,16 @@ const (
 func (e Frequency) ToPointer() *Frequency {
 	return &e
 }
-func (e *Frequency) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Frequency) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FREQUENCY_UNSPECIFIED", "FREQUENCY_NONE", "FREQUENCY_DAILY", "FREQUENCY_WEEKLY", "FREQUENCY_MONTHLY", "FREQUENCY_YEARLY":
+			return true
+		}
 	}
-	switch v {
-	case "FREQUENCY_UNSPECIFIED":
-		fallthrough
-	case "FREQUENCY_NONE":
-		fallthrough
-	case "FREQUENCY_DAILY":
-		fallthrough
-	case "FREQUENCY_WEEKLY":
-		fallthrough
-	case "FREQUENCY_MONTHLY":
-		fallthrough
-	case "FREQUENCY_YEARLY":
-		*e = Frequency(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Frequency: %v", v)
-	}
+	return false
 }
 
 // The RecurrenceRule message.

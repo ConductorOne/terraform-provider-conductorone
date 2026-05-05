@@ -143,24 +143,24 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
 
 ### Required
 
-- `app_id` (String)
-- `display_name` (String) The displayName field.
+- `app_id` (String) The ID of the app that is associated with the app entitlement.
+- `display_name` (String) The display name of the new entitlement.
 
 ### Optional
 
-- `alias` (String) The alias field.
-- `app_resource_id` (String) The appResourceId field. Requires replacement if changed.
-- `app_resource_type_id` (String) The appResourceTypeId field. Requires replacement if changed.
-- `certify_policy_id` (String) The certifyPolicyId field.
-- `compliance_framework_value_ids` (List of String) The complianceFrameworkValueIds field.
-- `description` (String) The description field.
+- `alias` (String) A unique alias for the entitlement, used for programmatic lookups and Cone.
+- `app_resource_id` (String) The ID of the resource that this entitlement belongs to. Requires replacement if changed.
+- `app_resource_type_id` (String) The ID of the resource type that this entitlement belongs to. Requires replacement if changed.
+- `certify_policy_id` (String) The ID of the policy to use for certification tasks.
+- `compliance_framework_value_ids` (List of String) The IDs of compliance frameworks to associate with this entitlement (e.g., SOX, HIPAA).
+- `description` (String) The description of the new entitlement.
 - `duration_grant` (String)
 - `duration_unset` (Attributes) (see [below for nested schema](#nestedatt--duration_unset))
-- `emergency_grant_enabled` (Boolean) The emergencyGrantEnabled field.
-- `emergency_grant_policy_id` (String) The emergencyGrantPolicyId field.
-- `grant_policy_id` (String) The grantPolicyId field.
+- `emergency_grant_enabled` (Boolean) Whether emergency grant requests are enabled for this entitlement.
+- `emergency_grant_policy_id` (String) The ID of the policy to use for emergency grant tasks. Required if emergency_grant_enabled is true.
+- `grant_policy_id` (String) The ID of the policy to use for grant request tasks.
 - `match_baton_id` (String) If supplied, it's implied that the entitlement is created before sync and needs to be merged with connector entitlement.
-- `override_access_requests_defaults` (Boolean) The overrideAccessRequestsDefaults field.
+- `override_access_requests_defaults` (Boolean) Whether to override the app-level access request defaults for this entitlement.
 - `provision_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -172,10 +172,10 @@ This message contains a oneof named typ. Only a single field of the following li
   - externalTicket
   - unconfigured
   - action (see [below for nested schema](#nestedatt--provision_policy))
-- `purpose` (String) The purpose field. must be one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]
-- `revoke_policy_id` (String) The revokePolicyId field.
-- `risk_level_value_id` (String) The riskLevelValueId field.
-- `slug` (String) The slug field.
+- `purpose` (String) The purpose of the entitlement (e.g., assignment, permission, ownership). possible known values include one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]
+- `revoke_policy_id` (String) The ID of the policy to use for revoke request tasks.
+- `risk_level_value_id` (String) The ID of the risk level to assign to this entitlement.
+- `slug` (String) A short label describing the permission the entitlement grants (e.g., "Admin", "Read").
 
 ### Read-Only
 
@@ -194,7 +194,9 @@ This message contains a oneof named typ. Only a single field of the following li
   - unconfigured
   - action (see [below for nested schema](#nestedatt--deprovisioner_policy))
 - `edit` (Boolean) The edit field.
-- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
+- `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
+- `external_id` (String) The upstream product's native external ID for this entitlement (e.g. an Okta group ID).
+ Populated from the connector's external ID during sync.
 - `extra` (Map of Boolean) The extra field.
 - `grant_count` (String) The amount of grants open for this entitlement
 - `id` (String) The unique ID for the App Entitlement.

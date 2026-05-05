@@ -4,11 +4,11 @@ package shared
 
 // The CohortHintView message.
 type CohortHintView struct {
-	// The attribute field.
+	// The user attribute name used for cohort grouping.
 	Attribute *string `json:"attribute,omitempty"`
-	// The priority field.
+	// Relative priority of this hint.
 	Priority *int `json:"priority,omitempty"`
-	// The values field.
+	// The specific attribute values targeted by this hint.
 	Values []string `json:"values,omitempty"`
 }
 

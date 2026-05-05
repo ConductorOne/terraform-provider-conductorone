@@ -45,3 +45,6 @@ func (c *C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse) Get
 	}
 	return c.SearchPastGrantsResponse
 }
+
+// #region class-body-c1apiappv1appentitlementuserbindingservicesearchpastgrantsresponse
+// #endregion class-body-c1apiappv1appentitlementuserbindingservicesearchpastgrantsresponse

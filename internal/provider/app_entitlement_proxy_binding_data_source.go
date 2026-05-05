@@ -62,27 +62,31 @@ func (r *AppEntitlementProxyBindingDataSource) Schema(ctx context.Context, req d
 				Computed: true,
 			},
 			"dst_app_entitlement_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The ID of the destination (child) entitlement.`,
 			},
 			"dst_app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The ID of the app that owns the destination entitlement.`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{},
 				},
-				Description: `The expanded field.`,
+				Description: `List of serialized related objects.`,
 			},
 			"src_app_entitlement_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The ID of the source (parent) entitlement.`,
 			},
 			"src_app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The ID of the app that owns the source entitlement.`,
 			},
 			"system_builtin": schema.BoolAttribute{
 				Computed:    true,
-				Description: `The systemBuiltin field.`,
+				Description: `If true, this binding was created by the system and cannot be removed by the user.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

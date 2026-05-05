@@ -2,6 +2,6 @@
 
 package shared
 
-// The VaultServiceDeleteRequest message.
+// VaultServiceDeleteRequest is the request message for deleting a vault.
 type VaultServiceDeleteRequest struct {
 }
