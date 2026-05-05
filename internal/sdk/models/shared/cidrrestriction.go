@@ -2,11 +2,12 @@
 
 package shared
 
-// The CIDRRestriction message.
+// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
 type CIDRRestriction struct {
-	// The enabled field.
+	// Whether this CIDR restriction is enforced.
 	Enabled *bool `json:"enabled,omitempty"`
-	// The sourceCidr field.
+	// The list of CIDR ranges that are allowed when the restriction is enabled.
+	//  Accepts IPv4 (e.g. 10.0.0.0/24) or IPv6 (e.g. 2001:db8::/32) CIDRs.
 	SourceCidr []string `json:"sourceCidr,omitempty"`
 }
 

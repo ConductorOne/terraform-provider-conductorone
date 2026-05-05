@@ -8,6 +8,7 @@ package shared
 //   - success
 //   - error
 //   - cancelled
+//   - pending
 type TaskAuditConnectorActionResult struct {
 	// The appEntitlementId field.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
@@ -21,6 +22,8 @@ type TaskAuditConnectorActionResult struct {
 	ConnectorID *string `json:"connectorId,omitempty"`
 	// The TaskAuditErrorResult message.
 	TaskAuditErrorResult *TaskAuditErrorResult `json:"error,omitempty"`
+	// The TaskAuditPendingResult message.
+	TaskAuditPendingResult *TaskAuditPendingResult `json:"pending,omitempty"`
 	// The TaskAuditSuccessResult message.
 	TaskAuditSuccessResult *TaskAuditSuccessResult `json:"success,omitempty"`
 }
@@ -65,6 +68,13 @@ func (t *TaskAuditConnectorActionResult) GetTaskAuditErrorResult() *TaskAuditErr
 		return nil
 	}
 	return t.TaskAuditErrorResult
+}
+
+func (t *TaskAuditConnectorActionResult) GetTaskAuditPendingResult() *TaskAuditPendingResult {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditPendingResult
 }
 
 func (t *TaskAuditConnectorActionResult) GetTaskAuditSuccessResult() *TaskAuditSuccessResult {

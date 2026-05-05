@@ -9,6 +9,7 @@ type TaskAuditActionInstanceSucceeded struct {
 	// This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:
 	//   - automation
 	//   - batonResourceActionInstance
+	//   - clientIdApprovalInstance
 	//
 	//
 	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
@@ -17,12 +18,12 @@ type TaskAuditActionInstanceSucceeded struct {
 	//   - error
 	//   - cancelled
 	//
-	ActionInstance *ActionInstance `json:"instance,omitempty"`
+	PolicyActionInstance *PolicyActionInstance `json:"instance,omitempty"`
 }
 
-func (t *TaskAuditActionInstanceSucceeded) GetActionInstance() *ActionInstance {
+func (t *TaskAuditActionInstanceSucceeded) GetPolicyActionInstance() *PolicyActionInstance {
 	if t == nil {
 		return nil
 	}
-	return t.ActionInstance
+	return t.PolicyActionInstance
 }

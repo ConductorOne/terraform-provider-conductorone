@@ -17,11 +17,11 @@ func (r *WebhooksDataSourceModel) RefreshFromSharedWebhooksSearchResponse(ctx co
 	if resp != nil {
 		if resp.List != nil {
 			if r.List == nil {
-				r.List = []tfTypes.Webhook1{}
+				r.List = []tfTypes.Webhook{}
 			}
 
 			for _, listItem := range resp.List {
-				var list tfTypes.Webhook1
+				var list tfTypes.Webhook
 
 				list.CallbackTimeout = types.StringPointerValue(listItem.CallbackTimeout)
 				list.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.CreatedAt))
@@ -34,6 +34,8 @@ func (r *WebhooksDataSourceModel) RefreshFromSharedWebhooksSearchResponse(ctx co
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

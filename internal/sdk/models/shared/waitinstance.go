@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e WaitInstanceState) ToPointer() *WaitInstanceState {
 	return &e
 }
-func (e *WaitInstanceState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WaitInstanceState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "WAIT_INSTANCE_STATE_UNSPECIFIED", "WAIT_INSTANCE_STATE_WAITING", "WAIT_INSTANCE_STATE_COMPLETED", "WAIT_INSTANCE_STATE_TIMED_OUT":
+			return true
+		}
 	}
-	switch v {
-	case "WAIT_INSTANCE_STATE_UNSPECIFIED":
-		fallthrough
-	case "WAIT_INSTANCE_STATE_WAITING":
-		fallthrough
-	case "WAIT_INSTANCE_STATE_COMPLETED":
-		fallthrough
-	case "WAIT_INSTANCE_STATE_TIMED_OUT":
-		*e = WaitInstanceState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WaitInstanceState: %v", v)
-	}
+	return false
 }
 
 // WaitInstance - Used by the policy engine to describe an instantiated wait step.

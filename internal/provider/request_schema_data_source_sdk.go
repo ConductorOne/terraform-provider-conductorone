@@ -30,12 +30,16 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 					for _, v := range fieldGroupsItem.Fields {
 						fieldGroups.Fields = append(fieldGroups.Fields, types.StringValue(v))
 					}
+				} else {
+					fieldGroups.Fields = nil
 				}
 				fieldGroups.HelpText = types.StringPointerValue(fieldGroupsItem.HelpText)
 				fieldGroups.Name = types.StringPointerValue(fieldGroupsItem.Name)
 
 				r.FieldGroups = append(r.FieldGroups, fieldGroups)
 			}
+		} else {
+			r.FieldGroups = nil
 		}
 		if resp.FieldRelationships != nil {
 			r.FieldRelationships = []tfTypes.FieldRelationship{}
@@ -57,6 +61,8 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 						for _, v := range fieldRelationshipsItem.DependentOn.DependencyFieldNames {
 							fieldRelationships.DependentOn.DependencyFieldNames = append(fieldRelationships.DependentOn.DependencyFieldNames, types.StringValue(v))
 						}
+					} else {
+						fieldRelationships.DependentOn.DependencyFieldNames = nil
 					}
 				}
 				if fieldRelationshipsItem.FieldNames != nil {
@@ -64,6 +70,8 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 					for _, v := range fieldRelationshipsItem.FieldNames {
 						fieldRelationships.FieldNames = append(fieldRelationships.FieldNames, types.StringValue(v))
 					}
+				} else {
+					fieldRelationships.FieldNames = nil
 				}
 				if fieldRelationshipsItem.MutuallyExclusive == nil {
 					fieldRelationships.MutuallyExclusive = nil
@@ -78,6 +86,8 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 
 				r.FieldRelationships = append(r.FieldRelationships, fieldRelationships)
 			}
+		} else {
+			r.FieldRelationships = nil
 		}
 		if resp.Fields != nil {
 			r.Fields = []tfTypes.Field{}
@@ -125,6 +135,8 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 						for _, v := range fieldsItem.FileField.AcceptedFileTypes {
 							fields.FileField.AcceptedFileTypes = append(fields.FileField.AcceptedFileTypes, types.StringValue(v))
 						}
+					} else {
+						fields.FileField.AcceptedFileTypes = nil
 					}
 					if fieldsItem.FileField.FileInputField == nil {
 						fields.FileField.FileInputField = nil
@@ -151,6 +163,8 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 							for _, v := range fieldsItem.Int64Field.Int64Rules.In {
 								fields.Int64Field.Int64Rules.In = append(fields.Int64Field.Int64Rules.In, types.StringValue(v))
 							}
+						} else {
+							fields.Int64Field.Int64Rules.In = nil
 						}
 						fields.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lt)
 						fields.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lte)
@@ -159,6 +173,8 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 							for _, v := range fieldsItem.Int64Field.Int64Rules.NotIn {
 								fields.Int64Field.Int64Rules.NotIn = append(fields.Int64Field.Int64Rules.NotIn, types.StringValue(v))
 							}
+						} else {
+							fields.Int64Field.Int64Rules.NotIn = nil
 						}
 					}
 					if fieldsItem.Int64Field.NumberField == nil {
@@ -241,6 +257,8 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 
 								fields.StringField.SelectField.Options = append(fields.StringField.SelectField.Options, optionsVar)
 							}
+						} else {
+							fields.StringField.SelectField.Options = nil
 						}
 						if fieldsItem.StringField.SelectField.Type != nil {
 							fields.StringField.SelectField.Type = types.StringValue(string(*fieldsItem.StringField.SelectField.Type))
@@ -263,6 +281,8 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 							for _, v := range fieldsItem.StringField.StringRules.In {
 								fields.StringField.StringRules.In = append(fields.StringField.StringRules.In, types.StringValue(v))
 							}
+						} else {
+							fields.StringField.StringRules.In = nil
 						}
 						fields.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem.StringField.StringRules.IP)
 						fields.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem.StringField.StringRules.Ipv4)
@@ -279,6 +299,8 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 							for _, v := range fieldsItem.StringField.StringRules.NotIn {
 								fields.StringField.StringRules.NotIn = append(fields.StringField.StringRules.NotIn, types.StringValue(v))
 							}
+						} else {
+							fields.StringField.StringRules.NotIn = nil
 						}
 						fields.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem.StringField.StringRules.Pattern)
 						fields.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem.StringField.StringRules.Prefix)
@@ -298,6 +320,25 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 					} else {
 						fields.StringField.TextField = &tfTypes.TextField{}
 						fields.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem.StringField.TextField.Multiline)
+						fields.StringField.TextField.Suffix = types.StringPointerValue(fieldsItem.StringField.TextField.Suffix)
+					}
+				}
+				if fieldsItem.StringMapField == nil {
+					fields.StringMapField = nil
+				} else {
+					fields.StringMapField = &tfTypes.StringMapField{}
+					if len(fieldsItem.StringMapField.DefaultValue) > 0 {
+						fields.StringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem.StringMapField.DefaultValue))
+						for key, value := range fieldsItem.StringMapField.DefaultValue {
+							fields.StringMapField.DefaultValue[key] = types.StringValue(value)
+						}
+					}
+					if fieldsItem.StringMapField.StringMapRules == nil {
+						fields.StringMapField.StringMapRules = nil
+					} else {
+						fields.StringMapField.StringMapRules = &tfTypes.StringMapRules{}
+						fields.StringMapField.StringMapRules.IsRequired = types.BoolPointerValue(fieldsItem.StringMapField.StringMapRules.IsRequired)
+						fields.StringMapField.StringMapRules.ValidateEmpty = types.BoolPointerValue(fieldsItem.StringMapField.StringMapRules.ValidateEmpty)
 					}
 				}
 				if fieldsItem.UserProviderConfig == nil {
@@ -309,6 +350,8 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 
 				r.Fields = append(r.Fields, fields)
 			}
+		} else {
+			r.Fields = nil
 		}
 		r.Name = types.StringPointerValue(resp.Name)
 	}

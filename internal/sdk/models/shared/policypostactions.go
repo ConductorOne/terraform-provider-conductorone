@@ -2,13 +2,13 @@
 
 package shared
 
-// PolicyPostActions - These are actions to happen after a policy is complete.
+// PolicyPostActions - Actions to execute after a policy finishes processing.
 //
 // This message contains a oneof named action. Only a single field of the following list may be set at a time:
 //   - certifyRemediateImmediately
 type PolicyPostActions struct {
-	// ONLY valid when used in a CERTIFY Ticket Type:
-	//  Causes any deprovision or change in a grant to be applied when Certify Ticket is closed.
+	// Only valid on certify policies. When true, any revocations resulting from
+	//  the certification are applied immediately when the campaign task closes.
 	// This field is part of the `action` oneof.
 	// See the documentation for `c1.api.policy.v1.PolicyPostActions` for more details.
 	CertifyRemediateImmediately *bool `json:"certifyRemediateImmediately,omitempty"`

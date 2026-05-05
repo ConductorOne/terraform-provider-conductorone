@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // InputType - The inputType field.
 type InputType string
 
@@ -20,24 +15,16 @@ const (
 func (e InputType) ToPointer() *InputType {
 	return &e
 }
-func (e *InputType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *InputType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DATE_TIME_INPUT_TYPE_UNSPECIFIED", "DATE_TIME_INPUT_TYPE_DATE", "DATE_TIME_INPUT_TYPE_TIME", "DATE_TIME_INPUT_TYPE_DATE_TIME":
+			return true
+		}
 	}
-	switch v {
-	case "DATE_TIME_INPUT_TYPE_UNSPECIFIED":
-		fallthrough
-	case "DATE_TIME_INPUT_TYPE_DATE":
-		fallthrough
-	case "DATE_TIME_INPUT_TYPE_TIME":
-		fallthrough
-	case "DATE_TIME_INPUT_TYPE_DATE_TIME":
-		*e = InputType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for InputType: %v", v)
-	}
+	return false
 }
 
 // DateTimeInputComponent for date/time selection.

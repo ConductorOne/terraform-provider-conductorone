@@ -14,7 +14,7 @@ type C1APITaskV1TaskServiceCreateOffboardingTaskResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The TaskServiceCreateOffboardingResponse returns the created offboarding task with optional expanded related objects.
 	TaskServiceCreateOffboardingResponse *shared.TaskServiceCreateOffboardingResponse
 }
 
@@ -45,3 +45,6 @@ func (c *C1APITaskV1TaskServiceCreateOffboardingTaskResponse) GetTaskServiceCrea
 	}
 	return c.TaskServiceCreateOffboardingResponse
 }
+
+// #region class-body-c1apitaskv1taskservicecreateoffboardingtaskresponse
+// #endregion class-body-c1apitaskv1taskservicecreateoffboardingtaskresponse

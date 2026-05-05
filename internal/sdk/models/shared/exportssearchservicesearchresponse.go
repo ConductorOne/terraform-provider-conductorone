@@ -2,11 +2,11 @@
 
 package shared
 
-// The ExportsSearchServiceSearchResponse message.
+// ExportsSearchServiceSearchResponse is the response for searching system log exports.
 type ExportsSearchServiceSearchResponse struct {
-	// The list field.
+	// The list of system log exports matching the search criteria.
 	List []Exporter `json:"list,omitempty"`
-	// The nextPageToken field.
+	// The token to retrieve the next page of results, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

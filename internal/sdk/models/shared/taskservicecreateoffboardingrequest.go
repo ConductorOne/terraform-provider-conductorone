@@ -2,11 +2,11 @@
 
 package shared
 
-// The TaskServiceCreateOffboardingRequest message.
+// TaskServiceCreateOffboardingRequest - Create an offboarding task.
 type TaskServiceCreateOffboardingRequest struct {
-	// The description field.
+	// The description of the offboarding request.
 	Description *string `json:"description,omitempty"`
-	// The subjectUserId field.
+	// The ID of the user to offboard.
 	SubjectUserID *string `json:"subjectUserId,omitempty"`
 }
 

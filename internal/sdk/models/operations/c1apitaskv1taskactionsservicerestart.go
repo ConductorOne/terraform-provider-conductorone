@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceRestartRequest) GetTaskActionsServiceResta
 	return c.TaskActionsServiceRestartRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsservicerestartrequest
+// #endregion class-body-c1apitaskv1taskactionsservicerestartrequest
+
 type C1APITaskV1TaskActionsServiceRestartResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -33,7 +36,7 @@ type C1APITaskV1TaskActionsServiceRestartResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The TaskActionsServiceRestartResponse returns the updated task after restarting.
 	TaskActionsServiceRestartResponse *shared.TaskActionsServiceRestartResponse
 }
 
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceRestartResponse) GetTaskActionsServiceRest
 	}
 	return c.TaskActionsServiceRestartResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsservicerestartresponse
+// #endregion class-body-c1apitaskv1taskactionsservicerestartresponse

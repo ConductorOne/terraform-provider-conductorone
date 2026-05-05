@@ -2,6 +2,6 @@
 
 package shared
 
-// The DeleteManuallyManagedAppResourceResponse message.
+// DeleteManuallyManagedAppResourceResponse - The empty response message for deleting a manually managed app resource.
 type DeleteManuallyManagedAppResourceResponse struct {
 }

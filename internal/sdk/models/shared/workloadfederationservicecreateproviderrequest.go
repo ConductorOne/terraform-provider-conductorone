@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // WorkloadFederationServiceCreateProviderRequestWellKnownProvider - Well-known provider type. Required -- UNSPECIFIED is rejected.
 //
 //	When set to a named source, the backend validates issuer_url consistency.
@@ -24,28 +19,16 @@ const (
 func (e WorkloadFederationServiceCreateProviderRequestWellKnownProvider) ToPointer() *WorkloadFederationServiceCreateProviderRequestWellKnownProvider {
 	return &e
 }
-func (e *WorkloadFederationServiceCreateProviderRequestWellKnownProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WorkloadFederationServiceCreateProviderRequestWellKnownProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED", "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM", "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS", "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI", "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM", "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND":
+			return true
+		}
 	}
-	switch v {
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND":
-		*e = WorkloadFederationServiceCreateProviderRequestWellKnownProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WorkloadFederationServiceCreateProviderRequestWellKnownProvider: %v", v)
-	}
+	return false
 }
 
 // The WorkloadFederationServiceCreateProviderRequest message.

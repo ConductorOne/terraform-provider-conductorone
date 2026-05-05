@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // WellKnownRegex specifies a common well known pattern defined as a regex.
 // This field is part of the `well_known` oneof.
 // See the documentation for `validate.StringRules` for more details.
@@ -21,22 +16,16 @@ const (
 func (e WellKnownRegex) ToPointer() *WellKnownRegex {
 	return &e
 }
-func (e *WellKnownRegex) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WellKnownRegex) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE":
+			return true
+		}
 	}
-	switch v {
-	case "UNKNOWN":
-		fallthrough
-	case "HTTP_HEADER_NAME":
-		fallthrough
-	case "HTTP_HEADER_VALUE":
-		*e = WellKnownRegex(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WellKnownRegex: %v", v)
-	}
+	return false
 }
 
 // StringRules describe the constraints applied to `string` values

@@ -42,6 +42,9 @@ func (c *C1APIAppV1AppResourceOwnersRemoveRequest) GetRemoveAppResourceOwnerRequ
 	return c.RemoveAppResourceOwnerRequest
 }
 
+// #region class-body-c1apiappv1appresourceownersremoverequest
+// #endregion class-body-c1apiappv1appresourceownersremoverequest
+
 type C1APIAppV1AppResourceOwnersRemoveResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -49,7 +52,7 @@ type C1APIAppV1AppResourceOwnersRemoveResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The empty response message for removing an owner from an app resource.
 	RemoveAppResourceOwnerResponse *shared.RemoveAppResourceOwnerResponse
 }
 
@@ -80,3 +83,6 @@ func (c *C1APIAppV1AppResourceOwnersRemoveResponse) GetRemoveAppResourceOwnerRes
 	}
 	return c.RemoveAppResourceOwnerResponse
 }
+
+// #region class-body-c1apiappv1appresourceownersremoveresponse
+// #endregion class-body-c1apiappv1appresourceownersremoveresponse

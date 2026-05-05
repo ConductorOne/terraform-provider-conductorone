@@ -23,3 +23,6 @@ func (a *A2UIServiceSubmitActionResponse) GetErrorMessage() *string {
 	}
 	return a.ErrorMessage
 }
+
+// #region class-body-a2uiservicesubmitactionresponse
+// #endregion class-body-a2uiservicesubmitactionresponse

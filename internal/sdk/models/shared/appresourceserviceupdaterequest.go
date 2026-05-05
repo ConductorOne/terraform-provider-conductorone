@@ -2,7 +2,7 @@
 
 package shared
 
-// The AppResourceServiceUpdateRequest message.
+// AppResourceServiceUpdateRequest - The request message for updating an app resource.
 type AppResourceServiceUpdateRequest struct {
 	// The app resource message is a single resource that can have entitlements.
 	//

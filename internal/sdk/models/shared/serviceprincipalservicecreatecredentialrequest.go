@@ -5,6 +5,7 @@ package shared
 // The ServicePrincipalServiceCreateCredentialRequest message.
 type ServicePrincipalServiceCreateCredentialRequest struct {
 	// A list of CIDRs to restrict this credential to.
+	//  Accepts IPv4 (e.g. 10.0.0.0/24) or IPv6 (e.g. 2001:db8::/32) CIDRs.
 	AllowSourceCidrs []string `json:"allowSourceCidrs,omitempty"`
 	// The display name for the new credential.
 	DisplayName *string `json:"displayName,omitempty"`

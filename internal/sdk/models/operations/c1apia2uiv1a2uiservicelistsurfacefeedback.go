@@ -18,6 +18,9 @@ func (c *C1APIA2uiV1A2UIServiceListSurfaceFeedbackRequest) GetSurfaceID() string
 	return c.SurfaceID
 }
 
+// #region class-body-c1apia2uiv1a2uiservicelistsurfacefeedbackrequest
+// #endregion class-body-c1apia2uiv1a2uiservicelistsurfacefeedbackrequest
+
 type C1APIA2uiV1A2UIServiceListSurfaceFeedbackResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIA2uiV1A2UIServiceListSurfaceFeedbackResponse) GetA2UIServiceListSu
 	}
 	return c.A2UIServiceListSurfaceFeedbackResponse
 }
+
+// #region class-body-c1apia2uiv1a2uiservicelistsurfacefeedbackresponse
+// #endregion class-body-c1apia2uiv1a2uiservicelistsurfacefeedbackresponse

@@ -31,7 +31,7 @@ func newPersonalClientSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfi
 }
 
 // Search - NOTE: Searches personal clients for all users
-// Invokes the c1.api.iam.v1.PersonalClientSearchService.Search method.
+// Search finds personal client credentials across all users, with optional filtering by query text or user.
 func (s *PersonalClientSearch) Search(ctx context.Context, request *shared.PersonalClientSearchServiceSearchRequest, opts ...operations.Option) (*operations.C1APIIamV1PersonalClientSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

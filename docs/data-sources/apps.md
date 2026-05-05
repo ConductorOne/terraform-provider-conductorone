@@ -67,6 +67,8 @@ Optional:
 
 Read-Only:
 
+- `access_model` (String) How this app models access. Derived during uplift from the app's resource type traits.
+ Sparse ACL feature.
 - `app_account_id` (String) The ID of the Account named by AccountName.
 - `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
 - `app_user_mapper` (Attributes) AppUserMapper configures custom account mapping for uplift. (see [below for nested schema](#nestedatt--list--app_user_mapper))

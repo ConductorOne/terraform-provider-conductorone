@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,22 +19,16 @@ const (
 func (e CurrentState) ToPointer() *CurrentState {
 	return &e
 }
-func (e *CurrentState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CurrentState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_STATE_UNSPECIFIED", "TASK_STATE_OPEN", "TASK_STATE_CLOSED":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_STATE_UNSPECIFIED":
-		fallthrough
-	case "TASK_STATE_OPEN":
-		fallthrough
-	case "TASK_STATE_CLOSED":
-		*e = CurrentState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CurrentState: %v", v)
-	}
+	return false
 }
 
 // TaskAuditViewEventType - The eventType field.
@@ -51,22 +43,16 @@ const (
 func (e TaskAuditViewEventType) ToPointer() *TaskAuditViewEventType {
 	return &e
 }
-func (e *TaskAuditViewEventType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskAuditViewEventType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_AUDIT_EVENT_TYPE_UNSPECIFIED", "TASK_AUDIT_EVENT_TYPE_NEUTRAL", "TASK_AUDIT_EVENT_TYPE_ERROR":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_AUDIT_EVENT_TYPE_UNSPECIFIED":
-		fallthrough
-	case "TASK_AUDIT_EVENT_TYPE_NEUTRAL":
-		fallthrough
-	case "TASK_AUDIT_EVENT_TYPE_ERROR":
-		*e = TaskAuditViewEventType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskAuditViewEventType: %v", v)
-	}
+	return false
 }
 
 // Source - The source field.
@@ -83,26 +69,16 @@ const (
 func (e Source) ToPointer() *Source {
 	return &e
 }
-func (e *Source) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Source) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SOURCE_UNSPECIFIED", "SOURCE_C1", "SOURCE_JIRA", "SOURCE_SLACK", "SOURCE_COPILOT_AGENTS":
+			return true
+		}
 	}
-	switch v {
-	case "SOURCE_UNSPECIFIED":
-		fallthrough
-	case "SOURCE_C1":
-		fallthrough
-	case "SOURCE_JIRA":
-		fallthrough
-	case "SOURCE_SLACK":
-		fallthrough
-	case "SOURCE_COPILOT_AGENTS":
-		*e = Source(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Source: %v", v)
-	}
+	return false
 }
 
 // The TaskAuditView message.
@@ -188,6 +164,7 @@ type TaskAuditView struct {
 	//   - success
 	//   - error
 	//   - cancelled
+	//   - pending
 	//
 	TaskAuditConnectorActionResult *TaskAuditConnectorActionResult `json:"actionResult,omitempty"`
 	// The TaskAuditActionSubmitted message.

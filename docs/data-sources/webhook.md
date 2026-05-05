@@ -33,26 +33,26 @@ data "conductorone_webhook" "my_webhook" {
 
 ### Optional
 
-- `page_size` (Number) The pageSize field.
-- `page_token` (String) The pageToken field.
-- `query` (String) The query field.
-- `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))
+- `page_size` (Number) The maximum number of webhooks to return per page.
+- `page_token` (String) The pagination token from a previous search response to fetch the next page.
+- `query` (String) A text query to match against webhook names and descriptions.
+- `refs` (Attributes List) Optional set of webhook references to restrict the search to specific webhooks. (see [below for nested schema](#nestedatt--refs))
 
 ### Read-Only
 
 - `callback_timeout` (String)
 - `created_at` (String)
 - `deleted_at` (String)
-- `description` (String) The description field.
-- `display_name` (String) The displayName field.
-- `id` (String) The id field.
-- `next_page_token` (String) The nextPageToken field.
+- `description` (String) An optional description of the webhook's purpose.
+- `display_name` (String) The human-readable name of the webhook.
+- `id` (String) The unique identifier of the webhook.
+- `next_page_token` (String) A token to retrieve the next page of results, or empty if there are no more results.
 - `updated_at` (String)
-- `url` (String) The url field.
+- `url` (String) The destination URL that receives event notification HTTP callbacks.
 
 <a id="nestedatt--refs"></a>
 ### Nested Schema for `refs`
 
 Optional:
 
-- `id` (String) The id field.
+- `id` (String) The ID of the referenced webhook.

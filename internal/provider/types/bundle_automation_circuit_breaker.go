@@ -7,8 +7,8 @@ import (
 )
 
 type BundleAutomationCircuitBreaker struct {
+	UserRef                           *UserRef     `tfsdk:"user_ref"`
 	RemovedMembersThresholdPercentage types.String `tfsdk:"removed_members_threshold_percentage"`
 	State                             types.String `tfsdk:"state"`
 	UpdatedAt                         types.String `tfsdk:"updated_at"`
-	UserRef                           *UserRef     `tfsdk:"user_ref"`
 }

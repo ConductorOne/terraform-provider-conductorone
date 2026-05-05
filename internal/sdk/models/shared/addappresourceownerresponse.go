@@ -2,6 +2,6 @@
 
 package shared
 
-// The AddAppResourceOwnerResponse message.
+// AddAppResourceOwnerResponse - The empty response message for adding an owner to an app resource.
 type AddAppResourceOwnerResponse struct {
 }

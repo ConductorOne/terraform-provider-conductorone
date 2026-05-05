@@ -14,7 +14,7 @@ type C1APIRequestSchemaV1RequestSchemaServiceFindBindingForAppEntitlementRespons
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message containing the binding for the specified app entitlement.
 	RequestSchemaServiceFindBindingForAppEntitlementResponse *shared.RequestSchemaServiceFindBindingForAppEntitlementResponse
 }
 
@@ -45,3 +45,6 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceFindBindingForAppEntitlementRes
 	}
 	return c.RequestSchemaServiceFindBindingForAppEntitlementResponse
 }
+
+// #region class-body-c1apirequestschemav1requestschemaservicefindbindingforappentitlementresponse
+// #endregion class-body-c1apirequestschemav1requestschemaservicefindbindingforappentitlementresponse

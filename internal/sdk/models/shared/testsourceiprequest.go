@@ -4,9 +4,11 @@ package shared
 
 // The TestSourceIPRequest message.
 type TestSourceIPRequest struct {
-	// The allowCidr field.
+	// The CIDR allowlist rules to test against. If empty, uses the tenant's current allowlist.
+	//  Accepts IPv4 (e.g. 10.0.0.0/24) or IPv6 (e.g. 2001:db8::/32) CIDRs.
 	AllowCidr []string `json:"allowCidr,omitempty"`
-	// if unset, uses the source IP of the request
+	// if unset, uses the source IP of the request.
+	//  Accepts IPv4 (e.g. 10.0.0.5) or IPv6 (e.g. 2001:db8::1) addresses, optionally with a CIDR prefix.
 	SourceIP *string `json:"sourceIp,omitempty"`
 }
 

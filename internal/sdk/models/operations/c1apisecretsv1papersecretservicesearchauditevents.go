@@ -46,3 +46,6 @@ func (c *C1APISecretsV1PaperSecretServiceSearchAuditEventsResponse) GetPaperSecr
 	}
 	return c.PaperSecretServiceSearchAuditEventsResponse
 }
+
+// #region class-body-c1apisecretsv1papersecretservicesearchauditeventsresponse
+// #endregion class-body-c1apisecretsv1papersecretservicesearchauditeventsresponse

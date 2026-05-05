@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -12,50 +10,91 @@ import (
 type FormValues struct {
 }
 
-// Outcome - The outcome field.
-type Outcome string
+// TaskTypeActionOutcome - The outcome field.
+type TaskTypeActionOutcome string
 
 const (
-	OutcomeActionOutcomeUnspecified Outcome = "ACTION_OUTCOME_UNSPECIFIED"
-	OutcomeActionOutcomeSuccess     Outcome = "ACTION_OUTCOME_SUCCESS"
-	OutcomeActionOutcomeDenied      Outcome = "ACTION_OUTCOME_DENIED"
-	OutcomeActionOutcomeError       Outcome = "ACTION_OUTCOME_ERROR"
-	OutcomeActionOutcomeCancelled   Outcome = "ACTION_OUTCOME_CANCELLED"
+	TaskTypeActionOutcomeActionOutcomeUnspecified TaskTypeActionOutcome = "ACTION_OUTCOME_UNSPECIFIED"
+	TaskTypeActionOutcomeActionOutcomeSuccess     TaskTypeActionOutcome = "ACTION_OUTCOME_SUCCESS"
+	TaskTypeActionOutcomeActionOutcomeDenied      TaskTypeActionOutcome = "ACTION_OUTCOME_DENIED"
+	TaskTypeActionOutcomeActionOutcomeError       TaskTypeActionOutcome = "ACTION_OUTCOME_ERROR"
+	TaskTypeActionOutcomeActionOutcomeCancelled   TaskTypeActionOutcome = "ACTION_OUTCOME_CANCELLED"
 )
 
-func (e Outcome) ToPointer() *Outcome {
+func (e TaskTypeActionOutcome) ToPointer() *TaskTypeActionOutcome {
 	return &e
 }
-func (e *Outcome) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskTypeActionOutcome) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACTION_OUTCOME_UNSPECIFIED", "ACTION_OUTCOME_SUCCESS", "ACTION_OUTCOME_DENIED", "ACTION_OUTCOME_ERROR", "ACTION_OUTCOME_CANCELLED":
+			return true
+		}
 	}
-	switch v {
-	case "ACTION_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "ACTION_OUTCOME_SUCCESS":
-		fallthrough
-	case "ACTION_OUTCOME_DENIED":
-		fallthrough
-	case "ACTION_OUTCOME_ERROR":
-		fallthrough
-	case "ACTION_OUTCOME_CANCELLED":
-		*e = Outcome(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Outcome: %v", v)
+	return false
+}
+
+// TaskTypeActionType - Flavor of action the ticket represents — mirrors the snapshot's
+//
+//	target_ref variant.
+type TaskTypeActionType string
+
+const (
+	TaskTypeActionTypeTypeUnspecified    TaskTypeActionType = "TYPE_UNSPECIFIED"
+	TaskTypeActionTypeTypeGrant          TaskTypeActionType = "TYPE_GRANT"
+	TaskTypeActionTypeTypeWorkflow       TaskTypeActionType = "TYPE_WORKFLOW"
+	TaskTypeActionTypeTypeResourceAction TaskTypeActionType = "TYPE_RESOURCE_ACTION"
+)
+
+func (e TaskTypeActionType) ToPointer() *TaskTypeActionType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskTypeActionType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TYPE_UNSPECIFIED", "TYPE_GRANT", "TYPE_WORKFLOW", "TYPE_RESOURCE_ACTION":
+			return true
+		}
 	}
+	return false
 }
 
 // The TaskTypeAction message.
+//
+// This message contains a oneof named target_object. Only a single field of the following list may be set at a time:
+//   - scopeRole
 type TaskTypeAction struct {
-	// The ID of the action to execute.
-	ActionID   *string     `json:"actionId,omitempty"`
-	FormValues *FormValues `json:"formValues,omitempty"`
+	// The ID of the admin-authored action to execute. Empty for synthesized
+	//  action tickets (e.g. scope-role grants) — those carry dispatch
+	//  configuration on action_instance and target_object instead.
+	ActionID *string `json:"actionId,omitempty"`
+	// ActionInstance is the API mirror of the internal immutable snapshot of an
+	//  Action captured on a TaskTypeAction at ticket-creation time.
+	//
+	// This message contains a oneof named target_ref. Only a single field of the following list may be set at a time:
+	//   - connectorActionRef
+	//
+	TaskActionInstance *TaskActionInstance `json:"actionInstance,omitempty"`
+	// Display label captured on the action snapshot at ticket-creation time.
+	//  Stable under admin renames to a referenced Action row and populated for
+	//  synthesized tickets that have no Action row at all. UI reads this to
+	//  render the task title without an Action fetch.
+	DisplayName *string     `json:"displayName,omitempty"`
+	FormValues  *FormValues `json:"formValues,omitempty"`
 	// The outcome field.
-	Outcome     *Outcome   `json:"outcome,omitempty"`
-	OutcomeTime *time.Time `json:"outcomeTime,omitempty"`
+	Outcome     *TaskTypeActionOutcome `json:"outcome,omitempty"`
+	OutcomeTime *time.Time             `json:"outcomeTime,omitempty"`
+	// Scope-role variant of TaskTypeAction.target_object. The UI uses the
+	//  embedded identifiers to build links and title strings without a separate
+	//  Action fetch.
+	ScopeRole *ScopeRole `json:"scopeRole,omitempty"`
+	// Flavor of action the ticket represents — mirrors the snapshot's
+	//  target_ref variant.
+	Type *TaskTypeActionType `json:"type,omitempty"`
 }
 
 func (t TaskTypeAction) MarshalJSON() ([]byte, error) {
@@ -76,6 +115,20 @@ func (t *TaskTypeAction) GetActionID() *string {
 	return t.ActionID
 }
 
+func (t *TaskTypeAction) GetTaskActionInstance() *TaskActionInstance {
+	if t == nil {
+		return nil
+	}
+	return t.TaskActionInstance
+}
+
+func (t *TaskTypeAction) GetDisplayName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.DisplayName
+}
+
 func (t *TaskTypeAction) GetFormValues() *FormValues {
 	if t == nil {
 		return nil
@@ -83,7 +136,7 @@ func (t *TaskTypeAction) GetFormValues() *FormValues {
 	return t.FormValues
 }
 
-func (t *TaskTypeAction) GetOutcome() *Outcome {
+func (t *TaskTypeAction) GetOutcome() *TaskTypeActionOutcome {
 	if t == nil {
 		return nil
 	}
@@ -95,4 +148,18 @@ func (t *TaskTypeAction) GetOutcomeTime() *time.Time {
 		return nil
 	}
 	return t.OutcomeTime
+}
+
+func (t *TaskTypeAction) GetScopeRole() *ScopeRole {
+	if t == nil {
+		return nil
+	}
+	return t.ScopeRole
+}
+
+func (t *TaskTypeAction) GetType() *TaskTypeActionType {
+	if t == nil {
+		return nil
+	}
+	return t.Type
 }

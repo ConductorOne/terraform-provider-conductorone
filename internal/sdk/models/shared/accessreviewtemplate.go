@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,22 +19,16 @@ const (
 func (e AccessReviewTemplateAccuracyIssueAction) ToPointer() *AccessReviewTemplateAccuracyIssueAction {
 	return &e
 }
-func (e *AccessReviewTemplateAccuracyIssueAction) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewTemplateAccuracyIssueAction) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT":
+			return true
+		}
 	}
-	switch v {
-	case "ACCURACY_ISSUE_ACTION_UNSPECIFIED":
-		fallthrough
-	case "ACCURACY_ISSUE_ACTION_CONTINUE":
-		fallthrough
-	case "ACCURACY_ISSUE_ACTION_WAIT":
-		*e = AccessReviewTemplateAccuracyIssueAction(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewTemplateAccuracyIssueAction: %v", v)
-	}
+	return false
 }
 
 // AccessReviewTemplateAutoCloseDecision - The autoCloseDecision field.
@@ -52,24 +44,16 @@ const (
 func (e AccessReviewTemplateAutoCloseDecision) ToPointer() *AccessReviewTemplateAutoCloseDecision {
 	return &e
 }
-func (e *AccessReviewTemplateAutoCloseDecision) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewTemplateAutoCloseDecision) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION":
+			return true
+		}
 	}
-	switch v {
-	case "CLOSE_DECISION_UNSPECIFIED":
-		fallthrough
-	case "CLOSE_DECISION_REVOKED":
-		fallthrough
-	case "CLOSE_DECISION_SKIP":
-		fallthrough
-	case "CLOSE_DECISION_NO_ACTION":
-		*e = AccessReviewTemplateAutoCloseDecision(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewTemplateAutoCloseDecision: %v", v)
-	}
+	return false
 }
 
 // AccessReviewTemplateDefaultView - The defaultView field.
@@ -80,29 +64,22 @@ const (
 	AccessReviewTemplateDefaultViewAccessReviewViewTypeByApp        AccessReviewTemplateDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_APP"
 	AccessReviewTemplateDefaultViewAccessReviewViewTypeByUser       AccessReviewTemplateDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_USER"
 	AccessReviewTemplateDefaultViewAccessReviewViewTypeUnstructured AccessReviewTemplateDefaultView = "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED"
+	AccessReviewTemplateDefaultViewAccessReviewViewTypeByResource   AccessReviewTemplateDefaultView = "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE"
 )
 
 func (e AccessReviewTemplateDefaultView) ToPointer() *AccessReviewTemplateDefaultView {
 	return &e
 }
-func (e *AccessReviewTemplateDefaultView) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewTemplateDefaultView) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED", "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_REVIEW_VIEW_TYPE_BY_APP":
-		fallthrough
-	case "ACCESS_REVIEW_VIEW_TYPE_BY_USER":
-		fallthrough
-	case "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED":
-		*e = AccessReviewTemplateDefaultView(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewTemplateDefaultView: %v", v)
-	}
+	return false
 }
 
 // AccessReviewTemplateScopeType - The scopeType field.
@@ -113,32 +90,27 @@ const (
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByEntitlements    AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS"
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByAccessConflicts AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByResource        AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
+	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByInheritance     AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"
 )
 
 func (e AccessReviewTemplateScopeType) ToPointer() *AccessReviewTemplateScopeType {
 	return &e
 }
-func (e *AccessReviewTemplateScopeType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewTemplateScopeType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS":
-		fallthrough
-	case "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE":
-		*e = AccessReviewTemplateScopeType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewTemplateScopeType: %v", v)
-	}
+	return false
 }
 
-// The AccessReviewTemplate message.
+// AccessReviewTemplate - A reusable template that defines the configuration for creating access review campaigns.
+//
+//	Templates can optionally be scheduled to automatically create campaigns on a recurring basis.
 //
 // This message contains a oneof named slack_channel_details. Only a single field of the following list may be set at a time:
 //   - slackChannel
@@ -155,29 +127,31 @@ type AccessReviewTemplate struct {
 	AutoGenerateReport *bool `json:"autoGenerateReport,omitempty"`
 	// Auto-start configuration
 	//  next_scheduled_campaign_at will be used as the scheduled start date
-	AutoStartCampaign *bool      `json:"autoStartCampaign,omitempty"`
-	CreatedAt         *time.Time `json:"createdAt,omitempty"`
+	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
+	// Configuration for which columns are visible in the reviewer task list.
+	AccessReviewColumnConfig *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
+	CreatedAt                *time.Time                `json:"createdAt,omitempty"`
 	// The defaultView field.
 	DefaultView *AccessReviewTemplateDefaultView `json:"defaultView,omitempty"`
 	DeletedAt   *time.Time                       `json:"deletedAt,omitempty"`
-	// The description field.
+	// An optional description providing context about this template.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// The human-readable name of this template.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The exemptCertifiedAccessConflicts field.
 	ExemptCertifiedAccessConflicts *bool `json:"exemptCertifiedAccessConflicts,omitempty"`
-	// The id field.
+	// The unique identifier of this template.
 	ID *string `json:"id,omitempty"`
 	// The AccessReviewInclusionScope message.
 	AccessReviewInclusionScope *AccessReviewInclusionScope `json:"inclusionScope,omitempty"`
-	// The isCampaignScheduleEnabled field.
+	// Whether automatic campaign creation on the recurrence schedule is enabled.
 	IsCampaignScheduleEnabled *bool      `json:"isCampaignScheduleEnabled,omitempty"`
 	NextScheduledCampaignAt   *time.Time `json:"nextScheduledCampaignAt,omitempty"`
-	// The NotificationConfig message.
-	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
-	// The occurrences field.
+	// Controls which email notifications are sent during the access review lifecycle.
+	AccessReviewNotificationConfig *AccessReviewNotificationConfig `json:"notificationConfig,omitempty"`
+	// The number of campaigns that have been created from this template.
 	Occurrences *int `json:"occurrences,omitempty"`
-	// The policyId field.
+	// The ID of the default review policy applied to campaigns created from this template.
 	PolicyID *string `json:"policyId,omitempty"`
 	// The RecurrenceRule message.
 	//
@@ -288,6 +262,13 @@ func (a *AccessReviewTemplate) GetAutoStartCampaign() *bool {
 	return a.AutoStartCampaign
 }
 
+func (a *AccessReviewTemplate) GetAccessReviewColumnConfig() *AccessReviewColumnConfig {
+	if a == nil {
+		return nil
+	}
+	return a.AccessReviewColumnConfig
+}
+
 func (a *AccessReviewTemplate) GetCreatedAt() *time.Time {
 	if a == nil {
 		return nil
@@ -358,11 +339,11 @@ func (a *AccessReviewTemplate) GetNextScheduledCampaignAt() *time.Time {
 	return a.NextScheduledCampaignAt
 }
 
-func (a *AccessReviewTemplate) GetNotificationConfig() *NotificationConfig {
+func (a *AccessReviewTemplate) GetAccessReviewNotificationConfig() *AccessReviewNotificationConfig {
 	if a == nil {
 		return nil
 	}
-	return a.NotificationConfig
+	return a.AccessReviewNotificationConfig
 }
 
 func (a *AccessReviewTemplate) GetOccurrences() *int {
@@ -435,7 +416,9 @@ func (a *AccessReviewTemplate) GetUsePolicyOverride() *bool {
 	return a.UsePolicyOverride
 }
 
-// AccessReviewTemplateInput - The AccessReviewTemplate message.
+// AccessReviewTemplateInput - A reusable template that defines the configuration for creating access review campaigns.
+//
+//	Templates can optionally be scheduled to automatically create campaigns on a recurring basis.
 //
 // This message contains a oneof named slack_channel_details. Only a single field of the following list may be set at a time:
 //   - slackChannel
@@ -453,26 +436,28 @@ type AccessReviewTemplateInput struct {
 	// Auto-start configuration
 	//  next_scheduled_campaign_at will be used as the scheduled start date
 	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
+	// Configuration for which columns are visible in the reviewer task list.
+	AccessReviewColumnConfig *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	// The defaultView field.
 	DefaultView *AccessReviewTemplateDefaultView `json:"defaultView,omitempty"`
-	// The description field.
+	// An optional description providing context about this template.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// The human-readable name of this template.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The exemptCertifiedAccessConflicts field.
 	ExemptCertifiedAccessConflicts *bool `json:"exemptCertifiedAccessConflicts,omitempty"`
-	// The id field.
+	// The unique identifier of this template.
 	ID *string `json:"id,omitempty"`
 	// The AccessReviewInclusionScope message.
 	AccessReviewInclusionScope *AccessReviewInclusionScope `json:"inclusionScope,omitempty"`
-	// The isCampaignScheduleEnabled field.
+	// Whether automatic campaign creation on the recurrence schedule is enabled.
 	IsCampaignScheduleEnabled *bool      `json:"isCampaignScheduleEnabled,omitempty"`
 	NextScheduledCampaignAt   *time.Time `json:"nextScheduledCampaignAt,omitempty"`
-	// The NotificationConfig message.
-	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
-	// The occurrences field.
+	// Controls which email notifications are sent during the access review lifecycle.
+	AccessReviewNotificationConfig *AccessReviewNotificationConfig `json:"notificationConfig,omitempty"`
+	// The number of campaigns that have been created from this template.
 	Occurrences *int `json:"occurrences,omitempty"`
-	// The policyId field.
+	// The ID of the default review policy applied to campaigns created from this template.
 	PolicyID *string `json:"policyId,omitempty"`
 	// The RecurrenceRule message.
 	//
@@ -582,6 +567,13 @@ func (a *AccessReviewTemplateInput) GetAutoStartCampaign() *bool {
 	return a.AutoStartCampaign
 }
 
+func (a *AccessReviewTemplateInput) GetAccessReviewColumnConfig() *AccessReviewColumnConfig {
+	if a == nil {
+		return nil
+	}
+	return a.AccessReviewColumnConfig
+}
+
 func (a *AccessReviewTemplateInput) GetDefaultView() *AccessReviewTemplateDefaultView {
 	if a == nil {
 		return nil
@@ -638,11 +630,11 @@ func (a *AccessReviewTemplateInput) GetNextScheduledCampaignAt() *time.Time {
 	return a.NextScheduledCampaignAt
 }
 
-func (a *AccessReviewTemplateInput) GetNotificationConfig() *NotificationConfig {
+func (a *AccessReviewTemplateInput) GetAccessReviewNotificationConfig() *AccessReviewNotificationConfig {
 	if a == nil {
 		return nil
 	}
-	return a.NotificationConfig
+	return a.AccessReviewNotificationConfig
 }
 
 func (a *AccessReviewTemplateInput) GetOccurrences() *int {

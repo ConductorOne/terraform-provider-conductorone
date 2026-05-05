@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,22 +19,16 @@ const (
 func (e EventType) ToPointer() *EventType {
 	return &e
 }
-func (e *EventType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EventType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_EVENT_TYPE_UNSPECIFIED", "GRANT_EVENT_TYPE_ADDED", "GRANT_EVENT_TYPE_REMOVED":
+			return true
+		}
 	}
-	switch v {
-	case "GRANT_EVENT_TYPE_UNSPECIFIED":
-		fallthrough
-	case "GRANT_EVENT_TYPE_ADDED":
-		fallthrough
-	case "GRANT_EVENT_TYPE_REMOVED":
-		*e = EventType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EventType: %v", v)
-	}
+	return false
 }
 
 // The AppEntitlementUserBindingFeed message.

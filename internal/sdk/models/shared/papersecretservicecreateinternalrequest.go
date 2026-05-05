@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // PaperSecretServiceCreateInternalRequestInputFormat - For TEXT secrets: hint about the plaintext format (e.g., JSON, YAML, key-value).
 //
 //	Used by the viewer UI for syntax highlighting. Does not affect encryption.
@@ -23,26 +18,16 @@ const (
 func (e PaperSecretServiceCreateInternalRequestInputFormat) ToPointer() *PaperSecretServiceCreateInternalRequestInputFormat {
 	return &e
 }
-func (e *PaperSecretServiceCreateInternalRequestInputFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceCreateInternalRequestInputFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_INPUT_FORMAT_UNSPECIFIED", "SECRET_INPUT_FORMAT_PLAINTEXT", "SECRET_INPUT_FORMAT_JSON", "SECRET_INPUT_FORMAT_YAML", "SECRET_INPUT_FORMAT_KEY_VALUE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_INPUT_FORMAT_UNSPECIFIED":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_PLAINTEXT":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_JSON":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_YAML":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_KEY_VALUE":
-		*e = PaperSecretServiceCreateInternalRequestInputFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceCreateInternalRequestInputFormat: %v", v)
-	}
+	return false
 }
 
 // PaperSecretServiceCreateInternalRequestSecretType - Secret type: TEXT or FILE.
@@ -60,22 +45,16 @@ const (
 func (e PaperSecretServiceCreateInternalRequestSecretType) ToPointer() *PaperSecretServiceCreateInternalRequestSecretType {
 	return &e
 }
-func (e *PaperSecretServiceCreateInternalRequestSecretType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceCreateInternalRequestSecretType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_TYPE_UNSPECIFIED", "SECRET_TYPE_TEXT", "SECRET_TYPE_FILE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_TYPE_UNSPECIFIED":
-		fallthrough
-	case "SECRET_TYPE_TEXT":
-		fallthrough
-	case "SECRET_TYPE_FILE":
-		*e = PaperSecretServiceCreateInternalRequestSecretType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceCreateInternalRequestSecretType: %v", v)
-	}
+	return false
 }
 
 // The PaperSecretServiceCreateInternalRequest message.

@@ -9,7 +9,7 @@ import (
 type UnenrollFromAllAccessProfiles struct {
 	CatalogIds     []types.String `tfsdk:"catalog_ids"`
 	CatalogIdsCel  types.String   `tfsdk:"catalog_ids_cel"`
+	UseSubjectUser types.Bool     `tfsdk:"use_subject_user"`
 	UserIdsCel     types.String   `tfsdk:"user_ids_cel"`
 	UserRefs       []UserRef      `tfsdk:"user_refs"`
-	UseSubjectUser types.Bool     `tfsdk:"use_subject_user"`
 }

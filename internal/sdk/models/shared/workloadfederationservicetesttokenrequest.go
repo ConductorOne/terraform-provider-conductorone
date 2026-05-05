@@ -6,6 +6,7 @@ package shared
 type WorkloadFederationServiceTestTokenRequest struct {
 	// Optional: override source IP for CIDR testing.
 	//  If empty, uses the request's source IP.
+	//  Accepts IPv4 (e.g. 10.0.0.5) or IPv6 (e.g. 2001:db8::1) addresses, optionally with a CIDR prefix.
 	SourceIP *string `json:"sourceIp,omitempty"`
 	// The raw JWT to validate (the subject_token from a CI job).
 	SubjectToken *string `json:"subjectToken,omitempty"`

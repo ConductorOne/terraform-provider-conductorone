@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppEntitlementsUpdateAutomationRequest) GetAppEntitlementServ
 	return c.AppEntitlementServiceUpdateAutomationRequest
 }
 
+// #region class-body-c1apiappv1appentitlementsupdateautomationrequest
+// #endregion class-body-c1apiappv1appentitlementsupdateautomationrequest
+
 type C1APIAppV1AppEntitlementsUpdateAutomationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppEntitlementsUpdateAutomationResponse) GetAppEntitlementSer
 	}
 	return c.AppEntitlementServiceUpdateAutomationResponse
 }
+
+// #region class-body-c1apiappv1appentitlementsupdateautomationresponse
+// #endregion class-body-c1apiappv1appentitlementsupdateautomationresponse

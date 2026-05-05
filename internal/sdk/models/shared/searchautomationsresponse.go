@@ -4,9 +4,9 @@ package shared
 
 // The SearchAutomationsResponse message.
 type SearchAutomationsResponse struct {
-	// The list field.
+	// The page of automations matching the search criteria.
 	List []Automation `json:"list,omitempty"`
-	// The nextPageToken field.
+	// Token to retrieve the next page of results, empty when no more results exist.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

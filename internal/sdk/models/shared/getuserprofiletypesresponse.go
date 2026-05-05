@@ -2,9 +2,9 @@
 
 package shared
 
-// The GetUserProfileTypesResponse message.
+// GetUserProfileTypesResponse is the response containing the profile types for a user.
 type GetUserProfileTypesResponse struct {
-	// The profileTypes field.
+	// The list of profile types associated with the user across their connected apps.
 	ProfileTypes []ProfileType `json:"profileTypes,omitempty"`
 }
 

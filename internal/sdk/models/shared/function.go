@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/v2/internal/sdk/internal/utils"
 	"time"
 )
@@ -15,25 +13,22 @@ type FunctionType string
 const (
 	FunctionTypeFunctionTypeUnspecified FunctionType = "FUNCTION_TYPE_UNSPECIFIED"
 	FunctionTypeFunctionTypeAny         FunctionType = "FUNCTION_TYPE_ANY"
+	FunctionTypeFunctionTypeCodeMode    FunctionType = "FUNCTION_TYPE_CODE_MODE"
 )
 
 func (e FunctionType) ToPointer() *FunctionType {
 	return &e
 }
-func (e *FunctionType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FunctionType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE":
+			return true
+		}
 	}
-	switch v {
-	case "FUNCTION_TYPE_UNSPECIFIED":
-		fallthrough
-	case "FUNCTION_TYPE_ANY":
-		*e = FunctionType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FunctionType: %v", v)
-	}
+	return false
 }
 
 // Function represents a customer-provided code extension in the API
@@ -66,6 +61,13 @@ type Function struct {
 	// The secret field.
 	Secret    map[string]string `json:"secret,omitempty"`
 	UpdatedAt *time.Time        `json:"updatedAt,omitempty"`
+	// FN-347 transition flag. When true, the function authenticates to c1-api
+	//  as user:<sp_id> via the AssumeIdentity token exchange using its
+	//  ServicePrincipalBinding; when false, it authenticates as
+	//  function:<id>. Read-only from clients: set by CreateFunction (when the
+	//  tenant has completed the FunctionsToSPN migration) and by the migration
+	//  itself, never by UpdateFunction. Retired once all functions are on SPN.
+	UseSpn *bool `json:"useSpn,omitempty"`
 }
 
 func (f Function) MarshalJSON() ([]byte, error) {
@@ -168,6 +170,13 @@ func (f *Function) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return f.UpdatedAt
+}
+
+func (f *Function) GetUseSpn() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.UseSpn
 }
 
 // FunctionInput - Function represents a customer-provided code extension in the API

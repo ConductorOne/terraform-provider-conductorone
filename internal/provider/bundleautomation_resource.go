@@ -34,6 +34,7 @@ type BundleAutomationResource struct {
 type BundleAutomationResourceModel struct {
 	BundleAutomationCircuitBreaker  *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"bundle_automation_circuit_breaker"`
 	BundleAutomationLastRunState    *tfTypes.BundleAutomationLastRunState    `tfsdk:"bundle_automation_last_run_state"`
+	BundleAutomationRuleCEL         *tfTypes.BundleAutomationRuleCEL         `tfsdk:"bundle_automation_rule_cel"`
 	BundleAutomationRuleEntitlement *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"bundle_automation_rule_entitlement"`
 	CreatedAt                       types.String                             `tfsdk:"created_at"`
 	CreateTasks                     types.Bool                               `tfsdk:"create_tasks"`
@@ -84,6 +85,27 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 			"bundle_automation_last_run_state": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"bundle_automation_cel_evaluation_state": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"error_message": schema.StringAttribute{
+								Computed:    true,
+								Description: `The errorMessage field.`,
+							},
+							"last_evaluated_at": schema.StringAttribute{
+								Computed: true,
+							},
+							"matched_users": schema.StringAttribute{
+								Computed:    true,
+								Description: `The matchedUsers field.`,
+							},
+							"status": schema.StringAttribute{
+								Computed:    true,
+								Description: `The status field.`,
+							},
+						},
+						Description: `The BundleAutomationCelEvaluationState message.`,
+					},
 					"error_message": schema.StringAttribute{
 						Computed:    true,
 						Description: `The errorMessage field.`,
@@ -97,6 +119,18 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 					},
 				},
 				Description: `The BundleAutomationLastRunState message.`,
+			},
+			"bundle_automation_rule_cel": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"expression": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The expression field.`,
+					},
+				},
+				Description: `The BundleAutomationRuleCEL message.`,
 			},
 			"bundle_automation_rule_entitlement": schema.SingleNestedAttribute{
 				Computed: true,
@@ -130,27 +164,28 @@ func (r *BundleAutomationResource) Schema(ctx context.Context, req resource.Sche
 			"create_tasks": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The createTasks field.`,
+				Description: `Whether to create access request tasks for matched users instead of granting directly.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},
 			"delete_bundle_automation_request": schema.SingleNestedAttribute{
 				Optional:    true,
-				Description: `The DeleteBundleAutomationRequest message.`,
+				Description: `The request message for deleting a bundle automation from a catalog.`,
 			},
 			"disable_circuit_breaker": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The disableCircuitBreaker field.`,
+				Description: `Whether to disable the circuit breaker that pauses the automation when excessive membership changes are detected.`,
 			},
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The enabled field.`,
+				Description: `Whether the automation should actively run on its schedule.`,
 			},
 			"request_catalog_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The requestCatalogId field.`,
 			},
 			"tenant_id": schema.StringAttribute{
 				Computed:    true,
@@ -398,7 +433,10 @@ func (r *BundleAutomationResource) Delete(ctx context.Context, req resource.Dele
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

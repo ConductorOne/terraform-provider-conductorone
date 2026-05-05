@@ -30,6 +30,9 @@ type AppResource struct {
 	Description *string `json:"description,omitempty"`
 	// The display name for this resource.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The upstream product's native external ID for this resource (e.g. an Okta group ID).
+	//  Populated from the connector's external ID during sync.
+	ExternalID *string `json:"externalId,omitempty"`
 	// The number of grants to this resource.
 	GrantCount *string `json:"grantCount,omitempty"`
 	// The id of the resource.
@@ -111,6 +114,13 @@ func (a *AppResource) GetDisplayName() *string {
 		return nil
 	}
 	return a.DisplayName
+}
+
+func (a *AppResource) GetExternalID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ExternalID
 }
 
 func (a *AppResource) GetGrantCount() *string {

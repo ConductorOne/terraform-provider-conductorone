@@ -4,8 +4,18 @@ package shared
 
 // The GeneratePassword message.
 type GeneratePassword struct {
-	// The ID of the password policy to use for generating the password.
+	// Deprecated: password policy ID lookup is no longer used.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	PasswordPolicyID *string `json:"passwordPolicyId,omitempty"`
+	// GeneratePasswordPolicy defines inline password generation rules.
+	//
+	// This message contains a oneof named character_rules. Only a single field of the following list may be set at a time:
+	//   - noRestrictions
+	//   - customCharacters
+	//   - excludedCharacters
+	//
+	GeneratePasswordPolicy *GeneratePasswordPolicy `json:"policy,omitempty"`
 }
 
 func (g *GeneratePassword) GetPasswordPolicyID() *string {
@@ -13,4 +23,11 @@ func (g *GeneratePassword) GetPasswordPolicyID() *string {
 		return nil
 	}
 	return g.PasswordPolicyID
+}
+
+func (g *GeneratePassword) GetGeneratePasswordPolicy() *GeneratePasswordPolicy {
+	if g == nil {
+		return nil
+	}
+	return g.GeneratePasswordPolicy
 }

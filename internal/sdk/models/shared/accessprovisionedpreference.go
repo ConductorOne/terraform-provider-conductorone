@@ -6,6 +6,8 @@ package shared
 type AccessProvisionedPreference struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// The locked field.
+	Locked *bool `json:"locked,omitempty"`
 }
 
 func (a *AccessProvisionedPreference) GetEnabled() *bool {
@@ -13,4 +15,11 @@ func (a *AccessProvisionedPreference) GetEnabled() *bool {
 		return nil
 	}
 	return a.Enabled
+}
+
+func (a *AccessProvisionedPreference) GetLocked() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.Locked
 }

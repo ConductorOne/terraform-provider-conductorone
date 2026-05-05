@@ -2,6 +2,6 @@
 
 package shared
 
-// The ResumePausedBundleAutomationRequest message.
+// ResumePausedBundleAutomationRequest - The request message for resuming a paused bundle automation.
 type ResumePausedBundleAutomationRequest struct {
 }

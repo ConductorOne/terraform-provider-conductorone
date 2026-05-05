@@ -18,6 +18,9 @@ func (c *C1APIWebhooksV1WebhooksServiceGetRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apiwebhooksv1webhooksservicegetrequest
+// #endregion class-body-c1apiwebhooksv1webhooksservicegetrequest
+
 type C1APIWebhooksV1WebhooksServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIWebhooksV1WebhooksServiceGetResponse) GetWebhooksServiceGetRespons
 	}
 	return c.WebhooksServiceGetResponse
 }
+
+// #region class-body-c1apiwebhooksv1webhooksservicegetresponse
+// #endregion class-body-c1apiwebhooksv1webhooksservicegetresponse

@@ -34,6 +34,9 @@ func (c *C1APIServicePrincipalV1ServicePrincipalServiceRevokeCredentialRequest) 
 	return c.ServicePrincipalServiceRevokeCredentialRequest
 }
 
+// #region class-body-c1apiserviceprincipalv1serviceprincipalservicerevokecredentialrequest
+// #endregion class-body-c1apiserviceprincipalv1serviceprincipalservicerevokecredentialrequest
+
 type C1APIServicePrincipalV1ServicePrincipalServiceRevokeCredentialResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIServicePrincipalV1ServicePrincipalServiceRevokeCredentialResponse)
 	}
 	return c.ServicePrincipalServiceRevokeCredentialResponse
 }
+
+// #region class-body-c1apiserviceprincipalv1serviceprincipalservicerevokecredentialresponse
+// #endregion class-body-c1apiserviceprincipalv1serviceprincipalservicerevokecredentialresponse

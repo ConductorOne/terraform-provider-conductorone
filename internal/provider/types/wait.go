@@ -7,11 +7,11 @@ import (
 )
 
 type Wait struct {
+	WaitCondition      *WaitCondition `tfsdk:"wait_condition"`
+	WaitDuration       *WaitDuration  `tfsdk:"wait_duration"`
+	WaitUntilTime      *WaitUntilTime `tfsdk:"wait_until_time"`
 	CommentOnFirstWait types.String   `tfsdk:"comment_on_first_wait"`
 	CommentOnTimeout   types.String   `tfsdk:"comment_on_timeout"`
 	Name               types.String   `tfsdk:"name"`
 	TimeoutDuration    types.String   `tfsdk:"timeout_duration"`
-	WaitCondition      *WaitCondition `tfsdk:"wait_condition"`
-	WaitDuration       *WaitDuration  `tfsdk:"wait_duration"`
-	WaitUntilTime      *WaitUntilTime `tfsdk:"wait_until_time"`
 }

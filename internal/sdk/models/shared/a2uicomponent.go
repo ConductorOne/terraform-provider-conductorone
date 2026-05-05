@@ -22,15 +22,57 @@ package shared
 //   - c1StatusIndicator
 //   - c1CodeBlock
 //   - c1ResourcePicker
+//   - c1DurationPicker
+//   - c1TodoList
+//   - c1SlackNotifications
+//   - c1MsTeamsNotifications
+//   - c1ConnectorSyncProgress
+//   - c1ConnectorConfigForm
+//   - c1OnboardingWelcome
+//   - c1OnboardingPlan
+//   - c1ConnectorSyncDetail
 type A2UIComponent struct {
 	// ButtonComponent triggers actions.
 	ButtonComponent *ButtonComponent `json:"button,omitempty"`
 	// C1CodeBlockComponent displays code with syntax highlighting.
 	C1CodeBlockComponent *C1CodeBlockComponent `json:"c1CodeBlock,omitempty"`
+	// C1ConnectorConfigFormComponent renders the shared admin connector-settings form inside an
+	//  A2UI surface. The frontend resolves the catalog, connector, and config schema itself from
+	//  the ids below, keeping the configuration field values out of the agent's data model — the
+	//  agent never receives API keys, passwords, or other secrets entered by the user.
+	C1ConnectorConfigFormComponent *C1ConnectorConfigFormComponent `json:"c1ConnectorConfigForm,omitempty"`
+	// C1ConnectorSyncDetailComponent renders the same live card as
+	//  C1ConnectorSyncProgressComponent but pre-expanded with the phase checklist,
+	//  live count tiles, and "What's happening" explainer visible from the first
+	//  paint. Intended for message-body placement — emit one after each
+	//  `submit_app_config` so the transcript carries a clear "this is what just
+	//  happened" receipt for the connector the user just connected.
+	C1ConnectorSyncDetailComponent *C1ConnectorSyncDetailComponent `json:"c1ConnectorSyncDetail,omitempty"`
+	// C1ConnectorSyncProgressComponent renders a live connector sync status card.
+	//  Subscribes to WebSocket updates for real-time sync lifecycle status.
+	C1ConnectorSyncProgressComponent *C1ConnectorSyncProgressComponent `json:"c1ConnectorSyncProgress,omitempty"`
+	// C1DurationPickerComponent is the access-request duration picker (presets + custom with number/unit).
+	//  Value is duration in seconds bound to the given path.
+	C1DurationPickerComponent *C1DurationPickerComponent `json:"c1DurationPicker,omitempty"`
+	// C1MSTeamsNotificationsComponent renders a self-contained Microsoft Teams integration card.
+	//  Fetches status and consent URLs via frontend API calls.
+	C1MSTeamsNotificationsComponent *C1MSTeamsNotificationsComponent `json:"c1MsTeamsNotifications,omitempty"`
+	// C1OnboardingPlanComponent renders a personalized onboarding plan with categorized steps.
+	//  The agent dynamically populates categories and steps based on user intent and context.
+	C1OnboardingPlanComponent *C1OnboardingPlanComponent `json:"c1OnboardingPlan,omitempty"`
+	// C1OnboardingWelcomeComponent renders the onboarding welcome screen with org context and intent collection.
+	//  Backend pre-populates recommended_catalog_id / recommended_display_name from detected IDP.
+	//  Frontend detects auth backend via introspect for contextual UI text.
+	C1OnboardingWelcomeComponent *C1OnboardingWelcomeComponent `json:"c1OnboardingWelcome,omitempty"`
 	// C1ResourcePickerComponent allows selecting C1 resources.
 	C1ResourcePickerComponent *C1ResourcePickerComponent `json:"c1ResourcePicker,omitempty"`
+	// C1SlackNotificationsComponent renders a self-contained Slack integration card.
+	//  Fetches status and OAuth URLs via frontend API calls.
+	C1SlackNotificationsComponent *C1SlackNotificationsComponent `json:"c1SlackNotifications,omitempty"`
 	// C1StatusIndicatorComponent shows agent progress status.
 	C1StatusIndicatorComponent *C1StatusIndicatorComponent `json:"c1StatusIndicator,omitempty"`
+	// C1TodoListComponent renders a phase/step checklist with progress tracking.
+	C1TodoListComponent *C1TodoListComponent `json:"c1TodoList,omitempty"`
 	// CardComponent is a container with styling.
 	CardComponent *CardComponent `json:"card,omitempty"`
 	// CheckBoxComponent is a boolean checkbox.
@@ -73,6 +115,55 @@ func (a *A2UIComponent) GetC1CodeBlockComponent() *C1CodeBlockComponent {
 	return a.C1CodeBlockComponent
 }
 
+func (a *A2UIComponent) GetC1ConnectorConfigFormComponent() *C1ConnectorConfigFormComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1ConnectorConfigFormComponent
+}
+
+func (a *A2UIComponent) GetC1ConnectorSyncDetailComponent() *C1ConnectorSyncDetailComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1ConnectorSyncDetailComponent
+}
+
+func (a *A2UIComponent) GetC1ConnectorSyncProgressComponent() *C1ConnectorSyncProgressComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1ConnectorSyncProgressComponent
+}
+
+func (a *A2UIComponent) GetC1DurationPickerComponent() *C1DurationPickerComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1DurationPickerComponent
+}
+
+func (a *A2UIComponent) GetC1MSTeamsNotificationsComponent() *C1MSTeamsNotificationsComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1MSTeamsNotificationsComponent
+}
+
+func (a *A2UIComponent) GetC1OnboardingPlanComponent() *C1OnboardingPlanComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1OnboardingPlanComponent
+}
+
+func (a *A2UIComponent) GetC1OnboardingWelcomeComponent() *C1OnboardingWelcomeComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1OnboardingWelcomeComponent
+}
+
 func (a *A2UIComponent) GetC1ResourcePickerComponent() *C1ResourcePickerComponent {
 	if a == nil {
 		return nil
@@ -80,11 +171,25 @@ func (a *A2UIComponent) GetC1ResourcePickerComponent() *C1ResourcePickerComponen
 	return a.C1ResourcePickerComponent
 }
 
+func (a *A2UIComponent) GetC1SlackNotificationsComponent() *C1SlackNotificationsComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1SlackNotificationsComponent
+}
+
 func (a *A2UIComponent) GetC1StatusIndicatorComponent() *C1StatusIndicatorComponent {
 	if a == nil {
 		return nil
 	}
 	return a.C1StatusIndicatorComponent
+}
+
+func (a *A2UIComponent) GetC1TodoListComponent() *C1TodoListComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1TodoListComponent
 }
 
 func (a *A2UIComponent) GetCardComponent() *CardComponent {
@@ -177,3 +282,6 @@ func (a *A2UIComponent) GetWeight() *int {
 	}
 	return a.Weight
 }
+
+// #region class-body-a2uicomponent
+// #endregion class-body-a2uicomponent
