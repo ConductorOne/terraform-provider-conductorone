@@ -26,6 +26,8 @@ func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestC
 
 				r.AppEntitlements = append(r.AppEntitlements, appEntitlements)
 			}
+		} else {
+			r.AppEntitlements = nil
 		}
 	}
 

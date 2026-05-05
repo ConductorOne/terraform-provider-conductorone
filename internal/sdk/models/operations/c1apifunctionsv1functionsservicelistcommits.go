@@ -18,6 +18,9 @@ func (c *C1APIFunctionsV1FunctionsServiceListCommitsRequest) GetFunctionID() str
 	return c.FunctionID
 }
 
+// #region class-body-c1apifunctionsv1functionsservicelistcommitsrequest
+// #endregion class-body-c1apifunctionsv1functionsservicelistcommitsrequest
+
 type C1APIFunctionsV1FunctionsServiceListCommitsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIFunctionsV1FunctionsServiceListCommitsResponse) GetFunctionsServic
 	}
 	return c.FunctionsServiceListCommitsResponse
 }
+
+// #region class-body-c1apifunctionsv1functionsservicelistcommitsresponse
+// #endregion class-body-c1apifunctionsv1functionsservicelistcommitsresponse

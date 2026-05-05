@@ -26,6 +26,9 @@ func (c *C1APIAppV1AppAccessRequestsDefaultsServiceCancelAppAccessRequestsDefaul
 	return c.CancelAccessRequestDefaultsRequest
 }
 
+// #region class-body-c1apiappv1appaccessrequestsdefaultsservicecancelappaccessrequestsdefaultsrequest
+// #endregion class-body-c1apiappv1appaccessrequestsdefaultsservicecancelappaccessrequestsdefaultsrequest
+
 type C1APIAppV1AppAccessRequestsDefaultsServiceCancelAppAccessRequestsDefaultsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1AppAccessRequestsDefaultsServiceCancelAppAccessRequestsDefaul
 	}
 	return c.AppAccessRequestDefaults
 }
+
+// #region class-body-c1apiappv1appaccessrequestsdefaultsservicecancelappaccessrequestsdefaultsresponse
+// #endregion class-body-c1apiappv1appaccessrequestsdefaultsservicecancelappaccessrequestsdefaultsresponse

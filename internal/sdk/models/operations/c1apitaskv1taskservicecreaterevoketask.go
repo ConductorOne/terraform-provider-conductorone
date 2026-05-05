@@ -45,3 +45,6 @@ func (c *C1APITaskV1TaskServiceCreateRevokeTaskResponse) GetTaskServiceCreateRev
 	}
 	return c.TaskServiceCreateRevokeResponse
 }
+
+// #region class-body-c1apitaskv1taskservicecreaterevoketaskresponse
+// #endregion class-body-c1apitaskv1taskservicecreaterevoketaskresponse

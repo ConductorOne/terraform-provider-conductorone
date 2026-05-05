@@ -4,9 +4,9 @@ package shared
 
 // The ListSuggestionsResponse message.
 type ListSuggestionsResponse struct {
-	// The list field.
+	// The list of role mining suggestions.
 	List []RoleMiningManagementSuggestion `json:"list,omitempty"`
-	// The nextPageToken field.
+	// Token to retrieve the next page of results, empty if no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

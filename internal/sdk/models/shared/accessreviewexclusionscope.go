@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type AccessReviewExclusionScopeAppUserStatuses string
 
 const (
@@ -19,24 +14,16 @@ const (
 func (e AccessReviewExclusionScopeAppUserStatuses) ToPointer() *AccessReviewExclusionScopeAppUserStatuses {
 	return &e
 }
-func (e *AccessReviewExclusionScopeAppUserStatuses) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessReviewExclusionScopeAppUserStatuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_STATUS_UNSPECIFIED", "APP_USER_STATUS_ENABLED", "APP_USER_STATUS_DISABLED", "APP_USER_STATUS_DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_STATUS_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_STATUS_ENABLED":
-		fallthrough
-	case "APP_USER_STATUS_DISABLED":
-		fallthrough
-	case "APP_USER_STATUS_DELETED":
-		*e = AccessReviewExclusionScopeAppUserStatuses(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessReviewExclusionScopeAppUserStatuses: %v", v)
-	}
+	return false
 }
 
 type AppUserTypes string
@@ -51,24 +38,16 @@ const (
 func (e AppUserTypes) ToPointer() *AppUserTypes {
 	return &e
 }
-func (e *AppUserTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppUserTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_TYPE_USER":
-		fallthrough
-	case "APP_USER_TYPE_SERVICE_ACCOUNT":
-		fallthrough
-	case "APP_USER_TYPE_SYSTEM_ACCOUNT":
-		*e = AppUserTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppUserTypes: %v", v)
-	}
+	return false
 }
 
 // The AccessReviewExclusionScope message.

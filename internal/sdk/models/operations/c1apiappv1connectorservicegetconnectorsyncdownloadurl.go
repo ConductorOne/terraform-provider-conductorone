@@ -34,6 +34,9 @@ func (c *C1APIAppV1ConnectorServiceGetConnectorSyncDownloadURLRequest) GetSyncID
 	return c.SyncID
 }
 
+// #region class-body-c1apiappv1connectorservicegetconnectorsyncdownloadurlrequest
+// #endregion class-body-c1apiappv1connectorservicegetconnectorsyncdownloadurlrequest
+
 type C1APIAppV1ConnectorServiceGetConnectorSyncDownloadURLResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1ConnectorServiceGetConnectorSyncDownloadURLResponse) GetGetCo
 	}
 	return c.GetConnectorSyncDownloadURLResponse
 }
+
+// #region class-body-c1apiappv1connectorservicegetconnectorsyncdownloadurlresponse
+// #endregion class-body-c1apiappv1connectorservicegetconnectorsyncdownloadurlresponse

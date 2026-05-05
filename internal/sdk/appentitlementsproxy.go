@@ -30,7 +30,7 @@ func newAppEntitlementsProxy(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfi
 }
 
 // Delete
-// Invokes the c1.api.app.v1.AppEntitlementsProxy.Delete method.
+// Delete a proxy binding between a source and destination entitlement.
 func (s *AppEntitlementsProxy) Delete(ctx context.Context, request operations.C1APIAppV1AppEntitlementsProxyDeleteRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsProxyDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -154,6 +154,8 @@ func (s *AppEntitlementsProxy) Delete(ctx context.Context, request operations.C1
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -167,7 +169,7 @@ func (s *AppEntitlementsProxy) Delete(ctx context.Context, request operations.C1
 }
 
 // Get
-// Invokes the c1.api.app.v1.AppEntitlementsProxy.Get method.
+// Retrieve a specific proxy binding between a source and destination entitlement.
 func (s *AppEntitlementsProxy) Get(ctx context.Context, request operations.C1APIAppV1AppEntitlementsProxyGetRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsProxyGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -285,6 +287,7 @@ func (s *AppEntitlementsProxy) Get(ctx context.Context, request operations.C1API
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -298,7 +301,7 @@ func (s *AppEntitlementsProxy) Get(ctx context.Context, request operations.C1API
 }
 
 // Create
-// Invokes the c1.api.app.v1.AppEntitlementsProxy.Create method.
+// Create a proxy binding between a source and destination entitlement, establishing a hierarchical relationship.
 func (s *AppEntitlementsProxy) Create(ctx context.Context, request operations.C1APIAppV1AppEntitlementsProxyCreateRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsProxyCreateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

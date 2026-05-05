@@ -5,3 +5,6 @@ package shared
 // OAuth2AuthorizedAsInput - OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
 type OAuth2AuthorizedAsInput struct {
 }
+
+// #region class-body-oauth2authorizedasinput
+// #endregion class-body-oauth2authorizedasinput

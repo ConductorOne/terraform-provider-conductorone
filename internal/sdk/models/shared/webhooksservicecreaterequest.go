@@ -5,11 +5,11 @@ package shared
 // The WebhooksServiceCreateRequest message.
 type WebhooksServiceCreateRequest struct {
 	CallbackTimeout *string `json:"callbackTimeout,omitempty"`
-	// The description field.
+	// An optional description of the webhook's purpose.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// The human-readable name for the new webhook.
 	DisplayName string `json:"displayName"`
-	// The url field.
+	// The destination URL that will receive event notification HTTP callbacks.
 	URL string `json:"url"`
 }
 

@@ -4,11 +4,11 @@ package shared
 
 // The SearchAutomationTemplateVersionsRequest message.
 type SearchAutomationTemplateVersionsRequest struct {
-	// The automationTemplateId field.
+	// The automation template whose version history to search.
 	AutomationTemplateID *string `json:"automationTemplateId,omitempty"`
-	// The pageSize field.
+	// Maximum number of results to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
+	// Pagination token from a previous SearchAutomationTemplateVersionsResponse.
 	PageToken *string `json:"pageToken,omitempty"`
 }
 

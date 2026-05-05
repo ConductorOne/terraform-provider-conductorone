@@ -4,7 +4,7 @@ package shared
 
 // The UpdateOrgDomainResponse message.
 type UpdateOrgDomainResponse struct {
-	// The list field.
+	// The resulting list of verified domains after the update.
 	List []OrgDomain `json:"list,omitempty"`
 }
 

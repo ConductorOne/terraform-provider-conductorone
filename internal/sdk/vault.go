@@ -31,7 +31,7 @@ func newVault(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, hooks
 }
 
 // Create
-// Invokes the c1.api.vault.v1.VaultService.Create method.
+// Create provisions a new external secret storage vault and returns it.
 func (s *Vault) Create(ctx context.Context, request *shared.VaultServiceCreateRequest, opts ...operations.Option) (*operations.C1APIVaultV1VaultServiceCreateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -168,7 +168,7 @@ func (s *Vault) Create(ctx context.Context, request *shared.VaultServiceCreateRe
 }
 
 // Delete
-// Invokes the c1.api.vault.v1.VaultService.Delete method.
+// Delete a vault by its ID. Active connectors using this vault will no longer be able to access their stored credentials.
 func (s *Vault) Delete(ctx context.Context, request operations.C1APIVaultV1VaultServiceDeleteRequest, opts ...operations.Option) (*operations.C1APIVaultV1VaultServiceDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -292,6 +292,8 @@ func (s *Vault) Delete(ctx context.Context, request operations.C1APIVaultV1Vault
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -305,7 +307,7 @@ func (s *Vault) Delete(ctx context.Context, request operations.C1APIVaultV1Vault
 }
 
 // Get
-// Invokes the c1.api.vault.v1.VaultService.Get method.
+// Get returns a single vault by its ID.
 func (s *Vault) Get(ctx context.Context, request operations.C1APIVaultV1VaultServiceGetRequest, opts ...operations.Option) (*operations.C1APIVaultV1VaultServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -423,6 +425,7 @@ func (s *Vault) Get(ctx context.Context, request operations.C1APIVaultV1VaultSer
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -436,7 +439,7 @@ func (s *Vault) Get(ctx context.Context, request operations.C1APIVaultV1VaultSer
 }
 
 // Update
-// Invokes the c1.api.vault.v1.VaultService.Update method.
+// Update modifies an existing vault's properties using a field mask.
 func (s *Vault) Update(ctx context.Context, request operations.C1APIVaultV1VaultServiceUpdateRequest, opts ...operations.Option) (*operations.C1APIVaultV1VaultServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

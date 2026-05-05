@@ -70,6 +70,11 @@ func (r *AppsDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"access_model": schema.StringAttribute{
+							Computed: true,
+							MarkdownDescription: `How this app models access. Derived during uplift from the app's resource type traits.` + "\n" +
+								` Sparse ACL feature.`,
+						},
 						"app_account_id": schema.StringAttribute{
 							Computed:    true,
 							Description: `The ID of the Account named by AccountName.`,

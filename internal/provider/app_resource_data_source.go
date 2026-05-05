@@ -39,6 +39,7 @@ type AppResourceDataSourceModel struct {
 	DisplayName             types.String                                    `tfsdk:"display_name"`
 	Edit                    types.Bool                                      `tfsdk:"edit"`
 	Expanded                []tfTypes.AppResourceServiceGetResponseExpanded `tfsdk:"expanded"`
+	ExternalID              types.String                                    `tfsdk:"external_id"`
 	Extra                   map[string]types.Bool                           `tfsdk:"extra"`
 	GrantCount              types.String                                    `tfsdk:"grant_count"`
 	ID                      types.String                                    `tfsdk:"id"`
@@ -68,10 +69,12 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 					` Must be one of the builtin access config IDs or empty.`,
 			},
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The app that this resource belongs to.`,
 			},
 			"app_resource_type_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The resource type that this resource is.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -102,6 +105,11 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				},
 				Description: `List of serialized related objects.`,
 			},
+			"external_id": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `The upstream product's native external ID for this resource (e.g. an Okta group ID).` + "\n" +
+					` Populated from the connector's external ID during sync.`,
+			},
 			"extra": schema.MapAttribute{
 				Computed:    true,
 				ElementType: types.BoolType,
@@ -112,7 +120,8 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				Description: `The number of grants to this resource.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The id of the resource.`,
 			},
 			"match_baton_id": schema.StringAttribute{
 				Computed:    true,

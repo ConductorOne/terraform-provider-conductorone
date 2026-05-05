@@ -74,3 +74,6 @@ func (a *A2UIServiceSubmitActionRequest) GetSourceComponentID() *string {
 	}
 	return a.SourceComponentID
 }
+
+// #region class-body-a2uiservicesubmitactionrequest
+// #endregion class-body-a2uiservicesubmitactionrequest

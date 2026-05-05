@@ -26,6 +26,9 @@ func (c *C1APIAppV1AppEntitlementsGetRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apiappv1appentitlementsgetrequest
+// #endregion class-body-c1apiappv1appentitlementsgetrequest
+
 type C1APIAppV1AppEntitlementsGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1AppEntitlementsGetResponse) GetGetAppEntitlementResponse() *s
 	}
 	return c.GetAppEntitlementResponse
 }
+
+// #region class-body-c1apiappv1appentitlementsgetresponse
+// #endregion class-body-c1apiappv1appentitlementsgetresponse

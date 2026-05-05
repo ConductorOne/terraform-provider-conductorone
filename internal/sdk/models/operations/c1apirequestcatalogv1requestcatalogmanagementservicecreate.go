@@ -45,3 +45,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceCreateResponse) Get
 	}
 	return c.RequestCatalogManagementServiceGetResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicecreateresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicecreateresponse

@@ -7,9 +7,9 @@ import (
 	"time"
 )
 
-// The SetExpiringUserDelegationBindingByAdminRequest message.
+// SetExpiringUserDelegationBindingByAdminRequest is the request for an admin to set a temporary delegation binding for a user.
 type SetExpiringUserDelegationBindingByAdminRequest struct {
-	// The delegatedUserId field.
+	// The ID of the user who will act as delegate. Empty string removes the delegation.
 	DelegatedUserID    *string    `json:"delegatedUserId,omitempty"`
 	DelegationExpireAt *time.Time `json:"delegationExpireAt,omitempty"`
 	DelegationStartAt  *time.Time `json:"delegationStartAt,omitempty"`

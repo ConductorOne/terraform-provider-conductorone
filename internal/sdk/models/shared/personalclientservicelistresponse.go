@@ -4,9 +4,9 @@ package shared
 
 // The PersonalClientServiceListResponse message.
 type PersonalClientServiceListResponse struct {
-	// The list field.
+	// The list of personal client credentials owned by the calling user.
 	List []PersonalClient `json:"list,omitempty"`
-	// The nextPageToken field.
+	// A token to retrieve the next page of results, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

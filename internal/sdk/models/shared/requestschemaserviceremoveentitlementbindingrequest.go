@@ -2,11 +2,11 @@
 
 package shared
 
-// The RequestSchemaServiceRemoveEntitlementBindingRequest message.
+// RequestSchemaServiceRemoveEntitlementBindingRequest - The request message for removing a single entitlement binding from a request schema.
 type RequestSchemaServiceRemoveEntitlementBindingRequest struct {
 	// The AppEntitlementRef message.
 	AppEntitlementRef *AppEntitlementRef `json:"entitlementRef,omitempty"`
-	// The requestSchemaId field.
+	// The unique identifier of the request schema to remove the binding from.
 	RequestSchemaID *string `json:"requestSchemaId,omitempty"`
 }
 

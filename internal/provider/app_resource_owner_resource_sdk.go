@@ -19,6 +19,8 @@ func (r *AppResourceOwnerResourceModel) RefreshFromSharedListAppResourceOwnerIDs
 			for _, v := range resp.UserIds {
 				r.UserIds = append(r.UserIds, types.StringValue(v))
 			}
+		} else {
+			r.UserIds = nil
 		}
 	}
 
@@ -37,18 +39,10 @@ func (r *AppResourceOwnerResourceModel) ToOperationsC1APIAppV1AppResourceOwnersD
 	var resourceID string
 	resourceID = r.ResourceID.ValueString()
 
-	deleteAppResourceOwnersRequest, deleteAppResourceOwnersRequestDiags := r.ToSharedDeleteAppResourceOwnersRequest(ctx)
-	diags.Append(deleteAppResourceOwnersRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIAppV1AppResourceOwnersDeleteRequest{
-		AppID:                          appID,
-		ResourceTypeID:                 resourceTypeID,
-		ResourceID:                     resourceID,
-		DeleteAppResourceOwnersRequest: deleteAppResourceOwnersRequest,
+		AppID:          appID,
+		ResourceTypeID: resourceTypeID,
+		ResourceID:     resourceID,
 	}
 
 	return &out, diags

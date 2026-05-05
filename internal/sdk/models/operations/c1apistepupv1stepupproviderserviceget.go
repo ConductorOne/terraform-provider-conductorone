@@ -18,6 +18,9 @@ func (c *C1APIStepupV1StepUpProviderServiceGetRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apistepupv1stepupproviderservicegetrequest
+// #endregion class-body-c1apistepupv1stepupproviderservicegetrequest
+
 type C1APIStepupV1StepUpProviderServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIStepupV1StepUpProviderServiceGetResponse) GetGetStepUpProviderResp
 	}
 	return c.GetStepUpProviderResponse
 }
+
+// #region class-body-c1apistepupv1stepupproviderservicegetresponse
+// #endregion class-body-c1apistepupv1stepupproviderservicegetresponse

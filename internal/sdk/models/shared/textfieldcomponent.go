@@ -2,6 +2,32 @@
 
 package shared
 
+// TextFieldComponentVariant - The variant field.
+type TextFieldComponentVariant string
+
+const (
+	TextFieldComponentVariantTextFieldVariantUnspecified TextFieldComponentVariant = "TEXT_FIELD_VARIANT_UNSPECIFIED"
+	TextFieldComponentVariantTextFieldVariantShortText   TextFieldComponentVariant = "TEXT_FIELD_VARIANT_SHORT_TEXT"
+	TextFieldComponentVariantTextFieldVariantLongText    TextFieldComponentVariant = "TEXT_FIELD_VARIANT_LONG_TEXT"
+	TextFieldComponentVariantTextFieldVariantNumber      TextFieldComponentVariant = "TEXT_FIELD_VARIANT_NUMBER"
+	TextFieldComponentVariantTextFieldVariantObscured    TextFieldComponentVariant = "TEXT_FIELD_VARIANT_OBSCURED"
+)
+
+func (e TextFieldComponentVariant) ToPointer() *TextFieldComponentVariant {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TextFieldComponentVariant) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TEXT_FIELD_VARIANT_UNSPECIFIED", "TEXT_FIELD_VARIANT_SHORT_TEXT", "TEXT_FIELD_VARIANT_LONG_TEXT", "TEXT_FIELD_VARIANT_NUMBER", "TEXT_FIELD_VARIANT_OBSCURED":
+			return true
+		}
+	}
+	return false
+}
+
 // TextFieldComponent is a text input field.
 type TextFieldComponent struct {
 	// The checks field.
@@ -14,8 +40,6 @@ type TextFieldComponent struct {
 	//   - call
 	//
 	DynamicString *DynamicString `json:"label,omitempty"`
-	// The multiline field.
-	Multiline *bool `json:"multiline,omitempty"`
 	// DynamicString can be a literal value, a JSON pointer path, or a function call.
 	//
 	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
@@ -32,6 +56,8 @@ type TextFieldComponent struct {
 	//   - call
 	//
 	DynamicString2 *DynamicString `json:"value,omitempty"`
+	// The variant field.
+	Variant *TextFieldComponentVariant `json:"variant,omitempty"`
 }
 
 func (t *TextFieldComponent) GetChecks() []*FunctionCall {
@@ -48,13 +74,6 @@ func (t *TextFieldComponent) GetDynamicString() *DynamicString {
 	return t.DynamicString
 }
 
-func (t *TextFieldComponent) GetMultiline() *bool {
-	if t == nil {
-		return nil
-	}
-	return t.Multiline
-}
-
 func (t *TextFieldComponent) GetDynamicString1() *DynamicString {
 	if t == nil {
 		return nil
@@ -67,4 +86,11 @@ func (t *TextFieldComponent) GetDynamicString2() *DynamicString {
 		return nil
 	}
 	return t.DynamicString2
+}
+
+func (t *TextFieldComponent) GetVariant() *TextFieldComponentVariant {
+	if t == nil {
+		return nil
+	}
+	return t.Variant
 }

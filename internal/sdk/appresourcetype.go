@@ -82,7 +82,7 @@ func (s *AppResourceType) List(ctx context.Context, request operations.C1APIAppV
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -164,7 +164,7 @@ func (s *AppResourceType) List(ctx context.Context, request operations.C1APIAppV
 }
 
 // CreateManuallyManagedResourceType - Create Manually Managed Resource Type
-// Invokes the c1.api.app.v1.AppResourceTypeService.CreateManuallyManagedResourceType method.
+// Create a manually managed resource type that classifies resources within an app.
 func (s *AppResourceType) CreateManuallyManagedResourceType(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceTypeServiceCreateManuallyManagedResourceTypeResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -301,7 +301,7 @@ func (s *AppResourceType) CreateManuallyManagedResourceType(ctx context.Context,
 }
 
 // DeleteManuallyManagedResourceType - Delete Manually Managed Resource Type
-// Invokes the c1.api.app.v1.AppResourceTypeService.DeleteManuallyManagedResourceType method.
+// Delete a manually managed resource type and all its associated resources from an app.
 func (s *AppResourceType) DeleteManuallyManagedResourceType(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -425,6 +425,8 @@ func (s *AppResourceType) DeleteManuallyManagedResourceType(ctx context.Context,
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -556,6 +558,7 @@ func (s *AppResourceType) Get(ctx context.Context, request operations.C1APIAppV1
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -569,7 +572,7 @@ func (s *AppResourceType) Get(ctx context.Context, request operations.C1APIAppV1
 }
 
 // UpdateManuallyManagedResourceType - Update Manually Managed Resource Type
-// Invokes the c1.api.app.v1.AppResourceTypeService.UpdateManuallyManagedResourceType method.
+// Update a manually managed resource type's fields. Only the fields specified in the update mask are modified.
 func (s *AppResourceType) UpdateManuallyManagedResourceType(ctx context.Context, request operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

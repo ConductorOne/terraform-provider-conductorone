@@ -4,7 +4,7 @@ package shared
 
 // The AddManuallyManagedUsersRequest message.
 type AddManuallyManagedUsersRequest struct {
-	// The userIds field.
+	// The IDs of users to add as manually managed members.
 	UserIds []string `json:"userIds,omitempty"`
 }
 

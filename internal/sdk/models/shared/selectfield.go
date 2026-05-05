@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // SelectFieldType - The type field.
 type SelectFieldType string
 
@@ -20,24 +15,16 @@ const (
 func (e SelectFieldType) ToPointer() *SelectFieldType {
 	return &e
 }
-func (e *SelectFieldType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SelectFieldType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SELECT_TYPE_UNSPECIFIED", "SELECT_TYPE_DROPDOWN", "SELECT_TYPE_RADIO", "SELECT_TYPE_BUTTONS":
+			return true
+		}
 	}
-	switch v {
-	case "SELECT_TYPE_UNSPECIFIED":
-		fallthrough
-	case "SELECT_TYPE_DROPDOWN":
-		fallthrough
-	case "SELECT_TYPE_RADIO":
-		fallthrough
-	case "SELECT_TYPE_BUTTONS":
-		*e = SelectFieldType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SelectFieldType: %v", v)
-	}
+	return false
 }
 
 // The SelectField message.

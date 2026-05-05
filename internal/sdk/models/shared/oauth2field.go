@@ -17,3 +17,6 @@ func (o *Oauth2Field) GetOauth2FieldView() *Oauth2FieldView {
 	}
 	return o.Oauth2FieldView
 }
+
+// #region class-body-oauth2field
+// #endregion class-body-oauth2field

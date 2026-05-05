@@ -2,9 +2,9 @@
 
 package shared
 
-// The AddAppResourceOwnerRequest message.
+// AddAppResourceOwnerRequest - The request message for adding an owner to an app resource.
 type AddAppResourceOwnerRequest struct {
-	// The userId field.
+	// The C1 user ID to add as an owner.
 	UserID *string `json:"userId,omitempty"`
 }
 

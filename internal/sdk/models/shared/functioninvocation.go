@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -29,26 +27,16 @@ const (
 func (e FunctionInvocationStatus) ToPointer() *FunctionInvocationStatus {
 	return &e
 }
-func (e *FunctionInvocationStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FunctionInvocationStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FUNCTION_INVOCATION_STATUS_UNSPECIFIED", "FUNCTION_INVOCATION_STATUS_PENDING", "FUNCTION_INVOCATION_STATUS_RUNNING", "FUNCTION_INVOCATION_STATUS_SUCCESS", "FUNCTION_INVOCATION_STATUS_ERROR":
+			return true
+		}
 	}
-	switch v {
-	case "FUNCTION_INVOCATION_STATUS_UNSPECIFIED":
-		fallthrough
-	case "FUNCTION_INVOCATION_STATUS_PENDING":
-		fallthrough
-	case "FUNCTION_INVOCATION_STATUS_RUNNING":
-		fallthrough
-	case "FUNCTION_INVOCATION_STATUS_SUCCESS":
-		fallthrough
-	case "FUNCTION_INVOCATION_STATUS_ERROR":
-		*e = FunctionInvocationStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FunctionInvocationStatus: %v", v)
-	}
+	return false
 }
 
 // The FunctionInvocation message.

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // PreviousState - The previousState field.
 type PreviousState string
 
@@ -19,22 +14,16 @@ const (
 func (e PreviousState) ToPointer() *PreviousState {
 	return &e
 }
-func (e *PreviousState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PreviousState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_STATE_UNSPECIFIED", "TASK_STATE_OPEN", "TASK_STATE_CLOSED":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_STATE_UNSPECIFIED":
-		fallthrough
-	case "TASK_STATE_OPEN":
-		fallthrough
-	case "TASK_STATE_CLOSED":
-		*e = PreviousState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PreviousState: %v", v)
-	}
+	return false
 }
 
 // The TaskAuditStateChange message.

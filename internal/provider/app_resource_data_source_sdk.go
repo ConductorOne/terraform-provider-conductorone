@@ -23,6 +23,7 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.ExternalID = types.StringPointerValue(resp.ExternalID)
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
@@ -59,6 +60,8 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceServiceGetRespo
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -79,11 +82,6 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceView(ctx contex
 				}
 			}
 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
-		} else {
-			r.Delete = types.BoolNull()
-			r.Edit = types.BoolNull()
-			r.Extra = nil
-			r.Read = types.BoolNull()
 		}
 		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
 

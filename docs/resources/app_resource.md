@@ -29,13 +29,13 @@ resource "conductorone_app_resource" "my_app_resource" {
 
 ### Required
 
-- `app_id` (String)
-- `app_resource_type_id` (String) Requires replacement if changed.
-- `display_name` (String) The displayName field.
+- `app_id` (String) The app that this resource belongs to.
+- `app_resource_type_id` (String) The resource type that this resource is. Requires replacement if changed.
+- `display_name` (String) The display name for the new resource.
 
 ### Optional
 
-- `description` (String) The description field.
+- `description` (String) An optional description for the new resource.
 - `match_baton_id` (String) If supplied, it's implied that the resource is created before sync and needs to be merged with connector resource.
 
 ### Read-Only
@@ -46,6 +46,8 @@ resource "conductorone_app_resource" "my_app_resource" {
 - `delete` (Boolean) The delete field.
 - `edit` (Boolean) The edit field.
 - `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
+- `external_id` (String) The upstream product's native external ID for this resource (e.g. an Okta group ID).
+ Populated from the connector's external ID during sync.
 - `extra` (Map of Boolean) The extra field.
 - `grant_count` (String) The number of grants to this resource.
 - `id` (String) The id of the resource.

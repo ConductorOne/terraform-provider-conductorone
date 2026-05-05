@@ -15,6 +15,9 @@ resource "conductorone_policy" "my_policy" {
             action_target_baton_resource_action = {
               baton_resource_action_id = "...my_baton_resource_action_id..."
             }
+            action_target_client_id_approval = {
+              # ...
+            }
           }
           approval = {
             agent_approval = {
@@ -165,7 +168,7 @@ resource "conductorone_policy" "my_policy" {
               webhook_id = "...my_webhook_id..."
             }
           }
-          form = "{ \"see\": \"documentation\" }"
+          policy_form = "{ \"see\": \"documentation\" }"
           provision = {
             assigned = true
             provision_policy = {

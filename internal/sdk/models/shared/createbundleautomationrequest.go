@@ -2,19 +2,29 @@
 
 package shared
 
-// The CreateBundleAutomationRequest message.
+// CreateBundleAutomationRequest - The request message for creating a new bundle automation rule on a catalog.
 //
 // This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
 //   - entitlements
+//   - cel
 type CreateBundleAutomationRequest struct {
-	// The createTasks field.
+	// The BundleAutomationRuleCEL message.
+	BundleAutomationRuleCEL *BundleAutomationRuleCEL `json:"cel,omitempty"`
+	// Whether to create access request tasks for matched users instead of granting directly.
 	CreateTasks *bool `json:"createTasks,omitempty"`
-	// The disableCircuitBreaker field.
+	// Whether to disable the circuit breaker that pauses the automation when excessive membership changes are detected.
 	DisableCircuitBreaker *bool `json:"disableCircuitBreaker,omitempty"`
-	// The enabled field.
+	// Whether the automation should actively run on its schedule.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The BundleAutomationRuleEntitlement message.
 	BundleAutomationRuleEntitlement *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
+}
+
+func (c *CreateBundleAutomationRequest) GetBundleAutomationRuleCEL() *BundleAutomationRuleCEL {
+	if c == nil {
+		return nil
+	}
+	return c.BundleAutomationRuleCEL
 }
 
 func (c *CreateBundleAutomationRequest) GetCreateTasks() *bool {

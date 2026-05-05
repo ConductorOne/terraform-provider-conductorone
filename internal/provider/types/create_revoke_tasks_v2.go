@@ -15,7 +15,7 @@ type CreateRevokeTasksV2 struct {
 	EntitlementInclusionCriteria *EntitlementInclusionCriteria `tfsdk:"entitlement_inclusion_criteria"`
 	EntitlementInclusionList     *EntitlementInclusionList     `tfsdk:"entitlement_inclusion_list"`
 	EntitlementInclusionListCel  *EntitlementInclusionListCel  `tfsdk:"entitlement_inclusion_list_cel"`
-	UserIDCel                    types.String                  `tfsdk:"user_id_cel"`
 	UserRef                      *UserRef                      `tfsdk:"user_ref"`
 	UseSubjectUser               types.Bool                    `tfsdk:"use_subject_user"`
+	UserIDCel                    types.String                  `tfsdk:"user_id_cel"`
 }

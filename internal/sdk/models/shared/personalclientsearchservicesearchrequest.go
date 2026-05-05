@@ -4,13 +4,13 @@ package shared
 
 // The PersonalClientSearchServiceSearchRequest message.
 type PersonalClientSearchServiceSearchRequest struct {
-	// The pageSize field.
+	// The maximum number of results to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
+	// A pagination token returned from a previous Search call.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The query field.
+	// A text query to filter personal clients by display name.
 	Query *string `json:"query,omitempty"`
-	// The users field.
+	// Filter results to personal clients owned by the specified users.
 	Users []UserRef `json:"users,omitempty"`
 }
 

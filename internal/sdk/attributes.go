@@ -435,7 +435,7 @@ func (s *Attributes) GetAttributeValue(ctx context.Context, request operations.C
 }
 
 // ListComplianceFrameworks - List Compliance Frameworks
-// Invokes the c1.api.attribute.v1.Attributes.ListComplianceFrameworks method.
+// List all compliance framework attribute values (e.g., SOC 2, HIPAA) with pagination.
 func (s *Attributes) ListComplianceFrameworks(ctx context.Context, request operations.C1APIAttributeV1AttributesListComplianceFrameworksRequest, opts ...operations.Option) (*operations.C1APIAttributeV1AttributesListComplianceFrameworksResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -487,7 +487,7 @@ func (s *Attributes) ListComplianceFrameworks(ctx context.Context, request opera
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -830,6 +830,8 @@ func (s *Attributes) DeleteComplianceFrameworkAttributeValue(ctx context.Context
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -961,6 +963,7 @@ func (s *Attributes) GetComplianceFrameworkAttributeValue(ctx context.Context, r
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -974,7 +977,7 @@ func (s *Attributes) GetComplianceFrameworkAttributeValue(ctx context.Context, r
 }
 
 // ListRiskLevels - List Risk Levels
-// Invokes the c1.api.attribute.v1.Attributes.ListRiskLevels method.
+// List all risk level attribute values with pagination.
 func (s *Attributes) ListRiskLevels(ctx context.Context, request operations.C1APIAttributeV1AttributesListRiskLevelsRequest, opts ...operations.Option) (*operations.C1APIAttributeV1AttributesListRiskLevelsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1026,7 +1029,7 @@ func (s *Attributes) ListRiskLevels(ctx context.Context, request operations.C1AP
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -1369,6 +1372,8 @@ func (s *Attributes) DeleteRiskLevelAttributeValue(ctx context.Context, request 
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -1500,6 +1505,7 @@ func (s *Attributes) GetRiskLevelAttributeValue(ctx context.Context, request ope
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -1565,7 +1571,7 @@ func (s *Attributes) ListAttributeTypes(ctx context.Context, request operations.
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -1699,7 +1705,7 @@ func (s *Attributes) ListAttributeValues(ctx context.Context, request operations
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 

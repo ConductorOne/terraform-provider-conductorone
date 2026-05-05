@@ -26,6 +26,9 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceDeleteProviderRequest
 	return c.WorkloadFederationServiceDeleteProviderRequest
 }
 
+// #region class-body-c1apiworkloadfederationv1workloadfederationservicedeleteproviderrequest
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationservicedeleteproviderrequest
+
 type C1APIWorkloadFederationV1WorkloadFederationServiceDeleteProviderResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceDeleteProviderRespons
 	}
 	return c.WorkloadFederationServiceDeleteProviderResponse
 }
+
+// #region class-body-c1apiworkloadfederationv1workloadfederationservicedeleteproviderresponse
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationservicedeleteproviderresponse

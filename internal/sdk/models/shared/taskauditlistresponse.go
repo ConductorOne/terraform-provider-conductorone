@@ -4,9 +4,9 @@ package shared
 
 // The TaskAuditListResponse message.
 type TaskAuditListResponse struct {
-	// The list field.
+	// The list of audit events for the task.
 	List []TaskAuditView `json:"list,omitempty"`
-	// The nextPageToken field.
+	// A pagination token to retrieve the next page of results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

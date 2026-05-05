@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // UserStatusEnum - The userStatusEnum field.
 // This field is part of the `user_status` oneof.
 // See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
@@ -22,24 +17,16 @@ const (
 func (e UserStatusEnum) ToPointer() *UserStatusEnum {
 	return &e
 }
-func (e *UserStatusEnum) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UserStatusEnum) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "UNKNOWN", "ENABLED", "DISABLED", "DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "UNKNOWN":
-		fallthrough
-	case "ENABLED":
-		fallthrough
-	case "DISABLED":
-		fallthrough
-	case "DELETED":
-		*e = UserStatusEnum(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UserStatusEnum: %v", v)
-	}
+	return false
 }
 
 // The UpdateUser message.

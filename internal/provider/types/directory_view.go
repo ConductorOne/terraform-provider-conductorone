@@ -7,6 +7,6 @@ import (
 )
 
 type DirectoryView struct {
-	AppPath   types.String `tfsdk:"app_path"`
 	Directory *Directory   `tfsdk:"directory"`
+	AppPath   types.String `tfsdk:"app_path"`
 }

@@ -2,7 +2,7 @@
 
 package shared
 
-// The TaskActionsServiceUpdateGrantDurationRequest message.
+// The TaskActionsServiceUpdateGrantDurationRequest object lets you change the grant duration on a grant task.
 type TaskActionsServiceUpdateGrantDurationRequest struct {
 	Duration string `json:"duration"`
 }

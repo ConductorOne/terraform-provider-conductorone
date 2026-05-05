@@ -2,9 +2,9 @@
 
 package shared
 
-// The ForceRunBundleAutomationRequest message.
+// ForceRunBundleAutomationRequest - The request message for triggering an immediate bundle automation run.
 type ForceRunBundleAutomationRequest struct {
-	// The refs field.
+	// Optional entitlement references to scope the run to specific entitlements.
 	Refs []AppEntitlementRef `json:"refs,omitempty"`
 }
 

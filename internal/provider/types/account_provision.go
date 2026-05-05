@@ -8,9 +8,9 @@ import (
 )
 
 type AccountProvision struct {
-	Config      jsontypes.Normalized `tfsdk:"config"`
-	ConnectorID types.String         `tfsdk:"connector_id"`
 	DoNotSave   *DoNotSave           `tfsdk:"do_not_save"`
 	SaveToVault *SaveToVault         `tfsdk:"save_to_vault"`
+	Config      jsontypes.Normalized `tfsdk:"config"`
+	ConnectorID types.String         `tfsdk:"connector_id"`
 	SchemaID    types.String         `tfsdk:"schema_id"`
 }

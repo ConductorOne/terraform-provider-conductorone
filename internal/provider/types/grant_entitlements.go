@@ -14,7 +14,7 @@ type GrantEntitlements struct {
 	GrantEntitlementInclusionCriteria *GrantEntitlementInclusionCriteria `tfsdk:"grant_entitlement_inclusion_criteria"`
 	GrantEntitlementInclusionList     *GrantEntitlementInclusionList     `tfsdk:"grant_entitlement_inclusion_list"`
 	GrantEntitlementInclusionListCel  *GrantEntitlementInclusionListCel  `tfsdk:"grant_entitlement_inclusion_list_cel"`
-	UserIDCel                         types.String                       `tfsdk:"user_id_cel"`
 	UserRef                           *UserRef                           `tfsdk:"user_ref"`
 	UseSubjectUser                    types.Bool                         `tfsdk:"use_subject_user"`
+	UserIDCel                         types.String                       `tfsdk:"user_id_cel"`
 }

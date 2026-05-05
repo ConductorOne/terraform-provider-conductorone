@@ -26,6 +26,9 @@ func (c *C1APIAppV1AppUsageControlsServiceUpdateRequest) GetUpdateAppUsageContro
 	return c.UpdateAppUsageControlsRequest
 }
 
+// #region class-body-c1apiappv1appusagecontrolsserviceupdaterequest
+// #endregion class-body-c1apiappv1appusagecontrolsserviceupdaterequest
+
 type C1APIAppV1AppUsageControlsServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1AppUsageControlsServiceUpdateResponse) GetUpdateAppUsageContr
 	}
 	return c.UpdateAppUsageControlsResponse
 }
+
+// #region class-body-c1apiappv1appusagecontrolsserviceupdateresponse
+// #endregion class-body-c1apiappv1appusagecontrolsserviceupdateresponse

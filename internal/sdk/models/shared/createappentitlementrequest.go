@@ -2,15 +2,10 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type CreateAppEntitlementRequestDurationUnset struct {
 }
 
-// CreateAppEntitlementRequestPurpose - The purpose field.
+// CreateAppEntitlementRequestPurpose - The purpose of the entitlement (e.g., assignment, permission, ownership).
 type CreateAppEntitlementRequestPurpose string
 
 const (
@@ -23,24 +18,16 @@ const (
 func (e CreateAppEntitlementRequestPurpose) ToPointer() *CreateAppEntitlementRequestPurpose {
 	return &e
 }
-func (e *CreateAppEntitlementRequestPurpose) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreateAppEntitlementRequestPurpose) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
+			return true
+		}
 	}
-	switch v {
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
-		*e = CreateAppEntitlementRequestPurpose(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateAppEntitlementRequestPurpose: %v", v)
-	}
+	return false
 }
 
 // The CreateAppEntitlementRequest message.
@@ -49,31 +36,31 @@ func (e *CreateAppEntitlementRequestPurpose) UnmarshalJSON(data []byte) error {
 //   - durationUnset
 //   - durationGrant
 type CreateAppEntitlementRequest struct {
-	// The alias field.
+	// A unique alias for the entitlement, used for programmatic lookups and Cone.
 	Alias *string `json:"alias,omitempty"`
-	// The appResourceId field.
+	// The ID of the resource that this entitlement belongs to.
 	AppResourceID *string `json:"appResourceId,omitempty"`
-	// The appResourceTypeId field.
+	// The ID of the resource type that this entitlement belongs to.
 	AppResourceTypeID *string `json:"appResourceTypeId,omitempty"`
-	// The certifyPolicyId field.
+	// The ID of the policy to use for certification tasks.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
-	// The complianceFrameworkValueIds field.
+	// The IDs of compliance frameworks to associate with this entitlement (e.g., SOX, HIPAA).
 	ComplianceFrameworkValueIds []string `json:"complianceFrameworkValueIds,omitempty"`
-	// The description field.
+	// The description of the new entitlement.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// The display name of the new entitlement.
 	DisplayName   string                                    `json:"displayName"`
 	DurationGrant *string                                   `json:"durationGrant,omitempty"`
 	DurationUnset *CreateAppEntitlementRequestDurationUnset `json:"durationUnset,omitempty"`
-	// The emergencyGrantEnabled field.
+	// Whether emergency grant requests are enabled for this entitlement.
 	EmergencyGrantEnabled *bool `json:"emergencyGrantEnabled,omitempty"`
-	// The emergencyGrantPolicyId field.
+	// The ID of the policy to use for emergency grant tasks. Required if emergency_grant_enabled is true.
 	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
-	// The grantPolicyId field.
+	// The ID of the policy to use for grant request tasks.
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// If supplied, it's implied that the entitlement is created before sync and needs to be merged with connector entitlement.
 	MatchBatonID *string `json:"matchBatonId,omitempty"`
-	// The overrideAccessRequestsDefaults field.
+	// Whether to override the app-level access request defaults for this entitlement.
 	OverrideAccessRequestsDefaults *bool `json:"overrideAccessRequestsDefaults,omitempty"`
 	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 	//
@@ -88,13 +75,13 @@ type CreateAppEntitlementRequest struct {
 	//   - action
 	//
 	ProvisionPolicy *ProvisionPolicy `json:"provisionPolicy,omitempty"`
-	// The purpose field.
+	// The purpose of the entitlement (e.g., assignment, permission, ownership).
 	Purpose *CreateAppEntitlementRequestPurpose `json:"purpose,omitempty"`
-	// The revokePolicyId field.
+	// The ID of the policy to use for revoke request tasks.
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
-	// The riskLevelValueId field.
+	// The ID of the risk level to assign to this entitlement.
 	RiskLevelValueID *string `json:"riskLevelValueId,omitempty"`
-	// The slug field.
+	// A short label describing the permission the entitlement grants (e.g., "Admin", "Read").
 	Slug *string `json:"slug,omitempty"`
 }
 

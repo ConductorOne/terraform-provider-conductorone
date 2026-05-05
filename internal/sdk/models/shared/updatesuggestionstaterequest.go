@@ -2,12 +2,7 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// UpdateSuggestionStateRequestState - The state field.
+// UpdateSuggestionStateRequestState - The new state to transition the suggestion to.
 type UpdateSuggestionStateRequestState string
 
 const (
@@ -20,31 +15,23 @@ const (
 func (e UpdateSuggestionStateRequestState) ToPointer() *UpdateSuggestionStateRequestState {
 	return &e
 }
-func (e *UpdateSuggestionStateRequestState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpdateSuggestionStateRequestState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SUGGESTION_STATE_UNSPECIFIED", "SUGGESTION_STATE_NEW", "SUGGESTION_STATE_DISMISSED", "SUGGESTION_STATE_ACCEPTED":
+			return true
+		}
 	}
-	switch v {
-	case "SUGGESTION_STATE_UNSPECIFIED":
-		fallthrough
-	case "SUGGESTION_STATE_NEW":
-		fallthrough
-	case "SUGGESTION_STATE_DISMISSED":
-		fallthrough
-	case "SUGGESTION_STATE_ACCEPTED":
-		*e = UpdateSuggestionStateRequestState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpdateSuggestionStateRequestState: %v", v)
-	}
+	return false
 }
 
 // The UpdateSuggestionStateRequest message.
 type UpdateSuggestionStateRequest struct {
-	// The createdCatalogId field.
+	// The ID of the access profile created from this suggestion, set when accepting.
 	CreatedCatalogID *string `json:"createdCatalogId,omitempty"`
-	// The state field.
+	// The new state to transition the suggestion to.
 	State *UpdateSuggestionStateRequestState `json:"state,omitempty"`
 }
 

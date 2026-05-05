@@ -6,6 +6,8 @@ package shared
 type CommentOnRequestPreference struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// The locked field.
+	Locked *bool `json:"locked,omitempty"`
 }
 
 func (c *CommentOnRequestPreference) GetEnabled() *bool {
@@ -13,4 +15,11 @@ func (c *CommentOnRequestPreference) GetEnabled() *bool {
 		return nil
 	}
 	return c.Enabled
+}
+
+func (c *CommentOnRequestPreference) GetLocked() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Locked
 }

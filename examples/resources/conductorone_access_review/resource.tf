@@ -1,4 +1,9 @@
 resource "conductorone_access_review" "my_access_review" {
+  access_review_notification_config = {
+    send_close     = true
+    send_kickoff   = true
+    send_reminders = false
+  }
   access_review_scope_v2 = {
     account_criteria_scope = {
       account_domain = "APP_USER_DOMAIN_EXTERNAL"
@@ -104,11 +109,6 @@ resource "conductorone_access_review" "my_access_review" {
   description     = "...my_description..."
   display_name    = "...my_display_name..."
   duplicate_from  = "...my_duplicate_from..."
-  notification_config = {
-    send_close     = true
-    send_kickoff   = true
-    send_reminders = true
-  }
   owner_ids = [
     "..."
   ]

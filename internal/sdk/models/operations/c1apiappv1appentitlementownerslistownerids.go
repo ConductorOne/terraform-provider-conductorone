@@ -26,6 +26,9 @@ func (c *C1APIAppV1AppEntitlementOwnersListOwnerIDsRequest) GetEntitlementID() s
 	return c.EntitlementID
 }
 
+// #region class-body-c1apiappv1appentitlementownerslistowneridsrequest
+// #endregion class-body-c1apiappv1appentitlementownerslistowneridsrequest
+
 type C1APIAppV1AppEntitlementOwnersListOwnerIDsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1AppEntitlementOwnersListOwnerIDsResponse) GetListAppEntitleme
 	}
 	return c.ListAppEntitlementOwnerIDsResponse
 }
+
+// #region class-body-c1apiappv1appentitlementownerslistowneridsresponse
+// #endregion class-body-c1apiappv1appentitlementownerslistowneridsresponse

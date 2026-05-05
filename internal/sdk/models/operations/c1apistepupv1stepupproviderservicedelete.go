@@ -26,6 +26,9 @@ func (c *C1APIStepupV1StepUpProviderServiceDeleteRequest) GetDeleteStepUpProvide
 	return c.DeleteStepUpProviderRequest
 }
 
+// #region class-body-c1apistepupv1stepupproviderservicedeleterequest
+// #endregion class-body-c1apistepupv1stepupproviderservicedeleterequest
+
 type C1APIStepupV1StepUpProviderServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIStepupV1StepUpProviderServiceDeleteResponse) GetDeleteStepUpProvid
 	}
 	return c.DeleteStepUpProviderResponse
 }
+
+// #region class-body-c1apistepupv1stepupproviderservicedeleteresponse
+// #endregion class-body-c1apistepupv1stepupproviderservicedeleteresponse

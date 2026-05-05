@@ -125,3 +125,6 @@ func (c *CreateRevokeTasksV2) GetUserRef() *UserRef {
 	}
 	return c.UserRef
 }
+
+// #region class-body-createrevoketasksv2
+// #endregion class-body-createrevoketasksv2

@@ -31,6 +31,8 @@ func (r *RiskLevelsDataSourceModel) RefreshFromSharedListRiskLevelsResponse(ctx 
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

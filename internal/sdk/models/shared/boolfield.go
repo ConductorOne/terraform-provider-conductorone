@@ -7,9 +7,6 @@ package shared
 // This message contains a oneof named view. Only a single field of the following list may be set at a time:
 //   - checkboxField
 //   - toggleField
-//
-// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-//   - rules
 type BoolField struct {
 	// The CheckboxField message.
 	CheckboxField *CheckboxField `json:"checkboxField,omitempty"`

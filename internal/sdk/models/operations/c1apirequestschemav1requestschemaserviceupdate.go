@@ -26,6 +26,9 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceUpdateRequest) GetRequestSchema
 	return c.RequestSchemaServiceUpdateRequest
 }
 
+// #region class-body-c1apirequestschemav1requestschemaserviceupdaterequest
+// #endregion class-body-c1apirequestschemav1requestschemaserviceupdaterequest
+
 type C1APIRequestSchemaV1RequestSchemaServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -33,7 +36,7 @@ type C1APIRequestSchemaV1RequestSchemaServiceUpdateResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for updating a request schema.
 	RequestSchemaServiceUpdateResponse *shared.RequestSchemaServiceUpdateResponse
 }
 
@@ -64,3 +67,6 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceUpdateResponse) GetRequestSchem
 	}
 	return c.RequestSchemaServiceUpdateResponse
 }
+
+// #region class-body-c1apirequestschemav1requestschemaserviceupdateresponse
+// #endregion class-body-c1apirequestschemav1requestschemaserviceupdateresponse

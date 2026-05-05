@@ -47,3 +47,6 @@ func (c *C1APIPolicyV1PolicySearchSearchResponse) GetSearchPoliciesResponse() *s
 	}
 	return c.SearchPoliciesResponse
 }
+
+// #region class-body-c1apipolicyv1policysearchsearchresponse
+// #endregion class-body-c1apipolicyv1policysearchsearchresponse

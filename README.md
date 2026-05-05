@@ -39,7 +39,7 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 <!-- Start Available Resources and Data Sources [operations] -->
 ## Available Resources and Data Sources
 
-### Resources
+### Managed Resources
 
 * [conductorone_access_review](docs/resources/access_review.md)
 * [conductorone_access_review_setup](docs/resources/access_review_setup.md)
@@ -76,8 +76,10 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_task_revoke](docs/resources/task_revoke.md)
 * [conductorone_vault](docs/resources/vault.md)
 * [conductorone_webhook](docs/resources/webhook.md)
+
 ### Data Sources
 
+* [conductorone_aws_external_id](docs/data-sources/aws_external_id.md)
 * [conductorone_access_review](docs/data-sources/access_review.md)
 * [conductorone_access_review_setup](docs/data-sources/access_review_setup.md)
 * [conductorone_access_review_template](docs/data-sources/access_review_template.md)
@@ -94,13 +96,12 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_app_resource_type](docs/data-sources/app_resource_type.md)
 * [conductorone_app_resource_types](docs/data-sources/app_resource_types.md)
 * [conductorone_app_resources](docs/data-sources/app_resources.md)
-* [conductorone_app_entitlement_monitor_binding](docs/data-sources/app_entitlement_monitor_binding.md)
 * [conductorone_app_entitlement_owners](docs/data-sources/app_entitlement_owners.md)
 * [conductorone_app_entitlement_users](docs/data-sources/app_entitlement_users.md)
 * [conductorone_app_owners](docs/data-sources/app_owners.md)
 * [conductorone_app_resource_owners](docs/data-sources/app_resource_owners.md)
+* [conductorone_app_entitlement_monitor_binding](docs/data-sources/app_entitlement_monitor_binding.md)
 * [conductorone_apps](docs/data-sources/apps.md)
-* [conductorone_aws_external_id](docs/data-sources/aws_external_id.md)
 * [conductorone_bundle_automation](docs/data-sources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/data-sources/compliance_framework.md)
 * [conductorone_compliance_frameworks](docs/data-sources/compliance_frameworks.md)
@@ -173,7 +174,7 @@ Feel free to open a PR or a Github issue as a proof of concept and we'll do our 
 <!-- Start Summary [summary] -->
 ## Summary
 
-ConductorOne API: The ConductorOne API is a HTTP API for managing ConductorOne resources.
+C1 API: The C1 API is a HTTP API for managing C1 resources.
 <!-- End Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->

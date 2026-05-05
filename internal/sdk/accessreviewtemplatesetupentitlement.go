@@ -30,7 +30,7 @@ func newAccessReviewTemplateSetupEntitlement(rootSDK *ConductoroneAPI, sdkConfig
 }
 
 // GetScopeAndEntitlements - Get Scope And Entitlements
-// Invokes the c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlementService.GetScopeAndEntitlements method.
+// GetScopeAndEntitlements retrieves the current scope configuration and selected entitlements for an access review template.
 func (s *AccessReviewTemplateSetupEntitlement) GetScopeAndEntitlements(ctx context.Context, request operations.C1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceGetScopeAndEntitlementsRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceGetScopeAndEntitlementsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -148,6 +148,7 @@ func (s *AccessReviewTemplateSetupEntitlement) GetScopeAndEntitlements(ctx conte
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -161,7 +162,7 @@ func (s *AccessReviewTemplateSetupEntitlement) GetScopeAndEntitlements(ctx conte
 }
 
 // SetScopeAndEntitlements - Set Scope And Entitlements
-// Invokes the c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlementService.SetScopeAndEntitlements method.
+// SetScopeAndEntitlements replaces the scope configuration and selected entitlements for an access review template.
 func (s *AccessReviewTemplateSetupEntitlement) SetScopeAndEntitlements(ctx context.Context, request operations.C1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceSetScopeAndEntitlementsRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceSetScopeAndEntitlementsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -298,7 +299,7 @@ func (s *AccessReviewTemplateSetupEntitlement) SetScopeAndEntitlements(ctx conte
 }
 
 // SetScopeByResourceType - Set Scope By Resource Type
-// Invokes the c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlementService.SetScopeByResourceType method.
+// SetScopeByResourceType sets the template scope by selecting specific resource types to include in campaigns created from this template.
 func (s *AccessReviewTemplateSetupEntitlement) SetScopeByResourceType(ctx context.Context, request operations.C1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceSetScopeByResourceTypeRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceSetScopeByResourceTypeResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

@@ -34,6 +34,9 @@ func (c *C1APIAppV1ConnectorServiceGetCredentialsRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apiappv1connectorservicegetcredentialsrequest
+// #endregion class-body-c1apiappv1connectorservicegetcredentialsrequest
+
 type C1APIAppV1ConnectorServiceGetCredentialsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1ConnectorServiceGetCredentialsResponse) GetConnectorServiceGe
 	}
 	return c.ConnectorServiceGetCredentialsResponse
 }
+
+// #region class-body-c1apiappv1connectorservicegetcredentialsresponse
+// #endregion class-body-c1apiappv1connectorservicegetcredentialsresponse

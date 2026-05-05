@@ -26,6 +26,9 @@ func (c *C1APIServicePrincipalV1ServicePrincipalServiceDeleteRequest) GetService
 	return c.ServicePrincipalServiceDeleteRequest
 }
 
+// #region class-body-c1apiserviceprincipalv1serviceprincipalservicedeleterequest
+// #endregion class-body-c1apiserviceprincipalv1serviceprincipalservicedeleterequest
+
 type C1APIServicePrincipalV1ServicePrincipalServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIServicePrincipalV1ServicePrincipalServiceDeleteResponse) GetServic
 	}
 	return c.ServicePrincipalServiceDeleteResponse
 }
+
+// #region class-body-c1apiserviceprincipalv1serviceprincipalservicedeleteresponse
+// #endregion class-body-c1apiserviceprincipalv1serviceprincipalservicedeleteresponse

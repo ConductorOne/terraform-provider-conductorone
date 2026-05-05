@@ -8,9 +8,9 @@ import (
 )
 
 type C1APIAppV1AppEntitlementsDeleteAutomationRequest struct {
-	AppID                   string                          `pathParam:"style=simple,explode=false,name=app_id"`
-	AppEntitlementID        string                          `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
-	DeleteAutomationRequest *shared.DeleteAutomationRequest `request:"mediaType=application/json"`
+	AppID                      string                             `pathParam:"style=simple,explode=false,name=app_id"`
+	AppEntitlementID           string                             `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
+	AppDeleteAutomationRequest *shared.AppDeleteAutomationRequest `request:"mediaType=application/json"`
 }
 
 func (c *C1APIAppV1AppEntitlementsDeleteAutomationRequest) GetAppID() string {
@@ -27,12 +27,15 @@ func (c *C1APIAppV1AppEntitlementsDeleteAutomationRequest) GetAppEntitlementID()
 	return c.AppEntitlementID
 }
 
-func (c *C1APIAppV1AppEntitlementsDeleteAutomationRequest) GetDeleteAutomationRequest() *shared.DeleteAutomationRequest {
+func (c *C1APIAppV1AppEntitlementsDeleteAutomationRequest) GetAppDeleteAutomationRequest() *shared.AppDeleteAutomationRequest {
 	if c == nil {
 		return nil
 	}
-	return c.DeleteAutomationRequest
+	return c.AppDeleteAutomationRequest
 }
+
+// #region class-body-c1apiappv1appentitlementsdeleteautomationrequest
+// #endregion class-body-c1apiappv1appentitlementsdeleteautomationrequest
 
 type C1APIAppV1AppEntitlementsDeleteAutomationResponse struct {
 	// HTTP response content type for this operation
@@ -42,7 +45,7 @@ type C1APIAppV1AppEntitlementsDeleteAutomationResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successful response
-	DeleteAutomationResponse *shared.DeleteAutomationResponse
+	AppDeleteAutomationResponse *shared.AppDeleteAutomationResponse
 }
 
 func (c *C1APIAppV1AppEntitlementsDeleteAutomationResponse) GetContentType() string {
@@ -66,9 +69,12 @@ func (c *C1APIAppV1AppEntitlementsDeleteAutomationResponse) GetRawResponse() *ht
 	return c.RawResponse
 }
 
-func (c *C1APIAppV1AppEntitlementsDeleteAutomationResponse) GetDeleteAutomationResponse() *shared.DeleteAutomationResponse {
+func (c *C1APIAppV1AppEntitlementsDeleteAutomationResponse) GetAppDeleteAutomationResponse() *shared.AppDeleteAutomationResponse {
 	if c == nil {
 		return nil
 	}
-	return c.DeleteAutomationResponse
+	return c.AppDeleteAutomationResponse
 }
+
+// #region class-body-c1apiappv1appentitlementsdeleteautomationresponse
+// #endregion class-body-c1apiappv1appentitlementsdeleteautomationresponse

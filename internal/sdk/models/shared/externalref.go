@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ExternalRefSource - The source of the external reference.
 type ExternalRefSource string
 
@@ -18,20 +13,16 @@ const (
 func (e ExternalRefSource) ToPointer() *ExternalRefSource {
 	return &e
 }
-func (e *ExternalRefSource) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ExternalRefSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "UNSPECIFIED", "JIRA":
+			return true
+		}
 	}
-	switch v {
-	case "UNSPECIFIED":
-		fallthrough
-	case "JIRA":
-		*e = ExternalRefSource(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ExternalRefSource: %v", v)
-	}
+	return false
 }
 
 // ExternalRef - A reference to an external source. This value is unused currently, but may be brought back.

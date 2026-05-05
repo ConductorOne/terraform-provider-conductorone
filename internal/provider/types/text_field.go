@@ -7,5 +7,6 @@ import (
 )
 
 type TextField struct {
-	Multiline types.Bool `tfsdk:"multiline"`
+	Multiline types.Bool   `tfsdk:"multiline"`
+	Suffix    types.String `tfsdk:"suffix"`
 }

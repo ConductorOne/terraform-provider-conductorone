@@ -1,4 +1,7 @@
 resource "conductorone_bundle_automation" "my_bundleautomation" {
+  bundle_automation_rule_cel = {
+    expression = "...my_expression..."
+  }
   bundle_automation_rule_entitlement = {
     entitlement_refs = [
       {

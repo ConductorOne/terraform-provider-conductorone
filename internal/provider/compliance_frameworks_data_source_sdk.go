@@ -31,6 +31,8 @@ func (r *ComplianceFrameworksDataSourceModel) RefreshFromSharedListComplianceFra
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

@@ -2,6 +2,6 @@
 
 package shared
 
-// The RequestSchemaServiceRemoveEntitlementBindingResponse message.
+// RequestSchemaServiceRemoveEntitlementBindingResponse - The response message for removing a single entitlement binding.
 type RequestSchemaServiceRemoveEntitlementBindingResponse struct {
 }

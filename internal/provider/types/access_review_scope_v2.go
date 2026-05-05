@@ -8,8 +8,8 @@ type AccessReviewScopeV2 struct {
 	AllAccountsScope             *AllAccountsScope             `tfsdk:"all_accounts_scope"`
 	AllGrantsScope               *AllGrantsScope               `tfsdk:"all_grants_scope"`
 	AllUsersScope                *AllUsersScope                `tfsdk:"all_users_scope"`
-	ApplicationAccessScope       *ApplicationAccessScope       `tfsdk:"application_access_scope"`
 	AppSelectionCriteriaScope    *AppSelectionCriteriaScope    `tfsdk:"app_selection_criteria_scope"`
+	ApplicationAccessScope       *ApplicationAccessScope       `tfsdk:"application_access_scope"`
 	CelExpressionScope           *CelExpressionScope           `tfsdk:"cel_expression_scope"`
 	CelExpressionScope1          *CelExpressionScope           `tfsdk:"cel_expression_scope1"`
 	GrantsByCriteriaScope        *GrantsByCriteriaScope        `tfsdk:"grants_by_criteria_scope"`

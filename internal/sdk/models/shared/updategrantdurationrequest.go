@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// The UpdateGrantDurationRequest message.
+// UpdateGrantDurationRequest - The request message for updating the duration of an existing grant.
 type UpdateGrantDurationRequest struct {
 	NewDeprovisionAt *time.Time `json:"newDeprovisionAt,omitempty"`
 }

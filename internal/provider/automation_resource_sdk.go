@@ -58,6 +58,69 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						automationSteps.AccountLifecycleAction.ConnectorRef.ID = types.StringPointerValue(automationStepsItem.AccountLifecycleAction.ConnectorRef.ID)
 					}
 				}
+				if automationStepsItem.AutomationsTaskAction == nil {
+					automationSteps.AutomationsTaskAction = nil
+				} else {
+					automationSteps.AutomationsTaskAction = &tfTypes.AutomationsTaskAction{}
+					if automationStepsItem.AutomationsTaskAction.CloseAction == nil {
+						automationSteps.AutomationsTaskAction.CloseAction = nil
+					} else {
+						automationSteps.AutomationsTaskAction.CloseAction = &tfTypes.CloseAction{}
+						automationSteps.AutomationsTaskAction.CloseAction.UserIDCel = types.StringPointerValue(automationStepsItem.AutomationsTaskAction.CloseAction.UserIDCel)
+						if automationStepsItem.AutomationsTaskAction.CloseAction.UserRef == nil {
+							automationSteps.AutomationsTaskAction.CloseAction.UserRef = nil
+						} else {
+							automationSteps.AutomationsTaskAction.CloseAction.UserRef = &tfTypes.UserRef{}
+							automationSteps.AutomationsTaskAction.CloseAction.UserRef.ID = types.StringPointerValue(automationStepsItem.AutomationsTaskAction.CloseAction.UserRef.ID)
+						}
+						automationSteps.AutomationsTaskAction.CloseAction.UseSubjectUser = types.BoolPointerValue(automationStepsItem.AutomationsTaskAction.CloseAction.UseSubjectUser)
+					}
+					if automationStepsItem.AutomationsTaskAction.ReassignAction == nil {
+						automationSteps.AutomationsTaskAction.ReassignAction = nil
+					} else {
+						automationSteps.AutomationsTaskAction.ReassignAction = &tfTypes.ReassignAction{}
+						automationSteps.AutomationsTaskAction.ReassignAction.AssigneeUserIDCel = types.StringPointerValue(automationStepsItem.AutomationsTaskAction.ReassignAction.AssigneeUserIDCel)
+						automationSteps.AutomationsTaskAction.ReassignAction.SubjectUserIDCel = types.StringPointerValue(automationStepsItem.AutomationsTaskAction.ReassignAction.SubjectUserIDCel)
+						if automationStepsItem.AutomationsTaskAction.ReassignAction.UserRef == nil {
+							automationSteps.AutomationsTaskAction.ReassignAction.UserRef = nil
+						} else {
+							automationSteps.AutomationsTaskAction.ReassignAction.UserRef = &tfTypes.UserRef{}
+							automationSteps.AutomationsTaskAction.ReassignAction.UserRef.ID = types.StringPointerValue(automationStepsItem.AutomationsTaskAction.ReassignAction.UserRef.ID)
+						}
+						if automationStepsItem.AutomationsTaskAction.ReassignAction.UserRef1 == nil {
+							automationSteps.AutomationsTaskAction.ReassignAction.UserRef1 = nil
+						} else {
+							automationSteps.AutomationsTaskAction.ReassignAction.UserRef1 = &tfTypes.UserRef{}
+							automationSteps.AutomationsTaskAction.ReassignAction.UserRef1.ID = types.StringPointerValue(automationStepsItem.AutomationsTaskAction.ReassignAction.UserRef1.ID)
+						}
+						automationSteps.AutomationsTaskAction.ReassignAction.UseSubjectUser = types.BoolPointerValue(automationStepsItem.AutomationsTaskAction.ReassignAction.UseSubjectUser)
+					}
+					if automationStepsItem.AutomationsTaskAction.TaskTypes != nil {
+						automationSteps.AutomationsTaskAction.TaskTypes = make([]types.String, 0, len(automationStepsItem.AutomationsTaskAction.TaskTypes))
+						for _, v := range automationStepsItem.AutomationsTaskAction.TaskTypes {
+							automationSteps.AutomationsTaskAction.TaskTypes = append(automationSteps.AutomationsTaskAction.TaskTypes, types.StringValue(string(v)))
+						}
+					} else {
+						automationSteps.AutomationsTaskAction.TaskTypes = nil
+					}
+					if automationStepsItem.AutomationsTaskAction.TaskUserRelation != nil {
+						automationSteps.AutomationsTaskAction.TaskUserRelation = types.StringValue(string(*automationStepsItem.AutomationsTaskAction.TaskUserRelation))
+					} else {
+						automationSteps.AutomationsTaskAction.TaskUserRelation = types.StringNull()
+					}
+				}
+				if automationStepsItem.AutomationsWebhook == nil {
+					automationSteps.AutomationsWebhook = nil
+				} else {
+					automationSteps.AutomationsWebhook = &tfTypes.AutomationsWebhook{}
+					if automationStepsItem.AutomationsWebhook.Payload == nil {
+						automationSteps.AutomationsWebhook.Payload = nil
+					} else {
+						automationSteps.AutomationsWebhook.Payload = &tfTypes.Payload{}
+					}
+					automationSteps.AutomationsWebhook.WebhookID = types.StringPointerValue(automationStepsItem.AutomationsWebhook.WebhookID)
+					automationSteps.AutomationsWebhook.WebhookIDCel = types.StringPointerValue(automationStepsItem.AutomationsWebhook.WebhookIDCel)
+				}
 				if automationStepsItem.CallFunction == nil {
 					automationSteps.CallFunction = nil
 				} else {
@@ -100,6 +163,7 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						automationSteps.ConnectorCreateAccount.ConnectorRef.AppID = types.StringPointerValue(automationStepsItem.ConnectorCreateAccount.ConnectorRef.AppID)
 						automationSteps.ConnectorCreateAccount.ConnectorRef.ID = types.StringPointerValue(automationStepsItem.ConnectorCreateAccount.ConnectorRef.ID)
 					}
+					automationSteps.ConnectorCreateAccount.PasswordCel = types.StringPointerValue(automationStepsItem.ConnectorCreateAccount.PasswordCel)
 					automationSteps.ConnectorCreateAccount.UserIDCel = types.StringPointerValue(automationStepsItem.ConnectorCreateAccount.UserIDCel)
 					if automationStepsItem.ConnectorCreateAccount.UserProperties == nil {
 						automationSteps.ConnectorCreateAccount.UserProperties = nil
@@ -129,6 +193,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.CreateAccessReview.UserRefs = append(automationSteps.CreateAccessReview.UserRefs, userRefs)
 						}
+					} else {
+						automationSteps.CreateAccessReview.UserRefs = nil
 					}
 					automationSteps.CreateAccessReview.UseSubjectUser = types.BoolPointerValue(automationStepsItem.CreateAccessReview.UseSubjectUser)
 				}
@@ -147,6 +213,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.CreateRevokeTasks.AppEntitlementRefs = append(automationSteps.CreateRevokeTasks.AppEntitlementRefs, appEntitlementRefs)
 						}
+					} else {
+						automationSteps.CreateRevokeTasks.AppEntitlementRefs = nil
 					}
 					automationSteps.CreateRevokeTasks.AppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasks.AppEntitlementRefsCel)
 					if automationStepsItem.CreateRevokeTasks.ExcludedAppEntitlementRefs != nil {
@@ -160,6 +228,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs = append(automationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs)
 						}
+					} else {
+						automationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs = nil
 					}
 					automationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasks.ExcludedAppEntitlementRefsCel)
 					automationSteps.CreateRevokeTasks.RevokeAll = types.BoolPointerValue(automationStepsItem.CreateRevokeTasks.RevokeAll)
@@ -185,24 +255,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
 					if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionList == nil {
@@ -220,6 +298,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								automationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs1)
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
 					if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionListCel == nil {
@@ -247,24 +327,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = nil
 						}
 						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds != nil {
 							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds))
 							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds {
 								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = nil
 						}
 					}
 					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionList == nil {
@@ -282,6 +370,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								automationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs1)
 							}
+						} else {
+							automationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = nil
 						}
 					}
 					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionListCel == nil {
@@ -315,12 +405,28 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.EvaluateExpressions.Expressions = append(automationSteps.EvaluateExpressions.Expressions, expressions)
 						}
+					} else {
+						automationSteps.EvaluateExpressions.Expressions = nil
 					}
 				}
 				if automationStepsItem.GeneratePassword == nil {
 					automationSteps.GeneratePassword = nil
 				} else {
 					automationSteps.GeneratePassword = &tfTypes.GeneratePassword{}
+					if automationStepsItem.GeneratePassword.GeneratePasswordPolicy == nil {
+						automationSteps.GeneratePassword.GeneratePasswordPolicy = nil
+					} else {
+						automationSteps.GeneratePassword.GeneratePasswordPolicy = &tfTypes.GeneratePasswordPolicy{}
+						automationSteps.GeneratePassword.GeneratePasswordPolicy.CustomCharacters = types.StringPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.CustomCharacters)
+						automationSteps.GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters = types.StringPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters)
+						automationSteps.GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount))
+						automationSteps.GeneratePassword.GeneratePasswordPolicy.MinCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.MinCharacterCount))
+						automationSteps.GeneratePassword.GeneratePasswordPolicy.NoRestrictions = types.BoolPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.NoRestrictions)
+						automationSteps.GeneratePassword.GeneratePasswordPolicy.RequireLowercase = types.BoolPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireLowercase)
+						automationSteps.GeneratePassword.GeneratePasswordPolicy.RequireNumbers = types.BoolPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireNumbers)
+						automationSteps.GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters = types.BoolPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters)
+						automationSteps.GeneratePassword.GeneratePasswordPolicy.RequireUppercase = types.BoolPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireUppercase)
+					}
 					automationSteps.GeneratePassword.PasswordPolicyID = types.StringPointerValue(automationStepsItem.GeneratePassword.PasswordPolicyID)
 				}
 				if automationStepsItem.GrantEntitlements == nil {
@@ -336,18 +442,24 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds {
 								automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = nil
 						}
 						if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
 							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
 								automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
 						if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
 							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds))
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds {
 								automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
 					if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionList == nil {
@@ -365,6 +477,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								automationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs2)
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
 					if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionListCel == nil {
@@ -387,18 +501,24 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds {
 								automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = nil
 						}
 						if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds))
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds {
 								automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 						}
 						if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds != nil {
 							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds))
 							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds {
 								automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = nil
 						}
 					}
 					if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionList == nil {
@@ -416,6 +536,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								automationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs2)
 							}
+						} else {
+							automationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = nil
 						}
 					}
 					if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionListCel == nil {
@@ -480,6 +602,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					automationSteps.SendEmail = &tfTypes.SendEmail{}
 					automationSteps.SendEmail.Body = types.StringPointerValue(automationStepsItem.SendEmail.Body)
+					automationSteps.SendEmail.Email = types.StringPointerValue(automationStepsItem.SendEmail.Email)
+					automationSteps.SendEmail.EmailCel = types.StringPointerValue(automationStepsItem.SendEmail.EmailCel)
 					automationSteps.SendEmail.Subject = types.StringPointerValue(automationStepsItem.SendEmail.Subject)
 					automationSteps.SendEmail.Title = types.StringPointerValue(automationStepsItem.SendEmail.Title)
 					automationSteps.SendEmail.UserIdsCel = types.StringPointerValue(automationStepsItem.SendEmail.UserIdsCel)
@@ -493,6 +617,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							automationSteps.SendEmail.UserRefs = append(automationSteps.SendEmail.UserRefs, userRefs1)
 						}
+					} else {
+						automationSteps.SendEmail.UserRefs = nil
 					}
 					automationSteps.SendEmail.UseSubjectUser = types.BoolPointerValue(automationStepsItem.SendEmail.UseSubjectUser)
 				}
@@ -503,6 +629,21 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					automationSteps.SendSlackMessage.Body = types.StringPointerValue(automationStepsItem.SendSlackMessage.Body)
 					automationSteps.SendSlackMessage.ChannelName = types.StringPointerValue(automationStepsItem.SendSlackMessage.ChannelName)
 					automationSteps.SendSlackMessage.ChannelNameCel = types.StringPointerValue(automationStepsItem.SendSlackMessage.ChannelNameCel)
+					automationSteps.SendSlackMessage.UserIdsCel = types.StringPointerValue(automationStepsItem.SendSlackMessage.UserIdsCel)
+					if automationStepsItem.SendSlackMessage.UserRefs != nil {
+						automationSteps.SendSlackMessage.UserRefs = []tfTypes.UserRef{}
+
+						for _, userRefsItem2 := range automationStepsItem.SendSlackMessage.UserRefs {
+							var userRefs2 tfTypes.UserRef
+
+							userRefs2.ID = types.StringPointerValue(userRefsItem2.ID)
+
+							automationSteps.SendSlackMessage.UserRefs = append(automationSteps.SendSlackMessage.UserRefs, userRefs2)
+						}
+					} else {
+						automationSteps.SendSlackMessage.UserRefs = nil
+					}
+					automationSteps.SendSlackMessage.UseSubjectUser = types.BoolPointerValue(automationStepsItem.SendSlackMessage.UseSubjectUser)
 				}
 				if automationStepsItem.SetCredential == nil {
 					automationSteps.SetCredential = nil
@@ -521,53 +662,27 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				automationSteps.SkipIfTrueCel = types.StringPointerValue(automationStepsItem.SkipIfTrueCel)
 				automationSteps.StepDisplayName = types.StringPointerValue(automationStepsItem.StepDisplayName)
 				automationSteps.StepName = types.StringPointerValue(automationStepsItem.StepName)
-				if automationStepsItem.TaskAction == nil {
-					automationSteps.TaskAction = nil
+				if automationStepsItem.StoreCredential == nil {
+					automationSteps.StoreCredential = nil
 				} else {
-					automationSteps.TaskAction = &tfTypes.TaskAction{}
-					if automationStepsItem.TaskAction.CloseAction == nil {
-						automationSteps.TaskAction.CloseAction = nil
+					automationSteps.StoreCredential = &tfTypes.StoreCredential{}
+					automationSteps.StoreCredential.AppIDCel = types.StringPointerValue(automationStepsItem.StoreCredential.AppIDCel)
+					if automationStepsItem.StoreCredential.AuthType != nil {
+						automationSteps.StoreCredential.AuthType = types.StringValue(string(*automationStepsItem.StoreCredential.AuthType))
 					} else {
-						automationSteps.TaskAction.CloseAction = &tfTypes.CloseAction{}
-						automationSteps.TaskAction.CloseAction.UserIDCel = types.StringPointerValue(automationStepsItem.TaskAction.CloseAction.UserIDCel)
-						if automationStepsItem.TaskAction.CloseAction.UserRef == nil {
-							automationSteps.TaskAction.CloseAction.UserRef = nil
-						} else {
-							automationSteps.TaskAction.CloseAction.UserRef = &tfTypes.UserRef{}
-							automationSteps.TaskAction.CloseAction.UserRef.ID = types.StringPointerValue(automationStepsItem.TaskAction.CloseAction.UserRef.ID)
-						}
-						automationSteps.TaskAction.CloseAction.UseSubjectUser = types.BoolPointerValue(automationStepsItem.TaskAction.CloseAction.UseSubjectUser)
+						automationSteps.StoreCredential.AuthType = types.StringNull()
 					}
-					if automationStepsItem.TaskAction.ReassignAction == nil {
-						automationSteps.TaskAction.ReassignAction = nil
+					automationSteps.StoreCredential.CredentialCel = types.StringPointerValue(automationStepsItem.StoreCredential.CredentialCel)
+					automationSteps.StoreCredential.Expiry = types.StringPointerValue(automationStepsItem.StoreCredential.Expiry)
+					automationSteps.StoreCredential.LabelCel = types.StringPointerValue(automationStepsItem.StoreCredential.LabelCel)
+					automationSteps.StoreCredential.MaxViews = types.Int64PointerValue(automationStepsItem.StoreCredential.MaxViews)
+					automationSteps.StoreCredential.RecipientCel = types.StringPointerValue(automationStepsItem.StoreCredential.RecipientCel)
+					automationSteps.StoreCredential.RecipientEmailCel = types.StringPointerValue(automationStepsItem.StoreCredential.RecipientEmailCel)
+					automationSteps.StoreCredential.TTL = types.StringPointerValue(automationStepsItem.StoreCredential.TTL)
+					if automationStepsItem.StoreCredential.VaultType != nil {
+						automationSteps.StoreCredential.VaultType = types.StringValue(string(*automationStepsItem.StoreCredential.VaultType))
 					} else {
-						automationSteps.TaskAction.ReassignAction = &tfTypes.ReassignAction{}
-						automationSteps.TaskAction.ReassignAction.AssigneeUserIDCel = types.StringPointerValue(automationStepsItem.TaskAction.ReassignAction.AssigneeUserIDCel)
-						automationSteps.TaskAction.ReassignAction.SubjectUserIDCel = types.StringPointerValue(automationStepsItem.TaskAction.ReassignAction.SubjectUserIDCel)
-						if automationStepsItem.TaskAction.ReassignAction.UserRef == nil {
-							automationSteps.TaskAction.ReassignAction.UserRef = nil
-						} else {
-							automationSteps.TaskAction.ReassignAction.UserRef = &tfTypes.UserRef{}
-							automationSteps.TaskAction.ReassignAction.UserRef.ID = types.StringPointerValue(automationStepsItem.TaskAction.ReassignAction.UserRef.ID)
-						}
-						if automationStepsItem.TaskAction.ReassignAction.UserRef1 == nil {
-							automationSteps.TaskAction.ReassignAction.UserRef1 = nil
-						} else {
-							automationSteps.TaskAction.ReassignAction.UserRef1 = &tfTypes.UserRef{}
-							automationSteps.TaskAction.ReassignAction.UserRef1.ID = types.StringPointerValue(automationStepsItem.TaskAction.ReassignAction.UserRef1.ID)
-						}
-						automationSteps.TaskAction.ReassignAction.UseSubjectUser = types.BoolPointerValue(automationStepsItem.TaskAction.ReassignAction.UseSubjectUser)
-					}
-					if automationStepsItem.TaskAction.TaskTypes != nil {
-						automationSteps.TaskAction.TaskTypes = make([]types.String, 0, len(automationStepsItem.TaskAction.TaskTypes))
-						for _, v := range automationStepsItem.TaskAction.TaskTypes {
-							automationSteps.TaskAction.TaskTypes = append(automationSteps.TaskAction.TaskTypes, types.StringValue(string(v)))
-						}
-					}
-					if automationStepsItem.TaskAction.TaskUserRelation != nil {
-						automationSteps.TaskAction.TaskUserRelation = types.StringValue(string(*automationStepsItem.TaskAction.TaskUserRelation))
-					} else {
-						automationSteps.TaskAction.TaskUserRelation = types.StringNull()
+						automationSteps.StoreCredential.VaultType = types.StringNull()
 					}
 				}
 				if automationStepsItem.UnenrollFromAllAccessProfiles == nil {
@@ -579,19 +694,23 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						for _, v := range automationStepsItem.UnenrollFromAllAccessProfiles.CatalogIds {
 							automationSteps.UnenrollFromAllAccessProfiles.CatalogIds = append(automationSteps.UnenrollFromAllAccessProfiles.CatalogIds, types.StringValue(v))
 						}
+					} else {
+						automationSteps.UnenrollFromAllAccessProfiles.CatalogIds = nil
 					}
 					automationSteps.UnenrollFromAllAccessProfiles.CatalogIdsCel = types.StringPointerValue(automationStepsItem.UnenrollFromAllAccessProfiles.CatalogIdsCel)
 					automationSteps.UnenrollFromAllAccessProfiles.UserIdsCel = types.StringPointerValue(automationStepsItem.UnenrollFromAllAccessProfiles.UserIdsCel)
 					if automationStepsItem.UnenrollFromAllAccessProfiles.UserRefs != nil {
 						automationSteps.UnenrollFromAllAccessProfiles.UserRefs = []tfTypes.UserRef{}
 
-						for _, userRefsItem2 := range automationStepsItem.UnenrollFromAllAccessProfiles.UserRefs {
-							var userRefs2 tfTypes.UserRef
+						for _, userRefsItem3 := range automationStepsItem.UnenrollFromAllAccessProfiles.UserRefs {
+							var userRefs3 tfTypes.UserRef
 
-							userRefs2.ID = types.StringPointerValue(userRefsItem2.ID)
+							userRefs3.ID = types.StringPointerValue(userRefsItem3.ID)
 
-							automationSteps.UnenrollFromAllAccessProfiles.UserRefs = append(automationSteps.UnenrollFromAllAccessProfiles.UserRefs, userRefs2)
+							automationSteps.UnenrollFromAllAccessProfiles.UserRefs = append(automationSteps.UnenrollFromAllAccessProfiles.UserRefs, userRefs3)
 						}
+					} else {
+						automationSteps.UnenrollFromAllAccessProfiles.UserRefs = nil
 					}
 					automationSteps.UnenrollFromAllAccessProfiles.UseSubjectUser = types.BoolPointerValue(automationStepsItem.UnenrollFromAllAccessProfiles.UseSubjectUser)
 				}
@@ -620,21 +739,11 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					automationSteps.WaitForDuration = &tfTypes.WaitForDuration{}
 					automationSteps.WaitForDuration.Duration = types.StringPointerValue(automationStepsItem.WaitForDuration.Duration)
 				}
-				if automationStepsItem.Webhook == nil {
-					automationSteps.Webhook = nil
-				} else {
-					automationSteps.Webhook = &tfTypes.Webhook{}
-					if automationStepsItem.Webhook.Payload == nil {
-						automationSteps.Webhook.Payload = nil
-					} else {
-						automationSteps.Webhook.Payload = &tfTypes.Payload{}
-					}
-					automationSteps.Webhook.WebhookID = types.StringPointerValue(automationStepsItem.Webhook.WebhookID)
-					automationSteps.Webhook.WebhookIDCel = types.StringPointerValue(automationStepsItem.Webhook.WebhookIDCel)
-				}
 
 				r.AutomationSteps = append(r.AutomationSteps, automationSteps)
 			}
+		} else {
+			r.AutomationSteps = nil
 		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CurrentVersion = types.StringPointerValue(resp.CurrentVersion)
@@ -674,6 +783,69 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						draftAutomationSteps.AccountLifecycleAction.ConnectorRef.AppID = types.StringPointerValue(draftAutomationStepsItem.AccountLifecycleAction.ConnectorRef.AppID)
 						draftAutomationSteps.AccountLifecycleAction.ConnectorRef.ID = types.StringPointerValue(draftAutomationStepsItem.AccountLifecycleAction.ConnectorRef.ID)
 					}
+				}
+				if draftAutomationStepsItem.AutomationsTaskAction == nil {
+					draftAutomationSteps.AutomationsTaskAction = nil
+				} else {
+					draftAutomationSteps.AutomationsTaskAction = &tfTypes.AutomationsTaskAction{}
+					if draftAutomationStepsItem.AutomationsTaskAction.CloseAction == nil {
+						draftAutomationSteps.AutomationsTaskAction.CloseAction = nil
+					} else {
+						draftAutomationSteps.AutomationsTaskAction.CloseAction = &tfTypes.CloseAction{}
+						draftAutomationSteps.AutomationsTaskAction.CloseAction.UserIDCel = types.StringPointerValue(draftAutomationStepsItem.AutomationsTaskAction.CloseAction.UserIDCel)
+						if draftAutomationStepsItem.AutomationsTaskAction.CloseAction.UserRef == nil {
+							draftAutomationSteps.AutomationsTaskAction.CloseAction.UserRef = nil
+						} else {
+							draftAutomationSteps.AutomationsTaskAction.CloseAction.UserRef = &tfTypes.UserRef{}
+							draftAutomationSteps.AutomationsTaskAction.CloseAction.UserRef.ID = types.StringPointerValue(draftAutomationStepsItem.AutomationsTaskAction.CloseAction.UserRef.ID)
+						}
+						draftAutomationSteps.AutomationsTaskAction.CloseAction.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.AutomationsTaskAction.CloseAction.UseSubjectUser)
+					}
+					if draftAutomationStepsItem.AutomationsTaskAction.ReassignAction == nil {
+						draftAutomationSteps.AutomationsTaskAction.ReassignAction = nil
+					} else {
+						draftAutomationSteps.AutomationsTaskAction.ReassignAction = &tfTypes.ReassignAction{}
+						draftAutomationSteps.AutomationsTaskAction.ReassignAction.AssigneeUserIDCel = types.StringPointerValue(draftAutomationStepsItem.AutomationsTaskAction.ReassignAction.AssigneeUserIDCel)
+						draftAutomationSteps.AutomationsTaskAction.ReassignAction.SubjectUserIDCel = types.StringPointerValue(draftAutomationStepsItem.AutomationsTaskAction.ReassignAction.SubjectUserIDCel)
+						if draftAutomationStepsItem.AutomationsTaskAction.ReassignAction.UserRef == nil {
+							draftAutomationSteps.AutomationsTaskAction.ReassignAction.UserRef = nil
+						} else {
+							draftAutomationSteps.AutomationsTaskAction.ReassignAction.UserRef = &tfTypes.UserRef{}
+							draftAutomationSteps.AutomationsTaskAction.ReassignAction.UserRef.ID = types.StringPointerValue(draftAutomationStepsItem.AutomationsTaskAction.ReassignAction.UserRef.ID)
+						}
+						if draftAutomationStepsItem.AutomationsTaskAction.ReassignAction.UserRef1 == nil {
+							draftAutomationSteps.AutomationsTaskAction.ReassignAction.UserRef1 = nil
+						} else {
+							draftAutomationSteps.AutomationsTaskAction.ReassignAction.UserRef1 = &tfTypes.UserRef{}
+							draftAutomationSteps.AutomationsTaskAction.ReassignAction.UserRef1.ID = types.StringPointerValue(draftAutomationStepsItem.AutomationsTaskAction.ReassignAction.UserRef1.ID)
+						}
+						draftAutomationSteps.AutomationsTaskAction.ReassignAction.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.AutomationsTaskAction.ReassignAction.UseSubjectUser)
+					}
+					if draftAutomationStepsItem.AutomationsTaskAction.TaskTypes != nil {
+						draftAutomationSteps.AutomationsTaskAction.TaskTypes = make([]types.String, 0, len(draftAutomationStepsItem.AutomationsTaskAction.TaskTypes))
+						for _, v := range draftAutomationStepsItem.AutomationsTaskAction.TaskTypes {
+							draftAutomationSteps.AutomationsTaskAction.TaskTypes = append(draftAutomationSteps.AutomationsTaskAction.TaskTypes, types.StringValue(string(v)))
+						}
+					} else {
+						draftAutomationSteps.AutomationsTaskAction.TaskTypes = nil
+					}
+					if draftAutomationStepsItem.AutomationsTaskAction.TaskUserRelation != nil {
+						draftAutomationSteps.AutomationsTaskAction.TaskUserRelation = types.StringValue(string(*draftAutomationStepsItem.AutomationsTaskAction.TaskUserRelation))
+					} else {
+						draftAutomationSteps.AutomationsTaskAction.TaskUserRelation = types.StringNull()
+					}
+				}
+				if draftAutomationStepsItem.AutomationsWebhook == nil {
+					draftAutomationSteps.AutomationsWebhook = nil
+				} else {
+					draftAutomationSteps.AutomationsWebhook = &tfTypes.AutomationsWebhook{}
+					if draftAutomationStepsItem.AutomationsWebhook.Payload == nil {
+						draftAutomationSteps.AutomationsWebhook.Payload = nil
+					} else {
+						draftAutomationSteps.AutomationsWebhook.Payload = &tfTypes.Payload{}
+					}
+					draftAutomationSteps.AutomationsWebhook.WebhookID = types.StringPointerValue(draftAutomationStepsItem.AutomationsWebhook.WebhookID)
+					draftAutomationSteps.AutomationsWebhook.WebhookIDCel = types.StringPointerValue(draftAutomationStepsItem.AutomationsWebhook.WebhookIDCel)
 				}
 				if draftAutomationStepsItem.CallFunction == nil {
 					draftAutomationSteps.CallFunction = nil
@@ -717,6 +889,7 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						draftAutomationSteps.ConnectorCreateAccount.ConnectorRef.AppID = types.StringPointerValue(draftAutomationStepsItem.ConnectorCreateAccount.ConnectorRef.AppID)
 						draftAutomationSteps.ConnectorCreateAccount.ConnectorRef.ID = types.StringPointerValue(draftAutomationStepsItem.ConnectorCreateAccount.ConnectorRef.ID)
 					}
+					draftAutomationSteps.ConnectorCreateAccount.PasswordCel = types.StringPointerValue(draftAutomationStepsItem.ConnectorCreateAccount.PasswordCel)
 					draftAutomationSteps.ConnectorCreateAccount.UserIDCel = types.StringPointerValue(draftAutomationStepsItem.ConnectorCreateAccount.UserIDCel)
 					if draftAutomationStepsItem.ConnectorCreateAccount.UserProperties == nil {
 						draftAutomationSteps.ConnectorCreateAccount.UserProperties = nil
@@ -739,13 +912,15 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					if draftAutomationStepsItem.CreateAccessReview.UserRefs != nil {
 						draftAutomationSteps.CreateAccessReview.UserRefs = []tfTypes.UserRef{}
 
-						for _, userRefsItem3 := range draftAutomationStepsItem.CreateAccessReview.UserRefs {
-							var userRefs3 tfTypes.UserRef
+						for _, userRefsItem4 := range draftAutomationStepsItem.CreateAccessReview.UserRefs {
+							var userRefs4 tfTypes.UserRef
 
-							userRefs3.ID = types.StringPointerValue(userRefsItem3.ID)
+							userRefs4.ID = types.StringPointerValue(userRefsItem4.ID)
 
-							draftAutomationSteps.CreateAccessReview.UserRefs = append(draftAutomationSteps.CreateAccessReview.UserRefs, userRefs3)
+							draftAutomationSteps.CreateAccessReview.UserRefs = append(draftAutomationSteps.CreateAccessReview.UserRefs, userRefs4)
 						}
+					} else {
+						draftAutomationSteps.CreateAccessReview.UserRefs = nil
 					}
 					draftAutomationSteps.CreateAccessReview.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.CreateAccessReview.UseSubjectUser)
 				}
@@ -764,6 +939,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftAutomationSteps.CreateRevokeTasks.AppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasks.AppEntitlementRefs, appEntitlementRefs3)
 						}
+					} else {
+						draftAutomationSteps.CreateRevokeTasks.AppEntitlementRefs = nil
 					}
 					draftAutomationSteps.CreateRevokeTasks.AppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasks.AppEntitlementRefsCel)
 					if draftAutomationStepsItem.CreateRevokeTasks.ExcludedAppEntitlementRefs != nil {
@@ -777,6 +954,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftAutomationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs3)
 						}
+					} else {
+						draftAutomationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefs = nil
 					}
 					draftAutomationSteps.CreateRevokeTasks.ExcludedAppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasks.ExcludedAppEntitlementRefsCel)
 					draftAutomationSteps.CreateRevokeTasks.RevokeAll = types.BoolPointerValue(draftAutomationStepsItem.CreateRevokeTasks.RevokeAll)
@@ -802,24 +981,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
 					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionList == nil {
@@ -837,6 +1024,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs4)
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
 					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionListCel == nil {
@@ -864,24 +1053,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = nil
 						}
 						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds != nil {
 							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds))
 							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds {
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = nil
 						}
 					}
 					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionList == nil {
@@ -899,6 +1096,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs4)
 							}
+						} else {
+							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = nil
 						}
 					}
 					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionListCel == nil {
@@ -932,12 +1131,28 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftAutomationSteps.EvaluateExpressions.Expressions = append(draftAutomationSteps.EvaluateExpressions.Expressions, expressions1)
 						}
+					} else {
+						draftAutomationSteps.EvaluateExpressions.Expressions = nil
 					}
 				}
 				if draftAutomationStepsItem.GeneratePassword == nil {
 					draftAutomationSteps.GeneratePassword = nil
 				} else {
 					draftAutomationSteps.GeneratePassword = &tfTypes.GeneratePassword{}
+					if draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy == nil {
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy = nil
+					} else {
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy = &tfTypes.GeneratePasswordPolicy{}
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.CustomCharacters = types.StringPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.CustomCharacters)
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters = types.StringPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters)
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount))
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.MinCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.MinCharacterCount))
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.NoRestrictions = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.NoRestrictions)
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.RequireLowercase = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireLowercase)
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.RequireNumbers = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireNumbers)
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters)
+						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.RequireUppercase = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireUppercase)
+					}
 					draftAutomationSteps.GeneratePassword.PasswordPolicyID = types.StringPointerValue(draftAutomationStepsItem.GeneratePassword.PasswordPolicyID)
 				}
 				if draftAutomationStepsItem.GrantEntitlements == nil {
@@ -953,18 +1168,24 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = nil
 						}
 						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
 							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
 						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
 							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds))
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
 					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionList == nil {
@@ -982,6 +1203,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs5)
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
 					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionListCel == nil {
@@ -1004,18 +1227,24 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = nil
 						}
 						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds))
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 						}
 						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds != nil {
 							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds))
 							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds {
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = nil
 						}
 					}
 					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionList == nil {
@@ -1033,6 +1262,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs5)
 							}
+						} else {
+							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = nil
 						}
 					}
 					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionListCel == nil {
@@ -1097,19 +1328,23 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					draftAutomationSteps.SendEmail = &tfTypes.SendEmail{}
 					draftAutomationSteps.SendEmail.Body = types.StringPointerValue(draftAutomationStepsItem.SendEmail.Body)
+					draftAutomationSteps.SendEmail.Email = types.StringPointerValue(draftAutomationStepsItem.SendEmail.Email)
+					draftAutomationSteps.SendEmail.EmailCel = types.StringPointerValue(draftAutomationStepsItem.SendEmail.EmailCel)
 					draftAutomationSteps.SendEmail.Subject = types.StringPointerValue(draftAutomationStepsItem.SendEmail.Subject)
 					draftAutomationSteps.SendEmail.Title = types.StringPointerValue(draftAutomationStepsItem.SendEmail.Title)
 					draftAutomationSteps.SendEmail.UserIdsCel = types.StringPointerValue(draftAutomationStepsItem.SendEmail.UserIdsCel)
 					if draftAutomationStepsItem.SendEmail.UserRefs != nil {
 						draftAutomationSteps.SendEmail.UserRefs = []tfTypes.UserRef{}
 
-						for _, userRefsItem4 := range draftAutomationStepsItem.SendEmail.UserRefs {
-							var userRefs4 tfTypes.UserRef
+						for _, userRefsItem5 := range draftAutomationStepsItem.SendEmail.UserRefs {
+							var userRefs5 tfTypes.UserRef
 
-							userRefs4.ID = types.StringPointerValue(userRefsItem4.ID)
+							userRefs5.ID = types.StringPointerValue(userRefsItem5.ID)
 
-							draftAutomationSteps.SendEmail.UserRefs = append(draftAutomationSteps.SendEmail.UserRefs, userRefs4)
+							draftAutomationSteps.SendEmail.UserRefs = append(draftAutomationSteps.SendEmail.UserRefs, userRefs5)
 						}
+					} else {
+						draftAutomationSteps.SendEmail.UserRefs = nil
 					}
 					draftAutomationSteps.SendEmail.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.SendEmail.UseSubjectUser)
 				}
@@ -1120,6 +1355,21 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					draftAutomationSteps.SendSlackMessage.Body = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.Body)
 					draftAutomationSteps.SendSlackMessage.ChannelName = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.ChannelName)
 					draftAutomationSteps.SendSlackMessage.ChannelNameCel = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.ChannelNameCel)
+					draftAutomationSteps.SendSlackMessage.UserIdsCel = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.UserIdsCel)
+					if draftAutomationStepsItem.SendSlackMessage.UserRefs != nil {
+						draftAutomationSteps.SendSlackMessage.UserRefs = []tfTypes.UserRef{}
+
+						for _, userRefsItem6 := range draftAutomationStepsItem.SendSlackMessage.UserRefs {
+							var userRefs6 tfTypes.UserRef
+
+							userRefs6.ID = types.StringPointerValue(userRefsItem6.ID)
+
+							draftAutomationSteps.SendSlackMessage.UserRefs = append(draftAutomationSteps.SendSlackMessage.UserRefs, userRefs6)
+						}
+					} else {
+						draftAutomationSteps.SendSlackMessage.UserRefs = nil
+					}
+					draftAutomationSteps.SendSlackMessage.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.SendSlackMessage.UseSubjectUser)
 				}
 				if draftAutomationStepsItem.SetCredential == nil {
 					draftAutomationSteps.SetCredential = nil
@@ -1138,53 +1388,27 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				draftAutomationSteps.SkipIfTrueCel = types.StringPointerValue(draftAutomationStepsItem.SkipIfTrueCel)
 				draftAutomationSteps.StepDisplayName = types.StringPointerValue(draftAutomationStepsItem.StepDisplayName)
 				draftAutomationSteps.StepName = types.StringPointerValue(draftAutomationStepsItem.StepName)
-				if draftAutomationStepsItem.TaskAction == nil {
-					draftAutomationSteps.TaskAction = nil
+				if draftAutomationStepsItem.StoreCredential == nil {
+					draftAutomationSteps.StoreCredential = nil
 				} else {
-					draftAutomationSteps.TaskAction = &tfTypes.TaskAction{}
-					if draftAutomationStepsItem.TaskAction.CloseAction == nil {
-						draftAutomationSteps.TaskAction.CloseAction = nil
+					draftAutomationSteps.StoreCredential = &tfTypes.StoreCredential{}
+					draftAutomationSteps.StoreCredential.AppIDCel = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.AppIDCel)
+					if draftAutomationStepsItem.StoreCredential.AuthType != nil {
+						draftAutomationSteps.StoreCredential.AuthType = types.StringValue(string(*draftAutomationStepsItem.StoreCredential.AuthType))
 					} else {
-						draftAutomationSteps.TaskAction.CloseAction = &tfTypes.CloseAction{}
-						draftAutomationSteps.TaskAction.CloseAction.UserIDCel = types.StringPointerValue(draftAutomationStepsItem.TaskAction.CloseAction.UserIDCel)
-						if draftAutomationStepsItem.TaskAction.CloseAction.UserRef == nil {
-							draftAutomationSteps.TaskAction.CloseAction.UserRef = nil
-						} else {
-							draftAutomationSteps.TaskAction.CloseAction.UserRef = &tfTypes.UserRef{}
-							draftAutomationSteps.TaskAction.CloseAction.UserRef.ID = types.StringPointerValue(draftAutomationStepsItem.TaskAction.CloseAction.UserRef.ID)
-						}
-						draftAutomationSteps.TaskAction.CloseAction.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.TaskAction.CloseAction.UseSubjectUser)
+						draftAutomationSteps.StoreCredential.AuthType = types.StringNull()
 					}
-					if draftAutomationStepsItem.TaskAction.ReassignAction == nil {
-						draftAutomationSteps.TaskAction.ReassignAction = nil
+					draftAutomationSteps.StoreCredential.CredentialCel = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.CredentialCel)
+					draftAutomationSteps.StoreCredential.Expiry = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.Expiry)
+					draftAutomationSteps.StoreCredential.LabelCel = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.LabelCel)
+					draftAutomationSteps.StoreCredential.MaxViews = types.Int64PointerValue(draftAutomationStepsItem.StoreCredential.MaxViews)
+					draftAutomationSteps.StoreCredential.RecipientCel = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.RecipientCel)
+					draftAutomationSteps.StoreCredential.RecipientEmailCel = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.RecipientEmailCel)
+					draftAutomationSteps.StoreCredential.TTL = types.StringPointerValue(draftAutomationStepsItem.StoreCredential.TTL)
+					if draftAutomationStepsItem.StoreCredential.VaultType != nil {
+						draftAutomationSteps.StoreCredential.VaultType = types.StringValue(string(*draftAutomationStepsItem.StoreCredential.VaultType))
 					} else {
-						draftAutomationSteps.TaskAction.ReassignAction = &tfTypes.ReassignAction{}
-						draftAutomationSteps.TaskAction.ReassignAction.AssigneeUserIDCel = types.StringPointerValue(draftAutomationStepsItem.TaskAction.ReassignAction.AssigneeUserIDCel)
-						draftAutomationSteps.TaskAction.ReassignAction.SubjectUserIDCel = types.StringPointerValue(draftAutomationStepsItem.TaskAction.ReassignAction.SubjectUserIDCel)
-						if draftAutomationStepsItem.TaskAction.ReassignAction.UserRef == nil {
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef = nil
-						} else {
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef = &tfTypes.UserRef{}
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef.ID = types.StringPointerValue(draftAutomationStepsItem.TaskAction.ReassignAction.UserRef.ID)
-						}
-						if draftAutomationStepsItem.TaskAction.ReassignAction.UserRef1 == nil {
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef1 = nil
-						} else {
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef1 = &tfTypes.UserRef{}
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef1.ID = types.StringPointerValue(draftAutomationStepsItem.TaskAction.ReassignAction.UserRef1.ID)
-						}
-						draftAutomationSteps.TaskAction.ReassignAction.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.TaskAction.ReassignAction.UseSubjectUser)
-					}
-					if draftAutomationStepsItem.TaskAction.TaskTypes != nil {
-						draftAutomationSteps.TaskAction.TaskTypes = make([]types.String, 0, len(draftAutomationStepsItem.TaskAction.TaskTypes))
-						for _, v := range draftAutomationStepsItem.TaskAction.TaskTypes {
-							draftAutomationSteps.TaskAction.TaskTypes = append(draftAutomationSteps.TaskAction.TaskTypes, types.StringValue(string(v)))
-						}
-					}
-					if draftAutomationStepsItem.TaskAction.TaskUserRelation != nil {
-						draftAutomationSteps.TaskAction.TaskUserRelation = types.StringValue(string(*draftAutomationStepsItem.TaskAction.TaskUserRelation))
-					} else {
-						draftAutomationSteps.TaskAction.TaskUserRelation = types.StringNull()
+						draftAutomationSteps.StoreCredential.VaultType = types.StringNull()
 					}
 				}
 				if draftAutomationStepsItem.UnenrollFromAllAccessProfiles == nil {
@@ -1196,19 +1420,23 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						for _, v := range draftAutomationStepsItem.UnenrollFromAllAccessProfiles.CatalogIds {
 							draftAutomationSteps.UnenrollFromAllAccessProfiles.CatalogIds = append(draftAutomationSteps.UnenrollFromAllAccessProfiles.CatalogIds, types.StringValue(v))
 						}
+					} else {
+						draftAutomationSteps.UnenrollFromAllAccessProfiles.CatalogIds = nil
 					}
 					draftAutomationSteps.UnenrollFromAllAccessProfiles.CatalogIdsCel = types.StringPointerValue(draftAutomationStepsItem.UnenrollFromAllAccessProfiles.CatalogIdsCel)
 					draftAutomationSteps.UnenrollFromAllAccessProfiles.UserIdsCel = types.StringPointerValue(draftAutomationStepsItem.UnenrollFromAllAccessProfiles.UserIdsCel)
 					if draftAutomationStepsItem.UnenrollFromAllAccessProfiles.UserRefs != nil {
 						draftAutomationSteps.UnenrollFromAllAccessProfiles.UserRefs = []tfTypes.UserRef{}
 
-						for _, userRefsItem5 := range draftAutomationStepsItem.UnenrollFromAllAccessProfiles.UserRefs {
-							var userRefs5 tfTypes.UserRef
+						for _, userRefsItem7 := range draftAutomationStepsItem.UnenrollFromAllAccessProfiles.UserRefs {
+							var userRefs7 tfTypes.UserRef
 
-							userRefs5.ID = types.StringPointerValue(userRefsItem5.ID)
+							userRefs7.ID = types.StringPointerValue(userRefsItem7.ID)
 
-							draftAutomationSteps.UnenrollFromAllAccessProfiles.UserRefs = append(draftAutomationSteps.UnenrollFromAllAccessProfiles.UserRefs, userRefs5)
+							draftAutomationSteps.UnenrollFromAllAccessProfiles.UserRefs = append(draftAutomationSteps.UnenrollFromAllAccessProfiles.UserRefs, userRefs7)
 						}
+					} else {
+						draftAutomationSteps.UnenrollFromAllAccessProfiles.UserRefs = nil
 					}
 					draftAutomationSteps.UnenrollFromAllAccessProfiles.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.UnenrollFromAllAccessProfiles.UseSubjectUser)
 				}
@@ -1237,21 +1465,11 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					draftAutomationSteps.WaitForDuration = &tfTypes.WaitForDuration{}
 					draftAutomationSteps.WaitForDuration.Duration = types.StringPointerValue(draftAutomationStepsItem.WaitForDuration.Duration)
 				}
-				if draftAutomationStepsItem.Webhook == nil {
-					draftAutomationSteps.Webhook = nil
-				} else {
-					draftAutomationSteps.Webhook = &tfTypes.Webhook{}
-					if draftAutomationStepsItem.Webhook.Payload == nil {
-						draftAutomationSteps.Webhook.Payload = nil
-					} else {
-						draftAutomationSteps.Webhook.Payload = &tfTypes.Payload{}
-					}
-					draftAutomationSteps.Webhook.WebhookID = types.StringPointerValue(draftAutomationStepsItem.Webhook.WebhookID)
-					draftAutomationSteps.Webhook.WebhookIDCel = types.StringPointerValue(draftAutomationStepsItem.Webhook.WebhookIDCel)
-				}
 
 				r.DraftAutomationSteps = append(r.DraftAutomationSteps, draftAutomationSteps)
 			}
+		} else {
+			r.DraftAutomationSteps = nil
 		}
 		if resp.DraftTriggers != nil {
 			r.DraftTriggers = []tfTypes.AutomationTrigger{}
@@ -1278,6 +1496,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								draftTriggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = append(draftTriggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs, conflictMonitorRefs)
 							}
+						} else {
+							draftTriggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = nil
 						}
 					}
 				}
@@ -1329,24 +1549,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
 									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
 							}
 							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 							}
 							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
 								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
 									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
 							}
 							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
 								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
 								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
 									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
 							}
 						}
 						if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
@@ -1364,6 +1592,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs6)
 								}
+							} else {
+								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
 							}
 						}
 						if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
@@ -1426,24 +1656,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
 									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
 							}
 							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 							}
 							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
 								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
 									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
 							}
 							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
 								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
 								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
 									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 								}
+							} else {
+								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
 							}
 						}
 						if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
@@ -1461,6 +1699,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs7)
 								}
+							} else {
+								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
 							}
 						}
 						if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
@@ -1512,6 +1752,15 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					draftTriggers.ScheduleTriggerAppUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.ScheduleTriggerAppUser.Start))
 					draftTriggers.ScheduleTriggerAppUser.Timezone = types.StringPointerValue(draftTriggersItem.ScheduleTriggerAppUser.Timezone)
 				}
+				if draftTriggersItem.ScheduleTriggerNoUser == nil {
+					draftTriggers.ScheduleTriggerNoUser = nil
+				} else {
+					draftTriggers.ScheduleTriggerNoUser = &tfTypes.ScheduleTriggerNoUser{}
+					draftTriggers.ScheduleTriggerNoUser.Advanced = types.BoolPointerValue(draftTriggersItem.ScheduleTriggerNoUser.Advanced)
+					draftTriggers.ScheduleTriggerNoUser.CronSpec = types.StringPointerValue(draftTriggersItem.ScheduleTriggerNoUser.CronSpec)
+					draftTriggers.ScheduleTriggerNoUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.ScheduleTriggerNoUser.Start))
+					draftTriggers.ScheduleTriggerNoUser.Timezone = types.StringPointerValue(draftTriggersItem.ScheduleTriggerNoUser.Timezone)
+				}
 				if draftTriggersItem.UsageBasedRevocationTrigger == nil {
 					draftTriggers.UsageBasedRevocationTrigger = nil
 				} else {
@@ -1529,6 +1778,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftTriggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = append(draftTriggers.UsageBasedRevocationTrigger.ExcludedGroupRefs, excludedGroupRefs)
 						}
+					} else {
+						draftTriggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = nil
 					}
 					if draftTriggersItem.UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
 						draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs = []tfTypes.UserRef{}
@@ -1540,6 +1791,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs = append(draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs, excludedUserRefs)
 						}
+					} else {
+						draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs = nil
 					}
 					draftTriggers.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity = types.BoolPointerValue(draftTriggersItem.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity)
 					if draftTriggersItem.UsageBasedRevocationTrigger.RunDelayed == nil {
@@ -1558,6 +1811,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						for _, v := range draftTriggersItem.UsageBasedRevocationTrigger.TargetedAppUserTypes {
 							draftTriggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = append(draftTriggers.UsageBasedRevocationTrigger.TargetedAppUserTypes, types.StringValue(string(v)))
 						}
+					} else {
+						draftTriggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = nil
 					}
 					if draftTriggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
 						draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = []tfTypes.AppEntitlementRef{}
@@ -1570,6 +1825,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = append(draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs, targetedEntitlementRefs)
 						}
+					} else {
+						draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = nil
 					}
 					draftTriggers.UsageBasedRevocationTrigger.UnusedForDays = types.Int64PointerValue(draftTriggersItem.UsageBasedRevocationTrigger.UnusedForDays)
 				}
@@ -1590,6 +1847,11 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					draftTriggers.WebhookAutomationTrigger = &tfTypes.WebhookAutomationTrigger{}
 					draftTriggers.WebhookAutomationTrigger.ListenerID = types.StringPointerValue(draftTriggersItem.WebhookAutomationTrigger.ListenerID)
+					if draftTriggersItem.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL == nil {
+						draftTriggers.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL = nil
+					} else {
+						draftTriggers.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL = &tfTypes.WebhookListenerAuthCapabilityURL{}
+					}
 					if draftTriggersItem.WebhookAutomationTrigger.WebhookListenerAuthHMAC == nil {
 						draftTriggers.WebhookAutomationTrigger.WebhookListenerAuthHMAC = nil
 					} else {
@@ -1605,6 +1867,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 				r.DraftTriggers = append(r.DraftTriggers, draftTriggers)
 			}
+		} else {
+			r.DraftTriggers = nil
 		}
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -1640,6 +1904,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 								triggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = append(triggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs, conflictMonitorRefs1)
 							}
+						} else {
+							triggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = nil
 						}
 					}
 				}
@@ -1691,24 +1957,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
 									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
 							}
 							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 							}
 							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
 								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
 									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
 							}
 							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
 								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
 								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
 									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
 							}
 						}
 						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
@@ -1726,6 +2000,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs8)
 								}
+							} else {
+								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
 							}
 						}
 						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
@@ -1788,24 +2064,32 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
 									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
 							}
 							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
 								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
 								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
 									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
 							}
 							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
 								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
 								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
 									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
 							}
 							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
 								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
 								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
 									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
 								}
+							} else {
+								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
 							}
 						}
 						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
@@ -1823,6 +2107,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs9)
 								}
+							} else {
+								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
 							}
 						}
 						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
@@ -1874,6 +2160,15 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					triggers.ScheduleTriggerAppUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.ScheduleTriggerAppUser.Start))
 					triggers.ScheduleTriggerAppUser.Timezone = types.StringPointerValue(triggersItem.ScheduleTriggerAppUser.Timezone)
 				}
+				if triggersItem.ScheduleTriggerNoUser == nil {
+					triggers.ScheduleTriggerNoUser = nil
+				} else {
+					triggers.ScheduleTriggerNoUser = &tfTypes.ScheduleTriggerNoUser{}
+					triggers.ScheduleTriggerNoUser.Advanced = types.BoolPointerValue(triggersItem.ScheduleTriggerNoUser.Advanced)
+					triggers.ScheduleTriggerNoUser.CronSpec = types.StringPointerValue(triggersItem.ScheduleTriggerNoUser.CronSpec)
+					triggers.ScheduleTriggerNoUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.ScheduleTriggerNoUser.Start))
+					triggers.ScheduleTriggerNoUser.Timezone = types.StringPointerValue(triggersItem.ScheduleTriggerNoUser.Timezone)
+				}
 				if triggersItem.UsageBasedRevocationTrigger == nil {
 					triggers.UsageBasedRevocationTrigger = nil
 				} else {
@@ -1891,6 +2186,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							triggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = append(triggers.UsageBasedRevocationTrigger.ExcludedGroupRefs, excludedGroupRefs1)
 						}
+					} else {
+						triggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = nil
 					}
 					if triggersItem.UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
 						triggers.UsageBasedRevocationTrigger.ExcludedUserRefs = []tfTypes.UserRef{}
@@ -1902,6 +2199,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							triggers.UsageBasedRevocationTrigger.ExcludedUserRefs = append(triggers.UsageBasedRevocationTrigger.ExcludedUserRefs, excludedUserRefs1)
 						}
+					} else {
+						triggers.UsageBasedRevocationTrigger.ExcludedUserRefs = nil
 					}
 					triggers.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity = types.BoolPointerValue(triggersItem.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity)
 					if triggersItem.UsageBasedRevocationTrigger.RunDelayed == nil {
@@ -1920,6 +2219,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						for _, v := range triggersItem.UsageBasedRevocationTrigger.TargetedAppUserTypes {
 							triggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = append(triggers.UsageBasedRevocationTrigger.TargetedAppUserTypes, types.StringValue(string(v)))
 						}
+					} else {
+						triggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = nil
 					}
 					if triggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
 						triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = []tfTypes.AppEntitlementRef{}
@@ -1932,6 +2233,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 							triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = append(triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs, targetedEntitlementRefs1)
 						}
+					} else {
+						triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = nil
 					}
 					triggers.UsageBasedRevocationTrigger.UnusedForDays = types.Int64PointerValue(triggersItem.UsageBasedRevocationTrigger.UnusedForDays)
 				}
@@ -1952,6 +2255,11 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					triggers.WebhookAutomationTrigger = &tfTypes.WebhookAutomationTrigger{}
 					triggers.WebhookAutomationTrigger.ListenerID = types.StringPointerValue(triggersItem.WebhookAutomationTrigger.ListenerID)
+					if triggersItem.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL == nil {
+						triggers.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL = nil
+					} else {
+						triggers.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL = &tfTypes.WebhookListenerAuthCapabilityURL{}
+					}
 					if triggersItem.WebhookAutomationTrigger.WebhookListenerAuthHMAC == nil {
 						triggers.WebhookAutomationTrigger.WebhookListenerAuthHMAC = nil
 					} else {
@@ -1967,6 +2275,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 
 				r.Triggers = append(r.Triggers, triggers)
 			}
+		} else {
+			r.Triggers = nil
 		}
 		r.WebhookHmacSecret = types.StringPointerValue(resp.WebhookHmacSecret)
 	}
@@ -1974,7 +2284,7 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 	return diags
 }
 
-func (r *AutomationResourceModel) RefreshFromSharedCreateAutomationResponse1(ctx context.Context, resp *shared.CreateAutomationResponse1) diag.Diagnostics {
+func (r *AutomationResourceModel) RefreshFromSharedAutomationsCreateAutomationResponse(ctx context.Context, resp *shared.AutomationsCreateAutomationResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -1984,6 +2294,7 @@ func (r *AutomationResourceModel) RefreshFromSharedCreateAutomationResponse1(ctx
 			return diags
 		}
 
+		r.WebhookCapabilityURL = types.StringPointerValue(resp.WebhookCapabilityURL)
 	}
 
 	return diags
@@ -2014,6 +2325,7 @@ func (r *AutomationResourceModel) RefreshFromSharedUpdateAutomationResponse(ctx 
 			return diags
 		}
 
+		r.WebhookCapabilityURL = types.StringPointerValue(resp.WebhookCapabilityURL)
 	}
 
 	return diags
@@ -2025,16 +2337,13 @@ func (r *AutomationResourceModel) ToOperationsC1APIAutomationsV1AutomationServic
 	var id string
 	id = r.ID.ValueString()
 
-	deleteAutomationRequest, deleteAutomationRequestDiags := r.ToSharedDeleteAutomationRequest(ctx)
-	diags.Append(deleteAutomationRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
+	var automationsDeleteAutomationRequest *shared.AutomationsDeleteAutomationRequest
+	if r.AutomationsDeleteAutomationRequest != nil {
+		automationsDeleteAutomationRequest = &shared.AutomationsDeleteAutomationRequest{}
 	}
-
 	out := operations.C1APIAutomationsV1AutomationServiceDeleteAutomationRequest{
-		ID:                      id,
-		DeleteAutomationRequest: deleteAutomationRequest,
+		ID:                                 id,
+		AutomationsDeleteAutomationRequest: automationsDeleteAutomationRequest,
 	}
 
 	return &out, diags
@@ -2222,6 +2531,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						ID:    id2,
 					}
 				}
+				passwordCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.PasswordCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.PasswordCel.IsNull() {
+					*passwordCel = r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.PasswordCel.ValueString()
+				} else {
+					passwordCel = nil
+				}
 				userIDCel := new(string)
 				if !r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.UserIDCel.IsNull() {
 					*userIDCel = r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.UserIDCel.ValueString()
@@ -2263,6 +2578,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				connectorCreateAccount = &shared.ConnectorCreateAccount{
 					ConnectorRef:   connectorRef2,
+					PasswordCel:    passwordCel,
 					UserIDCel:      userIDCel,
 					UserProperties: userProperties,
 				}
@@ -2667,8 +2983,77 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					passwordPolicyID = nil
 				}
+				var generatePasswordPolicy *shared.GeneratePasswordPolicy
+				if r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy != nil {
+					customCharacters := new(string)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsNull() {
+						*customCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.ValueString()
+					} else {
+						customCharacters = nil
+					}
+					excludedCharacters := new(string)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsNull() {
+						*excludedCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.ValueString()
+					} else {
+						excludedCharacters = nil
+					}
+					maxCharacterCount := new(int)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsNull() {
+						*maxCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.ValueInt32())
+					} else {
+						maxCharacterCount = nil
+					}
+					minCharacterCount := new(int)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsNull() {
+						*minCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.ValueInt32())
+					} else {
+						minCharacterCount = nil
+					}
+					noRestrictions := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsNull() {
+						*noRestrictions = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.ValueBool()
+					} else {
+						noRestrictions = nil
+					}
+					requireLowercase := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsNull() {
+						*requireLowercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.ValueBool()
+					} else {
+						requireLowercase = nil
+					}
+					requireNumbers := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsNull() {
+						*requireNumbers = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.ValueBool()
+					} else {
+						requireNumbers = nil
+					}
+					requireSpecialCharacters := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsNull() {
+						*requireSpecialCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.ValueBool()
+					} else {
+						requireSpecialCharacters = nil
+					}
+					requireUppercase := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsNull() {
+						*requireUppercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.ValueBool()
+					} else {
+						requireUppercase = nil
+					}
+					generatePasswordPolicy = &shared.GeneratePasswordPolicy{
+						CustomCharacters:         customCharacters,
+						ExcludedCharacters:       excludedCharacters,
+						MaxCharacterCount:        maxCharacterCount,
+						MinCharacterCount:        minCharacterCount,
+						NoRestrictions:           noRestrictions,
+						RequireLowercase:         requireLowercase,
+						RequireNumbers:           requireNumbers,
+						RequireSpecialCharacters: requireSpecialCharacters,
+						RequireUppercase:         requireUppercase,
+					}
+				}
 				generatePassword = &shared.GeneratePassword{
-					PasswordPolicyID: passwordPolicyID,
+					PasswordPolicyID:       passwordPolicyID,
+					GeneratePasswordPolicy: generatePasswordPolicy,
 				}
 			}
 			var grantEntitlements *shared.GrantEntitlements
@@ -2948,6 +3333,18 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					body = nil
 				}
+				email := new(string)
+				if !r.AutomationSteps[automationStepsIndex].SendEmail.Email.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendEmail.Email.IsNull() {
+					*email = r.AutomationSteps[automationStepsIndex].SendEmail.Email.ValueString()
+				} else {
+					email = nil
+				}
+				emailCel1 := new(string)
+				if !r.AutomationSteps[automationStepsIndex].SendEmail.EmailCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendEmail.EmailCel.IsNull() {
+					*emailCel1 = r.AutomationSteps[automationStepsIndex].SendEmail.EmailCel.ValueString()
+				} else {
+					emailCel1 = nil
+				}
 				subject := new(string)
 				if !r.AutomationSteps[automationStepsIndex].SendEmail.Subject.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendEmail.Subject.IsNull() {
 					*subject = r.AutomationSteps[automationStepsIndex].SendEmail.Subject.ValueString()
@@ -2989,6 +3386,8 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				sendEmail = &shared.SendEmail{
 					Body:           body,
+					Email:          email,
+					EmailCel:       emailCel1,
 					Subject:        subject,
 					Title:          title,
 					UseSubjectUser: useSubjectUser5,
@@ -3016,10 +3415,40 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					channelNameCel = nil
 				}
+				useSubjectUser6 := new(bool)
+				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UseSubjectUser.IsNull() {
+					*useSubjectUser6 = r.AutomationSteps[automationStepsIndex].SendSlackMessage.UseSubjectUser.ValueBool()
+				} else {
+					useSubjectUser6 = nil
+				}
+				userIdsCel2 := new(string)
+				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserIdsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserIdsCel.IsNull() {
+					*userIdsCel2 = r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserIdsCel.ValueString()
+				} else {
+					userIdsCel2 = nil
+				}
+				var userRefs2 []shared.UserRef
+				if r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs != nil {
+					userRefs2 = make([]shared.UserRef, 0, len(r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs))
+					for userRefsIndex2 := range r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs {
+						id17 := new(string)
+						if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex2].ID.IsNull() {
+							*id17 = r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex2].ID.ValueString()
+						} else {
+							id17 = nil
+						}
+						userRefs2 = append(userRefs2, shared.UserRef{
+							ID: id17,
+						})
+					}
+				}
 				sendSlackMessage = &shared.SendSlackMessage{
 					Body:           body1,
 					ChannelName:    channelName,
 					ChannelNameCel: channelNameCel,
+					UseSubjectUser: useSubjectUser6,
+					UserIdsCel:     userIdsCel2,
+					UserRefs:       userRefs2,
 				}
 			}
 			var setCredential *shared.SetCredential
@@ -3038,27 +3467,27 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						appId10 = nil
 					}
-					id17 := new(string)
+					id18 := new(string)
 					if !r.AutomationSteps[automationStepsIndex].SetCredential.ConnectorRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SetCredential.ConnectorRef.ID.IsNull() {
-						*id17 = r.AutomationSteps[automationStepsIndex].SetCredential.ConnectorRef.ID.ValueString()
+						*id18 = r.AutomationSteps[automationStepsIndex].SetCredential.ConnectorRef.ID.ValueString()
 					} else {
-						id17 = nil
+						id18 = nil
 					}
 					connectorRef3 = &shared.ConnectorRef{
 						AppID: appId10,
-						ID:    id17,
+						ID:    id18,
 					}
 				}
-				passwordCel := new(string)
+				passwordCel1 := new(string)
 				if !r.AutomationSteps[automationStepsIndex].SetCredential.PasswordCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SetCredential.PasswordCel.IsNull() {
-					*passwordCel = r.AutomationSteps[automationStepsIndex].SetCredential.PasswordCel.ValueString()
+					*passwordCel1 = r.AutomationSteps[automationStepsIndex].SetCredential.PasswordCel.ValueString()
 				} else {
-					passwordCel = nil
+					passwordCel1 = nil
 				}
 				setCredential = &shared.SetCredential{
 					AccountIDCel: accountIDCel1,
 					ConnectorRef: connectorRef3,
-					PasswordCel:  passwordCel,
+					PasswordCel:  passwordCel1,
 				}
 			}
 			skipIfTrueCel := new(string)
@@ -3079,106 +3508,181 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			} else {
 				stepName = nil
 			}
-			var taskAction *shared.TaskAction
-			if r.AutomationSteps[automationStepsIndex].TaskAction != nil {
+			var storeCredential *shared.StoreCredential
+			if r.AutomationSteps[automationStepsIndex].StoreCredential != nil {
+				appIDCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.IsNull() {
+					*appIDCel = r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.ValueString()
+				} else {
+					appIDCel = nil
+				}
+				authType := new(shared.AuthType)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.IsNull() {
+					*authType = shared.AuthType(r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.ValueString())
+				} else {
+					authType = nil
+				}
+				credentialCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.IsNull() {
+					*credentialCel = r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.ValueString()
+				} else {
+					credentialCel = nil
+				}
+				expiry := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.IsNull() {
+					*expiry = r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.ValueString()
+				} else {
+					expiry = nil
+				}
+				labelCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.IsNull() {
+					*labelCel = r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.ValueString()
+				} else {
+					labelCel = nil
+				}
+				maxViews := new(int64)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.IsNull() {
+					*maxViews = r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.ValueInt64()
+				} else {
+					maxViews = nil
+				}
+				recipientCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.IsNull() {
+					*recipientCel = r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.ValueString()
+				} else {
+					recipientCel = nil
+				}
+				recipientEmailCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.IsNull() {
+					*recipientEmailCel = r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.ValueString()
+				} else {
+					recipientEmailCel = nil
+				}
+				ttl := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.TTL.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.TTL.IsNull() {
+					*ttl = r.AutomationSteps[automationStepsIndex].StoreCredential.TTL.ValueString()
+				} else {
+					ttl = nil
+				}
+				vaultType := new(shared.VaultType)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.IsNull() {
+					*vaultType = shared.VaultType(r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.ValueString())
+				} else {
+					vaultType = nil
+				}
+				storeCredential = &shared.StoreCredential{
+					AppIDCel:          appIDCel,
+					AuthType:          authType,
+					CredentialCel:     credentialCel,
+					Expiry:            expiry,
+					LabelCel:          labelCel,
+					MaxViews:          maxViews,
+					RecipientCel:      recipientCel,
+					RecipientEmailCel: recipientEmailCel,
+					TTL:               ttl,
+					VaultType:         vaultType,
+				}
+			}
+			var automationsTaskAction *shared.AutomationsTaskAction
+			if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction != nil {
 				var closeAction *shared.CloseAction
-				if r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction != nil {
-					useSubjectUser6 := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsNull() {
-						*useSubjectUser6 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.ValueBool()
+				if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction != nil {
+					useSubjectUser7 := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.IsNull() {
+						*useSubjectUser7 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.ValueBool()
 					} else {
-						useSubjectUser6 = nil
+						useSubjectUser7 = nil
 					}
 					userIDCel5 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.IsNull() {
-						*userIDCel5 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.IsNull() {
+						*userIDCel5 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.ValueString()
 					} else {
 						userIDCel5 = nil
 					}
 					var userRef4 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef != nil {
-						id18 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsNull() {
-							*id18 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.ValueString()
+					if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserRef != nil {
+						id19 := new(string)
+						if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.IsNull() {
+							*id19 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.ValueString()
 						} else {
-							id18 = nil
+							id19 = nil
 						}
 						userRef4 = &shared.UserRef{
-							ID: id18,
+							ID: id19,
 						}
 					}
 					closeAction = &shared.CloseAction{
-						UseSubjectUser: useSubjectUser6,
+						UseSubjectUser: useSubjectUser7,
 						UserIDCel:      userIDCel5,
 						UserRef:        userRef4,
 					}
 				}
 				var reassignAction *shared.ReassignAction
-				if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction != nil {
+				if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction != nil {
 					assigneeUserIDCel := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
-						*assigneeUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
+						*assigneeUserIDCel = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
 					} else {
 						assigneeUserIDCel = nil
 					}
 					var userRef5 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef != nil {
-						id19 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsNull() {
-							*id19 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.ValueString()
+					if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef != nil {
+						id20 := new(string)
+						if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.IsNull() {
+							*id20 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.ValueString()
 						} else {
-							id19 = nil
+							id20 = nil
 						}
 						userRef5 = &shared.UserRef{
-							ID: id19,
+							ID: id20,
 						}
 					}
 					subjectUserIDCel := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
-						*subjectUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
+						*subjectUserIDCel = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.ValueString()
 					} else {
 						subjectUserIDCel = nil
 					}
 					var userRef12 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1 != nil {
-						id20 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsNull() {
-							*id20 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.ValueString()
+					if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1 != nil {
+						id21 := new(string)
+						if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.IsNull() {
+							*id21 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.ValueString()
 						} else {
-							id20 = nil
+							id21 = nil
 						}
 						userRef12 = &shared.UserRef{
-							ID: id20,
+							ID: id21,
 						}
 					}
-					useSubjectUser7 := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsNull() {
-						*useSubjectUser7 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.ValueBool()
+					useSubjectUser8 := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.IsNull() {
+						*useSubjectUser8 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.ValueBool()
 					} else {
-						useSubjectUser7 = nil
+						useSubjectUser8 = nil
 					}
 					reassignAction = &shared.ReassignAction{
 						AssigneeUserIDCel: assigneeUserIDCel,
 						UserRef:           userRef5,
 						SubjectUserIDCel:  subjectUserIDCel,
 						UserRef1:          userRef12,
-						UseSubjectUser:    useSubjectUser7,
+						UseSubjectUser:    useSubjectUser8,
 					}
 				}
 				var taskTypes []shared.TaskTypes
-				if r.AutomationSteps[automationStepsIndex].TaskAction.TaskTypes != nil {
-					taskTypes = make([]shared.TaskTypes, 0, len(r.AutomationSteps[automationStepsIndex].TaskAction.TaskTypes))
-					for _, taskTypesItem := range r.AutomationSteps[automationStepsIndex].TaskAction.TaskTypes {
+				if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskTypes != nil {
+					taskTypes = make([]shared.TaskTypes, 0, len(r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskTypes))
+					for _, taskTypesItem := range r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskTypes {
 						taskTypes = append(taskTypes, shared.TaskTypes(taskTypesItem.ValueString()))
 					}
 				}
 				taskUserRelation := new(shared.TaskUserRelation)
-				if !r.AutomationSteps[automationStepsIndex].TaskAction.TaskUserRelation.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.TaskUserRelation.IsNull() {
-					*taskUserRelation = shared.TaskUserRelation(r.AutomationSteps[automationStepsIndex].TaskAction.TaskUserRelation.ValueString())
+				if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskUserRelation.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskUserRelation.IsNull() {
+					*taskUserRelation = shared.TaskUserRelation(r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskUserRelation.ValueString())
 				} else {
 					taskUserRelation = nil
 				}
-				taskAction = &shared.TaskAction{
+				automationsTaskAction = &shared.AutomationsTaskAction{
 					CloseAction:      closeAction,
 					ReassignAction:   reassignAction,
 					TaskTypes:        taskTypes,
@@ -3200,48 +3704,48 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					catalogIdsCel = nil
 				}
-				useSubjectUser8 := new(bool)
+				useSubjectUser9 := new(bool)
 				if !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.IsNull() {
-					*useSubjectUser8 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.ValueBool()
+					*useSubjectUser9 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser8 = nil
+					useSubjectUser9 = nil
 				}
-				userIdsCel2 := new(string)
+				userIdsCel3 := new(string)
 				if !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.IsNull() {
-					*userIdsCel2 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.ValueString()
+					*userIdsCel3 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.ValueString()
 				} else {
-					userIdsCel2 = nil
+					userIdsCel3 = nil
 				}
-				var userRefs2 []shared.UserRef
+				var userRefs3 []shared.UserRef
 				if r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs != nil {
-					userRefs2 = make([]shared.UserRef, 0, len(r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs))
-					for userRefsIndex2 := range r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs {
-						id21 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex2].ID.IsNull() {
-							*id21 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex2].ID.ValueString()
+					userRefs3 = make([]shared.UserRef, 0, len(r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs))
+					for userRefsIndex3 := range r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs {
+						id22 := new(string)
+						if !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex3].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex3].ID.IsNull() {
+							*id22 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex3].ID.ValueString()
 						} else {
-							id21 = nil
+							id22 = nil
 						}
-						userRefs2 = append(userRefs2, shared.UserRef{
-							ID: id21,
+						userRefs3 = append(userRefs3, shared.UserRef{
+							ID: id22,
 						})
 					}
 				}
 				unenrollFromAllAccessProfiles = &shared.UnenrollFromAllAccessProfiles{
 					CatalogIds:     catalogIds,
 					CatalogIdsCel:  catalogIdsCel,
-					UseSubjectUser: useSubjectUser8,
-					UserIdsCel:     userIdsCel2,
-					UserRefs:       userRefs2,
+					UseSubjectUser: useSubjectUser9,
+					UserIdsCel:     userIdsCel3,
+					UserRefs:       userRefs3,
 				}
 			}
 			var updateUser *shared.UpdateUser
 			if r.AutomationSteps[automationStepsIndex].UpdateUser != nil {
-				useSubjectUser9 := new(bool)
+				useSubjectUser10 := new(bool)
 				if !r.AutomationSteps[automationStepsIndex].UpdateUser.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UpdateUser.UseSubjectUser.IsNull() {
-					*useSubjectUser9 = r.AutomationSteps[automationStepsIndex].UpdateUser.UseSubjectUser.ValueBool()
+					*useSubjectUser10 = r.AutomationSteps[automationStepsIndex].UpdateUser.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser9 = nil
+					useSubjectUser10 = nil
 				}
 				userIDCel6 := new(string)
 				if !r.AutomationSteps[automationStepsIndex].UpdateUser.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UpdateUser.UserIDCel.IsNull() {
@@ -3251,14 +3755,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				var userRef6 *shared.UserRef
 				if r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef != nil {
-					id22 := new(string)
+					id23 := new(string)
 					if !r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.IsNull() {
-						*id22 = r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.ValueString()
+						*id23 = r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.ValueString()
 					} else {
-						id22 = nil
+						id23 = nil
 					}
 					userRef6 = &shared.UserRef{
-						ID: id22,
+						ID: id23,
 					}
 				}
 				userStatusCel := new(string)
@@ -3274,7 +3778,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					userStatusEnum = nil
 				}
 				updateUser = &shared.UpdateUser{
-					UseSubjectUser: useSubjectUser9,
+					UseSubjectUser: useSubjectUser10,
 					UserIDCel:      userIDCel6,
 					UserRef:        userRef6,
 					UserStatusCel:  userStatusCel,
@@ -3293,25 +3797,25 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					Duration: duration,
 				}
 			}
-			var webhook *shared.Webhook
-			if r.AutomationSteps[automationStepsIndex].Webhook != nil {
+			var automationsWebhook *shared.AutomationsWebhook
+			if r.AutomationSteps[automationStepsIndex].AutomationsWebhook != nil {
 				var payload *shared.Payload
-				if r.AutomationSteps[automationStepsIndex].Webhook.Payload != nil {
+				if r.AutomationSteps[automationStepsIndex].AutomationsWebhook.Payload != nil {
 					payload = &shared.Payload{}
 				}
 				webhookID := new(string)
-				if !r.AutomationSteps[automationStepsIndex].Webhook.WebhookID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].Webhook.WebhookID.IsNull() {
-					*webhookID = r.AutomationSteps[automationStepsIndex].Webhook.WebhookID.ValueString()
+				if !r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookID.IsNull() {
+					*webhookID = r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookID.ValueString()
 				} else {
 					webhookID = nil
 				}
 				webhookIDCel := new(string)
-				if !r.AutomationSteps[automationStepsIndex].Webhook.WebhookIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].Webhook.WebhookIDCel.IsNull() {
-					*webhookIDCel = r.AutomationSteps[automationStepsIndex].Webhook.WebhookIDCel.ValueString()
+				if !r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookIDCel.IsNull() {
+					*webhookIDCel = r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookIDCel.ValueString()
 				} else {
 					webhookIDCel = nil
 				}
-				webhook = &shared.Webhook{
+				automationsWebhook = &shared.AutomationsWebhook{
 					Payload:      payload,
 					WebhookID:    webhookID,
 					WebhookIDCel: webhookIDCel,
@@ -3336,11 +3840,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				SkipIfTrueCel:                 skipIfTrueCel,
 				StepDisplayName:               stepDisplayName,
 				StepName:                      stepName,
-				TaskAction:                    taskAction,
+				StoreCredential:               storeCredential,
+				AutomationsTaskAction:         automationsTaskAction,
 				UnenrollFromAllAccessProfiles: unenrollFromAllAccessProfiles,
 				UpdateUser:                    updateUser,
 				WaitForDuration:               waitForDuration,
-				Webhook:                       webhook,
+				AutomationsWebhook:            automationsWebhook,
 			})
 		}
 	}
@@ -3418,15 +3923,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						appId11 = nil
 					}
-					id23 := new(string)
+					id24 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AccountLifecycleAction.ConnectorRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AccountLifecycleAction.ConnectorRef.ID.IsNull() {
-						*id23 = r.DraftAutomationSteps[draftAutomationStepsIndex].AccountLifecycleAction.ConnectorRef.ID.ValueString()
+						*id24 = r.DraftAutomationSteps[draftAutomationStepsIndex].AccountLifecycleAction.ConnectorRef.ID.ValueString()
 					} else {
-						id23 = nil
+						id24 = nil
 					}
 					connectorRef4 = &shared.ConnectorRef{
 						AppID: appId11,
-						ID:    id23,
+						ID:    id24,
 					}
 				}
 				accountLifecycleAction1 = &shared.AccountLifecycleAction{
@@ -3476,15 +3981,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						appId12 = nil
 					}
-					id24 := new(string)
+					id25 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorAction.ConnectorRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorAction.ConnectorRef.ID.IsNull() {
-						*id24 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorAction.ConnectorRef.ID.ValueString()
+						*id25 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorAction.ConnectorRef.ID.ValueString()
 					} else {
-						id24 = nil
+						id25 = nil
 					}
 					connectorRef5 = &shared.ConnectorRef{
 						AppID: appId12,
-						ID:    id24,
+						ID:    id25,
 					}
 				}
 				resourceTypeId1 := new(string)
@@ -3510,16 +4015,22 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						appId13 = nil
 					}
-					id25 := new(string)
+					id26 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.ConnectorRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.ConnectorRef.ID.IsNull() {
-						*id25 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.ConnectorRef.ID.ValueString()
+						*id26 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.ConnectorRef.ID.ValueString()
 					} else {
-						id25 = nil
+						id26 = nil
 					}
 					connectorRef6 = &shared.ConnectorRef{
 						AppID: appId13,
-						ID:    id25,
+						ID:    id26,
 					}
+				}
+				passwordCel2 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.PasswordCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.PasswordCel.IsNull() {
+					*passwordCel2 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.PasswordCel.ValueString()
+				} else {
+					passwordCel2 = nil
 				}
 				userIDCel7 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserIDCel.IsNull() {
@@ -3535,11 +4046,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						displayNameCel1 = nil
 					}
-					emailCel1 := new(string)
+					emailCel2 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.EmailCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.EmailCel.IsNull() {
-						*emailCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.EmailCel.ValueString()
+						*emailCel2 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.EmailCel.ValueString()
 					} else {
-						emailCel1 = nil
+						emailCel2 = nil
 					}
 					profileAttributeCel1 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.ProfileAttributeCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.ProfileAttributeCel.IsNull() {
@@ -3555,13 +4066,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 					userProperties1 = &shared.UserProperties{
 						DisplayNameCel:      displayNameCel1,
-						EmailCel:            emailCel1,
+						EmailCel:            emailCel2,
 						ProfileAttributeCel: profileAttributeCel1,
 						UsernameCel:         usernameCel1,
 					}
 				}
 				connectorCreateAccount1 = &shared.ConnectorCreateAccount{
 					ConnectorRef:   connectorRef6,
+					PasswordCel:    passwordCel2,
 					UserIDCel:      userIDCel7,
 					UserProperties: userProperties1,
 				}
@@ -3586,30 +4098,30 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					campaignName1 = nil
 				}
-				useSubjectUser10 := new(bool)
+				useSubjectUser11 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UseSubjectUser.IsNull() {
-					*useSubjectUser10 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UseSubjectUser.ValueBool()
+					*useSubjectUser11 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser10 = nil
+					useSubjectUser11 = nil
 				}
-				userIdsCel3 := new(string)
+				userIdsCel4 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserIdsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserIdsCel.IsNull() {
-					*userIdsCel3 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserIdsCel.ValueString()
+					*userIdsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserIdsCel.ValueString()
 				} else {
-					userIdsCel3 = nil
+					userIdsCel4 = nil
 				}
-				var userRefs3 []shared.UserRef
+				var userRefs4 []shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs != nil {
-					userRefs3 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs))
-					for userRefsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs {
-						id26 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex3].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex3].ID.IsNull() {
-							*id26 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex3].ID.ValueString()
+					userRefs4 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs))
+					for userRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs {
+						id27 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex4].ID.IsNull() {
+							*id27 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex4].ID.ValueString()
 						} else {
-							id26 = nil
+							id27 = nil
 						}
-						userRefs3 = append(userRefs3, shared.UserRef{
-							ID: id26,
+						userRefs4 = append(userRefs4, shared.UserRef{
+							ID: id27,
 						})
 					}
 				}
@@ -3617,9 +4129,9 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					AccessReviewTemplateCel: accessReviewTemplateCel1,
 					AccessReviewTemplateID:  accessReviewTemplateId1,
 					CampaignName:            campaignName1,
-					UseSubjectUser:          useSubjectUser10,
-					UserIdsCel:              userIdsCel3,
-					UserRefs:                userRefs3,
+					UseSubjectUser:          useSubjectUser11,
+					UserIdsCel:              userIdsCel4,
+					UserRefs:                userRefs4,
 				}
 			}
 			var createRevokeTasks1 *shared.CreateRevokeTasks
@@ -3634,15 +4146,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							appId14 = nil
 						}
-						id27 := new(string)
+						id28 := new(string)
 						if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.AppEntitlementRefs[appEntitlementRefsIndex3].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.AppEntitlementRefs[appEntitlementRefsIndex3].ID.IsNull() {
-							*id27 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.AppEntitlementRefs[appEntitlementRefsIndex3].ID.ValueString()
+							*id28 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.AppEntitlementRefs[appEntitlementRefsIndex3].ID.ValueString()
 						} else {
-							id27 = nil
+							id28 = nil
 						}
 						appEntitlementRefs3 = append(appEntitlementRefs3, shared.AppEntitlementRef{
 							AppID: appId14,
-							ID:    id27,
+							ID:    id28,
 						})
 					}
 				}
@@ -3662,15 +4174,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							appId15 = nil
 						}
-						id28 := new(string)
+						id29 := new(string)
 						if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex3].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex3].ID.IsNull() {
-							*id28 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex3].ID.ValueString()
+							*id29 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex3].ID.ValueString()
 						} else {
-							id28 = nil
+							id29 = nil
 						}
 						excludedAppEntitlementRefs3 = append(excludedAppEntitlementRefs3, shared.AppEntitlementRef{
 							AppID: appId15,
-							ID:    id28,
+							ID:    id29,
 						})
 					}
 				}
@@ -3686,11 +4198,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					revokeAll1 = nil
 				}
-				useSubjectUser11 := new(bool)
+				useSubjectUser12 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UseSubjectUser.IsNull() {
-					*useSubjectUser11 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UseSubjectUser.ValueBool()
+					*useSubjectUser12 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser11 = nil
+					useSubjectUser12 = nil
 				}
 				userIDCel8 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserIDCel.IsNull() {
@@ -3700,14 +4212,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				var userRef7 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef != nil {
-					id29 := new(string)
+					id30 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.IsNull() {
-						*id29 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.ValueString()
+						*id30 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.ValueString()
 					} else {
-						id29 = nil
+						id30 = nil
 					}
 					userRef7 = &shared.UserRef{
-						ID: id29,
+						ID: id30,
 					}
 				}
 				createRevokeTasks1 = &shared.CreateRevokeTasks{
@@ -3716,7 +4228,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					ExcludedAppEntitlementRefs:    excludedAppEntitlementRefs3,
 					ExcludedAppEntitlementRefsCel: excludedAppEntitlementRefsCel3,
 					RevokeAll:                     revokeAll1,
-					UseSubjectUser:                useSubjectUser11,
+					UseSubjectUser:                useSubjectUser12,
 					UserIDCel:                     userIDCel8,
 					UserRef:                       userRef7,
 				}
@@ -3772,15 +4284,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							} else {
 								appId16 = nil
 							}
-							id30 := new(string)
+							id31 := new(string)
 							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsNull() {
-								*id30 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.ValueString()
+								*id31 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.ValueString()
 							} else {
-								id30 = nil
+								id31 = nil
 							}
 							excludedAppEntitlementRefs4 = append(excludedAppEntitlementRefs4, shared.AppEntitlementRef{
 								AppID: appId16,
-								ID:    id30,
+								ID:    id31,
 							})
 						}
 					}
@@ -3857,15 +4369,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							} else {
 								appId17 = nil
 							}
-							id31 := new(string)
+							id32 := new(string)
 							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsNull() {
-								*id31 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.ValueString()
+								*id32 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.ValueString()
 							} else {
-								id31 = nil
+								id32 = nil
 							}
 							appEntitlementRefs4 = append(appEntitlementRefs4, shared.AppEntitlementRef{
 								AppID: appId17,
-								ID:    id31,
+								ID:    id32,
 							})
 						}
 					}
@@ -3885,11 +4397,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						AppEntitlementRefsCel: appEntitlementRefsCel4,
 					}
 				}
-				useSubjectUser12 := new(bool)
+				useSubjectUser13 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UseSubjectUser.IsNull() {
-					*useSubjectUser12 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UseSubjectUser.ValueBool()
+					*useSubjectUser13 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser12 = nil
+					useSubjectUser13 = nil
 				}
 				userIDCel9 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserIDCel.IsNull() {
@@ -3899,14 +4411,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				var userRef8 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef != nil {
-					id32 := new(string)
+					id33 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.IsNull() {
-						*id32 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.ValueString()
+						*id33 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.ValueString()
 					} else {
-						id32 = nil
+						id33 = nil
 					}
 					userRef8 = &shared.UserRef{
-						ID: id32,
+						ID: id33,
 					}
 				}
 				createRevokeTasksV21 = &shared.CreateRevokeTasksV2{
@@ -3918,7 +4430,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					EntitlementInclusionCriteria: entitlementInclusionCriteria1,
 					EntitlementInclusionList:     entitlementInclusionList1,
 					EntitlementInclusionListCel:  entitlementInclusionListCel1,
-					UseSubjectUser:               useSubjectUser12,
+					UseSubjectUser:               useSubjectUser13,
 					UserIDCel:                    userIDCel9,
 					UserRef:                      userRef8,
 				}
@@ -3966,8 +4478,77 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					passwordPolicyId1 = nil
 				}
+				var generatePasswordPolicy1 *shared.GeneratePasswordPolicy
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy != nil {
+					customCharacters1 := new(string)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsNull() {
+						*customCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.ValueString()
+					} else {
+						customCharacters1 = nil
+					}
+					excludedCharacters1 := new(string)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsNull() {
+						*excludedCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.ValueString()
+					} else {
+						excludedCharacters1 = nil
+					}
+					maxCharacterCount1 := new(int)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsNull() {
+						*maxCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.ValueInt32())
+					} else {
+						maxCharacterCount1 = nil
+					}
+					minCharacterCount1 := new(int)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsNull() {
+						*minCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.ValueInt32())
+					} else {
+						minCharacterCount1 = nil
+					}
+					noRestrictions1 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsNull() {
+						*noRestrictions1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.ValueBool()
+					} else {
+						noRestrictions1 = nil
+					}
+					requireLowercase1 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsNull() {
+						*requireLowercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.ValueBool()
+					} else {
+						requireLowercase1 = nil
+					}
+					requireNumbers1 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsNull() {
+						*requireNumbers1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.ValueBool()
+					} else {
+						requireNumbers1 = nil
+					}
+					requireSpecialCharacters1 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsNull() {
+						*requireSpecialCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.ValueBool()
+					} else {
+						requireSpecialCharacters1 = nil
+					}
+					requireUppercase1 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsNull() {
+						*requireUppercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.ValueBool()
+					} else {
+						requireUppercase1 = nil
+					}
+					generatePasswordPolicy1 = &shared.GeneratePasswordPolicy{
+						CustomCharacters:         customCharacters1,
+						ExcludedCharacters:       excludedCharacters1,
+						MaxCharacterCount:        maxCharacterCount1,
+						MinCharacterCount:        minCharacterCount1,
+						NoRestrictions:           noRestrictions1,
+						RequireLowercase:         requireLowercase1,
+						RequireNumbers:           requireNumbers1,
+						RequireSpecialCharacters: requireSpecialCharacters1,
+						RequireUppercase:         requireUppercase1,
+					}
+				}
 				generatePassword1 = &shared.GeneratePassword{
-					PasswordPolicyID: passwordPolicyId1,
+					PasswordPolicyID:       passwordPolicyId1,
+					GeneratePasswordPolicy: generatePasswordPolicy1,
 				}
 			}
 			var grantEntitlements1 *shared.GrantEntitlements
@@ -4013,15 +4594,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							} else {
 								appId18 = nil
 							}
-							id33 := new(string)
+							id34 := new(string)
 							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsNull() {
-								*id33 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.ValueString()
+								*id34 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.ValueString()
 							} else {
-								id33 = nil
+								id34 = nil
 							}
 							excludedAppEntitlementRefs5 = append(excludedAppEntitlementRefs5, shared.AppEntitlementRef{
 								AppID: appId18,
-								ID:    id33,
+								ID:    id34,
 							})
 						}
 					}
@@ -4086,15 +4667,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							} else {
 								appId19 = nil
 							}
-							id34 := new(string)
+							id35 := new(string)
 							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsNull() {
-								*id34 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.ValueString()
+								*id35 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.ValueString()
 							} else {
-								id34 = nil
+								id35 = nil
 							}
 							appEntitlementRefs5 = append(appEntitlementRefs5, shared.AppEntitlementRef{
 								AppID: appId19,
-								ID:    id34,
+								ID:    id35,
 							})
 						}
 					}
@@ -4114,11 +4695,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						AppEntitlementRefsCel: appEntitlementRefsCel5,
 					}
 				}
-				useSubjectUser13 := new(bool)
+				useSubjectUser14 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UseSubjectUser.IsNull() {
-					*useSubjectUser13 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UseSubjectUser.ValueBool()
+					*useSubjectUser14 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser13 = nil
+					useSubjectUser14 = nil
 				}
 				userIDCel10 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserIDCel.IsNull() {
@@ -4128,14 +4709,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				var userRef9 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef != nil {
-					id35 := new(string)
+					id36 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.IsNull() {
-						*id35 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.ValueString()
+						*id36 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.ValueString()
 					} else {
-						id35 = nil
+						id36 = nil
 					}
 					userRef9 = &shared.UserRef{
-						ID: id35,
+						ID: id36,
 					}
 				}
 				grantEntitlements1 = &shared.GrantEntitlements{
@@ -4146,7 +4727,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					GrantEntitlementInclusionCriteria: grantEntitlementInclusionCriteria1,
 					GrantEntitlementInclusionList:     grantEntitlementInclusionList1,
 					GrantEntitlementInclusionListCel:  grantEntitlementInclusionListCel1,
-					UseSubjectUser:                    useSubjectUser13,
+					UseSubjectUser:                    useSubjectUser14,
 					UserIDCel:                         userIDCel10,
 					UserRef:                           userRef9,
 				}
@@ -4161,21 +4742,21 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				var userRef10 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef != nil {
-					id36 := new(string)
+					id37 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsNull() {
-						*id36 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
+						*id37 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
 					} else {
-						id36 = nil
+						id37 = nil
 					}
 					userRef10 = &shared.UserRef{
-						ID: id36,
+						ID: id37,
 					}
 				}
-				useSubjectUser14 := new(bool)
+				useSubjectUser15 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UseSubjectUser.IsNull() {
-					*useSubjectUser14 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UseSubjectUser.ValueBool()
+					*useSubjectUser15 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser14 = nil
+					useSubjectUser15 = nil
 				}
 				userIDCel11 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserIDCel.IsNull() {
@@ -4185,20 +4766,20 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				var userRef13 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1 != nil {
-					id37 := new(string)
+					id38 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsNull() {
-						*id37 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.ValueString()
+						*id38 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.ValueString()
 					} else {
-						id37 = nil
+						id38 = nil
 					}
 					userRef13 = &shared.UserRef{
-						ID: id37,
+						ID: id38,
 					}
 				}
 				removeFromDelegation1 = &shared.RemoveFromDelegation{
 					ReplacementUserIDCel: replacementUserIDCel1,
 					UserRef:              userRef10,
-					UseSubjectUser:       useSubjectUser14,
+					UseSubjectUser:       useSubjectUser15,
 					UserIDCel:            userIDCel11,
 					UserRef1:             userRef13,
 				}
@@ -4213,14 +4794,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				var automationTemplateRef1 *shared.AutomationTemplateRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationTemplateRef != nil {
-					id38 := new(string)
+					id39 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationTemplateRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationTemplateRef.ID.IsNull() {
-						*id38 = r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationTemplateRef.ID.ValueString()
+						*id39 = r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationTemplateRef.ID.ValueString()
 					} else {
-						id38 = nil
+						id39 = nil
 					}
 					automationTemplateRef1 = &shared.AutomationTemplateRef{
-						ID: id38,
+						ID: id39,
 					}
 				}
 				var automationContext2 *shared.AutomationContext
@@ -4247,6 +4828,18 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					body2 = nil
 				}
+				email1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Email.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Email.IsNull() {
+					*email1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Email.ValueString()
+				} else {
+					email1 = nil
+				}
+				emailCel3 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.EmailCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.EmailCel.IsNull() {
+					*emailCel3 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.EmailCel.ValueString()
+				} else {
+					emailCel3 = nil
+				}
 				subject1 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Subject.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Subject.IsNull() {
 					*subject1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Subject.ValueString()
@@ -4259,40 +4852,42 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					title1 = nil
 				}
-				useSubjectUser15 := new(bool)
+				useSubjectUser16 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UseSubjectUser.IsNull() {
-					*useSubjectUser15 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UseSubjectUser.ValueBool()
+					*useSubjectUser16 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser15 = nil
+					useSubjectUser16 = nil
 				}
-				userIdsCel4 := new(string)
+				userIdsCel5 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserIdsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserIdsCel.IsNull() {
-					*userIdsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserIdsCel.ValueString()
+					*userIdsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserIdsCel.ValueString()
 				} else {
-					userIdsCel4 = nil
+					userIdsCel5 = nil
 				}
-				var userRefs4 []shared.UserRef
+				var userRefs5 []shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs != nil {
-					userRefs4 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs))
-					for userRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs {
-						id39 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex4].ID.IsNull() {
-							*id39 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex4].ID.ValueString()
+					userRefs5 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs))
+					for userRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs {
+						id40 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex5].ID.IsNull() {
+							*id40 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex5].ID.ValueString()
 						} else {
-							id39 = nil
+							id40 = nil
 						}
-						userRefs4 = append(userRefs4, shared.UserRef{
-							ID: id39,
+						userRefs5 = append(userRefs5, shared.UserRef{
+							ID: id40,
 						})
 					}
 				}
 				sendEmail1 = &shared.SendEmail{
 					Body:           body2,
+					Email:          email1,
+					EmailCel:       emailCel3,
 					Subject:        subject1,
 					Title:          title1,
-					UseSubjectUser: useSubjectUser15,
-					UserIdsCel:     userIdsCel4,
-					UserRefs:       userRefs4,
+					UseSubjectUser: useSubjectUser16,
+					UserIdsCel:     userIdsCel5,
+					UserRefs:       userRefs5,
 				}
 			}
 			var sendSlackMessage1 *shared.SendSlackMessage
@@ -4315,10 +4910,40 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					channelNameCel1 = nil
 				}
+				useSubjectUser17 := new(bool)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UseSubjectUser.IsNull() {
+					*useSubjectUser17 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UseSubjectUser.ValueBool()
+				} else {
+					useSubjectUser17 = nil
+				}
+				userIdsCel6 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserIdsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserIdsCel.IsNull() {
+					*userIdsCel6 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserIdsCel.ValueString()
+				} else {
+					userIdsCel6 = nil
+				}
+				var userRefs6 []shared.UserRef
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs != nil {
+					userRefs6 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs))
+					for userRefsIndex6 := range r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs {
+						id41 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex6].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex6].ID.IsNull() {
+							*id41 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex6].ID.ValueString()
+						} else {
+							id41 = nil
+						}
+						userRefs6 = append(userRefs6, shared.UserRef{
+							ID: id41,
+						})
+					}
+				}
 				sendSlackMessage1 = &shared.SendSlackMessage{
 					Body:           body3,
 					ChannelName:    channelName1,
 					ChannelNameCel: channelNameCel1,
+					UseSubjectUser: useSubjectUser17,
+					UserIdsCel:     userIdsCel6,
+					UserRefs:       userRefs6,
 				}
 			}
 			var setCredential1 *shared.SetCredential
@@ -4337,27 +4962,27 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						appId20 = nil
 					}
-					id40 := new(string)
+					id42 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.ConnectorRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.ConnectorRef.ID.IsNull() {
-						*id40 = r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.ConnectorRef.ID.ValueString()
+						*id42 = r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.ConnectorRef.ID.ValueString()
 					} else {
-						id40 = nil
+						id42 = nil
 					}
 					connectorRef7 = &shared.ConnectorRef{
 						AppID: appId20,
-						ID:    id40,
+						ID:    id42,
 					}
 				}
-				passwordCel1 := new(string)
+				passwordCel3 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.PasswordCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.PasswordCel.IsNull() {
-					*passwordCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.PasswordCel.ValueString()
+					*passwordCel3 = r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.PasswordCel.ValueString()
 				} else {
-					passwordCel1 = nil
+					passwordCel3 = nil
 				}
 				setCredential1 = &shared.SetCredential{
 					AccountIDCel: accountIDCel3,
 					ConnectorRef: connectorRef7,
-					PasswordCel:  passwordCel1,
+					PasswordCel:  passwordCel3,
 				}
 			}
 			skipIfTrueCel1 := new(string)
@@ -4378,106 +5003,181 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			} else {
 				stepName1 = nil
 			}
-			var taskAction1 *shared.TaskAction
-			if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction != nil {
+			var storeCredential1 *shared.StoreCredential
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential != nil {
+				appIDCel1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.IsNull() {
+					*appIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.ValueString()
+				} else {
+					appIDCel1 = nil
+				}
+				authType1 := new(shared.AuthType)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.IsNull() {
+					*authType1 = shared.AuthType(r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.ValueString())
+				} else {
+					authType1 = nil
+				}
+				credentialCel1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.IsNull() {
+					*credentialCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.ValueString()
+				} else {
+					credentialCel1 = nil
+				}
+				expiry1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.IsNull() {
+					*expiry1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.ValueString()
+				} else {
+					expiry1 = nil
+				}
+				labelCel1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.IsNull() {
+					*labelCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.ValueString()
+				} else {
+					labelCel1 = nil
+				}
+				maxViews1 := new(int64)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.IsNull() {
+					*maxViews1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.ValueInt64()
+				} else {
+					maxViews1 = nil
+				}
+				recipientCel1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.IsNull() {
+					*recipientCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.ValueString()
+				} else {
+					recipientCel1 = nil
+				}
+				recipientEmailCel1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.IsNull() {
+					*recipientEmailCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.ValueString()
+				} else {
+					recipientEmailCel1 = nil
+				}
+				ttl1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.TTL.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.TTL.IsNull() {
+					*ttl1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.TTL.ValueString()
+				} else {
+					ttl1 = nil
+				}
+				vaultType1 := new(shared.VaultType)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.IsNull() {
+					*vaultType1 = shared.VaultType(r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.ValueString())
+				} else {
+					vaultType1 = nil
+				}
+				storeCredential1 = &shared.StoreCredential{
+					AppIDCel:          appIDCel1,
+					AuthType:          authType1,
+					CredentialCel:     credentialCel1,
+					Expiry:            expiry1,
+					LabelCel:          labelCel1,
+					MaxViews:          maxViews1,
+					RecipientCel:      recipientCel1,
+					RecipientEmailCel: recipientEmailCel1,
+					TTL:               ttl1,
+					VaultType:         vaultType1,
+				}
+			}
+			var automationsTaskAction1 *shared.AutomationsTaskAction
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction != nil {
 				var closeAction1 *shared.CloseAction
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction != nil {
-					useSubjectUser16 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsNull() {
-						*useSubjectUser16 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.ValueBool()
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction != nil {
+					useSubjectUser18 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.IsNull() {
+						*useSubjectUser18 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.ValueBool()
 					} else {
-						useSubjectUser16 = nil
+						useSubjectUser18 = nil
 					}
 					userIDCel12 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.IsNull() {
-						*userIDCel12 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.IsNull() {
+						*userIDCel12 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.ValueString()
 					} else {
 						userIDCel12 = nil
 					}
 					var userRef14 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef != nil {
-						id41 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsNull() {
-							*id41 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.ValueString()
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserRef != nil {
+						id43 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.IsNull() {
+							*id43 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.ValueString()
 						} else {
-							id41 = nil
+							id43 = nil
 						}
 						userRef14 = &shared.UserRef{
-							ID: id41,
+							ID: id43,
 						}
 					}
 					closeAction1 = &shared.CloseAction{
-						UseSubjectUser: useSubjectUser16,
+						UseSubjectUser: useSubjectUser18,
 						UserIDCel:      userIDCel12,
 						UserRef:        userRef14,
 					}
 				}
 				var reassignAction1 *shared.ReassignAction
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction != nil {
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction != nil {
 					assigneeUserIDCel1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
-						*assigneeUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
+						*assigneeUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
 					} else {
 						assigneeUserIDCel1 = nil
 					}
 					var userRef15 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef != nil {
-						id42 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsNull() {
-							*id42 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.ValueString()
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef != nil {
+						id44 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.IsNull() {
+							*id44 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.ValueString()
 						} else {
-							id42 = nil
+							id44 = nil
 						}
 						userRef15 = &shared.UserRef{
-							ID: id42,
+							ID: id44,
 						}
 					}
 					subjectUserIDCel1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
-						*subjectUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
+						*subjectUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.ValueString()
 					} else {
 						subjectUserIDCel1 = nil
 					}
 					var userRef16 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1 != nil {
-						id43 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsNull() {
-							*id43 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.ValueString()
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1 != nil {
+						id45 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.IsNull() {
+							*id45 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.ValueString()
 						} else {
-							id43 = nil
+							id45 = nil
 						}
 						userRef16 = &shared.UserRef{
-							ID: id43,
+							ID: id45,
 						}
 					}
-					useSubjectUser17 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsNull() {
-						*useSubjectUser17 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.ValueBool()
+					useSubjectUser19 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.IsNull() {
+						*useSubjectUser19 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.ValueBool()
 					} else {
-						useSubjectUser17 = nil
+						useSubjectUser19 = nil
 					}
 					reassignAction1 = &shared.ReassignAction{
 						AssigneeUserIDCel: assigneeUserIDCel1,
 						UserRef:           userRef15,
 						SubjectUserIDCel:  subjectUserIDCel1,
 						UserRef1:          userRef16,
-						UseSubjectUser:    useSubjectUser17,
+						UseSubjectUser:    useSubjectUser19,
 					}
 				}
 				var taskTypes1 []shared.TaskTypes
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskTypes != nil {
-					taskTypes1 = make([]shared.TaskTypes, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskTypes))
-					for _, taskTypesItem1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskTypes {
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskTypes != nil {
+					taskTypes1 = make([]shared.TaskTypes, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskTypes))
+					for _, taskTypesItem1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskTypes {
 						taskTypes1 = append(taskTypes1, shared.TaskTypes(taskTypesItem1.ValueString()))
 					}
 				}
 				taskUserRelation1 := new(shared.TaskUserRelation)
-				if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskUserRelation.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskUserRelation.IsNull() {
-					*taskUserRelation1 = shared.TaskUserRelation(r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskUserRelation.ValueString())
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskUserRelation.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskUserRelation.IsNull() {
+					*taskUserRelation1 = shared.TaskUserRelation(r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskUserRelation.ValueString())
 				} else {
 					taskUserRelation1 = nil
 				}
-				taskAction1 = &shared.TaskAction{
+				automationsTaskAction1 = &shared.AutomationsTaskAction{
 					CloseAction:      closeAction1,
 					ReassignAction:   reassignAction1,
 					TaskTypes:        taskTypes1,
@@ -4499,48 +5199,48 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					catalogIdsCel1 = nil
 				}
-				useSubjectUser18 := new(bool)
+				useSubjectUser20 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.IsNull() {
-					*useSubjectUser18 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.ValueBool()
+					*useSubjectUser20 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser18 = nil
+					useSubjectUser20 = nil
 				}
-				userIdsCel5 := new(string)
+				userIdsCel7 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.IsNull() {
-					*userIdsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.ValueString()
+					*userIdsCel7 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.ValueString()
 				} else {
-					userIdsCel5 = nil
+					userIdsCel7 = nil
 				}
-				var userRefs5 []shared.UserRef
+				var userRefs7 []shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs != nil {
-					userRefs5 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs))
-					for userRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs {
-						id44 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex5].ID.IsNull() {
-							*id44 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex5].ID.ValueString()
+					userRefs7 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs))
+					for userRefsIndex7 := range r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs {
+						id46 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex7].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex7].ID.IsNull() {
+							*id46 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex7].ID.ValueString()
 						} else {
-							id44 = nil
+							id46 = nil
 						}
-						userRefs5 = append(userRefs5, shared.UserRef{
-							ID: id44,
+						userRefs7 = append(userRefs7, shared.UserRef{
+							ID: id46,
 						})
 					}
 				}
 				unenrollFromAllAccessProfiles1 = &shared.UnenrollFromAllAccessProfiles{
 					CatalogIds:     catalogIds1,
 					CatalogIdsCel:  catalogIdsCel1,
-					UseSubjectUser: useSubjectUser18,
-					UserIdsCel:     userIdsCel5,
-					UserRefs:       userRefs5,
+					UseSubjectUser: useSubjectUser20,
+					UserIdsCel:     userIdsCel7,
+					UserRefs:       userRefs7,
 				}
 			}
 			var updateUser1 *shared.UpdateUser
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser != nil {
-				useSubjectUser19 := new(bool)
+				useSubjectUser21 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UseSubjectUser.IsNull() {
-					*useSubjectUser19 = r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UseSubjectUser.ValueBool()
+					*useSubjectUser21 = r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser19 = nil
+					useSubjectUser21 = nil
 				}
 				userIDCel13 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserIDCel.IsNull() {
@@ -4550,14 +5250,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				var userRef17 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef != nil {
-					id45 := new(string)
+					id47 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.IsNull() {
-						*id45 = r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.ValueString()
+						*id47 = r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.ValueString()
 					} else {
-						id45 = nil
+						id47 = nil
 					}
 					userRef17 = &shared.UserRef{
-						ID: id45,
+						ID: id47,
 					}
 				}
 				userStatusCel1 := new(string)
@@ -4573,7 +5273,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					userStatusEnum1 = nil
 				}
 				updateUser1 = &shared.UpdateUser{
-					UseSubjectUser: useSubjectUser19,
+					UseSubjectUser: useSubjectUser21,
 					UserIDCel:      userIDCel13,
 					UserRef:        userRef17,
 					UserStatusCel:  userStatusCel1,
@@ -4592,25 +5292,25 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					Duration: duration1,
 				}
 			}
-			var webhook1 *shared.Webhook
-			if r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook != nil {
+			var automationsWebhook1 *shared.AutomationsWebhook
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook != nil {
 				var payload1 *shared.Payload
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.Payload != nil {
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.Payload != nil {
 					payload1 = &shared.Payload{}
 				}
 				webhookId1 := new(string)
-				if !r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookID.IsNull() {
-					*webhookId1 = r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookID.ValueString()
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookID.IsNull() {
+					*webhookId1 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookID.ValueString()
 				} else {
 					webhookId1 = nil
 				}
 				webhookIDCel1 := new(string)
-				if !r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookIDCel.IsNull() {
-					*webhookIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookIDCel.ValueString()
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookIDCel.IsNull() {
+					*webhookIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookIDCel.ValueString()
 				} else {
 					webhookIDCel1 = nil
 				}
-				webhook1 = &shared.Webhook{
+				automationsWebhook1 = &shared.AutomationsWebhook{
 					Payload:      payload1,
 					WebhookID:    webhookId1,
 					WebhookIDCel: webhookIDCel1,
@@ -4635,11 +5335,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				SkipIfTrueCel:                 skipIfTrueCel1,
 				StepDisplayName:               stepDisplayName1,
 				StepName:                      stepName1,
-				TaskAction:                    taskAction1,
+				StoreCredential:               storeCredential1,
+				AutomationsTaskAction:         automationsTaskAction1,
 				UnenrollFromAllAccessProfiles: unenrollFromAllAccessProfiles1,
 				UpdateUser:                    updateUser1,
 				WaitForDuration:               waitForDuration1,
-				Webhook:                       webhook1,
+				AutomationsWebhook:            automationsWebhook1,
 			})
 		}
 	}
@@ -4661,14 +5362,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					if r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs != nil {
 						conflictMonitorRefs1 = make([]shared.ConflictMonitorRef, 0, len(r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs))
 						for conflictMonitorRefsIndex := range r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs {
-							id46 := new(string)
+							id48 := new(string)
 							if !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsNull() {
-								*id46 = r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.ValueString()
+								*id48 = r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.ValueString()
 							} else {
-								id46 = nil
+								id48 = nil
 							}
 							conflictMonitorRefs1 = append(conflictMonitorRefs1, shared.ConflictMonitorRef{
-								ID: id46,
+								ID: id48,
 							})
 						}
 					}
@@ -4689,11 +5390,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					appId21 = nil
 				}
-				appIDCel := new(string)
+				appIDCel2 := new(string)
 				if !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.IsNull() {
-					*appIDCel = r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
+					*appIDCel2 = r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
 				} else {
-					appIDCel = nil
+					appIDCel2 = nil
 				}
 				condition := new(string)
 				if !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.Condition.IsNull() {
@@ -4703,7 +5404,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				appUserCreatedTrigger = &shared.AppUserCreatedTrigger{
 					AppID:     appId21,
-					AppIDCel:  appIDCel,
+					AppIDCel:  appIDCel2,
 					Condition: condition,
 				}
 			}
@@ -4715,11 +5416,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					appId22 = nil
 				}
-				appIDCel1 := new(string)
+				appIDCel3 := new(string)
 				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.IsNull() {
-					*appIDCel1 = r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
+					*appIDCel3 = r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
 				} else {
-					appIDCel1 = nil
+					appIDCel3 = nil
 				}
 				condition1 := new(string)
 				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.Condition.IsNull() {
@@ -4729,7 +5430,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				appUserUpdatedTrigger = &shared.AppUserUpdatedTrigger{
 					AppID:     appId22,
-					AppIDCel:  appIDCel1,
+					AppIDCel:  appIDCel3,
 					Condition: condition1,
 				}
 			}
@@ -4828,15 +5529,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 								} else {
 									appId23 = nil
 								}
-								id47 := new(string)
+								id49 := new(string)
 								if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsNull() {
-									*id47 = r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.ValueString()
+									*id49 = r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.ValueString()
 								} else {
-									id47 = nil
+									id49 = nil
 								}
 								appEntitlementRefs6 = append(appEntitlementRefs6, shared.AppEntitlementRef{
 									AppID: appId23,
-									ID:    id47,
+									ID:    id49,
 								})
 							}
 						}
@@ -4964,15 +5665,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 								} else {
 									appId24 = nil
 								}
-								id48 := new(string)
+								id50 := new(string)
 								if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsNull() {
-									*id48 = r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.ValueString()
+									*id50 = r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.ValueString()
 								} else {
-									id48 = nil
+									id50 = nil
 								}
 								appEntitlementRefs7 = append(appEntitlementRefs7, shared.AppEntitlementRef{
 									AppID: appId24,
-									ID:    id48,
+									ID:    id50,
 								})
 							}
 						}
@@ -5092,6 +5793,39 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					Timezone:  timezone1,
 				}
 			}
+			var scheduleTriggerNoUser *shared.ScheduleTriggerNoUser
+			if r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser != nil {
+				advanced1 := new(bool)
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.IsNull() {
+					*advanced1 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.ValueBool()
+				} else {
+					advanced1 = nil
+				}
+				cronSpec2 := new(string)
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.IsNull() {
+					*cronSpec2 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.ValueString()
+				} else {
+					cronSpec2 = nil
+				}
+				start2 := new(time.Time)
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.IsNull() {
+					*start2, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.ValueString())
+				} else {
+					start2 = nil
+				}
+				timezone2 := new(string)
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.IsNull() {
+					*timezone2 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.ValueString()
+				} else {
+					timezone2 = nil
+				}
+				scheduleTriggerNoUser = &shared.ScheduleTriggerNoUser{
+					Advanced: advanced1,
+					CronSpec: cronSpec2,
+					Start:    start2,
+					Timezone: timezone2,
+				}
+			}
 			var usageBasedRevocationTrigger *shared.UsageBasedRevocationTrigger
 			if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger != nil {
 				appId26 := new(string)
@@ -5116,15 +5850,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							appId27 = nil
 						}
-						id49 := new(string)
+						id51 := new(string)
 						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsNull() {
-							*id49 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.ValueString()
+							*id51 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.ValueString()
 						} else {
-							id49 = nil
+							id51 = nil
 						}
 						excludedGroupRefs = append(excludedGroupRefs, shared.AppEntitlementRef{
 							AppID: appId27,
-							ID:    id49,
+							ID:    id51,
 						})
 					}
 				}
@@ -5132,14 +5866,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
 					excludedUserRefs = make([]shared.UserRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs))
 					for excludedUserRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs {
-						id50 := new(string)
+						id52 := new(string)
 						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.IsNull() {
-							*id50 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.ValueString()
+							*id52 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.ValueString()
 						} else {
-							id50 = nil
+							id52 = nil
 						}
 						excludedUserRefs = append(excludedUserRefs, shared.UserRef{
-							ID: id50,
+							ID: id52,
 						})
 					}
 				}
@@ -5179,15 +5913,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							appId28 = nil
 						}
-						id51 := new(string)
+						id53 := new(string)
 						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsNull() {
-							*id51 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.ValueString()
+							*id53 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.ValueString()
 						} else {
-							id51 = nil
+							id53 = nil
 						}
 						targetedEntitlementRefs = append(targetedEntitlementRefs, shared.AppEntitlementRef{
 							AppID: appId28,
-							ID:    id51,
+							ID:    id53,
 						})
 					}
 				}
@@ -5236,6 +5970,10 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			}
 			var webhookAutomationTrigger *shared.WebhookAutomationTrigger
 			if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger != nil {
+				var webhookListenerAuthCapabilityURL *shared.WebhookListenerAuthCapabilityURL
+				if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL != nil {
+					webhookListenerAuthCapabilityURL = &shared.WebhookListenerAuthCapabilityURL{}
+				}
 				var webhookListenerAuthHMAC *shared.WebhookListenerAuthHMAC
 				if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthHMAC != nil {
 					webhookListenerAuthHMAC = &shared.WebhookListenerAuthHMAC{}
@@ -5259,9 +5997,10 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					listenerID = nil
 				}
 				webhookAutomationTrigger = &shared.WebhookAutomationTrigger{
-					WebhookListenerAuthHMAC: webhookListenerAuthHMAC,
-					WebhookListenerAuthJWT:  webhookListenerAuthJWT,
-					ListenerID:              listenerID,
+					WebhookListenerAuthCapabilityURL: webhookListenerAuthCapabilityURL,
+					WebhookListenerAuthHMAC:          webhookListenerAuthHMAC,
+					WebhookListenerAuthJWT:           webhookListenerAuthJWT,
+					ListenerID:                       listenerID,
 				}
 			}
 			draftTriggers = append(draftTriggers, shared.AutomationTrigger{
@@ -5272,6 +6011,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				GrantFoundTrigger:           grantFoundTrigger,
 				ScheduleTrigger:             scheduleTrigger,
 				ScheduleTriggerAppUser:      scheduleTriggerAppUser,
+				ScheduleTriggerNoUser:       scheduleTriggerNoUser,
 				UsageBasedRevocationTrigger: usageBasedRevocationTrigger,
 				UserCreatedTrigger:          userCreatedTrigger,
 				UserProfileChangeTrigger:    userProfileChangeTrigger,
@@ -5321,14 +6061,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					if r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs != nil {
 						conflictMonitorRefs3 = make([]shared.ConflictMonitorRef, 0, len(r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs))
 						for conflictMonitorRefsIndex1 := range r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs {
-							id52 := new(string)
+							id54 := new(string)
 							if !r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsNull() {
-								*id52 = r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.ValueString()
+								*id54 = r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.ValueString()
 							} else {
-								id52 = nil
+								id54 = nil
 							}
 							conflictMonitorRefs3 = append(conflictMonitorRefs3, shared.ConflictMonitorRef{
-								ID: id52,
+								ID: id54,
 							})
 						}
 					}
@@ -5349,11 +6089,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					appId29 = nil
 				}
-				appIDCel2 := new(string)
+				appIDCel4 := new(string)
 				if !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.IsNull() {
-					*appIDCel2 = r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
+					*appIDCel4 = r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
 				} else {
-					appIDCel2 = nil
+					appIDCel4 = nil
 				}
 				condition6 := new(string)
 				if !r.Triggers[triggersIndex].AppUserCreatedTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreatedTrigger.Condition.IsNull() {
@@ -5363,7 +6103,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				appUserCreatedTrigger1 = &shared.AppUserCreatedTrigger{
 					AppID:     appId29,
-					AppIDCel:  appIDCel2,
+					AppIDCel:  appIDCel4,
 					Condition: condition6,
 				}
 			}
@@ -5375,11 +6115,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					appId30 = nil
 				}
-				appIDCel3 := new(string)
+				appIDCel5 := new(string)
 				if !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.IsNull() {
-					*appIDCel3 = r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
+					*appIDCel5 = r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
 				} else {
-					appIDCel3 = nil
+					appIDCel5 = nil
 				}
 				condition7 := new(string)
 				if !r.Triggers[triggersIndex].AppUserUpdatedTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdatedTrigger.Condition.IsNull() {
@@ -5389,7 +6129,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				appUserUpdatedTrigger1 = &shared.AppUserUpdatedTrigger{
 					AppID:     appId30,
-					AppIDCel:  appIDCel3,
+					AppIDCel:  appIDCel5,
 					Condition: condition7,
 				}
 			}
@@ -5488,15 +6228,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 								} else {
 									appId31 = nil
 								}
-								id53 := new(string)
+								id55 := new(string)
 								if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsNull() {
-									*id53 = r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.ValueString()
+									*id55 = r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.ValueString()
 								} else {
-									id53 = nil
+									id55 = nil
 								}
 								appEntitlementRefs8 = append(appEntitlementRefs8, shared.AppEntitlementRef{
 									AppID: appId31,
-									ID:    id53,
+									ID:    id55,
 								})
 							}
 						}
@@ -5624,15 +6364,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 								} else {
 									appId32 = nil
 								}
-								id54 := new(string)
+								id56 := new(string)
 								if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsNull() {
-									*id54 = r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.ValueString()
+									*id56 = r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.ValueString()
 								} else {
-									id54 = nil
+									id56 = nil
 								}
 								appEntitlementRefs9 = append(appEntitlementRefs9, shared.AppEntitlementRef{
 									AppID: appId32,
-									ID:    id54,
+									ID:    id56,
 								})
 							}
 						}
@@ -5667,11 +6407,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			}
 			var scheduleTrigger1 *shared.ScheduleTrigger
 			if r.Triggers[triggersIndex].ScheduleTrigger != nil {
-				advanced1 := new(bool)
+				advanced2 := new(bool)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.Advanced.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Advanced.IsNull() {
-					*advanced1 = r.Triggers[triggersIndex].ScheduleTrigger.Advanced.ValueBool()
+					*advanced2 = r.Triggers[triggersIndex].ScheduleTrigger.Advanced.ValueBool()
 				} else {
-					advanced1 = nil
+					advanced2 = nil
 				}
 				condition8 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Condition.IsNull() {
@@ -5679,11 +6419,11 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					condition8 = nil
 				}
-				cronSpec2 := new(string)
+				cronSpec3 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.IsNull() {
-					*cronSpec2 = r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.ValueString()
+					*cronSpec3 = r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.ValueString()
 				} else {
-					cronSpec2 = nil
+					cronSpec3 = nil
 				}
 				skipIfTrueCel3 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.SkipIfTrueCel.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.SkipIfTrueCel.IsNull() {
@@ -5691,25 +6431,25 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					skipIfTrueCel3 = nil
 				}
-				start2 := new(time.Time)
+				start3 := new(time.Time)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Start.IsNull() {
-					*start2, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTrigger.Start.ValueString())
+					*start3, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTrigger.Start.ValueString())
 				} else {
-					start2 = nil
+					start3 = nil
 				}
-				timezone2 := new(string)
+				timezone3 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Timezone.IsNull() {
-					*timezone2 = r.Triggers[triggersIndex].ScheduleTrigger.Timezone.ValueString()
+					*timezone3 = r.Triggers[triggersIndex].ScheduleTrigger.Timezone.ValueString()
 				} else {
-					timezone2 = nil
+					timezone3 = nil
 				}
 				scheduleTrigger1 = &shared.ScheduleTrigger{
-					Advanced:      advanced1,
+					Advanced:      advanced2,
 					Condition:     condition8,
-					CronSpec:      cronSpec2,
+					CronSpec:      cronSpec3,
 					SkipIfTrueCel: skipIfTrueCel3,
-					Start:         start2,
-					Timezone:      timezone2,
+					Start:         start3,
+					Timezone:      timezone3,
 				}
 			}
 			var scheduleTriggerAppUser1 *shared.ScheduleTriggerAppUser
@@ -5726,30 +6466,63 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					condition9 = nil
 				}
-				cronSpec3 := new(string)
+				cronSpec4 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.IsNull() {
-					*cronSpec3 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.ValueString()
+					*cronSpec4 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.ValueString()
 				} else {
-					cronSpec3 = nil
+					cronSpec4 = nil
 				}
-				start3 := new(time.Time)
+				start4 := new(time.Time)
 				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.IsNull() {
-					*start3, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.ValueString())
+					*start4, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.ValueString())
 				} else {
-					start3 = nil
+					start4 = nil
 				}
-				timezone3 := new(string)
+				timezone4 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.IsNull() {
-					*timezone3 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.ValueString()
+					*timezone4 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.ValueString()
 				} else {
-					timezone3 = nil
+					timezone4 = nil
 				}
 				scheduleTriggerAppUser1 = &shared.ScheduleTriggerAppUser{
 					AppID:     appId33,
 					Condition: condition9,
-					CronSpec:  cronSpec3,
-					Start:     start3,
-					Timezone:  timezone3,
+					CronSpec:  cronSpec4,
+					Start:     start4,
+					Timezone:  timezone4,
+				}
+			}
+			var scheduleTriggerNoUser1 *shared.ScheduleTriggerNoUser
+			if r.Triggers[triggersIndex].ScheduleTriggerNoUser != nil {
+				advanced3 := new(bool)
+				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.IsNull() {
+					*advanced3 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.ValueBool()
+				} else {
+					advanced3 = nil
+				}
+				cronSpec5 := new(string)
+				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.IsNull() {
+					*cronSpec5 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.ValueString()
+				} else {
+					cronSpec5 = nil
+				}
+				start5 := new(time.Time)
+				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.IsNull() {
+					*start5, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.ValueString())
+				} else {
+					start5 = nil
+				}
+				timezone5 := new(string)
+				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.IsNull() {
+					*timezone5 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.ValueString()
+				} else {
+					timezone5 = nil
+				}
+				scheduleTriggerNoUser1 = &shared.ScheduleTriggerNoUser{
+					Advanced: advanced3,
+					CronSpec: cronSpec5,
+					Start:    start5,
+					Timezone: timezone5,
 				}
 			}
 			var usageBasedRevocationTrigger1 *shared.UsageBasedRevocationTrigger
@@ -5776,15 +6549,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							appId35 = nil
 						}
-						id55 := new(string)
+						id57 := new(string)
 						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsNull() {
-							*id55 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.ValueString()
+							*id57 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.ValueString()
 						} else {
-							id55 = nil
+							id57 = nil
 						}
 						excludedGroupRefs1 = append(excludedGroupRefs1, shared.AppEntitlementRef{
 							AppID: appId35,
-							ID:    id55,
+							ID:    id57,
 						})
 					}
 				}
@@ -5792,14 +6565,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
 					excludedUserRefs1 = make([]shared.UserRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs))
 					for excludedUserRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs {
-						id56 := new(string)
+						id58 := new(string)
 						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsNull() {
-							*id56 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.ValueString()
+							*id58 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.ValueString()
 						} else {
-							id56 = nil
+							id58 = nil
 						}
 						excludedUserRefs1 = append(excludedUserRefs1, shared.UserRef{
-							ID: id56,
+							ID: id58,
 						})
 					}
 				}
@@ -5839,15 +6612,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							appId36 = nil
 						}
-						id57 := new(string)
+						id59 := new(string)
 						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsNull() {
-							*id57 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.ValueString()
+							*id59 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.ValueString()
 						} else {
-							id57 = nil
+							id59 = nil
 						}
 						targetedEntitlementRefs1 = append(targetedEntitlementRefs1, shared.AppEntitlementRef{
 							AppID: appId36,
-							ID:    id57,
+							ID:    id59,
 						})
 					}
 				}
@@ -5896,6 +6669,10 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			}
 			var webhookAutomationTrigger1 *shared.WebhookAutomationTrigger
 			if r.Triggers[triggersIndex].WebhookAutomationTrigger != nil {
+				var webhookListenerAuthCapabilityUrl1 *shared.WebhookListenerAuthCapabilityURL
+				if r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL != nil {
+					webhookListenerAuthCapabilityUrl1 = &shared.WebhookListenerAuthCapabilityURL{}
+				}
 				var webhookListenerAuthHmac1 *shared.WebhookListenerAuthHMAC
 				if r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthHMAC != nil {
 					webhookListenerAuthHmac1 = &shared.WebhookListenerAuthHMAC{}
@@ -5919,9 +6696,10 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					listenerId1 = nil
 				}
 				webhookAutomationTrigger1 = &shared.WebhookAutomationTrigger{
-					WebhookListenerAuthHMAC: webhookListenerAuthHmac1,
-					WebhookListenerAuthJWT:  webhookListenerAuthJwt1,
-					ListenerID:              listenerId1,
+					WebhookListenerAuthCapabilityURL: webhookListenerAuthCapabilityUrl1,
+					WebhookListenerAuthHMAC:          webhookListenerAuthHmac1,
+					WebhookListenerAuthJWT:           webhookListenerAuthJwt1,
+					ListenerID:                       listenerId1,
 				}
 			}
 			triggers = append(triggers, shared.AutomationTrigger{
@@ -5932,6 +6710,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				GrantFoundTrigger:           grantFoundTrigger1,
 				ScheduleTrigger:             scheduleTrigger1,
 				ScheduleTriggerAppUser:      scheduleTriggerAppUser1,
+				ScheduleTriggerNoUser:       scheduleTriggerNoUser1,
 				UsageBasedRevocationTrigger: usageBasedRevocationTrigger1,
 				UserCreatedTrigger:          userCreatedTrigger1,
 				UserProfileChangeTrigger:    userProfileChangeTrigger1,
@@ -5967,7 +6746,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 	return &out, diags
 }
 
-func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Context) (*shared.CreateAutomationRequest, diag.Diagnostics) {
+func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx context.Context) (*shared.AutomationsCreateAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	appID := new(string)
@@ -6115,6 +6894,12 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						ID:    id2,
 					}
 				}
+				passwordCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.PasswordCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.PasswordCel.IsNull() {
+					*passwordCel = r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.PasswordCel.ValueString()
+				} else {
+					passwordCel = nil
+				}
 				userIDCel := new(string)
 				if !r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.UserIDCel.IsNull() {
 					*userIDCel = r.AutomationSteps[automationStepsIndex].ConnectorCreateAccount.UserIDCel.ValueString()
@@ -6156,6 +6941,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				connectorCreateAccount = &shared.ConnectorCreateAccount{
 					ConnectorRef:   connectorRef2,
+					PasswordCel:    passwordCel,
 					UserIDCel:      userIDCel,
 					UserProperties: userProperties,
 				}
@@ -6560,8 +7346,77 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					passwordPolicyID = nil
 				}
+				var generatePasswordPolicy *shared.GeneratePasswordPolicy
+				if r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy != nil {
+					customCharacters := new(string)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsNull() {
+						*customCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.ValueString()
+					} else {
+						customCharacters = nil
+					}
+					excludedCharacters := new(string)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsNull() {
+						*excludedCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.ValueString()
+					} else {
+						excludedCharacters = nil
+					}
+					maxCharacterCount := new(int)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsNull() {
+						*maxCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.ValueInt32())
+					} else {
+						maxCharacterCount = nil
+					}
+					minCharacterCount := new(int)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsNull() {
+						*minCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.ValueInt32())
+					} else {
+						minCharacterCount = nil
+					}
+					noRestrictions := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsNull() {
+						*noRestrictions = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.ValueBool()
+					} else {
+						noRestrictions = nil
+					}
+					requireLowercase := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsNull() {
+						*requireLowercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.ValueBool()
+					} else {
+						requireLowercase = nil
+					}
+					requireNumbers := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsNull() {
+						*requireNumbers = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.ValueBool()
+					} else {
+						requireNumbers = nil
+					}
+					requireSpecialCharacters := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsNull() {
+						*requireSpecialCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.ValueBool()
+					} else {
+						requireSpecialCharacters = nil
+					}
+					requireUppercase := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsNull() {
+						*requireUppercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.ValueBool()
+					} else {
+						requireUppercase = nil
+					}
+					generatePasswordPolicy = &shared.GeneratePasswordPolicy{
+						CustomCharacters:         customCharacters,
+						ExcludedCharacters:       excludedCharacters,
+						MaxCharacterCount:        maxCharacterCount,
+						MinCharacterCount:        minCharacterCount,
+						NoRestrictions:           noRestrictions,
+						RequireLowercase:         requireLowercase,
+						RequireNumbers:           requireNumbers,
+						RequireSpecialCharacters: requireSpecialCharacters,
+						RequireUppercase:         requireUppercase,
+					}
+				}
 				generatePassword = &shared.GeneratePassword{
-					PasswordPolicyID: passwordPolicyID,
+					PasswordPolicyID:       passwordPolicyID,
+					GeneratePasswordPolicy: generatePasswordPolicy,
 				}
 			}
 			var grantEntitlements *shared.GrantEntitlements
@@ -6841,6 +7696,18 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					body = nil
 				}
+				email := new(string)
+				if !r.AutomationSteps[automationStepsIndex].SendEmail.Email.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendEmail.Email.IsNull() {
+					*email = r.AutomationSteps[automationStepsIndex].SendEmail.Email.ValueString()
+				} else {
+					email = nil
+				}
+				emailCel1 := new(string)
+				if !r.AutomationSteps[automationStepsIndex].SendEmail.EmailCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendEmail.EmailCel.IsNull() {
+					*emailCel1 = r.AutomationSteps[automationStepsIndex].SendEmail.EmailCel.ValueString()
+				} else {
+					emailCel1 = nil
+				}
 				subject := new(string)
 				if !r.AutomationSteps[automationStepsIndex].SendEmail.Subject.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendEmail.Subject.IsNull() {
 					*subject = r.AutomationSteps[automationStepsIndex].SendEmail.Subject.ValueString()
@@ -6882,6 +7749,8 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				sendEmail = &shared.SendEmail{
 					Body:           body,
+					Email:          email,
+					EmailCel:       emailCel1,
 					Subject:        subject,
 					Title:          title,
 					UseSubjectUser: useSubjectUser5,
@@ -6909,10 +7778,40 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					channelNameCel = nil
 				}
+				useSubjectUser6 := new(bool)
+				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UseSubjectUser.IsNull() {
+					*useSubjectUser6 = r.AutomationSteps[automationStepsIndex].SendSlackMessage.UseSubjectUser.ValueBool()
+				} else {
+					useSubjectUser6 = nil
+				}
+				userIdsCel2 := new(string)
+				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserIdsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserIdsCel.IsNull() {
+					*userIdsCel2 = r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserIdsCel.ValueString()
+				} else {
+					userIdsCel2 = nil
+				}
+				var userRefs2 []shared.UserRef
+				if r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs != nil {
+					userRefs2 = make([]shared.UserRef, 0, len(r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs))
+					for userRefsIndex2 := range r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs {
+						id17 := new(string)
+						if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex2].ID.IsNull() {
+							*id17 = r.AutomationSteps[automationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex2].ID.ValueString()
+						} else {
+							id17 = nil
+						}
+						userRefs2 = append(userRefs2, shared.UserRef{
+							ID: id17,
+						})
+					}
+				}
 				sendSlackMessage = &shared.SendSlackMessage{
 					Body:           body1,
 					ChannelName:    channelName,
 					ChannelNameCel: channelNameCel,
+					UseSubjectUser: useSubjectUser6,
+					UserIdsCel:     userIdsCel2,
+					UserRefs:       userRefs2,
 				}
 			}
 			var setCredential *shared.SetCredential
@@ -6931,27 +7830,27 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					} else {
 						appId10 = nil
 					}
-					id17 := new(string)
+					id18 := new(string)
 					if !r.AutomationSteps[automationStepsIndex].SetCredential.ConnectorRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SetCredential.ConnectorRef.ID.IsNull() {
-						*id17 = r.AutomationSteps[automationStepsIndex].SetCredential.ConnectorRef.ID.ValueString()
+						*id18 = r.AutomationSteps[automationStepsIndex].SetCredential.ConnectorRef.ID.ValueString()
 					} else {
-						id17 = nil
+						id18 = nil
 					}
 					connectorRef3 = &shared.ConnectorRef{
 						AppID: appId10,
-						ID:    id17,
+						ID:    id18,
 					}
 				}
-				passwordCel := new(string)
+				passwordCel1 := new(string)
 				if !r.AutomationSteps[automationStepsIndex].SetCredential.PasswordCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SetCredential.PasswordCel.IsNull() {
-					*passwordCel = r.AutomationSteps[automationStepsIndex].SetCredential.PasswordCel.ValueString()
+					*passwordCel1 = r.AutomationSteps[automationStepsIndex].SetCredential.PasswordCel.ValueString()
 				} else {
-					passwordCel = nil
+					passwordCel1 = nil
 				}
 				setCredential = &shared.SetCredential{
 					AccountIDCel: accountIDCel1,
 					ConnectorRef: connectorRef3,
-					PasswordCel:  passwordCel,
+					PasswordCel:  passwordCel1,
 				}
 			}
 			skipIfTrueCel := new(string)
@@ -6972,106 +7871,181 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 			} else {
 				stepName = nil
 			}
-			var taskAction *shared.TaskAction
-			if r.AutomationSteps[automationStepsIndex].TaskAction != nil {
+			var storeCredential *shared.StoreCredential
+			if r.AutomationSteps[automationStepsIndex].StoreCredential != nil {
+				appIDCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.IsNull() {
+					*appIDCel = r.AutomationSteps[automationStepsIndex].StoreCredential.AppIDCel.ValueString()
+				} else {
+					appIDCel = nil
+				}
+				authType := new(shared.AuthType)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.IsNull() {
+					*authType = shared.AuthType(r.AutomationSteps[automationStepsIndex].StoreCredential.AuthType.ValueString())
+				} else {
+					authType = nil
+				}
+				credentialCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.IsNull() {
+					*credentialCel = r.AutomationSteps[automationStepsIndex].StoreCredential.CredentialCel.ValueString()
+				} else {
+					credentialCel = nil
+				}
+				expiry := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.IsNull() {
+					*expiry = r.AutomationSteps[automationStepsIndex].StoreCredential.Expiry.ValueString()
+				} else {
+					expiry = nil
+				}
+				labelCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.IsNull() {
+					*labelCel = r.AutomationSteps[automationStepsIndex].StoreCredential.LabelCel.ValueString()
+				} else {
+					labelCel = nil
+				}
+				maxViews := new(int64)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.IsNull() {
+					*maxViews = r.AutomationSteps[automationStepsIndex].StoreCredential.MaxViews.ValueInt64()
+				} else {
+					maxViews = nil
+				}
+				recipientCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.IsNull() {
+					*recipientCel = r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientCel.ValueString()
+				} else {
+					recipientCel = nil
+				}
+				recipientEmailCel := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.IsNull() {
+					*recipientEmailCel = r.AutomationSteps[automationStepsIndex].StoreCredential.RecipientEmailCel.ValueString()
+				} else {
+					recipientEmailCel = nil
+				}
+				ttl := new(string)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.TTL.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.TTL.IsNull() {
+					*ttl = r.AutomationSteps[automationStepsIndex].StoreCredential.TTL.ValueString()
+				} else {
+					ttl = nil
+				}
+				vaultType := new(shared.VaultType)
+				if !r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.IsUnknown() && !r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.IsNull() {
+					*vaultType = shared.VaultType(r.AutomationSteps[automationStepsIndex].StoreCredential.VaultType.ValueString())
+				} else {
+					vaultType = nil
+				}
+				storeCredential = &shared.StoreCredential{
+					AppIDCel:          appIDCel,
+					AuthType:          authType,
+					CredentialCel:     credentialCel,
+					Expiry:            expiry,
+					LabelCel:          labelCel,
+					MaxViews:          maxViews,
+					RecipientCel:      recipientCel,
+					RecipientEmailCel: recipientEmailCel,
+					TTL:               ttl,
+					VaultType:         vaultType,
+				}
+			}
+			var automationsTaskAction *shared.AutomationsTaskAction
+			if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction != nil {
 				var closeAction *shared.CloseAction
-				if r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction != nil {
-					useSubjectUser6 := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsNull() {
-						*useSubjectUser6 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.ValueBool()
+				if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction != nil {
+					useSubjectUser7 := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.IsNull() {
+						*useSubjectUser7 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.ValueBool()
 					} else {
-						useSubjectUser6 = nil
+						useSubjectUser7 = nil
 					}
 					userIDCel5 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.IsNull() {
-						*userIDCel5 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.IsNull() {
+						*userIDCel5 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.ValueString()
 					} else {
 						userIDCel5 = nil
 					}
 					var userRef4 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef != nil {
-						id18 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsNull() {
-							*id18 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.ValueString()
+					if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserRef != nil {
+						id19 := new(string)
+						if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.IsNull() {
+							*id19 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.ValueString()
 						} else {
-							id18 = nil
+							id19 = nil
 						}
 						userRef4 = &shared.UserRef{
-							ID: id18,
+							ID: id19,
 						}
 					}
 					closeAction = &shared.CloseAction{
-						UseSubjectUser: useSubjectUser6,
+						UseSubjectUser: useSubjectUser7,
 						UserIDCel:      userIDCel5,
 						UserRef:        userRef4,
 					}
 				}
 				var reassignAction *shared.ReassignAction
-				if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction != nil {
+				if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction != nil {
 					assigneeUserIDCel := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
-						*assigneeUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
+						*assigneeUserIDCel = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
 					} else {
 						assigneeUserIDCel = nil
 					}
 					var userRef5 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef != nil {
-						id19 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsNull() {
-							*id19 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.ValueString()
+					if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef != nil {
+						id20 := new(string)
+						if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.IsNull() {
+							*id20 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.ValueString()
 						} else {
-							id19 = nil
+							id20 = nil
 						}
 						userRef5 = &shared.UserRef{
-							ID: id19,
+							ID: id20,
 						}
 					}
 					subjectUserIDCel := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
-						*subjectUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
+						*subjectUserIDCel = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.ValueString()
 					} else {
 						subjectUserIDCel = nil
 					}
 					var userRef12 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1 != nil {
-						id20 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsNull() {
-							*id20 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.ValueString()
+					if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1 != nil {
+						id21 := new(string)
+						if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.IsNull() {
+							*id21 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.ValueString()
 						} else {
-							id20 = nil
+							id21 = nil
 						}
 						userRef12 = &shared.UserRef{
-							ID: id20,
+							ID: id21,
 						}
 					}
-					useSubjectUser7 := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsNull() {
-						*useSubjectUser7 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.ValueBool()
+					useSubjectUser8 := new(bool)
+					if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.IsNull() {
+						*useSubjectUser8 = r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.ValueBool()
 					} else {
-						useSubjectUser7 = nil
+						useSubjectUser8 = nil
 					}
 					reassignAction = &shared.ReassignAction{
 						AssigneeUserIDCel: assigneeUserIDCel,
 						UserRef:           userRef5,
 						SubjectUserIDCel:  subjectUserIDCel,
 						UserRef1:          userRef12,
-						UseSubjectUser:    useSubjectUser7,
+						UseSubjectUser:    useSubjectUser8,
 					}
 				}
 				var taskTypes []shared.TaskTypes
-				if r.AutomationSteps[automationStepsIndex].TaskAction.TaskTypes != nil {
-					taskTypes = make([]shared.TaskTypes, 0, len(r.AutomationSteps[automationStepsIndex].TaskAction.TaskTypes))
-					for _, taskTypesItem := range r.AutomationSteps[automationStepsIndex].TaskAction.TaskTypes {
+				if r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskTypes != nil {
+					taskTypes = make([]shared.TaskTypes, 0, len(r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskTypes))
+					for _, taskTypesItem := range r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskTypes {
 						taskTypes = append(taskTypes, shared.TaskTypes(taskTypesItem.ValueString()))
 					}
 				}
 				taskUserRelation := new(shared.TaskUserRelation)
-				if !r.AutomationSteps[automationStepsIndex].TaskAction.TaskUserRelation.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.TaskUserRelation.IsNull() {
-					*taskUserRelation = shared.TaskUserRelation(r.AutomationSteps[automationStepsIndex].TaskAction.TaskUserRelation.ValueString())
+				if !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskUserRelation.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskUserRelation.IsNull() {
+					*taskUserRelation = shared.TaskUserRelation(r.AutomationSteps[automationStepsIndex].AutomationsTaskAction.TaskUserRelation.ValueString())
 				} else {
 					taskUserRelation = nil
 				}
-				taskAction = &shared.TaskAction{
+				automationsTaskAction = &shared.AutomationsTaskAction{
 					CloseAction:      closeAction,
 					ReassignAction:   reassignAction,
 					TaskTypes:        taskTypes,
@@ -7093,48 +8067,48 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					catalogIdsCel = nil
 				}
-				useSubjectUser8 := new(bool)
+				useSubjectUser9 := new(bool)
 				if !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.IsNull() {
-					*useSubjectUser8 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.ValueBool()
+					*useSubjectUser9 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser8 = nil
+					useSubjectUser9 = nil
 				}
-				userIdsCel2 := new(string)
+				userIdsCel3 := new(string)
 				if !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.IsNull() {
-					*userIdsCel2 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.ValueString()
+					*userIdsCel3 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.ValueString()
 				} else {
-					userIdsCel2 = nil
+					userIdsCel3 = nil
 				}
-				var userRefs2 []shared.UserRef
+				var userRefs3 []shared.UserRef
 				if r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs != nil {
-					userRefs2 = make([]shared.UserRef, 0, len(r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs))
-					for userRefsIndex2 := range r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs {
-						id21 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex2].ID.IsNull() {
-							*id21 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex2].ID.ValueString()
+					userRefs3 = make([]shared.UserRef, 0, len(r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs))
+					for userRefsIndex3 := range r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs {
+						id22 := new(string)
+						if !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex3].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex3].ID.IsNull() {
+							*id22 = r.AutomationSteps[automationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex3].ID.ValueString()
 						} else {
-							id21 = nil
+							id22 = nil
 						}
-						userRefs2 = append(userRefs2, shared.UserRef{
-							ID: id21,
+						userRefs3 = append(userRefs3, shared.UserRef{
+							ID: id22,
 						})
 					}
 				}
 				unenrollFromAllAccessProfiles = &shared.UnenrollFromAllAccessProfiles{
 					CatalogIds:     catalogIds,
 					CatalogIdsCel:  catalogIdsCel,
-					UseSubjectUser: useSubjectUser8,
-					UserIdsCel:     userIdsCel2,
-					UserRefs:       userRefs2,
+					UseSubjectUser: useSubjectUser9,
+					UserIdsCel:     userIdsCel3,
+					UserRefs:       userRefs3,
 				}
 			}
 			var updateUser *shared.UpdateUser
 			if r.AutomationSteps[automationStepsIndex].UpdateUser != nil {
-				useSubjectUser9 := new(bool)
+				useSubjectUser10 := new(bool)
 				if !r.AutomationSteps[automationStepsIndex].UpdateUser.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UpdateUser.UseSubjectUser.IsNull() {
-					*useSubjectUser9 = r.AutomationSteps[automationStepsIndex].UpdateUser.UseSubjectUser.ValueBool()
+					*useSubjectUser10 = r.AutomationSteps[automationStepsIndex].UpdateUser.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser9 = nil
+					useSubjectUser10 = nil
 				}
 				userIDCel6 := new(string)
 				if !r.AutomationSteps[automationStepsIndex].UpdateUser.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UpdateUser.UserIDCel.IsNull() {
@@ -7144,14 +8118,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				var userRef6 *shared.UserRef
 				if r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef != nil {
-					id22 := new(string)
+					id23 := new(string)
 					if !r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.IsNull() {
-						*id22 = r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.ValueString()
+						*id23 = r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.ValueString()
 					} else {
-						id22 = nil
+						id23 = nil
 					}
 					userRef6 = &shared.UserRef{
-						ID: id22,
+						ID: id23,
 					}
 				}
 				userStatusCel := new(string)
@@ -7167,7 +8141,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					userStatusEnum = nil
 				}
 				updateUser = &shared.UpdateUser{
-					UseSubjectUser: useSubjectUser9,
+					UseSubjectUser: useSubjectUser10,
 					UserIDCel:      userIDCel6,
 					UserRef:        userRef6,
 					UserStatusCel:  userStatusCel,
@@ -7186,25 +8160,25 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					Duration: duration,
 				}
 			}
-			var webhook *shared.Webhook
-			if r.AutomationSteps[automationStepsIndex].Webhook != nil {
+			var automationsWebhook *shared.AutomationsWebhook
+			if r.AutomationSteps[automationStepsIndex].AutomationsWebhook != nil {
 				var payload *shared.Payload
-				if r.AutomationSteps[automationStepsIndex].Webhook.Payload != nil {
+				if r.AutomationSteps[automationStepsIndex].AutomationsWebhook.Payload != nil {
 					payload = &shared.Payload{}
 				}
 				webhookID := new(string)
-				if !r.AutomationSteps[automationStepsIndex].Webhook.WebhookID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].Webhook.WebhookID.IsNull() {
-					*webhookID = r.AutomationSteps[automationStepsIndex].Webhook.WebhookID.ValueString()
+				if !r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookID.IsNull() {
+					*webhookID = r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookID.ValueString()
 				} else {
 					webhookID = nil
 				}
 				webhookIDCel := new(string)
-				if !r.AutomationSteps[automationStepsIndex].Webhook.WebhookIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].Webhook.WebhookIDCel.IsNull() {
-					*webhookIDCel = r.AutomationSteps[automationStepsIndex].Webhook.WebhookIDCel.ValueString()
+				if !r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookIDCel.IsNull() {
+					*webhookIDCel = r.AutomationSteps[automationStepsIndex].AutomationsWebhook.WebhookIDCel.ValueString()
 				} else {
 					webhookIDCel = nil
 				}
-				webhook = &shared.Webhook{
+				automationsWebhook = &shared.AutomationsWebhook{
 					Payload:      payload,
 					WebhookID:    webhookID,
 					WebhookIDCel: webhookIDCel,
@@ -7229,11 +8203,12 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				SkipIfTrueCel:                 skipIfTrueCel,
 				StepDisplayName:               stepDisplayName,
 				StepName:                      stepName,
-				TaskAction:                    taskAction,
+				StoreCredential:               storeCredential,
+				AutomationsTaskAction:         automationsTaskAction,
 				UnenrollFromAllAccessProfiles: unenrollFromAllAccessProfiles,
 				UpdateUser:                    updateUser,
 				WaitForDuration:               waitForDuration,
-				Webhook:                       webhook,
+				AutomationsWebhook:            automationsWebhook,
 			})
 		}
 	}
@@ -7295,15 +8270,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					} else {
 						appId11 = nil
 					}
-					id23 := new(string)
+					id24 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AccountLifecycleAction.ConnectorRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AccountLifecycleAction.ConnectorRef.ID.IsNull() {
-						*id23 = r.DraftAutomationSteps[draftAutomationStepsIndex].AccountLifecycleAction.ConnectorRef.ID.ValueString()
+						*id24 = r.DraftAutomationSteps[draftAutomationStepsIndex].AccountLifecycleAction.ConnectorRef.ID.ValueString()
 					} else {
-						id23 = nil
+						id24 = nil
 					}
 					connectorRef4 = &shared.ConnectorRef{
 						AppID: appId11,
-						ID:    id23,
+						ID:    id24,
 					}
 				}
 				accountLifecycleAction1 = &shared.AccountLifecycleAction{
@@ -7353,15 +8328,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					} else {
 						appId12 = nil
 					}
-					id24 := new(string)
+					id25 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorAction.ConnectorRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorAction.ConnectorRef.ID.IsNull() {
-						*id24 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorAction.ConnectorRef.ID.ValueString()
+						*id25 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorAction.ConnectorRef.ID.ValueString()
 					} else {
-						id24 = nil
+						id25 = nil
 					}
 					connectorRef5 = &shared.ConnectorRef{
 						AppID: appId12,
-						ID:    id24,
+						ID:    id25,
 					}
 				}
 				resourceTypeId1 := new(string)
@@ -7387,16 +8362,22 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					} else {
 						appId13 = nil
 					}
-					id25 := new(string)
+					id26 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.ConnectorRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.ConnectorRef.ID.IsNull() {
-						*id25 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.ConnectorRef.ID.ValueString()
+						*id26 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.ConnectorRef.ID.ValueString()
 					} else {
-						id25 = nil
+						id26 = nil
 					}
 					connectorRef6 = &shared.ConnectorRef{
 						AppID: appId13,
-						ID:    id25,
+						ID:    id26,
 					}
+				}
+				passwordCel2 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.PasswordCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.PasswordCel.IsNull() {
+					*passwordCel2 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.PasswordCel.ValueString()
+				} else {
+					passwordCel2 = nil
 				}
 				userIDCel7 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserIDCel.IsNull() {
@@ -7412,11 +8393,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					} else {
 						displayNameCel1 = nil
 					}
-					emailCel1 := new(string)
+					emailCel2 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.EmailCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.EmailCel.IsNull() {
-						*emailCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.EmailCel.ValueString()
+						*emailCel2 = r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.EmailCel.ValueString()
 					} else {
-						emailCel1 = nil
+						emailCel2 = nil
 					}
 					profileAttributeCel1 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.ProfileAttributeCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].ConnectorCreateAccount.UserProperties.ProfileAttributeCel.IsNull() {
@@ -7432,13 +8413,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					}
 					userProperties1 = &shared.UserProperties{
 						DisplayNameCel:      displayNameCel1,
-						EmailCel:            emailCel1,
+						EmailCel:            emailCel2,
 						ProfileAttributeCel: profileAttributeCel1,
 						UsernameCel:         usernameCel1,
 					}
 				}
 				connectorCreateAccount1 = &shared.ConnectorCreateAccount{
 					ConnectorRef:   connectorRef6,
+					PasswordCel:    passwordCel2,
 					UserIDCel:      userIDCel7,
 					UserProperties: userProperties1,
 				}
@@ -7463,30 +8445,30 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					campaignName1 = nil
 				}
-				useSubjectUser10 := new(bool)
+				useSubjectUser11 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UseSubjectUser.IsNull() {
-					*useSubjectUser10 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UseSubjectUser.ValueBool()
+					*useSubjectUser11 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser10 = nil
+					useSubjectUser11 = nil
 				}
-				userIdsCel3 := new(string)
+				userIdsCel4 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserIdsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserIdsCel.IsNull() {
-					*userIdsCel3 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserIdsCel.ValueString()
+					*userIdsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserIdsCel.ValueString()
 				} else {
-					userIdsCel3 = nil
+					userIdsCel4 = nil
 				}
-				var userRefs3 []shared.UserRef
+				var userRefs4 []shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs != nil {
-					userRefs3 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs))
-					for userRefsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs {
-						id26 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex3].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex3].ID.IsNull() {
-							*id26 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex3].ID.ValueString()
+					userRefs4 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs))
+					for userRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs {
+						id27 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex4].ID.IsNull() {
+							*id27 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateAccessReview.UserRefs[userRefsIndex4].ID.ValueString()
 						} else {
-							id26 = nil
+							id27 = nil
 						}
-						userRefs3 = append(userRefs3, shared.UserRef{
-							ID: id26,
+						userRefs4 = append(userRefs4, shared.UserRef{
+							ID: id27,
 						})
 					}
 				}
@@ -7494,9 +8476,9 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					AccessReviewTemplateCel: accessReviewTemplateCel1,
 					AccessReviewTemplateID:  accessReviewTemplateId1,
 					CampaignName:            campaignName1,
-					UseSubjectUser:          useSubjectUser10,
-					UserIdsCel:              userIdsCel3,
-					UserRefs:                userRefs3,
+					UseSubjectUser:          useSubjectUser11,
+					UserIdsCel:              userIdsCel4,
+					UserRefs:                userRefs4,
 				}
 			}
 			var createRevokeTasks1 *shared.CreateRevokeTasks
@@ -7511,15 +8493,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						} else {
 							appId14 = nil
 						}
-						id27 := new(string)
+						id28 := new(string)
 						if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.AppEntitlementRefs[appEntitlementRefsIndex3].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.AppEntitlementRefs[appEntitlementRefsIndex3].ID.IsNull() {
-							*id27 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.AppEntitlementRefs[appEntitlementRefsIndex3].ID.ValueString()
+							*id28 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.AppEntitlementRefs[appEntitlementRefsIndex3].ID.ValueString()
 						} else {
-							id27 = nil
+							id28 = nil
 						}
 						appEntitlementRefs3 = append(appEntitlementRefs3, shared.AppEntitlementRef{
 							AppID: appId14,
-							ID:    id27,
+							ID:    id28,
 						})
 					}
 				}
@@ -7539,15 +8521,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						} else {
 							appId15 = nil
 						}
-						id28 := new(string)
+						id29 := new(string)
 						if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex3].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex3].ID.IsNull() {
-							*id28 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex3].ID.ValueString()
+							*id29 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex3].ID.ValueString()
 						} else {
-							id28 = nil
+							id29 = nil
 						}
 						excludedAppEntitlementRefs3 = append(excludedAppEntitlementRefs3, shared.AppEntitlementRef{
 							AppID: appId15,
-							ID:    id28,
+							ID:    id29,
 						})
 					}
 				}
@@ -7563,11 +8545,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					revokeAll1 = nil
 				}
-				useSubjectUser11 := new(bool)
+				useSubjectUser12 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UseSubjectUser.IsNull() {
-					*useSubjectUser11 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UseSubjectUser.ValueBool()
+					*useSubjectUser12 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser11 = nil
+					useSubjectUser12 = nil
 				}
 				userIDCel8 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserIDCel.IsNull() {
@@ -7577,14 +8559,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				var userRef7 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef != nil {
-					id29 := new(string)
+					id30 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.IsNull() {
-						*id29 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.ValueString()
+						*id30 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.ValueString()
 					} else {
-						id29 = nil
+						id30 = nil
 					}
 					userRef7 = &shared.UserRef{
-						ID: id29,
+						ID: id30,
 					}
 				}
 				createRevokeTasks1 = &shared.CreateRevokeTasks{
@@ -7593,7 +8575,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					ExcludedAppEntitlementRefs:    excludedAppEntitlementRefs3,
 					ExcludedAppEntitlementRefsCel: excludedAppEntitlementRefsCel3,
 					RevokeAll:                     revokeAll1,
-					UseSubjectUser:                useSubjectUser11,
+					UseSubjectUser:                useSubjectUser12,
 					UserIDCel:                     userIDCel8,
 					UserRef:                       userRef7,
 				}
@@ -7649,15 +8631,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 							} else {
 								appId16 = nil
 							}
-							id30 := new(string)
+							id31 := new(string)
 							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsNull() {
-								*id30 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.ValueString()
+								*id31 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.ValueString()
 							} else {
-								id30 = nil
+								id31 = nil
 							}
 							excludedAppEntitlementRefs4 = append(excludedAppEntitlementRefs4, shared.AppEntitlementRef{
 								AppID: appId16,
-								ID:    id30,
+								ID:    id31,
 							})
 						}
 					}
@@ -7734,15 +8716,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 							} else {
 								appId17 = nil
 							}
-							id31 := new(string)
+							id32 := new(string)
 							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsNull() {
-								*id31 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.ValueString()
+								*id32 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.ValueString()
 							} else {
-								id31 = nil
+								id32 = nil
 							}
 							appEntitlementRefs4 = append(appEntitlementRefs4, shared.AppEntitlementRef{
 								AppID: appId17,
-								ID:    id31,
+								ID:    id32,
 							})
 						}
 					}
@@ -7762,11 +8744,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						AppEntitlementRefsCel: appEntitlementRefsCel4,
 					}
 				}
-				useSubjectUser12 := new(bool)
+				useSubjectUser13 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UseSubjectUser.IsNull() {
-					*useSubjectUser12 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UseSubjectUser.ValueBool()
+					*useSubjectUser13 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser12 = nil
+					useSubjectUser13 = nil
 				}
 				userIDCel9 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserIDCel.IsNull() {
@@ -7776,14 +8758,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				var userRef8 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef != nil {
-					id32 := new(string)
+					id33 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.IsNull() {
-						*id32 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.ValueString()
+						*id33 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.ValueString()
 					} else {
-						id32 = nil
+						id33 = nil
 					}
 					userRef8 = &shared.UserRef{
-						ID: id32,
+						ID: id33,
 					}
 				}
 				createRevokeTasksV21 = &shared.CreateRevokeTasksV2{
@@ -7795,7 +8777,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					EntitlementInclusionCriteria: entitlementInclusionCriteria1,
 					EntitlementInclusionList:     entitlementInclusionList1,
 					EntitlementInclusionListCel:  entitlementInclusionListCel1,
-					UseSubjectUser:               useSubjectUser12,
+					UseSubjectUser:               useSubjectUser13,
 					UserIDCel:                    userIDCel9,
 					UserRef:                      userRef8,
 				}
@@ -7843,8 +8825,77 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					passwordPolicyId1 = nil
 				}
+				var generatePasswordPolicy1 *shared.GeneratePasswordPolicy
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy != nil {
+					customCharacters1 := new(string)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsNull() {
+						*customCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.ValueString()
+					} else {
+						customCharacters1 = nil
+					}
+					excludedCharacters1 := new(string)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsNull() {
+						*excludedCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.ValueString()
+					} else {
+						excludedCharacters1 = nil
+					}
+					maxCharacterCount1 := new(int)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsNull() {
+						*maxCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.ValueInt32())
+					} else {
+						maxCharacterCount1 = nil
+					}
+					minCharacterCount1 := new(int)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsNull() {
+						*minCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.ValueInt32())
+					} else {
+						minCharacterCount1 = nil
+					}
+					noRestrictions1 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsNull() {
+						*noRestrictions1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.ValueBool()
+					} else {
+						noRestrictions1 = nil
+					}
+					requireLowercase1 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsNull() {
+						*requireLowercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.ValueBool()
+					} else {
+						requireLowercase1 = nil
+					}
+					requireNumbers1 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsNull() {
+						*requireNumbers1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.ValueBool()
+					} else {
+						requireNumbers1 = nil
+					}
+					requireSpecialCharacters1 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsNull() {
+						*requireSpecialCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.ValueBool()
+					} else {
+						requireSpecialCharacters1 = nil
+					}
+					requireUppercase1 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsNull() {
+						*requireUppercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.ValueBool()
+					} else {
+						requireUppercase1 = nil
+					}
+					generatePasswordPolicy1 = &shared.GeneratePasswordPolicy{
+						CustomCharacters:         customCharacters1,
+						ExcludedCharacters:       excludedCharacters1,
+						MaxCharacterCount:        maxCharacterCount1,
+						MinCharacterCount:        minCharacterCount1,
+						NoRestrictions:           noRestrictions1,
+						RequireLowercase:         requireLowercase1,
+						RequireNumbers:           requireNumbers1,
+						RequireSpecialCharacters: requireSpecialCharacters1,
+						RequireUppercase:         requireUppercase1,
+					}
+				}
 				generatePassword1 = &shared.GeneratePassword{
-					PasswordPolicyID: passwordPolicyId1,
+					PasswordPolicyID:       passwordPolicyId1,
+					GeneratePasswordPolicy: generatePasswordPolicy1,
 				}
 			}
 			var grantEntitlements1 *shared.GrantEntitlements
@@ -7890,15 +8941,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 							} else {
 								appId18 = nil
 							}
-							id33 := new(string)
+							id34 := new(string)
 							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsNull() {
-								*id33 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.ValueString()
+								*id34 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.ValueString()
 							} else {
-								id33 = nil
+								id34 = nil
 							}
 							excludedAppEntitlementRefs5 = append(excludedAppEntitlementRefs5, shared.AppEntitlementRef{
 								AppID: appId18,
-								ID:    id33,
+								ID:    id34,
 							})
 						}
 					}
@@ -7963,15 +9014,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 							} else {
 								appId19 = nil
 							}
-							id34 := new(string)
+							id35 := new(string)
 							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsNull() {
-								*id34 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.ValueString()
+								*id35 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.ValueString()
 							} else {
-								id34 = nil
+								id35 = nil
 							}
 							appEntitlementRefs5 = append(appEntitlementRefs5, shared.AppEntitlementRef{
 								AppID: appId19,
-								ID:    id34,
+								ID:    id35,
 							})
 						}
 					}
@@ -7991,11 +9042,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						AppEntitlementRefsCel: appEntitlementRefsCel5,
 					}
 				}
-				useSubjectUser13 := new(bool)
+				useSubjectUser14 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UseSubjectUser.IsNull() {
-					*useSubjectUser13 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UseSubjectUser.ValueBool()
+					*useSubjectUser14 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser13 = nil
+					useSubjectUser14 = nil
 				}
 				userIDCel10 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserIDCel.IsNull() {
@@ -8005,14 +9056,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				var userRef9 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef != nil {
-					id35 := new(string)
+					id36 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.IsNull() {
-						*id35 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.ValueString()
+						*id36 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.ValueString()
 					} else {
-						id35 = nil
+						id36 = nil
 					}
 					userRef9 = &shared.UserRef{
-						ID: id35,
+						ID: id36,
 					}
 				}
 				grantEntitlements1 = &shared.GrantEntitlements{
@@ -8023,7 +9074,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					GrantEntitlementInclusionCriteria: grantEntitlementInclusionCriteria1,
 					GrantEntitlementInclusionList:     grantEntitlementInclusionList1,
 					GrantEntitlementInclusionListCel:  grantEntitlementInclusionListCel1,
-					UseSubjectUser:                    useSubjectUser13,
+					UseSubjectUser:                    useSubjectUser14,
 					UserIDCel:                         userIDCel10,
 					UserRef:                           userRef9,
 				}
@@ -8038,21 +9089,21 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				var userRef10 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef != nil {
-					id36 := new(string)
+					id37 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsNull() {
-						*id36 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
+						*id37 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
 					} else {
-						id36 = nil
+						id37 = nil
 					}
 					userRef10 = &shared.UserRef{
-						ID: id36,
+						ID: id37,
 					}
 				}
-				useSubjectUser14 := new(bool)
+				useSubjectUser15 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UseSubjectUser.IsNull() {
-					*useSubjectUser14 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UseSubjectUser.ValueBool()
+					*useSubjectUser15 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser14 = nil
+					useSubjectUser15 = nil
 				}
 				userIDCel11 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserIDCel.IsNull() {
@@ -8062,20 +9113,20 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				var userRef13 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1 != nil {
-					id37 := new(string)
+					id38 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsNull() {
-						*id37 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.ValueString()
+						*id38 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.ValueString()
 					} else {
-						id37 = nil
+						id38 = nil
 					}
 					userRef13 = &shared.UserRef{
-						ID: id37,
+						ID: id38,
 					}
 				}
 				removeFromDelegation1 = &shared.RemoveFromDelegation{
 					ReplacementUserIDCel: replacementUserIDCel1,
 					UserRef:              userRef10,
-					UseSubjectUser:       useSubjectUser14,
+					UseSubjectUser:       useSubjectUser15,
 					UserIDCel:            userIDCel11,
 					UserRef1:             userRef13,
 				}
@@ -8090,14 +9141,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				var automationTemplateRef1 *shared.AutomationTemplateRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationTemplateRef != nil {
-					id38 := new(string)
+					id39 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationTemplateRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationTemplateRef.ID.IsNull() {
-						*id38 = r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationTemplateRef.ID.ValueString()
+						*id39 = r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationTemplateRef.ID.ValueString()
 					} else {
-						id38 = nil
+						id39 = nil
 					}
 					automationTemplateRef1 = &shared.AutomationTemplateRef{
-						ID: id38,
+						ID: id39,
 					}
 				}
 				var automationContext2 *shared.AutomationContext
@@ -8124,6 +9175,18 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					body2 = nil
 				}
+				email1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Email.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Email.IsNull() {
+					*email1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Email.ValueString()
+				} else {
+					email1 = nil
+				}
+				emailCel3 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.EmailCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.EmailCel.IsNull() {
+					*emailCel3 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.EmailCel.ValueString()
+				} else {
+					emailCel3 = nil
+				}
 				subject1 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Subject.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Subject.IsNull() {
 					*subject1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.Subject.ValueString()
@@ -8136,40 +9199,42 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					title1 = nil
 				}
-				useSubjectUser15 := new(bool)
+				useSubjectUser16 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UseSubjectUser.IsNull() {
-					*useSubjectUser15 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UseSubjectUser.ValueBool()
+					*useSubjectUser16 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser15 = nil
+					useSubjectUser16 = nil
 				}
-				userIdsCel4 := new(string)
+				userIdsCel5 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserIdsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserIdsCel.IsNull() {
-					*userIdsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserIdsCel.ValueString()
+					*userIdsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserIdsCel.ValueString()
 				} else {
-					userIdsCel4 = nil
+					userIdsCel5 = nil
 				}
-				var userRefs4 []shared.UserRef
+				var userRefs5 []shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs != nil {
-					userRefs4 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs))
-					for userRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs {
-						id39 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex4].ID.IsNull() {
-							*id39 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex4].ID.ValueString()
+					userRefs5 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs))
+					for userRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs {
+						id40 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex5].ID.IsNull() {
+							*id40 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendEmail.UserRefs[userRefsIndex5].ID.ValueString()
 						} else {
-							id39 = nil
+							id40 = nil
 						}
-						userRefs4 = append(userRefs4, shared.UserRef{
-							ID: id39,
+						userRefs5 = append(userRefs5, shared.UserRef{
+							ID: id40,
 						})
 					}
 				}
 				sendEmail1 = &shared.SendEmail{
 					Body:           body2,
+					Email:          email1,
+					EmailCel:       emailCel3,
 					Subject:        subject1,
 					Title:          title1,
-					UseSubjectUser: useSubjectUser15,
-					UserIdsCel:     userIdsCel4,
-					UserRefs:       userRefs4,
+					UseSubjectUser: useSubjectUser16,
+					UserIdsCel:     userIdsCel5,
+					UserRefs:       userRefs5,
 				}
 			}
 			var sendSlackMessage1 *shared.SendSlackMessage
@@ -8192,10 +9257,40 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					channelNameCel1 = nil
 				}
+				useSubjectUser17 := new(bool)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UseSubjectUser.IsNull() {
+					*useSubjectUser17 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UseSubjectUser.ValueBool()
+				} else {
+					useSubjectUser17 = nil
+				}
+				userIdsCel6 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserIdsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserIdsCel.IsNull() {
+					*userIdsCel6 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserIdsCel.ValueString()
+				} else {
+					userIdsCel6 = nil
+				}
+				var userRefs6 []shared.UserRef
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs != nil {
+					userRefs6 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs))
+					for userRefsIndex6 := range r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs {
+						id41 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex6].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex6].ID.IsNull() {
+							*id41 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.UserRefs[userRefsIndex6].ID.ValueString()
+						} else {
+							id41 = nil
+						}
+						userRefs6 = append(userRefs6, shared.UserRef{
+							ID: id41,
+						})
+					}
+				}
 				sendSlackMessage1 = &shared.SendSlackMessage{
 					Body:           body3,
 					ChannelName:    channelName1,
 					ChannelNameCel: channelNameCel1,
+					UseSubjectUser: useSubjectUser17,
+					UserIdsCel:     userIdsCel6,
+					UserRefs:       userRefs6,
 				}
 			}
 			var setCredential1 *shared.SetCredential
@@ -8214,27 +9309,27 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					} else {
 						appId20 = nil
 					}
-					id40 := new(string)
+					id42 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.ConnectorRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.ConnectorRef.ID.IsNull() {
-						*id40 = r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.ConnectorRef.ID.ValueString()
+						*id42 = r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.ConnectorRef.ID.ValueString()
 					} else {
-						id40 = nil
+						id42 = nil
 					}
 					connectorRef7 = &shared.ConnectorRef{
 						AppID: appId20,
-						ID:    id40,
+						ID:    id42,
 					}
 				}
-				passwordCel1 := new(string)
+				passwordCel3 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.PasswordCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.PasswordCel.IsNull() {
-					*passwordCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.PasswordCel.ValueString()
+					*passwordCel3 = r.DraftAutomationSteps[draftAutomationStepsIndex].SetCredential.PasswordCel.ValueString()
 				} else {
-					passwordCel1 = nil
+					passwordCel3 = nil
 				}
 				setCredential1 = &shared.SetCredential{
 					AccountIDCel: accountIDCel3,
 					ConnectorRef: connectorRef7,
-					PasswordCel:  passwordCel1,
+					PasswordCel:  passwordCel3,
 				}
 			}
 			skipIfTrueCel1 := new(string)
@@ -8255,106 +9350,181 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 			} else {
 				stepName1 = nil
 			}
-			var taskAction1 *shared.TaskAction
-			if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction != nil {
+			var storeCredential1 *shared.StoreCredential
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential != nil {
+				appIDCel1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.IsNull() {
+					*appIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AppIDCel.ValueString()
+				} else {
+					appIDCel1 = nil
+				}
+				authType1 := new(shared.AuthType)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.IsNull() {
+					*authType1 = shared.AuthType(r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.AuthType.ValueString())
+				} else {
+					authType1 = nil
+				}
+				credentialCel1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.IsNull() {
+					*credentialCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.CredentialCel.ValueString()
+				} else {
+					credentialCel1 = nil
+				}
+				expiry1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.IsNull() {
+					*expiry1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.Expiry.ValueString()
+				} else {
+					expiry1 = nil
+				}
+				labelCel1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.IsNull() {
+					*labelCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.LabelCel.ValueString()
+				} else {
+					labelCel1 = nil
+				}
+				maxViews1 := new(int64)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.IsNull() {
+					*maxViews1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.MaxViews.ValueInt64()
+				} else {
+					maxViews1 = nil
+				}
+				recipientCel1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.IsNull() {
+					*recipientCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientCel.ValueString()
+				} else {
+					recipientCel1 = nil
+				}
+				recipientEmailCel1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.IsNull() {
+					*recipientEmailCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.RecipientEmailCel.ValueString()
+				} else {
+					recipientEmailCel1 = nil
+				}
+				ttl1 := new(string)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.TTL.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.TTL.IsNull() {
+					*ttl1 = r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.TTL.ValueString()
+				} else {
+					ttl1 = nil
+				}
+				vaultType1 := new(shared.VaultType)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.IsNull() {
+					*vaultType1 = shared.VaultType(r.DraftAutomationSteps[draftAutomationStepsIndex].StoreCredential.VaultType.ValueString())
+				} else {
+					vaultType1 = nil
+				}
+				storeCredential1 = &shared.StoreCredential{
+					AppIDCel:          appIDCel1,
+					AuthType:          authType1,
+					CredentialCel:     credentialCel1,
+					Expiry:            expiry1,
+					LabelCel:          labelCel1,
+					MaxViews:          maxViews1,
+					RecipientCel:      recipientCel1,
+					RecipientEmailCel: recipientEmailCel1,
+					TTL:               ttl1,
+					VaultType:         vaultType1,
+				}
+			}
+			var automationsTaskAction1 *shared.AutomationsTaskAction
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction != nil {
 				var closeAction1 *shared.CloseAction
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction != nil {
-					useSubjectUser16 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsNull() {
-						*useSubjectUser16 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.ValueBool()
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction != nil {
+					useSubjectUser18 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.IsNull() {
+						*useSubjectUser18 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UseSubjectUser.ValueBool()
 					} else {
-						useSubjectUser16 = nil
+						useSubjectUser18 = nil
 					}
 					userIDCel12 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.IsNull() {
-						*userIDCel12 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.IsNull() {
+						*userIDCel12 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserIDCel.ValueString()
 					} else {
 						userIDCel12 = nil
 					}
 					var userRef14 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef != nil {
-						id41 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsNull() {
-							*id41 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.ValueString()
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserRef != nil {
+						id43 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.IsNull() {
+							*id43 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.CloseAction.UserRef.ID.ValueString()
 						} else {
-							id41 = nil
+							id43 = nil
 						}
 						userRef14 = &shared.UserRef{
-							ID: id41,
+							ID: id43,
 						}
 					}
 					closeAction1 = &shared.CloseAction{
-						UseSubjectUser: useSubjectUser16,
+						UseSubjectUser: useSubjectUser18,
 						UserIDCel:      userIDCel12,
 						UserRef:        userRef14,
 					}
 				}
 				var reassignAction1 *shared.ReassignAction
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction != nil {
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction != nil {
 					assigneeUserIDCel1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
-						*assigneeUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
+						*assigneeUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
 					} else {
 						assigneeUserIDCel1 = nil
 					}
 					var userRef15 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef != nil {
-						id42 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsNull() {
-							*id42 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.ValueString()
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef != nil {
+						id44 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.IsNull() {
+							*id44 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef.ID.ValueString()
 						} else {
-							id42 = nil
+							id44 = nil
 						}
 						userRef15 = &shared.UserRef{
-							ID: id42,
+							ID: id44,
 						}
 					}
 					subjectUserIDCel1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
-						*subjectUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
+						*subjectUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.SubjectUserIDCel.ValueString()
 					} else {
 						subjectUserIDCel1 = nil
 					}
 					var userRef16 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1 != nil {
-						id43 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsNull() {
-							*id43 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.ValueString()
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1 != nil {
+						id45 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.IsNull() {
+							*id45 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UserRef1.ID.ValueString()
 						} else {
-							id43 = nil
+							id45 = nil
 						}
 						userRef16 = &shared.UserRef{
-							ID: id43,
+							ID: id45,
 						}
 					}
-					useSubjectUser17 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsNull() {
-						*useSubjectUser17 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.ValueBool()
+					useSubjectUser19 := new(bool)
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.IsNull() {
+						*useSubjectUser19 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.ReassignAction.UseSubjectUser.ValueBool()
 					} else {
-						useSubjectUser17 = nil
+						useSubjectUser19 = nil
 					}
 					reassignAction1 = &shared.ReassignAction{
 						AssigneeUserIDCel: assigneeUserIDCel1,
 						UserRef:           userRef15,
 						SubjectUserIDCel:  subjectUserIDCel1,
 						UserRef1:          userRef16,
-						UseSubjectUser:    useSubjectUser17,
+						UseSubjectUser:    useSubjectUser19,
 					}
 				}
 				var taskTypes1 []shared.TaskTypes
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskTypes != nil {
-					taskTypes1 = make([]shared.TaskTypes, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskTypes))
-					for _, taskTypesItem1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskTypes {
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskTypes != nil {
+					taskTypes1 = make([]shared.TaskTypes, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskTypes))
+					for _, taskTypesItem1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskTypes {
 						taskTypes1 = append(taskTypes1, shared.TaskTypes(taskTypesItem1.ValueString()))
 					}
 				}
 				taskUserRelation1 := new(shared.TaskUserRelation)
-				if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskUserRelation.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskUserRelation.IsNull() {
-					*taskUserRelation1 = shared.TaskUserRelation(r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.TaskUserRelation.ValueString())
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskUserRelation.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskUserRelation.IsNull() {
+					*taskUserRelation1 = shared.TaskUserRelation(r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsTaskAction.TaskUserRelation.ValueString())
 				} else {
 					taskUserRelation1 = nil
 				}
-				taskAction1 = &shared.TaskAction{
+				automationsTaskAction1 = &shared.AutomationsTaskAction{
 					CloseAction:      closeAction1,
 					ReassignAction:   reassignAction1,
 					TaskTypes:        taskTypes1,
@@ -8376,48 +9546,48 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					catalogIdsCel1 = nil
 				}
-				useSubjectUser18 := new(bool)
+				useSubjectUser20 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.IsNull() {
-					*useSubjectUser18 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.ValueBool()
+					*useSubjectUser20 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser18 = nil
+					useSubjectUser20 = nil
 				}
-				userIdsCel5 := new(string)
+				userIdsCel7 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.IsNull() {
-					*userIdsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.ValueString()
+					*userIdsCel7 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserIdsCel.ValueString()
 				} else {
-					userIdsCel5 = nil
+					userIdsCel7 = nil
 				}
-				var userRefs5 []shared.UserRef
+				var userRefs7 []shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs != nil {
-					userRefs5 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs))
-					for userRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs {
-						id44 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex5].ID.IsNull() {
-							*id44 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex5].ID.ValueString()
+					userRefs7 = make([]shared.UserRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs))
+					for userRefsIndex7 := range r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs {
+						id46 := new(string)
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex7].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex7].ID.IsNull() {
+							*id46 = r.DraftAutomationSteps[draftAutomationStepsIndex].UnenrollFromAllAccessProfiles.UserRefs[userRefsIndex7].ID.ValueString()
 						} else {
-							id44 = nil
+							id46 = nil
 						}
-						userRefs5 = append(userRefs5, shared.UserRef{
-							ID: id44,
+						userRefs7 = append(userRefs7, shared.UserRef{
+							ID: id46,
 						})
 					}
 				}
 				unenrollFromAllAccessProfiles1 = &shared.UnenrollFromAllAccessProfiles{
 					CatalogIds:     catalogIds1,
 					CatalogIdsCel:  catalogIdsCel1,
-					UseSubjectUser: useSubjectUser18,
-					UserIdsCel:     userIdsCel5,
-					UserRefs:       userRefs5,
+					UseSubjectUser: useSubjectUser20,
+					UserIdsCel:     userIdsCel7,
+					UserRefs:       userRefs7,
 				}
 			}
 			var updateUser1 *shared.UpdateUser
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser != nil {
-				useSubjectUser19 := new(bool)
+				useSubjectUser21 := new(bool)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UseSubjectUser.IsNull() {
-					*useSubjectUser19 = r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UseSubjectUser.ValueBool()
+					*useSubjectUser21 = r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UseSubjectUser.ValueBool()
 				} else {
-					useSubjectUser19 = nil
+					useSubjectUser21 = nil
 				}
 				userIDCel13 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserIDCel.IsNull() {
@@ -8427,14 +9597,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				var userRef17 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef != nil {
-					id45 := new(string)
+					id47 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.IsNull() {
-						*id45 = r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.ValueString()
+						*id47 = r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.ValueString()
 					} else {
-						id45 = nil
+						id47 = nil
 					}
 					userRef17 = &shared.UserRef{
-						ID: id45,
+						ID: id47,
 					}
 				}
 				userStatusCel1 := new(string)
@@ -8450,7 +9620,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					userStatusEnum1 = nil
 				}
 				updateUser1 = &shared.UpdateUser{
-					UseSubjectUser: useSubjectUser19,
+					UseSubjectUser: useSubjectUser21,
 					UserIDCel:      userIDCel13,
 					UserRef:        userRef17,
 					UserStatusCel:  userStatusCel1,
@@ -8469,25 +9639,25 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					Duration: duration1,
 				}
 			}
-			var webhook1 *shared.Webhook
-			if r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook != nil {
+			var automationsWebhook1 *shared.AutomationsWebhook
+			if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook != nil {
 				var payload1 *shared.Payload
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.Payload != nil {
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.Payload != nil {
 					payload1 = &shared.Payload{}
 				}
 				webhookId1 := new(string)
-				if !r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookID.IsNull() {
-					*webhookId1 = r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookID.ValueString()
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookID.IsNull() {
+					*webhookId1 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookID.ValueString()
 				} else {
 					webhookId1 = nil
 				}
 				webhookIDCel1 := new(string)
-				if !r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookIDCel.IsNull() {
-					*webhookIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].Webhook.WebhookIDCel.ValueString()
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookIDCel.IsNull() {
+					*webhookIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].AutomationsWebhook.WebhookIDCel.ValueString()
 				} else {
 					webhookIDCel1 = nil
 				}
-				webhook1 = &shared.Webhook{
+				automationsWebhook1 = &shared.AutomationsWebhook{
 					Payload:      payload1,
 					WebhookID:    webhookId1,
 					WebhookIDCel: webhookIDCel1,
@@ -8512,11 +9682,12 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				SkipIfTrueCel:                 skipIfTrueCel1,
 				StepDisplayName:               stepDisplayName1,
 				StepName:                      stepName1,
-				TaskAction:                    taskAction1,
+				StoreCredential:               storeCredential1,
+				AutomationsTaskAction:         automationsTaskAction1,
 				UnenrollFromAllAccessProfiles: unenrollFromAllAccessProfiles1,
 				UpdateUser:                    updateUser1,
 				WaitForDuration:               waitForDuration1,
-				Webhook:                       webhook1,
+				AutomationsWebhook:            automationsWebhook1,
 			})
 		}
 	}
@@ -8538,14 +9709,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					if r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs != nil {
 						conflictMonitorRefs1 = make([]shared.ConflictMonitorRef, 0, len(r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs))
 						for conflictMonitorRefsIndex := range r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs {
-							id46 := new(string)
+							id48 := new(string)
 							if !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsNull() {
-								*id46 = r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.ValueString()
+								*id48 = r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.ValueString()
 							} else {
-								id46 = nil
+								id48 = nil
 							}
 							conflictMonitorRefs1 = append(conflictMonitorRefs1, shared.ConflictMonitorRef{
-								ID: id46,
+								ID: id48,
 							})
 						}
 					}
@@ -8566,11 +9737,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					appId21 = nil
 				}
-				appIDCel := new(string)
+				appIDCel2 := new(string)
 				if !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.IsNull() {
-					*appIDCel = r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
+					*appIDCel2 = r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
 				} else {
-					appIDCel = nil
+					appIDCel2 = nil
 				}
 				condition := new(string)
 				if !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.Condition.IsNull() {
@@ -8580,7 +9751,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				appUserCreatedTrigger = &shared.AppUserCreatedTrigger{
 					AppID:     appId21,
-					AppIDCel:  appIDCel,
+					AppIDCel:  appIDCel2,
 					Condition: condition,
 				}
 			}
@@ -8592,11 +9763,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					appId22 = nil
 				}
-				appIDCel1 := new(string)
+				appIDCel3 := new(string)
 				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.IsNull() {
-					*appIDCel1 = r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
+					*appIDCel3 = r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
 				} else {
-					appIDCel1 = nil
+					appIDCel3 = nil
 				}
 				condition1 := new(string)
 				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.Condition.IsNull() {
@@ -8606,7 +9777,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				appUserUpdatedTrigger = &shared.AppUserUpdatedTrigger{
 					AppID:     appId22,
-					AppIDCel:  appIDCel1,
+					AppIDCel:  appIDCel3,
 					Condition: condition1,
 				}
 			}
@@ -8705,15 +9876,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 								} else {
 									appId23 = nil
 								}
-								id47 := new(string)
+								id49 := new(string)
 								if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsNull() {
-									*id47 = r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.ValueString()
+									*id49 = r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.ValueString()
 								} else {
-									id47 = nil
+									id49 = nil
 								}
 								appEntitlementRefs6 = append(appEntitlementRefs6, shared.AppEntitlementRef{
 									AppID: appId23,
-									ID:    id47,
+									ID:    id49,
 								})
 							}
 						}
@@ -8841,15 +10012,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 								} else {
 									appId24 = nil
 								}
-								id48 := new(string)
+								id50 := new(string)
 								if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsNull() {
-									*id48 = r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.ValueString()
+									*id50 = r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.ValueString()
 								} else {
-									id48 = nil
+									id50 = nil
 								}
 								appEntitlementRefs7 = append(appEntitlementRefs7, shared.AppEntitlementRef{
 									AppID: appId24,
-									ID:    id48,
+									ID:    id50,
 								})
 							}
 						}
@@ -8969,6 +10140,39 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					Timezone:  timezone1,
 				}
 			}
+			var scheduleTriggerNoUser *shared.ScheduleTriggerNoUser
+			if r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser != nil {
+				advanced1 := new(bool)
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.IsNull() {
+					*advanced1 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.ValueBool()
+				} else {
+					advanced1 = nil
+				}
+				cronSpec2 := new(string)
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.IsNull() {
+					*cronSpec2 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.ValueString()
+				} else {
+					cronSpec2 = nil
+				}
+				start2 := new(time.Time)
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.IsNull() {
+					*start2, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.ValueString())
+				} else {
+					start2 = nil
+				}
+				timezone2 := new(string)
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.IsNull() {
+					*timezone2 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.ValueString()
+				} else {
+					timezone2 = nil
+				}
+				scheduleTriggerNoUser = &shared.ScheduleTriggerNoUser{
+					Advanced: advanced1,
+					CronSpec: cronSpec2,
+					Start:    start2,
+					Timezone: timezone2,
+				}
+			}
 			var usageBasedRevocationTrigger *shared.UsageBasedRevocationTrigger
 			if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger != nil {
 				appId26 := new(string)
@@ -8993,15 +10197,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						} else {
 							appId27 = nil
 						}
-						id49 := new(string)
+						id51 := new(string)
 						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsNull() {
-							*id49 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.ValueString()
+							*id51 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.ValueString()
 						} else {
-							id49 = nil
+							id51 = nil
 						}
 						excludedGroupRefs = append(excludedGroupRefs, shared.AppEntitlementRef{
 							AppID: appId27,
-							ID:    id49,
+							ID:    id51,
 						})
 					}
 				}
@@ -9009,14 +10213,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
 					excludedUserRefs = make([]shared.UserRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs))
 					for excludedUserRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs {
-						id50 := new(string)
+						id52 := new(string)
 						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.IsNull() {
-							*id50 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.ValueString()
+							*id52 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.ValueString()
 						} else {
-							id50 = nil
+							id52 = nil
 						}
 						excludedUserRefs = append(excludedUserRefs, shared.UserRef{
-							ID: id50,
+							ID: id52,
 						})
 					}
 				}
@@ -9056,15 +10260,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						} else {
 							appId28 = nil
 						}
-						id51 := new(string)
+						id53 := new(string)
 						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsNull() {
-							*id51 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.ValueString()
+							*id53 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.ValueString()
 						} else {
-							id51 = nil
+							id53 = nil
 						}
 						targetedEntitlementRefs = append(targetedEntitlementRefs, shared.AppEntitlementRef{
 							AppID: appId28,
-							ID:    id51,
+							ID:    id53,
 						})
 					}
 				}
@@ -9113,6 +10317,10 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 			}
 			var webhookAutomationTrigger *shared.WebhookAutomationTrigger
 			if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger != nil {
+				var webhookListenerAuthCapabilityURL *shared.WebhookListenerAuthCapabilityURL
+				if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL != nil {
+					webhookListenerAuthCapabilityURL = &shared.WebhookListenerAuthCapabilityURL{}
+				}
 				var webhookListenerAuthHMAC *shared.WebhookListenerAuthHMAC
 				if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthHMAC != nil {
 					webhookListenerAuthHMAC = &shared.WebhookListenerAuthHMAC{}
@@ -9136,9 +10344,10 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					listenerID = nil
 				}
 				webhookAutomationTrigger = &shared.WebhookAutomationTrigger{
-					WebhookListenerAuthHMAC: webhookListenerAuthHMAC,
-					WebhookListenerAuthJWT:  webhookListenerAuthJWT,
-					ListenerID:              listenerID,
+					WebhookListenerAuthCapabilityURL: webhookListenerAuthCapabilityURL,
+					WebhookListenerAuthHMAC:          webhookListenerAuthHMAC,
+					WebhookListenerAuthJWT:           webhookListenerAuthJWT,
+					ListenerID:                       listenerID,
 				}
 			}
 			draftTriggers = append(draftTriggers, shared.AutomationTrigger{
@@ -9149,6 +10358,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				GrantFoundTrigger:           grantFoundTrigger,
 				ScheduleTrigger:             scheduleTrigger,
 				ScheduleTriggerAppUser:      scheduleTriggerAppUser,
+				ScheduleTriggerNoUser:       scheduleTriggerNoUser,
 				UsageBasedRevocationTrigger: usageBasedRevocationTrigger,
 				UserCreatedTrigger:          userCreatedTrigger,
 				UserProfileChangeTrigger:    userProfileChangeTrigger,
@@ -9186,14 +10396,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					if r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs != nil {
 						conflictMonitorRefs3 = make([]shared.ConflictMonitorRef, 0, len(r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs))
 						for conflictMonitorRefsIndex1 := range r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs {
-							id52 := new(string)
+							id54 := new(string)
 							if !r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsNull() {
-								*id52 = r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.ValueString()
+								*id54 = r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.ValueString()
 							} else {
-								id52 = nil
+								id54 = nil
 							}
 							conflictMonitorRefs3 = append(conflictMonitorRefs3, shared.ConflictMonitorRef{
-								ID: id52,
+								ID: id54,
 							})
 						}
 					}
@@ -9214,11 +10424,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					appId29 = nil
 				}
-				appIDCel2 := new(string)
+				appIDCel4 := new(string)
 				if !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.IsNull() {
-					*appIDCel2 = r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
+					*appIDCel4 = r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
 				} else {
-					appIDCel2 = nil
+					appIDCel4 = nil
 				}
 				condition6 := new(string)
 				if !r.Triggers[triggersIndex].AppUserCreatedTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreatedTrigger.Condition.IsNull() {
@@ -9228,7 +10438,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				appUserCreatedTrigger1 = &shared.AppUserCreatedTrigger{
 					AppID:     appId29,
-					AppIDCel:  appIDCel2,
+					AppIDCel:  appIDCel4,
 					Condition: condition6,
 				}
 			}
@@ -9240,11 +10450,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					appId30 = nil
 				}
-				appIDCel3 := new(string)
+				appIDCel5 := new(string)
 				if !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.IsNull() {
-					*appIDCel3 = r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
+					*appIDCel5 = r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
 				} else {
-					appIDCel3 = nil
+					appIDCel5 = nil
 				}
 				condition7 := new(string)
 				if !r.Triggers[triggersIndex].AppUserUpdatedTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdatedTrigger.Condition.IsNull() {
@@ -9254,7 +10464,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				}
 				appUserUpdatedTrigger1 = &shared.AppUserUpdatedTrigger{
 					AppID:     appId30,
-					AppIDCel:  appIDCel3,
+					AppIDCel:  appIDCel5,
 					Condition: condition7,
 				}
 			}
@@ -9353,15 +10563,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 								} else {
 									appId31 = nil
 								}
-								id53 := new(string)
+								id55 := new(string)
 								if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsNull() {
-									*id53 = r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.ValueString()
+									*id55 = r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.ValueString()
 								} else {
-									id53 = nil
+									id55 = nil
 								}
 								appEntitlementRefs8 = append(appEntitlementRefs8, shared.AppEntitlementRef{
 									AppID: appId31,
-									ID:    id53,
+									ID:    id55,
 								})
 							}
 						}
@@ -9489,15 +10699,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 								} else {
 									appId32 = nil
 								}
-								id54 := new(string)
+								id56 := new(string)
 								if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsNull() {
-									*id54 = r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.ValueString()
+									*id56 = r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.ValueString()
 								} else {
-									id54 = nil
+									id56 = nil
 								}
 								appEntitlementRefs9 = append(appEntitlementRefs9, shared.AppEntitlementRef{
 									AppID: appId32,
-									ID:    id54,
+									ID:    id56,
 								})
 							}
 						}
@@ -9532,11 +10742,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 			}
 			var scheduleTrigger1 *shared.ScheduleTrigger
 			if r.Triggers[triggersIndex].ScheduleTrigger != nil {
-				advanced1 := new(bool)
+				advanced2 := new(bool)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.Advanced.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Advanced.IsNull() {
-					*advanced1 = r.Triggers[triggersIndex].ScheduleTrigger.Advanced.ValueBool()
+					*advanced2 = r.Triggers[triggersIndex].ScheduleTrigger.Advanced.ValueBool()
 				} else {
-					advanced1 = nil
+					advanced2 = nil
 				}
 				condition8 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Condition.IsNull() {
@@ -9544,11 +10754,11 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					condition8 = nil
 				}
-				cronSpec2 := new(string)
+				cronSpec3 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.IsNull() {
-					*cronSpec2 = r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.ValueString()
+					*cronSpec3 = r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.ValueString()
 				} else {
-					cronSpec2 = nil
+					cronSpec3 = nil
 				}
 				skipIfTrueCel3 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.SkipIfTrueCel.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.SkipIfTrueCel.IsNull() {
@@ -9556,25 +10766,25 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					skipIfTrueCel3 = nil
 				}
-				start2 := new(time.Time)
+				start3 := new(time.Time)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Start.IsNull() {
-					*start2, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTrigger.Start.ValueString())
+					*start3, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTrigger.Start.ValueString())
 				} else {
-					start2 = nil
+					start3 = nil
 				}
-				timezone2 := new(string)
+				timezone3 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTrigger.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Timezone.IsNull() {
-					*timezone2 = r.Triggers[triggersIndex].ScheduleTrigger.Timezone.ValueString()
+					*timezone3 = r.Triggers[triggersIndex].ScheduleTrigger.Timezone.ValueString()
 				} else {
-					timezone2 = nil
+					timezone3 = nil
 				}
 				scheduleTrigger1 = &shared.ScheduleTrigger{
-					Advanced:      advanced1,
+					Advanced:      advanced2,
 					Condition:     condition8,
-					CronSpec:      cronSpec2,
+					CronSpec:      cronSpec3,
 					SkipIfTrueCel: skipIfTrueCel3,
-					Start:         start2,
-					Timezone:      timezone2,
+					Start:         start3,
+					Timezone:      timezone3,
 				}
 			}
 			var scheduleTriggerAppUser1 *shared.ScheduleTriggerAppUser
@@ -9591,30 +10801,63 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				} else {
 					condition9 = nil
 				}
-				cronSpec3 := new(string)
+				cronSpec4 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.IsNull() {
-					*cronSpec3 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.ValueString()
+					*cronSpec4 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.ValueString()
 				} else {
-					cronSpec3 = nil
+					cronSpec4 = nil
 				}
-				start3 := new(time.Time)
+				start4 := new(time.Time)
 				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.IsNull() {
-					*start3, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.ValueString())
+					*start4, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.ValueString())
 				} else {
-					start3 = nil
+					start4 = nil
 				}
-				timezone3 := new(string)
+				timezone4 := new(string)
 				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.IsNull() {
-					*timezone3 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.ValueString()
+					*timezone4 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.ValueString()
 				} else {
-					timezone3 = nil
+					timezone4 = nil
 				}
 				scheduleTriggerAppUser1 = &shared.ScheduleTriggerAppUser{
 					AppID:     appId33,
 					Condition: condition9,
-					CronSpec:  cronSpec3,
-					Start:     start3,
-					Timezone:  timezone3,
+					CronSpec:  cronSpec4,
+					Start:     start4,
+					Timezone:  timezone4,
+				}
+			}
+			var scheduleTriggerNoUser1 *shared.ScheduleTriggerNoUser
+			if r.Triggers[triggersIndex].ScheduleTriggerNoUser != nil {
+				advanced3 := new(bool)
+				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.IsNull() {
+					*advanced3 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.ValueBool()
+				} else {
+					advanced3 = nil
+				}
+				cronSpec5 := new(string)
+				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.IsNull() {
+					*cronSpec5 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.ValueString()
+				} else {
+					cronSpec5 = nil
+				}
+				start5 := new(time.Time)
+				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.IsNull() {
+					*start5, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.ValueString())
+				} else {
+					start5 = nil
+				}
+				timezone5 := new(string)
+				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.IsNull() {
+					*timezone5 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.ValueString()
+				} else {
+					timezone5 = nil
+				}
+				scheduleTriggerNoUser1 = &shared.ScheduleTriggerNoUser{
+					Advanced: advanced3,
+					CronSpec: cronSpec5,
+					Start:    start5,
+					Timezone: timezone5,
 				}
 			}
 			var usageBasedRevocationTrigger1 *shared.UsageBasedRevocationTrigger
@@ -9641,15 +10884,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						} else {
 							appId35 = nil
 						}
-						id55 := new(string)
+						id57 := new(string)
 						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsNull() {
-							*id55 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.ValueString()
+							*id57 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.ValueString()
 						} else {
-							id55 = nil
+							id57 = nil
 						}
 						excludedGroupRefs1 = append(excludedGroupRefs1, shared.AppEntitlementRef{
 							AppID: appId35,
-							ID:    id55,
+							ID:    id57,
 						})
 					}
 				}
@@ -9657,14 +10900,14 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
 					excludedUserRefs1 = make([]shared.UserRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs))
 					for excludedUserRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs {
-						id56 := new(string)
+						id58 := new(string)
 						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsNull() {
-							*id56 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.ValueString()
+							*id58 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.ValueString()
 						} else {
-							id56 = nil
+							id58 = nil
 						}
 						excludedUserRefs1 = append(excludedUserRefs1, shared.UserRef{
-							ID: id56,
+							ID: id58,
 						})
 					}
 				}
@@ -9704,15 +10947,15 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 						} else {
 							appId36 = nil
 						}
-						id57 := new(string)
+						id59 := new(string)
 						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsNull() {
-							*id57 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.ValueString()
+							*id59 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.ValueString()
 						} else {
-							id57 = nil
+							id59 = nil
 						}
 						targetedEntitlementRefs1 = append(targetedEntitlementRefs1, shared.AppEntitlementRef{
 							AppID: appId36,
-							ID:    id57,
+							ID:    id59,
 						})
 					}
 				}
@@ -9761,6 +11004,10 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 			}
 			var webhookAutomationTrigger1 *shared.WebhookAutomationTrigger
 			if r.Triggers[triggersIndex].WebhookAutomationTrigger != nil {
+				var webhookListenerAuthCapabilityUrl1 *shared.WebhookListenerAuthCapabilityURL
+				if r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL != nil {
+					webhookListenerAuthCapabilityUrl1 = &shared.WebhookListenerAuthCapabilityURL{}
+				}
 				var webhookListenerAuthHmac1 *shared.WebhookListenerAuthHMAC
 				if r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthHMAC != nil {
 					webhookListenerAuthHmac1 = &shared.WebhookListenerAuthHMAC{}
@@ -9784,9 +11031,10 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 					listenerId1 = nil
 				}
 				webhookAutomationTrigger1 = &shared.WebhookAutomationTrigger{
-					WebhookListenerAuthHMAC: webhookListenerAuthHmac1,
-					WebhookListenerAuthJWT:  webhookListenerAuthJwt1,
-					ListenerID:              listenerId1,
+					WebhookListenerAuthCapabilityURL: webhookListenerAuthCapabilityUrl1,
+					WebhookListenerAuthHMAC:          webhookListenerAuthHmac1,
+					WebhookListenerAuthJWT:           webhookListenerAuthJwt1,
+					ListenerID:                       listenerId1,
 				}
 			}
 			triggers = append(triggers, shared.AutomationTrigger{
@@ -9797,6 +11045,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 				GrantFoundTrigger:           grantFoundTrigger1,
 				ScheduleTrigger:             scheduleTrigger1,
 				ScheduleTriggerAppUser:      scheduleTriggerAppUser1,
+				ScheduleTriggerNoUser:       scheduleTriggerNoUser1,
 				UsageBasedRevocationTrigger: usageBasedRevocationTrigger1,
 				UserCreatedTrigger:          userCreatedTrigger1,
 				UserProfileChangeTrigger:    userProfileChangeTrigger1,
@@ -9804,7 +11053,7 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 			})
 		}
 	}
-	out := shared.CreateAutomationRequest{
+	out := shared.AutomationsCreateAutomationRequest{
 		AppID:                appID,
 		AutomationSteps:      automationSteps,
 		AutomationContext:    automationContext1,
@@ -9820,10 +11069,10 @@ func (r *AutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Co
 	return &out, diags
 }
 
-func (r *AutomationResourceModel) ToSharedDeleteAutomationRequest(ctx context.Context) (*shared.DeleteAutomationRequest, diag.Diagnostics) {
+func (r *AutomationResourceModel) ToSharedAutomationsDeleteAutomationRequest(ctx context.Context) (*shared.AutomationsDeleteAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	out := shared.DeleteAutomationRequest{}
+	out := shared.AutomationsDeleteAutomationRequest{}
 
 	return &out, diags
 }

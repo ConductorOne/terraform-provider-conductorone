@@ -31,7 +31,7 @@ func newAccountProvisionPolicyTest(rootSDK *ConductoroneAPI, sdkConfig config.SD
 }
 
 // Test
-// Invokes the c1.api.policy.v1.AccountProvisionPolicyTest.Test method.
+// Test an account provision policy by evaluating a CEL expression and returning the computed result.
 func (s *AccountProvisionPolicyTest) Test(ctx context.Context, request *shared.TestAccountProvisionPolicyRequest, opts ...operations.Option) (*operations.C1APIPolicyV1AccountProvisionPolicyTestTestResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

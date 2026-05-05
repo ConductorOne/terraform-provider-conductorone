@@ -4,9 +4,9 @@ package shared
 
 // The TestSourceIPResponse message.
 type TestSourceIPResponse struct {
-	// The allowed field.
+	// Whether the tested IP address is allowed by the CIDR rules.
 	Allowed *bool `json:"allowed,omitempty"`
-	// The checkedIp field.
+	// The IP address that was checked, either from the request or inferred from the caller.
 	CheckedIP *string `json:"checkedIp,omitempty"`
 	// The `Status` type defines a logical error model that is suitable for
 	//  different programming environments, including REST APIs and RPC APIs. It is

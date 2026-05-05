@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type WellKnownClients string
 
 const (
@@ -28,42 +23,16 @@ const (
 func (e WellKnownClients) ToPointer() *WellKnownClients {
 	return &e
 }
-func (e *WellKnownClients) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WellKnownClients) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "WELL_KNOWN_CLIENT_UNSPECIFIED", "WELL_KNOWN_CLIENT_UNKNOWN", "WELL_KNOWN_CLIENT_CLAUDE_AI", "WELL_KNOWN_CLIENT_CLAUDE_DESKTOP", "WELL_KNOWN_CLIENT_CLAUDE_CODE", "WELL_KNOWN_CLIENT_MCP_INSPECTOR", "WELL_KNOWN_CLIENT_CHATGPT", "WELL_KNOWN_CLIENT_VSCODE", "WELL_KNOWN_CLIENT_CURSOR", "WELL_KNOWN_CLIENT_WINDSURF", "WELL_KNOWN_CLIENT_ZED", "WELL_KNOWN_CLIENT_JETBRAINS", "WELL_KNOWN_CLIENT_DOCKER_MCP_TOOLKIT":
+			return true
+		}
 	}
-	switch v {
-	case "WELL_KNOWN_CLIENT_UNSPECIFIED":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_UNKNOWN":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_CLAUDE_AI":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_CLAUDE_DESKTOP":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_CLAUDE_CODE":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_MCP_INSPECTOR":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_CHATGPT":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_VSCODE":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_CURSOR":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_WINDSURF":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_ZED":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_JETBRAINS":
-		fallthrough
-	case "WELL_KNOWN_CLIENT_DOCKER_MCP_TOOLKIT":
-		*e = WellKnownClients(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WellKnownClients: %v", v)
-	}
+	return false
 }
 
 // The ExternalClientSearchServiceSearchRequest message.

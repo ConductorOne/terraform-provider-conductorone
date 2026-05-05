@@ -7,16 +7,16 @@ import (
 )
 
 type ProvisionInstance struct {
-	BatonActionInvocationID           types.String             `tfsdk:"baton_action_invocation_id"`
 	CancelledAction                   *CancelledAction         `tfsdk:"cancelled_action"`
 	CompletedAction                   *CompletedAction         `tfsdk:"completed_action"`
 	ErroredAction                     *ErroredAction           `tfsdk:"errored_action"`
-	ExternalTicketID                  types.String             `tfsdk:"external_ticket_id"`
-	ExternalTicketProvisionerConfigID types.String             `tfsdk:"external_ticket_provisioner_config_id"`
-	NotificationID                    types.String             `tfsdk:"notification_id"`
 	Provision                         *Provision               `tfsdk:"provision"`
 	ReassignedByErrorAction           *ReassignedByErrorAction `tfsdk:"reassigned_by_error_action"`
 	SkippedAction                     *SkippedAction           `tfsdk:"skipped_action"`
+	BatonActionInvocationID           types.String             `tfsdk:"baton_action_invocation_id"`
+	ExternalTicketID                  types.String             `tfsdk:"external_ticket_id"`
+	ExternalTicketProvisionerConfigID types.String             `tfsdk:"external_ticket_provisioner_config_id"`
+	NotificationID                    types.String             `tfsdk:"notification_id"`
 	State                             types.String             `tfsdk:"state"`
 	WebhookID                         types.String             `tfsdk:"webhook_id"`
 	WebhookInstanceID                 types.String             `tfsdk:"webhook_instance_id"`

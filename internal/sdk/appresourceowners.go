@@ -154,6 +154,8 @@ func (s *AppResourceOwners) Delete(ctx context.Context, request operations.C1API
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -285,6 +287,7 @@ func (s *AppResourceOwners) ListOwnerIDs(ctx context.Context, request operations
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -298,7 +301,7 @@ func (s *AppResourceOwners) ListOwnerIDs(ctx context.Context, request operations
 }
 
 // Remove
-// Invokes the c1.api.app.v1.AppResourceOwners.Remove method.
+// Remove a user from the owners of an app resource.
 func (s *AppResourceOwners) Remove(ctx context.Context, request operations.C1APIAppV1AppResourceOwnersRemoveRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceOwnersRemoveResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -487,7 +490,7 @@ func (s *AppResourceOwners) List(ctx context.Context, request operations.C1APIAp
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -569,7 +572,7 @@ func (s *AppResourceOwners) List(ctx context.Context, request operations.C1APIAp
 }
 
 // Add
-// Invokes the c1.api.app.v1.AppResourceOwners.Add method.
+// Add a user as an owner of an app resource.
 func (s *AppResourceOwners) Add(ctx context.Context, request operations.C1APIAppV1AppResourceOwnersAddRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceOwnersAddResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

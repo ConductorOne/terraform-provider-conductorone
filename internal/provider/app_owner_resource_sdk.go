@@ -19,6 +19,8 @@ func (r *AppOwnerResourceModel) RefreshFromSharedListAppOwnerIDsResponse(ctx con
 			for _, v := range resp.UserIds {
 				r.UserIds = append(r.UserIds, types.StringValue(v))
 			}
+		} else {
+			r.UserIds = nil
 		}
 	}
 

@@ -7,9 +7,9 @@ import (
 )
 
 type ReassignAction struct {
-	AssigneeUserIDCel types.String `tfsdk:"assignee_user_id_cel"`
-	SubjectUserIDCel  types.String `tfsdk:"subject_user_id_cel"`
 	UserRef           *UserRef     `tfsdk:"user_ref"`
 	UserRef1          *UserRef     `tfsdk:"user_ref1"`
+	AssigneeUserIDCel types.String `tfsdk:"assignee_user_id_cel"`
+	SubjectUserIDCel  types.String `tfsdk:"subject_user_id_cel"`
 	UseSubjectUser    types.Bool   `tfsdk:"use_subject_user"`
 }

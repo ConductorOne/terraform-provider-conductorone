@@ -34,6 +34,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequestableEntry
 	return c.EntitlementID
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetrequestableentryrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetrequestableentryrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequestableEntryResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceGetRequestableEntry
 	}
 	return c.RequestCatalogManagementServiceGetRequestableEntryResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetrequestableentryresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicegetrequestableentryresponse

@@ -2,10 +2,59 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
+// Direction to sort in. Unspecified falls back to ASC when sort_field is set;
+//
+//	when sort_field is also unspecified, the server default order (created_at
+//	DESC) applies.
+type Direction string
+
+const (
+	DirectionSortDirectionUnspecified Direction = "SORT_DIRECTION_UNSPECIFIED"
+	DirectionSortDirectionAsc         Direction = "SORT_DIRECTION_ASC"
+	DirectionSortDirectionDesc        Direction = "SORT_DIRECTION_DESC"
 )
+
+func (e Direction) ToPointer() *Direction {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Direction) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC":
+			return true
+		}
+	}
+	return false
+}
+
+// SortField - Column to sort by. Unspecified (0) means sort by created_at desc (server default).
+type SortField string
+
+const (
+	SortFieldAutomationSortFieldUnspecified        SortField = "AUTOMATION_SORT_FIELD_UNSPECIFIED"
+	SortFieldAutomationSortFieldDisplayName        SortField = "AUTOMATION_SORT_FIELD_DISPLAY_NAME"
+	SortFieldAutomationSortFieldCreatedAt          SortField = "AUTOMATION_SORT_FIELD_CREATED_AT"
+	SortFieldAutomationSortFieldLastExecutedAt     SortField = "AUTOMATION_SORT_FIELD_LAST_EXECUTED_AT"
+	SortFieldAutomationSortFieldEnabled            SortField = "AUTOMATION_SORT_FIELD_ENABLED"
+	SortFieldAutomationSortFieldPrimaryTriggerType SortField = "AUTOMATION_SORT_FIELD_PRIMARY_TRIGGER_TYPE"
+)
+
+func (e SortField) ToPointer() *SortField {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SortField) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AUTOMATION_SORT_FIELD_UNSPECIFIED", "AUTOMATION_SORT_FIELD_DISPLAY_NAME", "AUTOMATION_SORT_FIELD_CREATED_AT", "AUTOMATION_SORT_FIELD_LAST_EXECUTED_AT", "AUTOMATION_SORT_FIELD_ENABLED", "AUTOMATION_SORT_FIELD_PRIMARY_TRIGGER_TYPE":
+			return true
+		}
+	}
+	return false
+}
 
 type TriggerTypes string
 
@@ -23,62 +72,43 @@ const (
 	TriggerTypesTriggerTypeForm              TriggerTypes = "TRIGGER_TYPE_FORM"
 	TriggerTypesTriggerTypeScheduleAppUser   TriggerTypes = "TRIGGER_TYPE_SCHEDULE_APP_USER"
 	TriggerTypesTriggerTypeAccessConflict    TriggerTypes = "TRIGGER_TYPE_ACCESS_CONFLICT"
+	TriggerTypesTriggerTypeScheduleNoUser    TriggerTypes = "TRIGGER_TYPE_SCHEDULE_NO_USER"
 )
 
 func (e TriggerTypes) ToPointer() *TriggerTypes {
 	return &e
 }
-func (e *TriggerTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TriggerTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TRIGGER_TYPE_UNSPECIFIED", "TRIGGER_TYPE_USER_PROFILE_CHANGE", "TRIGGER_TYPE_APP_USER_CREATE", "TRIGGER_TYPE_APP_USER_UPDATE", "TRIGGER_TYPE_UNUSED_ACCESS", "TRIGGER_TYPE_USER_CREATED", "TRIGGER_TYPE_GRANT_FOUND", "TRIGGER_TYPE_GRANT_DELETED", "TRIGGER_TYPE_WEBHOOK", "TRIGGER_TYPE_SCHEDULE", "TRIGGER_TYPE_FORM", "TRIGGER_TYPE_SCHEDULE_APP_USER", "TRIGGER_TYPE_ACCESS_CONFLICT", "TRIGGER_TYPE_SCHEDULE_NO_USER":
+			return true
+		}
 	}
-	switch v {
-	case "TRIGGER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "TRIGGER_TYPE_USER_PROFILE_CHANGE":
-		fallthrough
-	case "TRIGGER_TYPE_APP_USER_CREATE":
-		fallthrough
-	case "TRIGGER_TYPE_APP_USER_UPDATE":
-		fallthrough
-	case "TRIGGER_TYPE_UNUSED_ACCESS":
-		fallthrough
-	case "TRIGGER_TYPE_USER_CREATED":
-		fallthrough
-	case "TRIGGER_TYPE_GRANT_FOUND":
-		fallthrough
-	case "TRIGGER_TYPE_GRANT_DELETED":
-		fallthrough
-	case "TRIGGER_TYPE_WEBHOOK":
-		fallthrough
-	case "TRIGGER_TYPE_SCHEDULE":
-		fallthrough
-	case "TRIGGER_TYPE_FORM":
-		fallthrough
-	case "TRIGGER_TYPE_SCHEDULE_APP_USER":
-		fallthrough
-	case "TRIGGER_TYPE_ACCESS_CONFLICT":
-		*e = TriggerTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TriggerTypes: %v", v)
-	}
+	return false
 }
 
 // The SearchAutomationsRequest message.
 type SearchAutomationsRequest struct {
-	// The appId field.
+	// Filter results to automations belonging to this application.
 	AppID *string `json:"appId,omitempty"`
-	// The pageSize field.
+	// Direction to sort in. Unspecified falls back to ASC when sort_field is set;
+	//  when sort_field is also unspecified, the server default order (created_at
+	//  DESC) applies.
+	Direction *Direction `json:"direction,omitempty"`
+	// Maximum number of results to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
+	// Pagination token from a previous SearchAutomationsResponse.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The query field.
+	// Free-text search query to filter automations by name or description.
 	Query *string `json:"query,omitempty"`
-	// The refs field.
+	// Restrict results to automations matching these template references.
 	Refs []*AutomationTemplateRef `json:"refs,omitempty"`
-	// The triggerTypes field.
+	// Column to sort by. Unspecified (0) means sort by created_at desc (server default).
+	SortField *SortField `json:"sortField,omitempty"`
+	// Filter results to automations with any of the specified trigger types.
 	TriggerTypes []TriggerTypes `json:"triggerTypes,omitempty"`
 }
 
@@ -87,6 +117,13 @@ func (s *SearchAutomationsRequest) GetAppID() *string {
 		return nil
 	}
 	return s.AppID
+}
+
+func (s *SearchAutomationsRequest) GetDirection() *Direction {
+	if s == nil {
+		return nil
+	}
+	return s.Direction
 }
 
 func (s *SearchAutomationsRequest) GetPageSize() *int {
@@ -115,6 +152,13 @@ func (s *SearchAutomationsRequest) GetRefs() []*AutomationTemplateRef {
 		return nil
 	}
 	return s.Refs
+}
+
+func (s *SearchAutomationsRequest) GetSortField() *SortField {
+	if s == nil {
+		return nil
+	}
+	return s.SortField
 }
 
 func (s *SearchAutomationsRequest) GetTriggerTypes() []TriggerTypes {

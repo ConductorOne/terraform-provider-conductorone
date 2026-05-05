@@ -6,6 +6,8 @@ package shared
 type ExpiringAccessPreference struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// The locked field.
+	Locked *bool `json:"locked,omitempty"`
 }
 
 func (e *ExpiringAccessPreference) GetEnabled() *bool {
@@ -13,4 +15,11 @@ func (e *ExpiringAccessPreference) GetEnabled() *bool {
 		return nil
 	}
 	return e.Enabled
+}
+
+func (e *ExpiringAccessPreference) GetLocked() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.Locked
 }

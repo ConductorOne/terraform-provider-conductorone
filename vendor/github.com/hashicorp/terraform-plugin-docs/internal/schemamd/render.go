@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright IBM Corp. 2020, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package schemamd
@@ -31,6 +31,22 @@ func Render(schema *tfjson.Schema, w io.Writer) error {
 	err = writeRootBlock(w, schema.Block)
 	if err != nil {
 		return fmt.Errorf("unable to render schema: %w", err)
+	}
+
+	return nil
+}
+
+// RenderAction is a variant of Render for action schemas. Action schemas share the same config block as
+// resource schemas, with the addition of other schema data based on the type of action it is.
+func RenderAction(schema *tfjson.ActionSchema, w io.Writer) error {
+	_, err := io.WriteString(w, "## Schema\n\n")
+	if err != nil {
+		return err
+	}
+
+	err = writeRootBlock(w, schema.Block)
+	if err != nil {
+		return fmt.Errorf("unable to render action schema: %w", err)
 	}
 
 	return nil

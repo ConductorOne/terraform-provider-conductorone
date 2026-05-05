@@ -4,7 +4,7 @@ package shared
 
 // The UpdateOrgDomainRequest message.
 type UpdateOrgDomainRequest struct {
-	// The newDomains field.
+	// The complete list of domain names that should be set as the tenant's verified domains.
 	NewDomains []string `json:"newDomains,omitempty"`
 }
 

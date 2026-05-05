@@ -45,3 +45,6 @@ func (c *C1APIDirectoryV1DirectoryServiceCreateResponse) GetDirectoryServiceCrea
 	}
 	return c.DirectoryServiceCreateResponse
 }
+
+// #region class-body-c1apidirectoryv1directoryservicecreateresponse
+// #endregion class-body-c1apidirectoryv1directoryservicecreateresponse

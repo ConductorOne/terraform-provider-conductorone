@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // TaskAuditAccessRequestOutcomeOutcome - The outcome field.
 type TaskAuditAccessRequestOutcomeOutcome string
 
@@ -21,26 +16,16 @@ const (
 func (e TaskAuditAccessRequestOutcomeOutcome) ToPointer() *TaskAuditAccessRequestOutcomeOutcome {
 	return &e
 }
-func (e *TaskAuditAccessRequestOutcomeOutcome) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskAuditAccessRequestOutcomeOutcome) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACCESS_REQUEST_OUTCOME_UNSPECIFIED", "ACCESS_REQUEST_OUTCOME_APPROVED", "ACCESS_REQUEST_OUTCOME_DENIED", "ACCESS_REQUEST_OUTCOME_ERROR", "ACCESS_REQUEST_OUTCOME_CANCELLED":
+			return true
+		}
 	}
-	switch v {
-	case "ACCESS_REQUEST_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "ACCESS_REQUEST_OUTCOME_APPROVED":
-		fallthrough
-	case "ACCESS_REQUEST_OUTCOME_DENIED":
-		fallthrough
-	case "ACCESS_REQUEST_OUTCOME_ERROR":
-		fallthrough
-	case "ACCESS_REQUEST_OUTCOME_CANCELLED":
-		*e = TaskAuditAccessRequestOutcomeOutcome(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskAuditAccessRequestOutcomeOutcome: %v", v)
-	}
+	return false
 }
 
 // The TaskAuditAccessRequestOutcome message.

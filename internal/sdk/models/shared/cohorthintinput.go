@@ -4,11 +4,11 @@ package shared
 
 // The CohortHintInput message.
 type CohortHintInput struct {
-	// The attribute field.
+	// The user attribute name to use for cohort grouping (e.g., "department", "job_title").
 	Attribute *string `json:"attribute,omitempty"`
-	// The priority field.
+	// Relative priority of this hint. Higher values cause the analysis to weight this attribute more heavily.
 	Priority *int `json:"priority,omitempty"`
-	// The values field.
+	// Specific attribute values to focus on. If empty, all values for the attribute are considered.
 	Values []string `json:"values,omitempty"`
 }
 

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // AgentFailureAction - The action to take if the agent fails to approve, deny, or reassign the task.
 type AgentFailureAction string
 
@@ -20,24 +15,16 @@ const (
 func (e AgentFailureAction) ToPointer() *AgentFailureAction {
 	return &e
 }
-func (e *AgentFailureAction) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AgentFailureAction) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP":
+			return true
+		}
 	}
-	switch v {
-	case "APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED":
-		fallthrough
-	case "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS":
-		fallthrough
-	case "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS":
-		fallthrough
-	case "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP":
-		*e = AgentFailureAction(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AgentFailureAction: %v", v)
-	}
+	return false
 }
 
 // AgentMode - The mode of the agent, full control, change policy only, or comment only.
@@ -53,24 +40,16 @@ const (
 func (e AgentMode) ToPointer() *AgentMode {
 	return &e
 }
-func (e *AgentMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AgentMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY":
+			return true
+		}
 	}
-	switch v {
-	case "APPROVAL_AGENT_MODE_UNSPECIFIED":
-		fallthrough
-	case "APPROVAL_AGENT_MODE_FULL_CONTROL":
-		fallthrough
-	case "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY":
-		fallthrough
-	case "APPROVAL_AGENT_MODE_COMMENT_ONLY":
-		*e = AgentMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AgentMode: %v", v)
-	}
+	return false
 }
 
 // AgentApproval - The agent to assign the task to.

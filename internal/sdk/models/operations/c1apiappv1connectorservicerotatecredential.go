@@ -45,3 +45,6 @@ func (c *C1APIAppV1ConnectorServiceRotateCredentialResponse) GetConnectorService
 	}
 	return c.ConnectorServiceRotateCredentialResponse
 }
+
+// #region class-body-c1apiappv1connectorservicerotatecredentialresponse
+// #endregion class-body-c1apiappv1connectorservicerotatecredentialresponse

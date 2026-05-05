@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessRequest) GetTaskA
 	return c.TaskActionsServiceEscalateToEmergencyAccessRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsserviceescalatetoemergencyaccessrequest
+// #endregion class-body-c1apitaskv1taskactionsserviceescalatetoemergencyaccessrequest
+
 type C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -33,7 +36,7 @@ type C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// A generic response for task action endpoints, containing the updated task and the ID of the action that was created.
 	TaskServiceActionResponse *shared.TaskServiceActionResponse
 }
 
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessResponse) GetTask
 	}
 	return c.TaskServiceActionResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsserviceescalatetoemergencyaccessresponse
+// #endregion class-body-c1apitaskv1taskactionsserviceescalatetoemergencyaccessresponse

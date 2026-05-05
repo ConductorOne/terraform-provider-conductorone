@@ -26,6 +26,9 @@ func (c *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueRequest) GetDele
 	return c.DeleteRiskLevelAttributeValueRequest
 }
 
+// #region class-body-c1apiattributev1attributesdeleterisklevelattributevaluerequest
+// #endregion class-body-c1apiattributev1attributesdeleterisklevelattributevaluerequest
+
 type C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAttributeV1AttributesDeleteRiskLevelAttributeValueResponse) GetDel
 	}
 	return c.DeleteRiskLevelAttributeValueResponse
 }
+
+// #region class-body-c1apiattributev1attributesdeleterisklevelattributevalueresponse
+// #endregion class-body-c1apiattributev1attributesdeleterisklevelattributevalueresponse

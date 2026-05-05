@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppEntitlementsAddAutomationExclusionRequest) GetAddAutomatio
 	return c.AddAutomationExclusionRequest
 }
 
+// #region class-body-c1apiappv1appentitlementsaddautomationexclusionrequest
+// #endregion class-body-c1apiappv1appentitlementsaddautomationexclusionrequest
+
 type C1APIAppV1AppEntitlementsAddAutomationExclusionResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppEntitlementsAddAutomationExclusionResponse) GetAddAutomati
 	}
 	return c.AddAutomationExclusionResponse
 }
+
+// #region class-body-c1apiappv1appentitlementsaddautomationexclusionresponse
+// #endregion class-body-c1apiappv1appentitlementsaddautomationexclusionresponse
