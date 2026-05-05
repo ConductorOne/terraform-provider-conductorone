@@ -83,6 +83,11 @@ func (r *RequestCatalogsDataSource) Schema(ctx context.Context, req datasource.S
 									Computed:    true,
 									Description: `Defines how to handle the request policies of the entitlements in the catalog during enrollment.`,
 								},
+								"grant_policy_id": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `The ID of the policy to use for access requests in this catalog.` + "\n" +
+										` This is different from the catalog AppEntitlement's grant_policy_id, which is used for catalog membership grants.`,
+								},
 								"id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The id of the request catalog.`,

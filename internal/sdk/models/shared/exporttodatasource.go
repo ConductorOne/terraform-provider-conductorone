@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // Format - The format field.
 type Format string
 
@@ -19,22 +14,16 @@ const (
 func (e Format) ToPointer() *Format {
 	return &e
 }
-func (e *Format) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Format) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "EXPORT_FORMAT_UNSPECIFIED", "EXPORT_FORMAT_OCSF_JSON_ZSTD", "EXPORT_FORMAT_OCSF_JSON_GZIP":
+			return true
+		}
 	}
-	switch v {
-	case "EXPORT_FORMAT_UNSPECIFIED":
-		fallthrough
-	case "EXPORT_FORMAT_OCSF_JSON_ZSTD":
-		fallthrough
-	case "EXPORT_FORMAT_OCSF_JSON_GZIP":
-		*e = Format(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Format: %v", v)
-	}
+	return false
 }
 
 // The ExportToDatasource message.

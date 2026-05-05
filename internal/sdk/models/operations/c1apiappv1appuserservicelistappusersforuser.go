@@ -42,6 +42,9 @@ func (c *C1APIAppV1AppUserServiceListAppUsersForUserRequest) GetPageToken() *str
 	return c.PageToken
 }
 
+// #region class-body-c1apiappv1appuserservicelistappusersforuserrequest
+// #endregion class-body-c1apiappv1appuserservicelistappusersforuserrequest
+
 type C1APIAppV1AppUserServiceListAppUsersForUserResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -49,7 +52,7 @@ type C1APIAppV1AppUserServiceListAppUsersForUserResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for listing app users correlated to a specific C1 user.
 	AppUsersForUserServiceListResponse *shared.AppUsersForUserServiceListResponse
 }
 
@@ -80,3 +83,6 @@ func (c *C1APIAppV1AppUserServiceListAppUsersForUserResponse) GetAppUsersForUser
 	}
 	return c.AppUsersForUserServiceListResponse
 }
+
+// #region class-body-c1apiappv1appuserservicelistappusersforuserresponse
+// #endregion class-body-c1apiappv1appuserservicelistappusersforuserresponse

@@ -4,7 +4,7 @@ package shared
 
 // The GetUserNotificationSettingsResponse message.
 type GetUserNotificationSettingsResponse struct {
-	// The UserNotificationSettings message.
+	// UserNotificationSettings contains the calling user's personal notification preferences.
 	UserNotificationSettings *UserNotificationSettings `json:"userNotificationSettings,omitempty"`
 }
 

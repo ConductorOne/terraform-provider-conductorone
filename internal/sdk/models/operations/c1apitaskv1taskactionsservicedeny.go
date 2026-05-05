@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceDenyRequest) GetTaskActionsServiceDenyRequ
 	return c.TaskActionsServiceDenyRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsservicedenyrequest
+// #endregion class-body-c1apitaskv1taskactionsservicedenyrequest
+
 type C1APITaskV1TaskActionsServiceDenyResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceDenyResponse) GetTaskActionsServiceDenyRes
 	}
 	return c.TaskActionsServiceDenyResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsservicedenyresponse
+// #endregion class-body-c1apitaskv1taskactionsservicedenyresponse

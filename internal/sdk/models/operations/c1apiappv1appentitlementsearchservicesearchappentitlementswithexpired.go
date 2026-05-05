@@ -42,6 +42,9 @@ func (c *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRe
 	return c.PageToken
 }
 
+// #region class-body-c1apiappv1appentitlementsearchservicesearchappentitlementswithexpiredrequest
+// #endregion class-body-c1apiappv1appentitlementsearchservicesearchappentitlementswithexpiredrequest
+
 type C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -80,3 +83,6 @@ func (c *C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRe
 	}
 	return c.SearchAppEntitlementsWithExpiredResponse
 }
+
+// #region class-body-c1apiappv1appentitlementsearchservicesearchappentitlementswithexpiredresponse
+// #endregion class-body-c1apiappv1appentitlementsearchservicesearchappentitlementswithexpiredresponse

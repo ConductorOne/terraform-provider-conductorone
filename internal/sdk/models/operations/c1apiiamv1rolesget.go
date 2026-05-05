@@ -18,6 +18,9 @@ func (c *C1APIIamV1RolesGetRequest) GetRoleID() string {
 	return c.RoleID
 }
 
+// #region class-body-c1apiiamv1rolesgetrequest
+// #endregion class-body-c1apiiamv1rolesgetrequest
+
 type C1APIIamV1RolesGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIIamV1RolesGetResponse) GetGetRolesResponse() *shared.GetRolesRespo
 	}
 	return c.GetRolesResponse
 }
+
+// #region class-body-c1apiiamv1rolesgetresponse
+// #endregion class-body-c1apiiamv1rolesgetresponse

@@ -34,6 +34,9 @@ func (c *C1APIAppV1ConnectorServicePauseSyncRequest) GetPauseSyncRequest() *shar
 	return c.PauseSyncRequest
 }
 
+// #region class-body-c1apiappv1connectorservicepausesyncrequest
+// #endregion class-body-c1apiappv1connectorservicepausesyncrequest
+
 type C1APIAppV1ConnectorServicePauseSyncResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -41,7 +44,7 @@ type C1APIAppV1ConnectorServicePauseSyncResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// Empty response body. Status code indicates success.
 	PauseSyncResponse *shared.PauseSyncResponse
 }
 
@@ -72,3 +75,6 @@ func (c *C1APIAppV1ConnectorServicePauseSyncResponse) GetPauseSyncResponse() *sh
 	}
 	return c.PauseSyncResponse
 }
+
+// #region class-body-c1apiappv1connectorservicepausesyncresponse
+// #endregion class-body-c1apiappv1connectorservicepausesyncresponse

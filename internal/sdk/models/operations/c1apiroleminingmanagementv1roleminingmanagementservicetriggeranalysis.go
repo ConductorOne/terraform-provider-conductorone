@@ -45,3 +45,6 @@ func (c *C1APIRoleMiningManagementV1RoleMiningManagementServiceTriggerAnalysisRe
 	}
 	return c.TriggerAnalysisResponse
 }
+
+// #region class-body-c1apiroleminingmanagementv1roleminingmanagementservicetriggeranalysisresponse
+// #endregion class-body-c1apiroleminingmanagementv1roleminingmanagementservicetriggeranalysisresponse

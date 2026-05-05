@@ -2,12 +2,7 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// DayOfWeek - The dayOfWeek field.
+// DayOfWeek - The day of the week to send weekly digests.
 type DayOfWeek string
 
 const (
@@ -24,35 +19,19 @@ const (
 func (e DayOfWeek) ToPointer() *DayOfWeek {
 	return &e
 }
-func (e *DayOfWeek) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DayOfWeek) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "WEEKDAY_UNSPECIFIED", "WEEKDAY_MONDAY", "WEEKDAY_TUESDAY", "WEEKDAY_WEDNESDAY", "WEEKDAY_THURSDAY", "WEEKDAY_FRIDAY", "WEEKDAY_SATURDAY", "WEEKDAY_SUNDAY":
+			return true
+		}
 	}
-	switch v {
-	case "WEEKDAY_UNSPECIFIED":
-		fallthrough
-	case "WEEKDAY_MONDAY":
-		fallthrough
-	case "WEEKDAY_TUESDAY":
-		fallthrough
-	case "WEEKDAY_WEDNESDAY":
-		fallthrough
-	case "WEEKDAY_THURSDAY":
-		fallthrough
-	case "WEEKDAY_FRIDAY":
-		fallthrough
-	case "WEEKDAY_SATURDAY":
-		fallthrough
-	case "WEEKDAY_SUNDAY":
-		*e = DayOfWeek(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DayOfWeek: %v", v)
-	}
+	return false
 }
 
-// DigestPreferenceFrequency - The frequency field.
+// DigestPreferenceFrequency - How often digest notifications are sent.
 type DigestPreferenceFrequency string
 
 const (
@@ -64,32 +43,28 @@ const (
 func (e DigestPreferenceFrequency) ToPointer() *DigestPreferenceFrequency {
 	return &e
 }
-func (e *DigestPreferenceFrequency) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DigestPreferenceFrequency) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DIGEST_FREQUENCY_UNSPECIFIED", "DIGEST_FREQUENCY_DAILY", "DIGEST_FREQUENCY_WEEKLY":
+			return true
+		}
 	}
-	switch v {
-	case "DIGEST_FREQUENCY_UNSPECIFIED":
-		fallthrough
-	case "DIGEST_FREQUENCY_DAILY":
-		fallthrough
-	case "DIGEST_FREQUENCY_WEEKLY":
-		*e = DigestPreferenceFrequency(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DigestPreferenceFrequency: %v", v)
-	}
+	return false
 }
 
-// The DigestPreference message.
+// DigestPreference controls whether summary digest notifications are sent and how often.
 type DigestPreference struct {
-	// The dayOfWeek field.
+	// The day of the week to send weekly digests.
 	DayOfWeek *DayOfWeek `json:"dayOfWeek,omitempty"`
-	// The enabled field.
+	// Whether digest notifications are enabled.
 	Enabled *bool `json:"enabled,omitempty"`
-	// The frequency field.
+	// How often digest notifications are sent.
 	Frequency *DigestPreferenceFrequency `json:"frequency,omitempty"`
+	// Whether this preference is locked by org-level settings, preventing users from overriding it.
+	Locked *bool `json:"locked,omitempty"`
 }
 
 func (d *DigestPreference) GetDayOfWeek() *DayOfWeek {
@@ -111,4 +86,11 @@ func (d *DigestPreference) GetFrequency() *DigestPreferenceFrequency {
 		return nil
 	}
 	return d.Frequency
+}
+
+func (d *DigestPreference) GetLocked() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Locked
 }

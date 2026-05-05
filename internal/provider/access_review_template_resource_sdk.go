@@ -17,6 +17,19 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AccessReviewColumnConfig == nil {
+			r.AccessReviewColumnConfig = nil
+		} else {
+			r.AccessReviewColumnConfig = &tfTypes.AccessReviewColumnConfig{}
+			if resp.AccessReviewColumnConfig.Columns != nil {
+				r.AccessReviewColumnConfig.Columns = make([]types.String, 0, len(resp.AccessReviewColumnConfig.Columns))
+				for _, v := range resp.AccessReviewColumnConfig.Columns {
+					r.AccessReviewColumnConfig.Columns = append(r.AccessReviewColumnConfig.Columns, types.StringValue(string(v)))
+				}
+			} else {
+				r.AccessReviewColumnConfig.Columns = nil
+			}
+		}
 		r.AccessReviewDuration = types.StringPointerValue(resp.AccessReviewDuration)
 		if resp.AccessReviewInclusionScope == nil {
 			r.AccessReviewInclusionScope = nil
@@ -27,18 +40,24 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 				for _, v := range resp.AccessReviewInclusionScope.AppUserStatuses {
 					r.AccessReviewInclusionScope.AppUserStatuses = append(r.AccessReviewInclusionScope.AppUserStatuses, types.StringValue(string(v)))
 				}
+			} else {
+				r.AccessReviewInclusionScope.AppUserStatuses = nil
 			}
 			if resp.AccessReviewInclusionScope.AppUserTypes != nil {
 				r.AccessReviewInclusionScope.AppUserTypes = make([]types.String, 0, len(resp.AccessReviewInclusionScope.AppUserTypes))
 				for _, v := range resp.AccessReviewInclusionScope.AppUserTypes {
 					r.AccessReviewInclusionScope.AppUserTypes = append(r.AccessReviewInclusionScope.AppUserTypes, types.StringValue(string(v)))
 				}
+			} else {
+				r.AccessReviewInclusionScope.AppUserTypes = nil
 			}
 			if resp.AccessReviewInclusionScope.ManagerIds != nil {
 				r.AccessReviewInclusionScope.ManagerIds = make([]types.String, 0, len(resp.AccessReviewInclusionScope.ManagerIds))
 				for _, v := range resp.AccessReviewInclusionScope.ManagerIds {
 					r.AccessReviewInclusionScope.ManagerIds = append(r.AccessReviewInclusionScope.ManagerIds, types.StringValue(v))
 				}
+			} else {
+				r.AccessReviewInclusionScope.ManagerIds = nil
 			}
 			if len(resp.AccessReviewInclusionScope.MultiUserProfileAttributes) > 0 {
 				r.AccessReviewInclusionScope.MultiUserProfileAttributes = make(map[string]tfTypes.IncludedUserAttributeValues, len(resp.AccessReviewInclusionScope.MultiUserProfileAttributes))
@@ -54,6 +73,8 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 
 							includedUserAttributeValuesResult.Values = append(includedUserAttributeValuesResult.Values, values)
 						}
+					} else {
+						includedUserAttributeValuesResult.Values = nil
 					}
 
 					r.AccessReviewInclusionScope.MultiUserProfileAttributes[includedUserAttributeValuesKey] = includedUserAttributeValuesResult
@@ -65,13 +86,25 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 				for _, v := range resp.AccessReviewInclusionScope.UserIds {
 					r.AccessReviewInclusionScope.UserIds = append(r.AccessReviewInclusionScope.UserIds, types.StringValue(v))
 				}
+			} else {
+				r.AccessReviewInclusionScope.UserIds = nil
 			}
 			if resp.AccessReviewInclusionScope.UserStatuses != nil {
 				r.AccessReviewInclusionScope.UserStatuses = make([]types.String, 0, len(resp.AccessReviewInclusionScope.UserStatuses))
 				for _, v := range resp.AccessReviewInclusionScope.UserStatuses {
 					r.AccessReviewInclusionScope.UserStatuses = append(r.AccessReviewInclusionScope.UserStatuses, types.StringValue(string(v)))
 				}
+			} else {
+				r.AccessReviewInclusionScope.UserStatuses = nil
 			}
+		}
+		if resp.AccessReviewNotificationConfig == nil {
+			r.AccessReviewNotificationConfig = nil
+		} else {
+			r.AccessReviewNotificationConfig = &tfTypes.AccessReviewNotificationConfig{}
+			r.AccessReviewNotificationConfig.SendClose = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendClose)
+			r.AccessReviewNotificationConfig.SendKickoff = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendKickoff)
+			r.AccessReviewNotificationConfig.SendReminders = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendReminders)
 		}
 		if resp.AccessReviewScopeV2 == nil {
 			r.AccessReviewScopeV2 = nil
@@ -91,12 +124,16 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 					for _, v := range resp.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes {
 						r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes = append(r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes, types.StringValue(string(v)))
 					}
+				} else {
+					r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes = nil
 				}
 				if resp.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses != nil {
 					r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses = make([]types.String, 0, len(resp.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses))
 					for _, v := range resp.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses {
 						r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses = append(r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses, types.StringValue(string(v)))
 					}
+				} else {
+					r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses = nil
 				}
 				r.AccessReviewScopeV2.AccountCriteriaScope.NoAccountOwner = types.BoolPointerValue(resp.AccessReviewScopeV2.AccountCriteriaScope.NoAccountOwner)
 			}
@@ -134,12 +171,16 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 					for _, v := range resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds {
 						r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = append(r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds, types.StringValue(v))
 					}
+				} else {
+					r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = nil
 				}
 				if resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds != nil {
 					r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds))
 					for _, v := range resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds {
 						r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = append(r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds, types.StringValue(v))
 					}
+				} else {
+					r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = nil
 				}
 			}
 			if resp.AccessReviewScopeV2.CelExpressionScope == nil {
@@ -170,6 +211,8 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 						for _, v := range resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds {
 							r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds = append(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds, types.StringValue(v))
 						}
+					} else {
+						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds = nil
 					}
 					if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType != nil {
 						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType = types.StringValue(string(*resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType))
@@ -181,6 +224,8 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 						for _, v := range resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds {
 							r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = append(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds, types.StringValue(v))
 						}
+					} else {
+						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = nil
 					}
 				}
 				if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween == nil {
@@ -220,6 +265,8 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 					for _, v := range resp.AccessReviewScopeV2.SelectedUsersScope.UserIds {
 						r.AccessReviewScopeV2.SelectedUsersScope.UserIds = append(r.AccessReviewScopeV2.SelectedUsersScope.UserIds, types.StringValue(v))
 					}
+				} else {
+					r.AccessReviewScopeV2.SelectedUsersScope.UserIds = nil
 				}
 			}
 			if resp.AccessReviewScopeV2.SpecificAccessConflictsScope == nil {
@@ -247,12 +294,16 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 
 						r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef = append(r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef, groupAppEntitlementsRef)
 					}
+				} else {
+					r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef = nil
 				}
 				if resp.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds != nil {
 					r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds))
 					for _, v := range resp.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds {
 						r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds = append(r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds, types.StringValue(v))
 					}
+				} else {
+					r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds = nil
 				}
 				if len(resp.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes) > 0 {
 					r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes = make(map[string]tfTypes.IncludedUserAttributeValues, len(resp.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes))
@@ -268,6 +319,8 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 
 								includedUserAttributeValuesResult1.Values = append(includedUserAttributeValuesResult1.Values, values1)
 							}
+						} else {
+							includedUserAttributeValuesResult1.Values = nil
 						}
 
 						r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[includedUserAttributeValuesKey1] = includedUserAttributeValuesResult1
@@ -278,6 +331,8 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 					for _, v := range resp.AccessReviewScopeV2.UserCriteriaScope.UserStatus {
 						r.AccessReviewScopeV2.UserCriteriaScope.UserStatus = append(r.AccessReviewScopeV2.UserCriteriaScope.UserStatus, types.StringValue(string(v)))
 					}
+				} else {
+					r.AccessReviewScopeV2.UserCriteriaScope.UserStatus = nil
 				}
 			}
 		}
@@ -307,14 +362,6 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 		r.ID = types.StringPointerValue(resp.ID)
 		r.IsCampaignScheduleEnabled = types.BoolPointerValue(resp.IsCampaignScheduleEnabled)
 		r.NextScheduledCampaignAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextScheduledCampaignAt))
-		if resp.NotificationConfig == nil {
-			r.NotificationConfig = nil
-		} else {
-			r.NotificationConfig = &tfTypes.NotificationConfig{}
-			r.NotificationConfig.SendClose = types.BoolPointerValue(resp.NotificationConfig.SendClose)
-			r.NotificationConfig.SendKickoff = types.BoolPointerValue(resp.NotificationConfig.SendKickoff)
-			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
-		}
 		r.Occurrences = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.Occurrences))
 		r.PolicyID = types.StringPointerValue(resp.PolicyID)
 		if resp.RecurrenceRule == nil {
@@ -499,6 +546,19 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 	} else {
 		autoStartCampaign = nil
 	}
+	var accessReviewColumnConfig *shared.AccessReviewColumnConfig
+	if r.AccessReviewColumnConfig != nil {
+		var columns []shared.Columns
+		if r.AccessReviewColumnConfig.Columns != nil {
+			columns = make([]shared.Columns, 0, len(r.AccessReviewColumnConfig.Columns))
+			for _, columnsItem := range r.AccessReviewColumnConfig.Columns {
+				columns = append(columns, shared.Columns(columnsItem.ValueString()))
+			}
+		}
+		accessReviewColumnConfig = &shared.AccessReviewColumnConfig{
+			Columns: columns,
+		}
+	}
 	defaultView := new(shared.AccessReviewTemplateDefaultView)
 	if !r.DefaultView.IsUnknown() && !r.DefaultView.IsNull() {
 		*defaultView = shared.AccessReviewTemplateDefaultView(r.DefaultView.ValueString())
@@ -616,27 +676,27 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 	} else {
 		nextScheduledCampaignAt = nil
 	}
-	var notificationConfig *shared.NotificationConfig
-	if r.NotificationConfig != nil {
+	var accessReviewNotificationConfig *shared.AccessReviewNotificationConfig
+	if r.AccessReviewNotificationConfig != nil {
 		sendClose := new(bool)
-		if !r.NotificationConfig.SendClose.IsUnknown() && !r.NotificationConfig.SendClose.IsNull() {
-			*sendClose = r.NotificationConfig.SendClose.ValueBool()
+		if !r.AccessReviewNotificationConfig.SendClose.IsUnknown() && !r.AccessReviewNotificationConfig.SendClose.IsNull() {
+			*sendClose = r.AccessReviewNotificationConfig.SendClose.ValueBool()
 		} else {
 			sendClose = nil
 		}
 		sendKickoff := new(bool)
-		if !r.NotificationConfig.SendKickoff.IsUnknown() && !r.NotificationConfig.SendKickoff.IsNull() {
-			*sendKickoff = r.NotificationConfig.SendKickoff.ValueBool()
+		if !r.AccessReviewNotificationConfig.SendKickoff.IsUnknown() && !r.AccessReviewNotificationConfig.SendKickoff.IsNull() {
+			*sendKickoff = r.AccessReviewNotificationConfig.SendKickoff.ValueBool()
 		} else {
 			sendKickoff = nil
 		}
 		sendReminders := new(bool)
-		if !r.NotificationConfig.SendReminders.IsUnknown() && !r.NotificationConfig.SendReminders.IsNull() {
-			*sendReminders = r.NotificationConfig.SendReminders.ValueBool()
+		if !r.AccessReviewNotificationConfig.SendReminders.IsUnknown() && !r.AccessReviewNotificationConfig.SendReminders.IsNull() {
+			*sendReminders = r.AccessReviewNotificationConfig.SendReminders.ValueBool()
 		} else {
 			sendReminders = nil
 		}
-		notificationConfig = &shared.NotificationConfig{
+		accessReviewNotificationConfig = &shared.AccessReviewNotificationConfig{
 			SendClose:     sendClose,
 			SendKickoff:   sendKickoff,
 			SendReminders: sendReminders,
@@ -1077,6 +1137,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		AutoCloseDecision:              autoCloseDecision,
 		AutoGenerateReport:             autoGenerateReport,
 		AutoStartCampaign:              autoStartCampaign,
+		AccessReviewColumnConfig:       accessReviewColumnConfig,
 		DefaultView:                    defaultView,
 		Description:                    description,
 		DisplayName:                    displayName,
@@ -1085,7 +1146,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		AccessReviewInclusionScope:     accessReviewInclusionScope,
 		IsCampaignScheduleEnabled:      isCampaignScheduleEnabled,
 		NextScheduledCampaignAt:        nextScheduledCampaignAt,
-		NotificationConfig:             notificationConfig,
+		AccessReviewNotificationConfig: accessReviewNotificationConfig,
 		Occurrences:                    occurrences,
 		PolicyID:                       policyID,
 		RecurrenceRule:                 recurrenceRule,
@@ -1139,6 +1200,19 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 	} else {
 		autoStartCampaign = nil
 	}
+	var accessReviewColumnConfig *shared.AccessReviewColumnConfig
+	if r.AccessReviewColumnConfig != nil {
+		var columns []shared.Columns
+		if r.AccessReviewColumnConfig.Columns != nil {
+			columns = make([]shared.Columns, 0, len(r.AccessReviewColumnConfig.Columns))
+			for _, columnsItem := range r.AccessReviewColumnConfig.Columns {
+				columns = append(columns, shared.Columns(columnsItem.ValueString()))
+			}
+		}
+		accessReviewColumnConfig = &shared.AccessReviewColumnConfig{
+			Columns: columns,
+		}
+	}
 	defaultView := new(shared.AccessReviewTemplateServiceCreateRequestDefaultView)
 	if !r.DefaultView.IsUnknown() && !r.DefaultView.IsNull() {
 		*defaultView = shared.AccessReviewTemplateServiceCreateRequestDefaultView(r.DefaultView.ValueString())
@@ -1169,27 +1243,27 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 	} else {
 		isCampaignScheduleEnabled = nil
 	}
-	var notificationConfig *shared.NotificationConfig
-	if r.NotificationConfig != nil {
+	var accessReviewNotificationConfig *shared.AccessReviewNotificationConfig
+	if r.AccessReviewNotificationConfig != nil {
 		sendClose := new(bool)
-		if !r.NotificationConfig.SendClose.IsUnknown() && !r.NotificationConfig.SendClose.IsNull() {
-			*sendClose = r.NotificationConfig.SendClose.ValueBool()
+		if !r.AccessReviewNotificationConfig.SendClose.IsUnknown() && !r.AccessReviewNotificationConfig.SendClose.IsNull() {
+			*sendClose = r.AccessReviewNotificationConfig.SendClose.ValueBool()
 		} else {
 			sendClose = nil
 		}
 		sendKickoff := new(bool)
-		if !r.NotificationConfig.SendKickoff.IsUnknown() && !r.NotificationConfig.SendKickoff.IsNull() {
-			*sendKickoff = r.NotificationConfig.SendKickoff.ValueBool()
+		if !r.AccessReviewNotificationConfig.SendKickoff.IsUnknown() && !r.AccessReviewNotificationConfig.SendKickoff.IsNull() {
+			*sendKickoff = r.AccessReviewNotificationConfig.SendKickoff.ValueBool()
 		} else {
 			sendKickoff = nil
 		}
 		sendReminders := new(bool)
-		if !r.NotificationConfig.SendReminders.IsUnknown() && !r.NotificationConfig.SendReminders.IsNull() {
-			*sendReminders = r.NotificationConfig.SendReminders.ValueBool()
+		if !r.AccessReviewNotificationConfig.SendReminders.IsUnknown() && !r.AccessReviewNotificationConfig.SendReminders.IsNull() {
+			*sendReminders = r.AccessReviewNotificationConfig.SendReminders.ValueBool()
 		} else {
 			sendReminders = nil
 		}
-		notificationConfig = &shared.NotificationConfig{
+		accessReviewNotificationConfig = &shared.AccessReviewNotificationConfig{
 			SendClose:     sendClose,
 			SendKickoff:   sendKickoff,
 			SendReminders: sendReminders,
@@ -1612,12 +1686,13 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		AutoCloseDecision:              autoCloseDecision,
 		AutoGenerateReport:             autoGenerateReport,
 		AutoStartCampaign:              autoStartCampaign,
+		AccessReviewColumnConfig:       accessReviewColumnConfig,
 		DefaultView:                    defaultView,
 		Description:                    description,
 		DisplayName:                    displayName,
 		ExemptCertifiedAccessConflicts: exemptCertifiedAccessConflicts,
 		IsCampaignScheduleEnabled:      isCampaignScheduleEnabled,
-		NotificationConfig:             notificationConfig,
+		AccessReviewNotificationConfig: accessReviewNotificationConfig,
 		OwnerIds:                       ownerIds,
 		PolicyID:                       policyID,
 		RecurrenceRule:                 recurrenceRule,

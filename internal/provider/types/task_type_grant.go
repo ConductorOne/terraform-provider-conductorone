@@ -7,6 +7,7 @@ import (
 )
 
 type TaskTypeGrant struct {
+	TaskGrantSource  *TaskGrantSource `tfsdk:"task_grant_source"`
 	AppEntitlementID types.String     `tfsdk:"app_entitlement_id"`
 	AppID            types.String     `tfsdk:"app_id"`
 	AppUserID        types.String     `tfsdk:"app_user_id"`
@@ -14,5 +15,4 @@ type TaskTypeGrant struct {
 	IdentityUserID   types.String     `tfsdk:"identity_user_id"`
 	Outcome          types.String     `tfsdk:"outcome"`
 	OutcomeTime      types.String     `tfsdk:"outcome_time"`
-	TaskGrantSource  *TaskGrantSource `tfsdk:"task_grant_source"`
 }

@@ -47,8 +47,8 @@ type AppEntitlementDataSourceModel struct {
 	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy         `tfsdk:"deprovisioner_policy"`
 	Description                    types.String                         `tfsdk:"description"`
 	DisplayName                    types.String                         `tfsdk:"display_name"`
-	DurationGrant                  types.String                         `tfsdk:"duration_grant" tfPlanOnly:"true"`
-	DurationUnset                  *tfTypes.AppEntitlementDurationUnset `tfsdk:"duration_unset" tfPlanOnly:"true"`
+	DurationGrant                  types.String                         `tfsdk:"duration_grant"`
+	DurationUnset                  *tfTypes.AppEntitlementDurationUnset `tfsdk:"duration_unset"`
 	Edit                           types.Bool                           `tfsdk:"edit"`
 	EmergencyGrantEnabled          types.Bool                           `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID         types.String                         `tfsdk:"emergency_grant_policy_id"`
@@ -57,6 +57,7 @@ type AppEntitlementDataSourceModel struct {
 	ExcludedEntitlementRefs        []tfTypes.AppEntitlementRef          `tfsdk:"excluded_entitlement_refs"`
 	ExcludeImmutable               types.Bool                           `tfsdk:"exclude_immutable"`
 	ExcludeResourceTypeIds         []types.String                       `tfsdk:"exclude_resource_type_ids"`
+	ExternalID                     types.String                         `tfsdk:"external_id"`
 	Extra                          map[string]types.Bool                `tfsdk:"extra"`
 	GrantCount                     types.String                         `tfsdk:"grant_count"`
 	GrantPolicyID                  types.String                         `tfsdk:"grant_policy_id"`
@@ -110,7 +111,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"alias": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Search for app entitlements that have this alias (exact match).`,
+				Description: `The alias of the app entitlement used by Cone. Also exact-match queryable.`,
 			},
 			"app_id": schema.StringAttribute{
 				Computed:    true,
@@ -141,7 +142,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"compliance_framework_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `Search for app entitlements that are part of these compliace frameworks.`,
+				Description: `Search for app entitlements that are part of these compliance frameworks.`,
 			},
 			"compliance_framework_value_ids": schema.ListAttribute{
 				Computed:    true,
@@ -465,7 +466,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The displayName field.`,
+				Description: `The display name of the app entitlement.`,
 			},
 			"duration_grant": schema.StringAttribute{
 				Computed: true,
@@ -493,16 +494,16 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"exclude_app_user_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `Exclude app entitlements from the results that these app users have granted.`,
+				Description: `Exclude entitlements from results that are granted to any of these app users.`,
 			},
 			"exclude_immutable": schema.BoolAttribute{
 				Optional:    true,
-				Description: `The excludeImmutable field.`,
+				Description: `If true, exclude immutable entitlements (e.g., system-managed entitlements that cannot be modified).`,
 			},
 			"exclude_resource_type_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The excludeResourceTypeIds field.`,
+				Description: `Exclude entitlements with any of these resource type IDs from results.`,
 			},
 			"excluded_entitlement_refs": schema.ListNestedAttribute{
 				Optional: true,
@@ -518,7 +519,12 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						},
 					},
 				},
-				Description: `The excludedEntitlementRefs field.`,
+				Description: `Exclude these specific entitlements from results.`,
+			},
+			"external_id": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `The upstream product's native external ID for this entitlement (e.g. an Okta group ID).` + "\n" +
+					` Populated from the connector's external ID during sync.`,
 			},
 			"extra": schema.MapAttribute{
 				Computed:    true,
@@ -543,7 +549,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"is_automated": schema.BoolAttribute{
 				Optional:    true,
-				Description: `The isAutomated field.`,
+				Description: `If true, restrict results to entitlements that have an automation rule configured.`,
 			},
 			"is_automation_enabled": schema.BoolAttribute{
 				Computed:    true,
@@ -555,12 +561,12 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"match_baton_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The matchBatonId field.`,
+				Description: `An identifier used to match this entitlement to a connector-synced entitlement during sync.`,
 			},
 			"membership_type": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The membershipType field.`,
+				Description: `Filter results to entitlements where the user has any of these membership types (e.g., member, owner, admin).`,
 			},
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
@@ -568,7 +574,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"only_get_expiring": schema.BoolAttribute{
 				Optional:    true,
-				Description: `Restrict results to only those who have expiring app entitlement user bindings.`,
+				Description: `If true, restrict results to entitlements that have at least one expiring grant.`,
 			},
 			"override_access_requests_defaults": schema.BoolAttribute{
 				Computed:    true,
@@ -892,7 +898,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"purpose": schema.StringAttribute{
 				Computed:    true,
-				Description: `The purpose field.`,
+				Description: `The purpose of this entitlement (e.g., assignment, permission, ownership).`,
 			},
 			"query": schema.StringAttribute{
 				Optional:    true,
@@ -916,7 +922,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 						},
 					},
 				},
-				Description: `The refs field.`,
+				Description: `Filter results to only these specific entitlements.`,
 			},
 			"request_schema_id": schema.StringAttribute{
 				Computed:    true,
@@ -930,7 +936,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"resource_trait_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The resourceTraitIds field.`,
+				Description: `Filter results to entitlements whose resource types have any of these trait IDs.`,
 			},
 			"resource_type_ids": schema.ListAttribute{
 				Optional:    true,
@@ -948,7 +954,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"risk_level_value_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The riskLevelValueId field.`,
+				Description: `The ID of the risk level assigned to this entitlement.`,
 			},
 			"slug": schema.StringAttribute{
 				Computed:    true,
@@ -956,7 +962,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			},
 			"source_connector_id": schema.StringAttribute{
 				Optional:    true,
-				Description: `The sourceConnectorId field.`,
+				Description: `Filter results to entitlements synced from this connector.`,
 			},
 			"source_connector_ids": schema.MapAttribute{
 				Computed:    true,
@@ -1042,26 +1048,6 @@ func (r *AppEntitlementDataSource) Read(ctx context.Context, req datasource.Read
 
 	if resp.Diagnostics.HasError() {
 		return
-	}
-	for {
-		var err error
-
-		res, err = res.Next()
-
-		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
-			return
-		}
-
-		if res == nil {
-			break
-		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedAppEntitlementSearchServiceSearchResponse(ctx, res.AppEntitlementSearchServiceSearchResponse)...)
-
-		if resp.Diagnostics.HasError() {
-			return
-		}
 	}
 
 	// Save updated data into Terraform state

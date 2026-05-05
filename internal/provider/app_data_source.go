@@ -29,6 +29,7 @@ type AppDataSource struct {
 
 // AppDataSourceModel describes the data model.
 type AppDataSourceModel struct {
+	AccessModel                         types.String           `tfsdk:"access_model"`
 	AppAccountID                        types.String           `tfsdk:"app_account_id"`
 	AppAccountName                      types.String           `tfsdk:"app_account_name"`
 	AppIds                              []types.String         `tfsdk:"app_ids"`
@@ -73,6 +74,11 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 		MarkdownDescription: "App DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"access_model": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `How this app models access. Derived during uplift from the app's resource type traits.` + "\n" +
+					` Sparse ACL feature.`,
+			},
 			"app_account_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the Account named by AccountName.`,
@@ -133,7 +139,7 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Search for apps with a case insensitive match on the display name.`,
+				Description: `The app's display name.`,
 			},
 			"enable_connector_sourced_ownership": schema.BoolAttribute{
 				Computed:    true,
@@ -297,26 +303,6 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 
 	if resp.Diagnostics.HasError() {
 		return
-	}
-	for {
-		var err error
-
-		res, err = res.Next()
-
-		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
-			return
-		}
-
-		if res == nil {
-			break
-		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppsResponse(ctx, res.SearchAppsResponse)...)
-
-		if resp.Diagnostics.HasError() {
-			return
-		}
 	}
 
 	// Save updated data into Terraform state

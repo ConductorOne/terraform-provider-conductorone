@@ -8,9 +8,9 @@ type AccessReviewTemplateSetupEntitlementServiceSetResponseExpanded struct {
 
 // The AccessReviewTemplateSetupEntitlementServiceSetResponse message.
 type AccessReviewTemplateSetupEntitlementServiceSetResponse struct {
-	// The expanded field.
+	// Related objects requested via the expand mask.
 	Expanded []AccessReviewTemplateSetupEntitlementServiceSetResponseExpanded `json:"expanded,omitempty"`
-	// The list field.
+	// The current list of setup entitlements for the template.
 	List []AccessReviewTemplateSetupEntitlementView `json:"list,omitempty"`
 	// The AccessReviewScopeV2 message.
 	//

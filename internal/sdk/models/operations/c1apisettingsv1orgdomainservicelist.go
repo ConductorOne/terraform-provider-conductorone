@@ -26,6 +26,9 @@ func (c *C1APISettingsV1OrgDomainServiceListRequest) GetPageToken() *string {
 	return c.PageToken
 }
 
+// #region class-body-c1apisettingsv1orgdomainservicelistrequest
+// #endregion class-body-c1apisettingsv1orgdomainservicelistrequest
+
 type C1APISettingsV1OrgDomainServiceListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APISettingsV1OrgDomainServiceListResponse) GetListOrgDomainsResponse(
 	}
 	return c.ListOrgDomainsResponse
 }
+
+// #region class-body-c1apisettingsv1orgdomainservicelistresponse
+// #endregion class-body-c1apisettingsv1orgdomainservicelistresponse

@@ -29,7 +29,7 @@ type WebhooksDataSource struct {
 
 // WebhooksDataSourceModel describes the data model.
 type WebhooksDataSourceModel struct {
-	List          []tfTypes.Webhook1   `tfsdk:"list"`
+	List          []tfTypes.Webhook    `tfsdk:"list"`
 	NextPageToken types.String         `tfsdk:"next_page_token"`
 	PageSize      types.Int32          `tfsdk:"page_size"`
 	PageToken     types.String         `tfsdk:"page_token"`
@@ -63,42 +63,42 @@ func (r *WebhooksDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 						},
 						"description": schema.StringAttribute{
 							Computed:    true,
-							Description: `The description field.`,
+							Description: `An optional description of the webhook's purpose.`,
 						},
 						"display_name": schema.StringAttribute{
 							Computed:    true,
-							Description: `The displayName field.`,
+							Description: `The human-readable name of the webhook.`,
 						},
 						"id": schema.StringAttribute{
 							Computed:    true,
-							Description: `The id field.`,
+							Description: `The unique identifier of the webhook.`,
 						},
 						"updated_at": schema.StringAttribute{
 							Computed: true,
 						},
 						"url": schema.StringAttribute{
 							Computed:    true,
-							Description: `The url field.`,
+							Description: `The destination URL that receives event notification HTTP callbacks.`,
 						},
 					},
 				},
-				Description: `The list field.`,
+				Description: `The list of webhooks matching the search criteria.`,
 			},
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
-				Description: `The nextPageToken field.`,
+				Description: `A token to retrieve the next page of results, or empty if there are no more results.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,
-				Description: `The pageSize field.`,
+				Description: `The maximum number of webhooks to return per page.`,
 			},
 			"page_token": schema.StringAttribute{
 				Optional:    true,
-				Description: `The pageToken field.`,
+				Description: `The pagination token from a previous search response to fetch the next page.`,
 			},
 			"query": schema.StringAttribute{
 				Optional:    true,
-				Description: `The query field.`,
+				Description: `A text query to match against webhook names and descriptions.`,
 			},
 			"refs": schema.ListNestedAttribute{
 				Optional: true,
@@ -106,11 +106,11 @@ func (r *WebhooksDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
 							Optional:    true,
-							Description: `The id field.`,
+							Description: `The ID of the referenced webhook.`,
 						},
 					},
 				},
-				Description: `The refs field.`,
+				Description: `Optional set of webhook references to restrict the search to specific webhooks.`,
 			},
 		},
 	}

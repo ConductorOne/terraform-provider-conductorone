@@ -44,7 +44,7 @@ data "conductorone_policy" "my_policy" {
 
 ### Optional
 
-- `display_name` (String) Search for policies with a case insensitive match on the display name.
+- `display_name` (String) The display name of the Policy.
 - `exclude_policy_ids` (List of String) The policy IDs to exclude from the search.
 - `include_deleted` (Boolean) The includeDeleted field.
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
@@ -60,11 +60,18 @@ data "conductorone_policy" "my_policy" {
 - `description` (String) The description of the Policy.
 - `id` (String) The ID of the Policy.
 - `next_page_token` (String) The nextPageToken field.
-- `policy_steps` (Attributes Map) A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set. (see [below for nested schema](#nestedatt--policy_steps))
-- `policy_type` (String) Indicates the type of this policy. Can also be used to get the value from policySteps.
-- `post_actions` (Attributes List) An array of actions (ordered) to take place after a policy completes processing. (see [below for nested schema](#nestedatt--post_actions))
-- `reassign_tasks_to_delegates` (Boolean, Deprecated) Deprecated. Use setting in policy step instead
-- `rules` (Attributes List) The rules field. (see [below for nested schema](#nestedatt--rules))
+- `policy_steps` (Attributes Map) A map from string keys to step sequences. One entry is always the baseline,
+ keyed by the lowercased policy_type (e.g., "grant", "revoke", "certify").
+ Additional entries have opaque keys (UUIDs) and are referenced by the rules
+ array for conditional routing. If no conditional rules are configured, only
+ the baseline entry exists. (see [below for nested schema](#nestedatt--policy_steps))
+- `policy_type` (String) The type of this policy (grant, revoke, or certify). The lowercased type
+ name (e.g., "grant") is also the key for the baseline entry in policy_steps.
+- `post_actions` (Attributes List) Ordered actions to execute after the policy completes processing. (see [below for nested schema](#nestedatt--post_actions))
+- `reassign_tasks_to_delegates` (Boolean, Deprecated) This field is no longer used. Configure delegate reassignment in the policy step instead.
+- `rules` (Attributes List) Ordered conditional routing rules. Evaluated top-to-bottom; the first
+ matching rule selects a step sequence from policy_steps. If no rule matches
+ (or if this array is empty), the baseline entry in policy_steps is used. (see [below for nested schema](#nestedatt--rules))
 - `system_builtin` (Boolean) Whether this policy is a builtin system policy. Builtin system policies cannot be edited.
 - `updated_at` (String)
 
@@ -81,7 +88,8 @@ Optional:
 
 Read-Only:
 
-- `steps` (Attributes List) An array of policy steps indicating the processing flow of a policy. These steps are oneOfs, and only one property may be set for each array index at a time. (see [below for nested schema](#nestedatt--policy_steps--steps))
+- `steps` (Attributes List) Ordered array of steps. Each step is a oneof -- exactly one step type is
+ set per entry. Steps execute sequentially. (see [below for nested schema](#nestedatt--policy_steps--steps))
 
 <a id="nestedatt--policy_steps--steps"></a>
 ### Nested Schema for `policy_steps.steps`
@@ -93,7 +101,8 @@ Read-Only:
 
 This message contains a oneof named target. Only a single field of the following list may be set at a time:
   - automation
-  - batonResourceAction (see [below for nested schema](#nestedatt--policy_steps--steps--action))
+  - batonResourceAction
+  - clientIdApproval (see [below for nested schema](#nestedatt--policy_steps--steps--action))
 - `approval` (Attributes) The Approval message.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -107,7 +116,7 @@ This message contains a oneof named typ. Only a single field of the following li
   - webhook
   - resourceOwners
   - agent (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
-- `form` (String) The Form message. Parsed as JSON.
+- `policy_form` (String) The Form message. Parsed as JSON.
 - `provision` (Attributes) The provision step references a provision policy for this step. (see [below for nested schema](#nestedatt--policy_steps--steps--provision))
 - `reject` (Attributes) This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--reject))
 - `wait` (Attributes) Define a Wait step for a policy to wait on a condition to be met.
@@ -132,6 +141,8 @@ Read-Only:
 
 - `action_target_automation` (Attributes) ActionTargetAutomation targets automation templates for policy actions. (see [below for nested schema](#nestedatt--policy_steps--steps--action--action_target_automation))
 - `action_target_baton_resource_action` (Attributes) ActionTargetResource targets resource actions for policy actions. (see [below for nested schema](#nestedatt--policy_steps--steps--action--action_target_baton_resource_action))
+- `action_target_client_id_approval` (Attributes) ActionTargetClientIdApproval targets administrator review of an external
+ OAuth client registration (CIMD or DCR) for policy actions. (see [below for nested schema](#nestedatt--policy_steps--steps--action--action_target_client_id_approval))
 
 <a id="nestedatt--policy_steps--steps--action--action_target_automation"></a>
 ### Nested Schema for `policy_steps.steps.action.action_target_automation`
@@ -147,6 +158,10 @@ Read-Only:
 Read-Only:
 
 - `baton_resource_action_id` (String) The batonResourceActionId field.
+
+
+<a id="nestedatt--policy_steps--steps--action--action_target_client_id_approval"></a>
+### Nested Schema for `policy_steps.steps.action.action_target_client_id_approval`
 
 
 
@@ -690,8 +705,8 @@ Read-Only:
 
 Read-Only:
 
-- `certify_remediate_immediately` (Boolean) ONLY valid when used in a CERTIFY Ticket Type:
- Causes any deprovision or change in a grant to be applied when Certify Ticket is closed.
+- `certify_remediate_immediately` (Boolean) Only valid on certify policies. When true, any revocations resulting from
+ the certification are applied immediately when the campaign task closes.
 This field is part of the `action` oneof.
 See the documentation for `c1.api.policy.v1.PolicyPostActions` for more details.
 
@@ -701,5 +716,7 @@ See the documentation for `c1.api.policy.v1.PolicyPostActions` for more details.
 
 Read-Only:
 
-- `condition` (String) The condition field.
-- `policy_key` (String) This is a reference to a list of policy steps from `policy_steps`
+- `condition` (String) A CEL expression that is evaluated against the request context. If it
+ returns true, the step sequence identified by policy_key is used.
+- `policy_key` (String) A key into the policy's policy_steps map identifying which step sequence
+ to execute when this rule's condition matches.

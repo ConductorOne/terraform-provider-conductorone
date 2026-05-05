@@ -28,16 +28,16 @@ resource "conductorone_webhook" "my_webhook" {
 
 ### Required
 
-- `display_name` (String) The displayName field.
-- `url` (String) The url field.
+- `display_name` (String) The human-readable name for the new webhook.
+- `url` (String) The destination URL that will receive event notification HTTP callbacks.
 
 ### Optional
 
 - `callback_timeout` (String)
-- `description` (String) The description field.
+- `description` (String) An optional description of the webhook's purpose.
 
 ### Read-Only
 
 - `created_at` (String)
-- `id` (String) The id field.
+- `id` (String) The unique identifier of the webhook.
 - `updated_at` (String)

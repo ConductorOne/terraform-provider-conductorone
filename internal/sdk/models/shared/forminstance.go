@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type FormInstanceData struct {
 }
 
@@ -22,22 +17,16 @@ const (
 func (e FormInstanceState) ToPointer() *FormInstanceState {
 	return &e
 }
-func (e *FormInstanceState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FormInstanceState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FORM_INSTANCE_STATE_UNSPECIFIED", "FORM_INSTANCE_STATE_WAITING", "FORM_INSTANCE_STATE_DONE":
+			return true
+		}
 	}
-	switch v {
-	case "FORM_INSTANCE_STATE_UNSPECIFIED":
-		fallthrough
-	case "FORM_INSTANCE_STATE_WAITING":
-		fallthrough
-	case "FORM_INSTANCE_STATE_DONE":
-		*e = FormInstanceState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FormInstanceState: %v", v)
-	}
+	return false
 }
 
 // The FormInstance message.

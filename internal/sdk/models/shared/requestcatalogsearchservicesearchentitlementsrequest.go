@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // GrantedStatus - Search entitlements with this granted status for your signed in user.
 type GrantedStatus string
 
@@ -20,24 +15,16 @@ const (
 func (e GrantedStatus) ToPointer() *GrantedStatus {
 	return &e
 }
-func (e *GrantedStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GrantedStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "UNSPECIFIED", "ALL", "GRANTED", "NOT_GRANTED":
+			return true
+		}
 	}
-	switch v {
-	case "UNSPECIFIED":
-		fallthrough
-	case "ALL":
-		fallthrough
-	case "GRANTED":
-		fallthrough
-	case "NOT_GRANTED":
-		*e = GrantedStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GrantedStatus: %v", v)
-	}
+	return false
 }
 
 // The RequestCatalogSearchServiceSearchEntitlementsRequest searches entitlements, but only ones that are available to you through the open catalogs.

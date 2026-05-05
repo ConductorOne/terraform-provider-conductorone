@@ -14,6 +14,11 @@ AccessReview Resource
 
 ```terraform
 resource "conductorone_access_review" "my_access_review" {
+  access_review_notification_config = {
+    send_close     = true
+    send_kickoff   = true
+    send_reminders = false
+  }
   access_review_scope_v2 = {
     account_criteria_scope = {
       account_domain = "APP_USER_DOMAIN_EXTERNAL"
@@ -119,11 +124,6 @@ resource "conductorone_access_review" "my_access_review" {
   description     = "...my_description..."
   display_name    = "...my_display_name..."
   duplicate_from  = "...my_duplicate_from..."
-  notification_config = {
-    send_close     = true
-    send_kickoff   = true
-    send_reminders = true
-  }
   owner_ids = [
     "..."
   ]
@@ -137,6 +137,7 @@ resource "conductorone_access_review" "my_access_review" {
 
 ### Optional
 
+- `access_review_notification_config` (Attributes) Controls which email notifications are sent during the access review lifecycle. (see [below for nested schema](#nestedatt--access_review_notification_config))
 - `access_review_scope_v2` (Attributes) The AccessReviewScopeV2 message.
 
 This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
@@ -172,16 +173,16 @@ This message contains a oneof named access_conflicts_scope. Only a single field 
 This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
   - resourceSelection (see [below for nested schema](#nestedatt--access_review_scope_v2))
 - `completion_date` (String)
-- `description` (String) The description field.
-- `display_name` (String) The displayName field.
-- `duplicate_from` (String) The duplicateFrom field. Requires replacement if changed.
-- `notification_config` (Attributes) The NotificationConfig message. (see [below for nested schema](#nestedatt--notification_config))
-- `owner_ids` (List of String) The ownerIds field. Requires replacement if changed.
-- `policy_id` (String) The policyId field.
-- `scope_type` (String) The scopeType field. must be one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"]
+- `description` (String) An optional description providing context about the campaign.
+- `display_name` (String) The display name for the new campaign.
+- `duplicate_from` (String) The ID of an existing campaign to copy scope and entitlement configuration from. Optional. Requires replacement if changed.
+- `owner_ids` (List of String) The IDs of the users who own and manage this campaign. At least one owner is required. Requires replacement if changed.
+- `policy_id` (String) The ID of the review policy that governs task assignment and resolution.
+- `scope_type` (String) The type of scoping method for the campaign (e.g., by entitlements, by access conflicts, or by resource). possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"]
 
 ### Read-Only
 
+- `access_review_column_config` (Attributes) Configuration for which columns are visible in the reviewer task list. (see [below for nested schema](#nestedatt--access_review_column_config))
 - `access_review_exclusion_scope` (Attributes) The AccessReviewExclusionScope message. (see [below for nested schema](#nestedatt--access_review_exclusion_scope))
 - `access_review_inclusion_scope` (Attributes) The AccessReviewInclusionScope message. (see [below for nested schema](#nestedatt--access_review_inclusion_scope))
 - `access_review_scope` (Attributes) The AccessReviewScope message. (see [below for nested schema](#nestedatt--access_review_scope))
@@ -191,36 +192,50 @@ This message contains a oneof named resource_scope. Only a single field of the f
  completion_date is used as the scheduled close date
 - `auto_close_decision` (String) The autoCloseDecision field.
 - `auto_generate_report` (Boolean) The autoGenerateReport field.
-- `auto_resolve` (Boolean) The autoResolve field.
+- `auto_resolve` (Boolean) When true, selections are automatically resolved if the entitlement grant no longer exists.
 - `auto_start_campaign` (Boolean) Auto-start configuration
 - `binding_object_setup` (Attributes) The BindingObjectSetup message. (see [below for nested schema](#nestedatt--binding_object_setup))
+- `campaign_health_snapshot` (Attributes) Campaign health snapshot. Read-only; updated by backend maintenance processors. (see [below for nested schema](#nestedatt--campaign_health_snapshot))
+- `campaign_insights` (Attributes) AI-generated campaign insights (markdown). Read-only; set by backend when campaign is closed. (see [below for nested schema](#nestedatt--campaign_insights))
 - `closed_at` (String)
 - `connector_sources_frozen_at` (String)
 - `created_at` (String)
-- `created_by_id` (String) The createdById field.
+- `created_by_id` (String) The ID of the user who created this campaign.
 - `created_by_user_path` (String) The createdByUserPath field.
 - `default_view` (String) the default view that reviewers will see when they complete their access reviews
 - `delete` (Boolean) The delete field.
 - `edit` (Boolean) The edit field.
+- `error_state` (String) Error state set when a prepare action fails with a recoverable condition.
+ Cleared when the campaign scope is changed.
 - `exempt_certified_access_conflicts` (Boolean) this setting is used for access conflict type scope
-- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
-- `expected_ticket_count` (Number) The expectedTicketCount field.
+- `expanded` (Attributes List) Related objects requested via the expand mask. (see [below for nested schema](#nestedatt--expanded))
+- `expected_ticket_count` (Number) The estimated number of review tasks that will be generated when the campaign starts.
 - `extra` (Map of Boolean) The extra field.
-- `has_accuracy_support` (Boolean) The hasAccuracySupport field.
-- `id` (String) The id field.
+- `has_accuracy_support` (Boolean) Whether the connectors in this campaign support accuracy checking.
+- `id` (String) The unique identifier of this access review campaign.
 - `multi_app_setup` (Attributes) The MultiAppSetup message. (see [below for nested schema](#nestedatt--multi_app_setup))
 - `policy_path` (String) The policyPath field.
 - `read` (Boolean) The read field.
-- `review_instructions` (String) The reviewInstructions field.
+- `review_instructions` (String) Optional instructions displayed to reviewers when completing their review tasks.
 - `review_signature_config` (Attributes) Signature configuration for access review submissions (see [below for nested schema](#nestedatt--review_signature_config))
 - `scheduled_start_date` (String)
-- `scoping_version` (String) The scopingVersion field.
+- `scoping_version` (String) Internal version counter incremented when the campaign scope changes.
 - `single_app_setup` (Attributes) The SingleAppSetup message. (see [below for nested schema](#nestedatt--single_app_setup))
 - `started_at` (String)
-- `state` (String) The state field.
+- `state` (String) The current lifecycle state of the campaign (e.g., draft, open, closed).
 - `updated_at` (String)
 - `use_policy_override` (Boolean) Determines the policy applied to the campaign. Default is false, using the campaign policy.
  If true, the order of precedence is entitlement → app → campaign policy.
+
+<a id="nestedatt--access_review_notification_config"></a>
+### Nested Schema for `access_review_notification_config`
+
+Optional:
+
+- `send_close` (Boolean) Whether to send a notification when the campaign is closed.
+- `send_kickoff` (Boolean) Whether to send a notification when the campaign is started.
+- `send_reminders` (Boolean) Whether to send periodic reminder emails to reviewers with outstanding tasks.
+
 
 <a id="nestedatt--access_review_scope_v2"></a>
 ### Nested Schema for `access_review_scope_v2`
@@ -254,7 +269,7 @@ This message contains a oneof named criteria_filter. Only a single field of the 
 
 Optional:
 
-- `account_domain` (String) The accountDomain field. must be one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]
+- `account_domain` (String) The accountDomain field. possible known values include one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]
 - `account_types` (List of String) The accountTypes field.
 - `app_user_statuses` (List of String) The appUserStatuses field.
 - `no_account_owner` (Boolean) The noAccountOwner field.
@@ -315,8 +330,8 @@ Optional:
 - `days_since_reviewed` (String)
 - `grant_access_profile_filter` (Attributes) The GrantAccessProfileFilter message. (see [below for nested schema](#nestedatt--access_review_scope_v2--grants_by_criteria_scope--grant_access_profile_filter))
 - `grants_added_between` (Attributes) The GrantsAddedBetween message. (see [below for nested schema](#nestedatt--access_review_scope_v2--grants_by_criteria_scope--grants_added_between))
-- `source_filter` (String) The sourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
-- `type_filter` (String) The typeFilter field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
+- `source_filter` (String) The sourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
+- `type_filter` (String) The typeFilter field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
 
 <a id="nestedatt--access_review_scope_v2--grants_by_criteria_scope--grant_access_profile_filter"></a>
 ### Nested Schema for `access_review_scope_v2.grants_by_criteria_scope.grant_access_profile_filter`
@@ -326,7 +341,7 @@ Optional:
 - `excluded_access_profile_ids` (List of String) Access profile IDs to EXCLUDE from the campaign
  Used when filter_type = EXCLUDE_SPECIFIC
  Max 32 profile IDs
-- `filter_type` (String) The filterType field. must be one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]
+- `filter_type` (String) The filterType field. possible known values include one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]
 - `included_access_profile_ids` (List of String) Access profile IDs to INCLUDE in the campaign
  Used when filter_type = INCLUDE_SPECIFIC
  Max 32 profile IDs
@@ -403,14 +418,13 @@ Optional:
 
 
 
-<a id="nestedatt--notification_config"></a>
-### Nested Schema for `notification_config`
+<a id="nestedatt--access_review_column_config"></a>
+### Nested Schema for `access_review_column_config`
 
-Optional:
+Read-Only:
 
-- `send_close` (Boolean) The sendClose field.
-- `send_kickoff` (Boolean) The sendKickoff field.
-- `send_reminders` (Boolean) The sendReminders field.
+- `columns` (List of String) Ordered list of columns visible to reviewers.
+ If empty, the default column set for the campaign's default_view is used.
 
 
 <a id="nestedatt--access_review_exclusion_scope"></a>
@@ -463,6 +477,23 @@ Read-Only:
 
 <a id="nestedatt--binding_object_setup"></a>
 ### Nested Schema for `binding_object_setup`
+
+
+<a id="nestedatt--campaign_health_snapshot"></a>
+### Nested Schema for `campaign_health_snapshot`
+
+Read-Only:
+
+- `checked_at` (String)
+- `phantom_locked_count` (Number) Number of pending actions locked by terminal (dead) submissions.
+
+
+<a id="nestedatt--campaign_insights"></a>
+### Nested Schema for `campaign_insights`
+
+Read-Only:
+
+- `markdown` (String) The markdown field.
 
 
 <a id="nestedatt--expanded"></a>

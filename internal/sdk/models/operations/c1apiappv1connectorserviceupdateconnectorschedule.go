@@ -34,6 +34,9 @@ func (c *C1APIAppV1ConnectorServiceUpdateConnectorScheduleRequest) GetUpdateConn
 	return c.UpdateConnectorScheduleRequest
 }
 
+// #region class-body-c1apiappv1connectorserviceupdateconnectorschedulerequest
+// #endregion class-body-c1apiappv1connectorserviceupdateconnectorschedulerequest
+
 type C1APIAppV1ConnectorServiceUpdateConnectorScheduleResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -41,7 +44,7 @@ type C1APIAppV1ConnectorServiceUpdateConnectorScheduleResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// Empty response body. Status code indicates success.
 	UpdateConnectorScheduleResponse *shared.UpdateConnectorScheduleResponse
 }
 
@@ -72,3 +75,6 @@ func (c *C1APIAppV1ConnectorServiceUpdateConnectorScheduleResponse) GetUpdateCon
 	}
 	return c.UpdateConnectorScheduleResponse
 }
+
+// #region class-body-c1apiappv1connectorserviceupdateconnectorscheduleresponse
+// #endregion class-body-c1apiappv1connectorserviceupdateconnectorscheduleresponse

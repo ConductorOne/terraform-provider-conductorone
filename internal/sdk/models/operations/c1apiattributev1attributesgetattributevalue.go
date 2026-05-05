@@ -18,6 +18,9 @@ func (c *C1APIAttributeV1AttributesGetAttributeValueRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apiattributev1attributesgetattributevaluerequest
+// #endregion class-body-c1apiattributev1attributesgetattributevaluerequest
+
 type C1APIAttributeV1AttributesGetAttributeValueResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIAttributeV1AttributesGetAttributeValueResponse) GetGetAttributeVal
 	}
 	return c.GetAttributeValueResponse
 }
+
+// #region class-body-c1apiattributev1attributesgetattributevalueresponse
+// #endregion class-body-c1apiattributev1attributesgetattributevalueresponse

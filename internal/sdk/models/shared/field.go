@@ -11,6 +11,7 @@ package shared
 //   - int64Field
 //   - fileField
 //   - oauth2Field
+//   - stringMapField
 //
 // This message contains a oneof named provider_config. Only a single field of the following list may be set at a time:
 //   - userConfig
@@ -25,10 +26,6 @@ type Field struct {
 	//   - checkboxField
 	//   - toggleField
 	//
-	//
-	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-	//   - rules
-	//
 	BoolField *BoolField `json:"boolField,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
@@ -39,23 +36,11 @@ type Field struct {
 	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
 	//   - fileInputField
 	//
-	//
-	// This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:
-	//   - maxFileSize
-	//
 	FileField *FileField `json:"fileField,omitempty"`
 	// The Int64Field message.
 	//
 	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
 	//   - numberField
-	//
-	//
-	// This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:
-	//   - defaultValue
-	//
-	//
-	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-	//   - rules
 	//
 	Int64Field *Int64Field `json:"int64Field,omitempty"`
 	// The name field.
@@ -78,11 +63,9 @@ type Field struct {
 	//   - selectField
 	//   - pickerField
 	//
-	//
-	// This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-	//   - rules
-	//
 	StringField *StringField `json:"stringField,omitempty"`
+	// The StringMapField message.
+	StringMapField *StringMapField `json:"stringMapField,omitempty"`
 	// The UserProviderConfig message.
 	UserProviderConfig *UserProviderConfig `json:"userConfig,omitempty"`
 }
@@ -162,6 +145,13 @@ func (f *Field) GetStringField() *StringField {
 		return nil
 	}
 	return f.StringField
+}
+
+func (f *Field) GetStringMapField() *StringMapField {
+	if f == nil {
+		return nil
+	}
+	return f.StringMapField
 }
 
 func (f *Field) GetUserProviderConfig() *UserProviderConfig {

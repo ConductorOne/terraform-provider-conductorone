@@ -34,6 +34,9 @@ func (c *C1APIAppV1ConnectorServiceForceSyncRequest) GetForceSyncRequest() *shar
 	return c.ForceSyncRequest
 }
 
+// #region class-body-c1apiappv1connectorserviceforcesyncrequest
+// #endregion class-body-c1apiappv1connectorserviceforcesyncrequest
+
 type C1APIAppV1ConnectorServiceForceSyncResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -41,7 +44,7 @@ type C1APIAppV1ConnectorServiceForceSyncResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// Empty response body. Status code indicates success.
 	ForceSyncResponse *shared.ForceSyncResponse
 }
 
@@ -72,3 +75,6 @@ func (c *C1APIAppV1ConnectorServiceForceSyncResponse) GetForceSyncResponse() *sh
 	}
 	return c.ForceSyncResponse
 }
+
+// #region class-body-c1apiappv1connectorserviceforcesyncresponse
+// #endregion class-body-c1apiappv1connectorserviceforcesyncresponse

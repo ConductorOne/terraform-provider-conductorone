@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // FunctionTestResultStatus - The test result status.
 type FunctionTestResultStatus string
 
@@ -20,24 +15,16 @@ const (
 func (e FunctionTestResultStatus) ToPointer() *FunctionTestResultStatus {
 	return &e
 }
-func (e *FunctionTestResultStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FunctionTestResultStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FUNCTION_TEST_RESULT_STATUS_UNSPECIFIED", "FUNCTION_TEST_RESULT_STATUS_OK", "FUNCTION_TEST_RESULT_STATUS_FAIL", "FUNCTION_TEST_RESULT_STATUS_SKIPPED":
+			return true
+		}
 	}
-	switch v {
-	case "FUNCTION_TEST_RESULT_STATUS_UNSPECIFIED":
-		fallthrough
-	case "FUNCTION_TEST_RESULT_STATUS_OK":
-		fallthrough
-	case "FUNCTION_TEST_RESULT_STATUS_FAIL":
-		fallthrough
-	case "FUNCTION_TEST_RESULT_STATUS_SKIPPED":
-		*e = FunctionTestResultStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FunctionTestResultStatus: %v", v)
-	}
+	return false
 }
 
 // FunctionTestResult contains the result of a single test case execution.

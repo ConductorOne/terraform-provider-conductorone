@@ -30,8 +30,9 @@ data "conductorone_app_resource" "my_app_resource" {
 
 ### Required
 
-- `app_id` (String)
-- `app_resource_type_id` (String)
+- `app_id` (String) The app that this resource belongs to.
+- `app_resource_type_id` (String) The resource type that this resource is.
+- `id` (String) The id of the resource.
 
 ### Read-Only
 
@@ -44,9 +45,10 @@ data "conductorone_app_resource" "my_app_resource" {
 - `display_name` (String) The display name for this resource.
 - `edit` (Boolean) The edit field.
 - `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
+- `external_id` (String) The upstream product's native external ID for this resource (e.g. an Okta group ID).
+ Populated from the connector's external ID during sync.
 - `extra` (Map of Boolean) The extra field.
 - `grant_count` (String) The number of grants to this resource.
-- `id` (String) The ID of this resource.
 - `match_baton_id` (String) The matchBatonId field.
 - `parent_app_resource_id` (String) The parent resource id, if this resource is a child of another resource.
 - `parent_app_resource_type_id` (String) The parent resource type id, if this resource is a child of another resource.

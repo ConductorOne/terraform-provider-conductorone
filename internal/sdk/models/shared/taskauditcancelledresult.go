@@ -4,4 +4,15 @@ package shared
 
 // The TaskAuditCancelledResult message.
 type TaskAuditCancelledResult struct {
+	// Human-readable reason the action was cancelled. Already populated on the
+	//  model-side CanceledResult (e.g., "action is invalid - ticket is closed");
+	//  this surfaces it to the UI.
+	CancelReason *string `json:"cancelReason,omitempty"`
+}
+
+func (t *TaskAuditCancelledResult) GetCancelReason() *string {
+	if t == nil {
+		return nil
+	}
+	return t.CancelReason
 }

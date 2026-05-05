@@ -5,13 +5,13 @@ package shared
 // WebhookInput - The Webhook message.
 type WebhookInput struct {
 	CallbackTimeout *string `json:"callbackTimeout,omitempty"`
-	// The description field.
+	// An optional description of the webhook's purpose.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// The human-readable name of the webhook.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The id field.
+	// The unique identifier of the webhook.
 	ID *string `json:"id,omitempty"`
-	// The url field.
+	// The destination URL that receives event notification HTTP callbacks.
 	URL *string `json:"url,omitempty"`
 }
 

@@ -30,8 +30,9 @@ data "conductorone_connector_credential" "my_connectorcredential" {
 
 ### Required
 
-- `app_id` (String)
-- `connector_id` (String)
+- `app_id` (String) The appId of the app the connector is attached to.
+- `connector_id` (String) The connectorId of the connector the credential is associated with.
+- `id` (String) The id of the ConnectorCredential.
 
 ### Read-Only
 
@@ -41,6 +42,5 @@ data "conductorone_connector_credential" "my_connectorcredential" {
 - `deleted_at` (String)
 - `display_name` (String) The display name of the ConnectorCredential.
 - `expires_time` (String)
-- `id` (String) The ID of this resource.
 - `last_used_at` (String)
 - `updated_at` (String)

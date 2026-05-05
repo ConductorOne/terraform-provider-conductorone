@@ -26,6 +26,9 @@ func (c *C1APIVaultV1VaultServiceDeleteRequest) GetVaultServiceDeleteRequest() *
 	return c.VaultServiceDeleteRequest
 }
 
+// #region class-body-c1apivaultv1vaultservicedeleterequest
+// #endregion class-body-c1apivaultv1vaultservicedeleterequest
+
 type C1APIVaultV1VaultServiceDeleteResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIVaultV1VaultServiceDeleteResponse) GetVaultServiceDeleteResponse()
 	}
 	return c.VaultServiceDeleteResponse
 }
+
+// #region class-body-c1apivaultv1vaultservicedeleteresponse
+// #endregion class-body-c1apivaultv1vaultservicedeleteresponse

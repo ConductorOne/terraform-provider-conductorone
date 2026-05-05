@@ -26,6 +26,9 @@ func (c *C1APIAppV1AppEntitlementsCreateRequest) GetCreateAppEntitlementRequest(
 	return c.CreateAppEntitlementRequest
 }
 
+// #region class-body-c1apiappv1appentitlementscreaterequest
+// #endregion class-body-c1apiappv1appentitlementscreaterequest
+
 type C1APIAppV1AppEntitlementsCreateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAppV1AppEntitlementsCreateResponse) GetCreateAppEntitlementRespons
 	}
 	return c.CreateAppEntitlementResponse
 }
+
+// #region class-body-c1apiappv1appentitlementscreateresponse
+// #endregion class-body-c1apiappv1appentitlementscreateresponse

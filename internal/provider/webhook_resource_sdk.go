@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *WebhookResourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
+func (r *WebhookResourceModel) RefreshFromSharedWebhook(ctx context.Context, resp *shared.Webhook) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -32,7 +32,7 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceCreateResponse(ct
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedWebhook1(ctx, resp.Webhook)...)
+		diags.Append(r.RefreshFromSharedWebhook(ctx, resp.Webhook)...)
 
 		if diags.HasError() {
 			return diags
@@ -47,7 +47,7 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceGetResponse(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedWebhook1(ctx, resp.Webhook)...)
+		diags.Append(r.RefreshFromSharedWebhook(ctx, resp.Webhook)...)
 
 		if diags.HasError() {
 			return diags
@@ -62,7 +62,7 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceUpdateResponse(ct
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedWebhook1(ctx, resp.Webhook)...)
+		diags.Append(r.RefreshFromSharedWebhook(ctx, resp.Webhook)...)
 
 		if diags.HasError() {
 			return diags

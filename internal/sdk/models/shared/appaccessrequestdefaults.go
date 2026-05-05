@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type DurationUnset struct {
 }
 
@@ -26,30 +21,16 @@ const (
 func (e AppAccessRequestDefaultsState) ToPointer() *AppAccessRequestDefaultsState {
 	return &e
 }
-func (e *AppAccessRequestDefaultsState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppAccessRequestDefaultsState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_UNSPECIFIED", "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_RUNNING", "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_SUCCESS", "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_FAILED", "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCELING", "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCEL_SUCCESS", "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCEL_ERROR":
+			return true
+		}
 	}
-	switch v {
-	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_UNSPECIFIED":
-		fallthrough
-	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_RUNNING":
-		fallthrough
-	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_SUCCESS":
-		fallthrough
-	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_FAILED":
-		fallthrough
-	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCELING":
-		fallthrough
-	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCEL_SUCCESS":
-		fallthrough
-	case "APP_ACCESS_REQUEST_DEFAULTS_LAST_APPLY_STATE_CANCEL_ERROR":
-		*e = AppAccessRequestDefaultsState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppAccessRequestDefaultsState: %v", v)
-	}
+	return false
 }
 
 // The AppAccessRequestDefaults message.
@@ -70,7 +51,7 @@ type AppAccessRequestDefaults struct {
 	EmergencyGrantEnabled *bool `json:"emergencyGrantEnabled,omitempty"`
 	// The policy id for the emergency grant policy.
 	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
-	// The requestPolicyId field.
+	// The ID of the request policy to apply to entitlements matching this rule.
 	RequestPolicyID *string `json:"requestPolicyId,omitempty"`
 	// The ID of the request schema to apply to entitlements matching this rule.
 	RequestSchemaID *string `json:"requestSchemaId,omitempty"`
@@ -173,7 +154,7 @@ type AppAccessRequestDefaults1 struct {
 	EmergencyGrantEnabled *bool `json:"emergencyGrantEnabled,omitempty"`
 	// The policy id for the emergency grant policy.
 	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
-	// The requestPolicyId field.
+	// The ID of the request policy to apply to entitlements matching this rule.
 	RequestPolicyID *string `json:"requestPolicyId,omitempty"`
 	// The ID of the request schema to apply to entitlements matching this rule.
 	RequestSchemaID *string `json:"requestSchemaId,omitempty"`
@@ -252,3 +233,6 @@ func (a *AppAccessRequestDefaults1) GetState() *AppAccessRequestDefaultsState {
 	}
 	return a.State
 }
+
+// #region class-body-appaccessrequestdefaults1
+// #endregion class-body-appaccessrequestdefaults1

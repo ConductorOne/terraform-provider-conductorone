@@ -2,9 +2,9 @@
 
 package shared
 
-// The VaultServiceGetResponse message.
+// VaultServiceGetResponse is the response message containing the requested vault.
 type VaultServiceGetResponse struct {
-	// The Vault message.
+	// Vault represents an external secret storage integration used to store connector credentials securely.
 	//
 	// This message contains a oneof named vault. Only a single field of the following list may be set at a time:
 	//   - groupAuthzVault

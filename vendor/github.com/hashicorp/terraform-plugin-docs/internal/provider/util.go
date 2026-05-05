@@ -1,4 +1,4 @@
-// Copyright (c) HashiCorp, Inc.
+// Copyright IBM Corp. 2020, 2026
 // SPDX-License-Identifier: MPL-2.0
 
 package provider
@@ -77,6 +77,19 @@ func removeAllExt(file string) string {
 // has either the providerShortName or the providerShortName concatenated with the
 // templateFileName (stripped of file extension.
 func resourceSchema(schemas map[string]*tfjson.Schema, providerShortName, templateFileName string) (*tfjson.Schema, string) {
+	resName := providerShortName + "_" + removeAllExt(templateFileName)
+	if schema, ok := schemas[resName]; ok {
+		return schema, resName
+	}
+
+	if schema, ok := schemas[providerShortName]; ok {
+		return schema, providerShortName
+	}
+
+	return nil, resName
+}
+
+func actionSchema(schemas map[string]*tfjson.ActionSchema, providerShortName, templateFileName string) (*tfjson.ActionSchema, string) {
 	resName := providerShortName + "_" + removeAllExt(templateFileName)
 	if schema, ok := schemas[resName]; ok {
 		return schema, resName

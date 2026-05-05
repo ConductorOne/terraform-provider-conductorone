@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,24 +19,16 @@ const (
 func (e TaskSearchRequestAccountTypes) ToPointer() *TaskSearchRequestAccountTypes {
 	return &e
 }
-func (e *TaskSearchRequestAccountTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskSearchRequestAccountTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT":
+			return true
+		}
 	}
-	switch v {
-	case "APP_USER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "APP_USER_TYPE_USER":
-		fallthrough
-	case "APP_USER_TYPE_SERVICE_ACCOUNT":
-		fallthrough
-	case "APP_USER_TYPE_SYSTEM_ACCOUNT":
-		*e = TaskSearchRequestAccountTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskSearchRequestAccountTypes: %v", v)
-	}
+	return false
 }
 
 type CertifyOutcomes string
@@ -55,28 +45,16 @@ const (
 func (e CertifyOutcomes) ToPointer() *CertifyOutcomes {
 	return &e
 }
-func (e *CertifyOutcomes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CertifyOutcomes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CERTIFY_OUTCOME_UNSPECIFIED", "CERTIFY_OUTCOME_CERTIFIED", "CERTIFY_OUTCOME_DECERTIFIED", "CERTIFY_OUTCOME_ERROR", "CERTIFY_OUTCOME_CANCELLED", "CERTIFY_OUTCOME_WAIT_TIMED_OUT":
+			return true
+		}
 	}
-	switch v {
-	case "CERTIFY_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "CERTIFY_OUTCOME_CERTIFIED":
-		fallthrough
-	case "CERTIFY_OUTCOME_DECERTIFIED":
-		fallthrough
-	case "CERTIFY_OUTCOME_ERROR":
-		fallthrough
-	case "CERTIFY_OUTCOME_CANCELLED":
-		fallthrough
-	case "CERTIFY_OUTCOME_WAIT_TIMED_OUT":
-		*e = CertifyOutcomes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CertifyOutcomes: %v", v)
-	}
+	return false
 }
 
 // CurrentStep - Search tasks that have this type of step as the current step.
@@ -91,22 +69,16 @@ const (
 func (e CurrentStep) ToPointer() *CurrentStep {
 	return &e
 }
-func (e *CurrentStep) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CurrentStep) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_SEARCH_CURRENT_STEP_UNSPECIFIED", "TASK_SEARCH_CURRENT_STEP_APPROVAL", "TASK_SEARCH_CURRENT_STEP_PROVISION":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_SEARCH_CURRENT_STEP_UNSPECIFIED":
-		fallthrough
-	case "TASK_SEARCH_CURRENT_STEP_APPROVAL":
-		fallthrough
-	case "TASK_SEARCH_CURRENT_STEP_PROVISION":
-		*e = CurrentStep(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CurrentStep: %v", v)
-	}
+	return false
 }
 
 // EmergencyStatus - Search tasks that are or are not emergency access.
@@ -122,24 +94,16 @@ const (
 func (e EmergencyStatus) ToPointer() *EmergencyStatus {
 	return &e
 }
-func (e *EmergencyStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EmergencyStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "UNSPECIFIED", "ALL", "NON_EMERGENCY", "EMERGENCY":
+			return true
+		}
 	}
-	switch v {
-	case "UNSPECIFIED":
-		fallthrough
-	case "ALL":
-		fallthrough
-	case "NON_EMERGENCY":
-		fallthrough
-	case "EMERGENCY":
-		*e = EmergencyStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EmergencyStatus: %v", v)
-	}
+	return false
 }
 
 type GrantOutcomes string
@@ -156,28 +120,16 @@ const (
 func (e GrantOutcomes) ToPointer() *GrantOutcomes {
 	return &e
 }
-func (e *GrantOutcomes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GrantOutcomes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_OUTCOME_UNSPECIFIED", "GRANT_OUTCOME_GRANTED", "GRANT_OUTCOME_DENIED", "GRANT_OUTCOME_ERROR", "GRANT_OUTCOME_CANCELLED", "GRANT_OUTCOME_WAIT_TIMED_OUT":
+			return true
+		}
 	}
-	switch v {
-	case "GRANT_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "GRANT_OUTCOME_GRANTED":
-		fallthrough
-	case "GRANT_OUTCOME_DENIED":
-		fallthrough
-	case "GRANT_OUTCOME_ERROR":
-		fallthrough
-	case "GRANT_OUTCOME_CANCELLED":
-		fallthrough
-	case "GRANT_OUTCOME_WAIT_TIMED_OUT":
-		*e = GrantOutcomes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GrantOutcomes: %v", v)
-	}
+	return false
 }
 
 // PendingActionFilter - Filter tasks by pending action status. Only applies when exactly one access_review_id is specified.
@@ -194,22 +146,16 @@ const (
 func (e PendingActionFilter) ToPointer() *PendingActionFilter {
 	return &e
 }
-func (e *PendingActionFilter) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PendingActionFilter) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PENDING_ACTION_FILTER_UNSPECIFIED", "PENDING_ACTION_FILTER_WITH_PENDING", "PENDING_ACTION_FILTER_WITHOUT_PENDING":
+			return true
+		}
 	}
-	switch v {
-	case "PENDING_ACTION_FILTER_UNSPECIFIED":
-		fallthrough
-	case "PENDING_ACTION_FILTER_WITH_PENDING":
-		fallthrough
-	case "PENDING_ACTION_FILTER_WITHOUT_PENDING":
-		*e = PendingActionFilter(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PendingActionFilter: %v", v)
-	}
+	return false
 }
 
 type RevokeOutcomes string
@@ -226,28 +172,16 @@ const (
 func (e RevokeOutcomes) ToPointer() *RevokeOutcomes {
 	return &e
 }
-func (e *RevokeOutcomes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RevokeOutcomes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REVOKE_OUTCOME_UNSPECIFIED", "REVOKE_OUTCOME_REVOKED", "REVOKE_OUTCOME_DENIED", "REVOKE_OUTCOME_ERROR", "REVOKE_OUTCOME_CANCELLED", "REVOKE_OUTCOME_WAIT_TIMED_OUT":
+			return true
+		}
 	}
-	switch v {
-	case "REVOKE_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "REVOKE_OUTCOME_REVOKED":
-		fallthrough
-	case "REVOKE_OUTCOME_DENIED":
-		fallthrough
-	case "REVOKE_OUTCOME_ERROR":
-		fallthrough
-	case "REVOKE_OUTCOME_CANCELLED":
-		fallthrough
-	case "REVOKE_OUTCOME_WAIT_TIMED_OUT":
-		*e = RevokeOutcomes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RevokeOutcomes: %v", v)
-	}
+	return false
 }
 
 // TaskSearchRequestSortBy - Sort tasks in a specific order.
@@ -268,34 +202,16 @@ const (
 func (e TaskSearchRequestSortBy) ToPointer() *TaskSearchRequestSortBy {
 	return &e
 }
-func (e *TaskSearchRequestSortBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskSearchRequestSortBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_SEARCH_SORT_BY_UNSPECIFIED", "TASK_SEARCH_SORT_BY_ACCOUNT", "TASK_SEARCH_SORT_BY_RESOURCE", "TASK_SEARCH_SORT_BY_ACCOUNT_OWNER", "TASK_SEARCH_SORT_BY_REVERSE_TICKET_ID", "TASK_SEARCH_SORT_BY_TICKET_ID", "TASK_SEARCH_SORT_BY_CREATED_AT", "TASK_SEARCH_SORT_BY_REVERSE_CREATED_AT", "TASK_SEARCH_SORT_BY_APP_RESOURCE_ID_AND_APP_ENTITLEMENT":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_SEARCH_SORT_BY_UNSPECIFIED":
-		fallthrough
-	case "TASK_SEARCH_SORT_BY_ACCOUNT":
-		fallthrough
-	case "TASK_SEARCH_SORT_BY_RESOURCE":
-		fallthrough
-	case "TASK_SEARCH_SORT_BY_ACCOUNT_OWNER":
-		fallthrough
-	case "TASK_SEARCH_SORT_BY_REVERSE_TICKET_ID":
-		fallthrough
-	case "TASK_SEARCH_SORT_BY_TICKET_ID":
-		fallthrough
-	case "TASK_SEARCH_SORT_BY_CREATED_AT":
-		fallthrough
-	case "TASK_SEARCH_SORT_BY_REVERSE_CREATED_AT":
-		fallthrough
-	case "TASK_SEARCH_SORT_BY_APP_RESOURCE_ID_AND_APP_ENTITLEMENT":
-		*e = TaskSearchRequestSortBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskSearchRequestSortBy: %v", v)
-	}
+	return false
 }
 
 type StepApprovalTypes string
@@ -317,38 +233,16 @@ const (
 func (e StepApprovalTypes) ToPointer() *StepApprovalTypes {
 	return &e
 }
-func (e *StepApprovalTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *StepApprovalTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "STEP_APPROVAL_TYPE_UNSPECIFIED", "STEP_APPROVAL_TYPE_USERS", "STEP_APPROVAL_TYPE_MANAGER", "STEP_APPROVAL_TYPE_APP_OWNERS", "STEP_APPROVAL_TYPE_GROUP", "STEP_APPROVAL_TYPE_SELF", "STEP_APPROVAL_TYPE_ENTITLEMENT_OWNERS", "STEP_APPROVAL_TYPE_EXPRESSION", "STEP_APPROVAL_TYPE_WEBHOOK", "STEP_APPROVAL_TYPE_RESOURCE_OWNERS", "STEP_APPROVAL_TYPE_AGENT":
+			return true
+		}
 	}
-	switch v {
-	case "STEP_APPROVAL_TYPE_UNSPECIFIED":
-		fallthrough
-	case "STEP_APPROVAL_TYPE_USERS":
-		fallthrough
-	case "STEP_APPROVAL_TYPE_MANAGER":
-		fallthrough
-	case "STEP_APPROVAL_TYPE_APP_OWNERS":
-		fallthrough
-	case "STEP_APPROVAL_TYPE_GROUP":
-		fallthrough
-	case "STEP_APPROVAL_TYPE_SELF":
-		fallthrough
-	case "STEP_APPROVAL_TYPE_ENTITLEMENT_OWNERS":
-		fallthrough
-	case "STEP_APPROVAL_TYPE_EXPRESSION":
-		fallthrough
-	case "STEP_APPROVAL_TYPE_WEBHOOK":
-		fallthrough
-	case "STEP_APPROVAL_TYPE_RESOURCE_OWNERS":
-		fallthrough
-	case "STEP_APPROVAL_TYPE_AGENT":
-		*e = StepApprovalTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for StepApprovalTypes: %v", v)
-	}
+	return false
 }
 
 type TaskStates string
@@ -362,22 +256,16 @@ const (
 func (e TaskStates) ToPointer() *TaskStates {
 	return &e
 }
-func (e *TaskStates) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskStates) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_STATE_UNSPECIFIED", "TASK_STATE_OPEN", "TASK_STATE_CLOSED":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_STATE_UNSPECIFIED":
-		fallthrough
-	case "TASK_STATE_OPEN":
-		fallthrough
-	case "TASK_STATE_CLOSED":
-		*e = TaskStates(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskStates: %v", v)
-	}
+	return false
 }
 
 // TaskSearchRequest - Search for tasks based on a plethora filters.

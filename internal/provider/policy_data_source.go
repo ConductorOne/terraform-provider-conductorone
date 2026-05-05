@@ -76,7 +76,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Search for policies with a case insensitive match on the display name.`,
+				Description: `The display name of the Policy.`,
 			},
 			"exclude_policy_ids": schema.ListAttribute{
 				Optional:    true,
@@ -144,12 +144,18 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 												},
 												Description: `ActionTargetResource targets resource actions for policy actions.`,
 											},
+											"action_target_client_id_approval": schema.SingleNestedAttribute{
+												Computed: true,
+												MarkdownDescription: `ActionTargetClientIdApproval targets administrator review of an external` + "\n" +
+													` OAuth client registration (CIMD or DCR) for policy actions.`,
+											},
 										},
 										MarkdownDescription: `The Action message.` + "\n" +
 											`` + "\n" +
 											`This message contains a oneof named target. Only a single field of the following list may be set at a time:` + "\n" +
 											`  - automation` + "\n" +
-											`  - batonResourceAction`,
+											`  - batonResourceAction` + "\n" +
+											`  - clientIdApproval`,
 									},
 									"approval": schema.SingleNestedAttribute{
 										Computed: true,
@@ -609,7 +615,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											`  - resourceOwners` + "\n" +
 											`  - agent`,
 									},
-									"form": schema.StringAttribute{
+									"policy_form": schema.StringAttribute{
 										CustomType:  jsontypes.NormalizedType{},
 										Computed:    true,
 										Description: `The Form message. Parsed as JSON.`,
@@ -1016,15 +1022,21 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 									},
 								},
 							},
-							Description: `An array of policy steps indicating the processing flow of a policy. These steps are oneOfs, and only one property may be set for each array index at a time.`,
+							MarkdownDescription: `Ordered array of steps. Each step is a oneof -- exactly one step type is` + "\n" +
+								` set per entry. Steps execute sequentially.`,
 						},
 					},
 				},
-				Description: `A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set.`,
+				MarkdownDescription: `A map from string keys to step sequences. One entry is always the baseline,` + "\n" +
+					` keyed by the lowercased policy_type (e.g., "grant", "revoke", "certify").` + "\n" +
+					` Additional entries have opaque keys (UUIDs) and are referenced by the rules` + "\n" +
+					` array for conditional routing. If no conditional rules are configured, only` + "\n" +
+					` the baseline entry exists.`,
 			},
 			"policy_type": schema.StringAttribute{
-				Computed:    true,
-				Description: `Indicates the type of this policy. Can also be used to get the value from policySteps.`,
+				Computed: true,
+				MarkdownDescription: `The type of this policy (grant, revoke, or certify). The lowercased type` + "\n" +
+					` name (e.g., "grant") is also the key for the baseline entry in policy_steps.`,
 			},
 			"policy_types": schema.ListAttribute{
 				Optional:    true,
@@ -1037,14 +1049,14 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 					Attributes: map[string]schema.Attribute{
 						"certify_remediate_immediately": schema.BoolAttribute{
 							Computed: true,
-							MarkdownDescription: `ONLY valid when used in a CERTIFY Ticket Type:` + "\n" +
-								` Causes any deprovision or change in a grant to be applied when Certify Ticket is closed.` + "\n" +
+							MarkdownDescription: `Only valid on certify policies. When true, any revocations resulting from` + "\n" +
+								` the certification are applied immediately when the campaign task closes.` + "\n" +
 								`This field is part of the ` + "`" + `action` + "`" + ` oneof.` + "\n" +
 								`See the documentation for ` + "`" + `c1.api.policy.v1.PolicyPostActions` + "`" + ` for more details.`,
 						},
 					},
 				},
-				Description: `An array of actions (ordered) to take place after a policy completes processing.`,
+				Description: `Ordered actions to execute after the policy completes processing.`,
 			},
 			"query": schema.StringAttribute{
 				Optional:    true,
@@ -1053,7 +1065,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			"reassign_tasks_to_delegates": schema.BoolAttribute{
 				Computed:           true,
 				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-				Description:        `Deprecated. Use setting in policy step instead`,
+				Description:        `This field is no longer used. Configure delegate reassignment in the policy step instead.`,
 			},
 			"refs": schema.ListNestedAttribute{
 				Optional: true,
@@ -1072,16 +1084,20 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"condition": schema.StringAttribute{
-							Computed:    true,
-							Description: `The condition field.`,
+							Computed: true,
+							MarkdownDescription: `A CEL expression that is evaluated against the request context. If it` + "\n" +
+								` returns true, the step sequence identified by policy_key is used.`,
 						},
 						"policy_key": schema.StringAttribute{
-							Computed:    true,
-							Description: `This is a reference to a list of policy steps from ` + "`" + `policy_steps` + "`" + ``,
+							Computed: true,
+							MarkdownDescription: `A key into the policy's policy_steps map identifying which step sequence` + "\n" +
+								` to execute when this rule's condition matches.`,
 						},
 					},
 				},
-				Description: `The rules field.`,
+				MarkdownDescription: `Ordered conditional routing rules. Evaluated top-to-bottom; the first` + "\n" +
+					` matching rule selects a step sequence from policy_steps. If no rule matches` + "\n" +
+					` (or if this array is empty), the baseline entry in policy_steps is used.`,
 			},
 			"system_builtin": schema.BoolAttribute{
 				Computed:    true,
@@ -1162,26 +1178,6 @@ func (r *PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 
 	if resp.Diagnostics.HasError() {
 		return
-	}
-	for {
-		var err error
-
-		res, err = res.Next()
-
-		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
-			return
-		}
-
-		if res == nil {
-			break
-		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedSearchPoliciesResponse(ctx, res.SearchPoliciesResponse)...)
-
-		if resp.Diagnostics.HasError() {
-			return
-		}
 	}
 
 	// Save updated data into Terraform state

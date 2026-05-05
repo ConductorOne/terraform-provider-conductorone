@@ -31,7 +31,7 @@ func newOrgNotificationSettings(rootSDK *ConductoroneAPI, sdkConfig config.SDKCo
 }
 
 // Get
-// Invokes the c1.api.settings.v1.OrgNotificationSettingsService.Get method.
+// Get retrieves the organization-level notification settings, including per-channel preferences and admin-locked defaults.
 func (s *OrgNotificationSettings) Get(ctx context.Context, opts ...operations.Option) (*operations.C1APISettingsV1OrgNotificationSettingsServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -161,7 +161,7 @@ func (s *OrgNotificationSettings) Get(ctx context.Context, opts ...operations.Op
 }
 
 // Update
-// Invokes the c1.api.settings.v1.OrgNotificationSettingsService.Update method.
+// Update modifies the organization-level notification settings, such as enabling channels and locking preferences for users.
 func (s *OrgNotificationSettings) Update(ctx context.Context, request *shared.UpdateOrgNotificationSettingsRequest, opts ...operations.Option) (*operations.C1APISettingsV1OrgNotificationSettingsServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

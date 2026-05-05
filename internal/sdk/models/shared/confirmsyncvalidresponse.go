@@ -2,6 +2,6 @@
 
 package shared
 
-// The ConfirmSyncValidResponse message.
+// ConfirmSyncValidResponse - Empty response body. Status code indicates success.
 type ConfirmSyncValidResponse struct {
 }

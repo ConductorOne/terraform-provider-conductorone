@@ -73,11 +73,11 @@ func (r *RiskLevelsDataSource) Schema(ctx context.Context, req datasource.Schema
 						},
 					},
 				},
-				Description: `The list field.`,
+				Description: `The list of risk level attribute values.`,
 			},
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
-				Description: `The nextPageToken field.`,
+				Description: `The token to retrieve the next page of results, or empty if there are no more results.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional: true,

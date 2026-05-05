@@ -26,10 +26,10 @@ resource "conductorone_app_entitlement_monitor_binding" "my_app_entitlement_moni
 
 ### Optional
 
-- `app_entitlement_id` (String) The appEntitlementId field. Requires replacement if changed.
-- `app_id` (String) The appId field. Requires replacement if changed.
-- `entitlement_group` (String) The entitlementGroup field. must be one of ["ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]; Requires replacement if changed.
-- `monitor_id` (String) The monitorId field. Requires replacement if changed.
+- `app_entitlement_id` (String) The unique identifier of the app entitlement to bind. Requires replacement if changed.
+- `app_id` (String) The unique identifier of the application containing the entitlement. Requires replacement if changed.
+- `entitlement_group` (String) Which side of the conflict monitor (A or B) to place this entitlement in. possible known values include one of ["ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B"]; Requires replacement if changed.
+- `monitor_id` (String) The unique identifier of the conflict monitor to bind the entitlement to. Requires replacement if changed.
 
 ### Read-Only
 

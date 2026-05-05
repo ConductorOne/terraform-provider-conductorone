@@ -2,9 +2,9 @@
 
 package shared
 
-// The TestAccountProvisionPolicyRequest message.
+// TestAccountProvisionPolicyRequest is the request for testing an account provision policy.
 type TestAccountProvisionPolicyRequest struct {
-	// The cel field.
+	// The CEL expression to evaluate for the account provision policy.
 	Cel *string `json:"cel,omitempty"`
 }
 

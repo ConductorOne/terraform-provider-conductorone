@@ -66,7 +66,7 @@ data "conductorone_users" "my_users" {
 
 ### Optional
 
-- `delegate_status` (String) Filter for users based on their delegate status. must be one of ["DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE"]
+- `delegate_status` (String) Filter for users based on their delegate status. possible known values include one of ["DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE"]
 - `delegated_user_ids` (List of String) Filter for users that have any of the delegated user IDs on this list.
 - `departments` (List of String) Search for users that have any of the departments on this list.
 - `email` (String) Search for users based on their email (exact match).

@@ -2,11 +2,11 @@
 
 package shared
 
-// The ListRiskLevelsResponse message.
+// ListRiskLevelsResponse is the response for listing risk level attribute values.
 type ListRiskLevelsResponse struct {
-	// The list field.
+	// The list of risk level attribute values.
 	List []AttributeValue `json:"list,omitempty"`
-	// The nextPageToken field.
+	// The token to retrieve the next page of results, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

@@ -2,11 +2,11 @@
 
 package shared
 
-// The CreateManuallyManagedAppResourceRequest message.
+// CreateManuallyManagedAppResourceRequest - The request message for creating a manually managed app resource.
 type CreateManuallyManagedAppResourceRequest struct {
-	// The description field.
+	// An optional description for the new resource.
 	Description *string `json:"description,omitempty"`
-	// The displayName field.
+	// The display name for the new resource.
 	DisplayName string `json:"displayName"`
 	// If supplied, it's implied that the resource is created before sync and needs to be merged with connector resource.
 	MatchBatonID *string `json:"matchBatonId,omitempty"`

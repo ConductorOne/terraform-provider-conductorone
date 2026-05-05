@@ -2,6 +2,6 @@
 
 package shared
 
-// The UpdateConnectorScheduleResponse message.
+// UpdateConnectorScheduleResponse - Empty response body. Status code indicates success.
 type UpdateConnectorScheduleResponse struct {
 }

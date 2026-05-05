@@ -26,6 +26,9 @@ func (c *C1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceSetScopeB
 	return c.AccessReviewTemplateSetScopeByResourceTypeRequest
 }
 
+// #region class-body-c1apiaccessreviewv1accessreviewtemplatesetupentitlementservicesetscopebyresourcetyperequest
+// #endregion class-body-c1apiaccessreviewv1accessreviewtemplatesetupentitlementservicesetscopebyresourcetyperequest
+
 type C1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceSetScopeByResourceTypeResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAccessreviewV1AccessReviewTemplateSetupEntitlementServiceSetScopeB
 	}
 	return c.AccessReviewTemplateSetScopeByResourceTypeResponse
 }
+
+// #region class-body-c1apiaccessreviewv1accessreviewtemplatesetupentitlementservicesetscopebyresourcetyperesponse
+// #endregion class-body-c1apiaccessreviewv1accessreviewtemplatesetupentitlementservicesetscopebyresourcetyperesponse

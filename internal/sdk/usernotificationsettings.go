@@ -31,7 +31,7 @@ func newUserNotificationSettings(rootSDK *ConductoroneAPI, sdkConfig config.SDKC
 }
 
 // Get
-// Invokes the c1.api.settings.v1.UserNotificationSettingsService.Get method.
+// Get retrieves the calling user's notification preferences, merged with organization-level defaults.
 func (s *UserNotificationSettings) Get(ctx context.Context, opts ...operations.Option) (*operations.C1APISettingsV1UserNotificationSettingsServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -161,7 +161,7 @@ func (s *UserNotificationSettings) Get(ctx context.Context, opts ...operations.O
 }
 
 // Update
-// Invokes the c1.api.settings.v1.UserNotificationSettingsService.Update method.
+// Update modifies the calling user's personal notification preferences for each channel.
 func (s *UserNotificationSettings) Update(ctx context.Context, request *shared.UpdateUserNotificationSettingsRequest, opts ...operations.Option) (*operations.C1APISettingsV1UserNotificationSettingsServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

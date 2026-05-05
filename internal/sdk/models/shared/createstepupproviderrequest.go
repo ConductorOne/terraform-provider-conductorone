@@ -8,13 +8,13 @@ package shared
 //   - oauth2
 //   - microsoft
 type CreateStepUpProviderRequest struct {
-	// The clientId field.
+	// The OAuth2 client ID used to authenticate with the step-up provider.
 	ClientID *string `json:"clientId,omitempty"`
-	// The clientSecret field.
+	// The OAuth2 client secret. Write-only; never returned in responses.
 	ClientSecret *string `json:"clientSecret,omitempty"`
-	// The displayName field.
+	// The human-readable name for the new step-up provider.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The issuerUrl field.
+	// The OIDC issuer URL for the step-up provider.
 	IssuerURL *string `json:"issuerUrl,omitempty"`
 	// StepUpMicrosoftSettings configures a Microsoft Entra step-up provider using Conditional Access.
 	StepUpMicrosoftSettings *StepUpMicrosoftSettings `json:"microsoft,omitempty"`

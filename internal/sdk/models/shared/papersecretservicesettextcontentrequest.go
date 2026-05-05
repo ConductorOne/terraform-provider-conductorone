@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // PaperSecretServiceSetTextContentRequestInputFormat - Input format hint for the viewer UI when the secret is decrypted.
 //
 //	Does not affect encryption — this is metadata only.
@@ -23,26 +18,16 @@ const (
 func (e PaperSecretServiceSetTextContentRequestInputFormat) ToPointer() *PaperSecretServiceSetTextContentRequestInputFormat {
 	return &e
 }
-func (e *PaperSecretServiceSetTextContentRequestInputFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceSetTextContentRequestInputFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_INPUT_FORMAT_UNSPECIFIED", "SECRET_INPUT_FORMAT_PLAINTEXT", "SECRET_INPUT_FORMAT_JSON", "SECRET_INPUT_FORMAT_YAML", "SECRET_INPUT_FORMAT_KEY_VALUE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_INPUT_FORMAT_UNSPECIFIED":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_PLAINTEXT":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_JSON":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_YAML":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_KEY_VALUE":
-		*e = PaperSecretServiceSetTextContentRequestInputFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceSetTextContentRequestInputFormat: %v", v)
-	}
+	return false
 }
 
 // The PaperSecretServiceSetTextContentRequest message.

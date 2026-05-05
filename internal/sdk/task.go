@@ -168,7 +168,7 @@ func (s *Task) CreateGrantTask(ctx context.Context, request *shared.TaskServiceC
 }
 
 // CreateOffboardingTask - Create Offboarding Task
-// Invokes the c1.api.task.v1.TaskService.CreateOffboardingTask method.
+// Create an offboarding task to remove a user's access across applications.
 func (s *Task) CreateOffboardingTask(ctx context.Context, request *shared.TaskServiceCreateOffboardingRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskServiceCreateOffboardingTaskResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -560,6 +560,7 @@ func (s *Task) Get(ctx context.Context, request operations.C1APITaskV1TaskServic
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

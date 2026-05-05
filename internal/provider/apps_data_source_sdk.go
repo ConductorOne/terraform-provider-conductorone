@@ -23,6 +23,11 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 			for _, listItem := range resp.List {
 				var list tfTypes.App
 
+				if listItem.AccessModel != nil {
+					list.AccessModel = types.StringValue(string(*listItem.AccessModel))
+				} else {
+					list.AccessModel = types.StringNull()
+				}
 				list.AppAccountID = types.StringPointerValue(listItem.AppAccountID)
 				list.AppAccountName = types.StringPointerValue(listItem.AppAccountName)
 				if listItem.AppUserMapper == nil {
@@ -42,6 +47,8 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 
 							list.AppUserMapper.MappingCases = append(list.AppUserMapper.MappingCases, mappingCases)
 						}
+					} else {
+						list.AppUserMapper.MappingCases = nil
 					}
 				}
 				list.CertifyPolicyID = types.StringPointerValue(listItem.CertifyPolicyID)
@@ -71,6 +78,8 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

@@ -14,3 +14,6 @@ func (a *A2UIServiceCreateSurfaceFeedbackResponse) GetA2UISurfaceFeedback() *A2U
 	}
 	return a.A2UISurfaceFeedback
 }
+
+// #region class-body-a2uiservicecreatesurfacefeedbackresponse
+// #endregion class-body-a2uiservicecreatesurfacefeedbackresponse

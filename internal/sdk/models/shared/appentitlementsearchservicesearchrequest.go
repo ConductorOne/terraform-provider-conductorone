@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type MembershipType string
 
 const (
@@ -20,26 +15,16 @@ const (
 func (e MembershipType) ToPointer() *MembershipType {
 	return &e
 }
-func (e *MembershipType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MembershipType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_UNSPECIFIED", "APP_ENTITLEMENT_MEMBERSHIP_TYPE_MEMBER", "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER", "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION", "APP_ENTITLEMENT_MEMBERSHIP_TYPE_ADMIN":
+			return true
+		}
 	}
-	switch v {
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_UNSPECIFIED":
-		fallthrough
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_MEMBER":
-		fallthrough
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER":
-		fallthrough
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_EXCLUSION":
-		fallthrough
-	case "APP_ENTITLEMENT_MEMBERSHIP_TYPE_ADMIN":
-		*e = MembershipType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MembershipType: %v", v)
-	}
+	return false
 }
 
 // AppEntitlementSearchServiceSearchRequest - Search app entitlements by a variety of filters.
@@ -52,27 +37,27 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	AppIds []string `json:"appIds,omitempty"`
 	// Search for app entitlements that are granted to any of these app user ids.
 	AppUserIds []string `json:"appUserIds,omitempty"`
-	// Search for app entitlements that are part of these compliace frameworks.
+	// Search for app entitlements that are part of these compliance frameworks.
 	ComplianceFrameworkIds []string `json:"complianceFrameworkIds,omitempty"`
-	// The displayName field.
+	// Filter results to entitlements with this exact display name.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Exclude app entitlements from the results that are in these app IDs.
 	ExcludeAppIds []string `json:"excludeAppIds,omitempty"`
-	// Exclude app entitlements from the results that these app users have granted.
+	// Exclude entitlements from results that are granted to any of these app users.
 	ExcludeAppUserIds []string `json:"excludeAppUserIds,omitempty"`
-	// The excludeImmutable field.
+	// If true, exclude immutable entitlements (e.g., system-managed entitlements that cannot be modified).
 	ExcludeImmutable *bool `json:"excludeImmutable,omitempty"`
-	// The excludeResourceTypeIds field.
+	// Exclude entitlements with any of these resource type IDs from results.
 	ExcludeResourceTypeIds []string `json:"excludeResourceTypeIds,omitempty"`
-	// The excludedEntitlementRefs field.
+	// Exclude these specific entitlements from results.
 	ExcludedEntitlementRefs []AppEntitlementRef `json:"excludedEntitlementRefs,omitempty"`
 	// Include deleted app entitlements, this includes app entitlements that have a deleted parent object (app, app resource, app resource type)
 	IncludeDeleted *bool `json:"includeDeleted,omitempty"`
-	// The isAutomated field.
+	// If true, restrict results to entitlements that have an automation rule configured.
 	IsAutomated *bool `json:"isAutomated,omitempty"`
-	// The membershipType field.
+	// Filter results to entitlements where the user has any of these membership types (e.g., member, owner, admin).
 	MembershipType []MembershipType `json:"membershipType,omitempty"`
-	// Restrict results to only those who have expiring app entitlement user bindings.
+	// If true, restrict results to entitlements that have at least one expiring grant.
 	OnlyGetExpiring *bool `json:"onlyGetExpiring,omitempty"`
 	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *int `json:"pageSize,omitempty"`
@@ -82,17 +67,17 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	PolicyRefs []PolicyRef `json:"policyRefs,omitempty"`
 	// Query the app entitlements with a fuzzy search on display name and description.
 	Query *string `json:"query,omitempty"`
-	// The refs field.
+	// Filter results to only these specific entitlements.
 	Refs []AppEntitlementRef `json:"refs,omitempty"`
 	// Search for app entitlements that belongs to these resources.
 	ResourceIds []string `json:"resourceIds,omitempty"`
-	// The resourceTraitIds field.
+	// Filter results to entitlements whose resource types have any of these trait IDs.
 	ResourceTraitIds []string `json:"resourceTraitIds,omitempty"`
 	// Search for app entitlements that are for items with resources types that have matching names. Example names are "group", "role", and "app".
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
 	// Search for app entitlements with these risk levels.
 	RiskLevelIds []string `json:"riskLevelIds,omitempty"`
-	// The sourceConnectorId field.
+	// Filter results to entitlements synced from this connector.
 	SourceConnectorID *string `json:"sourceConnectorId,omitempty"`
 }
 

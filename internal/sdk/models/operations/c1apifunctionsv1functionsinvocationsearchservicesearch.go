@@ -26,6 +26,9 @@ func (c *C1APIFunctionsV1FunctionsInvocationSearchServiceSearchRequest) GetFunct
 	return c.FunctionsInvocationSearchRequest
 }
 
+// #region class-body-c1apifunctionsv1functionsinvocationsearchservicesearchrequest
+// #endregion class-body-c1apifunctionsv1functionsinvocationsearchservicesearchrequest
+
 type C1APIFunctionsV1FunctionsInvocationSearchServiceSearchResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIFunctionsV1FunctionsInvocationSearchServiceSearchResponse) GetFunc
 	}
 	return c.FunctionsInvocationSearchResponse
 }
+
+// #region class-body-c1apifunctionsv1functionsinvocationsearchservicesearchresponse
+// #endregion class-body-c1apifunctionsv1functionsinvocationsearchservicesearchresponse

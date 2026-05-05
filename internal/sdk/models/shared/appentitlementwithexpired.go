@@ -7,21 +7,21 @@ import (
 	"time"
 )
 
-// The AppEntitlementWithExpired message.
+// AppEntitlementWithExpired - A grant with its expiry and discovery timestamps, along with the associated app user and ConductorOne user.
 type AppEntitlementWithExpired struct {
-	// The appEntitlementId field.
+	// The ID of the app entitlement.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
-	// The appId field.
+	// The ID of the app that contains the entitlement.
 	AppID *string `json:"appId,omitempty"`
 	// Application User that represents an account in the application.
 	AppUser *AppUser `json:"appUser,omitempty"`
-	// The appUserId field.
+	// The ID of the app user who holds the grant.
 	AppUserID  *string    `json:"appUserId,omitempty"`
 	Discovered *time.Time `json:"discovered,omitempty"`
 	Expired    *time.Time `json:"expired,omitempty"`
-	// The grantReasons field.
+	// The reasons this grant was given (e.g., access request, automation).
 	GrantReasons []GrantReason `json:"grantReasons,omitempty"`
-	// The grantSources field.
+	// Entitlements that are the source of this grant (e.g., a group membership that implies a role).
 	GrantSources []AppEntitlementRef `json:"grantSources,omitempty"`
 	// The User object provides all of the details for an user, as well as some configuration.
 	User *User `json:"user,omitempty"`

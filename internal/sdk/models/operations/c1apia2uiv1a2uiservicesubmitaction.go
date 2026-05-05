@@ -26,6 +26,9 @@ func (c *C1APIA2uiV1A2UIServiceSubmitActionRequest) GetA2UIServiceSubmitActionRe
 	return c.A2UIServiceSubmitActionRequest
 }
 
+// #region class-body-c1apia2uiv1a2uiservicesubmitactionrequest
+// #endregion class-body-c1apia2uiv1a2uiservicesubmitactionrequest
+
 type C1APIA2uiV1A2UIServiceSubmitActionResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIA2uiV1A2UIServiceSubmitActionResponse) GetA2UIServiceSubmitActionR
 	}
 	return c.A2UIServiceSubmitActionResponse
 }
+
+// #region class-body-c1apia2uiv1a2uiservicesubmitactionresponse
+// #endregion class-body-c1apia2uiv1a2uiservicesubmitactionresponse

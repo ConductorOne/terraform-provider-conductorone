@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceCommentRequest) GetTaskActionsServiceComme
 	return c.TaskActionsServiceCommentRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsservicecommentrequest
+// #endregion class-body-c1apitaskv1taskactionsservicecommentrequest
+
 type C1APITaskV1TaskActionsServiceCommentResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceCommentResponse) GetTaskActionsServiceComm
 	}
 	return c.TaskActionsServiceCommentResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsservicecommentresponse
+// #endregion class-body-c1apitaskv1taskactionsservicecommentresponse

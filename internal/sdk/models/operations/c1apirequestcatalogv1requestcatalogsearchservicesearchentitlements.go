@@ -45,3 +45,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogSearchServiceSearchEntitlementsRespo
 	}
 	return c.RequestCatalogSearchServiceSearchEntitlementsResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogsearchservicesearchentitlementsresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogsearchservicesearchentitlementsresponse

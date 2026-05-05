@@ -175,11 +175,7 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								`` + "\n" +
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - checkboxField` + "\n" +
-								`  - toggleField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - rules`,
+								`  - toggleField`,
 						},
 						"description": schema.StringAttribute{
 							Computed:    true,
@@ -202,29 +198,21 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 									Description: `The FileInputField message.`,
 								},
 								"max_file_size": schema.StringAttribute{
-									Computed: true,
-									MarkdownDescription: `The maxFileSize field.` + "\n" +
-										`This field is part of the ` + "`" + `_max_file_size` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.form.v1.FileField` + "`" + ` for more details.`,
+									Computed:    true,
+									Description: `The maxFileSize field.`,
 								},
 							},
 							MarkdownDescription: `The FileField message.` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - fileInputField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - maxFileSize`,
+								`  - fileInputField`,
 						},
 						"int64_field": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
 								"default_value": schema.StringAttribute{
-									Computed: true,
-									MarkdownDescription: `The defaultValue field.` + "\n" +
-										`This field is part of the ` + "`" + `_default_value` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.form.v1.Int64Field` + "`" + ` for more details.`,
+									Computed:    true,
+									Description: `The defaultValue field.`,
 								},
 								"int64_rules": schema.SingleNestedAttribute{
 									Computed: true,
@@ -301,15 +289,7 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 							MarkdownDescription: `The Int64Field message.` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - numberField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - defaultValue` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - rules`,
+								`  - numberField`,
 						},
 						"name": schema.StringAttribute{
 							Computed:    true,
@@ -618,6 +598,10 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 											Computed:    true,
 											Description: `The multiline field.`,
 										},
+										"suffix": schema.StringAttribute{
+											Computed:    true,
+											Description: `Static text displayed as an end adornment (e.g. ".example.com" for domain fields).`,
+										},
 									},
 									Description: `The TextField message.`,
 								},
@@ -628,11 +612,32 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								`  - textField` + "\n" +
 								`  - passwordField` + "\n" +
 								`  - selectField` + "\n" +
-								`  - pickerField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - rules`,
+								`  - pickerField`,
+						},
+						"string_map_field": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"default_value": schema.MapAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `The defaultValue field.`,
+								},
+								"string_map_rules": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"is_required": schema.BoolAttribute{
+											Computed:    true,
+											Description: `The isRequired field.`,
+										},
+										"validate_empty": schema.BoolAttribute{
+											Computed:    true,
+											Description: `The validateEmpty field.`,
+										},
+									},
+									Description: `The StringMapRules message.`,
+								},
+							},
+							Description: `The StringMapField message.`,
 						},
 						"user_provider_config": schema.SingleNestedAttribute{
 							Computed: true,
@@ -649,11 +654,12 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 				Description: `The fields field.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The unique identifier of this request schema.`,
 			},
 			"justification_visibility": schema.StringAttribute{
 				Computed:    true,
-				Description: `The justificationVisibility field.`,
+				Description: `Controls whether the justification field is shown or hidden on the request form.`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,

@@ -30,7 +30,7 @@ func newAutomationExecutionActions(rootSDK *ConductoroneAPI, sdkConfig config.SD
 }
 
 // TerminateAutomation - Terminate Automation
-// Invokes the c1.api.automations.v1.AutomationExecutionActionsService.TerminateAutomation method.
+// Terminate a running automation execution asynchronously, stopping it and marking it as terminated.
 func (s *AutomationExecutionActions) TerminateAutomation(ctx context.Context, request operations.C1APIAutomationsV1AutomationExecutionActionsServiceTerminateAutomationRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationExecutionActionsServiceTerminateAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

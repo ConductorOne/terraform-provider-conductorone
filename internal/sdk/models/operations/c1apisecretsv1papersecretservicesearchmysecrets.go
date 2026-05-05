@@ -45,3 +45,6 @@ func (c *C1APISecretsV1PaperSecretServiceSearchMySecretsResponse) GetPaperSecret
 	}
 	return c.PaperSecretServiceSearchResponse
 }
+
+// #region class-body-c1apisecretsv1papersecretservicesearchmysecretsresponse
+// #endregion class-body-c1apisecretsv1papersecretservicesearchmysecretsresponse

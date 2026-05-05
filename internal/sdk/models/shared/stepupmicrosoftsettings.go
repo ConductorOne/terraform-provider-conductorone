@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ValidationMode - Validation approach. See MicrosoftValidationMode for details on each mode.
 type ValidationMode string
 
@@ -19,22 +14,16 @@ const (
 func (e ValidationMode) ToPointer() *ValidationMode {
 	return &e
 }
-func (e *ValidationMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ValidationMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "MICROSOFT_VALIDATION_MODE_UNSPECIFIED", "MICROSOFT_VALIDATION_MODE_ACRS", "MICROSOFT_VALIDATION_MODE_OIDC":
+			return true
+		}
 	}
-	switch v {
-	case "MICROSOFT_VALIDATION_MODE_UNSPECIFIED":
-		fallthrough
-	case "MICROSOFT_VALIDATION_MODE_ACRS":
-		fallthrough
-	case "MICROSOFT_VALIDATION_MODE_OIDC":
-		*e = ValidationMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ValidationMode: %v", v)
-	}
+	return false
 }
 
 // StepUpMicrosoftSettings configures a Microsoft Entra step-up provider using Conditional Access.

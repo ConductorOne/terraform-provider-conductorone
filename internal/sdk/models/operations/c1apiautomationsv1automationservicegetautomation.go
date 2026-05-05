@@ -18,6 +18,9 @@ func (c *C1APIAutomationsV1AutomationServiceGetAutomationRequest) GetID() string
 	return c.ID
 }
 
+// #region class-body-c1apiautomationsv1automationservicegetautomationrequest
+// #endregion class-body-c1apiautomationsv1automationservicegetautomationrequest
+
 type C1APIAutomationsV1AutomationServiceGetAutomationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIAutomationsV1AutomationServiceGetAutomationResponse) GetGetAutomat
 	}
 	return c.GetAutomationResponse
 }
+
+// #region class-body-c1apiautomationsv1automationservicegetautomationresponse
+// #endregion class-body-c1apiautomationsv1automationservicegetautomationresponse

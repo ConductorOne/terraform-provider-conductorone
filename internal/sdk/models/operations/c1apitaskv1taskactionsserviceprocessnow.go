@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceProcessNowRequest) GetTaskActionsServicePr
 	return c.TaskActionsServiceProcessNowRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsserviceprocessnowrequest
+// #endregion class-body-c1apitaskv1taskactionsserviceprocessnowrequest
+
 type C1APITaskV1TaskActionsServiceProcessNowResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -33,7 +36,7 @@ type C1APITaskV1TaskActionsServiceProcessNowResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The TaskActionsServiceProcessNowResponse returns the task view after triggering immediate processing.
 	TaskActionsServiceProcessNowResponse *shared.TaskActionsServiceProcessNowResponse
 }
 
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceProcessNowResponse) GetTaskActionsServiceP
 	}
 	return c.TaskActionsServiceProcessNowResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsserviceprocessnowresponse
+// #endregion class-body-c1apitaskv1taskactionsserviceprocessnowresponse

@@ -62,16 +62,8 @@ func (r *ComplianceFrameworkResourceModel) ToOperationsC1APIAttributeV1Attribute
 	var id string
 	id = r.ID.ValueString()
 
-	deleteComplianceFrameworkAttributeValueRequest, deleteComplianceFrameworkAttributeValueRequestDiags := r.ToSharedDeleteComplianceFrameworkAttributeValueRequest(ctx)
-	diags.Append(deleteComplianceFrameworkAttributeValueRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRequest{
 		ID: id,
-		DeleteComplianceFrameworkAttributeValueRequest: deleteComplianceFrameworkAttributeValueRequest,
 	}
 
 	return &out, diags

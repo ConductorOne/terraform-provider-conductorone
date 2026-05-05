@@ -26,6 +26,9 @@ func (c *C1APIWebhooksV1WebhooksServiceListRequest) GetPageToken() *string {
 	return c.PageToken
 }
 
+// #region class-body-c1apiwebhooksv1webhooksservicelistrequest
+// #endregion class-body-c1apiwebhooksv1webhooksservicelistrequest
+
 type C1APIWebhooksV1WebhooksServiceListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIWebhooksV1WebhooksServiceListResponse) GetWebhooksServiceListRespo
 	}
 	return c.WebhooksServiceListResponse
 }
+
+// #region class-body-c1apiwebhooksv1webhooksservicelistresponse
+// #endregion class-body-c1apiwebhooksv1webhooksservicelistresponse

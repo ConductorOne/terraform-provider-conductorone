@@ -34,6 +34,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsFor
 	return c.PageToken
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementsforaccessrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementsforaccessrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsForAccessResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsFor
 	}
 	return c.RequestCatalogManagementServiceListEntitlementsForAccessResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementsforaccessresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementsforaccessresponse

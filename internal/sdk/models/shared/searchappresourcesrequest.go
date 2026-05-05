@@ -2,33 +2,33 @@
 
 package shared
 
-// The SearchAppResourcesRequest message.
+// SearchAppResourcesRequest - Search app resources based on filters specified in the request body.
 type SearchAppResourcesRequest struct {
-	// The appId field.
+	// The app ID to restrict the search to.
 	AppID *string `json:"appId,omitempty"`
-	// The appUserIds field.
+	// A list of app user IDs to restrict the search by.
 	AppUserIds []string `json:"appUserIds,omitempty"`
-	// The excludeDeletedResourceBindings field.
+	// If true, exclude resources whose bindings have been deleted.
 	ExcludeDeletedResourceBindings *bool `json:"excludeDeletedResourceBindings,omitempty"`
-	// The excludeResourceIds field.
+	// A list of resource IDs to exclude from the search results.
 	ExcludeResourceIds []string `json:"excludeResourceIds,omitempty"`
-	// The excludeResourceTypeTraitIds field.
+	// A list of resource type trait IDs to exclude from the search.
 	ExcludeResourceTypeTraitIds []string `json:"excludeResourceTypeTraitIds,omitempty"`
-	// The ownerUserIds field.
+	// A list of C1 user IDs to filter resources by ownership.
 	OwnerUserIds []string `json:"ownerUserIds,omitempty"`
-	// The pageSize field.
+	// The maximum number of results to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
+	// The token for fetching the next page of results.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The query field.
+	// Fuzzy search the display name of resources.
 	Query *string `json:"query,omitempty"`
-	// The refs field.
+	// A list of specific app resource references to restrict the search to.
 	Refs []AppResourceRef `json:"refs,omitempty"`
-	// The resourceIds field.
+	// A list of resource IDs to restrict the search to.
 	ResourceIds []string `json:"resourceIds,omitempty"`
-	// The resourceTypeIds field.
+	// A list of resource type IDs to restrict the search by.
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
-	// The resourceTypeTraitIds field.
+	// A list of resource type trait IDs to restrict the search by.
 	ResourceTypeTraitIds []string `json:"resourceTypeTraitIds,omitempty"`
 }
 

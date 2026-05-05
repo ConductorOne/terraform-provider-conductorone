@@ -7,13 +7,13 @@ import (
 )
 
 type UsageBasedRevocationTrigger struct {
+	RunDelayed                 *RunDelayed         `tfsdk:"run_delayed"`
+	RunImmediately             *RunImmediately     `tfsdk:"run_immediately"`
 	AppID                      types.String        `tfsdk:"app_id"`
 	EnabledAt                  types.String        `tfsdk:"enabled_at"`
 	ExcludedGroupRefs          []AppEntitlementRef `tfsdk:"excluded_group_refs"`
 	ExcludedUserRefs           []UserRef           `tfsdk:"excluded_user_refs"`
 	IncludeUsersWithNoActivity types.Bool          `tfsdk:"include_users_with_no_activity"`
-	RunDelayed                 *RunDelayed         `tfsdk:"run_delayed"`
-	RunImmediately             *RunImmediately     `tfsdk:"run_immediately"`
 	TargetedAppUserTypes       []types.String      `tfsdk:"targeted_app_user_types"`
 	TargetedEntitlementRefs    []AppEntitlementRef `tfsdk:"targeted_entitlement_refs"`
 	UnusedForDays              types.Int64         `tfsdk:"unused_for_days"`

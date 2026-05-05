@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type ExecutionStepStates string
 
 const (
@@ -25,55 +20,35 @@ const (
 func (e ExecutionStepStates) ToPointer() *ExecutionStepStates {
 	return &e
 }
-func (e *ExecutionStepStates) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ExecutionStepStates) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AUTOMATION_EXECUTION_STATE_UNSPECIFIED", "AUTOMATION_EXECUTION_STATE_PENDING", "AUTOMATION_EXECUTION_STATE_CREATING", "AUTOMATION_EXECUTION_STATE_GET_STEP", "AUTOMATION_EXECUTION_STATE_PROCESS_STEP", "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP", "AUTOMATION_EXECUTION_STATE_DONE", "AUTOMATION_EXECUTION_STATE_ERROR", "AUTOMATION_EXECUTION_STATE_TERMINATE", "AUTOMATION_EXECUTION_STATE_WAITING":
+			return true
+		}
 	}
-	switch v {
-	case "AUTOMATION_EXECUTION_STATE_UNSPECIFIED":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_PENDING":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_CREATING":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_GET_STEP":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_PROCESS_STEP":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_DONE":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_ERROR":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_TERMINATE":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_WAITING":
-		*e = ExecutionStepStates(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ExecutionStepStates: %v", v)
-	}
+	return false
 }
 
 // The SearchAutomationExecutionsRequest message.
 type SearchAutomationExecutionsRequest struct {
-	// The automationTemplateId field.
+	// Filter results to executions of this automation template.
 	AutomationTemplateID *string `json:"automationTemplateId,omitempty"`
-	// The executionId field.
+	// Filter results to a specific execution by its numeric identifier.
 	ExecutionID *string `json:"executionId,omitempty"`
-	// The executionStepStates field.
+	// Filter results to executions in any of the specified states.
 	ExecutionStepStates []ExecutionStepStates `json:"executionStepStates,omitempty"`
 	// The AutomationExecutionExpandMask message.
 	AutomationExecutionExpandMask *AutomationExecutionExpandMask `json:"expandMask,omitempty"`
-	// The pageSize field.
+	// Maximum number of results to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
+	// Pagination token from a previous SearchAutomationExecutionsResponse.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The query field.
+	// Free-text search query to filter executions.
 	Query *string `json:"query,omitempty"`
-	// The refs field.
+	// Restrict results to specific execution references.
 	Refs []AutomationExecutionRef `json:"refs,omitempty"`
 }
 

@@ -10,6 +10,12 @@ type TaskAuditSuccessResultAnnotations struct {
 type TaskAuditSuccessResult struct {
 	// The annotations field.
 	Annotations []TaskAuditSuccessResultAnnotations `json:"annotations,omitempty"`
+	// Optional human-readable note about the successful action. Rendered in
+	//  the ticket audit log when present (e.g., "Account already existed; no
+	//  change made." for the AlreadyExistsResult path). Naming mirrors
+	//  TaskAuditErrorResult.error_reason and TaskAuditCancelledResult.cancel_reason
+	//  for consistency.
+	SuccessReason *string `json:"successReason,omitempty"`
 }
 
 func (t *TaskAuditSuccessResult) GetAnnotations() []TaskAuditSuccessResultAnnotations {
@@ -17,4 +23,11 @@ func (t *TaskAuditSuccessResult) GetAnnotations() []TaskAuditSuccessResultAnnota
 		return nil
 	}
 	return t.Annotations
+}
+
+func (t *TaskAuditSuccessResult) GetSuccessReason() *string {
+	if t == nil {
+		return nil
+	}
+	return t.SuccessReason
 }

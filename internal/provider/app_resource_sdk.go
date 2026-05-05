@@ -16,6 +16,11 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.AccessModel != nil {
+			r.AccessModel = types.StringValue(string(*resp.AccessModel))
+		} else {
+			r.AccessModel = types.StringNull()
+		}
 		r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
 		r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
 		if resp.AppUserMapper == nil {
@@ -33,6 +38,8 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 
 					r.AppUserMapper.MappingCases = append(r.AppUserMapper.MappingCases, mappingCases)
 				}
+			} else {
+				r.AppUserMapper.MappingCases = nil
 			}
 		}
 		r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)
@@ -115,16 +122,8 @@ func (r *AppResourceModel) ToOperationsC1APIAppV1AppsDeleteRequest(ctx context.C
 	var id string
 	id = r.ID.ValueString()
 
-	deleteAppRequest, deleteAppRequestDiags := r.ToSharedDeleteAppRequest(ctx)
-	diags.Append(deleteAppRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIAppV1AppsDeleteRequest{
-		ID:               id,
-		DeleteAppRequest: deleteAppRequest,
+		ID: id,
 	}
 
 	return &out, diags
@@ -167,6 +166,12 @@ func (r *AppResourceModel) ToOperationsC1APIAppV1AppsUpdateRequest(ctx context.C
 func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	accessModel := new(shared.AccessModel)
+	if !r.AccessModel.IsUnknown() && !r.AccessModel.IsNull() {
+		*accessModel = shared.AccessModel(r.AccessModel.ValueString())
+	} else {
+		accessModel = nil
+	}
 	var appUserMapper *shared.AppUserMapper
 	if r.AppUserMapper != nil {
 		var mappingCases []shared.AppUserMapperMatchCase
@@ -274,6 +279,7 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 		strictAccessEntitlementProvisioning = nil
 	}
 	out := shared.AppInput{
+		AccessModel:                         accessModel,
 		AppUserMapper:                       appUserMapper,
 		CertifyPolicyID:                     certifyPolicyID,
 		ConnectorVersion:                    connectorVersion,
@@ -296,6 +302,28 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*shared.CreateAppRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	var appEntitlementOwnerRefs []shared.AppEntitlementRef
+	if r.AppEntitlementOwnerRefs != nil {
+		appEntitlementOwnerRefs = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlementOwnerRefs))
+		for appEntitlementOwnerRefsIndex := range r.AppEntitlementOwnerRefs {
+			appID := new(string)
+			if !r.AppEntitlementOwnerRefs[appEntitlementOwnerRefsIndex].AppID.IsUnknown() && !r.AppEntitlementOwnerRefs[appEntitlementOwnerRefsIndex].AppID.IsNull() {
+				*appID = r.AppEntitlementOwnerRefs[appEntitlementOwnerRefsIndex].AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !r.AppEntitlementOwnerRefs[appEntitlementOwnerRefsIndex].ID.IsUnknown() && !r.AppEntitlementOwnerRefs[appEntitlementOwnerRefsIndex].ID.IsNull() {
+				*id = r.AppEntitlementOwnerRefs[appEntitlementOwnerRefsIndex].ID.ValueString()
+			} else {
+				id = nil
+			}
+			appEntitlementOwnerRefs = append(appEntitlementOwnerRefs, shared.AppEntitlementRef{
+				AppID: appID,
+				ID:    id,
+			})
+		}
+	}
 	certifyPolicyID := new(string)
 	if !r.CertifyPolicyID.IsUnknown() && !r.CertifyPolicyID.IsNull() {
 		*certifyPolicyID = r.CertifyPolicyID.ValueString()
@@ -348,6 +376,7 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 		strictAccessEntitlementProvisioning = nil
 	}
 	out := shared.CreateAppRequest{
+		AppEntitlementOwnerRefs:             appEntitlementOwnerRefs,
 		CertifyPolicyID:                     certifyPolicyID,
 		Description:                         description,
 		DisplayName:                         displayName,

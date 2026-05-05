@@ -34,6 +34,9 @@ func (c *C1APIAppV1ConnectorServiceUpdateDelegatedRequest) GetConnectorServiceUp
 	return c.ConnectorServiceUpdateDelegatedRequest
 }
 
+// #region class-body-c1apiappv1connectorserviceupdatedelegatedrequest
+// #endregion class-body-c1apiappv1connectorserviceupdatedelegatedrequest
+
 type C1APIAppV1ConnectorServiceUpdateDelegatedResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1ConnectorServiceUpdateDelegatedResponse) GetConnectorServiceU
 	}
 	return c.ConnectorServiceUpdateResponse
 }
+
+// #region class-body-c1apiappv1connectorserviceupdatedelegatedresponse
+// #endregion class-body-c1apiappv1connectorserviceupdatedelegatedresponse

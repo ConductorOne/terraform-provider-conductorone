@@ -45,3 +45,6 @@ func (c *C1APIStepupV1StepUpTransactionServiceSearchResponse) GetSearchStepUpTra
 	}
 	return c.SearchStepUpTransactionsResponse
 }
+
+// #region class-body-c1apistepupv1stepuptransactionservicesearchresponse
+// #endregion class-body-c1apistepupv1stepuptransactionservicesearchresponse

@@ -6,13 +6,13 @@ package shared
 type TaskServiceActionResponseExpanded struct {
 }
 
-// The TaskServiceActionResponse message.
+// TaskServiceActionResponse - A generic response for task action endpoints, containing the updated task and the ID of the action that was created.
 type TaskServiceActionResponse struct {
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []TaskServiceActionResponseExpanded `json:"expanded,omitempty"`
 	// Contains a task and JSONPATH expressions that describe where in the expanded array related objects are located. This view can be used to display a fully-detailed dashboard of task information.
 	TaskView *TaskView `json:"taskView,omitempty"`
-	// The ticketActionId field.
+	// The ID of the task action created by this request.
 	TicketActionID *string `json:"ticketActionId,omitempty"`
 }
 

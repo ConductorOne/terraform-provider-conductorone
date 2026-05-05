@@ -26,6 +26,9 @@ func (c *C1APIAccessconflictV1AccessConflictServiceDeleteMonitorRequest) GetConf
 	return c.ConflictMonitorDeleteRequest
 }
 
+// #region class-body-c1apiaccessconflictv1accessconflictservicedeletemonitorrequest
+// #endregion class-body-c1apiaccessconflictv1accessconflictservicedeletemonitorrequest
+
 type C1APIAccessconflictV1AccessConflictServiceDeleteMonitorResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -33,7 +36,7 @@ type C1APIAccessconflictV1AccessConflictServiceDeleteMonitorResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for deleting a conflict monitor.
 	ConflictMonitorDeleteResponse *shared.ConflictMonitorDeleteResponse
 }
 
@@ -64,3 +67,6 @@ func (c *C1APIAccessconflictV1AccessConflictServiceDeleteMonitorResponse) GetCon
 	}
 	return c.ConflictMonitorDeleteResponse
 }
+
+// #region class-body-c1apiaccessconflictv1accessconflictservicedeletemonitorresponse
+// #endregion class-body-c1apiaccessconflictv1accessconflictservicedeletemonitorresponse

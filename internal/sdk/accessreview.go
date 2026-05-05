@@ -31,7 +31,7 @@ func newAccessReview(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration
 }
 
 // Create
-// Invokes the c1.api.accessreview.v1.AccessReviewService.Create method.
+// Create creates a new access review campaign with the specified name, policy, and owners.
 func (s *AccessReview) Create(ctx context.Context, request *shared.AccessReviewServiceCreateRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewServiceCreateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -168,7 +168,7 @@ func (s *AccessReview) Create(ctx context.Context, request *shared.AccessReviewS
 }
 
 // Delete
-// Invokes the c1.api.accessreview.v1.AccessReviewService.Delete method.
+// Delete transitions an access review campaign to the deleted state, along with its dependent objects.
 func (s *AccessReview) Delete(ctx context.Context, request operations.C1APIAccessreviewV1AccessReviewServiceDeleteRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewServiceDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -292,6 +292,8 @@ func (s *AccessReview) Delete(ctx context.Context, request operations.C1APIAcces
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -305,7 +307,7 @@ func (s *AccessReview) Delete(ctx context.Context, request operations.C1APIAcces
 }
 
 // Get
-// Invokes the c1.api.accessreview.v1.AccessReviewService.Get method.
+// Get retrieves a single access review campaign by ID.
 func (s *AccessReview) Get(ctx context.Context, request operations.C1APIAccessreviewV1AccessReviewServiceGetRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -423,6 +425,7 @@ func (s *AccessReview) Get(ctx context.Context, request operations.C1APIAccessre
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -436,7 +439,7 @@ func (s *AccessReview) Get(ctx context.Context, request operations.C1APIAccessre
 }
 
 // Update
-// Invokes the c1.api.accessreview.v1.AccessReviewService.Update method.
+// Update modifies an existing access review campaign. Use the update_mask to specify which fields to change.
 func (s *AccessReview) Update(ctx context.Context, request operations.C1APIAccessreviewV1AccessReviewServiceUpdateRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -573,7 +576,7 @@ func (s *AccessReview) Update(ctx context.Context, request operations.C1APIAcces
 }
 
 // List
-// Invokes the c1.api.accessreview.v1.AccessReviewService.List method.
+// List returns a paginated list of access review campaigns.
 func (s *AccessReview) List(ctx context.Context, request operations.C1APIAccessreviewV1AccessReviewServiceListRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewServiceListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -625,7 +628,7 @@ func (s *AccessReview) List(ctx context.Context, request operations.C1APIAccessr
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 
-	if err := utils.PopulateQueryParams(ctx, req, request, nil); err != nil {
+	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
 		return nil, fmt.Errorf("error populating query params: %w", err)
 	}
 
@@ -695,6 +698,7 @@ func (s *AccessReview) List(ctx context.Context, request operations.C1APIAccessr
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

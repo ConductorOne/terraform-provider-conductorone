@@ -25,6 +25,8 @@ func (r *AppResourceTypeResourceModel) RefreshFromSharedAppResourceType(ctx cont
 			for _, v := range resp.TraitIds {
 				r.TraitIds = append(r.TraitIds, types.StringValue(v))
 			}
+		} else {
+			r.TraitIds = nil
 		}
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
@@ -43,6 +45,8 @@ func (r *AppResourceTypeResourceModel) RefreshFromSharedAppResourceTypeServiceGe
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -75,6 +79,8 @@ func (r *AppResourceTypeResourceModel) RefreshFromSharedCreateManuallyManagedRes
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -92,6 +98,8 @@ func (r *AppResourceTypeResourceModel) RefreshFromSharedUpdateManuallyManagedRes
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -128,17 +136,9 @@ func (r *AppResourceTypeResourceModel) ToOperationsC1APIAppV1AppResourceTypeServ
 	var id string
 	id = r.ID.ValueString()
 
-	deleteManuallyManagedResourceTypeRequest, deleteManuallyManagedResourceTypeRequestDiags := r.ToSharedDeleteManuallyManagedResourceTypeRequest(ctx)
-	diags.Append(deleteManuallyManagedResourceTypeRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIAppV1AppResourceTypeServiceDeleteManuallyManagedResourceTypeRequest{
-		AppID:                                    appID,
-		ID:                                       id,
-		DeleteManuallyManagedResourceTypeRequest: deleteManuallyManagedResourceTypeRequest,
+		AppID: appID,
+		ID:    id,
 	}
 
 	return &out, diags

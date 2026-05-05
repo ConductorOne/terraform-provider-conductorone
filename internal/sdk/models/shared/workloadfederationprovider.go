@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -26,28 +24,16 @@ const (
 func (e WellKnownProvider) ToPointer() *WellKnownProvider {
 	return &e
 }
-func (e *WellKnownProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WellKnownProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED", "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM", "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS", "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI", "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM", "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND":
+			return true
+		}
 	}
-	switch v {
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND":
-		*e = WellKnownProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WellKnownProvider: %v", v)
-	}
+	return false
 }
 
 // WorkloadFederationProvider represents a tenant-level OIDC issuer registration.

@@ -5,6 +5,7 @@ package shared
 // The PersonalClientServiceCreateRequest message contains the fields for creating a new personal client.
 type PersonalClientServiceCreateRequest struct {
 	// A list of CIDRs to restrict this credential to.
+	//  Accepts IPv4 (e.g. 10.0.0.0/24) or IPv6 (e.g. 2001:db8::/32) CIDRs.
 	AllowSourceCidr []string `json:"allowSourceCidr,omitempty"`
 	// The display name for the new personal client.
 	DisplayName *string `json:"displayName,omitempty"`

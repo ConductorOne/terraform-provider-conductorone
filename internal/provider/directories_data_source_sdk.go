@@ -17,6 +17,8 @@ func (r *DirectoriesDataSourceModel) RefreshFromSharedDirectoryServiceListRespon
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		if resp.List != nil {
 			r.List = []tfTypes.DirectoryView{}
@@ -58,6 +60,8 @@ func (r *DirectoriesDataSourceModel) RefreshFromSharedDirectoryServiceListRespon
 
 								list.Directory.DirectoryMergeConfig.MatchCases = append(list.Directory.DirectoryMergeConfig.MatchCases, matchCases)
 							}
+						} else {
+							list.Directory.DirectoryMergeConfig.MatchCases = nil
 						}
 					}
 					list.Directory.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.Directory.UpdatedAt))
@@ -65,6 +69,8 @@ func (r *DirectoriesDataSourceModel) RefreshFromSharedDirectoryServiceListRespon
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

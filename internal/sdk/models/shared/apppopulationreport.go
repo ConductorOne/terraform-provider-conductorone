@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e AppPopulationReportState) ToPointer() *AppPopulationReportState {
 	return &e
 }
-func (e *AppPopulationReportState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppPopulationReportState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REPORT_STATE_UNSPECIFIED", "REPORT_STATE_PENDING", "REPORT_STATE_OK", "REPORT_STATE_ERROR":
+			return true
+		}
 	}
-	switch v {
-	case "REPORT_STATE_UNSPECIFIED":
-		fallthrough
-	case "REPORT_STATE_PENDING":
-		fallthrough
-	case "REPORT_STATE_OK":
-		fallthrough
-	case "REPORT_STATE_ERROR":
-		*e = AppPopulationReportState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppPopulationReportState: %v", v)
-	}
+	return false
 }
 
 // The AppPopulationReport is a generated report for a specific app that gives details about the app's users. These details include what groups, roles, and other entitlements the users have access to.

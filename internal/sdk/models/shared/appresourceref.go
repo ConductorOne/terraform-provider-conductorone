@@ -2,13 +2,13 @@
 
 package shared
 
-// The AppResourceRef message.
+// AppResourceRef - A reference to a specific app resource by its composite key.
 type AppResourceRef struct {
-	// The appId field.
+	// The ID of the app that owns the resource.
 	AppID *string `json:"appId,omitempty"`
-	// The appResourceTypeId field.
+	// The ID of the resource type that classifies this resource.
 	AppResourceTypeID *string `json:"appResourceTypeId,omitempty"`
-	// The id field.
+	// The unique ID of the app resource.
 	ID *string `json:"id,omitempty"`
 }
 

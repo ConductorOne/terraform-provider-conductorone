@@ -18,6 +18,9 @@ func (c *C1APIAutomationsV1AutomationExecutionServiceGetAutomationExecutionReque
 	return c.ID
 }
 
+// #region class-body-c1apiautomationsv1automationexecutionservicegetautomationexecutionrequest
+// #endregion class-body-c1apiautomationsv1automationexecutionservicegetautomationexecutionrequest
+
 type C1APIAutomationsV1AutomationExecutionServiceGetAutomationExecutionResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIAutomationsV1AutomationExecutionServiceGetAutomationExecutionRespo
 	}
 	return c.GetAutomationExecutionResponse
 }
+
+// #region class-body-c1apiautomationsv1automationexecutionservicegetautomationexecutionresponse
+// #endregion class-body-c1apiautomationsv1automationexecutionservicegetautomationexecutionresponse

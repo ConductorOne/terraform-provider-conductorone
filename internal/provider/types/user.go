@@ -17,10 +17,10 @@ type User struct {
 	DirectoryStatusSources  []UserAttributeMappingSource `tfsdk:"directory_status_sources"`
 	DisplayName             types.String                 `tfsdk:"display_name"`
 	Email                   types.String                 `tfsdk:"email"`
-	Emails                  []types.String               `tfsdk:"emails"`
 	EmailSources            []UserAttributeMappingSource `tfsdk:"email_sources"`
-	EmployeeIds             []types.String               `tfsdk:"employee_ids"`
+	Emails                  []types.String               `tfsdk:"emails"`
 	EmployeeIDSources       []UserAttributeMappingSource `tfsdk:"employee_id_sources"`
+	EmployeeIds             []types.String               `tfsdk:"employee_ids"`
 	EmploymentStatus        types.String                 `tfsdk:"employment_status"`
 	EmploymentStatusSources []UserAttributeMappingSource `tfsdk:"employment_status_sources"`
 	EmploymentType          types.String                 `tfsdk:"employment_type"`
@@ -37,6 +37,6 @@ type User struct {
 	Type                    types.String                 `tfsdk:"type"`
 	UpdatedAt               types.String                 `tfsdk:"updated_at"`
 	Username                types.String                 `tfsdk:"username"`
-	Usernames               []types.String               `tfsdk:"usernames"`
 	UsernameSources         []UserAttributeMappingSource `tfsdk:"username_sources"`
+	Usernames               []types.String               `tfsdk:"usernames"`
 }

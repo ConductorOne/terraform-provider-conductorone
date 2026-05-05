@@ -26,6 +26,9 @@ func (c *C1APIDirectoryV1DirectoryServiceUpdateRequest) GetDirectoryServiceUpdat
 	return c.DirectoryServiceUpdateRequest
 }
 
+// #region class-body-c1apidirectoryv1directoryserviceupdaterequest
+// #endregion class-body-c1apidirectoryv1directoryserviceupdaterequest
+
 type C1APIDirectoryV1DirectoryServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIDirectoryV1DirectoryServiceUpdateResponse) GetDirectoryServiceUpda
 	}
 	return c.DirectoryServiceUpdateResponse
 }
+
+// #region class-body-c1apidirectoryv1directoryserviceupdateresponse
+// #endregion class-body-c1apidirectoryv1directoryserviceupdateresponse

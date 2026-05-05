@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppUserServiceUpdateRequest) GetAppUserServiceUpdateRequest()
 	return c.AppUserServiceUpdateRequest
 }
 
+// #region class-body-c1apiappv1appuserserviceupdaterequest
+// #endregion class-body-c1apiappv1appuserserviceupdaterequest
+
 type C1APIAppV1AppUserServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppUserServiceUpdateResponse) GetAppUserServiceUpdateResponse
 	}
 	return c.AppUserServiceUpdateResponse
 }
+
+// #region class-body-c1apiappv1appuserserviceupdateresponse
+// #endregion class-body-c1apiappv1appuserserviceupdateresponse

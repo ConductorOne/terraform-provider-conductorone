@@ -4,11 +4,11 @@ package shared
 
 // The RoleMiningManagementConfig message.
 type RoleMiningManagementConfig struct {
-	// The cohortHints field.
+	// Configured cohort hints that guide which user attributes the analysis prioritizes.
 	CohortHints []CohortHintView `json:"cohortHints,omitempty"`
-	// The maxSuggestions field.
+	// Maximum number of suggestions the analysis will produce per run.
 	MaxSuggestions *int `json:"maxSuggestions,omitempty"`
-	// The minCohortSize field.
+	// Minimum number of users a cohort must contain to generate a suggestion.
 	MinCohortSize *int `json:"minCohortSize,omitempty"`
 }
 

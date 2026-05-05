@@ -9,7 +9,7 @@ import (
 type FieldRelationship struct {
 	AtLeastOne        *AtLeastOne        `tfsdk:"at_least_one"`
 	DependentOn       *DependentOn       `tfsdk:"dependent_on"`
-	FieldNames        []types.String     `tfsdk:"field_names"`
 	MutuallyExclusive *MutuallyExclusive `tfsdk:"mutually_exclusive"`
 	RequiredTogether  *RequiredTogether  `tfsdk:"required_together"`
+	FieldNames        []types.String     `tfsdk:"field_names"`
 }

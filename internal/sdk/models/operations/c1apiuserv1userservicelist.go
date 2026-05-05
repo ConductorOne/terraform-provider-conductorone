@@ -26,6 +26,9 @@ func (c *C1APIUserV1UserServiceListRequest) GetPageToken() *string {
 	return c.PageToken
 }
 
+// #region class-body-c1apiuserv1userservicelistrequest
+// #endregion class-body-c1apiuserv1userservicelistrequest
+
 type C1APIUserV1UserServiceListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIUserV1UserServiceListResponse) GetUserServiceListResponse() *share
 	}
 	return c.UserServiceListResponse
 }
+
+// #region class-body-c1apiuserv1userservicelistresponse
+// #endregion class-body-c1apiuserv1userservicelistresponse

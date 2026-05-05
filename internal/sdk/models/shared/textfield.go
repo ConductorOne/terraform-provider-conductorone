@@ -6,6 +6,8 @@ package shared
 type TextField struct {
 	// The multiline field.
 	Multiline *bool `json:"multiline,omitempty"`
+	// Static text displayed as an end adornment (e.g. ".example.com" for domain fields).
+	Suffix *string `json:"suffix,omitempty"`
 }
 
 func (t *TextField) GetMultiline() *bool {
@@ -13,4 +15,11 @@ func (t *TextField) GetMultiline() *bool {
 		return nil
 	}
 	return t.Multiline
+}
+
+func (t *TextField) GetSuffix() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Suffix
 }

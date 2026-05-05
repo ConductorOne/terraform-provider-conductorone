@@ -34,12 +34,16 @@ func (r *AccessReviewSetupDataSourceModel) RefreshFromSharedAccessReviewSetupEnt
 					for _, v := range resp.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes {
 						r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes = append(r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes, types.StringValue(string(v)))
 					}
+				} else {
+					r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes = nil
 				}
 				if resp.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses != nil {
 					r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses = make([]types.String, 0, len(resp.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses))
 					for _, v := range resp.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses {
 						r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses = append(r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses, types.StringValue(string(v)))
 					}
+				} else {
+					r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses = nil
 				}
 				r.AccessReviewScopeV2.AccountCriteriaScope.NoAccountOwner = types.BoolPointerValue(resp.AccessReviewScopeV2.AccountCriteriaScope.NoAccountOwner)
 			}
@@ -77,12 +81,16 @@ func (r *AccessReviewSetupDataSourceModel) RefreshFromSharedAccessReviewSetupEnt
 					for _, v := range resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds {
 						r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = append(r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds, types.StringValue(v))
 					}
+				} else {
+					r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = nil
 				}
 				if resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds != nil {
 					r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds))
 					for _, v := range resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds {
 						r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = append(r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds, types.StringValue(v))
 					}
+				} else {
+					r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = nil
 				}
 			}
 			if resp.AccessReviewScopeV2.CelExpressionScope == nil {
@@ -113,6 +121,8 @@ func (r *AccessReviewSetupDataSourceModel) RefreshFromSharedAccessReviewSetupEnt
 						for _, v := range resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds {
 							r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds = append(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds, types.StringValue(v))
 						}
+					} else {
+						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds = nil
 					}
 					if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType != nil {
 						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType = types.StringValue(string(*resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType))
@@ -124,6 +134,8 @@ func (r *AccessReviewSetupDataSourceModel) RefreshFromSharedAccessReviewSetupEnt
 						for _, v := range resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds {
 							r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = append(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds, types.StringValue(v))
 						}
+					} else {
+						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = nil
 					}
 				}
 				if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween == nil {
@@ -163,6 +175,8 @@ func (r *AccessReviewSetupDataSourceModel) RefreshFromSharedAccessReviewSetupEnt
 					for _, v := range resp.AccessReviewScopeV2.SelectedUsersScope.UserIds {
 						r.AccessReviewScopeV2.SelectedUsersScope.UserIds = append(r.AccessReviewScopeV2.SelectedUsersScope.UserIds, types.StringValue(v))
 					}
+				} else {
+					r.AccessReviewScopeV2.SelectedUsersScope.UserIds = nil
 				}
 			}
 			if resp.AccessReviewScopeV2.SpecificAccessConflictsScope == nil {
@@ -190,12 +204,16 @@ func (r *AccessReviewSetupDataSourceModel) RefreshFromSharedAccessReviewSetupEnt
 
 						r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef = append(r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef, groupAppEntitlementsRef)
 					}
+				} else {
+					r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef = nil
 				}
 				if resp.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds != nil {
 					r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds))
 					for _, v := range resp.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds {
 						r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds = append(r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds, types.StringValue(v))
 					}
+				} else {
+					r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds = nil
 				}
 				if len(resp.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes) > 0 {
 					r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes = make(map[string]tfTypes.IncludedUserAttributeValues, len(resp.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes))
@@ -211,6 +229,8 @@ func (r *AccessReviewSetupDataSourceModel) RefreshFromSharedAccessReviewSetupEnt
 
 								includedUserAttributeValuesResult.Values = append(includedUserAttributeValuesResult.Values, values)
 							}
+						} else {
+							includedUserAttributeValuesResult.Values = nil
 						}
 
 						r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[includedUserAttributeValuesKey] = includedUserAttributeValuesResult
@@ -221,10 +241,14 @@ func (r *AccessReviewSetupDataSourceModel) RefreshFromSharedAccessReviewSetupEnt
 					for _, v := range resp.AccessReviewScopeV2.UserCriteriaScope.UserStatus {
 						r.AccessReviewScopeV2.UserCriteriaScope.UserStatus = append(r.AccessReviewScopeV2.UserCriteriaScope.UserStatus, types.StringValue(string(v)))
 					}
+				} else {
+					r.AccessReviewScopeV2.UserCriteriaScope.UserStatus = nil
 				}
 			}
 		}
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		if resp.List != nil {
 			r.List = []tfTypes.AccessReviewSetupEntitlementView{}
@@ -253,6 +277,8 @@ func (r *AccessReviewSetupDataSourceModel) RefreshFromSharedAccessReviewSetupEnt
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 	}
 

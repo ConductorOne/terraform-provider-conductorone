@@ -42,6 +42,9 @@ func (c *C1APIAppV1AppResourceOwnersSetRequest) GetSetAppResourceOwnersRequest()
 	return c.SetAppResourceOwnersRequest
 }
 
+// #region class-body-c1apiappv1appresourceownerssetrequest
+// #endregion class-body-c1apiappv1appresourceownerssetrequest
+
 type C1APIAppV1AppResourceOwnersSetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -80,3 +83,6 @@ func (c *C1APIAppV1AppResourceOwnersSetResponse) GetSetAppResourceOwnersResponse
 	}
 	return c.SetAppResourceOwnersResponse
 }
+
+// #region class-body-c1apiappv1appresourceownerssetresponse
+// #endregion class-body-c1apiappv1appresourceownerssetresponse

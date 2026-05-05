@@ -34,6 +34,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPer
 	return c.PageToken
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementspercatalogrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementspercatalogrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPerCatalogResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListEntitlementsPer
 	}
 	return c.RequestCatalogManagementServiceListEntitlementsPerCatalogResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementspercatalogresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistentitlementspercatalogresponse

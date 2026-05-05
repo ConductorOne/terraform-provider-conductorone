@@ -4,7 +4,7 @@ package shared
 
 // The TaskActionsServiceCloseRequest object lets you close or cancel a task.
 type TaskActionsServiceCloseRequest struct {
-	// The comment field.
+	// An optional comment attached to the close action.
 	Comment *string `json:"comment,omitempty"`
 }
 

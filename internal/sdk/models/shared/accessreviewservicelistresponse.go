@@ -8,11 +8,11 @@ type AccessReviewServiceListResponseExpanded struct {
 
 // The AccessReviewServiceListResponse message.
 type AccessReviewServiceListResponse struct {
-	// The expanded field.
+	// Related objects requested via the expand mask.
 	Expanded []AccessReviewServiceListResponseExpanded `json:"expanded,omitempty"`
-	// The list field.
+	// The list of access review campaigns for the current page.
 	List []AccessReviewView `json:"list,omitempty"`
-	// The nextPageToken field.
+	// Token to retrieve the next page, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

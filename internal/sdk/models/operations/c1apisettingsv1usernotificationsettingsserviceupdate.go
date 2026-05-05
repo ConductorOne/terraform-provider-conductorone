@@ -45,3 +45,6 @@ func (c *C1APISettingsV1UserNotificationSettingsServiceUpdateResponse) GetUpdate
 	}
 	return c.UpdateUserNotificationSettingsResponse
 }
+
+// #region class-body-c1apisettingsv1usernotificationsettingsserviceupdateresponse
+// #endregion class-body-c1apisettingsv1usernotificationsettingsserviceupdateresponse

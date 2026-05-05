@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -22,24 +20,16 @@ const (
 func (e State) ToPointer() *State {
 	return &e
 }
-func (e *State) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *State) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SURFACE_LIFECYCLE_STATE_UNSPECIFIED", "SURFACE_LIFECYCLE_STATE_ACTIVE", "SURFACE_LIFECYCLE_STATE_COMPLETE", "SURFACE_LIFECYCLE_STATE_DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "SURFACE_LIFECYCLE_STATE_UNSPECIFIED":
-		fallthrough
-	case "SURFACE_LIFECYCLE_STATE_ACTIVE":
-		fallthrough
-	case "SURFACE_LIFECYCLE_STATE_COMPLETE":
-		fallthrough
-	case "SURFACE_LIFECYCLE_STATE_DELETED":
-		*e = State(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for State: %v", v)
-	}
+	return false
 }
 
 // A2UISurface represents a rendered UI surface within a conversation.
@@ -161,3 +151,6 @@ func (a *A2UISurface) GetUpdatedAt() *time.Time {
 	}
 	return a.UpdatedAt
 }
+
+// #region class-body-a2uisurface
+// #endregion class-body-a2uisurface

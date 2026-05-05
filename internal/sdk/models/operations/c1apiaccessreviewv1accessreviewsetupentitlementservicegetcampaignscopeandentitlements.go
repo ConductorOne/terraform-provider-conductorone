@@ -18,6 +18,9 @@ func (c *C1APIAccessreviewV1AccessReviewSetupEntitlementServiceGetCampaignScopeA
 	return c.AccessReviewID
 }
 
+// #region class-body-c1apiaccessreviewv1accessreviewsetupentitlementservicegetcampaignscopeandentitlementsrequest
+// #endregion class-body-c1apiaccessreviewv1accessreviewsetupentitlementservicegetcampaignscopeandentitlementsrequest
+
 type C1APIAccessreviewV1AccessReviewSetupEntitlementServiceGetCampaignScopeAndEntitlementsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIAccessreviewV1AccessReviewSetupEntitlementServiceGetCampaignScopeA
 	}
 	return c.AccessReviewSetupEntitlementAndScopeServiceSetResponse
 }
+
+// #region class-body-c1apiaccessreviewv1accessreviewsetupentitlementservicegetcampaignscopeandentitlementsresponse
+// #endregion class-body-c1apiaccessreviewv1accessreviewsetupentitlementservicegetcampaignscopeandentitlementsresponse

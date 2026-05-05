@@ -31,7 +31,7 @@ func newPersonalClient(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfigurati
 }
 
 // List - NOTE: Only shows personal clients for the current user.
-// Invokes the c1.api.iam.v1.PersonalClientService.List method.
+// List returns all personal client credentials owned by the calling user.
 func (s *PersonalClient) List(ctx context.Context, opts ...operations.Option) (*operations.C1APIIamV1PersonalClientServiceListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -298,7 +298,7 @@ func (s *PersonalClient) Create(ctx context.Context, request *shared.PersonalCli
 }
 
 // Delete
-// Invokes the c1.api.iam.v1.PersonalClientService.Delete method.
+// Delete a personal client credential, revoking it and preventing further API access.
 func (s *PersonalClient) Delete(ctx context.Context, request operations.C1APIIamV1PersonalClientServiceDeleteRequest, opts ...operations.Option) (*operations.C1APIIamV1PersonalClientServiceDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -435,7 +435,7 @@ func (s *PersonalClient) Delete(ctx context.Context, request operations.C1APIIam
 }
 
 // Get
-// Invokes the c1.api.iam.v1.PersonalClientService.Get method.
+// Get retrieves a single personal client credential by its ID.
 func (s *PersonalClient) Get(ctx context.Context, request operations.C1APIIamV1PersonalClientServiceGetRequest, opts ...operations.Option) (*operations.C1APIIamV1PersonalClientServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -565,7 +565,7 @@ func (s *PersonalClient) Get(ctx context.Context, request operations.C1APIIamV1P
 }
 
 // Update
-// Invokes the c1.api.iam.v1.PersonalClientService.Update method.
+// Update modifies an existing personal client credential. Use the update mask to specify which fields to change.
 func (s *PersonalClient) Update(ctx context.Context, request operations.C1APIIamV1PersonalClientServiceUpdateRequest, opts ...operations.Option) (*operations.C1APIIamV1PersonalClientServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

@@ -6,11 +6,11 @@ package shared
 type UpdateManuallyManagedResourceTypeResponseExpanded struct {
 }
 
-// The UpdateManuallyManagedResourceTypeResponse message.
+// UpdateManuallyManagedResourceTypeResponse - The response message for updating a manually managed resource type.
 type UpdateManuallyManagedResourceTypeResponse struct {
 	// The AppResourceType is referenced by an app entitlement defining its resource types. Commonly things like Group or Role.
 	AppResourceType *AppResourceType `json:"appResourceType,omitempty"`
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []UpdateManuallyManagedResourceTypeResponseExpanded `json:"expanded,omitempty"`
 }
 

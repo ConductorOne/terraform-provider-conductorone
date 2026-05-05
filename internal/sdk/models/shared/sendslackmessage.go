@@ -2,7 +2,11 @@
 
 package shared
 
-// The SendSlackMessage message.
+// SendSlackMessage posts to a channel or DMs one or more users. Delivery mode is
+//
+//	inferred from which fields are populated: DM if any user field is set
+//	(use_subject_user, user_ids_cel, user_refs), otherwise channel. Priority for DM
+//	recipient resolution: use_subject_user > user_ids_cel > user_refs.
 //
 // This message contains a oneof named channel. Only a single field of the following list may be set at a time:
 //   - channelName
@@ -18,6 +22,12 @@ type SendSlackMessage struct {
 	// This field is part of the `channel` oneof.
 	// See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
 	ChannelNameCel *string `json:"channelNameCel,omitempty"`
+	// The useSubjectUser field.
+	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
+	// The userIdsCel field.
+	UserIdsCel *string `json:"userIdsCel,omitempty"`
+	// The userRefs field.
+	UserRefs []UserRef `json:"userRefs,omitempty"`
 }
 
 func (s *SendSlackMessage) GetBody() *string {
@@ -39,4 +49,25 @@ func (s *SendSlackMessage) GetChannelNameCel() *string {
 		return nil
 	}
 	return s.ChannelNameCel
+}
+
+func (s *SendSlackMessage) GetUseSubjectUser() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.UseSubjectUser
+}
+
+func (s *SendSlackMessage) GetUserIdsCel() *string {
+	if s == nil {
+		return nil
+	}
+	return s.UserIdsCel
+}
+
+func (s *SendSlackMessage) GetUserRefs() []UserRef {
+	if s == nil {
+		return nil
+	}
+	return s.UserRefs
 }

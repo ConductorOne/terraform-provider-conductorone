@@ -35,11 +35,15 @@ func (r *AppResourceTypesDataSourceModel) RefreshFromSharedSearchAppResourceType
 					for _, v := range listItem.TraitIds {
 						list.TraitIds = append(list.TraitIds, types.StringValue(v))
 					}
+				} else {
+					list.TraitIds = nil
 				}
 				list.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.UpdatedAt))
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

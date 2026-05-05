@@ -45,3 +45,6 @@ func (c *C1APIWorkloadFederationV1WorkloadFederationServiceTestCELResponse) GetW
 	}
 	return c.WorkloadFederationServiceTestCELResponse
 }
+
+// #region class-body-c1apiworkloadfederationv1workloadfederationservicetestcelresponse
+// #endregion class-body-c1apiworkloadfederationv1workloadfederationservicetestcelresponse
