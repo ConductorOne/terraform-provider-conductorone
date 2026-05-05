@@ -35,7 +35,7 @@ generation:
   persistentEdits: {}
   versioningStrategy: automatic
 terraform:
-  version: 2.0.0-alpha.1
+  version: 1.1.0
   additionalActions: []
   additionalDataSources: []
   additionalDependencies: {}
