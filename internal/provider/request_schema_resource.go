@@ -41,7 +41,7 @@ type RequestSchemaResourceModel struct {
 	DeletedAt          types.String                `tfsdk:"-"`
 	Description        types.String                `tfsdk:"description"`
 	FieldRelationships []tfTypes.FieldRelationship `tfsdk:"field_relationships"`
-	Fields             []tfTypes.Field             `tfsdk:"fields"`
+	Fields             []tfTypes.FormField             `tfsdk:"fields"`
 	ID                 types.String                `tfsdk:"id"`
 	Name               types.String                `tfsdk:"name"`
 }
@@ -654,7 +654,7 @@ func (r *RequestSchemaResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceCreateResponse != nil && res.RequestSchemaServiceCreateResponse.RequestSchema != nil && res.RequestSchemaServiceCreateResponse.RequestSchema.Form != nil) {
+	if !(res.RequestSchemaServiceCreateResponse != nil && res.RequestSchemaServiceCreateResponse.RequestSchema != nil && res.RequestSchemaServiceCreateResponse.RequestSchema.RequestSchemaForm != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
@@ -663,7 +663,7 @@ func (r *RequestSchemaResource) Create(ctx context.Context, req resource.CreateR
 	// Once speakeasy team fixes it, we can remove it.
 	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceCreateResponse.RequestSchema)...)
 
-	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceCreateResponse.RequestSchema.Form)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceCreateResponse.RequestSchema.RequestSchemaForm)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -723,7 +723,7 @@ func (r *RequestSchemaResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceGetResponse != nil && res.RequestSchemaServiceGetResponse.RequestSchema != nil && res.RequestSchemaServiceGetResponse.RequestSchema.Form != nil) {
+	if !(res.RequestSchemaServiceGetResponse != nil && res.RequestSchemaServiceGetResponse.RequestSchema != nil && res.RequestSchemaServiceGetResponse.RequestSchema.RequestSchemaForm != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
@@ -732,7 +732,7 @@ func (r *RequestSchemaResource) Read(ctx context.Context, req resource.ReadReque
 	// Once speakeasy team fixes it, we can remove it.
 	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceGetResponse.RequestSchema)...)
 
-	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceGetResponse.RequestSchema.Form)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceGetResponse.RequestSchema.RequestSchemaForm)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -783,7 +783,7 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceUpdateResponse != nil && res.RequestSchemaServiceUpdateResponse.RequestSchema != nil && res.RequestSchemaServiceUpdateResponse.RequestSchema.Form != nil) {
+	if !(res.RequestSchemaServiceUpdateResponse != nil && res.RequestSchemaServiceUpdateResponse.RequestSchema != nil && res.RequestSchemaServiceUpdateResponse.RequestSchema.RequestSchemaForm != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
@@ -791,7 +791,7 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateR
 	// Once speakeasy team fixes it, we can remove it.
 	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceUpdateResponse.RequestSchema)...)
 
-	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceUpdateResponse.RequestSchema.Form)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceUpdateResponse.RequestSchema.RequestSchemaForm)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -824,7 +824,7 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
 		return
 	}
-	if !(res1.RequestSchemaServiceGetResponse != nil && res1.RequestSchemaServiceGetResponse.RequestSchema != nil && res1.RequestSchemaServiceGetResponse.RequestSchema.Form != nil) {
+	if !(res1.RequestSchemaServiceGetResponse != nil && res1.RequestSchemaServiceGetResponse.RequestSchema != nil && res1.RequestSchemaServiceGetResponse.RequestSchema.RequestSchemaForm != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
@@ -832,7 +832,7 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateR
 	// Once speakeasy team fixes it, we can remove it.
 	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res1.RequestSchemaServiceGetResponse.RequestSchema)...)
 
-	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res1.RequestSchemaServiceGetResponse.RequestSchema.Form)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res1.RequestSchemaServiceGetResponse.RequestSchema.RequestSchemaForm)...)
 
 	if resp.Diagnostics.HasError() {
 		return
