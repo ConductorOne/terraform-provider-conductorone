@@ -29,34 +29,34 @@ type AccessReviewTemplateDataSource struct {
 
 // AccessReviewTemplateDataSourceModel describes the data model.
 type AccessReviewTemplateDataSourceModel struct {
-	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig       `tfsdk:"access_review_column_config"`
-	AccessReviewDuration           types.String                            `tfsdk:"access_review_duration"`
-	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope     `tfsdk:"access_review_inclusion_scope"`
-	AccessReviewNotificationConfig *tfTypes.AccessReviewNotificationConfig `tfsdk:"access_review_notification_config"`
-	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2            `tfsdk:"access_review_scope_v2"`
-	AccuracyIssueAction            types.String                            `tfsdk:"accuracy_issue_action"`
-	AutoCloseCampaign              types.Bool                              `tfsdk:"auto_close_campaign"`
-	AutoCloseDecision              types.String                            `tfsdk:"auto_close_decision"`
-	AutoGenerateReport             types.Bool                              `tfsdk:"auto_generate_report"`
-	AutoStartCampaign              types.Bool                              `tfsdk:"auto_start_campaign"`
-	CreatedAt                      types.String                            `tfsdk:"created_at"`
-	DefaultView                    types.String                            `tfsdk:"default_view"`
-	DeletedAt                      types.String                            `tfsdk:"deleted_at"`
-	Description                    types.String                            `tfsdk:"description"`
-	DisplayName                    types.String                            `tfsdk:"display_name"`
-	ExemptCertifiedAccessConflicts types.Bool                              `tfsdk:"exempt_certified_access_conflicts"`
-	ID                             types.String                            `tfsdk:"id"`
-	IsCampaignScheduleEnabled      types.Bool                              `tfsdk:"is_campaign_schedule_enabled"`
-	NextScheduledCampaignAt        types.String                            `tfsdk:"next_scheduled_campaign_at"`
-	Occurrences                    types.Int32                             `tfsdk:"occurrences"`
-	PolicyID                       types.String                            `tfsdk:"policy_id"`
-	RecurrenceRule                 *tfTypes.RecurrenceRule                 `tfsdk:"recurrence_rule"`
-	ReviewInstructions             types.String                            `tfsdk:"review_instructions"`
-	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig          `tfsdk:"review_signature_config"`
-	ScopeType                      types.String                            `tfsdk:"scope_type"`
-	SlackChannel                   *tfTypes.SlackChannel                   `tfsdk:"slack_channel"`
-	UpdatedAt                      types.String                            `tfsdk:"updated_at"`
-	UsePolicyOverride              types.Bool                              `tfsdk:"use_policy_override"`
+	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig   `tfsdk:"access_review_column_config"`
+	AccessReviewDuration           types.String                        `tfsdk:"access_review_duration"`
+	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
+	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
+	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
+	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
+	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
+	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
+	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
+	CreatedAt                      types.String                        `tfsdk:"created_at"`
+	DefaultView                    types.String                        `tfsdk:"default_view"`
+	DeletedAt                      types.String                        `tfsdk:"deleted_at"`
+	Description                    types.String                        `tfsdk:"description"`
+	DisplayName                    types.String                        `tfsdk:"display_name"`
+	ExemptCertifiedAccessConflicts types.Bool                          `tfsdk:"exempt_certified_access_conflicts"`
+	ID                             types.String                        `tfsdk:"id"`
+	IsCampaignScheduleEnabled      types.Bool                          `tfsdk:"is_campaign_schedule_enabled"`
+	NextScheduledCampaignAt        types.String                        `tfsdk:"next_scheduled_campaign_at"`
+	NotificationConfig             *tfTypes.NotificationConfig         `tfsdk:"notification_config"`
+	Occurrences                    types.Int32                         `tfsdk:"occurrences"`
+	PolicyID                       types.String                        `tfsdk:"policy_id"`
+	RecurrenceRule                 *tfTypes.RecurrenceRule             `tfsdk:"recurrence_rule"`
+	ReviewInstructions             types.String                        `tfsdk:"review_instructions"`
+	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig      `tfsdk:"review_signature_config"`
+	ScopeType                      types.String                        `tfsdk:"scope_type"`
+	SlackChannel                   *tfTypes.SlackChannel               `tfsdk:"slack_channel"`
+	UpdatedAt                      types.String                        `tfsdk:"updated_at"`
+	UsePolicyOverride              types.Bool                          `tfsdk:"use_policy_override"`
 }
 
 // Metadata returns the data source type name.
@@ -139,24 +139,6 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 					},
 				},
 				Description: `The AccessReviewInclusionScope message.`,
-			},
-			"access_review_notification_config": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"send_close": schema.BoolAttribute{
-						Computed:    true,
-						Description: `Whether to send a notification when the campaign is closed.`,
-					},
-					"send_kickoff": schema.BoolAttribute{
-						Computed:    true,
-						Description: `Whether to send a notification when the campaign is started.`,
-					},
-					"send_reminders": schema.BoolAttribute{
-						Computed:    true,
-						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
-					},
-				},
-				Description: `Controls which email notifications are sent during the access review lifecycle.`,
 			},
 			"access_review_scope_v2": schema.SingleNestedAttribute{
 				Computed: true,
@@ -474,6 +456,24 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 			},
 			"next_scheduled_campaign_at": schema.StringAttribute{
 				Computed: true,
+			},
+			"notification_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"send_close": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether to send a notification when the campaign is closed.`,
+					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether to send a notification when the campaign is started.`,
+					},
+					"send_reminders": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
+					},
+				},
+				Description: `Controls which email notifications are sent during the access review lifecycle.`,
 			},
 			"occurrences": schema.Int32Attribute{
 				Computed:    true,

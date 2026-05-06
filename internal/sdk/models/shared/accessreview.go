@@ -227,7 +227,7 @@ type AccessReview struct {
 	// The MultiAppSetup message.
 	MultiAppSetup *MultiAppSetup `json:"multiApp,omitempty"`
 	// Controls which email notifications are sent during the access review lifecycle.
-	AccessReviewNotificationConfig *AccessReviewNotificationConfig `json:"notificationConfig,omitempty"`
+	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The ID of the review policy that governs how review tasks are assigned and resolved.
 	PolicyID *string `json:"policyId,omitempty"`
 	// Optional instructions displayed to reviewers when completing their review tasks.
@@ -488,11 +488,11 @@ func (a *AccessReview) GetMultiAppSetup() *MultiAppSetup {
 	return a.MultiAppSetup
 }
 
-func (a *AccessReview) GetAccessReviewNotificationConfig() *AccessReviewNotificationConfig {
+func (a *AccessReview) GetNotificationConfig() *NotificationConfig {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewNotificationConfig
+	return a.NotificationConfig
 }
 
 func (a *AccessReview) GetPolicyID() *string {
@@ -642,7 +642,7 @@ type AccessReviewInput struct {
 	// The MultiAppSetup message.
 	MultiAppSetup *MultiAppSetup `json:"multiApp,omitempty"`
 	// Controls which email notifications are sent during the access review lifecycle.
-	AccessReviewNotificationConfig *AccessReviewNotificationConfig `json:"notificationConfig,omitempty"`
+	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The ID of the review policy that governs how review tasks are assigned and resolved.
 	PolicyID *string `json:"policyId,omitempty"`
 	// Optional instructions displayed to reviewers when completing their review tasks.
@@ -888,11 +888,11 @@ func (a *AccessReviewInput) GetMultiAppSetup() *MultiAppSetup {
 	return a.MultiAppSetup
 }
 
-func (a *AccessReviewInput) GetAccessReviewNotificationConfig() *AccessReviewNotificationConfig {
+func (a *AccessReviewInput) GetNotificationConfig() *NotificationConfig {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewNotificationConfig
+	return a.NotificationConfig
 }
 
 func (a *AccessReviewInput) GetPolicyID() *string {

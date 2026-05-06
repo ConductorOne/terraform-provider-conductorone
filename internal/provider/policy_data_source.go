@@ -615,7 +615,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											`  - resourceOwners` + "\n" +
 											`  - agent`,
 									},
-									"policy_form": schema.StringAttribute{
+									"form": schema.StringAttribute{
 										CustomType:  jsontypes.NormalizedType{},
 										Computed:    true,
 										Description: `The Form message. Parsed as JSON.`,

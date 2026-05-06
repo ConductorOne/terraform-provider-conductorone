@@ -2,6 +2,86 @@
 
 package shared
 
-// The DisabledReasonCircuitBreaker message.
+import (
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
+	"time"
+)
+
+// Period - Snapshot of the period at trip time.
+type Period string
+
+const (
+	PeriodCircuitBreakerPeriodUnspecified Period = "CIRCUIT_BREAKER_PERIOD_UNSPECIFIED"
+	PeriodCircuitBreakerPeriodHour        Period = "CIRCUIT_BREAKER_PERIOD_HOUR"
+	PeriodCircuitBreakerPeriodDay         Period = "CIRCUIT_BREAKER_PERIOD_DAY"
+	PeriodCircuitBreakerPeriodWeek        Period = "CIRCUIT_BREAKER_PERIOD_WEEK"
+	PeriodCircuitBreakerPeriodMonth       Period = "CIRCUIT_BREAKER_PERIOD_MONTH"
+)
+
+func (e Period) ToPointer() *Period {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Period) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CIRCUIT_BREAKER_PERIOD_UNSPECIFIED", "CIRCUIT_BREAKER_PERIOD_HOUR", "CIRCUIT_BREAKER_PERIOD_DAY", "CIRCUIT_BREAKER_PERIOD_WEEK", "CIRCUIT_BREAKER_PERIOD_MONTH":
+			return true
+		}
+	}
+	return false
+}
+
+// DisabledReasonCircuitBreaker carries the trip context when an automation
+//
+//	has been auto-disabled by its rate cap. Returned on the parent Automation
+//	when read; not directly settable.
 type DisabledReasonCircuitBreaker struct {
+	// Observed execution count in the period at trip time.
+	ObservedCount *int64 `json:"observedCount,omitempty"`
+	// Snapshot of the period at trip time.
+	Period *Period `json:"period,omitempty"`
+	// Snapshot of the threshold at trip time.
+	Threshold *int64     `json:"threshold,omitempty"`
+	TrippedAt *time.Time `json:"trippedAt,omitempty"`
+}
+
+func (d DisabledReasonCircuitBreaker) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DisabledReasonCircuitBreaker) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DisabledReasonCircuitBreaker) GetObservedCount() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.ObservedCount
+}
+
+func (d *DisabledReasonCircuitBreaker) GetPeriod() *Period {
+	if d == nil {
+		return nil
+	}
+	return d.Period
+}
+
+func (d *DisabledReasonCircuitBreaker) GetThreshold() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.Threshold
+}
+
+func (d *DisabledReasonCircuitBreaker) GetTrippedAt() *time.Time {
+	if d == nil {
+		return nil
+	}
+	return d.TrippedAt
 }

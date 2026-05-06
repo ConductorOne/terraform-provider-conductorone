@@ -131,14 +131,6 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 							list.AccessReview.AccessReviewInclusionScope.UserStatuses = nil
 						}
 					}
-					if listItem.AccessReview.AccessReviewNotificationConfig == nil {
-						list.AccessReview.AccessReviewNotificationConfig = nil
-					} else {
-						list.AccessReview.AccessReviewNotificationConfig = &tfTypes.AccessReviewNotificationConfig{}
-						list.AccessReview.AccessReviewNotificationConfig.SendClose = types.BoolPointerValue(listItem.AccessReview.AccessReviewNotificationConfig.SendClose)
-						list.AccessReview.AccessReviewNotificationConfig.SendKickoff = types.BoolPointerValue(listItem.AccessReview.AccessReviewNotificationConfig.SendKickoff)
-						list.AccessReview.AccessReviewNotificationConfig.SendReminders = types.BoolPointerValue(listItem.AccessReview.AccessReviewNotificationConfig.SendReminders)
-					}
 					if listItem.AccessReview.AccessReviewScope == nil {
 						list.AccessReview.AccessReviewScope = nil
 					} else {
@@ -484,6 +476,14 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 								list.AccessReview.MultiAppSetup.AppEntitlements[multiAppEntitlementKey] = multiAppEntitlementResult
 							}
 						}
+					}
+					if listItem.AccessReview.NotificationConfig == nil {
+						list.AccessReview.NotificationConfig = nil
+					} else {
+						list.AccessReview.NotificationConfig = &tfTypes.NotificationConfig{}
+						list.AccessReview.NotificationConfig.SendClose = types.BoolPointerValue(listItem.AccessReview.NotificationConfig.SendClose)
+						list.AccessReview.NotificationConfig.SendKickoff = types.BoolPointerValue(listItem.AccessReview.NotificationConfig.SendKickoff)
+						list.AccessReview.NotificationConfig.SendReminders = types.BoolPointerValue(listItem.AccessReview.NotificationConfig.SendReminders)
 					}
 					list.AccessReview.PolicyID = types.StringPointerValue(listItem.AccessReview.PolicyID)
 					list.AccessReview.ReviewInstructions = types.StringPointerValue(listItem.AccessReview.ReviewInstructions)

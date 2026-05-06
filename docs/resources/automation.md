@@ -35,37 +35,6 @@ resource "conductorone_automation" "my_automation" {
           id     = "...my_id..."
         }
       }
-      automations_task_action = {
-        close_action = {
-          use_subject_user = true
-          user_id_cel      = "...my_user_id_cel..."
-          user_ref = {
-            id = "...my_id..."
-          }
-        }
-        reassign_action = {
-          assignee_user_id_cel = "...my_assignee_user_id_cel..."
-          subject_user_id_cel  = "...my_subject_user_id_cel..."
-          use_subject_user     = true
-          user_ref = {
-            id = "...my_id..."
-          }
-          user_ref1 = {
-            id = "...my_id..."
-          }
-        }
-        task_types = [
-          "TASK_TYPE_REVOKE"
-        ]
-        task_user_relation = "TASK_USER_RELATION_UNSPECIFIED"
-      }
-      automations_webhook = {
-        payload = {
-          # ...
-        }
-        webhook_id     = "...my_webhook_id..."
-        webhook_id_cel = "...my_webhook_id_cel..."
-      }
       call_function = {
         args = {
           key = "value"
@@ -342,6 +311,30 @@ resource "conductorone_automation" "my_automation" {
         ttl                 = "...my_ttl..."
         vault_type          = "STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED"
       }
+      task_action = {
+        close_action = {
+          use_subject_user = false
+          user_id_cel      = "...my_user_id_cel..."
+          user_ref = {
+            id = "...my_id..."
+          }
+        }
+        reassign_action = {
+          assignee_user_id_cel = "...my_assignee_user_id_cel..."
+          subject_user_id_cel  = "...my_subject_user_id_cel..."
+          use_subject_user     = false
+          user_ref = {
+            id = "...my_id..."
+          }
+          user_ref1 = {
+            id = "...my_id..."
+          }
+        }
+        task_types = [
+          "TASK_TYPE_REVOKE"
+        ]
+        task_user_relation = "TASK_USER_RELATION_ASSIGNEE"
+      }
       unenroll_from_all_access_profiles = {
         catalog_ids = [
           "..."
@@ -367,13 +360,22 @@ resource "conductorone_automation" "my_automation" {
       wait_for_duration = {
         duration = "...my_duration..."
       }
+      webhook = {
+        payload = {
+          # ...
+        }
+        webhook_id     = "...my_webhook_id..."
+        webhook_id_cel = "...my_webhook_id_cel..."
+      }
     }
   ]
   automations_delete_automation_request = {
     # ...
   }
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
+  circuit_breaker_max    = 3
+  circuit_breaker_period = "CIRCUIT_BREAKER_PERIOD_MONTH"
+  description            = "...my_description..."
+  display_name           = "...my_display_name..."
   draft_automation_steps = [
     {
       account_lifecycle_action = {
@@ -388,37 +390,6 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
-      }
-      automations_task_action = {
-        close_action = {
-          use_subject_user = false
-          user_id_cel      = "...my_user_id_cel..."
-          user_ref = {
-            id = "...my_id..."
-          }
-        }
-        reassign_action = {
-          assignee_user_id_cel = "...my_assignee_user_id_cel..."
-          subject_user_id_cel  = "...my_subject_user_id_cel..."
-          use_subject_user     = true
-          user_ref = {
-            id = "...my_id..."
-          }
-          user_ref1 = {
-            id = "...my_id..."
-          }
-        }
-        task_types = [
-          "TASK_TYPE_REVOKE"
-        ]
-        task_user_relation = "TASK_USER_RELATION_UNSPECIFIED"
-      }
-      automations_webhook = {
-        payload = {
-          # ...
-        }
-        webhook_id     = "...my_webhook_id..."
-        webhook_id_cel = "...my_webhook_id_cel..."
       }
       call_function = {
         args = {
@@ -696,6 +667,30 @@ resource "conductorone_automation" "my_automation" {
         ttl                 = "...my_ttl..."
         vault_type          = "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT"
       }
+      task_action = {
+        close_action = {
+          use_subject_user = false
+          user_id_cel      = "...my_user_id_cel..."
+          user_ref = {
+            id = "...my_id..."
+          }
+        }
+        reassign_action = {
+          assignee_user_id_cel = "...my_assignee_user_id_cel..."
+          subject_user_id_cel  = "...my_subject_user_id_cel..."
+          use_subject_user     = false
+          user_ref = {
+            id = "...my_id..."
+          }
+          user_ref1 = {
+            id = "...my_id..."
+          }
+        }
+        task_types = [
+          "TASK_TYPE_UNSPECIFIED"
+        ]
+        task_user_relation = "TASK_USER_RELATION_UNSPECIFIED"
+      }
       unenroll_from_all_access_profiles = {
         catalog_ids = [
           "..."
@@ -720,6 +715,13 @@ resource "conductorone_automation" "my_automation" {
       }
       wait_for_duration = {
         duration = "...my_duration..."
+      }
+      webhook = {
+        payload = {
+          # ...
+        }
+        webhook_id     = "...my_webhook_id..."
+        webhook_id_cel = "...my_webhook_id_cel..."
       }
     }
   ]
@@ -1087,6 +1089,8 @@ resource "conductorone_automation" "my_automation" {
 - `automation_context` (Attributes) The AutomationContext message. (see [below for nested schema](#nestedatt--automation_context))
 - `automation_steps` (Attributes List) Ordered list of steps that the automation executes. (see [below for nested schema](#nestedatt--automation_steps))
 - `automations_delete_automation_request` (Attributes) The DeleteAutomationRequest message. (see [below for nested schema](#nestedatt--automations_delete_automation_request))
+- `circuit_breaker_max` (Number) Circuit breaker rate cap. See Automation.circuit_breaker_max for semantics.
+- `circuit_breaker_period` (String) The circuitBreakerPeriod field. possible known values include one of ["CIRCUIT_BREAKER_PERIOD_UNSPECIFIED", "CIRCUIT_BREAKER_PERIOD_HOUR", "CIRCUIT_BREAKER_PERIOD_DAY", "CIRCUIT_BREAKER_PERIOD_WEEK", "CIRCUIT_BREAKER_PERIOD_MONTH"]
 - `description` (String) Optional description explaining the automation's purpose.
 - `display_name` (String) Human-readable name for the automation.
 - `draft_automation_steps` (Attributes List) Steps saved as a draft that have not yet been published. (see [below for nested schema](#nestedatt--draft_automation_steps))
@@ -1099,7 +1103,9 @@ resource "conductorone_automation" "my_automation" {
 
 - `created_at` (String)
 - `current_version` (String) The currentVersion field.
-- `disabled_reason_circuit_breaker` (Attributes) The DisabledReasonCircuitBreaker message. (see [below for nested schema](#nestedatt--disabled_reason_circuit_breaker))
+- `disabled_reason_circuit_breaker` (Attributes) DisabledReasonCircuitBreaker carries the trip context when an automation
+ has been auto-disabled by its rate cap. Returned on the parent Automation
+ when read; not directly settable. (see [below for nested schema](#nestedatt--disabled_reason_circuit_breaker))
 - `id` (String) The id field.
 - `last_executed_at` (String)
 - `primary_trigger_type` (String) The primaryTriggerType field.
@@ -1130,16 +1136,6 @@ Optional:
 This message contains a oneof named account_identifier. Only a single field of the following list may be set at a time:
   - accountRef
   - accountInContext (see [below for nested schema](#nestedatt--automation_steps--account_lifecycle_action))
-- `automations_task_action` (Attributes) The TaskAction message.
-
-This message contains a oneof named action. Only a single field of the following list may be set at a time:
-  - close
-  - reassign (see [below for nested schema](#nestedatt--automation_steps--automations_task_action))
-- `automations_webhook` (Attributes) The Webhook message.
-
-This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
-  - webhookId
-  - webhookIdCel (see [below for nested schema](#nestedatt--automation_steps--automations_webhook))
 - `call_function` (Attributes) The CallFunction message. (see [below for nested schema](#nestedatt--automation_steps--call_function))
 - `connector_action` (Attributes) The ConnectorAction message.
 
@@ -1216,6 +1212,11 @@ This message contains a oneof named connector_identifier. Only a single field of
 - `step_name` (String) The stepName field.
 - `store_credential` (Attributes) StoreCredential stores a credential from GeneratePassword in a vault.
  Supports Paper Vault (SSO/email) and App Vault (entitlement-bound). (see [below for nested schema](#nestedatt--automation_steps--store_credential))
+- `task_action` (Attributes) The TaskAction message.
+
+This message contains a oneof named action. Only a single field of the following list may be set at a time:
+  - close
+  - reassign (see [below for nested schema](#nestedatt--automation_steps--task_action))
 - `unenroll_from_all_access_profiles` (Attributes) The UnenrollFromAllAccessProfiles message. (see [below for nested schema](#nestedatt--automation_steps--unenroll_from_all_access_profiles))
 - `update_user` (Attributes) The UpdateUser message.
 
@@ -1228,6 +1229,11 @@ This message contains a oneof named user_status. Only a single field of the foll
   - userStatusEnum
   - userStatusCel (see [below for nested schema](#nestedatt--automation_steps--update_user))
 - `wait_for_duration` (Attributes) The WaitForDuration message. (see [below for nested schema](#nestedatt--automation_steps--wait_for_duration))
+- `webhook` (Attributes) The Webhook message.
+
+This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
+  - webhookId
+  - webhookIdCel (see [below for nested schema](#nestedatt--automation_steps--webhook))
 
 <a id="nestedatt--automation_steps--account_lifecycle_action"></a>
 ### Nested Schema for `automation_steps.account_lifecycle_action`
@@ -1258,100 +1264,6 @@ Optional:
 
 - `app_id` (String) The appId field.
 - `id` (String) The id field.
-
-
-
-<a id="nestedatt--automation_steps--automations_task_action"></a>
-### Nested Schema for `automation_steps.automations_task_action`
-
-Optional:
-
-- `close_action` (Attributes) The CloseAction message.
-
-This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:
-  - userIdCel
-  - userRef (see [below for nested schema](#nestedatt--automation_steps--automations_task_action--close_action))
-- `reassign_action` (Attributes) The ReassignAction message.
-
-This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:
-  - assigneeUserIdCel
-  - assigneeUserRef
-
-
-This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:
-  - subjectUserIdCel
-  - subjectUserRef (see [below for nested schema](#nestedatt--automation_steps--automations_task_action--reassign_action))
-- `task_types` (List of String) The taskTypes field.
-- `task_user_relation` (String) The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]
-
-<a id="nestedatt--automation_steps--automations_task_action--close_action"></a>
-### Nested Schema for `automation_steps.automations_task_action.close_action`
-
-Optional:
-
-- `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
-- `user_id_cel` (String) The userIdCel field.
-This field is part of the `user_identifier` oneof.
-See the documentation for `c1.api.automations.v1.CloseAction` for more details.
-- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--automation_steps--automations_task_action--close_action--user_ref))
-
-<a id="nestedatt--automation_steps--automations_task_action--close_action--user_ref"></a>
-### Nested Schema for `automation_steps.automations_task_action.close_action.user_ref`
-
-Optional:
-
-- `id` (String) The id of the user.
-
-
-
-<a id="nestedatt--automation_steps--automations_task_action--reassign_action"></a>
-### Nested Schema for `automation_steps.automations_task_action.reassign_action`
-
-Optional:
-
-- `assignee_user_id_cel` (String) The assigneeUserIdCel field.
-This field is part of the `assignee_user_identifier` oneof.
-See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
-- `subject_user_id_cel` (String) The subjectUserIdCel field.
-This field is part of the `subject_user_identifier` oneof.
-See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
-- `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
-- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--automation_steps--automations_task_action--reassign_action--user_ref))
-- `user_ref1` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--automation_steps--automations_task_action--reassign_action--user_ref1))
-
-<a id="nestedatt--automation_steps--automations_task_action--reassign_action--user_ref"></a>
-### Nested Schema for `automation_steps.automations_task_action.reassign_action.user_ref`
-
-Optional:
-
-- `id` (String) The id of the user.
-
-
-<a id="nestedatt--automation_steps--automations_task_action--reassign_action--user_ref1"></a>
-### Nested Schema for `automation_steps.automations_task_action.reassign_action.user_ref1`
-
-Optional:
-
-- `id` (String) The id of the user.
-
-
-
-
-<a id="nestedatt--automation_steps--automations_webhook"></a>
-### Nested Schema for `automation_steps.automations_webhook`
-
-Optional:
-
-- `payload` (Attributes) (see [below for nested schema](#nestedatt--automation_steps--automations_webhook--payload))
-- `webhook_id` (String) The webhookId field.
-This field is part of the `webhook_identifier` oneof.
-See the documentation for `c1.api.automations.v1.Webhook` for more details.
-- `webhook_id_cel` (String) The webhookIdCel field.
-This field is part of the `webhook_identifier` oneof.
-See the documentation for `c1.api.automations.v1.Webhook` for more details.
-
-<a id="nestedatt--automation_steps--automations_webhook--payload"></a>
-### Nested Schema for `automation_steps.automations_webhook.payload`
 
 
 
@@ -1898,6 +1810,82 @@ Optional:
 - `vault_type` (String) Vault type selector (default: PAPER_VAULT for backward compatibility). possible known values include one of ["STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT", "STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT"]
 
 
+<a id="nestedatt--automation_steps--task_action"></a>
+### Nested Schema for `automation_steps.task_action`
+
+Optional:
+
+- `close_action` (Attributes) The CloseAction message.
+
+This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:
+  - userIdCel
+  - userRef (see [below for nested schema](#nestedatt--automation_steps--task_action--close_action))
+- `reassign_action` (Attributes) The ReassignAction message.
+
+This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:
+  - assigneeUserIdCel
+  - assigneeUserRef
+
+
+This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:
+  - subjectUserIdCel
+  - subjectUserRef (see [below for nested schema](#nestedatt--automation_steps--task_action--reassign_action))
+- `task_types` (List of String) The taskTypes field.
+- `task_user_relation` (String) The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]
+
+<a id="nestedatt--automation_steps--task_action--close_action"></a>
+### Nested Schema for `automation_steps.task_action.close_action`
+
+Optional:
+
+- `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
+- `user_id_cel` (String) The userIdCel field.
+This field is part of the `user_identifier` oneof.
+See the documentation for `c1.api.automations.v1.CloseAction` for more details.
+- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--automation_steps--task_action--close_action--user_ref))
+
+<a id="nestedatt--automation_steps--task_action--close_action--user_ref"></a>
+### Nested Schema for `automation_steps.task_action.close_action.user_ref`
+
+Optional:
+
+- `id` (String) The id of the user.
+
+
+
+<a id="nestedatt--automation_steps--task_action--reassign_action"></a>
+### Nested Schema for `automation_steps.task_action.reassign_action`
+
+Optional:
+
+- `assignee_user_id_cel` (String) The assigneeUserIdCel field.
+This field is part of the `assignee_user_identifier` oneof.
+See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
+- `subject_user_id_cel` (String) The subjectUserIdCel field.
+This field is part of the `subject_user_identifier` oneof.
+See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
+- `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
+- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--automation_steps--task_action--reassign_action--user_ref))
+- `user_ref1` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--automation_steps--task_action--reassign_action--user_ref1))
+
+<a id="nestedatt--automation_steps--task_action--reassign_action--user_ref"></a>
+### Nested Schema for `automation_steps.task_action.reassign_action.user_ref`
+
+Optional:
+
+- `id` (String) The id of the user.
+
+
+<a id="nestedatt--automation_steps--task_action--reassign_action--user_ref1"></a>
+### Nested Schema for `automation_steps.task_action.reassign_action.user_ref1`
+
+Optional:
+
+- `id` (String) The id of the user.
+
+
+
+
 <a id="nestedatt--automation_steps--unenroll_from_all_access_profiles"></a>
 ### Nested Schema for `automation_steps.unenroll_from_all_access_profiles`
 
@@ -1953,6 +1941,24 @@ Optional:
 - `duration` (String)
 
 
+<a id="nestedatt--automation_steps--webhook"></a>
+### Nested Schema for `automation_steps.webhook`
+
+Optional:
+
+- `payload` (Attributes) (see [below for nested schema](#nestedatt--automation_steps--webhook--payload))
+- `webhook_id` (String) The webhookId field.
+This field is part of the `webhook_identifier` oneof.
+See the documentation for `c1.api.automations.v1.Webhook` for more details.
+- `webhook_id_cel` (String) The webhookIdCel field.
+This field is part of the `webhook_identifier` oneof.
+See the documentation for `c1.api.automations.v1.Webhook` for more details.
+
+<a id="nestedatt--automation_steps--webhook--payload"></a>
+### Nested Schema for `automation_steps.webhook.payload`
+
+
+
 
 <a id="nestedatt--automations_delete_automation_request"></a>
 ### Nested Schema for `automations_delete_automation_request`
@@ -1968,16 +1974,6 @@ Optional:
 This message contains a oneof named account_identifier. Only a single field of the following list may be set at a time:
   - accountRef
   - accountInContext (see [below for nested schema](#nestedatt--draft_automation_steps--account_lifecycle_action))
-- `automations_task_action` (Attributes) The TaskAction message.
-
-This message contains a oneof named action. Only a single field of the following list may be set at a time:
-  - close
-  - reassign (see [below for nested schema](#nestedatt--draft_automation_steps--automations_task_action))
-- `automations_webhook` (Attributes) The Webhook message.
-
-This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
-  - webhookId
-  - webhookIdCel (see [below for nested schema](#nestedatt--draft_automation_steps--automations_webhook))
 - `call_function` (Attributes) The CallFunction message. (see [below for nested schema](#nestedatt--draft_automation_steps--call_function))
 - `connector_action` (Attributes) The ConnectorAction message.
 
@@ -2054,6 +2050,11 @@ This message contains a oneof named connector_identifier. Only a single field of
 - `step_name` (String) The stepName field.
 - `store_credential` (Attributes) StoreCredential stores a credential from GeneratePassword in a vault.
  Supports Paper Vault (SSO/email) and App Vault (entitlement-bound). (see [below for nested schema](#nestedatt--draft_automation_steps--store_credential))
+- `task_action` (Attributes) The TaskAction message.
+
+This message contains a oneof named action. Only a single field of the following list may be set at a time:
+  - close
+  - reassign (see [below for nested schema](#nestedatt--draft_automation_steps--task_action))
 - `unenroll_from_all_access_profiles` (Attributes) The UnenrollFromAllAccessProfiles message. (see [below for nested schema](#nestedatt--draft_automation_steps--unenroll_from_all_access_profiles))
 - `update_user` (Attributes) The UpdateUser message.
 
@@ -2066,6 +2067,11 @@ This message contains a oneof named user_status. Only a single field of the foll
   - userStatusEnum
   - userStatusCel (see [below for nested schema](#nestedatt--draft_automation_steps--update_user))
 - `wait_for_duration` (Attributes) The WaitForDuration message. (see [below for nested schema](#nestedatt--draft_automation_steps--wait_for_duration))
+- `webhook` (Attributes) The Webhook message.
+
+This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
+  - webhookId
+  - webhookIdCel (see [below for nested schema](#nestedatt--draft_automation_steps--webhook))
 
 <a id="nestedatt--draft_automation_steps--account_lifecycle_action"></a>
 ### Nested Schema for `draft_automation_steps.account_lifecycle_action`
@@ -2096,100 +2102,6 @@ Optional:
 
 - `app_id` (String) The appId field.
 - `id` (String) The id field.
-
-
-
-<a id="nestedatt--draft_automation_steps--automations_task_action"></a>
-### Nested Schema for `draft_automation_steps.automations_task_action`
-
-Optional:
-
-- `close_action` (Attributes) The CloseAction message.
-
-This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:
-  - userIdCel
-  - userRef (see [below for nested schema](#nestedatt--draft_automation_steps--automations_task_action--close_action))
-- `reassign_action` (Attributes) The ReassignAction message.
-
-This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:
-  - assigneeUserIdCel
-  - assigneeUserRef
-
-
-This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:
-  - subjectUserIdCel
-  - subjectUserRef (see [below for nested schema](#nestedatt--draft_automation_steps--automations_task_action--reassign_action))
-- `task_types` (List of String) The taskTypes field.
-- `task_user_relation` (String) The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]
-
-<a id="nestedatt--draft_automation_steps--automations_task_action--close_action"></a>
-### Nested Schema for `draft_automation_steps.automations_task_action.close_action`
-
-Optional:
-
-- `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
-- `user_id_cel` (String) The userIdCel field.
-This field is part of the `user_identifier` oneof.
-See the documentation for `c1.api.automations.v1.CloseAction` for more details.
-- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--draft_automation_steps--automations_task_action--close_action--user_ref))
-
-<a id="nestedatt--draft_automation_steps--automations_task_action--close_action--user_ref"></a>
-### Nested Schema for `draft_automation_steps.automations_task_action.close_action.user_ref`
-
-Optional:
-
-- `id` (String) The id of the user.
-
-
-
-<a id="nestedatt--draft_automation_steps--automations_task_action--reassign_action"></a>
-### Nested Schema for `draft_automation_steps.automations_task_action.reassign_action`
-
-Optional:
-
-- `assignee_user_id_cel` (String) The assigneeUserIdCel field.
-This field is part of the `assignee_user_identifier` oneof.
-See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
-- `subject_user_id_cel` (String) The subjectUserIdCel field.
-This field is part of the `subject_user_identifier` oneof.
-See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
-- `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
-- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--draft_automation_steps--automations_task_action--reassign_action--user_ref))
-- `user_ref1` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--draft_automation_steps--automations_task_action--reassign_action--user_ref1))
-
-<a id="nestedatt--draft_automation_steps--automations_task_action--reassign_action--user_ref"></a>
-### Nested Schema for `draft_automation_steps.automations_task_action.reassign_action.user_ref`
-
-Optional:
-
-- `id` (String) The id of the user.
-
-
-<a id="nestedatt--draft_automation_steps--automations_task_action--reassign_action--user_ref1"></a>
-### Nested Schema for `draft_automation_steps.automations_task_action.reassign_action.user_ref1`
-
-Optional:
-
-- `id` (String) The id of the user.
-
-
-
-
-<a id="nestedatt--draft_automation_steps--automations_webhook"></a>
-### Nested Schema for `draft_automation_steps.automations_webhook`
-
-Optional:
-
-- `payload` (Attributes) (see [below for nested schema](#nestedatt--draft_automation_steps--automations_webhook--payload))
-- `webhook_id` (String) The webhookId field.
-This field is part of the `webhook_identifier` oneof.
-See the documentation for `c1.api.automations.v1.Webhook` for more details.
-- `webhook_id_cel` (String) The webhookIdCel field.
-This field is part of the `webhook_identifier` oneof.
-See the documentation for `c1.api.automations.v1.Webhook` for more details.
-
-<a id="nestedatt--draft_automation_steps--automations_webhook--payload"></a>
-### Nested Schema for `draft_automation_steps.automations_webhook.payload`
 
 
 
@@ -2736,6 +2648,82 @@ Optional:
 - `vault_type` (String) Vault type selector (default: PAPER_VAULT for backward compatibility). possible known values include one of ["STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT", "STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT"]
 
 
+<a id="nestedatt--draft_automation_steps--task_action"></a>
+### Nested Schema for `draft_automation_steps.task_action`
+
+Optional:
+
+- `close_action` (Attributes) The CloseAction message.
+
+This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:
+  - userIdCel
+  - userRef (see [below for nested schema](#nestedatt--draft_automation_steps--task_action--close_action))
+- `reassign_action` (Attributes) The ReassignAction message.
+
+This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:
+  - assigneeUserIdCel
+  - assigneeUserRef
+
+
+This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:
+  - subjectUserIdCel
+  - subjectUserRef (see [below for nested schema](#nestedatt--draft_automation_steps--task_action--reassign_action))
+- `task_types` (List of String) The taskTypes field.
+- `task_user_relation` (String) The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]
+
+<a id="nestedatt--draft_automation_steps--task_action--close_action"></a>
+### Nested Schema for `draft_automation_steps.task_action.close_action`
+
+Optional:
+
+- `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
+- `user_id_cel` (String) The userIdCel field.
+This field is part of the `user_identifier` oneof.
+See the documentation for `c1.api.automations.v1.CloseAction` for more details.
+- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--draft_automation_steps--task_action--close_action--user_ref))
+
+<a id="nestedatt--draft_automation_steps--task_action--close_action--user_ref"></a>
+### Nested Schema for `draft_automation_steps.task_action.close_action.user_ref`
+
+Optional:
+
+- `id` (String) The id of the user.
+
+
+
+<a id="nestedatt--draft_automation_steps--task_action--reassign_action"></a>
+### Nested Schema for `draft_automation_steps.task_action.reassign_action`
+
+Optional:
+
+- `assignee_user_id_cel` (String) The assigneeUserIdCel field.
+This field is part of the `assignee_user_identifier` oneof.
+See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
+- `subject_user_id_cel` (String) The subjectUserIdCel field.
+This field is part of the `subject_user_identifier` oneof.
+See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
+- `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
+- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--draft_automation_steps--task_action--reassign_action--user_ref))
+- `user_ref1` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--draft_automation_steps--task_action--reassign_action--user_ref1))
+
+<a id="nestedatt--draft_automation_steps--task_action--reassign_action--user_ref"></a>
+### Nested Schema for `draft_automation_steps.task_action.reassign_action.user_ref`
+
+Optional:
+
+- `id` (String) The id of the user.
+
+
+<a id="nestedatt--draft_automation_steps--task_action--reassign_action--user_ref1"></a>
+### Nested Schema for `draft_automation_steps.task_action.reassign_action.user_ref1`
+
+Optional:
+
+- `id` (String) The id of the user.
+
+
+
+
 <a id="nestedatt--draft_automation_steps--unenroll_from_all_access_profiles"></a>
 ### Nested Schema for `draft_automation_steps.unenroll_from_all_access_profiles`
 
@@ -2789,6 +2777,24 @@ Optional:
 Optional:
 
 - `duration` (String)
+
+
+<a id="nestedatt--draft_automation_steps--webhook"></a>
+### Nested Schema for `draft_automation_steps.webhook`
+
+Optional:
+
+- `payload` (Attributes) (see [below for nested schema](#nestedatt--draft_automation_steps--webhook--payload))
+- `webhook_id` (String) The webhookId field.
+This field is part of the `webhook_identifier` oneof.
+See the documentation for `c1.api.automations.v1.Webhook` for more details.
+- `webhook_id_cel` (String) The webhookIdCel field.
+This field is part of the `webhook_identifier` oneof.
+See the documentation for `c1.api.automations.v1.Webhook` for more details.
+
+<a id="nestedatt--draft_automation_steps--webhook--payload"></a>
+### Nested Schema for `draft_automation_steps.webhook.payload`
+
 
 
 
@@ -3600,6 +3606,13 @@ Optional:
 
 <a id="nestedatt--disabled_reason_circuit_breaker"></a>
 ### Nested Schema for `disabled_reason_circuit_breaker`
+
+Read-Only:
+
+- `observed_count` (Number) Observed execution count in the period at trip time.
+- `period` (String) Snapshot of the period at trip time.
+- `threshold` (Number) Snapshot of the threshold at trip time.
+- `tripped_at` (String)
 
 ## Import
 

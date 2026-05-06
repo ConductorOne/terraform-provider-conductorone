@@ -168,7 +168,7 @@ resource "conductorone_policy" "my_policy" {
               webhook_id = "...my_webhook_id..."
             }
           }
-          policy_form = "{ \"see\": \"documentation\" }"
+          form = "{ \"see\": \"documentation\" }"
           provision = {
             assigned = true
             provision_policy = {

@@ -8,6 +8,7 @@ import (
 
 type ScopeRole struct {
 	AppID               types.String `tfsdk:"app_id"`
+	GrantDuration       types.String `tfsdk:"grant_duration"`
 	RoleResourceID      types.String `tfsdk:"role_resource_id"`
 	RoleResourceTypeID  types.String `tfsdk:"role_resource_type_id"`
 	ScopeResourceID     types.String `tfsdk:"scope_resource_id"`

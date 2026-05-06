@@ -36,56 +36,56 @@ type AccessReviewResource struct {
 
 // AccessReviewResourceModel describes the resource data model.
 type AccessReviewResourceModel struct {
-	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig       `tfsdk:"access_review_column_config"`
-	AccessReviewExclusionScope     *tfTypes.AccessReviewExclusionScope     `tfsdk:"access_review_exclusion_scope"`
-	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope     `tfsdk:"access_review_inclusion_scope"`
-	AccessReviewNotificationConfig *tfTypes.AccessReviewNotificationConfig `tfsdk:"access_review_notification_config"`
-	AccessReviewScope              *tfTypes.AccessReviewScope              `tfsdk:"access_review_scope"`
-	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2            `tfsdk:"access_review_scope_v2"`
-	AccessReviewTemplateID         types.String                            `tfsdk:"access_review_template_id"`
-	AccuracyIssueAction            types.String                            `tfsdk:"accuracy_issue_action"`
-	AutoCloseCampaign              types.Bool                              `tfsdk:"auto_close_campaign"`
-	AutoCloseDecision              types.String                            `tfsdk:"auto_close_decision"`
-	AutoGenerateReport             types.Bool                              `tfsdk:"auto_generate_report"`
-	AutoResolve                    types.Bool                              `tfsdk:"auto_resolve"`
-	AutoStartCampaign              types.Bool                              `tfsdk:"auto_start_campaign"`
-	BindingObjectSetup             *tfTypes.BindingObjectSetup             `tfsdk:"binding_object_setup"`
-	CampaignHealthSnapshot         *tfTypes.CampaignHealthSnapshot         `tfsdk:"campaign_health_snapshot"`
-	CampaignInsights               *tfTypes.CampaignInsights               `tfsdk:"campaign_insights"`
-	ClosedAt                       types.String                            `tfsdk:"closed_at"`
-	CompletionDate                 types.String                            `tfsdk:"completion_date"`
-	ConnectorSourcesFrozenAt       types.String                            `tfsdk:"connector_sources_frozen_at"`
-	CreatedAt                      types.String                            `tfsdk:"created_at"`
-	CreatedByID                    types.String                            `tfsdk:"created_by_id"`
-	CreatedByUserPath              types.String                            `tfsdk:"created_by_user_path"`
-	DefaultView                    types.String                            `tfsdk:"default_view"`
-	Delete                         types.Bool                              `tfsdk:"delete"`
-	Description                    types.String                            `tfsdk:"description"`
-	DisplayName                    types.String                            `tfsdk:"display_name"`
-	DuplicateFrom                  types.String                            `tfsdk:"duplicate_from"`
-	Edit                           types.Bool                              `tfsdk:"edit"`
-	ErrorState                     types.String                            `tfsdk:"error_state"`
-	ExemptCertifiedAccessConflicts types.Bool                              `tfsdk:"exempt_certified_access_conflicts"`
-	Expanded                       []tfTypes.Expanded                      `tfsdk:"expanded"`
-	ExpectedTicketCount            types.Int32                             `tfsdk:"expected_ticket_count"`
-	Extra                          map[string]types.Bool                   `tfsdk:"extra"`
-	HasAccuracySupport             types.Bool                              `tfsdk:"has_accuracy_support"`
-	ID                             types.String                            `tfsdk:"id"`
-	MultiAppSetup                  *tfTypes.MultiAppSetup                  `tfsdk:"multi_app_setup"`
-	OwnerIds                       []types.String                          `tfsdk:"owner_ids"`
-	PolicyID                       types.String                            `tfsdk:"policy_id"`
-	PolicyPath                     types.String                            `tfsdk:"policy_path"`
-	Read                           types.Bool                              `tfsdk:"read"`
-	ReviewInstructions             types.String                            `tfsdk:"review_instructions"`
-	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig          `tfsdk:"review_signature_config"`
-	ScheduledStartDate             types.String                            `tfsdk:"scheduled_start_date"`
-	ScopeType                      types.String                            `tfsdk:"scope_type"`
-	ScopingVersion                 types.String                            `tfsdk:"scoping_version"`
-	SingleAppSetup                 *tfTypes.SingleAppSetup                 `tfsdk:"single_app_setup"`
-	StartedAt                      types.String                            `tfsdk:"started_at"`
-	State                          types.String                            `tfsdk:"state"`
-	UpdatedAt                      types.String                            `tfsdk:"updated_at"`
-	UsePolicyOverride              types.Bool                              `tfsdk:"use_policy_override"`
+	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig   `tfsdk:"access_review_column_config"`
+	AccessReviewExclusionScope     *tfTypes.AccessReviewExclusionScope `tfsdk:"access_review_exclusion_scope"`
+	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
+	AccessReviewScope              *tfTypes.AccessReviewScope          `tfsdk:"access_review_scope"`
+	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
+	AccessReviewTemplateID         types.String                        `tfsdk:"access_review_template_id"`
+	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
+	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
+	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
+	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
+	AutoResolve                    types.Bool                          `tfsdk:"auto_resolve"`
+	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
+	BindingObjectSetup             *tfTypes.BindingObjectSetup         `tfsdk:"binding_object_setup"`
+	CampaignHealthSnapshot         *tfTypes.CampaignHealthSnapshot     `tfsdk:"campaign_health_snapshot"`
+	CampaignInsights               *tfTypes.CampaignInsights           `tfsdk:"campaign_insights"`
+	ClosedAt                       types.String                        `tfsdk:"closed_at"`
+	CompletionDate                 types.String                        `tfsdk:"completion_date"`
+	ConnectorSourcesFrozenAt       types.String                        `tfsdk:"connector_sources_frozen_at"`
+	CreatedAt                      types.String                        `tfsdk:"created_at"`
+	CreatedByID                    types.String                        `tfsdk:"created_by_id"`
+	CreatedByUserPath              types.String                        `tfsdk:"created_by_user_path"`
+	DefaultView                    types.String                        `tfsdk:"default_view"`
+	Delete                         types.Bool                          `tfsdk:"delete"`
+	Description                    types.String                        `tfsdk:"description"`
+	DisplayName                    types.String                        `tfsdk:"display_name"`
+	DuplicateFrom                  types.String                        `tfsdk:"duplicate_from"`
+	Edit                           types.Bool                          `tfsdk:"edit"`
+	ErrorState                     types.String                        `tfsdk:"error_state"`
+	ExemptCertifiedAccessConflicts types.Bool                          `tfsdk:"exempt_certified_access_conflicts"`
+	Expanded                       []tfTypes.Expanded                  `tfsdk:"expanded"`
+	ExpectedTicketCount            types.Int32                         `tfsdk:"expected_ticket_count"`
+	Extra                          map[string]types.Bool               `tfsdk:"extra"`
+	HasAccuracySupport             types.Bool                          `tfsdk:"has_accuracy_support"`
+	ID                             types.String                        `tfsdk:"id"`
+	MultiAppSetup                  *tfTypes.MultiAppSetup              `tfsdk:"multi_app_setup"`
+	NotificationConfig             *tfTypes.NotificationConfig         `tfsdk:"notification_config"`
+	OwnerIds                       []types.String                      `tfsdk:"owner_ids"`
+	PolicyID                       types.String                        `tfsdk:"policy_id"`
+	PolicyPath                     types.String                        `tfsdk:"policy_path"`
+	Read                           types.Bool                          `tfsdk:"read"`
+	ReviewInstructions             types.String                        `tfsdk:"review_instructions"`
+	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig      `tfsdk:"review_signature_config"`
+	ScheduledStartDate             types.String                        `tfsdk:"scheduled_start_date"`
+	ScopeType                      types.String                        `tfsdk:"scope_type"`
+	ScopingVersion                 types.String                        `tfsdk:"scoping_version"`
+	SingleAppSetup                 *tfTypes.SingleAppSetup             `tfsdk:"single_app_setup"`
+	StartedAt                      types.String                        `tfsdk:"started_at"`
+	State                          types.String                        `tfsdk:"state"`
+	UpdatedAt                      types.String                        `tfsdk:"updated_at"`
+	UsePolicyOverride              types.Bool                          `tfsdk:"use_policy_override"`
 }
 
 func (r *AccessReviewResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -178,28 +178,6 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 				},
 				Description: `The AccessReviewInclusionScope message.`,
-			},
-			"access_review_notification_config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"send_close": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Whether to send a notification when the campaign is closed.`,
-					},
-					"send_kickoff": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Whether to send a notification when the campaign is started.`,
-					},
-					"send_reminders": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
-					},
-				},
-				Description: `Controls which email notifications are sent during the access review lifecycle.`,
 			},
 			"access_review_scope": schema.SingleNestedAttribute{
 				Computed: true,
@@ -732,6 +710,28 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 				},
 				Description: `The MultiAppSetup message.`,
+			},
+			"notification_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"send_close": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send a notification when the campaign is closed.`,
+					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send a notification when the campaign is started.`,
+					},
+					"send_reminders": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
+					},
+				},
+				Description: `Controls which email notifications are sent during the access review lifecycle.`,
 			},
 			"owner_ids": schema.ListAttribute{
 				Optional: true,

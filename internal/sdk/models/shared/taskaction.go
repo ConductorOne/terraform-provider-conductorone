@@ -2,139 +2,109 @@
 
 package shared
 
-import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
-	"time"
-)
-
-// ActionType - The type of action that was performed.
-type ActionType string
+type TaskTypes string
 
 const (
-	ActionTypeTaskActionTypeUnspecified                              ActionType = "TASK_ACTION_TYPE_UNSPECIFIED"
-	ActionTypeTaskActionTypeClose                                    ActionType = "TASK_ACTION_TYPE_CLOSE"
-	ActionTypeTaskActionTypeApprove                                  ActionType = "TASK_ACTION_TYPE_APPROVE"
-	ActionTypeTaskActionTypeDeny                                     ActionType = "TASK_ACTION_TYPE_DENY"
-	ActionTypeTaskActionTypeComment                                  ActionType = "TASK_ACTION_TYPE_COMMENT"
-	ActionTypeTaskActionTypeDelete                                   ActionType = "TASK_ACTION_TYPE_DELETE"
-	ActionTypeTaskActionTypeReassign                                 ActionType = "TASK_ACTION_TYPE_REASSIGN"
-	ActionTypeTaskActionTypeRestart                                  ActionType = "TASK_ACTION_TYPE_RESTART"
-	ActionTypeTaskActionTypeSendReminder                             ActionType = "TASK_ACTION_TYPE_SEND_REMINDER"
-	ActionTypeTaskActionTypeProvisionComplete                        ActionType = "TASK_ACTION_TYPE_PROVISION_COMPLETE"
-	ActionTypeTaskActionTypeProvisionCancelled                       ActionType = "TASK_ACTION_TYPE_PROVISION_CANCELLED"
-	ActionTypeTaskActionTypeProvisionErrored                         ActionType = "TASK_ACTION_TYPE_PROVISION_ERRORED"
-	ActionTypeTaskActionTypeRollbackSkipped                          ActionType = "TASK_ACTION_TYPE_ROLLBACK_SKIPPED"
-	ActionTypeTaskActionTypeProvisionAppUserTargetCreated            ActionType = "TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED"
-	ActionTypeTaskActionTypeHardReset                                ActionType = "TASK_ACTION_TYPE_HARD_RESET"
-	ActionTypeTaskActionTypeEscalateToEmergencyAccess                ActionType = "TASK_ACTION_TYPE_ESCALATE_TO_EMERGENCY_ACCESS"
-	ActionTypeTaskActionTypeChangePolicy                             ActionType = "TASK_ACTION_TYPE_CHANGE_POLICY"
-	ActionTypeTaskActionTypeRecalculateDenialFromBasePolicyDecisions ActionType = "TASK_ACTION_TYPE_RECALCULATE_DENIAL_FROM_BASE_POLICY_DECISIONS"
-	ActionTypeTaskActionTypeSetInsightsAndRecommendation             ActionType = "TASK_ACTION_TYPE_SET_INSIGHTS_AND_RECOMMENDATION"
-	ActionTypeTaskActionTypeSetAnalysisID                            ActionType = "TASK_ACTION_TYPE_SET_ANALYSIS_ID"
-	ActionTypeTaskActionTypeRecalculateApproversList                 ActionType = "TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST"
-	ActionTypeTaskActionTypeProcessNow                               ActionType = "TASK_ACTION_TYPE_PROCESS_NOW"
-	ActionTypeTaskActionTypeApproveWithStepUp                        ActionType = "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP"
-	ActionTypeTaskActionTypeSkipStep                                 ActionType = "TASK_ACTION_TYPE_SKIP_STEP"
-	ActionTypeTaskActionTypeRollbackCancelled                        ActionType = "TASK_ACTION_TYPE_ROLLBACK_CANCELLED"
-	ActionTypeTaskActionTypeUpdateRequestData                        ActionType = "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA"
-	ActionTypeTaskActionTypeUpdateGrantDuration                      ActionType = "TASK_ACTION_TYPE_UPDATE_GRANT_DURATION"
+	TaskTypesTaskTypeUnspecified TaskTypes = "TASK_TYPE_UNSPECIFIED"
+	TaskTypesTaskTypeRequest     TaskTypes = "TASK_TYPE_REQUEST"
+	TaskTypesTaskTypeRevoke      TaskTypes = "TASK_TYPE_REVOKE"
+	TaskTypesTaskTypeReview      TaskTypes = "TASK_TYPE_REVIEW"
 )
 
-func (e ActionType) ToPointer() *ActionType {
+func (e TaskTypes) ToPointer() *TaskTypes {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ActionType) IsExact() bool {
+func (e *TaskTypes) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "TASK_ACTION_TYPE_UNSPECIFIED", "TASK_ACTION_TYPE_CLOSE", "TASK_ACTION_TYPE_APPROVE", "TASK_ACTION_TYPE_DENY", "TASK_ACTION_TYPE_COMMENT", "TASK_ACTION_TYPE_DELETE", "TASK_ACTION_TYPE_REASSIGN", "TASK_ACTION_TYPE_RESTART", "TASK_ACTION_TYPE_SEND_REMINDER", "TASK_ACTION_TYPE_PROVISION_COMPLETE", "TASK_ACTION_TYPE_PROVISION_CANCELLED", "TASK_ACTION_TYPE_PROVISION_ERRORED", "TASK_ACTION_TYPE_ROLLBACK_SKIPPED", "TASK_ACTION_TYPE_PROVISION_APP_USER_TARGET_CREATED", "TASK_ACTION_TYPE_HARD_RESET", "TASK_ACTION_TYPE_ESCALATE_TO_EMERGENCY_ACCESS", "TASK_ACTION_TYPE_CHANGE_POLICY", "TASK_ACTION_TYPE_RECALCULATE_DENIAL_FROM_BASE_POLICY_DECISIONS", "TASK_ACTION_TYPE_SET_INSIGHTS_AND_RECOMMENDATION", "TASK_ACTION_TYPE_SET_ANALYSIS_ID", "TASK_ACTION_TYPE_RECALCULATE_APPROVERS_LIST", "TASK_ACTION_TYPE_PROCESS_NOW", "TASK_ACTION_TYPE_APPROVE_WITH_STEP_UP", "TASK_ACTION_TYPE_SKIP_STEP", "TASK_ACTION_TYPE_ROLLBACK_CANCELLED", "TASK_ACTION_TYPE_UPDATE_REQUEST_DATA", "TASK_ACTION_TYPE_UPDATE_GRANT_DURATION":
+		case "TASK_TYPE_UNSPECIFIED", "TASK_TYPE_REQUEST", "TASK_TYPE_REVOKE", "TASK_TYPE_REVIEW":
 			return true
 		}
 	}
 	return false
 }
 
-// TaskAction - Represents a single action that was performed on a task.
+// TaskUserRelation - The taskUserRelation field.
+type TaskUserRelation string
+
+const (
+	TaskUserRelationTaskUserRelationUnspecified TaskUserRelation = "TASK_USER_RELATION_UNSPECIFIED"
+	TaskUserRelationTaskUserRelationAssignee    TaskUserRelation = "TASK_USER_RELATION_ASSIGNEE"
+	TaskUserRelationTaskUserRelationSubject     TaskUserRelation = "TASK_USER_RELATION_SUBJECT"
+)
+
+func (e TaskUserRelation) ToPointer() *TaskUserRelation {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskUserRelation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT":
+			return true
+		}
+	}
+	return false
+}
+
+// The TaskAction message.
+//
+// This message contains a oneof named action. Only a single field of the following list may be set at a time:
+//   - close
+//   - reassign
 type TaskAction struct {
-	// The type of action that was performed.
-	ActionType *ActionType `json:"actionType,omitempty"`
-	// The ID of the bulk action this action belongs to, if it was part of a bulk operation.
-	BulkActionID *string    `json:"bulkActionId,omitempty"`
-	CreatedAt    *time.Time `json:"createdAt,omitempty"`
-	DeletedAt    *time.Time `json:"deletedAt,omitempty"`
-	// The unique ID of this action.
-	ID *string `json:"id,omitempty"`
-	// The ID of the policy step this action was performed on.
-	PolicyStepID *string    `json:"policyStepId,omitempty"`
-	UpdatedAt    *time.Time `json:"updatedAt,omitempty"`
-	// The ID of the user who performed the action.
-	UserID *string `json:"userId,omitempty"`
+	// The CloseAction message.
+	//
+	// This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:
+	//   - userIdCel
+	//   - userRef
+	//
+	CloseAction *CloseAction `json:"close,omitempty"`
+	// The ReassignAction message.
+	//
+	// This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:
+	//   - assigneeUserIdCel
+	//   - assigneeUserRef
+	//
+	//
+	// This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:
+	//   - subjectUserIdCel
+	//   - subjectUserRef
+	//
+	ReassignAction *ReassignAction `json:"reassign,omitempty"`
+	// The taskTypes field.
+	TaskTypes []TaskTypes `json:"taskTypes,omitempty"`
+	// The taskUserRelation field.
+	TaskUserRelation *TaskUserRelation `json:"taskUserRelation,omitempty"`
 }
 
-func (t TaskAction) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(t, "", false)
-}
-
-func (t *TaskAction) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (t *TaskAction) GetActionType() *ActionType {
+func (t *TaskAction) GetCloseAction() *CloseAction {
 	if t == nil {
 		return nil
 	}
-	return t.ActionType
+	return t.CloseAction
 }
 
-func (t *TaskAction) GetBulkActionID() *string {
+func (t *TaskAction) GetReassignAction() *ReassignAction {
 	if t == nil {
 		return nil
 	}
-	return t.BulkActionID
+	return t.ReassignAction
 }
 
-func (t *TaskAction) GetCreatedAt() *time.Time {
+func (t *TaskAction) GetTaskTypes() []TaskTypes {
 	if t == nil {
 		return nil
 	}
-	return t.CreatedAt
+	return t.TaskTypes
 }
 
-func (t *TaskAction) GetDeletedAt() *time.Time {
+func (t *TaskAction) GetTaskUserRelation() *TaskUserRelation {
 	if t == nil {
 		return nil
 	}
-	return t.DeletedAt
-}
-
-func (t *TaskAction) GetID() *string {
-	if t == nil {
-		return nil
-	}
-	return t.ID
-}
-
-func (t *TaskAction) GetPolicyStepID() *string {
-	if t == nil {
-		return nil
-	}
-	return t.PolicyStepID
-}
-
-func (t *TaskAction) GetUpdatedAt() *time.Time {
-	if t == nil {
-		return nil
-	}
-	return t.UpdatedAt
-}
-
-func (t *TaskAction) GetUserID() *string {
-	if t == nil {
-		return nil
-	}
-	return t.UserID
+	return t.TaskUserRelation
 }

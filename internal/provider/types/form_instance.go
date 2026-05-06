@@ -7,9 +7,9 @@ import (
 )
 
 type FormInstance struct {
-	Form                *Form                `tfsdk:"form"`
 	FormCompletedAction *FormCompletedAction `tfsdk:"form_completed_action"`
 	ReassignedAction    *ReassignedAction    `tfsdk:"reassigned_action"`
+	RequestSchemaForm   *RequestSchemaForm   `tfsdk:"request_schema_form"`
 	RestartAction       *RestartAction       `tfsdk:"restart_action"`
 	SkippedAction       *SkippedAction       `tfsdk:"skipped_action"`
 	Data                *FormInstanceData    `tfsdk:"data"`

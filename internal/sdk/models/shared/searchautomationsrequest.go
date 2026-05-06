@@ -56,6 +56,29 @@ func (e *SortField) IsExact() bool {
 	return false
 }
 
+type Statuses string
+
+const (
+	StatusesAutomationStatusFilterUnspecified Statuses = "AUTOMATION_STATUS_FILTER_UNSPECIFIED"
+	StatusesAutomationStatusFilterOn          Statuses = "AUTOMATION_STATUS_FILTER_ON"
+	StatusesAutomationStatusFilterOff         Statuses = "AUTOMATION_STATUS_FILTER_OFF"
+)
+
+func (e Statuses) ToPointer() *Statuses {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Statuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AUTOMATION_STATUS_FILTER_UNSPECIFIED", "AUTOMATION_STATUS_FILTER_ON", "AUTOMATION_STATUS_FILTER_OFF":
+			return true
+		}
+	}
+	return false
+}
+
 type TriggerTypes string
 
 const (
@@ -94,10 +117,17 @@ func (e *TriggerTypes) IsExact() bool {
 type SearchAutomationsRequest struct {
 	// Filter results to automations belonging to this application.
 	AppID *string `json:"appId,omitempty"`
+	// Filter results to automations belonging to any of the specified apps.
+	//  Supersedes the singular `app_id` field when non-empty; when empty, the
+	//  server falls back to `app_id` for backward compatibility.
+	AppIds []string `json:"appIds,omitempty"`
 	// Direction to sort in. Unspecified falls back to ASC when sort_field is set;
 	//  when sort_field is also unspecified, the server default order (created_at
 	//  DESC) applies.
 	Direction *Direction `json:"direction,omitempty"`
+	// Tri-state draft filter. Unset = include both drafts and published;
+	//  `true` = drafts only; `false` = published only.
+	IsDraft *bool `json:"isDraft,omitempty"`
 	// Maximum number of results to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
 	// Pagination token from a previous SearchAutomationsResponse.
@@ -108,6 +138,9 @@ type SearchAutomationsRequest struct {
 	Refs []*AutomationTemplateRef `json:"refs,omitempty"`
 	// Column to sort by. Unspecified (0) means sort by created_at desc (server default).
 	SortField *SortField `json:"sortField,omitempty"`
+	// Filter results by automation status. Empty or containing both ON and OFF
+	//  applies no status filter.
+	Statuses []Statuses `json:"statuses,omitempty"`
 	// Filter results to automations with any of the specified trigger types.
 	TriggerTypes []TriggerTypes `json:"triggerTypes,omitempty"`
 }
@@ -119,11 +152,25 @@ func (s *SearchAutomationsRequest) GetAppID() *string {
 	return s.AppID
 }
 
+func (s *SearchAutomationsRequest) GetAppIds() []string {
+	if s == nil {
+		return nil
+	}
+	return s.AppIds
+}
+
 func (s *SearchAutomationsRequest) GetDirection() *Direction {
 	if s == nil {
 		return nil
 	}
 	return s.Direction
+}
+
+func (s *SearchAutomationsRequest) GetIsDraft() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.IsDraft
 }
 
 func (s *SearchAutomationsRequest) GetPageSize() *int {
@@ -159,6 +206,13 @@ func (s *SearchAutomationsRequest) GetSortField() *SortField {
 		return nil
 	}
 	return s.SortField
+}
+
+func (s *SearchAutomationsRequest) GetStatuses() []Statuses {
+	if s == nil {
+		return nil
+	}
+	return s.Statuses
 }
 
 func (s *SearchAutomationsRequest) GetTriggerTypes() []TriggerTypes {

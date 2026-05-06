@@ -20,11 +20,6 @@ resource "conductorone_access_review_template" "my_access_review_template" {
     ]
   }
   access_review_duration = "...my_access_review_duration..."
-  access_review_notification_config = {
-    send_close     = true
-    send_kickoff   = true
-    send_reminders = true
-  }
   access_review_scope_v2 = {
     account_criteria_scope = {
       account_domain = "APP_USER_DOMAIN_UNSPECIFIED"
@@ -136,6 +131,11 @@ resource "conductorone_access_review_template" "my_access_review_template" {
   display_name                      = "...my_display_name..."
   exempt_certified_access_conflicts = true
   is_campaign_schedule_enabled      = false
+  notification_config = {
+    send_close     = true
+    send_kickoff   = false
+    send_reminders = false
+  }
   owner_ids = [
     "..."
   ]
@@ -166,7 +166,6 @@ resource "conductorone_access_review_template" "my_access_review_template" {
 
 - `access_review_column_config` (Attributes) Configuration for which columns are visible in the reviewer task list. (see [below for nested schema](#nestedatt--access_review_column_config))
 - `access_review_duration` (String)
-- `access_review_notification_config` (Attributes) Controls which email notifications are sent during the access review lifecycle. (see [below for nested schema](#nestedatt--access_review_notification_config))
 - `access_review_scope_v2` (Attributes) The AccessReviewScopeV2 message.
 
 This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
@@ -211,6 +210,7 @@ This message contains a oneof named resource_scope. Only a single field of the f
 - `display_name` (String) The display name for the new template.
 - `exempt_certified_access_conflicts` (Boolean) The exemptCertifiedAccessConflicts field.
 - `is_campaign_schedule_enabled` (Boolean) The isCampaignScheduleEnabled field.
+- `notification_config` (Attributes) Controls which email notifications are sent during the access review lifecycle. (see [below for nested schema](#nestedatt--notification_config))
 - `owner_ids` (List of String) The IDs of the users who own this template. At least one owner is required. Requires replacement if changed.
 - `policy_id` (String) The ID of the default review policy for campaigns created from this template.
 - `recurrence_rule` (Attributes) The RecurrenceRule message.
@@ -240,16 +240,6 @@ Optional:
 
 - `columns` (List of String) Ordered list of columns visible to reviewers.
  If empty, the default column set for the campaign's default_view is used.
-
-
-<a id="nestedatt--access_review_notification_config"></a>
-### Nested Schema for `access_review_notification_config`
-
-Optional:
-
-- `send_close` (Boolean) Whether to send a notification when the campaign is closed.
-- `send_kickoff` (Boolean) Whether to send a notification when the campaign is started.
-- `send_reminders` (Boolean) Whether to send periodic reminder emails to reviewers with outstanding tasks.
 
 
 <a id="nestedatt--access_review_scope_v2"></a>
@@ -431,6 +421,16 @@ Optional:
 
 
 
+
+
+<a id="nestedatt--notification_config"></a>
+### Nested Schema for `notification_config`
+
+Optional:
+
+- `send_close` (Boolean) Whether to send a notification when the campaign is closed.
+- `send_kickoff` (Boolean) Whether to send a notification when the campaign is started.
+- `send_reminders` (Boolean) Whether to send periodic reminder emails to reviewers with outstanding tasks.
 
 
 <a id="nestedatt--recurrence_rule"></a>

@@ -36,7 +36,7 @@ type RequestSchema struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	DeletedAt *time.Time `json:"deletedAt,omitempty"`
 	// A form is a collection of fields to be filled out by a user
-	Form *Form `json:"form,omitempty"`
+	RequestSchemaForm *RequestSchemaForm `json:"form,omitempty"`
 	// The unique identifier of this request schema.
 	ID *string `json:"id,omitempty"`
 	// Controls whether the justification field is shown or hidden on the request form.
@@ -68,11 +68,11 @@ func (r *RequestSchema) GetDeletedAt() *time.Time {
 	return r.DeletedAt
 }
 
-func (r *RequestSchema) GetForm() *Form {
+func (r *RequestSchema) GetRequestSchemaForm() *RequestSchemaForm {
 	if r == nil {
 		return nil
 	}
-	return r.Form
+	return r.RequestSchemaForm
 }
 
 func (r *RequestSchema) GetID() *string {

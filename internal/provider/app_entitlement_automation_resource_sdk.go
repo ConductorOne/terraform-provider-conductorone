@@ -12,21 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *AppEntitlementAutomationResourceModel) RefreshFromSharedAppCreateAutomationResponse(ctx context.Context, resp *shared.AppCreateAutomationResponse) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		diags.Append(r.RefreshFromSharedAppEntitlementAutomation(ctx, resp.AppEntitlementAutomation)...)
-
-		if diags.HasError() {
-			return diags
-		}
-
-	}
-
-	return diags
-}
-
 func (r *AppEntitlementAutomationResourceModel) RefreshFromSharedAppEntitlementAutomation(ctx context.Context, resp *shared.AppEntitlementAutomation) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -122,6 +107,21 @@ func (r *AppEntitlementAutomationResourceModel) RefreshFromSharedAppEntitlementS
 	return diags
 }
 
+func (r *AppEntitlementAutomationResourceModel) RefreshFromSharedCreateAutomationResponse(ctx context.Context, resp *shared.CreateAutomationResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedAppEntitlementAutomation(ctx, resp.AppEntitlementAutomation)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitlementsCreateAutomationRequest(ctx context.Context) (*operations.C1APIAppV1AppEntitlementsCreateAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -131,17 +131,17 @@ func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitle
 	var appEntitlementID string
 	appEntitlementID = r.AppEntitlementID.ValueString()
 
-	appCreateAutomationRequest, appCreateAutomationRequestDiags := r.ToSharedAppCreateAutomationRequest(ctx)
-	diags.Append(appCreateAutomationRequestDiags...)
+	createAutomationRequest, createAutomationRequestDiags := r.ToSharedCreateAutomationRequest(ctx)
+	diags.Append(createAutomationRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.C1APIAppV1AppEntitlementsCreateAutomationRequest{
-		AppID:                      appID,
-		AppEntitlementID:           appEntitlementID,
-		AppCreateAutomationRequest: appCreateAutomationRequest,
+		AppID:                   appID,
+		AppEntitlementID:        appEntitlementID,
+		CreateAutomationRequest: createAutomationRequest,
 	}
 
 	return &out, diags
@@ -156,17 +156,17 @@ func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitle
 	var appEntitlementID string
 	appEntitlementID = r.AppEntitlementID.ValueString()
 
-	appDeleteAutomationRequest, appDeleteAutomationRequestDiags := r.ToSharedAppDeleteAutomationRequest(ctx)
-	diags.Append(appDeleteAutomationRequestDiags...)
+	deleteAutomationRequest, deleteAutomationRequestDiags := r.ToSharedDeleteAutomationRequest(ctx)
+	diags.Append(deleteAutomationRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.C1APIAppV1AppEntitlementsDeleteAutomationRequest{
-		AppID:                      appID,
-		AppEntitlementID:           appEntitlementID,
-		AppDeleteAutomationRequest: appDeleteAutomationRequest,
+		AppID:                   appID,
+		AppEntitlementID:        appEntitlementID,
+		DeleteAutomationRequest: deleteAutomationRequest,
 	}
 
 	return &out, diags
@@ -210,31 +210,6 @@ func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitle
 		AppEntitlementID: appEntitlementID,
 		AppEntitlementServiceUpdateAutomationRequest: appEntitlementServiceUpdateAutomationRequest,
 	}
-
-	return &out, diags
-}
-
-func (r *AppEntitlementAutomationResourceModel) ToSharedAppCreateAutomationRequest(ctx context.Context) (*shared.AppCreateAutomationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	appEntitlementAutomation, appEntitlementAutomationDiags := r.ToSharedAppEntitlementAutomationInput(ctx)
-	diags.Append(appEntitlementAutomationDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
-	out := shared.AppCreateAutomationRequest{
-		AppEntitlementAutomation: appEntitlementAutomation,
-	}
-
-	return &out, diags
-}
-
-func (r *AppEntitlementAutomationResourceModel) ToSharedAppDeleteAutomationRequest(ctx context.Context) (*shared.AppDeleteAutomationRequest, diag.Diagnostics) {
-	var diags diag.Diagnostics
-
-	out := shared.AppDeleteAutomationRequest{}
 
 	return &out, diags
 }
@@ -406,6 +381,31 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementServiceUpd
 		AppEntitlementAutomationRuleEntitlement: appEntitlementAutomationRuleEntitlement,
 		AppEntitlementAutomationRuleNone:        appEntitlementAutomationRuleNone,
 	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Context) (*shared.CreateAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	appEntitlementAutomation, appEntitlementAutomationDiags := r.ToSharedAppEntitlementAutomationInput(ctx)
+	diags.Append(appEntitlementAutomationDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := shared.CreateAutomationRequest{
+		AppEntitlementAutomation: appEntitlementAutomation,
+	}
+
+	return &out, diags
+}
+
+func (r *AppEntitlementAutomationResourceModel) ToSharedDeleteAutomationRequest(ctx context.Context) (*shared.DeleteAutomationRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	out := shared.DeleteAutomationRequest{}
 
 	return &out, diags
 }

@@ -148,7 +148,7 @@ type AccessReviewTemplate struct {
 	IsCampaignScheduleEnabled *bool      `json:"isCampaignScheduleEnabled,omitempty"`
 	NextScheduledCampaignAt   *time.Time `json:"nextScheduledCampaignAt,omitempty"`
 	// Controls which email notifications are sent during the access review lifecycle.
-	AccessReviewNotificationConfig *AccessReviewNotificationConfig `json:"notificationConfig,omitempty"`
+	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The number of campaigns that have been created from this template.
 	Occurrences *int `json:"occurrences,omitempty"`
 	// The ID of the default review policy applied to campaigns created from this template.
@@ -339,11 +339,11 @@ func (a *AccessReviewTemplate) GetNextScheduledCampaignAt() *time.Time {
 	return a.NextScheduledCampaignAt
 }
 
-func (a *AccessReviewTemplate) GetAccessReviewNotificationConfig() *AccessReviewNotificationConfig {
+func (a *AccessReviewTemplate) GetNotificationConfig() *NotificationConfig {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewNotificationConfig
+	return a.NotificationConfig
 }
 
 func (a *AccessReviewTemplate) GetOccurrences() *int {
@@ -454,7 +454,7 @@ type AccessReviewTemplateInput struct {
 	IsCampaignScheduleEnabled *bool      `json:"isCampaignScheduleEnabled,omitempty"`
 	NextScheduledCampaignAt   *time.Time `json:"nextScheduledCampaignAt,omitempty"`
 	// Controls which email notifications are sent during the access review lifecycle.
-	AccessReviewNotificationConfig *AccessReviewNotificationConfig `json:"notificationConfig,omitempty"`
+	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The number of campaigns that have been created from this template.
 	Occurrences *int `json:"occurrences,omitempty"`
 	// The ID of the default review policy applied to campaigns created from this template.
@@ -630,11 +630,11 @@ func (a *AccessReviewTemplateInput) GetNextScheduledCampaignAt() *time.Time {
 	return a.NextScheduledCampaignAt
 }
 
-func (a *AccessReviewTemplateInput) GetAccessReviewNotificationConfig() *AccessReviewNotificationConfig {
+func (a *AccessReviewTemplateInput) GetNotificationConfig() *NotificationConfig {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewNotificationConfig
+	return a.NotificationConfig
 }
 
 func (a *AccessReviewTemplateInput) GetOccurrences() *int {

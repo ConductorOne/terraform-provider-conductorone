@@ -98,14 +98,6 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 				r.AccessReviewInclusionScope.UserStatuses = nil
 			}
 		}
-		if resp.AccessReviewNotificationConfig == nil {
-			r.AccessReviewNotificationConfig = nil
-		} else {
-			r.AccessReviewNotificationConfig = &tfTypes.AccessReviewNotificationConfig{}
-			r.AccessReviewNotificationConfig.SendClose = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendClose)
-			r.AccessReviewNotificationConfig.SendKickoff = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendKickoff)
-			r.AccessReviewNotificationConfig.SendReminders = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendReminders)
-		}
 		if resp.AccessReviewScopeV2 == nil {
 			r.AccessReviewScopeV2 = nil
 		} else {
@@ -362,6 +354,14 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 		r.ID = types.StringPointerValue(resp.ID)
 		r.IsCampaignScheduleEnabled = types.BoolPointerValue(resp.IsCampaignScheduleEnabled)
 		r.NextScheduledCampaignAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextScheduledCampaignAt))
+		if resp.NotificationConfig == nil {
+			r.NotificationConfig = nil
+		} else {
+			r.NotificationConfig = &tfTypes.NotificationConfig{}
+			r.NotificationConfig.SendClose = types.BoolPointerValue(resp.NotificationConfig.SendClose)
+			r.NotificationConfig.SendKickoff = types.BoolPointerValue(resp.NotificationConfig.SendKickoff)
+			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
+		}
 		r.Occurrences = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.Occurrences))
 		r.PolicyID = types.StringPointerValue(resp.PolicyID)
 		if resp.RecurrenceRule == nil {
@@ -676,27 +676,27 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 	} else {
 		nextScheduledCampaignAt = nil
 	}
-	var accessReviewNotificationConfig *shared.AccessReviewNotificationConfig
-	if r.AccessReviewNotificationConfig != nil {
+	var notificationConfig *shared.NotificationConfig
+	if r.NotificationConfig != nil {
 		sendClose := new(bool)
-		if !r.AccessReviewNotificationConfig.SendClose.IsUnknown() && !r.AccessReviewNotificationConfig.SendClose.IsNull() {
-			*sendClose = r.AccessReviewNotificationConfig.SendClose.ValueBool()
+		if !r.NotificationConfig.SendClose.IsUnknown() && !r.NotificationConfig.SendClose.IsNull() {
+			*sendClose = r.NotificationConfig.SendClose.ValueBool()
 		} else {
 			sendClose = nil
 		}
 		sendKickoff := new(bool)
-		if !r.AccessReviewNotificationConfig.SendKickoff.IsUnknown() && !r.AccessReviewNotificationConfig.SendKickoff.IsNull() {
-			*sendKickoff = r.AccessReviewNotificationConfig.SendKickoff.ValueBool()
+		if !r.NotificationConfig.SendKickoff.IsUnknown() && !r.NotificationConfig.SendKickoff.IsNull() {
+			*sendKickoff = r.NotificationConfig.SendKickoff.ValueBool()
 		} else {
 			sendKickoff = nil
 		}
 		sendReminders := new(bool)
-		if !r.AccessReviewNotificationConfig.SendReminders.IsUnknown() && !r.AccessReviewNotificationConfig.SendReminders.IsNull() {
-			*sendReminders = r.AccessReviewNotificationConfig.SendReminders.ValueBool()
+		if !r.NotificationConfig.SendReminders.IsUnknown() && !r.NotificationConfig.SendReminders.IsNull() {
+			*sendReminders = r.NotificationConfig.SendReminders.ValueBool()
 		} else {
 			sendReminders = nil
 		}
-		accessReviewNotificationConfig = &shared.AccessReviewNotificationConfig{
+		notificationConfig = &shared.NotificationConfig{
 			SendClose:     sendClose,
 			SendKickoff:   sendKickoff,
 			SendReminders: sendReminders,
@@ -1146,7 +1146,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		AccessReviewInclusionScope:     accessReviewInclusionScope,
 		IsCampaignScheduleEnabled:      isCampaignScheduleEnabled,
 		NextScheduledCampaignAt:        nextScheduledCampaignAt,
-		AccessReviewNotificationConfig: accessReviewNotificationConfig,
+		NotificationConfig:             notificationConfig,
 		Occurrences:                    occurrences,
 		PolicyID:                       policyID,
 		RecurrenceRule:                 recurrenceRule,
@@ -1243,27 +1243,27 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 	} else {
 		isCampaignScheduleEnabled = nil
 	}
-	var accessReviewNotificationConfig *shared.AccessReviewNotificationConfig
-	if r.AccessReviewNotificationConfig != nil {
+	var notificationConfig *shared.NotificationConfig
+	if r.NotificationConfig != nil {
 		sendClose := new(bool)
-		if !r.AccessReviewNotificationConfig.SendClose.IsUnknown() && !r.AccessReviewNotificationConfig.SendClose.IsNull() {
-			*sendClose = r.AccessReviewNotificationConfig.SendClose.ValueBool()
+		if !r.NotificationConfig.SendClose.IsUnknown() && !r.NotificationConfig.SendClose.IsNull() {
+			*sendClose = r.NotificationConfig.SendClose.ValueBool()
 		} else {
 			sendClose = nil
 		}
 		sendKickoff := new(bool)
-		if !r.AccessReviewNotificationConfig.SendKickoff.IsUnknown() && !r.AccessReviewNotificationConfig.SendKickoff.IsNull() {
-			*sendKickoff = r.AccessReviewNotificationConfig.SendKickoff.ValueBool()
+		if !r.NotificationConfig.SendKickoff.IsUnknown() && !r.NotificationConfig.SendKickoff.IsNull() {
+			*sendKickoff = r.NotificationConfig.SendKickoff.ValueBool()
 		} else {
 			sendKickoff = nil
 		}
 		sendReminders := new(bool)
-		if !r.AccessReviewNotificationConfig.SendReminders.IsUnknown() && !r.AccessReviewNotificationConfig.SendReminders.IsNull() {
-			*sendReminders = r.AccessReviewNotificationConfig.SendReminders.ValueBool()
+		if !r.NotificationConfig.SendReminders.IsUnknown() && !r.NotificationConfig.SendReminders.IsNull() {
+			*sendReminders = r.NotificationConfig.SendReminders.ValueBool()
 		} else {
 			sendReminders = nil
 		}
-		accessReviewNotificationConfig = &shared.AccessReviewNotificationConfig{
+		notificationConfig = &shared.NotificationConfig{
 			SendClose:     sendClose,
 			SendKickoff:   sendKickoff,
 			SendReminders: sendReminders,
@@ -1692,7 +1692,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		DisplayName:                    displayName,
 		ExemptCertifiedAccessConflicts: exemptCertifiedAccessConflicts,
 		IsCampaignScheduleEnabled:      isCampaignScheduleEnabled,
-		AccessReviewNotificationConfig: accessReviewNotificationConfig,
+		NotificationConfig:             notificationConfig,
 		OwnerIds:                       ownerIds,
 		PolicyID:                       policyID,
 		RecurrenceRule:                 recurrenceRule,

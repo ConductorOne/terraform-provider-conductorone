@@ -39,7 +39,7 @@ type PolicyStep struct {
 	//
 	Approval *Approval `json:"approval,omitempty"`
 	// The Form message.
-	PolicyForm any `json:"form,omitempty"`
+	Form any `json:"form,omitempty"`
 	// The provision step references a provision policy for this step.
 	Provision *Provision `json:"provision,omitempty"`
 	// This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps.
@@ -75,11 +75,11 @@ func (p *PolicyStep) GetApproval() *Approval {
 	return p.Approval
 }
 
-func (p *PolicyStep) GetPolicyForm() any {
+func (p *PolicyStep) GetForm() any {
 	if p == nil {
 		return nil
 	}
-	return p.PolicyForm
+	return p.Form
 }
 
 func (p *PolicyStep) GetProvision() *Provision {

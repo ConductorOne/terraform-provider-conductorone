@@ -7,6 +7,32 @@ import (
 	"time"
 )
 
+// CircuitBreakerPeriod - The circuitBreakerPeriod field.
+type CircuitBreakerPeriod string
+
+const (
+	CircuitBreakerPeriodCircuitBreakerPeriodUnspecified CircuitBreakerPeriod = "CIRCUIT_BREAKER_PERIOD_UNSPECIFIED"
+	CircuitBreakerPeriodCircuitBreakerPeriodHour        CircuitBreakerPeriod = "CIRCUIT_BREAKER_PERIOD_HOUR"
+	CircuitBreakerPeriodCircuitBreakerPeriodDay         CircuitBreakerPeriod = "CIRCUIT_BREAKER_PERIOD_DAY"
+	CircuitBreakerPeriodCircuitBreakerPeriodWeek        CircuitBreakerPeriod = "CIRCUIT_BREAKER_PERIOD_WEEK"
+	CircuitBreakerPeriodCircuitBreakerPeriodMonth       CircuitBreakerPeriod = "CIRCUIT_BREAKER_PERIOD_MONTH"
+)
+
+func (e CircuitBreakerPeriod) ToPointer() *CircuitBreakerPeriod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CircuitBreakerPeriod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CIRCUIT_BREAKER_PERIOD_UNSPECIFIED", "CIRCUIT_BREAKER_PERIOD_HOUR", "CIRCUIT_BREAKER_PERIOD_DAY", "CIRCUIT_BREAKER_PERIOD_WEEK", "CIRCUIT_BREAKER_PERIOD_MONTH":
+			return true
+		}
+	}
+	return false
+}
+
 // PrimaryTriggerType - The primaryTriggerType field.
 type PrimaryTriggerType string
 
@@ -51,8 +77,16 @@ type Automation struct {
 	AppID *string `json:"appId,omitempty"`
 	// The automationSteps field.
 	AutomationSteps []AutomationStep `json:"automationSteps,omitempty"`
-	// The DisabledReasonCircuitBreaker message.
+	// DisabledReasonCircuitBreaker carries the trip context when an automation
+	//  has been auto-disabled by its rate cap. Returned on the parent Automation
+	//  when read; not directly settable.
 	DisabledReasonCircuitBreaker *DisabledReasonCircuitBreaker `json:"circuitBreaker,omitempty"`
+	// Circuit breaker rate cap: disable this automation if it executes more
+	//  than circuit_breaker_max times in the trailing circuit_breaker_period.
+	//  0 = circuit breaker off (default).
+	CircuitBreakerMax *int64 `json:"circuitBreakerMax,omitempty"`
+	// The circuitBreakerPeriod field.
+	CircuitBreakerPeriod *CircuitBreakerPeriod `json:"circuitBreakerPeriod,omitempty"`
 	// The AutomationContext message.
 	AutomationContext *AutomationContext `json:"context,omitempty"`
 	CreatedAt         *time.Time         `json:"createdAt,omitempty"`
@@ -111,6 +145,20 @@ func (a *Automation) GetDisabledReasonCircuitBreaker() *DisabledReasonCircuitBre
 		return nil
 	}
 	return a.DisabledReasonCircuitBreaker
+}
+
+func (a *Automation) GetCircuitBreakerMax() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.CircuitBreakerMax
+}
+
+func (a *Automation) GetCircuitBreakerPeriod() *CircuitBreakerPeriod {
+	if a == nil {
+		return nil
+	}
+	return a.CircuitBreakerPeriod
 }
 
 func (a *Automation) GetAutomationContext() *AutomationContext {
@@ -220,8 +268,16 @@ type AutomationInput struct {
 	AppID *string `json:"appId,omitempty"`
 	// The automationSteps field.
 	AutomationSteps []AutomationStep `json:"automationSteps,omitempty"`
-	// The DisabledReasonCircuitBreaker message.
+	// DisabledReasonCircuitBreaker carries the trip context when an automation
+	//  has been auto-disabled by its rate cap. Returned on the parent Automation
+	//  when read; not directly settable.
 	DisabledReasonCircuitBreaker *DisabledReasonCircuitBreaker `json:"circuitBreaker,omitempty"`
+	// Circuit breaker rate cap: disable this automation if it executes more
+	//  than circuit_breaker_max times in the trailing circuit_breaker_period.
+	//  0 = circuit breaker off (default).
+	CircuitBreakerMax *int64 `json:"circuitBreakerMax,omitempty"`
+	// The circuitBreakerPeriod field.
+	CircuitBreakerPeriod *CircuitBreakerPeriod `json:"circuitBreakerPeriod,omitempty"`
 	// The AutomationContext message.
 	AutomationContext *AutomationContext `json:"context,omitempty"`
 	CreatedAt         *time.Time         `json:"createdAt,omitempty"`
@@ -278,6 +334,20 @@ func (a *AutomationInput) GetDisabledReasonCircuitBreaker() *DisabledReasonCircu
 		return nil
 	}
 	return a.DisabledReasonCircuitBreaker
+}
+
+func (a *AutomationInput) GetCircuitBreakerMax() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.CircuitBreakerMax
+}
+
+func (a *AutomationInput) GetCircuitBreakerPeriod() *CircuitBreakerPeriod {
+	if a == nil {
+		return nil
+	}
+	return a.CircuitBreakerPeriod
 }
 
 func (a *AutomationInput) GetAutomationContext() *AutomationContext {

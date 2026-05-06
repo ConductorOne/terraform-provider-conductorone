@@ -7,8 +7,8 @@ import (
 )
 
 type Task struct {
-	Form               *Form                  `tfsdk:"form"`
 	PolicyInstance     *PolicyInstance        `tfsdk:"policy_instance"`
+	RequestSchemaForm  *RequestSchemaForm     `tfsdk:"request_schema_form"`
 	TaskType           *TaskType              `tfsdk:"task_type"`
 	Actions            []types.String         `tfsdk:"actions"`
 	AnalysisID         types.String           `tfsdk:"analysis_id"`

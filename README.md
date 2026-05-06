@@ -58,6 +58,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_app_entitlement_monitor_binding](docs/resources/app_entitlement_monitor_binding.md)
 * [conductorone_app_entitlement_owner](docs/resources/app_entitlement_owner.md)
 * [conductorone_app_owner](docs/resources/app_owner.md)
+* [conductorone_app_owner_entitlement](docs/resources/app_owner_entitlement.md)
+* [conductorone_app_owner_user](docs/resources/app_owner_user.md)
 * [conductorone_app_resource_owner](docs/resources/app_resource_owner.md)
 * [conductorone_automation](docs/resources/automation.md)
 * [conductorone_bundle_automation](docs/resources/bundle_automation.md)
@@ -101,6 +103,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_app_owners](docs/data-sources/app_owners.md)
 * [conductorone_app_resource_owners](docs/data-sources/app_resource_owners.md)
 * [conductorone_app_entitlement_monitor_binding](docs/data-sources/app_entitlement_monitor_binding.md)
+* [conductorone_app_owner_entitlement](docs/data-sources/app_owner_entitlement.md)
+* [conductorone_app_owner_user](docs/data-sources/app_owner_user.md)
 * [conductorone_apps](docs/data-sources/apps.md)
 * [conductorone_bundle_automation](docs/data-sources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/data-sources/compliance_framework.md)
@@ -202,13 +206,16 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.7.16"
+      version = "1.1.0"
     }
   }
 }
 
 provider "conductorone" {
-  # Configuration options
+  bearer_auth   = "<YOUR_BEARER_AUTH>" # Required
+  oauth         = "<YOUR_OAUTH>"       # Required
+  server_url    = "..."                # Optional
+  tenant_domain = "..."                # Optional
 }
 ```
 <!-- End Installation [installation] -->

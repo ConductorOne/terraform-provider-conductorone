@@ -142,7 +142,7 @@ type AutomationStep struct {
 	//   - close
 	//   - reassign
 	//
-	AutomationsTaskAction *AutomationsTaskAction `json:"taskAction,omitempty"`
+	TaskAction *TaskAction `json:"taskAction,omitempty"`
 	// The UnenrollFromAllAccessProfiles message.
 	UnenrollFromAllAccessProfiles *UnenrollFromAllAccessProfiles `json:"unenrollFromAllAccessProfiles,omitempty"`
 	// The UpdateUser message.
@@ -165,7 +165,7 @@ type AutomationStep struct {
 	//   - webhookId
 	//   - webhookIdCel
 	//
-	AutomationsWebhook *AutomationsWebhook `json:"webhook,omitempty"`
+	Webhook *Webhook `json:"webhook,omitempty"`
 }
 
 func (a *AutomationStep) GetAccountLifecycleAction() *AccountLifecycleAction {
@@ -301,11 +301,11 @@ func (a *AutomationStep) GetStoreCredential() *StoreCredential {
 	return a.StoreCredential
 }
 
-func (a *AutomationStep) GetAutomationsTaskAction() *AutomationsTaskAction {
+func (a *AutomationStep) GetTaskAction() *TaskAction {
 	if a == nil {
 		return nil
 	}
-	return a.AutomationsTaskAction
+	return a.TaskAction
 }
 
 func (a *AutomationStep) GetUnenrollFromAllAccessProfiles() *UnenrollFromAllAccessProfiles {
@@ -329,9 +329,9 @@ func (a *AutomationStep) GetWaitForDuration() *WaitForDuration {
 	return a.WaitForDuration
 }
 
-func (a *AutomationStep) GetAutomationsWebhook() *AutomationsWebhook {
+func (a *AutomationStep) GetWebhook() *Webhook {
 	if a == nil {
 		return nil
 	}
-	return a.AutomationsWebhook
+	return a.Webhook
 }

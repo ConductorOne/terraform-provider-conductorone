@@ -43,7 +43,7 @@ type AccessReviewServiceCreateRequest struct {
 	// The ID of an existing campaign to copy scope and entitlement configuration from. Optional.
 	DuplicateFrom *string `json:"duplicateFrom,omitempty"`
 	// Controls which email notifications are sent during the access review lifecycle.
-	AccessReviewNotificationConfig *AccessReviewNotificationConfig `json:"notificationConfig,omitempty"`
+	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The IDs of the users who own and manage this campaign. At least one owner is required.
 	OwnerIds []string `json:"ownerIds,omitempty"`
 	// The ID of the review policy that governs task assignment and resolution.
@@ -127,11 +127,11 @@ func (a *AccessReviewServiceCreateRequest) GetDuplicateFrom() *string {
 	return a.DuplicateFrom
 }
 
-func (a *AccessReviewServiceCreateRequest) GetAccessReviewNotificationConfig() *AccessReviewNotificationConfig {
+func (a *AccessReviewServiceCreateRequest) GetNotificationConfig() *NotificationConfig {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewNotificationConfig
+	return a.NotificationConfig
 }
 
 func (a *AccessReviewServiceCreateRequest) GetOwnerIds() []string {

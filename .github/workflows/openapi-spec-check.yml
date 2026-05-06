@@ -1,0 +1,63 @@
+name: OpenAPI spec check
+
+# Validates that the openapi.yaml committed on the branch matches the spec
+# served at https://insulator.conductor.one/api/v1/openapi.yaml. If it does
+# not, the job fails and prints the diff.
+#
+# The Speakeasy `Generate` workflow (`mode: pr`) regenerates from the
+# openapi.yaml committed in this repo (per .speakeasy/workflow.yaml's local
+# source), not from insulator. Whenever the committed openapi.yaml falls
+# behind insulator, every PR the bot opens lands against a stale spec —
+# which is how v1.1.0 shipped without the IGA-1181 Phase 2 collision-
+# resolution renames. The Generate workflow has been disabled in the
+# GitHub Actions UI; regens are run manually with `make gen` (which curls
+# insulator directly). This check fails the PR if the committed
+# openapi.yaml drifts from what insulator is currently serving.
+
+on:
+  pull_request:
+    paths:
+      - openapi.yaml
+      - .github/workflows/openapi-spec-check.yml
+  push:
+    branches:
+      - main
+
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch live openapi.yaml from insulator
+        run: |
+          curl -sSL --fail \
+            -o insulator-openapi.yaml \
+            https://insulator.conductor.one/api/v1/openapi.yaml
+
+      - name: Compare against branch openapi.yaml
+        run: |
+          if diff -u openapi.yaml insulator-openapi.yaml > spec.diff; then
+            echo "openapi.yaml matches insulator (https://insulator.conductor.one/api/v1/openapi.yaml)"
+            exit 0
+          fi
+
+          echo "::error::openapi.yaml on this branch does not match the spec served at https://insulator.conductor.one/api/v1/openapi.yaml"
+          echo ""
+          echo "To fix: run \`make gen\` locally and commit the result."
+          echo ""
+          echo "Diff (branch -> insulator):"
+          echo "----------------------------"
+          cat spec.diff | head -200
+          if [ "$(wc -l < spec.diff)" -gt 200 ]; then
+            echo "... (diff truncated; download the full spec.diff artifact for the rest)"
+          fi
+          exit 1
+
+      - name: Upload diff as artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-spec-diff
+          path: spec.diff
+          if-no-files-found: ignore

@@ -52,13 +52,24 @@ gen:
 		exit 1; \
 	fi; \
 	DATE=$$(date +%Y%m%d%H%M%S); \
-	FILENAME="openapi_$$DATE.yaml"; \
-	FILENAME2="combined_$$DATE.yaml"; \
-	trap 'rm -f $$FILENAME $$FILENAME2' EXIT; \
-	curl -sSL -o $$FILENAME https://insulator.conductor.one/api/v1/openapi.yaml && \
-	speakeasy overlay apply -s $$FILENAME -o overlay.yaml >> $$FILENAME2 && \
-	speakeasy generate sdk -s $$FILENAME2 -o . -l terraform -d
+	COMBINED="combined_$$DATE.yaml"; \
+	trap 'rm -f $$COMBINED' EXIT; \
+	curl -sSL -o openapi.yaml https://insulator.conductor.one/api/v1/openapi.yaml && \
+	speakeasy overlay apply -s openapi.yaml -o overlay.yaml >> $$COMBINED && \
+	speakeasy generate sdk -s $$COMBINED -o . -l terraform -d
+	$(MAKE) apply-patches
 	$(MAKE) vendor
+
+# apply-patches: applies every unified-diff patch in patches/ in filename order.
+# These are hand-fixes for Speakeasy regressions that the regen wipes on every
+# run. See patches/README.md.
+.PHONY: apply-patches
+apply-patches:
+	@for patch in patches/*.patch; do \
+		[ -e "$$patch" ] || continue; \
+		echo "Applying $$patch"; \
+		git apply "$$patch" || { echo "ERROR: failed to apply $$patch"; exit 1; }; \
+	done
 	
 
 .PHONY: test

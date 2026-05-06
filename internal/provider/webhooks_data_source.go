@@ -29,12 +29,12 @@ type WebhooksDataSource struct {
 
 // WebhooksDataSourceModel describes the data model.
 type WebhooksDataSourceModel struct {
-	List          []tfTypes.Webhook    `tfsdk:"list"`
-	NextPageToken types.String         `tfsdk:"next_page_token"`
-	PageSize      types.Int32          `tfsdk:"page_size"`
-	PageToken     types.String         `tfsdk:"page_token"`
-	Query         types.String         `tfsdk:"query"`
-	Refs          []tfTypes.WebhookRef `tfsdk:"refs"`
+	List          []tfTypes.WebhookEndpoint `tfsdk:"list"`
+	NextPageToken types.String              `tfsdk:"next_page_token"`
+	PageSize      types.Int32               `tfsdk:"page_size"`
+	PageToken     types.String              `tfsdk:"page_token"`
+	Query         types.String              `tfsdk:"query"`
+	Refs          []tfTypes.WebhookRef      `tfsdk:"refs"`
 }
 
 // Metadata returns the data source type name.

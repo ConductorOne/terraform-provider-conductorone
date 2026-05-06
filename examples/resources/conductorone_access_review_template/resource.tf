@@ -5,11 +5,6 @@ resource "conductorone_access_review_template" "my_access_review_template" {
     ]
   }
   access_review_duration = "...my_access_review_duration..."
-  access_review_notification_config = {
-    send_close     = true
-    send_kickoff   = true
-    send_reminders = true
-  }
   access_review_scope_v2 = {
     account_criteria_scope = {
       account_domain = "APP_USER_DOMAIN_UNSPECIFIED"
@@ -121,6 +116,11 @@ resource "conductorone_access_review_template" "my_access_review_template" {
   display_name                      = "...my_display_name..."
   exempt_certified_access_conflicts = true
   is_campaign_schedule_enabled      = false
+  notification_config = {
+    send_close     = true
+    send_kickoff   = false
+    send_reminders = false
+  }
   owner_ids = [
     "..."
   ]

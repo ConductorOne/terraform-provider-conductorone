@@ -12,16 +12,39 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context, resp *shared.Form) diag.Diagnostics {
+func (r *RequestSchemaDataSourceModel) RefreshFromSharedRequestSchema(ctx context.Context, resp *shared.RequestSchema) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
+		r.ID = types.StringPointerValue(resp.ID)
+		if resp.JustificationVisibility != nil {
+			r.JustificationVisibility = types.StringValue(string(*resp.JustificationVisibility))
+		} else {
+			r.JustificationVisibility = types.StringNull()
+		}
+		diags.Append(r.RefreshFromSharedRequestSchemaForm(ctx, resp.RequestSchemaForm)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
+func (r *RequestSchemaDataSourceModel) RefreshFromSharedRequestSchemaForm(ctx context.Context, resp *shared.RequestSchemaForm) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		r.Description = types.StringPointerValue(resp.Description)
 		if resp.FieldGroups != nil {
-			r.FieldGroups = []tfTypes.FieldGroup{}
+			r.FieldGroups = []tfTypes.FormFieldGroup{}
 
 			for _, fieldGroupsItem := range resp.FieldGroups {
-				var fieldGroups tfTypes.FieldGroup
+				var fieldGroups tfTypes.FormFieldGroup
 
 				fieldGroups.Default = types.BoolPointerValue(fieldGroupsItem.Default)
 				fieldGroups.DisplayName = types.StringPointerValue(fieldGroupsItem.DisplayName)
@@ -90,10 +113,10 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 			r.FieldRelationships = nil
 		}
 		if resp.Fields != nil {
-			r.Fields = []tfTypes.Field{}
+			r.Fields = []tfTypes.FormField{}
 
 			for _, fieldsItem := range resp.Fields {
-				var fields tfTypes.Field
+				var fields tfTypes.FormField
 
 				if fieldsItem.AdminProviderConfig == nil {
 					fields.AdminProviderConfig = nil
@@ -144,6 +167,140 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 						fields.FileField.FileInputField = &tfTypes.FileInputField{}
 					}
 					fields.FileField.MaxFileSize = types.StringPointerValue(fieldsItem.FileField.MaxFileSize)
+				}
+				if fieldsItem.FormStringField == nil {
+					fields.FormStringField = nil
+				} else {
+					fields.FormStringField = &tfTypes.FormStringField{}
+					fields.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem.FormStringField.DefaultValue)
+					if fieldsItem.FormStringField.PasswordField == nil {
+						fields.FormStringField.PasswordField = nil
+					} else {
+						fields.FormStringField.PasswordField = &tfTypes.PasswordField{}
+					}
+					if fieldsItem.FormStringField.PickerField == nil {
+						fields.FormStringField.PickerField = nil
+					} else {
+						fields.FormStringField.PickerField = &tfTypes.PickerField{}
+						if fieldsItem.FormStringField.PickerField.AppResourceFilter == nil {
+							fields.FormStringField.PickerField.AppResourceFilter = nil
+						} else {
+							fields.FormStringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
+							fields.FormStringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem.FormStringField.PickerField.AppResourceFilter.AppID)
+							fields.FormStringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem.FormStringField.PickerField.AppResourceFilter.ResourceTypeID)
+						}
+						if fieldsItem.FormStringField.PickerField.AppUserFilter == nil {
+							fields.FormStringField.PickerField.AppUserFilter = nil
+						} else {
+							fields.FormStringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
+							fields.FormStringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem.FormStringField.PickerField.AppUserFilter.AppID)
+						}
+						if fieldsItem.FormStringField.PickerField.C1UserFilter == nil {
+							fields.FormStringField.PickerField.C1UserFilter = nil
+						} else {
+							fields.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
+						}
+					}
+					fields.FormStringField.Placeholder = types.StringPointerValue(fieldsItem.FormStringField.Placeholder)
+					if fieldsItem.FormStringField.SelectField == nil {
+						fields.FormStringField.SelectField = nil
+					} else {
+						fields.FormStringField.SelectField = &tfTypes.SelectField{}
+						if fieldsItem.FormStringField.SelectField.Options != nil {
+							fields.FormStringField.SelectField.Options = []tfTypes.SelectOption{}
+
+							for _, optionsVarItem := range fieldsItem.FormStringField.SelectField.Options {
+								var optionsVar tfTypes.SelectOption
+
+								optionsVar.Description = types.StringPointerValue(optionsVarItem.Description)
+								optionsVar.DisplayName = types.StringPointerValue(optionsVarItem.DisplayName)
+								optionsVar.Value = types.StringPointerValue(optionsVarItem.Value)
+
+								fields.FormStringField.SelectField.Options = append(fields.FormStringField.SelectField.Options, optionsVar)
+							}
+						} else {
+							fields.FormStringField.SelectField.Options = nil
+						}
+						if fieldsItem.FormStringField.SelectField.Type != nil {
+							fields.FormStringField.SelectField.Type = types.StringValue(string(*fieldsItem.FormStringField.SelectField.Type))
+						} else {
+							fields.FormStringField.SelectField.Type = types.StringNull()
+						}
+					}
+					if fieldsItem.FormStringField.StringRules == nil {
+						fields.FormStringField.StringRules = nil
+					} else {
+						fields.FormStringField.StringRules = &tfTypes.StringRules{}
+						fields.FormStringField.StringRules.Address = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Address)
+						fields.FormStringField.StringRules.Const = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Const)
+						fields.FormStringField.StringRules.Contains = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Contains)
+						fields.FormStringField.StringRules.Email = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Email)
+						fields.FormStringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Hostname)
+						fields.FormStringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.IgnoreEmpty)
+						if fieldsItem.FormStringField.StringRules.In != nil {
+							fields.FormStringField.StringRules.In = make([]types.String, 0, len(fieldsItem.FormStringField.StringRules.In))
+							for _, v := range fieldsItem.FormStringField.StringRules.In {
+								fields.FormStringField.StringRules.In = append(fields.FormStringField.StringRules.In, types.StringValue(v))
+							}
+						} else {
+							fields.FormStringField.StringRules.In = nil
+						}
+						fields.FormStringField.StringRules.IP = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.IP)
+						fields.FormStringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Ipv4)
+						fields.FormStringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Ipv6)
+						fields.FormStringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem.FormStringField.StringRules.LenBytes)
+						fields.FormStringField.StringRules.Length = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Length)
+						fields.FormStringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MaxBytes)
+						fields.FormStringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MaxLen)
+						fields.FormStringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MinBytes)
+						fields.FormStringField.StringRules.MinLen = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MinLen)
+						fields.FormStringField.StringRules.NotContains = types.StringPointerValue(fieldsItem.FormStringField.StringRules.NotContains)
+						if fieldsItem.FormStringField.StringRules.NotIn != nil {
+							fields.FormStringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem.FormStringField.StringRules.NotIn))
+							for _, v := range fieldsItem.FormStringField.StringRules.NotIn {
+								fields.FormStringField.StringRules.NotIn = append(fields.FormStringField.StringRules.NotIn, types.StringValue(v))
+							}
+						} else {
+							fields.FormStringField.StringRules.NotIn = nil
+						}
+						fields.FormStringField.StringRules.Pattern = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Pattern)
+						fields.FormStringField.StringRules.Prefix = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Prefix)
+						fields.FormStringField.StringRules.Strict = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Strict)
+						fields.FormStringField.StringRules.Suffix = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Suffix)
+						fields.FormStringField.StringRules.URI = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.URI)
+						fields.FormStringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.URIRef)
+						fields.FormStringField.StringRules.UUID = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.UUID)
+						if fieldsItem.FormStringField.StringRules.WellKnownRegex != nil {
+							fields.FormStringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem.FormStringField.StringRules.WellKnownRegex))
+						} else {
+							fields.FormStringField.StringRules.WellKnownRegex = types.StringNull()
+						}
+					}
+					if fieldsItem.FormStringField.TextField == nil {
+						fields.FormStringField.TextField = nil
+					} else {
+						fields.FormStringField.TextField = &tfTypes.TextField{}
+						fields.FormStringField.TextField.Multiline = types.BoolPointerValue(fieldsItem.FormStringField.TextField.Multiline)
+						fields.FormStringField.TextField.Suffix = types.StringPointerValue(fieldsItem.FormStringField.TextField.Suffix)
+					}
+				}
+				if fieldsItem.FormStringMapField == nil {
+					fields.FormStringMapField = nil
+				} else {
+					fields.FormStringMapField = &tfTypes.FormStringMapField{}
+					if len(fieldsItem.FormStringMapField.DefaultValue) > 0 {
+						fields.FormStringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem.FormStringMapField.DefaultValue))
+						for key, value := range fieldsItem.FormStringMapField.DefaultValue {
+							fields.FormStringMapField.DefaultValue[key] = types.StringValue(value)
+						}
+					}
+					if fieldsItem.FormStringMapField.StringMapRules == nil {
+						fields.FormStringMapField.StringMapRules = nil
+					} else {
+						fields.FormStringMapField.StringMapRules = &tfTypes.StringMapRules{}
+						fields.FormStringMapField.StringMapRules.IsRequired = types.BoolPointerValue(fieldsItem.FormStringMapField.StringMapRules.IsRequired)
+						fields.FormStringMapField.StringMapRules.ValidateEmpty = types.BoolPointerValue(fieldsItem.FormStringMapField.StringMapRules.ValidateEmpty)
+					}
 				}
 				if fieldsItem.Int64Field == nil {
 					fields.Int64Field = nil
@@ -207,140 +364,6 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 					fields.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.SharedProviderConfig.InputTransformationCel)
 					fields.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem.SharedProviderConfig.LockDefaultValues)
 				}
-				if fieldsItem.StringField == nil {
-					fields.StringField = nil
-				} else {
-					fields.StringField = &tfTypes.StringField{}
-					fields.StringField.DefaultValue = types.StringPointerValue(fieldsItem.StringField.DefaultValue)
-					if fieldsItem.StringField.PasswordField == nil {
-						fields.StringField.PasswordField = nil
-					} else {
-						fields.StringField.PasswordField = &tfTypes.PasswordField{}
-					}
-					if fieldsItem.StringField.PickerField == nil {
-						fields.StringField.PickerField = nil
-					} else {
-						fields.StringField.PickerField = &tfTypes.PickerField{}
-						if fieldsItem.StringField.PickerField.AppResourceFilter == nil {
-							fields.StringField.PickerField.AppResourceFilter = nil
-						} else {
-							fields.StringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
-							fields.StringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppResourceFilter.AppID)
-							fields.StringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppResourceFilter.ResourceTypeID)
-						}
-						if fieldsItem.StringField.PickerField.AppUserFilter == nil {
-							fields.StringField.PickerField.AppUserFilter = nil
-						} else {
-							fields.StringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
-							fields.StringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppUserFilter.AppID)
-						}
-						if fieldsItem.StringField.PickerField.C1UserFilter == nil {
-							fields.StringField.PickerField.C1UserFilter = nil
-						} else {
-							fields.StringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
-						}
-					}
-					fields.StringField.Placeholder = types.StringPointerValue(fieldsItem.StringField.Placeholder)
-					if fieldsItem.StringField.SelectField == nil {
-						fields.StringField.SelectField = nil
-					} else {
-						fields.StringField.SelectField = &tfTypes.SelectField{}
-						if fieldsItem.StringField.SelectField.Options != nil {
-							fields.StringField.SelectField.Options = []tfTypes.SelectOption{}
-
-							for _, optionsVarItem := range fieldsItem.StringField.SelectField.Options {
-								var optionsVar tfTypes.SelectOption
-
-								optionsVar.Description = types.StringPointerValue(optionsVarItem.Description)
-								optionsVar.DisplayName = types.StringPointerValue(optionsVarItem.DisplayName)
-								optionsVar.Value = types.StringPointerValue(optionsVarItem.Value)
-
-								fields.StringField.SelectField.Options = append(fields.StringField.SelectField.Options, optionsVar)
-							}
-						} else {
-							fields.StringField.SelectField.Options = nil
-						}
-						if fieldsItem.StringField.SelectField.Type != nil {
-							fields.StringField.SelectField.Type = types.StringValue(string(*fieldsItem.StringField.SelectField.Type))
-						} else {
-							fields.StringField.SelectField.Type = types.StringNull()
-						}
-					}
-					if fieldsItem.StringField.StringRules == nil {
-						fields.StringField.StringRules = nil
-					} else {
-						fields.StringField.StringRules = &tfTypes.StringRules{}
-						fields.StringField.StringRules.Address = types.BoolPointerValue(fieldsItem.StringField.StringRules.Address)
-						fields.StringField.StringRules.Const = types.StringPointerValue(fieldsItem.StringField.StringRules.Const)
-						fields.StringField.StringRules.Contains = types.StringPointerValue(fieldsItem.StringField.StringRules.Contains)
-						fields.StringField.StringRules.Email = types.BoolPointerValue(fieldsItem.StringField.StringRules.Email)
-						fields.StringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem.StringField.StringRules.Hostname)
-						fields.StringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.StringField.StringRules.IgnoreEmpty)
-						if fieldsItem.StringField.StringRules.In != nil {
-							fields.StringField.StringRules.In = make([]types.String, 0, len(fieldsItem.StringField.StringRules.In))
-							for _, v := range fieldsItem.StringField.StringRules.In {
-								fields.StringField.StringRules.In = append(fields.StringField.StringRules.In, types.StringValue(v))
-							}
-						} else {
-							fields.StringField.StringRules.In = nil
-						}
-						fields.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem.StringField.StringRules.IP)
-						fields.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem.StringField.StringRules.Ipv4)
-						fields.StringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem.StringField.StringRules.Ipv6)
-						fields.StringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.LenBytes)
-						fields.StringField.StringRules.Length = types.StringPointerValue(fieldsItem.StringField.StringRules.Length)
-						fields.StringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.MaxBytes)
-						fields.StringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem.StringField.StringRules.MaxLen)
-						fields.StringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.MinBytes)
-						fields.StringField.StringRules.MinLen = types.StringPointerValue(fieldsItem.StringField.StringRules.MinLen)
-						fields.StringField.StringRules.NotContains = types.StringPointerValue(fieldsItem.StringField.StringRules.NotContains)
-						if fieldsItem.StringField.StringRules.NotIn != nil {
-							fields.StringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem.StringField.StringRules.NotIn))
-							for _, v := range fieldsItem.StringField.StringRules.NotIn {
-								fields.StringField.StringRules.NotIn = append(fields.StringField.StringRules.NotIn, types.StringValue(v))
-							}
-						} else {
-							fields.StringField.StringRules.NotIn = nil
-						}
-						fields.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem.StringField.StringRules.Pattern)
-						fields.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem.StringField.StringRules.Prefix)
-						fields.StringField.StringRules.Strict = types.BoolPointerValue(fieldsItem.StringField.StringRules.Strict)
-						fields.StringField.StringRules.Suffix = types.StringPointerValue(fieldsItem.StringField.StringRules.Suffix)
-						fields.StringField.StringRules.URI = types.BoolPointerValue(fieldsItem.StringField.StringRules.URI)
-						fields.StringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem.StringField.StringRules.URIRef)
-						fields.StringField.StringRules.UUID = types.BoolPointerValue(fieldsItem.StringField.StringRules.UUID)
-						if fieldsItem.StringField.StringRules.WellKnownRegex != nil {
-							fields.StringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem.StringField.StringRules.WellKnownRegex))
-						} else {
-							fields.StringField.StringRules.WellKnownRegex = types.StringNull()
-						}
-					}
-					if fieldsItem.StringField.TextField == nil {
-						fields.StringField.TextField = nil
-					} else {
-						fields.StringField.TextField = &tfTypes.TextField{}
-						fields.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem.StringField.TextField.Multiline)
-						fields.StringField.TextField.Suffix = types.StringPointerValue(fieldsItem.StringField.TextField.Suffix)
-					}
-				}
-				if fieldsItem.StringMapField == nil {
-					fields.StringMapField = nil
-				} else {
-					fields.StringMapField = &tfTypes.StringMapField{}
-					if len(fieldsItem.StringMapField.DefaultValue) > 0 {
-						fields.StringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem.StringMapField.DefaultValue))
-						for key, value := range fieldsItem.StringMapField.DefaultValue {
-							fields.StringMapField.DefaultValue[key] = types.StringValue(value)
-						}
-					}
-					if fieldsItem.StringMapField.StringMapRules == nil {
-						fields.StringMapField.StringMapRules = nil
-					} else {
-						fields.StringMapField.StringMapRules = &tfTypes.StringMapRules{}
-						fields.StringMapField.StringMapRules.IsRequired = types.BoolPointerValue(fieldsItem.StringMapField.StringMapRules.IsRequired)
-						fields.StringMapField.StringMapRules.ValidateEmpty = types.BoolPointerValue(fieldsItem.StringMapField.StringMapRules.ValidateEmpty)
-					}
-				}
 				if fieldsItem.UserProviderConfig == nil {
 					fields.UserProviderConfig = nil
 				} else {
@@ -354,29 +377,6 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedForm(ctx context.Context
 			r.Fields = nil
 		}
 		r.Name = types.StringPointerValue(resp.Name)
-	}
-
-	return diags
-}
-
-func (r *RequestSchemaDataSourceModel) RefreshFromSharedRequestSchema(ctx context.Context, resp *shared.RequestSchema) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
-		diags.Append(r.RefreshFromSharedForm(ctx, resp.Form)...)
-
-		if diags.HasError() {
-			return diags
-		}
-
-		r.ID = types.StringPointerValue(resp.ID)
-		if resp.JustificationVisibility != nil {
-			r.JustificationVisibility = types.StringValue(string(*resp.JustificationVisibility))
-		} else {
-			r.JustificationVisibility = types.StringNull()
-		}
 	}
 
 	return diags

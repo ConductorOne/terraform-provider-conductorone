@@ -54,7 +54,7 @@ type PolicyStepInstance struct {
 	//   - error
 	//   - cancelled
 	//
-	PolicyActionInstance *PolicyActionInstance `json:"action,omitempty"`
+	ActionInstance *ActionInstance `json:"action,omitempty"`
 	// The approval instance object describes the way a policy step should be approved as well as its outcomes and state.
 	//
 	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
@@ -116,11 +116,11 @@ func (p *PolicyStepInstance) GetAcceptInstance() *AcceptInstance {
 	return p.AcceptInstance
 }
 
-func (p *PolicyStepInstance) GetPolicyActionInstance() *PolicyActionInstance {
+func (p *PolicyStepInstance) GetActionInstance() *ActionInstance {
 	if p == nil {
 		return nil
 	}
-	return p.PolicyActionInstance
+	return p.ActionInstance
 }
 
 func (p *PolicyStepInstance) GetApprovalInstance() *ApprovalInstance {

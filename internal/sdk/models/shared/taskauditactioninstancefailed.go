@@ -18,12 +18,12 @@ type TaskAuditActionInstanceFailed struct {
 	//   - error
 	//   - cancelled
 	//
-	PolicyActionInstance *PolicyActionInstance `json:"instance,omitempty"`
+	ActionInstance *ActionInstance `json:"instance,omitempty"`
 }
 
-func (t *TaskAuditActionInstanceFailed) GetPolicyActionInstance() *PolicyActionInstance {
+func (t *TaskAuditActionInstanceFailed) GetActionInstance() *ActionInstance {
 	if t == nil {
 		return nil
 	}
-	return t.PolicyActionInstance
+	return t.ActionInstance
 }

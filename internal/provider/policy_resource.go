@@ -836,7 +836,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											}...),
 										},
 									},
-									"policy_form": schema.StringAttribute{
+									"form": schema.StringAttribute{
 										CustomType:  jsontypes.NormalizedType{},
 										Computed:    true,
 										Optional:    true,
