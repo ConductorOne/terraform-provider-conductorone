@@ -196,7 +196,7 @@ type Task struct {
 	// An array of external references to the task. Historically that has been items like Jira task IDs. This is currently unused, but may come back in the future for integrations.
 	ExternalRefs []ExternalRef `json:"externalRefs,omitempty"`
 	// A form is a collection of fields to be filled out by a user
-	Form *Form `json:"form,omitempty"`
+	RequestSchemaForm *RequestSchemaForm `json:"form,omitempty"`
 	// The ID of the task.
 	ID *string `json:"id,omitempty"`
 	// The insightIds field.
@@ -338,11 +338,11 @@ func (t *Task) GetExternalRefs() []ExternalRef {
 	return t.ExternalRefs
 }
 
-func (t *Task) GetForm() *Form {
+func (t *Task) GetRequestSchemaForm() *RequestSchemaForm {
 	if t == nil {
 		return nil
 	}
-	return t.Form
+	return t.RequestSchemaForm
 }
 
 func (t *Task) GetID() *string {

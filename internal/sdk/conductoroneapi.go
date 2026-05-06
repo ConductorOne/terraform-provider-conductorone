@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.881.16
+// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.882.0
 
 import (
 	"context"
@@ -140,6 +140,7 @@ type ConductoroneAPI struct {
 	User                                 *User
 	Vault                                *Vault
 	Webhooks                             *Webhooks
+	ConnectorOwnersV2                    *ConnectorOwnersV2
 	AppEntitlementOwnersV2               *AppEntitlementOwnersV2
 	AppOwnersV2                          *AppOwnersV2
 
@@ -230,9 +231,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.1.0",
+		SDKVersion: "1.1.1",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.1.0 2.881.16 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.1.1 2.882.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{
@@ -347,6 +348,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.User = newUser(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Vault = newVault(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Webhooks = newWebhooks(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ConnectorOwnersV2 = newConnectorOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppEntitlementOwnersV2 = newAppEntitlementOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppOwnersV2 = newAppOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
 

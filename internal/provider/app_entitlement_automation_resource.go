@@ -280,11 +280,11 @@ func (r *AppEntitlementAutomationResource) Create(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AppCreateAutomationResponse != nil) {
+	if !(res.CreateAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAppCreateAutomationResponse(ctx, res.AppCreateAutomationResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateAutomationResponse(ctx, res.CreateAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

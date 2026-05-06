@@ -20,37 +20,6 @@ resource "conductorone_automation" "my_automation" {
           id     = "...my_id..."
         }
       }
-      automations_task_action = {
-        close_action = {
-          use_subject_user = true
-          user_id_cel      = "...my_user_id_cel..."
-          user_ref = {
-            id = "...my_id..."
-          }
-        }
-        reassign_action = {
-          assignee_user_id_cel = "...my_assignee_user_id_cel..."
-          subject_user_id_cel  = "...my_subject_user_id_cel..."
-          use_subject_user     = true
-          user_ref = {
-            id = "...my_id..."
-          }
-          user_ref1 = {
-            id = "...my_id..."
-          }
-        }
-        task_types = [
-          "TASK_TYPE_REVOKE"
-        ]
-        task_user_relation = "TASK_USER_RELATION_UNSPECIFIED"
-      }
-      automations_webhook = {
-        payload = {
-          # ...
-        }
-        webhook_id     = "...my_webhook_id..."
-        webhook_id_cel = "...my_webhook_id_cel..."
-      }
       call_function = {
         args = {
           key = "value"
@@ -327,6 +296,30 @@ resource "conductorone_automation" "my_automation" {
         ttl                 = "...my_ttl..."
         vault_type          = "STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED"
       }
+      task_action = {
+        close_action = {
+          use_subject_user = false
+          user_id_cel      = "...my_user_id_cel..."
+          user_ref = {
+            id = "...my_id..."
+          }
+        }
+        reassign_action = {
+          assignee_user_id_cel = "...my_assignee_user_id_cel..."
+          subject_user_id_cel  = "...my_subject_user_id_cel..."
+          use_subject_user     = false
+          user_ref = {
+            id = "...my_id..."
+          }
+          user_ref1 = {
+            id = "...my_id..."
+          }
+        }
+        task_types = [
+          "TASK_TYPE_REVOKE"
+        ]
+        task_user_relation = "TASK_USER_RELATION_ASSIGNEE"
+      }
       unenroll_from_all_access_profiles = {
         catalog_ids = [
           "..."
@@ -352,13 +345,22 @@ resource "conductorone_automation" "my_automation" {
       wait_for_duration = {
         duration = "...my_duration..."
       }
+      webhook = {
+        payload = {
+          # ...
+        }
+        webhook_id     = "...my_webhook_id..."
+        webhook_id_cel = "...my_webhook_id_cel..."
+      }
     }
   ]
   automations_delete_automation_request = {
     # ...
   }
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
+  circuit_breaker_max    = 3
+  circuit_breaker_period = "CIRCUIT_BREAKER_PERIOD_MONTH"
+  description            = "...my_description..."
+  display_name           = "...my_display_name..."
   draft_automation_steps = [
     {
       account_lifecycle_action = {
@@ -373,37 +375,6 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
-      }
-      automations_task_action = {
-        close_action = {
-          use_subject_user = false
-          user_id_cel      = "...my_user_id_cel..."
-          user_ref = {
-            id = "...my_id..."
-          }
-        }
-        reassign_action = {
-          assignee_user_id_cel = "...my_assignee_user_id_cel..."
-          subject_user_id_cel  = "...my_subject_user_id_cel..."
-          use_subject_user     = true
-          user_ref = {
-            id = "...my_id..."
-          }
-          user_ref1 = {
-            id = "...my_id..."
-          }
-        }
-        task_types = [
-          "TASK_TYPE_REVOKE"
-        ]
-        task_user_relation = "TASK_USER_RELATION_UNSPECIFIED"
-      }
-      automations_webhook = {
-        payload = {
-          # ...
-        }
-        webhook_id     = "...my_webhook_id..."
-        webhook_id_cel = "...my_webhook_id_cel..."
       }
       call_function = {
         args = {
@@ -681,6 +652,30 @@ resource "conductorone_automation" "my_automation" {
         ttl                 = "...my_ttl..."
         vault_type          = "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT"
       }
+      task_action = {
+        close_action = {
+          use_subject_user = false
+          user_id_cel      = "...my_user_id_cel..."
+          user_ref = {
+            id = "...my_id..."
+          }
+        }
+        reassign_action = {
+          assignee_user_id_cel = "...my_assignee_user_id_cel..."
+          subject_user_id_cel  = "...my_subject_user_id_cel..."
+          use_subject_user     = false
+          user_ref = {
+            id = "...my_id..."
+          }
+          user_ref1 = {
+            id = "...my_id..."
+          }
+        }
+        task_types = [
+          "TASK_TYPE_UNSPECIFIED"
+        ]
+        task_user_relation = "TASK_USER_RELATION_UNSPECIFIED"
+      }
       unenroll_from_all_access_profiles = {
         catalog_ids = [
           "..."
@@ -705,6 +700,13 @@ resource "conductorone_automation" "my_automation" {
       }
       wait_for_duration = {
         duration = "...my_duration..."
+      }
+      webhook = {
+        payload = {
+          # ...
+        }
+        webhook_id     = "...my_webhook_id..."
+        webhook_id_cel = "...my_webhook_id_cel..."
       }
     }
   ]

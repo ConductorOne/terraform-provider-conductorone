@@ -471,7 +471,7 @@ func (s *AppEntitlements) DeleteAutomation(ctx context.Context, request operatio
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AppDeleteAutomationRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteAutomationRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -549,12 +549,12 @@ func (s *AppEntitlements) DeleteAutomation(ctx context.Context, request operatio
 				return nil, err
 			}
 
-			var out shared.AppDeleteAutomationResponse
+			var out shared.DeleteAutomationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AppDeleteAutomationResponse = &out
+			res.DeleteAutomationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -742,7 +742,7 @@ func (s *AppEntitlements) CreateAutomation(ctx context.Context, request operatio
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AppCreateAutomationRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateAutomationRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -820,12 +820,12 @@ func (s *AppEntitlements) CreateAutomation(ctx context.Context, request operatio
 				return nil, err
 			}
 
-			var out shared.AppCreateAutomationResponse
+			var out shared.CreateAutomationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AppCreateAutomationResponse = &out
+			res.CreateAutomationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

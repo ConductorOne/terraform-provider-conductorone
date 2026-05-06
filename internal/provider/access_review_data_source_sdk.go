@@ -117,14 +117,6 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 				r.AccessReviewInclusionScope.UserStatuses = nil
 			}
 		}
-		if resp.AccessReviewNotificationConfig == nil {
-			r.AccessReviewNotificationConfig = nil
-		} else {
-			r.AccessReviewNotificationConfig = &tfTypes.AccessReviewNotificationConfig{}
-			r.AccessReviewNotificationConfig.SendClose = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendClose)
-			r.AccessReviewNotificationConfig.SendKickoff = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendKickoff)
-			r.AccessReviewNotificationConfig.SendReminders = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendReminders)
-		}
 		if resp.AccessReviewScope == nil {
 			r.AccessReviewScope = nil
 		} else {
@@ -470,6 +462,14 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 					r.MultiAppSetup.AppEntitlements[multiAppEntitlementKey] = multiAppEntitlementResult
 				}
 			}
+		}
+		if resp.NotificationConfig == nil {
+			r.NotificationConfig = nil
+		} else {
+			r.NotificationConfig = &tfTypes.NotificationConfig{}
+			r.NotificationConfig.SendClose = types.BoolPointerValue(resp.NotificationConfig.SendClose)
+			r.NotificationConfig.SendKickoff = types.BoolPointerValue(resp.NotificationConfig.SendKickoff)
+			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
 		}
 		r.PolicyID = types.StringPointerValue(resp.PolicyID)
 		r.ReviewInstructions = types.StringPointerValue(resp.ReviewInstructions)

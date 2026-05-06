@@ -22,6 +22,8 @@ type C1TodoItem struct {
 	//   - call
 	//
 	DynamicString1 *DynamicString `json:"label,omitempty"`
+	// The section field.
+	Section *string `json:"section,omitempty"`
 	// The status field.
 	Status *string `json:"status,omitempty"`
 	// ServerEvent triggers a server-side action.
@@ -55,6 +57,13 @@ func (c *C1TodoItem) GetDynamicString1() *DynamicString {
 		return nil
 	}
 	return c.DynamicString1
+}
+
+func (c *C1TodoItem) GetSection() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Section
 }
 
 func (c *C1TodoItem) GetStatus() *string {

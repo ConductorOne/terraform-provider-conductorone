@@ -8,9 +8,9 @@ import (
 )
 
 type C1APIAppV1AppEntitlementsCreateAutomationRequest struct {
-	AppID                      string                             `pathParam:"style=simple,explode=false,name=app_id"`
-	AppEntitlementID           string                             `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
-	AppCreateAutomationRequest *shared.AppCreateAutomationRequest `request:"mediaType=application/json"`
+	AppID                   string                          `pathParam:"style=simple,explode=false,name=app_id"`
+	AppEntitlementID        string                          `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
+	CreateAutomationRequest *shared.CreateAutomationRequest `request:"mediaType=application/json"`
 }
 
 func (c *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetAppID() string {
@@ -27,11 +27,11 @@ func (c *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetAppEntitlementID()
 	return c.AppEntitlementID
 }
 
-func (c *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetAppCreateAutomationRequest() *shared.AppCreateAutomationRequest {
+func (c *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetCreateAutomationRequest() *shared.CreateAutomationRequest {
 	if c == nil {
 		return nil
 	}
-	return c.AppCreateAutomationRequest
+	return c.CreateAutomationRequest
 }
 
 // #region class-body-c1apiappv1appentitlementscreateautomationrequest
@@ -45,7 +45,7 @@ type C1APIAppV1AppEntitlementsCreateAutomationResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successful response
-	AppCreateAutomationResponse *shared.AppCreateAutomationResponse
+	CreateAutomationResponse *shared.CreateAutomationResponse
 }
 
 func (c *C1APIAppV1AppEntitlementsCreateAutomationResponse) GetContentType() string {
@@ -69,11 +69,11 @@ func (c *C1APIAppV1AppEntitlementsCreateAutomationResponse) GetRawResponse() *ht
 	return c.RawResponse
 }
 
-func (c *C1APIAppV1AppEntitlementsCreateAutomationResponse) GetAppCreateAutomationResponse() *shared.AppCreateAutomationResponse {
+func (c *C1APIAppV1AppEntitlementsCreateAutomationResponse) GetCreateAutomationResponse() *shared.CreateAutomationResponse {
 	if c == nil {
 		return nil
 	}
-	return c.AppCreateAutomationResponse
+	return c.CreateAutomationResponse
 }
 
 // #region class-body-c1apiappv1appentitlementscreateautomationresponse

@@ -41,7 +41,7 @@ type FormInstance struct {
 	FormCompletedAction *FormCompletedAction `json:"completed,omitempty"`
 	Data                *FormInstanceData    `json:"data,omitempty"`
 	// A form is a collection of fields to be filled out by a user
-	Form *Form `json:"form,omitempty"`
+	RequestSchemaForm *RequestSchemaForm `json:"form,omitempty"`
 	// The ReassignedAction object describes the outcome of a policy step that has been reassigned.
 	ReassignedAction *ReassignedAction `json:"reassigned,omitempty"`
 	// The restart action describes the outcome of policy steps for when the task was restarted. This can be applied to multiple steps since restart skips all pending next steps.
@@ -66,11 +66,11 @@ func (f *FormInstance) GetData() *FormInstanceData {
 	return f.Data
 }
 
-func (f *FormInstance) GetForm() *Form {
+func (f *FormInstance) GetRequestSchemaForm() *RequestSchemaForm {
 	if f == nil {
 		return nil
 	}
-	return f.Form
+	return f.RequestSchemaForm
 }
 
 func (f *FormInstance) GetReassignedAction() *ReassignedAction {

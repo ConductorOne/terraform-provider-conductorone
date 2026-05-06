@@ -9,6 +9,8 @@ import (
 
 // AppOwnerUser represents a user ownership source for an app.
 type AppOwnerUser struct {
+	// The appId field.
+	AppID     *string    `json:"appId,omitempty"`
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// The roleSlug field.
 	RoleSlug *string `json:"roleSlug,omitempty"`
@@ -25,6 +27,13 @@ func (a *AppOwnerUser) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AppOwnerUser) GetAppID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AppID
 }
 
 func (a *AppOwnerUser) GetCreatedAt() *time.Time {

@@ -2,90 +2,43 @@
 
 package shared
 
-import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
-	"time"
-)
+type Payload struct {
+}
 
 // The Webhook message.
+//
+// This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
+//   - webhookId
+//   - webhookIdCel
 type Webhook struct {
-	CallbackTimeout *string    `json:"callbackTimeout,omitempty"`
-	CreatedAt       *time.Time `json:"createdAt,omitempty"`
-	DeletedAt       *time.Time `json:"deletedAt,omitempty"`
-	// An optional description of the webhook's purpose.
-	Description *string `json:"description,omitempty"`
-	// The human-readable name of the webhook.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The unique identifier of the webhook.
-	ID        *string    `json:"id,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
-	// The destination URL that receives event notification HTTP callbacks.
-	URL *string `json:"url,omitempty"`
+	Payload *Payload `json:"payload,omitempty"`
+	// The webhookId field.
+	// This field is part of the `webhook_identifier` oneof.
+	// See the documentation for `c1.api.automations.v1.Webhook` for more details.
+	WebhookID *string `json:"webhookId,omitempty"`
+	// The webhookIdCel field.
+	// This field is part of the `webhook_identifier` oneof.
+	// See the documentation for `c1.api.automations.v1.Webhook` for more details.
+	WebhookIDCel *string `json:"webhookIdCel,omitempty"`
 }
 
-func (w Webhook) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(w, "", false)
-}
-
-func (w *Webhook) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (w *Webhook) GetCallbackTimeout() *string {
+func (w *Webhook) GetPayload() *Payload {
 	if w == nil {
 		return nil
 	}
-	return w.CallbackTimeout
+	return w.Payload
 }
 
-func (w *Webhook) GetCreatedAt() *time.Time {
+func (w *Webhook) GetWebhookID() *string {
 	if w == nil {
 		return nil
 	}
-	return w.CreatedAt
+	return w.WebhookID
 }
 
-func (w *Webhook) GetDeletedAt() *time.Time {
+func (w *Webhook) GetWebhookIDCel() *string {
 	if w == nil {
 		return nil
 	}
-	return w.DeletedAt
-}
-
-func (w *Webhook) GetDescription() *string {
-	if w == nil {
-		return nil
-	}
-	return w.Description
-}
-
-func (w *Webhook) GetDisplayName() *string {
-	if w == nil {
-		return nil
-	}
-	return w.DisplayName
-}
-
-func (w *Webhook) GetID() *string {
-	if w == nil {
-		return nil
-	}
-	return w.ID
-}
-
-func (w *Webhook) GetUpdatedAt() *time.Time {
-	if w == nil {
-		return nil
-	}
-	return w.UpdatedAt
-}
-
-func (w *Webhook) GetURL() *string {
-	if w == nil {
-		return nil
-	}
-	return w.URL
+	return w.WebhookIDCel
 }

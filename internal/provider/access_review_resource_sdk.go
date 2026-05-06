@@ -118,14 +118,6 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 				r.AccessReviewInclusionScope.UserStatuses = nil
 			}
 		}
-		if resp.AccessReviewNotificationConfig == nil {
-			r.AccessReviewNotificationConfig = nil
-		} else {
-			r.AccessReviewNotificationConfig = &tfTypes.AccessReviewNotificationConfig{}
-			r.AccessReviewNotificationConfig.SendClose = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendClose)
-			r.AccessReviewNotificationConfig.SendKickoff = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendKickoff)
-			r.AccessReviewNotificationConfig.SendReminders = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendReminders)
-		}
 		if resp.AccessReviewScope == nil {
 			r.AccessReviewScope = nil
 		} else {
@@ -471,6 +463,14 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 					r.MultiAppSetup.AppEntitlements[multiAppEntitlementKey] = multiAppEntitlementResult
 				}
 			}
+		}
+		if resp.NotificationConfig == nil {
+			r.NotificationConfig = nil
+		} else {
+			r.NotificationConfig = &tfTypes.NotificationConfig{}
+			r.NotificationConfig.SendClose = types.BoolPointerValue(resp.NotificationConfig.SendClose)
+			r.NotificationConfig.SendKickoff = types.BoolPointerValue(resp.NotificationConfig.SendKickoff)
+			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
 		}
 		r.PolicyID = types.StringPointerValue(resp.PolicyID)
 		r.ReviewInstructions = types.StringPointerValue(resp.ReviewInstructions)
@@ -971,27 +971,27 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 			AppEntitlements:       appEntitlements,
 		}
 	}
-	var accessReviewNotificationConfig *shared.AccessReviewNotificationConfig
-	if r.AccessReviewNotificationConfig != nil {
+	var notificationConfig *shared.NotificationConfig
+	if r.NotificationConfig != nil {
 		sendClose := new(bool)
-		if !r.AccessReviewNotificationConfig.SendClose.IsUnknown() && !r.AccessReviewNotificationConfig.SendClose.IsNull() {
-			*sendClose = r.AccessReviewNotificationConfig.SendClose.ValueBool()
+		if !r.NotificationConfig.SendClose.IsUnknown() && !r.NotificationConfig.SendClose.IsNull() {
+			*sendClose = r.NotificationConfig.SendClose.ValueBool()
 		} else {
 			sendClose = nil
 		}
 		sendKickoff := new(bool)
-		if !r.AccessReviewNotificationConfig.SendKickoff.IsUnknown() && !r.AccessReviewNotificationConfig.SendKickoff.IsNull() {
-			*sendKickoff = r.AccessReviewNotificationConfig.SendKickoff.ValueBool()
+		if !r.NotificationConfig.SendKickoff.IsUnknown() && !r.NotificationConfig.SendKickoff.IsNull() {
+			*sendKickoff = r.NotificationConfig.SendKickoff.ValueBool()
 		} else {
 			sendKickoff = nil
 		}
 		sendReminders := new(bool)
-		if !r.AccessReviewNotificationConfig.SendReminders.IsUnknown() && !r.AccessReviewNotificationConfig.SendReminders.IsNull() {
-			*sendReminders = r.AccessReviewNotificationConfig.SendReminders.ValueBool()
+		if !r.NotificationConfig.SendReminders.IsUnknown() && !r.NotificationConfig.SendReminders.IsNull() {
+			*sendReminders = r.NotificationConfig.SendReminders.ValueBool()
 		} else {
 			sendReminders = nil
 		}
-		accessReviewNotificationConfig = &shared.AccessReviewNotificationConfig{
+		notificationConfig = &shared.NotificationConfig{
 			SendClose:     sendClose,
 			SendKickoff:   sendKickoff,
 			SendReminders: sendReminders,
@@ -1443,7 +1443,7 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 		ID:                             id,
 		AccessReviewInclusionScope:     accessReviewInclusionScope,
 		MultiAppSetup:                  multiAppSetup,
-		AccessReviewNotificationConfig: accessReviewNotificationConfig,
+		NotificationConfig:             notificationConfig,
 		PolicyID:                       policyId1,
 		ReviewInstructions:             reviewInstructions,
 		ScheduledStartDate:             scheduledStartDate,
@@ -1488,27 +1488,27 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 	} else {
 		duplicateFrom = nil
 	}
-	var accessReviewNotificationConfig *shared.AccessReviewNotificationConfig
-	if r.AccessReviewNotificationConfig != nil {
+	var notificationConfig *shared.NotificationConfig
+	if r.NotificationConfig != nil {
 		sendClose := new(bool)
-		if !r.AccessReviewNotificationConfig.SendClose.IsUnknown() && !r.AccessReviewNotificationConfig.SendClose.IsNull() {
-			*sendClose = r.AccessReviewNotificationConfig.SendClose.ValueBool()
+		if !r.NotificationConfig.SendClose.IsUnknown() && !r.NotificationConfig.SendClose.IsNull() {
+			*sendClose = r.NotificationConfig.SendClose.ValueBool()
 		} else {
 			sendClose = nil
 		}
 		sendKickoff := new(bool)
-		if !r.AccessReviewNotificationConfig.SendKickoff.IsUnknown() && !r.AccessReviewNotificationConfig.SendKickoff.IsNull() {
-			*sendKickoff = r.AccessReviewNotificationConfig.SendKickoff.ValueBool()
+		if !r.NotificationConfig.SendKickoff.IsUnknown() && !r.NotificationConfig.SendKickoff.IsNull() {
+			*sendKickoff = r.NotificationConfig.SendKickoff.ValueBool()
 		} else {
 			sendKickoff = nil
 		}
 		sendReminders := new(bool)
-		if !r.AccessReviewNotificationConfig.SendReminders.IsUnknown() && !r.AccessReviewNotificationConfig.SendReminders.IsNull() {
-			*sendReminders = r.AccessReviewNotificationConfig.SendReminders.ValueBool()
+		if !r.NotificationConfig.SendReminders.IsUnknown() && !r.NotificationConfig.SendReminders.IsNull() {
+			*sendReminders = r.NotificationConfig.SendReminders.ValueBool()
 		} else {
 			sendReminders = nil
 		}
-		accessReviewNotificationConfig = &shared.AccessReviewNotificationConfig{
+		notificationConfig = &shared.NotificationConfig{
 			SendClose:     sendClose,
 			SendKickoff:   sendKickoff,
 			SendReminders: sendReminders,
@@ -1840,15 +1840,15 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 		}
 	}
 	out := shared.AccessReviewServiceCreateRequest{
-		CompletionDate:                 completionDate,
-		Description:                    description,
-		DisplayName:                    displayName,
-		DuplicateFrom:                  duplicateFrom,
-		AccessReviewNotificationConfig: accessReviewNotificationConfig,
-		OwnerIds:                       ownerIds,
-		PolicyID:                       policyID,
-		ScopeType:                      scopeType,
-		AccessReviewScopeV2:            accessReviewScopeV2,
+		CompletionDate:      completionDate,
+		Description:         description,
+		DisplayName:         displayName,
+		DuplicateFrom:       duplicateFrom,
+		NotificationConfig:  notificationConfig,
+		OwnerIds:            ownerIds,
+		PolicyID:            policyID,
+		ScopeType:           scopeType,
+		AccessReviewScopeV2: accessReviewScopeV2,
 	}
 
 	return &out, diags

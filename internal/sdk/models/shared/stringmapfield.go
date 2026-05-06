@@ -4,22 +4,13 @@ package shared
 
 // The StringMapField message.
 type StringMapField struct {
-	// The defaultValue field.
-	DefaultValue map[string]string `json:"defaultValue,omitempty"`
-	// The StringMapRules message.
-	StringMapRules *StringMapRules `json:"rules,omitempty"`
+	// The optional field.
+	Optional *bool `json:"optional,omitempty"`
 }
 
-func (s *StringMapField) GetDefaultValue() map[string]string {
+func (s *StringMapField) GetOptional() *bool {
 	if s == nil {
 		return nil
 	}
-	return s.DefaultValue
-}
-
-func (s *StringMapField) GetStringMapRules() *StringMapRules {
-	if s == nil {
-		return nil
-	}
-	return s.StringMapRules
+	return s.Optional
 }

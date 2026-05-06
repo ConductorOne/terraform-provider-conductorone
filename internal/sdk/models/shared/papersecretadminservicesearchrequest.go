@@ -81,23 +81,23 @@ func (e *SortBy) IsExact() bool {
 	return false
 }
 
-type Statuses string
+type PaperSecretAdminServiceSearchRequestStatuses string
 
 const (
-	StatusesSecretStatusUnspecified Statuses = "SECRET_STATUS_UNSPECIFIED"
-	StatusesSecretStatusActive      Statuses = "SECRET_STATUS_ACTIVE"
-	StatusesSecretStatusExpired     Statuses = "SECRET_STATUS_EXPIRED"
-	StatusesSecretStatusBurned      Statuses = "SECRET_STATUS_BURNED"
-	StatusesSecretStatusRevoked     Statuses = "SECRET_STATUS_REVOKED"
-	StatusesSecretStatusDataDeleted Statuses = "SECRET_STATUS_DATA_DELETED"
+	PaperSecretAdminServiceSearchRequestStatusesSecretStatusUnspecified PaperSecretAdminServiceSearchRequestStatuses = "SECRET_STATUS_UNSPECIFIED"
+	PaperSecretAdminServiceSearchRequestStatusesSecretStatusActive      PaperSecretAdminServiceSearchRequestStatuses = "SECRET_STATUS_ACTIVE"
+	PaperSecretAdminServiceSearchRequestStatusesSecretStatusExpired     PaperSecretAdminServiceSearchRequestStatuses = "SECRET_STATUS_EXPIRED"
+	PaperSecretAdminServiceSearchRequestStatusesSecretStatusBurned      PaperSecretAdminServiceSearchRequestStatuses = "SECRET_STATUS_BURNED"
+	PaperSecretAdminServiceSearchRequestStatusesSecretStatusRevoked     PaperSecretAdminServiceSearchRequestStatuses = "SECRET_STATUS_REVOKED"
+	PaperSecretAdminServiceSearchRequestStatusesSecretStatusDataDeleted PaperSecretAdminServiceSearchRequestStatuses = "SECRET_STATUS_DATA_DELETED"
 )
 
-func (e Statuses) ToPointer() *Statuses {
+func (e PaperSecretAdminServiceSearchRequestStatuses) ToPointer() *PaperSecretAdminServiceSearchRequestStatuses {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Statuses) IsExact() bool {
+func (e *PaperSecretAdminServiceSearchRequestStatuses) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "SECRET_STATUS_UNSPECIFIED", "SECRET_STATUS_ACTIVE", "SECRET_STATUS_EXPIRED", "SECRET_STATUS_BURNED", "SECRET_STATUS_REVOKED", "SECRET_STATUS_DATA_DELETED":
@@ -128,7 +128,7 @@ type PaperSecretAdminServiceSearchRequest struct {
 	// Sort order
 	SortBy *SortBy `json:"sortBy,omitempty"`
 	// Filter by status (optional)
-	Statuses []Statuses `json:"statuses,omitempty"`
+	Statuses []PaperSecretAdminServiceSearchRequestStatuses `json:"statuses,omitempty"`
 }
 
 func (p PaperSecretAdminServiceSearchRequest) MarshalJSON() ([]byte, error) {
@@ -212,7 +212,7 @@ func (p *PaperSecretAdminServiceSearchRequest) GetSortBy() *SortBy {
 	return p.SortBy
 }
 
-func (p *PaperSecretAdminServiceSearchRequest) GetStatuses() []Statuses {
+func (p *PaperSecretAdminServiceSearchRequest) GetStatuses() []PaperSecretAdminServiceSearchRequestStatuses {
 	if p == nil {
 		return nil
 	}

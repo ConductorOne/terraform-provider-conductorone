@@ -129,7 +129,7 @@ type AccessReviewTemplateServiceCreateRequest struct {
 	// The isCampaignScheduleEnabled field.
 	IsCampaignScheduleEnabled *bool `json:"isCampaignScheduleEnabled,omitempty"`
 	// Controls which email notifications are sent during the access review lifecycle.
-	AccessReviewNotificationConfig *AccessReviewNotificationConfig `json:"notificationConfig,omitempty"`
+	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The IDs of the users who own this template. At least one owner is required.
 	OwnerIds []string `json:"ownerIds,omitempty"`
 	// The ID of the default review policy for campaigns created from this template.
@@ -271,11 +271,11 @@ func (a *AccessReviewTemplateServiceCreateRequest) GetIsCampaignScheduleEnabled(
 	return a.IsCampaignScheduleEnabled
 }
 
-func (a *AccessReviewTemplateServiceCreateRequest) GetAccessReviewNotificationConfig() *AccessReviewNotificationConfig {
+func (a *AccessReviewTemplateServiceCreateRequest) GetNotificationConfig() *NotificationConfig {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewNotificationConfig
+	return a.NotificationConfig
 }
 
 func (a *AccessReviewTemplateServiceCreateRequest) GetOwnerIds() []string {

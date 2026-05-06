@@ -448,11 +448,11 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 										steps.Approval.WebhookApproval.WebhookID = types.StringPointerValue(stepsItem.Approval.WebhookApproval.WebhookID)
 									}
 								}
-								if stepsItem.PolicyForm == nil {
-									steps.PolicyForm = jsontypes.NewNormalizedNull()
+								if stepsItem.Form == nil {
+									steps.Form = jsontypes.NewNormalizedNull()
 								} else {
-									policyFormResult, _ := json.Marshal(stepsItem.PolicyForm)
-									steps.PolicyForm = jsontypes.NewNormalizedValue(string(policyFormResult))
+									formResult, _ := json.Marshal(stepsItem.Form)
+									steps.Form = jsontypes.NewNormalizedValue(string(formResult))
 								}
 								if stepsItem.Provision == nil {
 									steps.Provision = nil

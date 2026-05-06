@@ -16,7 +16,9 @@ type AppOwnerEntitlement struct {
 	//   - durationGrant
 	//
 	AppEntitlement *AppEntitlement `json:"appEntitlement,omitempty"`
-	CreatedAt      *time.Time      `json:"createdAt,omitempty"`
+	// The appId field.
+	AppID     *string    `json:"appId,omitempty"`
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// The roleSlug field.
 	RoleSlug *string `json:"roleSlug,omitempty"`
 }
@@ -37,6 +39,13 @@ func (a *AppOwnerEntitlement) GetAppEntitlement() *AppEntitlement {
 		return nil
 	}
 	return a.AppEntitlement
+}
+
+func (a *AppOwnerEntitlement) GetAppID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AppID
 }
 
 func (a *AppOwnerEntitlement) GetCreatedAt() *time.Time {

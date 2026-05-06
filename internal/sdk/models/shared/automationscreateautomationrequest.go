@@ -2,12 +2,42 @@
 
 package shared
 
+// AutomationsCreateAutomationRequestCircuitBreakerPeriod - The circuitBreakerPeriod field.
+type AutomationsCreateAutomationRequestCircuitBreakerPeriod string
+
+const (
+	AutomationsCreateAutomationRequestCircuitBreakerPeriodCircuitBreakerPeriodUnspecified AutomationsCreateAutomationRequestCircuitBreakerPeriod = "CIRCUIT_BREAKER_PERIOD_UNSPECIFIED"
+	AutomationsCreateAutomationRequestCircuitBreakerPeriodCircuitBreakerPeriodHour        AutomationsCreateAutomationRequestCircuitBreakerPeriod = "CIRCUIT_BREAKER_PERIOD_HOUR"
+	AutomationsCreateAutomationRequestCircuitBreakerPeriodCircuitBreakerPeriodDay         AutomationsCreateAutomationRequestCircuitBreakerPeriod = "CIRCUIT_BREAKER_PERIOD_DAY"
+	AutomationsCreateAutomationRequestCircuitBreakerPeriodCircuitBreakerPeriodWeek        AutomationsCreateAutomationRequestCircuitBreakerPeriod = "CIRCUIT_BREAKER_PERIOD_WEEK"
+	AutomationsCreateAutomationRequestCircuitBreakerPeriodCircuitBreakerPeriodMonth       AutomationsCreateAutomationRequestCircuitBreakerPeriod = "CIRCUIT_BREAKER_PERIOD_MONTH"
+)
+
+func (e AutomationsCreateAutomationRequestCircuitBreakerPeriod) ToPointer() *AutomationsCreateAutomationRequestCircuitBreakerPeriod {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AutomationsCreateAutomationRequestCircuitBreakerPeriod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CIRCUIT_BREAKER_PERIOD_UNSPECIFIED", "CIRCUIT_BREAKER_PERIOD_HOUR", "CIRCUIT_BREAKER_PERIOD_DAY", "CIRCUIT_BREAKER_PERIOD_WEEK", "CIRCUIT_BREAKER_PERIOD_MONTH":
+			return true
+		}
+	}
+	return false
+}
+
 // AutomationsCreateAutomationRequest - The CreateAutomationRequest message.
 type AutomationsCreateAutomationRequest struct {
 	// the app id this workflow_template belongs to
 	AppID *string `json:"appId,omitempty"`
 	// Ordered list of steps that the automation executes.
 	AutomationSteps []AutomationStep `json:"automationSteps,omitempty"`
+	// Circuit breaker rate cap. See Automation.circuit_breaker_max for semantics.
+	CircuitBreakerMax *int64 `json:"circuitBreakerMax,omitempty"`
+	// The circuitBreakerPeriod field.
+	CircuitBreakerPeriod *AutomationsCreateAutomationRequestCircuitBreakerPeriod `json:"circuitBreakerPeriod,omitempty"`
 	// The AutomationContext message.
 	AutomationContext *AutomationContext `json:"context,omitempty"`
 	// Optional description explaining the automation's purpose.
@@ -38,6 +68,20 @@ func (a *AutomationsCreateAutomationRequest) GetAutomationSteps() []AutomationSt
 		return nil
 	}
 	return a.AutomationSteps
+}
+
+func (a *AutomationsCreateAutomationRequest) GetCircuitBreakerMax() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.CircuitBreakerMax
+}
+
+func (a *AutomationsCreateAutomationRequest) GetCircuitBreakerPeriod() *AutomationsCreateAutomationRequestCircuitBreakerPeriod {
+	if a == nil {
+		return nil
+	}
+	return a.CircuitBreakerPeriod
 }
 
 func (a *AutomationsCreateAutomationRequest) GetAutomationContext() *AutomationContext {

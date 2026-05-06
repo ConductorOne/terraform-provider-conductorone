@@ -31,11 +31,11 @@ type RequestSchemaServiceCreateRequest struct {
 	// An optional description of the request schema's purpose.
 	Description *string `json:"description,omitempty"`
 	// Logical groupings of fields for display purposes.
-	FieldGroups []FieldGroup `json:"fieldGroups,omitempty"`
+	FieldGroups []FormFieldGroup `json:"fieldGroups,omitempty"`
 	// Dependencies between fields that control conditional visibility or validation.
 	FieldRelationships []FieldRelationship `json:"fieldRelationships,omitempty"`
 	// The form fields that users must fill out when requesting access.
-	Fields []Field `json:"fields,omitempty"`
+	Fields []FormField `json:"fields,omitempty"`
 	// Controls whether the justification field is shown or hidden on the request form.
 	JustificationVisibility *JustificationVisibility `json:"justificationVisibility,omitempty"`
 	// The human-readable name for the request schema.
@@ -49,7 +49,7 @@ func (r *RequestSchemaServiceCreateRequest) GetDescription() *string {
 	return r.Description
 }
 
-func (r *RequestSchemaServiceCreateRequest) GetFieldGroups() []FieldGroup {
+func (r *RequestSchemaServiceCreateRequest) GetFieldGroups() []FormFieldGroup {
 	if r == nil {
 		return nil
 	}
@@ -63,7 +63,7 @@ func (r *RequestSchemaServiceCreateRequest) GetFieldRelationships() []FieldRelat
 	return r.FieldRelationships
 }
 
-func (r *RequestSchemaServiceCreateRequest) GetFields() []Field {
+func (r *RequestSchemaServiceCreateRequest) GetFields() []FormField {
 	if r == nil {
 		return nil
 	}

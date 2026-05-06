@@ -32,7 +32,6 @@ type AccessReviewDataSourceModel struct {
 	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig                `tfsdk:"access_review_column_config"`
 	AccessReviewExclusionScope     *tfTypes.AccessReviewExclusionScope              `tfsdk:"access_review_exclusion_scope"`
 	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope              `tfsdk:"access_review_inclusion_scope"`
-	AccessReviewNotificationConfig *tfTypes.AccessReviewNotificationConfig          `tfsdk:"access_review_notification_config"`
 	AccessReviewScope              *tfTypes.AccessReviewScope                       `tfsdk:"access_review_scope"`
 	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2                     `tfsdk:"access_review_scope_v2"`
 	AccessReviewTemplateID         types.String                                     `tfsdk:"access_review_template_id"`
@@ -64,6 +63,7 @@ type AccessReviewDataSourceModel struct {
 	HasAccuracySupport             types.Bool                                       `tfsdk:"has_accuracy_support"`
 	ID                             types.String                                     `tfsdk:"id"`
 	MultiAppSetup                  *tfTypes.MultiAppSetup                           `tfsdk:"multi_app_setup"`
+	NotificationConfig             *tfTypes.NotificationConfig                      `tfsdk:"notification_config"`
 	PolicyID                       types.String                                     `tfsdk:"policy_id"`
 	PolicyPath                     types.String                                     `tfsdk:"policy_path"`
 	Read                           types.Bool                                       `tfsdk:"read"`
@@ -172,24 +172,6 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 					},
 				},
 				Description: `The AccessReviewInclusionScope message.`,
-			},
-			"access_review_notification_config": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"send_close": schema.BoolAttribute{
-						Computed:    true,
-						Description: `Whether to send a notification when the campaign is closed.`,
-					},
-					"send_kickoff": schema.BoolAttribute{
-						Computed:    true,
-						Description: `Whether to send a notification when the campaign is started.`,
-					},
-					"send_reminders": schema.BoolAttribute{
-						Computed:    true,
-						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
-					},
-				},
-				Description: `Controls which email notifications are sent during the access review lifecycle.`,
 			},
 			"access_review_scope": schema.SingleNestedAttribute{
 				Computed: true,
@@ -648,6 +630,24 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 					},
 				},
 				Description: `The MultiAppSetup message.`,
+			},
+			"notification_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"send_close": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether to send a notification when the campaign is closed.`,
+					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether to send a notification when the campaign is started.`,
+					},
+					"send_reminders": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
+					},
+				},
+				Description: `Controls which email notifications are sent during the access review lifecycle.`,
 			},
 			"policy_id": schema.StringAttribute{
 				Computed:    true,

@@ -5,12 +5,12 @@ package shared
 // The WebhooksSearchResponse message.
 type WebhooksSearchResponse struct {
 	// The list of webhooks matching the search criteria.
-	List []Webhook `json:"list,omitempty"`
+	List []WebhookEndpoint `json:"list,omitempty"`
 	// A token to retrieve the next page of results, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (w *WebhooksSearchResponse) GetList() []Webhook {
+func (w *WebhooksSearchResponse) GetList() []WebhookEndpoint {
 	if w == nil {
 		return nil
 	}

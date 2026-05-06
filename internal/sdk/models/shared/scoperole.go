@@ -8,7 +8,8 @@ package shared
 //	Action fetch.
 type ScopeRole struct {
 	// The IaaS/sparse-ACL app the (scope, role) pair lives on.
-	AppID *string `json:"appId,omitempty"`
+	AppID         *string `json:"appId,omitempty"`
+	GrantDuration *string `json:"grantDuration,omitempty"`
 	// The roleResourceId field.
 	RoleResourceID *string `json:"roleResourceId,omitempty"`
 	// The roleResourceTypeId field.
@@ -24,6 +25,13 @@ func (s *ScopeRole) GetAppID() *string {
 		return nil
 	}
 	return s.AppID
+}
+
+func (s *ScopeRole) GetGrantDuration() *string {
+	if s == nil {
+		return nil
+	}
+	return s.GrantDuration
 }
 
 func (s *ScopeRole) GetRoleResourceID() *string {

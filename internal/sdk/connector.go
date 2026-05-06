@@ -2204,7 +2204,7 @@ func (s *Connector) RotateCredential(ctx context.Context, request *shared.Connec
 
 // ValidateHTTPConnectorConfig - Validate Http Connector Config
 // Validate an HTTP connector configuration and return any diagnostics or errors found.
-func (s *Connector) ValidateHTTPConnectorConfig(ctx context.Context, request *shared.AppEditorValidateRequest, opts ...operations.Option) (*operations.C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse, error) {
+func (s *Connector) ValidateHTTPConnectorConfig(ctx context.Context, request *shared.EditorValidateRequest, opts ...operations.Option) (*operations.C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -2314,12 +2314,12 @@ func (s *Connector) ValidateHTTPConnectorConfig(ctx context.Context, request *sh
 				return nil, err
 			}
 
-			var out shared.AppEditorValidateResponse
+			var out shared.EditorValidateResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AppEditorValidateResponse = &out
+			res.EditorValidateResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

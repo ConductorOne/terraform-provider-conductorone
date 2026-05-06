@@ -5,16 +5,16 @@ package shared
 // ConnectorCatalogServiceConfigurationSchemaResponse is the response containing the connector's configuration schema.
 type ConnectorCatalogServiceConfigurationSchemaResponse struct {
 	// A form is a collection of fields to be filled out by a user
-	Form *Form `json:"formSchema,omitempty"`
+	RequestSchemaForm *RequestSchemaForm `json:"formSchema,omitempty"`
 	// The ConfigSchema message.
 	ConfigSchema *ConfigSchema `json:"schema,omitempty"`
 }
 
-func (c *ConnectorCatalogServiceConfigurationSchemaResponse) GetForm() *Form {
+func (c *ConnectorCatalogServiceConfigurationSchemaResponse) GetRequestSchemaForm() *RequestSchemaForm {
 	if c == nil {
 		return nil
 	}
-	return c.Form
+	return c.RequestSchemaForm
 }
 
 func (c *ConnectorCatalogServiceConfigurationSchemaResponse) GetConfigSchema() *ConfigSchema {

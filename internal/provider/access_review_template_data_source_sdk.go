@@ -97,14 +97,6 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 				r.AccessReviewInclusionScope.UserStatuses = nil
 			}
 		}
-		if resp.AccessReviewNotificationConfig == nil {
-			r.AccessReviewNotificationConfig = nil
-		} else {
-			r.AccessReviewNotificationConfig = &tfTypes.AccessReviewNotificationConfig{}
-			r.AccessReviewNotificationConfig.SendClose = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendClose)
-			r.AccessReviewNotificationConfig.SendKickoff = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendKickoff)
-			r.AccessReviewNotificationConfig.SendReminders = types.BoolPointerValue(resp.AccessReviewNotificationConfig.SendReminders)
-		}
 		if resp.AccessReviewScopeV2 == nil {
 			r.AccessReviewScopeV2 = nil
 		} else {
@@ -361,6 +353,14 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 		r.ID = types.StringPointerValue(resp.ID)
 		r.IsCampaignScheduleEnabled = types.BoolPointerValue(resp.IsCampaignScheduleEnabled)
 		r.NextScheduledCampaignAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextScheduledCampaignAt))
+		if resp.NotificationConfig == nil {
+			r.NotificationConfig = nil
+		} else {
+			r.NotificationConfig = &tfTypes.NotificationConfig{}
+			r.NotificationConfig.SendClose = types.BoolPointerValue(resp.NotificationConfig.SendClose)
+			r.NotificationConfig.SendKickoff = types.BoolPointerValue(resp.NotificationConfig.SendKickoff)
+			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
+		}
 		r.Occurrences = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.Occurrences))
 		r.PolicyID = types.StringPointerValue(resp.PolicyID)
 		if resp.RecurrenceRule == nil {

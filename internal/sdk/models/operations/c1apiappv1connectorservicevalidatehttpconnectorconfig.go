@@ -15,7 +15,7 @@ type C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// The EditorValidateResponse message contains validation results.
-	AppEditorValidateResponse *shared.AppEditorValidateResponse
+	EditorValidateResponse *shared.EditorValidateResponse
 }
 
 func (c *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetContentType() string {
@@ -39,11 +39,11 @@ func (c *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetRawRe
 	return c.RawResponse
 }
 
-func (c *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetAppEditorValidateResponse() *shared.AppEditorValidateResponse {
+func (c *C1APIAppV1ConnectorServiceValidateHTTPConnectorConfigResponse) GetEditorValidateResponse() *shared.EditorValidateResponse {
 	if c == nil {
 		return nil
 	}
-	return c.AppEditorValidateResponse
+	return c.EditorValidateResponse
 }
 
 // #region class-body-c1apiappv1connectorservicevalidatehttpconnectorconfigresponse

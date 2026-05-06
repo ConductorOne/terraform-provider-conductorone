@@ -38,6 +38,8 @@ type AutomationResourceModel struct {
 	AutomationContext                  *tfTypes.AutomationContext                  `tfsdk:"automation_context"`
 	AutomationsDeleteAutomationRequest *tfTypes.AutomationsDeleteAutomationRequest `tfsdk:"automations_delete_automation_request"`
 	AutomationSteps                    []tfTypes.AutomationStep                    `tfsdk:"automation_steps"`
+	CircuitBreakerMax                  types.Int64                                 `tfsdk:"circuit_breaker_max"`
+	CircuitBreakerPeriod               types.String                                `tfsdk:"circuit_breaker_period"`
 	CreatedAt                          types.String                                `tfsdk:"created_at"`
 	CurrentVersion                     types.String                                `tfsdk:"current_version"`
 	Description                        types.String                                `tfsdk:"description"`
@@ -137,151 +139,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - accountRef` + "\n" +
 								`  - accountInContext`,
 						},
-						"automations_task_action": schema.SingleNestedAttribute{
-							Computed: true,
-							Optional: true,
-							Attributes: map[string]schema.Attribute{
-								"close_action": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"use_subject_user": schema.BoolAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The userIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.CloseAction` + "`" + ` for more details.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-									},
-									MarkdownDescription: `The CloseAction message.` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - userIdCel` + "\n" +
-										`  - userRef`,
-								},
-								"reassign_action": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"assignee_user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The assigneeUserIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
-										},
-										"subject_user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The subjectUserIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
-										},
-										"use_subject_user": schema.BoolAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-										"user_ref1": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-									},
-									MarkdownDescription: `The ReassignAction message.` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - assigneeUserIdCel` + "\n" +
-										`  - assigneeUserRef` + "\n" +
-										`` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - subjectUserIdCel` + "\n" +
-										`  - subjectUserRef`,
-								},
-								"task_types": schema.ListAttribute{
-									Computed:    true,
-									Optional:    true,
-									ElementType: types.StringType,
-									Description: `The taskTypes field.`,
-								},
-								"task_user_relation": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
-								},
-							},
-							MarkdownDescription: `The TaskAction message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named action. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - close` + "\n" +
-								`  - reassign`,
-						},
-						"automations_webhook": schema.SingleNestedAttribute{
-							Computed: true,
-							Optional: true,
-							Attributes: map[string]schema.Attribute{
-								"payload": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-								},
-								"webhook_id": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The webhookId field.` + "\n" +
-										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
-								},
-								"webhook_id_cel": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The webhookIdCel field.` + "\n" +
-										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
-								},
-							},
-							MarkdownDescription: `The Webhook message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - webhookId` + "\n" +
-								`  - webhookIdCel`,
-						},
 						"call_function": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -1367,6 +1224,122 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							MarkdownDescription: `StoreCredential stores a credential from GeneratePassword in a vault.` + "\n" +
 								` Supports Paper Vault (SSO/email) and App Vault (entitlement-bound).`,
 						},
+						"task_action": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"close_action": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"use_subject_user": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `If true, the step will use the subject user of the automation as the subject.`,
+										},
+										"user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The userIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.CloseAction` + "`" + ` for more details.`,
+										},
+										"user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+									},
+									MarkdownDescription: `The CloseAction message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - userIdCel` + "\n" +
+										`  - userRef`,
+								},
+								"reassign_action": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"assignee_user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The assigneeUserIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
+										},
+										"subject_user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The subjectUserIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
+										},
+										"use_subject_user": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `If true, the step will use the subject user of the automation as the subject.`,
+										},
+										"user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+										"user_ref1": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+									},
+									MarkdownDescription: `The ReassignAction message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - assigneeUserIdCel` + "\n" +
+										`  - assigneeUserRef` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - subjectUserIdCel` + "\n" +
+										`  - subjectUserRef`,
+								},
+								"task_types": schema.ListAttribute{
+									Computed:    true,
+									Optional:    true,
+									ElementType: types.StringType,
+									Description: `The taskTypes field.`,
+								},
+								"task_user_relation": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
+								},
+							},
+							MarkdownDescription: `The TaskAction message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named action. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - close` + "\n" +
+								`  - reassign`,
+						},
 						"unenroll_from_all_access_profiles": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -1478,6 +1451,35 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The WaitForDuration message.`,
 						},
+						"webhook": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"payload": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"webhook_id": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The webhookId field.` + "\n" +
+										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
+								},
+								"webhook_id_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The webhookIdCel field.` + "\n" +
+										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
+								},
+							},
+							MarkdownDescription: `The Webhook message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - webhookId` + "\n" +
+								`  - webhookIdCel`,
+						},
 					},
 				},
 				Description: `Ordered list of steps that the automation executes.`,
@@ -1485,6 +1487,16 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"automations_delete_automation_request": schema.SingleNestedAttribute{
 				Optional:    true,
 				Description: `The DeleteAutomationRequest message.`,
+			},
+			"circuit_breaker_max": schema.Int64Attribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Circuit breaker rate cap. See Automation.circuit_breaker_max for semantics.`,
+			},
+			"circuit_breaker_period": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The circuitBreakerPeriod field. possible known values include one of ["CIRCUIT_BREAKER_PERIOD_UNSPECIFIED", "CIRCUIT_BREAKER_PERIOD_HOUR", "CIRCUIT_BREAKER_PERIOD_DAY", "CIRCUIT_BREAKER_PERIOD_WEEK", "CIRCUIT_BREAKER_PERIOD_MONTH"]`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -1499,8 +1511,27 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Optional description explaining the automation's purpose.`,
 			},
 			"disabled_reason_circuit_breaker": schema.SingleNestedAttribute{
-				Computed:    true,
-				Description: `The DisabledReasonCircuitBreaker message.`,
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"observed_count": schema.Int64Attribute{
+						Computed:    true,
+						Description: `Observed execution count in the period at trip time.`,
+					},
+					"period": schema.StringAttribute{
+						Computed:    true,
+						Description: `Snapshot of the period at trip time.`,
+					},
+					"threshold": schema.Int64Attribute{
+						Computed:    true,
+						Description: `Snapshot of the threshold at trip time.`,
+					},
+					"tripped_at": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+				MarkdownDescription: `DisabledReasonCircuitBreaker carries the trip context when an automation` + "\n" +
+					` has been auto-disabled by its rate cap. Returned on the parent Automation` + "\n" +
+					` when read; not directly settable.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
@@ -1565,151 +1596,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - accountRef` + "\n" +
 								`  - accountInContext`,
 						},
-						"automations_task_action": schema.SingleNestedAttribute{
-							Computed: true,
-							Optional: true,
-							Attributes: map[string]schema.Attribute{
-								"close_action": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"use_subject_user": schema.BoolAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The userIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.CloseAction` + "`" + ` for more details.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-									},
-									MarkdownDescription: `The CloseAction message.` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - userIdCel` + "\n" +
-										`  - userRef`,
-								},
-								"reassign_action": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"assignee_user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The assigneeUserIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
-										},
-										"subject_user_id_cel": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `The subjectUserIdCel field.` + "\n" +
-												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
-												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
-										},
-										"use_subject_user": schema.BoolAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-										"user_ref1": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-									},
-									MarkdownDescription: `The ReassignAction message.` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - assigneeUserIdCel` + "\n" +
-										`  - assigneeUserRef` + "\n" +
-										`` + "\n" +
-										`` + "\n" +
-										`This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - subjectUserIdCel` + "\n" +
-										`  - subjectUserRef`,
-								},
-								"task_types": schema.ListAttribute{
-									Computed:    true,
-									Optional:    true,
-									ElementType: types.StringType,
-									Description: `The taskTypes field.`,
-								},
-								"task_user_relation": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
-								},
-							},
-							MarkdownDescription: `The TaskAction message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named action. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - close` + "\n" +
-								`  - reassign`,
-						},
-						"automations_webhook": schema.SingleNestedAttribute{
-							Computed: true,
-							Optional: true,
-							Attributes: map[string]schema.Attribute{
-								"payload": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-								},
-								"webhook_id": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The webhookId field.` + "\n" +
-										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
-								},
-								"webhook_id_cel": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The webhookIdCel field.` + "\n" +
-										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
-								},
-							},
-							MarkdownDescription: `The Webhook message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - webhookId` + "\n" +
-								`  - webhookIdCel`,
-						},
 						"call_function": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -2795,6 +2681,122 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							MarkdownDescription: `StoreCredential stores a credential from GeneratePassword in a vault.` + "\n" +
 								` Supports Paper Vault (SSO/email) and App Vault (entitlement-bound).`,
 						},
+						"task_action": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"close_action": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"use_subject_user": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `If true, the step will use the subject user of the automation as the subject.`,
+										},
+										"user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The userIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.CloseAction` + "`" + ` for more details.`,
+										},
+										"user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+									},
+									MarkdownDescription: `The CloseAction message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - userIdCel` + "\n" +
+										`  - userRef`,
+								},
+								"reassign_action": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"assignee_user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The assigneeUserIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
+										},
+										"subject_user_id_cel": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The subjectUserIdCel field.` + "\n" +
+												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
+										},
+										"use_subject_user": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `If true, the step will use the subject user of the automation as the subject.`,
+										},
+										"user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+										"user_ref1": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
+									},
+									MarkdownDescription: `The ReassignAction message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named assignee_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - assigneeUserIdCel` + "\n" +
+										`  - assigneeUserRef` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named subject_user_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - subjectUserIdCel` + "\n" +
+										`  - subjectUserRef`,
+								},
+								"task_types": schema.ListAttribute{
+									Computed:    true,
+									Optional:    true,
+									ElementType: types.StringType,
+									Description: `The taskTypes field.`,
+								},
+								"task_user_relation": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
+								},
+							},
+							MarkdownDescription: `The TaskAction message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named action. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - close` + "\n" +
+								`  - reassign`,
+						},
 						"unenroll_from_all_access_profiles": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -2905,6 +2907,35 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								},
 							},
 							Description: `The WaitForDuration message.`,
+						},
+						"webhook": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"payload": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"webhook_id": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The webhookId field.` + "\n" +
+										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
+								},
+								"webhook_id_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The webhookIdCel field.` + "\n" +
+										`This field is part of the ` + "`" + `webhook_identifier` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.automations.v1.Webhook` + "`" + ` for more details.`,
+								},
+							},
+							MarkdownDescription: `The Webhook message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - webhookId` + "\n" +
+								`  - webhookIdCel`,
 						},
 					},
 				},

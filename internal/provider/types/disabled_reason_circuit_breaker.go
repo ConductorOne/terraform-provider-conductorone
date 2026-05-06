@@ -2,5 +2,13 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type DisabledReasonCircuitBreaker struct {
+	ObservedCount types.Int64  `tfsdk:"observed_count"`
+	Period        types.String `tfsdk:"period"`
+	Threshold     types.Int64  `tfsdk:"threshold"`
+	TrippedAt     types.String `tfsdk:"tripped_at"`
 }

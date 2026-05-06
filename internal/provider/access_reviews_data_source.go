@@ -144,24 +144,6 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 									},
 									Description: `The AccessReviewInclusionScope message.`,
 								},
-								"access_review_notification_config": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"send_close": schema.BoolAttribute{
-											Computed:    true,
-											Description: `Whether to send a notification when the campaign is closed.`,
-										},
-										"send_kickoff": schema.BoolAttribute{
-											Computed:    true,
-											Description: `Whether to send a notification when the campaign is started.`,
-										},
-										"send_reminders": schema.BoolAttribute{
-											Computed:    true,
-											Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
-										},
-									},
-									Description: `Controls which email notifications are sent during the access review lifecycle.`,
-								},
 								"access_review_scope": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
@@ -595,6 +577,24 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 										},
 									},
 									Description: `The MultiAppSetup message.`,
+								},
+								"notification_config": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"send_close": schema.BoolAttribute{
+											Computed:    true,
+											Description: `Whether to send a notification when the campaign is closed.`,
+										},
+										"send_kickoff": schema.BoolAttribute{
+											Computed:    true,
+											Description: `Whether to send a notification when the campaign is started.`,
+										},
+										"send_reminders": schema.BoolAttribute{
+											Computed:    true,
+											Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
+										},
+									},
+									Description: `Controls which email notifications are sent during the access review lifecycle.`,
 								},
 								"policy_id": schema.StringAttribute{
 									Computed:    true,
