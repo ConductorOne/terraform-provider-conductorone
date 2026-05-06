@@ -58,7 +58,19 @@ gen:
 	curl -sSL -o $$FILENAME https://insulator.conductor.one/api/v1/openapi.yaml && \
 	speakeasy overlay apply -s $$FILENAME -o overlay.yaml >> $$FILENAME2 && \
 	speakeasy generate sdk -s $$FILENAME2 -o . -l terraform -d
+	$(MAKE) apply-patches
 	$(MAKE) vendor
+
+# apply-patches: applies every unified-diff patch in patches/ in filename order.
+# These are hand-fixes for Speakeasy regressions that the regen wipes on every
+# run. See patches/README.md.
+.PHONY: apply-patches
+apply-patches:
+	@for patch in patches/*.patch; do \
+		[ -e "$$patch" ] || continue; \
+		echo "Applying $$patch"; \
+		git apply "$$patch" || { echo "ERROR: failed to apply $$patch"; exit 1; }; \
+	done
 	
 
 .PHONY: test
