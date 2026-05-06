@@ -14,11 +14,6 @@ AccessReview Resource
 
 ```terraform
 resource "conductorone_access_review" "my_access_review" {
-  access_review_notification_config = {
-    send_close     = true
-    send_kickoff   = true
-    send_reminders = false
-  }
   access_review_scope_v2 = {
     account_criteria_scope = {
       account_domain = "APP_USER_DOMAIN_EXTERNAL"
@@ -124,6 +119,11 @@ resource "conductorone_access_review" "my_access_review" {
   description     = "...my_description..."
   display_name    = "...my_display_name..."
   duplicate_from  = "...my_duplicate_from..."
+  notification_config = {
+    send_close     = true
+    send_kickoff   = true
+    send_reminders = true
+  }
   owner_ids = [
     "..."
   ]
@@ -137,7 +137,6 @@ resource "conductorone_access_review" "my_access_review" {
 
 ### Optional
 
-- `access_review_notification_config` (Attributes) Controls which email notifications are sent during the access review lifecycle. (see [below for nested schema](#nestedatt--access_review_notification_config))
 - `access_review_scope_v2` (Attributes) The AccessReviewScopeV2 message.
 
 This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
@@ -176,6 +175,7 @@ This message contains a oneof named resource_scope. Only a single field of the f
 - `description` (String) An optional description providing context about the campaign.
 - `display_name` (String) The display name for the new campaign.
 - `duplicate_from` (String) The ID of an existing campaign to copy scope and entitlement configuration from. Optional. Requires replacement if changed.
+- `notification_config` (Attributes) Controls which email notifications are sent during the access review lifecycle. (see [below for nested schema](#nestedatt--notification_config))
 - `owner_ids` (List of String) The IDs of the users who own and manage this campaign. At least one owner is required. Requires replacement if changed.
 - `policy_id` (String) The ID of the review policy that governs task assignment and resolution.
 - `scope_type` (String) The type of scoping method for the campaign (e.g., by entitlements, by access conflicts, or by resource). possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"]
@@ -226,16 +226,6 @@ This message contains a oneof named resource_scope. Only a single field of the f
 - `updated_at` (String)
 - `use_policy_override` (Boolean) Determines the policy applied to the campaign. Default is false, using the campaign policy.
  If true, the order of precedence is entitlement → app → campaign policy.
-
-<a id="nestedatt--access_review_notification_config"></a>
-### Nested Schema for `access_review_notification_config`
-
-Optional:
-
-- `send_close` (Boolean) Whether to send a notification when the campaign is closed.
-- `send_kickoff` (Boolean) Whether to send a notification when the campaign is started.
-- `send_reminders` (Boolean) Whether to send periodic reminder emails to reviewers with outstanding tasks.
-
 
 <a id="nestedatt--access_review_scope_v2"></a>
 ### Nested Schema for `access_review_scope_v2`
@@ -416,6 +406,16 @@ Optional:
 
 
 
+
+
+<a id="nestedatt--notification_config"></a>
+### Nested Schema for `notification_config`
+
+Optional:
+
+- `send_close` (Boolean) Whether to send a notification when the campaign is closed.
+- `send_kickoff` (Boolean) Whether to send a notification when the campaign is started.
+- `send_reminders` (Boolean) Whether to send periodic reminder emails to reviewers with outstanding tasks.
 
 
 <a id="nestedatt--access_review_column_config"></a>
