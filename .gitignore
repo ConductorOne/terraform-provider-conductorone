@@ -7,3 +7,4 @@
 .speakeasy/temp/
 /*.md
 .claude
+/bin/

@@ -135,9 +135,27 @@ install-hooks:
 	@echo "Note: golangci-lint v1.x (>= v1.63.0) is required for 'make lint' to work."
 	@echo "      Install: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8"
 
+# tfplugindocs subcommands (generate / validate).
+#
 # --provider-name matches what Speakeasy's CI uses (filepath.Base of the
-# checkout dir = "terraform-provider-conductorone"), so make generate produces
-# the same page_title regardless of local worktree name.
+# checkout dir = "terraform-provider-conductorone"), so output is stable
+# regardless of local worktree name.
+#
+# We build the binary (pinned via tools/tools.go) and invoke it from the repo
+# root so its --provider-dir / --examples-dir / --templates-dir defaults
+# resolve to the repo's own directories. Running tfplugindocs as
+# `cd tools && go run ...` is functionally equivalent but obscures the default
+# resolution and rebuilds the binary on every invocation.
+bin/tfplugindocs:
+	go build -o $@ github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+
+# generate: regenerate docs/ from the live provider schema + templates/ + examples/.
 .PHONY: generate
-generate:
-	cd tools && go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir .. --provider-name terraform-provider-conductorone
+generate: bin/tfplugindocs
+	./bin/tfplugindocs generate --provider-name terraform-provider-conductorone
+
+# validate-docs: lint the generated docs structure (frontmatter, schema, links).
+# Read-only; safe to run in CI alongside generate.
+.PHONY: validate-docs
+validate-docs: bin/tfplugindocs
+	./bin/tfplugindocs validate --provider-name terraform-provider-conductorone
