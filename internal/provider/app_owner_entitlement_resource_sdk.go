@@ -498,7 +498,7 @@ func (r *AppOwnerEntitlementResourceModel) RefreshFromSharedAppOwnerEntitlement(
 	return diags
 }
 
-func (r *AppOwnerEntitlementResourceModel) RefreshFromSharedCreateEntitlementOwnerResponse(ctx context.Context, resp *shared.CreateEntitlementOwnerResponse) diag.Diagnostics {
+func (r *AppOwnerEntitlementResourceModel) RefreshFromSharedCreateAppEntitlementOwnerResponse(ctx context.Context, resp *shared.CreateAppEntitlementOwnerResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -513,7 +513,7 @@ func (r *AppOwnerEntitlementResourceModel) RefreshFromSharedCreateEntitlementOwn
 	return diags
 }
 
-func (r *AppOwnerEntitlementResourceModel) RefreshFromSharedGetEntitlementOwnerResponse(ctx context.Context, resp *shared.GetEntitlementOwnerResponse) diag.Diagnostics {
+func (r *AppOwnerEntitlementResourceModel) RefreshFromSharedGetAppEntitlementOwnerResponse(ctx context.Context, resp *shared.GetAppEntitlementOwnerResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -543,19 +543,19 @@ func (r *AppOwnerEntitlementResourceModel) ToOperationsC1APIAppV2AppOwnersCreate
 	var appEntitlementRefID string
 	appEntitlementRefID = r.AppEntitlementRefID.ValueString()
 
-	createEntitlementOwnerRequest, createEntitlementOwnerRequestDiags := r.ToSharedCreateEntitlementOwnerRequest(ctx)
-	diags.Append(createEntitlementOwnerRequestDiags...)
+	createAppEntitlementOwnerRequest, createAppEntitlementOwnerRequestDiags := r.ToSharedCreateAppEntitlementOwnerRequest(ctx)
+	diags.Append(createAppEntitlementOwnerRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.C1APIAppV2AppOwnersCreateEntitlementOwnerRequest{
-		AppID:                         appID,
-		RoleSlug:                      roleSlug,
-		AppEntitlementRefAppID:        appEntitlementRefAppID,
-		AppEntitlementRefID:           appEntitlementRefID,
-		CreateEntitlementOwnerRequest: createEntitlementOwnerRequest,
+		AppID:                            appID,
+		RoleSlug:                         roleSlug,
+		AppEntitlementRefAppID:           appEntitlementRefAppID,
+		AppEntitlementRefID:              appEntitlementRefID,
+		CreateAppEntitlementOwnerRequest: createAppEntitlementOwnerRequest,
 	}
 
 	return &out, diags
@@ -576,19 +576,19 @@ func (r *AppOwnerEntitlementResourceModel) ToOperationsC1APIAppV2AppOwnersDelete
 	var appEntitlementRefID string
 	appEntitlementRefID = r.AppEntitlementRefID.ValueString()
 
-	deleteEntitlementOwnerRequest, deleteEntitlementOwnerRequestDiags := r.ToSharedDeleteEntitlementOwnerRequest(ctx)
-	diags.Append(deleteEntitlementOwnerRequestDiags...)
+	deleteAppEntitlementOwnerRequest, deleteAppEntitlementOwnerRequestDiags := r.ToSharedDeleteAppEntitlementOwnerRequest(ctx)
+	diags.Append(deleteAppEntitlementOwnerRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.C1APIAppV2AppOwnersDeleteEntitlementOwnerRequest{
-		AppID:                         appID,
-		RoleSlug:                      roleSlug,
-		AppEntitlementRefAppID:        appEntitlementRefAppID,
-		AppEntitlementRefID:           appEntitlementRefID,
-		DeleteEntitlementOwnerRequest: deleteEntitlementOwnerRequest,
+		AppID:                            appID,
+		RoleSlug:                         roleSlug,
+		AppEntitlementRefAppID:           appEntitlementRefAppID,
+		AppEntitlementRefID:              appEntitlementRefID,
+		DeleteAppEntitlementOwnerRequest: deleteAppEntitlementOwnerRequest,
 	}
 
 	return &out, diags
@@ -619,7 +619,7 @@ func (r *AppOwnerEntitlementResourceModel) ToOperationsC1APIAppV2AppOwnersGetEnt
 	return &out, diags
 }
 
-func (r *AppOwnerEntitlementResourceModel) ToSharedCreateEntitlementOwnerRequest(ctx context.Context) (*shared.CreateEntitlementOwnerRequest, diag.Diagnostics) {
+func (r *AppOwnerEntitlementResourceModel) ToSharedCreateAppEntitlementOwnerRequest(ctx context.Context) (*shared.CreateAppEntitlementOwnerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var appEntitlementRef *shared.AppEntitlementRef
@@ -641,14 +641,14 @@ func (r *AppOwnerEntitlementResourceModel) ToSharedCreateEntitlementOwnerRequest
 			ID:    id,
 		}
 	}
-	out := shared.CreateEntitlementOwnerRequest{
+	out := shared.CreateAppEntitlementOwnerRequest{
 		AppEntitlementRef: appEntitlementRef,
 	}
 
 	return &out, diags
 }
 
-func (r *AppOwnerEntitlementResourceModel) ToSharedDeleteEntitlementOwnerRequest(ctx context.Context) (*shared.DeleteEntitlementOwnerRequest, diag.Diagnostics) {
+func (r *AppOwnerEntitlementResourceModel) ToSharedDeleteAppEntitlementOwnerRequest(ctx context.Context) (*shared.DeleteAppEntitlementOwnerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var appEntitlementRef *shared.AppEntitlementRef
@@ -670,7 +670,7 @@ func (r *AppOwnerEntitlementResourceModel) ToSharedDeleteEntitlementOwnerRequest
 			ID:    id,
 		}
 	}
-	out := shared.DeleteEntitlementOwnerRequest{
+	out := shared.DeleteAppEntitlementOwnerRequest{
 		AppEntitlementRef: appEntitlementRef,
 	}
 

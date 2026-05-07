@@ -2,13 +2,13 @@
 
 package shared
 
-// GetEntitlementOwnerResponse is the response for getting an entitlement ownership source.
-type GetEntitlementOwnerResponse struct {
+// GetAppEntitlementOwnerResponse - GetEntitlementOwnerResponse is the response for getting an entitlement ownership source.
+type GetAppEntitlementOwnerResponse struct {
 	// AppOwnerEntitlement represents an entitlement ownership source for an app.
 	AppOwnerEntitlement *AppOwnerEntitlement `json:"appOwnerEntitlement,omitempty"`
 }
 
-func (g *GetEntitlementOwnerResponse) GetAppOwnerEntitlement() *AppOwnerEntitlement {
+func (g *GetAppEntitlementOwnerResponse) GetAppOwnerEntitlement() *AppOwnerEntitlement {
 	if g == nil {
 		return nil
 	}

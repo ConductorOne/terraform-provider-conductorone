@@ -9,7 +9,11 @@ import (
 
 // AppEntitlementOwnerUser represents a user ownership source for an app entitlement.
 type AppEntitlementOwnerUser struct {
+	// The appId field.
+	AppID     *string    `json:"appId,omitempty"`
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	// The entitlementId field.
+	EntitlementID *string `json:"entitlementId,omitempty"`
 	// The roleSlug field.
 	RoleSlug *string `json:"roleSlug,omitempty"`
 	// The User object provides all of the details for an user, as well as some configuration.
@@ -27,11 +31,25 @@ func (a *AppEntitlementOwnerUser) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *AppEntitlementOwnerUser) GetAppID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AppID
+}
+
 func (a *AppEntitlementOwnerUser) GetCreatedAt() *time.Time {
 	if a == nil {
 		return nil
 	}
 	return a.CreatedAt
+}
+
+func (a *AppEntitlementOwnerUser) GetEntitlementID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.EntitlementID
 }
 
 func (a *AppEntitlementOwnerUser) GetRoleSlug() *string {

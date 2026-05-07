@@ -2,13 +2,13 @@
 
 package shared
 
-// CreateUserOwnerRequest is the request for creating a user ownership source.
-type CreateUserOwnerRequest struct {
+// CreateAppUserOwnerRequest - CreateUserOwnerRequest is the request for creating a user ownership source.
+type CreateAppUserOwnerRequest struct {
 	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
 }
 
-func (c *CreateUserOwnerRequest) GetUserRef() *UserRef {
+func (c *CreateAppUserOwnerRequest) GetUserRef() *UserRef {
 	if c == nil {
 		return nil
 	}

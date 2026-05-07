@@ -2,22 +2,22 @@
 
 package shared
 
-// SearchEntitlementOwnersResponse is the response for searching entitlement ownership sources.
-type SearchEntitlementOwnersResponse struct {
+// SearchAppEntitlementOwnersResponse - SearchEntitlementOwnersResponse is the response for searching entitlement ownership sources.
+type SearchAppEntitlementOwnersResponse struct {
 	// The list field.
 	List []AppOwnerEntitlement `json:"list,omitempty"`
 	// The nextPageToken field.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (s *SearchEntitlementOwnersResponse) GetList() []AppOwnerEntitlement {
+func (s *SearchAppEntitlementOwnersResponse) GetList() []AppOwnerEntitlement {
 	if s == nil {
 		return nil
 	}
 	return s.List
 }
 
-func (s *SearchEntitlementOwnersResponse) GetNextPageToken() *string {
+func (s *SearchAppEntitlementOwnersResponse) GetNextPageToken() *string {
 	if s == nil {
 		return nil
 	}

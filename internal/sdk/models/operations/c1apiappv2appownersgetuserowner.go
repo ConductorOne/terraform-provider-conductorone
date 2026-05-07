@@ -45,7 +45,7 @@ type C1APIAppV2AppOwnersGetUserOwnerResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// GetUserOwnerResponse is the response for getting a user ownership source.
-	GetUserOwnerResponse *shared.GetUserOwnerResponse
+	GetAppUserOwnerResponse *shared.GetAppUserOwnerResponse
 }
 
 func (c *C1APIAppV2AppOwnersGetUserOwnerResponse) GetContentType() string {
@@ -69,11 +69,11 @@ func (c *C1APIAppV2AppOwnersGetUserOwnerResponse) GetRawResponse() *http.Respons
 	return c.RawResponse
 }
 
-func (c *C1APIAppV2AppOwnersGetUserOwnerResponse) GetGetUserOwnerResponse() *shared.GetUserOwnerResponse {
+func (c *C1APIAppV2AppOwnersGetUserOwnerResponse) GetGetAppUserOwnerResponse() *shared.GetAppUserOwnerResponse {
 	if c == nil {
 		return nil
 	}
-	return c.GetUserOwnerResponse
+	return c.GetAppUserOwnerResponse
 }
 
 // #region class-body-c1apiappv2appownersgetuserownerresponse

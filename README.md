@@ -57,6 +57,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_app_resource_type](docs/resources/app_resource_type.md)
 * [conductorone_app_entitlement_monitor_binding](docs/resources/app_entitlement_monitor_binding.md)
 * [conductorone_app_entitlement_owner](docs/resources/app_entitlement_owner.md)
+* [conductorone_app_entitlement_owner_entitlement](docs/resources/app_entitlement_owner_entitlement.md)
+* [conductorone_app_entitlement_owner_user](docs/resources/app_entitlement_owner_user.md)
 * [conductorone_app_owner](docs/resources/app_owner.md)
 * [conductorone_app_owner_entitlement](docs/resources/app_owner_entitlement.md)
 * [conductorone_app_owner_user](docs/resources/app_owner_user.md)
@@ -103,6 +105,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_app_owners](docs/data-sources/app_owners.md)
 * [conductorone_app_resource_owners](docs/data-sources/app_resource_owners.md)
 * [conductorone_app_entitlement_monitor_binding](docs/data-sources/app_entitlement_monitor_binding.md)
+* [conductorone_app_entitlement_owner_entitlement](docs/data-sources/app_entitlement_owner_entitlement.md)
+* [conductorone_app_entitlement_owner_user](docs/data-sources/app_entitlement_owner_user.md)
 * [conductorone_app_owner_entitlement](docs/data-sources/app_owner_entitlement.md)
 * [conductorone_app_owner_user](docs/data-sources/app_owner_user.md)
 * [conductorone_apps](docs/data-sources/apps.md)
@@ -206,7 +210,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.1.0"
+      version = "1.1.1"
     }
   }
 }

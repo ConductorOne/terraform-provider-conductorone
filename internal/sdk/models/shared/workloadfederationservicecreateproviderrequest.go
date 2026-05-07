@@ -5,6 +5,8 @@ package shared
 // WorkloadFederationServiceCreateProviderRequestWellKnownProvider - Well-known provider type. Required -- UNSPECIFIED is rejected.
 //
 //	When set to a named source, the backend validates issuer_url consistency.
+//	SPIFFE wkp requires `settings.spiffe`; all other wkp values require
+//	`settings.oidc`.
 type WorkloadFederationServiceCreateProviderRequestWellKnownProvider string
 
 const (
@@ -14,6 +16,7 @@ const (
 	WorkloadFederationServiceCreateProviderRequestWellKnownProviderWellKnownWorkloadProviderGitlabCi       WorkloadFederationServiceCreateProviderRequestWellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI"
 	WorkloadFederationServiceCreateProviderRequestWellKnownProviderWellKnownWorkloadProviderHcpTerraform   WorkloadFederationServiceCreateProviderRequestWellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM"
 	WorkloadFederationServiceCreateProviderRequestWellKnownProviderWellKnownWorkloadProviderAwsIamOutbound WorkloadFederationServiceCreateProviderRequestWellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND"
+	WorkloadFederationServiceCreateProviderRequestWellKnownProviderWellKnownWorkloadProviderSpiffe         WorkloadFederationServiceCreateProviderRequestWellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE"
 )
 
 func (e WorkloadFederationServiceCreateProviderRequestWellKnownProvider) ToPointer() *WorkloadFederationServiceCreateProviderRequestWellKnownProvider {
@@ -24,7 +27,7 @@ func (e WorkloadFederationServiceCreateProviderRequestWellKnownProvider) ToPoint
 func (e *WorkloadFederationServiceCreateProviderRequestWellKnownProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED", "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM", "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS", "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI", "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM", "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND":
+		case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED", "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM", "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS", "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI", "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM", "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND", "WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE":
 			return true
 		}
 	}
@@ -32,16 +35,32 @@ func (e *WorkloadFederationServiceCreateProviderRequestWellKnownProvider) IsExac
 }
 
 // The WorkloadFederationServiceCreateProviderRequest message.
+//
+// This message contains a oneof named settings. Only a single field of the following list may be set at a time:
+//   - oidc
+//   - spiffe
 type WorkloadFederationServiceCreateProviderRequest struct {
 	// A description of what this provider is for.
 	Description *string `json:"description,omitempty"`
 	// The display name for the new provider.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The OIDC issuer URL. Will be validated via OIDC discovery.
-	//  Normalized on write: lowercase host, no trailing slash, HTTPS only.
+	// The issuer URL. For OIDC providers, this is an HTTPS URL validated via
+	//  OIDC discovery. For SPIFFE providers, this is the SPIFFE trust-domain URI
+	//  (e.g., spiffe://prod.example.com). Normalized on write: lowercase
+	//  scheme/host, no trailing slash. Unique within tenant.
 	IssuerURL *string `json:"issuerUrl,omitempty"`
+	// OIDCSettings is the kind-specific configuration block for classic OIDC
+	//  providers (GitHub Actions, GitLab CI, HCP Terraform, AWS IAM Outbound,
+	//  any CUSTOM provider). Empty for now; future fields like custom_jwks_url,
+	//  audience overrides, and required_claims land here.
+	OIDCSettings *OIDCSettings `json:"oidc,omitempty"`
+	// SPIFFESettings is the kind-specific configuration block for SPIFFE
+	//  trust-domain providers (issuer_url = spiffe://<trust-domain>).
+	SPIFFESettings *SPIFFESettings `json:"spiffe,omitempty"`
 	// Well-known provider type. Required -- UNSPECIFIED is rejected.
 	//  When set to a named source, the backend validates issuer_url consistency.
+	//  SPIFFE wkp requires `settings.spiffe`; all other wkp values require
+	//  `settings.oidc`.
 	WellKnownProvider *WorkloadFederationServiceCreateProviderRequestWellKnownProvider `json:"wellKnownProvider,omitempty"`
 }
 
@@ -64,6 +83,20 @@ func (w *WorkloadFederationServiceCreateProviderRequest) GetIssuerURL() *string 
 		return nil
 	}
 	return w.IssuerURL
+}
+
+func (w *WorkloadFederationServiceCreateProviderRequest) GetOIDCSettings() *OIDCSettings {
+	if w == nil {
+		return nil
+	}
+	return w.OIDCSettings
+}
+
+func (w *WorkloadFederationServiceCreateProviderRequest) GetSPIFFESettings() *SPIFFESettings {
+	if w == nil {
+		return nil
+	}
+	return w.SPIFFESettings
 }
 
 func (w *WorkloadFederationServiceCreateProviderRequest) GetWellKnownProvider() *WorkloadFederationServiceCreateProviderRequestWellKnownProvider {

@@ -904,11 +904,11 @@ func (r *AppOwnerEntitlementResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateEntitlementOwnerResponse != nil) {
+	if !(res.CreateAppEntitlementOwnerResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreateEntitlementOwnerResponse(ctx, res.CreateEntitlementOwnerResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppEntitlementOwnerResponse(ctx, res.CreateAppEntitlementOwnerResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -968,11 +968,11 @@ func (r *AppOwnerEntitlementResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetEntitlementOwnerResponse != nil) {
+	if !(res.GetAppEntitlementOwnerResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetEntitlementOwnerResponse(ctx, res.GetEntitlementOwnerResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAppEntitlementOwnerResponse(ctx, res.GetAppEntitlementOwnerResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -701,6 +701,14 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                hideLabel:
+                    description: |-
+                        When true, the label slot is omitted entirely (no label text, no
+                         "(optional)" suffix, no reserved space). Use when the picker sits under
+                         or beside another control that already names the field — e.g. stacked
+                         under a check_box in a per-attribute mapping row.
+                    readOnly: false
+                    type: boolean
                 label:
                     $ref: '#/components/schemas/c1.api.a2ui.v1.DynamicString'
                 multiSelect:
@@ -7780,8 +7788,16 @@ components:
             properties:
                 appEntitlement:
                     $ref: '#/components/schemas/c1.api.app.v1.AppEntitlement'
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
                 createdAt:
                     format: date-time
+                    readOnly: false
+                    type: string
+                entitlementId:
+                    description: The entitlementId field.
                     readOnly: false
                     type: string
                 roleSlug:
@@ -7790,12 +7806,21 @@ components:
                     type: string
             title: App Entitlement Owner Entitlement
             type: object
+            x-speakeasy-entity: App_Entitlement_Owner_Entitlement
             x-speakeasy-name-override: AppEntitlementOwnerEntitlement
         c1.api.app.v2.AppEntitlementOwnerUser:
             description: AppEntitlementOwnerUser represents a user ownership source for an app entitlement.
             properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
                 createdAt:
                     format: date-time
+                    readOnly: false
+                    type: string
+                entitlementId:
+                    description: The entitlementId field.
                     readOnly: false
                     type: string
                 roleSlug:
@@ -7806,6 +7831,7 @@ components:
                     $ref: '#/components/schemas/c1.api.user.v1.User'
             title: App Entitlement Owner User
             type: object
+            x-speakeasy-entity: App_Entitlement_Owner_User
             x-speakeasy-name-override: AppEntitlementOwnerUser
         c1.api.app.v2.AppOwnerEntitlement:
             description: AppOwnerEntitlement represents an entitlement ownership source for an app.
@@ -7881,80 +7907,154 @@ components:
             title: Connector Owner User
             type: object
             x-speakeasy-name-override: ConnectorOwnerUser
-        c1.api.app.v2.CreateEntitlementOwnerRequestInput:
+        c1.api.app.v2.CreateAppEntitlementEntitlementOwnerRequestInput:
+            description: CreateAppEntitlementEntitlementOwnerRequest is the request for creating an entitlement ownership source on an entitlement.
+            properties:
+                appEntitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+            title: Create App Entitlement Entitlement Owner Request
+            type: object
+            x-speakeasy-name-override: CreateAppEntitlementEntitlementOwnerRequest
+        c1.api.app.v2.CreateAppEntitlementEntitlementOwnerResponse:
+            description: CreateAppEntitlementEntitlementOwnerResponse is the response for creating an entitlement ownership source on an entitlement.
+            properties:
+                appEntitlementOwnerEntitlement:
+                    $ref: '#/components/schemas/c1.api.app.v2.AppEntitlementOwnerEntitlement'
+            title: Create App Entitlement Entitlement Owner Response
+            type: object
+            x-speakeasy-name-override: CreateAppEntitlementEntitlementOwnerResponse
+        c1.api.app.v2.CreateAppEntitlementOwnerRequestInput:
             description: CreateEntitlementOwnerRequest is the request for creating an entitlement ownership source.
             properties:
                 appEntitlementRef:
                     $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
-            title: Create Entitlement Owner Request
+            title: Create App Entitlement Owner Request
             type: object
-            x-speakeasy-name-override: CreateEntitlementOwnerRequest
-        c1.api.app.v2.CreateEntitlementOwnerResponse:
+            x-speakeasy-name-override: CreateAppEntitlementOwnerRequest
+        c1.api.app.v2.CreateAppEntitlementOwnerResponse:
             description: CreateEntitlementOwnerResponse is the response for creating an entitlement ownership source.
             properties:
                 appOwnerEntitlement:
                     $ref: '#/components/schemas/c1.api.app.v2.AppOwnerEntitlement'
-            title: Create Entitlement Owner Response
+            title: Create App Entitlement Owner Response
             type: object
-            x-speakeasy-name-override: CreateEntitlementOwnerResponse
-        c1.api.app.v2.CreateUserOwnerRequestInput:
+            x-speakeasy-name-override: CreateAppEntitlementOwnerResponse
+        c1.api.app.v2.CreateAppEntitlementUserOwnerRequestInput:
+            description: CreateAppEntitlementUserOwnerRequest is the request for creating a user ownership source on an entitlement.
+            properties:
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Create App Entitlement User Owner Request
+            type: object
+            x-speakeasy-name-override: CreateAppEntitlementUserOwnerRequest
+        c1.api.app.v2.CreateAppEntitlementUserOwnerResponse:
+            description: CreateAppEntitlementUserOwnerResponse is the response for creating a user ownership source on an entitlement.
+            properties:
+                appEntitlementOwnerUser:
+                    $ref: '#/components/schemas/c1.api.app.v2.AppEntitlementOwnerUser'
+            title: Create App Entitlement User Owner Response
+            type: object
+            x-speakeasy-name-override: CreateAppEntitlementUserOwnerResponse
+        c1.api.app.v2.CreateAppUserOwnerRequestInput:
             description: CreateUserOwnerRequest is the request for creating a user ownership source.
             properties:
                 userRef:
                     $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-            title: Create User Owner Request
+            title: Create App User Owner Request
             type: object
-            x-speakeasy-name-override: CreateUserOwnerRequest
-        c1.api.app.v2.CreateUserOwnerResponse:
+            x-speakeasy-name-override: CreateAppUserOwnerRequest
+        c1.api.app.v2.CreateAppUserOwnerResponse:
             description: CreateUserOwnerResponse is the response for creating a user ownership source.
             properties:
                 appOwnerUser:
                     $ref: '#/components/schemas/c1.api.app.v2.AppOwnerUser'
-            title: Create User Owner Response
+            title: Create App User Owner Response
             type: object
-            x-speakeasy-name-override: CreateUserOwnerResponse
-        c1.api.app.v2.DeleteEntitlementOwnerRequestInput:
+            x-speakeasy-name-override: CreateAppUserOwnerResponse
+        c1.api.app.v2.DeleteAppEntitlementEntitlementOwnerRequestInput:
+            description: DeleteAppEntitlementEntitlementOwnerRequest is the request for deleting an entitlement ownership source on an entitlement.
+            properties:
+                appEntitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+            title: Delete App Entitlement Entitlement Owner Request
+            type: object
+            x-speakeasy-name-override: DeleteAppEntitlementEntitlementOwnerRequest
+        c1.api.app.v2.DeleteAppEntitlementEntitlementOwnerResponse:
+            description: DeleteAppEntitlementEntitlementOwnerResponse is the empty response for deleting an entitlement ownership source on an entitlement.
+            title: Delete App Entitlement Entitlement Owner Response
+            type: object
+            x-speakeasy-name-override: DeleteAppEntitlementEntitlementOwnerResponse
+        c1.api.app.v2.DeleteAppEntitlementOwnerRequestInput:
             description: DeleteEntitlementOwnerRequest is the request for deleting an entitlement ownership source.
             properties:
                 appEntitlementRef:
                     $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
-            title: Delete Entitlement Owner Request
+            title: Delete App Entitlement Owner Request
             type: object
-            x-speakeasy-name-override: DeleteEntitlementOwnerRequest
-        c1.api.app.v2.DeleteEntitlementOwnerResponse:
+            x-speakeasy-name-override: DeleteAppEntitlementOwnerRequest
+        c1.api.app.v2.DeleteAppEntitlementOwnerResponse:
             description: DeleteEntitlementOwnerResponse is the empty response for deleting an entitlement ownership source.
-            title: Delete Entitlement Owner Response
+            title: Delete App Entitlement Owner Response
             type: object
-            x-speakeasy-name-override: DeleteEntitlementOwnerResponse
-        c1.api.app.v2.DeleteUserOwnerRequestInput:
+            x-speakeasy-name-override: DeleteAppEntitlementOwnerResponse
+        c1.api.app.v2.DeleteAppEntitlementUserOwnerRequestInput:
+            description: DeleteAppEntitlementUserOwnerRequest is the request for deleting a user ownership source on an entitlement.
+            properties:
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Delete App Entitlement User Owner Request
+            type: object
+            x-speakeasy-name-override: DeleteAppEntitlementUserOwnerRequest
+        c1.api.app.v2.DeleteAppEntitlementUserOwnerResponse:
+            description: DeleteAppEntitlementUserOwnerResponse is the empty response for deleting a user ownership source on an entitlement.
+            title: Delete App Entitlement User Owner Response
+            type: object
+            x-speakeasy-name-override: DeleteAppEntitlementUserOwnerResponse
+        c1.api.app.v2.DeleteAppUserOwnerRequestInput:
             description: DeleteUserOwnerRequest is the request for deleting a user ownership source.
             properties:
                 userRef:
                     $ref: '#/components/schemas/c1.api.user.v1.UserRef'
-            title: Delete User Owner Request
+            title: Delete App User Owner Request
             type: object
-            x-speakeasy-name-override: DeleteUserOwnerRequest
-        c1.api.app.v2.DeleteUserOwnerResponse:
+            x-speakeasy-name-override: DeleteAppUserOwnerRequest
+        c1.api.app.v2.DeleteAppUserOwnerResponse:
             description: DeleteUserOwnerResponse is the empty response for deleting a user ownership source.
-            title: Delete User Owner Response
+            title: Delete App User Owner Response
             type: object
-            x-speakeasy-name-override: DeleteUserOwnerResponse
-        c1.api.app.v2.GetEntitlementOwnerResponse:
+            x-speakeasy-name-override: DeleteAppUserOwnerResponse
+        c1.api.app.v2.GetAppEntitlementEntitlementOwnerResponse:
+            description: GetAppEntitlementEntitlementOwnerResponse is the response for getting an entitlement ownership source on an entitlement.
+            properties:
+                appEntitlementOwnerEntitlement:
+                    $ref: '#/components/schemas/c1.api.app.v2.AppEntitlementOwnerEntitlement'
+            title: Get App Entitlement Entitlement Owner Response
+            type: object
+            x-speakeasy-name-override: GetAppEntitlementEntitlementOwnerResponse
+        c1.api.app.v2.GetAppEntitlementOwnerResponse:
             description: GetEntitlementOwnerResponse is the response for getting an entitlement ownership source.
             properties:
                 appOwnerEntitlement:
                     $ref: '#/components/schemas/c1.api.app.v2.AppOwnerEntitlement'
-            title: Get Entitlement Owner Response
+            title: Get App Entitlement Owner Response
             type: object
-            x-speakeasy-name-override: GetEntitlementOwnerResponse
-        c1.api.app.v2.GetUserOwnerResponse:
+            x-speakeasy-name-override: GetAppEntitlementOwnerResponse
+        c1.api.app.v2.GetAppEntitlementUserOwnerResponse:
+            description: GetAppEntitlementUserOwnerResponse is the response for getting a user ownership source on an entitlement.
+            properties:
+                appEntitlementOwnerUser:
+                    $ref: '#/components/schemas/c1.api.app.v2.AppEntitlementOwnerUser'
+            title: Get App Entitlement User Owner Response
+            type: object
+            x-speakeasy-name-override: GetAppEntitlementUserOwnerResponse
+        c1.api.app.v2.GetAppUserOwnerResponse:
             description: GetUserOwnerResponse is the response for getting a user ownership source.
             properties:
                 appOwnerUser:
                     $ref: '#/components/schemas/c1.api.app.v2.AppOwnerUser'
-            title: Get User Owner Response
+            title: Get App User Owner Response
             type: object
-            x-speakeasy-name-override: GetUserOwnerResponse
+            x-speakeasy-name-override: GetAppUserOwnerResponse
         c1.api.app.v2.SearchAppEntitlementEntitlementOwnersResponse:
             description: SearchAppEntitlementEntitlementOwnersResponse is the response for searching entitlement ownership sources on an entitlement.
             properties:
@@ -7972,6 +8072,23 @@ components:
             title: Search App Entitlement Entitlement Owners Response
             type: object
             x-speakeasy-name-override: SearchAppEntitlementEntitlementOwnersResponse
+        c1.api.app.v2.SearchAppEntitlementOwnersResponse:
+            description: SearchEntitlementOwnersResponse is the response for searching entitlement ownership sources.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v2.AppOwnerEntitlement'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Search App Entitlement Owners Response
+            type: object
+            x-speakeasy-name-override: SearchAppEntitlementOwnersResponse
         c1.api.app.v2.SearchAppEntitlementUserOwnersResponse:
             description: SearchAppEntitlementUserOwnersResponse is the response for searching user ownership sources on an entitlement.
             properties:
@@ -7989,6 +8106,23 @@ components:
             title: Search App Entitlement User Owners Response
             type: object
             x-speakeasy-name-override: SearchAppEntitlementUserOwnersResponse
+        c1.api.app.v2.SearchAppUserOwnersResponse:
+            description: SearchUserOwnersResponse is the response for searching user ownership sources.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v2.AppOwnerUser'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Search App User Owners Response
+            type: object
+            x-speakeasy-name-override: SearchAppUserOwnersResponse
         c1.api.app.v2.SearchConnectorEntitlementOwnersResponse:
             description: SearchConnectorEntitlementOwnersResponse is the response for searching entitlement ownership sources on a connector.
             properties:
@@ -8023,42 +8157,8 @@ components:
             title: Search Connector User Owners Response
             type: object
             x-speakeasy-name-override: SearchConnectorUserOwnersResponse
-        c1.api.app.v2.SearchEntitlementOwnersResponse:
-            description: SearchEntitlementOwnersResponse is the response for searching entitlement ownership sources.
-            properties:
-                list:
-                    description: The list field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.app.v2.AppOwnerEntitlement'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                nextPageToken:
-                    description: The nextPageToken field.
-                    readOnly: false
-                    type: string
-            title: Search Entitlement Owners Response
-            type: object
-            x-speakeasy-name-override: SearchEntitlementOwnersResponse
-        c1.api.app.v2.SearchUserOwnersResponse:
-            description: SearchUserOwnersResponse is the response for searching user ownership sources.
-            properties:
-                list:
-                    description: The list field.
-                    items:
-                        $ref: '#/components/schemas/c1.api.app.v2.AppOwnerUser'
-                    nullable: true
-                    readOnly: false
-                    type: array
-                nextPageToken:
-                    description: The nextPageToken field.
-                    readOnly: false
-                    type: string
-            title: Search User Owners Response
-            type: object
-            x-speakeasy-name-override: SearchUserOwnersResponse
-        c1.api.app.v2.SetAppEntitlementOwnersV2RequestInput:
-            description: SetAppEntitlementOwnersV2Request is the request for setting the owners of an app entitlement for a given role.
+        c1.api.app.v2.SetAppEntitlementOwnersRequestInput:
+            description: SetAppEntitlementOwnersRequest is the request for setting the owners of an app entitlement for a given role.
             properties:
                 appEntitlementRefs:
                     description: The appEntitlementRefs field.
@@ -8068,7 +8168,7 @@ components:
                     readOnly: false
                     type: array
                 roleSlug:
-                    description: Empty defaults to the "primary" role on the server side.
+                    description: The roleSlug field.
                     readOnly: false
                     type: string
                 userRefs:
@@ -8078,14 +8178,14 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
-            title: Set App Entitlement Owners V 2 Request
+            title: Set App Entitlement Owners Request
             type: object
-            x-speakeasy-name-override: SetAppEntitlementOwnersV2Request
-        c1.api.app.v2.SetAppEntitlementOwnersV2Response:
-            description: SetAppEntitlementOwnersV2Response is the empty response for setting app entitlement owners.
-            title: Set App Entitlement Owners V 2 Response
+            x-speakeasy-name-override: SetAppEntitlementOwnersRequestV2
+        c1.api.app.v2.SetAppEntitlementOwnersResponse:
+            description: SetAppEntitlementOwnersResponse is the empty response for setting app entitlement owners.
+            title: Set App Entitlement Owners Response
             type: object
-            x-speakeasy-name-override: SetAppEntitlementOwnersV2Response
+            x-speakeasy-name-override: SetAppEntitlementOwnersResponseV2
         c1.api.app.v2.SetAppOwnersRequestInput:
             description: SetAppOwnersRequest is the request for setting user owners for an app and role.
             properties:
@@ -9405,11 +9505,36 @@ components:
             x-speakeasy-name-override: CallFunction
         c1.api.automations.v1.ClearAutomationCircuitBreakerRequestInput:
             description: The ClearAutomationCircuitBreakerRequest message.
+            properties:
+                decision:
+                    description: |-
+                        What to do with paused executions. UNSPECIFIED means clear the breaker
+                         only (backward-compatible default). RUN or CANCEL creates a bulk action
+                         to resolve them asynchronously.
+                    enum:
+                        - PAUSED_EXECUTION_DECISION_UNSPECIFIED
+                        - PAUSED_EXECUTION_DECISION_RUN
+                        - PAUSED_EXECUTION_DECISION_CANCEL
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                reason:
+                    description: Admin-supplied reason when decision is CANCEL. Up to 1024 bytes.
+                    readOnly: false
+                    type: string
             title: Clear Automation Circuit Breaker Request
             type: object
             x-speakeasy-name-override: ClearAutomationCircuitBreakerRequest
         c1.api.automations.v1.ClearAutomationCircuitBreakerResponse:
             description: The ClearAutomationCircuitBreakerResponse message.
+            properties:
+                bulkActionId:
+                    description: |-
+                        The bulk action ID if a bulk action was created to resolve paused
+                         executions. Empty when decision is UNSPECIFIED or there were no
+                         paused executions.
+                    readOnly: false
+                    type: string
             title: Clear Automation Circuit Breaker Response
             type: object
             x-speakeasy-name-override: ClearAutomationCircuitBreakerResponse
@@ -10457,24 +10582,23 @@ components:
         c1.api.automations.v1.ResolvePausedAutomationExecutionsResponse:
             description: The ResolvePausedAutomationExecutionsResponse message.
             properties:
-                erroredCount:
+                bulkActionId:
                     description: |-
-                        The number of paused executions that were attempted but failed to
-                         resolve (e.g., a transient Dynamo error during the per-execution
-                         mutate). Per-execution failures do not abort the run — the loop
-                         continues, the failures are recorded on the audit row, and the
-                         affected executions remain in PAUSED_BY_CIRCUIT_BREAKER state so a
-                         subsequent call can retry them. Always 0 in the happy path.
+                        The bulk action ID created to resolve the paused executions. Track
+                         progress via the BulkAction API.
+                    readOnly: false
+                    type: string
+                erroredCount:
+                    deprecated: true
+                    description: 'Deprecated: see paused_count.'
                     format: uint32
                     readOnly: false
                     type: integer
                 pausedCount:
+                    deprecated: true
                     description: |-
-                        The number of paused executions successfully resolved by this call
-                         (transitioned to PENDING for RUN, TERMINATE for CANCEL). Paused
-                         executions are processed inline, paginated server-side. For very large
-                         paused sets (10K+) this RPC may take seconds to minutes; callers should
-                         treat the request as long-running.
+                        Deprecated: previously returned inline resolution counts. Now returns
+                         the bulk action ID for async tracking.
                     format: uint32
                     readOnly: false
                     type: integer
@@ -27310,6 +27434,35 @@ components:
             title: Webhooks Service Update Response
             type: object
             x-speakeasy-name-override: WebhooksServiceUpdateResponse
+        c1.api.workload_federation.v1.OIDCSettings:
+            description: |-
+                OIDCSettings is the kind-specific configuration block for classic OIDC
+                 providers (GitHub Actions, GitLab CI, HCP Terraform, AWS IAM Outbound,
+                 any CUSTOM provider). Empty for now; future fields like custom_jwks_url,
+                 audience overrides, and required_claims land here.
+            nullable: true
+            title: Oidc Settings
+            type: object
+            x-speakeasy-name-override: OIDCSettings
+        c1.api.workload_federation.v1.SPIFFESettings:
+            description: |-
+                SPIFFESettings is the kind-specific configuration block for SPIFFE
+                 trust-domain providers (issuer_url = spiffe://<trust-domain>).
+            nullable: true
+            properties:
+                bundleEndpointUrl:
+                    description: |-
+                        HTTPS URL of the JWKS endpoint serving the trust domain's signing keys.
+                         Required: the spiffe:// scheme has no discovery mechanism.
+                         Typically the SPIRE OIDC Discovery Provider's /keys endpoint.
+
+                         Mutable: updates re-validate the new URL by fetching its JWKS before
+                         persisting; the issuer (trust domain) itself remains immutable.
+                    readOnly: false
+                    type: string
+            title: Spiffe Settings
+            type: object
+            x-speakeasy-name-override: SPIFFESettings
         c1.api.workload_federation.v1.TestTokenStepResult:
             description: TestTokenStepResult represents the result of a single validation step.
             properties:
@@ -27341,7 +27494,21 @@ components:
             type: object
             x-speakeasy-name-override: TestTokenStepResult
         c1.api.workload_federation.v1.WorkloadFederationProvider:
-            description: WorkloadFederationProvider represents a tenant-level OIDC issuer registration.
+            description: |
+                WorkloadFederationProvider represents a tenant-level workload identity
+                 issuer registration. Two issuer schemes are supported:
+
+                   - https://...   classic OIDC issuer; `settings.oidc` MUST be set.
+                   - spiffe://...  SPIFFE trust-domain URI; `settings.spiffe` MUST be set.
+
+                 The (well_known_provider, issuer_url scheme, settings oneof) tuple is a
+                 tri-invariant: SPIFFE wkp ⟺ spiffe:// issuer ⟺ settings.spiffe set; any
+                 other wkp ⟺ https:// issuer ⟺ settings.oidc set. Issuer URLs are unique
+                 within tenant.
+
+                This message contains a oneof named settings. Only a single field of the following list may be set at a time:
+                  - oidc
+                  - spiffe
             properties:
                 createdAt:
                     format: date-time
@@ -27364,9 +27531,15 @@ components:
                     readOnly: true
                     type: string
                 issuerUrl:
-                    description: The OIDC issuer URL. Immutable after creation.
+                    description: |-
+                        Canonical issuer URL. https:// for OIDC providers, spiffe:// for SPIFFE
+                         trust domains. Unique within tenant. Immutable after creation.
                     readOnly: true
                     type: string
+                oidc:
+                    $ref: '#/components/schemas/c1.api.workload_federation.v1.OIDCSettings'
+                spiffe:
+                    $ref: '#/components/schemas/c1.api.workload_federation.v1.SPIFFESettings'
                 updatedAt:
                     format: date-time
                     readOnly: true
@@ -27382,6 +27555,7 @@ components:
                         - WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI
                         - WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM
                         - WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND
+                        - WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE
                     readOnly: true
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -27389,7 +27563,12 @@ components:
             type: object
             x-speakeasy-name-override: WorkloadFederationProvider
         c1.api.workload_federation.v1.WorkloadFederationServiceCreateProviderRequest:
-            description: The WorkloadFederationServiceCreateProviderRequest message.
+            description: |
+                The WorkloadFederationServiceCreateProviderRequest message.
+
+                This message contains a oneof named settings. Only a single field of the following list may be set at a time:
+                  - oidc
+                  - spiffe
             properties:
                 description:
                     description: A description of what this provider is for.
@@ -27401,14 +27580,22 @@ components:
                     type: string
                 issuerUrl:
                     description: |-
-                        The OIDC issuer URL. Will be validated via OIDC discovery.
-                         Normalized on write: lowercase host, no trailing slash, HTTPS only.
+                        The issuer URL. For OIDC providers, this is an HTTPS URL validated via
+                         OIDC discovery. For SPIFFE providers, this is the SPIFFE trust-domain URI
+                         (e.g., spiffe://prod.example.com). Normalized on write: lowercase
+                         scheme/host, no trailing slash. Unique within tenant.
                     readOnly: false
                     type: string
+                oidc:
+                    $ref: '#/components/schemas/c1.api.workload_federation.v1.OIDCSettings'
+                spiffe:
+                    $ref: '#/components/schemas/c1.api.workload_federation.v1.SPIFFESettings'
                 wellKnownProvider:
                     description: |-
                         Well-known provider type. Required -- UNSPECIFIED is rejected.
                          When set to a named source, the backend validates issuer_url consistency.
+                         SPIFFE wkp requires `settings.spiffe`; all other wkp values require
+                         `settings.oidc`.
                     enum:
                         - WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED
                         - WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM
@@ -27416,6 +27603,7 @@ components:
                         - WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI
                         - WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM
                         - WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND
+                        - WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -27674,6 +27862,8 @@ components:
                     readOnly: false
                     type: boolean
                 signatureValidation:
+                    $ref: '#/components/schemas/c1.api.workload_federation.v1.TestTokenStepResult'
+                subjectValidation:
                     $ref: '#/components/schemas/c1.api.workload_federation.v1.TestTokenStepResult'
                 tokenFreshness:
                     $ref: '#/components/schemas/c1.api.workload_federation.v1.TestTokenStepResult'
@@ -41406,14 +41596,14 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/c1.api.app.v2.SetAppEntitlementOwnersV2RequestInput'
+                            $ref: '#/components/schemas/c1.api.app.v2.SetAppEntitlementOwnersRequestInput'
             responses:
                 "200":
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.app.v2.SetAppEntitlementOwnersV2Response'
-                    description: SetAppEntitlementOwnersV2Response is the empty response for setting app entitlement owners.
+                                $ref: '#/components/schemas/c1.api.app.v2.SetAppEntitlementOwnersResponse'
+                    description: SetAppEntitlementOwnersResponse is the empty response for setting app entitlement owners.
             summary: Set
             tags:
                 - App Entitlement Owner V2
@@ -41422,7 +41612,7 @@ paths:
             x-stability-level: draft
     /api/v2/apps/{app_id}/entitlements/{entitlement_id}/owners/entitlements:
         get:
-            description: SearchEntitlementOwners searches for the entitlement ownership for an app entitlement.
+            description: SearchEntitlementOwners searches for entitlement ownership sources for an app entitlement.
             operationId: c1.api.app.v2.AppEntitlementOwners.SearchEntitlementOwners
             parameters:
                 - in: path
@@ -41455,7 +41645,7 @@ paths:
                 - in: query
                   name: role_slug
                   schema:
-                    description: Empty means "any role" (no filter).
+                    description: The roleSlug field.
                     readOnly: false
                     type: string
             responses:
@@ -41468,12 +41658,197 @@ paths:
             summary: Search Entitlement Owners
             tags:
                 - App Entitlement Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-datasource: App_Entitlement_Owner_Entitlement#read
+                terraform-resource: null
             x-speakeasy-group: AppEntitlementOwnersV2
             x-speakeasy-name-override: SearchEntitlementOwners
             x-stability-level: draft
+    ? /api/v2/apps/{app_id}/entitlements/{entitlement_id}/owners/entitlements/{role_slug}/{app_entitlement_ref_app_id}/{app_entitlement_ref_id}
+    :   delete:
+            description: DeleteEntitlementOwner deletes an entitlement ownership source for an app entitlement.
+            operationId: c1.api.app.v2.AppEntitlementOwners.DeleteEntitlementOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The entitlementId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.DeleteAppEntitlementEntitlementOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.DeleteAppEntitlementEntitlementOwnerResponse'
+                    description: DeleteAppEntitlementEntitlementOwnerResponse is the empty response for deleting an entitlement ownership source on an entitlement.
+            summary: Delete Entitlement Owner
+            tags:
+                - App Entitlement Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: App_Entitlement_Owner_Entitlement#delete
+            x-speakeasy-group: AppEntitlementOwnersV2
+            x-speakeasy-name-override: DeleteEntitlementOwner
+            x-stability-level: draft
+        get:
+            description: GetEntitlementOwner gets an entitlement ownership source for an app entitlement.
+            operationId: c1.api.app.v2.AppEntitlementOwners.GetEntitlementOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The entitlementId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.GetAppEntitlementEntitlementOwnerResponse'
+                    description: GetAppEntitlementEntitlementOwnerResponse is the response for getting an entitlement ownership source on an entitlement.
+            summary: Get Entitlement Owner
+            tags:
+                - App Entitlement Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: App_Entitlement_Owner_Entitlement#read
+            x-speakeasy-group: AppEntitlementOwnersV2
+            x-speakeasy-name-override: GetEntitlementOwner
+            x-stability-level: draft
+        post:
+            description: CreateEntitlementOwner creates an entitlement ownership source for an app entitlement.
+            operationId: c1.api.app.v2.AppEntitlementOwners.CreateEntitlementOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The entitlementId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.CreateAppEntitlementEntitlementOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.CreateAppEntitlementEntitlementOwnerResponse'
+                    description: CreateAppEntitlementEntitlementOwnerResponse is the response for creating an entitlement ownership source on an entitlement.
+            summary: Create Entitlement Owner
+            tags:
+                - App Entitlement Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: App_Entitlement_Owner_Entitlement#create
+            x-speakeasy-group: AppEntitlementOwnersV2
+            x-speakeasy-name-override: CreateEntitlementOwner
+            x-stability-level: draft
     /api/v2/apps/{app_id}/entitlements/{entitlement_id}/owners/users:
         get:
-            description: SearchUserOwners searches for users who are owners of this app entitlement.
+            description: SearchUserOwners searches for user ownership sources of this app entitlement.
             operationId: c1.api.app.v2.AppEntitlementOwners.SearchUserOwners
             parameters:
                 - in: path
@@ -41506,7 +41881,7 @@ paths:
                 - in: query
                   name: role_slug
                   schema:
-                    description: Empty means "any role" (no filter).
+                    description: The roleSlug field.
                     readOnly: false
                     type: string
             responses:
@@ -41519,8 +41894,172 @@ paths:
             summary: Search User Owners
             tags:
                 - App Entitlement Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-datasource: App_Entitlement_Owner_User#read
+                terraform-resource: null
             x-speakeasy-group: AppEntitlementOwnersV2
             x-speakeasy-name-override: SearchUserOwners
+            x-stability-level: draft
+    /api/v2/apps/{app_id}/entitlements/{entitlement_id}/owners/users/{role_slug}/{user_ref_id}:
+        delete:
+            description: DeleteUserOwner deletes a user ownership source for an app entitlement.
+            operationId: c1.api.app.v2.AppEntitlementOwners.DeleteUserOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The entitlementId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: user_ref_id
+                  required: true
+                  schema:
+                    description: The id of the user.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.DeleteAppEntitlementUserOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.DeleteAppEntitlementUserOwnerResponse'
+                    description: DeleteAppEntitlementUserOwnerResponse is the empty response for deleting a user ownership source on an entitlement.
+            summary: Delete User Owner
+            tags:
+                - App Entitlement Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: App_Entitlement_Owner_User#delete
+            x-speakeasy-group: AppEntitlementOwnersV2
+            x-speakeasy-name-override: DeleteUserOwner
+            x-stability-level: draft
+        get:
+            description: GetUserOwner gets a user ownership source for an app entitlement.
+            operationId: c1.api.app.v2.AppEntitlementOwners.GetUserOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The entitlementId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: user_ref_id
+                  required: true
+                  schema:
+                    description: The id of the user.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.GetAppEntitlementUserOwnerResponse'
+                    description: GetAppEntitlementUserOwnerResponse is the response for getting a user ownership source on an entitlement.
+            summary: Get User Owner
+            tags:
+                - App Entitlement Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: App_Entitlement_Owner_User#read
+            x-speakeasy-group: AppEntitlementOwnersV2
+            x-speakeasy-name-override: GetUserOwner
+            x-stability-level: draft
+        post:
+            description: CreateUserOwner creates a user ownership source for an app entitlement.
+            operationId: c1.api.app.v2.AppEntitlementOwners.CreateUserOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: entitlement_id
+                  required: true
+                  schema:
+                    description: The entitlementId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: user_ref_id
+                  required: true
+                  schema:
+                    description: The id of the user.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.CreateAppEntitlementUserOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.CreateAppEntitlementUserOwnerResponse'
+                    description: CreateAppEntitlementUserOwnerResponse is the response for creating a user ownership source on an entitlement.
+            summary: Create User Owner
+            tags:
+                - App Entitlement Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: App_Entitlement_Owner_User#create
+            x-speakeasy-group: AppEntitlementOwnersV2
+            x-speakeasy-name-override: CreateUserOwner
             x-stability-level: draft
     /api/v2/apps/{app_id}/owners:
         put:
@@ -41588,7 +42127,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.app.v2.SearchEntitlementOwnersResponse'
+                                $ref: '#/components/schemas/c1.api.app.v2.SearchAppEntitlementOwnersResponse'
                     description: SearchEntitlementOwnersResponse is the response for searching entitlement ownership sources.
             summary: Search Entitlement Owners
             tags:
@@ -41638,13 +42177,13 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/c1.api.app.v2.DeleteEntitlementOwnerRequestInput'
+                            $ref: '#/components/schemas/c1.api.app.v2.DeleteAppEntitlementOwnerRequestInput'
             responses:
                 "200":
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.app.v2.DeleteEntitlementOwnerResponse'
+                                $ref: '#/components/schemas/c1.api.app.v2.DeleteAppEntitlementOwnerResponse'
                     description: DeleteEntitlementOwnerResponse is the empty response for deleting an entitlement ownership source.
             summary: Delete Entitlement Owner
             tags:
@@ -41693,7 +42232,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.app.v2.GetEntitlementOwnerResponse'
+                                $ref: '#/components/schemas/c1.api.app.v2.GetAppEntitlementOwnerResponse'
                     description: GetEntitlementOwnerResponse is the response for getting an entitlement ownership source.
             summary: Get Entitlement Owner
             tags:
@@ -41742,13 +42281,13 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/c1.api.app.v2.CreateEntitlementOwnerRequestInput'
+                            $ref: '#/components/schemas/c1.api.app.v2.CreateAppEntitlementOwnerRequestInput'
             responses:
                 "200":
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.app.v2.CreateEntitlementOwnerResponse'
+                                $ref: '#/components/schemas/c1.api.app.v2.CreateAppEntitlementOwnerResponse'
                     description: CreateEntitlementOwnerResponse is the response for creating an entitlement ownership source.
             summary: Create Entitlement Owner
             tags:
@@ -41796,7 +42335,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.app.v2.SearchUserOwnersResponse'
+                                $ref: '#/components/schemas/c1.api.app.v2.SearchAppUserOwnersResponse'
                     description: SearchUserOwnersResponse is the response for searching user ownership sources.
             summary: Search User Owners
             tags:
@@ -41839,13 +42378,13 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/c1.api.app.v2.DeleteUserOwnerRequestInput'
+                            $ref: '#/components/schemas/c1.api.app.v2.DeleteAppUserOwnerRequestInput'
             responses:
                 "200":
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.app.v2.DeleteUserOwnerResponse'
+                                $ref: '#/components/schemas/c1.api.app.v2.DeleteAppUserOwnerResponse'
                     description: DeleteUserOwnerResponse is the empty response for deleting a user ownership source.
             summary: Delete User Owner
             tags:
@@ -41887,7 +42426,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.app.v2.GetUserOwnerResponse'
+                                $ref: '#/components/schemas/c1.api.app.v2.GetAppUserOwnerResponse'
                     description: GetUserOwnerResponse is the response for getting a user ownership source.
             summary: Get User Owner
             tags:
@@ -41929,13 +42468,13 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/c1.api.app.v2.CreateUserOwnerRequestInput'
+                            $ref: '#/components/schemas/c1.api.app.v2.CreateAppUserOwnerRequestInput'
             responses:
                 "200":
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/c1.api.app.v2.CreateUserOwnerResponse'
+                                $ref: '#/components/schemas/c1.api.app.v2.CreateAppUserOwnerResponse'
                     description: CreateUserOwnerResponse is the response for creating a user ownership source.
             summary: Create User Owner
             tags:

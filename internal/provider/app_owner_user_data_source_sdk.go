@@ -265,7 +265,7 @@ func (r *AppOwnerUserDataSourceModel) RefreshFromSharedAppOwnerUser(ctx context.
 	return diags
 }
 
-func (r *AppOwnerUserDataSourceModel) RefreshFromSharedSearchUserOwnersResponse(ctx context.Context, resp *shared.SearchUserOwnersResponse) diag.Diagnostics {
+func (r *AppOwnerUserDataSourceModel) RefreshFromSharedSearchAppUserOwnersResponse(ctx context.Context, resp *shared.SearchAppUserOwnersResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {

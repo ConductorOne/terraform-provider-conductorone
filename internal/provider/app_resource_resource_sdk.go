@@ -114,12 +114,6 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceView(ctx context.
 			return diags
 		}
 
-		// CreateManuallyManagedAppResourceResponse returns AppResource, not AppResourceView,
-		// so ActorObjectPermissions fields are not available. Set them to null explicitly.
-		r.Delete = types.BoolNull()
-		r.Edit = types.BoolNull()
-		r.Extra = nil
-		r.Read = types.BoolNull()
 	}
 
 	return diags

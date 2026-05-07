@@ -22,7 +22,9 @@ type WorkloadFederationServiceTestTokenResponse struct {
 	// TestTokenStepResult represents the result of a single validation step.
 	TestTokenStepResult5 *TestTokenStepResult `json:"signatureValidation,omitempty"`
 	// TestTokenStepResult represents the result of a single validation step.
-	TestTokenStepResult6 *TestTokenStepResult `json:"tokenFreshness,omitempty"`
+	TestTokenStepResult6 *TestTokenStepResult `json:"subjectValidation,omitempty"`
+	// TestTokenStepResult represents the result of a single validation step.
+	TestTokenStepResult7 *TestTokenStepResult `json:"tokenFreshness,omitempty"`
 }
 
 func (w *WorkloadFederationServiceTestTokenResponse) GetTestTokenStepResult() *TestTokenStepResult {
@@ -86,4 +88,11 @@ func (w *WorkloadFederationServiceTestTokenResponse) GetTestTokenStepResult6() *
 		return nil
 	}
 	return w.TestTokenStepResult6
+}
+
+func (w *WorkloadFederationServiceTestTokenResponse) GetTestTokenStepResult7() *TestTokenStepResult {
+	if w == nil {
+		return nil
+	}
+	return w.TestTokenStepResult7
 }
