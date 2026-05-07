@@ -1,0 +1,1 @@
+terraform import conductorone_app_entitlement_owner_entitlement.my_conductorone_app_entitlement_owner_entitlement '{"app_entitlement_ref_app_id": "...", "app_entitlement_ref_id": "...", "app_id": "...", "entitlement_id": "...", "role_slug": "..."}'
