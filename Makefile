@@ -59,6 +59,19 @@ gen:
 	speakeasy generate sdk -s $$COMBINED -o . -l terraform -d
 	$(MAKE) apply-patches
 	$(MAKE) vendor
+	@$(MAKE) check-unregistered
+
+# check-unregistered: warns about Speakeasy-generated constructors that aren't
+# referenced from provider.go's registration methods or integrations.go's
+# getIntegrationResources(). provider.go is in .genignore, so Speakeasy can't
+# auto-register new entries — every regen requires a manual audit. Output is
+# informational; never fails the build. See IGA-1741 for the tracking issue.
+bin/check-unregistered:
+	go build -o $@ ./tools/check-unregistered
+
+.PHONY: check-unregistered
+check-unregistered: bin/check-unregistered
+	@./bin/check-unregistered
 
 # apply-patches: applies every unified-diff patch in patches/ in filename order.
 # These are hand-fixes for Speakeasy regressions that the regen wipes on every
