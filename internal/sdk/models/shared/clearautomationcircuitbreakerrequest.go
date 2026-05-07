@@ -3,6 +3,53 @@
 
 package shared
 
+// Decision - What to do with paused executions. UNSPECIFIED means clear the breaker
+//
+//	only (backward-compatible default). RUN or CANCEL creates a bulk action
+//	to resolve them asynchronously.
+type Decision string
+
+const (
+	DecisionPausedExecutionDecisionUnspecified Decision = "PAUSED_EXECUTION_DECISION_UNSPECIFIED"
+	DecisionPausedExecutionDecisionRun         Decision = "PAUSED_EXECUTION_DECISION_RUN"
+	DecisionPausedExecutionDecisionCancel      Decision = "PAUSED_EXECUTION_DECISION_CANCEL"
+)
+
+func (e Decision) ToPointer() *Decision {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Decision) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PAUSED_EXECUTION_DECISION_UNSPECIFIED", "PAUSED_EXECUTION_DECISION_RUN", "PAUSED_EXECUTION_DECISION_CANCEL":
+			return true
+		}
+	}
+	return false
+}
+
 // The ClearAutomationCircuitBreakerRequest message.
 type ClearAutomationCircuitBreakerRequest struct {
+	// What to do with paused executions. UNSPECIFIED means clear the breaker
+	//  only (backward-compatible default). RUN or CANCEL creates a bulk action
+	//  to resolve them asynchronously.
+	Decision *Decision `json:"decision,omitempty"`
+	// Admin-supplied reason when decision is CANCEL. Up to 1024 bytes.
+	Reason *string `json:"reason,omitempty"`
+}
+
+func (c *ClearAutomationCircuitBreakerRequest) GetDecision() *Decision {
+	if c == nil {
+		return nil
+	}
+	return c.Decision
+}
+
+func (c *ClearAutomationCircuitBreakerRequest) GetReason() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Reason
 }

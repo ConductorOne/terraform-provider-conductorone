@@ -5,19 +5,25 @@ package shared
 
 // The ResolvePausedAutomationExecutionsResponse message.
 type ResolvePausedAutomationExecutionsResponse struct {
-	// The number of paused executions that were attempted but failed to
-	//  resolve (e.g., a transient Dynamo error during the per-execution
-	//  mutate). Per-execution failures do not abort the run — the loop
-	//  continues, the failures are recorded on the audit row, and the
-	//  affected executions remain in PAUSED_BY_CIRCUIT_BREAKER state so a
-	//  subsequent call can retry them. Always 0 in the happy path.
+	// The bulk action ID created to resolve the paused executions. Track
+	//  progress via the BulkAction API.
+	BulkActionID *string `json:"bulkActionId,omitempty"`
+	// Deprecated: see paused_count.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ErroredCount *int64 `json:"erroredCount,omitempty"`
-	// The number of paused executions successfully resolved by this call
-	//  (transitioned to PENDING for RUN, TERMINATE for CANCEL). Paused
-	//  executions are processed inline, paginated server-side. For very large
-	//  paused sets (10K+) this RPC may take seconds to minutes; callers should
-	//  treat the request as long-running.
+	// Deprecated: previously returned inline resolution counts. Now returns
+	//  the bulk action ID for async tracking.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	PausedCount *int64 `json:"pausedCount,omitempty"`
+}
+
+func (r *ResolvePausedAutomationExecutionsResponse) GetBulkActionID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.BulkActionID
 }
 
 func (r *ResolvePausedAutomationExecutionsResponse) GetErroredCount() *int64 {
