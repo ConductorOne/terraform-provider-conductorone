@@ -32,18 +32,26 @@ var reservedTFNames = map[string]bool{
 // runTagParity scans every `tfsdk:"..."` tag on resource / data-source model
 // structs and flags two classes of issue:
 //
-//   - tags that aren't valid snake_case (catches camelCase leakage from
-//     Phase-2-class collision-resolution renames)
-//   - tags equal to a reserved Terraform meta-argument name
+//   - (a) tags that aren't valid snake_case
+//   - (b) tags equal to a reserved Terraform meta-argument name
 //
-// TODO: extend with the stricter "JSON-tag <-> TF-attribute parity" check
-// from the original brainstorm — for each TF attribute, walk to the wrapped
-// SDK shared type and verify the json: tag matches the snake_case form of
-// the tfsdk: tag. That would catch Phase-2-style renames where Speakeasy's
-// generator inherited a renamed schema name into the parent's nested
-// attribute name (the speakeasy-feature-request-property-override.md issue).
-// Not worth the AST-walking complexity until we hit a regression that
-// (a) and (b) fail to catch.
+// (a) catches camelCase leaking into customer-visible HCL attribute names.
+// terraform-plugin-framework doesn't enforce snake_case on attribute names,
+// but customers expect it (every other attribute in the provider follows it),
+// and inconsistencies are confusing to write and read.
+//
+// (b) prevents collisions with Terraform's meta-arguments. Using a reserved
+// name as a resource attribute produces opaque parse errors at apply time —
+// e.g. an attribute called `count` competes with the `count` meta-argument.
+//
+// TODO: a stricter check could verify each `tfsdk:"foo_bar"` tag aligns with
+// the JSON tag of the field it ultimately maps to in the wrapped SDK shared
+// type — i.e. the customer-visible HCL name and the wire-level JSON name
+// agree (modulo snake-vs-camel). Useful for catching cases where Speakeasy
+// inherits a renamed schema name into a parent's nested attribute name and
+// the TF attribute drifts from the underlying API field. Not worth the AST
+// navigation complexity (resource model -> wrapped SDK type -> field tags)
+// until we hit a regression (a)+(b) miss.
 func runTagParity() (int, error) {
 	files, err := filepath.Glob(providerGlob)
 	if err != nil {
@@ -124,9 +132,9 @@ func runTagParity() (int, error) {
 	w := os.Stderr
 	fmt.Fprintln(w)
 	fmt.Fprintf(w, "WARNING [tag-parity]: %d tfsdk: tag(s) violate naming rules.\n", len(findings))
-	fmt.Fprintln(w, "         Snake-case violations leak camelCase from Phase-2-class collision renames.")
-	fmt.Fprintln(w, "         Reserved-keyword violations conflict with Terraform meta-arguments and")
-	fmt.Fprintln(w, "         produce confusing parse errors at customer apply time.")
+	fmt.Fprintln(w, "         Snake-case violations expose camelCase in customer-visible HCL attribute")
+	fmt.Fprintln(w, "         names; reserved-keyword violations collide with Terraform meta-arguments")
+	fmt.Fprintln(w, "         and produce opaque parse errors at customer apply time.")
 	fmt.Fprintln(w)
 	for _, x := range findings {
 		fmt.Fprintf(w, "    [%s] %s.%s tfsdk:%q  (%s)\n", x.why, x.struct_, x.field, x.tag, x.file)
