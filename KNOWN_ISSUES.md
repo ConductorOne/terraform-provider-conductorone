@@ -1,5 +1,34 @@
 # Known Issues
 
+## `provider.go` is in `.genignore` — new resources don't auto-register
+
+### Summary
+
+`internal/provider/provider.go` is listed in `.genignore`, so Speakeasy never overwrites it. The file holds two things we need to preserve across regens:
+
+1. The custom `Schema()` + `Configure()` implementation (a four-tier auth chain: access token / OIDC workload federation / client credentials / env-var fallback).
+2. The `getIntegrationResources()` append on the `Resources()` slice, which pulls in 140+ hand-maintained integration resources from `integrations.go`.
+
+The cost: every regen that adds a new `*_resource.go` or `*_data_source.go` produces a `New<Name>Resource()` / `New<Name>DataSource()` constructor that's defined-but-unreachable from the live provider until someone hand-adds it to the appropriate slice. Customers can't use the resource and tfplugindocs won't render a doc page for it.
+
+### Tripwire
+
+`make gen` runs `bin/check all` at the end, which surfaces unregistered constructors as a warning. The `unregistered` subcommand alone is also exposed as `make check-unregistered`. Treat any non-empty output as a regen-PR review item.
+
+### Workaround per regen
+
+After `make gen`, audit the warning output. For each new constructor, hand-add it to:
+
+- `provider.go`'s `Resources()` (for `_resource.go` files outside `integration_*`)
+- `provider.go`'s `DataSources()` (for `_data_source.go` files)
+- `integrations.go`'s `getIntegrationResources()` (for `integration_*_resource.go` files)
+
+Pre-existing latent constructors that predate v1.0.40 are out of scope for any single regen — they need triage (some are intentional dead code, some are missed registrations) and are tracked in [IGA-1741](https://linear.app/ductone/issue/IGA-1741).
+
+### Status
+
+[IGA-1741](https://linear.app/ductone/issue/IGA-1741) tracks the redesign — drop `provider.go` from `.genignore` and migrate the auth + integration appends to a Speakeasy-native pattern (`additionalResources` in `gen.yaml` plus an overlay-injected hook for the auth chain). No upstream Speakeasy work needed; the primitives exist (per [Speakeasy provider configuration docs](https://www.speakeasy.com/docs/terraform/provider-configuration)).
+
 ## Speakeasy `x-speakeasy-terraform-plan-only` regression — FIXED upstream
 
 ### Status
