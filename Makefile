@@ -59,19 +59,40 @@ gen:
 	speakeasy generate sdk -s $$COMBINED -o . -l terraform -d
 	$(MAKE) apply-patches
 	$(MAKE) vendor
-	@$(MAKE) check-unregistered
+	@$(MAKE) check
 
-# check-unregistered: warns about Speakeasy-generated constructors that aren't
-# referenced from provider.go's registration methods or integrations.go's
-# getIntegrationResources(). provider.go is in .genignore, so Speakeasy can't
-# auto-register new entries — every regen requires a manual audit. Output is
-# informational; never fails the build. See IGA-1741 for the tracking issue.
-bin/check-unregistered:
-	go build -o $@ ./tools/check-unregistered
+# bin/check: static-audit binary with subcommands that surface regen drift —
+# constructors generated but not registered, registered constructors missing
+# example HCL or rendered docs, tfsdk: tags violating snake_case / reserved
+# keyword rules, and TODO markers in Speakeasy-generated code. Output is
+# informational by default; pass -strict to upgrade findings to exit 1 for
+# CI gating once the historical backlog is clean. See IGA-1741.
+bin/check:
+	go build -o $@ ./tools/check
 
+# check: run every audit subcommand. Default target invoked at the end of
+# `make gen` so reviewers see drift surfaced inline rather than discovering
+# it post-merge.
+.PHONY: check
+check: bin/check
+	@./bin/check all
+
+# Per-subcommand convenience targets — same binary, narrower scope.
 .PHONY: check-unregistered
-check-unregistered: bin/check-unregistered
-	@./bin/check-unregistered
+check-unregistered: bin/check
+	@./bin/check unregistered
+
+.PHONY: check-docs-coverage
+check-docs-coverage: bin/check
+	@./bin/check docs-coverage
+
+.PHONY: check-tag-parity
+check-tag-parity: bin/check
+	@./bin/check tag-parity
+
+.PHONY: check-todo-markers
+check-todo-markers: bin/check
+	@./bin/check todo-markers
 
 # apply-patches: applies every unified-diff patch in patches/ in filename order.
 # These are hand-fixes for Speakeasy regressions that the regen wipes on every
