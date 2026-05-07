@@ -1,27 +1,27 @@
 // check runs static audits over the generated provider code, surfacing
 // classes of regen drift that are easy to miss at PR review time:
 //
-//   unregistered    — Speakeasy-generated constructors not wired into
-//                     provider.go's registration slices or
-//                     integrations.go's getIntegrationResources().
+//	unregistered    — Speakeasy-generated constructors not wired into
+//	                  provider.go's registration slices or
+//	                  integrations.go's getIntegrationResources().
 //
-//   docs-coverage   — registered constructors that lack an example HCL
-//                     block in examples/<kind>/conductorone_<name>/ or a
-//                     rendered doc page in docs/<kind>/<name>.md.
+//	docs-coverage   — registered constructors that lack an example HCL
+//	                  block in examples/<kind>/conductorone_<name>/ or a
+//	                  rendered doc page in docs/<kind>/<name>.md.
 //
-//   tag-parity      — `tfsdk:` tags on resource model structs that violate
-//                     either snake_case style or reserved Terraform keyword
-//                     rules. (Stricter "JSON tag <-> TF attribute name
-//                     parity" — see TODO in parity.go — deferred.)
+//	tag-parity      — `tfsdk:` tags on resource model structs that violate
+//	                  either snake_case style or reserved Terraform keyword
+//	                  rules. (Stricter "JSON tag <-> TF attribute name
+//	                  parity" — see TODO in parity.go — deferred.)
 //
-//   todo-markers    — `// TODO` comments inside Speakeasy-generated files.
-//                     Generated code shouldn't ship with author-stub
-//                     placeholders; flagging them surfaces regen output
-//                     that the upstream generator emitted as incomplete.
+//	todo-markers    — `// TODO` comments inside Speakeasy-generated files.
+//	                  Generated code shouldn't ship with author-stub
+//	                  placeholders; flagging them surfaces regen output
+//	                  that the upstream generator emitted as incomplete.
 //
-//   all             — runs every subcommand above. Aggregate exit code is
-//                     the max of the subcommand exit codes (so a single
-//                     failure propagates).
+//	all             — runs every subcommand above. Aggregate exit code is
+//	                  the max of the subcommand exit codes (so a single
+//	                  failure propagates).
 //
 // All subcommands exit 0 by default and emit warnings to stderr. Failing
 // the build would force every regen to clear the historical backlog before
@@ -52,13 +52,13 @@ var subcommands = map[string]runFunc{
 func main() {
 	strict := flag.Bool("strict", false, "exit 1 on any finding (default: warning only, exit 0)")
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "usage: %s [-strict] <subcommand>\n", filepath.Base(os.Args[0]))
-		fmt.Fprintln(os.Stderr, "subcommands:")
-		fmt.Fprintln(os.Stderr, "  unregistered    Speakeasy-generated constructors not wired into provider.go")
-		fmt.Fprintln(os.Stderr, "  docs-coverage   registered constructors lacking examples/ or docs/ pages")
-		fmt.Fprintln(os.Stderr, "  tag-parity      tfsdk: tags violating snake_case / reserved keyword rules")
-		fmt.Fprintln(os.Stderr, "  todo-markers    // TODO comments inside Speakeasy-generated files")
-		fmt.Fprintln(os.Stderr, "  all             run every subcommand above")
+		pf(os.Stderr, "usage: %s [-strict] <subcommand>\n", filepath.Base(os.Args[0]))
+		pln(os.Stderr, "subcommands:")
+		pln(os.Stderr, "  unregistered    Speakeasy-generated constructors not wired into provider.go")
+		pln(os.Stderr, "  docs-coverage   registered constructors lacking examples/ or docs/ pages")
+		pln(os.Stderr, "  tag-parity      tfsdk: tags violating snake_case / reserved keyword rules")
+		pln(os.Stderr, "  todo-markers    // TODO comments inside Speakeasy-generated files")
+		pln(os.Stderr, "  all             run every subcommand above")
 	}
 	flag.Parse()
 
@@ -121,6 +121,6 @@ func chdirToRepoRoot() error {
 }
 
 func fail(format string, args ...any) {
-	fmt.Fprintf(os.Stderr, "check: "+format+"\n", args...)
+	pf(os.Stderr, "check: "+format+"\n", args...)
 	os.Exit(2)
 }

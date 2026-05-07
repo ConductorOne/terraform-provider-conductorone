@@ -1,13 +1,28 @@
 package main
 
 import (
+	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
 )
+
+// pln and pf wrap Fprintln/Fprintf and intentionally drop the error return.
+// Subcommands write warnings to os.Stderr; if stderr writes fail, the user
+// has bigger problems than this audit script. Wrapping centralizes the
+// errcheck-suppression in one place rather than scattering `_, _ = ...`
+// across every emit site.
+func pln(w io.Writer, args ...any) {
+	_, _ = fmt.Fprintln(w, args...)
+}
+
+func pf(w io.Writer, format string, args ...any) {
+	_, _ = fmt.Fprintf(w, format, args...)
+}
 
 // providerGlob is the pattern for files that hold resource / data-source
 // constructors and model structs.

@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
@@ -83,17 +82,17 @@ func runTodoMarkers() (int, error) {
 	})
 
 	w := os.Stderr
-	fmt.Fprintln(w)
-	fmt.Fprintf(w, "WARNING [todo-markers]: %d // TODO marker(s) in Speakeasy-generated files.\n", len(findings))
-	fmt.Fprintln(w, "         Generated code shouldn't ship with author-stub placeholders. Each one")
-	fmt.Fprintln(w, "         indicates either an upstream regression or a spec annotation the")
-	fmt.Fprintln(w, "         generator can't handle. Consider filing upstream and capturing the fix")
-	fmt.Fprintln(w, "         as a patches/*.patch entry.")
-	fmt.Fprintln(w)
+	pln(w)
+	pf(w, "WARNING [todo-markers]: %d // TODO marker(s) in Speakeasy-generated files.\n", len(findings))
+	pln(w, "         Generated code shouldn't ship with author-stub placeholders. Each one")
+	pln(w, "         indicates either an upstream regression or a spec annotation the")
+	pln(w, "         generator can't handle. Consider filing upstream and capturing the fix")
+	pln(w, "         as a patches/*.patch entry.")
+	pln(w)
 	for _, f := range findings {
-		fmt.Fprintf(w, "    %s:%d: %s\n", f.file, f.line, f.text)
+		pf(w, "    %s:%d: %s\n", f.file, f.line, f.text)
 	}
-	fmt.Fprintln(w)
+	pln(w)
 	return len(findings), nil
 }
 

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -130,16 +129,16 @@ func runTagParity() (int, error) {
 	})
 
 	w := os.Stderr
-	fmt.Fprintln(w)
-	fmt.Fprintf(w, "WARNING [tag-parity]: %d tfsdk: tag(s) violate naming rules.\n", len(findings))
-	fmt.Fprintln(w, "         Snake-case violations expose camelCase in customer-visible HCL attribute")
-	fmt.Fprintln(w, "         names; reserved-keyword violations collide with Terraform meta-arguments")
-	fmt.Fprintln(w, "         and produce opaque parse errors at customer apply time.")
-	fmt.Fprintln(w)
+	pln(w)
+	pf(w, "WARNING [tag-parity]: %d tfsdk: tag(s) violate naming rules.\n", len(findings))
+	pln(w, "         Snake-case violations expose camelCase in customer-visible HCL attribute")
+	pln(w, "         names; reserved-keyword violations collide with Terraform meta-arguments")
+	pln(w, "         and produce opaque parse errors at customer apply time.")
+	pln(w)
 	for _, x := range findings {
-		fmt.Fprintf(w, "    [%s] %s.%s tfsdk:%q  (%s)\n", x.why, x.struct_, x.field, x.tag, x.file)
+		pf(w, "    [%s] %s.%s tfsdk:%q  (%s)\n", x.why, x.struct_, x.field, x.tag, x.file)
 	}
-	fmt.Fprintln(w)
+	pln(w)
 	return len(findings), nil
 }
 

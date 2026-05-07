@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
@@ -86,29 +85,29 @@ func runDocsCoverage() (int, error) {
 	}
 
 	w := os.Stderr
-	fmt.Fprintln(w)
-	fmt.Fprintf(w, "WARNING [docs-coverage]: %d registered constructor(s) lack examples/ or docs/ pages.\n", totalMissing)
-	fmt.Fprintln(w, "         For each constructor: confirm an example HCL file exists under")
-	fmt.Fprintln(w, "         examples/<kind>/<provider>_<name>/, then rerun `make generate`")
-	fmt.Fprintln(w, "         to render docs/<kind>/<name>.md.")
+	pln(w)
+	pf(w, "WARNING [docs-coverage]: %d registered constructor(s) lack examples/ or docs/ pages.\n", totalMissing)
+	pln(w, "         For each constructor: confirm an example HCL file exists under")
+	pln(w, "         examples/<kind>/<provider>_<name>/, then rerun `make generate`")
+	pln(w, "         to render docs/<kind>/<name>.md.")
 	for _, kind := range allKinds() {
 		entries, ok := missesByKind[kind]
 		if !ok {
 			continue
 		}
 		sort.Slice(entries, func(i, j int) bool { return entries[i].constructor < entries[j].constructor })
-		fmt.Fprintf(w, "\n  %s (%d):\n", kindDisplay(kind), len(entries))
+		pf(w, "\n  %s (%d):\n", kindDisplay(kind), len(entries))
 		for _, m := range entries {
-			fmt.Fprintf(w, "    %s\n", m.constructor)
+			pf(w, "    %s\n", m.constructor)
 			if m.examplePath != "" {
-				fmt.Fprintf(w, "      missing example: %s/\n", m.examplePath)
+				pf(w, "      missing example: %s/\n", m.examplePath)
 			}
 			if m.docPath != "" {
-				fmt.Fprintf(w, "      missing doc:     %s\n", m.docPath)
+				pf(w, "      missing doc:     %s\n", m.docPath)
 			}
 		}
 	}
-	fmt.Fprintln(w)
+	pln(w)
 	return totalMissing, nil
 }
 

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"sort"
 )
@@ -45,22 +44,22 @@ func runUnregistered() (int, error) {
 	}
 
 	w := os.Stderr
-	fmt.Fprintln(w)
-	fmt.Fprintf(w, "WARNING [unregistered]: %d Speakeasy-generated constructor(s) are defined but unregistered.\n", total)
-	fmt.Fprintln(w, "         provider.go is in .genignore, so Speakeasy can't update its slices.")
-	fmt.Fprintln(w, "         Hand-add new entries to provider.go's registration methods")
-	fmt.Fprintln(w, "         (or integrations.go's getIntegrationResources() for integration_*).")
-	fmt.Fprintln(w, "         See IGA-1741 for the redesign tracking issue.")
+	pln(w)
+	pf(w, "WARNING [unregistered]: %d Speakeasy-generated constructor(s) are defined but unregistered.\n", total)
+	pln(w, "         provider.go is in .genignore, so Speakeasy can't update its slices.")
+	pln(w, "         Hand-add new entries to provider.go's registration methods")
+	pln(w, "         (or integrations.go's getIntegrationResources() for integration_*).")
+	pln(w, "         See IGA-1741 for the redesign tracking issue.")
 	for _, kind := range allKinds() {
 		names, ok := missing[kind]
 		if !ok {
 			continue
 		}
-		fmt.Fprintf(w, "\n  %s (%d):\n", kindDisplay(kind), len(names))
+		pf(w, "\n  %s (%d):\n", kindDisplay(kind), len(names))
 		for _, n := range names {
-			fmt.Fprintf(w, "    %s\n", n)
+			pf(w, "    %s\n", n)
 		}
 	}
-	fmt.Fprintln(w)
+	pln(w)
 	return total, nil
 }
