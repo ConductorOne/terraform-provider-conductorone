@@ -8,10 +8,10 @@ import (
 )
 
 type C1APIAppV2AppOwnersDeleteUserOwnerRequest struct {
-	AppID                  string                         `pathParam:"style=simple,explode=false,name=app_id"`
-	RoleSlug               string                         `pathParam:"style=simple,explode=false,name=role_slug"`
-	UserRefID              string                         `pathParam:"style=simple,explode=false,name=user_ref_id"`
-	DeleteUserOwnerRequest *shared.DeleteUserOwnerRequest `request:"mediaType=application/json"`
+	AppID                     string                            `pathParam:"style=simple,explode=false,name=app_id"`
+	RoleSlug                  string                            `pathParam:"style=simple,explode=false,name=role_slug"`
+	UserRefID                 string                            `pathParam:"style=simple,explode=false,name=user_ref_id"`
+	DeleteAppUserOwnerRequest *shared.DeleteAppUserOwnerRequest `request:"mediaType=application/json"`
 }
 
 func (c *C1APIAppV2AppOwnersDeleteUserOwnerRequest) GetAppID() string {
@@ -35,11 +35,11 @@ func (c *C1APIAppV2AppOwnersDeleteUserOwnerRequest) GetUserRefID() string {
 	return c.UserRefID
 }
 
-func (c *C1APIAppV2AppOwnersDeleteUserOwnerRequest) GetDeleteUserOwnerRequest() *shared.DeleteUserOwnerRequest {
+func (c *C1APIAppV2AppOwnersDeleteUserOwnerRequest) GetDeleteAppUserOwnerRequest() *shared.DeleteAppUserOwnerRequest {
 	if c == nil {
 		return nil
 	}
-	return c.DeleteUserOwnerRequest
+	return c.DeleteAppUserOwnerRequest
 }
 
 // #region class-body-c1apiappv2appownersdeleteuserownerrequest
@@ -53,7 +53,7 @@ type C1APIAppV2AppOwnersDeleteUserOwnerResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// DeleteUserOwnerResponse is the empty response for deleting a user ownership source.
-	DeleteUserOwnerResponse *shared.DeleteUserOwnerResponse
+	DeleteAppUserOwnerResponse *shared.DeleteAppUserOwnerResponse
 }
 
 func (c *C1APIAppV2AppOwnersDeleteUserOwnerResponse) GetContentType() string {
@@ -77,11 +77,11 @@ func (c *C1APIAppV2AppOwnersDeleteUserOwnerResponse) GetRawResponse() *http.Resp
 	return c.RawResponse
 }
 
-func (c *C1APIAppV2AppOwnersDeleteUserOwnerResponse) GetDeleteUserOwnerResponse() *shared.DeleteUserOwnerResponse {
+func (c *C1APIAppV2AppOwnersDeleteUserOwnerResponse) GetDeleteAppUserOwnerResponse() *shared.DeleteAppUserOwnerResponse {
 	if c == nil {
 		return nil
 	}
-	return c.DeleteUserOwnerResponse
+	return c.DeleteAppUserOwnerResponse
 }
 
 // #region class-body-c1apiappv2appownersdeleteuserownerresponse

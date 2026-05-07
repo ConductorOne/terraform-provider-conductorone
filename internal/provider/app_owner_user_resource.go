@@ -507,11 +507,11 @@ func (r *AppOwnerUserResource) Create(ctx context.Context, req resource.CreateRe
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateUserOwnerResponse != nil) {
+	if !(res.CreateAppUserOwnerResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreateUserOwnerResponse(ctx, res.CreateUserOwnerResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppUserOwnerResponse(ctx, res.CreateAppUserOwnerResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -571,11 +571,11 @@ func (r *AppOwnerUserResource) Read(ctx context.Context, req resource.ReadReques
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetUserOwnerResponse != nil) {
+	if !(res.GetAppUserOwnerResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetUserOwnerResponse(ctx, res.GetUserOwnerResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetAppUserOwnerResponse(ctx, res.GetAppUserOwnerResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

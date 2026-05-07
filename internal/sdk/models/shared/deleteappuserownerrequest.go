@@ -2,13 +2,13 @@
 
 package shared
 
-// DeleteUserOwnerRequest is the request for deleting a user ownership source.
-type DeleteUserOwnerRequest struct {
+// DeleteAppUserOwnerRequest - DeleteUserOwnerRequest is the request for deleting a user ownership source.
+type DeleteAppUserOwnerRequest struct {
 	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
 }
 
-func (d *DeleteUserOwnerRequest) GetUserRef() *UserRef {
+func (d *DeleteAppUserOwnerRequest) GetUserRef() *UserRef {
 	if d == nil {
 		return nil
 	}

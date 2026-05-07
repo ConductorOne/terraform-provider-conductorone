@@ -496,7 +496,7 @@ func (r *AppOwnerEntitlementDataSourceModel) RefreshFromSharedAppOwnerEntitlemen
 	return diags
 }
 
-func (r *AppOwnerEntitlementDataSourceModel) RefreshFromSharedSearchEntitlementOwnersResponse(ctx context.Context, resp *shared.SearchEntitlementOwnersResponse) diag.Diagnostics {
+func (r *AppOwnerEntitlementDataSourceModel) RefreshFromSharedSearchAppEntitlementOwnersResponse(ctx context.Context, resp *shared.SearchAppEntitlementOwnersResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {

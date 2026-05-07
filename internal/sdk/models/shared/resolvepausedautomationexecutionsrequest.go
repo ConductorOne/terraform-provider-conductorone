@@ -2,21 +2,21 @@
 
 package shared
 
-// Decision - Whether to run or cancel the paused executions.
-type Decision string
+// ResolvePausedAutomationExecutionsRequestDecision - Whether to run or cancel the paused executions.
+type ResolvePausedAutomationExecutionsRequestDecision string
 
 const (
-	DecisionPausedExecutionDecisionUnspecified Decision = "PAUSED_EXECUTION_DECISION_UNSPECIFIED"
-	DecisionPausedExecutionDecisionRun         Decision = "PAUSED_EXECUTION_DECISION_RUN"
-	DecisionPausedExecutionDecisionCancel      Decision = "PAUSED_EXECUTION_DECISION_CANCEL"
+	ResolvePausedAutomationExecutionsRequestDecisionPausedExecutionDecisionUnspecified ResolvePausedAutomationExecutionsRequestDecision = "PAUSED_EXECUTION_DECISION_UNSPECIFIED"
+	ResolvePausedAutomationExecutionsRequestDecisionPausedExecutionDecisionRun         ResolvePausedAutomationExecutionsRequestDecision = "PAUSED_EXECUTION_DECISION_RUN"
+	ResolvePausedAutomationExecutionsRequestDecisionPausedExecutionDecisionCancel      ResolvePausedAutomationExecutionsRequestDecision = "PAUSED_EXECUTION_DECISION_CANCEL"
 )
 
-func (e Decision) ToPointer() *Decision {
+func (e ResolvePausedAutomationExecutionsRequestDecision) ToPointer() *ResolvePausedAutomationExecutionsRequestDecision {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Decision) IsExact() bool {
+func (e *ResolvePausedAutomationExecutionsRequestDecision) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "PAUSED_EXECUTION_DECISION_UNSPECIFIED", "PAUSED_EXECUTION_DECISION_RUN", "PAUSED_EXECUTION_DECISION_CANCEL":
@@ -29,7 +29,7 @@ func (e *Decision) IsExact() bool {
 // The ResolvePausedAutomationExecutionsRequest message.
 type ResolvePausedAutomationExecutionsRequest struct {
 	// Whether to run or cancel the paused executions.
-	Decision *Decision `json:"decision,omitempty"`
+	Decision *ResolvePausedAutomationExecutionsRequestDecision `json:"decision,omitempty"`
 	// Optional human-readable reason for the resolution decision. Stored on
 	//  the audit row (paused_run / paused_cancelled events) for post-mortem
 	//  and compliance use. Surfaced in the FE as a required field on CANCEL
@@ -37,7 +37,7 @@ type ResolvePausedAutomationExecutionsRequest struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
-func (r *ResolvePausedAutomationExecutionsRequest) GetDecision() *Decision {
+func (r *ResolvePausedAutomationExecutionsRequest) GetDecision() *ResolvePausedAutomationExecutionsRequestDecision {
 	if r == nil {
 		return nil
 	}

@@ -53,7 +53,7 @@ type C1APIAppV2AppOwnersSearchUserOwnersResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// SearchUserOwnersResponse is the response for searching user ownership sources.
-	SearchUserOwnersResponse *shared.SearchUserOwnersResponse
+	SearchAppUserOwnersResponse *shared.SearchAppUserOwnersResponse
 }
 
 func (c *C1APIAppV2AppOwnersSearchUserOwnersResponse) GetContentType() string {
@@ -77,11 +77,11 @@ func (c *C1APIAppV2AppOwnersSearchUserOwnersResponse) GetRawResponse() *http.Res
 	return c.RawResponse
 }
 
-func (c *C1APIAppV2AppOwnersSearchUserOwnersResponse) GetSearchUserOwnersResponse() *shared.SearchUserOwnersResponse {
+func (c *C1APIAppV2AppOwnersSearchUserOwnersResponse) GetSearchAppUserOwnersResponse() *shared.SearchAppUserOwnersResponse {
 	if c == nil {
 		return nil
 	}
-	return c.SearchUserOwnersResponse
+	return c.SearchAppUserOwnersResponse
 }
 
 // #region class-body-c1apiappv2appownerssearchuserownersresponse

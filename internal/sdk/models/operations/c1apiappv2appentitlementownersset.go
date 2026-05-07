@@ -10,7 +10,7 @@ import (
 type C1APIAppV2AppEntitlementOwnersSetRequest struct {
 	AppID                            string                                   `pathParam:"style=simple,explode=false,name=app_id"`
 	EntitlementID                    string                                   `pathParam:"style=simple,explode=false,name=entitlement_id"`
-	SetAppEntitlementOwnersV2Request *shared.SetAppEntitlementOwnersV2Request `request:"mediaType=application/json"`
+	SetAppEntitlementOwnersRequestV2 *shared.SetAppEntitlementOwnersRequestV2 `request:"mediaType=application/json"`
 }
 
 func (c *C1APIAppV2AppEntitlementOwnersSetRequest) GetAppID() string {
@@ -27,11 +27,11 @@ func (c *C1APIAppV2AppEntitlementOwnersSetRequest) GetEntitlementID() string {
 	return c.EntitlementID
 }
 
-func (c *C1APIAppV2AppEntitlementOwnersSetRequest) GetSetAppEntitlementOwnersV2Request() *shared.SetAppEntitlementOwnersV2Request {
+func (c *C1APIAppV2AppEntitlementOwnersSetRequest) GetSetAppEntitlementOwnersRequestV2() *shared.SetAppEntitlementOwnersRequestV2 {
 	if c == nil {
 		return nil
 	}
-	return c.SetAppEntitlementOwnersV2Request
+	return c.SetAppEntitlementOwnersRequestV2
 }
 
 // #region class-body-c1apiappv2appentitlementownerssetrequest
@@ -44,8 +44,8 @@ type C1APIAppV2AppEntitlementOwnersSetResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// SetAppEntitlementOwnersV2Response is the empty response for setting app entitlement owners.
-	SetAppEntitlementOwnersV2Response *shared.SetAppEntitlementOwnersV2Response
+	// SetAppEntitlementOwnersResponse is the empty response for setting app entitlement owners.
+	SetAppEntitlementOwnersResponseV2 *shared.SetAppEntitlementOwnersResponseV2
 }
 
 func (c *C1APIAppV2AppEntitlementOwnersSetResponse) GetContentType() string {
@@ -69,11 +69,11 @@ func (c *C1APIAppV2AppEntitlementOwnersSetResponse) GetRawResponse() *http.Respo
 	return c.RawResponse
 }
 
-func (c *C1APIAppV2AppEntitlementOwnersSetResponse) GetSetAppEntitlementOwnersV2Response() *shared.SetAppEntitlementOwnersV2Response {
+func (c *C1APIAppV2AppEntitlementOwnersSetResponse) GetSetAppEntitlementOwnersResponseV2() *shared.SetAppEntitlementOwnersResponseV2 {
 	if c == nil {
 		return nil
 	}
-	return c.SetAppEntitlementOwnersV2Response
+	return c.SetAppEntitlementOwnersResponseV2
 }
 
 // #region class-body-c1apiappv2appentitlementownerssetresponse

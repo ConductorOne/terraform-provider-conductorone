@@ -860,11 +860,11 @@ func (r *AppOwnerEntitlementDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.SearchEntitlementOwnersResponse != nil) {
+	if !(res.SearchAppEntitlementOwnersResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedSearchEntitlementOwnersResponse(ctx, res.SearchEntitlementOwnersResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedSearchAppEntitlementOwnersResponse(ctx, res.SearchAppEntitlementOwnersResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -267,7 +267,7 @@ func (r *AppOwnerUserResourceModel) RefreshFromSharedAppOwnerUser(ctx context.Co
 	return diags
 }
 
-func (r *AppOwnerUserResourceModel) RefreshFromSharedCreateUserOwnerResponse(ctx context.Context, resp *shared.CreateUserOwnerResponse) diag.Diagnostics {
+func (r *AppOwnerUserResourceModel) RefreshFromSharedCreateAppUserOwnerResponse(ctx context.Context, resp *shared.CreateAppUserOwnerResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -282,7 +282,7 @@ func (r *AppOwnerUserResourceModel) RefreshFromSharedCreateUserOwnerResponse(ctx
 	return diags
 }
 
-func (r *AppOwnerUserResourceModel) RefreshFromSharedGetUserOwnerResponse(ctx context.Context, resp *shared.GetUserOwnerResponse) diag.Diagnostics {
+func (r *AppOwnerUserResourceModel) RefreshFromSharedGetAppUserOwnerResponse(ctx context.Context, resp *shared.GetAppUserOwnerResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -309,18 +309,18 @@ func (r *AppOwnerUserResourceModel) ToOperationsC1APIAppV2AppOwnersCreateUserOwn
 	var userRefID string
 	userRefID = r.UserRefID.ValueString()
 
-	createUserOwnerRequest, createUserOwnerRequestDiags := r.ToSharedCreateUserOwnerRequest(ctx)
-	diags.Append(createUserOwnerRequestDiags...)
+	createAppUserOwnerRequest, createAppUserOwnerRequestDiags := r.ToSharedCreateAppUserOwnerRequest(ctx)
+	diags.Append(createAppUserOwnerRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.C1APIAppV2AppOwnersCreateUserOwnerRequest{
-		AppID:                  appID,
-		RoleSlug:               roleSlug,
-		UserRefID:              userRefID,
-		CreateUserOwnerRequest: createUserOwnerRequest,
+		AppID:                     appID,
+		RoleSlug:                  roleSlug,
+		UserRefID:                 userRefID,
+		CreateAppUserOwnerRequest: createAppUserOwnerRequest,
 	}
 
 	return &out, diags
@@ -338,18 +338,18 @@ func (r *AppOwnerUserResourceModel) ToOperationsC1APIAppV2AppOwnersDeleteUserOwn
 	var userRefID string
 	userRefID = r.UserRefID.ValueString()
 
-	deleteUserOwnerRequest, deleteUserOwnerRequestDiags := r.ToSharedDeleteUserOwnerRequest(ctx)
-	diags.Append(deleteUserOwnerRequestDiags...)
+	deleteAppUserOwnerRequest, deleteAppUserOwnerRequestDiags := r.ToSharedDeleteAppUserOwnerRequest(ctx)
+	diags.Append(deleteAppUserOwnerRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.C1APIAppV2AppOwnersDeleteUserOwnerRequest{
-		AppID:                  appID,
-		RoleSlug:               roleSlug,
-		UserRefID:              userRefID,
-		DeleteUserOwnerRequest: deleteUserOwnerRequest,
+		AppID:                     appID,
+		RoleSlug:                  roleSlug,
+		UserRefID:                 userRefID,
+		DeleteAppUserOwnerRequest: deleteAppUserOwnerRequest,
 	}
 
 	return &out, diags
@@ -376,7 +376,7 @@ func (r *AppOwnerUserResourceModel) ToOperationsC1APIAppV2AppOwnersGetUserOwnerR
 	return &out, diags
 }
 
-func (r *AppOwnerUserResourceModel) ToSharedCreateUserOwnerRequest(ctx context.Context) (*shared.CreateUserOwnerRequest, diag.Diagnostics) {
+func (r *AppOwnerUserResourceModel) ToSharedCreateAppUserOwnerRequest(ctx context.Context) (*shared.CreateAppUserOwnerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var userRef *shared.UserRef
@@ -391,14 +391,14 @@ func (r *AppOwnerUserResourceModel) ToSharedCreateUserOwnerRequest(ctx context.C
 			ID: id,
 		}
 	}
-	out := shared.CreateUserOwnerRequest{
+	out := shared.CreateAppUserOwnerRequest{
 		UserRef: userRef,
 	}
 
 	return &out, diags
 }
 
-func (r *AppOwnerUserResourceModel) ToSharedDeleteUserOwnerRequest(ctx context.Context) (*shared.DeleteUserOwnerRequest, diag.Diagnostics) {
+func (r *AppOwnerUserResourceModel) ToSharedDeleteAppUserOwnerRequest(ctx context.Context) (*shared.DeleteAppUserOwnerRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var userRef *shared.UserRef
@@ -413,7 +413,7 @@ func (r *AppOwnerUserResourceModel) ToSharedDeleteUserOwnerRequest(ctx context.C
 			ID: id,
 		}
 	}
-	out := shared.DeleteUserOwnerRequest{
+	out := shared.DeleteAppUserOwnerRequest{
 		UserRef: userRef,
 	}
 

@@ -2,13 +2,13 @@
 
 package shared
 
-// GetUserOwnerResponse is the response for getting a user ownership source.
-type GetUserOwnerResponse struct {
+// GetAppUserOwnerResponse - GetUserOwnerResponse is the response for getting a user ownership source.
+type GetAppUserOwnerResponse struct {
 	// AppOwnerUser represents a user ownership source for an app.
 	AppOwnerUser *AppOwnerUser `json:"appOwnerUser,omitempty"`
 }
 
-func (g *GetUserOwnerResponse) GetAppOwnerUser() *AppOwnerUser {
+func (g *GetAppUserOwnerResponse) GetAppOwnerUser() *AppOwnerUser {
 	if g == nil {
 		return nil
 	}

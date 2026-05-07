@@ -4,4 +4,15 @@ package shared
 
 // The ClearAutomationCircuitBreakerResponse message.
 type ClearAutomationCircuitBreakerResponse struct {
+	// The bulk action ID if a bulk action was created to resolve paused
+	//  executions. Empty when decision is UNSPECIFIED or there were no
+	//  paused executions.
+	BulkActionID *string `json:"bulkActionId,omitempty"`
+}
+
+func (c *ClearAutomationCircuitBreakerResponse) GetBulkActionID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.BulkActionID
 }

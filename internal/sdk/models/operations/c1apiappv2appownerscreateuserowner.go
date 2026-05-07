@@ -8,10 +8,10 @@ import (
 )
 
 type C1APIAppV2AppOwnersCreateUserOwnerRequest struct {
-	AppID                  string                         `pathParam:"style=simple,explode=false,name=app_id"`
-	RoleSlug               string                         `pathParam:"style=simple,explode=false,name=role_slug"`
-	UserRefID              string                         `pathParam:"style=simple,explode=false,name=user_ref_id"`
-	CreateUserOwnerRequest *shared.CreateUserOwnerRequest `request:"mediaType=application/json"`
+	AppID                     string                            `pathParam:"style=simple,explode=false,name=app_id"`
+	RoleSlug                  string                            `pathParam:"style=simple,explode=false,name=role_slug"`
+	UserRefID                 string                            `pathParam:"style=simple,explode=false,name=user_ref_id"`
+	CreateAppUserOwnerRequest *shared.CreateAppUserOwnerRequest `request:"mediaType=application/json"`
 }
 
 func (c *C1APIAppV2AppOwnersCreateUserOwnerRequest) GetAppID() string {
@@ -35,11 +35,11 @@ func (c *C1APIAppV2AppOwnersCreateUserOwnerRequest) GetUserRefID() string {
 	return c.UserRefID
 }
 
-func (c *C1APIAppV2AppOwnersCreateUserOwnerRequest) GetCreateUserOwnerRequest() *shared.CreateUserOwnerRequest {
+func (c *C1APIAppV2AppOwnersCreateUserOwnerRequest) GetCreateAppUserOwnerRequest() *shared.CreateAppUserOwnerRequest {
 	if c == nil {
 		return nil
 	}
-	return c.CreateUserOwnerRequest
+	return c.CreateAppUserOwnerRequest
 }
 
 // #region class-body-c1apiappv2appownerscreateuserownerrequest
@@ -53,7 +53,7 @@ type C1APIAppV2AppOwnersCreateUserOwnerResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// CreateUserOwnerResponse is the response for creating a user ownership source.
-	CreateUserOwnerResponse *shared.CreateUserOwnerResponse
+	CreateAppUserOwnerResponse *shared.CreateAppUserOwnerResponse
 }
 
 func (c *C1APIAppV2AppOwnersCreateUserOwnerResponse) GetContentType() string {
@@ -77,11 +77,11 @@ func (c *C1APIAppV2AppOwnersCreateUserOwnerResponse) GetRawResponse() *http.Resp
 	return c.RawResponse
 }
 
-func (c *C1APIAppV2AppOwnersCreateUserOwnerResponse) GetCreateUserOwnerResponse() *shared.CreateUserOwnerResponse {
+func (c *C1APIAppV2AppOwnersCreateUserOwnerResponse) GetCreateAppUserOwnerResponse() *shared.CreateAppUserOwnerResponse {
 	if c == nil {
 		return nil
 	}
-	return c.CreateUserOwnerResponse
+	return c.CreateAppUserOwnerResponse
 }
 
 // #region class-body-c1apiappv2appownerscreateuserownerresponse
