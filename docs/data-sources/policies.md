@@ -227,7 +227,7 @@ Read-Only:
 Read-Only:
 
 - `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is a member of the group during this step.
-- `app_group_id` (String) The ID of the group specified for approval.
+- `app_group_id` (String) The app entitlement ID of the group specified for approval (not the group resource ID). Use the conductorone_app_entitlement data source to look up the correct entitlement ID.
 - `app_id` (String) The ID of the app that contains the group specified for approval.
 - `fallback` (Boolean) Configuration to allow a fallback if the group is empty.
 - `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the group is empty. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--app_group_approval--fallback_group_ids))
