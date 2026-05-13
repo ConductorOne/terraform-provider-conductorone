@@ -70,7 +70,6 @@ Read-Only:
 - `compliance_framework_value_ids` (List of String) The IDs of different compliance frameworks associated with this app entitlement ex (SOX, HIPAA, PCI, etc.)
 - `created_at` (String)
 - `default_values_applied` (Boolean) Flag to indicate if app-level access request defaults have been applied to the entitlement
-- `deleted_at` (String)
 - `deprovisioner_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
