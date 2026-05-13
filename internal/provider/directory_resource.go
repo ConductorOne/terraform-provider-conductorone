@@ -103,6 +103,9 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
 							"created_at": schema.StringAttribute{
 								Computed: true,
 							},
+							"deleted_at": schema.StringAttribute{
+								Computed: true,
+							},
 							"directory_account_filter_all": schema.SingleNestedAttribute{
 								Computed:    true,
 								Description: `The DirectoryAccountFilterAll message.`,
