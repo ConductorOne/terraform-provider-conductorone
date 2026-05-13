@@ -677,5 +677,20 @@ actions:
   - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlement"]["properties"]["deletedAt"]
     update:
       x-speakeasy-terraform-ignore: true
+  # IGA-1774: same Speakeasy bug class applies to entity-root types that get nested
+  # inside other resources (AppEntitlement nested in *_owner_entitlement_resource,
+  # User nested in *_owner_user_resource, Directory nested via DirectoryView in
+  # directory_resource). The struct/schema mismatch crashes resource conversion at
+  # runtime. Ignoring deletedAt on the entity-root schema removes it from both the
+  # struct and every nesting site.
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["deletedAt"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.user.v1.User"]["properties"]["deletedAt"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["components"]["schemas"]["c1.api.directory.v1.Directory"]["properties"]["deletedAt"]
+    update:
+      x-speakeasy-terraform-ignore: true
       
   
