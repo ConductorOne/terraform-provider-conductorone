@@ -1,0 +1,103 @@
+From: Brandon High <759848+highb@users.noreply.github.com>
+Date: Wed May 13 2026
+Subject: [PATCH] Re-add deleted_at to nested resource schemas (IGA-1774)
+
+Speakeasy's x-speakeasy-soft-delete-property handling has a known bug on
+nested uses of an entity-root struct: the field gets stripped from the
+resource schema but stays on the Go struct, triggering
+"Mismatch between struct and object type: Struct defines fields not
+found in object: deleted_at" at terraform plan/apply time.
+
+Tried fixing this in overlay.yaml with x-speakeasy-terraform-ignore (the
+pattern used for AccessReview at overlay.yaml:668-679), but that
+approach removes the field from BOTH the struct and the schema, which
+breaks the resource Read method's soft-delete handler (the generated
+`if !data.DeletedAt.IsNull() { resp.State.RemoveResource(ctx) }` block
+on top-level resources for these same entity-root types). AccessReview
+gets away with that overlay because it has no top-level resource;
+AppEntitlement, User, and Directory all do.
+
+Fix: re-add deleted_at to the five resource schema sites that nest
+these entity-root types. Files:
+  - app_entitlement_owner_entitlement_resource.go (IGA-1774 reported)
+  - app_owner_entitlement_resource.go             (IGA-1774 reported)
+  - app_entitlement_owner_user_resource.go        (latent same-class bug)
+  - app_owner_user_resource.go                    (latent same-class bug)
+  - directory_resource.go                         (latent same-class bug)
+
+The patch will go away when upstream Speakeasy fixes
+x-speakeasy-soft-delete-property propagation to nested struct uses;
+file the bug upstream so this can be tracked.
+
+Refs: IGA-1774
+---
+diff --git a/internal/provider/app_entitlement_owner_entitlement_resource.go b/internal/provider/app_entitlement_owner_entitlement_resource.go
+index 1c106439..07065c19 100644
+--- a/internal/provider/app_entitlement_owner_entitlement_resource.go
++++ b/internal/provider/app_entitlement_owner_entitlement_resource.go
+@@ -96,6 +96,9 @@ func (r *AppEntitlementOwnerEntitlementResource) Schema(ctx context.Context, req
+ 						Computed:    true,
+ 						Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
+ 					},
++					"deleted_at": schema.StringAttribute{
++						Computed: true,
++					},
+ 					"deprovisioner_policy": schema.SingleNestedAttribute{
+ 						Computed: true,
+ 						Attributes: map[string]schema.Attribute{
+diff --git a/internal/provider/app_entitlement_owner_user_resource.go b/internal/provider/app_entitlement_owner_user_resource.go
+index 939eedb2..2a1a7972 100644
+--- a/internal/provider/app_entitlement_owner_user_resource.go
++++ b/internal/provider/app_entitlement_owner_user_resource.go
+@@ -90,6 +90,9 @@ func (r *AppEntitlementOwnerUserResource) Schema(ctx context.Context, req resour
+ 						Computed:    true,
+ 						Description: `The id of the user to whom tasks will be automatically reassigned to.`,
+ 					},
++					"deleted_at": schema.StringAttribute{
++						Computed: true,
++					},
+ 					"department": schema.StringAttribute{
+ 						Computed:    true,
+ 						Description: `The department which the user belongs to in the organization.`,
+diff --git a/internal/provider/app_owner_entitlement_resource.go b/internal/provider/app_owner_entitlement_resource.go
+index 47452dcc..4832f505 100644
+--- a/internal/provider/app_owner_entitlement_resource.go
++++ b/internal/provider/app_owner_entitlement_resource.go
+@@ -95,6 +95,9 @@ func (r *AppOwnerEntitlementResource) Schema(ctx context.Context, req resource.S
+ 						Computed:    true,
+ 						Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
+ 					},
++					"deleted_at": schema.StringAttribute{
++						Computed: true,
++					},
+ 					"deprovisioner_policy": schema.SingleNestedAttribute{
+ 						Computed: true,
+ 						Attributes: map[string]schema.Attribute{
+diff --git a/internal/provider/app_owner_user_resource.go b/internal/provider/app_owner_user_resource.go
+index 1ba915ef..78cddb00 100644
+--- a/internal/provider/app_owner_user_resource.go
++++ b/internal/provider/app_owner_user_resource.go
+@@ -81,6 +81,9 @@ func (r *AppOwnerUserResource) Schema(ctx context.Context, req resource.SchemaRe
+ 						Computed:    true,
+ 						Description: `The id of the user to whom tasks will be automatically reassigned to.`,
+ 					},
++					"deleted_at": schema.StringAttribute{
++						Computed: true,
++					},
+ 					"department": schema.StringAttribute{
+ 						Computed:    true,
+ 						Description: `The department which the user belongs to in the organization.`,
+diff --git a/internal/provider/directory_resource.go b/internal/provider/directory_resource.go
+index da606749..5ba19b1f 100644
+--- a/internal/provider/directory_resource.go
++++ b/internal/provider/directory_resource.go
+@@ -103,6 +103,9 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
+ 							"created_at": schema.StringAttribute{
+ 								Computed: true,
+ 							},
++							"deleted_at": schema.StringAttribute{
++								Computed: true,
++							},
+ 							"directory_account_filter_all": schema.SingleNestedAttribute{
+ 								Computed:    true,
+ 								Description: `The DirectoryAccountFilterAll message.`,

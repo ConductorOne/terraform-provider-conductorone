@@ -112,3 +112,37 @@ func TestNullableNestedStructsHaveElseBranch(t *testing.T) {
 		}
 	}
 }
+
+// TestNestedDeletedAtSchemaAttribute verifies that resource schemas nesting
+// entity-root types (AppEntitlement, User, Directory) declare the deleted_at
+// attribute in their nested SingleNestedAttribute block.
+//
+// Regression: Speakeasy's x-speakeasy-soft-delete-property handling correctly
+// strips deleted_at from the resource schema when the field sits on the entity
+// root, but on nested uses of the same shared struct it leaves the field on
+// the Go struct while omitting the schema attribute. The resulting
+// struct/schema mismatch crashes terraform plan/apply with
+// "Mismatch between struct and object type: Struct defines fields not found
+// in object: deleted_at". Patched by patches/02-deleted-at-on-nested-resources.patch.
+func TestNestedDeletedAtSchemaAttribute(t *testing.T) {
+	// Resource files that nest a *tfTypes.{AppEntitlement,User,Directory}
+	// and therefore need deleted_at restored after every regen.
+	resourceFiles := []string{
+		"app_entitlement_owner_entitlement_resource.go",
+		"app_owner_entitlement_resource.go",
+		"app_entitlement_owner_user_resource.go",
+		"app_owner_user_resource.go",
+		"directory_resource.go",
+	}
+
+	for _, f := range resourceFiles {
+		data, err := os.ReadFile(f)
+		if err != nil {
+			t.Errorf("reading %s: %v", f, err)
+			continue
+		}
+		if !strings.Contains(string(data), `"deleted_at":`) {
+			t.Errorf("%s: nested schema missing \"deleted_at\" attribute (IGA-1774 regression); apply patches/02-deleted-at-on-nested-resources.patch", f)
+		}
+	}
+}
