@@ -61,6 +61,18 @@ func (r *RequestCatalogsDataSource) Schema(ctx context.Context, req datasource.S
 						"request_catalog": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
+								"annotations": schema.MapAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+										` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+										` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+										` URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/` + "\n" +
+										` are reserved.` + "\n" +
+										`` + "\n" +
+										` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+										` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+								},
 								"created_at": schema.StringAttribute{
 									Computed: true,
 								},
@@ -82,11 +94,6 @@ func (r *RequestCatalogsDataSource) Schema(ctx context.Context, req datasource.S
 								"enrollment_behavior": schema.StringAttribute{
 									Computed:    true,
 									Description: `Defines how to handle the request policies of the entitlements in the catalog during enrollment.`,
-								},
-								"grant_policy_id": schema.StringAttribute{
-									Computed: true,
-									MarkdownDescription: `The ID of the policy to use for access requests in this catalog.` + "\n" +
-										` This is different from the catalog AppEntitlement's grant_policy_id, which is used for catalog membership grants.`,
 								},
 								"id": schema.StringAttribute{
 									Computed:    true,

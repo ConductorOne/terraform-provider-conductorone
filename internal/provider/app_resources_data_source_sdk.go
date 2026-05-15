@@ -46,6 +46,12 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 				} else {
 					list.AppResource = &tfTypes.AppResource{}
 					list.AppResource.AccessConfigID = types.StringPointerValue(listItem.AppResource.AccessConfigID)
+					if len(listItem.AppResource.Annotations) > 0 {
+						list.AppResource.Annotations = make(map[string]types.String, len(listItem.AppResource.Annotations))
+						for key1, value1 := range listItem.AppResource.Annotations {
+							list.AppResource.Annotations[key1] = types.StringValue(value1)
+						}
+					}
 					list.AppResource.AppID = types.StringPointerValue(listItem.AppResource.AppID)
 					list.AppResource.AppResourceTypeID = types.StringPointerValue(listItem.AppResource.AppResourceTypeID)
 					list.AppResource.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.CreatedAt))

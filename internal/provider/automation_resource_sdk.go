@@ -17,6 +17,12 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.AppID = types.StringPointerValue(resp.AppID)
 		if resp.AutomationContext == nil {
 			r.AutomationContext = nil
@@ -64,8 +70,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					automationSteps.CallFunction = &tfTypes.CallFunction{}
 					if len(automationStepsItem.CallFunction.Args) > 0 {
 						automationSteps.CallFunction.Args = make(map[string]types.String, len(automationStepsItem.CallFunction.Args))
-						for key, value := range automationStepsItem.CallFunction.Args {
-							automationSteps.CallFunction.Args[key] = types.StringValue(value)
+						for key1, value1 := range automationStepsItem.CallFunction.Args {
+							automationSteps.CallFunction.Args[key1] = types.StringValue(value1)
 						}
 					}
 					automationSteps.CallFunction.FunctionID = types.StringPointerValue(automationStepsItem.CallFunction.FunctionID)
@@ -804,8 +810,8 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					draftAutomationSteps.CallFunction = &tfTypes.CallFunction{}
 					if len(draftAutomationStepsItem.CallFunction.Args) > 0 {
 						draftAutomationSteps.CallFunction.Args = make(map[string]types.String, len(draftAutomationStepsItem.CallFunction.Args))
-						for key1, value1 := range draftAutomationStepsItem.CallFunction.Args {
-							draftAutomationSteps.CallFunction.Args[key1] = types.StringValue(value1)
+						for key2, value2 := range draftAutomationStepsItem.CallFunction.Args {
+							draftAutomationSteps.CallFunction.Args[key2] = types.StringValue(value2)
 						}
 					}
 					draftAutomationSteps.CallFunction.FunctionID = types.StringPointerValue(draftAutomationStepsItem.CallFunction.FunctionID)
@@ -2400,6 +2406,13 @@ func (r *AutomationResourceModel) ToOperationsC1APIAutomationsV1AutomationServic
 func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (*shared.AutomationInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
+	}
 	appID := new(string)
 	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
 		*appID = r.AppID.ValueString()
@@ -6780,6 +6793,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 		webhookHmacSecret = nil
 	}
 	out := shared.AutomationInput{
+		Annotations:                  annotations,
 		AppID:                        appID,
 		AutomationSteps:              automationSteps,
 		DisabledReasonCircuitBreaker: disabledReasonCircuitBreaker,
@@ -6806,6 +6820,13 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx context.Context) (*shared.AutomationsCreateAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
+	}
 	appID := new(string)
 	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
 		*appID = r.AppID.ValueString()
@@ -11123,6 +11144,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 		}
 	}
 	out := shared.AutomationsCreateAutomationRequest{
+		Annotations:          annotations,
 		AppID:                appID,
 		AutomationSteps:      automationSteps,
 		CircuitBreakerMax:    circuitBreakerMax,

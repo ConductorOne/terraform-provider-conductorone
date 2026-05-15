@@ -64,6 +64,15 @@ type App struct {
 	// How this app models access. Derived during uplift from the app's resource type traits.
 	//  Sparse ACL feature.
 	AccessModel *AccessModel `json:"accessModel,omitempty"`
+	// Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+	//  chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+	//
+	//  Updates have PATCH semantics: keys absent from the request are
+	//  preserved; an empty value deletes the key.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The ID of the Account named by AccountName.
 	AppAccountID *string `json:"appAccountId,omitempty"`
 	// The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
@@ -132,6 +141,13 @@ func (a *App) GetAccessModel() *AccessModel {
 		return nil
 	}
 	return a.AccessModel
+}
+
+func (a *App) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *App) GetAppAccountID() *string {
@@ -328,6 +344,15 @@ type AppInput struct {
 	// How this app models access. Derived during uplift from the app's resource type traits.
 	//  Sparse ACL feature.
 	AccessModel *AccessModel `json:"accessModel,omitempty"`
+	// Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+	//  chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+	//
+	//  Updates have PATCH semantics: keys absent from the request are
+	//  preserved; an empty value deletes the key.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// AppUserMapper configures custom account mapping for uplift.
 	AppUserMapper *AppUserMapper `json:"appUserMapper,omitempty"`
 	// The ID of the Certify Policy associated with this App.
@@ -365,6 +390,13 @@ func (a *AppInput) GetAccessModel() *AccessModel {
 		return nil
 	}
 	return a.AccessModel
+}
+
+func (a *AppInput) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *AppInput) GetAppUserMapper() *AppUserMapper {

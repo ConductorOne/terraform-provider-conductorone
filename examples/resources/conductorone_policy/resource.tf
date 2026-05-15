@@ -1,4 +1,7 @@
 resource "conductorone_policy" "my_policy" {
+  annotations = {
+    key = "value"
+  }
   description  = "...my_description..."
   display_name = "...my_display_name..."
   policy_steps = {

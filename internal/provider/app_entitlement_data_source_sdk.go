@@ -18,6 +18,12 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 
 	if resp != nil {
 		r.Alias = types.StringPointerValue(resp.Alias)
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.AppResourceID = types.StringPointerValue(resp.AppResourceID)
 		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
@@ -516,8 +522,8 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 		r.Slug = types.StringPointerValue(resp.Slug)
 		if len(resp.SourceConnectorIds) > 0 {
 			r.SourceConnectorIds = make(map[string]types.String, len(resp.SourceConnectorIds))
-			for key, value := range resp.SourceConnectorIds {
-				r.SourceConnectorIds[key] = types.StringValue(value)
+			for key1, value1 := range resp.SourceConnectorIds {
+				r.SourceConnectorIds[key1] = types.StringValue(value1)
 			}
 		}
 		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)

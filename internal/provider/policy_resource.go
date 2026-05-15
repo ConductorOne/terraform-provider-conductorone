@@ -37,6 +37,7 @@ type PolicyResource struct {
 
 // PolicyResourceModel describes the resource data model.
 type PolicyResourceModel struct {
+	Annotations              map[string]types.String        `tfsdk:"annotations"`
 	CreatedAt                types.String                   `tfsdk:"created_at"`
 	DeletedAt                types.String                   `tfsdk:"-"`
 	Description              types.String                   `tfsdk:"description"`
@@ -59,6 +60,19 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Policy Resource",
 		Attributes: map[string]schema.Attribute{
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting` + "\n" +
+					` with ` + "`" + `c1/` + "`" + ` are reserved for server-managed use and rejected on write.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},

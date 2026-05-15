@@ -48,6 +48,12 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
@@ -806,6 +812,13 @@ func (r *PolicyResourceModel) ToOperationsC1APIPolicyV1PoliciesUpdateRequest(ctx
 func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (*shared.CreatePolicyRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -2079,6 +2092,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 		}
 	}
 	out := shared.CreatePolicyRequest{
+		Annotations:              annotations,
 		Description:              description,
 		DisplayName:              displayName,
 		PolicySteps:              policySteps,
@@ -2102,6 +2116,13 @@ func (r *PolicyResourceModel) ToSharedDeletePolicyRequest(ctx context.Context) (
 func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.PolicyInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -3378,6 +3399,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 		}
 	}
 	out := shared.PolicyInput{
+		Annotations:              annotations,
 		Description:              description,
 		DisplayName:              displayName,
 		PolicySteps:              policySteps,

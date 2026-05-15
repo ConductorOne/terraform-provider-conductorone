@@ -19,6 +19,12 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 
 	if resp != nil {
 		r.Alias = types.StringPointerValue(resp.Alias)
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.AppResourceID = types.StringPointerValue(resp.AppResourceID)
 		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
@@ -479,8 +485,8 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 		r.Slug = types.StringPointerValue(resp.Slug)
 		if len(resp.SourceConnectorIds) > 0 {
 			r.SourceConnectorIds = make(map[string]types.String, len(resp.SourceConnectorIds))
-			for key, value := range resp.SourceConnectorIds {
-				r.SourceConnectorIds[key] = types.StringValue(value)
+			for key1, value1 := range resp.SourceConnectorIds {
+				r.SourceConnectorIds[key1] = types.StringValue(value1)
 			}
 		}
 		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
@@ -666,6 +672,13 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 		*alias = r.Alias.ValueString()
 	} else {
 		alias = nil
+	}
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
 	}
 	appID := new(string)
 	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
@@ -1535,6 +1548,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 	}
 	out := shared.AppEntitlementInput{
 		Alias:                          alias,
+		Annotations:                    annotations,
 		AppID:                          appID,
 		AppResourceID:                  appResourceID,
 		AppResourceTypeID:              appResourceTypeID,
@@ -1572,6 +1586,13 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 		*alias = r.Alias.ValueString()
 	} else {
 		alias = nil
+	}
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
 	}
 	appResourceID := new(string)
 	if !r.AppResourceID.IsUnknown() && !r.AppResourceID.IsNull() {
@@ -2040,6 +2061,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 	}
 	out := shared.CreateAppEntitlementRequest{
 		Alias:                          alias,
+		Annotations:                    annotations,
 		AppResourceID:                  appResourceID,
 		AppResourceTypeID:              appResourceTypeID,
 		CertifyPolicyID:                certifyPolicyID,

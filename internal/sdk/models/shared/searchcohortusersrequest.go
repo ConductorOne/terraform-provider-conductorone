@@ -10,6 +10,8 @@ type SearchCohortUsersRequest struct {
 	PageToken *string `json:"pageToken,omitempty"`
 	// Additional profile filters to narrow the cohort user search.
 	ProfileFilters []ProfileFilter `json:"profileFilters,omitempty"`
+	// Optional list of entitlements to compute per-user coverage for.
+	SelectedEntitlements []EntitlementRef `json:"selectedEntitlements,omitempty"`
 }
 
 func (s *SearchCohortUsersRequest) GetPageSize() *int {
@@ -31,4 +33,11 @@ func (s *SearchCohortUsersRequest) GetProfileFilters() []ProfileFilter {
 		return nil
 	}
 	return s.ProfileFilters
+}
+
+func (s *SearchCohortUsersRequest) GetSelectedEntitlements() []EntitlementRef {
+	if s == nil {
+		return nil
+	}
+	return s.SelectedEntitlements
 }

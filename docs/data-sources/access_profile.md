@@ -28,6 +28,14 @@ data "conductorone_access_profile" "my_access_profile" {
 
 ### Read-Only
 
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+ are reserved.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `created_at` (String)
 - `created_by_user_id` (String) The id of the user this request catalog was created by.
 - `deleted_at` (String)
@@ -35,8 +43,6 @@ data "conductorone_access_profile" "my_access_profile" {
 - `display_name` (String) The display name of the request catalog.
 - `enrollment_behavior` (String) Defines how to handle the request policies of the entitlements in the catalog during enrollment.
 - `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
-- `grant_policy_id` (String) The ID of the policy to use for access requests in this catalog.
- This is different from the catalog AppEntitlement's grant_policy_id, which is used for catalog membership grants.
 - `published` (Boolean) Whether or not this catalog is published.
 - `request_bundle` (Boolean) Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
 - `unenrollment_behavior` (String) Defines how to handle the revocation of the entitlements in the catalog during unenrollment.

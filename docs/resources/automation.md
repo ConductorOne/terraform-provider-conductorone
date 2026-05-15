@@ -14,6 +14,9 @@ Automation Resource
 
 ```terraform
 resource "conductorone_automation" "my_automation" {
+  annotations = {
+    key = "value"
+  }
   app_id = "...my_app_id..."
   automation_context = {
     context = {
@@ -1085,6 +1088,14 @@ resource "conductorone_automation" "my_automation" {
 
 ### Optional
 
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+ with `c1/` are reserved for server-managed use and rejected on write.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `app_id` (String) the app id this workflow_template belongs to
 - `automation_context` (Attributes) The AutomationContext message. (see [below for nested schema](#nestedatt--automation_context))
 - `automation_steps` (Attributes List) Ordered list of steps that the automation executes. (see [below for nested schema](#nestedatt--automation_steps))

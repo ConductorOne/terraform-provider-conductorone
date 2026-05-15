@@ -25,6 +25,12 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 			for _, listItem := range resp.List {
 				var list tfTypes.Policy
 
+				if len(listItem.Annotations) > 0 {
+					list.Annotations = make(map[string]types.String, len(listItem.Annotations))
+					for key, value := range listItem.Annotations {
+						list.Annotations[key] = types.StringValue(value)
+					}
+				}
 				list.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.CreatedAt))
 				list.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.DeletedAt))
 				list.Description = types.StringPointerValue(listItem.Description)

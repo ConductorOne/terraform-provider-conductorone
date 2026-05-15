@@ -17,6 +17,12 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 
 	if resp != nil {
 		r.AccessConfigID = types.StringPointerValue(resp.AccessConfigID)
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))

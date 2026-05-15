@@ -30,6 +30,7 @@ type AppResourceDataSource struct {
 // AppResourceDataSourceModel describes the data model.
 type AppResourceDataSourceModel struct {
 	AccessConfigID          types.String                                    `tfsdk:"access_config_id"`
+	Annotations             map[string]types.String                         `tfsdk:"annotations"`
 	AppID                   types.String                                    `tfsdk:"app_id"`
 	AppResourceTypeID       types.String                                    `tfsdk:"app_resource_type_id"`
 	CreatedAt               types.String                                    `tfsdk:"created_at"`
@@ -67,6 +68,23 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				Computed: true,
 				MarkdownDescription: `The access config ID for this resource. May be empty.` + "\n" +
 					` Must be one of the builtin access config IDs or empty.`,
+			},
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/` + "\n" +
+					` are reserved.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.` + "\n" +
+					`` + "\n" +
+					` Most AppResources are connector-synced; user-supplied annotations on` + "\n" +
+					` a synced resource will be overwritten by the next sync. The` + "\n" +
+					` annotations bag is most useful on user-created groups (the` + "\n" +
+					` ` + "`" + `conductorone_app_resource` + "`" + ` TF resource).`,
 			},
 			"app_id": schema.StringAttribute{
 				Required:    true,

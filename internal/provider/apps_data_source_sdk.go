@@ -28,6 +28,12 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 				} else {
 					list.AccessModel = types.StringNull()
 				}
+				if len(listItem.Annotations) > 0 {
+					list.Annotations = make(map[string]types.String, len(listItem.Annotations))
+					for key, value := range listItem.Annotations {
+						list.Annotations[key] = types.StringValue(value)
+					}
+				}
 				list.AppAccountID = types.StringPointerValue(listItem.AppAccountID)
 				list.AppAccountName = types.StringPointerValue(listItem.AppAccountName)
 				if listItem.AppUserMapper == nil {

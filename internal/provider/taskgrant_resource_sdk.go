@@ -994,6 +994,7 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 													fields.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
 												}
 											}
+											fields.ReadOnly = types.BoolPointerValue(fieldsItem.ReadOnly)
 											fields.Required = types.BoolPointerValue(fieldsItem.Required)
 											if fieldsItem.SharedProviderConfig == nil {
 												fields.SharedProviderConfig = nil
@@ -2045,6 +2046,12 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 						r.TaskView.Task.PolicyInstance.Policy = nil
 					} else {
 						r.TaskView.Task.PolicyInstance.Policy = &tfTypes.Policy{}
+						if len(resp.TaskView.Task.PolicyInstance.Policy.Annotations) > 0 {
+							r.TaskView.Task.PolicyInstance.Policy.Annotations = make(map[string]types.String, len(resp.TaskView.Task.PolicyInstance.Policy.Annotations))
+							for key1, value1 := range resp.TaskView.Task.PolicyInstance.Policy.Annotations {
+								r.TaskView.Task.PolicyInstance.Policy.Annotations[key1] = types.StringValue(value1)
+							}
+						}
 						r.TaskView.Task.PolicyInstance.Policy.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.CreatedAt))
 						r.TaskView.Task.PolicyInstance.Policy.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.DeletedAt))
 						r.TaskView.Task.PolicyInstance.Policy.Description = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.Policy.Description)
@@ -3547,8 +3554,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											fields1.FormStringMapField = &tfTypes.FormStringMapField{}
 											if len(fieldsItem1.FormStringMapField.DefaultValue) > 0 {
 												fields1.FormStringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem1.FormStringMapField.DefaultValue))
-												for key1, value1 := range fieldsItem1.FormStringMapField.DefaultValue {
-													fields1.FormStringMapField.DefaultValue[key1] = types.StringValue(value1)
+												for key2, value2 := range fieldsItem1.FormStringMapField.DefaultValue {
+													fields1.FormStringMapField.DefaultValue[key2] = types.StringValue(value2)
 												}
 											}
 											if fieldsItem1.FormStringMapField.StringMapRules == nil {
@@ -3612,6 +3619,7 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												fields1.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
 											}
 										}
+										fields1.ReadOnly = types.BoolPointerValue(fieldsItem1.ReadOnly)
 										fields1.Required = types.BoolPointerValue(fieldsItem1.Required)
 										if fieldsItem1.SharedProviderConfig == nil {
 											fields1.SharedProviderConfig = nil
@@ -4280,8 +4288,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 								fields2.FormStringMapField = &tfTypes.FormStringMapField{}
 								if len(fieldsItem2.FormStringMapField.DefaultValue) > 0 {
 									fields2.FormStringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem2.FormStringMapField.DefaultValue))
-									for key2, value2 := range fieldsItem2.FormStringMapField.DefaultValue {
-										fields2.FormStringMapField.DefaultValue[key2] = types.StringValue(value2)
+									for key3, value3 := range fieldsItem2.FormStringMapField.DefaultValue {
+										fields2.FormStringMapField.DefaultValue[key3] = types.StringValue(value3)
 									}
 								}
 								if fieldsItem2.FormStringMapField.StringMapRules == nil {
@@ -4345,6 +4353,7 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 									fields2.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
 								}
 							}
+							fields2.ReadOnly = types.BoolPointerValue(fieldsItem2.ReadOnly)
 							fields2.Required = types.BoolPointerValue(fieldsItem2.Required)
 							if fieldsItem2.SharedProviderConfig == nil {
 								fields2.SharedProviderConfig = nil

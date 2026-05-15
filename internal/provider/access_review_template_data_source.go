@@ -34,6 +34,7 @@ type AccessReviewTemplateDataSourceModel struct {
 	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
 	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
 	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
+	Annotations                    map[string]types.String             `tfsdk:"annotations"`
 	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
 	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
@@ -405,6 +406,18 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 			"accuracy_issue_action": schema.StringAttribute{
 				Computed:    true,
 				Description: `The accuracyIssueAction field.`,
+			},
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256` + "\n" +
+					` chars; URL-safe ASCII. Keys starting with ` + "`" + `c1/` + "`" + ` are reserved.` + "\n" +
+					`` + "\n" +
+					` Updates have PATCH semantics: keys absent from the request are` + "\n" +
+					` preserved; an empty value deletes the key.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
 			},
 			"auto_close_campaign": schema.BoolAttribute{
 				Computed: true,

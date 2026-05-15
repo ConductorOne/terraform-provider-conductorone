@@ -55,6 +55,14 @@ data "conductorone_policy" "my_policy" {
 
 ### Read-Only
 
+- `annotations` (Map of String) Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+ chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+
+ Updates have PATCH semantics: keys absent from the request are
+ preserved; an empty value deletes the key.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `created_at` (String)
 - `deleted_at` (String)
 - `description` (String) The description of the Policy.

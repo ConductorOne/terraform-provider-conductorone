@@ -29,6 +29,15 @@ func (e *CreateAppRequestIdentityMatching) IsExact() bool {
 
 // The CreateAppRequest message is used to create a new app.
 type CreateAppRequest struct {
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+	//  with `c1/` are reserved for server-managed use and rejected on write.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// Sets entitlement owners on the app.
 	AppEntitlementOwnerRefs []AppEntitlementRef `json:"appEntitlementOwnerRefs,omitempty"`
 	// Creates the app with this certify policy.
@@ -51,6 +60,13 @@ type CreateAppRequest struct {
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
 	// This flag enforces a provisioning mode where the access entitlement is always included in the provisioning flow, if the app user doesn't exist
 	StrictAccessEntitlementProvisioning *bool `json:"strictAccessEntitlementProvisioning,omitempty"`
+}
+
+func (c *CreateAppRequest) GetAnnotations() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.Annotations
 }
 
 func (c *CreateAppRequest) GetAppEntitlementOwnerRefs() []AppEntitlementRef {

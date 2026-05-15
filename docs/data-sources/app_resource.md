@@ -38,6 +38,19 @@ data "conductorone_app_resource" "my_app_resource" {
 
 - `access_config_id` (String) The access config ID for this resource. May be empty.
  Must be one of the builtin access config IDs or empty.
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+ are reserved.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
+
+ Most AppResources are connector-synced; user-supplied annotations on
+ a synced resource will be overwritten by the next sync. The
+ annotations bag is most useful on user-created groups (the
+ `conductorone_app_resource` TF resource).
 - `created_at` (String)
 - `delete` (Boolean) The delete field.
 - `deleted_at` (String)

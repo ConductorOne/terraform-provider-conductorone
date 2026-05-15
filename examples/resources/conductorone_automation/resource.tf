@@ -1,4 +1,7 @@
 resource "conductorone_automation" "my_automation" {
+  annotations = {
+    key = "value"
+  }
   app_id = "...my_app_id..."
   automation_context = {
     context = {

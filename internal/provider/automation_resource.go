@@ -34,6 +34,7 @@ type AutomationResource struct {
 
 // AutomationResourceModel describes the resource data model.
 type AutomationResourceModel struct {
+	Annotations                        map[string]types.String                     `tfsdk:"annotations"`
 	AppID                              types.String                                `tfsdk:"app_id"`
 	AutomationContext                  *tfTypes.AutomationContext                  `tfsdk:"automation_context"`
 	AutomationsDeleteAutomationRequest *tfTypes.AutomationsDeleteAutomationRequest `tfsdk:"automations_delete_automation_request"`
@@ -65,6 +66,19 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Automation Resource",
 		Attributes: map[string]schema.Attribute{
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting` + "\n" +
+					` with ` + "`" + `c1/` + "`" + ` are reserved for server-managed use and rejected on write.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
 			"app_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,

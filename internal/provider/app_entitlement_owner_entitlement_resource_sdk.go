@@ -23,6 +23,12 @@ func (r *AppEntitlementOwnerEntitlementResourceModel) RefreshFromSharedAppEntitl
 		} else {
 			r.AppEntitlement = &tfTypes.AppEntitlement{}
 			r.AppEntitlement.Alias = types.StringPointerValue(resp.AppEntitlement.Alias)
+			if len(resp.AppEntitlement.Annotations) > 0 {
+				r.AppEntitlement.Annotations = make(map[string]types.String, len(resp.AppEntitlement.Annotations))
+				for key, value := range resp.AppEntitlement.Annotations {
+					r.AppEntitlement.Annotations[key] = types.StringValue(value)
+				}
+			}
 			r.AppEntitlement.AppID = types.StringPointerValue(resp.AppEntitlement.AppID)
 			r.AppEntitlement.AppResourceID = types.StringPointerValue(resp.AppEntitlement.AppResourceID)
 			r.AppEntitlement.AppResourceTypeID = types.StringPointerValue(resp.AppEntitlement.AppResourceTypeID)
@@ -483,8 +489,8 @@ func (r *AppEntitlementOwnerEntitlementResourceModel) RefreshFromSharedAppEntitl
 			r.AppEntitlement.Slug = types.StringPointerValue(resp.AppEntitlement.Slug)
 			if len(resp.AppEntitlement.SourceConnectorIds) > 0 {
 				r.AppEntitlement.SourceConnectorIds = make(map[string]types.String, len(resp.AppEntitlement.SourceConnectorIds))
-				for key, value := range resp.AppEntitlement.SourceConnectorIds {
-					r.AppEntitlement.SourceConnectorIds[key] = types.StringValue(value)
+				for key1, value1 := range resp.AppEntitlement.SourceConnectorIds {
+					r.AppEntitlement.SourceConnectorIds[key1] = types.StringValue(value1)
 				}
 			}
 			r.AppEntitlement.SystemBuiltin = types.BoolPointerValue(resp.AppEntitlement.SystemBuiltin)

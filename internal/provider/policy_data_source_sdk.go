@@ -16,6 +16,12 @@ import (
 func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, resp *shared.Policy) diag.Diagnostics {
 	var diags diag.Diagnostics
 
+	if len(resp.Annotations) > 0 {
+		r.Annotations = make(map[string]types.String, len(resp.Annotations))
+		for key, value := range resp.Annotations {
+			r.Annotations[key] = types.StringValue(value)
+		}
+	}
 	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 	r.Description = types.StringPointerValue(resp.Description)

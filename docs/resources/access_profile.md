@@ -18,10 +18,12 @@ and `access_profile_entitlement_bindings_resource` resources.
 
 ```terraform
 resource "conductorone_access_profile" "my_access_profile" {
+  annotations = {
+    key = "value"
+  }
   description                       = "...my_description..."
   display_name                      = "...my_display_name..."
   enrollment_behavior               = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED"
-  grant_policy_id                   = "...my_grant_policy_id..."
   published                         = false
   request_bundle                    = false
   unenrollment_behavior             = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED"
@@ -39,9 +41,16 @@ resource "conductorone_access_profile" "my_access_profile" {
 
 ### Optional
 
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+ with `c1/` are reserved for server-managed use and rejected on write.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `description` (String) The description of the new request catalog.
 - `enrollment_behavior` (String) Defines how to handle the request policies of the entitlements in the catalog during enrollment. possible known values include one of ["REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY"]
-- `grant_policy_id` (String) The ID of the grant policy for access requests in this catalog.
 - `published` (Boolean) Whether or not the new catalog should be created as published.
 - `request_bundle` (Boolean) Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
 - `unenrollment_behavior` (String) Defines how to handle the revocation of the entitlements in the catalog during unenrollment. possible known values include one of ["REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED"]

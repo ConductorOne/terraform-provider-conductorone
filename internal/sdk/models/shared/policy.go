@@ -42,8 +42,17 @@ func (e *PolicyType) IsExact() bool {
 //	routing: different conditions can trigger different step sequences, with a
 //	baseline fallback.
 type Policy struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+	//  chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+	//
+	//  Updates have PATCH semantics: keys absent from the request are
+	//  preserved; an empty value deletes the key.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
+	CreatedAt   *time.Time        `json:"createdAt,omitempty"`
+	DeletedAt   *time.Time        `json:"deletedAt,omitempty"`
 	// The description of the Policy.
 	Description *string `json:"description,omitempty"`
 	// The display name of the Policy.
@@ -83,6 +92,13 @@ func (p *Policy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (p *Policy) GetAnnotations() map[string]string {
+	if p == nil {
+		return nil
+	}
+	return p.Annotations
 }
 
 func (p *Policy) GetCreatedAt() *time.Time {
@@ -175,6 +191,15 @@ func (p *Policy) GetUpdatedAt() *time.Time {
 //	routing: different conditions can trigger different step sequences, with a
 //	baseline fallback.
 type PolicyInput struct {
+	// Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+	//  chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+	//
+	//  Updates have PATCH semantics: keys absent from the request are
+	//  preserved; an empty value deletes the key.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The description of the Policy.
 	Description *string `json:"description,omitempty"`
 	// The display name of the Policy.
@@ -198,6 +223,13 @@ type PolicyInput struct {
 	//  matching rule selects a step sequence from policy_steps. If no rule matches
 	//  (or if this array is empty), the baseline entry in policy_steps is used.
 	Rules []Rule `json:"rules,omitempty"`
+}
+
+func (p *PolicyInput) GetAnnotations() map[string]string {
+	if p == nil {
+		return nil
+	}
+	return p.Annotations
 }
 
 func (p *PolicyInput) GetDescription() *string {

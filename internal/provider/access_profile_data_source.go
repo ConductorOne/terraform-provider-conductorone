@@ -29,6 +29,7 @@ type AccessProfileDataSource struct {
 
 // AccessProfileDataSourceModel describes the data model.
 type AccessProfileDataSourceModel struct {
+	Annotations                     map[string]types.String                                      `tfsdk:"annotations"`
 	CreatedAt                       types.String                                                 `tfsdk:"created_at"`
 	CreatedByUserID                 types.String                                                 `tfsdk:"created_by_user_id"`
 	DeletedAt                       types.String                                                 `tfsdk:"deleted_at"`
@@ -36,7 +37,6 @@ type AccessProfileDataSourceModel struct {
 	DisplayName                     types.String                                                 `tfsdk:"display_name"`
 	EnrollmentBehavior              types.String                                                 `tfsdk:"enrollment_behavior"`
 	Expanded                        []tfTypes.RequestCatalogManagementServiceGetResponseExpanded `tfsdk:"expanded"`
-	GrantPolicyID                   types.String                                                 `tfsdk:"grant_policy_id"`
 	ID                              types.String                                                 `tfsdk:"id"`
 	Published                       types.Bool                                                   `tfsdk:"published"`
 	RequestBundle                   types.Bool                                                   `tfsdk:"request_bundle"`
@@ -57,6 +57,18 @@ func (r *AccessProfileDataSource) Schema(ctx context.Context, req datasource.Sch
 		MarkdownDescription: "AccessProfile DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/` + "\n" +
+					` are reserved.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},
@@ -85,11 +97,6 @@ func (r *AccessProfileDataSource) Schema(ctx context.Context, req datasource.Sch
 					Attributes: map[string]schema.Attribute{},
 				},
 				Description: `List of serialized related objects.`,
-			},
-			"grant_policy_id": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `The ID of the policy to use for access requests in this catalog.` + "\n" +
-					` This is different from the catalog AppEntitlement's grant_policy_id, which is used for catalog membership grants.`,
 			},
 			"id": schema.StringAttribute{
 				Required:    true,

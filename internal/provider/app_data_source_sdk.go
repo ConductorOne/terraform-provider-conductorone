@@ -19,6 +19,12 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 	} else {
 		r.AccessModel = types.StringNull()
 	}
+	if len(resp.Annotations) > 0 {
+		r.Annotations = make(map[string]types.String, len(resp.Annotations))
+		for key, value := range resp.Annotations {
+			r.Annotations[key] = types.StringValue(value)
+		}
+	}
 	r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
 	r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
 	if resp.AppUserMapper == nil {

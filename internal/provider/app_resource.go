@@ -35,6 +35,7 @@ type AppResource struct {
 // AppResourceModel describes the resource data model.
 type AppResourceModel struct {
 	AccessModel                         types.String                `tfsdk:"access_model"`
+	Annotations                         map[string]types.String     `tfsdk:"annotations"`
 	AppAccountID                        types.String                `tfsdk:"app_account_id"`
 	AppAccountName                      types.String                `tfsdk:"app_account_name"`
 	AppEntitlementOwnerRefs             []tfTypes.AppEntitlementRef `tfsdk:"app_entitlement_owner_refs"`
@@ -73,6 +74,19 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Computed: true,
 				MarkdownDescription: `How this app models access. Derived during uplift from the app's resource type traits.` + "\n" +
 					` Sparse ACL feature.`,
+			},
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting` + "\n" +
+					` with ` + "`" + `c1/` + "`" + ` are reserved for server-managed use and rejected on write.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
 			},
 			"app_account_id": schema.StringAttribute{
 				Computed:    true,
