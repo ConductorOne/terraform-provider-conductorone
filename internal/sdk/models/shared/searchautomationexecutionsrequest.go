@@ -5,16 +5,17 @@ package shared
 type ExecutionStepStates string
 
 const (
-	ExecutionStepStatesAutomationExecutionStateUnspecified  ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_UNSPECIFIED"
-	ExecutionStepStatesAutomationExecutionStatePending      ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_PENDING"
-	ExecutionStepStatesAutomationExecutionStateCreating     ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_CREATING"
-	ExecutionStepStatesAutomationExecutionStateGetStep      ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_GET_STEP"
-	ExecutionStepStatesAutomationExecutionStateProcessStep  ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_PROCESS_STEP"
-	ExecutionStepStatesAutomationExecutionStateCompleteStep ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP"
-	ExecutionStepStatesAutomationExecutionStateDone         ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_DONE"
-	ExecutionStepStatesAutomationExecutionStateError        ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_ERROR"
-	ExecutionStepStatesAutomationExecutionStateTerminate    ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_TERMINATE"
-	ExecutionStepStatesAutomationExecutionStateWaiting      ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_WAITING"
+	ExecutionStepStatesAutomationExecutionStateUnspecified            ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_UNSPECIFIED"
+	ExecutionStepStatesAutomationExecutionStatePending                ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_PENDING"
+	ExecutionStepStatesAutomationExecutionStateCreating               ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_CREATING"
+	ExecutionStepStatesAutomationExecutionStateGetStep                ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_GET_STEP"
+	ExecutionStepStatesAutomationExecutionStateProcessStep            ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_PROCESS_STEP"
+	ExecutionStepStatesAutomationExecutionStateCompleteStep           ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP"
+	ExecutionStepStatesAutomationExecutionStateDone                   ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_DONE"
+	ExecutionStepStatesAutomationExecutionStateError                  ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_ERROR"
+	ExecutionStepStatesAutomationExecutionStateTerminate              ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_TERMINATE"
+	ExecutionStepStatesAutomationExecutionStateWaiting                ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_WAITING"
+	ExecutionStepStatesAutomationExecutionStatePausedByCircuitBreaker ExecutionStepStates = "AUTOMATION_EXECUTION_STATE_PAUSED_BY_CIRCUIT_BREAKER"
 )
 
 func (e ExecutionStepStates) ToPointer() *ExecutionStepStates {
@@ -25,7 +26,7 @@ func (e ExecutionStepStates) ToPointer() *ExecutionStepStates {
 func (e *ExecutionStepStates) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "AUTOMATION_EXECUTION_STATE_UNSPECIFIED", "AUTOMATION_EXECUTION_STATE_PENDING", "AUTOMATION_EXECUTION_STATE_CREATING", "AUTOMATION_EXECUTION_STATE_GET_STEP", "AUTOMATION_EXECUTION_STATE_PROCESS_STEP", "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP", "AUTOMATION_EXECUTION_STATE_DONE", "AUTOMATION_EXECUTION_STATE_ERROR", "AUTOMATION_EXECUTION_STATE_TERMINATE", "AUTOMATION_EXECUTION_STATE_WAITING":
+		case "AUTOMATION_EXECUTION_STATE_UNSPECIFIED", "AUTOMATION_EXECUTION_STATE_PENDING", "AUTOMATION_EXECUTION_STATE_CREATING", "AUTOMATION_EXECUTION_STATE_GET_STEP", "AUTOMATION_EXECUTION_STATE_PROCESS_STEP", "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP", "AUTOMATION_EXECUTION_STATE_DONE", "AUTOMATION_EXECUTION_STATE_ERROR", "AUTOMATION_EXECUTION_STATE_TERMINATE", "AUTOMATION_EXECUTION_STATE_WAITING", "AUTOMATION_EXECUTION_STATE_PAUSED_BY_CIRCUIT_BREAKER":
 			return true
 		}
 	}

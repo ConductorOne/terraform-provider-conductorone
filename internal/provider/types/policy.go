@@ -7,16 +7,17 @@ import (
 )
 
 type Policy struct {
-	CreatedAt                types.String           `tfsdk:"created_at"`
-	DeletedAt                types.String           `tfsdk:"deleted_at"`
-	Description              types.String           `tfsdk:"description"`
-	DisplayName              types.String           `tfsdk:"display_name"`
-	ID                       types.String           `tfsdk:"id"`
-	PolicySteps              map[string]PolicySteps `tfsdk:"policy_steps"`
-	PolicyType               types.String           `tfsdk:"policy_type"`
-	PostActions              []PolicyPostActions    `tfsdk:"post_actions"`
-	ReassignTasksToDelegates types.Bool             `tfsdk:"reassign_tasks_to_delegates"`
-	Rules                    []Rule                 `tfsdk:"rules"`
-	SystemBuiltin            types.Bool             `tfsdk:"system_builtin"`
-	UpdatedAt                types.String           `tfsdk:"updated_at"`
+	Annotations              map[string]types.String `tfsdk:"annotations"`
+	CreatedAt                types.String            `tfsdk:"created_at"`
+	DeletedAt                types.String            `tfsdk:"deleted_at"`
+	Description              types.String            `tfsdk:"description"`
+	DisplayName              types.String            `tfsdk:"display_name"`
+	ID                       types.String            `tfsdk:"id"`
+	PolicySteps              map[string]PolicySteps  `tfsdk:"policy_steps"`
+	PolicyType               types.String            `tfsdk:"policy_type"`
+	PostActions              []PolicyPostActions     `tfsdk:"post_actions"`
+	ReassignTasksToDelegates types.Bool              `tfsdk:"reassign_tasks_to_delegates"`
+	Rules                    []Rule                  `tfsdk:"rules"`
+	SystemBuiltin            types.Bool              `tfsdk:"system_builtin"`
+	UpdatedAt                types.String            `tfsdk:"updated_at"`
 }

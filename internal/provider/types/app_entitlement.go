@@ -9,6 +9,7 @@ import (
 type AppEntitlement struct {
 	ProvisionPolicy                *ProvisionPolicy             `tfsdk:"provision_policy"`
 	Alias                          types.String                 `tfsdk:"alias"`
+	Annotations                    map[string]types.String      `tfsdk:"annotations"`
 	AppID                          types.String                 `tfsdk:"app_id"`
 	AppResourceID                  types.String                 `tfsdk:"app_resource_id"`
 	AppResourceTypeID              types.String                 `tfsdk:"app_resource_type_id"`

@@ -51,6 +51,8 @@ type FormField struct {
 	//   - oauth2FieldView
 	//
 	Oauth2Field *Oauth2Field `json:"oauth2Field,omitempty"`
+	// When true, this field is displayed to the user but cannot be edited.
+	ReadOnly *bool `json:"readOnly,omitempty"`
 	// The required field.
 	Required *bool `json:"required,omitempty"`
 	// The SharedProviderConfig message.
@@ -124,6 +126,13 @@ func (f *FormField) GetOauth2Field() *Oauth2Field {
 		return nil
 	}
 	return f.Oauth2Field
+}
+
+func (f *FormField) GetReadOnly() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.ReadOnly
 }
 
 func (f *FormField) GetRequired() *bool {

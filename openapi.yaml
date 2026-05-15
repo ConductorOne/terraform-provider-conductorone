@@ -1547,6 +1547,7 @@ components:
                             - ACCESS_REVIEW_TASK_COLUMN_LAST_LOGIN
                             - ACCESS_REVIEW_TASK_COLUMN_RESOURCE_PARENT
                             - ACCESS_REVIEW_TASK_COLUMN_RESOURCE_CHILDREN
+                            - ACCESS_REVIEW_TASK_COLUMN_APP_USER_USERNAME
                         type: string
                         x-speakeasy-unknown-values: allow
                     nullable: true
@@ -2128,6 +2129,24 @@ components:
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+                         chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+
+                         Updates have PATCH semantics: keys absent from the request are
+                         preserved; an empty value deletes the key.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 autoCloseCampaign:
                     description: |-
                         Auto-close configuration
@@ -2263,6 +2282,24 @@ components:
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+                         with `c1/` are reserved for server-managed use and rejected on write.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 autoCloseCampaign:
                     description: The autoCloseCampaign field.
                     readOnly: false
@@ -3198,6 +3235,24 @@ components:
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+                         chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+
+                         Updates have PATCH semantics: keys absent from the request are
+                         preserved; an empty value deletes the key.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 appAccountId:
                     description: The ID of the Account named by AccountName.
                     readOnly: true
@@ -3478,6 +3533,24 @@ components:
                     description: The alias of the app entitlement used by Cone. Also exact-match queryable.
                     readOnly: false
                     type: string
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+                         are reserved.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 appId:
                     description: The ID of the app that is associated with the app entitlement.
                     readOnly: false
@@ -3967,6 +4040,122 @@ components:
             title: App Entitlement Search Service Search Grants Response
             type: object
             x-speakeasy-name-override: AppEntitlementSearchServiceSearchGrantsResponse
+        c1.api.app.v1.AppEntitlementSearchServiceSearchGraphRequest:
+            description: |-
+                SearchGraph request. Builds a filtered access graph starting from a root entity.
+                 Exactly one of user_id, app_id, or resource_id must be set.
+                 Server validates this constraint and returns InvalidArgument if violated.
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                appIds:
+                    description: Filters — all optional, applied at every traversal hop
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                entitlementIds:
+                    description: The entitlementIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                entitlementNameQuery:
+                    description: The entitlementNameQuery field.
+                    readOnly: false
+                    type: string
+                maxDepth:
+                    description: Traversal controls
+                    format: int32
+                    readOnly: false
+                    type: integer
+                maxFanOut:
+                    description: The maxFanOut field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                resourceId:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+                resourceIds:
+                    description: The resourceIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                resourceNameQuery:
+                    description: The resourceNameQuery field.
+                    readOnly: false
+                    type: string
+                resourceTypeIds:
+                    description: The resourceTypeIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                userId:
+                    description: Root entity — exactly one must be set
+                    readOnly: false
+                    type: string
+            title: App Entitlement Search Service Search Graph Request
+            type: object
+            x-speakeasy-name-override: AppEntitlementSearchServiceSearchGraphRequest
+        c1.api.app.v1.AppEntitlementSearchServiceSearchGraphResponse:
+            description: SearchGraph response. Contains a subgraph of nodes and edges.
+            properties:
+                edges:
+                    description: The edges field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.GraphEdge'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                hasMore:
+                    description: The hasMore field.
+                    readOnly: false
+                    type: boolean
+                nodes:
+                    description: The nodes field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.GraphNode'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                pathsReturned:
+                    description: The pathsReturned field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                truncatedNodeIds:
+                    description: The truncatedNodeIds field.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: App Entitlement Search Service Search Graph Response
+            type: object
+            x-speakeasy-name-override: AppEntitlementSearchServiceSearchGraphResponse
         c1.api.app.v1.AppEntitlementSearchServiceSearchRequest:
             description: Search app entitlements by a variety of filters.
             properties:
@@ -4564,6 +4753,29 @@ components:
                          Must be one of the builtin access config IDs or empty.
                     readOnly: false
                     type: string
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+                         are reserved.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+
+                         Most AppResources are connector-synced; user-supplied annotations on
+                         a synced resource will be overwritten by the next sync. The
+                         annotations bag is most useful on user-created groups (the
+                         `conductorone_app_resource` TF resource).
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 appId:
                     description: The app that this resource belongs to.
                     readOnly: false
@@ -5965,6 +6177,24 @@ components:
                     description: A unique alias for the entitlement, used for programmatic lookups and Cone.
                     readOnly: false
                     type: string
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+                         with `c1/` are reserved for server-managed use and rejected on write.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 appEntitlementOwnerIds:
                     description: The IDs of users to set as owners of this entitlement.
                     items:
@@ -6083,6 +6313,24 @@ components:
         c1.api.app.v1.CreateAppRequest:
             description: The CreateAppRequest message is used to create a new app.
             properties:
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+                         with `c1/` are reserved for server-managed use and rejected on write.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 appEntitlementOwnerRefs:
                     description: Sets entitlement owners on the app.
                     items:
@@ -6173,6 +6421,24 @@ components:
         c1.api.app.v1.CreateManuallyManagedAppResourceRequestInput:
             description: The request message for creating a manually managed app resource.
             properties:
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+                         with `c1/` are reserved for server-managed use and rejected on write.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 description:
                     description: An optional description for the new resource.
                     readOnly: false
@@ -6545,6 +6811,77 @@ components:
             title: Grant Reason
             type: object
             x-speakeasy-name-override: GrantReason
+        c1.api.app.v1.GraphEdge:
+            description: An edge in the access graph.
+            properties:
+                hiddenChildren:
+                    description: The hiddenChildren field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                isTruncated:
+                    description: The isTruncated field.
+                    readOnly: false
+                    type: boolean
+                sourceId:
+                    description: The sourceId field.
+                    readOnly: false
+                    type: string
+                targetId:
+                    description: The targetId field.
+                    readOnly: false
+                    type: string
+                type:
+                    description: The type field.
+                    enum:
+                        - GRAPH_EDGE_TYPE_UNSPECIFIED
+                        - GRAPH_EDGE_TYPE_IDENTITY_LINK
+                        - GRAPH_EDGE_TYPE_DIRECT_GRANT
+                        - GRAPH_EDGE_TYPE_APP_HIERARCHY
+                        - GRAPH_EDGE_TYPE_RESOURCE_HIERARCHY
+                        - GRAPH_EDGE_TYPE_PROXY_BINDING
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Graph Edge
+            type: object
+            x-speakeasy-name-override: GraphEdge
+        c1.api.app.v1.GraphNode:
+            description: A node in the access graph.
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                id:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+                resourceTypeId:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                type:
+                    description: The type field.
+                    enum:
+                        - GRAPH_NODE_TYPE_UNSPECIFIED
+                        - GRAPH_NODE_TYPE_USER
+                        - GRAPH_NODE_TYPE_APP_USER
+                        - GRAPH_NODE_TYPE_APP
+                        - GRAPH_NODE_TYPE_RESOURCE_TYPE
+                        - GRAPH_NODE_TYPE_RESOURCE
+                        - GRAPH_NODE_TYPE_ENTITLEMENT
+                        - GRAPH_NODE_TYPE_GRANT
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Graph Node
+            type: object
+            x-speakeasy-name-override: GraphNode
         c1.api.app.v1.ListAppEntitlementOwnerIDsResponse:
             description: The response message for listing app entitlement owners IDs.
             properties:
@@ -9081,6 +9418,24 @@ components:
                 This message contains a oneof named disabled_reason. Only a single field of the following list may be set at a time:
                   - circuitBreaker
             properties:
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+                         are reserved.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 appId:
                     description: the app id this workflow_template belongs to
                     readOnly: false
@@ -9255,6 +9610,7 @@ components:
                         - AUTOMATION_EXECUTION_STATE_ERROR
                         - AUTOMATION_EXECUTION_STATE_TERMINATE
                         - AUTOMATION_EXECUTION_STATE_WAITING
+                        - AUTOMATION_EXECUTION_STATE_PAUSED_BY_CIRCUIT_BREAKER
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
@@ -9670,6 +10026,24 @@ components:
         c1.api.automations.v1.CreateAutomationRequest:
             description: The CreateAutomationRequest message.
             properties:
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+                         with `c1/` are reserved for server-managed use and rejected on write.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 appId:
                     description: the app id this workflow_template belongs to
                     readOnly: false
@@ -10764,6 +11138,7 @@ components:
                             - AUTOMATION_EXECUTION_STATE_ERROR
                             - AUTOMATION_EXECUTION_STATE_TERMINATE
                             - AUTOMATION_EXECUTION_STATE_WAITING
+                            - AUTOMATION_EXECUTION_STATE_PAUSED_BY_CIRCUIT_BREAKER
                         type: string
                         x-speakeasy-unknown-values: allow
                     nullable: true
@@ -10847,6 +11222,7 @@ components:
                             - AUTOMATION_EXECUTION_STATE_ERROR
                             - AUTOMATION_EXECUTION_STATE_TERMINATE
                             - AUTOMATION_EXECUTION_STATE_WAITING
+                            - AUTOMATION_EXECUTION_STATE_PAUSED_BY_CIRCUIT_BREAKER
                         type: string
                         x-speakeasy-unknown-values: allow
                     nullable: true
@@ -12962,6 +13338,10 @@ components:
                     type: string
                 oauth2Field:
                     $ref: '#/components/schemas/c1.api.form.v1.Oauth2Field'
+                readOnly:
+                    description: When true, this field is displayed to the user but cannot be edited.
+                    readOnly: false
+                    type: boolean
                 required:
                     description: The required field.
                     readOnly: false
@@ -16294,6 +16674,24 @@ components:
         c1.api.policy.v1.CreatePolicyRequest:
             description: The CreatePolicyRequest message is used to create a new policy.
             properties:
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+                         with `c1/` are reserved for server-managed use and rejected on write.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 description:
                     description: The description of the new policy.
                     readOnly: false
@@ -16951,6 +17349,24 @@ components:
                  routing: different conditions can trigger different step sequences, with a
                  baseline fallback.
             properties:
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+                         chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+
+                         Updates have PATCH semantics: keys absent from the request are
+                         preserved; an empty value deletes the key.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 createdAt:
                     format: date-time
                     readOnly: true
@@ -18388,6 +18804,24 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+                         are reserved.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 createdAt:
                     format: date-time
                     readOnly: true
@@ -18417,12 +18851,6 @@ components:
                     readOnly: false
                     type: string
                     x-speakeasy-unknown-values: allow
-                grantPolicyId:
-                    description: |-
-                        The ID of the policy to use for access requests in this catalog.
-                         This is different from the catalog AppEntitlement's grant_policy_id, which is used for catalog membership grants.
-                    readOnly: false
-                    type: string
                 id:
                     description: The id of the request catalog.
                     readOnly: false
@@ -18532,6 +18960,24 @@ components:
         c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequest:
             description: Create a request catalog.
             properties:
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Bounded key/value metadata bag for IaC marking and customer tags.
+                         See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+                         chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+                         matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+                         with `c1/` are reserved for server-managed use and rejected on write.
+
+                         Well-known keys: `managed_by`, `iac_workspace`,
+                         `iac_resource_address`, `iac_tool_version`.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
                 description:
                     description: The description of the new request catalog.
                     readOnly: false
@@ -18551,10 +18997,6 @@ components:
                     x-speakeasy-unknown-values: allow
                 expandMask:
                     $ref: '#/components/schemas/c1.api.requestcatalog.v1.RequestCatalogExpandMask'
-                grantPolicyId:
-                    description: The ID of the grant policy for access requests in this catalog.
-                    readOnly: false
-                    type: string
                 published:
                     description: Whether or not the new catalog should be created as published.
                     readOnly: false
@@ -19052,6 +19494,19 @@ components:
             title: Cohort Hint View
             type: object
             x-speakeasy-name-override: CohortHintView
+        c1.api.role_mining_management.v1.CohortUserWithCoverage:
+            description: CohortUserWithCoverage pairs a user with the count of selected entitlements they hold.
+            properties:
+                coveredCount:
+                    description: Number of selected_entitlements that this user currently holds.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                user:
+                    $ref: '#/components/schemas/c1.api.user.v1.User'
+            title: Cohort User With Coverage
+            type: object
+            x-speakeasy-name-override: CohortUserWithCoverage
         c1.api.role_mining_management.v1.CreateAccessProfileFromCohortRequest:
             description: The CreateAccessProfileFromCohortRequest message.
             properties:
@@ -19108,6 +19563,69 @@ components:
             title: Create Access Profile From Cohort Response
             type: object
             x-speakeasy-name-override: CreateAccessProfileFromCohortResponse
+        c1.api.role_mining_management.v1.CustomAnalysisResultView:
+            description: CustomAnalysisResultView is a lightweight summary of a past custom analysis run.
+            properties:
+                cohortSize:
+                    description: Number of users in the cohort.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                completedAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                errorMessage:
+                    description: Error message if the analysis failed, empty on success.
+                    readOnly: false
+                    type: string
+                id:
+                    description: Unique identifier for this custom analysis result.
+                    readOnly: false
+                    type: string
+                profileFilters:
+                    description: Profile filters that defined the cohort for this analysis.
+                    items:
+                        $ref: '#/components/schemas/c1.mcp.role_mining.v1.ProfileFilter'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                status:
+                    description: Execution status of this analysis (e.g., running, completed, failed).
+                    enum:
+                        - RUN_STATUS_UNSPECIFIED
+                        - RUN_STATUS_RUNNING
+                        - RUN_STATUS_COMPLETED
+                        - RUN_STATUS_FAILED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                suggestionsGenerated:
+                    description: Number of role suggestions generated.
+                    format: int32
+                    readOnly: false
+                    type: integer
+            title: Custom Analysis Result View
+            type: object
+            x-speakeasy-name-override: CustomAnalysisResultView
+        c1.api.role_mining_management.v1.EntitlementRef:
+            description: EntitlementRef identifies an entitlement by app and entitlement ID.
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                entitlementId:
+                    description: The entitlementId field.
+                    readOnly: false
+                    type: string
+            title: Entitlement Ref
+            type: object
+            x-speakeasy-name-override: EntitlementRef
         c1.api.role_mining_management.v1.GetCustomAnalysisResultResponse:
             description: The GetCustomAnalysisResultResponse message.
             properties:
@@ -19192,6 +19710,23 @@ components:
             title: Get Suggestion Response
             type: object
             x-speakeasy-name-override: GetSuggestionResponse
+        c1.api.role_mining_management.v1.ListCustomAnalysisResultsResponse:
+            description: The ListCustomAnalysisResultsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.role_mining_management.v1.CustomAnalysisResultView'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: List Custom Analysis Results Response
+            type: object
+            x-speakeasy-name-override: ListCustomAnalysisResultsResponse
         c1.api.role_mining_management.v1.ListRunsResponse:
             description: The ListRunsResponse message.
             properties:
@@ -19502,6 +20037,13 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                selectedEntitlements:
+                    description: Optional list of entitlements to compute per-user coverage for.
+                    items:
+                        $ref: '#/components/schemas/c1.api.role_mining_management.v1.EntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
             title: Search Cohort Users Request
             type: object
             x-speakeasy-name-override: SearchCohortUsersRequest
@@ -19519,6 +20061,13 @@ components:
                     description: Token to retrieve the next page of results, empty if no more results.
                     readOnly: false
                     type: string
+                usersWithCoverage:
+                    description: Per-user coverage counts, populated when selected_entitlements is non-empty.
+                    items:
+                        $ref: '#/components/schemas/c1.api.role_mining_management.v1.CohortUserWithCoverage'
+                    nullable: true
+                    readOnly: false
+                    type: array
             title: Search Cohort Users Response
             type: object
             x-speakeasy-name-override: SearchCohortUsersResponse
@@ -21175,6 +21724,14 @@ components:
             title: Get Tenant Email Provider Response
             type: object
             x-speakeasy-name-override: GetTenantEmailProviderResponse
+        c1.api.settings.v1.GetUserDeveloperPreferencesResponse:
+            description: The GetUserDeveloperPreferencesResponse message.
+            properties:
+                userDeveloperPreferences:
+                    $ref: '#/components/schemas/c1.api.settings.v1.UserDeveloperPreferences'
+            title: Get User Developer Preferences Response
+            type: object
+            x-speakeasy-name-override: GetUserDeveloperPreferencesResponse
         c1.api.settings.v1.GetUserNotificationSettingsResponse:
             description: The GetUserNotificationSettingsResponse message.
             properties:
@@ -21542,6 +22099,26 @@ components:
             title: Tenant Email Provider
             type: object
             x-speakeasy-name-override: TenantEmailProvider
+        c1.api.settings.v1.TerraformPreferences:
+            description: |-
+                TerraformPreferences groups the user's preferences for the "Show
+                 Terraform code" feature.
+            properties:
+                showCode:
+                    description: |-
+                        When true, the user sees the "Show Terraform code" trigger on
+                         supported detail pages and list rows. Defaults to false.
+
+                         Visibility is also role-gated: the trigger is shown only to users
+                         with one of the SystemOwner, SystemOwnerReadOnly, IntegrationAdmin,
+                         ApplicationAdmin, CampaignAdmin, or AccessRequestAdmin roles. Users
+                         without one of these roles will not see the trigger even when this
+                         flag is true.
+                    readOnly: false
+                    type: boolean
+            title: Terraform Preferences
+            type: object
+            x-speakeasy-name-override: TerraformPreferences
         c1.api.settings.v1.TestSourceIPRequest:
             description: The TestSourceIPRequest message.
             properties:
@@ -21743,6 +22320,22 @@ components:
             title: Update Tenant Email Provider Response
             type: object
             x-speakeasy-name-override: UpdateTenantEmailProviderResponse
+        c1.api.settings.v1.UpdateUserDeveloperPreferencesRequest:
+            description: The UpdateUserDeveloperPreferencesRequest message.
+            properties:
+                terraform:
+                    $ref: '#/components/schemas/c1.api.settings.v1.TerraformPreferences'
+            title: Update User Developer Preferences Request
+            type: object
+            x-speakeasy-name-override: UpdateUserDeveloperPreferencesRequest
+        c1.api.settings.v1.UpdateUserDeveloperPreferencesResponse:
+            description: The UpdateUserDeveloperPreferencesResponse message.
+            properties:
+                userDeveloperPreferences:
+                    $ref: '#/components/schemas/c1.api.settings.v1.UserDeveloperPreferences'
+            title: Update User Developer Preferences Response
+            type: object
+            x-speakeasy-name-override: UpdateUserDeveloperPreferencesResponse
         c1.api.settings.v1.UpdateUserNotificationSettingsRequest:
             description: The UpdateUserNotificationSettingsRequest message.
             properties:
@@ -21759,6 +22352,16 @@ components:
             title: Update User Notification Settings Response
             type: object
             x-speakeasy-name-override: UpdateUserNotificationSettingsResponse
+        c1.api.settings.v1.UserDeveloperPreferences:
+            description: |-
+                UserDeveloperPreferences holds a user's developer-tooling preferences,
+                 organized into per-feature clusters.
+            properties:
+                terraform:
+                    $ref: '#/components/schemas/c1.api.settings.v1.TerraformPreferences'
+            title: User Developer Preferences
+            type: object
+            x-speakeasy-name-override: UserDeveloperPreferences
         c1.api.settings.v1.UserNotificationSettings:
             description: UserNotificationSettings contains the calling user's personal notification preferences.
             properties:
@@ -26365,6 +26968,424 @@ components:
             title: Task View
             type: object
             x-speakeasy-name-override: TaskView
+        c1.api.terraform_export.v1.CompositeKeyField:
+            description: |-
+                CompositeKeyField names one sibling component of a composite-key
+                 reference lookup.
+            properties:
+                c1Field:
+                    description: |-
+                        C1 API field name on the parent message (snake_case proto
+                         field). The collector reads the runtime value at this path.
+                    readOnly: false
+                    type: string
+                tfField:
+                    description: |-
+                        Attribute name in the Terraform data source's `refs[]` struct.
+                         Usually identical to c1_field (the conductorone provider
+                         matches them 1:1 today). Distinct fields anyway so a future
+                         provider rename is wire-safe — no migration needed.
+                    readOnly: false
+                    type: string
+            title: Composite Key Field
+            type: object
+            x-speakeasy-name-override: CompositeKeyField
+        c1.api.terraform_export.v1.CompositeKeyFieldSet:
+            description: |-
+                CompositeKeyFieldSet groups a non-empty set of composite-key
+                 fields as declared by one or more consumer reference sites that
+                 target the same Terraform type. Used in `TFSchemaMapping
+                 .referer_shapes` (the "inverted index" of composite-key shapes
+                 targeting this kind) so a multi-root producer can register
+                 canonical lookup keys for every shape its consumers might
+                 compute.
+
+                 Invariant: `fields` MUST be non-empty. The bare-id (single-id)
+                 form is implicit — every producer registers under
+                 `canonicalRefKey(id, {})` unconditionally, and consumer sites
+                 with empty composite_key_fields are not represented here. The
+                 backend's inverted-index computation skips them; including an
+                 empty `fields` would just round-trip to the bare-id form and
+                 produce a duplicate registration.
+            properties:
+                fields:
+                    description: The fields field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.terraform_export.v1.CompositeKeyField'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Composite Key Field Set
+            type: object
+            x-speakeasy-name-override: CompositeKeyFieldSet
+        c1.api.terraform_export.v1.EnumValue:
+            description: EnumValue is one declared variant of a proto enum.
+            properties:
+                name:
+                    description: |-
+                        Full proto enum value name (e.g. "POLICY_TYPE_GRANT"). The
+                         conductorone provider accepts this verbatim as a quoted-string HCL
+                         literal.
+                    readOnly: false
+                    type: string
+                number:
+                    description: |-
+                        Proto enum number — the value on the wire (e.g. 1 for
+                         POLICY_TYPE_GRANT).
+                    format: int32
+                    readOnly: false
+                    type: integer
+            title: Enum Value
+            type: object
+            x-speakeasy-name-override: EnumValue
+        c1.api.terraform_export.v1.GetSchemaResponse:
+            description: The GetSchemaResponse message.
+            properties:
+                schema:
+                    $ref: '#/components/schemas/c1.api.terraform_export.v1.TFSchemaMapping'
+            title: Get Schema Response
+            type: object
+            x-speakeasy-name-override: GetSchemaResponse
+        c1.api.terraform_export.v1.ImportIDShape:
+            description: |
+                ImportIDShape describes the structure of the `id` value in a
+                 Terraform `import { to = ..., id = "..." }` block. Most resources use
+                 a single string; binding-style resources (App_Owner,
+                 App_Entitlement_Owner, …) use a composite of multiple field values.
+
+                This message contains a oneof named shape. Only a single field of the following list may be set at a time:
+                  - singleString
+                  - composite
+            properties:
+                composite:
+                    $ref: '#/components/schemas/c1.api.terraform_export.v1.ImportIDShape.Composite'
+                singleString:
+                    $ref: '#/components/schemas/c1.api.terraform_export.v1.ImportIDShape.SingleString'
+            title: Import Id Shape
+            type: object
+            x-speakeasy-name-override: ImportIDShape
+        c1.api.terraform_export.v1.ImportIDShape.Composite:
+            description: |-
+                Composite import IDs combine values from multiple component fields
+                 per the declared `format`.
+            nullable: true
+            properties:
+                fields:
+                    description: |-
+                        Component fields, in the order they participate in the import
+                         ID.
+                    items:
+                        $ref: '#/components/schemas/c1.api.terraform_export.v1.ImportIDShape.CompositeField'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                format:
+                    description: |-
+                        Wire format the provider expects. Defaults to
+                         FORMAT_JSON_OBJECT.
+                    enum:
+                        - FORMAT_JSON_OBJECT
+                        - FORMAT_COLON_SEPARATED
+                        - FORMAT_UNDERSCORE_SEPARATED
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Composite
+            type: object
+            x-speakeasy-name-override: Composite
+        c1.api.terraform_export.v1.ImportIDShape.CompositeField:
+            description: CompositeField names one component of a composite import ID.
+            properties:
+                c1Field:
+                    description: The C1 API field whose value supplies this component.
+                    readOnly: false
+                    type: string
+                tfType:
+                    description: The TF attribute type of the component value.
+                    enum:
+                        - TF_TYPE_UNSPECIFIED
+                        - TF_TYPE_STRING
+                        - TF_TYPE_NUMBER
+                        - TF_TYPE_BOOL
+                        - TF_TYPE_LIST
+                        - TF_TYPE_SET
+                        - TF_TYPE_MAP
+                        - TF_TYPE_OBJECT
+                        - TF_TYPE_TUPLE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Composite Field
+            type: object
+            x-speakeasy-name-override: CompositeField
+        c1.api.terraform_export.v1.ImportIDShape.SingleString:
+            description: Single-string import IDs use the resource's id value verbatim.
+            nullable: true
+            title: Single String
+            type: object
+            x-speakeasy-name-override: SingleString
+        c1.api.terraform_export.v1.TFFieldMapping:
+            description: |-
+                TFFieldMapping describes how one field of a C1 API object maps to one
+                 attribute of a Terraform block.
+            properties:
+                c1Field:
+                    description: The C1 API field name (proto field name, snake_case).
+                    readOnly: false
+                    type: string
+                computed:
+                    description: |-
+                        Whether the server populates this field. A field that is
+                         `computed` and neither `optional` nor `required` is server-only —
+                         do not emit it in user-authored HCL.
+                    readOnly: false
+                    type: boolean
+                elementTfType:
+                    description: |-
+                        For collection fields (list/set/tuple/map) whose elements are
+                         primitives (string/number/bool), the TF type of those elements.
+                         TF_TYPE_UNSPECIFIED for non-collection fields and for collections
+                         of objects (where `nested_fields` describes the element shape).
+                    enum:
+                        - TF_TYPE_UNSPECIFIED
+                        - TF_TYPE_STRING
+                        - TF_TYPE_NUMBER
+                        - TF_TYPE_BOOL
+                        - TF_TYPE_LIST
+                        - TF_TYPE_SET
+                        - TF_TYPE_MAP
+                        - TF_TYPE_OBJECT
+                        - TF_TYPE_TUPLE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                enumValues:
+                    description: |-
+                        Declared variants for fields whose C1-side proto type is an enum.
+                         Empty for non-enum fields. The conductorone provider accepts the
+                         full proto enum name as a quoted string (e.g.
+                         `policy_type = "POLICY_TYPE_GRANT"`); emit `EnumValue.name` as the
+                         literal value.
+                    items:
+                        $ref: '#/components/schemas/c1.api.terraform_export.v1.EnumValue'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nestedFields:
+                    description: |-
+                        For object-typed fields and list/set/tuple fields whose elements
+                         are objects, the shape of the nested attributes. Empty for
+                         primitive scalars and primitive-element collections.
+                    items:
+                        $ref: '#/components/schemas/c1.api.terraform_export.v1.TFFieldMapping'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                oneofField:
+                    description: |-
+                        When this Terraform attribute corresponds to one variant of a
+                         proto `oneof`, `oneof_field` names the proto oneof and
+                         `oneof_variant` names the active case. Both unset for regular
+                         (non-oneof) fields, which is the common case.
+
+                         Example: a oneof `target` with variant `automation` on message
+                         `Action` exposed as the TF attribute `action_target_automation`:
+
+                           oneof_field   = "target"
+                           oneof_variant = "automation"
+                    readOnly: false
+                    type: string
+                oneofVariant:
+                    description: The oneofVariant field.
+                    readOnly: false
+                    type: string
+                optional:
+                    description: |-
+                        Whether the user may supply this field. May co-occur with
+                         `computed` (i.e. either the user or the server can set the value).
+                    readOnly: false
+                    type: boolean
+                references:
+                    $ref: '#/components/schemas/c1.api.terraform_export.v1.TFReference'
+                required:
+                    description: Whether the user must supply this field in HCL.
+                    readOnly: false
+                    type: boolean
+                sensitive:
+                    description: |-
+                        Whether the value is a secret. Sensitive values must not be
+                         rendered verbatim; emit a placeholder so callers wire the value
+                         through a Terraform variable or vault data source.
+                    readOnly: false
+                    type: boolean
+                tfField:
+                    description: |-
+                        The Terraform attribute name. Usually matches c1_field but may
+                         differ in casing or pluralization.
+                    readOnly: false
+                    type: string
+                tfType:
+                    description: |-
+                        The Terraform attribute type. For collections of structured
+                         objects, the element shape is in `nested_fields`. For collections
+                         of primitives, the element type is in `element_tf_type`.
+                    enum:
+                        - TF_TYPE_UNSPECIFIED
+                        - TF_TYPE_STRING
+                        - TF_TYPE_NUMBER
+                        - TF_TYPE_BOOL
+                        - TF_TYPE_LIST
+                        - TF_TYPE_SET
+                        - TF_TYPE_MAP
+                        - TF_TYPE_OBJECT
+                        - TF_TYPE_TUPLE
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Tf Field Mapping
+            type: object
+            x-speakeasy-name-override: TFFieldMapping
+        c1.api.terraform_export.v1.TFReference:
+            description: |-
+                TFReference describes the Terraform type(s) an ID-shaped field may
+                 reference, plus any sibling fields needed to disambiguate a
+                 composite-key lookup.
+
+                 `tf_type_names` covers the polymorphic / preferred-default
+                 dimension. `composite_key_fields` covers the multi-key dimension —
+                 some referents can't be resolved with a single id (every
+                 `conductorone_app_entitlement` lookup needs `(app_id, id)`,
+                 every `conductorone_app_entitlement_user_binding` needs three
+                 keys, etc.).
+            properties:
+                compositeKeyFields:
+                    description: |-
+                        Sibling fields on the SAME parent message whose runtime values
+                         must be paired with this reference's id to look the referent up
+                         via its Terraform data source.
+
+                         Examples (each entry's c1_field is the C1 proto field name on
+                         the parent message; tf_field is the attribute name in the data
+                         source's `refs[]` struct):
+
+                           `AppEntitlementAutomation.app_entitlement_id` →
+                             `[{c1_field: "app_id", tf_field: "app_id"}]`  (2 keys total)
+
+                           `AppEntitlementUserBinding.app_user_id` →
+                             `[{c1_field: "app_id",             tf_field: "app_id"},
+                               {c1_field: "app_entitlement_id", tf_field: "app_entitlement_id"}]`
+                             (3 keys total)
+
+                           `AppResourceOwner.user_id` →
+                             `[{c1_field: "app_id",               tf_field: "app_id"},
+                               {c1_field: "app_resource_type_id", tf_field: "app_resource_type_id"},
+                               {c1_field: "app_resource_id",      tf_field: "app_resource_id"}]`
+                             (4 keys total)
+
+                         The reference id field itself is always emitted as `id` in the
+                         data source's ref struct (provider convention) — it is NOT
+                         re-listed here.
+
+                         Empty/unset means single-id lookup is sufficient (User, Policy,
+                         App today). Mirrors `ImportIDShape.Composite.fields`'s
+                         structured shape.
+                    items:
+                        $ref: '#/components/schemas/c1.api.terraform_export.v1.CompositeKeyField'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                tfTypeNames:
+                    description: |-
+                        Candidate Terraform types this field may reference. The first
+                         entry is the preferred default when no other signal disambiguates.
+                         Empty means the field is not a reference.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Tf Reference
+            type: object
+            x-speakeasy-name-override: TFReference
+        c1.api.terraform_export.v1.TFSchemaMapping:
+            description: |
+                TFSchemaMapping describes how to translate one C1 API object into a
+                 single Terraform block. Variant-specific metadata (e.g. `import_id` for
+                 resources) lives on the `block` oneof.
+
+                This message contains a oneof named block. Only a single field of the following list may be set at a time:
+                  - resource
+                  - dataSource
+            properties:
+                dataSource:
+                    $ref: '#/components/schemas/c1.api.terraform_export.v1.TFSchemaMapping.DataSource'
+                fields:
+                    description: |-
+                        Per-attribute mapping. Order matches the provider schema; preserve
+                         it when emitting for stable output.
+                    items:
+                        $ref: '#/components/schemas/c1.api.terraform_export.v1.TFFieldMapping'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                providerVersion:
+                    description: |-
+                        The conductorone provider version this schema was derived from
+                         (e.g. "1.0.40").
+                    readOnly: false
+                    type: string
+                refererShapes:
+                    description: |-
+                        The set of distinct composite-key-field shapes that consumers
+                         declare when referencing this target via a TFReference. Used by
+                         the FE multi-root producer to enumerate canonical lookup keys for
+                         its `addressByImportId` registration so cross-root references
+                         collapse correctly to direct expressions regardless of which
+                         consumer site does the lookup.
+
+                         Each entry is one distinct shape (one `CompositeKeyFieldSet`
+                         with non-empty `fields`). The single-id (bare-id) form is
+                         implicit and is NOT represented here — every producer registers
+                         under `canonicalRefKey(id, {})` unconditionally as a baseline.
+
+                         Computed at schema-load time from `references_table.go` by
+                         grouping consumer-site `composite_key_fields` declarations
+                         by target tf_type and de-duplicating distinct shapes. Targets
+                         with no composite-key consumers (User, Policy, App today)
+                         ship an empty list.
+                    items:
+                        $ref: '#/components/schemas/c1.api.terraform_export.v1.CompositeKeyFieldSet'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                resource:
+                    $ref: '#/components/schemas/c1.api.terraform_export.v1.TFSchemaMapping.Resource'
+                tfTypeName:
+                    description: |-
+                        The Terraform type identifier — the string immediately after the
+                         `resource` or `data` keyword in HCL (e.g. "conductorone_app").
+                    readOnly: false
+                    type: string
+            title: Tf Schema Mapping
+            type: object
+            x-speakeasy-name-override: TFSchemaMapping
+        c1.api.terraform_export.v1.TFSchemaMapping.DataSource:
+            description: |-
+                Data-source-specific schema metadata. Reserved for future use; empty
+                 in v1.
+            nullable: true
+            title: Data Source
+            type: object
+            x-speakeasy-name-override: DataSource
+        c1.api.terraform_export.v1.TFSchemaMapping.Resource:
+            description: Resource-specific schema metadata.
+            nullable: true
+            properties:
+                importId:
+                    $ref: '#/components/schemas/c1.api.terraform_export.v1.ImportIDShape'
+            title: Resource
+            type: object
+            x-speakeasy-name-override: Resource
         c1.api.user.v1.ExpiringUserDelegationBinding:
             description: The ExpiringUserDelegationBinding message.
             properties:
@@ -28094,6 +29115,10 @@ components:
                     format: int32
                     readOnly: false
                     type: integer
+                riskLevelValueId:
+                    description: The riskLevelValueId field.
+                    readOnly: false
+                    type: string
             title: Cohort Entitlement
             type: object
             x-speakeasy-name-override: CohortEntitlement
@@ -37533,6 +38558,22 @@ paths:
                 - Role Mining
             x-speakeasy-group: RoleMiningManagement
             x-speakeasy-name-override: UpdateRoleMiningConfig
+    /api/v1/role-mining/custom-analysis:
+        get:
+            description: List recent custom analysis results in reverse chronological order.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.ListCustomAnalysisResults
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.ListCustomAnalysisResultsResponse'
+                    description: Successful response
+            summary: List Custom Analysis Results
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagement
+            x-speakeasy-name-override: ListCustomAnalysisResults
     /api/v1/role-mining/custom-analysis/{id}:
         get:
             description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.GetCustomAnalysisResult method.
@@ -38089,6 +39130,29 @@ paths:
                 - App Entitlement
             x-speakeasy-group: AppEntitlementSearch
             x-speakeasy-name-override: SearchGrants
+    /api/v1/search/graph:
+        post:
+            description: |-
+                SearchGraph performs a server-side BFS traversal and returns a bounded, filtered subgraph.
+                 Exactly one of user_id, app_id, or resource_id must be set.
+            operationId: c1.api.app.v1.AppEntitlementSearchService.SearchGraph
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementSearchServiceSearchGraphRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementSearchServiceSearchGraphResponse'
+                    description: SearchGraph response. Contains a subgraph of nodes and edges.
+            summary: Search Graph
+            tags:
+                - App Entitlement
+            x-speakeasy-group: AppEntitlementSearch
+            x-speakeasy-name-override: SearchGraph
     /api/v1/search/hooks:
         post:
             description: Invokes the c1.api.hooks.v1.HooksSearch.Search method.
@@ -39451,6 +40515,47 @@ paths:
                 - Contacts
             x-speakeasy-group: Contacts
             x-speakeasy-name-override: UpdateContacts
+    /api/v1/settings/developer-preferences/user:
+        get:
+            description: |-
+                Get returns the calling user's developer preferences. Returns the
+                 zero value (all preferences off) for users who have never updated
+                 them.
+            operationId: c1.api.settings.v1.UserDeveloperPreferencesService.Get
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.settings.v1.GetUserDeveloperPreferencesResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - User Developer Preferences
+            x-speakeasy-group: UserDeveloperPreferences
+            x-speakeasy-name-override: Get
+        post:
+            description: |-
+                Update modifies the calling user's developer preferences. See the
+                 service-level comment for cluster-merge semantics.
+            operationId: c1.api.settings.v1.UserDeveloperPreferencesService.Update
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.settings.v1.UpdateUserDeveloperPreferencesRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.settings.v1.UpdateUserDeveloperPreferencesResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - User Developer Preferences
+            x-speakeasy-group: UserDeveloperPreferences
+            x-speakeasy-name-override: Update
     /api/v1/settings/domains:
         get:
             description: List returns all verified domains configured for the tenant.
@@ -40886,6 +41991,25 @@ paths:
                 - Task
             x-speakeasy-group: TaskActions
             x-speakeasy-name-override: UpdateRequestData
+    /api/v1/terraform-export/schema:
+        get:
+            description: |-
+                GetSchema returns the field-by-field Terraform mapping for one C1
+                 API object type. Cacheable by (object_fqn, block_kind,
+                 provider_version).
+            operationId: c1.api.terraform_export.v1.TerraformExportService.GetSchema
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.terraform_export.v1.GetSchemaResponse'
+                    description: Successful response
+            summary: Get Schema
+            tags:
+                - Terraform Export
+            x-speakeasy-group: TerraformExport
+            x-speakeasy-name-override: GetSchema
     /api/v1/users:
         get:
             description: List users.

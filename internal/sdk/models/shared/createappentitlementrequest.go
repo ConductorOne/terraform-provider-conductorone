@@ -38,6 +38,15 @@ func (e *CreateAppEntitlementRequestPurpose) IsExact() bool {
 type CreateAppEntitlementRequest struct {
 	// A unique alias for the entitlement, used for programmatic lookups and Cone.
 	Alias *string `json:"alias,omitempty"`
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+	//  with `c1/` are reserved for server-managed use and rejected on write.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The ID of the resource that this entitlement belongs to.
 	AppResourceID *string `json:"appResourceId,omitempty"`
 	// The ID of the resource type that this entitlement belongs to.
@@ -90,6 +99,13 @@ func (c *CreateAppEntitlementRequest) GetAlias() *string {
 		return nil
 	}
 	return c.Alias
+}
+
+func (c *CreateAppEntitlementRequest) GetAnnotations() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.Annotations
 }
 
 func (c *CreateAppEntitlementRequest) GetAppResourceID() *string {

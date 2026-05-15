@@ -73,6 +73,15 @@ func (e *PrimaryTriggerType) IsExact() bool {
 // This message contains a oneof named disabled_reason. Only a single field of the following list may be set at a time:
 //   - circuitBreaker
 type Automation struct {
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// the app id this workflow_template belongs to
 	AppID *string `json:"appId,omitempty"`
 	// The automationSteps field.
@@ -124,6 +133,13 @@ func (a *Automation) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *Automation) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *Automation) GetAppID() *string {
@@ -264,6 +280,15 @@ func (a *Automation) GetWebhookHmacSecret() *string {
 // This message contains a oneof named disabled_reason. Only a single field of the following list may be set at a time:
 //   - circuitBreaker
 type AutomationInput struct {
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// the app id this workflow_template belongs to
 	AppID *string `json:"appId,omitempty"`
 	// The automationSteps field.
@@ -313,6 +338,13 @@ func (a *AutomationInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AutomationInput) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *AutomationInput) GetAppID() *string {

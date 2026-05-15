@@ -15,6 +15,12 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CreatedByUserID = types.StringPointerValue(resp.CreatedByUserID)
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
@@ -25,7 +31,6 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context
 		} else {
 			r.EnrollmentBehavior = types.StringNull()
 		}
-		r.GrantPolicyID = types.StringPointerValue(resp.GrantPolicyID)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Published = types.BoolPointerValue(resp.Published)
 		r.RequestBundle = types.BoolPointerValue(resp.RequestBundle)
@@ -130,6 +135,13 @@ func (r *AccessProfileResourceModel) ToOperationsC1APIRequestcatalogV1RequestCat
 func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Context) (*shared.RequestCatalogInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
+	}
 	createdByUserID := new(string)
 	if !r.CreatedByUserID.IsUnknown() && !r.CreatedByUserID.IsNull() {
 		*createdByUserID = r.CreatedByUserID.ValueString()
@@ -153,12 +165,6 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 		*enrollmentBehavior = shared.EnrollmentBehavior(r.EnrollmentBehavior.ValueString())
 	} else {
 		enrollmentBehavior = nil
-	}
-	grantPolicyID := new(string)
-	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
-		*grantPolicyID = r.GrantPolicyID.ValueString()
-	} else {
-		grantPolicyID = nil
 	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
@@ -197,11 +203,11 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 		visibleToEveryone = nil
 	}
 	out := shared.RequestCatalogInput{
+		Annotations:                     annotations,
 		CreatedByUserID:                 createdByUserID,
 		Description:                     description,
 		DisplayName:                     displayName,
 		EnrollmentBehavior:              enrollmentBehavior,
-		GrantPolicyID:                   grantPolicyID,
 		ID:                              id,
 		Published:                       published,
 		RequestBundle:                   requestBundle,
@@ -216,6 +222,13 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCreateRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceCreateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -230,12 +243,6 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 		*enrollmentBehavior = shared.RequestCatalogManagementServiceCreateRequestEnrollmentBehavior(r.EnrollmentBehavior.ValueString())
 	} else {
 		enrollmentBehavior = nil
-	}
-	grantPolicyID := new(string)
-	if !r.GrantPolicyID.IsUnknown() && !r.GrantPolicyID.IsNull() {
-		*grantPolicyID = r.GrantPolicyID.ValueString()
-	} else {
-		grantPolicyID = nil
 	}
 	published := new(bool)
 	if !r.Published.IsUnknown() && !r.Published.IsNull() {
@@ -268,10 +275,10 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 		visibleToEveryone = nil
 	}
 	out := shared.RequestCatalogManagementServiceCreateRequest{
+		Annotations:                     annotations,
 		Description:                     description,
 		DisplayName:                     displayName,
 		EnrollmentBehavior:              enrollmentBehavior,
-		GrantPolicyID:                   grantPolicyID,
 		Published:                       published,
 		RequestBundle:                   requestBundle,
 		UnenrollmentBehavior:            unenrollmentBehavior,

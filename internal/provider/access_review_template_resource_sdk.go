@@ -333,6 +333,12 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 		} else {
 			r.AccuracyIssueAction = types.StringNull()
 		}
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.AutoCloseCampaign = types.BoolPointerValue(resp.AutoCloseCampaign)
 		if resp.AutoCloseDecision != nil {
 			r.AutoCloseDecision = types.StringValue(string(*resp.AutoCloseDecision))
@@ -521,6 +527,13 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		*accuracyIssueAction = shared.AccessReviewTemplateAccuracyIssueAction(r.AccuracyIssueAction.ValueString())
 	} else {
 		accuracyIssueAction = nil
+	}
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
 	}
 	autoCloseCampaign := new(bool)
 	if !r.AutoCloseCampaign.IsUnknown() && !r.AutoCloseCampaign.IsNull() {
@@ -1133,6 +1146,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 	out := shared.AccessReviewTemplateInput{
 		AccessReviewDuration:           accessReviewDuration,
 		AccuracyIssueAction:            accuracyIssueAction,
+		Annotations:                    annotations,
 		AutoCloseCampaign:              autoCloseCampaign,
 		AutoCloseDecision:              autoCloseDecision,
 		AutoGenerateReport:             autoGenerateReport,
@@ -1175,6 +1189,13 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		*accuracyIssueAction = shared.AccessReviewTemplateServiceCreateRequestAccuracyIssueAction(r.AccuracyIssueAction.ValueString())
 	} else {
 		accuracyIssueAction = nil
+	}
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
 	}
 	autoCloseCampaign := new(bool)
 	if !r.AutoCloseCampaign.IsUnknown() && !r.AutoCloseCampaign.IsNull() {
@@ -1682,6 +1703,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 	out := shared.AccessReviewTemplateServiceCreateRequest{
 		AccessReviewDuration:           accessReviewDuration,
 		AccuracyIssueAction:            accuracyIssueAction,
+		Annotations:                    annotations,
 		AutoCloseCampaign:              autoCloseCampaign,
 		AutoCloseDecision:              autoCloseDecision,
 		AutoGenerateReport:             autoGenerateReport,

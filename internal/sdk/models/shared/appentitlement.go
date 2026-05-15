@@ -135,6 +135,15 @@ func (d *DeprovisionerPolicy) GetWebhookProvision() *WebhookProvision {
 type AppEntitlement struct {
 	// The alias of the app entitlement used by Cone. Also exact-match queryable.
 	Alias *string `json:"alias,omitempty"`
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The ID of the app that is associated with the app entitlement.
 	AppID *string `json:"appId,omitempty"`
 	// The ID of the app resource that is associated with the app entitlement
@@ -223,6 +232,13 @@ func (a *AppEntitlement) GetAlias() *string {
 		return nil
 	}
 	return a.Alias
+}
+
+func (a *AppEntitlement) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *AppEntitlement) GetAppID() *string {
@@ -457,6 +473,15 @@ func (a *AppEntitlement) GetDeprovisionerPolicy() *DeprovisionerPolicy {
 type AppEntitlementInput struct {
 	// The alias of the app entitlement used by Cone. Also exact-match queryable.
 	Alias *string `json:"alias,omitempty"`
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The ID of the app that is associated with the app entitlement.
 	AppID *string `json:"appId,omitempty"`
 	// The ID of the app resource that is associated with the app entitlement
@@ -520,6 +545,13 @@ func (a *AppEntitlementInput) GetAlias() *string {
 		return nil
 	}
 	return a.Alias
+}
+
+func (a *AppEntitlementInput) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *AppEntitlementInput) GetAppID() *string {

@@ -124,6 +124,7 @@ type ConductoroneAPI struct {
 	Principal                            *Principal
 	AWSExternalIDSettings                *AWSExternalIDSettings
 	Contacts                             *Contacts
+	UserDeveloperPreferences             *UserDeveloperPreferences
 	OrgDomain                            *OrgDomain
 	TenantEmailProvider                  *TenantEmailProvider
 	OrgNotificationSettings              *OrgNotificationSettings
@@ -137,6 +138,7 @@ type ConductoroneAPI struct {
 	TaskAudit                            *TaskAudit
 	Task                                 *Task
 	TaskActions                          *TaskActions
+	TerraformExport                      *TerraformExport
 	User                                 *User
 	Vault                                *Vault
 	Webhooks                             *Webhooks
@@ -231,9 +233,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.2.1",
+		SDKVersion: "1.3.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.2.1 2.882.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.3.0 2.882.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{
@@ -332,6 +334,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.Principal = newPrincipal(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AWSExternalIDSettings = newAWSExternalIDSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Contacts = newContacts(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.UserDeveloperPreferences = newUserDeveloperPreferences(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.OrgDomain = newOrgDomain(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.TenantEmailProvider = newTenantEmailProvider(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.OrgNotificationSettings = newOrgNotificationSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -345,6 +348,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.TaskAudit = newTaskAudit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Task = newTask(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.TaskActions = newTaskActions(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.TerraformExport = newTerraformExport(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.User = newUser(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Vault = newVault(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Webhooks = newWebhooks(sdk, sdk.sdkConfiguration, sdk.hooks)

@@ -21,6 +21,12 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 		} else {
 			r.AccessModel = types.StringNull()
 		}
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
 		r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
 		if resp.AppUserMapper == nil {
@@ -172,6 +178,13 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	} else {
 		accessModel = nil
 	}
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
+	}
 	var appUserMapper *shared.AppUserMapper
 	if r.AppUserMapper != nil {
 		var mappingCases []shared.AppUserMapperMatchCase
@@ -280,6 +293,7 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	}
 	out := shared.AppInput{
 		AccessModel:                         accessModel,
+		Annotations:                         annotations,
 		AppUserMapper:                       appUserMapper,
 		CertifyPolicyID:                     certifyPolicyID,
 		ConnectorVersion:                    connectorVersion,
@@ -302,6 +316,13 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*shared.CreateAppRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
+	}
 	var appEntitlementOwnerRefs []shared.AppEntitlementRef
 	if r.AppEntitlementOwnerRefs != nil {
 		appEntitlementOwnerRefs = make([]shared.AppEntitlementRef, 0, len(r.AppEntitlementOwnerRefs))
@@ -376,6 +397,7 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 		strictAccessEntitlementProvisioning = nil
 	}
 	out := shared.CreateAppRequest{
+		Annotations:                         annotations,
 		AppEntitlementOwnerRefs:             appEntitlementOwnerRefs,
 		CertifyPolicyID:                     certifyPolicyID,
 		Description:                         description,

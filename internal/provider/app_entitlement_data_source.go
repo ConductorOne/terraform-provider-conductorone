@@ -32,6 +32,7 @@ type AppEntitlementDataSource struct {
 type AppEntitlementDataSourceModel struct {
 	AccessReviewID                 types.String                         `tfsdk:"access_review_id"`
 	Alias                          types.String                         `tfsdk:"alias"`
+	Annotations                    map[string]types.String              `tfsdk:"annotations"`
 	AppID                          types.String                         `tfsdk:"app_id"`
 	AppIds                         []types.String                       `tfsdk:"app_ids"`
 	AppResourceID                  types.String                         `tfsdk:"app_resource_id"`
@@ -112,6 +113,18 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				Computed:    true,
 				Optional:    true,
 				Description: `The alias of the app entitlement used by Cone. Also exact-match queryable.`,
+			},
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/` + "\n" +
+					` are reserved.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
 			},
 			"app_id": schema.StringAttribute{
 				Computed:    true,

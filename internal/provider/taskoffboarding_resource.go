@@ -1619,6 +1619,10 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																					`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 																					`  - oauth2FieldView`,
 																			},
+																			"read_only": schema.BoolAttribute{
+																				Computed:    true,
+																				Description: `When true, this field is displayed to the user but cannot be edited.`,
+																			},
 																			"required": schema.BoolAttribute{
 																				Computed:    true,
 																				Description: `The required field.`,
@@ -3226,6 +3230,18 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 									"policy": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
+											"annotations": schema.MapAttribute{
+												Computed:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256` + "\n" +
+													` chars; URL-safe ASCII. Keys starting with ` + "`" + `c1/` + "`" + ` are reserved.` + "\n" +
+													`` + "\n" +
+													` Updates have PATCH semantics: keys absent from the request are` + "\n" +
+													` preserved; an empty value deletes the key.` + "\n" +
+													`` + "\n" +
+													` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+													` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+											},
 											"created_at": schema.StringAttribute{
 												Computed: true,
 											},
@@ -5631,6 +5647,10 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																				`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 																				`  - oauth2FieldView`,
 																		},
+																		"read_only": schema.BoolAttribute{
+																			Computed:    true,
+																			Description: `When true, this field is displayed to the user but cannot be edited.`,
+																		},
 																		"required": schema.BoolAttribute{
 																			Computed:    true,
 																			Description: `The required field.`,
@@ -6899,6 +6919,10 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 														`` + "\n" +
 														`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 														`  - oauth2FieldView`,
+												},
+												"read_only": schema.BoolAttribute{
+													Computed:    true,
+													Description: `When true, this field is displayed to the user but cannot be edited.`,
 												},
 												"required": schema.BoolAttribute{
 													Computed:    true,

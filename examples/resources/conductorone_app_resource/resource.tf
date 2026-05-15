@@ -1,4 +1,7 @@
 resource "conductorone_app_resource" "my_app_resource" {
+  annotations = {
+    key = "value"
+  }
   app_id               = "...my_app_id..."
   app_resource_type_id = "...my_app_resource_type_id..."
   description          = "...my_description..."

@@ -44,6 +44,12 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 				} else {
 					list.AppEntitlement = &tfTypes.AppEntitlement{}
 					list.AppEntitlement.Alias = types.StringPointerValue(listItem.AppEntitlement.Alias)
+					if len(listItem.AppEntitlement.Annotations) > 0 {
+						list.AppEntitlement.Annotations = make(map[string]types.String, len(listItem.AppEntitlement.Annotations))
+						for key1, value1 := range listItem.AppEntitlement.Annotations {
+							list.AppEntitlement.Annotations[key1] = types.StringValue(value1)
+						}
+					}
 					list.AppEntitlement.AppID = types.StringPointerValue(listItem.AppEntitlement.AppID)
 					list.AppEntitlement.AppResourceID = types.StringPointerValue(listItem.AppEntitlement.AppResourceID)
 					list.AppEntitlement.AppResourceTypeID = types.StringPointerValue(listItem.AppEntitlement.AppResourceTypeID)
@@ -542,8 +548,8 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 					list.AppEntitlement.Slug = types.StringPointerValue(listItem.AppEntitlement.Slug)
 					if len(listItem.AppEntitlement.SourceConnectorIds) > 0 {
 						list.AppEntitlement.SourceConnectorIds = make(map[string]types.String, len(listItem.AppEntitlement.SourceConnectorIds))
-						for key1, value1 := range listItem.AppEntitlement.SourceConnectorIds {
-							list.AppEntitlement.SourceConnectorIds[key1] = types.StringValue(value1)
+						for key2, value2 := range listItem.AppEntitlement.SourceConnectorIds {
+							list.AppEntitlement.SourceConnectorIds[key2] = types.StringValue(value2)
 						}
 					}
 					list.AppEntitlement.SystemBuiltin = types.BoolPointerValue(listItem.AppEntitlement.SystemBuiltin)

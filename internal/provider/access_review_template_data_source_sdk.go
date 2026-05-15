@@ -332,6 +332,12 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 		} else {
 			r.AccuracyIssueAction = types.StringNull()
 		}
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.AutoCloseCampaign = types.BoolPointerValue(resp.AutoCloseCampaign)
 		if resp.AutoCloseDecision != nil {
 			r.AutoCloseDecision = types.StringValue(string(*resp.AutoCloseDecision))

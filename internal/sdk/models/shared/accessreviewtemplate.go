@@ -118,6 +118,15 @@ type AccessReviewTemplate struct {
 	AccessReviewDuration *string `json:"accessReviewDuration,omitempty"`
 	// The accuracyIssueAction field.
 	AccuracyIssueAction *AccessReviewTemplateAccuracyIssueAction `json:"accuracyIssueAction,omitempty"`
+	// Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+	//  chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+	//
+	//  Updates have PATCH semantics: keys absent from the request are
+	//  preserved; an empty value deletes the key.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// Auto-close configuration
 	//  start date and access_review_duration will be used to calculate the scheduled close date
 	AutoCloseCampaign *bool `json:"autoCloseCampaign,omitempty"`
@@ -232,6 +241,13 @@ func (a *AccessReviewTemplate) GetAccuracyIssueAction() *AccessReviewTemplateAcc
 		return nil
 	}
 	return a.AccuracyIssueAction
+}
+
+func (a *AccessReviewTemplate) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *AccessReviewTemplate) GetAutoCloseCampaign() *bool {
@@ -426,6 +442,15 @@ type AccessReviewTemplateInput struct {
 	AccessReviewDuration *string `json:"accessReviewDuration,omitempty"`
 	// The accuracyIssueAction field.
 	AccuracyIssueAction *AccessReviewTemplateAccuracyIssueAction `json:"accuracyIssueAction,omitempty"`
+	// Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+	//  chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+	//
+	//  Updates have PATCH semantics: keys absent from the request are
+	//  preserved; an empty value deletes the key.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// Auto-close configuration
 	//  start date and access_review_duration will be used to calculate the scheduled close date
 	AutoCloseCampaign *bool `json:"autoCloseCampaign,omitempty"`
@@ -537,6 +562,13 @@ func (a *AccessReviewTemplateInput) GetAccuracyIssueAction() *AccessReviewTempla
 		return nil
 	}
 	return a.AccuracyIssueAction
+}
+
+func (a *AccessReviewTemplateInput) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *AccessReviewTemplateInput) GetAutoCloseCampaign() *bool {

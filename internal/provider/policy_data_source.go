@@ -30,6 +30,7 @@ type PolicyDataSource struct {
 
 // PolicyDataSourceModel describes the data model.
 type PolicyDataSourceModel struct {
+	Annotations              map[string]types.String        `tfsdk:"annotations"`
 	CreatedAt                types.String                   `tfsdk:"created_at"`
 	DeletedAt                types.String                   `tfsdk:"deleted_at"`
 	Description              types.String                   `tfsdk:"description"`
@@ -63,6 +64,18 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 		MarkdownDescription: "Policy DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256` + "\n" +
+					` chars; URL-safe ASCII. Keys starting with ` + "`" + `c1/` + "`" + ` are reserved.` + "\n" +
+					`` + "\n" +
+					` Updates have PATCH semantics: keys absent from the request are` + "\n" +
+					` preserved; an empty value deletes the key.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},

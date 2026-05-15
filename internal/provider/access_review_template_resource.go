@@ -40,6 +40,7 @@ type AccessReviewTemplateResourceModel struct {
 	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
 	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
 	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
+	Annotations                    map[string]types.String             `tfsdk:"annotations"`
 	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
 	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
@@ -474,6 +475,19 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 				Computed:    true,
 				Optional:    true,
 				Description: `The accuracyIssueAction field. possible known values include one of ["ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT"]`,
+			},
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting` + "\n" +
+					` with ` + "`" + `c1/` + "`" + ` are reserved for server-managed use and rejected on write.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
 			},
 			"auto_close_campaign": schema.BoolAttribute{
 				Computed:    true,

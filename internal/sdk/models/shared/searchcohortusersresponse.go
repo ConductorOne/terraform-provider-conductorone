@@ -8,6 +8,8 @@ type SearchCohortUsersResponse struct {
 	List []User `json:"list,omitempty"`
 	// Token to retrieve the next page of results, empty if no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
+	// Per-user coverage counts, populated when selected_entitlements is non-empty.
+	UsersWithCoverage []CohortUserWithCoverage `json:"usersWithCoverage,omitempty"`
 }
 
 func (s *SearchCohortUsersResponse) GetList() []User {
@@ -22,4 +24,11 @@ func (s *SearchCohortUsersResponse) GetNextPageToken() *string {
 		return nil
 	}
 	return s.NextPageToken
+}
+
+func (s *SearchCohortUsersResponse) GetUsersWithCoverage() []CohortUserWithCoverage {
+	if s == nil {
+		return nil
+	}
+	return s.UsersWithCoverage
 }

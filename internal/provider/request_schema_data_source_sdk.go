@@ -355,6 +355,7 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedRequestSchemaForm(ctx co
 						fields.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
 					}
 				}
+				fields.ReadOnly = types.BoolPointerValue(fieldsItem.ReadOnly)
 				fields.Required = types.BoolPointerValue(fieldsItem.Required)
 				if fieldsItem.SharedProviderConfig == nil {
 					fields.SharedProviderConfig = nil

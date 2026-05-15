@@ -19,5 +19,6 @@ type FormField struct {
 	Description          types.String          `tfsdk:"description"`
 	DisplayName          types.String          `tfsdk:"display_name"`
 	Name                 types.String          `tfsdk:"name"`
+	ReadOnly             types.Bool            `tfsdk:"read_only"`
 	Required             types.Bool            `tfsdk:"required"`
 }

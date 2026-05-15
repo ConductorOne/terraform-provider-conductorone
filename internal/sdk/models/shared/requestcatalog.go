@@ -82,7 +82,16 @@ func (e *UnenrollmentEntitlementBehavior) IsExact() bool {
 
 // The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
 type RequestCatalog struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
+	CreatedAt   *time.Time        `json:"createdAt,omitempty"`
 	// The id of the user this request catalog was created by.
 	CreatedByUserID *string    `json:"createdByUserId,omitempty"`
 	DeletedAt       *time.Time `json:"deletedAt,omitempty"`
@@ -92,9 +101,6 @@ type RequestCatalog struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Defines how to handle the request policies of the entitlements in the catalog during enrollment.
 	EnrollmentBehavior *EnrollmentBehavior `json:"enrollmentBehavior,omitempty"`
-	// The ID of the policy to use for access requests in this catalog.
-	//  This is different from the catalog AppEntitlement's grant_policy_id, which is used for catalog membership grants.
-	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// The id of the request catalog.
 	ID *string `json:"id,omitempty"`
 	// Whether or not this catalog is published.
@@ -119,6 +125,13 @@ func (r *RequestCatalog) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (r *RequestCatalog) GetAnnotations() map[string]string {
+	if r == nil {
+		return nil
+	}
+	return r.Annotations
 }
 
 func (r *RequestCatalog) GetCreatedAt() *time.Time {
@@ -161,13 +174,6 @@ func (r *RequestCatalog) GetEnrollmentBehavior() *EnrollmentBehavior {
 		return nil
 	}
 	return r.EnrollmentBehavior
-}
-
-func (r *RequestCatalog) GetGrantPolicyID() *string {
-	if r == nil {
-		return nil
-	}
-	return r.GrantPolicyID
 }
 
 func (r *RequestCatalog) GetID() *string {
@@ -221,6 +227,15 @@ func (r *RequestCatalog) GetVisibleToEveryone() *bool {
 
 // RequestCatalogInput - The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
 type RequestCatalogInput struct {
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The id of the user this request catalog was created by.
 	CreatedByUserID *string `json:"createdByUserId,omitempty"`
 	// The description of the request catalog.
@@ -229,9 +244,6 @@ type RequestCatalogInput struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Defines how to handle the request policies of the entitlements in the catalog during enrollment.
 	EnrollmentBehavior *EnrollmentBehavior `json:"enrollmentBehavior,omitempty"`
-	// The ID of the policy to use for access requests in this catalog.
-	//  This is different from the catalog AppEntitlement's grant_policy_id, which is used for catalog membership grants.
-	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// The id of the request catalog.
 	ID *string `json:"id,omitempty"`
 	// Whether or not this catalog is published.
@@ -244,6 +256,13 @@ type RequestCatalogInput struct {
 	UnenrollmentEntitlementBehavior *UnenrollmentEntitlementBehavior `json:"unenrollmentEntitlementBehavior,omitempty"`
 	// If this is true, the access entitlement requirement is ignored.
 	VisibleToEveryone *bool `json:"visibleToEveryone,omitempty"`
+}
+
+func (r *RequestCatalogInput) GetAnnotations() map[string]string {
+	if r == nil {
+		return nil
+	}
+	return r.Annotations
 }
 
 func (r *RequestCatalogInput) GetCreatedByUserID() *string {
@@ -272,13 +291,6 @@ func (r *RequestCatalogInput) GetEnrollmentBehavior() *EnrollmentBehavior {
 		return nil
 	}
 	return r.EnrollmentBehavior
-}
-
-func (r *RequestCatalogInput) GetGrantPolicyID() *string {
-	if r == nil {
-		return nil
-	}
-	return r.GrantPolicyID
 }
 
 func (r *RequestCatalogInput) GetID() *string {

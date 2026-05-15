@@ -108,6 +108,15 @@ type AccessReviewTemplateServiceCreateRequest struct {
 	AccessReviewDuration *string `json:"accessReviewDuration,omitempty"`
 	// The accuracyIssueAction field.
 	AccuracyIssueAction *AccessReviewTemplateServiceCreateRequestAccuracyIssueAction `json:"accuracyIssueAction,omitempty"`
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+	//  with `c1/` are reserved for server-managed use and rejected on write.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The autoCloseCampaign field.
 	AutoCloseCampaign *bool `json:"autoCloseCampaign,omitempty"`
 	// The autoCloseDecision field.
@@ -199,6 +208,13 @@ func (a *AccessReviewTemplateServiceCreateRequest) GetAccuracyIssueAction() *Acc
 		return nil
 	}
 	return a.AccuracyIssueAction
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *AccessReviewTemplateServiceCreateRequest) GetAutoCloseCampaign() *bool {

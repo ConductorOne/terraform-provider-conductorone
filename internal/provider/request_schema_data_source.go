@@ -617,6 +617,10 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - oauth2FieldView`,
 						},
+						"read_only": schema.BoolAttribute{
+							Computed:    true,
+							Description: `When true, this field is displayed to the user but cannot be edited.`,
+						},
 						"required": schema.BoolAttribute{
 							Computed:    true,
 							Description: `The required field.`,

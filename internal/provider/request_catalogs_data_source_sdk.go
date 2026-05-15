@@ -30,6 +30,12 @@ func (r *RequestCatalogsDataSourceModel) RefreshFromSharedRequestCatalogManageme
 					list.RequestCatalog = nil
 				} else {
 					list.RequestCatalog = &tfTypes.RequestCatalog{}
+					if len(listItem.RequestCatalog.Annotations) > 0 {
+						list.RequestCatalog.Annotations = make(map[string]types.String, len(listItem.RequestCatalog.Annotations))
+						for key, value := range listItem.RequestCatalog.Annotations {
+							list.RequestCatalog.Annotations[key] = types.StringValue(value)
+						}
+					}
 					list.RequestCatalog.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.RequestCatalog.CreatedAt))
 					list.RequestCatalog.CreatedByUserID = types.StringPointerValue(listItem.RequestCatalog.CreatedByUserID)
 					list.RequestCatalog.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.RequestCatalog.DeletedAt))
@@ -40,7 +46,6 @@ func (r *RequestCatalogsDataSourceModel) RefreshFromSharedRequestCatalogManageme
 					} else {
 						list.RequestCatalog.EnrollmentBehavior = types.StringNull()
 					}
-					list.RequestCatalog.GrantPolicyID = types.StringPointerValue(listItem.RequestCatalog.GrantPolicyID)
 					list.RequestCatalog.ID = types.StringPointerValue(listItem.RequestCatalog.ID)
 					list.RequestCatalog.Published = types.BoolPointerValue(listItem.RequestCatalog.Published)
 					list.RequestCatalog.RequestBundle = types.BoolPointerValue(listItem.RequestCatalog.RequestBundle)

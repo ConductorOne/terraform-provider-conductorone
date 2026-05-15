@@ -1,7 +1,7 @@
 resource "conductorone_access_review_template" "my_access_review_template" {
   access_review_column_config = {
     columns = [
-      "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_CHILDREN"
+      "ACCESS_REVIEW_TASK_COLUMN_APP_USER_USERNAME"
     ]
   }
   access_review_duration = "...my_access_review_duration..."
@@ -106,7 +106,10 @@ resource "conductorone_access_review_template" "my_access_review_template" {
       ]
     }
   }
-  accuracy_issue_action             = "ACCURACY_ISSUE_ACTION_WAIT"
+  accuracy_issue_action = "ACCURACY_ISSUE_ACTION_WAIT"
+  annotations = {
+    key = "value"
+  }
   auto_close_campaign               = false
   auto_close_decision               = "CLOSE_DECISION_NO_ACTION"
   auto_generate_report              = false
