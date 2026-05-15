@@ -274,6 +274,7 @@ Optional:
 
 
 
+
 <a id="nestedatt--provision_policy--unconfigured_provision"></a>
 ### Nested Schema for `provision_policy.unconfigured_provision`
 
@@ -476,6 +477,7 @@ Read-Only:
 
 - `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
 - `user_ids` (List of String) The user IDs to assign as provisioners.
+
 
 
 
