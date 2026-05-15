@@ -1,4 +1,13 @@
 resource "conductorone_app" "my_app" {
+  annotations = {
+    key = "value"
+  }
+  app_entitlement_owner_refs = [
+    {
+      app_id = "...my_app_id..."
+      id     = "...my_id..."
+    }
+  ]
   certify_policy_id                      = "...my_certify_policy_id..."
   description                            = "...my_description..."
   display_name                           = "...my_display_name..."

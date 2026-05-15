@@ -8,9 +8,9 @@ import (
 )
 
 type C1APIAppV1AppEntitlementsCreateAutomationRequest struct {
-	AppID                   string                               `pathParam:"style=simple,explode=false,name=app_id"`
-	AppEntitlementID        string                               `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
-	CreateAutomationRequest *shared.CreateAutomationRequestInput `request:"mediaType=application/json"`
+	AppID                   string                          `pathParam:"style=simple,explode=false,name=app_id"`
+	AppEntitlementID        string                          `pathParam:"style=simple,explode=false,name=app_entitlement_id"`
+	CreateAutomationRequest *shared.CreateAutomationRequest `request:"mediaType=application/json"`
 }
 
 func (c *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetAppID() string {
@@ -27,12 +27,15 @@ func (c *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetAppEntitlementID()
 	return c.AppEntitlementID
 }
 
-func (c *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetCreateAutomationRequest() *shared.CreateAutomationRequestInput {
+func (c *C1APIAppV1AppEntitlementsCreateAutomationRequest) GetCreateAutomationRequest() *shared.CreateAutomationRequest {
 	if c == nil {
 		return nil
 	}
 	return c.CreateAutomationRequest
 }
+
+// #region class-body-c1apiappv1appentitlementscreateautomationrequest
+// #endregion class-body-c1apiappv1appentitlementscreateautomationrequest
 
 type C1APIAppV1AppEntitlementsCreateAutomationResponse struct {
 	// HTTP response content type for this operation
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppEntitlementsCreateAutomationResponse) GetCreateAutomationR
 	}
 	return c.CreateAutomationResponse
 }
+
+// #region class-body-c1apiappv1appentitlementscreateautomationresponse
+// #endregion class-body-c1apiappv1appentitlementscreateautomationresponse

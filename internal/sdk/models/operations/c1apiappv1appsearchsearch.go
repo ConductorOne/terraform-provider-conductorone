@@ -47,3 +47,6 @@ func (c *C1APIAppV1AppSearchSearchResponse) GetSearchAppsResponse() *shared.Sear
 	}
 	return c.SearchAppsResponse
 }
+
+// #region class-body-c1apiappv1appsearchsearchresponse
+// #endregion class-body-c1apiappv1appsearchsearchresponse

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // SourceFilter - The sourceFilter field.
 type SourceFilter string
 
@@ -19,22 +14,16 @@ const (
 func (e SourceFilter) ToPointer() *SourceFilter {
 	return &e
 }
-func (e *SourceFilter) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SourceFilter) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED":
+			return true
+		}
 	}
-	switch v {
-	case "GRANT_SOURCE_FILTER_UNSPECIFIED":
-		fallthrough
-	case "GRANT_SOURCE_FILTER_DIRECT":
-		fallthrough
-	case "GRANT_SOURCE_FILTER_INHERITED":
-		*e = SourceFilter(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SourceFilter: %v", v)
-	}
+	return false
 }
 
 // TypeFilter - The typeFilter field.
@@ -49,22 +38,16 @@ const (
 func (e TypeFilter) ToPointer() *TypeFilter {
 	return &e
 }
-func (e *TypeFilter) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TypeFilter) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY":
+			return true
+		}
 	}
-	switch v {
-	case "GRANT_FILTER_TYPE_UNSPECIFIED":
-		fallthrough
-	case "GRANT_FILTER_TYPE_PERMANENT":
-		fallthrough
-	case "GRANT_FILTER_TYPE_TEMPORARY":
-		*e = TypeFilter(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TypeFilter: %v", v)
-	}
+	return false
 }
 
 // The GrantsByCriteriaScope message.

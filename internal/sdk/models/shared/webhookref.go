@@ -4,7 +4,7 @@ package shared
 
 // The WebhookRef message.
 type WebhookRef struct {
-	// The id field.
+	// The ID of the referenced webhook.
 	ID *string `json:"id,omitempty"`
 }
 

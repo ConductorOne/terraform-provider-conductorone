@@ -42,6 +42,9 @@ func (c *C1APIAppV1ConnectorServiceRevokeCredentialRequest) GetConnectorServiceR
 	return c.ConnectorServiceRevokeCredentialRequest
 }
 
+// #region class-body-c1apiappv1connectorservicerevokecredentialrequest
+// #endregion class-body-c1apiappv1connectorservicerevokecredentialrequest
+
 type C1APIAppV1ConnectorServiceRevokeCredentialResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -80,3 +83,6 @@ func (c *C1APIAppV1ConnectorServiceRevokeCredentialResponse) GetConnectorService
 	}
 	return c.ConnectorServiceRevokeCredentialResponse
 }
+
+// #region class-body-c1apiappv1connectorservicerevokecredentialresponse
+// #endregion class-body-c1apiappv1connectorservicerevokecredentialresponse

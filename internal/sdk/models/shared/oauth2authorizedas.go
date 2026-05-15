@@ -38,3 +38,6 @@ func (o *OAuth2AuthorizedAs) GetAuthorizedAt() *time.Time {
 	}
 	return o.AuthorizedAt
 }
+
+// #region class-body-oauth2authorizedas
+// #endregion class-body-oauth2authorizedas

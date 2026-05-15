@@ -7,3 +7,6 @@ package shared
 //	This is distinct from AppUserFilter which selects accounts within a connected app.
 type C1UserFilter struct {
 }
+
+// #region class-body-c1userfilter
+// #endregion class-body-c1userfilter

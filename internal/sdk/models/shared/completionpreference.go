@@ -6,6 +6,8 @@ package shared
 type CompletionPreference struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// The locked field.
+	Locked *bool `json:"locked,omitempty"`
 }
 
 func (c *CompletionPreference) GetEnabled() *bool {
@@ -13,4 +15,11 @@ func (c *CompletionPreference) GetEnabled() *bool {
 		return nil
 	}
 	return c.Enabled
+}
+
+func (c *CompletionPreference) GetLocked() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Locked
 }

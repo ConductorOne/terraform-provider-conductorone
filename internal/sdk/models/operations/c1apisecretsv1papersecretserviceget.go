@@ -18,6 +18,9 @@ func (c *C1APISecretsV1PaperSecretServiceGetRequest) GetVaultID() string {
 	return c.VaultID
 }
 
+// #region class-body-c1apisecretsv1papersecretservicegetrequest
+// #endregion class-body-c1apisecretsv1papersecretservicegetrequest
+
 type C1APISecretsV1PaperSecretServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APISecretsV1PaperSecretServiceGetResponse) GetPaperSecretServiceGetRe
 	}
 	return c.PaperSecretServiceGetResponse
 }
+
+// #region class-body-c1apisecretsv1papersecretservicegetresponse
+// #endregion class-body-c1apisecretsv1papersecretservicegetresponse

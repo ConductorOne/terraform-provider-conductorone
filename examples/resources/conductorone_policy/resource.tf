@@ -1,4 +1,7 @@
 resource "conductorone_policy" "my_policy" {
+  annotations = {
+    key = "value"
+  }
   description  = "...my_description..."
   display_name = "...my_display_name..."
   policy_steps = {
@@ -14,6 +17,9 @@ resource "conductorone_policy" "my_policy" {
             }
             action_target_baton_resource_action = {
               baton_resource_action_id = "...my_baton_resource_action_id..."
+            }
+            action_target_client_id_approval = {
+              # ...
             }
           }
           approval = {

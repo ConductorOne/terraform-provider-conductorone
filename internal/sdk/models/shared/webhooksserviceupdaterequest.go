@@ -6,7 +6,7 @@ package shared
 type WebhooksServiceUpdateRequest struct {
 	UpdateMask *string `json:"updateMask,omitempty"`
 	// The Webhook message.
-	Webhook *WebhookInput `json:"webhook,omitempty"`
+	WebhookEndpoint *WebhookEndpointInput `json:"webhook,omitempty"`
 }
 
 func (w *WebhooksServiceUpdateRequest) GetUpdateMask() *string {
@@ -16,9 +16,9 @@ func (w *WebhooksServiceUpdateRequest) GetUpdateMask() *string {
 	return w.UpdateMask
 }
 
-func (w *WebhooksServiceUpdateRequest) GetWebhook() *WebhookInput {
+func (w *WebhooksServiceUpdateRequest) GetWebhookEndpoint() *WebhookEndpointInput {
 	if w == nil {
 		return nil
 	}
-	return w.Webhook
+	return w.WebhookEndpoint
 }

@@ -18,6 +18,9 @@ func (c *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueRequest) 
 	return c.ID
 }
 
+// #region class-body-c1apiattributev1attributesgetcomplianceframeworkattributevaluerequest
+// #endregion class-body-c1apiattributev1attributesgetcomplianceframeworkattributevaluerequest
+
 type C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIAttributeV1AttributesGetComplianceFrameworkAttributeValueResponse)
 	}
 	return c.GetComplianceFrameworkAttributeValueResponse
 }
+
+// #region class-body-c1apiattributev1attributesgetcomplianceframeworkattributevalueresponse
+// #endregion class-body-c1apiattributev1attributesgetcomplianceframeworkattributevalueresponse

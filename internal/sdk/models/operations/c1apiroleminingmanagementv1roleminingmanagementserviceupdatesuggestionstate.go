@@ -26,6 +26,9 @@ func (c *C1APIRoleMiningManagementV1RoleMiningManagementServiceUpdateSuggestionS
 	return c.UpdateSuggestionStateRequest
 }
 
+// #region class-body-c1apiroleminingmanagementv1roleminingmanagementserviceupdatesuggestionstaterequest
+// #endregion class-body-c1apiroleminingmanagementv1roleminingmanagementserviceupdatesuggestionstaterequest
+
 type C1APIRoleMiningManagementV1RoleMiningManagementServiceUpdateSuggestionStateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIRoleMiningManagementV1RoleMiningManagementServiceUpdateSuggestionS
 	}
 	return c.UpdateSuggestionStateResponse
 }
+
+// #region class-body-c1apiroleminingmanagementv1roleminingmanagementserviceupdatesuggestionstateresponse
+// #endregion class-body-c1apiroleminingmanagementv1roleminingmanagementserviceupdatesuggestionstateresponse

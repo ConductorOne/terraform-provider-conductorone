@@ -2,7 +2,7 @@
 
 package shared
 
-// The UpdateManuallyManagedResourceTypeRequest message.
+// UpdateManuallyManagedResourceTypeRequest - The request message for updating a manually managed resource type.
 type UpdateManuallyManagedResourceTypeRequest struct {
 	// The AppResourceType is referenced by an app entitlement defining its resource types. Commonly things like Group or Role.
 	AppResourceType *AppResourceTypeInput `json:"appResourceType,omitempty"`

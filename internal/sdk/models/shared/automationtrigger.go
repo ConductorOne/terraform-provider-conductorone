@@ -16,6 +16,7 @@ package shared
 //   - schedule
 //   - scheduleAppUser
 //   - accessConflict
+//   - scheduleNoUser
 type AutomationTrigger struct {
 	// The AccessConflictTrigger message.
 	//
@@ -46,6 +47,9 @@ type AutomationTrigger struct {
 	ScheduleTrigger *ScheduleTrigger `json:"schedule,omitempty"`
 	// The ScheduleTriggerAppUser message.
 	ScheduleTriggerAppUser *ScheduleTriggerAppUser `json:"scheduleAppUser,omitempty"`
+	// ScheduleTriggerNoUser fires on a cron schedule with no subject user (e.g. reports, syncs, orchestration).
+	//  Minimum cron interval is enforced at 1 hour in validation.
+	ScheduleTriggerNoUser *ScheduleTriggerNoUser `json:"scheduleNoUser,omitempty"`
 	// The UsageBasedRevocationTrigger message.
 	//
 	// This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
@@ -62,6 +66,7 @@ type AutomationTrigger struct {
 	// This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:
 	//   - jwt
 	//   - hmac
+	//   - capabilityUrl
 	//
 	WebhookAutomationTrigger *WebhookAutomationTrigger `json:"webhook,omitempty"`
 }
@@ -113,6 +118,13 @@ func (a *AutomationTrigger) GetScheduleTriggerAppUser() *ScheduleTriggerAppUser 
 		return nil
 	}
 	return a.ScheduleTriggerAppUser
+}
+
+func (a *AutomationTrigger) GetScheduleTriggerNoUser() *ScheduleTriggerNoUser {
+	if a == nil {
+		return nil
+	}
+	return a.ScheduleTriggerNoUser
 }
 
 func (a *AutomationTrigger) GetUsageBasedRevocationTrigger() *UsageBasedRevocationTrigger {

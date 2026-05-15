@@ -18,6 +18,9 @@ func (c *C1APIAttributeV1AttributesGetRiskLevelAttributeValueRequest) GetID() st
 	return c.ID
 }
 
+// #region class-body-c1apiattributev1attributesgetrisklevelattributevaluerequest
+// #endregion class-body-c1apiattributev1attributesgetrisklevelattributevaluerequest
+
 type C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIAttributeV1AttributesGetRiskLevelAttributeValueResponse) GetGetRis
 	}
 	return c.GetRiskLevelAttributeValueResponse
 }
+
+// #region class-body-c1apiattributev1attributesgetrisklevelattributevalueresponse
+// #endregion class-body-c1apiattributev1attributesgetrisklevelattributevalueresponse

@@ -2,6 +2,6 @@
 
 package shared
 
-// The RemoveGrantDurationRequest message.
+// RemoveGrantDurationRequest - The request message for removing the expiration time from a grant.
 type RemoveGrantDurationRequest struct {
 }

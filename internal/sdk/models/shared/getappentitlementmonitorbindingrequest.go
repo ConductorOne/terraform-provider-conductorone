@@ -2,12 +2,7 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// GetAppEntitlementMonitorBindingRequestEntitlementGroup - The entitlementGroup field.
+// GetAppEntitlementMonitorBindingRequestEntitlementGroup - Which side of the conflict monitor (A or B) this binding belongs to.
 type GetAppEntitlementMonitorBindingRequestEntitlementGroup string
 
 const (
@@ -19,33 +14,27 @@ const (
 func (e GetAppEntitlementMonitorBindingRequestEntitlementGroup) ToPointer() *GetAppEntitlementMonitorBindingRequestEntitlementGroup {
 	return &e
 }
-func (e *GetAppEntitlementMonitorBindingRequestEntitlementGroup) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GetAppEntitlementMonitorBindingRequestEntitlementGroup) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ENTITLEMENT_GROUP_UNSPECIFIED", "ENTITLEMENT_GROUP_A", "ENTITLEMENT_GROUP_B":
+			return true
+		}
 	}
-	switch v {
-	case "ENTITLEMENT_GROUP_UNSPECIFIED":
-		fallthrough
-	case "ENTITLEMENT_GROUP_A":
-		fallthrough
-	case "ENTITLEMENT_GROUP_B":
-		*e = GetAppEntitlementMonitorBindingRequestEntitlementGroup(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GetAppEntitlementMonitorBindingRequestEntitlementGroup: %v", v)
-	}
+	return false
 }
 
-// The GetAppEntitlementMonitorBindingRequest message.
+// GetAppEntitlementMonitorBindingRequest - The request message for retrieving a single app entitlement monitor binding.
 type GetAppEntitlementMonitorBindingRequest struct {
-	// The appEntitlementId field.
+	// The unique identifier of the app entitlement bound to the monitor.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
-	// The appId field.
+	// The unique identifier of the application containing the entitlement.
 	AppID *string `json:"appId,omitempty"`
-	// The entitlementGroup field.
+	// Which side of the conflict monitor (A or B) this binding belongs to.
 	EntitlementGroup *GetAppEntitlementMonitorBindingRequestEntitlementGroup `json:"entitlementGroup,omitempty"`
-	// The monitorId field.
+	// The unique identifier of the conflict monitor.
 	MonitorID *string `json:"monitorId,omitempty"`
 }
 

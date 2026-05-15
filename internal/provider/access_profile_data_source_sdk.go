@@ -15,6 +15,12 @@ func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(ctx conte
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CreatedByUserID = types.StringPointerValue(resp.CreatedByUserID)
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
@@ -50,6 +56,8 @@ func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalogManagement
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		diags.Append(r.RefreshFromSharedRequestCatalogView(ctx, resp.RequestCatalogView)...)
 

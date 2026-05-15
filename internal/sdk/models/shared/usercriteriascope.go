@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type UserStatus string
 
 const (
@@ -19,24 +14,16 @@ const (
 func (e UserStatus) ToPointer() *UserStatus {
 	return &e
 }
-func (e *UserStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UserStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "UNKNOWN", "ENABLED", "DISABLED", "DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "UNKNOWN":
-		fallthrough
-	case "ENABLED":
-		fallthrough
-	case "DISABLED":
-		fallthrough
-	case "DELETED":
-		*e = UserStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UserStatus: %v", v)
-	}
+	return false
 }
 
 // The UserCriteriaScope message.

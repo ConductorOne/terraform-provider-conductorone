@@ -3,13 +3,13 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
 
-// PolicyType - Indicates the type of this policy. Can also be used to get the value from policySteps.
+// PolicyType - The type of this policy (grant, revoke, or certify). The lowercased type
+//
+//	name (e.g., "grant") is also the key for the baseline entry in policy_steps.
 type PolicyType string
 
 const (
@@ -24,51 +24,59 @@ const (
 func (e PolicyType) ToPointer() *PolicyType {
 	return &e
 }
-func (e *PolicyType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PolicyType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION":
+			return true
+		}
 	}
-	switch v {
-	case "POLICY_TYPE_UNSPECIFIED":
-		fallthrough
-	case "POLICY_TYPE_GRANT":
-		fallthrough
-	case "POLICY_TYPE_REVOKE":
-		fallthrough
-	case "POLICY_TYPE_CERTIFY":
-		fallthrough
-	case "POLICY_TYPE_ACCESS_REQUEST":
-		fallthrough
-	case "POLICY_TYPE_PROVISION":
-		*e = PolicyType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PolicyType: %v", v)
-	}
+	return false
 }
 
-// Policy - A policy describes the behavior of the ConductorOne system when processing a task. You can describe the type, approvers, fallback behavior, and escalation processes.
+// Policy - A policy defines a workflow (sequence of steps) that runs when processing
+//
+//	access requests, reviews, or revocations. Policies support conditional
+//	routing: different conditions can trigger different step sequences, with a
+//	baseline fallback.
 type Policy struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+	//  chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+	//
+	//  Updates have PATCH semantics: keys absent from the request are
+	//  preserved; an empty value deletes the key.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
+	CreatedAt   *time.Time        `json:"createdAt,omitempty"`
+	DeletedAt   *time.Time        `json:"deletedAt,omitempty"`
 	// The description of the Policy.
 	Description *string `json:"description,omitempty"`
 	// The display name of the Policy.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The ID of the Policy.
 	ID *string `json:"id,omitempty"`
-	// A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set.
+	// A map from string keys to step sequences. One entry is always the baseline,
+	//  keyed by the lowercased policy_type (e.g., "grant", "revoke", "certify").
+	//  Additional entries have opaque keys (UUIDs) and are referenced by the rules
+	//  array for conditional routing. If no conditional rules are configured, only
+	//  the baseline entry exists.
 	PolicySteps map[string]PolicySteps `json:"policySteps,omitempty"`
-	// Indicates the type of this policy. Can also be used to get the value from policySteps.
+	// The type of this policy (grant, revoke, or certify). The lowercased type
+	//  name (e.g., "grant") is also the key for the baseline entry in policy_steps.
 	PolicyType *PolicyType `json:"policyType,omitempty"`
-	// An array of actions (ordered) to take place after a policy completes processing.
+	// Ordered actions to execute after the policy completes processing.
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
-	// Deprecated. Use setting in policy step instead
+	// This field is no longer used. Configure delegate reassignment in the policy step instead.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
-	// The rules field.
+	// Ordered conditional routing rules. Evaluated top-to-bottom; the first
+	//  matching rule selects a step sequence from policy_steps. If no rule matches
+	//  (or if this array is empty), the baseline entry in policy_steps is used.
 	Rules []Rule `json:"rules,omitempty"`
 	// Whether this policy is a builtin system policy. Builtin system policies cannot be edited.
 	SystemBuiltin *bool      `json:"systemBuiltin,omitempty"`
@@ -84,6 +92,13 @@ func (p *Policy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (p *Policy) GetAnnotations() map[string]string {
+	if p == nil {
+		return nil
+	}
+	return p.Annotations
 }
 
 func (p *Policy) GetCreatedAt() *time.Time {
@@ -170,24 +185,51 @@ func (p *Policy) GetUpdatedAt() *time.Time {
 	return p.UpdatedAt
 }
 
-// PolicyInput - A policy describes the behavior of the ConductorOne system when processing a task. You can describe the type, approvers, fallback behavior, and escalation processes.
+// PolicyInput - A policy defines a workflow (sequence of steps) that runs when processing
+//
+//	access requests, reviews, or revocations. Policies support conditional
+//	routing: different conditions can trigger different step sequences, with a
+//	baseline fallback.
 type PolicyInput struct {
+	// Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+	//  chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+	//
+	//  Updates have PATCH semantics: keys absent from the request are
+	//  preserved; an empty value deletes the key.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The description of the Policy.
 	Description *string `json:"description,omitempty"`
 	// The display name of the Policy.
 	DisplayName *string `json:"displayName,omitempty"`
-	// A map of string(policy type) to steps in a policy. This structure is leftover from a previous design, and should only ever have one key->value set.
+	// A map from string keys to step sequences. One entry is always the baseline,
+	//  keyed by the lowercased policy_type (e.g., "grant", "revoke", "certify").
+	//  Additional entries have opaque keys (UUIDs) and are referenced by the rules
+	//  array for conditional routing. If no conditional rules are configured, only
+	//  the baseline entry exists.
 	PolicySteps map[string]PolicyStepsInput `json:"policySteps,omitempty"`
-	// Indicates the type of this policy. Can also be used to get the value from policySteps.
+	// The type of this policy (grant, revoke, or certify). The lowercased type
+	//  name (e.g., "grant") is also the key for the baseline entry in policy_steps.
 	PolicyType *PolicyType `json:"policyType,omitempty"`
-	// An array of actions (ordered) to take place after a policy completes processing.
+	// Ordered actions to execute after the policy completes processing.
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
-	// Deprecated. Use setting in policy step instead
+	// This field is no longer used. Configure delegate reassignment in the policy step instead.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
-	// The rules field.
+	// Ordered conditional routing rules. Evaluated top-to-bottom; the first
+	//  matching rule selects a step sequence from policy_steps. If no rule matches
+	//  (or if this array is empty), the baseline entry in policy_steps is used.
 	Rules []Rule `json:"rules,omitempty"`
+}
+
+func (p *PolicyInput) GetAnnotations() map[string]string {
+	if p == nil {
+		return nil
+	}
+	return p.Annotations
 }
 
 func (p *PolicyInput) GetDescription() *string {

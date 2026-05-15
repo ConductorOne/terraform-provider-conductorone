@@ -4,13 +4,13 @@ package shared
 
 // The WebhooksServiceListResponse message.
 type WebhooksServiceListResponse struct {
-	// The list field.
-	List []Webhook1 `json:"list,omitempty"`
-	// The nextPageToken field.
+	// The list of webhooks for the current page.
+	List []WebhookEndpoint `json:"list,omitempty"`
+	// A token to retrieve the next page of results, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 
-func (w *WebhooksServiceListResponse) GetList() []Webhook1 {
+func (w *WebhooksServiceListResponse) GetList() []WebhookEndpoint {
 	if w == nil {
 		return nil
 	}

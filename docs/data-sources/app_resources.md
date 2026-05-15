@@ -67,34 +67,34 @@ data "conductorone_app_resources" "my_app_resources" {
 
 ### Optional
 
-- `app_id` (String) The appId field.
-- `app_user_ids` (List of String) The appUserIds field.
-- `exclude_deleted_resource_bindings` (Boolean) The excludeDeletedResourceBindings field.
-- `exclude_resource_ids` (List of String) The excludeResourceIds field.
-- `exclude_resource_type_trait_ids` (List of String) The excludeResourceTypeTraitIds field.
-- `owner_user_ids` (List of String) The ownerUserIds field.
-- `page_size` (Number) The pageSize field.
-- `page_token` (String) The pageToken field.
-- `query` (String) The query field.
-- `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))
-- `resource_ids` (List of String) The resourceIds field.
-- `resource_type_ids` (List of String) The resourceTypeIds field.
-- `resource_type_trait_ids` (List of String) The resourceTypeTraitIds field.
+- `app_id` (String) The app ID to restrict the search to.
+- `app_user_ids` (List of String) A list of app user IDs to restrict the search by.
+- `exclude_deleted_resource_bindings` (Boolean) If true, exclude resources whose bindings have been deleted.
+- `exclude_resource_ids` (List of String) A list of resource IDs to exclude from the search results.
+- `exclude_resource_type_trait_ids` (List of String) A list of resource type trait IDs to exclude from the search.
+- `owner_user_ids` (List of String) A list of C1 user IDs to filter resources by ownership.
+- `page_size` (Number) The maximum number of results to return per page.
+- `page_token` (String) The token for fetching the next page of results.
+- `query` (String) Fuzzy search the display name of resources.
+- `refs` (Attributes List) A list of specific app resource references to restrict the search to. (see [below for nested schema](#nestedatt--refs))
+- `resource_ids` (List of String) A list of resource IDs to restrict the search to.
+- `resource_type_ids` (List of String) A list of resource type IDs to restrict the search by.
+- `resource_type_trait_ids` (List of String) A list of resource type trait IDs to restrict the search by.
 
 ### Read-Only
 
-- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
-- `list` (Attributes List) The list field. (see [below for nested schema](#nestedatt--list))
-- `next_page_token` (String) The nextPageToken field.
+- `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
+- `list` (Attributes List) The list of app resource results. (see [below for nested schema](#nestedatt--list))
+- `next_page_token` (String) The token for fetching the next page of results.
 
 <a id="nestedatt--refs"></a>
 ### Nested Schema for `refs`
 
 Optional:
 
-- `app_id` (String) The appId field.
-- `app_resource_type_id` (String) The appResourceTypeId field.
-- `id` (String) The id field.
+- `app_id` (String) The ID of the app that owns the resource.
+- `app_resource_type_id` (String) The ID of the resource type that classifies this resource.
+- `id` (String) The unique ID of the app resource.
 
 
 <a id="nestedatt--expanded"></a>
@@ -130,12 +130,27 @@ Read-Only:
 
 - `access_config_id` (String) The access config ID for this resource. May be empty.
  Must be one of the builtin access config IDs or empty.
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+ are reserved.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
+
+ Most AppResources are connector-synced; user-supplied annotations on
+ a synced resource will be overwritten by the next sync. The
+ annotations bag is most useful on user-created groups (the
+ `conductorone_app_resource` TF resource).
 - `app_id` (String) The app that this resource belongs to.
 - `app_resource_type_id` (String) The resource type that this resource is.
 - `created_at` (String)
 - `deleted_at` (String)
 - `description` (String) The description set for the resource.
 - `display_name` (String) The display name for this resource.
+- `external_id` (String) The upstream product's native external ID for this resource (e.g. an Okta group ID).
+ Populated from the connector's external ID during sync.
 - `grant_count` (String) The number of grants to this resource.
 - `id` (String) The id of the resource.
 - `match_baton_id` (String) The matchBatonId field.

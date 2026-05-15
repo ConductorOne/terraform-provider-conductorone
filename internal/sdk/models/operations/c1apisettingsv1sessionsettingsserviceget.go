@@ -45,3 +45,6 @@ func (c *C1APISettingsV1SessionSettingsServiceGetResponse) GetGetSessionSettings
 	}
 	return c.GetSessionSettingsResponse
 }
+
+// #region class-body-c1apisettingsv1sessionsettingsservicegetresponse
+// #endregion class-body-c1apisettingsv1sessionsettingsservicegetresponse

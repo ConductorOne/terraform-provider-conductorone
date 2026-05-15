@@ -45,3 +45,6 @@ func (c *C1APIIamV1ExternalClientSearchServiceSearchResponse) GetExternalClientS
 	}
 	return c.ExternalClientSearchServiceSearchResponse
 }
+
+// #region class-body-c1apiiamv1externalclientsearchservicesearchresponse
+// #endregion class-body-c1apiiamv1externalclientsearchservicesearchresponse

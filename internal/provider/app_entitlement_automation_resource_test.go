@@ -7,14 +7,11 @@ import (
 )
 
 func TestAccAppEntitlementAutomationResource(t *testing.T) {
-	resource.Test(t, resource.TestCase{
-		ProtoV6ProviderFactories: testAccProviderFactories,
-		Steps: []resource.TestStep{
-			// Create an automation with basic rule
-			{
-				Config: providerConfig + `
+	// Entitlement automation is gated by the API to the C1 app only, so the
+	// test must look it up rather than provision a fresh app fixture.
+	const fixture = `
 				data "conductorone_app" "test" {
-					display_name = "ConductorOne"
+					display_name = "C1"
 				}
 
 				data "conductorone_app_resource_type" "test" {
@@ -23,9 +20,9 @@ func TestAccAppEntitlementAutomationResource(t *testing.T) {
 				}
 
 				resource "conductorone_app_resource" "test" {
-					app_id = data.conductorone_app.test.id
-					display_name = "test-resource"
-					description = "test resource for automation"
+					app_id               = data.conductorone_app.test.id
+					display_name         = "test-resource"
+					description          = "test resource for automation"
 					app_resource_type_id = data.conductorone_app_resource_type.test.id
 				}
 
@@ -34,18 +31,25 @@ func TestAccAppEntitlementAutomationResource(t *testing.T) {
 					app_resource_id      = conductorone_app_resource.test.id
 					app_resource_type_id = data.conductorone_app_resource_type.test.id
 					display_name         = "test-entitlement"
-					description         = "test entitlement for automation"
+					description          = "test entitlement for automation"
 					provision_policy = {
 						connector_provision = {}
 					}
 					duration_unset = {}
 				}
+	`
 
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: testAccProviderFactories,
+		Steps: []resource.TestStep{
+			// Create an automation with basic rule
+			{
+				Config: providerConfig + fixture + `
 				resource "conductorone_app_entitlement_automation" "test" {
-					app_id = "2fsgTvxP0DVTsNXEUBI7hOe0l5A"
+					app_id             = "2fsgTvxP0DVTsNXEUBI7hOe0l5A"
 					app_entitlement_id = conductorone_custom_app_entitlement.test.id
-					display_name = "test-automation"
-					description = "test automation with basic rule"
+					display_name       = "test-automation"
+					description        = "test automation with basic rule"
 					app_entitlement_automation_rule_basic = {
 						expression = "true"
 					}
@@ -61,40 +65,12 @@ func TestAccAppEntitlementAutomationResource(t *testing.T) {
 			},
 			// Update to use CEL rule
 			{
-				Config: providerConfig + `
-				data "conductorone_app" "test" {
-					display_name = "ConductorOne"
-				}
-
-				data "conductorone_app_resource_type" "test" {
-					display_name  = "GROUP"
-					app_ids       = [data.conductorone_app.test.id]
-				}
-
-				resource "conductorone_app_resource" "test" {
-					app_id = data.conductorone_app.test.id
-					display_name = "test-resource"
-					description = "test resource for automation"
-					app_resource_type_id = data.conductorone_app_resource_type.test.id
-				}
-
-				resource "conductorone_custom_app_entitlement" "test" {
-					app_id               = data.conductorone_app.test.id
-					app_resource_id      = conductorone_app_resource.test.id
-					app_resource_type_id = data.conductorone_app_resource_type.test.id
-					display_name         = "test-entitlement"
-					description         = "test entitlement for automation"
-					provision_policy = {
-						connector_provision = {}
-					}
-					duration_unset = {}
-				}
-
+				Config: providerConfig + fixture + `
 				resource "conductorone_app_entitlement_automation" "test" {
-					app_id = data.conductorone_app.test.id
+					app_id             = data.conductorone_app.test.id
 					app_entitlement_id = conductorone_custom_app_entitlement.test.id
-					display_name = "test-automation-updated"
-					description = "test automation with CEL rule"
+					display_name       = "test-automation-updated"
+					description        = "test automation with CEL rule"
 					app_entitlement_automation_rule_cel = {
 						expression = "true"
 					}
@@ -110,45 +86,17 @@ func TestAccAppEntitlementAutomationResource(t *testing.T) {
 			},
 			// Update to use entitlement rule
 			{
-				Config: providerConfig + `
-				data "conductorone_app" "test" {
-					display_name = "ConductorOne"
-				}
-
-				data "conductorone_app_resource_type" "test" {
-					display_name  = "GROUP"
-					app_ids       = [data.conductorone_app.test.id]
-				}
-
-				resource "conductorone_app_resource" "test" {
-					app_id = data.conductorone_app.test.id
-					display_name = "test-resource"
-					description = "test resource for automation"
-					app_resource_type_id = data.conductorone_app_resource_type.test.id
-				}
-
-				resource "conductorone_custom_app_entitlement" "test" {
-					app_id               = data.conductorone_app.test.id
-					app_resource_id      = conductorone_app_resource.test.id
-					app_resource_type_id = data.conductorone_app_resource_type.test.id
-					display_name         = "test-entitlement"
-					description         = "test entitlement for automation"
-					provision_policy = {
-						connector_provision = {}
-					}
-					duration_unset = {}
-				}
-
+				Config: providerConfig + fixture + `
 				resource "conductorone_app_entitlement_automation" "test" {
-					app_id = data.conductorone_app.test.id
+					app_id             = data.conductorone_app.test.id
 					app_entitlement_id = conductorone_custom_app_entitlement.test.id
-					display_name = "test-automation-entitlement"
-					description = "test automation with entitlement rule"
+					display_name       = "test-automation-entitlement"
+					description        = "test automation with entitlement rule"
 					app_entitlement_automation_rule_entitlement = {
 						entitlement_refs = [
 							{
 								app_id = data.conductorone_app.test.id
-								id = conductorone_custom_app_entitlement.test.id
+								id     = conductorone_custom_app_entitlement.test.id
 							}
 						]
 					}

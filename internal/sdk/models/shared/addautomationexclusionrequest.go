@@ -4,7 +4,7 @@ package shared
 
 // The AddAutomationExclusionRequest message.
 type AddAutomationExclusionRequest struct {
-	// The userIds field.
+	// The IDs of users to add to the automation exclusion list.
 	UserIds []string `json:"userIds,omitempty"`
 }
 

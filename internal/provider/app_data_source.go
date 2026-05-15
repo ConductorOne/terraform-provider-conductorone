@@ -29,37 +29,39 @@ type AppDataSource struct {
 
 // AppDataSourceModel describes the data model.
 type AppDataSourceModel struct {
-	AppAccountID                        types.String           `tfsdk:"app_account_id"`
-	AppAccountName                      types.String           `tfsdk:"app_account_name"`
-	AppIds                              []types.String         `tfsdk:"app_ids"`
-	AppUserMapper                       *tfTypes.AppUserMapper `tfsdk:"app_user_mapper"`
-	CertifyPolicyID                     types.String           `tfsdk:"certify_policy_id"`
-	ConnectorVersion                    types.Int64            `tfsdk:"connector_version"`
-	CreatedAt                           types.String           `tfsdk:"created_at"`
-	DefaultRequestCatalogID             types.String           `tfsdk:"default_request_catalog_id"`
-	DeletedAt                           types.String           `tfsdk:"deleted_at"`
-	Description                         types.String           `tfsdk:"description"`
-	DisplayName                         types.String           `tfsdk:"display_name"`
-	EnableConnectorSourcedOwnership     types.Bool             `tfsdk:"enable_connector_sourced_ownership"`
-	ExcludeAppIds                       []types.String         `tfsdk:"exclude_app_ids"`
-	GrantPolicyID                       types.String           `tfsdk:"grant_policy_id"`
-	ID                                  types.String           `tfsdk:"id"`
-	IdentityMatching                    types.String           `tfsdk:"identity_matching"`
-	Instructions                        types.String           `tfsdk:"instructions"`
-	IsDirectory                         types.Bool             `tfsdk:"is_directory"`
-	IsManuallyManaged                   types.Bool             `tfsdk:"is_manually_managed"`
-	MonthlyCostUsd                      types.Int32            `tfsdk:"monthly_cost_usd"`
-	NextPageToken                       types.String           `tfsdk:"next_page_token"`
-	OnlyDirectories                     types.Bool             `tfsdk:"only_directories"`
-	PageSize                            types.Int32            `tfsdk:"page_size"`
-	PageToken                           types.String           `tfsdk:"page_token"`
-	ParentAppID                         types.String           `tfsdk:"parent_app_id"`
-	PolicyRefs                          []tfTypes.PolicyRef    `tfsdk:"policy_refs"`
-	Query                               types.String           `tfsdk:"query"`
-	RevokePolicyID                      types.String           `tfsdk:"revoke_policy_id"`
-	StrictAccessEntitlementProvisioning types.Bool             `tfsdk:"strict_access_entitlement_provisioning"`
-	UpdatedAt                           types.String           `tfsdk:"updated_at"`
-	UserCount                           types.String           `tfsdk:"user_count"`
+	AccessModel                         types.String            `tfsdk:"access_model"`
+	Annotations                         map[string]types.String `tfsdk:"annotations"`
+	AppAccountID                        types.String            `tfsdk:"app_account_id"`
+	AppAccountName                      types.String            `tfsdk:"app_account_name"`
+	AppIds                              []types.String          `tfsdk:"app_ids"`
+	AppUserMapper                       *tfTypes.AppUserMapper  `tfsdk:"app_user_mapper"`
+	CertifyPolicyID                     types.String            `tfsdk:"certify_policy_id"`
+	ConnectorVersion                    types.Int64             `tfsdk:"connector_version"`
+	CreatedAt                           types.String            `tfsdk:"created_at"`
+	DefaultRequestCatalogID             types.String            `tfsdk:"default_request_catalog_id"`
+	DeletedAt                           types.String            `tfsdk:"deleted_at"`
+	Description                         types.String            `tfsdk:"description"`
+	DisplayName                         types.String            `tfsdk:"display_name"`
+	EnableConnectorSourcedOwnership     types.Bool              `tfsdk:"enable_connector_sourced_ownership"`
+	ExcludeAppIds                       []types.String          `tfsdk:"exclude_app_ids"`
+	GrantPolicyID                       types.String            `tfsdk:"grant_policy_id"`
+	ID                                  types.String            `tfsdk:"id"`
+	IdentityMatching                    types.String            `tfsdk:"identity_matching"`
+	Instructions                        types.String            `tfsdk:"instructions"`
+	IsDirectory                         types.Bool              `tfsdk:"is_directory"`
+	IsManuallyManaged                   types.Bool              `tfsdk:"is_manually_managed"`
+	MonthlyCostUsd                      types.Int32             `tfsdk:"monthly_cost_usd"`
+	NextPageToken                       types.String            `tfsdk:"next_page_token"`
+	OnlyDirectories                     types.Bool              `tfsdk:"only_directories"`
+	PageSize                            types.Int32             `tfsdk:"page_size"`
+	PageToken                           types.String            `tfsdk:"page_token"`
+	ParentAppID                         types.String            `tfsdk:"parent_app_id"`
+	PolicyRefs                          []tfTypes.PolicyRef     `tfsdk:"policy_refs"`
+	Query                               types.String            `tfsdk:"query"`
+	RevokePolicyID                      types.String            `tfsdk:"revoke_policy_id"`
+	StrictAccessEntitlementProvisioning types.Bool              `tfsdk:"strict_access_entitlement_provisioning"`
+	UpdatedAt                           types.String            `tfsdk:"updated_at"`
+	UserCount                           types.String            `tfsdk:"user_count"`
 }
 
 // Metadata returns the data source type name.
@@ -73,6 +75,23 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 		MarkdownDescription: "App DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"access_model": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `How this app models access. Derived during uplift from the app's resource type traits.` + "\n" +
+					` Sparse ACL feature.`,
+			},
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256` + "\n" +
+					` chars; URL-safe ASCII. Keys starting with ` + "`" + `c1/` + "`" + ` are reserved.` + "\n" +
+					`` + "\n" +
+					` Updates have PATCH semantics: keys absent from the request are` + "\n" +
+					` preserved; an empty value deletes the key.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
 			"app_account_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the Account named by AccountName.`,
@@ -133,7 +152,7 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Search for apps with a case insensitive match on the display name.`,
+				Description: `The app's display name.`,
 			},
 			"enable_connector_sourced_ownership": schema.BoolAttribute{
 				Computed:    true,
@@ -297,26 +316,6 @@ func (r *AppDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 
 	if resp.Diagnostics.HasError() {
 		return
-	}
-	for {
-		var err error
-
-		res, err = res.Next()
-
-		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
-			return
-		}
-
-		if res == nil {
-			break
-		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedSearchAppsResponse(ctx, res.SearchAppsResponse)...)
-
-		if resp.Diagnostics.HasError() {
-			return
-		}
 	}
 
 	// Save updated data into Terraform state

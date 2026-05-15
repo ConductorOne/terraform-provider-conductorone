@@ -18,6 +18,9 @@ func (c *C1APISecretsV1PaperSecretServiceGetByShareCodeRequest) GetShareCode() s
 	return c.ShareCode
 }
 
+// #region class-body-c1apisecretsv1papersecretservicegetbysharecoderequest
+// #endregion class-body-c1apisecretsv1papersecretservicegetbysharecoderequest
+
 type C1APISecretsV1PaperSecretServiceGetByShareCodeResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APISecretsV1PaperSecretServiceGetByShareCodeResponse) GetPaperSecretS
 	}
 	return c.PaperSecretServiceGetResponse
 }
+
+// #region class-body-c1apisecretsv1papersecretservicegetbysharecoderesponse
+// #endregion class-body-c1apisecretsv1papersecretservicegetbysharecoderesponse

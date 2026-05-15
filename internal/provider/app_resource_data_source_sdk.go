@@ -17,12 +17,19 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 
 	if resp != nil {
 		r.AccessConfigID = types.StringPointerValue(resp.AccessConfigID)
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.ExternalID = types.StringPointerValue(resp.ExternalID)
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
@@ -59,6 +66,8 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceServiceGetRespo
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 

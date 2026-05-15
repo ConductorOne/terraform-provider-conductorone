@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeReques
 	return c.UpdateManuallyManagedResourceTypeRequest
 }
 
+// #region class-body-c1apiappv1appresourcetypeserviceupdatemanuallymanagedresourcetyperequest
+// #endregion class-body-c1apiappv1appresourcetypeserviceupdatemanuallymanagedresourcetyperequest
+
 type C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -41,7 +44,7 @@ type C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeResponse s
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for updating a manually managed resource type.
 	UpdateManuallyManagedResourceTypeResponse *shared.UpdateManuallyManagedResourceTypeResponse
 }
 
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppResourceTypeServiceUpdateManuallyManagedResourceTypeRespon
 	}
 	return c.UpdateManuallyManagedResourceTypeResponse
 }
+
+// #region class-body-c1apiappv1appresourcetypeserviceupdatemanuallymanagedresourcetyperesponse
+// #endregion class-body-c1apiappv1appresourcetypeserviceupdatemanuallymanagedresourcetyperesponse

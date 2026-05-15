@@ -44,7 +44,7 @@ func (r *AwsExternalIDDataSource) Schema(ctx context.Context, req datasource.Sch
 		Attributes: map[string]schema.Attribute{
 			"external_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The externalId field.`,
+				Description: `The external ID value to include in the AWS IAM role trust policy condition.`,
 			},
 		},
 	}

@@ -1,0 +1,27 @@
+name: Test SDKs
+permissions:
+    checks: write
+    contents: write
+    pull-requests: write
+    statuses: write
+
+on:
+    workflow_dispatch:
+        inputs:
+            target:
+                description: Specific target to test
+                type: string
+    pull_request:
+        paths:
+            - "**"
+        branches:
+            - main
+
+jobs:
+    test:
+        uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-test.yaml@v15
+        with:
+            target: ${{ github.event.inputs.target || 'conductorone-terraform' }}
+        secrets:
+            github_access_token: ${{ secrets.GITHUB_TOKEN }}
+            speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}

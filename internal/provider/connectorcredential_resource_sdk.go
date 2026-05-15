@@ -94,18 +94,10 @@ func (r *ConnectorCredentialResourceModel) ToOperationsC1APIAppV1ConnectorServic
 	var id string
 	id = r.ID.ValueString()
 
-	connectorServiceRevokeCredentialRequest, connectorServiceRevokeCredentialRequestDiags := r.ToSharedConnectorServiceRevokeCredentialRequest(ctx)
-	diags.Append(connectorServiceRevokeCredentialRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIAppV1ConnectorServiceRevokeCredentialRequest{
-		AppID:                                   appID,
-		ConnectorID:                             connectorID,
-		ID:                                      id,
-		ConnectorServiceRevokeCredentialRequest: connectorServiceRevokeCredentialRequest,
+		AppID:       appID,
+		ConnectorID: connectorID,
+		ID:          id,
 	}
 
 	return &out, diags

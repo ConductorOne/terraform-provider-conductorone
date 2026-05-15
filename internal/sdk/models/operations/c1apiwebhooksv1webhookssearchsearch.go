@@ -47,3 +47,6 @@ func (c *C1APIWebhooksV1WebhooksSearchSearchResponse) GetWebhooksSearchResponse(
 	}
 	return c.WebhooksSearchResponse
 }
+
+// #region class-body-c1apiwebhooksv1webhookssearchsearchresponse
+// #endregion class-body-c1apiwebhooksv1webhookssearchsearchresponse

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -13,51 +11,32 @@ import (
 type AutomationExecutionState string
 
 const (
-	AutomationExecutionStateAutomationExecutionStateUnspecified  AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_UNSPECIFIED"
-	AutomationExecutionStateAutomationExecutionStatePending      AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_PENDING"
-	AutomationExecutionStateAutomationExecutionStateCreating     AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_CREATING"
-	AutomationExecutionStateAutomationExecutionStateGetStep      AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_GET_STEP"
-	AutomationExecutionStateAutomationExecutionStateProcessStep  AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_PROCESS_STEP"
-	AutomationExecutionStateAutomationExecutionStateCompleteStep AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP"
-	AutomationExecutionStateAutomationExecutionStateDone         AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_DONE"
-	AutomationExecutionStateAutomationExecutionStateError        AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_ERROR"
-	AutomationExecutionStateAutomationExecutionStateTerminate    AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_TERMINATE"
-	AutomationExecutionStateAutomationExecutionStateWaiting      AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_WAITING"
+	AutomationExecutionStateAutomationExecutionStateUnspecified            AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_UNSPECIFIED"
+	AutomationExecutionStateAutomationExecutionStatePending                AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_PENDING"
+	AutomationExecutionStateAutomationExecutionStateCreating               AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_CREATING"
+	AutomationExecutionStateAutomationExecutionStateGetStep                AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_GET_STEP"
+	AutomationExecutionStateAutomationExecutionStateProcessStep            AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_PROCESS_STEP"
+	AutomationExecutionStateAutomationExecutionStateCompleteStep           AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP"
+	AutomationExecutionStateAutomationExecutionStateDone                   AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_DONE"
+	AutomationExecutionStateAutomationExecutionStateError                  AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_ERROR"
+	AutomationExecutionStateAutomationExecutionStateTerminate              AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_TERMINATE"
+	AutomationExecutionStateAutomationExecutionStateWaiting                AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_WAITING"
+	AutomationExecutionStateAutomationExecutionStatePausedByCircuitBreaker AutomationExecutionState = "AUTOMATION_EXECUTION_STATE_PAUSED_BY_CIRCUIT_BREAKER"
 )
 
 func (e AutomationExecutionState) ToPointer() *AutomationExecutionState {
 	return &e
 }
-func (e *AutomationExecutionState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AutomationExecutionState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AUTOMATION_EXECUTION_STATE_UNSPECIFIED", "AUTOMATION_EXECUTION_STATE_PENDING", "AUTOMATION_EXECUTION_STATE_CREATING", "AUTOMATION_EXECUTION_STATE_GET_STEP", "AUTOMATION_EXECUTION_STATE_PROCESS_STEP", "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP", "AUTOMATION_EXECUTION_STATE_DONE", "AUTOMATION_EXECUTION_STATE_ERROR", "AUTOMATION_EXECUTION_STATE_TERMINATE", "AUTOMATION_EXECUTION_STATE_WAITING", "AUTOMATION_EXECUTION_STATE_PAUSED_BY_CIRCUIT_BREAKER":
+			return true
+		}
 	}
-	switch v {
-	case "AUTOMATION_EXECUTION_STATE_UNSPECIFIED":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_PENDING":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_CREATING":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_GET_STEP":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_PROCESS_STEP":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_COMPLETE_STEP":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_DONE":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_ERROR":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_TERMINATE":
-		fallthrough
-	case "AUTOMATION_EXECUTION_STATE_WAITING":
-		*e = AutomationExecutionState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AutomationExecutionState: %v", v)
-	}
+	return false
 }
 
 // The AutomationExecution message.

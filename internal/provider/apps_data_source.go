@@ -70,6 +70,23 @@ func (r *AppsDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"access_model": schema.StringAttribute{
+							Computed: true,
+							MarkdownDescription: `How this app models access. Derived during uplift from the app's resource type traits.` + "\n" +
+								` Sparse ACL feature.`,
+						},
+						"annotations": schema.MapAttribute{
+							Computed:    true,
+							ElementType: types.StringType,
+							MarkdownDescription: `Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256` + "\n" +
+								` chars; URL-safe ASCII. Keys starting with ` + "`" + `c1/` + "`" + ` are reserved.` + "\n" +
+								`` + "\n" +
+								` Updates have PATCH semantics: keys absent from the request are` + "\n" +
+								` preserved; an empty value deletes the key.` + "\n" +
+								`` + "\n" +
+								` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+								` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+						},
 						"app_account_id": schema.StringAttribute{
 							Computed:    true,
 							Description: `The ID of the Account named by AccountName.`,

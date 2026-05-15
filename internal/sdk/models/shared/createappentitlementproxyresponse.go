@@ -6,11 +6,11 @@ package shared
 type CreateAppEntitlementProxyResponseExpanded struct {
 }
 
-// The CreateAppEntitlementProxyResponse message.
+// CreateAppEntitlementProxyResponse - The response message for creating an entitlement proxy binding.
 type CreateAppEntitlementProxyResponse struct {
 	// The AppEntitlementProxyView message.
 	AppEntitlementProxyView *AppEntitlementProxyView `json:"appProxyEntitlementView,omitempty"`
-	// The expanded field.
+	// List of serialized related objects.
 	Expanded []CreateAppEntitlementProxyResponseExpanded `json:"expanded,omitempty"`
 }
 

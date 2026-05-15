@@ -4,13 +4,13 @@ package shared
 
 // The TaskAuditListRequest message.
 type TaskAuditListRequest struct {
-	// The pageSize field.
+	// The maximum number of audit events to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
+	// A pagination token from a previous response to retrieve the next page.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The refs field.
+	// References to specific audit events to retrieve. If provided, only these events are returned.
 	Refs []TaskAuditViewRef `json:"refs,omitempty"`
-	// The taskId field.
+	// The ID of the task to list audit events for.
 	TaskID *string `json:"taskId,omitempty"`
 }
 

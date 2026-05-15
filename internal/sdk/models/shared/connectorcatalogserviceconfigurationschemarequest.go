@@ -2,13 +2,13 @@
 
 package shared
 
-// The ConnectorCatalogServiceConfigurationSchemaRequest message.
+// ConnectorCatalogServiceConfigurationSchemaRequest is the request for retrieving a connector's configuration schema.
 type ConnectorCatalogServiceConfigurationSchemaRequest struct {
-	// The appId field.
+	// The ID of the app associated with the connector. Optional.
 	AppID *string `json:"appId,omitempty"`
-	// The catalogId field.
+	// The catalog entry ID identifying the connector type.
 	CatalogID *string `json:"catalogId,omitempty"`
-	// The connectorId field.
+	// The ID of an existing connector to retrieve its current configuration schema. Optional.
 	ConnectorID *string `json:"connectorId,omitempty"`
 }
 

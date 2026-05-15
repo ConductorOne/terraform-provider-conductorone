@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type FormInstanceData struct {
 }
 
@@ -22,22 +17,16 @@ const (
 func (e FormInstanceState) ToPointer() *FormInstanceState {
 	return &e
 }
-func (e *FormInstanceState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FormInstanceState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FORM_INSTANCE_STATE_UNSPECIFIED", "FORM_INSTANCE_STATE_WAITING", "FORM_INSTANCE_STATE_DONE":
+			return true
+		}
 	}
-	switch v {
-	case "FORM_INSTANCE_STATE_UNSPECIFIED":
-		fallthrough
-	case "FORM_INSTANCE_STATE_WAITING":
-		fallthrough
-	case "FORM_INSTANCE_STATE_DONE":
-		*e = FormInstanceState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FormInstanceState: %v", v)
-	}
+	return false
 }
 
 // The FormInstance message.
@@ -52,7 +41,7 @@ type FormInstance struct {
 	FormCompletedAction *FormCompletedAction `json:"completed,omitempty"`
 	Data                *FormInstanceData    `json:"data,omitempty"`
 	// A form is a collection of fields to be filled out by a user
-	Form *Form `json:"form,omitempty"`
+	RequestSchemaForm *RequestSchemaForm `json:"form,omitempty"`
 	// The ReassignedAction object describes the outcome of a policy step that has been reassigned.
 	ReassignedAction *ReassignedAction `json:"reassigned,omitempty"`
 	// The restart action describes the outcome of policy steps for when the task was restarted. This can be applied to multiple steps since restart skips all pending next steps.
@@ -77,11 +66,11 @@ func (f *FormInstance) GetData() *FormInstanceData {
 	return f.Data
 }
 
-func (f *FormInstance) GetForm() *Form {
+func (f *FormInstance) GetRequestSchemaForm() *RequestSchemaForm {
 	if f == nil {
 		return nil
 	}
-	return f.Form
+	return f.RequestSchemaForm
 }
 
 func (f *FormInstance) GetReassignedAction() *ReassignedAction {

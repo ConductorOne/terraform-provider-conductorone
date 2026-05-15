@@ -34,11 +34,16 @@ func TestPaginationUsesAssignment(t *testing.T) {
 	}
 }
 
-// TestPlanOnlyFieldsAreComputed verifies that fields with tfPlanOnly:"true"
-// have Computed: true in their schema definitions.
+// TestPlanOnlyFieldsAreComputed verifies that fields annotated
+// x-speakeasy-terraform-plan-only: true preserve plan-only behavior in
+// their generated schema blocks.
 //
-// Regression: Speakeasy 1.661.0+ drops Computed: true for plan-only fields,
-// causing perpetual diffs on every terraform plan.
+// Background: Speakeasy 1.661.0–1.677.x dropped `Computed: true` on these
+// fields, causing perpetual diffs. Upstream fix shipped in v1.678.1 via
+// speakeasy-api/speakeasy#1770, which switched the implementation to an
+// attribute-defined plan modifier (UseConfigValue) instead of `Computed: true`.
+// Either pattern is acceptable for our purposes — both prevent the perpetual
+// diff. The test fails only if neither is present.
 func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 	data, err := os.ReadFile("custom_app_entitlement_resource.go")
 	if err != nil {
@@ -47,7 +52,6 @@ func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 	content := string(data)
 
 	// Fields annotated with x-speakeasy-terraform-plan-only: true in overlay.yaml.
-	// Their schema blocks must include Computed: true.
 	planOnlyFields := []string{
 		"provision_policy",
 		"duration_grant",
@@ -62,11 +66,13 @@ func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 		if idx == -1 {
 			continue
 		}
-		// Computed: true should appear within the next 200 chars of the schema definition.
-		end := min(idx+200, len(content))
+		// Either marker should appear within the next 300 chars of the schema definition.
+		end := min(idx+300, len(content))
 		window := content[idx:end]
-		if !strings.Contains(window, "Computed:") {
-			t.Errorf("field %q: schema block missing Computed: true (perpetual diff regression)", field)
+		hasComputed := strings.Contains(window, "Computed:")
+		hasUseConfigValue := strings.Contains(window, "UseConfigValue()")
+		if !hasComputed && !hasUseConfigValue {
+			t.Errorf("field %q: schema block missing both Computed: true and UseConfigValue() plan modifier (perpetual diff regression)", field)
 		}
 	}
 }
@@ -103,6 +109,40 @@ func TestNullableNestedStructsHaveElseBranch(t *testing.T) {
 		// contain BoolNull() calls for the else branch.
 		if !strings.Contains(content, "BoolNull()") {
 			t.Errorf("%s: accesses ActorObjectPermissions but has no BoolNull() else branch", f)
+		}
+	}
+}
+
+// TestNestedDeletedAtSchemaAttribute verifies that resource schemas nesting
+// entity-root types (AppEntitlement, User, Directory) declare the deleted_at
+// attribute in their nested SingleNestedAttribute block.
+//
+// Regression: Speakeasy's x-speakeasy-soft-delete-property handling correctly
+// strips deleted_at from the resource schema when the field sits on the entity
+// root, but on nested uses of the same shared struct it leaves the field on
+// the Go struct while omitting the schema attribute. The resulting
+// struct/schema mismatch crashes terraform plan/apply with
+// "Mismatch between struct and object type: Struct defines fields not found
+// in object: deleted_at". Patched by patches/02-deleted-at-on-nested-resources.patch.
+func TestNestedDeletedAtSchemaAttribute(t *testing.T) {
+	// Resource files that nest a *tfTypes.{AppEntitlement,User,Directory}
+	// and therefore need deleted_at restored after every regen.
+	resourceFiles := []string{
+		"app_entitlement_owner_entitlement_resource.go",
+		"app_owner_entitlement_resource.go",
+		"app_entitlement_owner_user_resource.go",
+		"app_owner_user_resource.go",
+		"directory_resource.go",
+	}
+
+	for _, f := range resourceFiles {
+		data, err := os.ReadFile(f)
+		if err != nil {
+			t.Errorf("reading %s: %v", f, err)
+			continue
+		}
+		if !strings.Contains(string(data), `"deleted_at":`) {
+			t.Errorf("%s: nested schema missing \"deleted_at\" attribute (IGA-1774 regression); apply patches/02-deleted-at-on-nested-resources.patch", f)
 		}
 	}
 }

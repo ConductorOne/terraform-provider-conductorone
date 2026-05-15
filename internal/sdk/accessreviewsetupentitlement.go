@@ -30,7 +30,7 @@ func newAccessReviewSetupEntitlement(rootSDK *ConductoroneAPI, sdkConfig config.
 }
 
 // GetCampaignScopeAndEntitlements - Get Campaign Scope And Entitlements
-// Invokes the c1.api.accessreview.v1.AccessReviewSetupEntitlementService.GetCampaignScopeAndEntitlements method.
+// GetCampaignScopeAndEntitlements retrieves the current scope configuration and selected entitlements for an access review campaign.
 func (s *AccessReviewSetupEntitlement) GetCampaignScopeAndEntitlements(ctx context.Context, request operations.C1APIAccessreviewV1AccessReviewSetupEntitlementServiceGetCampaignScopeAndEntitlementsRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewSetupEntitlementServiceGetCampaignScopeAndEntitlementsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -148,6 +148,7 @@ func (s *AccessReviewSetupEntitlement) GetCampaignScopeAndEntitlements(ctx conte
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -161,7 +162,7 @@ func (s *AccessReviewSetupEntitlement) GetCampaignScopeAndEntitlements(ctx conte
 }
 
 // SetCampaignScopeAndEntitlements - Set Campaign Scope And Entitlements
-// Invokes the c1.api.accessreview.v1.AccessReviewSetupEntitlementService.SetCampaignScopeAndEntitlements method.
+// SetCampaignScopeAndEntitlements replaces the scope configuration and selected entitlements for an access review campaign.
 func (s *AccessReviewSetupEntitlement) SetCampaignScopeAndEntitlements(ctx context.Context, request operations.C1APIAccessreviewV1AccessReviewSetupEntitlementServiceSetCampaignScopeAndEntitlementsRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewSetupEntitlementServiceSetCampaignScopeAndEntitlementsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -298,7 +299,7 @@ func (s *AccessReviewSetupEntitlement) SetCampaignScopeAndEntitlements(ctx conte
 }
 
 // SetCampaignScopeByResourceType - Set Campaign Scope By Resource Type
-// Invokes the c1.api.accessreview.v1.AccessReviewSetupEntitlementService.SetCampaignScopeByResourceType method.
+// SetCampaignScopeByResourceType sets the campaign scope by selecting specific resource types to include in the review.
 func (s *AccessReviewSetupEntitlement) SetCampaignScopeByResourceType(ctx context.Context, request operations.C1APIAccessreviewV1AccessReviewSetupEntitlementServiceSetCampaignScopeByResourceTypeRequest, opts ...operations.Option) (*operations.C1APIAccessreviewV1AccessReviewSetupEntitlementServiceSetCampaignScopeByResourceTypeResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

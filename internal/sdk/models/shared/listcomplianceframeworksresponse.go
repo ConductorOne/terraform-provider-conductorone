@@ -2,11 +2,11 @@
 
 package shared
 
-// The ListComplianceFrameworksResponse message.
+// ListComplianceFrameworksResponse is the response for listing compliance framework attribute values.
 type ListComplianceFrameworksResponse struct {
-	// The list field.
+	// The list of compliance framework attribute values.
 	List []AttributeValue `json:"list,omitempty"`
-	// The nextPageToken field.
+	// The token to retrieve the next page of results, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

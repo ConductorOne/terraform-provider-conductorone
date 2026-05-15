@@ -18,6 +18,9 @@ func (c *C1APIIamV1PersonalClientServiceGetRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apiiamv1personalclientservicegetrequest
+// #endregion class-body-c1apiiamv1personalclientservicegetrequest
+
 type C1APIIamV1PersonalClientServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIIamV1PersonalClientServiceGetResponse) GetPersonalClientServiceGet
 	}
 	return c.PersonalClientServiceGetResponse
 }
+
+// #region class-body-c1apiiamv1personalclientservicegetresponse
+// #endregion class-body-c1apiiamv1personalclientservicegetresponse

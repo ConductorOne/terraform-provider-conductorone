@@ -14,7 +14,7 @@ type C1APIVaultV1VaultServiceCreateResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// VaultServiceCreateResponse is the response message for creating a new vault.
 	VaultServiceCreateResponse *shared.VaultServiceCreateResponse
 }
 
@@ -45,3 +45,6 @@ func (c *C1APIVaultV1VaultServiceCreateResponse) GetVaultServiceCreateResponse()
 	}
 	return c.VaultServiceCreateResponse
 }
+
+// #region class-body-c1apivaultv1vaultservicecreateresponse
+// #endregion class-body-c1apivaultv1vaultservicecreateresponse

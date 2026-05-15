@@ -18,6 +18,9 @@ func (c *C1APIServicePrincipalV1ServicePrincipalServiceGetRequest) GetID() strin
 	return c.ID
 }
 
+// #region class-body-c1apiserviceprincipalv1serviceprincipalservicegetrequest
+// #endregion class-body-c1apiserviceprincipalv1serviceprincipalservicegetrequest
+
 type C1APIServicePrincipalV1ServicePrincipalServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIServicePrincipalV1ServicePrincipalServiceGetResponse) GetServicePr
 	}
 	return c.ServicePrincipalServiceGetResponse
 }
+
+// #region class-body-c1apiserviceprincipalv1serviceprincipalservicegetresponse
+// #endregion class-body-c1apiserviceprincipalv1serviceprincipalservicegetresponse

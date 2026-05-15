@@ -7,7 +7,7 @@ import (
 )
 
 type CloseAction struct {
-	UserIDCel      types.String `tfsdk:"user_id_cel"`
 	UserRef        *UserRef     `tfsdk:"user_ref"`
 	UseSubjectUser types.Bool   `tfsdk:"use_subject_user"`
+	UserIDCel      types.String `tfsdk:"user_id_cel"`
 }

@@ -2,35 +2,27 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type FunctionTypes string
 
 const (
 	FunctionTypesFunctionTypeUnspecified FunctionTypes = "FUNCTION_TYPE_UNSPECIFIED"
 	FunctionTypesFunctionTypeAny         FunctionTypes = "FUNCTION_TYPE_ANY"
+	FunctionTypesFunctionTypeCodeMode    FunctionTypes = "FUNCTION_TYPE_CODE_MODE"
 )
 
 func (e FunctionTypes) ToPointer() *FunctionTypes {
 	return &e
 }
-func (e *FunctionTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FunctionTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE":
+			return true
+		}
 	}
-	switch v {
-	case "FUNCTION_TYPE_UNSPECIFIED":
-		fallthrough
-	case "FUNCTION_TYPE_ANY":
-		*e = FunctionTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FunctionTypes: %v", v)
-	}
+	return false
 }
 
 // The FunctionsSearchRequest message.

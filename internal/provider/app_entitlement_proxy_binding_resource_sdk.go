@@ -55,6 +55,8 @@ func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedCreateAppEnti
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -72,6 +74,8 @@ func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedGetAppEntitle
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -93,19 +97,11 @@ func (r *AppEntitlementProxyBindingResourceModel) ToOperationsC1APIAppV1AppEntit
 	var dstAppEntitlementID string
 	dstAppEntitlementID = r.DstAppEntitlementID.ValueString()
 
-	createAppEntitlementProxyRequest, createAppEntitlementProxyRequestDiags := r.ToSharedCreateAppEntitlementProxyRequest(ctx)
-	diags.Append(createAppEntitlementProxyRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIAppV1AppEntitlementsProxyCreateRequest{
-		SrcAppID:                         srcAppID,
-		SrcAppEntitlementID:              srcAppEntitlementID,
-		DstAppID:                         dstAppID,
-		DstAppEntitlementID:              dstAppEntitlementID,
-		CreateAppEntitlementProxyRequest: createAppEntitlementProxyRequest,
+		SrcAppID:            srcAppID,
+		SrcAppEntitlementID: srcAppEntitlementID,
+		DstAppID:            dstAppID,
+		DstAppEntitlementID: dstAppEntitlementID,
 	}
 
 	return &out, diags

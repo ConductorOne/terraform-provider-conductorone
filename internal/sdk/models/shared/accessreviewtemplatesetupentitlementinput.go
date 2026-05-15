@@ -2,11 +2,11 @@
 
 package shared
 
-// The AccessReviewTemplateSetupEntitlementInput message.
+// AccessReviewTemplateSetupEntitlementInput - Identifies an entitlement to add or remove from a template's setup.
 type AccessReviewTemplateSetupEntitlementInput struct {
-	// The appEntitlementId field.
+	// The ID of the entitlement.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
-	// The appId field.
+	// The ID of the application that owns the entitlement.
 	AppID *string `json:"appId,omitempty"`
 }
 

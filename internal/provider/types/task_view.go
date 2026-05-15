@@ -7,16 +7,19 @@ import (
 )
 
 type TaskView struct {
+	Task                 *Task        `tfsdk:"task"`
 	AccessReviewPath     types.String `tfsdk:"access_review_path"`
 	AppPath              types.String `tfsdk:"app_path"`
-	ApproversPath        types.String `tfsdk:"approvers_path"`
 	AppUserLastUsagePath types.String `tfsdk:"app_user_last_usage_path"`
 	AppUserPath          types.String `tfsdk:"app_user_path"`
+	ApproversPath        types.String `tfsdk:"approvers_path"`
 	CreatedByUserPath    types.String `tfsdk:"created_by_user_path"`
 	EntitlementsPath     types.String `tfsdk:"entitlements_path"`
 	IdentityUserPath     types.String `tfsdk:"identity_user_path"`
 	InsightsPath         types.String `tfsdk:"insights_path"`
+	ResourceBindingsPath types.String `tfsdk:"resource_bindings_path"`
+	RoleResourcePath     types.String `tfsdk:"role_resource_path"`
+	ScopeResourcePath    types.String `tfsdk:"scope_resource_path"`
 	StepApproversPath    types.String `tfsdk:"step_approvers_path"`
-	Task                 *Task        `tfsdk:"task"`
 	UserPath             types.String `tfsdk:"user_path"`
 }

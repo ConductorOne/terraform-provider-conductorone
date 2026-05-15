@@ -31,7 +31,7 @@ func newConnectorCatalog(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfigura
 }
 
 // ConfigurationSchema - Configuration Schema
-// Invokes the c1.api.integration.connector.v1.ConnectorCatalogService.ConfigurationSchema method.
+// Return the configuration schema describing the fields required to set up a connector of the specified type.
 func (s *ConnectorCatalog) ConfigurationSchema(ctx context.Context, request *shared.ConnectorCatalogServiceConfigurationSchemaRequest, opts ...operations.Option) (*operations.C1APIIntegrationConnectorV1ConnectorCatalogServiceConfigurationSchemaResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

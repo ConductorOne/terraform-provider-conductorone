@@ -31,7 +31,7 @@ func newAppEntitlementUserBinding(rootSDK *ConductoroneAPI, sdkConfig config.SDK
 }
 
 // RemoveGrantDuration - Remove Grant Duration
-// Invokes the c1.api.app.v1.AppEntitlementUserBindingService.RemoveGrantDuration method.
+// Remove the expiration time from a grant, converting it to an indefinite (standing) grant.
 func (s *AppEntitlementUserBinding) RemoveGrantDuration(ctx context.Context, request operations.C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementUserBindingServiceRemoveGrantDurationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -168,7 +168,7 @@ func (s *AppEntitlementUserBinding) RemoveGrantDuration(ctx context.Context, req
 }
 
 // UpdateGrantDuration - Update Grant Duration
-// Invokes the c1.api.app.v1.AppEntitlementUserBindingService.UpdateGrantDuration method.
+// Update the expiration time of an existing grant, changing when automatic revocation will occur.
 func (s *AppEntitlementUserBinding) UpdateGrantDuration(ctx context.Context, request operations.C1APIAppV1AppEntitlementUserBindingServiceUpdateGrantDurationRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementUserBindingServiceUpdateGrantDurationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -435,7 +435,7 @@ func (s *AppEntitlementUserBinding) ListAppUsersForIdentityWithGrant(ctx context
 }
 
 // SearchGrantFeed - Search Grant Feed
-// Invokes the c1.api.app.v1.AppEntitlementUserBindingService.SearchGrantFeed method.
+// Search a chronological feed of grant and revoke events, filtered by app user, entitlement, or time range.
 func (s *AppEntitlementUserBinding) SearchGrantFeed(ctx context.Context, request *shared.SearchGrantFeedRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementUserBindingServiceSearchGrantFeedResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -572,7 +572,7 @@ func (s *AppEntitlementUserBinding) SearchGrantFeed(ctx context.Context, request
 }
 
 // SearchPastGrants - Search Past Grants
-// Invokes the c1.api.app.v1.AppEntitlementUserBindingService.SearchPastGrants method.
+// Search historical grants that have been revoked, filtered by app user or entitlement.
 func (s *AppEntitlementUserBinding) SearchPastGrants(ctx context.Context, request *shared.SearchPastGrantsRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementUserBindingServiceSearchPastGrantsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

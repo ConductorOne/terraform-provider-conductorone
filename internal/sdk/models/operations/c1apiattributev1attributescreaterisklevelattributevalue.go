@@ -45,3 +45,6 @@ func (c *C1APIAttributeV1AttributesCreateRiskLevelAttributeValueResponse) GetCre
 	}
 	return c.CreateRiskLevelAttributeValueResponse
 }
+
+// #region class-body-c1apiattributev1attributescreaterisklevelattributevalueresponse
+// #endregion class-body-c1apiattributev1attributescreaterisklevelattributevalueresponse

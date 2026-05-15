@@ -174,12 +174,12 @@ This message contains a oneof named access_conflicts_scope. Only a single field 
 This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
   - resourceSelection (see [below for nested schema](#nestedatt--access_review_scope_v2))
 - `access_review_template_setup_entitlement_expand_mask` (Attributes) The AccessReviewTemplateSetupEntitlementExpandMask message. (see [below for nested schema](#nestedatt--access_review_template_setup_entitlement_expand_mask))
-- `entitlements` (Attributes List) The entitlements field. (see [below for nested schema](#nestedatt--entitlements))
+- `entitlements` (Attributes List) The entitlements to include in the template. Replaces all previously selected entitlements. (see [below for nested schema](#nestedatt--entitlements))
 
 ### Read-Only
 
-- `expanded` (Attributes List) The expanded field. (see [below for nested schema](#nestedatt--expanded))
-- `list` (Attributes List) The list field. (see [below for nested schema](#nestedatt--list))
+- `expanded` (Attributes List) Related objects requested via the expand mask. (see [below for nested schema](#nestedatt--expanded))
+- `list` (Attributes List) The current list of setup entitlements for the template. (see [below for nested schema](#nestedatt--list))
 
 <a id="nestedatt--access_review_scope_v2"></a>
 ### Nested Schema for `access_review_scope_v2`
@@ -213,7 +213,7 @@ This message contains a oneof named criteria_filter. Only a single field of the 
 
 Optional:
 
-- `account_domain` (String) The accountDomain field. must be one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]
+- `account_domain` (String) The accountDomain field. possible known values include one of ["APP_USER_DOMAIN_UNSPECIFIED", "APP_USER_DOMAIN_EXTERNAL", "APP_USER_DOMAIN_TRUSTED"]
 - `account_types` (List of String) The accountTypes field.
 - `app_user_statuses` (List of String) The appUserStatuses field.
 - `no_account_owner` (Boolean) The noAccountOwner field.
@@ -274,8 +274,8 @@ Optional:
 - `days_since_reviewed` (String)
 - `grant_access_profile_filter` (Attributes) The GrantAccessProfileFilter message. (see [below for nested schema](#nestedatt--access_review_scope_v2--grants_by_criteria_scope--grant_access_profile_filter))
 - `grants_added_between` (Attributes) The GrantsAddedBetween message. (see [below for nested schema](#nestedatt--access_review_scope_v2--grants_by_criteria_scope--grants_added_between))
-- `source_filter` (String) The sourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
-- `type_filter` (String) The typeFilter field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
+- `source_filter` (String) The sourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
+- `type_filter` (String) The typeFilter field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
 
 <a id="nestedatt--access_review_scope_v2--grants_by_criteria_scope--grant_access_profile_filter"></a>
 ### Nested Schema for `access_review_scope_v2.grants_by_criteria_scope.grant_access_profile_filter`
@@ -285,7 +285,7 @@ Optional:
 - `excluded_access_profile_ids` (List of String) Access profile IDs to EXCLUDE from the campaign
  Used when filter_type = EXCLUDE_SPECIFIC
  Max 32 profile IDs
-- `filter_type` (String) The filterType field. must be one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]
+- `filter_type` (String) The filterType field. possible known values include one of ["ACCESS_PROFILE_FILTER_TYPE_UNSPECIFIED", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_ALL", "ACCESS_PROFILE_FILTER_TYPE_EXCLUDE_SPECIFIC", "ACCESS_PROFILE_FILTER_TYPE_INCLUDE_SPECIFIC"]
 - `included_access_profile_ids` (List of String) Access profile IDs to INCLUDE in the campaign
  Used when filter_type = INCLUDE_SPECIFIC
  Max 32 profile IDs
@@ -375,8 +375,8 @@ Optional:
 
 Optional:
 
-- `app_entitlement_id` (String) The appEntitlementId field.
-- `app_id` (String) The appId field.
+- `app_entitlement_id` (String) The ID of the entitlement.
+- `app_id` (String) The ID of the application that owns the entitlement.
 
 
 <a id="nestedatt--expanded"></a>
@@ -388,7 +388,7 @@ Optional:
 
 Read-Only:
 
-- `access_review_template_setup_entitlement` (Attributes) The AccessReviewTemplateSetupEntitlement message. (see [below for nested schema](#nestedatt--list--access_review_template_setup_entitlement))
+- `access_review_template_setup_entitlement` (Attributes) An entitlement that has been selected for inclusion in an access review template's scope. (see [below for nested schema](#nestedatt--list--access_review_template_setup_entitlement))
 - `app_path` (String) The appPath field.
 - `entitlement_path` (String) The entitlementPath field.
 - `policy_path` (String) The policyPath field.
@@ -398,15 +398,15 @@ Read-Only:
 
 Read-Only:
 
-- `access_review_template_id` (String) The accessReviewTemplateId field.
-- `app_entitlement_id` (String) The appEntitlementId field.
-- `app_id` (String) The appId field.
-- `app_resource_id` (String) The appResourceId field.
-- `app_resource_type_id` (String) The appResourceTypeId field.
+- `access_review_template_id` (String) The ID of the access review template this entitlement belongs to.
+- `app_entitlement_id` (String) The ID of the entitlement to be reviewed.
+- `app_id` (String) The ID of the application that owns the entitlement.
+- `app_resource_id` (String) The ID of the specific resource associated with this entitlement, if applicable.
+- `app_resource_type_id` (String) The ID of the resource type associated with this entitlement, if applicable.
 - `created_at` (String)
-- `custom_policy_id` (String) The customPolicyId field.
-- `policy_id` (String) The policyId field.
-- `tenant_id` (String) The tenantId field.
+- `custom_policy_id` (String) An override policy ID for this specific entitlement. Populated when use_policy_override is enabled on the template.
+- `policy_id` (String) The ID of the review policy applied to this entitlement. Defaults to the template policy.
+- `tenant_id` (String) The tenant that owns this setup entitlement.
 - `updated_at` (String)
 
 ## Import

@@ -26,6 +26,9 @@ func (c *C1APIIamV1RolesListRequest) GetPageToken() *string {
 	return c.PageToken
 }
 
+// #region class-body-c1apiiamv1roleslistrequest
+// #endregion class-body-c1apiiamv1roleslistrequest
+
 type C1APIIamV1RolesListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIIamV1RolesListResponse) GetListRolesResponse() *shared.ListRolesRe
 	}
 	return c.ListRolesResponse
 }
+
+// #region class-body-c1apiiamv1roleslistresponse
+// #endregion class-body-c1apiiamv1roleslistresponse

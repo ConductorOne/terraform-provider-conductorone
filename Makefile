@@ -52,13 +52,58 @@ gen:
 		exit 1; \
 	fi; \
 	DATE=$$(date +%Y%m%d%H%M%S); \
-	FILENAME="openapi_$$DATE.yaml"; \
-	FILENAME2="combined_$$DATE.yaml"; \
-	trap 'rm -f $$FILENAME $$FILENAME2' EXIT; \
-	curl -sSL -o $$FILENAME https://insulator.conductor.one/api/v1/openapi.yaml && \
-	speakeasy overlay apply -s $$FILENAME -o overlay.yaml >> $$FILENAME2 && \
-	speakeasy generate sdk -s $$FILENAME2 -o . -l terraform -d
+	COMBINED="combined_$$DATE.yaml"; \
+	trap 'rm -f $$COMBINED' EXIT; \
+	curl -sSL -o openapi.yaml https://insulator.conductor.one/api/v1/openapi.yaml && \
+	speakeasy overlay apply -s openapi.yaml -o overlay.yaml >> $$COMBINED && \
+	speakeasy generate sdk -s $$COMBINED -o . -l terraform -d
+	$(MAKE) apply-patches
 	$(MAKE) vendor
+	@$(MAKE) check
+
+# bin/check: static-audit binary with subcommands that surface regen drift —
+# constructors generated but not registered, registered constructors missing
+# example HCL or rendered docs, tfsdk: tags violating snake_case / reserved
+# keyword rules, and TODO markers in Speakeasy-generated code. Output is
+# informational by default; pass -strict to upgrade findings to exit 1 for
+# CI gating once the historical backlog is clean. See IGA-1741.
+bin/check:
+	go build -o $@ ./tools/check
+
+# check: run every audit subcommand. Default target invoked at the end of
+# `make gen` so reviewers see drift surfaced inline rather than discovering
+# it post-merge.
+.PHONY: check
+check: bin/check
+	@./bin/check all
+
+# Per-subcommand convenience targets — same binary, narrower scope.
+.PHONY: check-unregistered
+check-unregistered: bin/check
+	@./bin/check unregistered
+
+.PHONY: check-docs-coverage
+check-docs-coverage: bin/check
+	@./bin/check docs-coverage
+
+.PHONY: check-tag-parity
+check-tag-parity: bin/check
+	@./bin/check tag-parity
+
+.PHONY: check-todo-markers
+check-todo-markers: bin/check
+	@./bin/check todo-markers
+
+# apply-patches: applies every unified-diff patch in patches/ in filename order.
+# These are hand-fixes for Speakeasy regressions that the regen wipes on every
+# run. See patches/README.md.
+.PHONY: apply-patches
+apply-patches:
+	@for patch in patches/*.patch; do \
+		[ -e "$$patch" ] || continue; \
+		echo "Applying $$patch"; \
+		git apply "$$patch" || { echo "ERROR: failed to apply $$patch"; exit 1; }; \
+	done
 	
 
 .PHONY: test
@@ -124,6 +169,27 @@ install-hooks:
 	@echo "Note: golangci-lint v1.x (>= v1.63.0) is required for 'make lint' to work."
 	@echo "      Install: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8"
 
+# tfplugindocs subcommands (generate / validate).
+#
+# --provider-name matches what Speakeasy's CI uses (filepath.Base of the
+# checkout dir = "terraform-provider-conductorone"), so output is stable
+# regardless of local worktree name.
+#
+# We build the binary (pinned via tools/tools.go) and invoke it from the repo
+# root so its --provider-dir / --examples-dir / --templates-dir defaults
+# resolve to the repo's own directories. Running tfplugindocs as
+# `cd tools && go run ...` is functionally equivalent but obscures the default
+# resolution and rebuilds the binary on every invocation.
+bin/tfplugindocs:
+	go build -o $@ github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+
+# generate: regenerate docs/ from the live provider schema + templates/ + examples/.
 .PHONY: generate
-generate: fmt
-	cd tools; go generate ./...
+generate: bin/tfplugindocs
+	./bin/tfplugindocs generate --provider-name terraform-provider-conductorone
+
+# validate-docs: lint the generated docs structure (frontmatter, schema, links).
+# Read-only; safe to run in CI alongside generate.
+.PHONY: validate-docs
+validate-docs: bin/tfplugindocs
+	./bin/tfplugindocs validate --provider-name terraform-provider-conductorone

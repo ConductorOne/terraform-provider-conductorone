@@ -2,7 +2,21 @@
 
 package shared
 
-// WorkloadFederationProviderInput - WorkloadFederationProvider represents a tenant-level OIDC issuer registration.
+// WorkloadFederationProviderInput - WorkloadFederationProvider represents a tenant-level workload identity
+//
+//	issuer registration. Two issuer schemes are supported:
+//
+//	  - https://...   classic OIDC issuer; `settings.oidc` MUST be set.
+//	  - spiffe://...  SPIFFE trust-domain URI; `settings.spiffe` MUST be set.
+//
+//	The (well_known_provider, issuer_url scheme, settings oneof) tuple is a
+//	tri-invariant: SPIFFE wkp ⟺ spiffe:// issuer ⟺ settings.spiffe set; any
+//	other wkp ⟺ https:// issuer ⟺ settings.oidc set. Issuer URLs are unique
+//	within tenant.
+//
+// This message contains a oneof named settings. Only a single field of the following list may be set at a time:
+//   - oidc
+//   - spiffe
 type WorkloadFederationProviderInput struct {
 	// A description of what this provider is for.
 	Description *string `json:"description,omitempty"`
@@ -10,6 +24,14 @@ type WorkloadFederationProviderInput struct {
 	Disabled *bool `json:"disabled,omitempty"`
 	// The display name of the provider.
 	DisplayName *string `json:"displayName,omitempty"`
+	// OIDCSettings is the kind-specific configuration block for classic OIDC
+	//  providers (GitHub Actions, GitLab CI, HCP Terraform, AWS IAM Outbound,
+	//  any CUSTOM provider). Empty for now; future fields like custom_jwks_url,
+	//  audience overrides, and required_claims land here.
+	OIDCSettings *OIDCSettings `json:"oidc,omitempty"`
+	// SPIFFESettings is the kind-specific configuration block for SPIFFE
+	//  trust-domain providers (issuer_url = spiffe://<trust-domain>).
+	SPIFFESettings *SPIFFESettings `json:"spiffe,omitempty"`
 }
 
 func (w *WorkloadFederationProviderInput) GetDescription() *string {
@@ -31,4 +53,18 @@ func (w *WorkloadFederationProviderInput) GetDisplayName() *string {
 		return nil
 	}
 	return w.DisplayName
+}
+
+func (w *WorkloadFederationProviderInput) GetOIDCSettings() *OIDCSettings {
+	if w == nil {
+		return nil
+	}
+	return w.OIDCSettings
+}
+
+func (w *WorkloadFederationProviderInput) GetSPIFFESettings() *SPIFFESettings {
+	if w == nil {
+		return nil
+	}
+	return w.SPIFFESettings
 }

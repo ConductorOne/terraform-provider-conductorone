@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // Severity - The severity field.
 type Severity string
 
@@ -21,26 +16,16 @@ const (
 func (e Severity) ToPointer() *Severity {
 	return &e
 }
-func (e *Severity) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Severity) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "UNKNOWN", "HINT", "INFO", "WARNING", "ERROR":
+			return true
+		}
 	}
-	switch v {
-	case "UNKNOWN":
-		fallthrough
-	case "HINT":
-		fallthrough
-	case "INFO":
-		fallthrough
-	case "WARNING":
-		fallthrough
-	case "ERROR":
-		*e = Severity(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Severity: %v", v)
-	}
+	return false
 }
 
 // The EditorMarker message.

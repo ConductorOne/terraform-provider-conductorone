@@ -45,3 +45,6 @@ func (c *C1APIAuthV1AuthIntrospectResponse) GetIntrospectResponse() *shared.Intr
 	}
 	return c.IntrospectResponse
 }
+
+// #region class-body-c1apiauthv1authintrospectresponse
+// #endregion class-body-c1apiauthv1authintrospectresponse

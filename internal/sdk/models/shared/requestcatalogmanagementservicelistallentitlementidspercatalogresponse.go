@@ -2,9 +2,9 @@
 
 package shared
 
-// The RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse message.
+// RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse - The response message containing all requestable entitlement references in the catalog.
 type RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse struct {
-	// The refs field.
+	// The complete list of app entitlement references in this catalog.
 	AppEntitlements []AppEntitlementRef `json:"refs,omitempty"`
 }
 

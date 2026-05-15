@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceReassignRequest) GetTaskActionsServiceReas
 	return c.TaskActionsServiceReassignRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsservicereassignrequest
+// #endregion class-body-c1apitaskv1taskactionsservicereassignrequest
+
 type C1APITaskV1TaskActionsServiceReassignResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceReassignResponse) GetTaskActionsServiceRea
 	}
 	return c.TaskActionsServiceReassignResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsservicereassignresponse
+// #endregion class-body-c1apitaskv1taskactionsservicereassignresponse

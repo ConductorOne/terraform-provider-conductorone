@@ -7,11 +7,11 @@ import (
 )
 
 type Directory struct {
-	AppID                     types.String               `tfsdk:"app_id"`
-	CreatedAt                 types.String               `tfsdk:"created_at"`
-	DeletedAt                 types.String               `tfsdk:"deleted_at"`
 	DirectoryAccountFilterAll *DirectoryAccountFilterAll `tfsdk:"directory_account_filter_all"`
 	DirectoryAccountFilterCel *DirectoryAccountFilterCel `tfsdk:"directory_account_filter_cel"`
 	DirectoryMergeConfig      *DirectoryMergeConfig      `tfsdk:"directory_merge_config"`
+	AppID                     types.String               `tfsdk:"app_id"`
+	CreatedAt                 types.String               `tfsdk:"created_at"`
+	DeletedAt                 types.String               `tfsdk:"deleted_at"`
 	UpdatedAt                 types.String               `tfsdk:"updated_at"`
 }

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // RequestCatalogManagementServiceCreateRequestEnrollmentBehavior - Defines how to handle the request policies of the entitlements in the catalog during enrollment.
 type RequestCatalogManagementServiceCreateRequestEnrollmentBehavior string
 
@@ -19,22 +14,16 @@ const (
 func (e RequestCatalogManagementServiceCreateRequestEnrollmentBehavior) ToPointer() *RequestCatalogManagementServiceCreateRequestEnrollmentBehavior {
 	return &e
 }
-func (e *RequestCatalogManagementServiceCreateRequestEnrollmentBehavior) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCatalogManagementServiceCreateRequestEnrollmentBehavior) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY":
+			return true
+		}
 	}
-	switch v {
-	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED":
-		fallthrough
-	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY":
-		fallthrough
-	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY":
-		*e = RequestCatalogManagementServiceCreateRequestEnrollmentBehavior(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCatalogManagementServiceCreateRequestEnrollmentBehavior: %v", v)
-	}
+	return false
 }
 
 // RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior - Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
@@ -50,24 +39,16 @@ const (
 func (e RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior) ToPointer() *RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior {
 	return &e
 }
-func (e *RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED":
+			return true
+		}
 	}
-	switch v {
-	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED":
-		fallthrough
-	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS":
-		fallthrough
-	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL":
-		fallthrough
-	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED":
-		*e = RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior: %v", v)
-	}
+	return false
 }
 
 // RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior - Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
@@ -82,26 +63,29 @@ const (
 func (e RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior) ToPointer() *RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior {
 	return &e
 }
-func (e *RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS", "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE":
+			return true
+		}
 	}
-	switch v {
-	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED":
-		fallthrough
-	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS":
-		fallthrough
-	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE":
-		*e = RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior: %v", v)
-	}
+	return false
 }
 
 // RequestCatalogManagementServiceCreateRequest - Create a request catalog.
 type RequestCatalogManagementServiceCreateRequest struct {
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+	//  with `c1/` are reserved for server-managed use and rejected on write.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The description of the new request catalog.
 	Description *string `json:"description,omitempty"`
 	// The display name of the new request catalog.
@@ -118,6 +102,13 @@ type RequestCatalogManagementServiceCreateRequest struct {
 	UnenrollmentEntitlementBehavior *RequestCatalogManagementServiceCreateRequestUnenrollmentEntitlementBehavior `json:"unenrollmentEntitlementBehavior,omitempty"`
 	// Whether or not the new catalog is visible to everyone by default.
 	VisibleToEveryone *bool `json:"visibleToEveryone,omitempty"`
+}
+
+func (r *RequestCatalogManagementServiceCreateRequest) GetAnnotations() map[string]string {
+	if r == nil {
+		return nil
+	}
+	return r.Annotations
 }
 
 func (r *RequestCatalogManagementServiceCreateRequest) GetDescription() *string {

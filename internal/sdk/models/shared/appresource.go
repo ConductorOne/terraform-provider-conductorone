@@ -18,6 +18,20 @@ type AppResource struct {
 	// The access config ID for this resource. May be empty.
 	//  Must be one of the builtin access config IDs or empty.
 	AccessConfigID *string `json:"accessConfigId,omitempty"`
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	//
+	//  Most AppResources are connector-synced; user-supplied annotations on
+	//  a synced resource will be overwritten by the next sync. The
+	//  annotations bag is most useful on user-created groups (the
+	//  `conductorone_app_resource` TF resource).
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The app that this resource belongs to.
 	AppID *string `json:"appId,omitempty"`
 	// The resource type that this resource is.
@@ -30,6 +44,9 @@ type AppResource struct {
 	Description *string `json:"description,omitempty"`
 	// The display name for this resource.
 	DisplayName *string `json:"displayName,omitempty"`
+	// The upstream product's native external ID for this resource (e.g. an Okta group ID).
+	//  Populated from the connector's external ID during sync.
+	ExternalID *string `json:"externalId,omitempty"`
 	// The number of grants to this resource.
 	GrantCount *string `json:"grantCount,omitempty"`
 	// The id of the resource.
@@ -62,6 +79,13 @@ func (a *AppResource) GetAccessConfigID() *string {
 		return nil
 	}
 	return a.AccessConfigID
+}
+
+func (a *AppResource) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *AppResource) GetAppID() *string {
@@ -111,6 +135,13 @@ func (a *AppResource) GetDisplayName() *string {
 		return nil
 	}
 	return a.DisplayName
+}
+
+func (a *AppResource) GetExternalID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ExternalID
 }
 
 func (a *AppResource) GetGrantCount() *string {

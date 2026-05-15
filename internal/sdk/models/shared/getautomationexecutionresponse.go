@@ -10,7 +10,7 @@ type GetAutomationExecutionResponseExpanded struct {
 type GetAutomationExecutionResponse struct {
 	// The AutomationExecution message.
 	AutomationExecution *AutomationExecution `json:"automationExecution,omitempty"`
-	// The expanded field.
+	// Related objects requested via the expand mask.
 	Expanded []GetAutomationExecutionResponseExpanded `json:"expanded,omitempty"`
 	// The AutomationExecutionView message.
 	AutomationExecutionView *AutomationExecutionView `json:"view,omitempty"`

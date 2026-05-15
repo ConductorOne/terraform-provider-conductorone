@@ -2,9 +2,9 @@
 
 package shared
 
-// The UserNotificationSettings message.
+// UserNotificationSettings contains the calling user's personal notification preferences.
 type UserNotificationSettings struct {
-	// The ChannelSettings message.
+	// ChannelSettings groups notification preferences for all supported channels.
 	ChannelSettings *ChannelSettings `json:"channelSettings,omitempty"`
 }
 

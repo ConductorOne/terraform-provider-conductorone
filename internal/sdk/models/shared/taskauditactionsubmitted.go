@@ -4,13 +4,13 @@ package shared
 
 // The TaskAuditActionSubmitted message.
 type TaskAuditActionSubmitted struct {
-	// The TaskAction message.
-	TaskAction *TaskAction1 `json:"action,omitempty"`
+	// Represents a single action that was performed on a task.
+	SubmittedTaskAction *SubmittedTaskAction `json:"action,omitempty"`
 }
 
-func (t *TaskAuditActionSubmitted) GetTaskAction() *TaskAction1 {
+func (t *TaskAuditActionSubmitted) GetSubmittedTaskAction() *SubmittedTaskAction {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAction
+	return t.SubmittedTaskAction
 }

@@ -2,9 +2,9 @@
 
 package shared
 
-// The EditorValidateResponse message.
+// The EditorValidateResponse message contains validation results.
 type EditorValidateResponse struct {
-	// The markers field.
+	// The list of diagnostic markers found during validation.
 	Markers []EditorMarker `json:"markers,omitempty"`
 }
 

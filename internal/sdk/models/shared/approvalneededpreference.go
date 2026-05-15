@@ -6,6 +6,8 @@ package shared
 type ApprovalNeededPreference struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// The locked field.
+	Locked *bool `json:"locked,omitempty"`
 }
 
 func (a *ApprovalNeededPreference) GetEnabled() *bool {
@@ -13,4 +15,11 @@ func (a *ApprovalNeededPreference) GetEnabled() *bool {
 		return nil
 	}
 	return a.Enabled
+}
+
+func (a *ApprovalNeededPreference) GetLocked() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.Locked
 }

@@ -4,7 +4,7 @@ package shared
 
 // The RemoveEntitlementMembershipRequest message.
 type RemoveEntitlementMembershipRequest struct {
-	// The appUserId field.
+	// The ID of the app user whose membership to remove.
 	AppUserID *string `json:"appUserId,omitempty"`
 }
 

@@ -26,6 +26,9 @@ func (c *C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueReques
 	return c.DeleteComplianceFrameworkAttributeValueRequest
 }
 
+// #region class-body-c1apiattributev1attributesdeletecomplianceframeworkattributevaluerequest
+// #endregion class-body-c1apiattributev1attributesdeletecomplianceframeworkattributevaluerequest
+
 type C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAttributeV1AttributesDeleteComplianceFrameworkAttributeValueRespon
 	}
 	return c.DeleteComplianceFrameworkAttributeValueResponse
 }
+
+// #region class-body-c1apiattributev1attributesdeletecomplianceframeworkattributevalueresponse
+// #endregion class-body-c1apiattributev1attributesdeletecomplianceframeworkattributevalueresponse

@@ -7,17 +7,18 @@ import (
 )
 
 type RequestCatalog struct {
-	CreatedAt                       types.String `tfsdk:"created_at"`
-	CreatedByUserID                 types.String `tfsdk:"created_by_user_id"`
-	DeletedAt                       types.String `tfsdk:"deleted_at"`
-	Description                     types.String `tfsdk:"description"`
-	DisplayName                     types.String `tfsdk:"display_name"`
-	EnrollmentBehavior              types.String `tfsdk:"enrollment_behavior"`
-	ID                              types.String `tfsdk:"id"`
-	Published                       types.Bool   `tfsdk:"published"`
-	RequestBundle                   types.Bool   `tfsdk:"request_bundle"`
-	UnenrollmentBehavior            types.String `tfsdk:"unenrollment_behavior"`
-	UnenrollmentEntitlementBehavior types.String `tfsdk:"unenrollment_entitlement_behavior"`
-	UpdatedAt                       types.String `tfsdk:"updated_at"`
-	VisibleToEveryone               types.Bool   `tfsdk:"visible_to_everyone"`
+	Annotations                     map[string]types.String `tfsdk:"annotations"`
+	CreatedAt                       types.String            `tfsdk:"created_at"`
+	CreatedByUserID                 types.String            `tfsdk:"created_by_user_id"`
+	DeletedAt                       types.String            `tfsdk:"deleted_at"`
+	Description                     types.String            `tfsdk:"description"`
+	DisplayName                     types.String            `tfsdk:"display_name"`
+	EnrollmentBehavior              types.String            `tfsdk:"enrollment_behavior"`
+	ID                              types.String            `tfsdk:"id"`
+	Published                       types.Bool              `tfsdk:"published"`
+	RequestBundle                   types.Bool              `tfsdk:"request_bundle"`
+	UnenrollmentBehavior            types.String            `tfsdk:"unenrollment_behavior"`
+	UnenrollmentEntitlementBehavior types.String            `tfsdk:"unenrollment_entitlement_behavior"`
+	UpdatedAt                       types.String            `tfsdk:"updated_at"`
+	VisibleToEveryone               types.Bool              `tfsdk:"visible_to_everyone"`
 }

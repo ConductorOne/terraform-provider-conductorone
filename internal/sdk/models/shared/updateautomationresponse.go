@@ -10,7 +10,12 @@ type UpdateAutomationResponse struct {
 	//   - circuitBreaker
 	//
 	Automation *Automation `json:"automation,omitempty"`
-	// If we create a new trigger with an HMAC secret we return the HMAC on this field
+	// One-time absolute webhook URL for capability URL authentication, shown once when the trigger is saved.
+	//  Contains the full URL including the embedded token (e.g. https://tenant.conductorone.com/api/v1/webhooks/incoming/{id}/t/{token}).
+	//  Populated only when the webhook trigger uses capability URL authentication.
+	WebhookCapabilityURL *string `json:"webhookCapabilityUrl,omitempty"`
+	// One-time HMAC shared secret, shown once when the trigger is saved.
+	//  Populated only when the webhook trigger uses HMAC authentication.
 	WebhookHmacSecret *string `json:"webhookHmacSecret,omitempty"`
 }
 
@@ -19,6 +24,13 @@ func (u *UpdateAutomationResponse) GetAutomation() *Automation {
 		return nil
 	}
 	return u.Automation
+}
+
+func (u *UpdateAutomationResponse) GetWebhookCapabilityURL() *string {
+	if u == nil {
+		return nil
+	}
+	return u.WebhookCapabilityURL
 }
 
 func (u *UpdateAutomationResponse) GetWebhookHmacSecret() *string {

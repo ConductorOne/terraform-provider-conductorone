@@ -7,8 +7,8 @@ import (
 )
 
 type AppUser struct {
-	AppID          types.String    `tfsdk:"app_id"`
 	AppUserStatus  *AppUserStatus  `tfsdk:"app_user_status"`
+	AppID          types.String    `tfsdk:"app_id"`
 	AppUserType    types.String    `tfsdk:"app_user_type"`
 	CreatedAt      types.String    `tfsdk:"created_at"`
 	DeletedAt      types.String    `tfsdk:"deleted_at"`

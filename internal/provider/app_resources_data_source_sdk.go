@@ -16,6 +16,8 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		if resp.List != nil {
 			if r.List == nil {
@@ -44,12 +46,19 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 				} else {
 					list.AppResource = &tfTypes.AppResource{}
 					list.AppResource.AccessConfigID = types.StringPointerValue(listItem.AppResource.AccessConfigID)
+					if len(listItem.AppResource.Annotations) > 0 {
+						list.AppResource.Annotations = make(map[string]types.String, len(listItem.AppResource.Annotations))
+						for key1, value1 := range listItem.AppResource.Annotations {
+							list.AppResource.Annotations[key1] = types.StringValue(value1)
+						}
+					}
 					list.AppResource.AppID = types.StringPointerValue(listItem.AppResource.AppID)
 					list.AppResource.AppResourceTypeID = types.StringPointerValue(listItem.AppResource.AppResourceTypeID)
 					list.AppResource.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.CreatedAt))
 					list.AppResource.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.DeletedAt))
 					list.AppResource.Description = types.StringPointerValue(listItem.AppResource.Description)
 					list.AppResource.DisplayName = types.StringPointerValue(listItem.AppResource.DisplayName)
+					list.AppResource.ExternalID = types.StringPointerValue(listItem.AppResource.ExternalID)
 					list.AppResource.GrantCount = types.StringPointerValue(listItem.AppResource.GrantCount)
 					list.AppResource.ID = types.StringPointerValue(listItem.AppResource.ID)
 					list.AppResource.MatchBatonID = types.StringPointerValue(listItem.AppResource.MatchBatonID)
@@ -74,6 +83,8 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

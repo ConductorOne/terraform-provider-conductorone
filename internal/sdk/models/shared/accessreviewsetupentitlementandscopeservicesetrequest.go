@@ -4,7 +4,7 @@ package shared
 
 // The AccessReviewSetupEntitlementAndScopeServiceSetRequest message.
 type AccessReviewSetupEntitlementAndScopeServiceSetRequest struct {
-	// The entitlements field.
+	// The entitlements to include in the campaign. Replaces all previously selected entitlements.
 	Entitlements []AccessReviewSetupEntitlementInput `json:"entitlements,omitempty"`
 	// The AccessReviewSetupEntitlementExpandMask message.
 	AccessReviewSetupEntitlementExpandMask *AccessReviewSetupEntitlementExpandMask `json:"expandMask,omitempty"`

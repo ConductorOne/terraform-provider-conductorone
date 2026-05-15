@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceApproveWithStepUpRequest) GetTaskActionsSe
 	return c.TaskActionsServiceApproveWithStepUpRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsserviceapprovewithstepuprequest
+// #endregion class-body-c1apitaskv1taskactionsserviceapprovewithstepuprequest
+
 type C1APITaskV1TaskActionsServiceApproveWithStepUpResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceApproveWithStepUpResponse) GetTaskActionsS
 	}
 	return c.TaskActionsServiceApproveWithStepUpResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsserviceapprovewithstepupresponse
+// #endregion class-body-c1apitaskv1taskactionsserviceapprovewithstepupresponse

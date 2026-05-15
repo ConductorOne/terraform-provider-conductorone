@@ -5,6 +5,7 @@ package shared
 // The WorkloadFederationServiceCreateTrustRequest message.
 type WorkloadFederationServiceCreateTrustRequest struct {
 	// IP allowlist for token exchange requests matching this trust.
+	//  Accepts IPv4 (e.g. 10.0.0.0/24) or IPv6 (e.g. 2001:db8::/32) CIDRs.
 	AllowSourceCidrs []string `json:"allowSourceCidrs,omitempty"`
 	// CEL expression evaluated against JWT claims. Must return bool.
 	//  Compiled and validated before storage.

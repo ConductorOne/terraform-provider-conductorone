@@ -14,7 +14,7 @@ type C1APIAppV1AppResourceSearchSearchAppResourcesResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The SearchAppResourcesResponse message contains a list of results and a nextPageToken if applicable.
 	SearchAppResourcesResponse *shared.SearchAppResourcesResponse
 
 	Next func() (*C1APIAppV1AppResourceSearchSearchAppResourcesResponse, error)
@@ -47,3 +47,6 @@ func (c *C1APIAppV1AppResourceSearchSearchAppResourcesResponse) GetSearchAppReso
 	}
 	return c.SearchAppResourcesResponse
 }
+
+// #region class-body-c1apiappv1appresourcesearchsearchappresourcesresponse
+// #endregion class-body-c1apiappv1appresourcesearchsearchappresourcesresponse

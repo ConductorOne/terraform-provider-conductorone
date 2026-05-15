@@ -75,23 +75,23 @@ data "conductorone_user" "my_user" {
 
 ### Optional
 
-- `delegate_status` (String) Filter for users based on their delegate status. must be one of ["DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE"]
+- `delegate_status` (String) Filter for users based on their delegate status. possible known values include one of ["DELEGATE_STATUS_UNSPECIFIED", "DELEGATE_STATUS_HAS_DELEGATE", "DELEGATE_STATUS_NO_DELEGATE"]
 - `delegated_user_ids` (List of String) Filter for users that have any of the delegated user IDs on this list.
 - `departments` (List of String) Search for users that have any of the departments on this list.
-- `email` (String) Search for users based on their email (exact match).
+- `email` (String) This is the user's email.
 - `exclude_ids` (List of String) An array of users IDs to exclude from the results.
 - `exclude_origins` (List of String) Filter to exclude users with these origins.
 - `exclude_types` (List of String) An array of types to exclude from the results.
 - `ids` (List of String) Deprecated. Use refs array instead.
 - `is_delegate` (Boolean) Filter for users who are delegates of at least one other user.
 - `job_titles` (List of String) Search for users that have any of the job titles on this list.
-- `manager_ids` (List of String) Search for users that have any of the manager IDs on this list.
+- `manager_ids` (List of String) A list of ids of the user's managers.
 - `origins` (List of String) Filter to include only users with these origins.
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 - `page_token` (String) The pageToken field.
 - `query` (String) Query the apps with a fuzzy search on display name and emails.
 - `refs` (Attributes List) An array of user refs to restrict the return values to by ID. (see [below for nested schema](#nestedatt--refs))
-- `role_ids` (List of String) Search for users that have any of the role IDs on this list.
+- `role_ids` (List of String) A list of unique identifiers that maps to ConductorOne's user roles let you assign users permissions tailored to the work they do in the software.
 - `user_statuses` (List of String) Search for users that have any of the statuses on this list. This can only be ENABLED, DISABLED, and DELETED
 
 ### Read-Only

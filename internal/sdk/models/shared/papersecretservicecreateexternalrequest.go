@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // PaperSecretServiceCreateExternalRequestInputFormat - For TEXT secrets: hint about the plaintext format (e.g., JSON, YAML, key-value).
 //
 //	Used by the viewer UI for syntax highlighting. Does not affect encryption.
@@ -23,26 +18,16 @@ const (
 func (e PaperSecretServiceCreateExternalRequestInputFormat) ToPointer() *PaperSecretServiceCreateExternalRequestInputFormat {
 	return &e
 }
-func (e *PaperSecretServiceCreateExternalRequestInputFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceCreateExternalRequestInputFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_INPUT_FORMAT_UNSPECIFIED", "SECRET_INPUT_FORMAT_PLAINTEXT", "SECRET_INPUT_FORMAT_JSON", "SECRET_INPUT_FORMAT_YAML", "SECRET_INPUT_FORMAT_KEY_VALUE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_INPUT_FORMAT_UNSPECIFIED":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_PLAINTEXT":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_JSON":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_YAML":
-		fallthrough
-	case "SECRET_INPUT_FORMAT_KEY_VALUE":
-		*e = PaperSecretServiceCreateExternalRequestInputFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceCreateExternalRequestInputFormat: %v", v)
-	}
+	return false
 }
 
 // PaperSecretServiceCreateExternalRequestSecretType - Secret type: TEXT or FILE.
@@ -60,22 +45,16 @@ const (
 func (e PaperSecretServiceCreateExternalRequestSecretType) ToPointer() *PaperSecretServiceCreateExternalRequestSecretType {
 	return &e
 }
-func (e *PaperSecretServiceCreateExternalRequestSecretType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceCreateExternalRequestSecretType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_TYPE_UNSPECIFIED", "SECRET_TYPE_TEXT", "SECRET_TYPE_FILE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_TYPE_UNSPECIFIED":
-		fallthrough
-	case "SECRET_TYPE_TEXT":
-		fallthrough
-	case "SECRET_TYPE_FILE":
-		*e = PaperSecretServiceCreateExternalRequestSecretType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceCreateExternalRequestSecretType: %v", v)
-	}
+	return false
 }
 
 // The PaperSecretServiceCreateExternalRequest message.

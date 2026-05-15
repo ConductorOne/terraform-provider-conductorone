@@ -18,6 +18,9 @@ func (c *C1APIDirectoryV1DirectoryServiceGetRequest) GetAppID() string {
 	return c.AppID
 }
 
+// #region class-body-c1apidirectoryv1directoryservicegetrequest
+// #endregion class-body-c1apidirectoryv1directoryservicegetrequest
+
 type C1APIDirectoryV1DirectoryServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -57,3 +60,6 @@ func (c *C1APIDirectoryV1DirectoryServiceGetResponse) GetDirectoryServiceGetResp
 	}
 	return c.DirectoryServiceGetResponse
 }
+
+// #region class-body-c1apidirectoryv1directoryservicegetresponse
+// #endregion class-body-c1apidirectoryv1directoryservicegetresponse

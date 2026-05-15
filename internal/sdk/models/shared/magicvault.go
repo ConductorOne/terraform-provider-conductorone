@@ -2,11 +2,11 @@
 
 package shared
 
-// The MagicVault message.
+// MagicVault configures a vault that grants time-limited credential access via magic links.
 type MagicVault struct {
-	// The allowUnauthedViews field.
+	// Controls whether unauthenticated users can view credentials via a magic link.
 	AllowUnauthedViews *bool `json:"allowUnauthedViews,omitempty"`
-	// The allowedViews field.
+	// The maximum number of times a credential in this vault may be viewed.
 	AllowedViews *int64 `json:"allowedViews,omitempty"`
 }
 

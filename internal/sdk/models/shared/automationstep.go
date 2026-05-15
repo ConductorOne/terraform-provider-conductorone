@@ -25,6 +25,7 @@ package shared
 //   - generatePassword
 //   - evaluateExpressions
 //   - setCredential
+//   - storeCredential
 type AutomationStep struct {
 	// The AccountLifecycleAction message.
 	//
@@ -109,7 +110,10 @@ type AutomationStep struct {
 	RunAutomation *RunAutomation `json:"runAutomation,omitempty"`
 	// The SendEmail message.
 	SendEmail *SendEmail `json:"sendEmail,omitempty"`
-	// The SendSlackMessage message.
+	// SendSlackMessage posts to a channel or DMs one or more users. Delivery mode is
+	//  inferred from which fields are populated: DM if any user field is set
+	//  (use_subject_user, user_ids_cel, user_refs), otherwise channel. Priority for DM
+	//  recipient resolution: use_subject_user > user_ids_cel > user_refs.
 	//
 	// This message contains a oneof named channel. Only a single field of the following list may be set at a time:
 	//   - channelName
@@ -129,6 +133,9 @@ type AutomationStep struct {
 	StepDisplayName *string `json:"stepDisplayName,omitempty"`
 	// The stepName field.
 	StepName *string `json:"stepName,omitempty"`
+	// StoreCredential stores a credential from GeneratePassword in a vault.
+	//  Supports Paper Vault (SSO/email) and App Vault (entitlement-bound).
+	StoreCredential *StoreCredential `json:"storeCredential,omitempty"`
 	// The TaskAction message.
 	//
 	// This message contains a oneof named action. Only a single field of the following list may be set at a time:
@@ -285,6 +292,13 @@ func (a *AutomationStep) GetStepName() *string {
 		return nil
 	}
 	return a.StepName
+}
+
+func (a *AutomationStep) GetStoreCredential() *StoreCredential {
+	if a == nil {
+		return nil
+	}
+	return a.StoreCredential
 }
 
 func (a *AutomationStep) GetTaskAction() *TaskAction {

@@ -30,7 +30,7 @@ func newTaskActions(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration,
 }
 
 // Approve
-// Invokes the c1.api.task.v1.TaskActionsService.Approve method.
+// Approve the specified policy step on a task.
 func (s *TaskActions) Approve(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceApproveRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceApproveResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -167,7 +167,7 @@ func (s *TaskActions) Approve(ctx context.Context, request operations.C1APITaskV
 }
 
 // ApproveWithStepUp - Approve With Step Up
-// Invokes the c1.api.task.v1.TaskActionsService.ApproveWithStepUp method.
+// Approve a task that requires step-up authentication. If a verified step-up transaction ID is provided, the approval is processed immediately. Otherwise, a redirect URL is returned for the caller to complete authentication first.
 func (s *TaskActions) ApproveWithStepUp(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceApproveWithStepUpRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceApproveWithStepUpResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -304,7 +304,7 @@ func (s *TaskActions) ApproveWithStepUp(ctx context.Context, request operations.
 }
 
 // Close
-// Invokes the c1.api.task.v1.TaskActionsService.Close method.
+// Close a task, ending its workflow.
 func (s *TaskActions) Close(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceCloseRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceCloseResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -441,7 +441,7 @@ func (s *TaskActions) Close(ctx context.Context, request operations.C1APITaskV1T
 }
 
 // Comment
-// Invokes the c1.api.task.v1.TaskActionsService.Comment method.
+// Post a comment on a task without changing its state.
 func (s *TaskActions) Comment(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceCommentRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceCommentResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -578,7 +578,7 @@ func (s *TaskActions) Comment(ctx context.Context, request operations.C1APITaskV
 }
 
 // Deny
-// Invokes the c1.api.task.v1.TaskActionsService.Deny method.
+// Deny the specified policy step on a task. In multi-step policies, this may route to fallback steps rather than finalizing the task outcome.
 func (s *TaskActions) Deny(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceDenyRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceDenyResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -715,7 +715,7 @@ func (s *TaskActions) Deny(ctx context.Context, request operations.C1APITaskV1Ta
 }
 
 // EscalateToEmergencyAccess - Escalate To Emergency Access
-// Invokes the c1.api.task.v1.TaskActionsService.EscalateToEmergencyAccess method.
+// Escalate a grant task to use the emergency access policy, bypassing the normal approval flow. Only valid for grant tasks.
 func (s *TaskActions) EscalateToEmergencyAccess(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceEscalateToEmergencyAccessResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -852,7 +852,7 @@ func (s *TaskActions) EscalateToEmergencyAccess(ctx context.Context, request ope
 }
 
 // ProcessNow - Process Now
-// Invokes the c1.api.task.v1.TaskActionsService.ProcessNow method.
+// Trigger immediate processing of a task, bypassing any scheduled wait. For tasks linked to an external system, this also attempts to sync the external state.
 func (s *TaskActions) ProcessNow(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceProcessNowRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceProcessNowResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -989,7 +989,7 @@ func (s *TaskActions) ProcessNow(ctx context.Context, request operations.C1APITa
 }
 
 // Reassign
-// Invokes the c1.api.task.v1.TaskActionsService.Reassign method.
+// Reassign a task's current policy step to a different set of users. The target step must be an approval, provision, or form step.
 func (s *TaskActions) Reassign(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceReassignRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceReassignResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1126,7 +1126,7 @@ func (s *TaskActions) Reassign(ctx context.Context, request operations.C1APITask
 }
 
 // HardReset - Hard Reset
-// Invokes the c1.api.task.v1.TaskActionsService.HardReset method.
+// Reset a task and recalculate its policy from scratch. Unlike Restart, this re-evaluates which policy applies to the task.
 func (s *TaskActions) HardReset(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceHardResetRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceHardResetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1263,7 +1263,7 @@ func (s *TaskActions) HardReset(ctx context.Context, request operations.C1APITas
 }
 
 // Restart
-// Invokes the c1.api.task.v1.TaskActionsService.Restart method.
+// Restart a task, returning it to the beginning of its current policy workflow.
 func (s *TaskActions) Restart(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceRestartRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceRestartResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1400,7 +1400,7 @@ func (s *TaskActions) Restart(ctx context.Context, request operations.C1APITaskV
 }
 
 // SkipStep - Skip Step
-// Invokes the c1.api.task.v1.TaskActionsService.SkipStep method.
+// Skip a specific policy step in a task, advancing the task to the next step in the workflow.
 func (s *TaskActions) SkipStep(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceSkipStepRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceSkipStepResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1537,7 +1537,7 @@ func (s *TaskActions) SkipStep(ctx context.Context, request operations.C1APITask
 }
 
 // UpdateGrantDuration - Update Grant Duration
-// Invokes the c1.api.task.v1.TaskActionsService.UpdateGrantDuration method.
+// Update the grant duration for a task. Only applies to grant tasks with a single entitlement that are not in a provision step. The new duration must not exceed the entitlement's maximum allowed provision time.
 func (s *TaskActions) UpdateGrantDuration(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceUpdateGrantDurationRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceUpdateGrantDurationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1674,7 +1674,7 @@ func (s *TaskActions) UpdateGrantDuration(ctx context.Context, request operation
 }
 
 // UpdateRequestData - Update Request Data
-// Invokes the c1.api.task.v1.TaskActionsService.UpdateRequestData method.
+// Update the request data on a task that is currently in a form step. The submitted data is validated against the form schema before being applied.
 func (s *TaskActions) UpdateRequestData(ctx context.Context, request operations.C1APITaskV1TaskActionsServiceUpdateRequestDataRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskActionsServiceUpdateRequestDataResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

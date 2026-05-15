@@ -4,7 +4,7 @@ package shared
 
 // The TaskActionsServiceCommentRequest object lets you create a new comment on a task.
 type TaskActionsServiceCommentRequest struct {
-	// The comment to be posted to the ticket
+	// The comment to be posted to the task.
 	Comment *string `json:"comment,omitempty"`
 }
 

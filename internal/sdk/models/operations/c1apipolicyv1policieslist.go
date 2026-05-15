@@ -26,6 +26,9 @@ func (c *C1APIPolicyV1PoliciesListRequest) GetPageToken() *string {
 	return c.PageToken
 }
 
+// #region class-body-c1apipolicyv1policieslistrequest
+// #endregion class-body-c1apipolicyv1policieslistrequest
+
 type C1APIPolicyV1PoliciesListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIPolicyV1PoliciesListResponse) GetListPolicyResponse() *shared.List
 	}
 	return c.ListPolicyResponse
 }
+
+// #region class-body-c1apipolicyv1policieslistresponse
+// #endregion class-body-c1apipolicyv1policieslistresponse

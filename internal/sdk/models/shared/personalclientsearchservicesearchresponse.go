@@ -4,9 +4,9 @@ package shared
 
 // The PersonalClientSearchServiceSearchResponse message.
 type PersonalClientSearchServiceSearchResponse struct {
-	// The list field.
+	// The list of personal client credentials matching the search criteria.
 	List []PersonalClient `json:"list,omitempty"`
-	// The nextPageToken field.
+	// A token to retrieve the next page of results, or empty if there are no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
 

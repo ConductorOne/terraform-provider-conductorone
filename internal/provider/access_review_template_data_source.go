@@ -29,10 +29,12 @@ type AccessReviewTemplateDataSource struct {
 
 // AccessReviewTemplateDataSourceModel describes the data model.
 type AccessReviewTemplateDataSourceModel struct {
+	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig   `tfsdk:"access_review_column_config"`
 	AccessReviewDuration           types.String                        `tfsdk:"access_review_duration"`
 	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
 	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
 	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
+	Annotations                    map[string]types.String             `tfsdk:"annotations"`
 	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
 	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
@@ -69,6 +71,18 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 		MarkdownDescription: "AccessReviewTemplate DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"access_review_column_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"columns": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
+							` If empty, the default column set for the campaign's default_view is used.`,
+					},
+				},
+				Description: `Configuration for which columns are visible in the reviewer task list.`,
+			},
 			"access_review_duration": schema.StringAttribute{
 				Computed: true,
 			},
@@ -393,6 +407,18 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 				Computed:    true,
 				Description: `The accuracyIssueAction field.`,
 			},
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256` + "\n" +
+					` chars; URL-safe ASCII. Keys starting with ` + "`" + `c1/` + "`" + ` are reserved.` + "\n" +
+					`` + "\n" +
+					` Updates have PATCH semantics: keys absent from the request are` + "\n" +
+					` preserved; an empty value deletes the key.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
 			"auto_close_campaign": schema.BoolAttribute{
 				Computed: true,
 				MarkdownDescription: `Auto-close configuration` + "\n" +
@@ -423,22 +449,23 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
-				Description: `The description field.`,
+				Description: `An optional description providing context about this template.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The displayName field.`,
+				Description: `The human-readable name of this template.`,
 			},
 			"exempt_certified_access_conflicts": schema.BoolAttribute{
 				Computed:    true,
 				Description: `The exemptCertifiedAccessConflicts field.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The unique identifier of this template.`,
 			},
 			"is_campaign_schedule_enabled": schema.BoolAttribute{
 				Computed:    true,
-				Description: `The isCampaignScheduleEnabled field.`,
+				Description: `Whether automatic campaign creation on the recurrence schedule is enabled.`,
 			},
 			"next_scheduled_campaign_at": schema.StringAttribute{
 				Computed: true,
@@ -448,26 +475,26 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 				Attributes: map[string]schema.Attribute{
 					"send_close": schema.BoolAttribute{
 						Computed:    true,
-						Description: `The sendClose field.`,
+						Description: `Whether to send a notification when the campaign is closed.`,
 					},
 					"send_kickoff": schema.BoolAttribute{
 						Computed:    true,
-						Description: `The sendKickoff field.`,
+						Description: `Whether to send a notification when the campaign is started.`,
 					},
 					"send_reminders": schema.BoolAttribute{
 						Computed:    true,
-						Description: `The sendReminders field.`,
+						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
 					},
 				},
-				Description: `The NotificationConfig message.`,
+				Description: `Controls which email notifications are sent during the access review lifecycle.`,
 			},
 			"occurrences": schema.Int32Attribute{
 				Computed:    true,
-				Description: `The occurrences field.`,
+				Description: `The number of campaigns that have been created from this template.`,
 			},
 			"policy_id": schema.StringAttribute{
 				Computed:    true,
-				Description: `The policyId field.`,
+				Description: `The ID of the default review policy applied to campaigns created from this template.`,
 			},
 			"recurrence_rule": schema.SingleNestedAttribute{
 				Computed: true,

@@ -14,6 +14,9 @@ Automation Resource
 
 ```terraform
 resource "conductorone_automation" "my_automation" {
+  annotations = {
+    key = "value"
+  }
   app_id = "...my_app_id..."
   automation_context = {
     context = {
@@ -57,7 +60,8 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
-        user_id_cel = "...my_user_id_cel..."
+        password_cel = "...my_password_cel..."
+        user_id_cel  = "...my_user_id_cel..."
         user_properties = {
           display_name_cel      = "...my_display_name_cel..."
           email_cel             = "...my_email_cel..."
@@ -172,6 +176,17 @@ resource "conductorone_automation" "my_automation" {
         ]
       }
       generate_password = {
+        generate_password_policy = {
+          custom_characters          = "...my_custom_characters..."
+          excluded_characters        = "...my_excluded_characters..."
+          max_character_count        = 9
+          min_character_count        = 0
+          no_restrictions            = false
+          require_lowercase          = false
+          require_numbers            = true
+          require_special_characters = false
+          require_uppercase          = false
+        }
         password_policy_id = "...my_password_policy_id..."
       }
       grant_entitlements = {
@@ -252,6 +267,8 @@ resource "conductorone_automation" "my_automation" {
       }
       send_email = {
         body             = "...my_body..."
+        email            = "...my_email..."
+        email_cel        = "...my_email_cel..."
         subject          = "...my_subject..."
         title            = "...my_title..."
         use_subject_user = true
@@ -266,6 +283,13 @@ resource "conductorone_automation" "my_automation" {
         body             = "...my_body..."
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
+        use_subject_user = false
+        user_ids_cel     = "...my_user_ids_cel..."
+        user_refs = [
+          {
+            id = "...my_id..."
+          }
+        ]
       }
       set_credential = {
         account_id_cel = "...my_account_id_cel..."
@@ -278,6 +302,18 @@ resource "conductorone_automation" "my_automation" {
       skip_if_true_cel  = "...my_skip_if_true_cel..."
       step_display_name = "...my_step_display_name..."
       step_name         = "...my_step_name..."
+      store_credential = {
+        app_id_cel          = "...my_app_id_cel..."
+        auth_type           = "STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL"
+        credential_cel      = "...my_credential_cel..."
+        expiry              = "...my_expiry..."
+        label_cel           = "...my_label_cel..."
+        max_views           = 9
+        recipient_cel       = "...my_recipient_cel..."
+        recipient_email_cel = "...my_recipient_email_cel..."
+        ttl                 = "...my_ttl..."
+        vault_type          = "STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED"
+      }
       task_action = {
         close_action = {
           use_subject_user = false
@@ -336,8 +372,13 @@ resource "conductorone_automation" "my_automation" {
       }
     }
   ]
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
+  automations_delete_automation_request = {
+    # ...
+  }
+  circuit_breaker_max    = 3
+  circuit_breaker_period = "CIRCUIT_BREAKER_PERIOD_MONTH"
+  description            = "...my_description..."
+  display_name           = "...my_display_name..."
   draft_automation_steps = [
     {
       account_lifecycle_action = {
@@ -375,7 +416,8 @@ resource "conductorone_automation" "my_automation" {
           app_id = "...my_app_id..."
           id     = "...my_id..."
         }
-        user_id_cel = "...my_user_id_cel..."
+        password_cel = "...my_password_cel..."
+        user_id_cel  = "...my_user_id_cel..."
         user_properties = {
           display_name_cel      = "...my_display_name_cel..."
           email_cel             = "...my_email_cel..."
@@ -490,6 +532,17 @@ resource "conductorone_automation" "my_automation" {
         ]
       }
       generate_password = {
+        generate_password_policy = {
+          custom_characters          = "...my_custom_characters..."
+          excluded_characters        = "...my_excluded_characters..."
+          max_character_count        = 5
+          min_character_count        = 8
+          no_restrictions            = false
+          require_lowercase          = true
+          require_numbers            = false
+          require_special_characters = false
+          require_uppercase          = false
+        }
         password_policy_id = "...my_password_policy_id..."
       }
       grant_entitlements = {
@@ -570,6 +623,8 @@ resource "conductorone_automation" "my_automation" {
       }
       send_email = {
         body             = "...my_body..."
+        email            = "...my_email..."
+        email_cel        = "...my_email_cel..."
         subject          = "...my_subject..."
         title            = "...my_title..."
         use_subject_user = true
@@ -584,6 +639,13 @@ resource "conductorone_automation" "my_automation" {
         body             = "...my_body..."
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
+        use_subject_user = true
+        user_ids_cel     = "...my_user_ids_cel..."
+        user_refs = [
+          {
+            id = "...my_id..."
+          }
+        ]
       }
       set_credential = {
         account_id_cel = "...my_account_id_cel..."
@@ -596,6 +658,18 @@ resource "conductorone_automation" "my_automation" {
       skip_if_true_cel  = "...my_skip_if_true_cel..."
       step_display_name = "...my_step_display_name..."
       step_name         = "...my_step_name..."
+      store_credential = {
+        app_id_cel          = "...my_app_id_cel..."
+        auth_type           = "STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL"
+        credential_cel      = "...my_credential_cel..."
+        expiry              = "...my_expiry..."
+        label_cel           = "...my_label_cel..."
+        max_views           = 2
+        recipient_cel       = "...my_recipient_cel..."
+        recipient_email_cel = "...my_recipient_email_cel..."
+        ttl                 = "...my_ttl..."
+        vault_type          = "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT"
+      }
       task_action = {
         close_action = {
           use_subject_user = false
@@ -771,6 +845,12 @@ resource "conductorone_automation" "my_automation" {
         start     = "2022-01-16T12:05:57.834Z"
         timezone  = "...my_timezone..."
       }
+      schedule_trigger_no_user = {
+        advanced  = false
+        cron_spec = "...my_cron_spec..."
+        start     = "2022-04-12T03:31:44.666Z"
+        timezone  = "...my_timezone..."
+      }
       usage_based_revocation_trigger = {
         app_id     = "...my_app_id..."
         enabled_at = "2021-08-03T22:56:50.306Z"
@@ -811,6 +891,9 @@ resource "conductorone_automation" "my_automation" {
       }
       webhook_automation_trigger = {
         listener_id = "...my_listener_id..."
+        webhook_listener_auth_capability_url = {
+          # ...
+        }
         webhook_listener_auth_hmac = {
           # ...
         }
@@ -939,6 +1022,12 @@ resource "conductorone_automation" "my_automation" {
         start     = "2021-11-11T16:22:31.994Z"
         timezone  = "...my_timezone..."
       }
+      schedule_trigger_no_user = {
+        advanced  = true
+        cron_spec = "...my_cron_spec..."
+        start     = "2022-07-06T23:47:31.344Z"
+        timezone  = "...my_timezone..."
+      }
       usage_based_revocation_trigger = {
         app_id     = "...my_app_id..."
         enabled_at = "2022-01-14T07:38:09.864Z"
@@ -979,6 +1068,9 @@ resource "conductorone_automation" "my_automation" {
       }
       webhook_automation_trigger = {
         listener_id = "...my_listener_id..."
+        webhook_listener_auth_capability_url = {
+          # ...
+        }
         webhook_listener_auth_hmac = {
           # ...
         }
@@ -996,25 +1088,41 @@ resource "conductorone_automation" "my_automation" {
 
 ### Optional
 
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+ with `c1/` are reserved for server-managed use and rejected on write.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `app_id` (String) the app id this workflow_template belongs to
 - `automation_context` (Attributes) The AutomationContext message. (see [below for nested schema](#nestedatt--automation_context))
-- `automation_steps` (Attributes List) The automationSteps field. (see [below for nested schema](#nestedatt--automation_steps))
-- `description` (String) The description field.
-- `display_name` (String) The displayName field.
-- `draft_automation_steps` (Attributes List) The draftAutomationSteps field. (see [below for nested schema](#nestedatt--draft_automation_steps))
-- `draft_triggers` (Attributes List) The draftTriggers field. (see [below for nested schema](#nestedatt--draft_triggers))
-- `enabled` (Boolean) The enabled field.
-- `is_draft` (Boolean) The isDraft field.
-- `triggers` (Attributes List) The triggers field. (see [below for nested schema](#nestedatt--triggers))
+- `automation_steps` (Attributes List) Ordered list of steps that the automation executes. (see [below for nested schema](#nestedatt--automation_steps))
+- `automations_delete_automation_request` (Attributes) The DeleteAutomationRequest message. (see [below for nested schema](#nestedatt--automations_delete_automation_request))
+- `circuit_breaker_max` (Number) Circuit breaker rate cap. See Automation.circuit_breaker_max for semantics.
+- `circuit_breaker_period` (String) The circuitBreakerPeriod field. possible known values include one of ["CIRCUIT_BREAKER_PERIOD_UNSPECIFIED", "CIRCUIT_BREAKER_PERIOD_HOUR", "CIRCUIT_BREAKER_PERIOD_DAY", "CIRCUIT_BREAKER_PERIOD_WEEK", "CIRCUIT_BREAKER_PERIOD_MONTH"]
+- `description` (String) Optional description explaining the automation's purpose.
+- `display_name` (String) Human-readable name for the automation.
+- `draft_automation_steps` (Attributes List) Steps saved as a draft that have not yet been published. (see [below for nested schema](#nestedatt--draft_automation_steps))
+- `draft_triggers` (Attributes List) Triggers saved as a draft that have not yet been published. (see [below for nested schema](#nestedatt--draft_triggers))
+- `enabled` (Boolean) Whether the automation is active and eligible for execution.
+- `is_draft` (Boolean) Whether this automation is in draft mode. Draft automations are not eligible for trigger-based execution.
+- `triggers` (Attributes List) Triggers that determine when the automation runs. (see [below for nested schema](#nestedatt--triggers))
 
 ### Read-Only
 
 - `created_at` (String)
 - `current_version` (String) The currentVersion field.
-- `disabled_reason_circuit_breaker` (Attributes) The DisabledReasonCircuitBreaker message. (see [below for nested schema](#nestedatt--disabled_reason_circuit_breaker))
+- `disabled_reason_circuit_breaker` (Attributes) DisabledReasonCircuitBreaker carries the trip context when an automation
+ has been auto-disabled by its rate cap. Returned on the parent Automation
+ when read; not directly settable. (see [below for nested schema](#nestedatt--disabled_reason_circuit_breaker))
 - `id` (String) The id field.
 - `last_executed_at` (String)
 - `primary_trigger_type` (String) The primaryTriggerType field.
+- `webhook_capability_url` (String) One-time absolute webhook URL for capability URL authentication, shown once at creation time.
+ Contains the full URL including the embedded token (e.g. https://tenant.conductorone.com/api/v1/webhooks/incoming/{id}/t/{token}).
+ Populated only when the webhook trigger uses capability URL authentication.
 - `webhook_hmac_secret` (String) If we create a new trigger with an HMAC secret we return the HMAC on this field
 
 <a id="nestedatt--automation_context"></a>
@@ -1097,7 +1205,10 @@ This message contains a oneof named automation_template. Only a single field of 
   - automationTemplateRef
   - automationTemplateIdCel (see [below for nested schema](#nestedatt--automation_steps--run_automation))
 - `send_email` (Attributes) The SendEmail message. (see [below for nested schema](#nestedatt--automation_steps--send_email))
-- `send_slack_message` (Attributes) The SendSlackMessage message.
+- `send_slack_message` (Attributes) SendSlackMessage posts to a channel or DMs one or more users. Delivery mode is
+ inferred from which fields are populated: DM if any user field is set
+ (use_subject_user, user_ids_cel, user_refs), otherwise channel. Priority for DM
+ recipient resolution: use_subject_user > user_ids_cel > user_refs.
 
 This message contains a oneof named channel. Only a single field of the following list may be set at a time:
   - channelName
@@ -1110,6 +1221,8 @@ This message contains a oneof named connector_identifier. Only a single field of
 - `skip_if_true_cel` (String) The skipIfTrueCel field.
 - `step_display_name` (String) The stepDisplayName field.
 - `step_name` (String) The stepName field.
+- `store_credential` (Attributes) StoreCredential stores a credential from GeneratePassword in a vault.
+ Supports Paper Vault (SSO/email) and App Vault (entitlement-bound). (see [below for nested schema](#nestedatt--automation_steps--store_credential))
 - `task_action` (Attributes) The TaskAction message.
 
 This message contains a oneof named action. Only a single field of the following list may be set at a time:
@@ -1204,6 +1317,8 @@ Optional:
 Optional:
 
 - `connector_ref` (Attributes) The ConnectorRef message. (see [below for nested schema](#nestedatt--automation_steps--connector_create_account--connector_ref))
+- `password_cel` (String) CEL expression referencing a GeneratePassword step output (e.g. "genStep.password").
+ When set, the resolved password is encrypted for the connector and sent as CredentialOptions.EncryptedPassword.
 - `user_id_cel` (String) The userIdCel field.
 This field is part of the `create_account_arguments` oneof.
 See the documentation for `c1.api.automations.v1.ConnectorCreateAccount` for more details.
@@ -1425,7 +1540,35 @@ Optional:
 
 Optional:
 
-- `password_policy_id` (String) The ID of the password policy to use for generating the password.
+- `generate_password_policy` (Attributes) GeneratePasswordPolicy defines inline password generation rules.
+
+This message contains a oneof named character_rules. Only a single field of the following list may be set at a time:
+  - noRestrictions
+  - customCharacters
+  - excludedCharacters (see [below for nested schema](#nestedatt--automation_steps--generate_password--generate_password_policy))
+- `password_policy_id` (String, Deprecated) Deprecated: password policy ID lookup is no longer used.
+
+<a id="nestedatt--automation_steps--generate_password--generate_password_policy"></a>
+### Nested Schema for `automation_steps.generate_password.generate_password_policy`
+
+Optional:
+
+- `custom_characters` (String) The customCharacters field.
+This field is part of the `character_rules` oneof.
+See the documentation for `c1.api.automations.v1.GeneratePasswordPolicy` for more details.
+- `excluded_characters` (String) The excludedCharacters field.
+This field is part of the `character_rules` oneof.
+See the documentation for `c1.api.automations.v1.GeneratePasswordPolicy` for more details.
+- `max_character_count` (Number) The maxCharacterCount field.
+- `min_character_count` (Number) The minCharacterCount field.
+- `no_restrictions` (Boolean) The noRestrictions field.
+This field is part of the `character_rules` oneof.
+See the documentation for `c1.api.automations.v1.GeneratePasswordPolicy` for more details.
+- `require_lowercase` (Boolean) The requireLowercase field.
+- `require_numbers` (Boolean) The requireNumbers field.
+- `require_special_characters` (Boolean) The requireSpecialCharacters field.
+- `require_uppercase` (Boolean) The requireUppercase field.
+
 
 
 <a id="nestedatt--automation_steps--grant_entitlements"></a>
@@ -1595,6 +1738,13 @@ Optional:
 Optional:
 
 - `body` (String) The body field.
+- `email` (String, Deprecated) Deprecated: use email_cel instead. Static email field shipped behind FF 541 (SKU_MANUAL)
+ with zero tenant enablement. CEL subsumes static: '"ops@example.com"' is valid CEL.
+- `email_cel` (String) CEL expression resolving to one or more email addresses (string or list<string>).
+ Evaluated against the workflow execution context (trigger + completed steps).
+ Static emails work too: '"ops@example.com"' is valid CEL.
+ Supports list<string> for multiple recipients: '["a@x.com", "b@x.com"]'.
+ Requires the tenant to have a TenantEmailProvider configured.
 - `subject` (String) The subject field.
 - `title` (String) The title field.
 - `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
@@ -1622,6 +1772,17 @@ See the documentation for `c1.api.automations.v1.SendSlackMessage` for more deta
 - `channel_name_cel` (String) The channelNameCel field.
 This field is part of the `channel` oneof.
 See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
+- `use_subject_user` (Boolean) The useSubjectUser field.
+- `user_ids_cel` (String) The userIdsCel field.
+- `user_refs` (Attributes List) The userRefs field. (see [below for nested schema](#nestedatt--automation_steps--send_slack_message--user_refs))
+
+<a id="nestedatt--automation_steps--send_slack_message--user_refs"></a>
+### Nested Schema for `automation_steps.send_slack_message.user_refs`
+
+Optional:
+
+- `id` (String) The id of the user.
+
 
 
 <a id="nestedatt--automation_steps--set_credential"></a>
@@ -1641,6 +1802,23 @@ Optional:
 - `app_id` (String) The appId field.
 - `id` (String) The id field.
 
+
+
+<a id="nestedatt--automation_steps--store_credential"></a>
+### Nested Schema for `automation_steps.store_credential`
+
+Optional:
+
+- `app_id_cel` (String) CEL expression that resolves to app ID (App Vault only)
+- `auth_type` (String) Authentication type for the paper vault recipient (Paper Vault only). possible known values include one of ["STORE_CREDENTIAL_AUTH_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_AUTH_TYPE_SSO_INTERNAL", "STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL"]
+- `credential_cel` (String) CEL expression that resolves to the encrypted credential from GeneratePassword
+- `expiry` (String)
+- `label_cel` (String) Optional display label for the vault
+- `max_views` (Number) Maximum number of views (0 = unlimited, default 1) (Paper Vault only)
+- `recipient_cel` (String) CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)
+- `recipient_email_cel` (String) CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)
+- `ttl` (String)
+- `vault_type` (String) Vault type selector (default: PAPER_VAULT for backward compatibility). possible known values include one of ["STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT", "STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT"]
 
 
 <a id="nestedatt--automation_steps--task_action"></a>
@@ -1664,7 +1842,7 @@ This message contains a oneof named subject_user_identifier. Only a single field
   - subjectUserIdCel
   - subjectUserRef (see [below for nested schema](#nestedatt--automation_steps--task_action--reassign_action))
 - `task_types` (List of String) The taskTypes field.
-- `task_user_relation` (String) The taskUserRelation field. must be one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]
+- `task_user_relation` (String) The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]
 
 <a id="nestedatt--automation_steps--task_action--close_action"></a>
 ### Nested Schema for `automation_steps.task_action.close_action`
@@ -1755,7 +1933,7 @@ See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
 - `user_status_enum` (String) The userStatusEnum field.
 This field is part of the `user_status` oneof.
 See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
-must be one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]
+possible known values include one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]
 
 <a id="nestedatt--automation_steps--update_user--user_ref"></a>
 ### Nested Schema for `automation_steps.update_user.user_ref`
@@ -1791,6 +1969,10 @@ See the documentation for `c1.api.automations.v1.Webhook` for more details.
 ### Nested Schema for `automation_steps.webhook.payload`
 
 
+
+
+<a id="nestedatt--automations_delete_automation_request"></a>
+### Nested Schema for `automations_delete_automation_request`
 
 
 <a id="nestedatt--draft_automation_steps"></a>
@@ -1861,7 +2043,10 @@ This message contains a oneof named automation_template. Only a single field of 
   - automationTemplateRef
   - automationTemplateIdCel (see [below for nested schema](#nestedatt--draft_automation_steps--run_automation))
 - `send_email` (Attributes) The SendEmail message. (see [below for nested schema](#nestedatt--draft_automation_steps--send_email))
-- `send_slack_message` (Attributes) The SendSlackMessage message.
+- `send_slack_message` (Attributes) SendSlackMessage posts to a channel or DMs one or more users. Delivery mode is
+ inferred from which fields are populated: DM if any user field is set
+ (use_subject_user, user_ids_cel, user_refs), otherwise channel. Priority for DM
+ recipient resolution: use_subject_user > user_ids_cel > user_refs.
 
 This message contains a oneof named channel. Only a single field of the following list may be set at a time:
   - channelName
@@ -1874,6 +2059,8 @@ This message contains a oneof named connector_identifier. Only a single field of
 - `skip_if_true_cel` (String) The skipIfTrueCel field.
 - `step_display_name` (String) The stepDisplayName field.
 - `step_name` (String) The stepName field.
+- `store_credential` (Attributes) StoreCredential stores a credential from GeneratePassword in a vault.
+ Supports Paper Vault (SSO/email) and App Vault (entitlement-bound). (see [below for nested schema](#nestedatt--draft_automation_steps--store_credential))
 - `task_action` (Attributes) The TaskAction message.
 
 This message contains a oneof named action. Only a single field of the following list may be set at a time:
@@ -1968,6 +2155,8 @@ Optional:
 Optional:
 
 - `connector_ref` (Attributes) The ConnectorRef message. (see [below for nested schema](#nestedatt--draft_automation_steps--connector_create_account--connector_ref))
+- `password_cel` (String) CEL expression referencing a GeneratePassword step output (e.g. "genStep.password").
+ When set, the resolved password is encrypted for the connector and sent as CredentialOptions.EncryptedPassword.
 - `user_id_cel` (String) The userIdCel field.
 This field is part of the `create_account_arguments` oneof.
 See the documentation for `c1.api.automations.v1.ConnectorCreateAccount` for more details.
@@ -2189,7 +2378,35 @@ Optional:
 
 Optional:
 
-- `password_policy_id` (String) The ID of the password policy to use for generating the password.
+- `generate_password_policy` (Attributes) GeneratePasswordPolicy defines inline password generation rules.
+
+This message contains a oneof named character_rules. Only a single field of the following list may be set at a time:
+  - noRestrictions
+  - customCharacters
+  - excludedCharacters (see [below for nested schema](#nestedatt--draft_automation_steps--generate_password--generate_password_policy))
+- `password_policy_id` (String, Deprecated) Deprecated: password policy ID lookup is no longer used.
+
+<a id="nestedatt--draft_automation_steps--generate_password--generate_password_policy"></a>
+### Nested Schema for `draft_automation_steps.generate_password.generate_password_policy`
+
+Optional:
+
+- `custom_characters` (String) The customCharacters field.
+This field is part of the `character_rules` oneof.
+See the documentation for `c1.api.automations.v1.GeneratePasswordPolicy` for more details.
+- `excluded_characters` (String) The excludedCharacters field.
+This field is part of the `character_rules` oneof.
+See the documentation for `c1.api.automations.v1.GeneratePasswordPolicy` for more details.
+- `max_character_count` (Number) The maxCharacterCount field.
+- `min_character_count` (Number) The minCharacterCount field.
+- `no_restrictions` (Boolean) The noRestrictions field.
+This field is part of the `character_rules` oneof.
+See the documentation for `c1.api.automations.v1.GeneratePasswordPolicy` for more details.
+- `require_lowercase` (Boolean) The requireLowercase field.
+- `require_numbers` (Boolean) The requireNumbers field.
+- `require_special_characters` (Boolean) The requireSpecialCharacters field.
+- `require_uppercase` (Boolean) The requireUppercase field.
+
 
 
 <a id="nestedatt--draft_automation_steps--grant_entitlements"></a>
@@ -2359,6 +2576,13 @@ Optional:
 Optional:
 
 - `body` (String) The body field.
+- `email` (String, Deprecated) Deprecated: use email_cel instead. Static email field shipped behind FF 541 (SKU_MANUAL)
+ with zero tenant enablement. CEL subsumes static: '"ops@example.com"' is valid CEL.
+- `email_cel` (String) CEL expression resolving to one or more email addresses (string or list<string>).
+ Evaluated against the workflow execution context (trigger + completed steps).
+ Static emails work too: '"ops@example.com"' is valid CEL.
+ Supports list<string> for multiple recipients: '["a@x.com", "b@x.com"]'.
+ Requires the tenant to have a TenantEmailProvider configured.
 - `subject` (String) The subject field.
 - `title` (String) The title field.
 - `use_subject_user` (Boolean) If true, the step will use the subject user of the automation as the subject.
@@ -2386,6 +2610,17 @@ See the documentation for `c1.api.automations.v1.SendSlackMessage` for more deta
 - `channel_name_cel` (String) The channelNameCel field.
 This field is part of the `channel` oneof.
 See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
+- `use_subject_user` (Boolean) The useSubjectUser field.
+- `user_ids_cel` (String) The userIdsCel field.
+- `user_refs` (Attributes List) The userRefs field. (see [below for nested schema](#nestedatt--draft_automation_steps--send_slack_message--user_refs))
+
+<a id="nestedatt--draft_automation_steps--send_slack_message--user_refs"></a>
+### Nested Schema for `draft_automation_steps.send_slack_message.user_refs`
+
+Optional:
+
+- `id` (String) The id of the user.
+
 
 
 <a id="nestedatt--draft_automation_steps--set_credential"></a>
@@ -2405,6 +2640,23 @@ Optional:
 - `app_id` (String) The appId field.
 - `id` (String) The id field.
 
+
+
+<a id="nestedatt--draft_automation_steps--store_credential"></a>
+### Nested Schema for `draft_automation_steps.store_credential`
+
+Optional:
+
+- `app_id_cel` (String) CEL expression that resolves to app ID (App Vault only)
+- `auth_type` (String) Authentication type for the paper vault recipient (Paper Vault only). possible known values include one of ["STORE_CREDENTIAL_AUTH_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_AUTH_TYPE_SSO_INTERNAL", "STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL"]
+- `credential_cel` (String) CEL expression that resolves to the encrypted credential from GeneratePassword
+- `expiry` (String)
+- `label_cel` (String) Optional display label for the vault
+- `max_views` (Number) Maximum number of views (0 = unlimited, default 1) (Paper Vault only)
+- `recipient_cel` (String) CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)
+- `recipient_email_cel` (String) CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)
+- `ttl` (String)
+- `vault_type` (String) Vault type selector (default: PAPER_VAULT for backward compatibility). possible known values include one of ["STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT", "STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT"]
 
 
 <a id="nestedatt--draft_automation_steps--task_action"></a>
@@ -2428,7 +2680,7 @@ This message contains a oneof named subject_user_identifier. Only a single field
   - subjectUserIdCel
   - subjectUserRef (see [below for nested schema](#nestedatt--draft_automation_steps--task_action--reassign_action))
 - `task_types` (List of String) The taskTypes field.
-- `task_user_relation` (String) The taskUserRelation field. must be one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]
+- `task_user_relation` (String) The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]
 
 <a id="nestedatt--draft_automation_steps--task_action--close_action"></a>
 ### Nested Schema for `draft_automation_steps.task_action.close_action`
@@ -2519,7 +2771,7 @@ See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
 - `user_status_enum` (String) The userStatusEnum field.
 This field is part of the `user_status` oneof.
 See the documentation for `c1.api.automations.v1.UpdateUser` for more details.
-must be one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]
+possible known values include one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]
 
 <a id="nestedatt--draft_automation_steps--update_user--user_ref"></a>
 ### Nested Schema for `draft_automation_steps.update_user.user_ref`
@@ -2581,6 +2833,8 @@ This message contains a oneof named app_identifier. Only a single field of the f
 - `grant_found_trigger` (Attributes) The GrantFoundTrigger message. (see [below for nested schema](#nestedatt--draft_triggers--grant_found_trigger))
 - `schedule_trigger` (Attributes) The ScheduleTrigger message. (see [below for nested schema](#nestedatt--draft_triggers--schedule_trigger))
 - `schedule_trigger_app_user` (Attributes) The ScheduleTriggerAppUser message. (see [below for nested schema](#nestedatt--draft_triggers--schedule_trigger_app_user))
+- `schedule_trigger_no_user` (Attributes) ScheduleTriggerNoUser fires on a cron schedule with no subject user (e.g. reports, syncs, orchestration).
+ Minimum cron interval is enforced at 1 hour in validation. (see [below for nested schema](#nestedatt--draft_triggers--schedule_trigger_no_user))
 - `usage_based_revocation_trigger` (Attributes) The UsageBasedRevocationTrigger message.
 
 This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
@@ -2592,7 +2846,8 @@ This message contains a oneof named cold_start_schedule. Only a single field of 
 
 This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:
   - jwt
-  - hmac (see [below for nested schema](#nestedatt--draft_triggers--webhook_automation_trigger))
+  - hmac
+  - capabilityUrl (see [below for nested schema](#nestedatt--draft_triggers--webhook_automation_trigger))
 
 <a id="nestedatt--draft_triggers--access_conflict_trigger"></a>
 ### Nested Schema for `draft_triggers.access_conflict_trigger`
@@ -2679,7 +2934,7 @@ Optional:
 
 Optional:
 
-- `account_type` (String) The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
+- `account_type` (String) The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
 
 
 <a id="nestedatt--draft_triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_inclusion_all"></a>
@@ -2727,9 +2982,9 @@ Optional:
 
 Optional:
 
-- `grant_filter_type` (String) The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
-- `grant_justification_type` (String) The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]
-- `grant_source_filter` (String) The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
+- `grant_filter_type` (String) The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
+- `grant_justification_type` (String) The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]
+- `grant_source_filter` (String) The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
 
 
 
@@ -2764,7 +3019,7 @@ Optional:
 
 Optional:
 
-- `account_type` (String) The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
+- `account_type` (String) The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
 
 
 <a id="nestedatt--draft_triggers--grant_found_trigger--grant_trigger_filter--entitlement_inclusion_all"></a>
@@ -2812,9 +3067,9 @@ Optional:
 
 Optional:
 
-- `grant_filter_type` (String) The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
-- `grant_justification_type` (String) The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]
-- `grant_source_filter` (String) The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
+- `grant_filter_type` (String) The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
+- `grant_justification_type` (String) The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]
+- `grant_source_filter` (String) The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
 
 
 
@@ -2839,6 +3094,17 @@ Optional:
 
 - `app_id` (String) The appId field.
 - `condition` (String) The condition field.
+- `cron_spec` (String) The cronSpec field.
+- `start` (String)
+- `timezone` (String) The timezone field.
+
+
+<a id="nestedatt--draft_triggers--schedule_trigger_no_user"></a>
+### Nested Schema for `draft_triggers.schedule_trigger_no_user`
+
+Optional:
+
+- `advanced` (Boolean) The advanced field.
 - `cron_spec` (String) The cronSpec field.
 - `start` (String)
 - `timezone` (String) The timezone field.
@@ -2921,8 +3187,16 @@ Optional:
 Optional:
 
 - `listener_id` (String) Optional existing listener ID (hidden field from frontend)
+- `webhook_listener_auth_capability_url` (Attributes) Capability URL authentication: the URL itself contains an unguessable token that acts
+ as the credential. This is simpler to integrate but less secure than JWT or HMAC because
+ the token can leak via server logs, referrer headers, and URL sharing.
+ See https://www.w3.org/TR/capability-urls/ for background. (see [below for nested schema](#nestedatt--draft_triggers--webhook_automation_trigger--webhook_listener_auth_capability_url))
 - `webhook_listener_auth_hmac` (Attributes) The WebhookListenerAuthHMAC message. (see [below for nested schema](#nestedatt--draft_triggers--webhook_automation_trigger--webhook_listener_auth_hmac))
 - `webhook_listener_auth_jwt` (Attributes) The WebhookListenerAuthJWT message. (see [below for nested schema](#nestedatt--draft_triggers--webhook_automation_trigger--webhook_listener_auth_jwt))
+
+<a id="nestedatt--draft_triggers--webhook_automation_trigger--webhook_listener_auth_capability_url"></a>
+### Nested Schema for `draft_triggers.webhook_automation_trigger.webhook_listener_auth_capability_url`
+
 
 <a id="nestedatt--draft_triggers--webhook_automation_trigger--webhook_listener_auth_hmac"></a>
 ### Nested Schema for `draft_triggers.webhook_automation_trigger.webhook_listener_auth_hmac`
@@ -2962,6 +3236,8 @@ This message contains a oneof named app_identifier. Only a single field of the f
 - `grant_found_trigger` (Attributes) The GrantFoundTrigger message. (see [below for nested schema](#nestedatt--triggers--grant_found_trigger))
 - `schedule_trigger` (Attributes) The ScheduleTrigger message. (see [below for nested schema](#nestedatt--triggers--schedule_trigger))
 - `schedule_trigger_app_user` (Attributes) The ScheduleTriggerAppUser message. (see [below for nested schema](#nestedatt--triggers--schedule_trigger_app_user))
+- `schedule_trigger_no_user` (Attributes) ScheduleTriggerNoUser fires on a cron schedule with no subject user (e.g. reports, syncs, orchestration).
+ Minimum cron interval is enforced at 1 hour in validation. (see [below for nested schema](#nestedatt--triggers--schedule_trigger_no_user))
 - `usage_based_revocation_trigger` (Attributes) The UsageBasedRevocationTrigger message.
 
 This message contains a oneof named cold_start_schedule. Only a single field of the following list may be set at a time:
@@ -2973,7 +3249,8 @@ This message contains a oneof named cold_start_schedule. Only a single field of 
 
 This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:
   - jwt
-  - hmac (see [below for nested schema](#nestedatt--triggers--webhook_automation_trigger))
+  - hmac
+  - capabilityUrl (see [below for nested schema](#nestedatt--triggers--webhook_automation_trigger))
 
 <a id="nestedatt--triggers--access_conflict_trigger"></a>
 ### Nested Schema for `triggers.access_conflict_trigger`
@@ -3060,7 +3337,7 @@ Optional:
 
 Optional:
 
-- `account_type` (String) The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
+- `account_type` (String) The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
 
 
 <a id="nestedatt--triggers--grant_deleted_trigger--grant_trigger_filter--entitlement_inclusion_all"></a>
@@ -3108,9 +3385,9 @@ Optional:
 
 Optional:
 
-- `grant_filter_type` (String) The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
-- `grant_justification_type` (String) The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]
-- `grant_source_filter` (String) The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
+- `grant_filter_type` (String) The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
+- `grant_justification_type` (String) The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]
+- `grant_source_filter` (String) The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
 
 
 
@@ -3145,7 +3422,7 @@ Optional:
 
 Optional:
 
-- `account_type` (String) The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
+- `account_type` (String) The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]
 
 
 <a id="nestedatt--triggers--grant_found_trigger--grant_trigger_filter--entitlement_inclusion_all"></a>
@@ -3193,9 +3470,9 @@ Optional:
 
 Optional:
 
-- `grant_filter_type` (String) The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
-- `grant_justification_type` (String) The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]
-- `grant_source_filter` (String) The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
+- `grant_filter_type` (String) The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]
+- `grant_justification_type` (String) The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]
+- `grant_source_filter` (String) The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]
 
 
 
@@ -3220,6 +3497,17 @@ Optional:
 
 - `app_id` (String) The appId field.
 - `condition` (String) The condition field.
+- `cron_spec` (String) The cronSpec field.
+- `start` (String)
+- `timezone` (String) The timezone field.
+
+
+<a id="nestedatt--triggers--schedule_trigger_no_user"></a>
+### Nested Schema for `triggers.schedule_trigger_no_user`
+
+Optional:
+
+- `advanced` (Boolean) The advanced field.
 - `cron_spec` (String) The cronSpec field.
 - `start` (String)
 - `timezone` (String) The timezone field.
@@ -3302,8 +3590,16 @@ Optional:
 Optional:
 
 - `listener_id` (String) Optional existing listener ID (hidden field from frontend)
+- `webhook_listener_auth_capability_url` (Attributes) Capability URL authentication: the URL itself contains an unguessable token that acts
+ as the credential. This is simpler to integrate but less secure than JWT or HMAC because
+ the token can leak via server logs, referrer headers, and URL sharing.
+ See https://www.w3.org/TR/capability-urls/ for background. (see [below for nested schema](#nestedatt--triggers--webhook_automation_trigger--webhook_listener_auth_capability_url))
 - `webhook_listener_auth_hmac` (Attributes) The WebhookListenerAuthHMAC message. (see [below for nested schema](#nestedatt--triggers--webhook_automation_trigger--webhook_listener_auth_hmac))
 - `webhook_listener_auth_jwt` (Attributes) The WebhookListenerAuthJWT message. (see [below for nested schema](#nestedatt--triggers--webhook_automation_trigger--webhook_listener_auth_jwt))
+
+<a id="nestedatt--triggers--webhook_automation_trigger--webhook_listener_auth_capability_url"></a>
+### Nested Schema for `triggers.webhook_automation_trigger.webhook_listener_auth_capability_url`
+
 
 <a id="nestedatt--triggers--webhook_automation_trigger--webhook_listener_auth_hmac"></a>
 ### Nested Schema for `triggers.webhook_automation_trigger.webhook_listener_auth_hmac`
@@ -3321,6 +3617,13 @@ Optional:
 
 <a id="nestedatt--disabled_reason_circuit_breaker"></a>
 ### Nested Schema for `disabled_reason_circuit_breaker`
+
+Read-Only:
+
+- `observed_count` (Number) Observed execution count in the period at trip time.
+- `period` (String) Snapshot of the period at trip time.
+- `threshold` (Number) Snapshot of the threshold at trip time.
+- `tripped_at` (String)
 
 ## Import
 

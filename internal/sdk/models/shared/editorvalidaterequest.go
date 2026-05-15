@@ -2,9 +2,9 @@
 
 package shared
 
-// The EditorValidateRequest message.
+// The EditorValidateRequest message contains the configuration text to validate.
 type EditorValidateRequest struct {
-	// The text field.
+	// The configuration text to validate.
 	Text *string `json:"text,omitempty"`
 }
 

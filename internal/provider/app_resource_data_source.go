@@ -30,6 +30,7 @@ type AppResourceDataSource struct {
 // AppResourceDataSourceModel describes the data model.
 type AppResourceDataSourceModel struct {
 	AccessConfigID          types.String                                    `tfsdk:"access_config_id"`
+	Annotations             map[string]types.String                         `tfsdk:"annotations"`
 	AppID                   types.String                                    `tfsdk:"app_id"`
 	AppResourceTypeID       types.String                                    `tfsdk:"app_resource_type_id"`
 	CreatedAt               types.String                                    `tfsdk:"created_at"`
@@ -39,6 +40,7 @@ type AppResourceDataSourceModel struct {
 	DisplayName             types.String                                    `tfsdk:"display_name"`
 	Edit                    types.Bool                                      `tfsdk:"edit"`
 	Expanded                []tfTypes.AppResourceServiceGetResponseExpanded `tfsdk:"expanded"`
+	ExternalID              types.String                                    `tfsdk:"external_id"`
 	Extra                   map[string]types.Bool                           `tfsdk:"extra"`
 	GrantCount              types.String                                    `tfsdk:"grant_count"`
 	ID                      types.String                                    `tfsdk:"id"`
@@ -67,11 +69,30 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: `The access config ID for this resource. May be empty.` + "\n" +
 					` Must be one of the builtin access config IDs or empty.`,
 			},
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/` + "\n" +
+					` are reserved.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.` + "\n" +
+					`` + "\n" +
+					` Most AppResources are connector-synced; user-supplied annotations on` + "\n" +
+					` a synced resource will be overwritten by the next sync. The` + "\n" +
+					` annotations bag is most useful on user-created groups (the` + "\n" +
+					` ` + "`" + `conductorone_app_resource` + "`" + ` TF resource).`,
+			},
 			"app_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The app that this resource belongs to.`,
 			},
 			"app_resource_type_id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The resource type that this resource is.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -102,6 +123,11 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				},
 				Description: `List of serialized related objects.`,
 			},
+			"external_id": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `The upstream product's native external ID for this resource (e.g. an Okta group ID).` + "\n" +
+					` Populated from the connector's external ID during sync.`,
+			},
 			"extra": schema.MapAttribute{
 				Computed:    true,
 				ElementType: types.BoolType,
@@ -112,7 +138,8 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				Description: `The number of grants to this resource.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The id of the resource.`,
 			},
 			"match_baton_id": schema.StringAttribute{
 				Computed:    true,

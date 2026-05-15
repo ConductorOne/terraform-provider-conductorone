@@ -1,5 +1,8 @@
 resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
-  alias                = "...my_alias..."
+  alias = "...my_alias..."
+  annotations = {
+    key = "value"
+  }
   app_id               = "...my_app_id..."
   app_resource_id      = "...my_app_resource_id..."
   app_resource_type_id = "...my_app_resource_type_id..."

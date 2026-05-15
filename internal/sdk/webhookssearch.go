@@ -34,7 +34,7 @@ func newWebhooksSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfigurati
 }
 
 // Search
-// Invokes the c1.api.webhooks.v1.WebhooksSearch.Search method.
+// Search for webhook subscriptions by query string or specific webhook references.
 func (s *WebhooksSearch) Search(ctx context.Context, request *shared.WebhooksSearchRequest, opts ...operations.Option) (*operations.C1APIWebhooksV1WebhooksSearchSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -171,15 +171,11 @@ func (s *WebhooksSearch) Search(ctx context.Context, request *shared.WebhooksSea
 				return nil, nil
 			}
 		}
+		request.PageToken = &nCVal
 
 		return s.Search(
 			ctx,
-			&shared.WebhooksSearchRequest{
-				PageSize:  request.PageSize,
-				PageToken: &nCVal,
-				Query:     request.Query,
-				Refs:      request.Refs,
-			},
+			request,
 		)
 	}
 

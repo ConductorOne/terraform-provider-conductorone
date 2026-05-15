@@ -16,6 +16,9 @@ When creating a policy you must provide a display name. Optionally you can defin
 
 ```terraform
 resource "conductorone_policy" "my_policy" {
+  annotations = {
+    key = "value"
+  }
   description  = "...my_description..."
   display_name = "...my_display_name..."
   policy_steps = {
@@ -31,6 +34,9 @@ resource "conductorone_policy" "my_policy" {
             }
             action_target_baton_resource_action = {
               baton_resource_action_id = "...my_baton_resource_action_id..."
+            }
+            action_target_client_id_approval = {
+              # ...
             }
           }
           approval = {
@@ -336,12 +342,22 @@ resource "conductorone_policy" "my_policy" {
 
 ### Optional
 
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+ with `c1/` are reserved for server-managed use and rejected on write.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `description` (String) The description of the new policy.
-- `policy_steps` (Attributes Map) The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples. (see [below for nested schema](#nestedatt--policy_steps))
-- `policy_type` (String) The enum of the policy type. must be one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]
-- `post_actions` (Attributes List) Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately. (see [below for nested schema](#nestedatt--post_actions))
-- `reassign_tasks_to_delegates` (Boolean, Deprecated) Deprecated. Use setting in policy step instead
-- `rules` (Attributes List) The rules field. (see [below for nested schema](#nestedatt--rules))
+- `policy_steps` (Attributes Map) Step sequences for this policy. The map must include a baseline entry keyed
+ by the lowercased policy type (e.g., "grant"). Additional entries with
+ opaque keys can be added for conditional routing via the rules array. (see [below for nested schema](#nestedatt--policy_steps))
+- `policy_type` (String) The type of policy to create (grant, revoke, or certify). possible known values include one of ["POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION"]
+- `post_actions` (Attributes List) Ordered actions to execute after the policy completes processing. (see [below for nested schema](#nestedatt--post_actions))
+- `reassign_tasks_to_delegates` (Boolean, Deprecated) This field is no longer used. Configure delegate reassignment in the policy step instead.
+- `rules` (Attributes List) Conditional routing rules. See the Policy message for details on evaluation order. (see [below for nested schema](#nestedatt--rules))
 
 ### Read-Only
 
@@ -355,7 +371,8 @@ resource "conductorone_policy" "my_policy" {
 
 Optional:
 
-- `steps` (Attributes List) An array of policy steps indicating the processing flow of a policy. These steps are oneOfs, and only one property may be set for each array index at a time. (see [below for nested schema](#nestedatt--policy_steps--steps))
+- `steps` (Attributes List) Ordered array of steps. Each step is a oneof -- exactly one step type is
+ set per entry. Steps execute sequentially. (see [below for nested schema](#nestedatt--policy_steps--steps))
 
 <a id="nestedatt--policy_steps--steps"></a>
 ### Nested Schema for `policy_steps.steps`
@@ -367,7 +384,8 @@ Optional:
 
 This message contains a oneof named target. Only a single field of the following list may be set at a time:
   - automation
-  - batonResourceAction (see [below for nested schema](#nestedatt--policy_steps--steps--action))
+  - batonResourceAction
+  - clientIdApproval (see [below for nested schema](#nestedatt--policy_steps--steps--action))
 - `approval` (Attributes) The Approval message.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -406,6 +424,8 @@ Optional:
 
 - `action_target_automation` (Attributes) ActionTargetAutomation targets automation templates for policy actions. (see [below for nested schema](#nestedatt--policy_steps--steps--action--action_target_automation))
 - `action_target_baton_resource_action` (Attributes) ActionTargetResource targets resource actions for policy actions. (see [below for nested schema](#nestedatt--policy_steps--steps--action--action_target_baton_resource_action))
+- `action_target_client_id_approval` (Attributes) ActionTargetClientIdApproval targets administrator review of an external
+ OAuth client registration (CIMD or DCR) for policy actions. (see [below for nested schema](#nestedatt--policy_steps--steps--action--action_target_client_id_approval))
 
 <a id="nestedatt--policy_steps--steps--action--action_target_automation"></a>
 ### Nested Schema for `policy_steps.steps.action.action_target_automation`
@@ -421,6 +441,10 @@ Optional:
 Optional:
 
 - `baton_resource_action_id` (String) The batonResourceActionId field.
+
+
+<a id="nestedatt--policy_steps--steps--action--action_target_client_id_approval"></a>
+### Nested Schema for `policy_steps.steps.action.action_target_client_id_approval`
 
 
 
@@ -465,8 +489,8 @@ Read-Only:
 
 Optional:
 
-- `agent_failure_action` (String) The action to take if the agent fails to approve, deny, or reassign the task. must be one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]
-- `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only. must be one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]
+- `agent_failure_action` (String) The action to take if the agent fails to approve, deny, or reassign the task. possible known values include one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]
+- `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only. possible known values include one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]
 - `agent_user_id` (String) The agent user ID to assign the task to.
 - `instructions` (String) Instructions for the agent.
 - `policy_ids` (List of String) The allow list of policy IDs to re-route the task to.
@@ -976,8 +1000,8 @@ Optional:
 
 Optional:
 
-- `certify_remediate_immediately` (Boolean) ONLY valid when used in a CERTIFY Ticket Type:
- Causes any deprovision or change in a grant to be applied when Certify Ticket is closed.
+- `certify_remediate_immediately` (Boolean) Only valid on certify policies. When true, any revocations resulting from
+ the certification are applied immediately when the campaign task closes.
 This field is part of the `action` oneof.
 See the documentation for `c1.api.policy.v1.PolicyPostActions` for more details.
 
@@ -987,5 +1011,7 @@ See the documentation for `c1.api.policy.v1.PolicyPostActions` for more details.
 
 Optional:
 
-- `condition` (String) The condition field.
-- `policy_key` (String) This is a reference to a list of policy steps from `policy_steps`
+- `condition` (String) A CEL expression that is evaluated against the request context. If it
+ returns true, the step sequence identified by policy_key is used.
+- `policy_key` (String) A key into the policy's policy_steps map identifying which step sequence
+ to execute when this rule's condition matches.

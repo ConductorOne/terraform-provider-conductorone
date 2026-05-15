@@ -29,6 +29,7 @@ type AccessProfileDataSource struct {
 
 // AccessProfileDataSourceModel describes the data model.
 type AccessProfileDataSourceModel struct {
+	Annotations                     map[string]types.String                                      `tfsdk:"annotations"`
 	CreatedAt                       types.String                                                 `tfsdk:"created_at"`
 	CreatedByUserID                 types.String                                                 `tfsdk:"created_by_user_id"`
 	DeletedAt                       types.String                                                 `tfsdk:"deleted_at"`
@@ -56,6 +57,18 @@ func (r *AccessProfileDataSource) Schema(ctx context.Context, req datasource.Sch
 		MarkdownDescription: "AccessProfile DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/` + "\n" +
+					` are reserved.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},
@@ -86,7 +99,8 @@ func (r *AccessProfileDataSource) Schema(ctx context.Context, req datasource.Sch
 				Description: `List of serialized related objects.`,
 			},
 			"id": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `The id of the request catalog.`,
 			},
 			"published": schema.BoolAttribute{
 				Computed:    true,

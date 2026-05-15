@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,36 +19,39 @@ const (
 	WellKnownProviderWellKnownWorkloadProviderGitlabCi       WellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI"
 	WellKnownProviderWellKnownWorkloadProviderHcpTerraform   WellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM"
 	WellKnownProviderWellKnownWorkloadProviderAwsIamOutbound WellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND"
+	WellKnownProviderWellKnownWorkloadProviderSpiffe         WellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE"
 )
 
 func (e WellKnownProvider) ToPointer() *WellKnownProvider {
 	return &e
 }
-func (e *WellKnownProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WellKnownProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED", "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM", "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS", "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI", "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM", "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND", "WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE":
+			return true
+		}
 	}
-	switch v {
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM":
-		fallthrough
-	case "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND":
-		*e = WellKnownProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WellKnownProvider: %v", v)
-	}
+	return false
 }
 
-// WorkloadFederationProvider represents a tenant-level OIDC issuer registration.
+// WorkloadFederationProvider represents a tenant-level workload identity
+//
+//	issuer registration. Two issuer schemes are supported:
+//
+//	  - https://...   classic OIDC issuer; `settings.oidc` MUST be set.
+//	  - spiffe://...  SPIFFE trust-domain URI; `settings.spiffe` MUST be set.
+//
+//	The (well_known_provider, issuer_url scheme, settings oneof) tuple is a
+//	tri-invariant: SPIFFE wkp ⟺ spiffe:// issuer ⟺ settings.spiffe set; any
+//	other wkp ⟺ https:// issuer ⟺ settings.oidc set. Issuer URLs are unique
+//	within tenant.
+//
+// This message contains a oneof named settings. Only a single field of the following list may be set at a time:
+//   - oidc
+//   - spiffe
 type WorkloadFederationProvider struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// A description of what this provider is for.
@@ -61,9 +62,18 @@ type WorkloadFederationProvider struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// The unique ID of the provider.
 	ID *string `json:"id,omitempty"`
-	// The OIDC issuer URL. Immutable after creation.
-	IssuerURL *string    `json:"issuerUrl,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	// Canonical issuer URL. https:// for OIDC providers, spiffe:// for SPIFFE
+	//  trust domains. Unique within tenant. Immutable after creation.
+	IssuerURL *string `json:"issuerUrl,omitempty"`
+	// OIDCSettings is the kind-specific configuration block for classic OIDC
+	//  providers (GitHub Actions, GitLab CI, HCP Terraform, AWS IAM Outbound,
+	//  any CUSTOM provider). Empty for now; future fields like custom_jwks_url,
+	//  audience overrides, and required_claims land here.
+	OIDCSettings *OIDCSettings `json:"oidc,omitempty"`
+	// SPIFFESettings is the kind-specific configuration block for SPIFFE
+	//  trust-domain providers (issuer_url = spiffe://<trust-domain>).
+	SPIFFESettings *SPIFFESettings `json:"spiffe,omitempty"`
+	UpdatedAt      *time.Time      `json:"updatedAt,omitempty"`
 	// Well-known provider type. Drives UX (wizard presets, docs, icons).
 	//  Set at creation time, immutable.
 	WellKnownProvider *WellKnownProvider `json:"wellKnownProvider,omitempty"`
@@ -120,6 +130,20 @@ func (w *WorkloadFederationProvider) GetIssuerURL() *string {
 		return nil
 	}
 	return w.IssuerURL
+}
+
+func (w *WorkloadFederationProvider) GetOIDCSettings() *OIDCSettings {
+	if w == nil {
+		return nil
+	}
+	return w.OIDCSettings
+}
+
+func (w *WorkloadFederationProvider) GetSPIFFESettings() *SPIFFESettings {
+	if w == nil {
+		return nil
+	}
+	return w.SPIFFESettings
 }
 
 func (w *WorkloadFederationProvider) GetUpdatedAt() *time.Time {

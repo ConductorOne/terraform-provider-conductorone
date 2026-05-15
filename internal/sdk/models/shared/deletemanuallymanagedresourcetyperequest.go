@@ -2,6 +2,6 @@
 
 package shared
 
-// The DeleteManuallyManagedResourceTypeRequest message.
+// DeleteManuallyManagedResourceTypeRequest - The request message for deleting a manually managed resource type.
 type DeleteManuallyManagedResourceTypeRequest struct {
 }

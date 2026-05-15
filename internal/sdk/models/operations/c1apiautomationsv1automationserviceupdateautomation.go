@@ -26,6 +26,9 @@ func (c *C1APIAutomationsV1AutomationServiceUpdateAutomationRequest) GetUpdateAu
 	return c.UpdateAutomationRequest
 }
 
+// #region class-body-c1apiautomationsv1automationserviceupdateautomationrequest
+// #endregion class-body-c1apiautomationsv1automationserviceupdateautomationrequest
+
 type C1APIAutomationsV1AutomationServiceUpdateAutomationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIAutomationsV1AutomationServiceUpdateAutomationResponse) GetUpdateA
 	}
 	return c.UpdateAutomationResponse
 }
+
+// #region class-body-c1apiautomationsv1automationserviceupdateautomationresponse
+// #endregion class-body-c1apiautomationsv1automationserviceupdateautomationresponse

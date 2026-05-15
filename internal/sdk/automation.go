@@ -31,7 +31,7 @@ func newAutomation(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, 
 }
 
 // ListAutomations - List Automations
-// Invokes the c1.api.automations.v1.AutomationService.ListAutomations method.
+// List all automations in the tenant with pagination support.
 func (s *Automation) ListAutomations(ctx context.Context, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceListAutomationsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -161,8 +161,8 @@ func (s *Automation) ListAutomations(ctx context.Context, opts ...operations.Opt
 }
 
 // CreateAutomation - Create Automation
-// Invokes the c1.api.automations.v1.AutomationService.CreateAutomation method.
-func (s *Automation) CreateAutomation(ctx context.Context, request *shared.CreateAutomationRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceCreateAutomationResponse, error) {
+// Create a new automation with the specified steps, triggers, and configuration.
+func (s *Automation) CreateAutomation(ctx context.Context, request *shared.AutomationsCreateAutomationRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceCreateAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -272,12 +272,12 @@ func (s *Automation) CreateAutomation(ctx context.Context, request *shared.Creat
 				return nil, err
 			}
 
-			var out shared.CreateAutomationResponse1
+			var out shared.AutomationsCreateAutomationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.CreateAutomationResponse = &out
+			res.AutomationsCreateAutomationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -298,7 +298,7 @@ func (s *Automation) CreateAutomation(ctx context.Context, request *shared.Creat
 }
 
 // DeleteAutomation - Delete Automation
-// Invokes the c1.api.automations.v1.AutomationService.DeleteAutomation method.
+// Delete an automation by its unique identifier, removing it and its associated triggers.
 func (s *Automation) DeleteAutomation(ctx context.Context, request operations.C1APIAutomationsV1AutomationServiceDeleteAutomationRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceDeleteAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -331,7 +331,7 @@ func (s *Automation) DeleteAutomation(ctx context.Context, request operations.C1
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DeleteAutomationRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AutomationsDeleteAutomationRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -409,12 +409,12 @@ func (s *Automation) DeleteAutomation(ctx context.Context, request operations.C1
 				return nil, err
 			}
 
-			var out shared.DeleteAutomationResponse
+			var out shared.AutomationsDeleteAutomationResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.DeleteAutomationResponse = &out
+			res.AutomationsDeleteAutomationResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -422,6 +422,8 @@ func (s *Automation) DeleteAutomation(ctx context.Context, request operations.C1
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -435,7 +437,7 @@ func (s *Automation) DeleteAutomation(ctx context.Context, request operations.C1
 }
 
 // GetAutomation - Get Automation
-// Invokes the c1.api.automations.v1.AutomationService.GetAutomation method.
+// Retrieve a single automation by its unique identifier.
 func (s *Automation) GetAutomation(ctx context.Context, request operations.C1APIAutomationsV1AutomationServiceGetAutomationRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceGetAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -553,6 +555,7 @@ func (s *Automation) GetAutomation(ctx context.Context, request operations.C1API
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -566,7 +569,7 @@ func (s *Automation) GetAutomation(ctx context.Context, request operations.C1API
 }
 
 // UpdateAutomation - Update Automation
-// Invokes the c1.api.automations.v1.AutomationService.UpdateAutomation method.
+// Update an existing automation's properties, steps, or triggers using a field mask.
 func (s *Automation) UpdateAutomation(ctx context.Context, request operations.C1APIAutomationsV1AutomationServiceUpdateAutomationRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceUpdateAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -702,8 +705,287 @@ func (s *Automation) UpdateAutomation(ctx context.Context, request operations.C1
 
 }
 
+// ClearAutomationCircuitBreaker - Clear Automation Circuit Breaker
+// Clear the circuit breaker on an automation that was auto-disabled by the
+//
+//	rate cap. Future events flow normally; existing paused executions are not
+//	affected (use ResolvePausedAutomationExecutions to run or cancel them).
+func (s *Automation) ClearAutomationCircuitBreaker(ctx context.Context, request operations.C1APIAutomationsV1AutomationServiceClearAutomationCircuitBreakerRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceClearAutomationCircuitBreakerResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/automations/{id}/circuit_breaker/clear", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "c1.api.automations.v1.AutomationService.ClearAutomationCircuitBreaker",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ClearAutomationCircuitBreakerRequest", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.C1APIAutomationsV1AutomationServiceClearAutomationCircuitBreakerResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.ClearAutomationCircuitBreakerResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.ClearAutomationCircuitBreakerResponse = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
+// ResolvePausedAutomationExecutions - Resolve Paused Automation Executions
+// Decide what to do with the executions that were paused while the
+//
+//	automation's circuit breaker was tripped. Idempotent.
+func (s *Automation) ResolvePausedAutomationExecutions(ctx context.Context, request operations.C1APIAutomationsV1AutomationServiceResolvePausedAutomationExecutionsRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceResolvePausedAutomationExecutionsResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/automations/{id}/circuit_breaker/resolve_paused", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "c1.api.automations.v1.AutomationService.ResolvePausedAutomationExecutions",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "ResolvePausedAutomationExecutionsRequest", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.C1APIAutomationsV1AutomationServiceResolvePausedAutomationExecutionsResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.ResolvePausedAutomationExecutionsResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.ResolvePausedAutomationExecutionsResponse = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
 // ExecuteAutomation - Execute Automation
-// Invokes the c1.api.automations.v1.AutomationService.ExecuteAutomation method.
+// Trigger an on-demand execution of an automation, returning the new execution's identifier.
 func (s *Automation) ExecuteAutomation(ctx context.Context, request operations.C1APIAutomationsV1AutomationServiceExecuteAutomationRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceExecuteAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

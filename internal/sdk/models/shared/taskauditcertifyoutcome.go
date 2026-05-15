@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // TaskAuditCertifyOutcomeOutcome - The outcome field.
 type TaskAuditCertifyOutcomeOutcome string
 
@@ -22,28 +17,16 @@ const (
 func (e TaskAuditCertifyOutcomeOutcome) ToPointer() *TaskAuditCertifyOutcomeOutcome {
 	return &e
 }
-func (e *TaskAuditCertifyOutcomeOutcome) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskAuditCertifyOutcomeOutcome) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CERTIFY_OUTCOME_UNSPECIFIED", "CERTIFY_OUTCOME_CERTIFIED", "CERTIFY_OUTCOME_DECERTIFIED", "CERTIFY_OUTCOME_ERROR", "CERTIFY_OUTCOME_CANCELLED", "CERTIFY_OUTCOME_WAIT_TIMED_OUT":
+			return true
+		}
 	}
-	switch v {
-	case "CERTIFY_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "CERTIFY_OUTCOME_CERTIFIED":
-		fallthrough
-	case "CERTIFY_OUTCOME_DECERTIFIED":
-		fallthrough
-	case "CERTIFY_OUTCOME_ERROR":
-		fallthrough
-	case "CERTIFY_OUTCOME_CANCELLED":
-		fallthrough
-	case "CERTIFY_OUTCOME_WAIT_TIMED_OUT":
-		*e = TaskAuditCertifyOutcomeOutcome(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskAuditCertifyOutcomeOutcome: %v", v)
-	}
+	return false
 }
 
 // The TaskAuditCertifyOutcome message.

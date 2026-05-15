@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type TaskTypes string
 
 const (
@@ -19,24 +14,16 @@ const (
 func (e TaskTypes) ToPointer() *TaskTypes {
 	return &e
 }
-func (e *TaskTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_TYPE_UNSPECIFIED", "TASK_TYPE_REQUEST", "TASK_TYPE_REVOKE", "TASK_TYPE_REVIEW":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_TYPE_UNSPECIFIED":
-		fallthrough
-	case "TASK_TYPE_REQUEST":
-		fallthrough
-	case "TASK_TYPE_REVOKE":
-		fallthrough
-	case "TASK_TYPE_REVIEW":
-		*e = TaskTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskTypes: %v", v)
-	}
+	return false
 }
 
 // TaskUserRelation - The taskUserRelation field.
@@ -51,22 +38,16 @@ const (
 func (e TaskUserRelation) ToPointer() *TaskUserRelation {
 	return &e
 }
-func (e *TaskUserRelation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskUserRelation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT":
+			return true
+		}
 	}
-	switch v {
-	case "TASK_USER_RELATION_UNSPECIFIED":
-		fallthrough
-	case "TASK_USER_RELATION_ASSIGNEE":
-		fallthrough
-	case "TASK_USER_RELATION_SUBJECT":
-		*e = TaskUserRelation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskUserRelation: %v", v)
-	}
+	return false
 }
 
 // The TaskAction message.

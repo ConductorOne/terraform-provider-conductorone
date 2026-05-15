@@ -33,6 +33,9 @@ type AppEntitlementAutomation struct {
 	AppEntitlementAutomationRuleEntitlement *AppEntitlementAutomationRuleEntitlement `json:"entitlements,omitempty"`
 	// The AppEntitlementAutomationLastRunStatus message.
 	AppEntitlementAutomationLastRunStatus *AppEntitlementAutomationLastRunStatus `json:"lastRunStatus,omitempty"`
+	// When set, this automation is managed by an access profile's bundle automation.
+	//  Read-only. Not settable via this API.
+	ManagedByRequestCatalogID *string `json:"managedByRequestCatalogId,omitempty"`
 	// The AppEntitlementAutomationRuleNone message.
 	AppEntitlementAutomationRuleNone *AppEntitlementAutomationRuleNone `json:"none,omitempty"`
 	UpdatedAt                        *time.Time                        `json:"updatedAt,omitempty"`
@@ -117,6 +120,13 @@ func (a *AppEntitlementAutomation) GetAppEntitlementAutomationLastRunStatus() *A
 		return nil
 	}
 	return a.AppEntitlementAutomationLastRunStatus
+}
+
+func (a *AppEntitlementAutomation) GetManagedByRequestCatalogID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ManagedByRequestCatalogID
 }
 
 func (a *AppEntitlementAutomation) GetAppEntitlementAutomationRuleNone() *AppEntitlementAutomationRuleNone {

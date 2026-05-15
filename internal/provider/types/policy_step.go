@@ -8,8 +8,8 @@ import (
 
 type PolicyStep struct {
 	Accept    *Accept              `tfsdk:"accept"`
-	Action    *Action1             `tfsdk:"action"`
-	Approval  *Approval            `tfsdk:"approval" tfPlanOnly:"true"`
+	Action    *Action              `tfsdk:"action"`
+	Approval  *Approval            `tfsdk:"approval"`
 	Form      jsontypes.Normalized `tfsdk:"form"`
 	Provision *Provision           `tfsdk:"provision"`
 	Reject    *Reject              `tfsdk:"reject"`

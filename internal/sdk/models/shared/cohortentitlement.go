@@ -20,6 +20,8 @@ type CohortEntitlement struct {
 	EntitlementID *string `json:"entitlementId,omitempty"`
 	// The grantedCount field.
 	GrantedCount *int `json:"grantedCount,omitempty"`
+	// The riskLevelValueId field.
+	RiskLevelValueID *string `json:"riskLevelValueId,omitempty"`
 }
 
 func (c *CohortEntitlement) GetAppDisplayName() *string {
@@ -76,4 +78,11 @@ func (c *CohortEntitlement) GetGrantedCount() *int {
 		return nil
 	}
 	return c.GrantedCount
+}
+
+func (c *CohortEntitlement) GetRiskLevelValueID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.RiskLevelValueID
 }

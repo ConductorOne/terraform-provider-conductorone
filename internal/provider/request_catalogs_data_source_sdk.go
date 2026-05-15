@@ -17,6 +17,8 @@ func (r *RequestCatalogsDataSourceModel) RefreshFromSharedRequestCatalogManageme
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		if resp.List != nil {
 			r.List = []tfTypes.RequestCatalogView{}
@@ -28,6 +30,12 @@ func (r *RequestCatalogsDataSourceModel) RefreshFromSharedRequestCatalogManageme
 					list.RequestCatalog = nil
 				} else {
 					list.RequestCatalog = &tfTypes.RequestCatalog{}
+					if len(listItem.RequestCatalog.Annotations) > 0 {
+						list.RequestCatalog.Annotations = make(map[string]types.String, len(listItem.RequestCatalog.Annotations))
+						for key, value := range listItem.RequestCatalog.Annotations {
+							list.RequestCatalog.Annotations[key] = types.StringValue(value)
+						}
+					}
 					list.RequestCatalog.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.RequestCatalog.CreatedAt))
 					list.RequestCatalog.CreatedByUserID = types.StringPointerValue(listItem.RequestCatalog.CreatedByUserID)
 					list.RequestCatalog.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.RequestCatalog.DeletedAt))
@@ -57,6 +65,8 @@ func (r *RequestCatalogsDataSourceModel) RefreshFromSharedRequestCatalogManageme
 
 				r.List = append(r.List, list)
 			}
+		} else {
+			r.List = nil
 		}
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
 	}

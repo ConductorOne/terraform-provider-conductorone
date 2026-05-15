@@ -7,6 +7,6 @@ import (
 )
 
 type AccessConflictTrigger struct {
-	AllConflictMonitors types.Bool           `tfsdk:"all_conflict_monitors"`
 	ConflictMonitorRefs *ConflictMonitorRefs `tfsdk:"conflict_monitor_refs"`
+	AllConflictMonitors types.Bool           `tfsdk:"all_conflict_monitors"`
 }

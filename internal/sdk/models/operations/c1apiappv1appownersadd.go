@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppOwnersAddRequest) GetAddAppOwnerRequest() *shared.AddAppOw
 	return c.AddAppOwnerRequest
 }
 
+// #region class-body-c1apiappv1appownersaddrequest
+// #endregion class-body-c1apiappv1appownersaddrequest
+
 type C1APIAppV1AppOwnersAddResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppOwnersAddResponse) GetAddAppOwnerResponse() *shared.AddApp
 	}
 	return c.AddAppOwnerResponse
 }
+
+// #region class-body-c1apiappv1appownersaddresponse
+// #endregion class-body-c1apiappv1appownersaddresponse

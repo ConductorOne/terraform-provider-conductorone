@@ -10,11 +10,18 @@ package shared
 //   - certify
 //   - offboarding
 //   - action
+//   - finding
 type TaskTypeInput struct {
 	// The TaskTypeAction message.
+	//
+	// This message contains a oneof named target_object. Only a single field of the following list may be set at a time:
+	//   - scopeRole
+	//
 	TaskTypeAction *TaskTypeActionInput `json:"action,omitempty"`
 	// The TaskTypeCertify message indicates that a task is a certify task and all related details.
 	TaskTypeCertify *TaskTypeCertifyInput `json:"certify,omitempty"`
+	// The TaskTypeFinding message.
+	TaskTypeFinding *TaskTypeFindingInput `json:"finding,omitempty"`
 	// The TaskTypeGrant message indicates that a task is a grant task and all related details.
 	TaskTypeGrant *TaskTypeGrantInput `json:"grant,omitempty"`
 	// The TaskTypeOffboarding message.
@@ -35,6 +42,13 @@ func (t *TaskTypeInput) GetTaskTypeCertify() *TaskTypeCertifyInput {
 		return nil
 	}
 	return t.TaskTypeCertify
+}
+
+func (t *TaskTypeInput) GetTaskTypeFinding() *TaskTypeFindingInput {
+	if t == nil {
+		return nil
+	}
+	return t.TaskTypeFinding
 }
 
 func (t *TaskTypeInput) GetTaskTypeGrant() *TaskTypeGrantInput {

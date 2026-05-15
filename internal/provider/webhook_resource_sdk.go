@@ -11,7 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-func (r *WebhookResourceModel) RefreshFromSharedWebhook1(ctx context.Context, resp *shared.Webhook1) diag.Diagnostics {
+func (r *WebhookResourceModel) RefreshFromSharedWebhookEndpoint(ctx context.Context, resp *shared.WebhookEndpoint) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -32,7 +32,7 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceCreateResponse(ct
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedWebhook1(ctx, resp.Webhook)...)
+		diags.Append(r.RefreshFromSharedWebhookEndpoint(ctx, resp.WebhookEndpoint)...)
 
 		if diags.HasError() {
 			return diags
@@ -47,7 +47,7 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceGetResponse(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedWebhook1(ctx, resp.Webhook)...)
+		diags.Append(r.RefreshFromSharedWebhookEndpoint(ctx, resp.WebhookEndpoint)...)
 
 		if diags.HasError() {
 			return diags
@@ -62,7 +62,7 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceUpdateResponse(ct
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedWebhook1(ctx, resp.Webhook)...)
+		diags.Append(r.RefreshFromSharedWebhookEndpoint(ctx, resp.WebhookEndpoint)...)
 
 		if diags.HasError() {
 			return diags
@@ -128,7 +128,7 @@ func (r *WebhookResourceModel) ToOperationsC1APIWebhooksV1WebhooksServiceUpdateR
 	return &out, diags
 }
 
-func (r *WebhookResourceModel) ToSharedWebhookInput(ctx context.Context) (*shared.WebhookInput, diag.Diagnostics) {
+func (r *WebhookResourceModel) ToSharedWebhookEndpointInput(ctx context.Context) (*shared.WebhookEndpointInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	callbackTimeout := new(string)
@@ -161,7 +161,7 @@ func (r *WebhookResourceModel) ToSharedWebhookInput(ctx context.Context) (*share
 	} else {
 		url = nil
 	}
-	out := shared.WebhookInput{
+	out := shared.WebhookEndpointInput{
 		CallbackTimeout: callbackTimeout,
 		Description:     description,
 		DisplayName:     displayName,
@@ -214,15 +214,15 @@ func (r *WebhookResourceModel) ToSharedWebhooksServiceDeleteRequest(ctx context.
 func (r *WebhookResourceModel) ToSharedWebhooksServiceUpdateRequest(ctx context.Context) (*shared.WebhooksServiceUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	webhook, webhookDiags := r.ToSharedWebhookInput(ctx)
-	diags.Append(webhookDiags...)
+	webhookEndpoint, webhookEndpointDiags := r.ToSharedWebhookEndpointInput(ctx)
+	diags.Append(webhookEndpointDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := shared.WebhooksServiceUpdateRequest{
-		Webhook: webhook,
+		WebhookEndpoint: webhookEndpoint,
 	}
 
 	return &out, diags

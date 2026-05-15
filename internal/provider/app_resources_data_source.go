@@ -60,33 +60,33 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
 				Optional:    true,
-				Description: `The appId field.`,
+				Description: `The app ID to restrict the search to.`,
 			},
 			"app_user_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The appUserIds field.`,
+				Description: `A list of app user IDs to restrict the search by.`,
 			},
 			"exclude_deleted_resource_bindings": schema.BoolAttribute{
 				Optional:    true,
-				Description: `The excludeDeletedResourceBindings field.`,
+				Description: `If true, exclude resources whose bindings have been deleted.`,
 			},
 			"exclude_resource_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The excludeResourceIds field.`,
+				Description: `A list of resource IDs to exclude from the search results.`,
 			},
 			"exclude_resource_type_trait_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The excludeResourceTypeTraitIds field.`,
+				Description: `A list of resource type trait IDs to exclude from the search.`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{},
 				},
-				Description: `The expanded field.`,
+				Description: `List of serialized related objects.`,
 			},
 			"list": schema.ListNestedAttribute{
 				Computed: true,
@@ -123,6 +123,23 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 									MarkdownDescription: `The access config ID for this resource. May be empty.` + "\n" +
 										` Must be one of the builtin access config IDs or empty.`,
 								},
+								"annotations": schema.MapAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+										` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+										` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+										` URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/` + "\n" +
+										` are reserved.` + "\n" +
+										`` + "\n" +
+										` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+										` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.` + "\n" +
+										`` + "\n" +
+										` Most AppResources are connector-synced; user-supplied annotations on` + "\n" +
+										` a synced resource will be overwritten by the next sync. The` + "\n" +
+										` annotations bag is most useful on user-created groups (the` + "\n" +
+										` ` + "`" + `conductorone_app_resource` + "`" + ` TF resource).`,
+								},
 								"app_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The app that this resource belongs to.`,
@@ -144,6 +161,11 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 								"display_name": schema.StringAttribute{
 									Computed:    true,
 									Description: `The display name for this resource.`,
+								},
+								"external_id": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `The upstream product's native external ID for this resource (e.g. an Okta group ID).` + "\n" +
+										` Populated from the connector's external ID during sync.`,
 								},
 								"grant_count": schema.StringAttribute{
 									Computed:    true,
@@ -198,28 +220,28 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 						},
 					},
 				},
-				Description: `The list field.`,
+				Description: `The list of app resource results.`,
 			},
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
-				Description: `The nextPageToken field.`,
+				Description: `The token for fetching the next page of results.`,
 			},
 			"owner_user_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The ownerUserIds field.`,
+				Description: `A list of C1 user IDs to filter resources by ownership.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,
-				Description: `The pageSize field.`,
+				Description: `The maximum number of results to return per page.`,
 			},
 			"page_token": schema.StringAttribute{
 				Optional:    true,
-				Description: `The pageToken field.`,
+				Description: `The token for fetching the next page of results.`,
 			},
 			"query": schema.StringAttribute{
 				Optional:    true,
-				Description: `The query field.`,
+				Description: `Fuzzy search the display name of resources.`,
 			},
 			"refs": schema.ListNestedAttribute{
 				Optional: true,
@@ -227,34 +249,34 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 					Attributes: map[string]schema.Attribute{
 						"app_id": schema.StringAttribute{
 							Optional:    true,
-							Description: `The appId field.`,
+							Description: `The ID of the app that owns the resource.`,
 						},
 						"app_resource_type_id": schema.StringAttribute{
 							Optional:    true,
-							Description: `The appResourceTypeId field.`,
+							Description: `The ID of the resource type that classifies this resource.`,
 						},
 						"id": schema.StringAttribute{
 							Optional:    true,
-							Description: `The id field.`,
+							Description: `The unique ID of the app resource.`,
 						},
 					},
 				},
-				Description: `The refs field.`,
+				Description: `A list of specific app resource references to restrict the search to.`,
 			},
 			"resource_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The resourceIds field.`,
+				Description: `A list of resource IDs to restrict the search to.`,
 			},
 			"resource_type_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The resourceTypeIds field.`,
+				Description: `A list of resource type IDs to restrict the search by.`,
 			},
 			"resource_type_trait_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The resourceTypeTraitIds field.`,
+				Description: `A list of resource type trait IDs to restrict the search by.`,
 			},
 		},
 	}

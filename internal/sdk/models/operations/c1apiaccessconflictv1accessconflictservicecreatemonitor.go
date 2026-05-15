@@ -14,7 +14,8 @@ type C1APIAccessconflictV1AccessConflictServiceCreateMonitorResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// A conflict monitor defines a Separation of Duty rule between two entitlement sets.
+	//  It detects when any user holds entitlements from both set A and set B simultaneously.
 	ConflictMonitor *shared.ConflictMonitor
 }
 
@@ -45,3 +46,6 @@ func (c *C1APIAccessconflictV1AccessConflictServiceCreateMonitorResponse) GetCon
 	}
 	return c.ConflictMonitor
 }
+
+// #region class-body-c1apiaccessconflictv1accessconflictservicecreatemonitorresponse
+// #endregion class-body-c1apiaccessconflictv1accessconflictservicecreatemonitorresponse

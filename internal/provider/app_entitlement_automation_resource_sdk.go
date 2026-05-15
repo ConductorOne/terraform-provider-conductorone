@@ -55,6 +55,8 @@ func (r *AppEntitlementAutomationResourceModel) RefreshFromSharedAppEntitlementA
 
 					r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = append(r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
 				}
+			} else {
+				r.AppEntitlementAutomationRuleEntitlement.EntitlementRefs = nil
 			}
 		}
 		if resp.AppEntitlementAutomationRuleNone == nil {
@@ -68,6 +70,7 @@ func (r *AppEntitlementAutomationResourceModel) RefreshFromSharedAppEntitlementA
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.ManagedByRequestCatalogID = types.StringPointerValue(resp.ManagedByRequestCatalogID)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
@@ -128,7 +131,7 @@ func (r *AppEntitlementAutomationResourceModel) ToOperationsC1APIAppV1AppEntitle
 	var appEntitlementID string
 	appEntitlementID = r.AppEntitlementID.ValueString()
 
-	createAutomationRequest, createAutomationRequestDiags := r.ToSharedCreateAutomationRequestInput(ctx)
+	createAutomationRequest, createAutomationRequestDiags := r.ToSharedCreateAutomationRequest(ctx)
 	diags.Append(createAutomationRequestDiags...)
 
 	if diags.HasError() {
@@ -382,7 +385,7 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedAppEntitlementServiceUpd
 	return &out, diags
 }
 
-func (r *AppEntitlementAutomationResourceModel) ToSharedCreateAutomationRequestInput(ctx context.Context) (*shared.CreateAutomationRequestInput, diag.Diagnostics) {
+func (r *AppEntitlementAutomationResourceModel) ToSharedCreateAutomationRequest(ctx context.Context) (*shared.CreateAutomationRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	appEntitlementAutomation, appEntitlementAutomationDiags := r.ToSharedAppEntitlementAutomationInput(ctx)
@@ -392,7 +395,7 @@ func (r *AppEntitlementAutomationResourceModel) ToSharedCreateAutomationRequestI
 		return nil, diags
 	}
 
-	out := shared.CreateAutomationRequestInput{
+	out := shared.CreateAutomationRequest{
 		AppEntitlementAutomation: appEntitlementAutomation,
 	}
 

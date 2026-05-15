@@ -2,11 +2,17 @@
 
 package shared
 
-// The Rule message.
+// Rule - A conditional routing rule that maps a CEL expression to a step sequence.
+//
+//	Rules are evaluated top-to-bottom; the first matching rule's policy_key
+//	selects the step sequence from the policy's policy_steps map. If no rule
+//	matches, the baseline entry is used.
 type Rule struct {
-	// The condition field.
+	// A CEL expression that is evaluated against the request context. If it
+	//  returns true, the step sequence identified by policy_key is used.
 	Condition *string `json:"condition,omitempty"`
-	// This is a reference to a list of policy steps from `policy_steps`
+	// A key into the policy's policy_steps map identifying which step sequence
+	//  to execute when this rule's condition matches.
 	PolicyKey *string `json:"policyKey,omitempty"`
 }
 

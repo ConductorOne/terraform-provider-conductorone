@@ -45,3 +45,6 @@ func (c *C1APIAttributeV1AttributesCreateAttributeValueResponse) GetCreateAttrib
 	}
 	return c.CreateAttributeValueResponse
 }
+
+// #region class-body-c1apiattributev1attributescreateattributevalueresponse
+// #endregion class-body-c1apiattributev1attributescreateattributevalueresponse

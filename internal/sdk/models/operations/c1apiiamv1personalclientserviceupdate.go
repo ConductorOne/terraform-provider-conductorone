@@ -26,6 +26,9 @@ func (c *C1APIIamV1PersonalClientServiceUpdateRequest) GetPersonalClientServiceU
 	return c.PersonalClientServiceUpdateRequest
 }
 
+// #region class-body-c1apiiamv1personalclientserviceupdaterequest
+// #endregion class-body-c1apiiamv1personalclientserviceupdaterequest
+
 type C1APIIamV1PersonalClientServiceUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIIamV1PersonalClientServiceUpdateResponse) GetPersonalClientService
 	}
 	return c.PersonalClientServiceUpdateResponse
 }
+
+// #region class-body-c1apiiamv1personalclientserviceupdateresponse
+// #endregion class-body-c1apiiamv1personalclientserviceupdateresponse

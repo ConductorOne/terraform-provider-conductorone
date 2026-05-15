@@ -26,6 +26,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListRequest) GetPag
 	return c.PageToken
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceListResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceListResponse) GetRe
 	}
 	return c.RequestCatalogManagementServiceListResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementservicelistresponse

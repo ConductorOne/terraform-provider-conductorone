@@ -14,7 +14,7 @@ type C1APIAccessconflictV1AppEntitlementMonitorBindingServiceDeleteAppEntitlemen
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for deleting an app entitlement monitor binding.
 	DeleteAppEntitlementMonitorBindingResponse *shared.DeleteAppEntitlementMonitorBindingResponse
 }
 
@@ -45,3 +45,6 @@ func (c *C1APIAccessconflictV1AppEntitlementMonitorBindingServiceDeleteAppEntitl
 	}
 	return c.DeleteAppEntitlementMonitorBindingResponse
 }
+
+// #region class-body-c1apiaccessconflictv1appentitlementmonitorbindingservicedeleteappentitlementmonitorbindingresponse
+// #endregion class-body-c1apiaccessconflictv1appentitlementmonitorbindingservicedeleteappentitlementmonitorbindingresponse

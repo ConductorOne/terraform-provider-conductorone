@@ -2,7 +2,7 @@
 
 package shared
 
-// PolicyStepInput - The PolicyStep message.
+// PolicyStepInput - A single step in a policy workflow. Exactly one step type is set.
 //
 // This message contains a oneof named step. Only a single field of the following list may be set at a time:
 //   - approval
@@ -20,8 +20,9 @@ type PolicyStepInput struct {
 	// This message contains a oneof named target. Only a single field of the following list may be set at a time:
 	//   - automation
 	//   - batonResourceAction
+	//   - clientIdApproval
 	//
-	Action *Action1 `json:"action,omitempty"`
+	Action *Action `json:"action,omitempty"`
 	// The Approval message.
 	//
 	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
@@ -60,7 +61,7 @@ func (p *PolicyStepInput) GetAccept() *Accept {
 	return p.Accept
 }
 
-func (p *PolicyStepInput) GetAction() *Action1 {
+func (p *PolicyStepInput) GetAction() *Action {
 	if p == nil {
 		return nil
 	}

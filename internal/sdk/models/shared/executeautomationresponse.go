@@ -4,7 +4,7 @@ package shared
 
 // The ExecuteAutomationResponse message.
 type ExecuteAutomationResponse struct {
-	// The executionId field.
+	// The unique identifier of the newly created execution.
 	ExecutionID *string `json:"executionId,omitempty"`
 }
 

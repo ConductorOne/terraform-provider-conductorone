@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // A2UIServiceCreateSurfaceFeedbackRequestSentiment - The sentiment field.
 type A2UIServiceCreateSurfaceFeedbackRequestSentiment string
 
@@ -19,22 +14,16 @@ const (
 func (e A2UIServiceCreateSurfaceFeedbackRequestSentiment) ToPointer() *A2UIServiceCreateSurfaceFeedbackRequestSentiment {
 	return &e
 }
-func (e *A2UIServiceCreateSurfaceFeedbackRequestSentiment) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *A2UIServiceCreateSurfaceFeedbackRequestSentiment) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "A2UI_SURFACE_FEEDBACK_SENTIMENT_UNSPECIFIED", "A2UI_SURFACE_FEEDBACK_SENTIMENT_POSITIVE", "A2UI_SURFACE_FEEDBACK_SENTIMENT_NEGATIVE":
+			return true
+		}
 	}
-	switch v {
-	case "A2UI_SURFACE_FEEDBACK_SENTIMENT_UNSPECIFIED":
-		fallthrough
-	case "A2UI_SURFACE_FEEDBACK_SENTIMENT_POSITIVE":
-		fallthrough
-	case "A2UI_SURFACE_FEEDBACK_SENTIMENT_NEGATIVE":
-		*e = A2UIServiceCreateSurfaceFeedbackRequestSentiment(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for A2UIServiceCreateSurfaceFeedbackRequestSentiment: %v", v)
-	}
+	return false
 }
 
 // A2UIServiceCreateSurfaceFeedbackRequest creates feedback for a surface.
@@ -67,3 +56,6 @@ func (a *A2UIServiceCreateSurfaceFeedbackRequest) GetText() *string {
 	}
 	return a.Text
 }
+
+// #region class-body-a2uiservicecreatesurfacefeedbackrequest
+// #endregion class-body-a2uiservicecreatesurfacefeedbackrequest

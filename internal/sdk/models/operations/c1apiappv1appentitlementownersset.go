@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppEntitlementOwnersSetRequest) GetSetAppEntitlementOwnersReq
 	return c.SetAppEntitlementOwnersRequest
 }
 
+// #region class-body-c1apiappv1appentitlementownerssetrequest
+// #endregion class-body-c1apiappv1appentitlementownerssetrequest
+
 type C1APIAppV1AppEntitlementOwnersSetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppEntitlementOwnersSetResponse) GetSetAppEntitlementOwnersRe
 	}
 	return c.SetAppEntitlementOwnersResponse
 }
+
+// #region class-body-c1apiappv1appentitlementownerssetresponse
+// #endregion class-body-c1apiappv1appentitlementownerssetresponse

@@ -17,6 +17,9 @@ The entitlements you define here will be requestable by users who have access to
 
 ```terraform
 resource "conductorone_access_profile" "my_access_profile" {
+  annotations = {
+    key = "value"
+  }
   description                       = "...my_description..."
   display_name                      = "...my_display_name..."
   enrollment_behavior               = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED"

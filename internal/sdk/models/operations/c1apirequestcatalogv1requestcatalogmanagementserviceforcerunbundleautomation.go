@@ -26,6 +26,9 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutom
 	return c.ForceRunBundleAutomationRequest
 }
 
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomationrequest
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomationrequest
+
 type C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomationResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -33,7 +36,7 @@ type C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutomatio
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for triggering a bundle automation run.
 	ForceRunBundleAutomationResponse *shared.ForceRunBundleAutomationResponse
 }
 
@@ -64,3 +67,6 @@ func (c *C1APIRequestcatalogV1RequestCatalogManagementServiceForceRunBundleAutom
 	}
 	return c.ForceRunBundleAutomationResponse
 }
+
+// #region class-body-c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomationresponse
+// #endregion class-body-c1apirequestcatalogv1requestcatalogmanagementserviceforcerunbundleautomationresponse

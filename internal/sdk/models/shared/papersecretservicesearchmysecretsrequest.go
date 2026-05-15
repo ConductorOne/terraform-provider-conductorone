@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // PaperSecretServiceSearchMySecretsRequestSecretType - Filter by secret type (optional)
 type PaperSecretServiceSearchMySecretsRequestSecretType string
 
@@ -19,22 +14,16 @@ const (
 func (e PaperSecretServiceSearchMySecretsRequestSecretType) ToPointer() *PaperSecretServiceSearchMySecretsRequestSecretType {
 	return &e
 }
-func (e *PaperSecretServiceSearchMySecretsRequestSecretType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceSearchMySecretsRequestSecretType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_TYPE_UNSPECIFIED", "SECRET_TYPE_TEXT", "SECRET_TYPE_FILE":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_TYPE_UNSPECIFIED":
-		fallthrough
-	case "SECRET_TYPE_TEXT":
-		fallthrough
-	case "SECRET_TYPE_FILE":
-		*e = PaperSecretServiceSearchMySecretsRequestSecretType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceSearchMySecretsRequestSecretType: %v", v)
-	}
+	return false
 }
 
 // PaperSecretServiceSearchMySecretsRequestSharingMode - Filter by sharing mode (optional)
@@ -49,22 +38,16 @@ const (
 func (e PaperSecretServiceSearchMySecretsRequestSharingMode) ToPointer() *PaperSecretServiceSearchMySecretsRequestSharingMode {
 	return &e
 }
-func (e *PaperSecretServiceSearchMySecretsRequestSharingMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceSearchMySecretsRequestSharingMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PAPER_VAULT_SHARING_MODE_UNSPECIFIED", "PAPER_VAULT_SHARING_MODE_INTERNAL", "PAPER_VAULT_SHARING_MODE_EXTERNAL":
+			return true
+		}
 	}
-	switch v {
-	case "PAPER_VAULT_SHARING_MODE_UNSPECIFIED":
-		fallthrough
-	case "PAPER_VAULT_SHARING_MODE_INTERNAL":
-		fallthrough
-	case "PAPER_VAULT_SHARING_MODE_EXTERNAL":
-		*e = PaperSecretServiceSearchMySecretsRequestSharingMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceSearchMySecretsRequestSharingMode: %v", v)
-	}
+	return false
 }
 
 // PaperSecretServiceSearchMySecretsRequestSortBy - Sort order
@@ -81,26 +64,16 @@ const (
 func (e PaperSecretServiceSearchMySecretsRequestSortBy) ToPointer() *PaperSecretServiceSearchMySecretsRequestSortBy {
 	return &e
 }
-func (e *PaperSecretServiceSearchMySecretsRequestSortBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceSearchMySecretsRequestSortBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SEARCH_SORT_BY_UNSPECIFIED", "SEARCH_SORT_BY_CREATED_DESC", "SEARCH_SORT_BY_CREATED_ASC", "SEARCH_SORT_BY_EXPIRES_ASC", "SEARCH_SORT_BY_NAME_ASC":
+			return true
+		}
 	}
-	switch v {
-	case "SEARCH_SORT_BY_UNSPECIFIED":
-		fallthrough
-	case "SEARCH_SORT_BY_CREATED_DESC":
-		fallthrough
-	case "SEARCH_SORT_BY_CREATED_ASC":
-		fallthrough
-	case "SEARCH_SORT_BY_EXPIRES_ASC":
-		fallthrough
-	case "SEARCH_SORT_BY_NAME_ASC":
-		*e = PaperSecretServiceSearchMySecretsRequestSortBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceSearchMySecretsRequestSortBy: %v", v)
-	}
+	return false
 }
 
 type PaperSecretServiceSearchMySecretsRequestStatuses string
@@ -117,28 +90,16 @@ const (
 func (e PaperSecretServiceSearchMySecretsRequestStatuses) ToPointer() *PaperSecretServiceSearchMySecretsRequestStatuses {
 	return &e
 }
-func (e *PaperSecretServiceSearchMySecretsRequestStatuses) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceSearchMySecretsRequestStatuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SECRET_STATUS_UNSPECIFIED", "SECRET_STATUS_ACTIVE", "SECRET_STATUS_EXPIRED", "SECRET_STATUS_BURNED", "SECRET_STATUS_REVOKED", "SECRET_STATUS_DATA_DELETED":
+			return true
+		}
 	}
-	switch v {
-	case "SECRET_STATUS_UNSPECIFIED":
-		fallthrough
-	case "SECRET_STATUS_ACTIVE":
-		fallthrough
-	case "SECRET_STATUS_EXPIRED":
-		fallthrough
-	case "SECRET_STATUS_BURNED":
-		fallthrough
-	case "SECRET_STATUS_REVOKED":
-		fallthrough
-	case "SECRET_STATUS_DATA_DELETED":
-		*e = PaperSecretServiceSearchMySecretsRequestStatuses(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PaperSecretServiceSearchMySecretsRequestStatuses: %v", v)
-	}
+	return false
 }
 
 // PaperSecretServiceSearchMySecretsRequest - SearchMySecrets request - for end users viewing their own secrets.

@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceSkipStepRequest) GetTaskActionsServiceSkip
 	return c.TaskActionsServiceSkipStepRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsserviceskipsteprequest
+// #endregion class-body-c1apitaskv1taskactionsserviceskipsteprequest
+
 type C1APITaskV1TaskActionsServiceSkipStepResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -33,7 +36,7 @@ type C1APITaskV1TaskActionsServiceSkipStepResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// A generic response for task action endpoints, containing the updated task and the ID of the action that was created.
 	TaskServiceActionResponse *shared.TaskServiceActionResponse
 }
 
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceSkipStepResponse) GetTaskServiceActionResp
 	}
 	return c.TaskServiceActionResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsserviceskipstepresponse
+// #endregion class-body-c1apitaskv1taskactionsserviceskipstepresponse

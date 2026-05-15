@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest) GetRemoveE
 	return c.RemoveEntitlementMembershipRequest
 }
 
+// #region class-body-c1apiappv1appentitlementsremoveentitlementmembershiprequest
+// #endregion class-body-c1apiappv1appentitlementsremoveentitlementmembershiprequest
+
 type C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse) GetRemove
 	}
 	return c.RemoveEntitlementMembershipResponse
 }
+
+// #region class-body-c1apiappv1appentitlementsremoveentitlementmembershipresponse
+// #endregion class-body-c1apiappv1appentitlementsremoveentitlementmembershipresponse

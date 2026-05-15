@@ -4,13 +4,13 @@ package shared
 
 // The WebhooksSearchRequest message.
 type WebhooksSearchRequest struct {
-	// The pageSize field.
+	// The maximum number of webhooks to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
+	// The pagination token from a previous search response to fetch the next page.
 	PageToken *string `json:"pageToken,omitempty"`
-	// The query field.
+	// A text query to match against webhook names and descriptions.
 	Query *string `json:"query,omitempty"`
-	// The refs field.
+	// Optional set of webhook references to restrict the search to specific webhooks.
 	Refs []WebhookRef `json:"refs,omitempty"`
 }
 

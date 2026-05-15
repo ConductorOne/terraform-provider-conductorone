@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ActionInstanceState - The current state of the action execution.
 type ActionInstanceState string
 
@@ -21,26 +16,16 @@ const (
 func (e ActionInstanceState) ToPointer() *ActionInstanceState {
 	return &e
 }
-func (e *ActionInstanceState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ActionInstanceState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ACTION_INSTANCE_STATE_UNSPECIFIED", "ACTION_INSTANCE_STATE_INIT", "ACTION_INSTANCE_STATE_RUNNING", "ACTION_INSTANCE_STATE_DONE", "ACTION_INSTANCE_STATE_ERROR":
+			return true
+		}
 	}
-	switch v {
-	case "ACTION_INSTANCE_STATE_UNSPECIFIED":
-		fallthrough
-	case "ACTION_INSTANCE_STATE_INIT":
-		fallthrough
-	case "ACTION_INSTANCE_STATE_RUNNING":
-		fallthrough
-	case "ACTION_INSTANCE_STATE_DONE":
-		fallthrough
-	case "ACTION_INSTANCE_STATE_ERROR":
-		*e = ActionInstanceState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ActionInstanceState: %v", v)
-	}
+	return false
 }
 
 // The ActionInstance message.
@@ -48,6 +33,7 @@ func (e *ActionInstanceState) UnmarshalJSON(data []byte) error {
 // This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:
 //   - automation
 //   - batonResourceActionInstance
+//   - clientIdApprovalInstance
 //
 // This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
 //   - success
@@ -60,14 +46,18 @@ type ActionInstance struct {
 	// This message contains a oneof named target. Only a single field of the following list may be set at a time:
 	//   - automation
 	//   - batonResourceAction
+	//   - clientIdApproval
 	//
-	Action *Action1 `json:"action,omitempty"`
+	Action *Action `json:"action,omitempty"`
 	// The ActionTargetAutomationInstance message.
 	ActionTargetAutomationInstance *ActionTargetAutomationInstance `json:"automation,omitempty"`
 	// The ActionTargetBatonResourceActionInstance message.
 	ActionTargetBatonResourceActionInstance *ActionTargetBatonResourceActionInstance `json:"batonResourceActionInstance,omitempty"`
 	// The ActionOutcomeCancelled message.
 	ActionOutcomeCancelled *ActionOutcomeCancelled `json:"cancelled,omitempty"`
+	// ActionTargetClientIdApprovalInstance carries the registration key of the
+	//  external OAuth client that is being reviewed.
+	ActionTargetClientIDApprovalInstance *ActionTargetClientIDApprovalInstance `json:"clientIdApprovalInstance,omitempty"`
 	// The ActionOutcomeDenied message.
 	ActionOutcomeDenied *ActionOutcomeDenied `json:"denied,omitempty"`
 	// The ActionOutcomeError message.
@@ -78,7 +68,7 @@ type ActionInstance struct {
 	ActionOutcomeSuccess *ActionOutcomeSuccess `json:"success,omitempty"`
 }
 
-func (a *ActionInstance) GetAction() *Action1 {
+func (a *ActionInstance) GetAction() *Action {
 	if a == nil {
 		return nil
 	}
@@ -104,6 +94,13 @@ func (a *ActionInstance) GetActionOutcomeCancelled() *ActionOutcomeCancelled {
 		return nil
 	}
 	return a.ActionOutcomeCancelled
+}
+
+func (a *ActionInstance) GetActionTargetClientIDApprovalInstance() *ActionTargetClientIDApprovalInstance {
+	if a == nil {
+		return nil
+	}
+	return a.ActionTargetClientIDApprovalInstance
 }
 
 func (a *ActionInstance) GetActionOutcomeDenied() *ActionOutcomeDenied {

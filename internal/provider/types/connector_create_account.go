@@ -8,6 +8,7 @@ import (
 
 type ConnectorCreateAccount struct {
 	ConnectorRef   *ConnectorRef   `tfsdk:"connector_ref"`
-	UserIDCel      types.String    `tfsdk:"user_id_cel"`
 	UserProperties *UserProperties `tfsdk:"user_properties"`
+	PasswordCel    types.String    `tfsdk:"password_cel"`
+	UserIDCel      types.String    `tfsdk:"user_id_cel"`
 }

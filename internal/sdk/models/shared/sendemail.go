@@ -6,6 +6,17 @@ package shared
 type SendEmail struct {
 	// The body field.
 	Body *string `json:"body,omitempty"`
+	// Deprecated: use email_cel instead. Static email field shipped behind FF 541 (SKU_MANUAL)
+	//  with zero tenant enablement. CEL subsumes static: '"ops@example.com"' is valid CEL.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	Email *string `json:"email,omitempty"`
+	// CEL expression resolving to one or more email addresses (string or list<string>).
+	//  Evaluated against the workflow execution context (trigger + completed steps).
+	//  Static emails work too: '"ops@example.com"' is valid CEL.
+	//  Supports list<string> for multiple recipients: '["a@x.com", "b@x.com"]'.
+	//  Requires the tenant to have a TenantEmailProvider configured.
+	EmailCel *string `json:"emailCel,omitempty"`
 	// The subject field.
 	Subject *string `json:"subject,omitempty"`
 	// The title field.
@@ -23,6 +34,20 @@ func (s *SendEmail) GetBody() *string {
 		return nil
 	}
 	return s.Body
+}
+
+func (s *SendEmail) GetEmail() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Email
+}
+
+func (s *SendEmail) GetEmailCel() *string {
+	if s == nil {
+		return nil
+	}
+	return s.EmailCel
 }
 
 func (s *SendEmail) GetSubject() *string {

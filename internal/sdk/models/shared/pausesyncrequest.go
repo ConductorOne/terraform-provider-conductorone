@@ -2,6 +2,6 @@
 
 package shared
 
-// The PauseSyncRequest message.
+// The PauseSyncRequest message contains the fields required to pause syncing for a connector.
 type PauseSyncRequest struct {
 }

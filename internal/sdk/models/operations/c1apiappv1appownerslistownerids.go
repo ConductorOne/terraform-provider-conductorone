@@ -18,6 +18,9 @@ func (c *C1APIAppV1AppOwnersListOwnerIDsRequest) GetAppID() string {
 	return c.AppID
 }
 
+// #region class-body-c1apiappv1appownerslistowneridsrequest
+// #endregion class-body-c1apiappv1appownerslistowneridsrequest
+
 type C1APIAppV1AppOwnersListOwnerIDsResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -56,3 +59,6 @@ func (c *C1APIAppV1AppOwnersListOwnerIDsResponse) GetListAppOwnerIDsResponse() *
 	}
 	return c.ListAppOwnerIDsResponse
 }
+
+// #region class-body-c1apiappv1appownerslistowneridsresponse
+// #endregion class-body-c1apiappv1appownerslistowneridsresponse

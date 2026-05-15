@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -21,22 +19,16 @@ const (
 func (e EnrollmentBehavior) ToPointer() *EnrollmentBehavior {
 	return &e
 }
-func (e *EnrollmentBehavior) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EnrollmentBehavior) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY":
+			return true
+		}
 	}
-	switch v {
-	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED":
-		fallthrough
-	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY":
-		fallthrough
-	case "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY":
-		*e = EnrollmentBehavior(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EnrollmentBehavior: %v", v)
-	}
+	return false
 }
 
 // UnenrollmentBehavior - Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
@@ -52,24 +44,16 @@ const (
 func (e UnenrollmentBehavior) ToPointer() *UnenrollmentBehavior {
 	return &e
 }
-func (e *UnenrollmentBehavior) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UnenrollmentBehavior) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED":
+			return true
+		}
 	}
-	switch v {
-	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED":
-		fallthrough
-	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS":
-		fallthrough
-	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL":
-		fallthrough
-	case "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED":
-		*e = UnenrollmentBehavior(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UnenrollmentBehavior: %v", v)
-	}
+	return false
 }
 
 // UnenrollmentEntitlementBehavior - Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
@@ -84,27 +68,30 @@ const (
 func (e UnenrollmentEntitlementBehavior) ToPointer() *UnenrollmentEntitlementBehavior {
 	return &e
 }
-func (e *UnenrollmentEntitlementBehavior) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UnenrollmentEntitlementBehavior) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS", "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE":
+			return true
+		}
 	}
-	switch v {
-	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED":
-		fallthrough
-	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS":
-		fallthrough
-	case "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE":
-		*e = UnenrollmentEntitlementBehavior(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UnenrollmentEntitlementBehavior: %v", v)
-	}
+	return false
 }
 
 // The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
 type RequestCatalog struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
+	CreatedAt   *time.Time        `json:"createdAt,omitempty"`
 	// The id of the user this request catalog was created by.
 	CreatedByUserID *string    `json:"createdByUserId,omitempty"`
 	DeletedAt       *time.Time `json:"deletedAt,omitempty"`
@@ -138,6 +125,13 @@ func (r *RequestCatalog) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (r *RequestCatalog) GetAnnotations() map[string]string {
+	if r == nil {
+		return nil
+	}
+	return r.Annotations
 }
 
 func (r *RequestCatalog) GetCreatedAt() *time.Time {
@@ -233,6 +227,15 @@ func (r *RequestCatalog) GetVisibleToEveryone() *bool {
 
 // RequestCatalogInput - The RequestCatalog is used for managing which entitlements are requestable, and who can request them.
 type RequestCatalogInput struct {
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The id of the user this request catalog was created by.
 	CreatedByUserID *string `json:"createdByUserId,omitempty"`
 	// The description of the request catalog.
@@ -253,6 +256,13 @@ type RequestCatalogInput struct {
 	UnenrollmentEntitlementBehavior *UnenrollmentEntitlementBehavior `json:"unenrollmentEntitlementBehavior,omitempty"`
 	// If this is true, the access entitlement requirement is ignored.
 	VisibleToEveryone *bool `json:"visibleToEveryone,omitempty"`
+}
+
+func (r *RequestCatalogInput) GetAnnotations() map[string]string {
+	if r == nil {
+		return nil
+	}
+	return r.Annotations
 }
 
 func (r *RequestCatalogInput) GetCreatedByUserID() *string {

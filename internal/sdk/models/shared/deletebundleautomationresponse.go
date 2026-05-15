@@ -2,6 +2,6 @@
 
 package shared
 
-// The DeleteBundleAutomationResponse message.
+// DeleteBundleAutomationResponse - The response message for deleting a bundle automation.
 type DeleteBundleAutomationResponse struct {
 }

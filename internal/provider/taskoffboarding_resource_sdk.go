@@ -18,6 +18,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 	if resp != nil {
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 		if resp.TaskView == nil {
 			r.TaskView = nil
@@ -32,6 +34,9 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 			r.TaskView.EntitlementsPath = types.StringPointerValue(resp.TaskView.EntitlementsPath)
 			r.TaskView.IdentityUserPath = types.StringPointerValue(resp.TaskView.IdentityUserPath)
 			r.TaskView.InsightsPath = types.StringPointerValue(resp.TaskView.InsightsPath)
+			r.TaskView.ResourceBindingsPath = types.StringPointerValue(resp.TaskView.ResourceBindingsPath)
+			r.TaskView.RoleResourcePath = types.StringPointerValue(resp.TaskView.RoleResourcePath)
+			r.TaskView.ScopeResourcePath = types.StringPointerValue(resp.TaskView.ScopeResourcePath)
 			r.TaskView.StepApproversPath = types.StringPointerValue(resp.TaskView.StepApproversPath)
 			if resp.TaskView.Task == nil {
 				r.TaskView.Task = nil
@@ -42,15 +47,21 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 					for _, v := range resp.TaskView.Task.Actions {
 						r.TaskView.Task.Actions = append(r.TaskView.Task.Actions, types.StringValue(string(v)))
 					}
+				} else {
+					r.TaskView.Task.Actions = nil
 				}
 				r.TaskView.Task.AnalysisID = types.StringPointerValue(resp.TaskView.Task.AnalysisID)
 				if resp.TaskView.Task.Annotations != nil {
+				} else {
+					r.TaskView.Task.Annotations = nil
 				}
 				if resp.TaskView.Task.ApproverIds != nil {
 					r.TaskView.Task.ApproverIds = make([]types.String, 0, len(resp.TaskView.Task.ApproverIds))
 					for _, v := range resp.TaskView.Task.ApproverIds {
 						r.TaskView.Task.ApproverIds = append(r.TaskView.Task.ApproverIds, types.StringValue(v))
 					}
+				} else {
+					r.TaskView.Task.ApproverIds = nil
 				}
 				r.TaskView.Task.CommentCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.TaskView.Task.CommentCount))
 				r.TaskView.Task.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.CreatedAt))
@@ -80,306 +91,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 						r.TaskView.Task.ExternalRefs = append(r.TaskView.Task.ExternalRefs, externalRefs)
 					}
-				}
-				if resp.TaskView.Task.Form == nil {
-					r.TaskView.Task.Form = nil
 				} else {
-					r.TaskView.Task.Form = &tfTypes.Form{}
-					r.TaskView.Task.Form.Description = types.StringPointerValue(resp.TaskView.Task.Form.Description)
-					if resp.TaskView.Task.Form.FieldGroups != nil {
-						r.TaskView.Task.Form.FieldGroups = []tfTypes.FieldGroup{}
-
-						for _, fieldGroupsItem := range resp.TaskView.Task.Form.FieldGroups {
-							var fieldGroups tfTypes.FieldGroup
-
-							fieldGroups.Default = types.BoolPointerValue(fieldGroupsItem.Default)
-							fieldGroups.DisplayName = types.StringPointerValue(fieldGroupsItem.DisplayName)
-							if fieldGroupsItem.Fields != nil {
-								fieldGroups.Fields = make([]types.String, 0, len(fieldGroupsItem.Fields))
-								for _, v := range fieldGroupsItem.Fields {
-									fieldGroups.Fields = append(fieldGroups.Fields, types.StringValue(v))
-								}
-							}
-							fieldGroups.HelpText = types.StringPointerValue(fieldGroupsItem.HelpText)
-							fieldGroups.Name = types.StringPointerValue(fieldGroupsItem.Name)
-
-							r.TaskView.Task.Form.FieldGroups = append(r.TaskView.Task.Form.FieldGroups, fieldGroups)
-						}
-					}
-					if resp.TaskView.Task.Form.FieldRelationships != nil {
-						r.TaskView.Task.Form.FieldRelationships = []tfTypes.FieldRelationship{}
-
-						for _, fieldRelationshipsItem := range resp.TaskView.Task.Form.FieldRelationships {
-							var fieldRelationships tfTypes.FieldRelationship
-
-							if fieldRelationshipsItem.AtLeastOne == nil {
-								fieldRelationships.AtLeastOne = nil
-							} else {
-								fieldRelationships.AtLeastOne = &tfTypes.AtLeastOne{}
-							}
-							if fieldRelationshipsItem.DependentOn == nil {
-								fieldRelationships.DependentOn = nil
-							} else {
-								fieldRelationships.DependentOn = &tfTypes.DependentOn{}
-								if fieldRelationshipsItem.DependentOn.DependencyFieldNames != nil {
-									fieldRelationships.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem.DependentOn.DependencyFieldNames))
-									for _, v := range fieldRelationshipsItem.DependentOn.DependencyFieldNames {
-										fieldRelationships.DependentOn.DependencyFieldNames = append(fieldRelationships.DependentOn.DependencyFieldNames, types.StringValue(v))
-									}
-								}
-							}
-							if fieldRelationshipsItem.FieldNames != nil {
-								fieldRelationships.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem.FieldNames))
-								for _, v := range fieldRelationshipsItem.FieldNames {
-									fieldRelationships.FieldNames = append(fieldRelationships.FieldNames, types.StringValue(v))
-								}
-							}
-							if fieldRelationshipsItem.MutuallyExclusive == nil {
-								fieldRelationships.MutuallyExclusive = nil
-							} else {
-								fieldRelationships.MutuallyExclusive = &tfTypes.MutuallyExclusive{}
-							}
-							if fieldRelationshipsItem.RequiredTogether == nil {
-								fieldRelationships.RequiredTogether = nil
-							} else {
-								fieldRelationships.RequiredTogether = &tfTypes.RequiredTogether{}
-							}
-
-							r.TaskView.Task.Form.FieldRelationships = append(r.TaskView.Task.Form.FieldRelationships, fieldRelationships)
-						}
-					}
-					if resp.TaskView.Task.Form.Fields != nil {
-						r.TaskView.Task.Form.Fields = []tfTypes.Field{}
-
-						for _, fieldsItem := range resp.TaskView.Task.Form.Fields {
-							var fields tfTypes.Field
-
-							if fieldsItem.AdminProviderConfig == nil {
-								fields.AdminProviderConfig = nil
-							} else {
-								fields.AdminProviderConfig = &tfTypes.AdminProviderConfig{}
-								fields.AdminProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem.AdminProviderConfig.DefaultValueCel)
-								fields.AdminProviderConfig.ShowToUser = types.BoolPointerValue(fieldsItem.AdminProviderConfig.ShowToUser)
-							}
-							if fieldsItem.BoolField == nil {
-								fields.BoolField = nil
-							} else {
-								fields.BoolField = &tfTypes.BoolField{}
-								if fieldsItem.BoolField.BoolRules == nil {
-									fields.BoolField.BoolRules = nil
-								} else {
-									fields.BoolField.BoolRules = &tfTypes.BoolRules{}
-									fields.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem.BoolField.BoolRules.Const)
-								}
-								if fieldsItem.BoolField.CheckboxField == nil {
-									fields.BoolField.CheckboxField = nil
-								} else {
-									fields.BoolField.CheckboxField = &tfTypes.CheckboxField{}
-								}
-								fields.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem.BoolField.DefaultValue)
-								if fieldsItem.BoolField.ToggleField == nil {
-									fields.BoolField.ToggleField = nil
-								} else {
-									fields.BoolField.ToggleField = &tfTypes.ToggleField{}
-								}
-							}
-							fields.Description = types.StringPointerValue(fieldsItem.Description)
-							fields.DisplayName = types.StringPointerValue(fieldsItem.DisplayName)
-							if fieldsItem.FileField == nil {
-								fields.FileField = nil
-							} else {
-								fields.FileField = &tfTypes.FileField{}
-								if fieldsItem.FileField.AcceptedFileTypes != nil {
-									fields.FileField.AcceptedFileTypes = make([]types.String, 0, len(fieldsItem.FileField.AcceptedFileTypes))
-									for _, v := range fieldsItem.FileField.AcceptedFileTypes {
-										fields.FileField.AcceptedFileTypes = append(fields.FileField.AcceptedFileTypes, types.StringValue(v))
-									}
-								}
-								if fieldsItem.FileField.FileInputField == nil {
-									fields.FileField.FileInputField = nil
-								} else {
-									fields.FileField.FileInputField = &tfTypes.FileInputField{}
-								}
-								fields.FileField.MaxFileSize = types.StringPointerValue(fieldsItem.FileField.MaxFileSize)
-							}
-							if fieldsItem.Int64Field == nil {
-								fields.Int64Field = nil
-							} else {
-								fields.Int64Field = &tfTypes.Int64Field{}
-								fields.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem.Int64Field.DefaultValue)
-								if fieldsItem.Int64Field.Int64Rules == nil {
-									fields.Int64Field.Int64Rules = nil
-								} else {
-									fields.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
-									fields.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Const)
-									fields.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Gt)
-									fields.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Gte)
-									fields.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.Int64Field.Int64Rules.IgnoreEmpty)
-									if fieldsItem.Int64Field.Int64Rules.In != nil {
-										fields.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem.Int64Field.Int64Rules.In))
-										for _, v := range fieldsItem.Int64Field.Int64Rules.In {
-											fields.Int64Field.Int64Rules.In = append(fields.Int64Field.Int64Rules.In, types.StringValue(v))
-										}
-									}
-									fields.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lt)
-									fields.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lte)
-									if fieldsItem.Int64Field.Int64Rules.NotIn != nil {
-										fields.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem.Int64Field.Int64Rules.NotIn))
-										for _, v := range fieldsItem.Int64Field.Int64Rules.NotIn {
-											fields.Int64Field.Int64Rules.NotIn = append(fields.Int64Field.Int64Rules.NotIn, types.StringValue(v))
-										}
-									}
-								}
-								if fieldsItem.Int64Field.NumberField == nil {
-									fields.Int64Field.NumberField = nil
-								} else {
-									fields.Int64Field.NumberField = &tfTypes.NumberField{}
-									fields.Int64Field.NumberField.MaxValue = types.StringPointerValue(fieldsItem.Int64Field.NumberField.MaxValue)
-									fields.Int64Field.NumberField.MinValue = types.StringPointerValue(fieldsItem.Int64Field.NumberField.MinValue)
-									fields.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem.Int64Field.NumberField.Step)
-								}
-								fields.Int64Field.Placeholder = types.StringPointerValue(fieldsItem.Int64Field.Placeholder)
-							}
-							fields.Name = types.StringPointerValue(fieldsItem.Name)
-							if fieldsItem.Oauth2Field == nil {
-								fields.Oauth2Field = nil
-							} else {
-								fields.Oauth2Field = &tfTypes.Oauth2Field{}
-								if fieldsItem.Oauth2Field.Oauth2FieldView == nil {
-									fields.Oauth2Field.Oauth2FieldView = nil
-								} else {
-									fields.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
-								}
-							}
-							fields.Required = types.BoolPointerValue(fieldsItem.Required)
-							if fieldsItem.SharedProviderConfig == nil {
-								fields.SharedProviderConfig = nil
-							} else {
-								fields.SharedProviderConfig = &tfTypes.SharedProviderConfig{}
-								fields.SharedProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem.SharedProviderConfig.DefaultValueCel)
-								fields.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.SharedProviderConfig.InputTransformationCel)
-								fields.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem.SharedProviderConfig.LockDefaultValues)
-							}
-							if fieldsItem.StringField == nil {
-								fields.StringField = nil
-							} else {
-								fields.StringField = &tfTypes.StringField{}
-								fields.StringField.DefaultValue = types.StringPointerValue(fieldsItem.StringField.DefaultValue)
-								if fieldsItem.StringField.PasswordField == nil {
-									fields.StringField.PasswordField = nil
-								} else {
-									fields.StringField.PasswordField = &tfTypes.PasswordField{}
-								}
-								if fieldsItem.StringField.PickerField == nil {
-									fields.StringField.PickerField = nil
-								} else {
-									fields.StringField.PickerField = &tfTypes.PickerField{}
-									if fieldsItem.StringField.PickerField.AppResourceFilter == nil {
-										fields.StringField.PickerField.AppResourceFilter = nil
-									} else {
-										fields.StringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
-										fields.StringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppResourceFilter.AppID)
-										fields.StringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppResourceFilter.ResourceTypeID)
-									}
-									if fieldsItem.StringField.PickerField.AppUserFilter == nil {
-										fields.StringField.PickerField.AppUserFilter = nil
-									} else {
-										fields.StringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
-										fields.StringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppUserFilter.AppID)
-									}
-									if fieldsItem.StringField.PickerField.C1UserFilter == nil {
-										fields.StringField.PickerField.C1UserFilter = nil
-									} else {
-										fields.StringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
-									}
-								}
-								fields.StringField.Placeholder = types.StringPointerValue(fieldsItem.StringField.Placeholder)
-								if fieldsItem.StringField.SelectField == nil {
-									fields.StringField.SelectField = nil
-								} else {
-									fields.StringField.SelectField = &tfTypes.SelectField{}
-									if fieldsItem.StringField.SelectField.Options != nil {
-										fields.StringField.SelectField.Options = []tfTypes.SelectOption{}
-
-										for _, optionsVarItem := range fieldsItem.StringField.SelectField.Options {
-											var optionsVar tfTypes.SelectOption
-
-											optionsVar.Description = types.StringPointerValue(optionsVarItem.Description)
-											optionsVar.DisplayName = types.StringPointerValue(optionsVarItem.DisplayName)
-											optionsVar.Value = types.StringPointerValue(optionsVarItem.Value)
-
-											fields.StringField.SelectField.Options = append(fields.StringField.SelectField.Options, optionsVar)
-										}
-									}
-									if fieldsItem.StringField.SelectField.Type != nil {
-										fields.StringField.SelectField.Type = types.StringValue(string(*fieldsItem.StringField.SelectField.Type))
-									} else {
-										fields.StringField.SelectField.Type = types.StringNull()
-									}
-								}
-								if fieldsItem.StringField.StringRules == nil {
-									fields.StringField.StringRules = nil
-								} else {
-									fields.StringField.StringRules = &tfTypes.StringRules{}
-									fields.StringField.StringRules.Address = types.BoolPointerValue(fieldsItem.StringField.StringRules.Address)
-									fields.StringField.StringRules.Const = types.StringPointerValue(fieldsItem.StringField.StringRules.Const)
-									fields.StringField.StringRules.Contains = types.StringPointerValue(fieldsItem.StringField.StringRules.Contains)
-									fields.StringField.StringRules.Email = types.BoolPointerValue(fieldsItem.StringField.StringRules.Email)
-									fields.StringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem.StringField.StringRules.Hostname)
-									fields.StringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.StringField.StringRules.IgnoreEmpty)
-									if fieldsItem.StringField.StringRules.In != nil {
-										fields.StringField.StringRules.In = make([]types.String, 0, len(fieldsItem.StringField.StringRules.In))
-										for _, v := range fieldsItem.StringField.StringRules.In {
-											fields.StringField.StringRules.In = append(fields.StringField.StringRules.In, types.StringValue(v))
-										}
-									}
-									fields.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem.StringField.StringRules.IP)
-									fields.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem.StringField.StringRules.Ipv4)
-									fields.StringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem.StringField.StringRules.Ipv6)
-									fields.StringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.LenBytes)
-									fields.StringField.StringRules.Length = types.StringPointerValue(fieldsItem.StringField.StringRules.Length)
-									fields.StringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.MaxBytes)
-									fields.StringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem.StringField.StringRules.MaxLen)
-									fields.StringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem.StringField.StringRules.MinBytes)
-									fields.StringField.StringRules.MinLen = types.StringPointerValue(fieldsItem.StringField.StringRules.MinLen)
-									fields.StringField.StringRules.NotContains = types.StringPointerValue(fieldsItem.StringField.StringRules.NotContains)
-									if fieldsItem.StringField.StringRules.NotIn != nil {
-										fields.StringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem.StringField.StringRules.NotIn))
-										for _, v := range fieldsItem.StringField.StringRules.NotIn {
-											fields.StringField.StringRules.NotIn = append(fields.StringField.StringRules.NotIn, types.StringValue(v))
-										}
-									}
-									fields.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem.StringField.StringRules.Pattern)
-									fields.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem.StringField.StringRules.Prefix)
-									fields.StringField.StringRules.Strict = types.BoolPointerValue(fieldsItem.StringField.StringRules.Strict)
-									fields.StringField.StringRules.Suffix = types.StringPointerValue(fieldsItem.StringField.StringRules.Suffix)
-									fields.StringField.StringRules.URI = types.BoolPointerValue(fieldsItem.StringField.StringRules.URI)
-									fields.StringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem.StringField.StringRules.URIRef)
-									fields.StringField.StringRules.UUID = types.BoolPointerValue(fieldsItem.StringField.StringRules.UUID)
-									if fieldsItem.StringField.StringRules.WellKnownRegex != nil {
-										fields.StringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem.StringField.StringRules.WellKnownRegex))
-									} else {
-										fields.StringField.StringRules.WellKnownRegex = types.StringNull()
-									}
-								}
-								if fieldsItem.StringField.TextField == nil {
-									fields.StringField.TextField = nil
-								} else {
-									fields.StringField.TextField = &tfTypes.TextField{}
-									fields.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem.StringField.TextField.Multiline)
-								}
-							}
-							if fieldsItem.UserProviderConfig == nil {
-								fields.UserProviderConfig = nil
-							} else {
-								fields.UserProviderConfig = &tfTypes.UserProviderConfig{}
-								fields.UserProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.UserProviderConfig.InputTransformationCel)
-							}
-
-							r.TaskView.Task.Form.Fields = append(r.TaskView.Task.Form.Fields, fields)
-						}
-					}
-					r.TaskView.Task.Form.Name = types.StringPointerValue(resp.TaskView.Task.Form.Name)
+					r.TaskView.Task.ExternalRefs = nil
 				}
 				r.TaskView.Task.ID = types.StringPointerValue(resp.TaskView.Task.ID)
 				if resp.TaskView.Task.InsightIds != nil {
@@ -387,6 +100,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 					for _, v := range resp.TaskView.Task.InsightIds {
 						r.TaskView.Task.InsightIds = append(r.TaskView.Task.InsightIds, types.StringValue(v))
 					}
+				} else {
+					r.TaskView.Task.InsightIds = nil
 				}
 				r.TaskView.Task.NumericID = types.StringPointerValue(resp.TaskView.Task.NumericID)
 				if resp.TaskView.Task.Origin != nil {
@@ -418,7 +133,7 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 								if historyItem.ActionInstance.Action == nil {
 									history.ActionInstance.Action = nil
 								} else {
-									history.ActionInstance.Action = &tfTypes.Action1{}
+									history.ActionInstance.Action = &tfTypes.Action{}
 									if historyItem.ActionInstance.Action.ActionTargetAutomation == nil {
 										history.ActionInstance.Action.ActionTargetAutomation = nil
 									} else {
@@ -430,6 +145,11 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 									} else {
 										history.ActionInstance.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
 										history.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(historyItem.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+									}
+									if historyItem.ActionInstance.Action.ActionTargetClientIDApproval == nil {
+										history.ActionInstance.Action.ActionTargetClientIDApproval = nil
+									} else {
+										history.ActionInstance.Action.ActionTargetClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
 									}
 								}
 								if historyItem.ActionInstance.ActionOutcomeCancelled == nil {
@@ -470,6 +190,12 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 									history.ActionInstance.ActionTargetBatonResourceActionInstance = &tfTypes.ActionTargetBatonResourceActionInstance{}
 									history.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID = types.StringPointerValue(historyItem.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID)
 								}
+								if historyItem.ActionInstance.ActionTargetClientIDApprovalInstance == nil {
+									history.ActionInstance.ActionTargetClientIDApprovalInstance = nil
+								} else {
+									history.ActionInstance.ActionTargetClientIDApprovalInstance = &tfTypes.ActionTargetClientIDApprovalInstance{}
+									history.ActionInstance.ActionTargetClientIDApprovalInstance.ClientIDURL = types.StringPointerValue(historyItem.ActionInstance.ActionTargetClientIDApprovalInstance.ClientIDURL)
+								}
 								if historyItem.ActionInstance.State != nil {
 									history.ActionInstance.State = types.StringValue(string(*historyItem.ActionInstance.State))
 								} else {
@@ -505,12 +231,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											for _, v := range historyItem.ApprovalInstance.Approval.AgentApproval.PolicyIds {
 												history.ApprovalInstance.Approval.AgentApproval.PolicyIds = append(history.ApprovalInstance.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.AgentApproval.PolicyIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds != nil {
 											history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds {
 												history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = append(history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = nil
 										}
 									}
 									history.ApprovalInstance.Approval.AllowDelegation = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AllowDelegation)
@@ -519,6 +249,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range historyItem.ApprovalInstance.Approval.AllowedReassignees {
 											history.ApprovalInstance.Approval.AllowedReassignees = append(history.ApprovalInstance.Approval.AllowedReassignees, types.StringValue(v))
 										}
+									} else {
+										history.ApprovalInstance.Approval.AllowedReassignees = nil
 									}
 									history.ApprovalInstance.Approval.AllowReassignment = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AllowReassignment)
 									if historyItem.ApprovalInstance.Approval.AppGroupApproval == nil {
@@ -540,12 +272,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 												history.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds)
 											}
+										} else {
+											history.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers)
@@ -575,12 +311,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 												history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds1)
 											}
+										} else {
+											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
@@ -605,6 +345,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 												for _, v := range historyItem.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds {
 													history.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = append(history.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
 												}
+											} else {
+												history.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
 											}
 										}
 										if historyItem.ApprovalInstance.Approval.Escalation.ReplacePolicy == nil {
@@ -630,12 +372,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											for _, v := range historyItem.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds {
 												history.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = append(history.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.ExpressionApproval.Expressions != nil {
 											history.ApprovalInstance.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ExpressionApproval.Expressions))
 											for _, v := range historyItem.ApprovalInstance.Approval.ExpressionApproval.Expressions {
 												history.ApprovalInstance.Approval.ExpressionApproval.Expressions = append(history.ApprovalInstance.Approval.ExpressionApproval.Expressions, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ExpressionApproval.Expressions = nil
 										}
 										history.ApprovalInstance.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.Fallback)
 										if historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds != nil {
@@ -649,12 +395,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 												history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds2)
 											}
+										} else {
+											history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers)
@@ -669,6 +419,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											for _, v := range historyItem.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds {
 												history.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = append(history.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = nil
 										}
 										history.ApprovalInstance.Approval.ManagerApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.Fallback)
 										if historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds != nil {
@@ -682,12 +434,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 												history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds3)
 											}
+										} else {
+											history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers)
@@ -713,12 +469,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 												history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds4)
 											}
+										} else {
+											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 										history.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
@@ -732,6 +492,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											for _, v := range historyItem.ApprovalInstance.Approval.SelfApproval.AssignedUserIds {
 												history.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = append(history.ApprovalInstance.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = nil
 										}
 										history.ApprovalInstance.Approval.SelfApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.SelfApproval.Fallback)
 										if historyItem.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds != nil {
@@ -745,12 +507,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 												history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds5)
 											}
+										} else {
+											history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = nil
 										}
 										if historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds != nil {
 											history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds))
 											for _, v := range historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds {
 												history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = nil
 										}
 										history.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled)
 									}
@@ -765,6 +531,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											for _, v := range historyItem.ApprovalInstance.Approval.UserApproval.UserIds {
 												history.ApprovalInstance.Approval.UserApproval.UserIds = append(history.ApprovalInstance.Approval.UserApproval.UserIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.Approval.UserApproval.UserIds = nil
 										}
 									}
 									if historyItem.ApprovalInstance.Approval.WebhookApproval == nil {
@@ -790,6 +558,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											history.ApprovalInstance.ApprovedAction.Entitlements = append(history.ApprovalInstance.ApprovedAction.Entitlements, entitlements)
 										}
+									} else {
+										history.ApprovalInstance.ApprovedAction.Entitlements = nil
 									}
 									history.ApprovalInstance.ApprovedAction.StepUpTransactionID = types.StringPointerValue(historyItem.ApprovalInstance.ApprovedAction.StepUpTransactionID)
 									history.ApprovalInstance.ApprovedAction.UserID = types.StringPointerValue(historyItem.ApprovalInstance.ApprovedAction.UserID)
@@ -807,35 +577,37 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 								} else {
 									history.ApprovalInstance.EscalationInstance = &tfTypes.EscalationInstance{}
 									history.ApprovalInstance.EscalationInstance.AlreadyEscalated = types.BoolPointerValue(historyItem.ApprovalInstance.EscalationInstance.AlreadyEscalated)
-									if historyItem.ApprovalInstance.EscalationInstance.CancelTicket == nil {
-										history.ApprovalInstance.EscalationInstance.CancelTicket = nil
-									} else {
-										history.ApprovalInstance.EscalationInstance.CancelTicket = &tfTypes.CancelTicket{}
-									}
 									history.ApprovalInstance.EscalationInstance.EscalationComment = types.StringPointerValue(historyItem.ApprovalInstance.EscalationInstance.EscalationComment)
-									history.ApprovalInstance.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.EscalationInstance.ExpiresAt))
-									if historyItem.ApprovalInstance.EscalationInstance.ReassignToApprovers == nil {
-										history.ApprovalInstance.EscalationInstance.ReassignToApprovers = nil
+									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket == nil {
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = nil
 									} else {
-										history.ApprovalInstance.EscalationInstance.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
-										if historyItem.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds != nil {
-											history.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(historyItem.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds))
-											for _, v := range historyItem.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds {
-												history.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = append(history.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds, types.StringValue(v))
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = &tfTypes.EscalationInstanceCancelTicket{}
+									}
+									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers == nil {
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = nil
+									} else {
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = &tfTypes.EscalationInstanceReassignToApprovers{}
+										if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds != nil {
+											history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = make([]types.String, 0, len(historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds))
+											for _, v := range historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds {
+												history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = append(history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds, types.StringValue(v))
 											}
+										} else {
+											history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = nil
 										}
 									}
-									if historyItem.ApprovalInstance.EscalationInstance.ReplacePolicy == nil {
-										history.ApprovalInstance.EscalationInstance.ReplacePolicy = nil
+									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy == nil {
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = nil
 									} else {
-										history.ApprovalInstance.EscalationInstance.ReplacePolicy = &tfTypes.ReplacePolicy{}
-										history.ApprovalInstance.EscalationInstance.ReplacePolicy.PolicyID = types.StringPointerValue(historyItem.ApprovalInstance.EscalationInstance.ReplacePolicy.PolicyID)
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = &tfTypes.EscalationInstanceReplacePolicy{}
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID = types.StringPointerValue(historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID)
 									}
-									if historyItem.ApprovalInstance.EscalationInstance.SkipStep == nil {
-										history.ApprovalInstance.EscalationInstance.SkipStep = nil
+									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep == nil {
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = nil
 									} else {
-										history.ApprovalInstance.EscalationInstance.SkipStep = &tfTypes.SkipStep{}
+										history.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = &tfTypes.EscalationInstanceSkipStep{}
 									}
+									history.ApprovalInstance.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.EscalationInstance.ExpiresAt))
 								}
 								if historyItem.ApprovalInstance.ReassignedAction == nil {
 									history.ApprovalInstance.ReassignedAction = nil
@@ -887,306 +659,6 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 								} else {
 									history.FormInstance.Data = &tfTypes.FormInstanceData{}
 								}
-								if historyItem.FormInstance.Form == nil {
-									history.FormInstance.Form = nil
-								} else {
-									history.FormInstance.Form = &tfTypes.Form{}
-									history.FormInstance.Form.Description = types.StringPointerValue(historyItem.FormInstance.Form.Description)
-									if historyItem.FormInstance.Form.FieldGroups != nil {
-										history.FormInstance.Form.FieldGroups = []tfTypes.FieldGroup{}
-
-										for _, fieldGroupsItem1 := range historyItem.FormInstance.Form.FieldGroups {
-											var fieldGroups1 tfTypes.FieldGroup
-
-											fieldGroups1.Default = types.BoolPointerValue(fieldGroupsItem1.Default)
-											fieldGroups1.DisplayName = types.StringPointerValue(fieldGroupsItem1.DisplayName)
-											if fieldGroupsItem1.Fields != nil {
-												fieldGroups1.Fields = make([]types.String, 0, len(fieldGroupsItem1.Fields))
-												for _, v := range fieldGroupsItem1.Fields {
-													fieldGroups1.Fields = append(fieldGroups1.Fields, types.StringValue(v))
-												}
-											}
-											fieldGroups1.HelpText = types.StringPointerValue(fieldGroupsItem1.HelpText)
-											fieldGroups1.Name = types.StringPointerValue(fieldGroupsItem1.Name)
-
-											history.FormInstance.Form.FieldGroups = append(history.FormInstance.Form.FieldGroups, fieldGroups1)
-										}
-									}
-									if historyItem.FormInstance.Form.FieldRelationships != nil {
-										history.FormInstance.Form.FieldRelationships = []tfTypes.FieldRelationship{}
-
-										for _, fieldRelationshipsItem1 := range historyItem.FormInstance.Form.FieldRelationships {
-											var fieldRelationships1 tfTypes.FieldRelationship
-
-											if fieldRelationshipsItem1.AtLeastOne == nil {
-												fieldRelationships1.AtLeastOne = nil
-											} else {
-												fieldRelationships1.AtLeastOne = &tfTypes.AtLeastOne{}
-											}
-											if fieldRelationshipsItem1.DependentOn == nil {
-												fieldRelationships1.DependentOn = nil
-											} else {
-												fieldRelationships1.DependentOn = &tfTypes.DependentOn{}
-												if fieldRelationshipsItem1.DependentOn.DependencyFieldNames != nil {
-													fieldRelationships1.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem1.DependentOn.DependencyFieldNames))
-													for _, v := range fieldRelationshipsItem1.DependentOn.DependencyFieldNames {
-														fieldRelationships1.DependentOn.DependencyFieldNames = append(fieldRelationships1.DependentOn.DependencyFieldNames, types.StringValue(v))
-													}
-												}
-											}
-											if fieldRelationshipsItem1.FieldNames != nil {
-												fieldRelationships1.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem1.FieldNames))
-												for _, v := range fieldRelationshipsItem1.FieldNames {
-													fieldRelationships1.FieldNames = append(fieldRelationships1.FieldNames, types.StringValue(v))
-												}
-											}
-											if fieldRelationshipsItem1.MutuallyExclusive == nil {
-												fieldRelationships1.MutuallyExclusive = nil
-											} else {
-												fieldRelationships1.MutuallyExclusive = &tfTypes.MutuallyExclusive{}
-											}
-											if fieldRelationshipsItem1.RequiredTogether == nil {
-												fieldRelationships1.RequiredTogether = nil
-											} else {
-												fieldRelationships1.RequiredTogether = &tfTypes.RequiredTogether{}
-											}
-
-											history.FormInstance.Form.FieldRelationships = append(history.FormInstance.Form.FieldRelationships, fieldRelationships1)
-										}
-									}
-									if historyItem.FormInstance.Form.Fields != nil {
-										history.FormInstance.Form.Fields = []tfTypes.Field{}
-
-										for _, fieldsItem1 := range historyItem.FormInstance.Form.Fields {
-											var fields1 tfTypes.Field
-
-											if fieldsItem1.AdminProviderConfig == nil {
-												fields1.AdminProviderConfig = nil
-											} else {
-												fields1.AdminProviderConfig = &tfTypes.AdminProviderConfig{}
-												fields1.AdminProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem1.AdminProviderConfig.DefaultValueCel)
-												fields1.AdminProviderConfig.ShowToUser = types.BoolPointerValue(fieldsItem1.AdminProviderConfig.ShowToUser)
-											}
-											if fieldsItem1.BoolField == nil {
-												fields1.BoolField = nil
-											} else {
-												fields1.BoolField = &tfTypes.BoolField{}
-												if fieldsItem1.BoolField.BoolRules == nil {
-													fields1.BoolField.BoolRules = nil
-												} else {
-													fields1.BoolField.BoolRules = &tfTypes.BoolRules{}
-													fields1.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem1.BoolField.BoolRules.Const)
-												}
-												if fieldsItem1.BoolField.CheckboxField == nil {
-													fields1.BoolField.CheckboxField = nil
-												} else {
-													fields1.BoolField.CheckboxField = &tfTypes.CheckboxField{}
-												}
-												fields1.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem1.BoolField.DefaultValue)
-												if fieldsItem1.BoolField.ToggleField == nil {
-													fields1.BoolField.ToggleField = nil
-												} else {
-													fields1.BoolField.ToggleField = &tfTypes.ToggleField{}
-												}
-											}
-											fields1.Description = types.StringPointerValue(fieldsItem1.Description)
-											fields1.DisplayName = types.StringPointerValue(fieldsItem1.DisplayName)
-											if fieldsItem1.FileField == nil {
-												fields1.FileField = nil
-											} else {
-												fields1.FileField = &tfTypes.FileField{}
-												if fieldsItem1.FileField.AcceptedFileTypes != nil {
-													fields1.FileField.AcceptedFileTypes = make([]types.String, 0, len(fieldsItem1.FileField.AcceptedFileTypes))
-													for _, v := range fieldsItem1.FileField.AcceptedFileTypes {
-														fields1.FileField.AcceptedFileTypes = append(fields1.FileField.AcceptedFileTypes, types.StringValue(v))
-													}
-												}
-												if fieldsItem1.FileField.FileInputField == nil {
-													fields1.FileField.FileInputField = nil
-												} else {
-													fields1.FileField.FileInputField = &tfTypes.FileInputField{}
-												}
-												fields1.FileField.MaxFileSize = types.StringPointerValue(fieldsItem1.FileField.MaxFileSize)
-											}
-											if fieldsItem1.Int64Field == nil {
-												fields1.Int64Field = nil
-											} else {
-												fields1.Int64Field = &tfTypes.Int64Field{}
-												fields1.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem1.Int64Field.DefaultValue)
-												if fieldsItem1.Int64Field.Int64Rules == nil {
-													fields1.Int64Field.Int64Rules = nil
-												} else {
-													fields1.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
-													fields1.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Const)
-													fields1.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Gt)
-													fields1.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Gte)
-													fields1.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem1.Int64Field.Int64Rules.IgnoreEmpty)
-													if fieldsItem1.Int64Field.Int64Rules.In != nil {
-														fields1.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem1.Int64Field.Int64Rules.In))
-														for _, v := range fieldsItem1.Int64Field.Int64Rules.In {
-															fields1.Int64Field.Int64Rules.In = append(fields1.Int64Field.Int64Rules.In, types.StringValue(v))
-														}
-													}
-													fields1.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Lt)
-													fields1.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Lte)
-													if fieldsItem1.Int64Field.Int64Rules.NotIn != nil {
-														fields1.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem1.Int64Field.Int64Rules.NotIn))
-														for _, v := range fieldsItem1.Int64Field.Int64Rules.NotIn {
-															fields1.Int64Field.Int64Rules.NotIn = append(fields1.Int64Field.Int64Rules.NotIn, types.StringValue(v))
-														}
-													}
-												}
-												if fieldsItem1.Int64Field.NumberField == nil {
-													fields1.Int64Field.NumberField = nil
-												} else {
-													fields1.Int64Field.NumberField = &tfTypes.NumberField{}
-													fields1.Int64Field.NumberField.MaxValue = types.StringPointerValue(fieldsItem1.Int64Field.NumberField.MaxValue)
-													fields1.Int64Field.NumberField.MinValue = types.StringPointerValue(fieldsItem1.Int64Field.NumberField.MinValue)
-													fields1.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem1.Int64Field.NumberField.Step)
-												}
-												fields1.Int64Field.Placeholder = types.StringPointerValue(fieldsItem1.Int64Field.Placeholder)
-											}
-											fields1.Name = types.StringPointerValue(fieldsItem1.Name)
-											if fieldsItem1.Oauth2Field == nil {
-												fields1.Oauth2Field = nil
-											} else {
-												fields1.Oauth2Field = &tfTypes.Oauth2Field{}
-												if fieldsItem1.Oauth2Field.Oauth2FieldView == nil {
-													fields1.Oauth2Field.Oauth2FieldView = nil
-												} else {
-													fields1.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
-												}
-											}
-											fields1.Required = types.BoolPointerValue(fieldsItem1.Required)
-											if fieldsItem1.SharedProviderConfig == nil {
-												fields1.SharedProviderConfig = nil
-											} else {
-												fields1.SharedProviderConfig = &tfTypes.SharedProviderConfig{}
-												fields1.SharedProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem1.SharedProviderConfig.DefaultValueCel)
-												fields1.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem1.SharedProviderConfig.InputTransformationCel)
-												fields1.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem1.SharedProviderConfig.LockDefaultValues)
-											}
-											if fieldsItem1.StringField == nil {
-												fields1.StringField = nil
-											} else {
-												fields1.StringField = &tfTypes.StringField{}
-												fields1.StringField.DefaultValue = types.StringPointerValue(fieldsItem1.StringField.DefaultValue)
-												if fieldsItem1.StringField.PasswordField == nil {
-													fields1.StringField.PasswordField = nil
-												} else {
-													fields1.StringField.PasswordField = &tfTypes.PasswordField{}
-												}
-												if fieldsItem1.StringField.PickerField == nil {
-													fields1.StringField.PickerField = nil
-												} else {
-													fields1.StringField.PickerField = &tfTypes.PickerField{}
-													if fieldsItem1.StringField.PickerField.AppResourceFilter == nil {
-														fields1.StringField.PickerField.AppResourceFilter = nil
-													} else {
-														fields1.StringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
-														fields1.StringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem1.StringField.PickerField.AppResourceFilter.AppID)
-														fields1.StringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem1.StringField.PickerField.AppResourceFilter.ResourceTypeID)
-													}
-													if fieldsItem1.StringField.PickerField.AppUserFilter == nil {
-														fields1.StringField.PickerField.AppUserFilter = nil
-													} else {
-														fields1.StringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
-														fields1.StringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem1.StringField.PickerField.AppUserFilter.AppID)
-													}
-													if fieldsItem1.StringField.PickerField.C1UserFilter == nil {
-														fields1.StringField.PickerField.C1UserFilter = nil
-													} else {
-														fields1.StringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
-													}
-												}
-												fields1.StringField.Placeholder = types.StringPointerValue(fieldsItem1.StringField.Placeholder)
-												if fieldsItem1.StringField.SelectField == nil {
-													fields1.StringField.SelectField = nil
-												} else {
-													fields1.StringField.SelectField = &tfTypes.SelectField{}
-													if fieldsItem1.StringField.SelectField.Options != nil {
-														fields1.StringField.SelectField.Options = []tfTypes.SelectOption{}
-
-														for _, optionsVarItem1 := range fieldsItem1.StringField.SelectField.Options {
-															var optionsVar1 tfTypes.SelectOption
-
-															optionsVar1.Description = types.StringPointerValue(optionsVarItem1.Description)
-															optionsVar1.DisplayName = types.StringPointerValue(optionsVarItem1.DisplayName)
-															optionsVar1.Value = types.StringPointerValue(optionsVarItem1.Value)
-
-															fields1.StringField.SelectField.Options = append(fields1.StringField.SelectField.Options, optionsVar1)
-														}
-													}
-													if fieldsItem1.StringField.SelectField.Type != nil {
-														fields1.StringField.SelectField.Type = types.StringValue(string(*fieldsItem1.StringField.SelectField.Type))
-													} else {
-														fields1.StringField.SelectField.Type = types.StringNull()
-													}
-												}
-												if fieldsItem1.StringField.StringRules == nil {
-													fields1.StringField.StringRules = nil
-												} else {
-													fields1.StringField.StringRules = &tfTypes.StringRules{}
-													fields1.StringField.StringRules.Address = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Address)
-													fields1.StringField.StringRules.Const = types.StringPointerValue(fieldsItem1.StringField.StringRules.Const)
-													fields1.StringField.StringRules.Contains = types.StringPointerValue(fieldsItem1.StringField.StringRules.Contains)
-													fields1.StringField.StringRules.Email = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Email)
-													fields1.StringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Hostname)
-													fields1.StringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem1.StringField.StringRules.IgnoreEmpty)
-													if fieldsItem1.StringField.StringRules.In != nil {
-														fields1.StringField.StringRules.In = make([]types.String, 0, len(fieldsItem1.StringField.StringRules.In))
-														for _, v := range fieldsItem1.StringField.StringRules.In {
-															fields1.StringField.StringRules.In = append(fields1.StringField.StringRules.In, types.StringValue(v))
-														}
-													}
-													fields1.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem1.StringField.StringRules.IP)
-													fields1.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Ipv4)
-													fields1.StringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Ipv6)
-													fields1.StringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem1.StringField.StringRules.LenBytes)
-													fields1.StringField.StringRules.Length = types.StringPointerValue(fieldsItem1.StringField.StringRules.Length)
-													fields1.StringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem1.StringField.StringRules.MaxBytes)
-													fields1.StringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem1.StringField.StringRules.MaxLen)
-													fields1.StringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem1.StringField.StringRules.MinBytes)
-													fields1.StringField.StringRules.MinLen = types.StringPointerValue(fieldsItem1.StringField.StringRules.MinLen)
-													fields1.StringField.StringRules.NotContains = types.StringPointerValue(fieldsItem1.StringField.StringRules.NotContains)
-													if fieldsItem1.StringField.StringRules.NotIn != nil {
-														fields1.StringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem1.StringField.StringRules.NotIn))
-														for _, v := range fieldsItem1.StringField.StringRules.NotIn {
-															fields1.StringField.StringRules.NotIn = append(fields1.StringField.StringRules.NotIn, types.StringValue(v))
-														}
-													}
-													fields1.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem1.StringField.StringRules.Pattern)
-													fields1.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem1.StringField.StringRules.Prefix)
-													fields1.StringField.StringRules.Strict = types.BoolPointerValue(fieldsItem1.StringField.StringRules.Strict)
-													fields1.StringField.StringRules.Suffix = types.StringPointerValue(fieldsItem1.StringField.StringRules.Suffix)
-													fields1.StringField.StringRules.URI = types.BoolPointerValue(fieldsItem1.StringField.StringRules.URI)
-													fields1.StringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem1.StringField.StringRules.URIRef)
-													fields1.StringField.StringRules.UUID = types.BoolPointerValue(fieldsItem1.StringField.StringRules.UUID)
-													if fieldsItem1.StringField.StringRules.WellKnownRegex != nil {
-														fields1.StringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem1.StringField.StringRules.WellKnownRegex))
-													} else {
-														fields1.StringField.StringRules.WellKnownRegex = types.StringNull()
-													}
-												}
-												if fieldsItem1.StringField.TextField == nil {
-													fields1.StringField.TextField = nil
-												} else {
-													fields1.StringField.TextField = &tfTypes.TextField{}
-													fields1.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem1.StringField.TextField.Multiline)
-												}
-											}
-											if fieldsItem1.UserProviderConfig == nil {
-												fields1.UserProviderConfig = nil
-											} else {
-												fields1.UserProviderConfig = &tfTypes.UserProviderConfig{}
-												fields1.UserProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem1.UserProviderConfig.InputTransformationCel)
-											}
-
-											history.FormInstance.Form.Fields = append(history.FormInstance.Form.Fields, fields1)
-										}
-									}
-									history.FormInstance.Form.Name = types.StringPointerValue(historyItem.FormInstance.Form.Name)
-								}
 								if historyItem.FormInstance.FormCompletedAction == nil {
 									history.FormInstance.FormCompletedAction = nil
 								} else {
@@ -1201,6 +673,350 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 									history.FormInstance.ReassignedAction.NewPolicyStepID = types.StringPointerValue(historyItem.FormInstance.ReassignedAction.NewPolicyStepID)
 									history.FormInstance.ReassignedAction.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.FormInstance.ReassignedAction.ReassignedAt))
 									history.FormInstance.ReassignedAction.UserID = types.StringPointerValue(historyItem.FormInstance.ReassignedAction.UserID)
+								}
+								if historyItem.FormInstance.RequestSchemaForm == nil {
+									history.FormInstance.RequestSchemaForm = nil
+								} else {
+									history.FormInstance.RequestSchemaForm = &tfTypes.RequestSchemaForm{}
+									history.FormInstance.RequestSchemaForm.Description = types.StringPointerValue(historyItem.FormInstance.RequestSchemaForm.Description)
+									if historyItem.FormInstance.RequestSchemaForm.FieldGroups != nil {
+										history.FormInstance.RequestSchemaForm.FieldGroups = []tfTypes.FormFieldGroup{}
+
+										for _, fieldGroupsItem := range historyItem.FormInstance.RequestSchemaForm.FieldGroups {
+											var fieldGroups tfTypes.FormFieldGroup
+
+											fieldGroups.Default = types.BoolPointerValue(fieldGroupsItem.Default)
+											fieldGroups.DisplayName = types.StringPointerValue(fieldGroupsItem.DisplayName)
+											if fieldGroupsItem.Fields != nil {
+												fieldGroups.Fields = make([]types.String, 0, len(fieldGroupsItem.Fields))
+												for _, v := range fieldGroupsItem.Fields {
+													fieldGroups.Fields = append(fieldGroups.Fields, types.StringValue(v))
+												}
+											} else {
+												fieldGroups.Fields = nil
+											}
+											fieldGroups.HelpText = types.StringPointerValue(fieldGroupsItem.HelpText)
+											fieldGroups.Name = types.StringPointerValue(fieldGroupsItem.Name)
+
+											history.FormInstance.RequestSchemaForm.FieldGroups = append(history.FormInstance.RequestSchemaForm.FieldGroups, fieldGroups)
+										}
+									} else {
+										history.FormInstance.RequestSchemaForm.FieldGroups = nil
+									}
+									if historyItem.FormInstance.RequestSchemaForm.FieldRelationships != nil {
+										history.FormInstance.RequestSchemaForm.FieldRelationships = []tfTypes.FieldRelationship{}
+
+										for _, fieldRelationshipsItem := range historyItem.FormInstance.RequestSchemaForm.FieldRelationships {
+											var fieldRelationships tfTypes.FieldRelationship
+
+											if fieldRelationshipsItem.AtLeastOne == nil {
+												fieldRelationships.AtLeastOne = nil
+											} else {
+												fieldRelationships.AtLeastOne = &tfTypes.AtLeastOne{}
+											}
+											if fieldRelationshipsItem.DependentOn == nil {
+												fieldRelationships.DependentOn = nil
+											} else {
+												fieldRelationships.DependentOn = &tfTypes.DependentOn{}
+												if fieldRelationshipsItem.DependentOn.DependencyFieldNames != nil {
+													fieldRelationships.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem.DependentOn.DependencyFieldNames))
+													for _, v := range fieldRelationshipsItem.DependentOn.DependencyFieldNames {
+														fieldRelationships.DependentOn.DependencyFieldNames = append(fieldRelationships.DependentOn.DependencyFieldNames, types.StringValue(v))
+													}
+												} else {
+													fieldRelationships.DependentOn.DependencyFieldNames = nil
+												}
+											}
+											if fieldRelationshipsItem.FieldNames != nil {
+												fieldRelationships.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem.FieldNames))
+												for _, v := range fieldRelationshipsItem.FieldNames {
+													fieldRelationships.FieldNames = append(fieldRelationships.FieldNames, types.StringValue(v))
+												}
+											} else {
+												fieldRelationships.FieldNames = nil
+											}
+											if fieldRelationshipsItem.MutuallyExclusive == nil {
+												fieldRelationships.MutuallyExclusive = nil
+											} else {
+												fieldRelationships.MutuallyExclusive = &tfTypes.MutuallyExclusive{}
+											}
+											if fieldRelationshipsItem.RequiredTogether == nil {
+												fieldRelationships.RequiredTogether = nil
+											} else {
+												fieldRelationships.RequiredTogether = &tfTypes.RequiredTogether{}
+											}
+
+											history.FormInstance.RequestSchemaForm.FieldRelationships = append(history.FormInstance.RequestSchemaForm.FieldRelationships, fieldRelationships)
+										}
+									} else {
+										history.FormInstance.RequestSchemaForm.FieldRelationships = nil
+									}
+									if historyItem.FormInstance.RequestSchemaForm.Fields != nil {
+										history.FormInstance.RequestSchemaForm.Fields = []tfTypes.FormField{}
+
+										for _, fieldsItem := range historyItem.FormInstance.RequestSchemaForm.Fields {
+											var fields tfTypes.FormField
+
+											if fieldsItem.AdminProviderConfig == nil {
+												fields.AdminProviderConfig = nil
+											} else {
+												fields.AdminProviderConfig = &tfTypes.AdminProviderConfig{}
+												fields.AdminProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem.AdminProviderConfig.DefaultValueCel)
+												fields.AdminProviderConfig.ShowToUser = types.BoolPointerValue(fieldsItem.AdminProviderConfig.ShowToUser)
+											}
+											if fieldsItem.BoolField == nil {
+												fields.BoolField = nil
+											} else {
+												fields.BoolField = &tfTypes.BoolField{}
+												if fieldsItem.BoolField.BoolRules == nil {
+													fields.BoolField.BoolRules = nil
+												} else {
+													fields.BoolField.BoolRules = &tfTypes.BoolRules{}
+													fields.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem.BoolField.BoolRules.Const)
+												}
+												if fieldsItem.BoolField.CheckboxField == nil {
+													fields.BoolField.CheckboxField = nil
+												} else {
+													fields.BoolField.CheckboxField = &tfTypes.CheckboxField{}
+												}
+												fields.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem.BoolField.DefaultValue)
+												if fieldsItem.BoolField.ToggleField == nil {
+													fields.BoolField.ToggleField = nil
+												} else {
+													fields.BoolField.ToggleField = &tfTypes.ToggleField{}
+												}
+											}
+											fields.Description = types.StringPointerValue(fieldsItem.Description)
+											fields.DisplayName = types.StringPointerValue(fieldsItem.DisplayName)
+											if fieldsItem.FileField == nil {
+												fields.FileField = nil
+											} else {
+												fields.FileField = &tfTypes.FileField{}
+												if fieldsItem.FileField.AcceptedFileTypes != nil {
+													fields.FileField.AcceptedFileTypes = make([]types.String, 0, len(fieldsItem.FileField.AcceptedFileTypes))
+													for _, v := range fieldsItem.FileField.AcceptedFileTypes {
+														fields.FileField.AcceptedFileTypes = append(fields.FileField.AcceptedFileTypes, types.StringValue(v))
+													}
+												} else {
+													fields.FileField.AcceptedFileTypes = nil
+												}
+												if fieldsItem.FileField.FileInputField == nil {
+													fields.FileField.FileInputField = nil
+												} else {
+													fields.FileField.FileInputField = &tfTypes.FileInputField{}
+												}
+												fields.FileField.MaxFileSize = types.StringPointerValue(fieldsItem.FileField.MaxFileSize)
+											}
+											if fieldsItem.FormStringField == nil {
+												fields.FormStringField = nil
+											} else {
+												fields.FormStringField = &tfTypes.FormStringField{}
+												fields.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem.FormStringField.DefaultValue)
+												if fieldsItem.FormStringField.PasswordField == nil {
+													fields.FormStringField.PasswordField = nil
+												} else {
+													fields.FormStringField.PasswordField = &tfTypes.PasswordField{}
+												}
+												if fieldsItem.FormStringField.PickerField == nil {
+													fields.FormStringField.PickerField = nil
+												} else {
+													fields.FormStringField.PickerField = &tfTypes.PickerField{}
+													if fieldsItem.FormStringField.PickerField.AppResourceFilter == nil {
+														fields.FormStringField.PickerField.AppResourceFilter = nil
+													} else {
+														fields.FormStringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
+														fields.FormStringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem.FormStringField.PickerField.AppResourceFilter.AppID)
+														fields.FormStringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem.FormStringField.PickerField.AppResourceFilter.ResourceTypeID)
+													}
+													if fieldsItem.FormStringField.PickerField.AppUserFilter == nil {
+														fields.FormStringField.PickerField.AppUserFilter = nil
+													} else {
+														fields.FormStringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
+														fields.FormStringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem.FormStringField.PickerField.AppUserFilter.AppID)
+													}
+													if fieldsItem.FormStringField.PickerField.C1UserFilter == nil {
+														fields.FormStringField.PickerField.C1UserFilter = nil
+													} else {
+														fields.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
+													}
+												}
+												fields.FormStringField.Placeholder = types.StringPointerValue(fieldsItem.FormStringField.Placeholder)
+												if fieldsItem.FormStringField.SelectField == nil {
+													fields.FormStringField.SelectField = nil
+												} else {
+													fields.FormStringField.SelectField = &tfTypes.SelectField{}
+													if fieldsItem.FormStringField.SelectField.Options != nil {
+														fields.FormStringField.SelectField.Options = []tfTypes.SelectOption{}
+
+														for _, optionsVarItem := range fieldsItem.FormStringField.SelectField.Options {
+															var optionsVar tfTypes.SelectOption
+
+															optionsVar.Description = types.StringPointerValue(optionsVarItem.Description)
+															optionsVar.DisplayName = types.StringPointerValue(optionsVarItem.DisplayName)
+															optionsVar.Value = types.StringPointerValue(optionsVarItem.Value)
+
+															fields.FormStringField.SelectField.Options = append(fields.FormStringField.SelectField.Options, optionsVar)
+														}
+													} else {
+														fields.FormStringField.SelectField.Options = nil
+													}
+													if fieldsItem.FormStringField.SelectField.Type != nil {
+														fields.FormStringField.SelectField.Type = types.StringValue(string(*fieldsItem.FormStringField.SelectField.Type))
+													} else {
+														fields.FormStringField.SelectField.Type = types.StringNull()
+													}
+												}
+												if fieldsItem.FormStringField.StringRules == nil {
+													fields.FormStringField.StringRules = nil
+												} else {
+													fields.FormStringField.StringRules = &tfTypes.StringRules{}
+													fields.FormStringField.StringRules.Address = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Address)
+													fields.FormStringField.StringRules.Const = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Const)
+													fields.FormStringField.StringRules.Contains = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Contains)
+													fields.FormStringField.StringRules.Email = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Email)
+													fields.FormStringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Hostname)
+													fields.FormStringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.IgnoreEmpty)
+													if fieldsItem.FormStringField.StringRules.In != nil {
+														fields.FormStringField.StringRules.In = make([]types.String, 0, len(fieldsItem.FormStringField.StringRules.In))
+														for _, v := range fieldsItem.FormStringField.StringRules.In {
+															fields.FormStringField.StringRules.In = append(fields.FormStringField.StringRules.In, types.StringValue(v))
+														}
+													} else {
+														fields.FormStringField.StringRules.In = nil
+													}
+													fields.FormStringField.StringRules.IP = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.IP)
+													fields.FormStringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Ipv4)
+													fields.FormStringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Ipv6)
+													fields.FormStringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem.FormStringField.StringRules.LenBytes)
+													fields.FormStringField.StringRules.Length = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Length)
+													fields.FormStringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MaxBytes)
+													fields.FormStringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MaxLen)
+													fields.FormStringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MinBytes)
+													fields.FormStringField.StringRules.MinLen = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MinLen)
+													fields.FormStringField.StringRules.NotContains = types.StringPointerValue(fieldsItem.FormStringField.StringRules.NotContains)
+													if fieldsItem.FormStringField.StringRules.NotIn != nil {
+														fields.FormStringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem.FormStringField.StringRules.NotIn))
+														for _, v := range fieldsItem.FormStringField.StringRules.NotIn {
+															fields.FormStringField.StringRules.NotIn = append(fields.FormStringField.StringRules.NotIn, types.StringValue(v))
+														}
+													} else {
+														fields.FormStringField.StringRules.NotIn = nil
+													}
+													fields.FormStringField.StringRules.Pattern = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Pattern)
+													fields.FormStringField.StringRules.Prefix = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Prefix)
+													fields.FormStringField.StringRules.Strict = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Strict)
+													fields.FormStringField.StringRules.Suffix = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Suffix)
+													fields.FormStringField.StringRules.URI = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.URI)
+													fields.FormStringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.URIRef)
+													fields.FormStringField.StringRules.UUID = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.UUID)
+													if fieldsItem.FormStringField.StringRules.WellKnownRegex != nil {
+														fields.FormStringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem.FormStringField.StringRules.WellKnownRegex))
+													} else {
+														fields.FormStringField.StringRules.WellKnownRegex = types.StringNull()
+													}
+												}
+												if fieldsItem.FormStringField.TextField == nil {
+													fields.FormStringField.TextField = nil
+												} else {
+													fields.FormStringField.TextField = &tfTypes.TextField{}
+													fields.FormStringField.TextField.Multiline = types.BoolPointerValue(fieldsItem.FormStringField.TextField.Multiline)
+													fields.FormStringField.TextField.Suffix = types.StringPointerValue(fieldsItem.FormStringField.TextField.Suffix)
+												}
+											}
+											if fieldsItem.FormStringMapField == nil {
+												fields.FormStringMapField = nil
+											} else {
+												fields.FormStringMapField = &tfTypes.FormStringMapField{}
+												if len(fieldsItem.FormStringMapField.DefaultValue) > 0 {
+													fields.FormStringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem.FormStringMapField.DefaultValue))
+													for key, value := range fieldsItem.FormStringMapField.DefaultValue {
+														fields.FormStringMapField.DefaultValue[key] = types.StringValue(value)
+													}
+												}
+												if fieldsItem.FormStringMapField.StringMapRules == nil {
+													fields.FormStringMapField.StringMapRules = nil
+												} else {
+													fields.FormStringMapField.StringMapRules = &tfTypes.StringMapRules{}
+													fields.FormStringMapField.StringMapRules.IsRequired = types.BoolPointerValue(fieldsItem.FormStringMapField.StringMapRules.IsRequired)
+													fields.FormStringMapField.StringMapRules.ValidateEmpty = types.BoolPointerValue(fieldsItem.FormStringMapField.StringMapRules.ValidateEmpty)
+												}
+											}
+											if fieldsItem.Int64Field == nil {
+												fields.Int64Field = nil
+											} else {
+												fields.Int64Field = &tfTypes.Int64Field{}
+												fields.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem.Int64Field.DefaultValue)
+												if fieldsItem.Int64Field.Int64Rules == nil {
+													fields.Int64Field.Int64Rules = nil
+												} else {
+													fields.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
+													fields.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Const)
+													fields.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Gt)
+													fields.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Gte)
+													fields.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.Int64Field.Int64Rules.IgnoreEmpty)
+													if fieldsItem.Int64Field.Int64Rules.In != nil {
+														fields.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem.Int64Field.Int64Rules.In))
+														for _, v := range fieldsItem.Int64Field.Int64Rules.In {
+															fields.Int64Field.Int64Rules.In = append(fields.Int64Field.Int64Rules.In, types.StringValue(v))
+														}
+													} else {
+														fields.Int64Field.Int64Rules.In = nil
+													}
+													fields.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lt)
+													fields.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lte)
+													if fieldsItem.Int64Field.Int64Rules.NotIn != nil {
+														fields.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem.Int64Field.Int64Rules.NotIn))
+														for _, v := range fieldsItem.Int64Field.Int64Rules.NotIn {
+															fields.Int64Field.Int64Rules.NotIn = append(fields.Int64Field.Int64Rules.NotIn, types.StringValue(v))
+														}
+													} else {
+														fields.Int64Field.Int64Rules.NotIn = nil
+													}
+												}
+												if fieldsItem.Int64Field.NumberField == nil {
+													fields.Int64Field.NumberField = nil
+												} else {
+													fields.Int64Field.NumberField = &tfTypes.NumberField{}
+													fields.Int64Field.NumberField.MaxValue = types.StringPointerValue(fieldsItem.Int64Field.NumberField.MaxValue)
+													fields.Int64Field.NumberField.MinValue = types.StringPointerValue(fieldsItem.Int64Field.NumberField.MinValue)
+													fields.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem.Int64Field.NumberField.Step)
+												}
+												fields.Int64Field.Placeholder = types.StringPointerValue(fieldsItem.Int64Field.Placeholder)
+											}
+											fields.Name = types.StringPointerValue(fieldsItem.Name)
+											if fieldsItem.Oauth2Field == nil {
+												fields.Oauth2Field = nil
+											} else {
+												fields.Oauth2Field = &tfTypes.Oauth2Field{}
+												if fieldsItem.Oauth2Field.Oauth2FieldView == nil {
+													fields.Oauth2Field.Oauth2FieldView = nil
+												} else {
+													fields.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
+												}
+											}
+											fields.ReadOnly = types.BoolPointerValue(fieldsItem.ReadOnly)
+											fields.Required = types.BoolPointerValue(fieldsItem.Required)
+											if fieldsItem.SharedProviderConfig == nil {
+												fields.SharedProviderConfig = nil
+											} else {
+												fields.SharedProviderConfig = &tfTypes.SharedProviderConfig{}
+												fields.SharedProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem.SharedProviderConfig.DefaultValueCel)
+												fields.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.SharedProviderConfig.InputTransformationCel)
+												fields.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem.SharedProviderConfig.LockDefaultValues)
+											}
+											if fieldsItem.UserProviderConfig == nil {
+												fields.UserProviderConfig = nil
+											} else {
+												fields.UserProviderConfig = &tfTypes.UserProviderConfig{}
+												fields.UserProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.UserProviderConfig.InputTransformationCel)
+											}
+
+											history.FormInstance.RequestSchemaForm.Fields = append(history.FormInstance.RequestSchemaForm.Fields, fields)
+										}
+									} else {
+										history.FormInstance.RequestSchemaForm.Fields = nil
+									}
+									history.FormInstance.RequestSchemaForm.Name = types.StringPointerValue(historyItem.FormInstance.RequestSchemaForm.Name)
 								}
 								if historyItem.FormInstance.RestartAction == nil {
 									history.FormInstance.RestartAction = nil
@@ -1254,6 +1070,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											history.ProvisionInstance.CompletedAction.Entitlements = append(history.ProvisionInstance.CompletedAction.Entitlements, entitlements1)
 										}
+									} else {
+										history.ProvisionInstance.CompletedAction.Entitlements = nil
 									}
 									history.ProvisionInstance.CompletedAction.UserID = types.StringPointerValue(historyItem.ProvisionInstance.CompletedAction.UserID)
 								}
@@ -1315,6 +1133,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 													}
 												}
 												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -1367,6 +1187,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 													}
 												}
 												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -1379,6 +1201,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 													}
 												}
 												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -1391,12 +1215,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 													}
 													if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 													}
 												}
 												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -1411,6 +1239,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 													}
 												}
 												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -1423,6 +1253,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 													}
 												}
 												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -1435,6 +1267,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 														}
+													} else {
+														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 													}
 												}
 											}
@@ -1443,6 +1277,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 												for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds {
 													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 												}
+											} else {
+												history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
 											}
 										}
 										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.MultiStep == nil {
@@ -1563,6 +1399,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 							r.TaskView.Task.PolicyInstance.History = append(r.TaskView.Task.PolicyInstance.History, history)
 						}
+					} else {
+						r.TaskView.Task.PolicyInstance.History = nil
 					}
 					if resp.TaskView.Task.PolicyInstance.Next != nil {
 						r.TaskView.Task.PolicyInstance.Next = []tfTypes.PolicyStep{}
@@ -1579,7 +1417,7 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 							if nextItem.Action == nil {
 								next.Action = nil
 							} else {
-								next.Action = &tfTypes.Action1{}
+								next.Action = &tfTypes.Action{}
 								if nextItem.Action.ActionTargetAutomation == nil {
 									next.Action.ActionTargetAutomation = nil
 								} else {
@@ -1591,6 +1429,11 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 								} else {
 									next.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
 									next.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(nextItem.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+								}
+								if nextItem.Action.ActionTargetClientIDApproval == nil {
+									next.Action.ActionTargetClientIDApproval = nil
+								} else {
+									next.Action.ActionTargetClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
 								}
 							}
 							if nextItem.Approval == nil {
@@ -1618,12 +1461,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range nextItem.Approval.AgentApproval.PolicyIds {
 											next.Approval.AgentApproval.PolicyIds = append(next.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.AgentApproval.PolicyIds = nil
 									}
 									if nextItem.Approval.AgentApproval.ReassignToUserIds != nil {
 										next.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(nextItem.Approval.AgentApproval.ReassignToUserIds))
 										for _, v := range nextItem.Approval.AgentApproval.ReassignToUserIds {
 											next.Approval.AgentApproval.ReassignToUserIds = append(next.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.AgentApproval.ReassignToUserIds = nil
 									}
 								}
 								next.Approval.AllowDelegation = types.BoolPointerValue(nextItem.Approval.AllowDelegation)
@@ -1632,6 +1479,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 									for _, v := range nextItem.Approval.AllowedReassignees {
 										next.Approval.AllowedReassignees = append(next.Approval.AllowedReassignees, types.StringValue(v))
 									}
+								} else {
+									next.Approval.AllowedReassignees = nil
 								}
 								next.Approval.AllowReassignment = types.BoolPointerValue(nextItem.Approval.AllowReassignment)
 								if nextItem.Approval.AppGroupApproval == nil {
@@ -1653,12 +1502,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											next.Approval.AppGroupApproval.FallbackGroupIds = append(next.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds6)
 										}
+									} else {
+										next.Approval.AppGroupApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.AppGroupApproval.FallbackUserIds != nil {
 										next.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.AppGroupApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.AppGroupApproval.FallbackUserIds {
 											next.Approval.AppGroupApproval.FallbackUserIds = append(next.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.AppGroupApproval.FallbackUserIds = nil
 									}
 									next.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 									next.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.AppGroupApproval.RequireDistinctApprovers)
@@ -1688,12 +1541,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											next.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(next.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds7)
 										}
+									} else {
+										next.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 										next.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
 											next.Approval.EntitlementOwnerApproval.FallbackUserIds = append(next.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
 									}
 									next.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 									next.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
@@ -1718,6 +1575,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											for _, v := range nextItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
 												next.Approval.Escalation.ReassignToApprovers.ApproverIds = append(next.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
 											}
+										} else {
+											next.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
 										}
 									}
 									if nextItem.Approval.Escalation.ReplacePolicy == nil {
@@ -1743,12 +1602,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range nextItem.Approval.ExpressionApproval.AssignedUserIds {
 											next.Approval.ExpressionApproval.AssignedUserIds = append(next.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ExpressionApproval.AssignedUserIds = nil
 									}
 									if nextItem.Approval.ExpressionApproval.Expressions != nil {
 										next.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(nextItem.Approval.ExpressionApproval.Expressions))
 										for _, v := range nextItem.Approval.ExpressionApproval.Expressions {
 											next.Approval.ExpressionApproval.Expressions = append(next.Approval.ExpressionApproval.Expressions, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ExpressionApproval.Expressions = nil
 									}
 									next.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.Fallback)
 									if nextItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
@@ -1762,12 +1625,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											next.Approval.ExpressionApproval.FallbackGroupIds = append(next.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds8)
 										}
+									} else {
+										next.Approval.ExpressionApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.ExpressionApproval.FallbackUserIds != nil {
 										next.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ExpressionApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.ExpressionApproval.FallbackUserIds {
 											next.Approval.ExpressionApproval.FallbackUserIds = append(next.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ExpressionApproval.FallbackUserIds = nil
 									}
 									next.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 									next.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.RequireDistinctApprovers)
@@ -1782,6 +1649,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range nextItem.Approval.ManagerApproval.AssignedUserIds {
 											next.Approval.ManagerApproval.AssignedUserIds = append(next.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ManagerApproval.AssignedUserIds = nil
 									}
 									next.Approval.ManagerApproval.Fallback = types.BoolPointerValue(nextItem.Approval.ManagerApproval.Fallback)
 									if nextItem.Approval.ManagerApproval.FallbackGroupIds != nil {
@@ -1795,12 +1664,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											next.Approval.ManagerApproval.FallbackGroupIds = append(next.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds9)
 										}
+									} else {
+										next.Approval.ManagerApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.ManagerApproval.FallbackUserIds != nil {
 										next.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ManagerApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.ManagerApproval.FallbackUserIds {
 											next.Approval.ManagerApproval.FallbackUserIds = append(next.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ManagerApproval.FallbackUserIds = nil
 									}
 									next.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
 									next.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ManagerApproval.RequireDistinctApprovers)
@@ -1826,12 +1699,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											next.Approval.ResourceOwnerApproval.FallbackGroupIds = append(next.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds10)
 										}
+									} else {
+										next.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 										next.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ResourceOwnerApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.ResourceOwnerApproval.FallbackUserIds {
 											next.Approval.ResourceOwnerApproval.FallbackUserIds = append(next.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.ResourceOwnerApproval.FallbackUserIds = nil
 									}
 									next.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 									next.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
@@ -1845,6 +1722,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range nextItem.Approval.SelfApproval.AssignedUserIds {
 											next.Approval.SelfApproval.AssignedUserIds = append(next.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.SelfApproval.AssignedUserIds = nil
 									}
 									next.Approval.SelfApproval.Fallback = types.BoolPointerValue(nextItem.Approval.SelfApproval.Fallback)
 									if nextItem.Approval.SelfApproval.FallbackGroupIds != nil {
@@ -1858,12 +1737,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											next.Approval.SelfApproval.FallbackGroupIds = append(next.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds11)
 										}
+									} else {
+										next.Approval.SelfApproval.FallbackGroupIds = nil
 									}
 									if nextItem.Approval.SelfApproval.FallbackUserIds != nil {
 										next.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.SelfApproval.FallbackUserIds))
 										for _, v := range nextItem.Approval.SelfApproval.FallbackUserIds {
 											next.Approval.SelfApproval.FallbackUserIds = append(next.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.SelfApproval.FallbackUserIds = nil
 									}
 									next.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.SelfApproval.IsGroupFallbackEnabled)
 								}
@@ -1878,6 +1761,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range nextItem.Approval.UserApproval.UserIds {
 											next.Approval.UserApproval.UserIds = append(next.Approval.UserApproval.UserIds, types.StringValue(v))
 										}
+									} else {
+										next.Approval.UserApproval.UserIds = nil
 									}
 								}
 								if nextItem.Approval.WebhookApproval == nil {
@@ -1940,6 +1825,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 														next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 												}
 											}
 											next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -1992,6 +1879,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -2004,6 +1893,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -2016,12 +1907,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 												}
 												if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 												}
 											}
 											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -2036,6 +1931,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 												}
 											}
 											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -2048,6 +1945,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -2060,6 +1959,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 													}
+												} else {
+													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 												}
 											}
 										}
@@ -2068,6 +1969,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
 												next.Provision.ProvisionPolicy.ManualProvision.UserIds = append(next.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 											}
+										} else {
+											next.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
 										}
 									}
 									if nextItem.Provision.ProvisionPolicy.MultiStep == nil {
@@ -2136,11 +2039,19 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 							r.TaskView.Task.PolicyInstance.Next = append(r.TaskView.Task.PolicyInstance.Next, next)
 						}
+					} else {
+						r.TaskView.Task.PolicyInstance.Next = nil
 					}
 					if resp.TaskView.Task.PolicyInstance.Policy == nil {
 						r.TaskView.Task.PolicyInstance.Policy = nil
 					} else {
 						r.TaskView.Task.PolicyInstance.Policy = &tfTypes.Policy{}
+						if len(resp.TaskView.Task.PolicyInstance.Policy.Annotations) > 0 {
+							r.TaskView.Task.PolicyInstance.Policy.Annotations = make(map[string]types.String, len(resp.TaskView.Task.PolicyInstance.Policy.Annotations))
+							for key1, value1 := range resp.TaskView.Task.PolicyInstance.Policy.Annotations {
+								r.TaskView.Task.PolicyInstance.Policy.Annotations[key1] = types.StringValue(value1)
+							}
+						}
 						r.TaskView.Task.PolicyInstance.Policy.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.CreatedAt))
 						r.TaskView.Task.PolicyInstance.Policy.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.DeletedAt))
 						r.TaskView.Task.PolicyInstance.Policy.Description = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.Policy.Description)
@@ -2165,7 +2076,7 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										if stepsItem.Action == nil {
 											steps.Action = nil
 										} else {
-											steps.Action = &tfTypes.Action1{}
+											steps.Action = &tfTypes.Action{}
 											if stepsItem.Action.ActionTargetAutomation == nil {
 												steps.Action.ActionTargetAutomation = nil
 											} else {
@@ -2177,6 +2088,11 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											} else {
 												steps.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
 												steps.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(stepsItem.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+											}
+											if stepsItem.Action.ActionTargetClientIDApproval == nil {
+												steps.Action.ActionTargetClientIDApproval = nil
+											} else {
+												steps.Action.ActionTargetClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
 											}
 										}
 										if stepsItem.Approval == nil {
@@ -2204,12 +2120,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range stepsItem.Approval.AgentApproval.PolicyIds {
 														steps.Approval.AgentApproval.PolicyIds = append(steps.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.AgentApproval.PolicyIds = nil
 												}
 												if stepsItem.Approval.AgentApproval.ReassignToUserIds != nil {
 													steps.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.ReassignToUserIds))
 													for _, v := range stepsItem.Approval.AgentApproval.ReassignToUserIds {
 														steps.Approval.AgentApproval.ReassignToUserIds = append(steps.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.AgentApproval.ReassignToUserIds = nil
 												}
 											}
 											steps.Approval.AllowDelegation = types.BoolPointerValue(stepsItem.Approval.AllowDelegation)
@@ -2218,6 +2138,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 												for _, v := range stepsItem.Approval.AllowedReassignees {
 													steps.Approval.AllowedReassignees = append(steps.Approval.AllowedReassignees, types.StringValue(v))
 												}
+											} else {
+												steps.Approval.AllowedReassignees = nil
 											}
 											steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
 											if stepsItem.Approval.AppGroupApproval == nil {
@@ -2239,12 +2161,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 														steps.Approval.AppGroupApproval.FallbackGroupIds = append(steps.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds12)
 													}
+												} else {
+													steps.Approval.AppGroupApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
 													steps.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
 														steps.Approval.AppGroupApproval.FallbackUserIds = append(steps.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.AppGroupApproval.FallbackUserIds = nil
 												}
 												steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 												steps.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers)
@@ -2274,12 +2200,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 														steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(steps.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds13)
 													}
+												} else {
+													steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 													steps.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
 														steps.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
 												}
 												steps.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 												steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
@@ -2304,6 +2234,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 														for _, v := range stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
 															steps.Approval.Escalation.ReassignToApprovers.ApproverIds = append(steps.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
 														}
+													} else {
+														steps.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
 													}
 												}
 												if stepsItem.Approval.Escalation.ReplacePolicy == nil {
@@ -2329,12 +2261,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range stepsItem.Approval.ExpressionApproval.AssignedUserIds {
 														steps.Approval.ExpressionApproval.AssignedUserIds = append(steps.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ExpressionApproval.AssignedUserIds = nil
 												}
 												if stepsItem.Approval.ExpressionApproval.Expressions != nil {
 													steps.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.Expressions))
 													for _, v := range stepsItem.Approval.ExpressionApproval.Expressions {
 														steps.Approval.ExpressionApproval.Expressions = append(steps.Approval.ExpressionApproval.Expressions, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ExpressionApproval.Expressions = nil
 												}
 												steps.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.Fallback)
 												if stepsItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
@@ -2348,12 +2284,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 														steps.Approval.ExpressionApproval.FallbackGroupIds = append(steps.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds14)
 													}
+												} else {
+													steps.Approval.ExpressionApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.ExpressionApproval.FallbackUserIds != nil {
 													steps.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
 														steps.Approval.ExpressionApproval.FallbackUserIds = append(steps.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ExpressionApproval.FallbackUserIds = nil
 												}
 												steps.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 												steps.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
@@ -2368,6 +2308,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range stepsItem.Approval.ManagerApproval.AssignedUserIds {
 														steps.Approval.ManagerApproval.AssignedUserIds = append(steps.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ManagerApproval.AssignedUserIds = nil
 												}
 												steps.Approval.ManagerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.Fallback)
 												if stepsItem.Approval.ManagerApproval.FallbackGroupIds != nil {
@@ -2381,12 +2323,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 														steps.Approval.ManagerApproval.FallbackGroupIds = append(steps.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds15)
 													}
+												} else {
+													steps.Approval.ManagerApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.ManagerApproval.FallbackUserIds != nil {
 													steps.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
 														steps.Approval.ManagerApproval.FallbackUserIds = append(steps.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ManagerApproval.FallbackUserIds = nil
 												}
 												steps.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
 												steps.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
@@ -2412,12 +2358,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 														steps.Approval.ResourceOwnerApproval.FallbackGroupIds = append(steps.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds16)
 													}
+												} else {
+													steps.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 													steps.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
 														steps.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.ResourceOwnerApproval.FallbackUserIds = nil
 												}
 												steps.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 												steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
@@ -2431,6 +2381,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range stepsItem.Approval.SelfApproval.AssignedUserIds {
 														steps.Approval.SelfApproval.AssignedUserIds = append(steps.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.SelfApproval.AssignedUserIds = nil
 												}
 												steps.Approval.SelfApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.SelfApproval.Fallback)
 												if stepsItem.Approval.SelfApproval.FallbackGroupIds != nil {
@@ -2444,12 +2396,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 														steps.Approval.SelfApproval.FallbackGroupIds = append(steps.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds17)
 													}
+												} else {
+													steps.Approval.SelfApproval.FallbackGroupIds = nil
 												}
 												if stepsItem.Approval.SelfApproval.FallbackUserIds != nil {
 													steps.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
 													for _, v := range stepsItem.Approval.SelfApproval.FallbackUserIds {
 														steps.Approval.SelfApproval.FallbackUserIds = append(steps.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.SelfApproval.FallbackUserIds = nil
 												}
 												steps.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.SelfApproval.IsGroupFallbackEnabled)
 											}
@@ -2464,6 +2420,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range stepsItem.Approval.UserApproval.UserIds {
 														steps.Approval.UserApproval.UserIds = append(steps.Approval.UserApproval.UserIds, types.StringValue(v))
 													}
+												} else {
+													steps.Approval.UserApproval.UserIds = nil
 												}
 											}
 											if stepsItem.Approval.WebhookApproval == nil {
@@ -2526,6 +2484,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 																	steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 															}
 														}
 														steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -2578,6 +2538,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 															}
 														}
 														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -2590,6 +2552,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 															}
 														}
 														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -2602,12 +2566,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 															}
 															if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 															}
 														}
 														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -2622,6 +2590,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 															}
 														}
 														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -2634,6 +2604,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 															}
 														}
 														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -2646,6 +2618,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 																}
+															} else {
+																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 															}
 														}
 													}
@@ -2654,6 +2628,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 														for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
 															steps.Provision.ProvisionPolicy.ManualProvision.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 														}
+													} else {
+														steps.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
 													}
 												}
 												if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
@@ -2722,6 +2698,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 										policyStepsResult.Steps = append(policyStepsResult.Steps, steps)
 									}
+								} else {
+									policyStepsResult.Steps = nil
 								}
 
 								r.TaskView.Task.PolicyInstance.Policy.PolicySteps[policyStepsKey] = policyStepsResult
@@ -2742,6 +2720,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 								r.TaskView.Task.PolicyInstance.Policy.PostActions = append(r.TaskView.Task.PolicyInstance.Policy.PostActions, postActions)
 							}
+						} else {
+							r.TaskView.Task.PolicyInstance.Policy.PostActions = nil
 						}
 						r.TaskView.Task.PolicyInstance.Policy.ReassignTasksToDelegates = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.Policy.ReassignTasksToDelegates)
 						if resp.TaskView.Task.PolicyInstance.Policy.Rules != nil {
@@ -2755,6 +2735,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 								r.TaskView.Task.PolicyInstance.Policy.Rules = append(r.TaskView.Task.PolicyInstance.Policy.Rules, rules)
 							}
+						} else {
+							r.TaskView.Task.PolicyInstance.Policy.Rules = nil
 						}
 						r.TaskView.Task.PolicyInstance.Policy.SystemBuiltin = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.Policy.SystemBuiltin)
 						r.TaskView.Task.PolicyInstance.Policy.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.UpdatedAt))
@@ -2776,7 +2758,7 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action == nil {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action = &tfTypes.Action1{}
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action = &tfTypes.Action{}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation == nil {
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation = nil
 								} else {
@@ -2788,6 +2770,11 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 								} else {
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+								}
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetClientIDApproval == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetClientIDApproval = nil
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
 								}
 							}
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeCancelled == nil {
@@ -2828,6 +2815,12 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance = &tfTypes.ActionTargetBatonResourceActionInstance{}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID)
 							}
+							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetClientIDApprovalInstance == nil {
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetClientIDApprovalInstance = nil
+							} else {
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetClientIDApprovalInstance = &tfTypes.ActionTargetClientIDApprovalInstance{}
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetClientIDApprovalInstance.ClientIDURL = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetClientIDApprovalInstance.ClientIDURL)
+							}
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.State != nil {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.State = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.State))
 							} else {
@@ -2863,12 +2856,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = nil
 									}
 								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowDelegation = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowDelegation)
@@ -2877,6 +2874,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 									for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees, types.StringValue(v))
 									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees = nil
 								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowReassignment)
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval == nil {
@@ -2898,12 +2897,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds18)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers)
@@ -2933,12 +2936,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds19)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
@@ -2963,6 +2970,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds {
 												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
 											}
+										} else {
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
 										}
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReplacePolicy == nil {
@@ -2988,12 +2997,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Fallback)
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds != nil {
@@ -3007,12 +3020,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds20)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers)
@@ -3027,6 +3044,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.Fallback)
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds != nil {
@@ -3040,12 +3059,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds21)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers)
@@ -3071,12 +3094,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds22)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
@@ -3090,6 +3117,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.Fallback)
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds != nil {
@@ -3103,12 +3132,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds23)
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = nil
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds != nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds))
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = nil
 									}
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled)
 								}
@@ -3123,6 +3156,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds {
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds = nil
 									}
 								}
 								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.WebhookApproval == nil {
@@ -3148,6 +3183,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements, entitlements2)
 									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements = nil
 								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.StepUpTransactionID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.StepUpTransactionID)
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.UserID)
@@ -3165,35 +3202,37 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 							} else {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance = &tfTypes.EscalationInstance{}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.AlreadyEscalated = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.AlreadyEscalated)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.CancelTicket == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.CancelTicket = nil
-								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.CancelTicket = &tfTypes.CancelTicket{}
-								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationComment = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationComment)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ExpiresAt))
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers = nil
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReassignToApprovers.ApproverIds, types.StringValue(v))
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = &tfTypes.EscalationInstanceCancelTicket{}
+								}
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = nil
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = &tfTypes.EscalationInstanceReassignToApprovers{}
+									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds != nil {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds))
+										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds {
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds, types.StringValue(v))
 										}
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = nil
 									}
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy = nil
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy = &tfTypes.ReplacePolicy{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy.PolicyID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ReplacePolicy.PolicyID)
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = &tfTypes.EscalationInstanceReplacePolicy{}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID)
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.SkipStep == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.SkipStep = nil
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.SkipStep = &tfTypes.SkipStep{}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = &tfTypes.EscalationInstanceSkipStep{}
 								}
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ExpiresAt))
 							}
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction == nil {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction = nil
@@ -3245,306 +3284,6 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 							} else {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Data = &tfTypes.FormInstanceData{}
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form = nil
-							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form = &tfTypes.Form{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Description = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Description)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldGroups != nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldGroups = []tfTypes.FieldGroup{}
-
-									for _, fieldGroupsItem2 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldGroups {
-										var fieldGroups2 tfTypes.FieldGroup
-
-										fieldGroups2.Default = types.BoolPointerValue(fieldGroupsItem2.Default)
-										fieldGroups2.DisplayName = types.StringPointerValue(fieldGroupsItem2.DisplayName)
-										if fieldGroupsItem2.Fields != nil {
-											fieldGroups2.Fields = make([]types.String, 0, len(fieldGroupsItem2.Fields))
-											for _, v := range fieldGroupsItem2.Fields {
-												fieldGroups2.Fields = append(fieldGroups2.Fields, types.StringValue(v))
-											}
-										}
-										fieldGroups2.HelpText = types.StringPointerValue(fieldGroupsItem2.HelpText)
-										fieldGroups2.Name = types.StringPointerValue(fieldGroupsItem2.Name)
-
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldGroups = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldGroups, fieldGroups2)
-									}
-								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldRelationships != nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldRelationships = []tfTypes.FieldRelationship{}
-
-									for _, fieldRelationshipsItem2 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldRelationships {
-										var fieldRelationships2 tfTypes.FieldRelationship
-
-										if fieldRelationshipsItem2.AtLeastOne == nil {
-											fieldRelationships2.AtLeastOne = nil
-										} else {
-											fieldRelationships2.AtLeastOne = &tfTypes.AtLeastOne{}
-										}
-										if fieldRelationshipsItem2.DependentOn == nil {
-											fieldRelationships2.DependentOn = nil
-										} else {
-											fieldRelationships2.DependentOn = &tfTypes.DependentOn{}
-											if fieldRelationshipsItem2.DependentOn.DependencyFieldNames != nil {
-												fieldRelationships2.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem2.DependentOn.DependencyFieldNames))
-												for _, v := range fieldRelationshipsItem2.DependentOn.DependencyFieldNames {
-													fieldRelationships2.DependentOn.DependencyFieldNames = append(fieldRelationships2.DependentOn.DependencyFieldNames, types.StringValue(v))
-												}
-											}
-										}
-										if fieldRelationshipsItem2.FieldNames != nil {
-											fieldRelationships2.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem2.FieldNames))
-											for _, v := range fieldRelationshipsItem2.FieldNames {
-												fieldRelationships2.FieldNames = append(fieldRelationships2.FieldNames, types.StringValue(v))
-											}
-										}
-										if fieldRelationshipsItem2.MutuallyExclusive == nil {
-											fieldRelationships2.MutuallyExclusive = nil
-										} else {
-											fieldRelationships2.MutuallyExclusive = &tfTypes.MutuallyExclusive{}
-										}
-										if fieldRelationshipsItem2.RequiredTogether == nil {
-											fieldRelationships2.RequiredTogether = nil
-										} else {
-											fieldRelationships2.RequiredTogether = &tfTypes.RequiredTogether{}
-										}
-
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldRelationships = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.FieldRelationships, fieldRelationships2)
-									}
-								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Fields != nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Fields = []tfTypes.Field{}
-
-									for _, fieldsItem2 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Fields {
-										var fields2 tfTypes.Field
-
-										if fieldsItem2.AdminProviderConfig == nil {
-											fields2.AdminProviderConfig = nil
-										} else {
-											fields2.AdminProviderConfig = &tfTypes.AdminProviderConfig{}
-											fields2.AdminProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem2.AdminProviderConfig.DefaultValueCel)
-											fields2.AdminProviderConfig.ShowToUser = types.BoolPointerValue(fieldsItem2.AdminProviderConfig.ShowToUser)
-										}
-										if fieldsItem2.BoolField == nil {
-											fields2.BoolField = nil
-										} else {
-											fields2.BoolField = &tfTypes.BoolField{}
-											if fieldsItem2.BoolField.BoolRules == nil {
-												fields2.BoolField.BoolRules = nil
-											} else {
-												fields2.BoolField.BoolRules = &tfTypes.BoolRules{}
-												fields2.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem2.BoolField.BoolRules.Const)
-											}
-											if fieldsItem2.BoolField.CheckboxField == nil {
-												fields2.BoolField.CheckboxField = nil
-											} else {
-												fields2.BoolField.CheckboxField = &tfTypes.CheckboxField{}
-											}
-											fields2.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem2.BoolField.DefaultValue)
-											if fieldsItem2.BoolField.ToggleField == nil {
-												fields2.BoolField.ToggleField = nil
-											} else {
-												fields2.BoolField.ToggleField = &tfTypes.ToggleField{}
-											}
-										}
-										fields2.Description = types.StringPointerValue(fieldsItem2.Description)
-										fields2.DisplayName = types.StringPointerValue(fieldsItem2.DisplayName)
-										if fieldsItem2.FileField == nil {
-											fields2.FileField = nil
-										} else {
-											fields2.FileField = &tfTypes.FileField{}
-											if fieldsItem2.FileField.AcceptedFileTypes != nil {
-												fields2.FileField.AcceptedFileTypes = make([]types.String, 0, len(fieldsItem2.FileField.AcceptedFileTypes))
-												for _, v := range fieldsItem2.FileField.AcceptedFileTypes {
-													fields2.FileField.AcceptedFileTypes = append(fields2.FileField.AcceptedFileTypes, types.StringValue(v))
-												}
-											}
-											if fieldsItem2.FileField.FileInputField == nil {
-												fields2.FileField.FileInputField = nil
-											} else {
-												fields2.FileField.FileInputField = &tfTypes.FileInputField{}
-											}
-											fields2.FileField.MaxFileSize = types.StringPointerValue(fieldsItem2.FileField.MaxFileSize)
-										}
-										if fieldsItem2.Int64Field == nil {
-											fields2.Int64Field = nil
-										} else {
-											fields2.Int64Field = &tfTypes.Int64Field{}
-											fields2.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem2.Int64Field.DefaultValue)
-											if fieldsItem2.Int64Field.Int64Rules == nil {
-												fields2.Int64Field.Int64Rules = nil
-											} else {
-												fields2.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
-												fields2.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Const)
-												fields2.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Gt)
-												fields2.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Gte)
-												fields2.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem2.Int64Field.Int64Rules.IgnoreEmpty)
-												if fieldsItem2.Int64Field.Int64Rules.In != nil {
-													fields2.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem2.Int64Field.Int64Rules.In))
-													for _, v := range fieldsItem2.Int64Field.Int64Rules.In {
-														fields2.Int64Field.Int64Rules.In = append(fields2.Int64Field.Int64Rules.In, types.StringValue(v))
-													}
-												}
-												fields2.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Lt)
-												fields2.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Lte)
-												if fieldsItem2.Int64Field.Int64Rules.NotIn != nil {
-													fields2.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem2.Int64Field.Int64Rules.NotIn))
-													for _, v := range fieldsItem2.Int64Field.Int64Rules.NotIn {
-														fields2.Int64Field.Int64Rules.NotIn = append(fields2.Int64Field.Int64Rules.NotIn, types.StringValue(v))
-													}
-												}
-											}
-											if fieldsItem2.Int64Field.NumberField == nil {
-												fields2.Int64Field.NumberField = nil
-											} else {
-												fields2.Int64Field.NumberField = &tfTypes.NumberField{}
-												fields2.Int64Field.NumberField.MaxValue = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.MaxValue)
-												fields2.Int64Field.NumberField.MinValue = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.MinValue)
-												fields2.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.Step)
-											}
-											fields2.Int64Field.Placeholder = types.StringPointerValue(fieldsItem2.Int64Field.Placeholder)
-										}
-										fields2.Name = types.StringPointerValue(fieldsItem2.Name)
-										if fieldsItem2.Oauth2Field == nil {
-											fields2.Oauth2Field = nil
-										} else {
-											fields2.Oauth2Field = &tfTypes.Oauth2Field{}
-											if fieldsItem2.Oauth2Field.Oauth2FieldView == nil {
-												fields2.Oauth2Field.Oauth2FieldView = nil
-											} else {
-												fields2.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
-											}
-										}
-										fields2.Required = types.BoolPointerValue(fieldsItem2.Required)
-										if fieldsItem2.SharedProviderConfig == nil {
-											fields2.SharedProviderConfig = nil
-										} else {
-											fields2.SharedProviderConfig = &tfTypes.SharedProviderConfig{}
-											fields2.SharedProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem2.SharedProviderConfig.DefaultValueCel)
-											fields2.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem2.SharedProviderConfig.InputTransformationCel)
-											fields2.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem2.SharedProviderConfig.LockDefaultValues)
-										}
-										if fieldsItem2.StringField == nil {
-											fields2.StringField = nil
-										} else {
-											fields2.StringField = &tfTypes.StringField{}
-											fields2.StringField.DefaultValue = types.StringPointerValue(fieldsItem2.StringField.DefaultValue)
-											if fieldsItem2.StringField.PasswordField == nil {
-												fields2.StringField.PasswordField = nil
-											} else {
-												fields2.StringField.PasswordField = &tfTypes.PasswordField{}
-											}
-											if fieldsItem2.StringField.PickerField == nil {
-												fields2.StringField.PickerField = nil
-											} else {
-												fields2.StringField.PickerField = &tfTypes.PickerField{}
-												if fieldsItem2.StringField.PickerField.AppResourceFilter == nil {
-													fields2.StringField.PickerField.AppResourceFilter = nil
-												} else {
-													fields2.StringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
-													fields2.StringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem2.StringField.PickerField.AppResourceFilter.AppID)
-													fields2.StringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem2.StringField.PickerField.AppResourceFilter.ResourceTypeID)
-												}
-												if fieldsItem2.StringField.PickerField.AppUserFilter == nil {
-													fields2.StringField.PickerField.AppUserFilter = nil
-												} else {
-													fields2.StringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
-													fields2.StringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem2.StringField.PickerField.AppUserFilter.AppID)
-												}
-												if fieldsItem2.StringField.PickerField.C1UserFilter == nil {
-													fields2.StringField.PickerField.C1UserFilter = nil
-												} else {
-													fields2.StringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
-												}
-											}
-											fields2.StringField.Placeholder = types.StringPointerValue(fieldsItem2.StringField.Placeholder)
-											if fieldsItem2.StringField.SelectField == nil {
-												fields2.StringField.SelectField = nil
-											} else {
-												fields2.StringField.SelectField = &tfTypes.SelectField{}
-												if fieldsItem2.StringField.SelectField.Options != nil {
-													fields2.StringField.SelectField.Options = []tfTypes.SelectOption{}
-
-													for _, optionsVarItem2 := range fieldsItem2.StringField.SelectField.Options {
-														var optionsVar2 tfTypes.SelectOption
-
-														optionsVar2.Description = types.StringPointerValue(optionsVarItem2.Description)
-														optionsVar2.DisplayName = types.StringPointerValue(optionsVarItem2.DisplayName)
-														optionsVar2.Value = types.StringPointerValue(optionsVarItem2.Value)
-
-														fields2.StringField.SelectField.Options = append(fields2.StringField.SelectField.Options, optionsVar2)
-													}
-												}
-												if fieldsItem2.StringField.SelectField.Type != nil {
-													fields2.StringField.SelectField.Type = types.StringValue(string(*fieldsItem2.StringField.SelectField.Type))
-												} else {
-													fields2.StringField.SelectField.Type = types.StringNull()
-												}
-											}
-											if fieldsItem2.StringField.StringRules == nil {
-												fields2.StringField.StringRules = nil
-											} else {
-												fields2.StringField.StringRules = &tfTypes.StringRules{}
-												fields2.StringField.StringRules.Address = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Address)
-												fields2.StringField.StringRules.Const = types.StringPointerValue(fieldsItem2.StringField.StringRules.Const)
-												fields2.StringField.StringRules.Contains = types.StringPointerValue(fieldsItem2.StringField.StringRules.Contains)
-												fields2.StringField.StringRules.Email = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Email)
-												fields2.StringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Hostname)
-												fields2.StringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem2.StringField.StringRules.IgnoreEmpty)
-												if fieldsItem2.StringField.StringRules.In != nil {
-													fields2.StringField.StringRules.In = make([]types.String, 0, len(fieldsItem2.StringField.StringRules.In))
-													for _, v := range fieldsItem2.StringField.StringRules.In {
-														fields2.StringField.StringRules.In = append(fields2.StringField.StringRules.In, types.StringValue(v))
-													}
-												}
-												fields2.StringField.StringRules.IP = types.BoolPointerValue(fieldsItem2.StringField.StringRules.IP)
-												fields2.StringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Ipv4)
-												fields2.StringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Ipv6)
-												fields2.StringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem2.StringField.StringRules.LenBytes)
-												fields2.StringField.StringRules.Length = types.StringPointerValue(fieldsItem2.StringField.StringRules.Length)
-												fields2.StringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem2.StringField.StringRules.MaxBytes)
-												fields2.StringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem2.StringField.StringRules.MaxLen)
-												fields2.StringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem2.StringField.StringRules.MinBytes)
-												fields2.StringField.StringRules.MinLen = types.StringPointerValue(fieldsItem2.StringField.StringRules.MinLen)
-												fields2.StringField.StringRules.NotContains = types.StringPointerValue(fieldsItem2.StringField.StringRules.NotContains)
-												if fieldsItem2.StringField.StringRules.NotIn != nil {
-													fields2.StringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem2.StringField.StringRules.NotIn))
-													for _, v := range fieldsItem2.StringField.StringRules.NotIn {
-														fields2.StringField.StringRules.NotIn = append(fields2.StringField.StringRules.NotIn, types.StringValue(v))
-													}
-												}
-												fields2.StringField.StringRules.Pattern = types.StringPointerValue(fieldsItem2.StringField.StringRules.Pattern)
-												fields2.StringField.StringRules.Prefix = types.StringPointerValue(fieldsItem2.StringField.StringRules.Prefix)
-												fields2.StringField.StringRules.Strict = types.BoolPointerValue(fieldsItem2.StringField.StringRules.Strict)
-												fields2.StringField.StringRules.Suffix = types.StringPointerValue(fieldsItem2.StringField.StringRules.Suffix)
-												fields2.StringField.StringRules.URI = types.BoolPointerValue(fieldsItem2.StringField.StringRules.URI)
-												fields2.StringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem2.StringField.StringRules.URIRef)
-												fields2.StringField.StringRules.UUID = types.BoolPointerValue(fieldsItem2.StringField.StringRules.UUID)
-												if fieldsItem2.StringField.StringRules.WellKnownRegex != nil {
-													fields2.StringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem2.StringField.StringRules.WellKnownRegex))
-												} else {
-													fields2.StringField.StringRules.WellKnownRegex = types.StringNull()
-												}
-											}
-											if fieldsItem2.StringField.TextField == nil {
-												fields2.StringField.TextField = nil
-											} else {
-												fields2.StringField.TextField = &tfTypes.TextField{}
-												fields2.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem2.StringField.TextField.Multiline)
-											}
-										}
-										if fieldsItem2.UserProviderConfig == nil {
-											fields2.UserProviderConfig = nil
-										} else {
-											fields2.UserProviderConfig = &tfTypes.UserProviderConfig{}
-											fields2.UserProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem2.UserProviderConfig.InputTransformationCel)
-										}
-
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Fields = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Fields, fields2)
-									}
-								}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Name = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Form.Name)
-							}
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.FormCompletedAction == nil {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.FormCompletedAction = nil
 							} else {
@@ -3559,6 +3298,350 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.NewPolicyStepID)
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.ReassignedAt))
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.UserID)
+							}
+							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm == nil {
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm = nil
+							} else {
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm = &tfTypes.RequestSchemaForm{}
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Description = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Description)
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups != nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups = []tfTypes.FormFieldGroup{}
+
+									for _, fieldGroupsItem1 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups {
+										var fieldGroups1 tfTypes.FormFieldGroup
+
+										fieldGroups1.Default = types.BoolPointerValue(fieldGroupsItem1.Default)
+										fieldGroups1.DisplayName = types.StringPointerValue(fieldGroupsItem1.DisplayName)
+										if fieldGroupsItem1.Fields != nil {
+											fieldGroups1.Fields = make([]types.String, 0, len(fieldGroupsItem1.Fields))
+											for _, v := range fieldGroupsItem1.Fields {
+												fieldGroups1.Fields = append(fieldGroups1.Fields, types.StringValue(v))
+											}
+										} else {
+											fieldGroups1.Fields = nil
+										}
+										fieldGroups1.HelpText = types.StringPointerValue(fieldGroupsItem1.HelpText)
+										fieldGroups1.Name = types.StringPointerValue(fieldGroupsItem1.Name)
+
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups, fieldGroups1)
+									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups = nil
+								}
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships != nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships = []tfTypes.FieldRelationship{}
+
+									for _, fieldRelationshipsItem1 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships {
+										var fieldRelationships1 tfTypes.FieldRelationship
+
+										if fieldRelationshipsItem1.AtLeastOne == nil {
+											fieldRelationships1.AtLeastOne = nil
+										} else {
+											fieldRelationships1.AtLeastOne = &tfTypes.AtLeastOne{}
+										}
+										if fieldRelationshipsItem1.DependentOn == nil {
+											fieldRelationships1.DependentOn = nil
+										} else {
+											fieldRelationships1.DependentOn = &tfTypes.DependentOn{}
+											if fieldRelationshipsItem1.DependentOn.DependencyFieldNames != nil {
+												fieldRelationships1.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem1.DependentOn.DependencyFieldNames))
+												for _, v := range fieldRelationshipsItem1.DependentOn.DependencyFieldNames {
+													fieldRelationships1.DependentOn.DependencyFieldNames = append(fieldRelationships1.DependentOn.DependencyFieldNames, types.StringValue(v))
+												}
+											} else {
+												fieldRelationships1.DependentOn.DependencyFieldNames = nil
+											}
+										}
+										if fieldRelationshipsItem1.FieldNames != nil {
+											fieldRelationships1.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem1.FieldNames))
+											for _, v := range fieldRelationshipsItem1.FieldNames {
+												fieldRelationships1.FieldNames = append(fieldRelationships1.FieldNames, types.StringValue(v))
+											}
+										} else {
+											fieldRelationships1.FieldNames = nil
+										}
+										if fieldRelationshipsItem1.MutuallyExclusive == nil {
+											fieldRelationships1.MutuallyExclusive = nil
+										} else {
+											fieldRelationships1.MutuallyExclusive = &tfTypes.MutuallyExclusive{}
+										}
+										if fieldRelationshipsItem1.RequiredTogether == nil {
+											fieldRelationships1.RequiredTogether = nil
+										} else {
+											fieldRelationships1.RequiredTogether = &tfTypes.RequiredTogether{}
+										}
+
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships, fieldRelationships1)
+									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships = nil
+								}
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields != nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields = []tfTypes.FormField{}
+
+									for _, fieldsItem1 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields {
+										var fields1 tfTypes.FormField
+
+										if fieldsItem1.AdminProviderConfig == nil {
+											fields1.AdminProviderConfig = nil
+										} else {
+											fields1.AdminProviderConfig = &tfTypes.AdminProviderConfig{}
+											fields1.AdminProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem1.AdminProviderConfig.DefaultValueCel)
+											fields1.AdminProviderConfig.ShowToUser = types.BoolPointerValue(fieldsItem1.AdminProviderConfig.ShowToUser)
+										}
+										if fieldsItem1.BoolField == nil {
+											fields1.BoolField = nil
+										} else {
+											fields1.BoolField = &tfTypes.BoolField{}
+											if fieldsItem1.BoolField.BoolRules == nil {
+												fields1.BoolField.BoolRules = nil
+											} else {
+												fields1.BoolField.BoolRules = &tfTypes.BoolRules{}
+												fields1.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem1.BoolField.BoolRules.Const)
+											}
+											if fieldsItem1.BoolField.CheckboxField == nil {
+												fields1.BoolField.CheckboxField = nil
+											} else {
+												fields1.BoolField.CheckboxField = &tfTypes.CheckboxField{}
+											}
+											fields1.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem1.BoolField.DefaultValue)
+											if fieldsItem1.BoolField.ToggleField == nil {
+												fields1.BoolField.ToggleField = nil
+											} else {
+												fields1.BoolField.ToggleField = &tfTypes.ToggleField{}
+											}
+										}
+										fields1.Description = types.StringPointerValue(fieldsItem1.Description)
+										fields1.DisplayName = types.StringPointerValue(fieldsItem1.DisplayName)
+										if fieldsItem1.FileField == nil {
+											fields1.FileField = nil
+										} else {
+											fields1.FileField = &tfTypes.FileField{}
+											if fieldsItem1.FileField.AcceptedFileTypes != nil {
+												fields1.FileField.AcceptedFileTypes = make([]types.String, 0, len(fieldsItem1.FileField.AcceptedFileTypes))
+												for _, v := range fieldsItem1.FileField.AcceptedFileTypes {
+													fields1.FileField.AcceptedFileTypes = append(fields1.FileField.AcceptedFileTypes, types.StringValue(v))
+												}
+											} else {
+												fields1.FileField.AcceptedFileTypes = nil
+											}
+											if fieldsItem1.FileField.FileInputField == nil {
+												fields1.FileField.FileInputField = nil
+											} else {
+												fields1.FileField.FileInputField = &tfTypes.FileInputField{}
+											}
+											fields1.FileField.MaxFileSize = types.StringPointerValue(fieldsItem1.FileField.MaxFileSize)
+										}
+										if fieldsItem1.FormStringField == nil {
+											fields1.FormStringField = nil
+										} else {
+											fields1.FormStringField = &tfTypes.FormStringField{}
+											fields1.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem1.FormStringField.DefaultValue)
+											if fieldsItem1.FormStringField.PasswordField == nil {
+												fields1.FormStringField.PasswordField = nil
+											} else {
+												fields1.FormStringField.PasswordField = &tfTypes.PasswordField{}
+											}
+											if fieldsItem1.FormStringField.PickerField == nil {
+												fields1.FormStringField.PickerField = nil
+											} else {
+												fields1.FormStringField.PickerField = &tfTypes.PickerField{}
+												if fieldsItem1.FormStringField.PickerField.AppResourceFilter == nil {
+													fields1.FormStringField.PickerField.AppResourceFilter = nil
+												} else {
+													fields1.FormStringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
+													fields1.FormStringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem1.FormStringField.PickerField.AppResourceFilter.AppID)
+													fields1.FormStringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem1.FormStringField.PickerField.AppResourceFilter.ResourceTypeID)
+												}
+												if fieldsItem1.FormStringField.PickerField.AppUserFilter == nil {
+													fields1.FormStringField.PickerField.AppUserFilter = nil
+												} else {
+													fields1.FormStringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
+													fields1.FormStringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem1.FormStringField.PickerField.AppUserFilter.AppID)
+												}
+												if fieldsItem1.FormStringField.PickerField.C1UserFilter == nil {
+													fields1.FormStringField.PickerField.C1UserFilter = nil
+												} else {
+													fields1.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
+												}
+											}
+											fields1.FormStringField.Placeholder = types.StringPointerValue(fieldsItem1.FormStringField.Placeholder)
+											if fieldsItem1.FormStringField.SelectField == nil {
+												fields1.FormStringField.SelectField = nil
+											} else {
+												fields1.FormStringField.SelectField = &tfTypes.SelectField{}
+												if fieldsItem1.FormStringField.SelectField.Options != nil {
+													fields1.FormStringField.SelectField.Options = []tfTypes.SelectOption{}
+
+													for _, optionsVarItem1 := range fieldsItem1.FormStringField.SelectField.Options {
+														var optionsVar1 tfTypes.SelectOption
+
+														optionsVar1.Description = types.StringPointerValue(optionsVarItem1.Description)
+														optionsVar1.DisplayName = types.StringPointerValue(optionsVarItem1.DisplayName)
+														optionsVar1.Value = types.StringPointerValue(optionsVarItem1.Value)
+
+														fields1.FormStringField.SelectField.Options = append(fields1.FormStringField.SelectField.Options, optionsVar1)
+													}
+												} else {
+													fields1.FormStringField.SelectField.Options = nil
+												}
+												if fieldsItem1.FormStringField.SelectField.Type != nil {
+													fields1.FormStringField.SelectField.Type = types.StringValue(string(*fieldsItem1.FormStringField.SelectField.Type))
+												} else {
+													fields1.FormStringField.SelectField.Type = types.StringNull()
+												}
+											}
+											if fieldsItem1.FormStringField.StringRules == nil {
+												fields1.FormStringField.StringRules = nil
+											} else {
+												fields1.FormStringField.StringRules = &tfTypes.StringRules{}
+												fields1.FormStringField.StringRules.Address = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Address)
+												fields1.FormStringField.StringRules.Const = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Const)
+												fields1.FormStringField.StringRules.Contains = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Contains)
+												fields1.FormStringField.StringRules.Email = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Email)
+												fields1.FormStringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Hostname)
+												fields1.FormStringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.IgnoreEmpty)
+												if fieldsItem1.FormStringField.StringRules.In != nil {
+													fields1.FormStringField.StringRules.In = make([]types.String, 0, len(fieldsItem1.FormStringField.StringRules.In))
+													for _, v := range fieldsItem1.FormStringField.StringRules.In {
+														fields1.FormStringField.StringRules.In = append(fields1.FormStringField.StringRules.In, types.StringValue(v))
+													}
+												} else {
+													fields1.FormStringField.StringRules.In = nil
+												}
+												fields1.FormStringField.StringRules.IP = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.IP)
+												fields1.FormStringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Ipv4)
+												fields1.FormStringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Ipv6)
+												fields1.FormStringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.LenBytes)
+												fields1.FormStringField.StringRules.Length = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Length)
+												fields1.FormStringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.MaxBytes)
+												fields1.FormStringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.MaxLen)
+												fields1.FormStringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.MinBytes)
+												fields1.FormStringField.StringRules.MinLen = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.MinLen)
+												fields1.FormStringField.StringRules.NotContains = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.NotContains)
+												if fieldsItem1.FormStringField.StringRules.NotIn != nil {
+													fields1.FormStringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem1.FormStringField.StringRules.NotIn))
+													for _, v := range fieldsItem1.FormStringField.StringRules.NotIn {
+														fields1.FormStringField.StringRules.NotIn = append(fields1.FormStringField.StringRules.NotIn, types.StringValue(v))
+													}
+												} else {
+													fields1.FormStringField.StringRules.NotIn = nil
+												}
+												fields1.FormStringField.StringRules.Pattern = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Pattern)
+												fields1.FormStringField.StringRules.Prefix = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Prefix)
+												fields1.FormStringField.StringRules.Strict = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Strict)
+												fields1.FormStringField.StringRules.Suffix = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Suffix)
+												fields1.FormStringField.StringRules.URI = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.URI)
+												fields1.FormStringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.URIRef)
+												fields1.FormStringField.StringRules.UUID = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.UUID)
+												if fieldsItem1.FormStringField.StringRules.WellKnownRegex != nil {
+													fields1.FormStringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem1.FormStringField.StringRules.WellKnownRegex))
+												} else {
+													fields1.FormStringField.StringRules.WellKnownRegex = types.StringNull()
+												}
+											}
+											if fieldsItem1.FormStringField.TextField == nil {
+												fields1.FormStringField.TextField = nil
+											} else {
+												fields1.FormStringField.TextField = &tfTypes.TextField{}
+												fields1.FormStringField.TextField.Multiline = types.BoolPointerValue(fieldsItem1.FormStringField.TextField.Multiline)
+												fields1.FormStringField.TextField.Suffix = types.StringPointerValue(fieldsItem1.FormStringField.TextField.Suffix)
+											}
+										}
+										if fieldsItem1.FormStringMapField == nil {
+											fields1.FormStringMapField = nil
+										} else {
+											fields1.FormStringMapField = &tfTypes.FormStringMapField{}
+											if len(fieldsItem1.FormStringMapField.DefaultValue) > 0 {
+												fields1.FormStringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem1.FormStringMapField.DefaultValue))
+												for key2, value2 := range fieldsItem1.FormStringMapField.DefaultValue {
+													fields1.FormStringMapField.DefaultValue[key2] = types.StringValue(value2)
+												}
+											}
+											if fieldsItem1.FormStringMapField.StringMapRules == nil {
+												fields1.FormStringMapField.StringMapRules = nil
+											} else {
+												fields1.FormStringMapField.StringMapRules = &tfTypes.StringMapRules{}
+												fields1.FormStringMapField.StringMapRules.IsRequired = types.BoolPointerValue(fieldsItem1.FormStringMapField.StringMapRules.IsRequired)
+												fields1.FormStringMapField.StringMapRules.ValidateEmpty = types.BoolPointerValue(fieldsItem1.FormStringMapField.StringMapRules.ValidateEmpty)
+											}
+										}
+										if fieldsItem1.Int64Field == nil {
+											fields1.Int64Field = nil
+										} else {
+											fields1.Int64Field = &tfTypes.Int64Field{}
+											fields1.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem1.Int64Field.DefaultValue)
+											if fieldsItem1.Int64Field.Int64Rules == nil {
+												fields1.Int64Field.Int64Rules = nil
+											} else {
+												fields1.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
+												fields1.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Const)
+												fields1.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Gt)
+												fields1.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Gte)
+												fields1.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem1.Int64Field.Int64Rules.IgnoreEmpty)
+												if fieldsItem1.Int64Field.Int64Rules.In != nil {
+													fields1.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem1.Int64Field.Int64Rules.In))
+													for _, v := range fieldsItem1.Int64Field.Int64Rules.In {
+														fields1.Int64Field.Int64Rules.In = append(fields1.Int64Field.Int64Rules.In, types.StringValue(v))
+													}
+												} else {
+													fields1.Int64Field.Int64Rules.In = nil
+												}
+												fields1.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Lt)
+												fields1.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Lte)
+												if fieldsItem1.Int64Field.Int64Rules.NotIn != nil {
+													fields1.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem1.Int64Field.Int64Rules.NotIn))
+													for _, v := range fieldsItem1.Int64Field.Int64Rules.NotIn {
+														fields1.Int64Field.Int64Rules.NotIn = append(fields1.Int64Field.Int64Rules.NotIn, types.StringValue(v))
+													}
+												} else {
+													fields1.Int64Field.Int64Rules.NotIn = nil
+												}
+											}
+											if fieldsItem1.Int64Field.NumberField == nil {
+												fields1.Int64Field.NumberField = nil
+											} else {
+												fields1.Int64Field.NumberField = &tfTypes.NumberField{}
+												fields1.Int64Field.NumberField.MaxValue = types.StringPointerValue(fieldsItem1.Int64Field.NumberField.MaxValue)
+												fields1.Int64Field.NumberField.MinValue = types.StringPointerValue(fieldsItem1.Int64Field.NumberField.MinValue)
+												fields1.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem1.Int64Field.NumberField.Step)
+											}
+											fields1.Int64Field.Placeholder = types.StringPointerValue(fieldsItem1.Int64Field.Placeholder)
+										}
+										fields1.Name = types.StringPointerValue(fieldsItem1.Name)
+										if fieldsItem1.Oauth2Field == nil {
+											fields1.Oauth2Field = nil
+										} else {
+											fields1.Oauth2Field = &tfTypes.Oauth2Field{}
+											if fieldsItem1.Oauth2Field.Oauth2FieldView == nil {
+												fields1.Oauth2Field.Oauth2FieldView = nil
+											} else {
+												fields1.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
+											}
+										}
+										fields1.ReadOnly = types.BoolPointerValue(fieldsItem1.ReadOnly)
+										fields1.Required = types.BoolPointerValue(fieldsItem1.Required)
+										if fieldsItem1.SharedProviderConfig == nil {
+											fields1.SharedProviderConfig = nil
+										} else {
+											fields1.SharedProviderConfig = &tfTypes.SharedProviderConfig{}
+											fields1.SharedProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem1.SharedProviderConfig.DefaultValueCel)
+											fields1.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem1.SharedProviderConfig.InputTransformationCel)
+											fields1.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem1.SharedProviderConfig.LockDefaultValues)
+										}
+										if fieldsItem1.UserProviderConfig == nil {
+											fields1.UserProviderConfig = nil
+										} else {
+											fields1.UserProviderConfig = &tfTypes.UserProviderConfig{}
+											fields1.UserProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem1.UserProviderConfig.InputTransformationCel)
+										}
+
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields, fields1)
+									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields = nil
+								}
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Name = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Name)
 							}
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction == nil {
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction = nil
@@ -3612,6 +3695,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements, entitlements3)
 									}
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements = nil
 								}
 								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.UserID)
 							}
@@ -3673,6 +3758,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
 												}
 											}
 											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
@@ -3725,6 +3812,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
@@ -3737,6 +3826,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
@@ -3749,12 +3840,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 												}
 												if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
 													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 												}
 											}
 											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
@@ -3769,6 +3864,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 												}
 											}
 											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
@@ -3781,6 +3878,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 												}
 											}
 											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
@@ -3793,6 +3892,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
 														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 													}
+												} else {
+													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
 												}
 											}
 										}
@@ -3801,6 +3902,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds {
 												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 											}
+										} else {
+											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
 										}
 									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep == nil {
@@ -3930,6 +4033,350 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 				} else {
 					r.TaskView.Task.Recommendation = types.StringNull()
 				}
+				if resp.TaskView.Task.RequestSchemaForm == nil {
+					r.TaskView.Task.RequestSchemaForm = nil
+				} else {
+					r.TaskView.Task.RequestSchemaForm = &tfTypes.RequestSchemaForm{}
+					r.TaskView.Task.RequestSchemaForm.Description = types.StringPointerValue(resp.TaskView.Task.RequestSchemaForm.Description)
+					if resp.TaskView.Task.RequestSchemaForm.FieldGroups != nil {
+						r.TaskView.Task.RequestSchemaForm.FieldGroups = []tfTypes.FormFieldGroup{}
+
+						for _, fieldGroupsItem2 := range resp.TaskView.Task.RequestSchemaForm.FieldGroups {
+							var fieldGroups2 tfTypes.FormFieldGroup
+
+							fieldGroups2.Default = types.BoolPointerValue(fieldGroupsItem2.Default)
+							fieldGroups2.DisplayName = types.StringPointerValue(fieldGroupsItem2.DisplayName)
+							if fieldGroupsItem2.Fields != nil {
+								fieldGroups2.Fields = make([]types.String, 0, len(fieldGroupsItem2.Fields))
+								for _, v := range fieldGroupsItem2.Fields {
+									fieldGroups2.Fields = append(fieldGroups2.Fields, types.StringValue(v))
+								}
+							} else {
+								fieldGroups2.Fields = nil
+							}
+							fieldGroups2.HelpText = types.StringPointerValue(fieldGroupsItem2.HelpText)
+							fieldGroups2.Name = types.StringPointerValue(fieldGroupsItem2.Name)
+
+							r.TaskView.Task.RequestSchemaForm.FieldGroups = append(r.TaskView.Task.RequestSchemaForm.FieldGroups, fieldGroups2)
+						}
+					} else {
+						r.TaskView.Task.RequestSchemaForm.FieldGroups = nil
+					}
+					if resp.TaskView.Task.RequestSchemaForm.FieldRelationships != nil {
+						r.TaskView.Task.RequestSchemaForm.FieldRelationships = []tfTypes.FieldRelationship{}
+
+						for _, fieldRelationshipsItem2 := range resp.TaskView.Task.RequestSchemaForm.FieldRelationships {
+							var fieldRelationships2 tfTypes.FieldRelationship
+
+							if fieldRelationshipsItem2.AtLeastOne == nil {
+								fieldRelationships2.AtLeastOne = nil
+							} else {
+								fieldRelationships2.AtLeastOne = &tfTypes.AtLeastOne{}
+							}
+							if fieldRelationshipsItem2.DependentOn == nil {
+								fieldRelationships2.DependentOn = nil
+							} else {
+								fieldRelationships2.DependentOn = &tfTypes.DependentOn{}
+								if fieldRelationshipsItem2.DependentOn.DependencyFieldNames != nil {
+									fieldRelationships2.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem2.DependentOn.DependencyFieldNames))
+									for _, v := range fieldRelationshipsItem2.DependentOn.DependencyFieldNames {
+										fieldRelationships2.DependentOn.DependencyFieldNames = append(fieldRelationships2.DependentOn.DependencyFieldNames, types.StringValue(v))
+									}
+								} else {
+									fieldRelationships2.DependentOn.DependencyFieldNames = nil
+								}
+							}
+							if fieldRelationshipsItem2.FieldNames != nil {
+								fieldRelationships2.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem2.FieldNames))
+								for _, v := range fieldRelationshipsItem2.FieldNames {
+									fieldRelationships2.FieldNames = append(fieldRelationships2.FieldNames, types.StringValue(v))
+								}
+							} else {
+								fieldRelationships2.FieldNames = nil
+							}
+							if fieldRelationshipsItem2.MutuallyExclusive == nil {
+								fieldRelationships2.MutuallyExclusive = nil
+							} else {
+								fieldRelationships2.MutuallyExclusive = &tfTypes.MutuallyExclusive{}
+							}
+							if fieldRelationshipsItem2.RequiredTogether == nil {
+								fieldRelationships2.RequiredTogether = nil
+							} else {
+								fieldRelationships2.RequiredTogether = &tfTypes.RequiredTogether{}
+							}
+
+							r.TaskView.Task.RequestSchemaForm.FieldRelationships = append(r.TaskView.Task.RequestSchemaForm.FieldRelationships, fieldRelationships2)
+						}
+					} else {
+						r.TaskView.Task.RequestSchemaForm.FieldRelationships = nil
+					}
+					if resp.TaskView.Task.RequestSchemaForm.Fields != nil {
+						r.TaskView.Task.RequestSchemaForm.Fields = []tfTypes.FormField{}
+
+						for _, fieldsItem2 := range resp.TaskView.Task.RequestSchemaForm.Fields {
+							var fields2 tfTypes.FormField
+
+							if fieldsItem2.AdminProviderConfig == nil {
+								fields2.AdminProviderConfig = nil
+							} else {
+								fields2.AdminProviderConfig = &tfTypes.AdminProviderConfig{}
+								fields2.AdminProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem2.AdminProviderConfig.DefaultValueCel)
+								fields2.AdminProviderConfig.ShowToUser = types.BoolPointerValue(fieldsItem2.AdminProviderConfig.ShowToUser)
+							}
+							if fieldsItem2.BoolField == nil {
+								fields2.BoolField = nil
+							} else {
+								fields2.BoolField = &tfTypes.BoolField{}
+								if fieldsItem2.BoolField.BoolRules == nil {
+									fields2.BoolField.BoolRules = nil
+								} else {
+									fields2.BoolField.BoolRules = &tfTypes.BoolRules{}
+									fields2.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem2.BoolField.BoolRules.Const)
+								}
+								if fieldsItem2.BoolField.CheckboxField == nil {
+									fields2.BoolField.CheckboxField = nil
+								} else {
+									fields2.BoolField.CheckboxField = &tfTypes.CheckboxField{}
+								}
+								fields2.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem2.BoolField.DefaultValue)
+								if fieldsItem2.BoolField.ToggleField == nil {
+									fields2.BoolField.ToggleField = nil
+								} else {
+									fields2.BoolField.ToggleField = &tfTypes.ToggleField{}
+								}
+							}
+							fields2.Description = types.StringPointerValue(fieldsItem2.Description)
+							fields2.DisplayName = types.StringPointerValue(fieldsItem2.DisplayName)
+							if fieldsItem2.FileField == nil {
+								fields2.FileField = nil
+							} else {
+								fields2.FileField = &tfTypes.FileField{}
+								if fieldsItem2.FileField.AcceptedFileTypes != nil {
+									fields2.FileField.AcceptedFileTypes = make([]types.String, 0, len(fieldsItem2.FileField.AcceptedFileTypes))
+									for _, v := range fieldsItem2.FileField.AcceptedFileTypes {
+										fields2.FileField.AcceptedFileTypes = append(fields2.FileField.AcceptedFileTypes, types.StringValue(v))
+									}
+								} else {
+									fields2.FileField.AcceptedFileTypes = nil
+								}
+								if fieldsItem2.FileField.FileInputField == nil {
+									fields2.FileField.FileInputField = nil
+								} else {
+									fields2.FileField.FileInputField = &tfTypes.FileInputField{}
+								}
+								fields2.FileField.MaxFileSize = types.StringPointerValue(fieldsItem2.FileField.MaxFileSize)
+							}
+							if fieldsItem2.FormStringField == nil {
+								fields2.FormStringField = nil
+							} else {
+								fields2.FormStringField = &tfTypes.FormStringField{}
+								fields2.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem2.FormStringField.DefaultValue)
+								if fieldsItem2.FormStringField.PasswordField == nil {
+									fields2.FormStringField.PasswordField = nil
+								} else {
+									fields2.FormStringField.PasswordField = &tfTypes.PasswordField{}
+								}
+								if fieldsItem2.FormStringField.PickerField == nil {
+									fields2.FormStringField.PickerField = nil
+								} else {
+									fields2.FormStringField.PickerField = &tfTypes.PickerField{}
+									if fieldsItem2.FormStringField.PickerField.AppResourceFilter == nil {
+										fields2.FormStringField.PickerField.AppResourceFilter = nil
+									} else {
+										fields2.FormStringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
+										fields2.FormStringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem2.FormStringField.PickerField.AppResourceFilter.AppID)
+										fields2.FormStringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem2.FormStringField.PickerField.AppResourceFilter.ResourceTypeID)
+									}
+									if fieldsItem2.FormStringField.PickerField.AppUserFilter == nil {
+										fields2.FormStringField.PickerField.AppUserFilter = nil
+									} else {
+										fields2.FormStringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
+										fields2.FormStringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem2.FormStringField.PickerField.AppUserFilter.AppID)
+									}
+									if fieldsItem2.FormStringField.PickerField.C1UserFilter == nil {
+										fields2.FormStringField.PickerField.C1UserFilter = nil
+									} else {
+										fields2.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
+									}
+								}
+								fields2.FormStringField.Placeholder = types.StringPointerValue(fieldsItem2.FormStringField.Placeholder)
+								if fieldsItem2.FormStringField.SelectField == nil {
+									fields2.FormStringField.SelectField = nil
+								} else {
+									fields2.FormStringField.SelectField = &tfTypes.SelectField{}
+									if fieldsItem2.FormStringField.SelectField.Options != nil {
+										fields2.FormStringField.SelectField.Options = []tfTypes.SelectOption{}
+
+										for _, optionsVarItem2 := range fieldsItem2.FormStringField.SelectField.Options {
+											var optionsVar2 tfTypes.SelectOption
+
+											optionsVar2.Description = types.StringPointerValue(optionsVarItem2.Description)
+											optionsVar2.DisplayName = types.StringPointerValue(optionsVarItem2.DisplayName)
+											optionsVar2.Value = types.StringPointerValue(optionsVarItem2.Value)
+
+											fields2.FormStringField.SelectField.Options = append(fields2.FormStringField.SelectField.Options, optionsVar2)
+										}
+									} else {
+										fields2.FormStringField.SelectField.Options = nil
+									}
+									if fieldsItem2.FormStringField.SelectField.Type != nil {
+										fields2.FormStringField.SelectField.Type = types.StringValue(string(*fieldsItem2.FormStringField.SelectField.Type))
+									} else {
+										fields2.FormStringField.SelectField.Type = types.StringNull()
+									}
+								}
+								if fieldsItem2.FormStringField.StringRules == nil {
+									fields2.FormStringField.StringRules = nil
+								} else {
+									fields2.FormStringField.StringRules = &tfTypes.StringRules{}
+									fields2.FormStringField.StringRules.Address = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Address)
+									fields2.FormStringField.StringRules.Const = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Const)
+									fields2.FormStringField.StringRules.Contains = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Contains)
+									fields2.FormStringField.StringRules.Email = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Email)
+									fields2.FormStringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Hostname)
+									fields2.FormStringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.IgnoreEmpty)
+									if fieldsItem2.FormStringField.StringRules.In != nil {
+										fields2.FormStringField.StringRules.In = make([]types.String, 0, len(fieldsItem2.FormStringField.StringRules.In))
+										for _, v := range fieldsItem2.FormStringField.StringRules.In {
+											fields2.FormStringField.StringRules.In = append(fields2.FormStringField.StringRules.In, types.StringValue(v))
+										}
+									} else {
+										fields2.FormStringField.StringRules.In = nil
+									}
+									fields2.FormStringField.StringRules.IP = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.IP)
+									fields2.FormStringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Ipv4)
+									fields2.FormStringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Ipv6)
+									fields2.FormStringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.LenBytes)
+									fields2.FormStringField.StringRules.Length = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Length)
+									fields2.FormStringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.MaxBytes)
+									fields2.FormStringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.MaxLen)
+									fields2.FormStringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.MinBytes)
+									fields2.FormStringField.StringRules.MinLen = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.MinLen)
+									fields2.FormStringField.StringRules.NotContains = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.NotContains)
+									if fieldsItem2.FormStringField.StringRules.NotIn != nil {
+										fields2.FormStringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem2.FormStringField.StringRules.NotIn))
+										for _, v := range fieldsItem2.FormStringField.StringRules.NotIn {
+											fields2.FormStringField.StringRules.NotIn = append(fields2.FormStringField.StringRules.NotIn, types.StringValue(v))
+										}
+									} else {
+										fields2.FormStringField.StringRules.NotIn = nil
+									}
+									fields2.FormStringField.StringRules.Pattern = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Pattern)
+									fields2.FormStringField.StringRules.Prefix = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Prefix)
+									fields2.FormStringField.StringRules.Strict = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Strict)
+									fields2.FormStringField.StringRules.Suffix = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Suffix)
+									fields2.FormStringField.StringRules.URI = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.URI)
+									fields2.FormStringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.URIRef)
+									fields2.FormStringField.StringRules.UUID = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.UUID)
+									if fieldsItem2.FormStringField.StringRules.WellKnownRegex != nil {
+										fields2.FormStringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem2.FormStringField.StringRules.WellKnownRegex))
+									} else {
+										fields2.FormStringField.StringRules.WellKnownRegex = types.StringNull()
+									}
+								}
+								if fieldsItem2.FormStringField.TextField == nil {
+									fields2.FormStringField.TextField = nil
+								} else {
+									fields2.FormStringField.TextField = &tfTypes.TextField{}
+									fields2.FormStringField.TextField.Multiline = types.BoolPointerValue(fieldsItem2.FormStringField.TextField.Multiline)
+									fields2.FormStringField.TextField.Suffix = types.StringPointerValue(fieldsItem2.FormStringField.TextField.Suffix)
+								}
+							}
+							if fieldsItem2.FormStringMapField == nil {
+								fields2.FormStringMapField = nil
+							} else {
+								fields2.FormStringMapField = &tfTypes.FormStringMapField{}
+								if len(fieldsItem2.FormStringMapField.DefaultValue) > 0 {
+									fields2.FormStringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem2.FormStringMapField.DefaultValue))
+									for key3, value3 := range fieldsItem2.FormStringMapField.DefaultValue {
+										fields2.FormStringMapField.DefaultValue[key3] = types.StringValue(value3)
+									}
+								}
+								if fieldsItem2.FormStringMapField.StringMapRules == nil {
+									fields2.FormStringMapField.StringMapRules = nil
+								} else {
+									fields2.FormStringMapField.StringMapRules = &tfTypes.StringMapRules{}
+									fields2.FormStringMapField.StringMapRules.IsRequired = types.BoolPointerValue(fieldsItem2.FormStringMapField.StringMapRules.IsRequired)
+									fields2.FormStringMapField.StringMapRules.ValidateEmpty = types.BoolPointerValue(fieldsItem2.FormStringMapField.StringMapRules.ValidateEmpty)
+								}
+							}
+							if fieldsItem2.Int64Field == nil {
+								fields2.Int64Field = nil
+							} else {
+								fields2.Int64Field = &tfTypes.Int64Field{}
+								fields2.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem2.Int64Field.DefaultValue)
+								if fieldsItem2.Int64Field.Int64Rules == nil {
+									fields2.Int64Field.Int64Rules = nil
+								} else {
+									fields2.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
+									fields2.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Const)
+									fields2.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Gt)
+									fields2.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Gte)
+									fields2.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem2.Int64Field.Int64Rules.IgnoreEmpty)
+									if fieldsItem2.Int64Field.Int64Rules.In != nil {
+										fields2.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem2.Int64Field.Int64Rules.In))
+										for _, v := range fieldsItem2.Int64Field.Int64Rules.In {
+											fields2.Int64Field.Int64Rules.In = append(fields2.Int64Field.Int64Rules.In, types.StringValue(v))
+										}
+									} else {
+										fields2.Int64Field.Int64Rules.In = nil
+									}
+									fields2.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Lt)
+									fields2.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Lte)
+									if fieldsItem2.Int64Field.Int64Rules.NotIn != nil {
+										fields2.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem2.Int64Field.Int64Rules.NotIn))
+										for _, v := range fieldsItem2.Int64Field.Int64Rules.NotIn {
+											fields2.Int64Field.Int64Rules.NotIn = append(fields2.Int64Field.Int64Rules.NotIn, types.StringValue(v))
+										}
+									} else {
+										fields2.Int64Field.Int64Rules.NotIn = nil
+									}
+								}
+								if fieldsItem2.Int64Field.NumberField == nil {
+									fields2.Int64Field.NumberField = nil
+								} else {
+									fields2.Int64Field.NumberField = &tfTypes.NumberField{}
+									fields2.Int64Field.NumberField.MaxValue = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.MaxValue)
+									fields2.Int64Field.NumberField.MinValue = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.MinValue)
+									fields2.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.Step)
+								}
+								fields2.Int64Field.Placeholder = types.StringPointerValue(fieldsItem2.Int64Field.Placeholder)
+							}
+							fields2.Name = types.StringPointerValue(fieldsItem2.Name)
+							if fieldsItem2.Oauth2Field == nil {
+								fields2.Oauth2Field = nil
+							} else {
+								fields2.Oauth2Field = &tfTypes.Oauth2Field{}
+								if fieldsItem2.Oauth2Field.Oauth2FieldView == nil {
+									fields2.Oauth2Field.Oauth2FieldView = nil
+								} else {
+									fields2.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
+								}
+							}
+							fields2.ReadOnly = types.BoolPointerValue(fieldsItem2.ReadOnly)
+							fields2.Required = types.BoolPointerValue(fieldsItem2.Required)
+							if fieldsItem2.SharedProviderConfig == nil {
+								fields2.SharedProviderConfig = nil
+							} else {
+								fields2.SharedProviderConfig = &tfTypes.SharedProviderConfig{}
+								fields2.SharedProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem2.SharedProviderConfig.DefaultValueCel)
+								fields2.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem2.SharedProviderConfig.InputTransformationCel)
+								fields2.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem2.SharedProviderConfig.LockDefaultValues)
+							}
+							if fieldsItem2.UserProviderConfig == nil {
+								fields2.UserProviderConfig = nil
+							} else {
+								fields2.UserProviderConfig = &tfTypes.UserProviderConfig{}
+								fields2.UserProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem2.UserProviderConfig.InputTransformationCel)
+							}
+
+							r.TaskView.Task.RequestSchemaForm.Fields = append(r.TaskView.Task.RequestSchemaForm.Fields, fields2)
+						}
+					} else {
+						r.TaskView.Task.RequestSchemaForm.Fields = nil
+					}
+					r.TaskView.Task.RequestSchemaForm.Name = types.StringPointerValue(resp.TaskView.Task.RequestSchemaForm.Name)
+				}
 				if resp.TaskView.Task.RevocationTargets != nil {
 					r.TaskView.Task.RevocationTargets = []tfTypes.TaskRevocationTarget{}
 
@@ -3946,6 +4393,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 
 						r.TaskView.Task.RevocationTargets = append(r.TaskView.Task.RevocationTargets, revocationTargets)
 					}
+				} else {
+					r.TaskView.Task.RevocationTargets = nil
 				}
 				if resp.TaskView.Task.State != nil {
 					r.TaskView.Task.State = types.StringValue(string(*resp.TaskView.Task.State))
@@ -3957,6 +4406,8 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 					for _, v := range resp.TaskView.Task.StepApproverIds {
 						r.TaskView.Task.StepApproverIds = append(r.TaskView.Task.StepApproverIds, types.StringValue(v))
 					}
+				} else {
+					r.TaskView.Task.StepApproverIds = nil
 				}
 				if resp.TaskView.Task.TaskType == nil {
 					r.TaskView.Task.TaskType = nil
@@ -3967,6 +4418,7 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 					} else {
 						r.TaskView.Task.TaskType.TaskTypeAction = &tfTypes.TaskTypeAction{}
 						r.TaskView.Task.TaskType.TaskTypeAction.ActionID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ActionID)
+						r.TaskView.Task.TaskType.TaskTypeAction.DisplayName = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.DisplayName)
 						if resp.TaskView.Task.TaskType.TaskTypeAction.FormValues == nil {
 							r.TaskView.Task.TaskType.TaskTypeAction.FormValues = nil
 						} else {
@@ -3978,6 +4430,40 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 							r.TaskView.Task.TaskType.TaskTypeAction.Outcome = types.StringNull()
 						}
 						r.TaskView.Task.TaskType.TaskTypeAction.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeAction.OutcomeTime))
+						if resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole == nil {
+							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole = nil
+						} else {
+							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole = &tfTypes.ScopeRole{}
+							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.AppID)
+							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.GrantDuration = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.GrantDuration)
+							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.RoleResourceID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.RoleResourceID)
+							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.RoleResourceTypeID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.RoleResourceTypeID)
+							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.ScopeResourceID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.ScopeResourceID)
+							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.ScopeResourceTypeID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.ScopeResourceTypeID)
+						}
+						if resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance == nil {
+							r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance = nil
+						} else {
+							r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance = &tfTypes.TaskActionInstance{}
+							if resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef == nil {
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef = nil
+							} else {
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef = &tfTypes.ConnectorActionRef{}
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.AppID)
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.ConnectorID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.ConnectorID)
+								if resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.Operation != nil {
+									r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.Operation = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.Operation))
+								} else {
+									r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.Operation = types.StringNull()
+								}
+							}
+							r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.DisplayName = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.DisplayName)
+						}
+						if resp.TaskView.Task.TaskType.TaskTypeAction.Type != nil {
+							r.TaskView.Task.TaskType.TaskTypeAction.Type = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeAction.Type))
+						} else {
+							r.TaskView.Task.TaskType.TaskTypeAction.Type = types.StringNull()
+						}
 					}
 					if resp.TaskView.Task.TaskType.TaskTypeCertify == nil {
 						r.TaskView.Task.TaskType.TaskTypeCertify = nil
@@ -3995,6 +4481,19 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 							r.TaskView.Task.TaskType.TaskTypeCertify.Outcome = types.StringNull()
 						}
 						r.TaskView.Task.TaskType.TaskTypeCertify.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeCertify.OutcomeTime))
+					}
+					if resp.TaskView.Task.TaskType.TaskTypeFinding == nil {
+						r.TaskView.Task.TaskType.TaskTypeFinding = nil
+					} else {
+						r.TaskView.Task.TaskType.TaskTypeFinding = &tfTypes.TaskTypeFinding{}
+						r.TaskView.Task.TaskType.TaskTypeFinding.FindingID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeFinding.FindingID)
+						r.TaskView.Task.TaskType.TaskTypeFinding.FindingType = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeFinding.FindingType)
+						if resp.TaskView.Task.TaskType.TaskTypeFinding.Outcome != nil {
+							r.TaskView.Task.TaskType.TaskTypeFinding.Outcome = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeFinding.Outcome))
+						} else {
+							r.TaskView.Task.TaskType.TaskTypeFinding.Outcome = types.StringNull()
+						}
+						r.TaskView.Task.TaskType.TaskTypeFinding.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeFinding.OutcomeTime))
 					}
 					if resp.TaskView.Task.TaskType.TaskTypeGrant == nil {
 						r.TaskView.Task.TaskType.TaskTypeGrant = nil

@@ -2,9 +2,9 @@
 
 package shared
 
-// The RemoveAppResourceOwnerRequest message.
+// RemoveAppResourceOwnerRequest - The request message for removing an owner from an app resource.
 type RemoveAppResourceOwnerRequest struct {
-	// The userId field.
+	// The C1 user ID to remove as an owner.
 	UserID *string `json:"userId,omitempty"`
 }
 

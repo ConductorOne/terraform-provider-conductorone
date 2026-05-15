@@ -171,21 +171,11 @@ func (s *AppResourceSearch) SearchAppResourceTypes(ctx context.Context, request 
 				return nil, nil
 			}
 		}
+		request.PageToken = &nCVal
 
 		return s.SearchAppResourceTypes(
 			ctx,
-			&shared.SearchAppResourceTypesRequest{
-				AppIds:                      request.AppIds,
-				AppUserIds:                  request.AppUserIds,
-				DisplayName:                 request.DisplayName,
-				ExcludeResourceTypeIds:      request.ExcludeResourceTypeIds,
-				ExcludeResourceTypeTraitIds: request.ExcludeResourceTypeTraitIds,
-				PageSize:                    request.PageSize,
-				PageToken:                   &nCVal,
-				Query:                       request.Query,
-				ResourceTypeIds:             request.ResourceTypeIds,
-				ResourceTypeTraitIds:        request.ResourceTypeTraitIds,
-			},
+			request,
 		)
 	}
 
@@ -224,7 +214,7 @@ func (s *AppResourceSearch) SearchAppResourceTypes(ctx context.Context, request 
 }
 
 // SearchAppResources - Search App Resources
-// Invokes the c1.api.app.v1.AppResourceSearch.SearchAppResources method.
+// Search app resources based on filters specified in the request body.
 func (s *AppResourceSearch) SearchAppResources(ctx context.Context, request *shared.SearchAppResourcesRequest, opts ...operations.Option) (*operations.C1APIAppV1AppResourceSearchSearchAppResourcesResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -361,24 +351,11 @@ func (s *AppResourceSearch) SearchAppResources(ctx context.Context, request *sha
 				return nil, nil
 			}
 		}
+		request.PageToken = &nCVal
 
 		return s.SearchAppResources(
 			ctx,
-			&shared.SearchAppResourcesRequest{
-				AppID:                          request.AppID,
-				AppUserIds:                     request.AppUserIds,
-				ExcludeDeletedResourceBindings: request.ExcludeDeletedResourceBindings,
-				ExcludeResourceIds:             request.ExcludeResourceIds,
-				ExcludeResourceTypeTraitIds:    request.ExcludeResourceTypeTraitIds,
-				OwnerUserIds:                   request.OwnerUserIds,
-				PageSize:                       request.PageSize,
-				PageToken:                      &nCVal,
-				Query:                          request.Query,
-				Refs:                           request.Refs,
-				ResourceIds:                    request.ResourceIds,
-				ResourceTypeIds:                request.ResourceTypeIds,
-				ResourceTypeTraitIds:           request.ResourceTypeTraitIds,
-			},
+			request,
 		)
 	}
 

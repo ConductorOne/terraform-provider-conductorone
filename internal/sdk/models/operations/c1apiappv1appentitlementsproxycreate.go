@@ -50,6 +50,9 @@ func (c *C1APIAppV1AppEntitlementsProxyCreateRequest) GetCreateAppEntitlementPro
 	return c.CreateAppEntitlementProxyRequest
 }
 
+// #region class-body-c1apiappv1appentitlementsproxycreaterequest
+// #endregion class-body-c1apiappv1appentitlementsproxycreaterequest
+
 type C1APIAppV1AppEntitlementsProxyCreateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -57,7 +60,7 @@ type C1APIAppV1AppEntitlementsProxyCreateResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for creating an entitlement proxy binding.
 	CreateAppEntitlementProxyResponse *shared.CreateAppEntitlementProxyResponse
 }
 
@@ -88,3 +91,6 @@ func (c *C1APIAppV1AppEntitlementsProxyCreateResponse) GetCreateAppEntitlementPr
 	}
 	return c.CreateAppEntitlementProxyResponse
 }
+
+// #region class-body-c1apiappv1appentitlementsproxycreateresponse
+// #endregion class-body-c1apiappv1appentitlementsproxycreateresponse

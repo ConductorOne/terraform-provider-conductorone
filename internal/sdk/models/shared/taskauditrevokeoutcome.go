@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // TaskAuditRevokeOutcomeOutcome - The outcome field.
 type TaskAuditRevokeOutcomeOutcome string
 
@@ -22,28 +17,16 @@ const (
 func (e TaskAuditRevokeOutcomeOutcome) ToPointer() *TaskAuditRevokeOutcomeOutcome {
 	return &e
 }
-func (e *TaskAuditRevokeOutcomeOutcome) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TaskAuditRevokeOutcomeOutcome) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REVOKE_OUTCOME_UNSPECIFIED", "REVOKE_OUTCOME_REVOKED", "REVOKE_OUTCOME_DENIED", "REVOKE_OUTCOME_ERROR", "REVOKE_OUTCOME_CANCELLED", "REVOKE_OUTCOME_WAIT_TIMED_OUT":
+			return true
+		}
 	}
-	switch v {
-	case "REVOKE_OUTCOME_UNSPECIFIED":
-		fallthrough
-	case "REVOKE_OUTCOME_REVOKED":
-		fallthrough
-	case "REVOKE_OUTCOME_DENIED":
-		fallthrough
-	case "REVOKE_OUTCOME_ERROR":
-		fallthrough
-	case "REVOKE_OUTCOME_CANCELLED":
-		fallthrough
-	case "REVOKE_OUTCOME_WAIT_TIMED_OUT":
-		*e = TaskAuditRevokeOutcomeOutcome(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TaskAuditRevokeOutcomeOutcome: %v", v)
-	}
+	return false
 }
 
 // The TaskAuditRevokeOutcome message.

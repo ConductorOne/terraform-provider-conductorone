@@ -14,7 +14,7 @@ type C1APIRequestSchemaV1RequestSchemaServiceCreateResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for creating a request schema.
 	RequestSchemaServiceCreateResponse *shared.RequestSchemaServiceCreateResponse
 }
 
@@ -45,3 +45,6 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceCreateResponse) GetRequestSchem
 	}
 	return c.RequestSchemaServiceCreateResponse
 }
+
+// #region class-body-c1apirequestschemav1requestschemaservicecreateresponse
+// #endregion class-body-c1apirequestschemav1requestschemaservicecreateresponse

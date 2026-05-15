@@ -6,6 +6,8 @@ package shared
 type ProvisioningRequestPreference struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// The locked field.
+	Locked *bool `json:"locked,omitempty"`
 }
 
 func (p *ProvisioningRequestPreference) GetEnabled() *bool {
@@ -13,4 +15,11 @@ func (p *ProvisioningRequestPreference) GetEnabled() *bool {
 		return nil
 	}
 	return p.Enabled
+}
+
+func (p *ProvisioningRequestPreference) GetLocked() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.Locked
 }

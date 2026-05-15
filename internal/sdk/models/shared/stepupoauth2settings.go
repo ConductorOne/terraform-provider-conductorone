@@ -22,3 +22,6 @@ func (s *StepUpOAuth2Settings) GetAcrValues() []string {
 	}
 	return s.AcrValues
 }
+
+// #region class-body-stepupoauth2settings
+// #endregion class-body-stepupoauth2settings

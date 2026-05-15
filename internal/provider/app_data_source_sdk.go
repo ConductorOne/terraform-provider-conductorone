@@ -14,6 +14,17 @@ import (
 func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *shared.App) diag.Diagnostics {
 	var diags diag.Diagnostics
 
+	if resp.AccessModel != nil {
+		r.AccessModel = types.StringValue(string(*resp.AccessModel))
+	} else {
+		r.AccessModel = types.StringNull()
+	}
+	if len(resp.Annotations) > 0 {
+		r.Annotations = make(map[string]types.String, len(resp.Annotations))
+		for key, value := range resp.Annotations {
+			r.Annotations[key] = types.StringValue(value)
+		}
+	}
 	r.AppAccountID = types.StringPointerValue(resp.AppAccountID)
 	r.AppAccountName = types.StringPointerValue(resp.AppAccountName)
 	if resp.AppUserMapper == nil {
@@ -33,6 +44,8 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 
 				r.AppUserMapper.MappingCases = append(r.AppUserMapper.MappingCases, mappingCases)
 			}
+		} else {
+			r.AppUserMapper.MappingCases = nil
 		}
 	}
 	r.CertifyPolicyID = types.StringPointerValue(resp.CertifyPolicyID)

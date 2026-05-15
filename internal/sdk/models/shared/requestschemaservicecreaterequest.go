@@ -2,12 +2,7 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// JustificationVisibility - The justificationVisibility field.
+// JustificationVisibility - Controls whether the justification field is shown or hidden on the request form.
 type JustificationVisibility string
 
 const (
@@ -19,37 +14,31 @@ const (
 func (e JustificationVisibility) ToPointer() *JustificationVisibility {
 	return &e
 }
-func (e *JustificationVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *JustificationVisibility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "JUSTIFICATION_VISIBILITY_UNSPECIFIED", "JUSTIFICATION_VISIBILITY_SHOW", "JUSTIFICATION_VISIBILITY_HIDE":
+			return true
+		}
 	}
-	switch v {
-	case "JUSTIFICATION_VISIBILITY_UNSPECIFIED":
-		fallthrough
-	case "JUSTIFICATION_VISIBILITY_SHOW":
-		fallthrough
-	case "JUSTIFICATION_VISIBILITY_HIDE":
-		*e = JustificationVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for JustificationVisibility: %v", v)
-	}
+	return false
 }
 
-// The RequestSchemaServiceCreateRequest message.
+// RequestSchemaServiceCreateRequest - The request message for creating a new request schema.
 type RequestSchemaServiceCreateRequest struct {
-	// The description field.
+	// An optional description of the request schema's purpose.
 	Description *string `json:"description,omitempty"`
-	// The fieldGroups field.
-	FieldGroups []FieldGroup `json:"fieldGroups,omitempty"`
-	// The fieldRelationships field.
+	// Logical groupings of fields for display purposes.
+	FieldGroups []FormFieldGroup `json:"fieldGroups,omitempty"`
+	// Dependencies between fields that control conditional visibility or validation.
 	FieldRelationships []FieldRelationship `json:"fieldRelationships,omitempty"`
-	// The fields field.
-	Fields []Field `json:"fields,omitempty"`
-	// The justificationVisibility field.
+	// The form fields that users must fill out when requesting access.
+	Fields []FormField `json:"fields,omitempty"`
+	// Controls whether the justification field is shown or hidden on the request form.
 	JustificationVisibility *JustificationVisibility `json:"justificationVisibility,omitempty"`
-	// The name field.
+	// The human-readable name for the request schema.
 	Name *string `json:"name,omitempty"`
 }
 
@@ -60,7 +49,7 @@ func (r *RequestSchemaServiceCreateRequest) GetDescription() *string {
 	return r.Description
 }
 
-func (r *RequestSchemaServiceCreateRequest) GetFieldGroups() []FieldGroup {
+func (r *RequestSchemaServiceCreateRequest) GetFieldGroups() []FormFieldGroup {
 	if r == nil {
 		return nil
 	}
@@ -74,7 +63,7 @@ func (r *RequestSchemaServiceCreateRequest) GetFieldRelationships() []FieldRelat
 	return r.FieldRelationships
 }
 
-func (r *RequestSchemaServiceCreateRequest) GetFields() []Field {
+func (r *RequestSchemaServiceCreateRequest) GetFields() []FormField {
 	if r == nil {
 		return nil
 	}

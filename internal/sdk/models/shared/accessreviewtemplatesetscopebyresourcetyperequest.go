@@ -4,7 +4,7 @@ package shared
 
 // The AccessReviewTemplateSetScopeByResourceTypeRequest message.
 type AccessReviewTemplateSetScopeByResourceTypeRequest struct {
-	// The resourceTypeSelections field.
+	// The resource types to include in the template scope. Replaces all previously selected resource types.
 	ResourceTypeSelections []ResourceTypeIDRef `json:"resourceTypeSelections,omitempty"`
 	// The AccessReviewScopeV2 message.
 	//

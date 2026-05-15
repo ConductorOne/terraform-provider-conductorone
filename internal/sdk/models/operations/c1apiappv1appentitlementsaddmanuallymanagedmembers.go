@@ -34,6 +34,9 @@ func (c *C1APIAppV1AppEntitlementsAddManuallyManagedMembersRequest) GetAddManual
 	return c.AddManuallyManagedUsersRequest
 }
 
+// #region class-body-c1apiappv1appentitlementsaddmanuallymanagedmembersrequest
+// #endregion class-body-c1apiappv1appentitlementsaddmanuallymanagedmembersrequest
+
 type C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -72,3 +75,6 @@ func (c *C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse) GetManually
 	}
 	return c.ManuallyManagedUsersResponse
 }
+
+// #region class-body-c1apiappv1appentitlementsaddmanuallymanagedmembersresponse
+// #endregion class-body-c1apiappv1appentitlementsaddmanuallymanagedmembersresponse

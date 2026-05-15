@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
 	"time"
 )
@@ -12,7 +10,7 @@ import (
 type AppEntitlementDurationUnset struct {
 }
 
-// Purpose - The purpose field.
+// Purpose - The purpose of this entitlement (e.g., assignment, permission, ownership).
 type Purpose string
 
 const (
@@ -25,24 +23,16 @@ const (
 func (e Purpose) ToPointer() *Purpose {
 	return &e
 }
-func (e *Purpose) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Purpose) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
+			return true
+		}
 	}
-	switch v {
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION":
-		fallthrough
-	case "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP":
-		*e = Purpose(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Purpose: %v", v)
-	}
+	return false
 }
 
 // DeprovisionerPolicy - ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
@@ -145,6 +135,15 @@ func (d *DeprovisionerPolicy) GetWebhookProvision() *WebhookProvision {
 type AppEntitlement struct {
 	// The alias of the app entitlement used by Cone. Also exact-match queryable.
 	Alias *string `json:"alias,omitempty"`
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The ID of the app that is associated with the app entitlement.
 	AppID *string `json:"appId,omitempty"`
 	// The ID of the app resource that is associated with the app entitlement
@@ -169,6 +168,9 @@ type AppEntitlement struct {
 	EmergencyGrantEnabled *bool `json:"emergencyGrantEnabled,omitempty"`
 	// The ID of the policy that will be used for emergency access grant tasks.
 	EmergencyGrantPolicyID *string `json:"emergencyGrantPolicyId,omitempty"`
+	// The upstream product's native external ID for this entitlement (e.g. an Okta group ID).
+	//  Populated from the connector's external ID during sync.
+	ExternalID *string `json:"externalId,omitempty"`
 	// The amount of grants open for this entitlement
 	GrantCount *string `json:"grantCount,omitempty"`
 	// The ID of the policy that will be used for grant tickets related to the app entitlement.
@@ -179,7 +181,7 @@ type AppEntitlement struct {
 	IsAutomationEnabled *bool `json:"isAutomationEnabled,omitempty"`
 	// Flag to indicate if the app entitlement is manually managed.
 	IsManuallyManaged *bool `json:"isManuallyManaged,omitempty"`
-	// The matchBatonId field.
+	// An identifier used to match this entitlement to a connector-synced entitlement during sync.
 	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// Flag to indicate if the app-level access request settings have been overridden for the entitlement
 	OverrideAccessRequestsDefaults *bool `json:"overrideAccessRequestsDefaults,omitempty"`
@@ -196,13 +198,13 @@ type AppEntitlement struct {
 	//   - action
 	//
 	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
-	// The purpose field.
+	// The purpose of this entitlement (e.g., assignment, permission, ownership).
 	Purpose *Purpose `json:"purpose,omitempty"`
 	// The ID of the request schema associated with this app entitlement.
 	RequestSchemaID *string `json:"requestSchemaId,omitempty"`
 	// The ID of the policy that will be used for revoke tickets related to the app entitlement
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
-	// The riskLevelValueId field.
+	// The ID of the risk level assigned to this entitlement.
 	RiskLevelValueID *string `json:"riskLevelValueId,omitempty"`
 	// The slug is displayed as an oval next to the name in the frontend of C1, it tells you what permission the entitlement grants. See https://www.conductorone.com/docs/product/admin/entitlements/
 	Slug *string `json:"slug,omitempty"`
@@ -230,6 +232,13 @@ func (a *AppEntitlement) GetAlias() *string {
 		return nil
 	}
 	return a.Alias
+}
+
+func (a *AppEntitlement) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *AppEntitlement) GetAppID() *string {
@@ -328,6 +337,13 @@ func (a *AppEntitlement) GetEmergencyGrantPolicyID() *string {
 		return nil
 	}
 	return a.EmergencyGrantPolicyID
+}
+
+func (a *AppEntitlement) GetExternalID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ExternalID
 }
 
 func (a *AppEntitlement) GetGrantCount() *string {
@@ -457,6 +473,15 @@ func (a *AppEntitlement) GetDeprovisionerPolicy() *DeprovisionerPolicy {
 type AppEntitlementInput struct {
 	// The alias of the app entitlement used by Cone. Also exact-match queryable.
 	Alias *string `json:"alias,omitempty"`
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+	//  are reserved.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The ID of the app that is associated with the app entitlement.
 	AppID *string `json:"appId,omitempty"`
 	// The ID of the app resource that is associated with the app entitlement
@@ -483,7 +508,7 @@ type AppEntitlementInput struct {
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
 	// Flag to indicate if the app entitlement is manually managed.
 	IsManuallyManaged *bool `json:"isManuallyManaged,omitempty"`
-	// The matchBatonId field.
+	// An identifier used to match this entitlement to a connector-synced entitlement during sync.
 	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// Flag to indicate if the app-level access request settings have been overridden for the entitlement
 	OverrideAccessRequestsDefaults *bool `json:"overrideAccessRequestsDefaults,omitempty"`
@@ -500,13 +525,13 @@ type AppEntitlementInput struct {
 	//   - action
 	//
 	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
-	// The purpose field.
+	// The purpose of this entitlement (e.g., assignment, permission, ownership).
 	Purpose *Purpose `json:"purpose,omitempty"`
 	// The ID of the request schema associated with this app entitlement.
 	RequestSchemaID *string `json:"requestSchemaId,omitempty"`
 	// The ID of the policy that will be used for revoke tickets related to the app entitlement
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
-	// The riskLevelValueId field.
+	// The ID of the risk level assigned to this entitlement.
 	RiskLevelValueID *string `json:"riskLevelValueId,omitempty"`
 	// The slug is displayed as an oval next to the name in the frontend of C1, it tells you what permission the entitlement grants. See https://www.conductorone.com/docs/product/admin/entitlements/
 	Slug *string `json:"slug,omitempty"`
@@ -520,6 +545,13 @@ func (a *AppEntitlementInput) GetAlias() *string {
 		return nil
 	}
 	return a.Alias
+}
+
+func (a *AppEntitlementInput) GetAnnotations() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.Annotations
 }
 
 func (a *AppEntitlementInput) GetAppID() *string {

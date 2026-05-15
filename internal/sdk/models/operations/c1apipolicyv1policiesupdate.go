@@ -26,6 +26,9 @@ func (c *C1APIPolicyV1PoliciesUpdateRequest) GetUpdatePolicyRequest() *shared.Up
 	return c.UpdatePolicyRequest
 }
 
+// #region class-body-c1apipolicyv1policiesupdaterequest
+// #endregion class-body-c1apipolicyv1policiesupdaterequest
+
 type C1APIPolicyV1PoliciesUpdateResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIPolicyV1PoliciesUpdateResponse) GetUpdatePolicyResponse() *shared.
 	}
 	return c.UpdatePolicyResponse
 }
+
+// #region class-body-c1apipolicyv1policiesupdateresponse
+// #endregion class-body-c1apipolicyv1policiesupdateresponse

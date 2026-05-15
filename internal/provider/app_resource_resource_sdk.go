@@ -18,12 +18,19 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Cont
 
 	if resp != nil {
 		r.AccessConfigID = types.StringPointerValue(resp.AccessConfigID)
+		if len(resp.Annotations) > 0 {
+			r.Annotations = make(map[string]types.String, len(resp.Annotations))
+			for key, value := range resp.Annotations {
+				r.Annotations[key] = types.StringValue(value)
+			}
+		}
 		r.AppID = types.StringPointerValue(resp.AppID)
 		r.AppResourceTypeID = types.StringPointerValue(resp.AppResourceTypeID)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
+		r.ExternalID = types.StringPointerValue(resp.ExternalID)
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
@@ -60,6 +67,8 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceServiceGetRespons
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -77,6 +86,8 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceServiceUpdateResp
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 
@@ -124,7 +135,7 @@ func (r *AppResourceResourceModel) RefreshFromSharedCreateManuallyManagedAppReso
 			return diags
 		}
 
-		// CreateManuallyManagedAppResourceResponse contains AppResource (not AppResourceView),
+		// CreateManuallyManagedAppResourceResponse returns AppResource, not AppResourceView,
 		// so ActorObjectPermissions fields are not available. Set them to null explicitly.
 		r.Delete = types.BoolNull()
 		r.Edit = types.BoolNull()
@@ -172,18 +183,10 @@ func (r *AppResourceResourceModel) ToOperationsC1APIAppV1AppResourceServiceDelet
 	var id string
 	id = r.ID.ValueString()
 
-	deleteManuallyManagedAppResourceRequest, deleteManuallyManagedAppResourceRequestDiags := r.ToSharedDeleteManuallyManagedAppResourceRequest(ctx)
-	diags.Append(deleteManuallyManagedAppResourceRequestDiags...)
-
-	if diags.HasError() {
-		return nil, diags
-	}
-
 	out := operations.C1APIAppV1AppResourceServiceDeleteManuallyManagedAppResourceRequest{
-		AppID:                                   appID,
-		AppResourceTypeID:                       appResourceTypeID,
-		ID:                                      id,
-		DeleteManuallyManagedAppResourceRequest: deleteManuallyManagedAppResourceRequest,
+		AppID:             appID,
+		AppResourceTypeID: appResourceTypeID,
+		ID:                id,
 	}
 
 	return &out, diags
@@ -247,6 +250,13 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context)
 		*accessConfigID = r.AccessConfigID.ValueString()
 	} else {
 		accessConfigID = nil
+	}
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
 	}
 	appID := new(string)
 	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
@@ -337,6 +347,7 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context)
 	}
 	out := shared.AppResourceInput{
 		AccessConfigID:          accessConfigID,
+		Annotations:             annotations,
 		AppID:                   appID,
 		AppResourceTypeID:       appResourceTypeID,
 		Description:             description,
@@ -372,6 +383,13 @@ func (r *AppResourceResourceModel) ToSharedAppResourceServiceUpdateRequest(ctx c
 func (r *AppResourceResourceModel) ToSharedCreateManuallyManagedAppResourceRequest(ctx context.Context) (*shared.CreateManuallyManagedAppResourceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	annotations := make(map[string]string)
+	for annotationsKey := range r.Annotations {
+		var annotationsInst string
+		annotationsInst = r.Annotations[annotationsKey].ValueString()
+
+		annotations[annotationsKey] = annotationsInst
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -388,6 +406,7 @@ func (r *AppResourceResourceModel) ToSharedCreateManuallyManagedAppResourceReque
 		matchBatonID = nil
 	}
 	out := shared.CreateManuallyManagedAppResourceRequest{
+		Annotations:  annotations,
 		Description:  description,
 		DisplayName:  displayName,
 		MatchBatonID: matchBatonID,

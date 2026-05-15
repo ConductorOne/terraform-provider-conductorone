@@ -58,22 +58,22 @@ func (r *OrgDomainsDataSource) Schema(ctx context.Context, req datasource.Schema
 						},
 						"domain": schema.StringAttribute{
 							Computed:    true,
-							Description: `The domain field.`,
+							Description: `The verified domain name (e.g., "example.com").`,
 						},
 						"id": schema.StringAttribute{
 							Computed:    true,
-							Description: `The id field.`,
+							Description: `The unique identifier of the domain record.`,
 						},
 						"updated_at": schema.StringAttribute{
 							Computed: true,
 						},
 					},
 				},
-				Description: `The list field.`,
+				Description: `The list of verified domains.`,
 			},
 			"next_page_token": schema.StringAttribute{
 				Computed:    true,
-				Description: `The nextPageToken field.`,
+				Description: `A token to retrieve the next page of results, or empty if there are no more results.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional: true,

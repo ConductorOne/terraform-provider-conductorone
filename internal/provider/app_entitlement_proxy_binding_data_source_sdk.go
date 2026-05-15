@@ -55,6 +55,8 @@ func (r *AppEntitlementProxyBindingDataSourceModel) RefreshFromSharedGetAppEntit
 		}
 
 		if resp.Expanded != nil {
+		} else {
+			r.Expanded = nil
 		}
 	}
 

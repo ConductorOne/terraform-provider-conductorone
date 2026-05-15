@@ -14,7 +14,7 @@ type C1APIRequestSchemaV1RequestSchemaServiceRemoveEntitlementBindingResponse st
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successful response
+	// The response message for removing a single entitlement binding.
 	RequestSchemaServiceRemoveEntitlementBindingResponse *shared.RequestSchemaServiceRemoveEntitlementBindingResponse
 }
 
@@ -45,3 +45,6 @@ func (c *C1APIRequestSchemaV1RequestSchemaServiceRemoveEntitlementBindingRespons
 	}
 	return c.RequestSchemaServiceRemoveEntitlementBindingResponse
 }
+
+// #region class-body-c1apirequestschemav1requestschemaserviceremoveentitlementbindingresponse
+// #endregion class-body-c1apirequestschemav1requestschemaserviceremoveentitlementbindingresponse

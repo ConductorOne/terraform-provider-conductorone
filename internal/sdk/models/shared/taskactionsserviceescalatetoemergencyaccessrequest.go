@@ -2,11 +2,11 @@
 
 package shared
 
-// The TaskActionsServiceEscalateToEmergencyAccessRequest message.
+// The TaskActionsServiceEscalateToEmergencyAccessRequest object lets you escalate a task to the emergency access workflow.
 type TaskActionsServiceEscalateToEmergencyAccessRequest struct {
-	// The comment field.
+	// An optional comment attached to the escalation.
 	Comment *string `json:"comment,omitempty"`
-	// The policyStepId field.
+	// The ID of the current policy step being escalated from.
 	PolicyStepID *string `json:"policyStepId,omitempty"`
 }
 

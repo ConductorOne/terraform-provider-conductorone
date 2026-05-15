@@ -10,7 +10,6 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_int64validators "github.com/conductorone/terraform-provider-conductorone/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -35,23 +34,28 @@ type AutomationResource struct {
 
 // AutomationResourceModel describes the resource data model.
 type AutomationResourceModel struct {
-	AppID                        types.String                          `tfsdk:"app_id"`
-	AutomationContext            *tfTypes.AutomationContext            `tfsdk:"automation_context"`
-	AutomationSteps              []tfTypes.AutomationStep              `tfsdk:"automation_steps"`
-	CreatedAt                    types.String                          `tfsdk:"created_at"`
-	CurrentVersion               types.String                          `tfsdk:"current_version"`
-	Description                  types.String                          `tfsdk:"description"`
-	DisabledReasonCircuitBreaker *tfTypes.DisabledReasonCircuitBreaker `tfsdk:"disabled_reason_circuit_breaker"`
-	DisplayName                  types.String                          `tfsdk:"display_name"`
-	DraftAutomationSteps         []tfTypes.AutomationStep              `tfsdk:"draft_automation_steps"`
-	DraftTriggers                []tfTypes.AutomationTrigger           `tfsdk:"draft_triggers"`
-	Enabled                      types.Bool                            `tfsdk:"enabled"`
-	ID                           types.String                          `tfsdk:"id"`
-	IsDraft                      types.Bool                            `tfsdk:"is_draft"`
-	LastExecutedAt               types.String                          `tfsdk:"last_executed_at"`
-	PrimaryTriggerType           types.String                          `tfsdk:"primary_trigger_type"`
-	Triggers                     []tfTypes.AutomationTrigger           `tfsdk:"triggers"`
-	WebhookHmacSecret            types.String                          `tfsdk:"webhook_hmac_secret"`
+	Annotations                        map[string]types.String                     `tfsdk:"annotations"`
+	AppID                              types.String                                `tfsdk:"app_id"`
+	AutomationContext                  *tfTypes.AutomationContext                  `tfsdk:"automation_context"`
+	AutomationsDeleteAutomationRequest *tfTypes.AutomationsDeleteAutomationRequest `tfsdk:"automations_delete_automation_request"`
+	AutomationSteps                    []tfTypes.AutomationStep                    `tfsdk:"automation_steps"`
+	CircuitBreakerMax                  types.Int64                                 `tfsdk:"circuit_breaker_max"`
+	CircuitBreakerPeriod               types.String                                `tfsdk:"circuit_breaker_period"`
+	CreatedAt                          types.String                                `tfsdk:"created_at"`
+	CurrentVersion                     types.String                                `tfsdk:"current_version"`
+	Description                        types.String                                `tfsdk:"description"`
+	DisabledReasonCircuitBreaker       *tfTypes.DisabledReasonCircuitBreaker       `tfsdk:"disabled_reason_circuit_breaker"`
+	DisplayName                        types.String                                `tfsdk:"display_name"`
+	DraftAutomationSteps               []tfTypes.AutomationStep                    `tfsdk:"draft_automation_steps"`
+	DraftTriggers                      []tfTypes.AutomationTrigger                 `tfsdk:"draft_triggers"`
+	Enabled                            types.Bool                                  `tfsdk:"enabled"`
+	ID                                 types.String                                `tfsdk:"id"`
+	IsDraft                            types.Bool                                  `tfsdk:"is_draft"`
+	LastExecutedAt                     types.String                                `tfsdk:"last_executed_at"`
+	PrimaryTriggerType                 types.String                                `tfsdk:"primary_trigger_type"`
+	Triggers                           []tfTypes.AutomationTrigger                 `tfsdk:"triggers"`
+	WebhookCapabilityURL               types.String                                `tfsdk:"webhook_capability_url"`
+	WebhookHmacSecret                  types.String                                `tfsdk:"webhook_hmac_secret"`
 }
 
 func (r *AutomationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,6 +66,19 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Automation Resource",
 		Attributes: map[string]schema.Attribute{
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting` + "\n" +
+					` with ` + "`" + `c1/` + "`" + ` are reserved for server-managed use and rejected on write.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
 			"app_id": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -216,6 +233,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The ConnectorRef message.`,
 								},
+								"password_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression referencing a GeneratePassword step output (e.g. "genStep.password").` + "\n" +
+										` When set, the resolved password is encrypted for the connector and sent as CredentialOptions.EncryptedPassword.`,
+								},
 								"user_id_cel": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
@@ -638,10 +661,74 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
+								"generate_password_policy": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"custom_characters": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The customCharacters field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"excluded_characters": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The excludedCharacters field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"max_character_count": schema.Int32Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The maxCharacterCount field.`,
+										},
+										"min_character_count": schema.Int32Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The minCharacterCount field.`,
+										},
+										"no_restrictions": schema.BoolAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The noRestrictions field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"require_lowercase": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireLowercase field.`,
+										},
+										"require_numbers": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireNumbers field.`,
+										},
+										"require_special_characters": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireSpecialCharacters field.`,
+										},
+										"require_uppercase": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireUppercase field.`,
+										},
+									},
+									MarkdownDescription: `GeneratePasswordPolicy defines inline password generation rules.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named character_rules. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - noRestrictions` + "\n" +
+										`  - customCharacters` + "\n" +
+										`  - excludedCharacters`,
+								},
 								"password_policy_id": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The ID of the password policy to use for generating the password.`,
+									Computed:           true,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `Deprecated: password policy ID lookup is no longer used.`,
 								},
 							},
 							Description: `The GeneratePassword message.`,
@@ -926,6 +1013,22 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `The body field.`,
 								},
+								"email": schema.StringAttribute{
+									Computed:           true,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									MarkdownDescription: `Deprecated: use email_cel instead. Static email field shipped behind FF 541 (SKU_MANUAL)` + "\n" +
+										` with zero tenant enablement. CEL subsumes static: '"ops@example.com"' is valid CEL.`,
+								},
+								"email_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression resolving to one or more email addresses (string or list<string>).` + "\n" +
+										` Evaluated against the workflow execution context (trigger + completed steps).` + "\n" +
+										` Static emails work too: '"ops@example.com"' is valid CEL.` + "\n" +
+										` Supports list<string> for multiple recipients: '["a@x.com", "b@x.com"]'.` + "\n" +
+										` Requires the tenant to have a TenantEmailProvider configured.`,
+								},
 								"subject": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -989,8 +1092,38 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`This field is part of the ` + "`" + `channel` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.automations.v1.SendSlackMessage` + "`" + ` for more details.`,
 								},
+								"use_subject_user": schema.BoolAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The useSubjectUser field.`,
+								},
+								"user_ids_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The userIdsCel field.`,
+								},
+								"user_refs": schema.ListNestedAttribute{
+									Computed: true,
+									Optional: true,
+									NestedObject: schema.NestedAttributeObject{
+										Validators: []validator.Object{
+											speakeasy_objectvalidators.NotNull(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"id": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The id of the user.`,
+											},
+										},
+									},
+									Description: `The userRefs field.`,
+								},
 							},
-							MarkdownDescription: `The SendSlackMessage message.` + "\n" +
+							MarkdownDescription: `SendSlackMessage posts to a channel or DMs one or more users. Delivery mode is` + "\n" +
+								` inferred from which fields are populated: DM if any user field is set` + "\n" +
+								` (use_subject_user, user_ids_cel, user_refs), otherwise channel. Priority for DM` + "\n" +
+								` recipient resolution: use_subject_user > user_ids_cel > user_refs.` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named channel. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - channelName` + "\n" +
@@ -1048,6 +1181,62 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed:    true,
 							Optional:    true,
 							Description: `The stepName field.`,
+						},
+						"store_credential": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"app_id_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression that resolves to app ID (App Vault only)`,
+								},
+								"auth_type": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Authentication type for the paper vault recipient (Paper Vault only). possible known values include one of ["STORE_CREDENTIAL_AUTH_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_AUTH_TYPE_SSO_INTERNAL", "STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL"]`,
+								},
+								"credential_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression that resolves to the encrypted credential from GeneratePassword`,
+								},
+								"expiry": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"label_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Optional display label for the vault`,
+								},
+								"max_views": schema.Int64Attribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Maximum number of views (0 = unlimited, default 1) (Paper Vault only)`,
+								},
+								"recipient_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)`,
+								},
+								"recipient_email_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)`,
+								},
+								"ttl": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"vault_type": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Vault type selector (default: PAPER_VAULT for backward compatibility). possible known values include one of ["STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT", "STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT"]`,
+								},
+							},
+							MarkdownDescription: `StoreCredential stores a credential from GeneratePassword in a vault.` + "\n" +
+								` Supports Paper Vault (SSO/email) and App Vault (entitlement-bound).`,
 						},
 						"task_action": schema.SingleNestedAttribute{
 							Computed: true,
@@ -1156,14 +1345,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								"task_user_relation": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The taskUserRelation field. must be one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"TASK_USER_RELATION_UNSPECIFIED",
-											"TASK_USER_RELATION_ASSIGNEE",
-											"TASK_USER_RELATION_SUBJECT",
-										),
-									},
+									Description: `The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
 								},
 							},
 							MarkdownDescription: `The TaskAction message.` + "\n" +
@@ -1258,15 +1440,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									MarkdownDescription: `The userStatusEnum field.` + "\n" +
 										`This field is part of the ` + "`" + `user_status` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.automations.v1.UpdateUser` + "`" + ` for more details.` + "\n" +
-										`must be one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"UNKNOWN",
-											"ENABLED",
-											"DISABLED",
-											"DELETED",
-										),
-									},
+										`possible known values include one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
 								},
 							},
 							MarkdownDescription: `The UpdateUser message.` + "\n" +
@@ -1322,7 +1496,21 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						},
 					},
 				},
-				Description: `The automationSteps field.`,
+				Description: `Ordered list of steps that the automation executes.`,
+			},
+			"automations_delete_automation_request": schema.SingleNestedAttribute{
+				Optional:    true,
+				Description: `The DeleteAutomationRequest message.`,
+			},
+			"circuit_breaker_max": schema.Int64Attribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Circuit breaker rate cap. See Automation.circuit_breaker_max for semantics.`,
+			},
+			"circuit_breaker_period": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The circuitBreakerPeriod field. possible known values include one of ["CIRCUIT_BREAKER_PERIOD_UNSPECIFIED", "CIRCUIT_BREAKER_PERIOD_HOUR", "CIRCUIT_BREAKER_PERIOD_DAY", "CIRCUIT_BREAKER_PERIOD_WEEK", "CIRCUIT_BREAKER_PERIOD_MONTH"]`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -1334,16 +1522,35 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description field.`,
+				Description: `Optional description explaining the automation's purpose.`,
 			},
 			"disabled_reason_circuit_breaker": schema.SingleNestedAttribute{
-				Computed:    true,
-				Description: `The DisabledReasonCircuitBreaker message.`,
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"observed_count": schema.Int64Attribute{
+						Computed:    true,
+						Description: `Observed execution count in the period at trip time.`,
+					},
+					"period": schema.StringAttribute{
+						Computed:    true,
+						Description: `Snapshot of the period at trip time.`,
+					},
+					"threshold": schema.Int64Attribute{
+						Computed:    true,
+						Description: `Snapshot of the threshold at trip time.`,
+					},
+					"tripped_at": schema.StringAttribute{
+						Computed: true,
+					},
+				},
+				MarkdownDescription: `DisabledReasonCircuitBreaker carries the trip context when an automation` + "\n" +
+					` has been auto-disabled by its rate cap. Returned on the parent Automation` + "\n" +
+					` when read; not directly settable.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The displayName field.`,
+				Description: `Human-readable name for the automation.`,
 			},
 			"draft_automation_steps": schema.ListNestedAttribute{
 				Computed: true,
@@ -1483,6 +1690,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The ConnectorRef message.`,
 								},
+								"password_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression referencing a GeneratePassword step output (e.g. "genStep.password").` + "\n" +
+										` When set, the resolved password is encrypted for the connector and sent as CredentialOptions.EncryptedPassword.`,
+								},
 								"user_id_cel": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
@@ -1905,10 +2118,74 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
+								"generate_password_policy": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"custom_characters": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The customCharacters field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"excluded_characters": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The excludedCharacters field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"max_character_count": schema.Int32Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The maxCharacterCount field.`,
+										},
+										"min_character_count": schema.Int32Attribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The minCharacterCount field.`,
+										},
+										"no_restrictions": schema.BoolAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `The noRestrictions field.` + "\n" +
+												`This field is part of the ` + "`" + `character_rules` + "`" + ` oneof.` + "\n" +
+												`See the documentation for ` + "`" + `c1.api.automations.v1.GeneratePasswordPolicy` + "`" + ` for more details.`,
+										},
+										"require_lowercase": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireLowercase field.`,
+										},
+										"require_numbers": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireNumbers field.`,
+										},
+										"require_special_characters": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireSpecialCharacters field.`,
+										},
+										"require_uppercase": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The requireUppercase field.`,
+										},
+									},
+									MarkdownDescription: `GeneratePasswordPolicy defines inline password generation rules.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named character_rules. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - noRestrictions` + "\n" +
+										`  - customCharacters` + "\n" +
+										`  - excludedCharacters`,
+								},
 								"password_policy_id": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The ID of the password policy to use for generating the password.`,
+									Computed:           true,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `Deprecated: password policy ID lookup is no longer used.`,
 								},
 							},
 							Description: `The GeneratePassword message.`,
@@ -2193,6 +2470,22 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `The body field.`,
 								},
+								"email": schema.StringAttribute{
+									Computed:           true,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									MarkdownDescription: `Deprecated: use email_cel instead. Static email field shipped behind FF 541 (SKU_MANUAL)` + "\n" +
+										` with zero tenant enablement. CEL subsumes static: '"ops@example.com"' is valid CEL.`,
+								},
+								"email_cel": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression resolving to one or more email addresses (string or list<string>).` + "\n" +
+										` Evaluated against the workflow execution context (trigger + completed steps).` + "\n" +
+										` Static emails work too: '"ops@example.com"' is valid CEL.` + "\n" +
+										` Supports list<string> for multiple recipients: '["a@x.com", "b@x.com"]'.` + "\n" +
+										` Requires the tenant to have a TenantEmailProvider configured.`,
+								},
 								"subject": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -2256,8 +2549,38 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`This field is part of the ` + "`" + `channel` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.automations.v1.SendSlackMessage` + "`" + ` for more details.`,
 								},
+								"use_subject_user": schema.BoolAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The useSubjectUser field.`,
+								},
+								"user_ids_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The userIdsCel field.`,
+								},
+								"user_refs": schema.ListNestedAttribute{
+									Computed: true,
+									Optional: true,
+									NestedObject: schema.NestedAttributeObject{
+										Validators: []validator.Object{
+											speakeasy_objectvalidators.NotNull(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"id": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The id of the user.`,
+											},
+										},
+									},
+									Description: `The userRefs field.`,
+								},
 							},
-							MarkdownDescription: `The SendSlackMessage message.` + "\n" +
+							MarkdownDescription: `SendSlackMessage posts to a channel or DMs one or more users. Delivery mode is` + "\n" +
+								` inferred from which fields are populated: DM if any user field is set` + "\n" +
+								` (use_subject_user, user_ids_cel, user_refs), otherwise channel. Priority for DM` + "\n" +
+								` recipient resolution: use_subject_user > user_ids_cel > user_refs.` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named channel. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - channelName` + "\n" +
@@ -2315,6 +2638,62 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed:    true,
 							Optional:    true,
 							Description: `The stepName field.`,
+						},
+						"store_credential": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"app_id_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression that resolves to app ID (App Vault only)`,
+								},
+								"auth_type": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Authentication type for the paper vault recipient (Paper Vault only). possible known values include one of ["STORE_CREDENTIAL_AUTH_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_AUTH_TYPE_SSO_INTERNAL", "STORE_CREDENTIAL_AUTH_TYPE_VERIFY_EMAIL"]`,
+								},
+								"credential_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression that resolves to the encrypted credential from GeneratePassword`,
+								},
+								"expiry": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"label_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Optional display label for the vault`,
+								},
+								"max_views": schema.Int64Attribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Maximum number of views (0 = unlimited, default 1) (Paper Vault only)`,
+								},
+								"recipient_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)`,
+								},
+								"recipient_email_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)`,
+								},
+								"ttl": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"vault_type": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Vault type selector (default: PAPER_VAULT for backward compatibility). possible known values include one of ["STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT", "STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT"]`,
+								},
+							},
+							MarkdownDescription: `StoreCredential stores a credential from GeneratePassword in a vault.` + "\n" +
+								` Supports Paper Vault (SSO/email) and App Vault (entitlement-bound).`,
 						},
 						"task_action": schema.SingleNestedAttribute{
 							Computed: true,
@@ -2423,14 +2802,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								"task_user_relation": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The taskUserRelation field. must be one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"TASK_USER_RELATION_UNSPECIFIED",
-											"TASK_USER_RELATION_ASSIGNEE",
-											"TASK_USER_RELATION_SUBJECT",
-										),
-									},
+									Description: `The taskUserRelation field. possible known values include one of ["TASK_USER_RELATION_UNSPECIFIED", "TASK_USER_RELATION_ASSIGNEE", "TASK_USER_RELATION_SUBJECT"]`,
 								},
 							},
 							MarkdownDescription: `The TaskAction message.` + "\n" +
@@ -2525,15 +2897,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									MarkdownDescription: `The userStatusEnum field.` + "\n" +
 										`This field is part of the ` + "`" + `user_status` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.automations.v1.UpdateUser` + "`" + ` for more details.` + "\n" +
-										`must be one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"UNKNOWN",
-											"ENABLED",
-											"DISABLED",
-											"DELETED",
-										),
-									},
+										`possible known values include one of ["UNKNOWN", "ENABLED", "DISABLED", "DELETED"]`,
 								},
 							},
 							MarkdownDescription: `The UpdateUser message.` + "\n" +
@@ -2589,7 +2953,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						},
 					},
 				},
-				Description: `The draftAutomationSteps field.`,
+				Description: `Steps saved as a draft that have not yet been published.`,
 			},
 			"draft_triggers": schema.ListNestedAttribute{
 				Computed: true,
@@ -2716,15 +3080,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"account_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"APP_USER_TYPE_UNSPECIFIED",
-															"APP_USER_TYPE_USER",
-															"APP_USER_TYPE_SERVICE_ACCOUNT",
-															"APP_USER_TYPE_SYSTEM_ACCOUNT",
-														),
-													},
+													Description: `The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
 												},
 											},
 											Description: `The AccountFilter message.`,
@@ -2813,39 +3169,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"grant_filter_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_FILTER_TYPE_UNSPECIFIED",
-															"GRANT_FILTER_TYPE_PERMANENT",
-															"GRANT_FILTER_TYPE_TEMPORARY",
-														),
-													},
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 												},
 												"grant_justification_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_JUSTIFICATION_TYPE_UNSPECIFIED",
-															"GRANT_JUSTIFICATION_TYPE_ALL",
-															"GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE",
-															"GRANT_JUSTIFICATION_TYPE_DIRECT",
-														),
-													},
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
 												},
 												"grant_source_filter": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_SOURCE_FILTER_UNSPECIFIED",
-															"GRANT_SOURCE_FILTER_DIRECT",
-															"GRANT_SOURCE_FILTER_INHERITED",
-														),
-													},
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 												},
 											},
 											Description: `The GrantFilter message.`,
@@ -2877,15 +3211,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"account_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"APP_USER_TYPE_UNSPECIFIED",
-															"APP_USER_TYPE_USER",
-															"APP_USER_TYPE_SERVICE_ACCOUNT",
-															"APP_USER_TYPE_SYSTEM_ACCOUNT",
-														),
-													},
+													Description: `The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
 												},
 											},
 											Description: `The AccountFilter message.`,
@@ -2974,39 +3300,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"grant_filter_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_FILTER_TYPE_UNSPECIFIED",
-															"GRANT_FILTER_TYPE_PERMANENT",
-															"GRANT_FILTER_TYPE_TEMPORARY",
-														),
-													},
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 												},
 												"grant_justification_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_JUSTIFICATION_TYPE_UNSPECIFIED",
-															"GRANT_JUSTIFICATION_TYPE_ALL",
-															"GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE",
-															"GRANT_JUSTIFICATION_TYPE_DIRECT",
-														),
-													},
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
 												},
 												"grant_source_filter": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_SOURCE_FILTER_UNSPECIFIED",
-															"GRANT_SOURCE_FILTER_DIRECT",
-															"GRANT_SOURCE_FILTER_INHERITED",
-														),
-													},
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 												},
 											},
 											Description: `The GrantFilter message.`,
@@ -3096,6 +3400,36 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								},
 							},
 							Description: `The ScheduleTriggerAppUser message.`,
+						},
+						"schedule_trigger_no_user": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"advanced": schema.BoolAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The advanced field.`,
+								},
+								"cron_spec": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The cronSpec field.`,
+								},
+								"start": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									Validators: []validator.String{
+										validators.IsRFC3339(),
+									},
+								},
+								"timezone": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The timezone field.`,
+								},
+							},
+							MarkdownDescription: `ScheduleTriggerNoUser fires on a cron schedule with no subject user (e.g. reports, syncs, orchestration).` + "\n" +
+								` Minimum cron interval is enforced at 1 hour in validation.`,
 						},
 						"usage_based_revocation_trigger": schema.SingleNestedAttribute{
 							Computed: true,
@@ -3250,6 +3584,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `Optional existing listener ID (hidden field from frontend)`,
 								},
+								"webhook_listener_auth_capability_url": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `Capability URL authentication: the URL itself contains an unguessable token that acts` + "\n" +
+										` as the credential. This is simpler to integrate but less secure than JWT or HMAC because` + "\n" +
+										` the token can leak via server logs, referrer headers, and URL sharing.` + "\n" +
+										` See https://www.w3.org/TR/capability-urls/ for background.`,
+								},
 								"webhook_listener_auth_hmac": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -3272,16 +3614,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`` + "\n" +
 								`This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - jwt` + "\n" +
-								`  - hmac`,
+								`  - hmac` + "\n" +
+								`  - capabilityUrl`,
 						},
 					},
 				},
-				Description: `The draftTriggers field.`,
+				Description: `Triggers saved as a draft that have not yet been published.`,
 			},
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The enabled field.`,
+				Description: `Whether the automation is active and eligible for execution.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -3290,7 +3633,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"is_draft": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The isDraft field.`,
+				Description: `Whether this automation is in draft mode. Draft automations are not eligible for trigger-based execution.`,
 			},
 			"last_executed_at": schema.StringAttribute{
 				Computed: true,
@@ -3424,15 +3767,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"account_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"APP_USER_TYPE_UNSPECIFIED",
-															"APP_USER_TYPE_USER",
-															"APP_USER_TYPE_SERVICE_ACCOUNT",
-															"APP_USER_TYPE_SYSTEM_ACCOUNT",
-														),
-													},
+													Description: `The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
 												},
 											},
 											Description: `The AccountFilter message.`,
@@ -3521,39 +3856,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"grant_filter_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_FILTER_TYPE_UNSPECIFIED",
-															"GRANT_FILTER_TYPE_PERMANENT",
-															"GRANT_FILTER_TYPE_TEMPORARY",
-														),
-													},
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 												},
 												"grant_justification_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_JUSTIFICATION_TYPE_UNSPECIFIED",
-															"GRANT_JUSTIFICATION_TYPE_ALL",
-															"GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE",
-															"GRANT_JUSTIFICATION_TYPE_DIRECT",
-														),
-													},
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
 												},
 												"grant_source_filter": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_SOURCE_FILTER_UNSPECIFIED",
-															"GRANT_SOURCE_FILTER_DIRECT",
-															"GRANT_SOURCE_FILTER_INHERITED",
-														),
-													},
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 												},
 											},
 											Description: `The GrantFilter message.`,
@@ -3585,15 +3898,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"account_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The accountType field. must be one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"APP_USER_TYPE_UNSPECIFIED",
-															"APP_USER_TYPE_USER",
-															"APP_USER_TYPE_SERVICE_ACCOUNT",
-															"APP_USER_TYPE_SYSTEM_ACCOUNT",
-														),
-													},
+													Description: `The accountType field. possible known values include one of ["APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT"]`,
 												},
 											},
 											Description: `The AccountFilter message.`,
@@ -3682,39 +3987,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"grant_filter_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantFilterType field. must be one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_FILTER_TYPE_UNSPECIFIED",
-															"GRANT_FILTER_TYPE_PERMANENT",
-															"GRANT_FILTER_TYPE_TEMPORARY",
-														),
-													},
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
 												},
 												"grant_justification_type": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantJustificationType field. must be one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_JUSTIFICATION_TYPE_UNSPECIFIED",
-															"GRANT_JUSTIFICATION_TYPE_ALL",
-															"GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE",
-															"GRANT_JUSTIFICATION_TYPE_DIRECT",
-														),
-													},
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
 												},
 												"grant_source_filter": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `The grantSourceFilter field. must be one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"GRANT_SOURCE_FILTER_UNSPECIFIED",
-															"GRANT_SOURCE_FILTER_DIRECT",
-															"GRANT_SOURCE_FILTER_INHERITED",
-														),
-													},
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
 												},
 											},
 											Description: `The GrantFilter message.`,
@@ -3804,6 +4087,36 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								},
 							},
 							Description: `The ScheduleTriggerAppUser message.`,
+						},
+						"schedule_trigger_no_user": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"advanced": schema.BoolAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The advanced field.`,
+								},
+								"cron_spec": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The cronSpec field.`,
+								},
+								"start": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									Validators: []validator.String{
+										validators.IsRFC3339(),
+									},
+								},
+								"timezone": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The timezone field.`,
+								},
+							},
+							MarkdownDescription: `ScheduleTriggerNoUser fires on a cron schedule with no subject user (e.g. reports, syncs, orchestration).` + "\n" +
+								` Minimum cron interval is enforced at 1 hour in validation.`,
 						},
 						"usage_based_revocation_trigger": schema.SingleNestedAttribute{
 							Computed: true,
@@ -3958,6 +4271,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `Optional existing listener ID (hidden field from frontend)`,
 								},
+								"webhook_listener_auth_capability_url": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `Capability URL authentication: the URL itself contains an unguessable token that acts` + "\n" +
+										` as the credential. This is simpler to integrate but less secure than JWT or HMAC because` + "\n" +
+										` the token can leak via server logs, referrer headers, and URL sharing.` + "\n" +
+										` See https://www.w3.org/TR/capability-urls/ for background.`,
+								},
 								"webhook_listener_auth_hmac": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -3980,11 +4301,18 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`` + "\n" +
 								`This message contains a oneof named auth_config. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - jwt` + "\n" +
-								`  - hmac`,
+								`  - hmac` + "\n" +
+								`  - capabilityUrl`,
 						},
 					},
 				},
-				Description: `The triggers field.`,
+				Description: `Triggers that determine when the automation runs.`,
+			},
+			"webhook_capability_url": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `One-time absolute webhook URL for capability URL authentication, shown once at creation time.` + "\n" +
+					` Contains the full URL including the embedded token (e.g. https://tenant.conductorone.com/api/v1/webhooks/incoming/{id}/t/{token}).` + "\n" +
+					` Populated only when the webhook trigger uses capability URL authentication.`,
 			},
 			"webhook_hmac_secret": schema.StringAttribute{
 				Computed:    true,
@@ -4032,7 +4360,7 @@ func (r *AutomationResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreateAutomationRequest(ctx)
+	request, requestDiags := data.ToSharedAutomationsCreateAutomationRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
@@ -4054,11 +4382,11 @@ func (r *AutomationResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.CreateAutomationResponse != nil) {
+	if !(res.AutomationsCreateAutomationResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreateAutomationResponse1(ctx, res.CreateAutomationResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAutomationsCreateAutomationResponse(ctx, res.AutomationsCreateAutomationResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -4183,43 +4511,6 @@ func (r *AutomationResource) Update(ctx context.Context, req resource.UpdateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsC1APIAutomationsV1AutomationServiceGetAutomationRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.Automation.GetAutomation(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.GetAutomationResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetAutomationResponse(ctx, res1.GetAutomationResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -4261,7 +4552,10 @@ func (r *AutomationResource) Delete(ctx context.Context, req resource.DeleteRequ
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

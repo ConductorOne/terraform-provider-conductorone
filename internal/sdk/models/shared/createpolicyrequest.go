@@ -2,12 +2,7 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
-// CreatePolicyRequestPolicyType - The enum of the policy type.
+// CreatePolicyRequestPolicyType - The type of policy to create (grant, revoke, or certify).
 type CreatePolicyRequestPolicyType string
 
 const (
@@ -22,48 +17,54 @@ const (
 func (e CreatePolicyRequestPolicyType) ToPointer() *CreatePolicyRequestPolicyType {
 	return &e
 }
-func (e *CreatePolicyRequestPolicyType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreatePolicyRequestPolicyType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "POLICY_TYPE_UNSPECIFIED", "POLICY_TYPE_GRANT", "POLICY_TYPE_REVOKE", "POLICY_TYPE_CERTIFY", "POLICY_TYPE_ACCESS_REQUEST", "POLICY_TYPE_PROVISION":
+			return true
+		}
 	}
-	switch v {
-	case "POLICY_TYPE_UNSPECIFIED":
-		fallthrough
-	case "POLICY_TYPE_GRANT":
-		fallthrough
-	case "POLICY_TYPE_REVOKE":
-		fallthrough
-	case "POLICY_TYPE_CERTIFY":
-		fallthrough
-	case "POLICY_TYPE_ACCESS_REQUEST":
-		fallthrough
-	case "POLICY_TYPE_PROVISION":
-		*e = CreatePolicyRequestPolicyType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreatePolicyRequestPolicyType: %v", v)
-	}
+	return false
 }
 
 // The CreatePolicyRequest message is used to create a new policy.
 type CreatePolicyRequest struct {
+	// Bounded key/value metadata bag for IaC marking and customer tags.
+	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+	//  matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+	//  with `c1/` are reserved for server-managed use and rejected on write.
+	//
+	//  Well-known keys: `managed_by`, `iac_workspace`,
+	//  `iac_resource_address`, `iac_tool_version`.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The description of the new policy.
 	Description *string `json:"description,omitempty"`
 	// The display name of the new policy.
 	DisplayName string `json:"displayName"`
-	// The map of policy type to policy steps. The key is the stringified version of the enum. See other policies for examples.
+	// Step sequences for this policy. The map must include a baseline entry keyed
+	//  by the lowercased policy type (e.g., "grant"). Additional entries with
+	//  opaque keys can be added for conditional routing via the rules array.
 	PolicySteps map[string]PolicyStepsInput `json:"policySteps,omitempty"`
-	// The enum of the policy type.
+	// The type of policy to create (grant, revoke, or certify).
 	PolicyType *CreatePolicyRequestPolicyType `json:"policyType,omitempty"`
-	// Actions to occur after a policy finishes. As of now this is only valid on a certify policy to remediate a denied certification immediately.
+	// Ordered actions to execute after the policy completes processing.
 	PostActions []PolicyPostActions `json:"postActions,omitempty"`
-	// Deprecated. Use setting in policy step instead
+	// This field is no longer used. Configure delegate reassignment in the policy step instead.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ReassignTasksToDelegates *bool `json:"reassignTasksToDelegates,omitempty"`
-	// The rules field.
+	// Conditional routing rules. See the Policy message for details on evaluation order.
 	Rules []Rule `json:"rules,omitempty"`
+}
+
+func (c *CreatePolicyRequest) GetAnnotations() map[string]string {
+	if c == nil {
+		return nil
+	}
+	return c.Annotations
 }
 
 func (c *CreatePolicyRequest) GetDescription() *string {

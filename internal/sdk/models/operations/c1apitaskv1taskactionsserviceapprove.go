@@ -26,6 +26,9 @@ func (c *C1APITaskV1TaskActionsServiceApproveRequest) GetTaskActionsServiceAppro
 	return c.TaskActionsServiceApproveRequest
 }
 
+// #region class-body-c1apitaskv1taskactionsserviceapproverequest
+// #endregion class-body-c1apitaskv1taskactionsserviceapproverequest
+
 type C1APITaskV1TaskActionsServiceApproveResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APITaskV1TaskActionsServiceApproveResponse) GetTaskActionsServiceAppr
 	}
 	return c.TaskActionsServiceApproveResponse
 }
+
+// #region class-body-c1apitaskv1taskactionsserviceapproveresponse
+// #endregion class-body-c1apitaskv1taskactionsserviceapproveresponse

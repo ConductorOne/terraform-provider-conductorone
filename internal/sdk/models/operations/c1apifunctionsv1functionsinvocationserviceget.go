@@ -26,6 +26,9 @@ func (c *C1APIFunctionsV1FunctionsInvocationServiceGetRequest) GetID() string {
 	return c.ID
 }
 
+// #region class-body-c1apifunctionsv1functionsinvocationservicegetrequest
+// #endregion class-body-c1apifunctionsv1functionsinvocationservicegetrequest
+
 type C1APIFunctionsV1FunctionsInvocationServiceGetResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -64,3 +67,6 @@ func (c *C1APIFunctionsV1FunctionsInvocationServiceGetResponse) GetFunctionsInvo
 	}
 	return c.FunctionsInvocationServiceGetResponse
 }
+
+// #region class-body-c1apifunctionsv1functionsinvocationservicegetresponse
+// #endregion class-body-c1apifunctionsv1functionsinvocationservicegetresponse
