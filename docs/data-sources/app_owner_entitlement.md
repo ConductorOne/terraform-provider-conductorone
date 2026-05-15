@@ -50,6 +50,14 @@ This message contains a oneof named max_grant_duration. Only a single field of t
 Read-Only:
 
 - `alias` (String) The alias of the app entitlement used by Cone. Also exact-match queryable.
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching ^c1/
+ are reserved.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `app_id` (String) The ID of the app that is associated with the app entitlement.
 - `app_resource_id` (String) The ID of the app resource that is associated with the app entitlement
 - `app_resource_type_id` (String) The ID of the app resource type that is associated with the app entitlement

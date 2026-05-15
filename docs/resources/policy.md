@@ -16,6 +16,9 @@ When creating a policy you must provide a display name. Optionally you can defin
 
 ```terraform
 resource "conductorone_policy" "my_policy" {
+  annotations = {
+    key = "value"
+  }
   description  = "...my_description..."
   display_name = "...my_display_name..."
   policy_steps = {
@@ -339,6 +342,14 @@ resource "conductorone_policy" "my_policy" {
 
 ### Optional
 
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+ with `c1/` are reserved for server-managed use and rejected on write.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `description` (String) The description of the new policy.
 - `policy_steps` (Attributes Map) Step sequences for this policy. The map must include a baseline entry keyed
  by the lowercased policy type (e.g., "grant"). Additional entries with

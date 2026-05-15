@@ -17,7 +17,10 @@ This is different than the App Entitlement resource which only allows you to upd
 
 ```terraform
 resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
-  alias                = "...my_alias..."
+  alias = "...my_alias..."
+  annotations = {
+    key = "value"
+  }
   app_id               = "...my_app_id..."
   app_resource_id      = "...my_app_resource_id..."
   app_resource_type_id = "...my_app_resource_type_id..."
@@ -149,6 +152,14 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
 ### Optional
 
 - `alias` (String) A unique alias for the entitlement, used for programmatic lookups and Cone.
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+ with `c1/` are reserved for server-managed use and rejected on write.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `app_resource_id` (String) The ID of the resource that this entitlement belongs to. Requires replacement if changed.
 - `app_resource_type_id` (String) The ID of the resource type that this entitlement belongs to. Requires replacement if changed.
 - `certify_policy_id` (String) The ID of the policy to use for certification tasks.

@@ -16,6 +16,9 @@ When creating an AppResource you must provide a display name, app_id and app_res
 
 ```terraform
 resource "conductorone_app_resource" "my_app_resource" {
+  annotations = {
+    key = "value"
+  }
   app_id               = "...my_app_id..."
   app_resource_type_id = "...my_app_resource_type_id..."
   description          = "...my_description..."
@@ -35,6 +38,14 @@ resource "conductorone_app_resource" "my_app_resource" {
 
 ### Optional
 
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+ with `c1/` are reserved for server-managed use and rejected on write.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `description` (String) An optional description for the new resource.
 - `match_baton_id` (String) If supplied, it's implied that the resource is created before sync and needs to be merged with connector resource.
 

@@ -18,6 +18,9 @@ NOTE: To control appOwners you must use the `conductorone_app_owner` resource.
 
 ```terraform
 resource "conductorone_app" "my_app" {
+  annotations = {
+    key = "value"
+  }
   app_entitlement_owner_refs = [
     {
       app_id = "...my_app_id..."
@@ -45,6 +48,14 @@ resource "conductorone_app" "my_app" {
 
 ### Optional
 
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+ with `c1/` are reserved for server-managed use and rejected on write.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `app_entitlement_owner_refs` (Attributes List) Sets entitlement owners on the app. Requires replacement if changed. (see [below for nested schema](#nestedatt--app_entitlement_owner_refs))
 - `certify_policy_id` (String) Creates the app with this certify policy.
 - `description` (String) Creates the app with this description.

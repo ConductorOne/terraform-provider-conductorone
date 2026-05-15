@@ -69,6 +69,14 @@ Read-Only:
 
 - `access_model` (String) How this app models access. Derived during uplift from the app's resource type traits.
  Sparse ACL feature.
+- `annotations` (Map of String) Key/value metadata. Up to 16 entries; keys 1-128 chars; values 0-256
+ chars; URL-safe ASCII. Keys starting with `c1/` are reserved.
+
+ Updates have PATCH semantics: keys absent from the request are
+ preserved; an empty value deletes the key.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `app_account_id` (String) The ID of the Account named by AccountName.
 - `app_account_name` (String) The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
 - `app_user_mapper` (Attributes) AppUserMapper configures custom account mapping for uplift. (see [below for nested schema](#nestedatt--list--app_user_mapper))

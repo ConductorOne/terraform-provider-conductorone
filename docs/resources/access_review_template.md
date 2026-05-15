@@ -16,7 +16,7 @@ AccessReviewTemplate Resource
 resource "conductorone_access_review_template" "my_access_review_template" {
   access_review_column_config = {
     columns = [
-      "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_CHILDREN"
+      "ACCESS_REVIEW_TASK_COLUMN_APP_USER_USERNAME"
     ]
   }
   access_review_duration = "...my_access_review_duration..."
@@ -121,7 +121,10 @@ resource "conductorone_access_review_template" "my_access_review_template" {
       ]
     }
   }
-  accuracy_issue_action             = "ACCURACY_ISSUE_ACTION_WAIT"
+  accuracy_issue_action = "ACCURACY_ISSUE_ACTION_WAIT"
+  annotations = {
+    key = "value"
+  }
   auto_close_campaign               = false
   auto_close_decision               = "CLOSE_DECISION_NO_ACTION"
   auto_generate_report              = false
@@ -201,6 +204,14 @@ This message contains a oneof named access_conflicts_scope. Only a single field 
 This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
   - resourceSelection (see [below for nested schema](#nestedatt--access_review_scope_v2))
 - `accuracy_issue_action` (String) The accuracyIssueAction field. possible known values include one of ["ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT"]
+- `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
+ See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
+ chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
+ matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting
+ with `c1/` are reserved for server-managed use and rejected on write.
+
+ Well-known keys: `managed_by`, `iac_workspace`,
+ `iac_resource_address`, `iac_tool_version`.
 - `auto_close_campaign` (Boolean) The autoCloseCampaign field.
 - `auto_close_decision` (String) The autoCloseDecision field. possible known values include one of ["CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION"]
 - `auto_generate_report` (Boolean) auto generate report when campaign is closed
