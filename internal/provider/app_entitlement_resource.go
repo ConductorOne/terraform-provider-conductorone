@@ -120,20 +120,25 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"deprovisioner_policy": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"action_provision": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"action_name": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The actionName field.`,
 							},
 							"app_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The appId field.`,
 							},
 							"connector_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The connectorId field.`,
 							},
 						},
@@ -141,28 +146,35 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					},
 					"connector_provision": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"account_provision": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"config": schema.StringAttribute{
 										CustomType:  jsontypes.NormalizedType{},
 										Computed:    true,
+										Optional:    true,
 										Description: `Parsed as JSON.`,
 									},
 									"connector_id": schema.StringAttribute{
 										Computed:    true,
+										Optional:    true,
 										Description: `The connectorId field.`,
 									},
 									"do_not_save": schema.SingleNestedAttribute{
 										Computed:    true,
+										Optional:    true,
 										Description: `The DoNotSave message.`,
 									},
 									"save_to_vault": schema.SingleNestedAttribute{
 										Computed: true,
+										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"vault_ids": schema.ListAttribute{
 												Computed:    true,
+												Optional:    true,
 												ElementType: types.StringType,
 												Description: `The vaultIds field.`,
 											},
@@ -171,6 +183,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 									},
 									"schema_id": schema.StringAttribute{
 										Computed:    true,
+										Optional:    true,
 										Description: `The schemaId field.`,
 									},
 								},
@@ -182,9 +195,11 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 							},
 							"default_behavior": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"connector_id": schema.StringAttribute{
 										Computed: true,
+										Optional: true,
 										MarkdownDescription: `this checks if the entitlement is enabled by provisioning in a specific connector` + "\n" +
 											` this can happen automatically and doesn't need any extra info`,
 									},
@@ -193,9 +208,11 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 							},
 							"delete_account": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"connector_id": schema.StringAttribute{
 										Computed:    true,
+										Optional:    true,
 										Description: `The connectorId field.`,
 									},
 								},
@@ -220,13 +237,16 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					},
 					"delegated_provision": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The AppID of the entitlement to delegate provisioning to.`,
 							},
 							"entitlement_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The ID of the entitlement we are delegating provisioning to.`,
 							},
 						},
@@ -243,21 +263,26 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					},
 					"external_ticket_provision": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The appId field.`,
 							},
 							"connector_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The connectorId field.`,
 							},
 							"external_ticket_provisioner_config_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The externalTicketProvisionerConfigId field.`,
 							},
 							"instructions": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 							},
 						},
@@ -274,13 +299,16 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					},
 					"manual_provision": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"instructions": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 							},
 							"user_ids": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								Description: `An array of users that are required to provision during this step.`,
 							},
@@ -299,6 +327,7 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					"multi_step": schema.StringAttribute{
 						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
+						Optional:    true,
 						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
 						Validators: []validator.String{
 							stringvalidator.ConflictsWith(path.Expressions{
@@ -312,13 +341,16 @@ func (r *AppEntitlementResource) Schema(ctx context.Context, req resource.Schema
 					},
 					"unconfigured_provision": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The UnconfiguredProvision message.`,
 					},
 					"webhook_provision": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"webhook_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The ID of the webhook to call for provisioning.`,
 							},
 						},
