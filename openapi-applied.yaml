@@ -10142,7 +10142,7 @@ components:
           readOnly: false
           type: boolean
         appGroupId:
-          description: The ID of the group specified for approval.
+          description: The app entitlement ID of the group specified for approval (not the group resource ID). Use the conductorone_app_entitlement data source to look up the correct entitlement ID.
           readOnly: false
           type: string
         appId:

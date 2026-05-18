@@ -227,7 +227,7 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 													},
 													"app_group_id": schema.StringAttribute{
 														Computed:    true,
-														Description: `The ID of the group specified for approval.`,
+														Description: `The app entitlement ID of the group specified for approval (not the group resource ID). Use the conductorone_app_entitlement data source to look up the correct entitlement ID.`,
 													},
 													"app_id": schema.StringAttribute{
 														Computed:    true,

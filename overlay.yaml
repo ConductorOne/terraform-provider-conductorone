@@ -309,6 +309,9 @@ actions:
         - selfApproval
         - userApproval
         - webhookApproval
+  - target: $["components"]["schemas"]["c1.api.policy.v1.AppGroupApproval"]["properties"]["appGroupId"]
+    update:
+      description: "The app entitlement ID of the group specified for approval (not the group resource ID). Use the conductorone_app_entitlement data source to look up the correct entitlement ID."
   - target: $["components"]["schemas"]["c1.api.policy.v1.EntitlementOwnerApproval"]
     update:
       x-speakeasy-conflicts-with:
