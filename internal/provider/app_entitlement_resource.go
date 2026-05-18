@@ -1,9 +1,10 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
-	"strings"
 
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -970,18 +971,28 @@ func (r *AppEntitlementResource) Delete(ctx context.Context, req resource.Delete
 }
 
 func (r *AppEntitlementResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	idParts := strings.Split(req.ID, "_")
+	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
+	dec.DisallowUnknownFields()
+	var data struct {
+		AppID string `json:"app_id"`
+		ID    string `json:"id"`
+	}
 
-	if len(idParts) != 2 || idParts[0] == "" || idParts[1] == "" {
-		resp.Diagnostics.AddError(
-			"Unexpected Import Identifier",
-			fmt.Sprintf("Expected import identifier with format: id_appId. Got: %q", req.ID),
-		)
+	if err := dec.Decode(&data); err != nil {
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"app_id": "...", "id": "..."}': `+err.Error())
 		return
 	}
 
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), idParts[0])...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), idParts[1])...)
+	if len(data.AppID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field app_id is required but was not found in the json encoded ID.`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), data.AppID)...)
+	if len(data.ID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID.`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 }
 
 // cleanupDurationFields ensures that only one of the fields DurationGrant or DurationUnset is present in the final model (data),
