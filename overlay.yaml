@@ -621,6 +621,38 @@ actions:
       x-speakeasy-param-suppress-computed-diff: allow
   - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["stringSliceField"]
     remove: true
+  # IGA-743: Speakeasy regen has been adding new Field variants to the Go model
+  # (internal/provider/types/form_field.go) without wiring matching nested
+  # attributes into request_schema_resource.go's Schema(). That mismatch fires
+  # "Value Conversion Error / mismatch between struct and object" on refresh of
+  # any state written by an older provider version. None of these properties
+  # are exposed in the resource schema today, so no user HCL can reference
+  # them — drop them at the OpenAPI layer (same precedent as stringSliceField
+  # above) so the regen produces a model that matches the schema.
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["oauth2Field"]
+    remove: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["adminConfig"]
+    remove: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["sharedConfig"]
+    remove: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["userConfig"]
+    remove: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["stringMapField"]
+    remove: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["readOnly"]
+    remove: true
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["required"]
+    remove: true
+  # IGA-743: c1.api.form.v1.StringField carries x-speakeasy-name-override:
+  # FormStringField upstream, which renames the generated Go type to
+  # FormStringField and the tfsdk tag to "form_string_field" — but the resource
+  # Schema attribute key derives from the parent's property name (stringField ->
+  # string_field), so state (carrying "string_field") cannot map back to the
+  # struct. Drop the override so the Go type stays StringField, the tfsdk tag
+  # stays "string_field", and the schema, struct, and existing-state shapes
+  # all agree.
+  - target: $["components"]["schemas"]["c1.api.form.v1.StringField"]["x-speakeasy-name-override"]
+    remove: true
   ## len is a builtin function in golang, we have to rename `len` with a different name.
   - target: $["components"]["schemas"]["validate.StringRules"]["properties"]["len"]
     update: 
