@@ -6,7 +6,7 @@ package shared
 type AppGroupApproval struct {
 	// Configuration to allow self approval if the target user is a member of the group during this step.
 	AllowSelfApproval *bool `json:"allowSelfApproval,omitempty"`
-	// The app entitlement ID of the group specified for approval (not the group resource ID).
+	// The app entitlement ID of the group specified for approval (not the group resource ID). Use the conductorone_app_entitlement data source to look up the correct entitlement ID.
 	AppGroupID *string `json:"appGroupId,omitempty"`
 	// The ID of the app that contains the group specified for approval.
 	AppID *string `json:"appId,omitempty"`

@@ -4279,6 +4279,13 @@ components:
                     nullable: true
                     readOnly: false
                     type: array
+                requestSchemaIds:
+                    description: Search for app entitlements that are bound to any of these request schemas.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
                 resourceIds:
                     description: Search for app entitlements that belongs to these resources.
                     items:
@@ -8212,11 +8219,75 @@ components:
             type: object
             x-speakeasy-entity: App_Owner_User
             x-speakeasy-name-override: AppOwnerUser
+        c1.api.app.v2.AppResourceOwnerEntitlement:
+            description: AppResourceOwnerEntitlement represents an entitlement ownership source for an app resource.
+            properties:
+                appEntitlement:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlement'
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                resourceId:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+                resourceTypeId:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                roleSlug:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+            title: App Resource Owner Entitlement
+            type: object
+            x-speakeasy-name-override: AppResourceOwnerEntitlement
+        c1.api.app.v2.AppResourceOwnerUser:
+            description: AppResourceOwnerUser represents a user ownership source for an app resource.
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: false
+                    type: string
+                resourceId:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+                resourceTypeId:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                roleSlug:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                user:
+                    $ref: '#/components/schemas/c1.api.user.v1.User'
+            title: App Resource Owner User
+            type: object
+            x-speakeasy-name-override: AppResourceOwnerUser
         c1.api.app.v2.ConnectorOwnerEntitlement:
             description: ConnectorOwnerEntitlement represents an entitlement ownership source for a connector.
             properties:
                 appEntitlement:
                     $ref: '#/components/schemas/c1.api.app.v1.AppEntitlement'
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                connectorId:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
                 createdAt:
                     format: date-time
                     readOnly: false
@@ -8227,10 +8298,19 @@ components:
                     type: string
             title: Connector Owner Entitlement
             type: object
+            x-speakeasy-entity: Connector_Owner_Entitlement
             x-speakeasy-name-override: ConnectorOwnerEntitlement
         c1.api.app.v2.ConnectorOwnerUser:
             description: ConnectorOwnerUser represents a user ownership source for a connector.
             properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                connectorId:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
                 createdAt:
                     format: date-time
                     readOnly: false
@@ -8243,6 +8323,7 @@ components:
                     $ref: '#/components/schemas/c1.api.user.v1.User'
             title: Connector Owner User
             type: object
+            x-speakeasy-entity: Connector_Owner_User
             x-speakeasy-name-override: ConnectorOwnerUser
         c1.api.app.v2.CreateAppEntitlementEntitlementOwnerRequestInput:
             description: CreateAppEntitlementEntitlementOwnerRequest is the request for creating an entitlement ownership source on an entitlement.
@@ -8292,6 +8373,38 @@ components:
             title: Create App Entitlement User Owner Response
             type: object
             x-speakeasy-name-override: CreateAppEntitlementUserOwnerResponse
+        c1.api.app.v2.CreateAppResourceEntitlementOwnerRequestInput:
+            description: CreateAppResourceEntitlementOwnerRequest is the request for creating an entitlement ownership source on a resource.
+            properties:
+                appEntitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+            title: Create App Resource Entitlement Owner Request
+            type: object
+            x-speakeasy-name-override: CreateAppResourceEntitlementOwnerRequest
+        c1.api.app.v2.CreateAppResourceEntitlementOwnerResponse:
+            description: CreateAppResourceEntitlementOwnerResponse is the response for creating an entitlement ownership source on a resource.
+            properties:
+                appResourceOwnerEntitlement:
+                    $ref: '#/components/schemas/c1.api.app.v2.AppResourceOwnerEntitlement'
+            title: Create App Resource Entitlement Owner Response
+            type: object
+            x-speakeasy-name-override: CreateAppResourceEntitlementOwnerResponse
+        c1.api.app.v2.CreateAppResourceUserOwnerRequestInput:
+            description: CreateAppResourceUserOwnerRequest is the request for creating a user ownership source on a resource.
+            properties:
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Create App Resource User Owner Request
+            type: object
+            x-speakeasy-name-override: CreateAppResourceUserOwnerRequest
+        c1.api.app.v2.CreateAppResourceUserOwnerResponse:
+            description: CreateAppResourceUserOwnerResponse is the response for creating a user ownership source on a resource.
+            properties:
+                appResourceOwnerUser:
+                    $ref: '#/components/schemas/c1.api.app.v2.AppResourceOwnerUser'
+            title: Create App Resource User Owner Response
+            type: object
+            x-speakeasy-name-override: CreateAppResourceUserOwnerResponse
         c1.api.app.v2.CreateAppUserOwnerRequestInput:
             description: CreateUserOwnerRequest is the request for creating a user ownership source.
             properties:
@@ -8308,6 +8421,38 @@ components:
             title: Create App User Owner Response
             type: object
             x-speakeasy-name-override: CreateAppUserOwnerResponse
+        c1.api.app.v2.CreateConnectorEntitlementOwnerRequestInput:
+            description: CreateConnectorEntitlementOwnerRequest is the request for creating an entitlement ownership source on a connector.
+            properties:
+                appEntitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+            title: Create Connector Entitlement Owner Request
+            type: object
+            x-speakeasy-name-override: CreateConnectorEntitlementOwnerRequest
+        c1.api.app.v2.CreateConnectorEntitlementOwnerResponse:
+            description: CreateConnectorEntitlementOwnerResponse is the response for creating an entitlement ownership source on a connector.
+            properties:
+                connectorOwnerEntitlement:
+                    $ref: '#/components/schemas/c1.api.app.v2.ConnectorOwnerEntitlement'
+            title: Create Connector Entitlement Owner Response
+            type: object
+            x-speakeasy-name-override: CreateConnectorEntitlementOwnerResponse
+        c1.api.app.v2.CreateConnectorUserOwnerRequestInput:
+            description: CreateConnectorUserOwnerRequest is the request for creating a user ownership source on a connector.
+            properties:
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Create Connector User Owner Request
+            type: object
+            x-speakeasy-name-override: CreateConnectorUserOwnerRequest
+        c1.api.app.v2.CreateConnectorUserOwnerResponse:
+            description: CreateConnectorUserOwnerResponse is the response for creating a user ownership source on a connector.
+            properties:
+                connectorOwnerUser:
+                    $ref: '#/components/schemas/c1.api.app.v2.ConnectorOwnerUser'
+            title: Create Connector User Owner Response
+            type: object
+            x-speakeasy-name-override: CreateConnectorUserOwnerResponse
         c1.api.app.v2.DeleteAppEntitlementEntitlementOwnerRequestInput:
             description: DeleteAppEntitlementEntitlementOwnerRequest is the request for deleting an entitlement ownership source on an entitlement.
             properties:
@@ -8347,6 +8492,32 @@ components:
             title: Delete App Entitlement User Owner Response
             type: object
             x-speakeasy-name-override: DeleteAppEntitlementUserOwnerResponse
+        c1.api.app.v2.DeleteAppResourceEntitlementOwnerRequestInput:
+            description: DeleteAppResourceEntitlementOwnerRequest is the request for deleting an entitlement ownership source on a resource.
+            properties:
+                appEntitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+            title: Delete App Resource Entitlement Owner Request
+            type: object
+            x-speakeasy-name-override: DeleteAppResourceEntitlementOwnerRequest
+        c1.api.app.v2.DeleteAppResourceEntitlementOwnerResponse:
+            description: DeleteAppResourceEntitlementOwnerResponse is the empty response for deleting an entitlement ownership source on a resource.
+            title: Delete App Resource Entitlement Owner Response
+            type: object
+            x-speakeasy-name-override: DeleteAppResourceEntitlementOwnerResponse
+        c1.api.app.v2.DeleteAppResourceUserOwnerRequestInput:
+            description: DeleteAppResourceUserOwnerRequest is the request for deleting a user ownership source on a resource.
+            properties:
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Delete App Resource User Owner Request
+            type: object
+            x-speakeasy-name-override: DeleteAppResourceUserOwnerRequest
+        c1.api.app.v2.DeleteAppResourceUserOwnerResponse:
+            description: DeleteAppResourceUserOwnerResponse is the empty response for deleting a user ownership source on a resource.
+            title: Delete App Resource User Owner Response
+            type: object
+            x-speakeasy-name-override: DeleteAppResourceUserOwnerResponse
         c1.api.app.v2.DeleteAppUserOwnerRequestInput:
             description: DeleteUserOwnerRequest is the request for deleting a user ownership source.
             properties:
@@ -8360,6 +8531,32 @@ components:
             title: Delete App User Owner Response
             type: object
             x-speakeasy-name-override: DeleteAppUserOwnerResponse
+        c1.api.app.v2.DeleteConnectorEntitlementOwnerRequestInput:
+            description: DeleteConnectorEntitlementOwnerRequest is the request for deleting an entitlement ownership source on a connector.
+            properties:
+                appEntitlementRef:
+                    $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+            title: Delete Connector Entitlement Owner Request
+            type: object
+            x-speakeasy-name-override: DeleteConnectorEntitlementOwnerRequest
+        c1.api.app.v2.DeleteConnectorEntitlementOwnerResponse:
+            description: DeleteConnectorEntitlementOwnerResponse is the empty response for deleting an entitlement ownership source on a connector.
+            title: Delete Connector Entitlement Owner Response
+            type: object
+            x-speakeasy-name-override: DeleteConnectorEntitlementOwnerResponse
+        c1.api.app.v2.DeleteConnectorUserOwnerRequestInput:
+            description: DeleteConnectorUserOwnerRequest is the request for deleting a user ownership source on a connector.
+            properties:
+                userRef:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+            title: Delete Connector User Owner Request
+            type: object
+            x-speakeasy-name-override: DeleteConnectorUserOwnerRequest
+        c1.api.app.v2.DeleteConnectorUserOwnerResponse:
+            description: DeleteConnectorUserOwnerResponse is the empty response for deleting a user ownership source on a connector.
+            title: Delete Connector User Owner Response
+            type: object
+            x-speakeasy-name-override: DeleteConnectorUserOwnerResponse
         c1.api.app.v2.GetAppEntitlementEntitlementOwnerResponse:
             description: GetAppEntitlementEntitlementOwnerResponse is the response for getting an entitlement ownership source on an entitlement.
             properties:
@@ -8392,6 +8589,22 @@ components:
             title: Get App User Owner Response
             type: object
             x-speakeasy-name-override: GetAppUserOwnerResponse
+        c1.api.app.v2.GetConnectorEntitlementOwnerResponse:
+            description: GetConnectorEntitlementOwnerResponse is the response for getting an entitlement ownership source on a connector.
+            properties:
+                connectorOwnerEntitlement:
+                    $ref: '#/components/schemas/c1.api.app.v2.ConnectorOwnerEntitlement'
+            title: Get Connector Entitlement Owner Response
+            type: object
+            x-speakeasy-name-override: GetConnectorEntitlementOwnerResponse
+        c1.api.app.v2.GetConnectorUserOwnerResponse:
+            description: GetConnectorUserOwnerResponse is the response for getting a user ownership source on a connector.
+            properties:
+                connectorOwnerUser:
+                    $ref: '#/components/schemas/c1.api.app.v2.ConnectorOwnerUser'
+            title: Get Connector User Owner Response
+            type: object
+            x-speakeasy-name-override: GetConnectorUserOwnerResponse
         c1.api.app.v2.SearchAppEntitlementEntitlementOwnersResponse:
             description: SearchAppEntitlementEntitlementOwnersResponse is the response for searching entitlement ownership sources on an entitlement.
             properties:
@@ -8443,6 +8656,40 @@ components:
             title: Search App Entitlement User Owners Response
             type: object
             x-speakeasy-name-override: SearchAppEntitlementUserOwnersResponse
+        c1.api.app.v2.SearchAppResourceEntitlementOwnersResponse:
+            description: SearchAppResourceEntitlementOwnersResponse is the response for searching entitlement ownership sources on a resource.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v2.AppResourceOwnerEntitlement'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Search App Resource Entitlement Owners Response
+            type: object
+            x-speakeasy-name-override: SearchAppResourceEntitlementOwnersResponse
+        c1.api.app.v2.SearchAppResourceUserOwnersResponse:
+            description: SearchAppResourceUserOwnersResponse is the response for searching user ownership sources on a resource.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v2.AppResourceOwnerUser'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Search App Resource User Owners Response
+            type: object
+            x-speakeasy-name-override: SearchAppResourceUserOwnersResponse
         c1.api.app.v2.SearchAppUserOwnersResponse:
             description: SearchUserOwnersResponse is the response for searching user ownership sources.
             properties:
@@ -8552,6 +8799,35 @@ components:
             title: Set App Owners Response
             type: object
             x-speakeasy-name-override: SetAppOwnersResponseV2
+        c1.api.app.v2.SetAppResourceOwnersV2RequestInput:
+            description: SetAppResourceOwnersV2Request is the request for setting the owners of an app resource for a given role.
+            properties:
+                appEntitlementRefs:
+                    description: The appEntitlementRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                roleSlug:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                userRefs:
+                    description: The userRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.user.v1.UserRef'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Set App Resource Owners V 2 Request
+            type: object
+            x-speakeasy-name-override: SetAppResourceOwnersV2Request
+        c1.api.app.v2.SetAppResourceOwnersV2Response:
+            description: SetAppResourceOwnersV2Response is the empty response for setting app resource owners.
+            title: Set App Resource Owners V 2 Response
+            type: object
+            x-speakeasy-name-override: SetAppResourceOwnersV2Response
         c1.api.app.v2.SetConnectorOwnersV2RequestInput:
             description: SetConnectorOwnersV2Request is the request for setting the owners of a connector for a given role.
             properties:
@@ -10192,6 +10468,7 @@ components:
                   - inclusionAll
                   - inclusionCriteria
                   - inclusionListCel
+                  - inclusionAccessOnly
 
 
                 This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
@@ -10209,6 +10486,8 @@ components:
                     $ref: '#/components/schemas/c1.api.automations.v1.EntitlementExclusionListCel'
                 exclusionNone:
                     $ref: '#/components/schemas/c1.api.automations.v1.EntitlementExclusionNone'
+                inclusionAccessOnly:
+                    $ref: '#/components/schemas/c1.api.automations.v1.EntitlementInclusionAccessOnly'
                 inclusionAll:
                     $ref: '#/components/schemas/c1.api.automations.v1.EntitlementInclusionAll'
                 inclusionCriteria:
@@ -10349,6 +10628,16 @@ components:
             title: Entitlement Exclusion None
             type: object
             x-speakeasy-name-override: EntitlementExclusionNone
+        c1.api.automations.v1.EntitlementInclusionAccessOnly:
+            description: |-
+                EntitlementInclusionAccessOnly resolves to the system-managed access
+                 entitlement on every app the subject user has an AppUser on. Use this to
+                 deprovision app accounts without fanning out to every group, role, or
+                 permission inside each app — produces at most one revoke ticket per app.
+            nullable: true
+            title: Entitlement Inclusion Access Only
+            type: object
+            x-speakeasy-name-override: EntitlementInclusionAccessOnly
         c1.api.automations.v1.EntitlementInclusionAll:
             description: The EntitlementInclusionAll message.
             nullable: true
@@ -11999,6 +12288,322 @@ components:
             title: Webhook Listener Auth Jwt
             type: object
             x-speakeasy-name-override: WebhookListenerAuthJWT
+        c1.api.decoy.v1.Decoy:
+            description: |-
+                Decoy is the public projection of a planted honey-credential. Read-only
+                 surface; the variant-specific back-references live in c1models and are
+                 not exposed here.
+            properties:
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: |-
+                        Customer-defined grouping/filtering bag. PATCH semantics on Update:
+                         keys in the request overwrite, keys missing stay, keys set to empty
+                         string delete. Copied into the resulting Finding's custom_tags so
+                         routing rules can condition on the same keys.
+                    readOnly: false
+                    type: object
+                    x-speakeasy-terraform-plan-modifier:
+                        imports:
+                            - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+                        schemaDefinition: annotations.PlanModifier()
+                createdAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                disabled:
+                    description: Admin-disabled.
+                    readOnly: false
+                    type: boolean
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                id:
+                    description: The id field.
+                    readOnly: true
+                    type: string
+                kind:
+                    description: The kind field.
+                    enum:
+                        - DECOY_KIND_UNSPECIFIED
+                        - DECOY_KIND_USER_CLIENT_CREDENTIAL
+                        - DECOY_KIND_CONNECTOR_CLIENT
+                        - DECOY_KIND_WORKLOAD_FEDERATION
+                        - DECOY_KIND_ACCESS_TOKEN
+                    readOnly: true
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                updatedAt:
+                    format: date-time
+                    readOnly: true
+                    type: string
+            title: Decoy
+            type: object
+            x-speakeasy-name-override: Decoy
+        c1.api.decoy.v1.DecoyAccessTokenInput:
+            description: |-
+                DecoyAccessTokenInput requests a freestanding session access-token
+                 decoy minted under an existing User.
+            nullable: true
+            properties:
+                expiresIn:
+                    format: duration
+                    readOnly: false
+                    type: string
+                subjectUserId:
+                    description: Existing User the access token's subject claim references.
+                    readOnly: false
+                    type: string
+            title: Decoy Access Token Input
+            type: object
+            x-speakeasy-name-override: DecoyAccessTokenInput
+        c1.api.decoy.v1.DecoyAccessTokenMaterial:
+            description: DecoyAccessTokenMaterial is returned for AccessToken decoys.
+            nullable: true
+            properties:
+                accessToken:
+                    description: The accessToken field.
+                    readOnly: false
+                    type: string
+            title: Decoy Access Token Material
+            type: object
+            x-speakeasy-name-override: DecoyAccessTokenMaterial
+        c1.api.decoy.v1.DecoyClientCredentialMaterial:
+            description: |-
+                DecoyClientCredentialMaterial is returned for UserClientCredential and
+                 ConnectorClient decoys.
+            nullable: true
+            properties:
+                clientId:
+                    description: The clientId field.
+                    readOnly: false
+                    type: string
+                clientSecret:
+                    description: The clientSecret field.
+                    readOnly: false
+                    type: string
+            title: Decoy Client Credential Material
+            type: object
+            x-speakeasy-name-override: DecoyClientCredentialMaterial
+        c1.api.decoy.v1.DecoyConnectorClientInput:
+            description: |-
+                DecoyConnectorClientInput requests a ConnectorClientCredential decoy
+                 planted under an existing app+connector.
+            nullable: true
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                connectorId:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
+            title: Decoy Connector Client Input
+            type: object
+            x-speakeasy-name-override: DecoyConnectorClientInput
+        c1.api.decoy.v1.DecoyServiceCreateRequest:
+            description: |
+                The DecoyServiceCreateRequest message.
+
+                This message contains a oneof named create_input. Only a single field of the following list may be set at a time:
+                  - userClientCredential
+                  - connectorClient
+                  - workloadFed
+                  - accessToken
+            properties:
+                accessToken:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.DecoyAccessTokenInput'
+                annotations:
+                    additionalProperties:
+                        type: string
+                    description: The annotations field.
+                    readOnly: false
+                    type: object
+                connectorClient:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.DecoyConnectorClientInput'
+                description:
+                    description: The description field.
+                    readOnly: false
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    readOnly: false
+                    type: string
+                userClientCredential:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.DecoyUserClientCredentialInput'
+                workloadFed:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.DecoyWorkloadFederationInput'
+            title: Decoy Service Create Request
+            type: object
+            x-speakeasy-name-override: DecoyServiceCreateRequest
+        c1.api.decoy.v1.DecoyServiceCreateResponse:
+            description: The DecoyServiceCreateResponse message.
+            properties:
+                decoy:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.Decoy'
+                material:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.DecoyVendingMaterial'
+            title: Decoy Service Create Response
+            type: object
+            x-speakeasy-name-override: DecoyServiceCreateResponse
+        c1.api.decoy.v1.DecoyServiceDeleteRequestInput:
+            description: The DecoyServiceDeleteRequest message.
+            title: Decoy Service Delete Request
+            type: object
+            x-speakeasy-name-override: DecoyServiceDeleteRequest
+        c1.api.decoy.v1.DecoyServiceDeleteResponse:
+            description: The DecoyServiceDeleteResponse message.
+            title: Decoy Service Delete Response
+            type: object
+            x-speakeasy-name-override: DecoyServiceDeleteResponse
+        c1.api.decoy.v1.DecoyServiceGetResponse:
+            description: The DecoyServiceGetResponse message.
+            properties:
+                decoy:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.Decoy'
+            title: Decoy Service Get Response
+            type: object
+            x-speakeasy-name-override: DecoyServiceGetResponse
+        c1.api.decoy.v1.DecoyServiceListResponse:
+            description: The DecoyServiceListResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.decoy.v1.Decoy'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Decoy Service List Response
+            type: object
+            x-speakeasy-name-override: DecoyServiceListResponse
+        c1.api.decoy.v1.DecoyServiceRotateRequestInput:
+            description: The DecoyServiceRotateRequest message.
+            title: Decoy Service Rotate Request
+            type: object
+            x-speakeasy-name-override: DecoyServiceRotateRequest
+        c1.api.decoy.v1.DecoyServiceRotateResponse:
+            description: The DecoyServiceRotateResponse message.
+            properties:
+                decoy:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.Decoy'
+                material:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.DecoyVendingMaterial'
+            title: Decoy Service Rotate Response
+            type: object
+            x-speakeasy-name-override: DecoyServiceRotateResponse
+        c1.api.decoy.v1.DecoyServiceUpdateRequestInput:
+            description: The DecoyServiceUpdateRequest message.
+            properties:
+                decoy:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.Decoy'
+                updateMask:
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: Decoy Service Update Request
+            type: object
+            x-speakeasy-name-override: DecoyServiceUpdateRequest
+        c1.api.decoy.v1.DecoyServiceUpdateResponse:
+            description: The DecoyServiceUpdateResponse message.
+            properties:
+                decoy:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.Decoy'
+            title: Decoy Service Update Response
+            type: object
+            x-speakeasy-name-override: DecoyServiceUpdateResponse
+        c1.api.decoy.v1.DecoyUserClientCredentialInput:
+            description: |-
+                DecoyUserClientCredentialInput requests a UserClientCredential decoy
+                 planted under an existing User. The User's typ selects the credential
+                 usage: HUMAN -> pcc, SERVICE -> spc. Any other typ (SYSTEM, AGENT)
+                 is rejected at the handler.
+            nullable: true
+            properties:
+                userId:
+                    description: |-
+                        Existing User to plant the decoy credential under. Must be
+                         typ=HUMAN or typ=SERVICE.
+                    readOnly: false
+                    type: string
+            title: Decoy User Client Credential Input
+            type: object
+            x-speakeasy-name-override: DecoyUserClientCredentialInput
+        c1.api.decoy.v1.DecoyVendingMaterial:
+            description: |
+                DecoyVendingMaterial carries the freshly-vended secret material returned
+                 exactly once at Create or Rotate.
+
+                This message contains a oneof named material. Only a single field of the following list may be set at a time:
+                  - clientCredential
+                  - accessToken
+                  - workloadFederation
+            properties:
+                accessToken:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.DecoyAccessTokenMaterial'
+                clientCredential:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.DecoyClientCredentialMaterial'
+                workloadFederation:
+                    $ref: '#/components/schemas/c1.api.decoy.v1.DecoyWorkloadFederationMaterial'
+            title: Decoy Vending Material
+            type: object
+            x-speakeasy-name-override: DecoyVendingMaterial
+        c1.api.decoy.v1.DecoyWorkloadFederationInput:
+            description: |-
+                DecoyWorkloadFederationInput requests a WorkloadFederationTrust decoy
+                 bound to an existing Provider. Decoys reuse an already-registered
+                 Provider because Trust matching requires a real JWKS for JWT signature
+                 verification before the decoy_id check fires.
+
+                 `condition_expression` is the same CEL shape the regular WF Trust API
+                 takes -- operators express whatever matching they want against the
+                 JWT claims map (`claims.aud`, `claims.sub`, custom claims). Compiled
+                 + validated by the WF controller's CreateTrust at create time.
+            nullable: true
+            properties:
+                conditionExpression:
+                    description: |-
+                        CEL boolean evaluated against the presented JWT's claims map.
+                         Example: `claims.sub.startsWith("repo:acme/fake-infra:")`.
+                    readOnly: false
+                    type: string
+                providerId:
+                    description: Existing WorkloadFederationProvider to bind the decoy Trust under.
+                    readOnly: false
+                    type: string
+                servicePrincipalUserId:
+                    description: |-
+                        Existing SERVICE-typed User the Trust binds to. An attacker
+                         tripping the decoy would otherwise be act-as'ing this principal.
+                    readOnly: false
+                    type: string
+            title: Decoy Workload Federation Input
+            type: object
+            x-speakeasy-name-override: DecoyWorkloadFederationInput
+        c1.api.decoy.v1.DecoyWorkloadFederationMaterial:
+            description: |-
+                DecoyWorkloadFederationMaterial is returned for WorkloadFederation
+                 decoys. No vended secret; the operator binds the trust on the IdP side.
+            nullable: true
+            properties:
+                workloadFederationTrustId:
+                    description: The workloadFederationTrustId field.
+                    readOnly: false
+                    type: string
+            title: Decoy Workload Federation Material
+            type: object
+            x-speakeasy-name-override: DecoyWorkloadFederationMaterial
         c1.api.directory.v1.Directory:
             description: |
                 This object indicates that an app is also a directory.
@@ -12515,6 +13120,30 @@ components:
             title: Create Task Action
             type: object
             x-speakeasy-name-override: CreateTaskAction
+        c1.api.finding.v1.DecoyCredentialUsedType:
+            description: |-
+                DecoyCredentialUsedType: a planted decoy credential authenticated
+                 successfully.
+            nullable: true
+            properties:
+                decoyId:
+                    description: The decoyId field.
+                    readOnly: false
+                    type: string
+                kind:
+                    description: The kind field.
+                    enum:
+                        - DECOY_CREDENTIAL_KIND_UNSPECIFIED
+                        - DECOY_CREDENTIAL_KIND_USER_CLIENT_CREDENTIAL
+                        - DECOY_CREDENTIAL_KIND_CONNECTOR_CLIENT
+                        - DECOY_CREDENTIAL_KIND_WORKLOAD_FEDERATION
+                        - DECOY_CREDENTIAL_KIND_ACCESS_TOKEN
+                    readOnly: false
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Decoy Credential Used Type
+            type: object
+            x-speakeasy-name-override: DecoyCredentialUsedType
         c1.api.finding.v1.DeleteFindingRoutingRuleRequestInput:
             description: The DeleteFindingRoutingRuleRequest message.
             title: Delete Finding Routing Rule Request
@@ -12532,6 +13161,7 @@ components:
                 This message contains a oneof named finding_type. Only a single field of the following list may be set at a time:
                   - similarUsernameMatch
                   - serviceAccountMisclassification
+                  - decoyCredentialUsed
 
 
                 This message contains a oneof named target. Only a single field of the following list may be set at a time:
@@ -12563,6 +13193,8 @@ components:
                     description: The customTags field.
                     readOnly: false
                     type: object
+                decoyCredentialUsed:
+                    $ref: '#/components/schemas/c1.api.finding.v1.DecoyCredentialUsedType'
                 fingerprint:
                     description: The fingerprint field.
                     readOnly: false
@@ -12878,9 +13510,15 @@ components:
                     readOnly: false
                     type: array
                 findingTypes:
-                    description: Filter by finding type discriminators (OR within field).
+                    description: Filter by finding type (OR within field).
                     items:
+                        enum:
+                            - FINDING_TYPE_UNSPECIFIED
+                            - FINDING_TYPE_SIMILAR_USERNAME_MATCH
+                            - FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION
+                            - FINDING_TYPE_DECOY_CREDENTIAL_USED
                         type: string
+                        x-speakeasy-unknown-values: allow
                     nullable: true
                     readOnly: false
                     type: array
@@ -18611,8 +19249,21 @@ components:
                     description: The enabled field.
                     readOnly: false
                     type: boolean
+                enforceOnSmallProfiles:
+                    description: |-
+                        When true, the circuit breaker is evaluated even on profiles below the
+                         tenant min-members floor.
+                    readOnly: false
+                    type: boolean
                 entitlements:
                     $ref: '#/components/schemas/c1.api.requestcatalog.v1.BundleAutomationRuleEntitlement'
+                removedMembersThresholdPercent:
+                    description: |-
+                        Per-automation override for the removed-members percent that trips the
+                         circuit breaker (1-100). 0 / unset means the tenant default applies.
+                    format: int64
+                    readOnly: false
+                    type: string
                 requestCatalogId:
                     description: The requestCatalogId field.
                     readOnly: false
@@ -18761,8 +19412,21 @@ components:
                     description: Whether the automation should actively run on its schedule.
                     readOnly: false
                     type: boolean
+                enforceOnSmallProfiles:
+                    description: |-
+                        When true, the circuit breaker is evaluated even on profiles below the
+                         tenant min-members floor. Defaults to false.
+                    readOnly: false
+                    type: boolean
                 entitlements:
                     $ref: '#/components/schemas/c1.api.requestcatalog.v1.BundleAutomationRuleEntitlement'
+                removedMembersThresholdPercent:
+                    description: |-
+                        Per-automation override for the removed-members percent that trips the
+                         circuit breaker (1-100). 0 / unset means inherit the tenant default.
+                    format: int64
+                    readOnly: false
+                    type: string
             title: Create Bundle Automation Request
             type: object
             x-speakeasy-name-override: CreateBundleAutomationRequest
@@ -19445,8 +20109,21 @@ components:
                     description: Whether the automation should actively run on its schedule.
                     readOnly: false
                     type: boolean
+                enforceOnSmallProfiles:
+                    description: |-
+                        When true, the circuit breaker is evaluated even on profiles below the
+                         tenant min-members floor. Defaults to false.
+                    readOnly: false
+                    type: boolean
                 entitlements:
                     $ref: '#/components/schemas/c1.api.requestcatalog.v1.BundleAutomationRuleEntitlement'
+                removedMembersThresholdPercent:
+                    description: |-
+                        Per-automation override for the removed-members percent that trips the
+                         circuit breaker (1-100). 0 / unset means inherit the tenant default.
+                    format: int64
+                    readOnly: false
+                    type: string
             title: Set Bundle Automation Request
             type: object
             x-speakeasy-name-override: SetBundleAutomationRequest
@@ -19510,6 +20187,12 @@ components:
         c1.api.role_mining_management.v1.CreateAccessProfileFromCohortRequest:
             description: The CreateAccessProfileFromCohortRequest message.
             properties:
+                celExpression:
+                    description: |-
+                        Optional CEL expression for dynamic membership. When non-empty, used
+                         instead of auto-generating from profile_filters.
+                    readOnly: false
+                    type: string
                 createTasks:
                     description: |-
                         If true, the automation will create JIT tasks for access changes.
@@ -21708,6 +22391,14 @@ components:
             title: Get Org Notification Settings Response
             type: object
             x-speakeasy-name-override: GetOrgNotificationSettingsResponse
+        c1.api.settings.v1.GetRequestSettingsResponse:
+            description: The GetRequestSettingsResponse message.
+            properties:
+                requestSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.RequestSettings'
+            title: Get Request Settings Response
+            type: object
+            x-speakeasy-name-override: GetRequestSettingsResponse
         c1.api.settings.v1.GetSessionSettingsResponse:
             description: The GetSessionSettingsResponse message.
             properties:
@@ -21899,6 +22590,18 @@ components:
             title: Provisioning Request Preference
             type: object
             x-speakeasy-name-override: ProvisioningRequestPreference
+        c1.api.settings.v1.RequestSettings:
+            description: RequestSettings holds tenant-wide configuration for the access-request flow.
+            properties:
+                skipJustification:
+                    description: |-
+                        When true, request surfaces (webapp, Slack, MS Teams) skip prompting the
+                         requester for a justification.
+                    readOnly: false
+                    type: boolean
+            title: Request Settings
+            type: object
+            x-speakeasy-name-override: RequestSettings
         c1.api.settings.v1.ReviewsPreference:
             description: The ReviewsPreference message.
             properties:
@@ -22280,6 +22983,26 @@ components:
             title: Update Org Notification Settings Response
             type: object
             x-speakeasy-name-override: UpdateOrgNotificationSettingsResponse
+        c1.api.settings.v1.UpdateRequestSettingsRequest:
+            description: The UpdateRequestSettingsRequest message.
+            properties:
+                requestSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.RequestSettings'
+                updateMask:
+                    nullable: true
+                    readOnly: false
+                    type: string
+            title: Update Request Settings Request
+            type: object
+            x-speakeasy-name-override: UpdateRequestSettingsRequest
+        c1.api.settings.v1.UpdateRequestSettingsResponse:
+            description: The UpdateRequestSettingsResponse message.
+            properties:
+                requestSettings:
+                    $ref: '#/components/schemas/c1.api.settings.v1.RequestSettings'
+            title: Update Request Settings Response
+            type: object
+            x-speakeasy-name-override: UpdateRequestSettingsResponse
         c1.api.settings.v1.UpdateSessionSettingsRequest:
             description: The UpdateSessionSettingsRequest message.
             properties:
@@ -36615,6 +37338,158 @@ paths:
                 - Connector Catalog
             x-speakeasy-group: ConnectorCatalog
             x-speakeasy-name-override: ConfigurationSchema
+    /api/v1/decoys:
+        get:
+            description: List returns decoys for the tenant, paginated.
+            operationId: c1.api.decoy.v1.DecoyService.List
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.decoy.v1.DecoyServiceListResponse'
+                    description: Successful response
+            summary: List
+            tags:
+                - Decoy
+            x-speakeasy-group: Decoy
+            x-speakeasy-name-override: List
+        post:
+            description: |-
+                Create mints a decoy credential and returns the one-time vending
+                 material exactly once. The Decoy id is server-set; the credential's
+                 secret cannot be retrieved again after this response.
+            operationId: c1.api.decoy.v1.DecoyService.Create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.decoy.v1.DecoyServiceCreateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.decoy.v1.DecoyServiceCreateResponse'
+                    description: Successful response
+            summary: Create
+            tags:
+                - Decoy
+            x-speakeasy-group: Decoy
+            x-speakeasy-name-override: Create
+    /api/v1/decoys/{id}:
+        delete:
+            description: Delete soft-deletes a decoy and disables the paired credential row.
+            operationId: c1.api.decoy.v1.DecoyService.Delete
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.decoy.v1.DecoyServiceDeleteRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.decoy.v1.DecoyServiceDeleteResponse'
+                    description: Successful response
+            summary: Delete
+            tags:
+                - Decoy
+            x-speakeasy-group: Decoy
+            x-speakeasy-name-override: Delete
+        get:
+            description: Get returns a decoy by id.
+            operationId: c1.api.decoy.v1.DecoyService.Get
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.decoy.v1.DecoyServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Decoy
+            x-speakeasy-group: Decoy
+            x-speakeasy-name-override: Get
+        patch:
+            description: |-
+                Update modifies mutable metadata on a decoy. The decoy variant is
+                 fixed at Create -- rotate the secret with Rotate instead.
+            operationId: c1.api.decoy.v1.DecoyService.Update
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: true
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.decoy.v1.DecoyServiceUpdateRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.decoy.v1.DecoyServiceUpdateResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - Decoy
+            x-speakeasy-group: Decoy
+            x-speakeasy-name-override: Update
+    /api/v1/decoys/{id}/rotate:
+        post:
+            description: |-
+                Rotate re-mints the paired credential's secret material, preserves
+                 the decoy_id binding, and returns the new one-time vending material.
+            operationId: c1.api.decoy.v1.DecoyService.Rotate
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.decoy.v1.DecoyServiceRotateRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.decoy.v1.DecoyServiceRotateResponse'
+                    description: Successful response
+            summary: Rotate
+            tags:
+                - Decoy
+            x-speakeasy-group: Decoy
+            x-speakeasy-name-override: Rotate
     /api/v1/directories:
         get:
             description: List directories.
@@ -40821,6 +41696,42 @@ paths:
                 - Onboarding Settings
             x-speakeasy-group: OnboardingSettings
             x-speakeasy-name-override: Update
+    /api/v1/settings/request:
+        get:
+            description: Get returns the tenant's access-request settings.
+            operationId: c1.api.settings.v1.RequestSettingsService.Get
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.settings.v1.GetRequestSettingsResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Request Settings
+            x-speakeasy-group: RequestSettings
+            x-speakeasy-name-override: Get
+        post:
+            description: Update modifies the tenant's access-request settings.
+            operationId: c1.api.settings.v1.RequestSettingsService.Update
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.settings.v1.UpdateRequestSettingsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.settings.v1.UpdateRequestSettingsResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - Request Settings
+            x-speakeasy-group: RequestSettings
+            x-speakeasy-name-override: Update
     /api/v1/settings/session:
         get:
             description: Get retrieves the current session security settings for the tenant.
@@ -42597,7 +43508,7 @@ paths:
             x-stability-level: draft
     /api/v2/apps/{app_id}/connectors/{connector_id}/owners/entitlements:
         get:
-            description: SearchEntitlementOwners searches for the entitlement ownership for a connector.
+            description: SearchEntitlementOwners searches for entitlement ownership sources for a connector.
             operationId: c1.api.app.v2.ConnectorOwners.SearchEntitlementOwners
             parameters:
                 - in: path
@@ -42643,12 +43554,197 @@ paths:
             summary: Search Entitlement Owners
             tags:
                 - Connector Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-datasource: Connector_Owner_Entitlement#read
+                terraform-resource: null
             x-speakeasy-group: ConnectorOwnersV2
             x-speakeasy-name-override: SearchEntitlementOwners
             x-stability-level: draft
+    ? /api/v2/apps/{app_id}/connectors/{connector_id}/owners/entitlements/{role_slug}/{app_entitlement_ref_app_id}/{app_entitlement_ref_id}
+    :   delete:
+            description: DeleteEntitlementOwner deletes an entitlement ownership source for a connector.
+            operationId: c1.api.app.v2.ConnectorOwners.DeleteEntitlementOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.DeleteConnectorEntitlementOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.DeleteConnectorEntitlementOwnerResponse'
+                    description: DeleteConnectorEntitlementOwnerResponse is the empty response for deleting an entitlement ownership source on a connector.
+            summary: Delete Entitlement Owner
+            tags:
+                - Connector Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: Connector_Owner_Entitlement#delete
+            x-speakeasy-group: ConnectorOwnersV2
+            x-speakeasy-name-override: DeleteEntitlementOwner
+            x-stability-level: draft
+        get:
+            description: GetEntitlementOwner gets an entitlement ownership source for a connector.
+            operationId: c1.api.app.v2.ConnectorOwners.GetEntitlementOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.GetConnectorEntitlementOwnerResponse'
+                    description: GetConnectorEntitlementOwnerResponse is the response for getting an entitlement ownership source on a connector.
+            summary: Get Entitlement Owner
+            tags:
+                - Connector Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: Connector_Owner_Entitlement#read
+            x-speakeasy-group: ConnectorOwnersV2
+            x-speakeasy-name-override: GetEntitlementOwner
+            x-stability-level: draft
+        post:
+            description: CreateEntitlementOwner creates an entitlement ownership source for a connector.
+            operationId: c1.api.app.v2.ConnectorOwners.CreateEntitlementOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.CreateConnectorEntitlementOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.CreateConnectorEntitlementOwnerResponse'
+                    description: CreateConnectorEntitlementOwnerResponse is the response for creating an entitlement ownership source on a connector.
+            summary: Create Entitlement Owner
+            tags:
+                - Connector Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: Connector_Owner_Entitlement#create
+            x-speakeasy-group: ConnectorOwnersV2
+            x-speakeasy-name-override: CreateEntitlementOwner
+            x-stability-level: draft
     /api/v2/apps/{app_id}/connectors/{connector_id}/owners/users:
         get:
-            description: SearchUserOwners searches for users who are owners of this connector.
+            description: SearchUserOwners searches for user ownership sources for a connector.
             operationId: c1.api.app.v2.ConnectorOwners.SearchUserOwners
             parameters:
                 - in: path
@@ -42694,8 +43790,172 @@ paths:
             summary: Search User Owners
             tags:
                 - Connector Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-datasource: Connector_Owner_User#read
+                terraform-resource: null
             x-speakeasy-group: ConnectorOwnersV2
             x-speakeasy-name-override: SearchUserOwners
+            x-stability-level: draft
+    /api/v2/apps/{app_id}/connectors/{connector_id}/owners/users/{role_slug}/{user_ref_id}:
+        delete:
+            description: DeleteUserOwner deletes a user ownership source for a connector.
+            operationId: c1.api.app.v2.ConnectorOwners.DeleteUserOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: user_ref_id
+                  required: true
+                  schema:
+                    description: The id of the user.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.DeleteConnectorUserOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.DeleteConnectorUserOwnerResponse'
+                    description: DeleteConnectorUserOwnerResponse is the empty response for deleting a user ownership source on a connector.
+            summary: Delete User Owner
+            tags:
+                - Connector Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: Connector_Owner_User#delete
+            x-speakeasy-group: ConnectorOwnersV2
+            x-speakeasy-name-override: DeleteUserOwner
+            x-stability-level: draft
+        get:
+            description: GetUserOwner gets a user ownership source for a connector.
+            operationId: c1.api.app.v2.ConnectorOwners.GetUserOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: user_ref_id
+                  required: true
+                  schema:
+                    description: The id of the user.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.GetConnectorUserOwnerResponse'
+                    description: GetConnectorUserOwnerResponse is the response for getting a user ownership source on a connector.
+            summary: Get User Owner
+            tags:
+                - Connector Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: Connector_Owner_User#read
+            x-speakeasy-group: ConnectorOwnersV2
+            x-speakeasy-name-override: GetUserOwner
+            x-stability-level: draft
+        post:
+            description: CreateUserOwner creates a user ownership source for a connector.
+            operationId: c1.api.app.v2.ConnectorOwners.CreateUserOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: connector_id
+                  required: true
+                  schema:
+                    description: The connectorId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: user_ref_id
+                  required: true
+                  schema:
+                    description: The id of the user.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.CreateConnectorUserOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.CreateConnectorUserOwnerResponse'
+                    description: CreateConnectorUserOwnerResponse is the response for creating a user ownership source on a connector.
+            summary: Create User Owner
+            tags:
+                - Connector Owner V2
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: Connector_Owner_User#create
+            x-speakeasy-group: ConnectorOwnersV2
+            x-speakeasy-name-override: CreateUserOwner
             x-stability-level: draft
     /api/v2/apps/{app_id}/entitlements/{entitlement_id}/owners:
         put:
@@ -43608,6 +44868,410 @@ paths:
             x-speakeasy-entity-operation:
                 terraform-resource: App_Owner_User#create
             x-speakeasy-group: AppOwnersV2
+            x-speakeasy-name-override: CreateUserOwner
+            x-stability-level: draft
+    /api/v2/apps/{app_id}/resource_types/{resource_type_id}/resources/{resource_id}/owners:
+        put:
+            description: Set replaces all owners for a given app resource and role.
+            operationId: c1.api.app.v2.AppResourceOwnersV2.Set
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_type_id
+                  required: true
+                  schema:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_id
+                  required: true
+                  schema:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.SetAppResourceOwnersV2RequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.SetAppResourceOwnersV2Response'
+                    description: SetAppResourceOwnersV2Response is the empty response for setting app resource owners.
+            summary: Set
+            tags:
+                - App Resource Owner V2
+            x-speakeasy-group: AppResourceOwnersV2
+            x-speakeasy-name-override: Set
+            x-stability-level: draft
+    /api/v2/apps/{app_id}/resource_types/{resource_type_id}/resources/{resource_id}/owners/entitlements:
+        get:
+            description: SearchEntitlementOwners searches for entitlement ownership sources of this app resource.
+            operationId: c1.api.app.v2.AppResourceOwnersV2.SearchEntitlementOwners
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_type_id
+                  required: true
+                  schema:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_id
+                  required: true
+                  schema:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                - in: query
+                  name: role_slug
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.SearchAppResourceEntitlementOwnersResponse'
+                    description: SearchAppResourceEntitlementOwnersResponse is the response for searching entitlement ownership sources on a resource.
+            summary: Search Entitlement Owners
+            tags:
+                - App Resource Owner V2
+            x-speakeasy-group: AppResourceOwnersV2
+            x-speakeasy-name-override: SearchEntitlementOwners
+            x-stability-level: draft
+    ? /api/v2/apps/{app_id}/resource_types/{resource_type_id}/resources/{resource_id}/owners/entitlements/{role_slug}/{app_entitlement_ref_app_id}/{app_entitlement_ref_id}
+    :   delete:
+            description: DeleteEntitlementOwner deletes an entitlement ownership source for an app resource.
+            operationId: c1.api.app.v2.AppResourceOwnersV2.DeleteEntitlementOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_type_id
+                  required: true
+                  schema:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_id
+                  required: true
+                  schema:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.DeleteAppResourceEntitlementOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.DeleteAppResourceEntitlementOwnerResponse'
+                    description: DeleteAppResourceEntitlementOwnerResponse is the empty response for deleting an entitlement ownership source on a resource.
+            summary: Delete Entitlement Owner
+            tags:
+                - App Resource Owner V2
+            x-speakeasy-group: AppResourceOwnersV2
+            x-speakeasy-name-override: DeleteEntitlementOwner
+            x-stability-level: draft
+        post:
+            description: CreateEntitlementOwner creates an entitlement ownership source for an app resource.
+            operationId: c1.api.app.v2.AppResourceOwnersV2.CreateEntitlementOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_type_id
+                  required: true
+                  schema:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_id
+                  required: true
+                  schema:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: app_entitlement_ref_id
+                  required: true
+                  schema:
+                    description: The id field.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.CreateAppResourceEntitlementOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.CreateAppResourceEntitlementOwnerResponse'
+                    description: CreateAppResourceEntitlementOwnerResponse is the response for creating an entitlement ownership source on a resource.
+            summary: Create Entitlement Owner
+            tags:
+                - App Resource Owner V2
+            x-speakeasy-group: AppResourceOwnersV2
+            x-speakeasy-name-override: CreateEntitlementOwner
+            x-stability-level: draft
+    /api/v2/apps/{app_id}/resource_types/{resource_type_id}/resources/{resource_id}/owners/users:
+        get:
+            description: SearchUserOwners searches for user ownership sources of this app resource.
+            operationId: c1.api.app.v2.AppResourceOwnersV2.SearchUserOwners
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_type_id
+                  required: true
+                  schema:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_id
+                  required: true
+                  schema:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                - in: query
+                  name: role_slug
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.SearchAppResourceUserOwnersResponse'
+                    description: SearchAppResourceUserOwnersResponse is the response for searching user ownership sources on a resource.
+            summary: Search User Owners
+            tags:
+                - App Resource Owner V2
+            x-speakeasy-group: AppResourceOwnersV2
+            x-speakeasy-name-override: SearchUserOwners
+            x-stability-level: draft
+    /api/v2/apps/{app_id}/resource_types/{resource_type_id}/resources/{resource_id}/owners/users/{role_slug}/{user_ref_id}:
+        delete:
+            description: DeleteUserOwner deletes a user ownership source for an app resource.
+            operationId: c1.api.app.v2.AppResourceOwnersV2.DeleteUserOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_type_id
+                  required: true
+                  schema:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_id
+                  required: true
+                  schema:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: user_ref_id
+                  required: true
+                  schema:
+                    description: The id of the user.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.DeleteAppResourceUserOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.DeleteAppResourceUserOwnerResponse'
+                    description: DeleteAppResourceUserOwnerResponse is the empty response for deleting a user ownership source on a resource.
+            summary: Delete User Owner
+            tags:
+                - App Resource Owner V2
+            x-speakeasy-group: AppResourceOwnersV2
+            x-speakeasy-name-override: DeleteUserOwner
+            x-stability-level: draft
+        post:
+            description: CreateUserOwner creates a user ownership source for an app resource.
+            operationId: c1.api.app.v2.AppResourceOwnersV2.CreateUserOwner
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_type_id
+                  required: true
+                  schema:
+                    description: The resourceTypeId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: resource_id
+                  required: true
+                  schema:
+                    description: The resourceId field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: role_slug
+                  required: true
+                  schema:
+                    description: The roleSlug field.
+                    readOnly: false
+                    type: string
+                - in: path
+                  name: user_ref_id
+                  required: true
+                  schema:
+                    description: The id of the user.
+                    readOnly: false
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v2.CreateAppResourceUserOwnerRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v2.CreateAppResourceUserOwnerResponse'
+                    description: CreateAppResourceUserOwnerResponse is the response for creating a user ownership source on a resource.
+            summary: Create User Owner
+            tags:
+                - App Resource Owner V2
+            x-speakeasy-group: AppResourceOwnersV2
             x-speakeasy-name-override: CreateUserOwner
             x-stability-level: draft
 security:

@@ -89,6 +89,8 @@ func (r *BundleAutomationResourceModel) RefreshFromSharedBundleAutomation(ctx co
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.DisableCircuitBreaker = types.BoolPointerValue(resp.DisableCircuitBreaker)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.EnforceOnSmallProfiles = types.BoolPointerValue(resp.EnforceOnSmallProfiles)
+		r.RemovedMembersThresholdPercent = types.StringPointerValue(resp.RemovedMembersThresholdPercent)
 		r.RequestCatalogID = types.StringPointerValue(resp.RequestCatalogID)
 		r.TenantID = types.StringPointerValue(resp.TenantID)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
@@ -203,6 +205,12 @@ func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ct
 	} else {
 		enabled = nil
 	}
+	enforceOnSmallProfiles := new(bool)
+	if !r.EnforceOnSmallProfiles.IsUnknown() && !r.EnforceOnSmallProfiles.IsNull() {
+		*enforceOnSmallProfiles = r.EnforceOnSmallProfiles.ValueBool()
+	} else {
+		enforceOnSmallProfiles = nil
+	}
 	var bundleAutomationRuleEntitlement *shared.BundleAutomationRuleEntitlement
 	if r.BundleAutomationRuleEntitlement != nil {
 		var entitlementRefs []shared.AppEntitlementRef
@@ -231,12 +239,20 @@ func (r *BundleAutomationResourceModel) ToSharedCreateBundleAutomationRequest(ct
 			EntitlementRefs: entitlementRefs,
 		}
 	}
+	removedMembersThresholdPercent := new(string)
+	if !r.RemovedMembersThresholdPercent.IsUnknown() && !r.RemovedMembersThresholdPercent.IsNull() {
+		*removedMembersThresholdPercent = r.RemovedMembersThresholdPercent.ValueString()
+	} else {
+		removedMembersThresholdPercent = nil
+	}
 	out := shared.CreateBundleAutomationRequest{
 		BundleAutomationRuleCEL:         bundleAutomationRuleCEL,
 		CreateTasks:                     createTasks,
 		DisableCircuitBreaker:           disableCircuitBreaker,
 		Enabled:                         enabled,
+		EnforceOnSmallProfiles:          enforceOnSmallProfiles,
 		BundleAutomationRuleEntitlement: bundleAutomationRuleEntitlement,
+		RemovedMembersThresholdPercent:  removedMembersThresholdPercent,
 	}
 
 	return &out, diags
@@ -283,6 +299,12 @@ func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx c
 	} else {
 		enabled = nil
 	}
+	enforceOnSmallProfiles := new(bool)
+	if !r.EnforceOnSmallProfiles.IsUnknown() && !r.EnforceOnSmallProfiles.IsNull() {
+		*enforceOnSmallProfiles = r.EnforceOnSmallProfiles.ValueBool()
+	} else {
+		enforceOnSmallProfiles = nil
+	}
 	var bundleAutomationRuleEntitlement *shared.BundleAutomationRuleEntitlement
 	if r.BundleAutomationRuleEntitlement != nil {
 		var entitlementRefs []shared.AppEntitlementRef
@@ -311,12 +333,20 @@ func (r *BundleAutomationResourceModel) ToSharedSetBundleAutomationRequest(ctx c
 			EntitlementRefs: entitlementRefs,
 		}
 	}
+	removedMembersThresholdPercent := new(string)
+	if !r.RemovedMembersThresholdPercent.IsUnknown() && !r.RemovedMembersThresholdPercent.IsNull() {
+		*removedMembersThresholdPercent = r.RemovedMembersThresholdPercent.ValueString()
+	} else {
+		removedMembersThresholdPercent = nil
+	}
 	out := shared.SetBundleAutomationRequest{
 		BundleAutomationRuleCEL:         bundleAutomationRuleCEL,
 		CreateTasks:                     createTasks,
 		DisableCircuitBreaker:           disableCircuitBreaker,
 		Enabled:                         enabled,
+		EnforceOnSmallProfiles:          enforceOnSmallProfiles,
 		BundleAutomationRuleEntitlement: bundleAutomationRuleEntitlement,
+		RemovedMembersThresholdPercent:  removedMembersThresholdPercent,
 	}
 
 	return &out, diags

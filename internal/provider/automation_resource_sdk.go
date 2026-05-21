@@ -256,6 +256,11 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					} else {
 						automationSteps.CreateRevokeTasksV2.EntitlementExclusionNone = &tfTypes.EntitlementExclusionNone{}
 					}
+					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionAccessOnly == nil {
+						automationSteps.CreateRevokeTasksV2.EntitlementInclusionAccessOnly = nil
+					} else {
+						automationSteps.CreateRevokeTasksV2.EntitlementInclusionAccessOnly = &tfTypes.EntitlementInclusionAccessOnly{}
+					}
 					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionAll == nil {
 						automationSteps.CreateRevokeTasksV2.EntitlementInclusionAll = nil
 					} else {
@@ -995,6 +1000,11 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionNone = nil
 					} else {
 						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionNone = &tfTypes.EntitlementExclusionNone{}
+					}
+					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionAccessOnly == nil {
+						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionAccessOnly = nil
+					} else {
+						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionAccessOnly = &tfTypes.EntitlementInclusionAccessOnly{}
 					}
 					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionAll == nil {
 						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionAll = nil
@@ -2848,6 +2858,10 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
 					entitlementExclusionNone = &shared.EntitlementExclusionNone{}
 				}
+				var entitlementInclusionAccessOnly *shared.EntitlementInclusionAccessOnly
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
+					entitlementInclusionAccessOnly = &shared.EntitlementInclusionAccessOnly{}
+				}
 				var entitlementInclusionAll *shared.EntitlementInclusionAll
 				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAll != nil {
 					entitlementInclusionAll = &shared.EntitlementInclusionAll{}
@@ -2954,17 +2968,18 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				createRevokeTasksV2 = &shared.CreateRevokeTasksV2{
-					EntitlementExclusionCriteria: entitlementExclusionCriteria,
-					EntitlementExclusionList:     entitlementExclusionList,
-					EntitlementExclusionListCel:  entitlementExclusionListCel,
-					EntitlementExclusionNone:     entitlementExclusionNone,
-					EntitlementInclusionAll:      entitlementInclusionAll,
-					EntitlementInclusionCriteria: entitlementInclusionCriteria,
-					EntitlementInclusionList:     entitlementInclusionList,
-					EntitlementInclusionListCel:  entitlementInclusionListCel,
-					UseSubjectUser:               useSubjectUser2,
-					UserIDCel:                    userIDCel2,
-					UserRef:                      userRef1,
+					EntitlementExclusionCriteria:   entitlementExclusionCriteria,
+					EntitlementExclusionList:       entitlementExclusionList,
+					EntitlementExclusionListCel:    entitlementExclusionListCel,
+					EntitlementExclusionNone:       entitlementExclusionNone,
+					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly,
+					EntitlementInclusionAll:        entitlementInclusionAll,
+					EntitlementInclusionCriteria:   entitlementInclusionCriteria,
+					EntitlementInclusionList:       entitlementInclusionList,
+					EntitlementInclusionListCel:    entitlementInclusionListCel,
+					UseSubjectUser:                 useSubjectUser2,
+					UserIDCel:                      userIDCel2,
+					UserRef:                        userRef1,
 				}
 			}
 			var evaluateExpressions *shared.EvaluateExpressions
@@ -4384,6 +4399,10 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
 					entitlementExclusionNone1 = &shared.EntitlementExclusionNone{}
 				}
+				var entitlementInclusionAccessOnly1 *shared.EntitlementInclusionAccessOnly
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
+					entitlementInclusionAccessOnly1 = &shared.EntitlementInclusionAccessOnly{}
+				}
 				var entitlementInclusionAll1 *shared.EntitlementInclusionAll
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAll != nil {
 					entitlementInclusionAll1 = &shared.EntitlementInclusionAll{}
@@ -4490,17 +4509,18 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				createRevokeTasksV21 = &shared.CreateRevokeTasksV2{
-					EntitlementExclusionCriteria: entitlementExclusionCriteria1,
-					EntitlementExclusionList:     entitlementExclusionList1,
-					EntitlementExclusionListCel:  entitlementExclusionListCel1,
-					EntitlementExclusionNone:     entitlementExclusionNone1,
-					EntitlementInclusionAll:      entitlementInclusionAll1,
-					EntitlementInclusionCriteria: entitlementInclusionCriteria1,
-					EntitlementInclusionList:     entitlementInclusionList1,
-					EntitlementInclusionListCel:  entitlementInclusionListCel1,
-					UseSubjectUser:               useSubjectUser13,
-					UserIDCel:                    userIDCel9,
-					UserRef:                      userRef8,
+					EntitlementExclusionCriteria:   entitlementExclusionCriteria1,
+					EntitlementExclusionList:       entitlementExclusionList1,
+					EntitlementExclusionListCel:    entitlementExclusionListCel1,
+					EntitlementExclusionNone:       entitlementExclusionNone1,
+					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly1,
+					EntitlementInclusionAll:        entitlementInclusionAll1,
+					EntitlementInclusionCriteria:   entitlementInclusionCriteria1,
+					EntitlementInclusionList:       entitlementInclusionList1,
+					EntitlementInclusionListCel:    entitlementInclusionListCel1,
+					UseSubjectUser:                 useSubjectUser13,
+					UserIDCel:                      userIDCel9,
+					UserRef:                        userRef8,
 				}
 			}
 			var evaluateExpressions1 *shared.EvaluateExpressions
@@ -7262,6 +7282,10 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
 					entitlementExclusionNone = &shared.EntitlementExclusionNone{}
 				}
+				var entitlementInclusionAccessOnly *shared.EntitlementInclusionAccessOnly
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
+					entitlementInclusionAccessOnly = &shared.EntitlementInclusionAccessOnly{}
+				}
 				var entitlementInclusionAll *shared.EntitlementInclusionAll
 				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAll != nil {
 					entitlementInclusionAll = &shared.EntitlementInclusionAll{}
@@ -7368,17 +7392,18 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				createRevokeTasksV2 = &shared.CreateRevokeTasksV2{
-					EntitlementExclusionCriteria: entitlementExclusionCriteria,
-					EntitlementExclusionList:     entitlementExclusionList,
-					EntitlementExclusionListCel:  entitlementExclusionListCel,
-					EntitlementExclusionNone:     entitlementExclusionNone,
-					EntitlementInclusionAll:      entitlementInclusionAll,
-					EntitlementInclusionCriteria: entitlementInclusionCriteria,
-					EntitlementInclusionList:     entitlementInclusionList,
-					EntitlementInclusionListCel:  entitlementInclusionListCel,
-					UseSubjectUser:               useSubjectUser2,
-					UserIDCel:                    userIDCel2,
-					UserRef:                      userRef1,
+					EntitlementExclusionCriteria:   entitlementExclusionCriteria,
+					EntitlementExclusionList:       entitlementExclusionList,
+					EntitlementExclusionListCel:    entitlementExclusionListCel,
+					EntitlementExclusionNone:       entitlementExclusionNone,
+					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly,
+					EntitlementInclusionAll:        entitlementInclusionAll,
+					EntitlementInclusionCriteria:   entitlementInclusionCriteria,
+					EntitlementInclusionList:       entitlementInclusionList,
+					EntitlementInclusionListCel:    entitlementInclusionListCel,
+					UseSubjectUser:                 useSubjectUser2,
+					UserIDCel:                      userIDCel2,
+					UserRef:                        userRef1,
 				}
 			}
 			var evaluateExpressions *shared.EvaluateExpressions
@@ -8753,6 +8778,10 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
 					entitlementExclusionNone1 = &shared.EntitlementExclusionNone{}
 				}
+				var entitlementInclusionAccessOnly1 *shared.EntitlementInclusionAccessOnly
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
+					entitlementInclusionAccessOnly1 = &shared.EntitlementInclusionAccessOnly{}
+				}
 				var entitlementInclusionAll1 *shared.EntitlementInclusionAll
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAll != nil {
 					entitlementInclusionAll1 = &shared.EntitlementInclusionAll{}
@@ -8859,17 +8888,18 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				createRevokeTasksV21 = &shared.CreateRevokeTasksV2{
-					EntitlementExclusionCriteria: entitlementExclusionCriteria1,
-					EntitlementExclusionList:     entitlementExclusionList1,
-					EntitlementExclusionListCel:  entitlementExclusionListCel1,
-					EntitlementExclusionNone:     entitlementExclusionNone1,
-					EntitlementInclusionAll:      entitlementInclusionAll1,
-					EntitlementInclusionCriteria: entitlementInclusionCriteria1,
-					EntitlementInclusionList:     entitlementInclusionList1,
-					EntitlementInclusionListCel:  entitlementInclusionListCel1,
-					UseSubjectUser:               useSubjectUser13,
-					UserIDCel:                    userIDCel9,
-					UserRef:                      userRef8,
+					EntitlementExclusionCriteria:   entitlementExclusionCriteria1,
+					EntitlementExclusionList:       entitlementExclusionList1,
+					EntitlementExclusionListCel:    entitlementExclusionListCel1,
+					EntitlementExclusionNone:       entitlementExclusionNone1,
+					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly1,
+					EntitlementInclusionAll:        entitlementInclusionAll1,
+					EntitlementInclusionCriteria:   entitlementInclusionCriteria1,
+					EntitlementInclusionList:       entitlementInclusionList1,
+					EntitlementInclusionListCel:    entitlementInclusionListCel1,
+					UseSubjectUser:                 useSubjectUser13,
+					UserIDCel:                      userIDCel9,
+					UserRef:                        userRef8,
 				}
 			}
 			var evaluateExpressions1 *shared.EvaluateExpressions

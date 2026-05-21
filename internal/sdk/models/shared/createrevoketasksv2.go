@@ -14,6 +14,7 @@ package shared
 //   - inclusionAll
 //   - inclusionCriteria
 //   - inclusionListCel
+//   - inclusionAccessOnly
 //
 // This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
 //   - exclusionNone
@@ -29,6 +30,11 @@ type CreateRevokeTasksV2 struct {
 	EntitlementExclusionListCel *EntitlementExclusionListCel `json:"exclusionListCel,omitempty"`
 	// The EntitlementExclusionNone message.
 	EntitlementExclusionNone *EntitlementExclusionNone `json:"exclusionNone,omitempty"`
+	// EntitlementInclusionAccessOnly resolves to the system-managed access
+	//  entitlement on every app the subject user has an AppUser on. Use this to
+	//  deprovision app accounts without fanning out to every group, role, or
+	//  permission inside each app — produces at most one revoke ticket per app.
+	EntitlementInclusionAccessOnly *EntitlementInclusionAccessOnly `json:"inclusionAccessOnly,omitempty"`
 	// The EntitlementInclusionAll message.
 	EntitlementInclusionAll *EntitlementInclusionAll `json:"inclusionAll,omitempty"`
 	// The EntitlementInclusionCriteria message.
@@ -75,6 +81,13 @@ func (c *CreateRevokeTasksV2) GetEntitlementExclusionNone() *EntitlementExclusio
 		return nil
 	}
 	return c.EntitlementExclusionNone
+}
+
+func (c *CreateRevokeTasksV2) GetEntitlementInclusionAccessOnly() *EntitlementInclusionAccessOnly {
+	if c == nil {
+		return nil
+	}
+	return c.EntitlementInclusionAccessOnly
 }
 
 func (c *CreateRevokeTasksV2) GetEntitlementInclusionAll() *EntitlementInclusionAll {

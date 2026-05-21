@@ -2,6 +2,30 @@
 
 package shared
 
+type FindingTypes string
+
+const (
+	FindingTypesFindingTypeUnspecified                     FindingTypes = "FINDING_TYPE_UNSPECIFIED"
+	FindingTypesFindingTypeSimilarUsernameMatch            FindingTypes = "FINDING_TYPE_SIMILAR_USERNAME_MATCH"
+	FindingTypesFindingTypeServiceAccountMisclassification FindingTypes = "FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION"
+	FindingTypesFindingTypeDecoyCredentialUsed             FindingTypes = "FINDING_TYPE_DECOY_CREDENTIAL_USED"
+)
+
+func (e FindingTypes) ToPointer() *FindingTypes {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FindingTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FINDING_TYPE_UNSPECIFIED", "FINDING_TYPE_SIMILAR_USERNAME_MATCH", "FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION", "FINDING_TYPE_DECOY_CREDENTIAL_USED":
+			return true
+		}
+	}
+	return false
+}
+
 type Severities string
 
 const (
@@ -62,8 +86,8 @@ type FindingSearchRequest struct {
 	// Filter by app user IDs (OR within field). Matches findings whose
 	//  target.app_user_target.app_user_id is in this list.
 	AppUserIds []string `json:"appUserIds,omitempty"`
-	// Filter by finding type discriminators (OR within field).
-	FindingTypes []string `json:"findingTypes,omitempty"`
+	// Filter by finding type (OR within field).
+	FindingTypes []FindingTypes `json:"findingTypes,omitempty"`
 	// Maximum number of findings to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
 	// Pagination token from a previous response.
@@ -90,7 +114,7 @@ func (f *FindingSearchRequest) GetAppUserIds() []string {
 	return f.AppUserIds
 }
 
-func (f *FindingSearchRequest) GetFindingTypes() []string {
+func (f *FindingSearchRequest) GetFindingTypes() []FindingTypes {
 	if f == nil {
 		return nil
 	}

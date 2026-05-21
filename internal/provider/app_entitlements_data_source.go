@@ -52,6 +52,7 @@ type AppEntitlementsDataSourceModel struct {
 	PolicyRefs              []tfTypes.PolicyRef          `tfsdk:"policy_refs"`
 	Query                   types.String                 `tfsdk:"query"`
 	Refs                    []tfTypes.AppEntitlementRef  `tfsdk:"refs"`
+	RequestSchemaIds        []types.String               `tfsdk:"request_schema_ids"`
 	ResourceIds             []types.String               `tfsdk:"resource_ids"`
 	ResourceTraitIds        []types.String               `tfsdk:"resource_trait_ids"`
 	ResourceTypeIds         []types.String               `tfsdk:"resource_type_ids"`
@@ -959,6 +960,11 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 					},
 				},
 				Description: `Filter results to only these specific entitlements.`,
+			},
+			"request_schema_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Search for app entitlements that are bound to any of these request schemas.`,
 			},
 			"resource_ids": schema.ListAttribute{
 				Optional:    true,
