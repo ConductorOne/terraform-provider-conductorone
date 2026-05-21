@@ -132,6 +132,8 @@ func TestNestedDeletedAtSchemaAttribute(t *testing.T) {
 		"app_owner_entitlement_resource.go",
 		"app_entitlement_owner_user_resource.go",
 		"app_owner_user_resource.go",
+		"connector_owner_entitlement_resource.go",
+		"connector_owner_user_resource.go",
 		"directory_resource.go",
 	}
 

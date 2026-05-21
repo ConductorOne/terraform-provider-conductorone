@@ -17,12 +17,14 @@ on top-level resources for these same entity-root types). AccessReview
 gets away with that overlay because it has no top-level resource;
 AppEntitlement, User, and Directory all do.
 
-Fix: re-add deleted_at to the five resource schema sites that nest
+Fix: re-add deleted_at to the seven resource schema sites that nest
 these entity-root types. Files:
   - app_entitlement_owner_entitlement_resource.go (IGA-1774 reported)
   - app_owner_entitlement_resource.go             (IGA-1774 reported)
   - app_entitlement_owner_user_resource.go        (latent same-class bug)
   - app_owner_user_resource.go                    (latent same-class bug)
+  - connector_owner_entitlement_resource.go       (latent same-class bug, found by v1.4.0 smoke test)
+  - connector_owner_user_resource.go              (latent same-class bug, found by v1.4.0 smoke test)
   - directory_resource.go                         (latent same-class bug)
 
 The patch will go away when upstream Speakeasy fixes
@@ -78,6 +80,34 @@ index 1ba915ef..78cddb00 100644
 --- a/internal/provider/app_owner_user_resource.go
 +++ b/internal/provider/app_owner_user_resource.go
 @@ -81,6 +81,9 @@ func (r *AppOwnerUserResource) Schema(ctx context.Context, req resource.SchemaRe
+ 						Computed:    true,
+ 						Description: `The id of the user to whom tasks will be automatically reassigned to.`,
+ 					},
++					"deleted_at": schema.StringAttribute{
++						Computed: true,
++					},
+ 					"department": schema.StringAttribute{
+ 						Computed:    true,
+ 						Description: `The department which the user belongs to in the organization.`,
+diff --git a/internal/provider/connector_owner_entitlement_resource.go b/internal/provider/connector_owner_entitlement_resource.go
+index f0d85aa7..775d9f0d 100644
+--- a/internal/provider/connector_owner_entitlement_resource.go
++++ b/internal/provider/connector_owner_entitlement_resource.go
+@@ -108,6 +108,9 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
+ 						Computed:    true,
+ 						Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
+ 					},
++					"deleted_at": schema.StringAttribute{
++						Computed: true,
++					},
+ 					"deprovisioner_policy": schema.SingleNestedAttribute{
+ 						Computed: true,
+ 						Attributes: map[string]schema.Attribute{
+diff --git a/internal/provider/connector_owner_user_resource.go b/internal/provider/connector_owner_user_resource.go
+index 1af3af88..ff7b0646 100644
+--- a/internal/provider/connector_owner_user_resource.go
++++ b/internal/provider/connector_owner_user_resource.go
+@@ -90,6 +90,9 @@ func (r *ConnectorOwnerUserResource) Schema(ctx context.Context, req resource.Sc
  						Computed:    true,
  						Description: `The id of the user to whom tasks will be automatically reassigned to.`,
  					},
