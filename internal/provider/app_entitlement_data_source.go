@@ -81,6 +81,7 @@ type AppEntitlementDataSourceModel struct {
 	Read                           types.Bool                           `tfsdk:"read"`
 	Refs                           []tfTypes.AppEntitlementRef          `tfsdk:"refs"`
 	RequestSchemaID                types.String                         `tfsdk:"request_schema_id"`
+	RequestSchemaIds               []types.String                       `tfsdk:"request_schema_ids"`
 	ResourceIds                    []types.String                       `tfsdk:"resource_ids"`
 	ResourceTraitIds               []types.String                       `tfsdk:"resource_trait_ids"`
 	ResourceTypeIds                []types.String                       `tfsdk:"resource_type_ids"`
@@ -940,6 +941,11 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"request_schema_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the request schema associated with this app entitlement.`,
+			},
+			"request_schema_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Search for app entitlements that are bound to any of these request schemas.`,
 			},
 			"resource_ids": schema.ListAttribute{
 				Optional:    true,

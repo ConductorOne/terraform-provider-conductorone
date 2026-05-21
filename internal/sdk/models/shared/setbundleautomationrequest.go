@@ -16,8 +16,14 @@ type SetBundleAutomationRequest struct {
 	DisableCircuitBreaker *bool `json:"disableCircuitBreaker,omitempty"`
 	// Whether the automation should actively run on its schedule.
 	Enabled *bool `json:"enabled,omitempty"`
+	// When true, the circuit breaker is evaluated even on profiles below the
+	//  tenant min-members floor. Defaults to false.
+	EnforceOnSmallProfiles *bool `json:"enforceOnSmallProfiles,omitempty"`
 	// The BundleAutomationRuleEntitlement message.
 	BundleAutomationRuleEntitlement *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
+	// Per-automation override for the removed-members percent that trips the
+	//  circuit breaker (1-100). 0 / unset means inherit the tenant default.
+	RemovedMembersThresholdPercent *string `json:"removedMembersThresholdPercent,omitempty"`
 }
 
 func (s *SetBundleAutomationRequest) GetBundleAutomationRuleCEL() *BundleAutomationRuleCEL {
@@ -48,9 +54,23 @@ func (s *SetBundleAutomationRequest) GetEnabled() *bool {
 	return s.Enabled
 }
 
+func (s *SetBundleAutomationRequest) GetEnforceOnSmallProfiles() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.EnforceOnSmallProfiles
+}
+
 func (s *SetBundleAutomationRequest) GetBundleAutomationRuleEntitlement() *BundleAutomationRuleEntitlement {
 	if s == nil {
 		return nil
 	}
 	return s.BundleAutomationRuleEntitlement
+}
+
+func (s *SetBundleAutomationRequest) GetRemovedMembersThresholdPercent() *string {
+	if s == nil {
+		return nil
+	}
+	return s.RemovedMembersThresholdPercent
 }

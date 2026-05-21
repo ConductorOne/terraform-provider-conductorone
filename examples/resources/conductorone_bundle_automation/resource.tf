@@ -14,7 +14,9 @@ resource "conductorone_bundle_automation" "my_bundleautomation" {
   delete_bundle_automation_request = {
     # ...
   }
-  disable_circuit_breaker = false
-  enabled                 = true
-  request_catalog_id      = "...my_request_catalog_id..."
+  disable_circuit_breaker           = false
+  enabled                           = true
+  enforce_on_small_profiles         = false
+  removed_members_threshold_percent = "...my_removed_members_threshold_percent..."
+  request_catalog_id                = "...my_request_catalog_id..."
 }

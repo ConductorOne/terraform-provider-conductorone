@@ -25,8 +25,14 @@ type BundleAutomation struct {
 	DisableCircuitBreaker *bool `json:"disableCircuitBreaker,omitempty"`
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// When true, the circuit breaker is evaluated even on profiles below the
+	//  tenant min-members floor.
+	EnforceOnSmallProfiles *bool `json:"enforceOnSmallProfiles,omitempty"`
 	// The BundleAutomationRuleEntitlement message.
 	BundleAutomationRuleEntitlement *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
+	// Per-automation override for the removed-members percent that trips the
+	//  circuit breaker (1-100). 0 / unset means the tenant default applies.
+	RemovedMembersThresholdPercent *string `json:"removedMembersThresholdPercent,omitempty"`
 	// The requestCatalogId field.
 	RequestCatalogID *string `json:"requestCatalogId,omitempty"`
 	// The BundleAutomationLastRunState message.
@@ -96,11 +102,25 @@ func (b *BundleAutomation) GetEnabled() *bool {
 	return b.Enabled
 }
 
+func (b *BundleAutomation) GetEnforceOnSmallProfiles() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.EnforceOnSmallProfiles
+}
+
 func (b *BundleAutomation) GetBundleAutomationRuleEntitlement() *BundleAutomationRuleEntitlement {
 	if b == nil {
 		return nil
 	}
 	return b.BundleAutomationRuleEntitlement
+}
+
+func (b *BundleAutomation) GetRemovedMembersThresholdPercent() *string {
+	if b == nil {
+		return nil
+	}
+	return b.RemovedMembersThresholdPercent
 }
 
 func (b *BundleAutomation) GetRequestCatalogID() *string {

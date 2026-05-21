@@ -47,6 +47,9 @@ data "conductorone_app_entitlements" "my_app_entitlements" {
       id     = "...my_id..."
     }
   ]
+  request_schema_ids = [
+    "..."
+  ]
   resource_ids = [
     "..."
   ]

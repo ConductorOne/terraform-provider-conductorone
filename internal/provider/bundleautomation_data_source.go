@@ -38,6 +38,8 @@ type BundleAutomationDataSourceModel struct {
 	DeletedAt                       types.String                             `tfsdk:"deleted_at"`
 	DisableCircuitBreaker           types.Bool                               `tfsdk:"disable_circuit_breaker"`
 	Enabled                         types.Bool                               `tfsdk:"enabled"`
+	EnforceOnSmallProfiles          types.Bool                               `tfsdk:"enforce_on_small_profiles"`
+	RemovedMembersThresholdPercent  types.String                             `tfsdk:"removed_members_threshold_percent"`
 	RequestCatalogID                types.String                             `tfsdk:"request_catalog_id"`
 	TenantID                        types.String                             `tfsdk:"tenant_id"`
 	UpdatedAt                       types.String                             `tfsdk:"updated_at"`
@@ -168,6 +170,16 @@ func (r *BundleAutomationDataSource) Schema(ctx context.Context, req datasource.
 			"enabled": schema.BoolAttribute{
 				Computed:    true,
 				Description: `The enabled field.`,
+			},
+			"enforce_on_small_profiles": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `When true, the circuit breaker is evaluated even on profiles below the` + "\n" +
+					` tenant min-members floor.`,
+			},
+			"removed_members_threshold_percent": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `Per-automation override for the removed-members percent that trips the` + "\n" +
+					` circuit breaker (1-100). 0 / unset means the tenant default applies.`,
 			},
 			"request_catalog_id": schema.StringAttribute{
 				Required:    true,

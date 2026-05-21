@@ -3,7 +3,7 @@ module github.com/conductorone/terraform-provider-conductorone
 go 1.25.8
 
 require (
-	github.com/go-jose/go-jose/v4 v4.1.4
+	github.com/go-jose/go-jose/v4 v4.1.3
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/hashicorp/go-uuid v1.0.3

@@ -69,6 +69,8 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	Query *string `json:"query,omitempty"`
 	// Filter results to only these specific entitlements.
 	Refs []AppEntitlementRef `json:"refs,omitempty"`
+	// Search for app entitlements that are bound to any of these request schemas.
+	RequestSchemaIds []string `json:"requestSchemaIds,omitempty"`
 	// Search for app entitlements that belongs to these resources.
 	ResourceIds []string `json:"resourceIds,omitempty"`
 	// Filter results to entitlements whose resource types have any of these trait IDs.
@@ -219,6 +221,13 @@ func (a *AppEntitlementSearchServiceSearchRequest) GetRefs() []AppEntitlementRef
 		return nil
 	}
 	return a.Refs
+}
+
+func (a *AppEntitlementSearchServiceSearchRequest) GetRequestSchemaIds() []string {
+	if a == nil {
+		return nil
+	}
+	return a.RequestSchemaIds
 }
 
 func (a *AppEntitlementSearchServiceSearchRequest) GetResourceIds() []string {

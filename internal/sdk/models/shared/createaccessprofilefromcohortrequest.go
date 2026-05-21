@@ -4,6 +4,9 @@ package shared
 
 // The CreateAccessProfileFromCohortRequest message.
 type CreateAccessProfileFromCohortRequest struct {
+	// Optional CEL expression for dynamic membership. When non-empty, used
+	//  instead of auto-generating from profile_filters.
+	CelExpression *string `json:"celExpression,omitempty"`
 	// If true, the automation will create JIT tasks for access changes.
 	//  If false, users are synced to membership without creating tasks.
 	CreateTasks *bool `json:"createTasks,omitempty"`
@@ -19,6 +22,13 @@ type CreateAccessProfileFromCohortRequest struct {
 	ProfileFilters []ProfileFilter `json:"profileFilters,omitempty"`
 	// Optional suggestion ID to mark as accepted after creating the profile.
 	SuggestionID *string `json:"suggestionId,omitempty"`
+}
+
+func (c *CreateAccessProfileFromCohortRequest) GetCelExpression() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CelExpression
 }
 
 func (c *CreateAccessProfileFromCohortRequest) GetCreateTasks() *bool {
