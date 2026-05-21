@@ -29,9 +29,11 @@ resource "conductorone_bundle_automation" "my_bundleautomation" {
   delete_bundle_automation_request = {
     # ...
   }
-  disable_circuit_breaker = false
-  enabled                 = true
-  request_catalog_id      = "...my_request_catalog_id..."
+  disable_circuit_breaker           = false
+  enabled                           = true
+  enforce_on_small_profiles         = false
+  removed_members_threshold_percent = "...my_removed_members_threshold_percent..."
+  request_catalog_id                = "...my_request_catalog_id..."
 }
 ```
 
@@ -50,6 +52,10 @@ resource "conductorone_bundle_automation" "my_bundleautomation" {
 - `delete_bundle_automation_request` (Attributes) The request message for deleting a bundle automation from a catalog. (see [below for nested schema](#nestedatt--delete_bundle_automation_request))
 - `disable_circuit_breaker` (Boolean) Whether to disable the circuit breaker that pauses the automation when excessive membership changes are detected.
 - `enabled` (Boolean) Whether the automation should actively run on its schedule.
+- `enforce_on_small_profiles` (Boolean) When true, the circuit breaker is evaluated even on profiles below the
+ tenant min-members floor. Defaults to false.
+- `removed_members_threshold_percent` (String) Per-automation override for the removed-members percent that trips the
+ circuit breaker (1-100). 0 / unset means inherit the tenant default.
 
 ### Read-Only
 

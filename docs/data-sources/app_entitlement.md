@@ -82,6 +82,9 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
       id     = "...my_id..."
     }
   ]
+  request_schema_ids = [
+    "..."
+  ]
   resource_ids = [
     "..."
   ]
@@ -123,6 +126,7 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
 - `policy_refs` (Attributes List) Search for app entitlements that use any of these policies. (see [below for nested schema](#nestedatt--policy_refs))
 - `query` (String) Query the app entitlements with a fuzzy search on display name and description.
 - `refs` (Attributes List) Filter results to only these specific entitlements. (see [below for nested schema](#nestedatt--refs))
+- `request_schema_ids` (List of String) Search for app entitlements that are bound to any of these request schemas.
 - `resource_ids` (List of String) Search for app entitlements that belongs to these resources.
 - `resource_trait_ids` (List of String) Filter results to entitlements whose resource types have any of these trait IDs.
 - `resource_type_ids` (List of String) Search for app entitlements that are for items with resources types that have matching names. Example names are "group", "role", and "app".

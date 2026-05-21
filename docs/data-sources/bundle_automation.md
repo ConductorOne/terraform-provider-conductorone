@@ -39,6 +39,10 @@ data "conductorone_bundle_automation" "my_bundleautomation" {
 - `deleted_at` (String)
 - `disable_circuit_breaker` (Boolean) The disableCircuitBreaker field.
 - `enabled` (Boolean) The enabled field.
+- `enforce_on_small_profiles` (Boolean) When true, the circuit breaker is evaluated even on profiles below the
+ tenant min-members floor.
+- `removed_members_threshold_percent` (String) Per-automation override for the removed-members percent that trips the
+ circuit breaker (1-100). 0 / unset means the tenant default applies.
 - `tenant_id` (String) The tenantId field.
 - `updated_at` (String)
 
