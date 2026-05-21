@@ -31,7 +31,6 @@ type AccessConflictResource struct {
 // AccessConflictResourceModel describes the resource data model.
 type AccessConflictResourceModel struct {
 	AccessConflictNotificationConfig *tfTypes.AccessConflictNotificationConfig `tfsdk:"access_conflict_notification_config"`
-	ConflictMonitorDeleteRequest     *tfTypes.ConflictMonitorDeleteRequest     `tfsdk:"conflict_monitor_delete_request"`
 	CreatedAt                        types.String                              `tfsdk:"created_at"`
 	DeletedAt                        types.String                              `tfsdk:"-"`
 	Description                      types.String                              `tfsdk:"description"`
@@ -97,10 +96,6 @@ func (r *AccessConflictResource) Schema(ctx context.Context, req resource.Schema
 					},
 				},
 				Description: `The NotificationConfig message.`,
-			},
-			"conflict_monitor_delete_request": schema.SingleNestedAttribute{
-				Optional:    true,
-				Description: `The request message for deleting a conflict monitor.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
