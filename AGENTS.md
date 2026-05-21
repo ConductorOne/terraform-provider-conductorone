@@ -13,7 +13,7 @@ Specialized workflows live under `skills/`. Load the relevant skill when its tri
 | Skill | When to use |
 |---|---|
 | [`skills/upgrading/SKILL.md`](skills/upgrading/SKILL.md) | A user needs to upgrade the `ConductorOne/conductorone` provider version in their Terraform / OpenTofu configuration. Covers reading the breaking-changes log, applying attribute migrations, validating with `terraform plan`, and recovering from known issues (notably the v1.1.0 bad release and the v1.2.0 `deleted_at` crash). |
-| [`skills/release/SKILL.md`](skills/release/SKILL.md) | Cutting a new spec-driven release of the provider. Documents the regen sequence and the four hand-maintained edges Speakeasy will not handle: `provider.go` registration, doc-emission ordering, README install-snippet version lag, and pagination-fix verification. Trigger on `/release`, "cut a release", "regen for vX.Y.Z", or any time a Speakeasy regen is about to ship. |
+| [`skills/release/SKILL.md`](skills/release/SKILL.md) | Cutting a new spec-driven release of the provider. Documents the regen sequence and the six hand-maintained edges Speakeasy will not handle: `provider.go` registration, doc-emission ordering, README install-snippet version lag, pagination-fix verification, breaking-changes log in `templates/index.md.tmpl`, and the human-tagged GitHub release plus post-tag note polish. Trigger on `/release`, "cut a release", "regen for vX.Y.Z", or any time a Speakeasy regen is about to ship. |
 
 ## Other key docs
 
