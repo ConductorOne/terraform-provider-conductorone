@@ -39,6 +39,32 @@ to inject secrets using something like the [vault provider](https://registry.ter
 
 ## Breaking changes
 
+### 1.3.0
+
+- `conductorone_access_profile` removes the deprecated top-level `grant_policy_id` attribute on both the resource and data source. Grant policy is now managed via the catalog's `AppEntitlement.grant_policy_id`.
+
+### 1.1.1
+
+- `conductorone_access_conflict`: the `notification_config` block has been renamed to `access_conflict_notification_config` to disambiguate it from the similarly named attribute on `conductorone_access_review` and `conductorone_access_review_template`. The nested fields (`email_notifications`, `slack_notifications`) and their values are unchanged — only the wrapping block name has changed.
+
+  | Resource | v1.0.40 attribute | v1.1.1+ attribute |
+  |---|---|---|
+  | `conductorone_access_conflict` | `notification_config` | `access_conflict_notification_config` |
+
+### 1.1.0 — do not use
+
+`v1.1.0` was generated against a stale OpenAPI snapshot and emitted unintended attribute renames on several resources. Upgrade directly from `v1.0.x` to `v1.1.1` (or later) and skip `v1.1.0`. If you already adopted `v1.1.0`, restore the following attribute names before upgrading:
+
+| Resource | v1.1.0 (incorrect) | v1.1.1 (matches v1.0.40) |
+|---|---|---|
+| `conductorone_policy` (`policy_steps.steps[]`) | `policy_form` | `form` |
+| `conductorone_access_review` | `access_review_notification_config` | `notification_config` |
+| `conductorone_access_review_template` | `access_review_notification_config` | `notification_config` |
+| `conductorone_automation` (`automation_steps[]`, `draft_automation_steps[]`) | `automations_task_action` | `task_action` |
+| `conductorone_automation` (`automation_steps[]`, `draft_automation_steps[]`) | `automations_webhook` | `webhook` |
+| `conductorone_request_schema` (`form.fields[]`) | `form_string_field` | `string_field` |
+| `conductorone_request_schema` (`form.fields[]`) | `form_string_map_field` | `string_map_field` |
+
 ### 1.0.0
 
 - The `request_catalog` resource and datasource are now the `access_profile` resource and datasource.
