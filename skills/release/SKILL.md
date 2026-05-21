@@ -1,11 +1,11 @@
 ---
 name: release
-description: Spec-driven release workflow for this Speakeasy-generated Terraform provider. Documents the regen sequence and the six hand-maintained edges Speakeasy will not handle — provider.go registration, doc-emission ordering, README install-snippet version lag, breaking-changes log, post-merge tagging by a human, and post-tag release-note polish. Trigger on `/release`, "cut a release", "regen for vX.Y.Z", "bump version", or any time a Speakeasy regen is about to ship.
+description: Spec-driven release workflow for this Speakeasy-generated Terraform provider. Documents the regen sequence and the seven hand-maintained edges Speakeasy will not handle — provider.go registration, doc-emission ordering, README install-snippet version lag, breaking-changes log, patch-tripwire file-list extension for new entity-root-nesting resources (IGA-1774 class), post-merge tagging by a human, and post-tag release-note polish. Trigger on `/release`, "cut a release", "regen for vX.Y.Z", "bump version", or any time a Speakeasy regen is about to ship.
 ---
 
 # Release workflow
 
-The provider is Speakeasy-generated from `openapi.yaml`. Most of the release is mechanical, but **six places require hand intervention**. Skipping any of them ships a broken, misleading, or silently undocumented release.
+The provider is Speakeasy-generated from `openapi.yaml`. Most of the release is mechanical, but **seven places require hand intervention**. Skipping any of them ships a broken, misleading, or silently undocumented release.
 
 ## Canonical sequence
 
@@ -14,13 +14,14 @@ The provider is Speakeasy-generated from `openapi.yaml`. Most of the release is 
 | 1 | edit `gen.yaml` → `version: X.Y.Z` | **yes** | Drives Speakeasy versioning. Commit alone. |
 | 2 | `make gen` | no | Pulls fresh OAS from insulator, applies overlays, regenerates SDK + provider. Commit alone. |
 | 3 | register new resources/data sources in `internal/provider/provider.go` | **yes** | See [Edge 1](#edge-1). Commit alone. |
-| 4 | if release has breaking changes, prepend a `### X.Y.Z` block to `## Breaking changes` in `templates/index.md.tmpl` | **yes** | See [Edge 5](#edge-5). Commit alone. |
-| 5 | `make generate` (tfplugindocs) | no | Emits `docs/**/*.md` including the rendered `index.md` from the template above. Must run *after* steps 3 and 4. Commit alone. |
-| 6 | patch README install snippet to `X.Y.Z` | **yes** | See [Edge 3](#edge-3). Commit alone. |
-| 7 | `make pre-commit` | no | Final gate: build + lint + test + generate + pagination check. |
-| 8 | open PR → merge to `main` | manual | |
-| 9 | **human** cuts the tag `vX.Y.Z` via the GitHub Releases UI | **human, not agent** | See [Edge 6](#edge-6). |
-| 10 | agent offers to polish the release notes to match prior-release style | **yes, post-tag** | See [Edge 6](#edge-6). |
+| 4 | audit any **new** `*_resource.go` files for entity-root nesting; extend `patches/02-*.patch` + tripwire if needed | **yes** | See [Edge 6](#edge-6). Skip if the regen added no new resource files. Commit alone. |
+| 5 | if release has breaking changes, prepend a `### X.Y.Z` block to `## Breaking changes` in `templates/index.md.tmpl` | **yes** | See [Edge 5](#edge-5). Commit alone. |
+| 6 | `make generate` (tfplugindocs) | no | Emits `docs/**/*.md` including the rendered `index.md` from the template above. Must run *after* steps 3, 4, and 5. Commit alone. |
+| 7 | patch README install snippet to `X.Y.Z` | **yes** | See [Edge 3](#edge-3). Commit alone. |
+| 8 | `make pre-commit` | no | Final gate: build + lint + test + generate + pagination check. |
+| 9 | open PR → merge to `main` | manual | |
+| 10 | **human** cuts the tag `vX.Y.Z` via the GitHub Releases UI | **human, not agent** | See [Edge 7](#edge-7). |
+| 11 | agent offers to polish the release notes to match prior-release style | **yes, post-tag** | See [Edge 7](#edge-7). |
 
 **Segment commits** (per repo `CLAUDE.md`): manual edits before codegen; codegen alone; tfplugindocs alone. Eases rebases when you have to re-run a step.
 
@@ -109,7 +110,43 @@ The table is only needed when renames are involved; pure removals or behavior-on
 
 Skip this step entirely for additive-only releases. If unsure whether a change qualifies as breaking, default to documenting it — false positives are cheap, false negatives strand users.
 
-### Edge 6 — Tagging is human-only; release-note polish is post-tag
+### Edge 6 — Patch tripwires only protect a hard-coded file list
+
+`patches/` holds hand-fixes that re-apply on every regen, and each one has a tripwire test in `internal/provider/speakeasy_regen_test.go`. The tripwires work by checking specific files for the expected post-patch state. **They only check files in their hard-coded `[]string` list.**
+
+This is sharp: when a regen produces a *new* resource file that ought to be patched (e.g., a new resource that nests the entity-root types `tfTypes.User`, `tfTypes.AppEntitlement`, or `tfTypes.Directory` — all three trigger the IGA-1774 `deleted_at` regression), the patch silently doesn't apply to it, *and* the tripwire silently doesn't notice. The build passes, `make pre-commit` passes, the PR looks clean — and the new resource crashes on the first `terraform apply` with `Mismatch between struct and object type: Struct defines fields not found in object: deleted_at`. v1.4.0's PR was queued up exactly this way: only a manual smoke test against a real tenant caught that the new `conductorone_connector_owner_{user,entitlement}` resources were broken. They were fixed before merge.
+
+**Pre-PR audit recipe** — run after step 3 (registration) and before step 6 (`make generate`):
+
+```bash
+# 1. List new resource files emitted by this regen.
+git diff --name-only --diff-filter=A main..HEAD -- 'internal/provider/*_resource.go'
+
+# 2. For each new file, check whether it nests an entity-root type. If any of
+#    these greps return a hit, the file needs to be in patches/02 and in the
+#    TestNestedDeletedAtSchemaAttribute tripwire list.
+for f in $(git diff --name-only --diff-filter=A main..HEAD -- 'internal/provider/*_resource.go'); do
+  if rg -q 'tfTypes\.(User|AppEntitlement|Directory)\b' "$f"; then
+    echo "NESTED ENTITY-ROOT: $f — needs patches/02 + tripwire entry"
+  fi
+done
+
+# 3. Confirm each flagged file has "deleted_at" in its schema (post-patch state).
+for f in <flagged files>; do
+  rg -q '"deleted_at":' "$f" || echo "MISSING deleted_at: $f"
+done
+```
+
+If any file is flagged but not in `patches/02-deleted-at-on-nested-resources.patch`:
+
+1. Add `"deleted_at": schema.StringAttribute{Computed: true}` to the schema, inserted **inside the nested entity block**, alphabetized with the surrounding attributes. The patch file's existing hunks are the style template.
+2. Append a hunk for the new file to `patches/02-deleted-at-on-nested-resources.patch`, alphabetically sorted. Bump the file count in the patch's commit-message header and add an entry to the "Files:" list.
+3. Add the new filename to `resourceFiles` in `TestNestedDeletedAtSchemaAttribute`.
+4. Round-trip verify the patch: `git apply -R patches/02-...patch && git apply patches/02-...patch` should succeed on both directions and leave `git status` clean.
+
+Other patches in `patches/` follow the same pattern — when extending the spec produces a new file that triggers the patched-against regression, the patch's file list and tripwire list both need to grow. There is no automation for this; the tripwire only fires for files you tell it about.
+
+### Edge 7 — Tagging is human-only; release-note polish is post-tag
 
 The provider's GitHub release tags are cut **by a human via the GitHub Releases UI**, not by an agent and not by a CI workflow. The human typically writes one or two short bullets as starter notes. Do not attempt to cut the tag, push a tag, or call `gh release create` as part of the release workflow.
 
@@ -187,4 +224,4 @@ Release vX.Y.Z: regen against the current insulator OpenAPI spec, plus the manua
 
 ## Why this skill exists
 
-Shipping v1.4.0 hit edges 1, 2, and 3 in sequence. Each one fails silently — the build is green, the tests are green, the PR looks fine, and the broken thing only surfaces when someone tries to use the new release. Edges 5 and 6 don't break the build at all; they just produce a release whose docs and notes don't match the code. Future agents reading this: do not skip the manual steps because the build passes, and do not try to cut the tag — that's a human gate.
+Preparing v1.4.0 hit edges 1, 2, 3, and 6 in sequence — all caught pre-merge, none shipped. Edges 1–3 produced a green build that initially misled the PR review (resources unregistered, docs unrendered, README pinned to the old version). Edge 6 was the worst of the four: the build was green, the tripwire test passed, the PR looked clean, and only a manual smoke test against a real tenant revealed that `terraform apply` against the new resources crashed on a struct/schema mismatch. Edges 5 and 7 don't break the build at all; they just produce a release whose docs and notes don't match the code. Future agents reading this: do not skip the manual steps because the build passes, run the Edge 6 pre-PR audit on every new resource file, smoke-test the new resources against a real tenant before merging, and do not try to cut the tag — that's a human gate.
