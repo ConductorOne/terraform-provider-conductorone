@@ -148,3 +148,55 @@ func TestNestedDeletedAtSchemaAttribute(t *testing.T) {
 		}
 	}
 }
+
+// TestAppEntitlementSDKMirrorsManualProvisionSchema guards against schema/SDK
+// drift on the hand-written conductorone_app_entitlement resource.
+//
+// Both app_entitlement_resource.go (schema) and app_entitlement_resource_sdk.go
+// (Terraform <-> shared-types conversion) are hand-maintained — there is no
+// upstream OAS binding that drives them. When commit 2b29cade added
+// provisioner_assignment to the manual_provision schemas without updating the
+// SDK, user-configured values were silently dropped on the write path and
+// state never reflected the API on the read path. The build was green, every
+// pre-existing test passed, and only a manual smoke test caught the perpetual
+// diff and dropped writes.
+//
+// This tripwire checks that ProvisionerAssignment handling is present at all
+// four required sites (write-provision, write-deprovision, read-provision,
+// read-deprovision). It does NOT prove the field-by-field mapping is correct;
+// it proves the four sites exist at all. If you intentionally remove
+// provisioner_assignment from the schema, delete this test in the same change.
+func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
+	data, err := os.ReadFile("app_entitlement_resource_sdk.go")
+	if err != nil {
+		t.Fatalf("reading app_entitlement_resource_sdk.go: %v", err)
+	}
+	content := string(data)
+
+	// Write side: Terraform plan -> *shared.ManualProvision. Both policies
+	// must read ProvisionerAssignment from the plan and wire it into the
+	// shared.ManualProvision{} struct literal sent to the API.
+	writeMarkers := map[string]string{
+		"r.ProvisionPolicy.ManualProvision.ProvisionerAssignment != nil":     "ProvisionPolicy write-side reads ProvisionerAssignment from plan",
+		"r.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment != nil": "DeprovisionerPolicy write-side reads ProvisionerAssignment from plan",
+		"ProvisionerAssignment: provisionerAssignment,":                      "ProvisionPolicy ManualProvision struct literal wires ProvisionerAssignment",
+		"ProvisionerAssignment: provisionerAssignment1,":                     "DeprovisionerPolicy ManualProvision struct literal wires ProvisionerAssignment",
+	}
+	for marker, what := range writeMarkers {
+		if !strings.Contains(content, marker) {
+			t.Errorf("write-side mapping missing (%s): %q not found. Schema declares provisioner_assignment but plan->API conversion does not handle it; user-configured values will be silently dropped on apply.", what, marker)
+		}
+	}
+
+	// Read side: API response -> Terraform state. Both policies must
+	// hydrate the tfTypes.ProvisionerAssignment from the response.
+	readMarkers := map[string]string{
+		"r.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}":     "ProvisionPolicy read-side hydrates state from response",
+		"r.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}": "DeprovisionerPolicy read-side hydrates state from response",
+	}
+	for marker, what := range readMarkers {
+		if !strings.Contains(content, marker) {
+			t.Errorf("read-side mapping missing (%s): %q not found. Schema declares provisioner_assignment but API->state conversion does not populate it; refresh will null the field and produce a perpetual diff.", what, marker)
+		}
+	}
+}
