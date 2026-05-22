@@ -90,3 +90,32 @@ In `app_resource_resource_sdk.go` there is also a `RefreshFromSharedCreateManual
 Filed upstream as [speakeasy-api/speakeasy#2031](https://github.com/speakeasy-api/speakeasy/issues/2031) on 2026-04-30 with a minimal repro and our reproduction history. The generator template lives in the private `speakeasy-api/openapi-generation` repo, so the public CLI repo is the only place we can file. Robert previously applied the same hand-patch in [PR #184](https://github.com/ConductorOne/terraform-provider-conductorone/pull/184) (2026-02-26) without filing upstream; the patch ritual continues until the upstream issue is fixed.
 
 We confirmed `terraform.respectRequiredFields: true` in `gen.yaml` does NOT fix this — that flag improves nullable handling for ordinary nested struct fields but does not affect the flatten-promotion case. Documented in the upstream issue.
+
+## `conductorone_app_entitlement` resource is hand-written — schema and SDK can drift
+
+### Summary
+
+`internal/provider/app_entitlement_resource.go` and `app_entitlement_resource_sdk.go` are both hand-maintained. The OAS spec has no `x-speakeasy-entity-operation: App Entitlement#…` bindings, so Speakeasy never generates code for this resource; only `conductorone_custom_app_entitlement` and `conductorone_app_entitlement_automation` get codegen.
+
+When a contributor edits one half and forgets the other, the build still passes (the resource schema and the SDK conversion are in different files with no compile-time link). The failure mode is silent: user-configured values get dropped on write, or state never reflects the API on read, and the symptom is a perpetual `terraform plan` diff.
+
+This caught a real bug in May 2026: [PR #222](https://github.com/ConductorOne/terraform-provider-conductorone/pull/222) (commit 2b29cade, "Make deprovisioner_policy writable on conductorone_app_entitlement") added the `provisioner_assignment` attribute to both `provision_policy.manual_provision` and `deprovisioner_policy.manual_provision` schemas but didn't update the SDK file. A v1.4.0 smoke test against a real tenant exposed it. Fix landed in commit 2b678647.
+
+### Why not generate it?
+
+In theory, adding `x-speakeasy-entity-operation: App Entitlement#…` overlays to the existing CRUD paths and deleting the two hand-written files would let Speakeasy maintain this resource the same way it maintains `custom_app_entitlement`. In practice, the reason this resource was hand-written in the first place is likely that its Read semantics (configures already-existing connector-synced entitlements) and custom plan modifiers don't fit Speakeasy's resource model cleanly. Worth investigating but out of scope for a single release.
+
+### Tripwire
+
+`TestAppEntitlementSDKMirrorsManualProvisionSchema` in `internal/provider/speakeasy_regen_test.go` checks that the SDK conversion has ProvisionerAssignment handling at all four required sites:
+
+- write-provision: `r.ProvisionPolicy.ManualProvision.ProvisionerAssignment != nil`
+- write-deprovision: `r.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment != nil`
+- read-provision: `r.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}`
+- read-deprovision: `r.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}`
+
+It also checks both `shared.ManualProvision{}` struct literals wire `ProvisionerAssignment: provisionerAssignment{,1},` into the API request body. The tripwire does not validate field-by-field correctness — it only proves the four sites exist. If you intentionally remove `provisioner_assignment` from the schema, delete the test in the same change.
+
+### Scope
+
+This is a single-attribute tripwire, not a general schema/SDK symmetry check. The same drift can recur on other fields if a contributor extends `manual_provision` (or any other nested block on the hand-written resource) without touching the SDK. A more general check would parse the schema AST and assert every attribute appears in both directions of the SDK conversion — worth doing if this pattern recurs on a different field.

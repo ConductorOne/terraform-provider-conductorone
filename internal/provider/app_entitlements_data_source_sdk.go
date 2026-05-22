@@ -732,6 +732,13 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 			})
 		}
 	}
+	var requestSchemaIds []string
+	if r.RequestSchemaIds != nil {
+		requestSchemaIds = make([]string, 0, len(r.RequestSchemaIds))
+		for requestSchemaIdsIndex := range r.RequestSchemaIds {
+			requestSchemaIds = append(requestSchemaIds, r.RequestSchemaIds[requestSchemaIdsIndex].ValueString())
+		}
+	}
 	var resourceIds []string
 	if r.ResourceIds != nil {
 		resourceIds = make([]string, 0, len(r.ResourceIds))
@@ -786,6 +793,7 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 		PolicyRefs:              policyRefs,
 		Query:                   query,
 		Refs:                    refs,
+		RequestSchemaIds:        requestSchemaIds,
 		ResourceIds:             resourceIds,
 		ResourceTraitIds:        resourceTraitIds,
 		ResourceTypeIds:         resourceTypeIds,

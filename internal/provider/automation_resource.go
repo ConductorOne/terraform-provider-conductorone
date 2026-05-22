@@ -498,6 +498,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `The EntitlementExclusionNone message.`,
 								},
+								"entitlement_inclusion_access_only": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `EntitlementInclusionAccessOnly resolves to the system-managed access` + "\n" +
+										` entitlement on every app the subject user has an AppUser on. Use this to` + "\n" +
+										` deprovision app accounts without fanning out to every group, role, or` + "\n" +
+										` permission inside each app — produces at most one revoke ticket per app.`,
+								},
 								"entitlement_inclusion_all": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -615,6 +623,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - inclusionAll` + "\n" +
 								`  - inclusionCriteria` + "\n" +
 								`  - inclusionListCel` + "\n" +
+								`  - inclusionAccessOnly` + "\n" +
 								`` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:` + "\n" +
@@ -1955,6 +1964,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `The EntitlementExclusionNone message.`,
 								},
+								"entitlement_inclusion_access_only": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `EntitlementInclusionAccessOnly resolves to the system-managed access` + "\n" +
+										` entitlement on every app the subject user has an AppUser on. Use this to` + "\n" +
+										` deprovision app accounts without fanning out to every group, role, or` + "\n" +
+										` permission inside each app — produces at most one revoke ticket per app.`,
+								},
 								"entitlement_inclusion_all": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -2072,6 +2089,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - inclusionAll` + "\n" +
 								`  - inclusionCriteria` + "\n" +
 								`  - inclusionListCel` + "\n" +
+								`  - inclusionAccessOnly` + "\n" +
 								`` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:` + "\n" +

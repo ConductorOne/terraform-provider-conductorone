@@ -117,6 +117,9 @@ resource "conductorone_automation" "my_automation" {
         entitlement_exclusion_none = {
           # ...
         }
+        entitlement_inclusion_access_only = {
+          # ...
+        }
         entitlement_inclusion_all = {
           # ...
         }
@@ -471,6 +474,9 @@ resource "conductorone_automation" "my_automation" {
           excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
         }
         entitlement_exclusion_none = {
+          # ...
+        }
+        entitlement_inclusion_access_only = {
           # ...
         }
         entitlement_inclusion_all = {

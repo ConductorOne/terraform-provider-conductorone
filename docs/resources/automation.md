@@ -132,6 +132,9 @@ resource "conductorone_automation" "my_automation" {
         entitlement_exclusion_none = {
           # ...
         }
+        entitlement_inclusion_access_only = {
+          # ...
+        }
         entitlement_inclusion_all = {
           # ...
         }
@@ -486,6 +489,9 @@ resource "conductorone_automation" "my_automation" {
           excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
         }
         entitlement_exclusion_none = {
+          # ...
+        }
+        entitlement_inclusion_access_only = {
           # ...
         }
         entitlement_inclusion_all = {
@@ -1172,6 +1178,7 @@ This message contains a oneof named inclusion. Only a single field of the follow
   - inclusionAll
   - inclusionCriteria
   - inclusionListCel
+  - inclusionAccessOnly
 
 
 This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
@@ -1416,6 +1423,10 @@ Optional:
 - `entitlement_exclusion_list` (Attributes) The EntitlementExclusionList message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list))
 - `entitlement_exclusion_list_cel` (Attributes) The EntitlementExclusionListCel message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list_cel))
 - `entitlement_exclusion_none` (Attributes) The EntitlementExclusionNone message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none))
+- `entitlement_inclusion_access_only` (Attributes) EntitlementInclusionAccessOnly resolves to the system-managed access
+ entitlement on every app the subject user has an AppUser on. Use this to
+ deprovision app accounts without fanning out to every group, role, or
+ permission inside each app — produces at most one revoke ticket per app. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_access_only))
 - `entitlement_inclusion_all` (Attributes) The EntitlementInclusionAll message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_all))
 - `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_criteria))
 - `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list))
@@ -1466,6 +1477,10 @@ Optional:
 
 <a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none"></a>
 ### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_exclusion_none`
+
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_access_only"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.entitlement_inclusion_access_only`
 
 
 <a id="nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_all"></a>
@@ -2010,6 +2025,7 @@ This message contains a oneof named inclusion. Only a single field of the follow
   - inclusionAll
   - inclusionCriteria
   - inclusionListCel
+  - inclusionAccessOnly
 
 
 This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
@@ -2254,6 +2270,10 @@ Optional:
 - `entitlement_exclusion_list` (Attributes) The EntitlementExclusionList message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list))
 - `entitlement_exclusion_list_cel` (Attributes) The EntitlementExclusionListCel message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_list_cel))
 - `entitlement_exclusion_none` (Attributes) The EntitlementExclusionNone message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none))
+- `entitlement_inclusion_access_only` (Attributes) EntitlementInclusionAccessOnly resolves to the system-managed access
+ entitlement on every app the subject user has an AppUser on. Use this to
+ deprovision app accounts without fanning out to every group, role, or
+ permission inside each app — produces at most one revoke ticket per app. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_access_only))
 - `entitlement_inclusion_all` (Attributes) The EntitlementInclusionAll message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_all))
 - `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_criteria))
 - `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list))
@@ -2304,6 +2324,10 @@ Optional:
 
 <a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_exclusion_none"></a>
 ### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_exclusion_none`
+
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_access_only"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.entitlement_inclusion_access_only`
 
 
 <a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_all"></a>

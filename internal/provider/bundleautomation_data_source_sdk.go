@@ -89,6 +89,8 @@ func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx 
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.DisableCircuitBreaker = types.BoolPointerValue(resp.DisableCircuitBreaker)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
+		r.EnforceOnSmallProfiles = types.BoolPointerValue(resp.EnforceOnSmallProfiles)
+		r.RemovedMembersThresholdPercent = types.StringPointerValue(resp.RemovedMembersThresholdPercent)
 		r.RequestCatalogID = types.StringPointerValue(resp.RequestCatalogID)
 		r.TenantID = types.StringPointerValue(resp.TenantID)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))

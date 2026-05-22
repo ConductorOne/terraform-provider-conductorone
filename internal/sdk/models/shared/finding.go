@@ -67,6 +67,7 @@ func (e *FindingState) IsExact() bool {
 // This message contains a oneof named finding_type. Only a single field of the following list may be set at a time:
 //   - similarUsernameMatch
 //   - serviceAccountMisclassification
+//   - decoyCredentialUsed
 //
 // This message contains a oneof named target. Only a single field of the following list may be set at a time:
 //   - identityUserTarget
@@ -101,6 +102,9 @@ type Finding struct {
 	CreatedAt        *time.Time       `json:"createdAt,omitempty"`
 	// The customTags field.
 	CustomTags map[string]string `json:"customTags,omitempty"`
+	// DecoyCredentialUsedType: a planted decoy credential authenticated
+	//  successfully.
+	DecoyCredentialUsedType *DecoyCredentialUsedType `json:"decoyCredentialUsed,omitempty"`
 	// The fingerprint field.
 	Fingerprint     *string    `json:"fingerprint,omitempty"`
 	FirstObservedAt *time.Time `json:"firstObservedAt,omitempty"`
@@ -196,6 +200,13 @@ func (f *Finding) GetCustomTags() map[string]string {
 		return nil
 	}
 	return f.CustomTags
+}
+
+func (f *Finding) GetDecoyCredentialUsedType() *DecoyCredentialUsedType {
+	if f == nil {
+		return nil
+	}
+	return f.DecoyCredentialUsedType
 }
 
 func (f *Finding) GetFingerprint() *string {

@@ -2,5 +2,5 @@
 
 package types
 
-type ConflictMonitorDeleteRequest struct {
+type EntitlementInclusionAccessOnly struct {
 }

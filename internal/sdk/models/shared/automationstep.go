@@ -66,6 +66,7 @@ type AutomationStep struct {
 	//   - inclusionAll
 	//   - inclusionCriteria
 	//   - inclusionListCel
+	//   - inclusionAccessOnly
 	//
 	//
 	// This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:

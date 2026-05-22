@@ -82,6 +82,7 @@ type ConductoroneAPI struct {
 	Automation                           *Automation
 	RequestCatalogManagement             *RequestCatalogManagement
 	ConnectorCatalog                     *ConnectorCatalog
+	Decoy                                *Decoy
 	Directory                            *Directory
 	Finding                              *Finding
 	FindingRoutingRule                   *FindingRoutingRule
@@ -130,6 +131,7 @@ type ConductoroneAPI struct {
 	OrgNotificationSettings              *OrgNotificationSettings
 	UserNotificationSettings             *UserNotificationSettings
 	OnboardingSettings                   *OnboardingSettings
+	RequestSettings                      *RequestSettings
 	SessionSettings                      *SessionSettings
 	SSFReceiverStream                    *SSFReceiverStream
 	SSFReceiverEvent                     *SSFReceiverEvent
@@ -145,6 +147,7 @@ type ConductoroneAPI struct {
 	ConnectorOwnersV2                    *ConnectorOwnersV2
 	AppEntitlementOwnersV2               *AppEntitlementOwnersV2
 	AppOwnersV2                          *AppOwnersV2
+	AppResourceOwnersV2                  *AppResourceOwnersV2
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -233,9 +236,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.3.0",
+		SDKVersion: "1.4.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.3.0 2.882.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.4.0 2.882.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{
@@ -292,6 +295,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.Automation = newAutomation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.RequestCatalogManagement = newRequestCatalogManagement(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConnectorCatalog = newConnectorCatalog(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.Decoy = newDecoy(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Directory = newDirectory(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Finding = newFinding(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FindingRoutingRule = newFindingRoutingRule(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -340,6 +344,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.OrgNotificationSettings = newOrgNotificationSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.UserNotificationSettings = newUserNotificationSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.OnboardingSettings = newOnboardingSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.RequestSettings = newRequestSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SessionSettings = newSessionSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SSFReceiverStream = newSSFReceiverStream(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SSFReceiverEvent = newSSFReceiverEvent(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -355,6 +360,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.ConnectorOwnersV2 = newConnectorOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppEntitlementOwnersV2 = newAppEntitlementOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppOwnersV2 = newAppOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppResourceOwnersV2 = newAppResourceOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }
