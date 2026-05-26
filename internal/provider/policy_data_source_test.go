@@ -7,12 +7,9 @@ import (
 )
 
 func TestAccPolicyDataSource(t *testing.T) {
-	// Skipped pending upstream Speakeasy fix. Same root cause as
-	// TestAccPolicyResource — Approval-block fields drift false → null on
-	// refresh because the parent schema's x-speakeasy-terraform-plan-only
-	// annotation doesn't propagate UseConfigValue into nested leaf fields.
-	// Related: speakeasy-api/speakeasy#2031 (nullable nested flatten).
-	t.Skip("upstream: plan-only annotation does not propagate to nested fields in Speakeasy 1.761.10")
+	// Requires live ConductorOne credentials (TF_ACC=1).
+	// Previously skipped due to approval-block fields drifting false→null;
+	// fixed by switching to typeconvert.BoolPointerOrFalse in the SDK layer.
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{

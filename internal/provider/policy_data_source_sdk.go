@@ -108,7 +108,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 								steps.Approval.AgentApproval.ReassignToUserIds = nil
 							}
 						}
-						steps.Approval.AllowDelegation = types.BoolPointerValue(stepsItem.Approval.AllowDelegation)
+						steps.Approval.AllowDelegation = typeconvert.BoolPointerOrFalse(stepsItem.Approval.AllowDelegation)
 						if stepsItem.Approval.AllowedReassignees != nil {
 							if steps.Approval.AllowedReassignees == nil {
 								steps.Approval.AllowedReassignees = make([]types.String, 0, len(stepsItem.Approval.AllowedReassignees))
@@ -119,15 +119,15 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 						} else {
 							steps.Approval.AllowedReassignees = nil
 						}
-						steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
+						steps.Approval.AllowReassignment = typeconvert.BoolPointerOrFalse(stepsItem.Approval.AllowReassignment)
 						if stepsItem.Approval.AppGroupApproval == nil {
 							steps.Approval.AppGroupApproval = nil
 						} else {
 							steps.Approval.AppGroupApproval = &tfTypes.AppGroupApproval{}
-							steps.Approval.AppGroupApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.AllowSelfApproval)
+							steps.Approval.AppGroupApproval.AllowSelfApproval = typeconvert.BoolPointerOrFalse(stepsItem.Approval.AppGroupApproval.AllowSelfApproval)
 							steps.Approval.AppGroupApproval.AppGroupID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppGroupID)
 							steps.Approval.AppGroupApproval.AppID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppID)
-							steps.Approval.AppGroupApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.Fallback)
+							steps.Approval.AppGroupApproval.Fallback = typeconvert.BoolPointerOrFalse(stepsItem.Approval.AppGroupApproval.Fallback)
 							if stepsItem.Approval.AppGroupApproval.FallbackGroupIds != nil {
 								if steps.Approval.AppGroupApproval.FallbackGroupIds == nil {
 									steps.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
@@ -154,23 +154,23 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Approval.AppGroupApproval.FallbackUserIds = nil
 							}
-							steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
-							steps.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers)
+							steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = typeconvert.BoolPointerOrFalse(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
+							steps.Approval.AppGroupApproval.RequireDistinctApprovers = typeconvert.BoolPointerOrFalse(stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers)
 						}
 						if stepsItem.Approval.AppOwnerApproval == nil {
 							steps.Approval.AppOwnerApproval = nil
 						} else {
 							steps.Approval.AppOwnerApproval = &tfTypes.AppOwnerApproval{}
-							steps.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
-							steps.Approval.AppOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers)
+							steps.Approval.AppOwnerApproval.AllowSelfApproval = typeconvert.BoolPointerOrFalse(stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
+							steps.Approval.AppOwnerApproval.RequireDistinctApprovers = typeconvert.BoolPointerOrFalse(stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers)
 						}
-						steps.Approval.Assigned = types.BoolPointerValue(stepsItem.Approval.Assigned)
+						steps.Approval.Assigned = typeconvert.BoolPointerOrFalse(stepsItem.Approval.Assigned)
 						if stepsItem.Approval.EntitlementOwnerApproval == nil {
 							steps.Approval.EntitlementOwnerApproval = nil
 						} else {
 							steps.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
-							steps.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
-							steps.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.Fallback)
+							steps.Approval.EntitlementOwnerApproval.AllowSelfApproval = typeconvert.BoolPointerOrFalse(stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
+							steps.Approval.EntitlementOwnerApproval.Fallback = typeconvert.BoolPointerOrFalse(stepsItem.Approval.EntitlementOwnerApproval.Fallback)
 							if stepsItem.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
 								if steps.Approval.EntitlementOwnerApproval.FallbackGroupIds == nil {
 									steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
@@ -197,8 +197,8 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
 							}
-							steps.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
-							steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
+							steps.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = typeconvert.BoolPointerOrFalse(stepsItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
+							steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = typeconvert.BoolPointerOrFalse(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
 						}
 						if stepsItem.Approval.Escalation == nil {
 							steps.Approval.Escalation = nil
@@ -238,12 +238,12 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 								steps.Approval.Escalation.SkipStep = &tfTypes.SkipStep{}
 							}
 						}
-						steps.Approval.EscalationEnabled = types.BoolPointerValue(stepsItem.Approval.EscalationEnabled)
+						steps.Approval.EscalationEnabled = typeconvert.BoolPointerOrFalse(stepsItem.Approval.EscalationEnabled)
 						if stepsItem.Approval.ExpressionApproval == nil {
 							steps.Approval.ExpressionApproval = nil
 						} else {
 							steps.Approval.ExpressionApproval = &tfTypes.ExpressionApproval{}
-							steps.Approval.ExpressionApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.AllowSelfApproval)
+							steps.Approval.ExpressionApproval.AllowSelfApproval = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ExpressionApproval.AllowSelfApproval)
 							if stepsItem.Approval.ExpressionApproval.AssignedUserIds != nil {
 								if steps.Approval.ExpressionApproval.AssignedUserIds == nil {
 									steps.Approval.ExpressionApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.AssignedUserIds))
@@ -264,7 +264,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Approval.ExpressionApproval.Expressions = nil
 							}
-							steps.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.Fallback)
+							steps.Approval.ExpressionApproval.Fallback = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ExpressionApproval.Fallback)
 							if stepsItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
 								if steps.Approval.ExpressionApproval.FallbackGroupIds == nil {
 									steps.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
@@ -291,14 +291,14 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Approval.ExpressionApproval.FallbackUserIds = nil
 							}
-							steps.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
-							steps.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
+							steps.Approval.ExpressionApproval.IsGroupFallbackEnabled = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
+							steps.Approval.ExpressionApproval.RequireDistinctApprovers = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
 						}
 						if stepsItem.Approval.ManagerApproval == nil {
 							steps.Approval.ManagerApproval = nil
 						} else {
 							steps.Approval.ManagerApproval = &tfTypes.ManagerApproval{}
-							steps.Approval.ManagerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.AllowSelfApproval)
+							steps.Approval.ManagerApproval.AllowSelfApproval = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ManagerApproval.AllowSelfApproval)
 							if stepsItem.Approval.ManagerApproval.AssignedUserIds != nil {
 								if steps.Approval.ManagerApproval.AssignedUserIds == nil {
 									steps.Approval.ManagerApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.AssignedUserIds))
@@ -309,7 +309,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Approval.ManagerApproval.AssignedUserIds = nil
 							}
-							steps.Approval.ManagerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.Fallback)
+							steps.Approval.ManagerApproval.Fallback = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ManagerApproval.Fallback)
 							if stepsItem.Approval.ManagerApproval.FallbackGroupIds != nil {
 								if steps.Approval.ManagerApproval.FallbackGroupIds == nil {
 									steps.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
@@ -336,19 +336,19 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Approval.ManagerApproval.FallbackUserIds = nil
 							}
-							steps.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
-							steps.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
+							steps.Approval.ManagerApproval.IsGroupFallbackEnabled = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
+							steps.Approval.ManagerApproval.RequireDistinctApprovers = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
 						}
-						steps.Approval.RequireApprovalReason = types.BoolPointerValue(stepsItem.Approval.RequireApprovalReason)
-						steps.Approval.RequireDenialReason = types.BoolPointerValue(stepsItem.Approval.RequireDenialReason)
-						steps.Approval.RequireReassignmentReason = types.BoolPointerValue(stepsItem.Approval.RequireReassignmentReason)
-						steps.Approval.RequiresStepUpProviderID = types.StringPointerValue(stepsItem.Approval.RequiresStepUpProviderID)
+						steps.Approval.RequireApprovalReason = typeconvert.BoolPointerOrFalse(stepsItem.Approval.RequireApprovalReason)
+						steps.Approval.RequireDenialReason = typeconvert.BoolPointerOrFalse(stepsItem.Approval.RequireDenialReason)
+						steps.Approval.RequireReassignmentReason = typeconvert.BoolPointerOrFalse(stepsItem.Approval.RequireReassignmentReason)
+						steps.Approval.RequiresStepUpProviderID = typeconvert.StringPointerOrEmpty(stepsItem.Approval.RequiresStepUpProviderID)
 						if stepsItem.Approval.ResourceOwnerApproval == nil {
 							steps.Approval.ResourceOwnerApproval = nil
 						} else {
 							steps.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
-							steps.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval)
-							steps.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.Fallback)
+							steps.Approval.ResourceOwnerApproval.AllowSelfApproval = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval)
+							steps.Approval.ResourceOwnerApproval.Fallback = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ResourceOwnerApproval.Fallback)
 							if stepsItem.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
 								if steps.Approval.ResourceOwnerApproval.FallbackGroupIds == nil {
 									steps.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
@@ -375,8 +375,8 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Approval.ResourceOwnerApproval.FallbackUserIds = nil
 							}
-							steps.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
-							steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
+							steps.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
+							steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = typeconvert.BoolPointerOrFalse(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
 						}
 						if stepsItem.Approval.SelfApproval == nil {
 							steps.Approval.SelfApproval = nil
@@ -392,7 +392,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Approval.SelfApproval.AssignedUserIds = nil
 							}
-							steps.Approval.SelfApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.SelfApproval.Fallback)
+							steps.Approval.SelfApproval.Fallback = typeconvert.BoolPointerOrFalse(stepsItem.Approval.SelfApproval.Fallback)
 							if stepsItem.Approval.SelfApproval.FallbackGroupIds != nil {
 								if steps.Approval.SelfApproval.FallbackGroupIds == nil {
 									steps.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
@@ -419,14 +419,14 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 							} else {
 								steps.Approval.SelfApproval.FallbackUserIds = nil
 							}
-							steps.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.SelfApproval.IsGroupFallbackEnabled)
+							steps.Approval.SelfApproval.IsGroupFallbackEnabled = typeconvert.BoolPointerOrFalse(stepsItem.Approval.SelfApproval.IsGroupFallbackEnabled)
 						}
 						if stepsItem.Approval.UserApproval == nil {
 							steps.Approval.UserApproval = nil
 						} else {
 							steps.Approval.UserApproval = &tfTypes.UserApproval{}
-							steps.Approval.UserApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.UserApproval.AllowSelfApproval)
-							steps.Approval.UserApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.UserApproval.RequireDistinctApprovers)
+							steps.Approval.UserApproval.AllowSelfApproval = typeconvert.BoolPointerOrFalse(stepsItem.Approval.UserApproval.AllowSelfApproval)
+							steps.Approval.UserApproval.RequireDistinctApprovers = typeconvert.BoolPointerOrFalse(stepsItem.Approval.UserApproval.RequireDistinctApprovers)
 							if stepsItem.Approval.UserApproval.UserIds != nil {
 								if steps.Approval.UserApproval.UserIds == nil {
 									steps.Approval.UserApproval.UserIds = make([]types.String, 0, len(stepsItem.Approval.UserApproval.UserIds))
@@ -455,7 +455,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 						steps.Provision = nil
 					} else {
 						steps.Provision = &tfTypes.Provision{}
-						steps.Provision.Assigned = types.BoolPointerValue(stepsItem.Provision.Assigned)
+						steps.Provision.Assigned = typeconvert.BoolPointerOrFalse(stepsItem.Provision.Assigned)
 						if stepsItem.Provision.ProvisionPolicy == nil {
 							steps.Provision.ProvisionPolicy = nil
 						} else {
@@ -548,7 +548,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = nil
 									} else {
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = &tfTypes.AppOwnerProvisioner{}
-										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment)
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = typeconvert.BoolPointerOrFalse(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment)
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
 											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds == nil {
 												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
@@ -564,7 +564,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = nil
 									} else {
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = &tfTypes.EntitlementOwnerProvisioner{}
-										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment)
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = typeconvert.BoolPointerOrFalse(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment)
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
 											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds == nil {
 												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
@@ -580,7 +580,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = nil
 									} else {
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = &tfTypes.ExpressionProvisioner{}
-										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment)
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = typeconvert.BoolPointerOrFalse(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment)
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
 											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions == nil {
 												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
@@ -606,7 +606,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = nil
 									} else {
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = &tfTypes.GroupProvisioner{}
-										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment)
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = typeconvert.BoolPointerOrFalse(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment)
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID)
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID)
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
@@ -624,7 +624,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = nil
 									} else {
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = &tfTypes.ManagerProvisioner{}
-										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment)
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = typeconvert.BoolPointerOrFalse(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment)
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
 											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds == nil {
 												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
@@ -640,7 +640,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = nil
 									} else {
 										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = &tfTypes.UserProvisioner{}
-										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment)
+										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = typeconvert.BoolPointerOrFalse(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment)
 										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
 											if steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds == nil {
 												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
@@ -750,14 +750,14 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 		for _, postActionsItem := range resp.PostActions {
 			var postActions tfTypes.PolicyPostActions
 
-			postActions.CertifyRemediateImmediately = types.BoolPointerValue(postActionsItem.CertifyRemediateImmediately)
+			postActions.CertifyRemediateImmediately = typeconvert.BoolPointerOrFalse(postActionsItem.CertifyRemediateImmediately)
 
 			r.PostActions = append(r.PostActions, postActions)
 		}
 	} else {
 		r.PostActions = nil
 	}
-	r.ReassignTasksToDelegates = types.BoolPointerValue(resp.ReassignTasksToDelegates)
+	r.ReassignTasksToDelegates = typeconvert.BoolPointerOrFalse(resp.ReassignTasksToDelegates)
 	if resp.Rules != nil {
 		if r.Rules == nil {
 			r.Rules = []tfTypes.Rule{}
@@ -774,7 +774,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 	} else {
 		r.Rules = nil
 	}
-	r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
+	r.SystemBuiltin = typeconvert.BoolPointerOrFalse(resp.SystemBuiltin)
 	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 
 	return diags

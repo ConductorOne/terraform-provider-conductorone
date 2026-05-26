@@ -200,3 +200,28 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 		}
 	}
 }
+
+// TestPolicySDKUsesBoolPointerOrFalse verifies that the policy resource and
+// data source SDK files use typeconvert.BoolPointerOrFalse instead of
+// types.BoolPointerValue. When protobuf omits a zero-valued optional bool,
+// BoolPointerValue returns null while state holds false, causing perpetual
+// drift on every plan.
+func TestPolicySDKUsesBoolPointerOrFalse(t *testing.T) {
+	files := []string{
+		"policy_resource_sdk.go",
+		"policy_data_source_sdk.go",
+	}
+	for _, f := range files {
+		data, err := os.ReadFile(f)
+		if err != nil {
+			t.Fatalf("reading %s: %v", f, err)
+		}
+		content := string(data)
+		if strings.Contains(content, "types.BoolPointerValue(") {
+			t.Errorf("%s: still uses types.BoolPointerValue — must use typeconvert.BoolPointerOrFalse to prevent null/false drift", f)
+		}
+		if !strings.Contains(content, "typeconvert.BoolPointerOrFalse(") {
+			t.Errorf("%s: does not use typeconvert.BoolPointerOrFalse — approval-block bools will drift false→null on every refresh", f)
+		}
+	}
+}
