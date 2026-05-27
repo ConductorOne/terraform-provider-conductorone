@@ -66,12 +66,7 @@ func (r *IntegrationTemporalCloudResourceModel) ToUpdateSDKType() (*shared.Conne
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -110,12 +105,7 @@ func (r *IntegrationTemporalCloudResourceModel) getConfig() (map[string]interfac
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-	"strconv"
+
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -66,12 +66,7 @@ func (r *IntegrationOneloginV2ResourceModel) ToUpdateSDKType() (*shared.Connecto
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -112,12 +107,6 @@ func (r *IntegrationOneloginV2ResourceModel) populateConfig() map[string]interfa
 		configValues["oauth_client_cred_grant_client_secret"] = oauthClientCredGrantClientSecret
 	}
 
-	oneloginSyncPrivileges := new(string)
-	if !r.OneloginSyncPrivileges.IsUnknown() && !r.OneloginSyncPrivileges.IsNull() {
-		*oneloginSyncPrivileges = strconv.FormatBool(r.OneloginSyncPrivileges.ValueBool())
-		configValues["onelogin_sync_privileges"] = oneloginSyncPrivileges
-	}
-
 	return configValues
 }
 
@@ -128,12 +117,7 @@ func (r *IntegrationOneloginV2ResourceModel) getConfig() (map[string]interface{}
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -204,15 +188,6 @@ func (r *IntegrationOneloginV2ResourceModel) RefreshFromGetResponse(resp *shared
 					}
 				}
 
-				if _, ok := configValues["onelogin_sync_privileges"]; ok {
-					if val, ok := getStringValue(values, "onelogin_sync_privileges"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.OneloginSyncPrivileges = types.BoolValue(bv)
-						}
-					}
-				}
-
 			}
 		}
 	}
@@ -266,15 +241,6 @@ func (r *IntegrationOneloginV2ResourceModel) RefreshFromCreateResponse(resp *sha
 				if _, ok := configValues["oauth_client_cred_grant_client_id"]; ok {
 					if val, ok := getStringValue(values, "oauth_client_cred_grant_client_id"); ok {
 						r.OauthClientCredGrantClientId = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["onelogin_sync_privileges"]; ok {
-					if val, ok := getStringValue(values, "onelogin_sync_privileges"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.OneloginSyncPrivileges = types.BoolValue(bv)
-						}
 					}
 				}
 

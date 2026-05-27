@@ -66,12 +66,7 @@ func (r *IntegrationAwsV2ResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -142,12 +137,6 @@ func (r *IntegrationAwsV2ResourceModel) populateConfig() map[string]interface{} 
 		configValues["aws_sync_secrets"] = awsSyncSecrets
 	}
 
-	awsIamAssumeRoleName := new(string)
-	if !r.AwsIamAssumeRoleName.IsUnknown() && !r.AwsIamAssumeRoleName.IsNull() {
-		*awsIamAssumeRoleName = r.AwsIamAssumeRoleName.ValueString()
-		configValues["aws_iam_assume_role_name"] = awsIamAssumeRoleName
-	}
-
 	return configValues
 }
 
@@ -158,12 +147,7 @@ func (r *IntegrationAwsV2ResourceModel) getConfig() (map[string]interface{}, boo
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -282,12 +266,6 @@ func (r *IntegrationAwsV2ResourceModel) RefreshFromGetResponse(resp *shared.Conn
 					}
 				}
 
-				if _, ok := configValues["aws_iam_assume_role_name"]; ok {
-					if val, ok := getStringValue(values, "aws_iam_assume_role_name"); ok {
-						r.AwsIamAssumeRoleName = types.StringValue(val)
-					}
-				}
-
 			}
 		}
 	}
@@ -389,12 +367,6 @@ func (r *IntegrationAwsV2ResourceModel) RefreshFromCreateResponse(resp *shared.C
 						if err == nil {
 							r.AwsSyncSecrets = types.BoolValue(bv)
 						}
-					}
-				}
-
-				if _, ok := configValues["aws_iam_assume_role_name"]; ok {
-					if val, ok := getStringValue(values, "aws_iam_assume_role_name"); ok {
-						r.AwsIamAssumeRoleName = types.StringValue(val)
 					}
 				}
 

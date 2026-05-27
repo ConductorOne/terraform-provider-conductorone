@@ -4,7 +4,6 @@ package provider
 import (
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -67,12 +66,7 @@ func (r *IntegrationOktaV2ResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -125,14 +119,6 @@ func (r *IntegrationOktaV2ResourceModel) populateConfig() map[string]interface{}
 		configValues["okta_sync_secrets"] = oktaSyncSecrets
 	}
 
-	oktaFilterEmailDomains := make([]string, 0)
-	for _, item := range r.OktaFilterEmailDomains {
-		oktaFilterEmailDomains = append(oktaFilterEmailDomains, item.ValueString())
-	}
-	if len(oktaFilterEmailDomains) > 0 {
-		configValues["okta_filter_email_domains"] = strings.Join(oktaFilterEmailDomains, ",")
-	}
-
 	return configValues
 }
 
@@ -143,12 +129,7 @@ func (r *IntegrationOktaV2ResourceModel) getConfig() (map[string]interface{}, bo
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -240,20 +221,6 @@ func (r *IntegrationOktaV2ResourceModel) RefreshFromGetResponse(resp *shared.Con
 					}
 				}
 
-				if _, ok := configValues["okta_filter_email_domains"]; ok {
-					if val, ok := getStringValue(values, "okta_filter_email_domains"); ok {
-						var valLists []types.String
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
-							item = strings.TrimSpace(item)
-							if item != "" {
-								valLists = append(valLists, types.StringValue(item))
-							}
-						}
-						r.OktaFilterEmailDomains = valLists
-					}
-				}
-
 			}
 		}
 	}
@@ -328,20 +295,6 @@ func (r *IntegrationOktaV2ResourceModel) RefreshFromCreateResponse(resp *shared.
 						if err == nil {
 							r.OktaSyncSecrets = types.BoolValue(bv)
 						}
-					}
-				}
-
-				if _, ok := configValues["okta_filter_email_domains"]; ok {
-					if val, ok := getStringValue(values, "okta_filter_email_domains"); ok {
-						var valLists []types.String
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
-							item = strings.TrimSpace(item)
-							if item != "" {
-								valLists = append(valLists, types.StringValue(item))
-							}
-						}
-						r.OktaFilterEmailDomains = valLists
 					}
 				}
 

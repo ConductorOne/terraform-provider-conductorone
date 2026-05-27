@@ -67,12 +67,7 @@ func (r *IntegrationJiraCloudResourceModel) ToUpdateSDKType() (*shared.Connector
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -133,24 +128,6 @@ func (r *IntegrationJiraCloudResourceModel) populateConfig() map[string]interfac
 		configValues["jiracloud_skip_project_participants"] = jiracloudSkipProjectParticipants
 	}
 
-	jiracloudSkipCustomerUsers := new(string)
-	if !r.JiracloudSkipCustomerUsers.IsUnknown() && !r.JiracloudSkipCustomerUsers.IsNull() {
-		*jiracloudSkipCustomerUsers = strconv.FormatBool(r.JiracloudSkipCustomerUsers.ValueBool())
-		configValues["jiracloud_skip_customer_users"] = jiracloudSkipCustomerUsers
-	}
-
-	atlassianOrganizationId := new(string)
-	if !r.AtlassianOrganizationId.IsUnknown() && !r.AtlassianOrganizationId.IsNull() {
-		*atlassianOrganizationId = r.AtlassianOrganizationId.ValueString()
-		configValues["atlassian_organization_id"] = atlassianOrganizationId
-	}
-
-	atlassianApiToken := new(string)
-	if !r.AtlassianApiToken.IsUnknown() && !r.AtlassianApiToken.IsNull() {
-		*atlassianApiToken = r.AtlassianApiToken.ValueString()
-		configValues["atlassian_api_token"] = atlassianApiToken
-	}
-
 	return configValues
 }
 
@@ -161,12 +138,7 @@ func (r *IntegrationJiraCloudResourceModel) getConfig() (map[string]interface{},
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -269,21 +241,6 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromGetResponse(resp *shared.
 					}
 				}
 
-				if _, ok := configValues["jiracloud_skip_customer_users"]; ok {
-					if val, ok := getStringValue(values, "jiracloud_skip_customer_users"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.JiracloudSkipCustomerUsers = types.BoolValue(bv)
-						}
-					}
-				}
-
-				if _, ok := configValues["atlassian_organization_id"]; ok {
-					if val, ok := getStringValue(values, "atlassian_organization_id"); ok {
-						r.AtlassianOrganizationId = types.StringValue(val)
-					}
-				}
-
 			}
 		}
 	}
@@ -369,21 +326,6 @@ func (r *IntegrationJiraCloudResourceModel) RefreshFromCreateResponse(resp *shar
 						if err == nil {
 							r.JiracloudSkipProjectParticipants = types.BoolValue(bv)
 						}
-					}
-				}
-
-				if _, ok := configValues["jiracloud_skip_customer_users"]; ok {
-					if val, ok := getStringValue(values, "jiracloud_skip_customer_users"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.JiracloudSkipCustomerUsers = types.BoolValue(bv)
-						}
-					}
-				}
-
-				if _, ok := configValues["atlassian_organization_id"]; ok {
-					if val, ok := getStringValue(values, "atlassian_organization_id"); ok {
-						r.AtlassianOrganizationId = types.StringValue(val)
 					}
 				}
 

@@ -66,12 +66,7 @@ func (r *IntegrationMiroResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -100,12 +95,6 @@ func (r *IntegrationMiroResourceModel) populateConfig() map[string]interface{} {
 		configValues["miro_access_token"] = miroAccessToken
 	}
 
-	miroScimAccessToken := new(string)
-	if !r.MiroScimAccessToken.IsUnknown() && !r.MiroScimAccessToken.IsNull() {
-		*miroScimAccessToken = r.MiroScimAccessToken.ValueString()
-		configValues["miro_scim_access_token"] = miroScimAccessToken
-	}
-
 	return configValues
 }
 
@@ -116,12 +105,7 @@ func (r *IntegrationMiroResourceModel) getConfig() (map[string]interface{}, bool
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

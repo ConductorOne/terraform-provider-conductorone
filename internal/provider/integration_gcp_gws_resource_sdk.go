@@ -22,7 +22,7 @@ func (r *IntegrationGcpGwsResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("Google Cloud Platform with Google Workspace"),
+		DisplayName: sdk.String("Google Cloud Platform (With Google Workspace)"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -67,12 +67,7 @@ func (r *IntegrationGcpGwsResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -81,7 +76,7 @@ func (r *IntegrationGcpGwsResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Google Cloud Platform with Google Workspace"),
+		DisplayName: sdk.String("Google Cloud Platform (With Google Workspace)"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(gcpGwsCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
@@ -163,20 +158,6 @@ func (r *IntegrationGcpGwsResourceModel) populateConfig() map[string]interface{}
 		configValues["workforce-identity-pool-provider-id"] = workforceIdentityPoolProviderId
 	}
 
-	alwaysSyncCustomRoles := new(string)
-	if !r.AlwaysSyncCustomRoles.IsUnknown() && !r.AlwaysSyncCustomRoles.IsNull() {
-		*alwaysSyncCustomRoles = strconv.FormatBool(r.AlwaysSyncCustomRoles.ValueBool())
-		configValues["always-sync-custom-roles"] = alwaysSyncCustomRoles
-	}
-
-	alwaysSyncRolesFilter := make([]string, 0)
-	for _, item := range r.AlwaysSyncRolesFilter {
-		alwaysSyncRolesFilter = append(alwaysSyncRolesFilter, item.ValueString())
-	}
-	if len(alwaysSyncRolesFilter) > 0 {
-		configValues["always-sync-roles-filter"] = strings.Join(alwaysSyncRolesFilter, ",")
-	}
-
 	return configValues
 }
 
@@ -187,12 +168,7 @@ func (r *IntegrationGcpGwsResourceModel) getConfig() (map[string]interface{}, bo
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -331,29 +307,6 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromGetResponse(resp *shared.Con
 					}
 				}
 
-				if _, ok := configValues["always-sync-custom-roles"]; ok {
-					if val, ok := getStringValue(values, "always-sync-custom-roles"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.AlwaysSyncCustomRoles = types.BoolValue(bv)
-						}
-					}
-				}
-
-				if _, ok := configValues["always-sync-roles-filter"]; ok {
-					if val, ok := getStringValue(values, "always-sync-roles-filter"); ok {
-						var valLists []types.String
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
-							item = strings.TrimSpace(item)
-							if item != "" {
-								valLists = append(valLists, types.StringValue(item))
-							}
-						}
-						r.AlwaysSyncRolesFilter = valLists
-					}
-				}
-
 			}
 		}
 	}
@@ -475,29 +428,6 @@ func (r *IntegrationGcpGwsResourceModel) RefreshFromCreateResponse(resp *shared.
 				if _, ok := configValues["workforce-identity-pool-provider-id"]; ok {
 					if val, ok := getStringValue(values, "workforce-identity-pool-provider-id"); ok {
 						r.WorkforceIdentityPoolProviderId = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["always-sync-custom-roles"]; ok {
-					if val, ok := getStringValue(values, "always-sync-custom-roles"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.AlwaysSyncCustomRoles = types.BoolValue(bv)
-						}
-					}
-				}
-
-				if _, ok := configValues["always-sync-roles-filter"]; ok {
-					if val, ok := getStringValue(values, "always-sync-roles-filter"); ok {
-						var valLists []types.String
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
-							item = strings.TrimSpace(item)
-							if item != "" {
-								valLists = append(valLists, types.StringValue(item))
-							}
-						}
-						r.AlwaysSyncRolesFilter = valLists
 					}
 				}
 

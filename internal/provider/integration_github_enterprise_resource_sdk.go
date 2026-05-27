@@ -225,9 +225,11 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromGetResponse(resp *
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "github_instance_url"); ok {
-							attributeTypes["github_instance_url"] = types.StringType
-							attributeValues["github_instance_url"] = types.StringValue(val)
+						if _, ok := configValues["github_instance_url"]; ok {
+							if val, ok := getStringValue(values, "github_instance_url"); ok {
+								attributeTypes["github_instance_url"] = types.StringType
+								attributeValues["github_instance_url"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["github_access_token"] = types.StringType
@@ -236,36 +238,40 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromGetResponse(resp *
 						} else {
 							attributeValues["github_access_token"] = types.StringNull()
 						}
-						if val, ok := getStringValue(values, "github_org_list"); ok {
-							var valLists []attr.Value
-							tmpList := strings.Split(val, ",")
-							for _, item := range tmpList {
-								item = strings.TrimSpace(item)
-								if item != "" {
-									valLists = append(valLists, types.StringValue(item))
+						if _, ok := configValues["github_org_list"]; ok {
+							if val, ok := getStringValue(values, "github_org_list"); ok {
+								var valLists []attr.Value
+								tmpList := strings.Split(val, ",")
+								for _, item := range tmpList {
+									item = strings.TrimSpace(item)
+									if item != "" {
+										valLists = append(valLists, types.StringValue(item))
+									}
 								}
-							}
-							attributeTypes["github_org_list"] = types.ListType{ElemType: types.StringType}
-							if len(valLists) == 0 {
-								attributeValues["github_org_list"] = types.ListNull(types.StringType)
-							} else {
-								attributeValues["github_org_list"] = types.ListValueMust(types.StringType, valLists)
+								attributeTypes["github_org_list"] = types.ListType{ElemType: types.StringType}
+								if len(valLists) == 0 {
+									attributeValues["github_org_list"] = types.ListNull(types.StringType)
+								} else {
+									attributeValues["github_org_list"] = types.ListValueMust(types.StringType, valLists)
+								}
 							}
 						}
-						if val, ok := getStringValue(values, "enterprises"); ok {
-							var valLists []attr.Value
-							tmpList := strings.Split(val, ",")
-							for _, item := range tmpList {
-								item = strings.TrimSpace(item)
-								if item != "" {
-									valLists = append(valLists, types.StringValue(item))
+						if _, ok := configValues["enterprises"]; ok {
+							if val, ok := getStringValue(values, "enterprises"); ok {
+								var valLists []attr.Value
+								tmpList := strings.Split(val, ",")
+								for _, item := range tmpList {
+									item = strings.TrimSpace(item)
+									if item != "" {
+										valLists = append(valLists, types.StringValue(item))
+									}
 								}
-							}
-							attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
-							if len(valLists) == 0 {
-								attributeValues["enterprises"] = types.ListNull(types.StringType)
-							} else {
-								attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+								attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
+								if len(valLists) == 0 {
+									attributeValues["enterprises"] = types.ListNull(types.StringType)
+								} else {
+									attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+								}
 							}
 						}
 						if _, ok := configValues["omit-archived-repositories"]; ok {
@@ -289,14 +295,18 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromGetResponse(resp *
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "github_instance_url"); ok {
-							attributeTypes["github_instance_url"] = types.StringType
-							attributeValues["github_instance_url"] = types.StringValue(val)
+						if _, ok := configValues["github_instance_url"]; ok {
+							if val, ok := getStringValue(values, "github_instance_url"); ok {
+								attributeTypes["github_instance_url"] = types.StringType
+								attributeValues["github_instance_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "github_app_id"); ok {
-							attributeTypes["github_app_id"] = types.StringType
-							attributeValues["github_app_id"] = types.StringValue(val)
+						if _, ok := configValues["github_app_id"]; ok {
+							if val, ok := getStringValue(values, "github_app_id"); ok {
+								attributeTypes["github_app_id"] = types.StringType
+								attributeValues["github_app_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["github_app_private_key"] = types.StringType
@@ -306,24 +316,28 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromGetResponse(resp *
 							attributeValues["github_app_private_key"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "github_app_org"); ok {
-							attributeTypes["github_app_org"] = types.StringType
-							attributeValues["github_app_org"] = types.StringValue(val)
-						}
-						if val, ok := getStringValue(values, "enterprises"); ok {
-							var valLists []attr.Value
-							tmpList := strings.Split(val, ",")
-							for _, item := range tmpList {
-								item = strings.TrimSpace(item)
-								if item != "" {
-									valLists = append(valLists, types.StringValue(item))
-								}
+						if _, ok := configValues["github_app_org"]; ok {
+							if val, ok := getStringValue(values, "github_app_org"); ok {
+								attributeTypes["github_app_org"] = types.StringType
+								attributeValues["github_app_org"] = types.StringValue(val)
 							}
-							attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
-							if len(valLists) == 0 {
-								attributeValues["enterprises"] = types.ListNull(types.StringType)
-							} else {
-								attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+						}
+						if _, ok := configValues["enterprises"]; ok {
+							if val, ok := getStringValue(values, "enterprises"); ok {
+								var valLists []attr.Value
+								tmpList := strings.Split(val, ",")
+								for _, item := range tmpList {
+									item = strings.TrimSpace(item)
+									if item != "" {
+										valLists = append(valLists, types.StringValue(item))
+									}
+								}
+								attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
+								if len(valLists) == 0 {
+									attributeValues["enterprises"] = types.ListNull(types.StringType)
+								} else {
+									attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+								}
 							}
 						}
 						if _, ok := configValues["omit-archived-repositories"]; ok {
@@ -391,9 +405,11 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromCreateResponse(res
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "github_instance_url"); ok {
-							attributeTypes["github_instance_url"] = types.StringType
-							attributeValues["github_instance_url"] = types.StringValue(val)
+						if _, ok := configValues["github_instance_url"]; ok {
+							if val, ok := getStringValue(values, "github_instance_url"); ok {
+								attributeTypes["github_instance_url"] = types.StringType
+								attributeValues["github_instance_url"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["github_access_token"] = types.StringType
@@ -402,36 +418,40 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromCreateResponse(res
 						} else {
 							attributeValues["github_access_token"] = types.StringNull()
 						}
-						if val, ok := getStringValue(values, "github_org_list"); ok {
-							var valLists []attr.Value
-							tmpList := strings.Split(val, ",")
-							for _, item := range tmpList {
-								item = strings.TrimSpace(item)
-								if item != "" {
-									valLists = append(valLists, types.StringValue(item))
+						if _, ok := configValues["github_org_list"]; ok {
+							if val, ok := getStringValue(values, "github_org_list"); ok {
+								var valLists []attr.Value
+								tmpList := strings.Split(val, ",")
+								for _, item := range tmpList {
+									item = strings.TrimSpace(item)
+									if item != "" {
+										valLists = append(valLists, types.StringValue(item))
+									}
 								}
-							}
-							attributeTypes["github_org_list"] = types.ListType{ElemType: types.StringType}
-							if len(valLists) == 0 {
-								attributeValues["github_org_list"] = types.ListNull(types.StringType)
-							} else {
-								attributeValues["github_org_list"] = types.ListValueMust(types.StringType, valLists)
+								attributeTypes["github_org_list"] = types.ListType{ElemType: types.StringType}
+								if len(valLists) == 0 {
+									attributeValues["github_org_list"] = types.ListNull(types.StringType)
+								} else {
+									attributeValues["github_org_list"] = types.ListValueMust(types.StringType, valLists)
+								}
 							}
 						}
-						if val, ok := getStringValue(values, "enterprises"); ok {
-							var valLists []attr.Value
-							tmpList := strings.Split(val, ",")
-							for _, item := range tmpList {
-								item = strings.TrimSpace(item)
-								if item != "" {
-									valLists = append(valLists, types.StringValue(item))
+						if _, ok := configValues["enterprises"]; ok {
+							if val, ok := getStringValue(values, "enterprises"); ok {
+								var valLists []attr.Value
+								tmpList := strings.Split(val, ",")
+								for _, item := range tmpList {
+									item = strings.TrimSpace(item)
+									if item != "" {
+										valLists = append(valLists, types.StringValue(item))
+									}
 								}
-							}
-							attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
-							if len(valLists) == 0 {
-								attributeValues["enterprises"] = types.ListNull(types.StringType)
-							} else {
-								attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+								attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
+								if len(valLists) == 0 {
+									attributeValues["enterprises"] = types.ListNull(types.StringType)
+								} else {
+									attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+								}
 							}
 						}
 						if _, ok := configValues["omit-archived-repositories"]; ok {
@@ -455,14 +475,18 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromCreateResponse(res
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "github_instance_url"); ok {
-							attributeTypes["github_instance_url"] = types.StringType
-							attributeValues["github_instance_url"] = types.StringValue(val)
+						if _, ok := configValues["github_instance_url"]; ok {
+							if val, ok := getStringValue(values, "github_instance_url"); ok {
+								attributeTypes["github_instance_url"] = types.StringType
+								attributeValues["github_instance_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "github_app_id"); ok {
-							attributeTypes["github_app_id"] = types.StringType
-							attributeValues["github_app_id"] = types.StringValue(val)
+						if _, ok := configValues["github_app_id"]; ok {
+							if val, ok := getStringValue(values, "github_app_id"); ok {
+								attributeTypes["github_app_id"] = types.StringType
+								attributeValues["github_app_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["github_app_private_key"] = types.StringType
@@ -472,24 +496,28 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromCreateResponse(res
 							attributeValues["github_app_private_key"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "github_app_org"); ok {
-							attributeTypes["github_app_org"] = types.StringType
-							attributeValues["github_app_org"] = types.StringValue(val)
-						}
-						if val, ok := getStringValue(values, "enterprises"); ok {
-							var valLists []attr.Value
-							tmpList := strings.Split(val, ",")
-							for _, item := range tmpList {
-								item = strings.TrimSpace(item)
-								if item != "" {
-									valLists = append(valLists, types.StringValue(item))
-								}
+						if _, ok := configValues["github_app_org"]; ok {
+							if val, ok := getStringValue(values, "github_app_org"); ok {
+								attributeTypes["github_app_org"] = types.StringType
+								attributeValues["github_app_org"] = types.StringValue(val)
 							}
-							attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
-							if len(valLists) == 0 {
-								attributeValues["enterprises"] = types.ListNull(types.StringType)
-							} else {
-								attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+						}
+						if _, ok := configValues["enterprises"]; ok {
+							if val, ok := getStringValue(values, "enterprises"); ok {
+								var valLists []attr.Value
+								tmpList := strings.Split(val, ",")
+								for _, item := range tmpList {
+									item = strings.TrimSpace(item)
+									if item != "" {
+										valLists = append(valLists, types.StringValue(item))
+									}
+								}
+								attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
+								if len(valLists) == 0 {
+									attributeValues["enterprises"] = types.ListNull(types.StringType)
+								} else {
+									attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+								}
 							}
 						}
 						if _, ok := configValues["omit-archived-repositories"]; ok {

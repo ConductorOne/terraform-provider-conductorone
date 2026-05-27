@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-	"strconv"
+
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -66,12 +66,7 @@ func (r *IntegrationSuccessfactorsResourceModel) ToUpdateSDKType() (*shared.Conn
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -142,12 +137,6 @@ func (r *IntegrationSuccessfactorsResourceModel) populateConfig() map[string]int
 		configValues["saml-api-key"] = samlApiKey
 	}
 
-	syncGroups := new(string)
-	if !r.SyncGroups.IsUnknown() && !r.SyncGroups.IsNull() {
-		*syncGroups = strconv.FormatBool(r.SyncGroups.ValueBool())
-		configValues["sync-groups"] = syncGroups
-	}
-
 	return configValues
 }
 
@@ -158,12 +147,7 @@ func (r *IntegrationSuccessfactorsResourceModel) getConfig() (map[string]interfa
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -252,15 +236,6 @@ func (r *IntegrationSuccessfactorsResourceModel) RefreshFromGetResponse(resp *sh
 					}
 				}
 
-				if _, ok := configValues["sync-groups"]; ok {
-					if val, ok := getStringValue(values, "sync-groups"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SyncGroups = types.BoolValue(bv)
-						}
-					}
-				}
-
 			}
 		}
 	}
@@ -332,15 +307,6 @@ func (r *IntegrationSuccessfactorsResourceModel) RefreshFromCreateResponse(resp 
 				if _, ok := configValues["subject-name-id"]; ok {
 					if val, ok := getStringValue(values, "subject-name-id"); ok {
 						r.SubjectNameId = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["sync-groups"]; ok {
-					if val, ok := getStringValue(values, "sync-groups"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SyncGroups = types.BoolValue(bv)
-						}
 					}
 				}
 

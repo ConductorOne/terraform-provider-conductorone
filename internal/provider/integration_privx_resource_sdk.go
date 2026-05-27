@@ -225,14 +225,18 @@ func (r *IntegrationPrivxResourceModel) RefreshFromGetResponse(resp *shared.Conn
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "privx_base_url"); ok {
-							attributeTypes["privx_base_url"] = types.StringType
-							attributeValues["privx_base_url"] = types.StringValue(val)
+						if _, ok := configValues["privx_base_url"]; ok {
+							if val, ok := getStringValue(values, "privx_base_url"); ok {
+								attributeTypes["privx_base_url"] = types.StringType
+								attributeValues["privx_base_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "privx_oauth_client_id"); ok {
-							attributeTypes["privx_oauth_client_id"] = types.StringType
-							attributeValues["privx_oauth_client_id"] = types.StringValue(val)
+						if _, ok := configValues["privx_oauth_client_id"]; ok {
+							if val, ok := getStringValue(values, "privx_oauth_client_id"); ok {
+								attributeTypes["privx_oauth_client_id"] = types.StringType
+								attributeValues["privx_oauth_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["privx_oauth_client_secret"] = types.StringType
@@ -250,14 +254,18 @@ func (r *IntegrationPrivxResourceModel) RefreshFromGetResponse(resp *shared.Conn
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "privx_base_url"); ok {
-							attributeTypes["privx_base_url"] = types.StringType
-							attributeValues["privx_base_url"] = types.StringValue(val)
+						if _, ok := configValues["privx_base_url"]; ok {
+							if val, ok := getStringValue(values, "privx_base_url"); ok {
+								attributeTypes["privx_base_url"] = types.StringType
+								attributeValues["privx_base_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "privx_client_id"); ok {
-							attributeTypes["privx_client_id"] = types.StringType
-							attributeValues["privx_client_id"] = types.StringValue(val)
+						if _, ok := configValues["privx_client_id"]; ok {
+							if val, ok := getStringValue(values, "privx_client_id"); ok {
+								attributeTypes["privx_client_id"] = types.StringType
+								attributeValues["privx_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["privx_client_secret"] = types.StringType
@@ -319,14 +327,18 @@ func (r *IntegrationPrivxResourceModel) RefreshFromCreateResponse(resp *shared.C
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "privx_base_url"); ok {
-							attributeTypes["privx_base_url"] = types.StringType
-							attributeValues["privx_base_url"] = types.StringValue(val)
+						if _, ok := configValues["privx_base_url"]; ok {
+							if val, ok := getStringValue(values, "privx_base_url"); ok {
+								attributeTypes["privx_base_url"] = types.StringType
+								attributeValues["privx_base_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "privx_oauth_client_id"); ok {
-							attributeTypes["privx_oauth_client_id"] = types.StringType
-							attributeValues["privx_oauth_client_id"] = types.StringValue(val)
+						if _, ok := configValues["privx_oauth_client_id"]; ok {
+							if val, ok := getStringValue(values, "privx_oauth_client_id"); ok {
+								attributeTypes["privx_oauth_client_id"] = types.StringType
+								attributeValues["privx_oauth_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["privx_oauth_client_secret"] = types.StringType
@@ -344,14 +356,18 @@ func (r *IntegrationPrivxResourceModel) RefreshFromCreateResponse(resp *shared.C
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "privx_base_url"); ok {
-							attributeTypes["privx_base_url"] = types.StringType
-							attributeValues["privx_base_url"] = types.StringValue(val)
+						if _, ok := configValues["privx_base_url"]; ok {
+							if val, ok := getStringValue(values, "privx_base_url"); ok {
+								attributeTypes["privx_base_url"] = types.StringType
+								attributeValues["privx_base_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "privx_client_id"); ok {
-							attributeTypes["privx_client_id"] = types.StringType
-							attributeValues["privx_client_id"] = types.StringValue(val)
+						if _, ok := configValues["privx_client_id"]; ok {
+							if val, ok := getStringValue(values, "privx_client_id"); ok {
+								attributeTypes["privx_client_id"] = types.StringType
+								attributeValues["privx_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["privx_client_secret"] = types.StringType

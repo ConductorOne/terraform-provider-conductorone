@@ -21,7 +21,7 @@ func (r *IntegrationPingFederateResourceModel) ToCreateDelegatedSDKType() *share
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("PingFederate"),
+		DisplayName: sdk.String("Ping Federate"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -66,12 +66,7 @@ func (r *IntegrationPingFederateResourceModel) ToUpdateSDKType() (*shared.Connec
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -80,7 +75,7 @@ func (r *IntegrationPingFederateResourceModel) ToUpdateSDKType() (*shared.Connec
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("PingFederate"),
+		DisplayName: sdk.String("Ping Federate"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(pingFederateCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
@@ -122,12 +117,7 @@ func (r *IntegrationPingFederateResourceModel) getConfig() (map[string]interface
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

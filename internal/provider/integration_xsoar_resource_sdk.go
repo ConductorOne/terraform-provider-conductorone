@@ -21,7 +21,7 @@ func (r *IntegrationXsoarResourceModel) ToCreateDelegatedSDKType() *shared.Conne
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("XSOAR"),
+		DisplayName: sdk.String("Xsoar"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -66,12 +66,7 @@ func (r *IntegrationXsoarResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -80,7 +75,7 @@ func (r *IntegrationXsoarResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("XSOAR"),
+		DisplayName: sdk.String("Xsoar"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(xsoarCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
@@ -116,12 +111,7 @@ func (r *IntegrationXsoarResourceModel) getConfig() (map[string]interface{}, boo
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

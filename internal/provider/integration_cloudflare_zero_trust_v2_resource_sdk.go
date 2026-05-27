@@ -225,9 +225,11 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) RefreshFromGetResponse(r
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "account_id"); ok {
-							attributeTypes["account_id"] = types.StringType
-							attributeValues["account_id"] = types.StringValue(val)
+						if _, ok := configValues["account_id"]; ok {
+							if val, ok := getStringValue(values, "account_id"); ok {
+								attributeTypes["account_id"] = types.StringType
+								attributeValues["account_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["api_token"] = types.StringType
@@ -245,14 +247,18 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) RefreshFromGetResponse(r
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "account_id"); ok {
-							attributeTypes["account_id"] = types.StringType
-							attributeValues["account_id"] = types.StringValue(val)
+						if _, ok := configValues["account_id"]; ok {
+							if val, ok := getStringValue(values, "account_id"); ok {
+								attributeTypes["account_id"] = types.StringType
+								attributeValues["account_id"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "email"); ok {
-							attributeTypes["email"] = types.StringType
-							attributeValues["email"] = types.StringValue(val)
+						if _, ok := configValues["email"]; ok {
+							if val, ok := getStringValue(values, "email"); ok {
+								attributeTypes["email"] = types.StringType
+								attributeValues["email"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["api_key"] = types.StringType
@@ -314,9 +320,11 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) RefreshFromCreateRespons
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "account_id"); ok {
-							attributeTypes["account_id"] = types.StringType
-							attributeValues["account_id"] = types.StringValue(val)
+						if _, ok := configValues["account_id"]; ok {
+							if val, ok := getStringValue(values, "account_id"); ok {
+								attributeTypes["account_id"] = types.StringType
+								attributeValues["account_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["api_token"] = types.StringType
@@ -334,14 +342,18 @@ func (r *IntegrationCloudflareZeroTrustV2ResourceModel) RefreshFromCreateRespons
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "account_id"); ok {
-							attributeTypes["account_id"] = types.StringType
-							attributeValues["account_id"] = types.StringValue(val)
+						if _, ok := configValues["account_id"]; ok {
+							if val, ok := getStringValue(values, "account_id"); ok {
+								attributeTypes["account_id"] = types.StringType
+								attributeValues["account_id"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "email"); ok {
-							attributeTypes["email"] = types.StringType
-							attributeValues["email"] = types.StringValue(val)
+						if _, ok := configValues["email"]; ok {
+							if val, ok := getStringValue(values, "email"); ok {
+								attributeTypes["email"] = types.StringType
+								attributeValues["email"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["api_key"] = types.StringType

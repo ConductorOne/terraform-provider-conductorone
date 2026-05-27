@@ -66,12 +66,7 @@ func (r *IntegrationSharepointResourceModel) ToUpdateSDKType() (*shared.Connecto
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -118,16 +113,16 @@ func (r *IntegrationSharepointResourceModel) populateConfig() map[string]interfa
 		configValues["azure_graph_domain"] = azureGraphDomain
 	}
 
-	pemCertificate := new(string)
-	if !r.PemCertificate.IsUnknown() && !r.PemCertificate.IsNull() {
-		*pemCertificate = r.PemCertificate.ValueString()
-		configValues["pem_certificate"] = pemCertificate
+	pfxCertificate := new(string)
+	if !r.PfxCertificate.IsUnknown() && !r.PfxCertificate.IsNull() {
+		*pfxCertificate = r.PfxCertificate.ValueString()
+		configValues["pfx_certificate"] = pfxCertificate
 	}
 
-	pemKey := new(string)
-	if !r.PemKey.IsUnknown() && !r.PemKey.IsNull() {
-		*pemKey = r.PemKey.ValueString()
-		configValues["pem_key"] = pemKey
+	pfxCertificatePassword := new(string)
+	if !r.PfxCertificatePassword.IsUnknown() && !r.PfxCertificatePassword.IsNull() {
+		*pfxCertificatePassword = r.PfxCertificatePassword.ValueString()
+		configValues["pfx_certificate_password"] = pfxCertificatePassword
 	}
 
 	sharepointDomain := new(string)
@@ -146,12 +141,7 @@ func (r *IntegrationSharepointResourceModel) getConfig() (map[string]interface{}
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

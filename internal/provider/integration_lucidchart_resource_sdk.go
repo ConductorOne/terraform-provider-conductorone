@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-	"strconv"
+
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -66,12 +66,7 @@ func (r *IntegrationLucidchartResourceModel) ToUpdateSDKType() (*shared.Connecto
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -100,24 +95,6 @@ func (r *IntegrationLucidchartResourceModel) populateConfig() map[string]interfa
 		configValues["lucidchart-authorization-token"] = lucidchartAuthorizationToken
 	}
 
-	oauth2ClientCredGrantClientId := new(string)
-	if !r.Oauth2ClientCredGrantClientId.IsUnknown() && !r.Oauth2ClientCredGrantClientId.IsNull() {
-		*oauth2ClientCredGrantClientId = r.Oauth2ClientCredGrantClientId.ValueString()
-		configValues["oauth2_client_cred_grant_client_id"] = oauth2ClientCredGrantClientId
-	}
-
-	oauth2ClientCredGrantClientSecret := new(string)
-	if !r.Oauth2ClientCredGrantClientSecret.IsUnknown() && !r.Oauth2ClientCredGrantClientSecret.IsNull() {
-		*oauth2ClientCredGrantClientSecret = r.Oauth2ClientCredGrantClientSecret.ValueString()
-		configValues["oauth2_client_cred_grant_client_secret"] = oauth2ClientCredGrantClientSecret
-	}
-
-	excludeShortcuts := new(string)
-	if !r.ExcludeShortcuts.IsUnknown() && !r.ExcludeShortcuts.IsNull() {
-		*excludeShortcuts = strconv.FormatBool(r.ExcludeShortcuts.ValueBool())
-		configValues["exclude-shortcuts"] = excludeShortcuts
-	}
-
 	return configValues
 }
 
@@ -128,12 +105,7 @@ func (r *IntegrationLucidchartResourceModel) getConfig() (map[string]interface{}
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -188,29 +160,6 @@ func (r *IntegrationLucidchartResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if _, ok := configValues["oauth2_client_cred_grant_client_id"]; ok {
-					if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
-						r.Oauth2ClientCredGrantClientId = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["exclude-shortcuts"]; ok {
-					if val, ok := getStringValue(values, "exclude-shortcuts"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.ExcludeShortcuts = types.BoolValue(bv)
-						}
-					}
-				}
-
-			}
-		}
-	}
 }
 
 func (r *IntegrationLucidchartResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -248,27 +197,4 @@ func (r *IntegrationLucidchartResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if _, ok := configValues["oauth2_client_cred_grant_client_id"]; ok {
-					if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
-						r.Oauth2ClientCredGrantClientId = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["exclude-shortcuts"]; ok {
-					if val, ok := getStringValue(values, "exclude-shortcuts"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.ExcludeShortcuts = types.BoolValue(bv)
-						}
-					}
-				}
-
-			}
-		}
-	}
 }

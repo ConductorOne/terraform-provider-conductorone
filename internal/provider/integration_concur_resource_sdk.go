@@ -4,7 +4,6 @@ package provider
 import (
 	"fmt"
 
-	"strings"
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -67,12 +66,7 @@ func (r *IntegrationConcurResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -119,20 +113,6 @@ func (r *IntegrationConcurResourceModel) populateConfig() map[string]interface{}
 		configValues["concur_refresh_token"] = concurRefreshToken
 	}
 
-	concurYamlCreateAccountConfig := new(string)
-	if !r.ConcurYamlCreateAccountConfig.IsUnknown() && !r.ConcurYamlCreateAccountConfig.IsNull() {
-		*concurYamlCreateAccountConfig = r.ConcurYamlCreateAccountConfig.ValueString()
-		configValues["concur_yaml_create_account_config"] = concurYamlCreateAccountConfig
-	}
-
-	concurCreateAccountSkipFields := make([]string, 0)
-	for _, item := range r.ConcurCreateAccountSkipFields {
-		concurCreateAccountSkipFields = append(concurCreateAccountSkipFields, item.ValueString())
-	}
-	if len(concurCreateAccountSkipFields) > 0 {
-		configValues["concur_create_account_skip_fields"] = strings.Join(concurCreateAccountSkipFields, ",")
-	}
-
 	return configValues
 }
 
@@ -143,12 +123,7 @@ func (r *IntegrationConcurResourceModel) getConfig() (map[string]interface{}, bo
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -219,26 +194,6 @@ func (r *IntegrationConcurResourceModel) RefreshFromGetResponse(resp *shared.Con
 					}
 				}
 
-				if _, ok := configValues["concur_yaml_create_account_config"]; ok {
-					if val, ok := getStringValue(values, "concur_yaml_create_account_config"); ok {
-						r.ConcurYamlCreateAccountConfig = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["concur_create_account_skip_fields"]; ok {
-					if val, ok := getStringValue(values, "concur_create_account_skip_fields"); ok {
-						var valLists []types.String
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
-							item = strings.TrimSpace(item)
-							if item != "" {
-								valLists = append(valLists, types.StringValue(item))
-							}
-						}
-						r.ConcurCreateAccountSkipFields = valLists
-					}
-				}
-
 			}
 		}
 	}
@@ -292,26 +247,6 @@ func (r *IntegrationConcurResourceModel) RefreshFromCreateResponse(resp *shared.
 				if _, ok := configValues["concur_client_id"]; ok {
 					if val, ok := getStringValue(values, "concur_client_id"); ok {
 						r.ConcurClientId = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["concur_yaml_create_account_config"]; ok {
-					if val, ok := getStringValue(values, "concur_yaml_create_account_config"); ok {
-						r.ConcurYamlCreateAccountConfig = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["concur_create_account_skip_fields"]; ok {
-					if val, ok := getStringValue(values, "concur_create_account_skip_fields"); ok {
-						var valLists []types.String
-						tmpList := strings.Split(val, ",")
-						for _, item := range tmpList {
-							item = strings.TrimSpace(item)
-							if item != "" {
-								valLists = append(valLists, types.StringValue(item))
-							}
-						}
-						r.ConcurCreateAccountSkipFields = valLists
 					}
 				}
 

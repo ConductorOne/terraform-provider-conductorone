@@ -21,7 +21,7 @@ func (r *IntegrationDockerhubResourceModel) ToCreateDelegatedSDKType() *shared.C
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("Docker Hub"),
+		DisplayName: sdk.String("DockerHub"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -66,12 +66,7 @@ func (r *IntegrationDockerhubResourceModel) ToUpdateSDKType() (*shared.Connector
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -80,7 +75,7 @@ func (r *IntegrationDockerhubResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Docker Hub"),
+		DisplayName: sdk.String("DockerHub"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(dockerhubCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
@@ -116,12 +111,7 @@ func (r *IntegrationDockerhubResourceModel) getConfig() (map[string]interface{},
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}

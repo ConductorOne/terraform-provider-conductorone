@@ -225,9 +225,11 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromGetResponse(resp *shared.Co
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "workday_client_id"); ok {
-							attributeTypes["workday_client_id"] = types.StringType
-							attributeValues["workday_client_id"] = types.StringValue(val)
+						if _, ok := configValues["workday_client_id"]; ok {
+							if val, ok := getStringValue(values, "workday_client_id"); ok {
+								attributeTypes["workday_client_id"] = types.StringType
+								attributeValues["workday_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["workday_client_secret"] = types.StringType
@@ -244,14 +246,18 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromGetResponse(resp *shared.Co
 							attributeValues["refresh_token"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "workday_url"); ok {
-							attributeTypes["workday_url"] = types.StringType
-							attributeValues["workday_url"] = types.StringValue(val)
+						if _, ok := configValues["workday_url"]; ok {
+							if val, ok := getStringValue(values, "workday_url"); ok {
+								attributeTypes["workday_url"] = types.StringType
+								attributeValues["workday_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "tenant_name"); ok {
-							attributeTypes["tenant_name"] = types.StringType
-							attributeValues["tenant_name"] = types.StringValue(val)
+						if _, ok := configValues["tenant_name"]; ok {
+							if val, ok := getStringValue(values, "tenant_name"); ok {
+								attributeTypes["tenant_name"] = types.StringType
+								attributeValues["tenant_name"] = types.StringValue(val)
+							}
 						}
 						r.WorkdayGroupApiClient = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
@@ -262,14 +268,18 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromGetResponse(resp *shared.Co
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "workday_report_url"); ok {
-							attributeTypes["workday_report_url"] = types.StringType
-							attributeValues["workday_report_url"] = types.StringValue(val)
+						if _, ok := configValues["workday_report_url"]; ok {
+							if val, ok := getStringValue(values, "workday_report_url"); ok {
+								attributeTypes["workday_report_url"] = types.StringType
+								attributeValues["workday_report_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "workday_report_username"); ok {
-							attributeTypes["workday_report_username"] = types.StringType
-							attributeValues["workday_report_username"] = types.StringValue(val)
+						if _, ok := configValues["workday_report_username"]; ok {
+							if val, ok := getStringValue(values, "workday_report_username"); ok {
+								attributeTypes["workday_report_username"] = types.StringType
+								attributeValues["workday_report_username"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["workday_report_user_password"] = types.StringType
@@ -331,9 +341,11 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromCreateResponse(resp *shared
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "workday_client_id"); ok {
-							attributeTypes["workday_client_id"] = types.StringType
-							attributeValues["workday_client_id"] = types.StringValue(val)
+						if _, ok := configValues["workday_client_id"]; ok {
+							if val, ok := getStringValue(values, "workday_client_id"); ok {
+								attributeTypes["workday_client_id"] = types.StringType
+								attributeValues["workday_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["workday_client_secret"] = types.StringType
@@ -350,14 +362,18 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromCreateResponse(resp *shared
 							attributeValues["refresh_token"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "workday_url"); ok {
-							attributeTypes["workday_url"] = types.StringType
-							attributeValues["workday_url"] = types.StringValue(val)
+						if _, ok := configValues["workday_url"]; ok {
+							if val, ok := getStringValue(values, "workday_url"); ok {
+								attributeTypes["workday_url"] = types.StringType
+								attributeValues["workday_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "tenant_name"); ok {
-							attributeTypes["tenant_name"] = types.StringType
-							attributeValues["tenant_name"] = types.StringValue(val)
+						if _, ok := configValues["tenant_name"]; ok {
+							if val, ok := getStringValue(values, "tenant_name"); ok {
+								attributeTypes["tenant_name"] = types.StringType
+								attributeValues["tenant_name"] = types.StringValue(val)
+							}
 						}
 						r.WorkdayGroupApiClient = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
@@ -368,14 +384,18 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromCreateResponse(resp *shared
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "workday_report_url"); ok {
-							attributeTypes["workday_report_url"] = types.StringType
-							attributeValues["workday_report_url"] = types.StringValue(val)
+						if _, ok := configValues["workday_report_url"]; ok {
+							if val, ok := getStringValue(values, "workday_report_url"); ok {
+								attributeTypes["workday_report_url"] = types.StringType
+								attributeValues["workday_report_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "workday_report_username"); ok {
-							attributeTypes["workday_report_username"] = types.StringType
-							attributeValues["workday_report_username"] = types.StringValue(val)
+						if _, ok := configValues["workday_report_username"]; ok {
+							if val, ok := getStringValue(values, "workday_report_username"); ok {
+								attributeTypes["workday_report_username"] = types.StringType
+								attributeValues["workday_report_username"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["workday_report_user_password"] = types.StringType

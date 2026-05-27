@@ -66,12 +66,7 @@ func (r *IntegrationDatadogResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -118,12 +113,6 @@ func (r *IntegrationDatadogResourceModel) populateConfig() map[string]interface{
 		configValues["sync_secrets"] = syncSecrets
 	}
 
-	syncSchedules := new(string)
-	if !r.SyncSchedules.IsUnknown() && !r.SyncSchedules.IsNull() {
-		*syncSchedules = strconv.FormatBool(r.SyncSchedules.ValueBool())
-		configValues["sync-schedules"] = syncSchedules
-	}
-
 	return configValues
 }
 
@@ -134,12 +123,7 @@ func (r *IntegrationDatadogResourceModel) getConfig() (map[string]interface{}, b
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -213,15 +197,6 @@ func (r *IntegrationDatadogResourceModel) RefreshFromGetResponse(resp *shared.Co
 					}
 				}
 
-				if _, ok := configValues["sync-schedules"]; ok {
-					if val, ok := getStringValue(values, "sync-schedules"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SyncSchedules = types.BoolValue(bv)
-						}
-					}
-				}
-
 			}
 		}
 	}
@@ -277,15 +252,6 @@ func (r *IntegrationDatadogResourceModel) RefreshFromCreateResponse(resp *shared
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
 							r.SyncSecrets = types.BoolValue(bv)
-						}
-					}
-				}
-
-				if _, ok := configValues["sync-schedules"]; ok {
-					if val, ok := getStringValue(values, "sync-schedules"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SyncSchedules = types.BoolValue(bv)
 						}
 					}
 				}

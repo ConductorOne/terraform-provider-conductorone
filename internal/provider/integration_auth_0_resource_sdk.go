@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-	"strconv"
+
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -66,12 +66,7 @@ func (r *IntegrationAuth0ResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -112,12 +107,6 @@ func (r *IntegrationAuth0ResourceModel) populateConfig() map[string]interface{} 
 		configValues["auth0-client-secret"] = auth0ClientSecret
 	}
 
-	auth0ClientSyncPermissions := new(string)
-	if !r.Auth0ClientSyncPermissions.IsUnknown() && !r.Auth0ClientSyncPermissions.IsNull() {
-		*auth0ClientSyncPermissions = strconv.FormatBool(r.Auth0ClientSyncPermissions.ValueBool())
-		configValues["auth0-client-sync-permissions"] = auth0ClientSyncPermissions
-	}
-
 	return configValues
 }
 
@@ -128,12 +117,7 @@ func (r *IntegrationAuth0ResourceModel) getConfig() (map[string]interface{}, boo
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -204,15 +188,6 @@ func (r *IntegrationAuth0ResourceModel) RefreshFromGetResponse(resp *shared.Conn
 					}
 				}
 
-				if _, ok := configValues["auth0-client-sync-permissions"]; ok {
-					if val, ok := getStringValue(values, "auth0-client-sync-permissions"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.Auth0ClientSyncPermissions = types.BoolValue(bv)
-						}
-					}
-				}
-
 			}
 		}
 	}
@@ -266,15 +241,6 @@ func (r *IntegrationAuth0ResourceModel) RefreshFromCreateResponse(resp *shared.C
 				if _, ok := configValues["auth0-client-id"]; ok {
 					if val, ok := getStringValue(values, "auth0-client-id"); ok {
 						r.Auth0ClientId = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["auth0-client-sync-permissions"]; ok {
-					if val, ok := getStringValue(values, "auth0-client-sync-permissions"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.Auth0ClientSyncPermissions = types.BoolValue(bv)
-						}
 					}
 				}
 

@@ -250,14 +250,18 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromGetResponse(resp *shared
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "databricks_account_id"); ok {
-							attributeTypes["databricks_account_id"] = types.StringType
-							attributeValues["databricks_account_id"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_id"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_id"); ok {
+								attributeTypes["databricks_account_id"] = types.StringType
+								attributeValues["databricks_account_id"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_client_id"); ok {
-							attributeTypes["databricks_client_id"] = types.StringType
-							attributeValues["databricks_client_id"] = types.StringValue(val)
+						if _, ok := configValues["databricks_client_id"]; ok {
+							if val, ok := getStringValue(values, "databricks_client_id"); ok {
+								attributeTypes["databricks_client_id"] = types.StringType
+								attributeValues["databricks_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["databricks_client_secret"] = types.StringType
@@ -267,14 +271,18 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromGetResponse(resp *shared
 							attributeValues["databricks_client_secret"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
-							attributeTypes["databricks_account_hostname"] = types.StringType
-							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+								attributeTypes["databricks_account_hostname"] = types.StringType
+								attributeValues["databricks_account_hostname"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_hostname"); ok {
-							attributeTypes["databricks_hostname"] = types.StringType
-							attributeValues["databricks_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_hostname"); ok {
+								attributeTypes["databricks_hostname"] = types.StringType
+								attributeValues["databricks_hostname"] = types.StringValue(val)
+							}
 						}
 						r.DatabricksGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
@@ -285,9 +293,11 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromGetResponse(resp *shared
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "databricks_account_id"); ok {
-							attributeTypes["databricks_account_id"] = types.StringType
-							attributeValues["databricks_account_id"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_id"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_id"); ok {
+								attributeTypes["databricks_account_id"] = types.StringType
+								attributeValues["databricks_account_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["databricks_access_token"] = types.StringType
@@ -297,19 +307,25 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromGetResponse(resp *shared
 							attributeValues["databricks_access_token"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "databricks_workspace"); ok {
-							attributeTypes["databricks_workspace"] = types.StringType
-							attributeValues["databricks_workspace"] = types.StringValue(val)
+						if _, ok := configValues["databricks_workspace"]; ok {
+							if val, ok := getStringValue(values, "databricks_workspace"); ok {
+								attributeTypes["databricks_workspace"] = types.StringType
+								attributeValues["databricks_workspace"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
-							attributeTypes["databricks_account_hostname"] = types.StringType
-							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+								attributeTypes["databricks_account_hostname"] = types.StringType
+								attributeValues["databricks_account_hostname"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_hostname"); ok {
-							attributeTypes["databricks_hostname"] = types.StringType
-							attributeValues["databricks_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_hostname"); ok {
+								attributeTypes["databricks_hostname"] = types.StringType
+								attributeValues["databricks_hostname"] = types.StringValue(val)
+							}
 						}
 						r.DatabricksGroupToken = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
@@ -320,14 +336,18 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromGetResponse(resp *shared
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "databricks_account_id"); ok {
-							attributeTypes["databricks_account_id"] = types.StringType
-							attributeValues["databricks_account_id"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_id"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_id"); ok {
+								attributeTypes["databricks_account_id"] = types.StringType
+								attributeValues["databricks_account_id"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_username"); ok {
-							attributeTypes["databricks_username"] = types.StringType
-							attributeValues["databricks_username"] = types.StringValue(val)
+						if _, ok := configValues["databricks_username"]; ok {
+							if val, ok := getStringValue(values, "databricks_username"); ok {
+								attributeTypes["databricks_username"] = types.StringType
+								attributeValues["databricks_username"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["databricks_password"] = types.StringType
@@ -337,14 +357,18 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromGetResponse(resp *shared
 							attributeValues["databricks_password"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
-							attributeTypes["databricks_account_hostname"] = types.StringType
-							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+								attributeTypes["databricks_account_hostname"] = types.StringType
+								attributeValues["databricks_account_hostname"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_hostname"); ok {
-							attributeTypes["databricks_hostname"] = types.StringType
-							attributeValues["databricks_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_hostname"); ok {
+								attributeTypes["databricks_hostname"] = types.StringType
+								attributeValues["databricks_hostname"] = types.StringValue(val)
+							}
 						}
 						r.DatabricksGroupPassword = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
@@ -399,14 +423,18 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromCreateResponse(resp *sha
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "databricks_account_id"); ok {
-							attributeTypes["databricks_account_id"] = types.StringType
-							attributeValues["databricks_account_id"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_id"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_id"); ok {
+								attributeTypes["databricks_account_id"] = types.StringType
+								attributeValues["databricks_account_id"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_client_id"); ok {
-							attributeTypes["databricks_client_id"] = types.StringType
-							attributeValues["databricks_client_id"] = types.StringValue(val)
+						if _, ok := configValues["databricks_client_id"]; ok {
+							if val, ok := getStringValue(values, "databricks_client_id"); ok {
+								attributeTypes["databricks_client_id"] = types.StringType
+								attributeValues["databricks_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["databricks_client_secret"] = types.StringType
@@ -416,14 +444,18 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromCreateResponse(resp *sha
 							attributeValues["databricks_client_secret"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
-							attributeTypes["databricks_account_hostname"] = types.StringType
-							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+								attributeTypes["databricks_account_hostname"] = types.StringType
+								attributeValues["databricks_account_hostname"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_hostname"); ok {
-							attributeTypes["databricks_hostname"] = types.StringType
-							attributeValues["databricks_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_hostname"); ok {
+								attributeTypes["databricks_hostname"] = types.StringType
+								attributeValues["databricks_hostname"] = types.StringValue(val)
+							}
 						}
 						r.DatabricksGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
@@ -434,9 +466,11 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromCreateResponse(resp *sha
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "databricks_account_id"); ok {
-							attributeTypes["databricks_account_id"] = types.StringType
-							attributeValues["databricks_account_id"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_id"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_id"); ok {
+								attributeTypes["databricks_account_id"] = types.StringType
+								attributeValues["databricks_account_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["databricks_access_token"] = types.StringType
@@ -446,19 +480,25 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromCreateResponse(resp *sha
 							attributeValues["databricks_access_token"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "databricks_workspace"); ok {
-							attributeTypes["databricks_workspace"] = types.StringType
-							attributeValues["databricks_workspace"] = types.StringValue(val)
+						if _, ok := configValues["databricks_workspace"]; ok {
+							if val, ok := getStringValue(values, "databricks_workspace"); ok {
+								attributeTypes["databricks_workspace"] = types.StringType
+								attributeValues["databricks_workspace"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
-							attributeTypes["databricks_account_hostname"] = types.StringType
-							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+								attributeTypes["databricks_account_hostname"] = types.StringType
+								attributeValues["databricks_account_hostname"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_hostname"); ok {
-							attributeTypes["databricks_hostname"] = types.StringType
-							attributeValues["databricks_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_hostname"); ok {
+								attributeTypes["databricks_hostname"] = types.StringType
+								attributeValues["databricks_hostname"] = types.StringValue(val)
+							}
 						}
 						r.DatabricksGroupToken = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
@@ -469,14 +509,18 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromCreateResponse(resp *sha
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "databricks_account_id"); ok {
-							attributeTypes["databricks_account_id"] = types.StringType
-							attributeValues["databricks_account_id"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_id"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_id"); ok {
+								attributeTypes["databricks_account_id"] = types.StringType
+								attributeValues["databricks_account_id"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_username"); ok {
-							attributeTypes["databricks_username"] = types.StringType
-							attributeValues["databricks_username"] = types.StringValue(val)
+						if _, ok := configValues["databricks_username"]; ok {
+							if val, ok := getStringValue(values, "databricks_username"); ok {
+								attributeTypes["databricks_username"] = types.StringType
+								attributeValues["databricks_username"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["databricks_password"] = types.StringType
@@ -486,14 +530,18 @@ func (r *IntegrationDatabricksResourceModel) RefreshFromCreateResponse(resp *sha
 							attributeValues["databricks_password"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
-							attributeTypes["databricks_account_hostname"] = types.StringType
-							attributeValues["databricks_account_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_account_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_account_hostname"); ok {
+								attributeTypes["databricks_account_hostname"] = types.StringType
+								attributeValues["databricks_account_hostname"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "databricks_hostname"); ok {
-							attributeTypes["databricks_hostname"] = types.StringType
-							attributeValues["databricks_hostname"] = types.StringValue(val)
+						if _, ok := configValues["databricks_hostname"]; ok {
+							if val, ok := getStringValue(values, "databricks_hostname"); ok {
+								attributeTypes["databricks_hostname"] = types.StringType
+								attributeValues["databricks_hostname"] = types.StringValue(val)
+							}
 						}
 						r.DatabricksGroupPassword = types.ObjectValueMust(attributeTypes, attributeValues)
 					}

@@ -3,7 +3,7 @@ package provider
 
 import (
 	"fmt"
-	"strconv"
+
 	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -66,12 +66,7 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) ToUpdateSDKType() (*share
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -112,18 +107,6 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) populateConfig() map[stri
 		configValues["dynamics-client-secret"] = dynamicsClientSecret
 	}
 
-	tenantId := new(string)
-	if !r.TenantId.IsUnknown() && !r.TenantId.IsNull() {
-		*tenantId = r.TenantId.ValueString()
-		configValues["tenant-id"] = tenantId
-	}
-
-	includeSystemAccounts := new(string)
-	if !r.IncludeSystemAccounts.IsUnknown() && !r.IncludeSystemAccounts.IsNull() {
-		*includeSystemAccounts = strconv.FormatBool(r.IncludeSystemAccounts.ValueBool())
-		configValues["include-system-accounts"] = includeSystemAccounts
-	}
-
 	return configValues
 }
 
@@ -134,12 +117,7 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) getConfig() (map[string]i
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -210,21 +188,6 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) RefreshFromGetResponse(re
 					}
 				}
 
-				if _, ok := configValues["tenant-id"]; ok {
-					if val, ok := getStringValue(values, "tenant-id"); ok {
-						r.TenantId = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["include-system-accounts"]; ok {
-					if val, ok := getStringValue(values, "include-system-accounts"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.IncludeSystemAccounts = types.BoolValue(bv)
-						}
-					}
-				}
-
 			}
 		}
 	}
@@ -278,21 +241,6 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) RefreshFromCreateResponse
 				if _, ok := configValues["dynamics-client-id"]; ok {
 					if val, ok := getStringValue(values, "dynamics-client-id"); ok {
 						r.DynamicsClientId = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["tenant-id"]; ok {
-					if val, ok := getStringValue(values, "tenant-id"); ok {
-						r.TenantId = types.StringValue(val)
-					}
-				}
-
-				if _, ok := configValues["include-system-accounts"]; ok {
-					if val, ok := getStringValue(values, "include-system-accounts"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.IncludeSystemAccounts = types.BoolValue(bv)
-						}
 					}
 				}
 

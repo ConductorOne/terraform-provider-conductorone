@@ -66,12 +66,7 @@ func (r *IntegrationAzureInfrastructureResourceModel) ToUpdateSDKType() (*shared
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -142,18 +137,6 @@ func (r *IntegrationAzureInfrastructureResourceModel) populateConfig() map[strin
 		configValues["skip-sync-storage-containers"] = skipSyncStorageContainers
 	}
 
-	enableSyncExternalResourcesViaBatonId := new(string)
-	if !r.EnableSyncExternalResourcesViaBatonId.IsUnknown() && !r.EnableSyncExternalResourcesViaBatonId.IsNull() {
-		*enableSyncExternalResourcesViaBatonId = strconv.FormatBool(r.EnableSyncExternalResourcesViaBatonId.ValueBool())
-		configValues["enable-sync-external-resources-via-baton-id"] = enableSyncExternalResourcesViaBatonId
-	}
-
-	skipEntraIdP2LicenseFeatures := new(string)
-	if !r.SkipEntraIdP2LicenseFeatures.IsUnknown() && !r.SkipEntraIdP2LicenseFeatures.IsNull() {
-		*skipEntraIdP2LicenseFeatures = strconv.FormatBool(r.SkipEntraIdP2LicenseFeatures.ValueBool())
-		configValues["skip-entra-id-p2-license-features"] = skipEntraIdP2LicenseFeatures
-	}
-
 	return configValues
 }
 
@@ -164,12 +147,7 @@ func (r *IntegrationAzureInfrastructureResourceModel) getConfig() (map[string]in
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -282,24 +260,6 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromGetResponse(res
 					}
 				}
 
-				if _, ok := configValues["enable-sync-external-resources-via-baton-id"]; ok {
-					if val, ok := getStringValue(values, "enable-sync-external-resources-via-baton-id"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.EnableSyncExternalResourcesViaBatonId = types.BoolValue(bv)
-						}
-					}
-				}
-
-				if _, ok := configValues["skip-entra-id-p2-license-features"]; ok {
-					if val, ok := getStringValue(values, "skip-entra-id-p2-license-features"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SkipEntraIdP2LicenseFeatures = types.BoolValue(bv)
-						}
-					}
-				}
-
 			}
 		}
 	}
@@ -394,24 +354,6 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromCreateResponse(
 						bv, err := strconv.ParseBool(val)
 						if err == nil {
 							r.SkipSyncStorageContainers = types.BoolValue(bv)
-						}
-					}
-				}
-
-				if _, ok := configValues["enable-sync-external-resources-via-baton-id"]; ok {
-					if val, ok := getStringValue(values, "enable-sync-external-resources-via-baton-id"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.EnableSyncExternalResourcesViaBatonId = types.BoolValue(bv)
-						}
-					}
-				}
-
-				if _, ok := configValues["skip-entra-id-p2-license-features"]; ok {
-					if val, ok := getStringValue(values, "skip-entra-id-p2-license-features"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SkipEntraIdP2LicenseFeatures = types.BoolValue(bv)
 						}
 					}
 				}

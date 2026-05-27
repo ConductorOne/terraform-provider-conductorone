@@ -21,7 +21,7 @@ func (r *IntegrationFreshserviceResourceModel) ToCreateDelegatedSDKType() *share
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
-		DisplayName: sdk.String("Freshservice"),
+		DisplayName: sdk.String("FreshService"),
 		CatalogID:   catalogID,
 		UserIds:     userIds,
 	}
@@ -66,12 +66,7 @@ func (r *IntegrationFreshserviceResourceModel) ToUpdateSDKType() (*shared.Connec
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
@@ -80,7 +75,7 @@ func (r *IntegrationFreshserviceResourceModel) ToUpdateSDKType() (*shared.Connec
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Freshservice"),
+		DisplayName: sdk.String("FreshService"),
 		AppID:       sdk.String(r.AppID.ValueString()),
 		CatalogID:   sdk.String(freshserviceCatalogID),
 		ID:          sdk.String(r.ID.ValueString()),
@@ -128,12 +123,7 @@ func (r *IntegrationFreshserviceResourceModel) getConfig() (map[string]interface
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			mv := makeMapValue(configValue)
-			if mv != nil {
-				configOut[key] = mv
-			} else {
-				configOut[key] = makeStringValue(configValue)
-			}
+			configOut[key] = makeStringValue(configValue)
 			configSet = true
 		}
 	}
