@@ -119,3 +119,35 @@ It also checks both `shared.ManualProvision{}` struct literals wire `Provisioner
 ### Scope
 
 This is a single-attribute tripwire, not a general schema/SDK symmetry check. The same drift can recur on other fields if a contributor extends `manual_provision` (or any other nested block on the hand-written resource) without touching the SDK. A more general check would parse the schema AST and assert every attribute appears in both directions of the SDK conversion — worth doing if this pattern recurs on a different field.
+
+## `conductorone_request_schema` resource files were frozen in `.genignore` — RESOLVED
+
+### Status
+
+**Resolved** as part of [IGA-743](https://linear.app/ductone/issue/IGA-743). `internal/provider/request_schema_resource.go` and `request_schema_resource_sdk.go` were removed from `.genignore` and now regenerate normally.
+
+### Background
+
+The two files were added to `.genignore` in [PR #163](https://github.com/ConductorOne/terraform-provider-conductorone/pull/163) (commit `337f53df`, [DUCT-12034](https://linear.app/ductone/issue/DUCT-12034), 2025-10-17) to preserve a manual workaround. At that time Speakeasy's generated CRUD only called `RefreshFromSharedRequestSchema`, which populated just `created_at` / `deleted_at` / `id` — the form body (`description`, `fields`, `field_relationships`) was never written to state. The freeze protected hand-added `RefreshFromSharedForm` calls in Create/Read/Update/import, each marked:
+
+```go
+// ManualChange. We store the requestSchema into the terraform state.
+// Once speakeasy team fixes it, we can remove it.
+```
+
+Because the files were frozen, they drifted from the generated model. That drift **is** IGA-743: the generated `c1.api.form.v1.Field` model gained orphan variants (`oauth2_field`, provider configs, `string_map_field`, `read_only`, `required`) and a renamed `StringField` (→ `form_string_field`) with no matching attributes in the frozen schema, producing `mismatch between struct and object` on refresh of older state. The same freeze had also silently accumulated latent gaps (`field_relationships.dependent_on`, `string_field.picker_field`, `bool_field.toggle_field`) and missing top-level attributes (`field_groups`, `justification_visibility`).
+
+### Why it is fixed now
+
+Speakeasy now refreshes the form natively — the generated `RefreshFromSharedRequestSchema` calls `RefreshFromSharedRequestSchemaForm`, and Create/Read/Update use generated `RefreshFromSharedRequestSchemaService*Response` helpers. The `ManualChange` workaround the freeze protected is therefore obsolete ("once speakeasy team fixes it, we can remove it" — they did). Un-genignoring the two files lets them regenerate in lockstep with the model, which fixes IGA-743 and the latent drifts in one move and prevents this resource from silently drifting again.
+
+### Accepted consequences
+
+Regenerating drops two hand-added validators. Both drops are consistent with current provider-wide generation, not a request_schema-specific regression:
+
+- `validators.IsRFC3339()` on `created_at` — `created_at` is `Computed` (server-set); the current generator omits validators on computed date fields everywhere, and a validator on a computed attribute never runs against user input. No functional effect.
+- `stringvalidator.OneOf(...)` on `well_known_regex` — Speakeasy 1.762.0 treats enums as open/forward-compatible ("possible known values include one of …"); no enum anywhere in the provider generates a restricting `OneOf` any longer. Re-adding it would make this one field uniquely restrictive. The `enum` is still present in the spec; the generator simply no longer emits the validator, so it cannot be restored via overlay.
+
+### Tripwire
+
+`TestRequestSchemaResourceParity` in `internal/provider/request_schema_parity_test.go` reflects the `RequestSchemaResourceModel` tfsdk tags against the resource `Schema()` attribute keys, recursively, and asserts the two sets are equal. It fails on exactly the IGA-743 class of drift (it would have failed on commit `59b78696`) and guards against the resource files drifting from the generated model again.
