@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationDocusignResourceModel) ToCreateDelegatedSDKType() *shared.Co
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("DocuSign"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationDocusignResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("DocuSign"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(docusignCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("DocuSign"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(docusignCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,24 +95,31 @@ func (r *IntegrationDocusignResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 
 func (r *IntegrationDocusignResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		accountId := new(string)
+if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
+*accountId = r.AccountId.ValueString()
+configValues["account_id"] = accountId
+}
 
-	accountId := new(string)
-	if !r.AccountId.IsUnknown() && !r.AccountId.IsNull() {
-		*accountId = r.AccountId.ValueString()
-		configValues["account_id"] = accountId
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationDocusignResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -160,16 +174,21 @@ func (r *IntegrationDocusignResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "account_id"); ok {
-					r.AccountId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["account_id"]; ok {
+if val, ok := getStringValue(values, "account_id"); ok {
+r.AccountId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationDocusignResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -207,14 +226,19 @@ func (r *IntegrationDocusignResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "account_id"); ok {
-					r.AccountId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["account_id"]; ok {
+if val, ok := getStringValue(values, "account_id"); ok {
+r.AccountId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	"strings"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationConcurResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Concur"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationConcurResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationConcurResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationConcurResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Concur"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(concurCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Concur"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(concurCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,42 +95,69 @@ func (r *IntegrationConcurResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 
 func (r *IntegrationConcurResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		concurBaseUrl := new(string)
+if !r.ConcurBaseUrl.IsUnknown() && !r.ConcurBaseUrl.IsNull() {
+*concurBaseUrl = r.ConcurBaseUrl.ValueString()
+configValues["concur_base_url"] = concurBaseUrl
+}
 
-	concurBaseUrl := new(string)
-	if !r.ConcurBaseUrl.IsUnknown() && !r.ConcurBaseUrl.IsNull() {
-		*concurBaseUrl = r.ConcurBaseUrl.ValueString()
-		configValues["concur_base_url"] = concurBaseUrl
-	}
+    
+		concurClientId := new(string)
+if !r.ConcurClientId.IsUnknown() && !r.ConcurClientId.IsNull() {
+*concurClientId = r.ConcurClientId.ValueString()
+configValues["concur_client_id"] = concurClientId
+}
 
-	concurClientId := new(string)
-	if !r.ConcurClientId.IsUnknown() && !r.ConcurClientId.IsNull() {
-		*concurClientId = r.ConcurClientId.ValueString()
-		configValues["concur_client_id"] = concurClientId
-	}
+    
+		concurClientSecret := new(string)
+if !r.ConcurClientSecret.IsUnknown() && !r.ConcurClientSecret.IsNull() {
+*concurClientSecret = r.ConcurClientSecret.ValueString()
+configValues["concur_client_secret"] = concurClientSecret
+}
 
-	concurClientSecret := new(string)
-	if !r.ConcurClientSecret.IsUnknown() && !r.ConcurClientSecret.IsNull() {
-		*concurClientSecret = r.ConcurClientSecret.ValueString()
-		configValues["concur_client_secret"] = concurClientSecret
-	}
+    
+		concurRefreshToken := new(string)
+if !r.ConcurRefreshToken.IsUnknown() && !r.ConcurRefreshToken.IsNull() {
+*concurRefreshToken = r.ConcurRefreshToken.ValueString()
+configValues["concur_refresh_token"] = concurRefreshToken
+}
 
-	concurRefreshToken := new(string)
-	if !r.ConcurRefreshToken.IsUnknown() && !r.ConcurRefreshToken.IsNull() {
-		*concurRefreshToken = r.ConcurRefreshToken.ValueString()
-		configValues["concur_refresh_token"] = concurRefreshToken
-	}
+    
+		concurYamlCreateAccountConfig := new(string)
+if !r.ConcurYamlCreateAccountConfig.IsUnknown() && !r.ConcurYamlCreateAccountConfig.IsNull() {
+*concurYamlCreateAccountConfig = r.ConcurYamlCreateAccountConfig.ValueString()
+configValues["concur_yaml_create_account_config"] = concurYamlCreateAccountConfig
+}
 
-	return configValues
+    
+		concurCreateAccountSkipFields := make([]string, 0)
+for _, item := range r.ConcurCreateAccountSkipFields {
+concurCreateAccountSkipFields = append(concurCreateAccountSkipFields, item.ValueString())
+}
+if len(concurCreateAccountSkipFields) > 0 {
+configValues["concur_create_account_skip_fields"] = strings.Join(concurCreateAccountSkipFields, ",")
+}
+
+
+    
+
+    return configValues
 }
 
 func (r *IntegrationConcurResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -178,20 +212,49 @@ func (r *IntegrationConcurResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "concur_base_url"); ok {
-					r.ConcurBaseUrl = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["concur_base_url"]; ok {
+if val, ok := getStringValue(values, "concur_base_url"); ok {
+r.ConcurBaseUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "concur_client_id"); ok {
-					r.ConcurClientId = types.StringValue(val)
-				}
+               if _, ok := configValues["concur_client_id"]; ok {
+if val, ok := getStringValue(values, "concur_client_id"); ok {
+r.ConcurClientId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+               
+               if _, ok := configValues["concur_yaml_create_account_config"]; ok {
+if val, ok := getStringValue(values, "concur_yaml_create_account_config"); ok {
+r.ConcurYamlCreateAccountConfig = types.StringValue(val)
+}
+}
+
+               if _, ok := configValues["concur_create_account_skip_fields"]; ok {
+if val, ok := getStringValue(values, "concur_create_account_skip_fields"); ok {
+var valLists []types.String
+tmpList := strings.Split(val, ",")
+for _, item := range tmpList {
+item = strings.TrimSpace(item)
+if item != "" {
+valLists = append(valLists, types.StringValue(item))
+}
+}
+r.ConcurCreateAccountSkipFields = valLists
+}
+}
+
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationConcurResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -229,18 +292,47 @@ func (r *IntegrationConcurResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "concur_base_url"); ok {
-					r.ConcurBaseUrl = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["concur_base_url"]; ok {
+if val, ok := getStringValue(values, "concur_base_url"); ok {
+r.ConcurBaseUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "concur_client_id"); ok {
-					r.ConcurClientId = types.StringValue(val)
-				}
+                  if _, ok := configValues["concur_client_id"]; ok {
+if val, ok := getStringValue(values, "concur_client_id"); ok {
+r.ConcurClientId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+                  
+                  if _, ok := configValues["concur_yaml_create_account_config"]; ok {
+if val, ok := getStringValue(values, "concur_yaml_create_account_config"); ok {
+r.ConcurYamlCreateAccountConfig = types.StringValue(val)
+}
+}
+
+                  if _, ok := configValues["concur_create_account_skip_fields"]; ok {
+if val, ok := getStringValue(values, "concur_create_account_skip_fields"); ok {
+var valLists []types.String
+tmpList := strings.Split(val, ",")
+for _, item := range tmpList {
+item = strings.TrimSpace(item)
+if item != "" {
+valLists = append(valLists, types.StringValue(item))
+}
+}
+r.ConcurCreateAccountSkipFields = valLists
+}
+}
+
+                  
+              }
+          }
+       }
 }

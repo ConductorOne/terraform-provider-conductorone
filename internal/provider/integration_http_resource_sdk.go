@@ -2,15 +2,16 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
-	"github.com/hashicorp/terraform-plugin-framework/types"
+	
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 const httpCatalogID = "2xxnvEBt2eOHCHhCS4muTieQcJe"
@@ -23,8 +24,8 @@ func (r *IntegrationHttpResourceModel) ToCreateDelegatedSDKType() *shared.Connec
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("HTTP"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -37,20 +38,20 @@ func (r *IntegrationHttpResourceModel) ToCreateSDKType() (*shared.ConnectorServi
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -60,17 +61,17 @@ func (r *IntegrationHttpResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {
+			} else {	
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -81,12 +82,12 @@ func (r *IntegrationHttpResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("HTTP"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(httpCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("HTTP"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(httpCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -94,26 +95,30 @@ func (r *IntegrationHttpResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 
 func (r *IntegrationHttpResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-
-	httpConnectorMapValues := make(map[string]string)
-	for k, v := range r.HttpConnectorMapValues.Elements() {
-		if val, ok := v.(basetypes.StringValue); ok {
-			httpConnectorMapValues[k] = val.ValueString()
+    
+		
+		httpConnectorMapValues := make(map[string]string)
+		for k, v := range r.HttpConnectorMapValues.Elements() {
+			if val, ok := v.(basetypes.StringValue); ok {
+				httpConnectorMapValues[k] = val.ValueString()
+			}
 		}
-	}
-	configValues["http_connector_map_values"] = httpConnectorMapValues
+		configValues["http_connector_map_values"] = httpConnectorMapValues
+	
+    
+		httpConnectorConfigFile := new(string)
+if !r.HttpConnectorConfigFile.IsUnknown() && !r.HttpConnectorConfigFile.IsNull() {
+*httpConnectorConfigFile = r.HttpConnectorConfigFile.ValueString()
+configValues["http_connector_config_file"] = httpConnectorConfigFile
+}
 
-	httpConnectorConfigFile := new(string)
-	if !r.HttpConnectorConfigFile.IsUnknown() && !r.HttpConnectorConfigFile.IsNull() {
-		*httpConnectorConfigFile = r.HttpConnectorConfigFile.ValueString()
-		configValues["http_connector_config_file"] = httpConnectorConfigFile
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationHttpResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -122,7 +127,7 @@ func (r *IntegrationHttpResourceModel) getConfig() (map[string]interface{}, bool
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {
+			} else {	
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -179,17 +184,22 @@ func (r *IntegrationHttpResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               
+               if _, ok := configValues["http_connector_config_file"]; ok {
+if val, ok := getStringValue(values, "http_connector_config_file"); ok {
+r.HttpConnectorConfigFile = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "http_connector_config_file"); ok {
-					r.HttpConnectorConfigFile = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationHttpResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -227,15 +237,20 @@ func (r *IntegrationHttpResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  
+                  if _, ok := configValues["http_connector_config_file"]; ok {
+if val, ok := getStringValue(values, "http_connector_config_file"); ok {
+r.HttpConnectorConfigFile = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "http_connector_config_file"); ok {
-					r.HttpConnectorConfigFile = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

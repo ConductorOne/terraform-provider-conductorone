@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationServicenowResourceModel) ToCreateDelegatedSDKType() *shared.
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("ServiceNow"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationServicenowResourceModel) ToCreateSDKType() (*shared.Connecto
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationServicenowResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationServicenowResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("ServiceNow"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(servicenowCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("ServiceNow"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(servicenowCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,54 +95,66 @@ func (r *IntegrationServicenowResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 func (r *IntegrationServicenowResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		deployment := new(string)
+if !r.Deployment.IsUnknown() && !r.Deployment.IsNull() {
+*deployment = r.Deployment.ValueString()
+configValues["deployment"] = deployment
+}
 
-	deployment := new(string)
-	if !r.Deployment.IsUnknown() && !r.Deployment.IsNull() {
-		*deployment = r.Deployment.ValueString()
-		configValues["deployment"] = deployment
-	}
+    
+		username := new(string)
+if !r.Username.IsUnknown() && !r.Username.IsNull() {
+*username = r.Username.ValueString()
+configValues["username"] = username
+}
 
-	username := new(string)
-	if !r.Username.IsUnknown() && !r.Username.IsNull() {
-		*username = r.Username.ValueString()
-		configValues["username"] = username
-	}
+    
+		password := new(string)
+if !r.Password.IsUnknown() && !r.Password.IsNull() {
+*password = r.Password.ValueString()
+configValues["password"] = password
+}
 
-	password := new(string)
-	if !r.Password.IsUnknown() && !r.Password.IsNull() {
-		*password = r.Password.ValueString()
-		configValues["password"] = password
-	}
+    
+		enableExternalTicketProvisioning := new(string)
+if !r.EnableExternalTicketProvisioning.IsUnknown() && !r.EnableExternalTicketProvisioning.IsNull() {
+*enableExternalTicketProvisioning = strconv.FormatBool(r.EnableExternalTicketProvisioning.ValueBool())
+configValues["enable_external_ticket_provisioning"] = enableExternalTicketProvisioning
+}
 
-	enableExternalTicketProvisioning := new(string)
-	if !r.EnableExternalTicketProvisioning.IsUnknown() && !r.EnableExternalTicketProvisioning.IsNull() {
-		*enableExternalTicketProvisioning = strconv.FormatBool(r.EnableExternalTicketProvisioning.ValueBool())
-		configValues["enable_external_ticket_provisioning"] = enableExternalTicketProvisioning
-	}
+    
+		catalogId := new(string)
+if !r.CatalogId.IsUnknown() && !r.CatalogId.IsNull() {
+*catalogId = r.CatalogId.ValueString()
+configValues["catalog_id"] = catalogId
+}
 
-	catalogId := new(string)
-	if !r.CatalogId.IsUnknown() && !r.CatalogId.IsNull() {
-		*catalogId = r.CatalogId.ValueString()
-		configValues["catalog_id"] = catalogId
-	}
+    
+		categoryId := new(string)
+if !r.CategoryId.IsUnknown() && !r.CategoryId.IsNull() {
+*categoryId = r.CategoryId.ValueString()
+configValues["category_id"] = categoryId
+}
 
-	categoryId := new(string)
-	if !r.CategoryId.IsUnknown() && !r.CategoryId.IsNull() {
-		*categoryId = r.CategoryId.ValueString()
-		configValues["category_id"] = categoryId
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationServicenowResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -190,38 +209,49 @@ func (r *IntegrationServicenowResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "deployment"); ok {
-					r.Deployment = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["deployment"]; ok {
+if val, ok := getStringValue(values, "deployment"); ok {
+r.Deployment = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "username"); ok {
-					r.Username = types.StringValue(val)
-				}
+               if _, ok := configValues["username"]; ok {
+if val, ok := getStringValue(values, "username"); ok {
+r.Username = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
-					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.EnableExternalTicketProvisioning = types.BoolValue(bv)
-						}
-					}
-				}
+               
+               if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
+if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+}
+}
+}
 
-				if val, ok := getStringValue(values, "catalog_id"); ok {
-					r.CatalogId = types.StringValue(val)
-				}
+               if _, ok := configValues["catalog_id"]; ok {
+if val, ok := getStringValue(values, "catalog_id"); ok {
+r.CatalogId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "category_id"); ok {
-					r.CategoryId = types.StringValue(val)
-				}
+               if _, ok := configValues["category_id"]; ok {
+if val, ok := getStringValue(values, "category_id"); ok {
+r.CategoryId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationServicenowResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -259,36 +289,47 @@ func (r *IntegrationServicenowResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "deployment"); ok {
-					r.Deployment = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["deployment"]; ok {
+if val, ok := getStringValue(values, "deployment"); ok {
+r.Deployment = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "username"); ok {
-					r.Username = types.StringValue(val)
-				}
+                  if _, ok := configValues["username"]; ok {
+if val, ok := getStringValue(values, "username"); ok {
+r.Username = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
-					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.EnableExternalTicketProvisioning = types.BoolValue(bv)
-						}
-					}
-				}
+                  
+                  if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
+if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+}
+}
+}
 
-				if val, ok := getStringValue(values, "catalog_id"); ok {
-					r.CatalogId = types.StringValue(val)
-				}
+                  if _, ok := configValues["catalog_id"]; ok {
+if val, ok := getStringValue(values, "catalog_id"); ok {
+r.CatalogId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "category_id"); ok {
-					r.CategoryId = types.StringValue(val)
-				}
+                  if _, ok := configValues["category_id"]; ok {
+if val, ok := getStringValue(values, "category_id"); ok {
+r.CategoryId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationDatadogResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Datadog"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationDatadogResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationDatadogResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationDatadogResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Datadog"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(datadogCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Datadog"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(datadogCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,42 +95,59 @@ func (r *IntegrationDatadogResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationDatadogResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		datadogSite := new(string)
+if !r.DatadogSite.IsUnknown() && !r.DatadogSite.IsNull() {
+*datadogSite = r.DatadogSite.ValueString()
+configValues["datadog_site"] = datadogSite
+}
 
-	datadogSite := new(string)
-	if !r.DatadogSite.IsUnknown() && !r.DatadogSite.IsNull() {
-		*datadogSite = r.DatadogSite.ValueString()
-		configValues["datadog_site"] = datadogSite
-	}
+    
+		datadogApiKey := new(string)
+if !r.DatadogApiKey.IsUnknown() && !r.DatadogApiKey.IsNull() {
+*datadogApiKey = r.DatadogApiKey.ValueString()
+configValues["datadog_api_key"] = datadogApiKey
+}
 
-	datadogApiKey := new(string)
-	if !r.DatadogApiKey.IsUnknown() && !r.DatadogApiKey.IsNull() {
-		*datadogApiKey = r.DatadogApiKey.ValueString()
-		configValues["datadog_api_key"] = datadogApiKey
-	}
+    
+		datadogApplicationKey := new(string)
+if !r.DatadogApplicationKey.IsUnknown() && !r.DatadogApplicationKey.IsNull() {
+*datadogApplicationKey = r.DatadogApplicationKey.ValueString()
+configValues["datadog_application_key"] = datadogApplicationKey
+}
 
-	datadogApplicationKey := new(string)
-	if !r.DatadogApplicationKey.IsUnknown() && !r.DatadogApplicationKey.IsNull() {
-		*datadogApplicationKey = r.DatadogApplicationKey.ValueString()
-		configValues["datadog_application_key"] = datadogApplicationKey
-	}
+    
+		syncSecrets := new(string)
+if !r.SyncSecrets.IsUnknown() && !r.SyncSecrets.IsNull() {
+*syncSecrets = strconv.FormatBool(r.SyncSecrets.ValueBool())
+configValues["sync_secrets"] = syncSecrets
+}
 
-	syncSecrets := new(string)
-	if !r.SyncSecrets.IsUnknown() && !r.SyncSecrets.IsNull() {
-		*syncSecrets = strconv.FormatBool(r.SyncSecrets.ValueBool())
-		configValues["sync_secrets"] = syncSecrets
-	}
+    
+		syncSchedules := new(string)
+if !r.SyncSchedules.IsUnknown() && !r.SyncSchedules.IsNull() {
+*syncSchedules = strconv.FormatBool(r.SyncSchedules.ValueBool())
+configValues["sync-schedules"] = syncSchedules
+}
 
-	return configValues
+    
+
+    return configValues
 }
 
 func (r *IntegrationDatadogResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -178,26 +202,41 @@ func (r *IntegrationDatadogResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "datadog_site"); ok {
-					r.DatadogSite = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["datadog_site"]; ok {
+if val, ok := getStringValue(values, "datadog_site"); ok {
+r.DatadogSite = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["sync_secrets"]; ok {
-					if val, ok := getStringValue(values, "sync_secrets"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SyncSecrets = types.BoolValue(bv)
-						}
-					}
-				}
+               
+               
+               if _, ok := configValues["sync_secrets"]; ok {
+if val, ok := getStringValue(values, "sync_secrets"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SyncSecrets = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+               if _, ok := configValues["sync-schedules"]; ok {
+if val, ok := getStringValue(values, "sync-schedules"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SyncSchedules = types.BoolValue(bv)
+}
+}
+}
+
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationDatadogResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -235,24 +274,39 @@ func (r *IntegrationDatadogResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "datadog_site"); ok {
-					r.DatadogSite = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["datadog_site"]; ok {
+if val, ok := getStringValue(values, "datadog_site"); ok {
+r.DatadogSite = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["sync_secrets"]; ok {
-					if val, ok := getStringValue(values, "sync_secrets"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SyncSecrets = types.BoolValue(bv)
-						}
-					}
-				}
+                  
+                  
+                  if _, ok := configValues["sync_secrets"]; ok {
+if val, ok := getStringValue(values, "sync_secrets"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SyncSecrets = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+                  if _, ok := configValues["sync-schedules"]; ok {
+if val, ok := getStringValue(values, "sync-schedules"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SyncSchedules = types.BoolValue(bv)
+}
+}
+}
+
+                  
+              }
+          }
+       }
 }

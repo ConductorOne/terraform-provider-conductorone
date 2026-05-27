@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationOracleCloudInfrastructureResourceModel) ToCreateDelegatedSDK
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Oracle Cloud Infrastructure"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationOracleCloudInfrastructureResourceModel) ToCreateSDKType() (*
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationOracleCloudInfrastructureResourceModel) ToUpdateSDKType() (*
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationOracleCloudInfrastructureResourceModel) ToUpdateSDKType() (*
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Oracle Cloud Infrastructure"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(oracleCloudInfrastructureCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Oracle Cloud Infrastructure"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(oracleCloudInfrastructureCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,54 +95,66 @@ func (r *IntegrationOracleCloudInfrastructureResourceModel) ToUpdateSDKType() (*
 
 func (r *IntegrationOracleCloudInfrastructureResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		tenancyOcid := new(string)
+if !r.TenancyOcid.IsUnknown() && !r.TenancyOcid.IsNull() {
+*tenancyOcid = r.TenancyOcid.ValueString()
+configValues["tenancy-ocid"] = tenancyOcid
+}
 
-	tenancyOcid := new(string)
-	if !r.TenancyOcid.IsUnknown() && !r.TenancyOcid.IsNull() {
-		*tenancyOcid = r.TenancyOcid.ValueString()
-		configValues["tenancy-ocid"] = tenancyOcid
-	}
+    
+		userOcid := new(string)
+if !r.UserOcid.IsUnknown() && !r.UserOcid.IsNull() {
+*userOcid = r.UserOcid.ValueString()
+configValues["user-ocid"] = userOcid
+}
 
-	userOcid := new(string)
-	if !r.UserOcid.IsUnknown() && !r.UserOcid.IsNull() {
-		*userOcid = r.UserOcid.ValueString()
-		configValues["user-ocid"] = userOcid
-	}
+    
+		region := new(string)
+if !r.Region.IsUnknown() && !r.Region.IsNull() {
+*region = r.Region.ValueString()
+configValues["region"] = region
+}
 
-	region := new(string)
-	if !r.Region.IsUnknown() && !r.Region.IsNull() {
-		*region = r.Region.ValueString()
-		configValues["region"] = region
-	}
+    
+		fingerprint := new(string)
+if !r.Fingerprint.IsUnknown() && !r.Fingerprint.IsNull() {
+*fingerprint = r.Fingerprint.ValueString()
+configValues["fingerprint"] = fingerprint
+}
 
-	fingerprint := new(string)
-	if !r.Fingerprint.IsUnknown() && !r.Fingerprint.IsNull() {
-		*fingerprint = r.Fingerprint.ValueString()
-		configValues["fingerprint"] = fingerprint
-	}
+    
+		privateKey := new(string)
+if !r.PrivateKey.IsUnknown() && !r.PrivateKey.IsNull() {
+*privateKey = r.PrivateKey.ValueString()
+configValues["private-key"] = privateKey
+}
 
-	privateKey := new(string)
-	if !r.PrivateKey.IsUnknown() && !r.PrivateKey.IsNull() {
-		*privateKey = r.PrivateKey.ValueString()
-		configValues["private-key"] = privateKey
-	}
+    
+		syncSecrets := new(string)
+if !r.SyncSecrets.IsUnknown() && !r.SyncSecrets.IsNull() {
+*syncSecrets = strconv.FormatBool(r.SyncSecrets.ValueBool())
+configValues["sync-secrets"] = syncSecrets
+}
 
-	syncSecrets := new(string)
-	if !r.SyncSecrets.IsUnknown() && !r.SyncSecrets.IsNull() {
-		*syncSecrets = strconv.FormatBool(r.SyncSecrets.ValueBool())
-		configValues["sync-secrets"] = syncSecrets
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationOracleCloudInfrastructureResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -190,34 +209,44 @@ func (r *IntegrationOracleCloudInfrastructureResourceModel) RefreshFromGetRespon
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "tenancy-ocid"); ok {
-					r.TenancyOcid = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["tenancy-ocid"]; ok {
+if val, ok := getStringValue(values, "tenancy-ocid"); ok {
+r.TenancyOcid = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "user-ocid"); ok {
-					r.UserOcid = types.StringValue(val)
-				}
+               if _, ok := configValues["user-ocid"]; ok {
+if val, ok := getStringValue(values, "user-ocid"); ok {
+r.UserOcid = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "region"); ok {
-					r.Region = types.StringValue(val)
-				}
+               if _, ok := configValues["region"]; ok {
+if val, ok := getStringValue(values, "region"); ok {
+r.Region = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["sync-secrets"]; ok {
-					if val, ok := getStringValue(values, "sync-secrets"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SyncSecrets = types.BoolValue(bv)
-						}
-					}
-				}
+               
+               
+               if _, ok := configValues["sync-secrets"]; ok {
+if val, ok := getStringValue(values, "sync-secrets"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SyncSecrets = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationOracleCloudInfrastructureResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -255,32 +284,42 @@ func (r *IntegrationOracleCloudInfrastructureResourceModel) RefreshFromCreateRes
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "tenancy-ocid"); ok {
-					r.TenancyOcid = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["tenancy-ocid"]; ok {
+if val, ok := getStringValue(values, "tenancy-ocid"); ok {
+r.TenancyOcid = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "user-ocid"); ok {
-					r.UserOcid = types.StringValue(val)
-				}
+                  if _, ok := configValues["user-ocid"]; ok {
+if val, ok := getStringValue(values, "user-ocid"); ok {
+r.UserOcid = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "region"); ok {
-					r.Region = types.StringValue(val)
-				}
+                  if _, ok := configValues["region"]; ok {
+if val, ok := getStringValue(values, "region"); ok {
+r.Region = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["sync-secrets"]; ok {
-					if val, ok := getStringValue(values, "sync-secrets"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SyncSecrets = types.BoolValue(bv)
-						}
-					}
-				}
+                  
+                  
+                  if _, ok := configValues["sync-secrets"]; ok {
+if val, ok := getStringValue(values, "sync-secrets"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SyncSecrets = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

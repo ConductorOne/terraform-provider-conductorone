@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationVictoropsResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("VictorOps"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationVictoropsResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationVictoropsResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationVictoropsResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("VictorOps"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(victoropsCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("VictorOps"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(victoropsCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,30 +95,38 @@ func (r *IntegrationVictoropsResourceModel) ToUpdateSDKType() (*shared.Connector
 
 func (r *IntegrationVictoropsResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		victoropsApiId := new(string)
+if !r.VictoropsApiId.IsUnknown() && !r.VictoropsApiId.IsNull() {
+*victoropsApiId = r.VictoropsApiId.ValueString()
+configValues["victorops-api-id"] = victoropsApiId
+}
 
-	victoropsApiId := new(string)
-	if !r.VictoropsApiId.IsUnknown() && !r.VictoropsApiId.IsNull() {
-		*victoropsApiId = r.VictoropsApiId.ValueString()
-		configValues["victorops-api-id"] = victoropsApiId
-	}
+    
+		victoropsApiKey := new(string)
+if !r.VictoropsApiKey.IsUnknown() && !r.VictoropsApiKey.IsNull() {
+*victoropsApiKey = r.VictoropsApiKey.ValueString()
+configValues["victorops-api-key"] = victoropsApiKey
+}
 
-	victoropsApiKey := new(string)
-	if !r.VictoropsApiKey.IsUnknown() && !r.VictoropsApiKey.IsNull() {
-		*victoropsApiKey = r.VictoropsApiKey.ValueString()
-		configValues["victorops-api-key"] = victoropsApiKey
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationVictoropsResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -166,16 +181,22 @@ func (r *IntegrationVictoropsResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "victorops-api-id"); ok {
-					r.VictoropsApiId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["victorops-api-id"]; ok {
+if val, ok := getStringValue(values, "victorops-api-id"); ok {
+r.VictoropsApiId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationVictoropsResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -213,14 +234,20 @@ func (r *IntegrationVictoropsResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "victorops-api-id"); ok {
-					r.VictoropsApiId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["victorops-api-id"]; ok {
+if val, ok := getStringValue(values, "victorops-api-id"); ok {
+r.VictoropsApiId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+                  
+              }
+          }
+       }
 }

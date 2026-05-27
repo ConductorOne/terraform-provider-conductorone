@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) ToCreateDelegatedSDKType(
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Microsoft Dynamics 365"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) ToCreateSDKType() (*share
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) ToUpdateSDKType() (*share
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) ToUpdateSDKType() (*share
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Microsoft Dynamics 365"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(microsoftDynamics365CatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Microsoft Dynamics 365"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(microsoftDynamics365CatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,36 +95,59 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) ToUpdateSDKType() (*share
 
 func (r *IntegrationMicrosoftDynamics365ResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		environmentUrl := new(string)
+if !r.EnvironmentUrl.IsUnknown() && !r.EnvironmentUrl.IsNull() {
+*environmentUrl = r.EnvironmentUrl.ValueString()
+configValues["environment-url"] = environmentUrl
+}
 
-	environmentUrl := new(string)
-	if !r.EnvironmentUrl.IsUnknown() && !r.EnvironmentUrl.IsNull() {
-		*environmentUrl = r.EnvironmentUrl.ValueString()
-		configValues["environment-url"] = environmentUrl
-	}
+    
+		dynamicsClientId := new(string)
+if !r.DynamicsClientId.IsUnknown() && !r.DynamicsClientId.IsNull() {
+*dynamicsClientId = r.DynamicsClientId.ValueString()
+configValues["dynamics-client-id"] = dynamicsClientId
+}
 
-	dynamicsClientId := new(string)
-	if !r.DynamicsClientId.IsUnknown() && !r.DynamicsClientId.IsNull() {
-		*dynamicsClientId = r.DynamicsClientId.ValueString()
-		configValues["dynamics-client-id"] = dynamicsClientId
-	}
+    
+		dynamicsClientSecret := new(string)
+if !r.DynamicsClientSecret.IsUnknown() && !r.DynamicsClientSecret.IsNull() {
+*dynamicsClientSecret = r.DynamicsClientSecret.ValueString()
+configValues["dynamics-client-secret"] = dynamicsClientSecret
+}
 
-	dynamicsClientSecret := new(string)
-	if !r.DynamicsClientSecret.IsUnknown() && !r.DynamicsClientSecret.IsNull() {
-		*dynamicsClientSecret = r.DynamicsClientSecret.ValueString()
-		configValues["dynamics-client-secret"] = dynamicsClientSecret
-	}
+    
+		tenantId := new(string)
+if !r.TenantId.IsUnknown() && !r.TenantId.IsNull() {
+*tenantId = r.TenantId.ValueString()
+configValues["tenant-id"] = tenantId
+}
 
-	return configValues
+    
+		includeSystemAccounts := new(string)
+if !r.IncludeSystemAccounts.IsUnknown() && !r.IncludeSystemAccounts.IsNull() {
+*includeSystemAccounts = strconv.FormatBool(r.IncludeSystemAccounts.ValueBool())
+configValues["include-system-accounts"] = includeSystemAccounts
+}
+
+    
+
+    return configValues
 }
 
 func (r *IntegrationMicrosoftDynamics365ResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -172,20 +202,43 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) RefreshFromGetResponse(re
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "environment-url"); ok {
-					r.EnvironmentUrl = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["environment-url"]; ok {
+if val, ok := getStringValue(values, "environment-url"); ok {
+r.EnvironmentUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "dynamics-client-id"); ok {
-					r.DynamicsClientId = types.StringValue(val)
-				}
+               if _, ok := configValues["dynamics-client-id"]; ok {
+if val, ok := getStringValue(values, "dynamics-client-id"); ok {
+r.DynamicsClientId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+               if _, ok := configValues["tenant-id"]; ok {
+if val, ok := getStringValue(values, "tenant-id"); ok {
+r.TenantId = types.StringValue(val)
+}
+}
+
+               if _, ok := configValues["include-system-accounts"]; ok {
+if val, ok := getStringValue(values, "include-system-accounts"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.IncludeSystemAccounts = types.BoolValue(bv)
+}
+}
+}
+
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationMicrosoftDynamics365ResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -223,18 +276,41 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) RefreshFromCreateResponse
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "environment-url"); ok {
-					r.EnvironmentUrl = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["environment-url"]; ok {
+if val, ok := getStringValue(values, "environment-url"); ok {
+r.EnvironmentUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "dynamics-client-id"); ok {
-					r.DynamicsClientId = types.StringValue(val)
-				}
+                  if _, ok := configValues["dynamics-client-id"]; ok {
+if val, ok := getStringValue(values, "dynamics-client-id"); ok {
+r.DynamicsClientId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+                  if _, ok := configValues["tenant-id"]; ok {
+if val, ok := getStringValue(values, "tenant-id"); ok {
+r.TenantId = types.StringValue(val)
+}
+}
+
+                  if _, ok := configValues["include-system-accounts"]; ok {
+if val, ok := getStringValue(values, "include-system-accounts"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.IncludeSystemAccounts = types.BoolValue(bv)
+}
+}
+}
+
+                  
+              }
+          }
+       }
 }

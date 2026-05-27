@@ -2,14 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
-	"strings"
+    "fmt"
+	"strconv"
 	"time"
+	"strings"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	"github.com/hashicorp/terraform-plugin-framework/attr" 
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -23,8 +24,8 @@ func (r *IntegrationGithubV2TestResourceModel) ToCreateDelegatedSDKType() *share
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("GitHub v2 Test"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -37,20 +38,20 @@ func (r *IntegrationGithubV2TestResourceModel) ToCreateSDKType() (*shared.Connec
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -60,14 +61,19 @@ func (r *IntegrationGithubV2TestResourceModel) ToUpdateSDKType() (*shared.Connec
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -76,12 +82,12 @@ func (r *IntegrationGithubV2TestResourceModel) ToUpdateSDKType() (*shared.Connec
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("GitHub v2 Test"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(githubV2TestCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("GitHub v2 Test"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(githubV2TestCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -89,32 +95,78 @@ func (r *IntegrationGithubV2TestResourceModel) ToUpdateSDKType() (*shared.Connec
 
 func (r *IntegrationGithubV2TestResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-
-	githubAccessToken := new(string)
-	if !r.GithubAccessToken.IsUnknown() && !r.GithubAccessToken.IsNull() {
-		*githubAccessToken = r.GithubAccessToken.ValueString()
-		configValues["github_access_token"] = githubAccessToken
+    
+		
+	if !r.GithubPersonalAccessTokenGroup.IsUnknown() && !r.GithubPersonalAccessTokenGroup.IsNull() {
+		configValues["C1_selected_field_group_name"] = "github_personal_access_token_group"
+		for k, v := range r.GithubPersonalAccessTokenGroup.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
-
-	githubOrgList := make([]string, 0)
-	for _, item := range r.GithubOrgList {
-		githubOrgList = append(githubOrgList, item.ValueString())
+	
+    
+		
+	if !r.GithubAppGroup.IsUnknown() && !r.GithubAppGroup.IsNull() {
+		configValues["C1_selected_field_group_name"] = "github_app_group"
+		for k, v := range r.GithubAppGroup.Attributes() {
+			if v.IsUnknown() || v.IsNull() {
+				continue
+			}
+			if val, ok := v.(basetypes.StringValue); ok {
+				configValues[k] = val.ValueString()
+			}
+			if val, ok := v.(basetypes.BoolValue); ok {
+				configValues[k] = strconv.FormatBool(val.ValueBool())
+			}
+			if val, ok := v.(basetypes.ListValue); ok {
+				elements := val.Elements()
+				lv := make([]string, 0, len(elements))
+				for _, element := range elements {
+					if e, ok := element.(basetypes.StringValue); ok {
+						lv = append(lv, e.ValueString())
+					}
+				}
+				configValues[k] = strings.Join(lv, ",")
+			}
+		}
 	}
-	if len(githubOrgList) > 0 {
-		configValues["github_org_list"] = strings.Join(githubOrgList, ",")
-	}
+	
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationGithubV2TestResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -169,25 +221,81 @@ func (r *IntegrationGithubV2TestResourceModel) RefreshFromGetResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if val, ok := getStringValue(values, "github_org_list"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
-					}
-					r.GithubOrgList = valLists
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+		if groupName == "github_personal_access_token_group" {
+		attributeTypes := make(map[string]attr.Type, len(values))
+		attributeValues := make(map[string]attr.Value, len(values))
+	
+				attributeTypes["github_access_token"] = types.StringType
+				if sv, ok := configValues["github_access_token"].(string); ok {
+					attributeValues["github_access_token"] = types.StringValue(sv)
+				} else {
+				 	attributeValues["github_access_token"] = types.StringNull()
 				}
-
-			}
+			if val, ok := getStringValue(values, "github_org_list"); ok {
+var valLists []attr.Value
+tmpList := strings.Split(val, ",")
+for _, item := range tmpList {
+item = strings.TrimSpace(item)
+if item != "" {
+valLists = append(valLists, types.StringValue(item))
+}
+}
+attributeTypes["github_org_list"] = types.ListType{ElemType: types.StringType}
+		if len(valLists) == 0 {
+			attributeValues["github_org_list"] = types.ListNull(types.StringType)
+		} else {
+			attributeValues["github_org_list"] = types.ListValueMust(types.StringType, valLists)
 		}
-	}
+		}
+r.GithubPersonalAccessTokenGroup = types.ObjectValueMust(attributeTypes, attributeValues)
+	}}
+
+               if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+		if groupName == "github_app_group" {
+		attributeTypes := make(map[string]attr.Type, len(values))
+		attributeValues := make(map[string]attr.Value, len(values))
+	
+			if val, ok := getStringValue(values, "github_app_id"); ok {
+				attributeTypes["github_app_id"] = types.StringType
+				attributeValues["github_app_id"] = types.StringValue(val)
+			}
+		
+				attributeTypes["github_app_private_key"] = types.StringType
+				if sv, ok := configValues["github_app_private_key"].(string); ok {
+					attributeValues["github_app_private_key"] = types.StringValue(sv)
+				} else {
+				 	attributeValues["github_app_private_key"] = types.StringNull()
+				}
+			
+			if val, ok := getStringValue(values, "github_app_org"); ok {
+				attributeTypes["github_app_org"] = types.StringType
+				attributeValues["github_app_org"] = types.StringValue(val)
+			}
+		if _, ok := configValues["github_sync_secrets"]; ok {
+if val, ok := getStringValue(values, "github_sync_secrets"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+attributeTypes["github_sync_secrets"] = types.BoolType
+				attributeValues["github_sync_secrets"] = types.BoolValue(bv)
+				}
+			} 
+		} else {
+		 	attributeTypes["github_sync_secrets"] = types.BoolType
+			attributeValues["github_sync_secrets"] = types.BoolNull()
+		}
+		r.GithubAppGroup = types.ObjectValueMust(attributeTypes, attributeValues)
+	}}
+
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationGithubV2TestResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -225,23 +333,79 @@ func (r *IntegrationGithubV2TestResourceModel) RefreshFromCreateResponse(resp *s
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-
-				if val, ok := getStringValue(values, "github_org_list"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
-					}
-					r.GithubOrgList = valLists
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+		if groupName == "github_personal_access_token_group" {
+		attributeTypes := make(map[string]attr.Type, len(values))
+		attributeValues := make(map[string]attr.Value, len(values))
+	
+				attributeTypes["github_access_token"] = types.StringType
+				if sv, ok := configValues["github_access_token"].(string); ok {
+					attributeValues["github_access_token"] = types.StringValue(sv)
+				} else {
+				 	attributeValues["github_access_token"] = types.StringNull()
 				}
-
-			}
+			if val, ok := getStringValue(values, "github_org_list"); ok {
+var valLists []attr.Value
+tmpList := strings.Split(val, ",")
+for _, item := range tmpList {
+item = strings.TrimSpace(item)
+if item != "" {
+valLists = append(valLists, types.StringValue(item))
+}
+}
+attributeTypes["github_org_list"] = types.ListType{ElemType: types.StringType}
+		if len(valLists) == 0 {
+			attributeValues["github_org_list"] = types.ListNull(types.StringType)
+		} else {
+			attributeValues["github_org_list"] = types.ListValueMust(types.StringType, valLists)
 		}
-	}
+		}
+r.GithubPersonalAccessTokenGroup = types.ObjectValueMust(attributeTypes, attributeValues)
+	}}
+
+                  if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+		if groupName == "github_app_group" {
+		attributeTypes := make(map[string]attr.Type, len(values))
+		attributeValues := make(map[string]attr.Value, len(values))
+	
+			if val, ok := getStringValue(values, "github_app_id"); ok {
+				attributeTypes["github_app_id"] = types.StringType
+				attributeValues["github_app_id"] = types.StringValue(val)
+			}
+		
+				attributeTypes["github_app_private_key"] = types.StringType
+				if sv, ok := configValues["github_app_private_key"].(string); ok {
+					attributeValues["github_app_private_key"] = types.StringValue(sv)
+				} else {
+				 	attributeValues["github_app_private_key"] = types.StringNull()
+				}
+			
+			if val, ok := getStringValue(values, "github_app_org"); ok {
+				attributeTypes["github_app_org"] = types.StringType
+				attributeValues["github_app_org"] = types.StringValue(val)
+			}
+		if _, ok := configValues["github_sync_secrets"]; ok {
+if val, ok := getStringValue(values, "github_sync_secrets"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+attributeTypes["github_sync_secrets"] = types.BoolType
+				attributeValues["github_sync_secrets"] = types.BoolValue(bv)
+				}
+			} 
+		} else {
+		 	attributeTypes["github_sync_secrets"] = types.BoolType
+			attributeValues["github_sync_secrets"] = types.BoolNull()
+		}
+		r.GithubAppGroup = types.ObjectValueMust(attributeTypes, attributeValues)
+	}}
+
+                  
+              }
+          }
+       }
 }

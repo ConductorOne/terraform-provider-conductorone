@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) ToCreateDelegatedSDKType()
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Slack Enterprise Grid"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) ToCreateSDKType() (*shared
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) ToUpdateSDKType() (*shared
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) ToUpdateSDKType() (*shared
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Slack Enterprise Grid"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(slackEnterpriseGridCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Slack Enterprise Grid"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(slackEnterpriseGridCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,36 +95,45 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) ToUpdateSDKType() (*shared
 
 func (r *IntegrationSlackEnterpriseGridResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		slackApiKey := new(string)
+if !r.SlackApiKey.IsUnknown() && !r.SlackApiKey.IsNull() {
+*slackApiKey = r.SlackApiKey.ValueString()
+configValues["slack_api_key"] = slackApiKey
+}
 
-	slackApiKey := new(string)
-	if !r.SlackApiKey.IsUnknown() && !r.SlackApiKey.IsNull() {
-		*slackApiKey = r.SlackApiKey.ValueString()
-		configValues["slack_api_key"] = slackApiKey
-	}
+    
+		slackApiEnterpriseKey := new(string)
+if !r.SlackApiEnterpriseKey.IsUnknown() && !r.SlackApiEnterpriseKey.IsNull() {
+*slackApiEnterpriseKey = r.SlackApiEnterpriseKey.ValueString()
+configValues["slack_api_enterprise_key"] = slackApiEnterpriseKey
+}
 
-	slackApiEnterpriseKey := new(string)
-	if !r.SlackApiEnterpriseKey.IsUnknown() && !r.SlackApiEnterpriseKey.IsNull() {
-		*slackApiEnterpriseKey = r.SlackApiEnterpriseKey.ValueString()
-		configValues["slack_api_enterprise_key"] = slackApiEnterpriseKey
-	}
+    
+		useGovEnv := new(string)
+if !r.UseGovEnv.IsUnknown() && !r.UseGovEnv.IsNull() {
+*useGovEnv = strconv.FormatBool(r.UseGovEnv.ValueBool())
+configValues["use_gov_env"] = useGovEnv
+}
 
-	useGovEnv := new(string)
-	if !r.UseGovEnv.IsUnknown() && !r.UseGovEnv.IsNull() {
-		*useGovEnv = strconv.FormatBool(r.UseGovEnv.ValueBool())
-		configValues["use_gov_env"] = useGovEnv
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationSlackEnterpriseGridResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -172,23 +188,26 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) RefreshFromGetResponse(res
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               
+               
+               if _, ok := configValues["use_gov_env"]; ok {
+if val, ok := getStringValue(values, "use_gov_env"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.UseGovEnv = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["use_gov_env"]; ok {
-					if val, ok := getStringValue(values, "use_gov_env"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.UseGovEnv = types.BoolValue(bv)
-						}
-					}
-				}
-
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationSlackEnterpriseGridResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -226,21 +245,24 @@ func (r *IntegrationSlackEnterpriseGridResourceModel) RefreshFromCreateResponse(
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  
+                  
+                  if _, ok := configValues["use_gov_env"]; ok {
+if val, ok := getStringValue(values, "use_gov_env"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.UseGovEnv = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["use_gov_env"]; ok {
-					if val, ok := getStringValue(values, "use_gov_env"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.UseGovEnv = types.BoolValue(bv)
-						}
-					}
-				}
-
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

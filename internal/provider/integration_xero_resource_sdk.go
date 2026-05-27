@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationXeroResourceModel) ToCreateDelegatedSDKType() *shared.Connec
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Xero"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationXeroResourceModel) ToCreateSDKType() (*shared.ConnectorServi
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationXeroResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationXeroResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Xero"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(xeroCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Xero"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(xeroCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,30 +95,38 @@ func (r *IntegrationXeroResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 
 func (r *IntegrationXeroResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		xeroClientId := new(string)
+if !r.XeroClientId.IsUnknown() && !r.XeroClientId.IsNull() {
+*xeroClientId = r.XeroClientId.ValueString()
+configValues["xero_client_id"] = xeroClientId
+}
 
-	xeroClientId := new(string)
-	if !r.XeroClientId.IsUnknown() && !r.XeroClientId.IsNull() {
-		*xeroClientId = r.XeroClientId.ValueString()
-		configValues["xero_client_id"] = xeroClientId
-	}
+    
+		xeroClientSecret := new(string)
+if !r.XeroClientSecret.IsUnknown() && !r.XeroClientSecret.IsNull() {
+*xeroClientSecret = r.XeroClientSecret.ValueString()
+configValues["xero_client_secret"] = xeroClientSecret
+}
 
-	xeroClientSecret := new(string)
-	if !r.XeroClientSecret.IsUnknown() && !r.XeroClientSecret.IsNull() {
-		*xeroClientSecret = r.XeroClientSecret.ValueString()
-		configValues["xero_client_secret"] = xeroClientSecret
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationXeroResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -166,16 +181,22 @@ func (r *IntegrationXeroResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "xero_client_id"); ok {
-					r.XeroClientId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["xero_client_id"]; ok {
+if val, ok := getStringValue(values, "xero_client_id"); ok {
+r.XeroClientId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationXeroResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -213,14 +234,20 @@ func (r *IntegrationXeroResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "xero_client_id"); ok {
-					r.XeroClientId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["xero_client_id"]; ok {
+if val, ok := getStringValue(values, "xero_client_id"); ok {
+r.XeroClientId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+                  
+              }
+          }
+       }
 }

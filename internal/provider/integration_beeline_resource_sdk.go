@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationBeelineResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Beeline"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationBeelineResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationBeelineResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationBeelineResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Beeline"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(beelineCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Beeline"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(beelineCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,48 +95,59 @@ func (r *IntegrationBeelineResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationBeelineResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		beelineClientSiteId := new(string)
+if !r.BeelineClientSiteId.IsUnknown() && !r.BeelineClientSiteId.IsNull() {
+*beelineClientSiteId = r.BeelineClientSiteId.ValueString()
+configValues["beeline-client-site-id"] = beelineClientSiteId
+}
 
-	beelineClientSiteId := new(string)
-	if !r.BeelineClientSiteId.IsUnknown() && !r.BeelineClientSiteId.IsNull() {
-		*beelineClientSiteId = r.BeelineClientSiteId.ValueString()
-		configValues["beeline-client-site-id"] = beelineClientSiteId
-	}
+    
+		beelineClientId := new(string)
+if !r.BeelineClientId.IsUnknown() && !r.BeelineClientId.IsNull() {
+*beelineClientId = r.BeelineClientId.ValueString()
+configValues["beeline-client-id"] = beelineClientId
+}
 
-	beelineClientId := new(string)
-	if !r.BeelineClientId.IsUnknown() && !r.BeelineClientId.IsNull() {
-		*beelineClientId = r.BeelineClientId.ValueString()
-		configValues["beeline-client-id"] = beelineClientId
-	}
+    
+		beelineClientSecret := new(string)
+if !r.BeelineClientSecret.IsUnknown() && !r.BeelineClientSecret.IsNull() {
+*beelineClientSecret = r.BeelineClientSecret.ValueString()
+configValues["beeline-client-secret"] = beelineClientSecret
+}
 
-	beelineClientSecret := new(string)
-	if !r.BeelineClientSecret.IsUnknown() && !r.BeelineClientSecret.IsNull() {
-		*beelineClientSecret = r.BeelineClientSecret.ValueString()
-		configValues["beeline-client-secret"] = beelineClientSecret
-	}
+    
+		baseUrl := new(string)
+if !r.BaseUrl.IsUnknown() && !r.BaseUrl.IsNull() {
+*baseUrl = r.BaseUrl.ValueString()
+configValues["base-url"] = baseUrl
+}
 
-	baseUrl := new(string)
-	if !r.BaseUrl.IsUnknown() && !r.BaseUrl.IsNull() {
-		*baseUrl = r.BaseUrl.ValueString()
-		configValues["base-url"] = baseUrl
-	}
+    
+		authServerUrl := new(string)
+if !r.AuthServerUrl.IsUnknown() && !r.AuthServerUrl.IsNull() {
+*authServerUrl = r.AuthServerUrl.ValueString()
+configValues["auth-server-url"] = authServerUrl
+}
 
-	authServerUrl := new(string)
-	if !r.AuthServerUrl.IsUnknown() && !r.AuthServerUrl.IsNull() {
-		*authServerUrl = r.AuthServerUrl.ValueString()
-		configValues["auth-server-url"] = authServerUrl
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationBeelineResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -184,28 +202,40 @@ func (r *IntegrationBeelineResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "beeline-client-site-id"); ok {
-					r.BeelineClientSiteId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["beeline-client-site-id"]; ok {
+if val, ok := getStringValue(values, "beeline-client-site-id"); ok {
+r.BeelineClientSiteId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "beeline-client-id"); ok {
-					r.BeelineClientId = types.StringValue(val)
-				}
+               if _, ok := configValues["beeline-client-id"]; ok {
+if val, ok := getStringValue(values, "beeline-client-id"); ok {
+r.BeelineClientId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "base-url"); ok {
-					r.BaseUrl = types.StringValue(val)
-				}
+               
+               if _, ok := configValues["base-url"]; ok {
+if val, ok := getStringValue(values, "base-url"); ok {
+r.BaseUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "auth-server-url"); ok {
-					r.AuthServerUrl = types.StringValue(val)
-				}
+               if _, ok := configValues["auth-server-url"]; ok {
+if val, ok := getStringValue(values, "auth-server-url"); ok {
+r.AuthServerUrl = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationBeelineResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -243,26 +273,38 @@ func (r *IntegrationBeelineResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "beeline-client-site-id"); ok {
-					r.BeelineClientSiteId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["beeline-client-site-id"]; ok {
+if val, ok := getStringValue(values, "beeline-client-site-id"); ok {
+r.BeelineClientSiteId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "beeline-client-id"); ok {
-					r.BeelineClientId = types.StringValue(val)
-				}
+                  if _, ok := configValues["beeline-client-id"]; ok {
+if val, ok := getStringValue(values, "beeline-client-id"); ok {
+r.BeelineClientId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "base-url"); ok {
-					r.BaseUrl = types.StringValue(val)
-				}
+                  
+                  if _, ok := configValues["base-url"]; ok {
+if val, ok := getStringValue(values, "base-url"); ok {
+r.BaseUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "auth-server-url"); ok {
-					r.AuthServerUrl = types.StringValue(val)
-				}
+                  if _, ok := configValues["auth-server-url"]; ok {
+if val, ok := getStringValue(values, "auth-server-url"); ok {
+r.AuthServerUrl = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

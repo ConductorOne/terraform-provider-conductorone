@@ -2,14 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
-	"strings"
+    "fmt"
+	
 	"time"
+	"strings"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -23,8 +24,8 @@ func (r *IntegrationPercipioResourceModel) ToCreateDelegatedSDKType() *shared.Co
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Percipio"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -37,20 +38,20 @@ func (r *IntegrationPercipioResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -60,14 +61,19 @@ func (r *IntegrationPercipioResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -76,12 +82,12 @@ func (r *IntegrationPercipioResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Percipio"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(percipioCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Percipio"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(percipioCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -89,38 +95,48 @@ func (r *IntegrationPercipioResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 
 func (r *IntegrationPercipioResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		percipioOrganizationId := new(string)
+if !r.PercipioOrganizationId.IsUnknown() && !r.PercipioOrganizationId.IsNull() {
+*percipioOrganizationId = r.PercipioOrganizationId.ValueString()
+configValues["percipio_organization_id"] = percipioOrganizationId
+}
 
-	percipioOrganizationId := new(string)
-	if !r.PercipioOrganizationId.IsUnknown() && !r.PercipioOrganizationId.IsNull() {
-		*percipioOrganizationId = r.PercipioOrganizationId.ValueString()
-		configValues["percipio_organization_id"] = percipioOrganizationId
-	}
+    
+		percipioApiToken := new(string)
+if !r.PercipioApiToken.IsUnknown() && !r.PercipioApiToken.IsNull() {
+*percipioApiToken = r.PercipioApiToken.ValueString()
+configValues["percipio_api_token"] = percipioApiToken
+}
 
-	percipioApiToken := new(string)
-	if !r.PercipioApiToken.IsUnknown() && !r.PercipioApiToken.IsNull() {
-		*percipioApiToken = r.PercipioApiToken.ValueString()
-		configValues["percipio_api_token"] = percipioApiToken
-	}
+    
+		percipioCourseIds := make([]string, 0)
+for _, item := range r.PercipioCourseIds {
+percipioCourseIds = append(percipioCourseIds, item.ValueString())
+}
+if len(percipioCourseIds) > 0 {
+configValues["percipio_course_ids"] = strings.Join(percipioCourseIds, ",")
+}
 
-	percipioCourseIds := make([]string, 0)
-	for _, item := range r.PercipioCourseIds {
-		percipioCourseIds = append(percipioCourseIds, item.ValueString())
-	}
-	if len(percipioCourseIds) > 0 {
-		configValues["percipio_course_ids"] = strings.Join(percipioCourseIds, ",")
-	}
 
-	return configValues
+    
+
+    return configValues
 }
 
 func (r *IntegrationPercipioResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -175,28 +191,36 @@ func (r *IntegrationPercipioResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "percipio_organization_id"); ok {
-					r.PercipioOrganizationId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["percipio_organization_id"]; ok {
+if val, ok := getStringValue(values, "percipio_organization_id"); ok {
+r.PercipioOrganizationId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "percipio_course_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
-					}
-					r.PercipioCourseIds = valLists
-				}
+               
+               if _, ok := configValues["percipio_course_ids"]; ok {
+if val, ok := getStringValue(values, "percipio_course_ids"); ok {
+var valLists []types.String
+tmpList := strings.Split(val, ",")
+for _, item := range tmpList {
+item = strings.TrimSpace(item)
+if item != "" {
+valLists = append(valLists, types.StringValue(item))
+}
+}
+r.PercipioCourseIds = valLists
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationPercipioResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -234,26 +258,34 @@ func (r *IntegrationPercipioResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "percipio_organization_id"); ok {
-					r.PercipioOrganizationId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["percipio_organization_id"]; ok {
+if val, ok := getStringValue(values, "percipio_organization_id"); ok {
+r.PercipioOrganizationId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "percipio_course_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
-					}
-					r.PercipioCourseIds = valLists
-				}
+                  
+                  if _, ok := configValues["percipio_course_ids"]; ok {
+if val, ok := getStringValue(values, "percipio_course_ids"); ok {
+var valLists []types.String
+tmpList := strings.Split(val, ",")
+for _, item := range tmpList {
+item = strings.TrimSpace(item)
+if item != "" {
+valLists = append(valLists, types.StringValue(item))
+}
+}
+r.PercipioCourseIds = valLists
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

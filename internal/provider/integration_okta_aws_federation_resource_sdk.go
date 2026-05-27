@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationOktaAwsFederationResourceModel) ToCreateDelegatedSDKType() *
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Okta AWS Federation"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationOktaAwsFederationResourceModel) ToCreateSDKType() (*shared.C
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationOktaAwsFederationResourceModel) ToUpdateSDKType() (*shared.C
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationOktaAwsFederationResourceModel) ToUpdateSDKType() (*shared.C
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Okta AWS Federation"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(oktaAwsFederationCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Okta AWS Federation"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(oktaAwsFederationCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,42 +95,52 @@ func (r *IntegrationOktaAwsFederationResourceModel) ToUpdateSDKType() (*shared.C
 
 func (r *IntegrationOktaAwsFederationResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		oktaAwsFederationDomain := new(string)
+if !r.OktaAwsFederationDomain.IsUnknown() && !r.OktaAwsFederationDomain.IsNull() {
+*oktaAwsFederationDomain = r.OktaAwsFederationDomain.ValueString()
+configValues["okta_aws_federation_domain"] = oktaAwsFederationDomain
+}
 
-	oktaAwsFederationDomain := new(string)
-	if !r.OktaAwsFederationDomain.IsUnknown() && !r.OktaAwsFederationDomain.IsNull() {
-		*oktaAwsFederationDomain = r.OktaAwsFederationDomain.ValueString()
-		configValues["okta_aws_federation_domain"] = oktaAwsFederationDomain
-	}
+    
+		oktaAwsFederationApiToken := new(string)
+if !r.OktaAwsFederationApiToken.IsUnknown() && !r.OktaAwsFederationApiToken.IsNull() {
+*oktaAwsFederationApiToken = r.OktaAwsFederationApiToken.ValueString()
+configValues["okta_aws_federation_api_token"] = oktaAwsFederationApiToken
+}
 
-	oktaAwsFederationApiToken := new(string)
-	if !r.OktaAwsFederationApiToken.IsUnknown() && !r.OktaAwsFederationApiToken.IsNull() {
-		*oktaAwsFederationApiToken = r.OktaAwsFederationApiToken.ValueString()
-		configValues["okta_aws_federation_api_token"] = oktaAwsFederationApiToken
-	}
+    
+		oktaAwsFederationAwsOktaAppId := new(string)
+if !r.OktaAwsFederationAwsOktaAppId.IsUnknown() && !r.OktaAwsFederationAwsOktaAppId.IsNull() {
+*oktaAwsFederationAwsOktaAppId = r.OktaAwsFederationAwsOktaAppId.ValueString()
+configValues["okta_aws_federation_aws_okta_app_id"] = oktaAwsFederationAwsOktaAppId
+}
 
-	oktaAwsFederationAwsOktaAppId := new(string)
-	if !r.OktaAwsFederationAwsOktaAppId.IsUnknown() && !r.OktaAwsFederationAwsOktaAppId.IsNull() {
-		*oktaAwsFederationAwsOktaAppId = r.OktaAwsFederationAwsOktaAppId.ValueString()
-		configValues["okta_aws_federation_aws_okta_app_id"] = oktaAwsFederationAwsOktaAppId
-	}
+    
+		oktaAwsFederationAllowGroupToDirectConversionForProvisioning := new(string)
+if !r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning.IsUnknown() && !r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning.IsNull() {
+*oktaAwsFederationAllowGroupToDirectConversionForProvisioning = strconv.FormatBool(r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning.ValueBool())
+configValues["okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"] = oktaAwsFederationAllowGroupToDirectConversionForProvisioning
+}
 
-	oktaAwsFederationAllowGroupToDirectConversionForProvisioning := new(string)
-	if !r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning.IsUnknown() && !r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning.IsNull() {
-		*oktaAwsFederationAllowGroupToDirectConversionForProvisioning = strconv.FormatBool(r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning.ValueBool())
-		configValues["okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"] = oktaAwsFederationAllowGroupToDirectConversionForProvisioning
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationOktaAwsFederationResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -178,30 +195,37 @@ func (r *IntegrationOktaAwsFederationResourceModel) RefreshFromGetResponse(resp 
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "okta_aws_federation_domain"); ok {
-					r.OktaAwsFederationDomain = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["okta_aws_federation_domain"]; ok {
+if val, ok := getStringValue(values, "okta_aws_federation_domain"); ok {
+r.OktaAwsFederationDomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "okta_aws_federation_aws_okta_app_id"); ok {
-					r.OktaAwsFederationAwsOktaAppId = types.StringValue(val)
-				}
+               
+               if _, ok := configValues["okta_aws_federation_aws_okta_app_id"]; ok {
+if val, ok := getStringValue(values, "okta_aws_federation_aws_okta_app_id"); ok {
+r.OktaAwsFederationAwsOktaAppId = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"]; ok {
-					if val, ok := getStringValue(values, "okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning = types.BoolValue(bv)
-						}
-					}
-				}
+               if _, ok := configValues["okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"]; ok {
+if val, ok := getStringValue(values, "okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationOktaAwsFederationResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -239,28 +263,35 @@ func (r *IntegrationOktaAwsFederationResourceModel) RefreshFromCreateResponse(re
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "okta_aws_federation_domain"); ok {
-					r.OktaAwsFederationDomain = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["okta_aws_federation_domain"]; ok {
+if val, ok := getStringValue(values, "okta_aws_federation_domain"); ok {
+r.OktaAwsFederationDomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "okta_aws_federation_aws_okta_app_id"); ok {
-					r.OktaAwsFederationAwsOktaAppId = types.StringValue(val)
-				}
+                  
+                  if _, ok := configValues["okta_aws_federation_aws_okta_app_id"]; ok {
+if val, ok := getStringValue(values, "okta_aws_federation_aws_okta_app_id"); ok {
+r.OktaAwsFederationAwsOktaAppId = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"]; ok {
-					if val, ok := getStringValue(values, "okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning = types.BoolValue(bv)
-						}
-					}
-				}
+                  if _, ok := configValues["okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"]; ok {
+if val, ok := getStringValue(values, "okta_aws_federation_allow_group_to_direct_conversion_for_provisioning"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.OktaAwsFederationAllowGroupToDirectConversionForProvisioning = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

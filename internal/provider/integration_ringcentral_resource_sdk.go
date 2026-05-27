@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationRingcentralResourceModel) ToCreateDelegatedSDKType() *shared
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("RingCentral"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationRingcentralResourceModel) ToCreateSDKType() (*shared.Connect
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationRingcentralResourceModel) ToUpdateSDKType() (*shared.Connect
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationRingcentralResourceModel) ToUpdateSDKType() (*shared.Connect
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("RingCentral"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(ringcentralCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("RingCentral"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(ringcentralCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,36 +95,45 @@ func (r *IntegrationRingcentralResourceModel) ToUpdateSDKType() (*shared.Connect
 
 func (r *IntegrationRingcentralResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		ringcentralClientId := new(string)
+if !r.RingcentralClientId.IsUnknown() && !r.RingcentralClientId.IsNull() {
+*ringcentralClientId = r.RingcentralClientId.ValueString()
+configValues["ringcentral-client-id"] = ringcentralClientId
+}
 
-	ringcentralClientId := new(string)
-	if !r.RingcentralClientId.IsUnknown() && !r.RingcentralClientId.IsNull() {
-		*ringcentralClientId = r.RingcentralClientId.ValueString()
-		configValues["ringcentral-client-id"] = ringcentralClientId
-	}
+    
+		ringcentralClientSecret := new(string)
+if !r.RingcentralClientSecret.IsUnknown() && !r.RingcentralClientSecret.IsNull() {
+*ringcentralClientSecret = r.RingcentralClientSecret.ValueString()
+configValues["ringcentral-client-secret"] = ringcentralClientSecret
+}
 
-	ringcentralClientSecret := new(string)
-	if !r.RingcentralClientSecret.IsUnknown() && !r.RingcentralClientSecret.IsNull() {
-		*ringcentralClientSecret = r.RingcentralClientSecret.ValueString()
-		configValues["ringcentral-client-secret"] = ringcentralClientSecret
-	}
+    
+		ringcentralJwt := new(string)
+if !r.RingcentralJwt.IsUnknown() && !r.RingcentralJwt.IsNull() {
+*ringcentralJwt = r.RingcentralJwt.ValueString()
+configValues["ringcentral-jwt"] = ringcentralJwt
+}
 
-	ringcentralJwt := new(string)
-	if !r.RingcentralJwt.IsUnknown() && !r.RingcentralJwt.IsNull() {
-		*ringcentralJwt = r.RingcentralJwt.ValueString()
-		configValues["ringcentral-jwt"] = ringcentralJwt
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationRingcentralResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -172,16 +188,23 @@ func (r *IntegrationRingcentralResourceModel) RefreshFromGetResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "ringcentral-client-id"); ok {
-					r.RingcentralClientId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["ringcentral-client-id"]; ok {
+if val, ok := getStringValue(values, "ringcentral-client-id"); ok {
+r.RingcentralClientId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+               
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationRingcentralResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -219,14 +242,21 @@ func (r *IntegrationRingcentralResourceModel) RefreshFromCreateResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "ringcentral-client-id"); ok {
-					r.RingcentralClientId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["ringcentral-client-id"]; ok {
+if val, ok := getStringValue(values, "ringcentral-client-id"); ok {
+r.RingcentralClientId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+                  
+                  
+              }
+          }
+       }
 }

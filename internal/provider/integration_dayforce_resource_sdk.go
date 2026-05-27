@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationDayforceResourceModel) ToCreateDelegatedSDKType() *shared.Co
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Dayforce"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationDayforceResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationDayforceResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationDayforceResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Dayforce"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(dayforceCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Dayforce"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(dayforceCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,48 +95,59 @@ func (r *IntegrationDayforceResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 
 func (r *IntegrationDayforceResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		dayforceUsername := new(string)
+if !r.DayforceUsername.IsUnknown() && !r.DayforceUsername.IsNull() {
+*dayforceUsername = r.DayforceUsername.ValueString()
+configValues["dayforce_username"] = dayforceUsername
+}
 
-	dayforceUsername := new(string)
-	if !r.DayforceUsername.IsUnknown() && !r.DayforceUsername.IsNull() {
-		*dayforceUsername = r.DayforceUsername.ValueString()
-		configValues["dayforce_username"] = dayforceUsername
-	}
+    
+		dayforcePassword := new(string)
+if !r.DayforcePassword.IsUnknown() && !r.DayforcePassword.IsNull() {
+*dayforcePassword = r.DayforcePassword.ValueString()
+configValues["dayforce_password"] = dayforcePassword
+}
 
-	dayforcePassword := new(string)
-	if !r.DayforcePassword.IsUnknown() && !r.DayforcePassword.IsNull() {
-		*dayforcePassword = r.DayforcePassword.ValueString()
-		configValues["dayforce_password"] = dayforcePassword
-	}
+    
+		dayforceEnvironment := new(string)
+if !r.DayforceEnvironment.IsUnknown() && !r.DayforceEnvironment.IsNull() {
+*dayforceEnvironment = r.DayforceEnvironment.ValueString()
+configValues["dayforce_environment"] = dayforceEnvironment
+}
 
-	dayforceEnvironment := new(string)
-	if !r.DayforceEnvironment.IsUnknown() && !r.DayforceEnvironment.IsNull() {
-		*dayforceEnvironment = r.DayforceEnvironment.ValueString()
-		configValues["dayforce_environment"] = dayforceEnvironment
-	}
+    
+		dayforceUrl := new(string)
+if !r.DayforceUrl.IsUnknown() && !r.DayforceUrl.IsNull() {
+*dayforceUrl = r.DayforceUrl.ValueString()
+configValues["dayforce_url"] = dayforceUrl
+}
 
-	dayforceUrl := new(string)
-	if !r.DayforceUrl.IsUnknown() && !r.DayforceUrl.IsNull() {
-		*dayforceUrl = r.DayforceUrl.ValueString()
-		configValues["dayforce_url"] = dayforceUrl
-	}
+    
+		dayforceClientNamespace := new(string)
+if !r.DayforceClientNamespace.IsUnknown() && !r.DayforceClientNamespace.IsNull() {
+*dayforceClientNamespace = r.DayforceClientNamespace.ValueString()
+configValues["dayforce_client_namespace"] = dayforceClientNamespace
+}
 
-	dayforceClientNamespace := new(string)
-	if !r.DayforceClientNamespace.IsUnknown() && !r.DayforceClientNamespace.IsNull() {
-		*dayforceClientNamespace = r.DayforceClientNamespace.ValueString()
-		configValues["dayforce_client_namespace"] = dayforceClientNamespace
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationDayforceResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -184,28 +202,40 @@ func (r *IntegrationDayforceResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "dayforce_username"); ok {
-					r.DayforceUsername = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["dayforce_username"]; ok {
+if val, ok := getStringValue(values, "dayforce_username"); ok {
+r.DayforceUsername = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "dayforce_environment"); ok {
-					r.DayforceEnvironment = types.StringValue(val)
-				}
+               
+               if _, ok := configValues["dayforce_environment"]; ok {
+if val, ok := getStringValue(values, "dayforce_environment"); ok {
+r.DayforceEnvironment = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "dayforce_url"); ok {
-					r.DayforceUrl = types.StringValue(val)
-				}
+               if _, ok := configValues["dayforce_url"]; ok {
+if val, ok := getStringValue(values, "dayforce_url"); ok {
+r.DayforceUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "dayforce_client_namespace"); ok {
-					r.DayforceClientNamespace = types.StringValue(val)
-				}
+               if _, ok := configValues["dayforce_client_namespace"]; ok {
+if val, ok := getStringValue(values, "dayforce_client_namespace"); ok {
+r.DayforceClientNamespace = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationDayforceResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -243,26 +273,38 @@ func (r *IntegrationDayforceResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "dayforce_username"); ok {
-					r.DayforceUsername = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["dayforce_username"]; ok {
+if val, ok := getStringValue(values, "dayforce_username"); ok {
+r.DayforceUsername = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "dayforce_environment"); ok {
-					r.DayforceEnvironment = types.StringValue(val)
-				}
+                  
+                  if _, ok := configValues["dayforce_environment"]; ok {
+if val, ok := getStringValue(values, "dayforce_environment"); ok {
+r.DayforceEnvironment = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "dayforce_url"); ok {
-					r.DayforceUrl = types.StringValue(val)
-				}
+                  if _, ok := configValues["dayforce_url"]; ok {
+if val, ok := getStringValue(values, "dayforce_url"); ok {
+r.DayforceUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "dayforce_client_namespace"); ok {
-					r.DayforceClientNamespace = types.StringValue(val)
-				}
+                  if _, ok := configValues["dayforce_client_namespace"]; ok {
+if val, ok := getStringValue(values, "dayforce_client_namespace"); ok {
+r.DayforceClientNamespace = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

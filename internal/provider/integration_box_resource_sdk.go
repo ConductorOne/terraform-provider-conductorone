@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationBoxResourceModel) ToCreateDelegatedSDKType() *shared.Connect
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Box"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationBoxResourceModel) ToCreateSDKType() (*shared.ConnectorServic
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationBoxResourceModel) ToUpdateSDKType() (*shared.ConnectorInput,
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationBoxResourceModel) ToUpdateSDKType() (*shared.ConnectorInput,
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Box"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(boxCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Box"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(boxCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,36 +95,45 @@ func (r *IntegrationBoxResourceModel) ToUpdateSDKType() (*shared.ConnectorInput,
 
 func (r *IntegrationBoxResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		boxClientId := new(string)
+if !r.BoxClientId.IsUnknown() && !r.BoxClientId.IsNull() {
+*boxClientId = r.BoxClientId.ValueString()
+configValues["box_client_id"] = boxClientId
+}
 
-	boxClientId := new(string)
-	if !r.BoxClientId.IsUnknown() && !r.BoxClientId.IsNull() {
-		*boxClientId = r.BoxClientId.ValueString()
-		configValues["box_client_id"] = boxClientId
-	}
+    
+		boxClientSecret := new(string)
+if !r.BoxClientSecret.IsUnknown() && !r.BoxClientSecret.IsNull() {
+*boxClientSecret = r.BoxClientSecret.ValueString()
+configValues["box_client_secret"] = boxClientSecret
+}
 
-	boxClientSecret := new(string)
-	if !r.BoxClientSecret.IsUnknown() && !r.BoxClientSecret.IsNull() {
-		*boxClientSecret = r.BoxClientSecret.ValueString()
-		configValues["box_client_secret"] = boxClientSecret
-	}
+    
+		boxEnterpriseId := new(string)
+if !r.BoxEnterpriseId.IsUnknown() && !r.BoxEnterpriseId.IsNull() {
+*boxEnterpriseId = r.BoxEnterpriseId.ValueString()
+configValues["box_enterprise_id"] = boxEnterpriseId
+}
 
-	boxEnterpriseId := new(string)
-	if !r.BoxEnterpriseId.IsUnknown() && !r.BoxEnterpriseId.IsNull() {
-		*boxEnterpriseId = r.BoxEnterpriseId.ValueString()
-		configValues["box_enterprise_id"] = boxEnterpriseId
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationBoxResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -172,20 +188,28 @@ func (r *IntegrationBoxResourceModel) RefreshFromGetResponse(resp *shared.Connec
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "box_client_id"); ok {
-					r.BoxClientId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["box_client_id"]; ok {
+if val, ok := getStringValue(values, "box_client_id"); ok {
+r.BoxClientId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "box_enterprise_id"); ok {
-					r.BoxEnterpriseId = types.StringValue(val)
-				}
+               
+               if _, ok := configValues["box_enterprise_id"]; ok {
+if val, ok := getStringValue(values, "box_enterprise_id"); ok {
+r.BoxEnterpriseId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationBoxResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -223,18 +247,26 @@ func (r *IntegrationBoxResourceModel) RefreshFromCreateResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "box_client_id"); ok {
-					r.BoxClientId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["box_client_id"]; ok {
+if val, ok := getStringValue(values, "box_client_id"); ok {
+r.BoxClientId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "box_enterprise_id"); ok {
-					r.BoxEnterpriseId = types.StringValue(val)
-				}
+                  
+                  if _, ok := configValues["box_enterprise_id"]; ok {
+if val, ok := getStringValue(values, "box_enterprise_id"); ok {
+r.BoxEnterpriseId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

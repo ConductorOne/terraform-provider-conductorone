@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationTeamcityResourceModel) ToCreateDelegatedSDKType() *shared.Co
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("TeamCity"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationTeamcityResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("TeamCity"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(teamcityCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("TeamCity"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(teamcityCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,30 +95,38 @@ func (r *IntegrationTeamcityResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 
 func (r *IntegrationTeamcityResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		teamcityAccessToken := new(string)
+if !r.TeamcityAccessToken.IsUnknown() && !r.TeamcityAccessToken.IsNull() {
+*teamcityAccessToken = r.TeamcityAccessToken.ValueString()
+configValues["teamcity_access_token"] = teamcityAccessToken
+}
 
-	teamcityAccessToken := new(string)
-	if !r.TeamcityAccessToken.IsUnknown() && !r.TeamcityAccessToken.IsNull() {
-		*teamcityAccessToken = r.TeamcityAccessToken.ValueString()
-		configValues["teamcity_access_token"] = teamcityAccessToken
-	}
+    
+		teamcityInstanceUrl := new(string)
+if !r.TeamcityInstanceUrl.IsUnknown() && !r.TeamcityInstanceUrl.IsNull() {
+*teamcityInstanceUrl = r.TeamcityInstanceUrl.ValueString()
+configValues["teamcity_instance_url"] = teamcityInstanceUrl
+}
 
-	teamcityInstanceUrl := new(string)
-	if !r.TeamcityInstanceUrl.IsUnknown() && !r.TeamcityInstanceUrl.IsNull() {
-		*teamcityInstanceUrl = r.TeamcityInstanceUrl.ValueString()
-		configValues["teamcity_instance_url"] = teamcityInstanceUrl
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationTeamcityResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -166,17 +181,22 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               
+               if _, ok := configValues["teamcity_instance_url"]; ok {
+if val, ok := getStringValue(values, "teamcity_instance_url"); ok {
+r.TeamcityInstanceUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "teamcity_instance_url"); ok {
-					r.TeamcityInstanceUrl = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationTeamcityResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -214,15 +234,20 @@ func (r *IntegrationTeamcityResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  
+                  if _, ok := configValues["teamcity_instance_url"]; ok {
+if val, ok := getStringValue(values, "teamcity_instance_url"); ok {
+r.TeamcityInstanceUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "teamcity_instance_url"); ok {
-					r.TeamcityInstanceUrl = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

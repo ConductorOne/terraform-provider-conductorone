@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationDocusignV2ResourceModel) ToCreateDelegatedSDKType() *shared.
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("DocuSign v2"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationDocusignV2ResourceModel) ToCreateSDKType() (*shared.Connecto
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationDocusignV2ResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationDocusignV2ResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("DocuSign v2"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(docusignV2CatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("DocuSign v2"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(docusignV2CatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,30 +95,31 @@ func (r *IntegrationDocusignV2ResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 func (r *IntegrationDocusignV2ResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		syncSigningGroups := new(string)
+if !r.SyncSigningGroups.IsUnknown() && !r.SyncSigningGroups.IsNull() {
+*syncSigningGroups = strconv.FormatBool(r.SyncSigningGroups.ValueBool())
+configValues["sync-signing-groups"] = syncSigningGroups
+}
 
-	useDemoEnvironment := new(string)
-	if !r.UseDemoEnvironment.IsUnknown() && !r.UseDemoEnvironment.IsNull() {
-		*useDemoEnvironment = strconv.FormatBool(r.UseDemoEnvironment.ValueBool())
-		configValues["use_demo_environment"] = useDemoEnvironment
-	}
+    
 
-	docusignAccountId := new(string)
-	if !r.DocusignAccountId.IsUnknown() && !r.DocusignAccountId.IsNull() {
-		*docusignAccountId = r.DocusignAccountId.ValueString()
-		configValues["docusign_account_id"] = docusignAccountId
-	}
-
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationDocusignV2ResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -166,26 +174,24 @@ func (r *IntegrationDocusignV2ResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if _, ok := configValues["use_demo_environment"]; ok {
-					if val, ok := getStringValue(values, "use_demo_environment"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.UseDemoEnvironment = types.BoolValue(bv)
-						}
-					}
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["sync-signing-groups"]; ok {
+if val, ok := getStringValue(values, "sync-signing-groups"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SyncSigningGroups = types.BoolValue(bv)
+}
+}
+}
 
-				if val, ok := getStringValue(values, "docusign_account_id"); ok {
-					r.DocusignAccountId = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationDocusignV2ResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -223,24 +229,22 @@ func (r *IntegrationDocusignV2ResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if _, ok := configValues["use_demo_environment"]; ok {
-					if val, ok := getStringValue(values, "use_demo_environment"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.UseDemoEnvironment = types.BoolValue(bv)
-						}
-					}
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["sync-signing-groups"]; ok {
+if val, ok := getStringValue(values, "sync-signing-groups"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SyncSigningGroups = types.BoolValue(bv)
+}
+}
+}
 
-				if val, ok := getStringValue(values, "docusign_account_id"); ok {
-					r.DocusignAccountId = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

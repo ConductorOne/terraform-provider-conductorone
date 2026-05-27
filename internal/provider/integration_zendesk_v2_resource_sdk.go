@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationZendeskV2ResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Zendesk v2"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationZendeskV2ResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationZendeskV2ResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationZendeskV2ResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Zendesk v2"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(zendeskV2CatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Zendesk v2"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(zendeskV2CatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,42 +95,52 @@ func (r *IntegrationZendeskV2ResourceModel) ToUpdateSDKType() (*shared.Connector
 
 func (r *IntegrationZendeskV2ResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		zendeskV2Subdomain := new(string)
+if !r.ZendeskV2Subdomain.IsUnknown() && !r.ZendeskV2Subdomain.IsNull() {
+*zendeskV2Subdomain = r.ZendeskV2Subdomain.ValueString()
+configValues["zendesk_v2_subdomain"] = zendeskV2Subdomain
+}
 
-	zendeskV2Subdomain := new(string)
-	if !r.ZendeskV2Subdomain.IsUnknown() && !r.ZendeskV2Subdomain.IsNull() {
-		*zendeskV2Subdomain = r.ZendeskV2Subdomain.ValueString()
-		configValues["zendesk_v2_subdomain"] = zendeskV2Subdomain
-	}
+    
+		zendeskV2Email := new(string)
+if !r.ZendeskV2Email.IsUnknown() && !r.ZendeskV2Email.IsNull() {
+*zendeskV2Email = r.ZendeskV2Email.ValueString()
+configValues["zendesk_v2_email"] = zendeskV2Email
+}
 
-	zendeskV2Email := new(string)
-	if !r.ZendeskV2Email.IsUnknown() && !r.ZendeskV2Email.IsNull() {
-		*zendeskV2Email = r.ZendeskV2Email.ValueString()
-		configValues["zendesk_v2_email"] = zendeskV2Email
-	}
+    
+		zendeskV2ApiToken := new(string)
+if !r.ZendeskV2ApiToken.IsUnknown() && !r.ZendeskV2ApiToken.IsNull() {
+*zendeskV2ApiToken = r.ZendeskV2ApiToken.ValueString()
+configValues["zendesk_v2_api_token"] = zendeskV2ApiToken
+}
 
-	zendeskV2ApiToken := new(string)
-	if !r.ZendeskV2ApiToken.IsUnknown() && !r.ZendeskV2ApiToken.IsNull() {
-		*zendeskV2ApiToken = r.ZendeskV2ApiToken.ValueString()
-		configValues["zendesk_v2_api_token"] = zendeskV2ApiToken
-	}
+    
+		orgs := new(string)
+if !r.Orgs.IsUnknown() && !r.Orgs.IsNull() {
+*orgs = r.Orgs.ValueString()
+configValues["orgs"] = orgs
+}
 
-	orgs := new(string)
-	if !r.Orgs.IsUnknown() && !r.Orgs.IsNull() {
-		*orgs = r.Orgs.ValueString()
-		configValues["orgs"] = orgs
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationZendeskV2ResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -178,24 +195,34 @@ func (r *IntegrationZendeskV2ResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "zendesk_v2_subdomain"); ok {
-					r.ZendeskV2Subdomain = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["zendesk_v2_subdomain"]; ok {
+if val, ok := getStringValue(values, "zendesk_v2_subdomain"); ok {
+r.ZendeskV2Subdomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "zendesk_v2_email"); ok {
-					r.ZendeskV2Email = types.StringValue(val)
-				}
+               if _, ok := configValues["zendesk_v2_email"]; ok {
+if val, ok := getStringValue(values, "zendesk_v2_email"); ok {
+r.ZendeskV2Email = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "orgs"); ok {
-					r.Orgs = types.StringValue(val)
-				}
+               
+               if _, ok := configValues["orgs"]; ok {
+if val, ok := getStringValue(values, "orgs"); ok {
+r.Orgs = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationZendeskV2ResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -233,22 +260,32 @@ func (r *IntegrationZendeskV2ResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "zendesk_v2_subdomain"); ok {
-					r.ZendeskV2Subdomain = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["zendesk_v2_subdomain"]; ok {
+if val, ok := getStringValue(values, "zendesk_v2_subdomain"); ok {
+r.ZendeskV2Subdomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "zendesk_v2_email"); ok {
-					r.ZendeskV2Email = types.StringValue(val)
-				}
+                  if _, ok := configValues["zendesk_v2_email"]; ok {
+if val, ok := getStringValue(values, "zendesk_v2_email"); ok {
+r.ZendeskV2Email = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "orgs"); ok {
-					r.Orgs = types.StringValue(val)
-				}
+                  
+                  if _, ok := configValues["orgs"]; ok {
+if val, ok := getStringValue(values, "orgs"); ok {
+r.Orgs = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

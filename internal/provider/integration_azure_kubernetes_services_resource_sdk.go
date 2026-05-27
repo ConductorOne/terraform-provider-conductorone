@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationAzureKubernetesServicesResourceModel) ToCreateDelegatedSDKTy
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Azure Kubernetes Services"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationAzureKubernetesServicesResourceModel) ToCreateSDKType() (*sh
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationAzureKubernetesServicesResourceModel) ToUpdateSDKType() (*sh
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationAzureKubernetesServicesResourceModel) ToUpdateSDKType() (*sh
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Azure Kubernetes Services"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(azureKubernetesServicesCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Azure Kubernetes Services"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(azureKubernetesServicesCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,54 +95,66 @@ func (r *IntegrationAzureKubernetesServicesResourceModel) ToUpdateSDKType() (*sh
 
 func (r *IntegrationAzureKubernetesServicesResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		subscriptionId := new(string)
+if !r.SubscriptionId.IsUnknown() && !r.SubscriptionId.IsNull() {
+*subscriptionId = r.SubscriptionId.ValueString()
+configValues["subscription-id"] = subscriptionId
+}
 
-	subscriptionId := new(string)
-	if !r.SubscriptionId.IsUnknown() && !r.SubscriptionId.IsNull() {
-		*subscriptionId = r.SubscriptionId.ValueString()
-		configValues["subscription-id"] = subscriptionId
-	}
+    
+		resourceGroupName := new(string)
+if !r.ResourceGroupName.IsUnknown() && !r.ResourceGroupName.IsNull() {
+*resourceGroupName = r.ResourceGroupName.ValueString()
+configValues["resource-group-name"] = resourceGroupName
+}
 
-	resourceGroupName := new(string)
-	if !r.ResourceGroupName.IsUnknown() && !r.ResourceGroupName.IsNull() {
-		*resourceGroupName = r.ResourceGroupName.ValueString()
-		configValues["resource-group-name"] = resourceGroupName
-	}
+    
+		clusterName := new(string)
+if !r.ClusterName.IsUnknown() && !r.ClusterName.IsNull() {
+*clusterName = r.ClusterName.ValueString()
+configValues["cluster-name"] = clusterName
+}
 
-	clusterName := new(string)
-	if !r.ClusterName.IsUnknown() && !r.ClusterName.IsNull() {
-		*clusterName = r.ClusterName.ValueString()
-		configValues["cluster-name"] = clusterName
-	}
+    
+		tenantId := new(string)
+if !r.TenantId.IsUnknown() && !r.TenantId.IsNull() {
+*tenantId = r.TenantId.ValueString()
+configValues["tenant-id"] = tenantId
+}
 
-	tenantId := new(string)
-	if !r.TenantId.IsUnknown() && !r.TenantId.IsNull() {
-		*tenantId = r.TenantId.ValueString()
-		configValues["tenant-id"] = tenantId
-	}
+    
+		spClientId := new(string)
+if !r.SpClientId.IsUnknown() && !r.SpClientId.IsNull() {
+*spClientId = r.SpClientId.ValueString()
+configValues["sp-client-id"] = spClientId
+}
 
-	spClientId := new(string)
-	if !r.SpClientId.IsUnknown() && !r.SpClientId.IsNull() {
-		*spClientId = r.SpClientId.ValueString()
-		configValues["sp-client-id"] = spClientId
-	}
+    
+		spClientSecret := new(string)
+if !r.SpClientSecret.IsUnknown() && !r.SpClientSecret.IsNull() {
+*spClientSecret = r.SpClientSecret.ValueString()
+configValues["sp-client-secret"] = spClientSecret
+}
 
-	spClientSecret := new(string)
-	if !r.SpClientSecret.IsUnknown() && !r.SpClientSecret.IsNull() {
-		*spClientSecret = r.SpClientSecret.ValueString()
-		configValues["sp-client-secret"] = spClientSecret
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationAzureKubernetesServicesResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -190,32 +209,46 @@ func (r *IntegrationAzureKubernetesServicesResourceModel) RefreshFromGetResponse
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "subscription-id"); ok {
-					r.SubscriptionId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["subscription-id"]; ok {
+if val, ok := getStringValue(values, "subscription-id"); ok {
+r.SubscriptionId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "resource-group-name"); ok {
-					r.ResourceGroupName = types.StringValue(val)
-				}
+               if _, ok := configValues["resource-group-name"]; ok {
+if val, ok := getStringValue(values, "resource-group-name"); ok {
+r.ResourceGroupName = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "cluster-name"); ok {
-					r.ClusterName = types.StringValue(val)
-				}
+               if _, ok := configValues["cluster-name"]; ok {
+if val, ok := getStringValue(values, "cluster-name"); ok {
+r.ClusterName = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "tenant-id"); ok {
-					r.TenantId = types.StringValue(val)
-				}
+               if _, ok := configValues["tenant-id"]; ok {
+if val, ok := getStringValue(values, "tenant-id"); ok {
+r.TenantId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "sp-client-id"); ok {
-					r.SpClientId = types.StringValue(val)
-				}
+               if _, ok := configValues["sp-client-id"]; ok {
+if val, ok := getStringValue(values, "sp-client-id"); ok {
+r.SpClientId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationAzureKubernetesServicesResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -253,30 +286,44 @@ func (r *IntegrationAzureKubernetesServicesResourceModel) RefreshFromCreateRespo
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "subscription-id"); ok {
-					r.SubscriptionId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["subscription-id"]; ok {
+if val, ok := getStringValue(values, "subscription-id"); ok {
+r.SubscriptionId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "resource-group-name"); ok {
-					r.ResourceGroupName = types.StringValue(val)
-				}
+                  if _, ok := configValues["resource-group-name"]; ok {
+if val, ok := getStringValue(values, "resource-group-name"); ok {
+r.ResourceGroupName = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "cluster-name"); ok {
-					r.ClusterName = types.StringValue(val)
-				}
+                  if _, ok := configValues["cluster-name"]; ok {
+if val, ok := getStringValue(values, "cluster-name"); ok {
+r.ClusterName = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "tenant-id"); ok {
-					r.TenantId = types.StringValue(val)
-				}
+                  if _, ok := configValues["tenant-id"]; ok {
+if val, ok := getStringValue(values, "tenant-id"); ok {
+r.TenantId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "sp-client-id"); ok {
-					r.SpClientId = types.StringValue(val)
-				}
+                  if _, ok := configValues["sp-client-id"]; ok {
+if val, ok := getStringValue(values, "sp-client-id"); ok {
+r.SpClientId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+                  
+              }
+          }
+       }
 }

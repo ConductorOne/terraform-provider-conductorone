@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationHubspotResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("HubSpot"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationHubspotResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationHubspotResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationHubspotResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("HubSpot"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(hubspotCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("HubSpot"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(hubspotCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,30 +95,38 @@ func (r *IntegrationHubspotResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationHubspotResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		hubspotToken := new(string)
+if !r.HubspotToken.IsUnknown() && !r.HubspotToken.IsNull() {
+*hubspotToken = r.HubspotToken.ValueString()
+configValues["hubspot_token"] = hubspotToken
+}
 
-	hubspotToken := new(string)
-	if !r.HubspotToken.IsUnknown() && !r.HubspotToken.IsNull() {
-		*hubspotToken = r.HubspotToken.ValueString()
-		configValues["hubspot_token"] = hubspotToken
-	}
+    
+		hubspotUserStatus := new(string)
+if !r.HubspotUserStatus.IsUnknown() && !r.HubspotUserStatus.IsNull() {
+*hubspotUserStatus = strconv.FormatBool(r.HubspotUserStatus.ValueBool())
+configValues["hubspot_user_status"] = hubspotUserStatus
+}
 
-	hubspotUserStatus := new(string)
-	if !r.HubspotUserStatus.IsUnknown() && !r.HubspotUserStatus.IsNull() {
-		*hubspotUserStatus = strconv.FormatBool(r.HubspotUserStatus.ValueBool())
-		configValues["hubspot_user_status"] = hubspotUserStatus
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationHubspotResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -166,23 +181,25 @@ func (r *IntegrationHubspotResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               
+               if _, ok := configValues["hubspot_user_status"]; ok {
+if val, ok := getStringValue(values, "hubspot_user_status"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.HubspotUserStatus = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["hubspot_user_status"]; ok {
-					if val, ok := getStringValue(values, "hubspot_user_status"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.HubspotUserStatus = types.BoolValue(bv)
-						}
-					}
-				}
-
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationHubspotResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -220,21 +237,23 @@ func (r *IntegrationHubspotResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  
+                  if _, ok := configValues["hubspot_user_status"]; ok {
+if val, ok := getStringValue(values, "hubspot_user_status"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.HubspotUserStatus = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["hubspot_user_status"]; ok {
-					if val, ok := getStringValue(values, "hubspot_user_status"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.HubspotUserStatus = types.BoolValue(bv)
-						}
-					}
-				}
-
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

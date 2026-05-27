@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationTenableVmResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Tenable VM"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationTenableVmResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationTenableVmResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationTenableVmResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Tenable VM"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(tenableVmCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Tenable VM"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(tenableVmCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,30 +95,45 @@ func (r *IntegrationTenableVmResourceModel) ToUpdateSDKType() (*shared.Connector
 
 func (r *IntegrationTenableVmResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		tenableVmAccessKey := new(string)
+if !r.TenableVmAccessKey.IsUnknown() && !r.TenableVmAccessKey.IsNull() {
+*tenableVmAccessKey = r.TenableVmAccessKey.ValueString()
+configValues["tenable_vm_access_key"] = tenableVmAccessKey
+}
 
-	tenableVmAccessKey := new(string)
-	if !r.TenableVmAccessKey.IsUnknown() && !r.TenableVmAccessKey.IsNull() {
-		*tenableVmAccessKey = r.TenableVmAccessKey.ValueString()
-		configValues["tenable_vm_access_key"] = tenableVmAccessKey
-	}
+    
+		tenableVmSecretKey := new(string)
+if !r.TenableVmSecretKey.IsUnknown() && !r.TenableVmSecretKey.IsNull() {
+*tenableVmSecretKey = r.TenableVmSecretKey.ValueString()
+configValues["tenable_vm_secret_key"] = tenableVmSecretKey
+}
 
-	tenableVmSecretKey := new(string)
-	if !r.TenableVmSecretKey.IsUnknown() && !r.TenableVmSecretKey.IsNull() {
-		*tenableVmSecretKey = r.TenableVmSecretKey.ValueString()
-		configValues["tenable_vm_secret_key"] = tenableVmSecretKey
-	}
+    
+		tenableVmEnableUserOnProvisioning := new(string)
+if !r.TenableVmEnableUserOnProvisioning.IsUnknown() && !r.TenableVmEnableUserOnProvisioning.IsNull() {
+*tenableVmEnableUserOnProvisioning = strconv.FormatBool(r.TenableVmEnableUserOnProvisioning.ValueBool())
+configValues["tenable_vm_enable_user_on_provisioning"] = tenableVmEnableUserOnProvisioning
+}
 
-	return configValues
+    
+
+    return configValues
 }
 
 func (r *IntegrationTenableVmResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -166,6 +188,26 @@ func (r *IntegrationTenableVmResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               
+               
+               if _, ok := configValues["tenable_vm_enable_user_on_provisioning"]; ok {
+if val, ok := getStringValue(values, "tenable_vm_enable_user_on_provisioning"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.TenableVmEnableUserOnProvisioning = types.BoolValue(bv)
+}
+}
+}
+
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationTenableVmResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -203,4 +245,24 @@ func (r *IntegrationTenableVmResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  
+                  
+                  if _, ok := configValues["tenable_vm_enable_user_on_provisioning"]; ok {
+if val, ok := getStringValue(values, "tenable_vm_enable_user_on_provisioning"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.TenableVmEnableUserOnProvisioning = types.BoolValue(bv)
+}
+}
+}
+
+                  
+              }
+          }
+       }
 }

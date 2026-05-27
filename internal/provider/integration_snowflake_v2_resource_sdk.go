@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationSnowflakeV2ResourceModel) ToCreateDelegatedSDKType() *shared
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Snowflake v2"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationSnowflakeV2ResourceModel) ToCreateSDKType() (*shared.Connect
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationSnowflakeV2ResourceModel) ToUpdateSDKType() (*shared.Connect
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationSnowflakeV2ResourceModel) ToUpdateSDKType() (*shared.Connect
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Snowflake v2"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(snowflakeV2CatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Snowflake v2"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(snowflakeV2CatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,48 +95,59 @@ func (r *IntegrationSnowflakeV2ResourceModel) ToUpdateSDKType() (*shared.Connect
 
 func (r *IntegrationSnowflakeV2ResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		snowflakeAccountUrl := new(string)
+if !r.SnowflakeAccountUrl.IsUnknown() && !r.SnowflakeAccountUrl.IsNull() {
+*snowflakeAccountUrl = r.SnowflakeAccountUrl.ValueString()
+configValues["snowflake_account_url"] = snowflakeAccountUrl
+}
 
-	snowflakeAccountUrl := new(string)
-	if !r.SnowflakeAccountUrl.IsUnknown() && !r.SnowflakeAccountUrl.IsNull() {
-		*snowflakeAccountUrl = r.SnowflakeAccountUrl.ValueString()
-		configValues["snowflake_account_url"] = snowflakeAccountUrl
-	}
+    
+		snowflakeAccountId := new(string)
+if !r.SnowflakeAccountId.IsUnknown() && !r.SnowflakeAccountId.IsNull() {
+*snowflakeAccountId = r.SnowflakeAccountId.ValueString()
+configValues["snowflake_account_id"] = snowflakeAccountId
+}
 
-	snowflakeAccountId := new(string)
-	if !r.SnowflakeAccountId.IsUnknown() && !r.SnowflakeAccountId.IsNull() {
-		*snowflakeAccountId = r.SnowflakeAccountId.ValueString()
-		configValues["snowflake_account_id"] = snowflakeAccountId
-	}
+    
+		snowflakeUserId := new(string)
+if !r.SnowflakeUserId.IsUnknown() && !r.SnowflakeUserId.IsNull() {
+*snowflakeUserId = r.SnowflakeUserId.ValueString()
+configValues["snowflake_user_id"] = snowflakeUserId
+}
 
-	snowflakeUserId := new(string)
-	if !r.SnowflakeUserId.IsUnknown() && !r.SnowflakeUserId.IsNull() {
-		*snowflakeUserId = r.SnowflakeUserId.ValueString()
-		configValues["snowflake_user_id"] = snowflakeUserId
-	}
+    
+		snowflakePrivateKey := new(string)
+if !r.SnowflakePrivateKey.IsUnknown() && !r.SnowflakePrivateKey.IsNull() {
+*snowflakePrivateKey = r.SnowflakePrivateKey.ValueString()
+configValues["snowflake_private_key"] = snowflakePrivateKey
+}
 
-	snowflakePrivateKey := new(string)
-	if !r.SnowflakePrivateKey.IsUnknown() && !r.SnowflakePrivateKey.IsNull() {
-		*snowflakePrivateKey = r.SnowflakePrivateKey.ValueString()
-		configValues["snowflake_private_key"] = snowflakePrivateKey
-	}
+    
+		snowflakeSyncSecrets := new(string)
+if !r.SnowflakeSyncSecrets.IsUnknown() && !r.SnowflakeSyncSecrets.IsNull() {
+*snowflakeSyncSecrets = strconv.FormatBool(r.SnowflakeSyncSecrets.ValueBool())
+configValues["snowflake_sync_secrets"] = snowflakeSyncSecrets
+}
 
-	snowflakeSyncSecrets := new(string)
-	if !r.SnowflakeSyncSecrets.IsUnknown() && !r.SnowflakeSyncSecrets.IsNull() {
-		*snowflakeSyncSecrets = strconv.FormatBool(r.SnowflakeSyncSecrets.ValueBool())
-		configValues["snowflake_sync_secrets"] = snowflakeSyncSecrets
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationSnowflakeV2ResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -184,34 +202,43 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromGetResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "snowflake_account_url"); ok {
-					r.SnowflakeAccountUrl = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["snowflake_account_url"]; ok {
+if val, ok := getStringValue(values, "snowflake_account_url"); ok {
+r.SnowflakeAccountUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "snowflake_account_id"); ok {
-					r.SnowflakeAccountId = types.StringValue(val)
-				}
+               if _, ok := configValues["snowflake_account_id"]; ok {
+if val, ok := getStringValue(values, "snowflake_account_id"); ok {
+r.SnowflakeAccountId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "snowflake_user_id"); ok {
-					r.SnowflakeUserId = types.StringValue(val)
-				}
+               if _, ok := configValues["snowflake_user_id"]; ok {
+if val, ok := getStringValue(values, "snowflake_user_id"); ok {
+r.SnowflakeUserId = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["snowflake_sync_secrets"]; ok {
-					if val, ok := getStringValue(values, "snowflake_sync_secrets"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SnowflakeSyncSecrets = types.BoolValue(bv)
-						}
-					}
-				}
+               
+               if _, ok := configValues["snowflake_sync_secrets"]; ok {
+if val, ok := getStringValue(values, "snowflake_sync_secrets"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SnowflakeSyncSecrets = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -249,32 +276,41 @@ func (r *IntegrationSnowflakeV2ResourceModel) RefreshFromCreateResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "snowflake_account_url"); ok {
-					r.SnowflakeAccountUrl = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["snowflake_account_url"]; ok {
+if val, ok := getStringValue(values, "snowflake_account_url"); ok {
+r.SnowflakeAccountUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "snowflake_account_id"); ok {
-					r.SnowflakeAccountId = types.StringValue(val)
-				}
+                  if _, ok := configValues["snowflake_account_id"]; ok {
+if val, ok := getStringValue(values, "snowflake_account_id"); ok {
+r.SnowflakeAccountId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "snowflake_user_id"); ok {
-					r.SnowflakeUserId = types.StringValue(val)
-				}
+                  if _, ok := configValues["snowflake_user_id"]; ok {
+if val, ok := getStringValue(values, "snowflake_user_id"); ok {
+r.SnowflakeUserId = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["snowflake_sync_secrets"]; ok {
-					if val, ok := getStringValue(values, "snowflake_sync_secrets"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.SnowflakeSyncSecrets = types.BoolValue(bv)
-						}
-					}
-				}
+                  
+                  if _, ok := configValues["snowflake_sync_secrets"]; ok {
+if val, ok := getStringValue(values, "snowflake_sync_secrets"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SnowflakeSyncSecrets = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

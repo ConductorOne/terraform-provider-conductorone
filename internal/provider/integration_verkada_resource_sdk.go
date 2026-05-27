@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationVerkadaResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Verkada"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationVerkadaResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationVerkadaResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationVerkadaResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Verkada"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(verkadaCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Verkada"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(verkadaCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,30 +95,38 @@ func (r *IntegrationVerkadaResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationVerkadaResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		verkadaApiKey := new(string)
+if !r.VerkadaApiKey.IsUnknown() && !r.VerkadaApiKey.IsNull() {
+*verkadaApiKey = r.VerkadaApiKey.ValueString()
+configValues["verkada_api_key"] = verkadaApiKey
+}
 
-	verkadaApiKey := new(string)
-	if !r.VerkadaApiKey.IsUnknown() && !r.VerkadaApiKey.IsNull() {
-		*verkadaApiKey = r.VerkadaApiKey.ValueString()
-		configValues["verkada_api_key"] = verkadaApiKey
-	}
+    
+		verkadaRegion := new(string)
+if !r.VerkadaRegion.IsUnknown() && !r.VerkadaRegion.IsNull() {
+*verkadaRegion = r.VerkadaRegion.ValueString()
+configValues["verkada_region"] = verkadaRegion
+}
 
-	verkadaRegion := new(string)
-	if !r.VerkadaRegion.IsUnknown() && !r.VerkadaRegion.IsNull() {
-		*verkadaRegion = r.VerkadaRegion.ValueString()
-		configValues["verkada_region"] = verkadaRegion
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationVerkadaResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -166,17 +181,22 @@ func (r *IntegrationVerkadaResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               
+               if _, ok := configValues["verkada_region"]; ok {
+if val, ok := getStringValue(values, "verkada_region"); ok {
+r.VerkadaRegion = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "verkada_region"); ok {
-					r.VerkadaRegion = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationVerkadaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -214,15 +234,20 @@ func (r *IntegrationVerkadaResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  
+                  if _, ok := configValues["verkada_region"]; ok {
+if val, ok := getStringValue(values, "verkada_region"); ok {
+r.VerkadaRegion = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "verkada_region"); ok {
-					r.VerkadaRegion = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

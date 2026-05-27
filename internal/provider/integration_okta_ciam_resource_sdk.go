@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationOktaCiamResourceModel) ToCreateDelegatedSDKType() *shared.Co
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Okta CIAM"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationOktaCiamResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationOktaCiamResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationOktaCiamResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Okta CIAM"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(oktaCiamCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Okta CIAM"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(oktaCiamCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,36 +95,45 @@ func (r *IntegrationOktaCiamResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 
 func (r *IntegrationOktaCiamResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		oktaCiamDomain := new(string)
+if !r.OktaCiamDomain.IsUnknown() && !r.OktaCiamDomain.IsNull() {
+*oktaCiamDomain = r.OktaCiamDomain.ValueString()
+configValues["okta_ciam_domain"] = oktaCiamDomain
+}
 
-	oktaCiamDomain := new(string)
-	if !r.OktaCiamDomain.IsUnknown() && !r.OktaCiamDomain.IsNull() {
-		*oktaCiamDomain = r.OktaCiamDomain.ValueString()
-		configValues["okta_ciam_domain"] = oktaCiamDomain
-	}
+    
+		oktaCiamApiToken := new(string)
+if !r.OktaCiamApiToken.IsUnknown() && !r.OktaCiamApiToken.IsNull() {
+*oktaCiamApiToken = r.OktaCiamApiToken.ValueString()
+configValues["okta_ciam_api_token"] = oktaCiamApiToken
+}
 
-	oktaCiamApiToken := new(string)
-	if !r.OktaCiamApiToken.IsUnknown() && !r.OktaCiamApiToken.IsNull() {
-		*oktaCiamApiToken = r.OktaCiamApiToken.ValueString()
-		configValues["okta_ciam_api_token"] = oktaCiamApiToken
-	}
+    
+		oktaCiamEmailDomains := new(string)
+if !r.OktaCiamEmailDomains.IsUnknown() && !r.OktaCiamEmailDomains.IsNull() {
+*oktaCiamEmailDomains = r.OktaCiamEmailDomains.ValueString()
+configValues["okta_ciam_email_domains"] = oktaCiamEmailDomains
+}
 
-	oktaCiamEmailDomains := new(string)
-	if !r.OktaCiamEmailDomains.IsUnknown() && !r.OktaCiamEmailDomains.IsNull() {
-		*oktaCiamEmailDomains = r.OktaCiamEmailDomains.ValueString()
-		configValues["okta_ciam_email_domains"] = oktaCiamEmailDomains
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationOktaCiamResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -172,20 +188,28 @@ func (r *IntegrationOktaCiamResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "okta_ciam_domain"); ok {
-					r.OktaCiamDomain = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["okta_ciam_domain"]; ok {
+if val, ok := getStringValue(values, "okta_ciam_domain"); ok {
+r.OktaCiamDomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "okta_ciam_email_domains"); ok {
-					r.OktaCiamEmailDomains = types.StringValue(val)
-				}
+               
+               if _, ok := configValues["okta_ciam_email_domains"]; ok {
+if val, ok := getStringValue(values, "okta_ciam_email_domains"); ok {
+r.OktaCiamEmailDomains = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationOktaCiamResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -223,18 +247,26 @@ func (r *IntegrationOktaCiamResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "okta_ciam_domain"); ok {
-					r.OktaCiamDomain = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["okta_ciam_domain"]; ok {
+if val, ok := getStringValue(values, "okta_ciam_domain"); ok {
+r.OktaCiamDomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "okta_ciam_email_domains"); ok {
-					r.OktaCiamEmailDomains = types.StringValue(val)
-				}
+                  
+                  if _, ok := configValues["okta_ciam_email_domains"]; ok {
+if val, ok := getStringValue(values, "okta_ciam_email_domains"); ok {
+r.OktaCiamEmailDomains = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationGrafanaResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Grafana"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationGrafanaResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationGrafanaResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationGrafanaResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Grafana"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(grafanaCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Grafana"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(grafanaCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,36 +95,45 @@ func (r *IntegrationGrafanaResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationGrafanaResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		grafanaUrl := new(string)
+if !r.GrafanaUrl.IsUnknown() && !r.GrafanaUrl.IsNull() {
+*grafanaUrl = r.GrafanaUrl.ValueString()
+configValues["grafana_url"] = grafanaUrl
+}
 
-	grafanaUrl := new(string)
-	if !r.GrafanaUrl.IsUnknown() && !r.GrafanaUrl.IsNull() {
-		*grafanaUrl = r.GrafanaUrl.ValueString()
-		configValues["grafana_url"] = grafanaUrl
-	}
+    
+		grafanaUsername := new(string)
+if !r.GrafanaUsername.IsUnknown() && !r.GrafanaUsername.IsNull() {
+*grafanaUsername = r.GrafanaUsername.ValueString()
+configValues["grafana_username"] = grafanaUsername
+}
 
-	grafanaUsername := new(string)
-	if !r.GrafanaUsername.IsUnknown() && !r.GrafanaUsername.IsNull() {
-		*grafanaUsername = r.GrafanaUsername.ValueString()
-		configValues["grafana_username"] = grafanaUsername
-	}
+    
+		grafanaPassword := new(string)
+if !r.GrafanaPassword.IsUnknown() && !r.GrafanaPassword.IsNull() {
+*grafanaPassword = r.GrafanaPassword.ValueString()
+configValues["grafana_password"] = grafanaPassword
+}
 
-	grafanaPassword := new(string)
-	if !r.GrafanaPassword.IsUnknown() && !r.GrafanaPassword.IsNull() {
-		*grafanaPassword = r.GrafanaPassword.ValueString()
-		configValues["grafana_password"] = grafanaPassword
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationGrafanaResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -172,20 +188,28 @@ func (r *IntegrationGrafanaResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "grafana_url"); ok {
-					r.GrafanaUrl = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["grafana_url"]; ok {
+if val, ok := getStringValue(values, "grafana_url"); ok {
+r.GrafanaUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "grafana_username"); ok {
-					r.GrafanaUsername = types.StringValue(val)
-				}
+               if _, ok := configValues["grafana_username"]; ok {
+if val, ok := getStringValue(values, "grafana_username"); ok {
+r.GrafanaUsername = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationGrafanaResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -223,18 +247,26 @@ func (r *IntegrationGrafanaResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "grafana_url"); ok {
-					r.GrafanaUrl = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["grafana_url"]; ok {
+if val, ok := getStringValue(values, "grafana_url"); ok {
+r.GrafanaUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "grafana_username"); ok {
-					r.GrafanaUsername = types.StringValue(val)
-				}
+                  if _, ok := configValues["grafana_username"]; ok {
+if val, ok := getStringValue(values, "grafana_username"); ok {
+r.GrafanaUsername = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+                  
+              }
+          }
+       }
 }

@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationSumoLogicResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Sumo Logic"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationSumoLogicResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationSumoLogicResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationSumoLogicResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Sumo Logic"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(sumoLogicCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Sumo Logic"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(sumoLogicCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,42 +95,52 @@ func (r *IntegrationSumoLogicResourceModel) ToUpdateSDKType() (*shared.Connector
 
 func (r *IntegrationSumoLogicResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		apiAccessId := new(string)
+if !r.ApiAccessId.IsUnknown() && !r.ApiAccessId.IsNull() {
+*apiAccessId = r.ApiAccessId.ValueString()
+configValues["api-access-id"] = apiAccessId
+}
 
-	apiAccessId := new(string)
-	if !r.ApiAccessId.IsUnknown() && !r.ApiAccessId.IsNull() {
-		*apiAccessId = r.ApiAccessId.ValueString()
-		configValues["api-access-id"] = apiAccessId
-	}
+    
+		apiAccessKey := new(string)
+if !r.ApiAccessKey.IsUnknown() && !r.ApiAccessKey.IsNull() {
+*apiAccessKey = r.ApiAccessKey.ValueString()
+configValues["api-access-key"] = apiAccessKey
+}
 
-	apiAccessKey := new(string)
-	if !r.ApiAccessKey.IsUnknown() && !r.ApiAccessKey.IsNull() {
-		*apiAccessKey = r.ApiAccessKey.ValueString()
-		configValues["api-access-key"] = apiAccessKey
-	}
+    
+		apiBaseUrl := new(string)
+if !r.ApiBaseUrl.IsUnknown() && !r.ApiBaseUrl.IsNull() {
+*apiBaseUrl = r.ApiBaseUrl.ValueString()
+configValues["api-base-url"] = apiBaseUrl
+}
 
-	apiBaseUrl := new(string)
-	if !r.ApiBaseUrl.IsUnknown() && !r.ApiBaseUrl.IsNull() {
-		*apiBaseUrl = r.ApiBaseUrl.ValueString()
-		configValues["api-base-url"] = apiBaseUrl
-	}
+    
+		includeServiceAccounts := new(string)
+if !r.IncludeServiceAccounts.IsUnknown() && !r.IncludeServiceAccounts.IsNull() {
+*includeServiceAccounts = strconv.FormatBool(r.IncludeServiceAccounts.ValueBool())
+configValues["include-service-accounts"] = includeServiceAccounts
+}
 
-	includeServiceAccounts := new(string)
-	if !r.IncludeServiceAccounts.IsUnknown() && !r.IncludeServiceAccounts.IsNull() {
-		*includeServiceAccounts = strconv.FormatBool(r.IncludeServiceAccounts.ValueBool())
-		configValues["include-service-accounts"] = includeServiceAccounts
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationSumoLogicResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -178,30 +195,37 @@ func (r *IntegrationSumoLogicResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "api-access-id"); ok {
-					r.ApiAccessId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["api-access-id"]; ok {
+if val, ok := getStringValue(values, "api-access-id"); ok {
+r.ApiAccessId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "api-base-url"); ok {
-					r.ApiBaseUrl = types.StringValue(val)
-				}
+               
+               if _, ok := configValues["api-base-url"]; ok {
+if val, ok := getStringValue(values, "api-base-url"); ok {
+r.ApiBaseUrl = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["include-service-accounts"]; ok {
-					if val, ok := getStringValue(values, "include-service-accounts"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.IncludeServiceAccounts = types.BoolValue(bv)
-						}
-					}
-				}
+               if _, ok := configValues["include-service-accounts"]; ok {
+if val, ok := getStringValue(values, "include-service-accounts"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.IncludeServiceAccounts = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationSumoLogicResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -239,28 +263,35 @@ func (r *IntegrationSumoLogicResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "api-access-id"); ok {
-					r.ApiAccessId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["api-access-id"]; ok {
+if val, ok := getStringValue(values, "api-access-id"); ok {
+r.ApiAccessId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "api-base-url"); ok {
-					r.ApiBaseUrl = types.StringValue(val)
-				}
+                  
+                  if _, ok := configValues["api-base-url"]; ok {
+if val, ok := getStringValue(values, "api-base-url"); ok {
+r.ApiBaseUrl = types.StringValue(val)
+}
+}
 
-				if _, ok := configValues["include-service-accounts"]; ok {
-					if val, ok := getStringValue(values, "include-service-accounts"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.IncludeServiceAccounts = types.BoolValue(bv)
-						}
-					}
-				}
+                  if _, ok := configValues["include-service-accounts"]; ok {
+if val, ok := getStringValue(values, "include-service-accounts"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.IncludeServiceAccounts = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

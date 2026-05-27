@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationAirbyteResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Airbyte"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationAirbyteResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationAirbyteResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationAirbyteResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Airbyte"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(airbyteCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Airbyte"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(airbyteCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,36 +95,45 @@ func (r *IntegrationAirbyteResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationAirbyteResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		airbyteHostname := new(string)
+if !r.AirbyteHostname.IsUnknown() && !r.AirbyteHostname.IsNull() {
+*airbyteHostname = r.AirbyteHostname.ValueString()
+configValues["airbyte-hostname"] = airbyteHostname
+}
 
-	airbyteHostname := new(string)
-	if !r.AirbyteHostname.IsUnknown() && !r.AirbyteHostname.IsNull() {
-		*airbyteHostname = r.AirbyteHostname.ValueString()
-		configValues["airbyte-hostname"] = airbyteHostname
-	}
+    
+		airbyteClientId := new(string)
+if !r.AirbyteClientId.IsUnknown() && !r.AirbyteClientId.IsNull() {
+*airbyteClientId = r.AirbyteClientId.ValueString()
+configValues["airbyte-client-id"] = airbyteClientId
+}
 
-	airbyteClientId := new(string)
-	if !r.AirbyteClientId.IsUnknown() && !r.AirbyteClientId.IsNull() {
-		*airbyteClientId = r.AirbyteClientId.ValueString()
-		configValues["airbyte-client-id"] = airbyteClientId
-	}
+    
+		airbyteClientSecret := new(string)
+if !r.AirbyteClientSecret.IsUnknown() && !r.AirbyteClientSecret.IsNull() {
+*airbyteClientSecret = r.AirbyteClientSecret.ValueString()
+configValues["airbyte-client-secret"] = airbyteClientSecret
+}
 
-	airbyteClientSecret := new(string)
-	if !r.AirbyteClientSecret.IsUnknown() && !r.AirbyteClientSecret.IsNull() {
-		*airbyteClientSecret = r.AirbyteClientSecret.ValueString()
-		configValues["airbyte-client-secret"] = airbyteClientSecret
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationAirbyteResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -172,16 +188,23 @@ func (r *IntegrationAirbyteResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "airbyte-hostname"); ok {
-					r.AirbyteHostname = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["airbyte-hostname"]; ok {
+if val, ok := getStringValue(values, "airbyte-hostname"); ok {
+r.AirbyteHostname = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+               
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationAirbyteResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -219,14 +242,21 @@ func (r *IntegrationAirbyteResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "airbyte-hostname"); ok {
-					r.AirbyteHostname = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["airbyte-hostname"]; ok {
+if val, ok := getStringValue(values, "airbyte-hostname"); ok {
+r.AirbyteHostname = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+                  
+                  
+              }
+          }
+       }
 }

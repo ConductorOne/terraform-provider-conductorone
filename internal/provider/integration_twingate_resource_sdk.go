@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationTwingateResourceModel) ToCreateDelegatedSDKType() *shared.Co
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Twingate"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationTwingateResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Twingate"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(twingateCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Twingate"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(twingateCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,30 +95,38 @@ func (r *IntegrationTwingateResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 
 func (r *IntegrationTwingateResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		twingateApikey := new(string)
+if !r.TwingateApikey.IsUnknown() && !r.TwingateApikey.IsNull() {
+*twingateApikey = r.TwingateApikey.ValueString()
+configValues["twingate_apikey"] = twingateApikey
+}
 
-	twingateApikey := new(string)
-	if !r.TwingateApikey.IsUnknown() && !r.TwingateApikey.IsNull() {
-		*twingateApikey = r.TwingateApikey.ValueString()
-		configValues["twingate_apikey"] = twingateApikey
-	}
+    
+		twingateDomain := new(string)
+if !r.TwingateDomain.IsUnknown() && !r.TwingateDomain.IsNull() {
+*twingateDomain = r.TwingateDomain.ValueString()
+configValues["twingate_domain"] = twingateDomain
+}
 
-	twingateDomain := new(string)
-	if !r.TwingateDomain.IsUnknown() && !r.TwingateDomain.IsNull() {
-		*twingateDomain = r.TwingateDomain.ValueString()
-		configValues["twingate_domain"] = twingateDomain
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationTwingateResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -166,17 +181,22 @@ func (r *IntegrationTwingateResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               
+               if _, ok := configValues["twingate_domain"]; ok {
+if val, ok := getStringValue(values, "twingate_domain"); ok {
+r.TwingateDomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "twingate_domain"); ok {
-					r.TwingateDomain = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationTwingateResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -214,15 +234,20 @@ func (r *IntegrationTwingateResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  
+                  if _, ok := configValues["twingate_domain"]; ok {
+if val, ok := getStringValue(values, "twingate_domain"); ok {
+r.TwingateDomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "twingate_domain"); ok {
-					r.TwingateDomain = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

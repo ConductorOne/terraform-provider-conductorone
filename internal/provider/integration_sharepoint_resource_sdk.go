@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationSharepointResourceModel) ToCreateDelegatedSDKType() *shared.
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("SharePoint"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationSharepointResourceModel) ToCreateSDKType() (*shared.Connecto
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationSharepointResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationSharepointResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("SharePoint"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(sharepointCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("SharePoint"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(sharepointCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,60 +95,73 @@ func (r *IntegrationSharepointResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 func (r *IntegrationSharepointResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		azureClientId := new(string)
+if !r.AzureClientId.IsUnknown() && !r.AzureClientId.IsNull() {
+*azureClientId = r.AzureClientId.ValueString()
+configValues["azure_client_id"] = azureClientId
+}
 
-	azureClientId := new(string)
-	if !r.AzureClientId.IsUnknown() && !r.AzureClientId.IsNull() {
-		*azureClientId = r.AzureClientId.ValueString()
-		configValues["azure_client_id"] = azureClientId
-	}
+    
+		azureClientSecret := new(string)
+if !r.AzureClientSecret.IsUnknown() && !r.AzureClientSecret.IsNull() {
+*azureClientSecret = r.AzureClientSecret.ValueString()
+configValues["azure_client_secret"] = azureClientSecret
+}
 
-	azureClientSecret := new(string)
-	if !r.AzureClientSecret.IsUnknown() && !r.AzureClientSecret.IsNull() {
-		*azureClientSecret = r.AzureClientSecret.ValueString()
-		configValues["azure_client_secret"] = azureClientSecret
-	}
+    
+		azureTenantId := new(string)
+if !r.AzureTenantId.IsUnknown() && !r.AzureTenantId.IsNull() {
+*azureTenantId = r.AzureTenantId.ValueString()
+configValues["azure_tenant_id"] = azureTenantId
+}
 
-	azureTenantId := new(string)
-	if !r.AzureTenantId.IsUnknown() && !r.AzureTenantId.IsNull() {
-		*azureTenantId = r.AzureTenantId.ValueString()
-		configValues["azure_tenant_id"] = azureTenantId
-	}
+    
+		azureGraphDomain := new(string)
+if !r.AzureGraphDomain.IsUnknown() && !r.AzureGraphDomain.IsNull() {
+*azureGraphDomain = r.AzureGraphDomain.ValueString()
+configValues["azure_graph_domain"] = azureGraphDomain
+}
 
-	azureGraphDomain := new(string)
-	if !r.AzureGraphDomain.IsUnknown() && !r.AzureGraphDomain.IsNull() {
-		*azureGraphDomain = r.AzureGraphDomain.ValueString()
-		configValues["azure_graph_domain"] = azureGraphDomain
-	}
+    
+		pemCertificate := new(string)
+if !r.PemCertificate.IsUnknown() && !r.PemCertificate.IsNull() {
+*pemCertificate = r.PemCertificate.ValueString()
+configValues["pem_certificate"] = pemCertificate
+}
 
-	pfxCertificate := new(string)
-	if !r.PfxCertificate.IsUnknown() && !r.PfxCertificate.IsNull() {
-		*pfxCertificate = r.PfxCertificate.ValueString()
-		configValues["pfx_certificate"] = pfxCertificate
-	}
+    
+		pemKey := new(string)
+if !r.PemKey.IsUnknown() && !r.PemKey.IsNull() {
+*pemKey = r.PemKey.ValueString()
+configValues["pem_key"] = pemKey
+}
 
-	pfxCertificatePassword := new(string)
-	if !r.PfxCertificatePassword.IsUnknown() && !r.PfxCertificatePassword.IsNull() {
-		*pfxCertificatePassword = r.PfxCertificatePassword.ValueString()
-		configValues["pfx_certificate_password"] = pfxCertificatePassword
-	}
+    
+		sharepointDomain := new(string)
+if !r.SharepointDomain.IsUnknown() && !r.SharepointDomain.IsNull() {
+*sharepointDomain = r.SharepointDomain.ValueString()
+configValues["sharepoint_domain"] = sharepointDomain
+}
 
-	sharepointDomain := new(string)
-	if !r.SharepointDomain.IsUnknown() && !r.SharepointDomain.IsNull() {
-		*sharepointDomain = r.SharepointDomain.ValueString()
-		configValues["sharepoint_domain"] = sharepointDomain
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationSharepointResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -196,28 +216,42 @@ func (r *IntegrationSharepointResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "azure_client_id"); ok {
-					r.AzureClientId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["azure_client_id"]; ok {
+if val, ok := getStringValue(values, "azure_client_id"); ok {
+r.AzureClientId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "azure_tenant_id"); ok {
-					r.AzureTenantId = types.StringValue(val)
-				}
+               
+               if _, ok := configValues["azure_tenant_id"]; ok {
+if val, ok := getStringValue(values, "azure_tenant_id"); ok {
+r.AzureTenantId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "azure_graph_domain"); ok {
-					r.AzureGraphDomain = types.StringValue(val)
-				}
+               if _, ok := configValues["azure_graph_domain"]; ok {
+if val, ok := getStringValue(values, "azure_graph_domain"); ok {
+r.AzureGraphDomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "sharepoint_domain"); ok {
-					r.SharepointDomain = types.StringValue(val)
-				}
+               
+               
+               if _, ok := configValues["sharepoint_domain"]; ok {
+if val, ok := getStringValue(values, "sharepoint_domain"); ok {
+r.SharepointDomain = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationSharepointResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -255,26 +289,40 @@ func (r *IntegrationSharepointResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "azure_client_id"); ok {
-					r.AzureClientId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["azure_client_id"]; ok {
+if val, ok := getStringValue(values, "azure_client_id"); ok {
+r.AzureClientId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "azure_tenant_id"); ok {
-					r.AzureTenantId = types.StringValue(val)
-				}
+                  
+                  if _, ok := configValues["azure_tenant_id"]; ok {
+if val, ok := getStringValue(values, "azure_tenant_id"); ok {
+r.AzureTenantId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "azure_graph_domain"); ok {
-					r.AzureGraphDomain = types.StringValue(val)
-				}
+                  if _, ok := configValues["azure_graph_domain"]; ok {
+if val, ok := getStringValue(values, "azure_graph_domain"); ok {
+r.AzureGraphDomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "sharepoint_domain"); ok {
-					r.SharepointDomain = types.StringValue(val)
-				}
+                  
+                  
+                  if _, ok := configValues["sharepoint_domain"]; ok {
+if val, ok := getStringValue(values, "sharepoint_domain"); ok {
+r.SharepointDomain = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

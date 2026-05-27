@@ -2,16 +2,16 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
-	"strings"
 	"time"
+	"strings"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
-	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/attr" 
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 const workdayCatalogID = "2lM50zfAO7kAbPv2pyf1aPQnjYD"
@@ -24,8 +24,8 @@ func (r *IntegrationWorkdayResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Workday"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -38,20 +38,20 @@ func (r *IntegrationWorkdayResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -61,14 +61,19 @@ func (r *IntegrationWorkdayResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -77,12 +82,12 @@ func (r *IntegrationWorkdayResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Workday"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(workdayCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Workday"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(workdayCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -90,7 +95,8 @@ func (r *IntegrationWorkdayResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationWorkdayResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-
+    
+		
 	if !r.WorkdayGroupApiClient.IsUnknown() && !r.WorkdayGroupApiClient.IsNull() {
 		configValues["C1_selected_field_group_name"] = "workday_group_api_client"
 		for k, v := range r.WorkdayGroupApiClient.Attributes() {
@@ -115,7 +121,9 @@ func (r *IntegrationWorkdayResourceModel) populateConfig() map[string]interface{
 			}
 		}
 	}
-
+	
+    
+		
 	if !r.WorkdayGroupReport.IsUnknown() && !r.WorkdayGroupReport.IsNull() {
 		configValues["C1_selected_field_group_name"] = "workday_group_report"
 		for k, v := range r.WorkdayGroupReport.Attributes() {
@@ -140,18 +148,25 @@ func (r *IntegrationWorkdayResourceModel) populateConfig() map[string]interface{
 			}
 		}
 	}
+	
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationWorkdayResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -206,75 +221,75 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-					if groupName == "workday_group_api_client" {
-						attributeTypes := make(map[string]attr.Type, len(values))
-						attributeValues := make(map[string]attr.Value, len(values))
-
-						if val, ok := getStringValue(values, "workday_client_id"); ok {
-							attributeTypes["workday_client_id"] = types.StringType
-							attributeValues["workday_client_id"] = types.StringValue(val)
-						}
-
-						attributeTypes["workday_client_secret"] = types.StringType
-						if sv, ok := configValues["workday_client_secret"].(string); ok {
-							attributeValues["workday_client_secret"] = types.StringValue(sv)
-						} else {
-							attributeValues["workday_client_secret"] = types.StringNull()
-						}
-
-						attributeTypes["refresh_token"] = types.StringType
-						if sv, ok := configValues["refresh_token"].(string); ok {
-							attributeValues["refresh_token"] = types.StringValue(sv)
-						} else {
-							attributeValues["refresh_token"] = types.StringNull()
-						}
-
-						if val, ok := getStringValue(values, "workday_url"); ok {
-							attributeTypes["workday_url"] = types.StringType
-							attributeValues["workday_url"] = types.StringValue(val)
-						}
-
-						if val, ok := getStringValue(values, "tenant_name"); ok {
-							attributeTypes["tenant_name"] = types.StringType
-							attributeValues["tenant_name"] = types.StringValue(val)
-						}
-						r.WorkdayGroupApiClient = types.ObjectValueMust(attributeTypes, attributeValues)
-					}
-				}
-
-				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-					if groupName == "workday_group_report" {
-						attributeTypes := make(map[string]attr.Type, len(values))
-						attributeValues := make(map[string]attr.Value, len(values))
-
-						if val, ok := getStringValue(values, "workday_report_url"); ok {
-							attributeTypes["workday_report_url"] = types.StringType
-							attributeValues["workday_report_url"] = types.StringValue(val)
-						}
-
-						if val, ok := getStringValue(values, "workday_report_username"); ok {
-							attributeTypes["workday_report_username"] = types.StringType
-							attributeValues["workday_report_username"] = types.StringValue(val)
-						}
-
-						attributeTypes["workday_report_user_password"] = types.StringType
-						if sv, ok := configValues["workday_report_user_password"].(string); ok {
-							attributeValues["workday_report_user_password"] = types.StringValue(sv)
-						} else {
-							attributeValues["workday_report_user_password"] = types.StringNull()
-						}
-						r.WorkdayGroupReport = types.ObjectValueMust(attributeTypes, attributeValues)
-					}
-				}
-
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+		if groupName == "workday_group_api_client" {
+		attributeTypes := make(map[string]attr.Type, len(values))
+		attributeValues := make(map[string]attr.Value, len(values))
+	
+			if val, ok := getStringValue(values, "workday_client_id"); ok {
+				attributeTypes["workday_client_id"] = types.StringType
+				attributeValues["workday_client_id"] = types.StringValue(val)
 			}
-		}
-	}
+		
+				attributeTypes["workday_client_secret"] = types.StringType
+				if sv, ok := configValues["workday_client_secret"].(string); ok {
+					attributeValues["workday_client_secret"] = types.StringValue(sv)
+				} else {
+				 	attributeValues["workday_client_secret"] = types.StringNull()
+				}
+			
+				attributeTypes["refresh_token"] = types.StringType
+				if sv, ok := configValues["refresh_token"].(string); ok {
+					attributeValues["refresh_token"] = types.StringValue(sv)
+				} else {
+				 	attributeValues["refresh_token"] = types.StringNull()
+				}
+			
+			if val, ok := getStringValue(values, "workday_url"); ok {
+				attributeTypes["workday_url"] = types.StringType
+				attributeValues["workday_url"] = types.StringValue(val)
+			}
+		
+			if val, ok := getStringValue(values, "tenant_name"); ok {
+				attributeTypes["tenant_name"] = types.StringType
+				attributeValues["tenant_name"] = types.StringValue(val)
+			}
+		r.WorkdayGroupApiClient = types.ObjectValueMust(attributeTypes, attributeValues)
+	}}
+
+               if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+		if groupName == "workday_group_report" {
+		attributeTypes := make(map[string]attr.Type, len(values))
+		attributeValues := make(map[string]attr.Value, len(values))
+	
+			if val, ok := getStringValue(values, "workday_report_url"); ok {
+				attributeTypes["workday_report_url"] = types.StringType
+				attributeValues["workday_report_url"] = types.StringValue(val)
+			}
+		
+			if val, ok := getStringValue(values, "workday_report_username"); ok {
+				attributeTypes["workday_report_username"] = types.StringType
+				attributeValues["workday_report_username"] = types.StringValue(val)
+			}
+		
+				attributeTypes["workday_report_user_password"] = types.StringType
+				if sv, ok := configValues["workday_report_user_password"].(string); ok {
+					attributeValues["workday_report_user_password"] = types.StringValue(sv)
+				} else {
+				 	attributeValues["workday_report_user_password"] = types.StringNull()
+				}
+			r.WorkdayGroupReport = types.ObjectValueMust(attributeTypes, attributeValues)
+	}}
+
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationWorkdayResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -312,73 +327,73 @@ func (r *IntegrationWorkdayResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-					if groupName == "workday_group_api_client" {
-						attributeTypes := make(map[string]attr.Type, len(values))
-						attributeValues := make(map[string]attr.Value, len(values))
-
-						if val, ok := getStringValue(values, "workday_client_id"); ok {
-							attributeTypes["workday_client_id"] = types.StringType
-							attributeValues["workday_client_id"] = types.StringValue(val)
-						}
-
-						attributeTypes["workday_client_secret"] = types.StringType
-						if sv, ok := configValues["workday_client_secret"].(string); ok {
-							attributeValues["workday_client_secret"] = types.StringValue(sv)
-						} else {
-							attributeValues["workday_client_secret"] = types.StringNull()
-						}
-
-						attributeTypes["refresh_token"] = types.StringType
-						if sv, ok := configValues["refresh_token"].(string); ok {
-							attributeValues["refresh_token"] = types.StringValue(sv)
-						} else {
-							attributeValues["refresh_token"] = types.StringNull()
-						}
-
-						if val, ok := getStringValue(values, "workday_url"); ok {
-							attributeTypes["workday_url"] = types.StringType
-							attributeValues["workday_url"] = types.StringValue(val)
-						}
-
-						if val, ok := getStringValue(values, "tenant_name"); ok {
-							attributeTypes["tenant_name"] = types.StringType
-							attributeValues["tenant_name"] = types.StringValue(val)
-						}
-						r.WorkdayGroupApiClient = types.ObjectValueMust(attributeTypes, attributeValues)
-					}
-				}
-
-				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-					if groupName == "workday_group_report" {
-						attributeTypes := make(map[string]attr.Type, len(values))
-						attributeValues := make(map[string]attr.Value, len(values))
-
-						if val, ok := getStringValue(values, "workday_report_url"); ok {
-							attributeTypes["workday_report_url"] = types.StringType
-							attributeValues["workday_report_url"] = types.StringValue(val)
-						}
-
-						if val, ok := getStringValue(values, "workday_report_username"); ok {
-							attributeTypes["workday_report_username"] = types.StringType
-							attributeValues["workday_report_username"] = types.StringValue(val)
-						}
-
-						attributeTypes["workday_report_user_password"] = types.StringType
-						if sv, ok := configValues["workday_report_user_password"].(string); ok {
-							attributeValues["workday_report_user_password"] = types.StringValue(sv)
-						} else {
-							attributeValues["workday_report_user_password"] = types.StringNull()
-						}
-						r.WorkdayGroupReport = types.ObjectValueMust(attributeTypes, attributeValues)
-					}
-				}
-
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+		if groupName == "workday_group_api_client" {
+		attributeTypes := make(map[string]attr.Type, len(values))
+		attributeValues := make(map[string]attr.Value, len(values))
+	
+			if val, ok := getStringValue(values, "workday_client_id"); ok {
+				attributeTypes["workday_client_id"] = types.StringType
+				attributeValues["workday_client_id"] = types.StringValue(val)
 			}
-		}
-	}
+		
+				attributeTypes["workday_client_secret"] = types.StringType
+				if sv, ok := configValues["workday_client_secret"].(string); ok {
+					attributeValues["workday_client_secret"] = types.StringValue(sv)
+				} else {
+				 	attributeValues["workday_client_secret"] = types.StringNull()
+				}
+			
+				attributeTypes["refresh_token"] = types.StringType
+				if sv, ok := configValues["refresh_token"].(string); ok {
+					attributeValues["refresh_token"] = types.StringValue(sv)
+				} else {
+				 	attributeValues["refresh_token"] = types.StringNull()
+				}
+			
+			if val, ok := getStringValue(values, "workday_url"); ok {
+				attributeTypes["workday_url"] = types.StringType
+				attributeValues["workday_url"] = types.StringValue(val)
+			}
+		
+			if val, ok := getStringValue(values, "tenant_name"); ok {
+				attributeTypes["tenant_name"] = types.StringType
+				attributeValues["tenant_name"] = types.StringValue(val)
+			}
+		r.WorkdayGroupApiClient = types.ObjectValueMust(attributeTypes, attributeValues)
+	}}
+
+                  if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+		if groupName == "workday_group_report" {
+		attributeTypes := make(map[string]attr.Type, len(values))
+		attributeValues := make(map[string]attr.Value, len(values))
+	
+			if val, ok := getStringValue(values, "workday_report_url"); ok {
+				attributeTypes["workday_report_url"] = types.StringType
+				attributeValues["workday_report_url"] = types.StringValue(val)
+			}
+		
+			if val, ok := getStringValue(values, "workday_report_username"); ok {
+				attributeTypes["workday_report_username"] = types.StringType
+				attributeValues["workday_report_username"] = types.StringValue(val)
+			}
+		
+				attributeTypes["workday_report_user_password"] = types.StringType
+				if sv, ok := configValues["workday_report_user_password"].(string); ok {
+					attributeValues["workday_report_user_password"] = types.StringValue(sv)
+				} else {
+				 	attributeValues["workday_report_user_password"] = types.StringNull()
+				}
+			r.WorkdayGroupReport = types.ObjectValueMust(attributeTypes, attributeValues)
+	}}
+
+                  
+              }
+          }
+       }
 }

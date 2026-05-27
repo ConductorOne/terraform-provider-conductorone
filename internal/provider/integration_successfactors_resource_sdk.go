@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationSuccessfactorsResourceModel) ToCreateDelegatedSDKType() *sha
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("SuccessFactors"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationSuccessfactorsResourceModel) ToCreateSDKType() (*shared.Conn
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationSuccessfactorsResourceModel) ToUpdateSDKType() (*shared.Conn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationSuccessfactorsResourceModel) ToUpdateSDKType() (*shared.Conn
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("SuccessFactors"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(successfactorsCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("SuccessFactors"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(successfactorsCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,66 +95,87 @@ func (r *IntegrationSuccessfactorsResourceModel) ToUpdateSDKType() (*shared.Conn
 
 func (r *IntegrationSuccessfactorsResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		companyId := new(string)
+if !r.CompanyId.IsUnknown() && !r.CompanyId.IsNull() {
+*companyId = r.CompanyId.ValueString()
+configValues["company-id"] = companyId
+}
 
-	companyId := new(string)
-	if !r.CompanyId.IsUnknown() && !r.CompanyId.IsNull() {
-		*companyId = r.CompanyId.ValueString()
-		configValues["company-id"] = companyId
-	}
+    
+		cid := new(string)
+if !r.Cid.IsUnknown() && !r.Cid.IsNull() {
+*cid = r.Cid.ValueString()
+configValues["cid"] = cid
+}
 
-	cid := new(string)
-	if !r.Cid.IsUnknown() && !r.Cid.IsNull() {
-		*cid = r.Cid.ValueString()
-		configValues["cid"] = cid
-	}
+    
+		publicKey := new(string)
+if !r.PublicKey.IsUnknown() && !r.PublicKey.IsNull() {
+*publicKey = r.PublicKey.ValueString()
+configValues["public-key"] = publicKey
+}
 
-	publicKey := new(string)
-	if !r.PublicKey.IsUnknown() && !r.PublicKey.IsNull() {
-		*publicKey = r.PublicKey.ValueString()
-		configValues["public-key"] = publicKey
-	}
+    
+		privateKey := new(string)
+if !r.PrivateKey.IsUnknown() && !r.PrivateKey.IsNull() {
+*privateKey = r.PrivateKey.ValueString()
+configValues["private-key"] = privateKey
+}
 
-	privateKey := new(string)
-	if !r.PrivateKey.IsUnknown() && !r.PrivateKey.IsNull() {
-		*privateKey = r.PrivateKey.ValueString()
-		configValues["private-key"] = privateKey
-	}
+    
+		instanceUrl := new(string)
+if !r.InstanceUrl.IsUnknown() && !r.InstanceUrl.IsNull() {
+*instanceUrl = r.InstanceUrl.ValueString()
+configValues["instance-url"] = instanceUrl
+}
 
-	instanceUrl := new(string)
-	if !r.InstanceUrl.IsUnknown() && !r.InstanceUrl.IsNull() {
-		*instanceUrl = r.InstanceUrl.ValueString()
-		configValues["instance-url"] = instanceUrl
-	}
+    
+		issuerUrl := new(string)
+if !r.IssuerUrl.IsUnknown() && !r.IssuerUrl.IsNull() {
+*issuerUrl = r.IssuerUrl.ValueString()
+configValues["issuer-url"] = issuerUrl
+}
 
-	issuerUrl := new(string)
-	if !r.IssuerUrl.IsUnknown() && !r.IssuerUrl.IsNull() {
-		*issuerUrl = r.IssuerUrl.ValueString()
-		configValues["issuer-url"] = issuerUrl
-	}
+    
+		subjectNameId := new(string)
+if !r.SubjectNameId.IsUnknown() && !r.SubjectNameId.IsNull() {
+*subjectNameId = r.SubjectNameId.ValueString()
+configValues["subject-name-id"] = subjectNameId
+}
 
-	subjectNameId := new(string)
-	if !r.SubjectNameId.IsUnknown() && !r.SubjectNameId.IsNull() {
-		*subjectNameId = r.SubjectNameId.ValueString()
-		configValues["subject-name-id"] = subjectNameId
-	}
+    
+		samlApiKey := new(string)
+if !r.SamlApiKey.IsUnknown() && !r.SamlApiKey.IsNull() {
+*samlApiKey = r.SamlApiKey.ValueString()
+configValues["saml-api-key"] = samlApiKey
+}
 
-	samlApiKey := new(string)
-	if !r.SamlApiKey.IsUnknown() && !r.SamlApiKey.IsNull() {
-		*samlApiKey = r.SamlApiKey.ValueString()
-		configValues["saml-api-key"] = samlApiKey
-	}
+    
+		syncGroups := new(string)
+if !r.SyncGroups.IsUnknown() && !r.SyncGroups.IsNull() {
+*syncGroups = strconv.FormatBool(r.SyncGroups.ValueBool())
+configValues["sync-groups"] = syncGroups
+}
 
-	return configValues
+    
+
+    return configValues
 }
 
 func (r *IntegrationSuccessfactorsResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -202,32 +230,57 @@ func (r *IntegrationSuccessfactorsResourceModel) RefreshFromGetResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "company-id"); ok {
-					r.CompanyId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["company-id"]; ok {
+if val, ok := getStringValue(values, "company-id"); ok {
+r.CompanyId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "cid"); ok {
-					r.Cid = types.StringValue(val)
-				}
+               if _, ok := configValues["cid"]; ok {
+if val, ok := getStringValue(values, "cid"); ok {
+r.Cid = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "instance-url"); ok {
-					r.InstanceUrl = types.StringValue(val)
-				}
+               
+               
+               if _, ok := configValues["instance-url"]; ok {
+if val, ok := getStringValue(values, "instance-url"); ok {
+r.InstanceUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "issuer-url"); ok {
-					r.IssuerUrl = types.StringValue(val)
-				}
+               if _, ok := configValues["issuer-url"]; ok {
+if val, ok := getStringValue(values, "issuer-url"); ok {
+r.IssuerUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "subject-name-id"); ok {
-					r.SubjectNameId = types.StringValue(val)
-				}
+               if _, ok := configValues["subject-name-id"]; ok {
+if val, ok := getStringValue(values, "subject-name-id"); ok {
+r.SubjectNameId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+               if _, ok := configValues["sync-groups"]; ok {
+if val, ok := getStringValue(values, "sync-groups"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SyncGroups = types.BoolValue(bv)
+}
+}
+}
+
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationSuccessfactorsResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -265,30 +318,55 @@ func (r *IntegrationSuccessfactorsResourceModel) RefreshFromCreateResponse(resp 
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "company-id"); ok {
-					r.CompanyId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["company-id"]; ok {
+if val, ok := getStringValue(values, "company-id"); ok {
+r.CompanyId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "cid"); ok {
-					r.Cid = types.StringValue(val)
-				}
+                  if _, ok := configValues["cid"]; ok {
+if val, ok := getStringValue(values, "cid"); ok {
+r.Cid = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "instance-url"); ok {
-					r.InstanceUrl = types.StringValue(val)
-				}
+                  
+                  
+                  if _, ok := configValues["instance-url"]; ok {
+if val, ok := getStringValue(values, "instance-url"); ok {
+r.InstanceUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "issuer-url"); ok {
-					r.IssuerUrl = types.StringValue(val)
-				}
+                  if _, ok := configValues["issuer-url"]; ok {
+if val, ok := getStringValue(values, "issuer-url"); ok {
+r.IssuerUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "subject-name-id"); ok {
-					r.SubjectNameId = types.StringValue(val)
-				}
+                  if _, ok := configValues["subject-name-id"]; ok {
+if val, ok := getStringValue(values, "subject-name-id"); ok {
+r.SubjectNameId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+                  if _, ok := configValues["sync-groups"]; ok {
+if val, ok := getStringValue(values, "sync-groups"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.SyncGroups = types.BoolValue(bv)
+}
+}
+}
+
+                  
+              }
+          }
+       }
 }

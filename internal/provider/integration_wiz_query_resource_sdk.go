@@ -2,14 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
-	"strings"
 	"time"
+	"strings"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -23,8 +24,8 @@ func (r *IntegrationWizQueryResourceModel) ToCreateDelegatedSDKType() *shared.Co
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Wiz Query"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -37,20 +38,20 @@ func (r *IntegrationWizQueryResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -60,14 +61,19 @@ func (r *IntegrationWizQueryResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -76,12 +82,12 @@ func (r *IntegrationWizQueryResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Wiz Query"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(wizQueryCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Wiz Query"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(wizQueryCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -89,88 +95,107 @@ func (r *IntegrationWizQueryResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 
 func (r *IntegrationWizQueryResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		wizClientId := new(string)
+if !r.WizClientId.IsUnknown() && !r.WizClientId.IsNull() {
+*wizClientId = r.WizClientId.ValueString()
+configValues["wiz_client_id"] = wizClientId
+}
 
-	wizClientId := new(string)
-	if !r.WizClientId.IsUnknown() && !r.WizClientId.IsNull() {
-		*wizClientId = r.WizClientId.ValueString()
-		configValues["wiz_client_id"] = wizClientId
-	}
+    
+		wizClientSecret := new(string)
+if !r.WizClientSecret.IsUnknown() && !r.WizClientSecret.IsNull() {
+*wizClientSecret = r.WizClientSecret.ValueString()
+configValues["wiz_client_secret"] = wizClientSecret
+}
 
-	wizClientSecret := new(string)
-	if !r.WizClientSecret.IsUnknown() && !r.WizClientSecret.IsNull() {
-		*wizClientSecret = r.WizClientSecret.ValueString()
-		configValues["wiz_client_secret"] = wizClientSecret
-	}
+    
+		endpointUrl := new(string)
+if !r.EndpointUrl.IsUnknown() && !r.EndpointUrl.IsNull() {
+*endpointUrl = r.EndpointUrl.ValueString()
+configValues["endpoint_url"] = endpointUrl
+}
 
-	endpointUrl := new(string)
-	if !r.EndpointUrl.IsUnknown() && !r.EndpointUrl.IsNull() {
-		*endpointUrl = r.EndpointUrl.ValueString()
-		configValues["endpoint_url"] = endpointUrl
-	}
+    
+		authUrl := new(string)
+if !r.AuthUrl.IsUnknown() && !r.AuthUrl.IsNull() {
+*authUrl = r.AuthUrl.ValueString()
+configValues["auth_url"] = authUrl
+}
 
-	authUrl := new(string)
-	if !r.AuthUrl.IsUnknown() && !r.AuthUrl.IsNull() {
-		*authUrl = r.AuthUrl.ValueString()
-		configValues["auth_url"] = authUrl
-	}
+    
+		audience := new(string)
+if !r.Audience.IsUnknown() && !r.Audience.IsNull() {
+*audience = r.Audience.ValueString()
+configValues["audience"] = audience
+}
 
-	audience := new(string)
-	if !r.Audience.IsUnknown() && !r.Audience.IsNull() {
-		*audience = r.Audience.ValueString()
-		configValues["audience"] = audience
-	}
+    
+		projectId := new(string)
+if !r.ProjectId.IsUnknown() && !r.ProjectId.IsNull() {
+*projectId = r.ProjectId.ValueString()
+configValues["project_id"] = projectId
+}
 
-	projectId := new(string)
-	if !r.ProjectId.IsUnknown() && !r.ProjectId.IsNull() {
-		*projectId = r.ProjectId.ValueString()
-		configValues["project_id"] = projectId
-	}
+    
+		resourceIds := make([]string, 0)
+for _, item := range r.ResourceIds {
+resourceIds = append(resourceIds, item.ValueString())
+}
+if len(resourceIds) > 0 {
+configValues["resource_ids"] = strings.Join(resourceIds, ",")
+}
 
-	resourceIds := make([]string, 0)
-	for _, item := range r.ResourceIds {
-		resourceIds = append(resourceIds, item.ValueString())
-	}
-	if len(resourceIds) > 0 {
-		configValues["resource_ids"] = strings.Join(resourceIds, ",")
-	}
 
-	resourceTags := new(string)
-	if !r.ResourceTags.IsUnknown() && !r.ResourceTags.IsNull() {
-		*resourceTags = r.ResourceTags.ValueString()
-		configValues["resource_tags"] = resourceTags
-	}
+    
+		resourceTags := new(string)
+if !r.ResourceTags.IsUnknown() && !r.ResourceTags.IsNull() {
+*resourceTags = r.ResourceTags.ValueString()
+configValues["resource_tags"] = resourceTags
+}
 
-	resourceTypes := make([]string, 0)
-	for _, item := range r.ResourceTypes {
-		resourceTypes = append(resourceTypes, item.ValueString())
-	}
-	if len(resourceTypes) > 0 {
-		configValues["resource_types"] = strings.Join(resourceTypes, ",")
-	}
+    
+		resourceTypes := make([]string, 0)
+for _, item := range r.ResourceTypes {
+resourceTypes = append(resourceTypes, item.ValueString())
+}
+if len(resourceTypes) > 0 {
+configValues["resource_types"] = strings.Join(resourceTypes, ",")
+}
 
-	enableSyncIdentities := new(string)
-	if !r.EnableSyncIdentities.IsUnknown() && !r.EnableSyncIdentities.IsNull() {
-		*enableSyncIdentities = strconv.FormatBool(r.EnableSyncIdentities.ValueBool())
-		configValues["enable_sync_identities"] = enableSyncIdentities
-	}
 
-	enableSyncServiceAccounts := new(string)
-	if !r.EnableSyncServiceAccounts.IsUnknown() && !r.EnableSyncServiceAccounts.IsNull() {
-		*enableSyncServiceAccounts = strconv.FormatBool(r.EnableSyncServiceAccounts.ValueBool())
-		configValues["enable_sync_service_accounts"] = enableSyncServiceAccounts
-	}
+    
+		enableSyncIdentities := new(string)
+if !r.EnableSyncIdentities.IsUnknown() && !r.EnableSyncIdentities.IsNull() {
+*enableSyncIdentities = strconv.FormatBool(r.EnableSyncIdentities.ValueBool())
+configValues["enable_sync_identities"] = enableSyncIdentities
+}
 
-	return configValues
+    
+		enableSyncServiceAccounts := new(string)
+if !r.EnableSyncServiceAccounts.IsUnknown() && !r.EnableSyncServiceAccounts.IsNull() {
+*enableSyncServiceAccounts = strconv.FormatBool(r.EnableSyncServiceAccounts.ValueBool())
+configValues["enable_sync_service_accounts"] = enableSyncServiceAccounts
+}
+
+    
+
+    return configValues
 }
 
 func (r *IntegrationWizQueryResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -225,79 +250,98 @@ func (r *IntegrationWizQueryResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "wiz_client_id"); ok {
-					r.WizClientId = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["wiz_client_id"]; ok {
+if val, ok := getStringValue(values, "wiz_client_id"); ok {
+r.WizClientId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "endpoint_url"); ok {
-					r.EndpointUrl = types.StringValue(val)
-				}
+               
+               if _, ok := configValues["endpoint_url"]; ok {
+if val, ok := getStringValue(values, "endpoint_url"); ok {
+r.EndpointUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "auth_url"); ok {
-					r.AuthUrl = types.StringValue(val)
-				}
+               if _, ok := configValues["auth_url"]; ok {
+if val, ok := getStringValue(values, "auth_url"); ok {
+r.AuthUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "audience"); ok {
-					r.Audience = types.StringValue(val)
-				}
+               if _, ok := configValues["audience"]; ok {
+if val, ok := getStringValue(values, "audience"); ok {
+r.Audience = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "project_id"); ok {
-					r.ProjectId = types.StringValue(val)
-				}
+               if _, ok := configValues["project_id"]; ok {
+if val, ok := getStringValue(values, "project_id"); ok {
+r.ProjectId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "resource_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
-					}
-					r.ResourceIds = valLists
-				}
+               if _, ok := configValues["resource_ids"]; ok {
+if val, ok := getStringValue(values, "resource_ids"); ok {
+var valLists []types.String
+tmpList := strings.Split(val, ",")
+for _, item := range tmpList {
+item = strings.TrimSpace(item)
+if item != "" {
+valLists = append(valLists, types.StringValue(item))
+}
+}
+r.ResourceIds = valLists
+}
+}
 
-				if val, ok := getStringValue(values, "resource_tags"); ok {
-					r.ResourceTags = types.StringValue(val)
-				}
+               if _, ok := configValues["resource_tags"]; ok {
+if val, ok := getStringValue(values, "resource_tags"); ok {
+r.ResourceTags = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "resource_types"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
-					}
-					r.ResourceTypes = valLists
-				}
+               if _, ok := configValues["resource_types"]; ok {
+if val, ok := getStringValue(values, "resource_types"); ok {
+var valLists []types.String
+tmpList := strings.Split(val, ",")
+for _, item := range tmpList {
+item = strings.TrimSpace(item)
+if item != "" {
+valLists = append(valLists, types.StringValue(item))
+}
+}
+r.ResourceTypes = valLists
+}
+}
 
-				if _, ok := configValues["enable_sync_identities"]; ok {
-					if val, ok := getStringValue(values, "enable_sync_identities"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.EnableSyncIdentities = types.BoolValue(bv)
-						}
-					}
-				}
+               if _, ok := configValues["enable_sync_identities"]; ok {
+if val, ok := getStringValue(values, "enable_sync_identities"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.EnableSyncIdentities = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["enable_sync_service_accounts"]; ok {
-					if val, ok := getStringValue(values, "enable_sync_service_accounts"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.EnableSyncServiceAccounts = types.BoolValue(bv)
-						}
-					}
-				}
+               if _, ok := configValues["enable_sync_service_accounts"]; ok {
+if val, ok := getStringValue(values, "enable_sync_service_accounts"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.EnableSyncServiceAccounts = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationWizQueryResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -335,77 +379,96 @@ func (r *IntegrationWizQueryResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "wiz_client_id"); ok {
-					r.WizClientId = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["wiz_client_id"]; ok {
+if val, ok := getStringValue(values, "wiz_client_id"); ok {
+r.WizClientId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "endpoint_url"); ok {
-					r.EndpointUrl = types.StringValue(val)
-				}
+                  
+                  if _, ok := configValues["endpoint_url"]; ok {
+if val, ok := getStringValue(values, "endpoint_url"); ok {
+r.EndpointUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "auth_url"); ok {
-					r.AuthUrl = types.StringValue(val)
-				}
+                  if _, ok := configValues["auth_url"]; ok {
+if val, ok := getStringValue(values, "auth_url"); ok {
+r.AuthUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "audience"); ok {
-					r.Audience = types.StringValue(val)
-				}
+                  if _, ok := configValues["audience"]; ok {
+if val, ok := getStringValue(values, "audience"); ok {
+r.Audience = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "project_id"); ok {
-					r.ProjectId = types.StringValue(val)
-				}
+                  if _, ok := configValues["project_id"]; ok {
+if val, ok := getStringValue(values, "project_id"); ok {
+r.ProjectId = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "resource_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
-					}
-					r.ResourceIds = valLists
-				}
+                  if _, ok := configValues["resource_ids"]; ok {
+if val, ok := getStringValue(values, "resource_ids"); ok {
+var valLists []types.String
+tmpList := strings.Split(val, ",")
+for _, item := range tmpList {
+item = strings.TrimSpace(item)
+if item != "" {
+valLists = append(valLists, types.StringValue(item))
+}
+}
+r.ResourceIds = valLists
+}
+}
 
-				if val, ok := getStringValue(values, "resource_tags"); ok {
-					r.ResourceTags = types.StringValue(val)
-				}
+                  if _, ok := configValues["resource_tags"]; ok {
+if val, ok := getStringValue(values, "resource_tags"); ok {
+r.ResourceTags = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "resource_types"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
-					}
-					r.ResourceTypes = valLists
-				}
+                  if _, ok := configValues["resource_types"]; ok {
+if val, ok := getStringValue(values, "resource_types"); ok {
+var valLists []types.String
+tmpList := strings.Split(val, ",")
+for _, item := range tmpList {
+item = strings.TrimSpace(item)
+if item != "" {
+valLists = append(valLists, types.StringValue(item))
+}
+}
+r.ResourceTypes = valLists
+}
+}
 
-				if _, ok := configValues["enable_sync_identities"]; ok {
-					if val, ok := getStringValue(values, "enable_sync_identities"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.EnableSyncIdentities = types.BoolValue(bv)
-						}
-					}
-				}
+                  if _, ok := configValues["enable_sync_identities"]; ok {
+if val, ok := getStringValue(values, "enable_sync_identities"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.EnableSyncIdentities = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["enable_sync_service_accounts"]; ok {
-					if val, ok := getStringValue(values, "enable_sync_service_accounts"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.EnableSyncServiceAccounts = types.BoolValue(bv)
-						}
-					}
-				}
+                  if _, ok := configValues["enable_sync_service_accounts"]; ok {
+if val, ok := getStringValue(values, "enable_sync_service_accounts"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.EnableSyncServiceAccounts = types.BoolValue(bv)
+}
+}
+}
 
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

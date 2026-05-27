@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
+    "fmt"
 	"strconv"
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationArtifactoryResourceModel) ToCreateDelegatedSDKType() *shared
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Artifactory"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationArtifactoryResourceModel) ToCreateSDKType() (*shared.Connect
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,17 +61,17 @@ func (r *IntegrationArtifactoryResourceModel) ToUpdateSDKType() (*shared.Connect
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {
+			} else {	
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -80,12 +82,12 @@ func (r *IntegrationArtifactoryResourceModel) ToUpdateSDKType() (*shared.Connect
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Artifactory"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(artifactoryCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Artifactory"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(artifactoryCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -93,66 +95,76 @@ func (r *IntegrationArtifactoryResourceModel) ToUpdateSDKType() (*shared.Connect
 
 func (r *IntegrationArtifactoryResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		artifactoryBaseUrl := new(string)
+if !r.ArtifactoryBaseUrl.IsUnknown() && !r.ArtifactoryBaseUrl.IsNull() {
+*artifactoryBaseUrl = r.ArtifactoryBaseUrl.ValueString()
+configValues["artifactory-base-url"] = artifactoryBaseUrl
+}
 
-	artifactoryBaseUrl := new(string)
-	if !r.ArtifactoryBaseUrl.IsUnknown() && !r.ArtifactoryBaseUrl.IsNull() {
-		*artifactoryBaseUrl = r.ArtifactoryBaseUrl.ValueString()
-		configValues["artifactory-base-url"] = artifactoryBaseUrl
-	}
+    
+		artifactoryReferenceToken := new(string)
+if !r.ArtifactoryReferenceToken.IsUnknown() && !r.ArtifactoryReferenceToken.IsNull() {
+*artifactoryReferenceToken = r.ArtifactoryReferenceToken.ValueString()
+configValues["artifactory-reference-token"] = artifactoryReferenceToken
+}
 
-	artifactoryReferenceToken := new(string)
-	if !r.ArtifactoryReferenceToken.IsUnknown() && !r.ArtifactoryReferenceToken.IsNull() {
-		*artifactoryReferenceToken = r.ArtifactoryReferenceToken.ValueString()
-		configValues["artifactory-reference-token"] = artifactoryReferenceToken
-	}
+    
+		logLevel := new(string)
+if !r.LogLevel.IsUnknown() && !r.LogLevel.IsNull() {
+*logLevel = r.LogLevel.ValueString()
+configValues["log-level"] = logLevel
+}
 
-	logLevel := new(string)
-	if !r.LogLevel.IsUnknown() && !r.LogLevel.IsNull() {
-		*logLevel = r.LogLevel.ValueString()
-		configValues["log-level"] = logLevel
-	}
+    
+		otelCollectorEndpoint := new(string)
+if !r.OtelCollectorEndpoint.IsUnknown() && !r.OtelCollectorEndpoint.IsNull() {
+*otelCollectorEndpoint = r.OtelCollectorEndpoint.ValueString()
+configValues["otel-collector-endpoint"] = otelCollectorEndpoint
+}
 
-	otelCollectorEndpoint := new(string)
-	if !r.OtelCollectorEndpoint.IsUnknown() && !r.OtelCollectorEndpoint.IsNull() {
-		*otelCollectorEndpoint = r.OtelCollectorEndpoint.ValueString()
-		configValues["otel-collector-endpoint"] = otelCollectorEndpoint
-	}
+    
+		otelCollectorEndpointTlsCert := new(string)
+if !r.OtelCollectorEndpointTlsCert.IsUnknown() && !r.OtelCollectorEndpointTlsCert.IsNull() {
+*otelCollectorEndpointTlsCert = r.OtelCollectorEndpointTlsCert.ValueString()
+configValues["otel-collector-endpoint-tls-cert"] = otelCollectorEndpointTlsCert
+}
 
-	otelCollectorEndpointTlsCert := new(string)
-	if !r.OtelCollectorEndpointTlsCert.IsUnknown() && !r.OtelCollectorEndpointTlsCert.IsNull() {
-		*otelCollectorEndpointTlsCert = r.OtelCollectorEndpointTlsCert.ValueString()
-		configValues["otel-collector-endpoint-tls-cert"] = otelCollectorEndpointTlsCert
-	}
+    
+		otelCollectorEndpointTlsCertPath := new(string)
+if !r.OtelCollectorEndpointTlsCertPath.IsUnknown() && !r.OtelCollectorEndpointTlsCertPath.IsNull() {
+*otelCollectorEndpointTlsCertPath = r.OtelCollectorEndpointTlsCertPath.ValueString()
+configValues["otel-collector-endpoint-tls-cert-path"] = otelCollectorEndpointTlsCertPath
+}
 
-	otelCollectorEndpointTlsCertPath := new(string)
-	if !r.OtelCollectorEndpointTlsCertPath.IsUnknown() && !r.OtelCollectorEndpointTlsCertPath.IsNull() {
-		*otelCollectorEndpointTlsCertPath = r.OtelCollectorEndpointTlsCertPath.ValueString()
-		configValues["otel-collector-endpoint-tls-cert-path"] = otelCollectorEndpointTlsCertPath
-	}
+    
+		otelCollectorEndpointTlsInsecure := new(string)
+if !r.OtelCollectorEndpointTlsInsecure.IsUnknown() && !r.OtelCollectorEndpointTlsInsecure.IsNull() {
+*otelCollectorEndpointTlsInsecure = strconv.FormatBool(r.OtelCollectorEndpointTlsInsecure.ValueBool())
+configValues["otel-collector-endpoint-tls-insecure"] = otelCollectorEndpointTlsInsecure
+}
 
-	otelCollectorEndpointTlsInsecure := new(string)
-	if !r.OtelCollectorEndpointTlsInsecure.IsUnknown() && !r.OtelCollectorEndpointTlsInsecure.IsNull() {
-		*otelCollectorEndpointTlsInsecure = strconv.FormatBool(r.OtelCollectorEndpointTlsInsecure.ValueBool())
-		configValues["otel-collector-endpoint-tls-insecure"] = otelCollectorEndpointTlsInsecure
-	}
+    
+		otelLoggingDisabled := new(string)
+if !r.OtelLoggingDisabled.IsUnknown() && !r.OtelLoggingDisabled.IsNull() {
+*otelLoggingDisabled = strconv.FormatBool(r.OtelLoggingDisabled.ValueBool())
+configValues["otel-logging-disabled"] = otelLoggingDisabled
+}
 
-	otelLoggingDisabled := new(string)
-	if !r.OtelLoggingDisabled.IsUnknown() && !r.OtelLoggingDisabled.IsNull() {
-		*otelLoggingDisabled = strconv.FormatBool(r.OtelLoggingDisabled.ValueBool())
-		configValues["otel-logging-disabled"] = otelLoggingDisabled
-	}
+    
+		otelTracingDisabled := new(string)
+if !r.OtelTracingDisabled.IsUnknown() && !r.OtelTracingDisabled.IsNull() {
+*otelTracingDisabled = strconv.FormatBool(r.OtelTracingDisabled.ValueBool())
+configValues["otel-tracing-disabled"] = otelTracingDisabled
+}
 
-	otelTracingDisabled := new(string)
-	if !r.OtelTracingDisabled.IsUnknown() && !r.OtelTracingDisabled.IsNull() {
-		*otelTracingDisabled = strconv.FormatBool(r.OtelTracingDisabled.ValueBool())
-		configValues["otel-tracing-disabled"] = otelTracingDisabled
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationArtifactoryResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -161,7 +173,7 @@ func (r *IntegrationArtifactoryResourceModel) getConfig() (map[string]interface{
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {
+			} else {	
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -218,57 +230,68 @@ func (r *IntegrationArtifactoryResourceModel) RefreshFromGetResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               
+               
+               if _, ok := configValues["log-level"]; ok {
+if val, ok := getStringValue(values, "log-level"); ok {
+r.LogLevel = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "log-level"); ok {
-					r.LogLevel = types.StringValue(val)
-				}
+               if _, ok := configValues["otel-collector-endpoint"]; ok {
+if val, ok := getStringValue(values, "otel-collector-endpoint"); ok {
+r.OtelCollectorEndpoint = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint"); ok {
-					r.OtelCollectorEndpoint = types.StringValue(val)
-				}
+               if _, ok := configValues["otel-collector-endpoint-tls-cert"]; ok {
+if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert"); ok {
+r.OtelCollectorEndpointTlsCert = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert"); ok {
-					r.OtelCollectorEndpointTlsCert = types.StringValue(val)
-				}
+               if _, ok := configValues["otel-collector-endpoint-tls-cert-path"]; ok {
+if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert-path"); ok {
+r.OtelCollectorEndpointTlsCertPath = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert-path"); ok {
-					r.OtelCollectorEndpointTlsCertPath = types.StringValue(val)
-				}
+               if _, ok := configValues["otel-collector-endpoint-tls-insecure"]; ok {
+if val, ok := getStringValue(values, "otel-collector-endpoint-tls-insecure"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.OtelCollectorEndpointTlsInsecure = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["otel-collector-endpoint-tls-insecure"]; ok {
-					if val, ok := getStringValue(values, "otel-collector-endpoint-tls-insecure"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.OtelCollectorEndpointTlsInsecure = types.BoolValue(bv)
-						}
-					}
-				}
+               if _, ok := configValues["otel-logging-disabled"]; ok {
+if val, ok := getStringValue(values, "otel-logging-disabled"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.OtelLoggingDisabled = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["otel-logging-disabled"]; ok {
-					if val, ok := getStringValue(values, "otel-logging-disabled"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.OtelLoggingDisabled = types.BoolValue(bv)
-						}
-					}
-				}
+               if _, ok := configValues["otel-tracing-disabled"]; ok {
+if val, ok := getStringValue(values, "otel-tracing-disabled"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.OtelTracingDisabled = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["otel-tracing-disabled"]; ok {
-					if val, ok := getStringValue(values, "otel-tracing-disabled"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.OtelTracingDisabled = types.BoolValue(bv)
-						}
-					}
-				}
-
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationArtifactoryResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -306,55 +329,66 @@ func (r *IntegrationArtifactoryResourceModel) RefreshFromCreateResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	configValues := r.populateConfig()
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  
+                  
+                  if _, ok := configValues["log-level"]; ok {
+if val, ok := getStringValue(values, "log-level"); ok {
+r.LogLevel = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "log-level"); ok {
-					r.LogLevel = types.StringValue(val)
-				}
+                  if _, ok := configValues["otel-collector-endpoint"]; ok {
+if val, ok := getStringValue(values, "otel-collector-endpoint"); ok {
+r.OtelCollectorEndpoint = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint"); ok {
-					r.OtelCollectorEndpoint = types.StringValue(val)
-				}
+                  if _, ok := configValues["otel-collector-endpoint-tls-cert"]; ok {
+if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert"); ok {
+r.OtelCollectorEndpointTlsCert = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert"); ok {
-					r.OtelCollectorEndpointTlsCert = types.StringValue(val)
-				}
+                  if _, ok := configValues["otel-collector-endpoint-tls-cert-path"]; ok {
+if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert-path"); ok {
+r.OtelCollectorEndpointTlsCertPath = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert-path"); ok {
-					r.OtelCollectorEndpointTlsCertPath = types.StringValue(val)
-				}
+                  if _, ok := configValues["otel-collector-endpoint-tls-insecure"]; ok {
+if val, ok := getStringValue(values, "otel-collector-endpoint-tls-insecure"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.OtelCollectorEndpointTlsInsecure = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["otel-collector-endpoint-tls-insecure"]; ok {
-					if val, ok := getStringValue(values, "otel-collector-endpoint-tls-insecure"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.OtelCollectorEndpointTlsInsecure = types.BoolValue(bv)
-						}
-					}
-				}
+                  if _, ok := configValues["otel-logging-disabled"]; ok {
+if val, ok := getStringValue(values, "otel-logging-disabled"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.OtelLoggingDisabled = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["otel-logging-disabled"]; ok {
-					if val, ok := getStringValue(values, "otel-logging-disabled"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.OtelLoggingDisabled = types.BoolValue(bv)
-						}
-					}
-				}
+                  if _, ok := configValues["otel-tracing-disabled"]; ok {
+if val, ok := getStringValue(values, "otel-tracing-disabled"); ok {
+bv, err := strconv.ParseBool(val)
+if err == nil {
+r.OtelTracingDisabled = types.BoolValue(bv)
+}
+}
+}
 
-				if _, ok := configValues["otel-tracing-disabled"]; ok {
-					if val, ok := getStringValue(values, "otel-tracing-disabled"); ok {
-						bv, err := strconv.ParseBool(val)
-						if err == nil {
-							r.OtelTracingDisabled = types.BoolValue(bv)
-						}
-					}
-				}
-
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }

@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationOracleIdcsResourceModel) ToCreateDelegatedSDKType() *shared.
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Oracle IDCS"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationOracleIdcsResourceModel) ToCreateSDKType() (*shared.Connecto
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationOracleIdcsResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationOracleIdcsResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Oracle IDCS"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(oracleIdcsCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Oracle IDCS"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(oracleIdcsCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,36 +95,45 @@ func (r *IntegrationOracleIdcsResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 func (r *IntegrationOracleIdcsResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		apiBaseDomain := new(string)
+if !r.ApiBaseDomain.IsUnknown() && !r.ApiBaseDomain.IsNull() {
+*apiBaseDomain = r.ApiBaseDomain.ValueString()
+configValues["api-base-domain"] = apiBaseDomain
+}
 
-	apiBaseDomain := new(string)
-	if !r.ApiBaseDomain.IsUnknown() && !r.ApiBaseDomain.IsNull() {
-		*apiBaseDomain = r.ApiBaseDomain.ValueString()
-		configValues["api-base-domain"] = apiBaseDomain
-	}
+    
+		apiAccessId := new(string)
+if !r.ApiAccessId.IsUnknown() && !r.ApiAccessId.IsNull() {
+*apiAccessId = r.ApiAccessId.ValueString()
+configValues["api-access-id"] = apiAccessId
+}
 
-	apiAccessId := new(string)
-	if !r.ApiAccessId.IsUnknown() && !r.ApiAccessId.IsNull() {
-		*apiAccessId = r.ApiAccessId.ValueString()
-		configValues["api-access-id"] = apiAccessId
-	}
+    
+		apiAccessSecret := new(string)
+if !r.ApiAccessSecret.IsUnknown() && !r.ApiAccessSecret.IsNull() {
+*apiAccessSecret = r.ApiAccessSecret.ValueString()
+configValues["api-access-secret"] = apiAccessSecret
+}
 
-	apiAccessSecret := new(string)
-	if !r.ApiAccessSecret.IsUnknown() && !r.ApiAccessSecret.IsNull() {
-		*apiAccessSecret = r.ApiAccessSecret.ValueString()
-		configValues["api-access-secret"] = apiAccessSecret
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationOracleIdcsResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -172,20 +188,28 @@ func (r *IntegrationOracleIdcsResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "api-base-domain"); ok {
-					r.ApiBaseDomain = types.StringValue(val)
-				}
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               if _, ok := configValues["api-base-domain"]; ok {
+if val, ok := getStringValue(values, "api-base-domain"); ok {
+r.ApiBaseDomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "api-access-id"); ok {
-					r.ApiAccessId = types.StringValue(val)
-				}
+               if _, ok := configValues["api-access-id"]; ok {
+if val, ok := getStringValue(values, "api-access-id"); ok {
+r.ApiAccessId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+               
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationOracleIdcsResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -223,18 +247,26 @@ func (r *IntegrationOracleIdcsResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "api-base-domain"); ok {
-					r.ApiBaseDomain = types.StringValue(val)
-				}
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  if _, ok := configValues["api-base-domain"]; ok {
+if val, ok := getStringValue(values, "api-base-domain"); ok {
+r.ApiBaseDomain = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "api-access-id"); ok {
-					r.ApiAccessId = types.StringValue(val)
-				}
+                  if _, ok := configValues["api-access-id"]; ok {
+if val, ok := getStringValue(values, "api-access-id"); ok {
+r.ApiAccessId = types.StringValue(val)
+}
+}
 
-			}
-		}
-	}
+                  
+                  
+              }
+          }
+       }
 }

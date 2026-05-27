@@ -2,13 +2,15 @@
 package provider
 
 import (
-	"fmt"
-
+    "fmt"
+	
 	"time"
+	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-
+	
+	
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -22,8 +24,8 @@ func (r *IntegrationLinodeResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Linode"),
-		CatalogID:   catalogID,
-		UserIds:     userIds,
+		CatalogID: catalogID,
+		UserIds:   userIds,
 	}
 	return &out
 }
@@ -36,20 +38,20 @@ func (r *IntegrationLinodeResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	}
 
 	configOut, configSet := r.getConfig()
-	if !configSet {
-		return nil, fmt.Errorf("config must be set for create request")
-	}
+    if !configSet {
+        return nil, fmt.Errorf("config must be set for create request")
+    }
 
-	out := shared.ConnectorServiceCreateRequest{
-		CatalogID: catalogID,
-		UserIds:   userIds,
-		Config: &shared.ConnectorServiceCreateRequestConfig{
-			AtType: sdk.String(envConfigType),
-			AdditionalProperties: map[string]interface{}{
-				"configuration": configOut,
-			},
-		},
-	}
+    out := shared.ConnectorServiceCreateRequest{
+        CatalogID: catalogID,
+        UserIds:   userIds,
+        Config: &shared.ConnectorServiceCreateRequestConfig{
+            AtType: sdk.String(envConfigType),
+            AdditionalProperties: map[string]interface{}{
+                "configuration": configOut,
+            },
+        },
+    }
 	return &out, nil
 }
 
@@ -59,14 +61,19 @@ func (r *IntegrationLinodeResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 
-	configOut := make(map[string]interface{})
-	configSet := false
-	for key, configValue := range configValues {
+    configOut := make(map[string]interface{})
+    configSet := false
+    for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -75,12 +82,12 @@ func (r *IntegrationLinodeResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	}
 
 	out := shared.ConnectorInput{
-		DisplayName: sdk.String("Linode"),
-		AppID:       sdk.String(r.AppID.ValueString()),
-		CatalogID:   sdk.String(linodeCatalogID),
-		ID:          sdk.String(r.ID.ValueString()),
-		UserIds:     userIds,
-		Config:      makeConnectorConfig(configOut),
+	    DisplayName: sdk.String("Linode"),
+		AppID:     sdk.String(r.AppID.ValueString()),
+		CatalogID: sdk.String(linodeCatalogID),
+		ID:        sdk.String(r.ID.ValueString()),
+		UserIds:   userIds,
+		Config: makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -88,30 +95,38 @@ func (r *IntegrationLinodeResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 
 func (r *IntegrationLinodeResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
+    
+		linodeAuthorizationToken := new(string)
+if !r.LinodeAuthorizationToken.IsUnknown() && !r.LinodeAuthorizationToken.IsNull() {
+*linodeAuthorizationToken = r.LinodeAuthorizationToken.ValueString()
+configValues["linode-authorization-token"] = linodeAuthorizationToken
+}
 
-	linodeAuthorizationToken := new(string)
-	if !r.LinodeAuthorizationToken.IsUnknown() && !r.LinodeAuthorizationToken.IsNull() {
-		*linodeAuthorizationToken = r.LinodeAuthorizationToken.ValueString()
-		configValues["linode-authorization-token"] = linodeAuthorizationToken
-	}
+    
+		linodeApiUrl := new(string)
+if !r.LinodeApiUrl.IsUnknown() && !r.LinodeApiUrl.IsNull() {
+*linodeApiUrl = r.LinodeApiUrl.ValueString()
+configValues["linode-api-url"] = linodeApiUrl
+}
 
-	linodeApiUrl := new(string)
-	if !r.LinodeApiUrl.IsUnknown() && !r.LinodeApiUrl.IsNull() {
-		*linodeApiUrl = r.LinodeApiUrl.ValueString()
-		configValues["linode-api-url"] = linodeApiUrl
-	}
+    
 
-	return configValues
+    return configValues
 }
 
 func (r *IntegrationLinodeResourceModel) getConfig() (map[string]interface{}, bool) {
-	configValues := r.populateConfig()
+    configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {	
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -166,17 +181,22 @@ func (r *IntegrationLinodeResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+    
+    configValues := r.populateConfig()
+    if resp.Config != nil && *resp.Config.AtType == envConfigType {
+       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+           if values, ok := config["configuration"].(map[string]interface{}); ok {
+               
+               if _, ok := configValues["linode-api-url"]; ok {
+if val, ok := getStringValue(values, "linode-api-url"); ok {
+r.LinodeApiUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "linode-api-url"); ok {
-					r.LinodeApiUrl = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+               
+           }
+       }
+    }
 }
 
 func (r *IntegrationLinodeResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -214,15 +234,20 @@ func (r *IntegrationLinodeResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-	if resp.Config != nil && *resp.Config.AtType == envConfigType {
-		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-			if values, ok := config["configuration"].(map[string]interface{}); ok {
+   
+       configValues := r.populateConfig()
+       if resp.Config != nil && *resp.Config.AtType == envConfigType {
+          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+              if values, ok := config["configuration"].(map[string]interface{}); ok {
+                  
+                  if _, ok := configValues["linode-api-url"]; ok {
+if val, ok := getStringValue(values, "linode-api-url"); ok {
+r.LinodeApiUrl = types.StringValue(val)
+}
+}
 
-				if val, ok := getStringValue(values, "linode-api-url"); ok {
-					r.LinodeApiUrl = types.StringValue(val)
-				}
-
-			}
-		}
-	}
+                  
+              }
+          }
+       }
 }
