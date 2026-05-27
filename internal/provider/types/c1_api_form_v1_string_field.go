@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type FormStringField struct {
+type C1APIFormV1StringField struct {
 	PasswordField *PasswordField `tfsdk:"password_field"`
 	PickerField   *PickerField   `tfsdk:"picker_field"`
 	SelectField   *SelectField   `tfsdk:"select_field"`

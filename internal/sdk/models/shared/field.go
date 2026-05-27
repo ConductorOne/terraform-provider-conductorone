@@ -37,7 +37,7 @@ type Field struct {
 	// Must not start with `C1_` and match [a-zA-Z0-9_]{2,64}.  Must be unique within a connector.
 	Name *string `json:"name,omitempty"`
 	// The OAuth2Field message.
-	OAuth2Field *OAuth2Field1 `json:"oauth2,omitempty"`
+	OAuth2Field *OAuth2Field `json:"oauth2,omitempty"`
 	// The OptionsField message.
 	OptionsField *OptionsField `json:"options,omitempty"`
 	// The placeholder field.
@@ -118,7 +118,7 @@ func (f *Field) GetName() *string {
 	return f.Name
 }
 
-func (f *Field) GetOAuth2Field() *OAuth2Field1 {
+func (f *Field) GetOAuth2Field() *OAuth2Field {
 	if f == nil {
 		return nil
 	}

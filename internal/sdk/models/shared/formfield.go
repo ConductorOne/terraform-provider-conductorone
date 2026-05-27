@@ -18,8 +18,6 @@ package shared
 //   - adminConfig
 //   - sharedConfig
 type FormField struct {
-	// The AdminProviderConfig message.
-	AdminProviderConfig *AdminProviderConfig `json:"adminConfig,omitempty"`
 	// The BoolField message.
 	//
 	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
@@ -45,18 +43,6 @@ type FormField struct {
 	Int64Field *Int64Field `json:"int64Field,omitempty"`
 	// The name field.
 	Name *string `json:"name,omitempty"`
-	// The Oauth2Field message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - oauth2FieldView
-	//
-	Oauth2Field *Oauth2Field `json:"oauth2Field,omitempty"`
-	// When true, this field is displayed to the user but cannot be edited.
-	ReadOnly *bool `json:"readOnly,omitempty"`
-	// The required field.
-	Required *bool `json:"required,omitempty"`
-	// The SharedProviderConfig message.
-	SharedProviderConfig *SharedProviderConfig `json:"sharedConfig,omitempty"`
 	// The StringField message.
 	//
 	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
@@ -65,18 +51,7 @@ type FormField struct {
 	//   - selectField
 	//   - pickerField
 	//
-	FormStringField *FormStringField `json:"stringField,omitempty"`
-	// The StringMapField message.
-	FormStringMapField *FormStringMapField `json:"stringMapField,omitempty"`
-	// The UserProviderConfig message.
-	UserProviderConfig *UserProviderConfig `json:"userConfig,omitempty"`
-}
-
-func (f *FormField) GetAdminProviderConfig() *AdminProviderConfig {
-	if f == nil {
-		return nil
-	}
-	return f.AdminProviderConfig
+	StringField *C1APIFormV1StringField `json:"stringField,omitempty"`
 }
 
 func (f *FormField) GetBoolField() *BoolField {
@@ -121,51 +96,9 @@ func (f *FormField) GetName() *string {
 	return f.Name
 }
 
-func (f *FormField) GetOauth2Field() *Oauth2Field {
+func (f *FormField) GetStringField() *C1APIFormV1StringField {
 	if f == nil {
 		return nil
 	}
-	return f.Oauth2Field
-}
-
-func (f *FormField) GetReadOnly() *bool {
-	if f == nil {
-		return nil
-	}
-	return f.ReadOnly
-}
-
-func (f *FormField) GetRequired() *bool {
-	if f == nil {
-		return nil
-	}
-	return f.Required
-}
-
-func (f *FormField) GetSharedProviderConfig() *SharedProviderConfig {
-	if f == nil {
-		return nil
-	}
-	return f.SharedProviderConfig
-}
-
-func (f *FormField) GetFormStringField() *FormStringField {
-	if f == nil {
-		return nil
-	}
-	return f.FormStringField
-}
-
-func (f *FormField) GetFormStringMapField() *FormStringMapField {
-	if f == nil {
-		return nil
-	}
-	return f.FormStringMapField
-}
-
-func (f *FormField) GetUserProviderConfig() *UserProviderConfig {
-	if f == nil {
-		return nil
-	}
-	return f.UserProviderConfig
+	return f.StringField
 }

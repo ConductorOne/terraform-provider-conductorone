@@ -2,14 +2,14 @@
 
 package shared
 
-// FormStringField - The StringField message.
+// C1APIFormV1StringField - The StringField message.
 //
 // This message contains a oneof named view. Only a single field of the following list may be set at a time:
 //   - textField
 //   - passwordField
 //   - selectField
 //   - pickerField
-type FormStringField struct {
+type C1APIFormV1StringField struct {
 	// The defaultValue field.
 	DefaultValue *string `json:"defaultValue,omitempty"`
 	// The PasswordField message.
@@ -45,51 +45,54 @@ type FormStringField struct {
 	TextField *TextField `json:"textField,omitempty"`
 }
 
-func (f *FormStringField) GetDefaultValue() *string {
-	if f == nil {
+func (c *C1APIFormV1StringField) GetDefaultValue() *string {
+	if c == nil {
 		return nil
 	}
-	return f.DefaultValue
+	return c.DefaultValue
 }
 
-func (f *FormStringField) GetPasswordField() *PasswordField {
-	if f == nil {
+func (c *C1APIFormV1StringField) GetPasswordField() *PasswordField {
+	if c == nil {
 		return nil
 	}
-	return f.PasswordField
+	return c.PasswordField
 }
 
-func (f *FormStringField) GetPickerField() *PickerField {
-	if f == nil {
+func (c *C1APIFormV1StringField) GetPickerField() *PickerField {
+	if c == nil {
 		return nil
 	}
-	return f.PickerField
+	return c.PickerField
 }
 
-func (f *FormStringField) GetPlaceholder() *string {
-	if f == nil {
+func (c *C1APIFormV1StringField) GetPlaceholder() *string {
+	if c == nil {
 		return nil
 	}
-	return f.Placeholder
+	return c.Placeholder
 }
 
-func (f *FormStringField) GetStringRules() *StringRules {
-	if f == nil {
+func (c *C1APIFormV1StringField) GetStringRules() *StringRules {
+	if c == nil {
 		return nil
 	}
-	return f.StringRules
+	return c.StringRules
 }
 
-func (f *FormStringField) GetSelectField() *SelectField {
-	if f == nil {
+func (c *C1APIFormV1StringField) GetSelectField() *SelectField {
+	if c == nil {
 		return nil
 	}
-	return f.SelectField
+	return c.SelectField
 }
 
-func (f *FormStringField) GetTextField() *TextField {
-	if f == nil {
+func (c *C1APIFormV1StringField) GetTextField() *TextField {
+	if c == nil {
 		return nil
 	}
-	return f.TextField
+	return c.TextField
 }
+
+// #region class-body-c1apiformv1stringfield
+// #endregion class-body-c1apiformv1stringfield

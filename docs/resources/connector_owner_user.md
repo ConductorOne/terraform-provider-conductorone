@@ -58,7 +58,6 @@ Read-Only:
 
 - `created_at` (String)
 - `delegated_user_id` (String) The id of the user to whom tasks will be automatically reassigned to.
-- `deleted_at` (String)
 - `department` (String) The department which the user belongs to in the organization.
 - `department_sources` (Attributes List) A list of objects mapped based on department attribute mappings configured in the system. (see [below for nested schema](#nestedatt--user--department_sources))
 - `directory_ids` (List of String) A list of unique ids that represent different directories.

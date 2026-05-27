@@ -51,10 +51,6 @@ resource "conductorone_request_schema" "my_request_schema" {
   ]
   fields = [
     {
-      admin_provider_config = {
-        default_value_cel = "...my_default_value_cel..."
-        show_to_user      = false
-      }
       bool_field = {
         bool_rules = {
           const = false
@@ -78,7 +74,31 @@ resource "conductorone_request_schema" "my_request_schema" {
         }
         max_file_size = "...my_max_file_size..."
       }
-      form_string_field = {
+      int64_field = {
+        default_value = "...my_default_value..."
+        int64_rules = {
+          const        = "...my_const..."
+          gt           = "...my_gt..."
+          gte          = "...my_gte..."
+          ignore_empty = true
+          in = [
+            "..."
+          ]
+          lt  = "...my_lt..."
+          lte = "...my_lte..."
+          not_in = [
+            "..."
+          ]
+        }
+        number_field = {
+          max_value = "...my_max_value..."
+          min_value = "...my_min_value..."
+          step      = "...my_step..."
+        }
+        placeholder = "...my_placeholder..."
+      }
+      name = "...my_name..."
+      string_field = {
         default_value = "...my_default_value..."
         password_field = {
           # ...
@@ -107,7 +127,7 @@ resource "conductorone_request_schema" "my_request_schema" {
           type = "SELECT_TYPE_RADIO"
         }
         string_rules = {
-          address      = true
+          address      = false
           const        = "...my_const..."
           contains     = "...my_contains..."
           email        = true
@@ -116,9 +136,9 @@ resource "conductorone_request_schema" "my_request_schema" {
           in = [
             "..."
           ]
-          ip           = false
-          ipv4         = true
-          ipv6         = false
+          ip           = true
+          ipv4         = false
+          ipv6         = true
           len_bytes    = "...my_len_bytes..."
           length       = "...my_length..."
           max_bytes    = "...my_max_bytes..."
@@ -131,7 +151,7 @@ resource "conductorone_request_schema" "my_request_schema" {
           ]
           pattern          = "...my_pattern..."
           prefix           = "...my_prefix..."
-          strict           = false
+          strict           = true
           suffix           = "...my_suffix..."
           uri              = false
           uri_ref          = true
@@ -142,54 +162,6 @@ resource "conductorone_request_schema" "my_request_schema" {
           multiline = false
           suffix    = "...my_suffix..."
         }
-      }
-      form_string_map_field = {
-        default_value = {
-          key = "value"
-        }
-        string_map_rules = {
-          is_required    = false
-          validate_empty = false
-        }
-      }
-      int64_field = {
-        default_value = "...my_default_value..."
-        int64_rules = {
-          const        = "...my_const..."
-          gt           = "...my_gt..."
-          gte          = "...my_gte..."
-          ignore_empty = true
-          in = [
-            "..."
-          ]
-          lt  = "...my_lt..."
-          lte = "...my_lte..."
-          not_in = [
-            "..."
-          ]
-        }
-        number_field = {
-          max_value = "...my_max_value..."
-          min_value = "...my_min_value..."
-          step      = "...my_step..."
-        }
-        placeholder = "...my_placeholder..."
-      }
-      name = "...my_name..."
-      oauth2_field = {
-        oauth2_field_view = {
-          # ...
-        }
-      }
-      read_only = true
-      required  = false
-      shared_provider_config = {
-        default_value_cel        = "...my_default_value_cel..."
-        input_transformation_cel = "...my_input_transformation_cel..."
-        lock_default_values      = false
-      }
-      user_provider_config = {
-        input_transformation_cel = "...my_input_transformation_cel..."
       }
     }
   ]
@@ -203,15 +175,62 @@ resource "conductorone_request_schema" "my_request_schema" {
 
 ### Optional
 
-- `description` (String) The description field.
-- `fields` (Attributes List) The fields field. (see [below for nested schema](#nestedatt--fields))
-- `name` (String) The name field.
+- `description` (String) An optional description of the request schema's purpose.
+- `field_groups` (Attributes List) Logical groupings of fields for display purposes. (see [below for nested schema](#nestedatt--field_groups))
+- `field_relationships` (Attributes List) Dependencies between fields that control conditional visibility or validation. (see [below for nested schema](#nestedatt--field_relationships))
+- `fields` (Attributes List) The form fields that users must fill out when requesting access. (see [below for nested schema](#nestedatt--fields))
+- `justification_visibility` (String) Controls whether the justification field is shown or hidden on the request form. possible known values include one of ["JUSTIFICATION_VISIBILITY_UNSPECIFIED", "JUSTIFICATION_VISIBILITY_SHOW", "JUSTIFICATION_VISIBILITY_HIDE"]
+- `name` (String) The human-readable name for the request schema.
 
 ### Read-Only
 
 - `created_at` (String)
-- `field_relationships` (Attributes List) The fieldRelationships field. (see [below for nested schema](#nestedatt--field_relationships))
-- `id` (String) The id field.
+- `id` (String) The unique identifier of this request schema.
+
+<a id="nestedatt--field_groups"></a>
+### Nested Schema for `field_groups`
+
+Optional:
+
+- `default` (Boolean) The default field.
+- `display_name` (String) The displayName field.
+- `fields` (List of String) The fields field.
+- `help_text` (String) The helpText field.
+- `name` (String) The name field.
+
+
+<a id="nestedatt--field_relationships"></a>
+### Nested Schema for `field_relationships`
+
+Optional:
+
+- `at_least_one` (Attributes) The AtLeastOne message. (see [below for nested schema](#nestedatt--field_relationships--at_least_one))
+- `dependent_on` (Attributes) DependentOn means the fields in field_names are only valid if all fields
+ in dependency_field_names are also present (see [below for nested schema](#nestedatt--field_relationships--dependent_on))
+- `field_names` (List of String) The names of the fields that share this relationship
+- `mutually_exclusive` (Attributes) The MutuallyExclusive message. (see [below for nested schema](#nestedatt--field_relationships--mutually_exclusive))
+- `required_together` (Attributes) The RequiredTogether message. (see [below for nested schema](#nestedatt--field_relationships--required_together))
+
+<a id="nestedatt--field_relationships--at_least_one"></a>
+### Nested Schema for `field_relationships.at_least_one`
+
+
+<a id="nestedatt--field_relationships--dependent_on"></a>
+### Nested Schema for `field_relationships.dependent_on`
+
+Optional:
+
+- `dependency_field_names` (List of String) The fields that must be present for the primary field_names to be valid
+
+
+<a id="nestedatt--field_relationships--mutually_exclusive"></a>
+### Nested Schema for `field_relationships.mutually_exclusive`
+
+
+<a id="nestedatt--field_relationships--required_together"></a>
+### Nested Schema for `field_relationships.required_together`
+
+
 
 <a id="nestedatt--fields"></a>
 ### Nested Schema for `fields`
@@ -222,32 +241,17 @@ Optional:
 
 This message contains a oneof named view. Only a single field of the following list may be set at a time:
   - checkboxField
-
-
-This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-  - rules (see [below for nested schema](#nestedatt--fields--bool_field))
+  - toggleField (see [below for nested schema](#nestedatt--fields--bool_field))
 - `description` (String) The description field.
 - `display_name` (String) The displayName field.
 - `file_field` (Attributes) The FileField message.
 
 This message contains a oneof named view. Only a single field of the following list may be set at a time:
-  - fileInputField
-
-
-This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:
-  - maxFileSize (see [below for nested schema](#nestedatt--fields--file_field))
+  - fileInputField (see [below for nested schema](#nestedatt--fields--file_field))
 - `int64_field` (Attributes) The Int64Field message.
 
 This message contains a oneof named view. Only a single field of the following list may be set at a time:
-  - numberField
-
-
-This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:
-  - defaultValue
-
-
-This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-  - rules (see [below for nested schema](#nestedatt--fields--int64_field))
+  - numberField (see [below for nested schema](#nestedatt--fields--int64_field))
 - `name` (String) The name field.
 - `string_field` (Attributes) The StringField message.
 
@@ -255,10 +259,7 @@ This message contains a oneof named view. Only a single field of the following l
   - textField
   - passwordField
   - selectField
-
-
-This message contains a oneof named _rules. Only a single field of the following list may be set at a time:
-  - rules (see [below for nested schema](#nestedatt--fields--string_field))
+  - pickerField (see [below for nested schema](#nestedatt--fields--string_field))
 
 <a id="nestedatt--fields--bool_field"></a>
 ### Nested Schema for `fields.bool_field`
@@ -268,6 +269,7 @@ Optional:
 - `bool_rules` (Attributes) BoolRules describes the constraints applied to `bool` values (see [below for nested schema](#nestedatt--fields--bool_field--bool_rules))
 - `checkbox_field` (Attributes) The CheckboxField message. (see [below for nested schema](#nestedatt--fields--bool_field--checkbox_field))
 - `default_value` (Boolean) The defaultValue field.
+- `toggle_field` (Attributes) The ToggleField message. (see [below for nested schema](#nestedatt--fields--bool_field--toggle_field))
 
 <a id="nestedatt--fields--bool_field--bool_rules"></a>
 ### Nested Schema for `fields.bool_field.bool_rules`
@@ -281,6 +283,10 @@ Optional:
 ### Nested Schema for `fields.bool_field.checkbox_field`
 
 
+<a id="nestedatt--fields--bool_field--toggle_field"></a>
+### Nested Schema for `fields.bool_field.toggle_field`
+
+
 
 <a id="nestedatt--fields--file_field"></a>
 ### Nested Schema for `fields.file_field`
@@ -290,8 +296,6 @@ Optional:
 - `accepted_file_types` (List of String) The acceptedFileTypes field.
 - `file_input_field` (Attributes) The FileInputField message. (see [below for nested schema](#nestedatt--fields--file_field--file_input_field))
 - `max_file_size` (String) The maxFileSize field.
-This field is part of the `_max_file_size` oneof.
-See the documentation for `c1.api.form.v1.FileField` for more details.
 
 <a id="nestedatt--fields--file_field--file_input_field"></a>
 ### Nested Schema for `fields.file_field.file_input_field`
@@ -304,8 +308,6 @@ See the documentation for `c1.api.form.v1.FileField` for more details.
 Optional:
 
 - `default_value` (String) The defaultValue field.
-This field is part of the `_default_value` oneof.
-See the documentation for `c1.api.form.v1.Int64Field` for more details.
 - `int64_rules` (Attributes) Int64Rules describes the constraints applied to `int64` values (see [below for nested schema](#nestedatt--fields--int64_field--int64_rules))
 - `number_field` (Attributes) The NumberField message. (see [below for nested schema](#nestedatt--fields--int64_field--number_field))
 - `placeholder` (String) The placeholder field.
@@ -352,6 +354,12 @@ Optional:
 
 - `default_value` (String) The defaultValue field.
 - `password_field` (Attributes) The PasswordField message. (see [below for nested schema](#nestedatt--fields--string_field--password_field))
+- `picker_field` (Attributes) The PickerField message.
+
+This message contains a oneof named type. Only a single field of the following list may be set at a time:
+  - appUserPicker
+  - resourcePicker
+  - c1UserPicker (see [below for nested schema](#nestedatt--fields--string_field--picker_field))
 - `placeholder` (String) The placeholder field.
 - `select_field` (Attributes) The SelectField message. (see [below for nested schema](#nestedatt--fields--string_field--select_field))
 - `string_rules` (Attributes) StringRules describe the constraints applied to `string` values
@@ -373,18 +381,52 @@ This message contains a oneof named well_known. Only a single field of the follo
 ### Nested Schema for `fields.string_field.password_field`
 
 
+<a id="nestedatt--fields--string_field--picker_field"></a>
+### Nested Schema for `fields.string_field.picker_field`
+
+Optional:
+
+- `app_resource_filter` (Attributes) The AppResourceFilter message. (see [below for nested schema](#nestedatt--fields--string_field--picker_field--app_resource_filter))
+- `app_user_filter` (Attributes) The AppUserFilter message. (see [below for nested schema](#nestedatt--fields--string_field--picker_field--app_user_filter))
+- `c1_user_filter` (Attributes) C1UserFilter is used to configure a picker for selecting ConductorOne users.
+ This is distinct from AppUserFilter which selects accounts within a connected app. (see [below for nested schema](#nestedatt--fields--string_field--picker_field--c1_user_filter))
+
+<a id="nestedatt--fields--string_field--picker_field--app_resource_filter"></a>
+### Nested Schema for `fields.string_field.picker_field.app_resource_filter`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `resource_type_id` (String) The resourceTypeId field.
+
+
+<a id="nestedatt--fields--string_field--picker_field--app_user_filter"></a>
+### Nested Schema for `fields.string_field.picker_field.app_user_filter`
+
+Optional:
+
+- `app_id` (String) The appId field.
+
+
+<a id="nestedatt--fields--string_field--picker_field--c1_user_filter"></a>
+### Nested Schema for `fields.string_field.picker_field.c1_user_filter`
+
+
+
 <a id="nestedatt--fields--string_field--select_field"></a>
 ### Nested Schema for `fields.string_field.select_field`
 
 Optional:
 
 - `options` (Attributes List) The options field. (see [below for nested schema](#nestedatt--fields--string_field--select_field--options))
+- `type` (String) The type field. possible known values include one of ["SELECT_TYPE_UNSPECIFIED", "SELECT_TYPE_DROPDOWN", "SELECT_TYPE_RADIO", "SELECT_TYPE_BUTTONS"]
 
 <a id="nestedatt--fields--string_field--select_field--options"></a>
 ### Nested Schema for `fields.string_field.select_field.options`
 
 Optional:
 
+- `description` (String) Used for type BUTTONS
 - `display_name` (String) The displayName field.
 - `value` (String) The value field.
 
@@ -473,7 +515,7 @@ See the documentation for `validate.StringRules` for more details.
 - `well_known_regex` (String) WellKnownRegex specifies a common well known pattern defined as a regex.
 This field is part of the `well_known` oneof.
 See the documentation for `validate.StringRules` for more details.
-must be one of ["UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE"]
+possible known values include one of ["UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE"]
 
 
 <a id="nestedatt--fields--string_field--text_field"></a>
@@ -482,27 +524,4 @@ must be one of ["UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE"]
 Optional:
 
 - `multiline` (Boolean) The multiline field.
-
-
-
-
-<a id="nestedatt--field_relationships"></a>
-### Nested Schema for `field_relationships`
-
-Read-Only:
-
-- `at_least_one` (Attributes) The AtLeastOne message. (see [below for nested schema](#nestedatt--field_relationships--at_least_one))
-- `field_names` (List of String) The names of the fields that share this relationship
-- `mutually_exclusive` (Attributes) The MutuallyExclusive message. (see [below for nested schema](#nestedatt--field_relationships--mutually_exclusive))
-- `required_together` (Attributes) The RequiredTogether message. (see [below for nested schema](#nestedatt--field_relationships--required_together))
-
-<a id="nestedatt--field_relationships--at_least_one"></a>
-### Nested Schema for `field_relationships.at_least_one`
-
-
-<a id="nestedatt--field_relationships--mutually_exclusive"></a>
-### Nested Schema for `field_relationships.mutually_exclusive`
-
-
-<a id="nestedatt--field_relationships--required_together"></a>
-### Nested Schema for `field_relationships.required_together`
+- `suffix` (String) Static text displayed as an end adornment (e.g. ".example.com" for domain fields).

@@ -2,20 +2,8 @@
 
 package shared
 
-// The Oauth2Field message.
-//
-// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-//   - oauth2FieldView
-type Oauth2Field struct {
-	// The Oauth2FieldView message.
-	Oauth2FieldView *Oauth2FieldView `json:"oauth2FieldView,omitempty"`
-}
-
-func (o *Oauth2Field) GetOauth2FieldView() *Oauth2FieldView {
-	if o == nil {
-		return nil
-	}
-	return o.Oauth2FieldView
+// The OAuth2Field message.
+type OAuth2Field struct {
 }
 
 // #region class-body-oauth2field

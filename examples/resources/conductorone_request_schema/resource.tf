@@ -34,10 +34,6 @@ resource "conductorone_request_schema" "my_request_schema" {
   ]
   fields = [
     {
-      admin_provider_config = {
-        default_value_cel = "...my_default_value_cel..."
-        show_to_user      = false
-      }
       bool_field = {
         bool_rules = {
           const = false
@@ -61,7 +57,31 @@ resource "conductorone_request_schema" "my_request_schema" {
         }
         max_file_size = "...my_max_file_size..."
       }
-      form_string_field = {
+      int64_field = {
+        default_value = "...my_default_value..."
+        int64_rules = {
+          const        = "...my_const..."
+          gt           = "...my_gt..."
+          gte          = "...my_gte..."
+          ignore_empty = true
+          in = [
+            "..."
+          ]
+          lt  = "...my_lt..."
+          lte = "...my_lte..."
+          not_in = [
+            "..."
+          ]
+        }
+        number_field = {
+          max_value = "...my_max_value..."
+          min_value = "...my_min_value..."
+          step      = "...my_step..."
+        }
+        placeholder = "...my_placeholder..."
+      }
+      name = "...my_name..."
+      string_field = {
         default_value = "...my_default_value..."
         password_field = {
           # ...
@@ -90,7 +110,7 @@ resource "conductorone_request_schema" "my_request_schema" {
           type = "SELECT_TYPE_RADIO"
         }
         string_rules = {
-          address      = true
+          address      = false
           const        = "...my_const..."
           contains     = "...my_contains..."
           email        = true
@@ -99,9 +119,9 @@ resource "conductorone_request_schema" "my_request_schema" {
           in = [
             "..."
           ]
-          ip           = false
-          ipv4         = true
-          ipv6         = false
+          ip           = true
+          ipv4         = false
+          ipv6         = true
           len_bytes    = "...my_len_bytes..."
           length       = "...my_length..."
           max_bytes    = "...my_max_bytes..."
@@ -114,7 +134,7 @@ resource "conductorone_request_schema" "my_request_schema" {
           ]
           pattern          = "...my_pattern..."
           prefix           = "...my_prefix..."
-          strict           = false
+          strict           = true
           suffix           = "...my_suffix..."
           uri              = false
           uri_ref          = true
@@ -125,54 +145,6 @@ resource "conductorone_request_schema" "my_request_schema" {
           multiline = false
           suffix    = "...my_suffix..."
         }
-      }
-      form_string_map_field = {
-        default_value = {
-          key = "value"
-        }
-        string_map_rules = {
-          is_required    = false
-          validate_empty = false
-        }
-      }
-      int64_field = {
-        default_value = "...my_default_value..."
-        int64_rules = {
-          const        = "...my_const..."
-          gt           = "...my_gt..."
-          gte          = "...my_gte..."
-          ignore_empty = true
-          in = [
-            "..."
-          ]
-          lt  = "...my_lt..."
-          lte = "...my_lte..."
-          not_in = [
-            "..."
-          ]
-        }
-        number_field = {
-          max_value = "...my_max_value..."
-          min_value = "...my_min_value..."
-          step      = "...my_step..."
-        }
-        placeholder = "...my_placeholder..."
-      }
-      name = "...my_name..."
-      oauth2_field = {
-        oauth2_field_view = {
-          # ...
-        }
-      }
-      read_only = true
-      required  = false
-      shared_provider_config = {
-        default_value_cel        = "...my_default_value_cel..."
-        input_transformation_cel = "...my_input_transformation_cel..."
-        lock_default_values      = false
-      }
-      user_provider_config = {
-        input_transformation_cel = "...my_input_transformation_cel..."
       }
     }
   ]
