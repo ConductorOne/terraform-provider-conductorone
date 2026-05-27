@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationTrayAiResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Tray.ai"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationTrayAiResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationTrayAiResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationTrayAiResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Tray.ai"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(trayAiCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Tray.ai"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(trayAiCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,20 +93,18 @@ func (r *IntegrationTrayAiResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 
 func (r *IntegrationTrayAiResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		trayaiAuthorizationToken := new(string)
-if !r.TrayaiAuthorizationToken.IsUnknown() && !r.TrayaiAuthorizationToken.IsNull() {
-*trayaiAuthorizationToken = r.TrayaiAuthorizationToken.ValueString()
-configValues["trayai-authorization-token"] = trayaiAuthorizationToken
-}
 
-    
+	trayaiAuthorizationToken := new(string)
+	if !r.TrayaiAuthorizationToken.IsUnknown() && !r.TrayaiAuthorizationToken.IsNull() {
+		*trayaiAuthorizationToken = r.TrayaiAuthorizationToken.ValueString()
+		configValues["trayai-authorization-token"] = trayaiAuthorizationToken
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationTrayAiResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -117,7 +113,7 @@ func (r *IntegrationTrayAiResourceModel) getConfig() (map[string]interface{}, bo
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -174,7 +170,6 @@ func (r *IntegrationTrayAiResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
 }
 
 func (r *IntegrationTrayAiResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -212,5 +207,4 @@ func (r *IntegrationTrayAiResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
 }

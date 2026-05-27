@@ -2,15 +2,14 @@
 package provider
 
 import (
-    "fmt"
-	
-	"time"
+	"fmt"
+
 	"strings"
+	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +23,8 @@ func (r *IntegrationTrelloResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Trello"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +37,20 @@ func (r *IntegrationTrelloResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +60,17 @@ func (r *IntegrationTrelloResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +81,12 @@ func (r *IntegrationTrelloResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Trello"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(trelloCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Trello"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(trelloCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,37 +94,32 @@ func (r *IntegrationTrelloResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 
 func (r *IntegrationTrelloResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		apiKey := new(string)
-if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
-*apiKey = r.ApiKey.ValueString()
-configValues["api-key"] = apiKey
-}
 
-    
-		apiToken := new(string)
-if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
-*apiToken = r.ApiToken.ValueString()
-configValues["api-token"] = apiToken
-}
+	apiKey := new(string)
+	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
+		*apiKey = r.ApiKey.ValueString()
+		configValues["api-key"] = apiKey
+	}
 
-    
-		organizations := make([]string, 0)
-for _, item := range r.Organizations {
-organizations = append(organizations, item.ValueString())
-}
-if len(organizations) > 0 {
-configValues["organizations"] = strings.Join(organizations, ",")
-}
+	apiToken := new(string)
+	if !r.ApiToken.IsUnknown() && !r.ApiToken.IsNull() {
+		*apiToken = r.ApiToken.ValueString()
+		configValues["api-token"] = apiToken
+	}
 
+	organizations := make([]string, 0)
+	for _, item := range r.Organizations {
+		organizations = append(organizations, item.ValueString())
+	}
+	if len(organizations) > 0 {
+		configValues["organizations"] = strings.Join(organizations, ",")
+	}
 
-    
-
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationTrelloResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -134,7 +128,7 @@ func (r *IntegrationTrelloResourceModel) getConfig() (map[string]interface{}, bo
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -191,36 +185,33 @@ func (r *IntegrationTrelloResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["api-key"]; ok {
-if val, ok := getStringValue(values, "api-key"); ok {
-r.ApiKey = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["api-key"]; ok {
+					if val, ok := getStringValue(values, "api-key"); ok {
+						r.ApiKey = types.StringValue(val)
+					}
+				}
 
-               
-               if _, ok := configValues["organizations"]; ok {
-if val, ok := getStringValue(values, "organizations"); ok {
-var valLists []types.String
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-r.Organizations = valLists
-}
-}
+				if _, ok := configValues["organizations"]; ok {
+					if val, ok := getStringValue(values, "organizations"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.Organizations = valLists
+					}
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationTrelloResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -258,34 +249,31 @@ func (r *IntegrationTrelloResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["api-key"]; ok {
-if val, ok := getStringValue(values, "api-key"); ok {
-r.ApiKey = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["api-key"]; ok {
+					if val, ok := getStringValue(values, "api-key"); ok {
+						r.ApiKey = types.StringValue(val)
+					}
+				}
 
-                  
-                  if _, ok := configValues["organizations"]; ok {
-if val, ok := getStringValue(values, "organizations"); ok {
-var valLists []types.String
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-r.Organizations = valLists
-}
-}
+				if _, ok := configValues["organizations"]; ok {
+					if val, ok := getStringValue(values, "organizations"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.Organizations = valLists
+					}
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

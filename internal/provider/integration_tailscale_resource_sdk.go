@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationTailscaleResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Tailscale"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationTailscaleResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Tailscale"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(tailscaleCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Tailscale"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(tailscaleCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,27 +93,24 @@ func (r *IntegrationTailscaleResourceModel) ToUpdateSDKType() (*shared.Connector
 
 func (r *IntegrationTailscaleResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		tailscaleApiKey := new(string)
-if !r.TailscaleApiKey.IsUnknown() && !r.TailscaleApiKey.IsNull() {
-*tailscaleApiKey = r.TailscaleApiKey.ValueString()
-configValues["tailscale_api_key"] = tailscaleApiKey
-}
 
-    
-		tailnet := new(string)
-if !r.Tailnet.IsUnknown() && !r.Tailnet.IsNull() {
-*tailnet = r.Tailnet.ValueString()
-configValues["tailnet"] = tailnet
-}
+	tailscaleApiKey := new(string)
+	if !r.TailscaleApiKey.IsUnknown() && !r.TailscaleApiKey.IsNull() {
+		*tailscaleApiKey = r.TailscaleApiKey.ValueString()
+		configValues["tailscale_api_key"] = tailscaleApiKey
+	}
 
-    
+	tailnet := new(string)
+	if !r.Tailnet.IsUnknown() && !r.Tailnet.IsNull() {
+		*tailnet = r.Tailnet.ValueString()
+		configValues["tailnet"] = tailnet
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationTailscaleResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -124,7 +119,7 @@ func (r *IntegrationTailscaleResourceModel) getConfig() (map[string]interface{},
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -181,22 +176,20 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               
-               if _, ok := configValues["tailnet"]; ok {
-if val, ok := getStringValue(values, "tailnet"); ok {
-r.Tailnet = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-               
-           }
-       }
-    }
+				if _, ok := configValues["tailnet"]; ok {
+					if val, ok := getStringValue(values, "tailnet"); ok {
+						r.Tailnet = types.StringValue(val)
+					}
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationTailscaleResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -234,20 +227,18 @@ func (r *IntegrationTailscaleResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  
-                  if _, ok := configValues["tailnet"]; ok {
-if val, ok := getStringValue(values, "tailnet"); ok {
-r.Tailnet = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-                  
-              }
-          }
-       }
+				if _, ok := configValues["tailnet"]; ok {
+					if val, ok := getStringValue(values, "tailnet"); ok {
+						r.Tailnet = types.StringValue(val)
+					}
+				}
+
+			}
+		}
+	}
 }

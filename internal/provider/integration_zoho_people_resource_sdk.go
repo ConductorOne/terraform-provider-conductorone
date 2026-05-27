@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationZohoPeopleResourceModel) ToCreateDelegatedSDKType() *shared.
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Zoho People"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationZohoPeopleResourceModel) ToCreateSDKType() (*shared.Connecto
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationZohoPeopleResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationZohoPeopleResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Zoho People"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(zohoPeopleCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Zoho People"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(zohoPeopleCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,41 +93,36 @@ func (r *IntegrationZohoPeopleResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 func (r *IntegrationZohoPeopleResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		zohoClientId := new(string)
-if !r.ZohoClientId.IsUnknown() && !r.ZohoClientId.IsNull() {
-*zohoClientId = r.ZohoClientId.ValueString()
-configValues["zoho-client-id"] = zohoClientId
-}
 
-    
-		zohoClientSecret := new(string)
-if !r.ZohoClientSecret.IsUnknown() && !r.ZohoClientSecret.IsNull() {
-*zohoClientSecret = r.ZohoClientSecret.ValueString()
-configValues["zoho-client-secret"] = zohoClientSecret
-}
+	zohoClientId := new(string)
+	if !r.ZohoClientId.IsUnknown() && !r.ZohoClientId.IsNull() {
+		*zohoClientId = r.ZohoClientId.ValueString()
+		configValues["zoho-client-id"] = zohoClientId
+	}
 
-    
-		zohoRefreshToken := new(string)
-if !r.ZohoRefreshToken.IsUnknown() && !r.ZohoRefreshToken.IsNull() {
-*zohoRefreshToken = r.ZohoRefreshToken.ValueString()
-configValues["zoho-refresh-token"] = zohoRefreshToken
-}
+	zohoClientSecret := new(string)
+	if !r.ZohoClientSecret.IsUnknown() && !r.ZohoClientSecret.IsNull() {
+		*zohoClientSecret = r.ZohoClientSecret.ValueString()
+		configValues["zoho-client-secret"] = zohoClientSecret
+	}
 
-    
-		domainAccount := new(string)
-if !r.DomainAccount.IsUnknown() && !r.DomainAccount.IsNull() {
-*domainAccount = r.DomainAccount.ValueString()
-configValues["domain-account"] = domainAccount
-}
+	zohoRefreshToken := new(string)
+	if !r.ZohoRefreshToken.IsUnknown() && !r.ZohoRefreshToken.IsNull() {
+		*zohoRefreshToken = r.ZohoRefreshToken.ValueString()
+		configValues["zoho-refresh-token"] = zohoRefreshToken
+	}
 
-    
+	domainAccount := new(string)
+	if !r.DomainAccount.IsUnknown() && !r.DomainAccount.IsNull() {
+		*domainAccount = r.DomainAccount.ValueString()
+		configValues["domain-account"] = domainAccount
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationZohoPeopleResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -138,7 +131,7 @@ func (r *IntegrationZohoPeopleResourceModel) getConfig() (map[string]interface{}
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -195,29 +188,25 @@ func (r *IntegrationZohoPeopleResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["zoho-client-id"]; ok {
-if val, ok := getStringValue(values, "zoho-client-id"); ok {
-r.ZohoClientId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["zoho-client-id"]; ok {
+					if val, ok := getStringValue(values, "zoho-client-id"); ok {
+						r.ZohoClientId = types.StringValue(val)
+					}
+				}
 
-               
-               
-               if _, ok := configValues["domain-account"]; ok {
-if val, ok := getStringValue(values, "domain-account"); ok {
-r.DomainAccount = types.StringValue(val)
-}
-}
+				if _, ok := configValues["domain-account"]; ok {
+					if val, ok := getStringValue(values, "domain-account"); ok {
+						r.DomainAccount = types.StringValue(val)
+					}
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationZohoPeopleResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -255,27 +244,23 @@ func (r *IntegrationZohoPeopleResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["zoho-client-id"]; ok {
-if val, ok := getStringValue(values, "zoho-client-id"); ok {
-r.ZohoClientId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["zoho-client-id"]; ok {
+					if val, ok := getStringValue(values, "zoho-client-id"); ok {
+						r.ZohoClientId = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-                  if _, ok := configValues["domain-account"]; ok {
-if val, ok := getStringValue(values, "domain-account"); ok {
-r.DomainAccount = types.StringValue(val)
-}
-}
+				if _, ok := configValues["domain-account"]; ok {
+					if val, ok := getStringValue(values, "domain-account"); ok {
+						r.DomainAccount = types.StringValue(val)
+					}
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

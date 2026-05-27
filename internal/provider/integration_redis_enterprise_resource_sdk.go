@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationRedisEnterpriseResourceModel) ToCreateDelegatedSDKType() *sh
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Redis Enterprise"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationRedisEnterpriseResourceModel) ToCreateSDKType() (*shared.Con
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationRedisEnterpriseResourceModel) ToUpdateSDKType() (*shared.Con
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationRedisEnterpriseResourceModel) ToUpdateSDKType() (*shared.Con
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Redis Enterprise"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(redisEnterpriseCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Redis Enterprise"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(redisEnterpriseCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,41 +93,36 @@ func (r *IntegrationRedisEnterpriseResourceModel) ToUpdateSDKType() (*shared.Con
 
 func (r *IntegrationRedisEnterpriseResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		clusterHost := new(string)
-if !r.ClusterHost.IsUnknown() && !r.ClusterHost.IsNull() {
-*clusterHost = r.ClusterHost.ValueString()
-configValues["cluster-host"] = clusterHost
-}
 
-    
-		apiPort := new(string)
-if !r.ApiPort.IsUnknown() && !r.ApiPort.IsNull() {
-*apiPort = r.ApiPort.ValueString()
-configValues["api-port"] = apiPort
-}
+	clusterHost := new(string)
+	if !r.ClusterHost.IsUnknown() && !r.ClusterHost.IsNull() {
+		*clusterHost = r.ClusterHost.ValueString()
+		configValues["cluster-host"] = clusterHost
+	}
 
-    
-		username := new(string)
-if !r.Username.IsUnknown() && !r.Username.IsNull() {
-*username = r.Username.ValueString()
-configValues["username"] = username
-}
+	apiPort := new(string)
+	if !r.ApiPort.IsUnknown() && !r.ApiPort.IsNull() {
+		*apiPort = r.ApiPort.ValueString()
+		configValues["api-port"] = apiPort
+	}
 
-    
-		password := new(string)
-if !r.Password.IsUnknown() && !r.Password.IsNull() {
-*password = r.Password.ValueString()
-configValues["password"] = password
-}
+	username := new(string)
+	if !r.Username.IsUnknown() && !r.Username.IsNull() {
+		*username = r.Username.ValueString()
+		configValues["username"] = username
+	}
 
-    
+	password := new(string)
+	if !r.Password.IsUnknown() && !r.Password.IsNull() {
+		*password = r.Password.ValueString()
+		configValues["password"] = password
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationRedisEnterpriseResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -138,7 +131,7 @@ func (r *IntegrationRedisEnterpriseResourceModel) getConfig() (map[string]interf
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -195,34 +188,31 @@ func (r *IntegrationRedisEnterpriseResourceModel) RefreshFromGetResponse(resp *s
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["cluster-host"]; ok {
-if val, ok := getStringValue(values, "cluster-host"); ok {
-r.ClusterHost = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["cluster-host"]; ok {
+					if val, ok := getStringValue(values, "cluster-host"); ok {
+						r.ClusterHost = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["api-port"]; ok {
-if val, ok := getStringValue(values, "api-port"); ok {
-r.ApiPort = types.StringValue(val)
-}
-}
+				if _, ok := configValues["api-port"]; ok {
+					if val, ok := getStringValue(values, "api-port"); ok {
+						r.ApiPort = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["username"]; ok {
-if val, ok := getStringValue(values, "username"); ok {
-r.Username = types.StringValue(val)
-}
-}
+				if _, ok := configValues["username"]; ok {
+					if val, ok := getStringValue(values, "username"); ok {
+						r.Username = types.StringValue(val)
+					}
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationRedisEnterpriseResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -260,32 +250,29 @@ func (r *IntegrationRedisEnterpriseResourceModel) RefreshFromCreateResponse(resp
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["cluster-host"]; ok {
-if val, ok := getStringValue(values, "cluster-host"); ok {
-r.ClusterHost = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["cluster-host"]; ok {
+					if val, ok := getStringValue(values, "cluster-host"); ok {
+						r.ClusterHost = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["api-port"]; ok {
-if val, ok := getStringValue(values, "api-port"); ok {
-r.ApiPort = types.StringValue(val)
-}
-}
+				if _, ok := configValues["api-port"]; ok {
+					if val, ok := getStringValue(values, "api-port"); ok {
+						r.ApiPort = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["username"]; ok {
-if val, ok := getStringValue(values, "username"); ok {
-r.Username = types.StringValue(val)
-}
-}
+				if _, ok := configValues["username"]; ok {
+					if val, ok := getStringValue(values, "username"); ok {
+						r.Username = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

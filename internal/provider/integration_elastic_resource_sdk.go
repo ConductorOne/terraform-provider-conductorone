@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationElasticResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Elastic"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationElasticResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationElasticResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationElasticResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Elastic"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(elasticCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Elastic"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(elasticCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,41 +93,36 @@ func (r *IntegrationElasticResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationElasticResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		elasticApiKey := new(string)
-if !r.ElasticApiKey.IsUnknown() && !r.ElasticApiKey.IsNull() {
-*elasticApiKey = r.ElasticApiKey.ValueString()
-configValues["elastic_api_key"] = elasticApiKey
-}
 
-    
-		elasticDeploymentApiKey := new(string)
-if !r.ElasticDeploymentApiKey.IsUnknown() && !r.ElasticDeploymentApiKey.IsNull() {
-*elasticDeploymentApiKey = r.ElasticDeploymentApiKey.ValueString()
-configValues["elastic_deployment_api_key"] = elasticDeploymentApiKey
-}
+	elasticApiKey := new(string)
+	if !r.ElasticApiKey.IsUnknown() && !r.ElasticApiKey.IsNull() {
+		*elasticApiKey = r.ElasticApiKey.ValueString()
+		configValues["elastic_api_key"] = elasticApiKey
+	}
 
-    
-		elasticDeploymentEndpoint := new(string)
-if !r.ElasticDeploymentEndpoint.IsUnknown() && !r.ElasticDeploymentEndpoint.IsNull() {
-*elasticDeploymentEndpoint = r.ElasticDeploymentEndpoint.ValueString()
-configValues["elastic_deployment_endpoint"] = elasticDeploymentEndpoint
-}
+	elasticDeploymentApiKey := new(string)
+	if !r.ElasticDeploymentApiKey.IsUnknown() && !r.ElasticDeploymentApiKey.IsNull() {
+		*elasticDeploymentApiKey = r.ElasticDeploymentApiKey.ValueString()
+		configValues["elastic_deployment_api_key"] = elasticDeploymentApiKey
+	}
 
-    
-		elasticOrganizationId := new(string)
-if !r.ElasticOrganizationId.IsUnknown() && !r.ElasticOrganizationId.IsNull() {
-*elasticOrganizationId = r.ElasticOrganizationId.ValueString()
-configValues["elastic_organization_id"] = elasticOrganizationId
-}
+	elasticDeploymentEndpoint := new(string)
+	if !r.ElasticDeploymentEndpoint.IsUnknown() && !r.ElasticDeploymentEndpoint.IsNull() {
+		*elasticDeploymentEndpoint = r.ElasticDeploymentEndpoint.ValueString()
+		configValues["elastic_deployment_endpoint"] = elasticDeploymentEndpoint
+	}
 
-    
+	elasticOrganizationId := new(string)
+	if !r.ElasticOrganizationId.IsUnknown() && !r.ElasticOrganizationId.IsNull() {
+		*elasticOrganizationId = r.ElasticOrganizationId.ValueString()
+		configValues["elastic_organization_id"] = elasticOrganizationId
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationElasticResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -138,7 +131,7 @@ func (r *IntegrationElasticResourceModel) getConfig() (map[string]interface{}, b
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -195,29 +188,26 @@ func (r *IntegrationElasticResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               
-               
-               if _, ok := configValues["elastic_deployment_endpoint"]; ok {
-if val, ok := getStringValue(values, "elastic_deployment_endpoint"); ok {
-r.ElasticDeploymentEndpoint = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-               if _, ok := configValues["elastic_organization_id"]; ok {
-if val, ok := getStringValue(values, "elastic_organization_id"); ok {
-r.ElasticOrganizationId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["elastic_deployment_endpoint"]; ok {
+					if val, ok := getStringValue(values, "elastic_deployment_endpoint"); ok {
+						r.ElasticDeploymentEndpoint = types.StringValue(val)
+					}
+				}
 
-               
-           }
-       }
-    }
+				if _, ok := configValues["elastic_organization_id"]; ok {
+					if val, ok := getStringValue(values, "elastic_organization_id"); ok {
+						r.ElasticOrganizationId = types.StringValue(val)
+					}
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationElasticResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -255,27 +245,24 @@ func (r *IntegrationElasticResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  
-                  
-                  if _, ok := configValues["elastic_deployment_endpoint"]; ok {
-if val, ok := getStringValue(values, "elastic_deployment_endpoint"); ok {
-r.ElasticDeploymentEndpoint = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-                  if _, ok := configValues["elastic_organization_id"]; ok {
-if val, ok := getStringValue(values, "elastic_organization_id"); ok {
-r.ElasticOrganizationId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["elastic_deployment_endpoint"]; ok {
+					if val, ok := getStringValue(values, "elastic_deployment_endpoint"); ok {
+						r.ElasticDeploymentEndpoint = types.StringValue(val)
+					}
+				}
 
-                  
-              }
-          }
-       }
+				if _, ok := configValues["elastic_organization_id"]; ok {
+					if val, ok := getStringValue(values, "elastic_organization_id"); ok {
+						r.ElasticOrganizationId = types.StringValue(val)
+					}
+				}
+
+			}
+		}
+	}
 }

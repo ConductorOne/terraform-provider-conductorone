@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationSnipeItResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Snipe-IT"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationSnipeItResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationSnipeItResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationSnipeItResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Snipe-IT"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(snipeItCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Snipe-IT"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(snipeItCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,27 +93,24 @@ func (r *IntegrationSnipeItResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationSnipeItResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		snipeitBaseUrl := new(string)
-if !r.SnipeitBaseUrl.IsUnknown() && !r.SnipeitBaseUrl.IsNull() {
-*snipeitBaseUrl = r.SnipeitBaseUrl.ValueString()
-configValues["snipeit_base_url"] = snipeitBaseUrl
-}
 
-    
-		snipeitAccessToken := new(string)
-if !r.SnipeitAccessToken.IsUnknown() && !r.SnipeitAccessToken.IsNull() {
-*snipeitAccessToken = r.SnipeitAccessToken.ValueString()
-configValues["snipeit_access_token"] = snipeitAccessToken
-}
+	snipeitBaseUrl := new(string)
+	if !r.SnipeitBaseUrl.IsUnknown() && !r.SnipeitBaseUrl.IsNull() {
+		*snipeitBaseUrl = r.SnipeitBaseUrl.ValueString()
+		configValues["snipeit_base_url"] = snipeitBaseUrl
+	}
 
-    
+	snipeitAccessToken := new(string)
+	if !r.SnipeitAccessToken.IsUnknown() && !r.SnipeitAccessToken.IsNull() {
+		*snipeitAccessToken = r.SnipeitAccessToken.ValueString()
+		configValues["snipeit_access_token"] = snipeitAccessToken
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationSnipeItResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -124,7 +119,7 @@ func (r *IntegrationSnipeItResourceModel) getConfig() (map[string]interface{}, b
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -181,22 +176,19 @@ func (r *IntegrationSnipeItResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["snipeit_base_url"]; ok {
-if val, ok := getStringValue(values, "snipeit_base_url"); ok {
-r.SnipeitBaseUrl = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["snipeit_base_url"]; ok {
+					if val, ok := getStringValue(values, "snipeit_base_url"); ok {
+						r.SnipeitBaseUrl = types.StringValue(val)
+					}
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationSnipeItResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -234,20 +226,17 @@ func (r *IntegrationSnipeItResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["snipeit_base_url"]; ok {
-if val, ok := getStringValue(values, "snipeit_base_url"); ok {
-r.SnipeitBaseUrl = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["snipeit_base_url"]; ok {
+					if val, ok := getStringValue(values, "snipeit_base_url"); ok {
+						r.SnipeitBaseUrl = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

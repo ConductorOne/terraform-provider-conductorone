@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
+	"fmt"
 	"strconv"
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationAzureInfrastructureResourceModel) ToCreateDelegatedSDKType()
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Azure Infrastructure"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationAzureInfrastructureResourceModel) ToCreateSDKType() (*shared
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationAzureInfrastructureResourceModel) ToUpdateSDKType() (*shared
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationAzureInfrastructureResourceModel) ToUpdateSDKType() (*shared
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Azure Infrastructure"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(azureInfrastructureCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Azure Infrastructure"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(azureInfrastructureCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,83 +93,72 @@ func (r *IntegrationAzureInfrastructureResourceModel) ToUpdateSDKType() (*shared
 
 func (r *IntegrationAzureInfrastructureResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		azureClientId := new(string)
-if !r.AzureClientId.IsUnknown() && !r.AzureClientId.IsNull() {
-*azureClientId = r.AzureClientId.ValueString()
-configValues["azure-client-id"] = azureClientId
-}
 
-    
-		azureClientSecret := new(string)
-if !r.AzureClientSecret.IsUnknown() && !r.AzureClientSecret.IsNull() {
-*azureClientSecret = r.AzureClientSecret.ValueString()
-configValues["azure-client-secret"] = azureClientSecret
-}
+	azureClientId := new(string)
+	if !r.AzureClientId.IsUnknown() && !r.AzureClientId.IsNull() {
+		*azureClientId = r.AzureClientId.ValueString()
+		configValues["azure-client-id"] = azureClientId
+	}
 
-    
-		azureTenantId := new(string)
-if !r.AzureTenantId.IsUnknown() && !r.AzureTenantId.IsNull() {
-*azureTenantId = r.AzureTenantId.ValueString()
-configValues["azure-tenant-id"] = azureTenantId
-}
+	azureClientSecret := new(string)
+	if !r.AzureClientSecret.IsUnknown() && !r.AzureClientSecret.IsNull() {
+		*azureClientSecret = r.AzureClientSecret.ValueString()
+		configValues["azure-client-secret"] = azureClientSecret
+	}
 
-    
-		mailboxSettings := new(string)
-if !r.MailboxSettings.IsUnknown() && !r.MailboxSettings.IsNull() {
-*mailboxSettings = strconv.FormatBool(r.MailboxSettings.ValueBool())
-configValues["mailboxSettings"] = mailboxSettings
-}
+	azureTenantId := new(string)
+	if !r.AzureTenantId.IsUnknown() && !r.AzureTenantId.IsNull() {
+		*azureTenantId = r.AzureTenantId.ValueString()
+		configValues["azure-tenant-id"] = azureTenantId
+	}
 
-    
-		skipAdGroups := new(string)
-if !r.SkipAdGroups.IsUnknown() && !r.SkipAdGroups.IsNull() {
-*skipAdGroups = strconv.FormatBool(r.SkipAdGroups.ValueBool())
-configValues["skip-ad-groups"] = skipAdGroups
-}
+	mailboxSettings := new(string)
+	if !r.MailboxSettings.IsUnknown() && !r.MailboxSettings.IsNull() {
+		*mailboxSettings = strconv.FormatBool(r.MailboxSettings.ValueBool())
+		configValues["mailboxSettings"] = mailboxSettings
+	}
 
-    
-		graphDomain := new(string)
-if !r.GraphDomain.IsUnknown() && !r.GraphDomain.IsNull() {
-*graphDomain = r.GraphDomain.ValueString()
-configValues["graph-domain"] = graphDomain
-}
+	skipAdGroups := new(string)
+	if !r.SkipAdGroups.IsUnknown() && !r.SkipAdGroups.IsNull() {
+		*skipAdGroups = strconv.FormatBool(r.SkipAdGroups.ValueBool())
+		configValues["skip-ad-groups"] = skipAdGroups
+	}
 
-    
-		skipUnusedRoles := new(string)
-if !r.SkipUnusedRoles.IsUnknown() && !r.SkipUnusedRoles.IsNull() {
-*skipUnusedRoles = strconv.FormatBool(r.SkipUnusedRoles.ValueBool())
-configValues["skip-unused-roles"] = skipUnusedRoles
-}
+	graphDomain := new(string)
+	if !r.GraphDomain.IsUnknown() && !r.GraphDomain.IsNull() {
+		*graphDomain = r.GraphDomain.ValueString()
+		configValues["graph-domain"] = graphDomain
+	}
 
-    
-		skipSyncStorageContainers := new(string)
-if !r.SkipSyncStorageContainers.IsUnknown() && !r.SkipSyncStorageContainers.IsNull() {
-*skipSyncStorageContainers = strconv.FormatBool(r.SkipSyncStorageContainers.ValueBool())
-configValues["skip-sync-storage-containers"] = skipSyncStorageContainers
-}
+	skipUnusedRoles := new(string)
+	if !r.SkipUnusedRoles.IsUnknown() && !r.SkipUnusedRoles.IsNull() {
+		*skipUnusedRoles = strconv.FormatBool(r.SkipUnusedRoles.ValueBool())
+		configValues["skip-unused-roles"] = skipUnusedRoles
+	}
 
-    
-		enableSyncExternalResourcesViaBatonId := new(string)
-if !r.EnableSyncExternalResourcesViaBatonId.IsUnknown() && !r.EnableSyncExternalResourcesViaBatonId.IsNull() {
-*enableSyncExternalResourcesViaBatonId = strconv.FormatBool(r.EnableSyncExternalResourcesViaBatonId.ValueBool())
-configValues["enable-sync-external-resources-via-baton-id"] = enableSyncExternalResourcesViaBatonId
-}
+	skipSyncStorageContainers := new(string)
+	if !r.SkipSyncStorageContainers.IsUnknown() && !r.SkipSyncStorageContainers.IsNull() {
+		*skipSyncStorageContainers = strconv.FormatBool(r.SkipSyncStorageContainers.ValueBool())
+		configValues["skip-sync-storage-containers"] = skipSyncStorageContainers
+	}
 
-    
-		skipEntraIdP2LicenseFeatures := new(string)
-if !r.SkipEntraIdP2LicenseFeatures.IsUnknown() && !r.SkipEntraIdP2LicenseFeatures.IsNull() {
-*skipEntraIdP2LicenseFeatures = strconv.FormatBool(r.SkipEntraIdP2LicenseFeatures.ValueBool())
-configValues["skip-entra-id-p2-license-features"] = skipEntraIdP2LicenseFeatures
-}
+	enableSyncExternalResourcesViaBatonId := new(string)
+	if !r.EnableSyncExternalResourcesViaBatonId.IsUnknown() && !r.EnableSyncExternalResourcesViaBatonId.IsNull() {
+		*enableSyncExternalResourcesViaBatonId = strconv.FormatBool(r.EnableSyncExternalResourcesViaBatonId.ValueBool())
+		configValues["enable-sync-external-resources-via-baton-id"] = enableSyncExternalResourcesViaBatonId
+	}
 
-    
+	skipEntraIdP2LicenseFeatures := new(string)
+	if !r.SkipEntraIdP2LicenseFeatures.IsUnknown() && !r.SkipEntraIdP2LicenseFeatures.IsNull() {
+		*skipEntraIdP2LicenseFeatures = strconv.FormatBool(r.SkipEntraIdP2LicenseFeatures.ValueBool())
+		configValues["skip-entra-id-p2-license-features"] = skipEntraIdP2LicenseFeatures
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationAzureInfrastructureResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -180,7 +167,7 @@ func (r *IntegrationAzureInfrastructureResourceModel) getConfig() (map[string]in
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -237,88 +224,85 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromGetResponse(res
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["azure-client-id"]; ok {
-if val, ok := getStringValue(values, "azure-client-id"); ok {
-r.AzureClientId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["azure-client-id"]; ok {
+					if val, ok := getStringValue(values, "azure-client-id"); ok {
+						r.AzureClientId = types.StringValue(val)
+					}
+				}
 
-               
-               if _, ok := configValues["azure-tenant-id"]; ok {
-if val, ok := getStringValue(values, "azure-tenant-id"); ok {
-r.AzureTenantId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["azure-tenant-id"]; ok {
+					if val, ok := getStringValue(values, "azure-tenant-id"); ok {
+						r.AzureTenantId = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["mailboxSettings"]; ok {
-if val, ok := getStringValue(values, "mailboxSettings"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.MailboxSettings = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["mailboxSettings"]; ok {
+					if val, ok := getStringValue(values, "mailboxSettings"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.MailboxSettings = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["skip-ad-groups"]; ok {
-if val, ok := getStringValue(values, "skip-ad-groups"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.SkipAdGroups = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["skip-ad-groups"]; ok {
+					if val, ok := getStringValue(values, "skip-ad-groups"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.SkipAdGroups = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["graph-domain"]; ok {
-if val, ok := getStringValue(values, "graph-domain"); ok {
-r.GraphDomain = types.StringValue(val)
-}
-}
+				if _, ok := configValues["graph-domain"]; ok {
+					if val, ok := getStringValue(values, "graph-domain"); ok {
+						r.GraphDomain = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["skip-unused-roles"]; ok {
-if val, ok := getStringValue(values, "skip-unused-roles"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.SkipUnusedRoles = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["skip-unused-roles"]; ok {
+					if val, ok := getStringValue(values, "skip-unused-roles"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.SkipUnusedRoles = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["skip-sync-storage-containers"]; ok {
-if val, ok := getStringValue(values, "skip-sync-storage-containers"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.SkipSyncStorageContainers = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["skip-sync-storage-containers"]; ok {
+					if val, ok := getStringValue(values, "skip-sync-storage-containers"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.SkipSyncStorageContainers = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["enable-sync-external-resources-via-baton-id"]; ok {
-if val, ok := getStringValue(values, "enable-sync-external-resources-via-baton-id"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.EnableSyncExternalResourcesViaBatonId = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["enable-sync-external-resources-via-baton-id"]; ok {
+					if val, ok := getStringValue(values, "enable-sync-external-resources-via-baton-id"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.EnableSyncExternalResourcesViaBatonId = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["skip-entra-id-p2-license-features"]; ok {
-if val, ok := getStringValue(values, "skip-entra-id-p2-license-features"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.SkipEntraIdP2LicenseFeatures = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["skip-entra-id-p2-license-features"]; ok {
+					if val, ok := getStringValue(values, "skip-entra-id-p2-license-features"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.SkipEntraIdP2LicenseFeatures = types.BoolValue(bv)
+						}
+					}
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -356,86 +340,83 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromCreateResponse(
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["azure-client-id"]; ok {
-if val, ok := getStringValue(values, "azure-client-id"); ok {
-r.AzureClientId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["azure-client-id"]; ok {
+					if val, ok := getStringValue(values, "azure-client-id"); ok {
+						r.AzureClientId = types.StringValue(val)
+					}
+				}
 
-                  
-                  if _, ok := configValues["azure-tenant-id"]; ok {
-if val, ok := getStringValue(values, "azure-tenant-id"); ok {
-r.AzureTenantId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["azure-tenant-id"]; ok {
+					if val, ok := getStringValue(values, "azure-tenant-id"); ok {
+						r.AzureTenantId = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["mailboxSettings"]; ok {
-if val, ok := getStringValue(values, "mailboxSettings"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.MailboxSettings = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["mailboxSettings"]; ok {
+					if val, ok := getStringValue(values, "mailboxSettings"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.MailboxSettings = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["skip-ad-groups"]; ok {
-if val, ok := getStringValue(values, "skip-ad-groups"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.SkipAdGroups = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["skip-ad-groups"]; ok {
+					if val, ok := getStringValue(values, "skip-ad-groups"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.SkipAdGroups = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["graph-domain"]; ok {
-if val, ok := getStringValue(values, "graph-domain"); ok {
-r.GraphDomain = types.StringValue(val)
-}
-}
+				if _, ok := configValues["graph-domain"]; ok {
+					if val, ok := getStringValue(values, "graph-domain"); ok {
+						r.GraphDomain = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["skip-unused-roles"]; ok {
-if val, ok := getStringValue(values, "skip-unused-roles"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.SkipUnusedRoles = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["skip-unused-roles"]; ok {
+					if val, ok := getStringValue(values, "skip-unused-roles"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.SkipUnusedRoles = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["skip-sync-storage-containers"]; ok {
-if val, ok := getStringValue(values, "skip-sync-storage-containers"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.SkipSyncStorageContainers = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["skip-sync-storage-containers"]; ok {
+					if val, ok := getStringValue(values, "skip-sync-storage-containers"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.SkipSyncStorageContainers = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["enable-sync-external-resources-via-baton-id"]; ok {
-if val, ok := getStringValue(values, "enable-sync-external-resources-via-baton-id"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.EnableSyncExternalResourcesViaBatonId = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["enable-sync-external-resources-via-baton-id"]; ok {
+					if val, ok := getStringValue(values, "enable-sync-external-resources-via-baton-id"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.EnableSyncExternalResourcesViaBatonId = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["skip-entra-id-p2-license-features"]; ok {
-if val, ok := getStringValue(values, "skip-entra-id-p2-license-features"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.SkipEntraIdP2LicenseFeatures = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["skip-entra-id-p2-license-features"]; ok {
+					if val, ok := getStringValue(values, "skip-entra-id-p2-license-features"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.SkipEntraIdP2LicenseFeatures = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

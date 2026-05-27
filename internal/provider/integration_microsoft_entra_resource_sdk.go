@@ -2,16 +2,16 @@
 package provider
 
 import (
-    "fmt"
+	"fmt"
 	"strconv"
-	"time"
 	"strings"
+	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/attr" 
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 const microsoftEntraCatalogID = "2UUdYir252rR6PVSASeUFNaJOIB"
@@ -24,8 +24,8 @@ func (r *IntegrationMicrosoftEntraResourceModel) ToCreateDelegatedSDKType() *sha
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Microsoft Entra"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +38,20 @@ func (r *IntegrationMicrosoftEntraResourceModel) ToCreateSDKType() (*shared.Conn
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +61,17 @@ func (r *IntegrationMicrosoftEntraResourceModel) ToUpdateSDKType() (*shared.Conn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +82,12 @@ func (r *IntegrationMicrosoftEntraResourceModel) ToUpdateSDKType() (*shared.Conn
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Microsoft Entra"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(microsoftEntraCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Microsoft Entra"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(microsoftEntraCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,8 +95,7 @@ func (r *IntegrationMicrosoftEntraResourceModel) ToUpdateSDKType() (*shared.Conn
 
 func (r *IntegrationMicrosoftEntraResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		
+
 	if !r.EntraGroupOauth.IsUnknown() && !r.EntraGroupOauth.IsNull() {
 		configValues["C1_selected_field_group_name"] = "entra_group_oauth"
 		for k, v := range r.EntraGroupOauth.Attributes() {
@@ -121,9 +120,7 @@ func (r *IntegrationMicrosoftEntraResourceModel) populateConfig() map[string]int
 			}
 		}
 	}
-	
-    
-		
+
 	if !r.EntraGroupClientSecret.IsUnknown() && !r.EntraGroupClientSecret.IsNull() {
 		configValues["C1_selected_field_group_name"] = "entra_group_client_secret"
 		for k, v := range r.EntraGroupClientSecret.Attributes() {
@@ -148,14 +145,12 @@ func (r *IntegrationMicrosoftEntraResourceModel) populateConfig() map[string]int
 			}
 		}
 	}
-	
-    
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationMicrosoftEntraResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -164,7 +159,7 @@ func (r *IntegrationMicrosoftEntraResourceModel) getConfig() (map[string]interfa
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -221,181 +216,181 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-		if groupName == "entra_group_oauth" {
-		attributeTypes := make(map[string]attr.Type, len(values))
-		attributeValues := make(map[string]attr.Value, len(values))
-	
-			if val, ok := getStringValue(values, "entra_tenant_id"); ok {
-				attributeTypes["entra_tenant_id"] = types.StringType
-				attributeValues["entra_tenant_id"] = types.StringValue(val)
-			}
-		if _, ok := configValues["entra_skip_ad_groups"]; ok {
-if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_skip_ad_groups"] = types.BoolType
-				attributeValues["entra_skip_ad_groups"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_skip_ad_groups"] = types.BoolType
-			attributeValues["entra_skip_ad_groups"] = types.BoolNull()
-		}
-		
-			if val, ok := getStringValue(values, "entra_graph_domain"); ok {
-				attributeTypes["entra_graph_domain"] = types.StringType
-				attributeValues["entra_graph_domain"] = types.StringValue(val)
-			}
-		if _, ok := configValues["entra_sign_in_activity"]; ok {
-if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_sign_in_activity"] = types.BoolType
-				attributeValues["entra_sign_in_activity"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_sign_in_activity"] = types.BoolType
-			attributeValues["entra_sign_in_activity"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_schedule_scim_provisioning"]; ok {
-if val, ok := getStringValue(values, "entra_schedule_scim_provisioning"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
-				attributeValues["entra_schedule_scim_provisioning"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
-			attributeValues["entra_schedule_scim_provisioning"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_disable_audit_log_feed"]; ok {
-if val, ok := getStringValue(values, "entra_disable_audit_log_feed"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
-				attributeValues["entra_disable_audit_log_feed"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
-			attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
-if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
-				attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
-			attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
-		}
-		r.EntraGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
-	}}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "entra_group_oauth" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-               if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-		if groupName == "entra_group_client_secret" {
-		attributeTypes := make(map[string]attr.Type, len(values))
-		attributeValues := make(map[string]attr.Value, len(values))
-	
-			if val, ok := getStringValue(values, "entra_tenant_id"); ok {
-				attributeTypes["entra_tenant_id"] = types.StringType
-				attributeValues["entra_tenant_id"] = types.StringValue(val)
-			}
-		
-			if val, ok := getStringValue(values, "entra_client_id"); ok {
-				attributeTypes["entra_client_id"] = types.StringType
-				attributeValues["entra_client_id"] = types.StringValue(val)
-			}
-		
-				attributeTypes["entra_client_secret"] = types.StringType
-				if sv, ok := configValues["entra_client_secret"].(string); ok {
-					attributeValues["entra_client_secret"] = types.StringValue(sv)
-				} else {
-				 	attributeValues["entra_client_secret"] = types.StringNull()
-				}
-			if _, ok := configValues["entra_skip_ad_groups"]; ok {
-if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_skip_ad_groups"] = types.BoolType
-				attributeValues["entra_skip_ad_groups"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_skip_ad_groups"] = types.BoolType
-			attributeValues["entra_skip_ad_groups"] = types.BoolNull()
-		}
-		
-			if val, ok := getStringValue(values, "entra_graph_domain"); ok {
-				attributeTypes["entra_graph_domain"] = types.StringType
-				attributeValues["entra_graph_domain"] = types.StringValue(val)
-			}
-		if _, ok := configValues["entra_sign_in_activity"]; ok {
-if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_sign_in_activity"] = types.BoolType
-				attributeValues["entra_sign_in_activity"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_sign_in_activity"] = types.BoolType
-			attributeValues["entra_sign_in_activity"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_schedule_scim_provisioning"]; ok {
-if val, ok := getStringValue(values, "entra_schedule_scim_provisioning"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
-				attributeValues["entra_schedule_scim_provisioning"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
-			attributeValues["entra_schedule_scim_provisioning"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_disable_audit_log_feed"]; ok {
-if val, ok := getStringValue(values, "entra_disable_audit_log_feed"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
-				attributeValues["entra_disable_audit_log_feed"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
-			attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
-if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
-				attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
-			attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
-		}
-		r.EntraGroupClientSecret = types.ObjectValueMust(attributeTypes, attributeValues)
-	}}
+						if val, ok := getStringValue(values, "entra_tenant_id"); ok {
+							attributeTypes["entra_tenant_id"] = types.StringType
+							attributeValues["entra_tenant_id"] = types.StringValue(val)
+						}
+						if _, ok := configValues["entra_skip_ad_groups"]; ok {
+							if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_skip_ad_groups"] = types.BoolType
+									attributeValues["entra_skip_ad_groups"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_skip_ad_groups"] = types.BoolType
+							attributeValues["entra_skip_ad_groups"] = types.BoolNull()
+						}
 
-               
-           }
-       }
-    }
+						if val, ok := getStringValue(values, "entra_graph_domain"); ok {
+							attributeTypes["entra_graph_domain"] = types.StringType
+							attributeValues["entra_graph_domain"] = types.StringValue(val)
+						}
+						if _, ok := configValues["entra_sign_in_activity"]; ok {
+							if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_sign_in_activity"] = types.BoolType
+									attributeValues["entra_sign_in_activity"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_sign_in_activity"] = types.BoolType
+							attributeValues["entra_sign_in_activity"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_schedule_scim_provisioning"]; ok {
+							if val, ok := getStringValue(values, "entra_schedule_scim_provisioning"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
+									attributeValues["entra_schedule_scim_provisioning"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
+							attributeValues["entra_schedule_scim_provisioning"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_disable_audit_log_feed"]; ok {
+							if val, ok := getStringValue(values, "entra_disable_audit_log_feed"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
+									attributeValues["entra_disable_audit_log_feed"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
+							attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
+							if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+									attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+							attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
+						}
+						r.EntraGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
+				}
+
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "entra_group_client_secret" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "entra_tenant_id"); ok {
+							attributeTypes["entra_tenant_id"] = types.StringType
+							attributeValues["entra_tenant_id"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "entra_client_id"); ok {
+							attributeTypes["entra_client_id"] = types.StringType
+							attributeValues["entra_client_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["entra_client_secret"] = types.StringType
+						if sv, ok := configValues["entra_client_secret"].(string); ok {
+							attributeValues["entra_client_secret"] = types.StringValue(sv)
+						} else {
+							attributeValues["entra_client_secret"] = types.StringNull()
+						}
+						if _, ok := configValues["entra_skip_ad_groups"]; ok {
+							if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_skip_ad_groups"] = types.BoolType
+									attributeValues["entra_skip_ad_groups"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_skip_ad_groups"] = types.BoolType
+							attributeValues["entra_skip_ad_groups"] = types.BoolNull()
+						}
+
+						if val, ok := getStringValue(values, "entra_graph_domain"); ok {
+							attributeTypes["entra_graph_domain"] = types.StringType
+							attributeValues["entra_graph_domain"] = types.StringValue(val)
+						}
+						if _, ok := configValues["entra_sign_in_activity"]; ok {
+							if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_sign_in_activity"] = types.BoolType
+									attributeValues["entra_sign_in_activity"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_sign_in_activity"] = types.BoolType
+							attributeValues["entra_sign_in_activity"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_schedule_scim_provisioning"]; ok {
+							if val, ok := getStringValue(values, "entra_schedule_scim_provisioning"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
+									attributeValues["entra_schedule_scim_provisioning"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
+							attributeValues["entra_schedule_scim_provisioning"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_disable_audit_log_feed"]; ok {
+							if val, ok := getStringValue(values, "entra_disable_audit_log_feed"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
+									attributeValues["entra_disable_audit_log_feed"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
+							attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
+							if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+									attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+							attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
+						}
+						r.EntraGroupClientSecret = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -433,179 +428,179 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-		if groupName == "entra_group_oauth" {
-		attributeTypes := make(map[string]attr.Type, len(values))
-		attributeValues := make(map[string]attr.Value, len(values))
-	
-			if val, ok := getStringValue(values, "entra_tenant_id"); ok {
-				attributeTypes["entra_tenant_id"] = types.StringType
-				attributeValues["entra_tenant_id"] = types.StringValue(val)
-			}
-		if _, ok := configValues["entra_skip_ad_groups"]; ok {
-if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_skip_ad_groups"] = types.BoolType
-				attributeValues["entra_skip_ad_groups"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_skip_ad_groups"] = types.BoolType
-			attributeValues["entra_skip_ad_groups"] = types.BoolNull()
-		}
-		
-			if val, ok := getStringValue(values, "entra_graph_domain"); ok {
-				attributeTypes["entra_graph_domain"] = types.StringType
-				attributeValues["entra_graph_domain"] = types.StringValue(val)
-			}
-		if _, ok := configValues["entra_sign_in_activity"]; ok {
-if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_sign_in_activity"] = types.BoolType
-				attributeValues["entra_sign_in_activity"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_sign_in_activity"] = types.BoolType
-			attributeValues["entra_sign_in_activity"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_schedule_scim_provisioning"]; ok {
-if val, ok := getStringValue(values, "entra_schedule_scim_provisioning"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
-				attributeValues["entra_schedule_scim_provisioning"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
-			attributeValues["entra_schedule_scim_provisioning"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_disable_audit_log_feed"]; ok {
-if val, ok := getStringValue(values, "entra_disable_audit_log_feed"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
-				attributeValues["entra_disable_audit_log_feed"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
-			attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
-if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
-				attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
-			attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
-		}
-		r.EntraGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
-	}}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "entra_group_oauth" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-                  if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-		if groupName == "entra_group_client_secret" {
-		attributeTypes := make(map[string]attr.Type, len(values))
-		attributeValues := make(map[string]attr.Value, len(values))
-	
-			if val, ok := getStringValue(values, "entra_tenant_id"); ok {
-				attributeTypes["entra_tenant_id"] = types.StringType
-				attributeValues["entra_tenant_id"] = types.StringValue(val)
-			}
-		
-			if val, ok := getStringValue(values, "entra_client_id"); ok {
-				attributeTypes["entra_client_id"] = types.StringType
-				attributeValues["entra_client_id"] = types.StringValue(val)
-			}
-		
-				attributeTypes["entra_client_secret"] = types.StringType
-				if sv, ok := configValues["entra_client_secret"].(string); ok {
-					attributeValues["entra_client_secret"] = types.StringValue(sv)
-				} else {
-				 	attributeValues["entra_client_secret"] = types.StringNull()
-				}
-			if _, ok := configValues["entra_skip_ad_groups"]; ok {
-if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_skip_ad_groups"] = types.BoolType
-				attributeValues["entra_skip_ad_groups"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_skip_ad_groups"] = types.BoolType
-			attributeValues["entra_skip_ad_groups"] = types.BoolNull()
-		}
-		
-			if val, ok := getStringValue(values, "entra_graph_domain"); ok {
-				attributeTypes["entra_graph_domain"] = types.StringType
-				attributeValues["entra_graph_domain"] = types.StringValue(val)
-			}
-		if _, ok := configValues["entra_sign_in_activity"]; ok {
-if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_sign_in_activity"] = types.BoolType
-				attributeValues["entra_sign_in_activity"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_sign_in_activity"] = types.BoolType
-			attributeValues["entra_sign_in_activity"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_schedule_scim_provisioning"]; ok {
-if val, ok := getStringValue(values, "entra_schedule_scim_provisioning"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
-				attributeValues["entra_schedule_scim_provisioning"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
-			attributeValues["entra_schedule_scim_provisioning"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_disable_audit_log_feed"]; ok {
-if val, ok := getStringValue(values, "entra_disable_audit_log_feed"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
-				attributeValues["entra_disable_audit_log_feed"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
-			attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
-		}
-		if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
-if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
-				attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
-			attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
-		}
-		r.EntraGroupClientSecret = types.ObjectValueMust(attributeTypes, attributeValues)
-	}}
+						if val, ok := getStringValue(values, "entra_tenant_id"); ok {
+							attributeTypes["entra_tenant_id"] = types.StringType
+							attributeValues["entra_tenant_id"] = types.StringValue(val)
+						}
+						if _, ok := configValues["entra_skip_ad_groups"]; ok {
+							if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_skip_ad_groups"] = types.BoolType
+									attributeValues["entra_skip_ad_groups"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_skip_ad_groups"] = types.BoolType
+							attributeValues["entra_skip_ad_groups"] = types.BoolNull()
+						}
 
-                  
-              }
-          }
-       }
+						if val, ok := getStringValue(values, "entra_graph_domain"); ok {
+							attributeTypes["entra_graph_domain"] = types.StringType
+							attributeValues["entra_graph_domain"] = types.StringValue(val)
+						}
+						if _, ok := configValues["entra_sign_in_activity"]; ok {
+							if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_sign_in_activity"] = types.BoolType
+									attributeValues["entra_sign_in_activity"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_sign_in_activity"] = types.BoolType
+							attributeValues["entra_sign_in_activity"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_schedule_scim_provisioning"]; ok {
+							if val, ok := getStringValue(values, "entra_schedule_scim_provisioning"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
+									attributeValues["entra_schedule_scim_provisioning"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
+							attributeValues["entra_schedule_scim_provisioning"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_disable_audit_log_feed"]; ok {
+							if val, ok := getStringValue(values, "entra_disable_audit_log_feed"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
+									attributeValues["entra_disable_audit_log_feed"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
+							attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
+							if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+									attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+							attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
+						}
+						r.EntraGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
+				}
+
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "entra_group_client_secret" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "entra_tenant_id"); ok {
+							attributeTypes["entra_tenant_id"] = types.StringType
+							attributeValues["entra_tenant_id"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "entra_client_id"); ok {
+							attributeTypes["entra_client_id"] = types.StringType
+							attributeValues["entra_client_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["entra_client_secret"] = types.StringType
+						if sv, ok := configValues["entra_client_secret"].(string); ok {
+							attributeValues["entra_client_secret"] = types.StringValue(sv)
+						} else {
+							attributeValues["entra_client_secret"] = types.StringNull()
+						}
+						if _, ok := configValues["entra_skip_ad_groups"]; ok {
+							if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_skip_ad_groups"] = types.BoolType
+									attributeValues["entra_skip_ad_groups"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_skip_ad_groups"] = types.BoolType
+							attributeValues["entra_skip_ad_groups"] = types.BoolNull()
+						}
+
+						if val, ok := getStringValue(values, "entra_graph_domain"); ok {
+							attributeTypes["entra_graph_domain"] = types.StringType
+							attributeValues["entra_graph_domain"] = types.StringValue(val)
+						}
+						if _, ok := configValues["entra_sign_in_activity"]; ok {
+							if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_sign_in_activity"] = types.BoolType
+									attributeValues["entra_sign_in_activity"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_sign_in_activity"] = types.BoolType
+							attributeValues["entra_sign_in_activity"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_schedule_scim_provisioning"]; ok {
+							if val, ok := getStringValue(values, "entra_schedule_scim_provisioning"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
+									attributeValues["entra_schedule_scim_provisioning"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_schedule_scim_provisioning"] = types.BoolType
+							attributeValues["entra_schedule_scim_provisioning"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_disable_audit_log_feed"]; ok {
+							if val, ok := getStringValue(values, "entra_disable_audit_log_feed"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
+									attributeValues["entra_disable_audit_log_feed"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
+							attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
+							if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+									attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+							attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
+						}
+						r.EntraGroupClientSecret = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
+				}
+
+			}
+		}
+	}
 }

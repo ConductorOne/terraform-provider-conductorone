@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationContentfulResourceModel) ToCreateDelegatedSDKType() *shared.
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Contentful"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationContentfulResourceModel) ToCreateSDKType() (*shared.Connecto
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationContentfulResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationContentfulResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Contentful"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(contentfulCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Contentful"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(contentfulCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,27 +93,24 @@ func (r *IntegrationContentfulResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 func (r *IntegrationContentfulResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		contentfulToken := new(string)
-if !r.ContentfulToken.IsUnknown() && !r.ContentfulToken.IsNull() {
-*contentfulToken = r.ContentfulToken.ValueString()
-configValues["contentful_token"] = contentfulToken
-}
 
-    
-		contentfulOrganizationId := new(string)
-if !r.ContentfulOrganizationId.IsUnknown() && !r.ContentfulOrganizationId.IsNull() {
-*contentfulOrganizationId = r.ContentfulOrganizationId.ValueString()
-configValues["contentful_organization_id"] = contentfulOrganizationId
-}
+	contentfulToken := new(string)
+	if !r.ContentfulToken.IsUnknown() && !r.ContentfulToken.IsNull() {
+		*contentfulToken = r.ContentfulToken.ValueString()
+		configValues["contentful_token"] = contentfulToken
+	}
 
-    
+	contentfulOrganizationId := new(string)
+	if !r.ContentfulOrganizationId.IsUnknown() && !r.ContentfulOrganizationId.IsNull() {
+		*contentfulOrganizationId = r.ContentfulOrganizationId.ValueString()
+		configValues["contentful_organization_id"] = contentfulOrganizationId
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationContentfulResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -124,7 +119,7 @@ func (r *IntegrationContentfulResourceModel) getConfig() (map[string]interface{}
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -181,22 +176,20 @@ func (r *IntegrationContentfulResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               
-               if _, ok := configValues["contentful_organization_id"]; ok {
-if val, ok := getStringValue(values, "contentful_organization_id"); ok {
-r.ContentfulOrganizationId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-               
-           }
-       }
-    }
+				if _, ok := configValues["contentful_organization_id"]; ok {
+					if val, ok := getStringValue(values, "contentful_organization_id"); ok {
+						r.ContentfulOrganizationId = types.StringValue(val)
+					}
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationContentfulResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -234,20 +227,18 @@ func (r *IntegrationContentfulResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  
-                  if _, ok := configValues["contentful_organization_id"]; ok {
-if val, ok := getStringValue(values, "contentful_organization_id"); ok {
-r.ContentfulOrganizationId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-                  
-              }
-          }
-       }
+				if _, ok := configValues["contentful_organization_id"]; ok {
+					if val, ok := getStringValue(values, "contentful_organization_id"); ok {
+						r.ContentfulOrganizationId = types.StringValue(val)
+					}
+				}
+
+			}
+		}
+	}
 }

@@ -2,15 +2,14 @@
 package provider
 
 import (
-    "fmt"
+	"fmt"
 	"strconv"
-	"time"
 	"strings"
+	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +23,8 @@ func (r *IntegrationOktaV2ResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Okta v2"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +37,20 @@ func (r *IntegrationOktaV2ResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +60,17 @@ func (r *IntegrationOktaV2ResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +81,12 @@ func (r *IntegrationOktaV2ResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Okta v2"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(oktaV2CatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Okta v2"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(oktaV2CatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,58 +94,50 @@ func (r *IntegrationOktaV2ResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 
 func (r *IntegrationOktaV2ResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		oktaV2Domain := new(string)
-if !r.OktaV2Domain.IsUnknown() && !r.OktaV2Domain.IsNull() {
-*oktaV2Domain = r.OktaV2Domain.ValueString()
-configValues["okta_v2_domain"] = oktaV2Domain
-}
 
-    
-		oktaV2ApiToken := new(string)
-if !r.OktaV2ApiToken.IsUnknown() && !r.OktaV2ApiToken.IsNull() {
-*oktaV2ApiToken = r.OktaV2ApiToken.ValueString()
-configValues["okta_v2_api_token"] = oktaV2ApiToken
-}
+	oktaV2Domain := new(string)
+	if !r.OktaV2Domain.IsUnknown() && !r.OktaV2Domain.IsNull() {
+		*oktaV2Domain = r.OktaV2Domain.ValueString()
+		configValues["okta_v2_domain"] = oktaV2Domain
+	}
 
-    
-		oktaSyncCustomRoles := new(string)
-if !r.OktaSyncCustomRoles.IsUnknown() && !r.OktaSyncCustomRoles.IsNull() {
-*oktaSyncCustomRoles = strconv.FormatBool(r.OktaSyncCustomRoles.ValueBool())
-configValues["okta_sync_custom_roles"] = oktaSyncCustomRoles
-}
+	oktaV2ApiToken := new(string)
+	if !r.OktaV2ApiToken.IsUnknown() && !r.OktaV2ApiToken.IsNull() {
+		*oktaV2ApiToken = r.OktaV2ApiToken.ValueString()
+		configValues["okta_v2_api_token"] = oktaV2ApiToken
+	}
 
-    
-		oktaSkipSecondaryEmails := new(string)
-if !r.OktaSkipSecondaryEmails.IsUnknown() && !r.OktaSkipSecondaryEmails.IsNull() {
-*oktaSkipSecondaryEmails = strconv.FormatBool(r.OktaSkipSecondaryEmails.ValueBool())
-configValues["okta_skip_secondary_emails"] = oktaSkipSecondaryEmails
-}
+	oktaSyncCustomRoles := new(string)
+	if !r.OktaSyncCustomRoles.IsUnknown() && !r.OktaSyncCustomRoles.IsNull() {
+		*oktaSyncCustomRoles = strconv.FormatBool(r.OktaSyncCustomRoles.ValueBool())
+		configValues["okta_sync_custom_roles"] = oktaSyncCustomRoles
+	}
 
-    
-		oktaSyncSecrets := new(string)
-if !r.OktaSyncSecrets.IsUnknown() && !r.OktaSyncSecrets.IsNull() {
-*oktaSyncSecrets = strconv.FormatBool(r.OktaSyncSecrets.ValueBool())
-configValues["okta_sync_secrets"] = oktaSyncSecrets
-}
+	oktaSkipSecondaryEmails := new(string)
+	if !r.OktaSkipSecondaryEmails.IsUnknown() && !r.OktaSkipSecondaryEmails.IsNull() {
+		*oktaSkipSecondaryEmails = strconv.FormatBool(r.OktaSkipSecondaryEmails.ValueBool())
+		configValues["okta_skip_secondary_emails"] = oktaSkipSecondaryEmails
+	}
 
-    
-		oktaFilterEmailDomains := make([]string, 0)
-for _, item := range r.OktaFilterEmailDomains {
-oktaFilterEmailDomains = append(oktaFilterEmailDomains, item.ValueString())
-}
-if len(oktaFilterEmailDomains) > 0 {
-configValues["okta_filter_email_domains"] = strings.Join(oktaFilterEmailDomains, ",")
-}
+	oktaSyncSecrets := new(string)
+	if !r.OktaSyncSecrets.IsUnknown() && !r.OktaSyncSecrets.IsNull() {
+		*oktaSyncSecrets = strconv.FormatBool(r.OktaSyncSecrets.ValueBool())
+		configValues["okta_sync_secrets"] = oktaSyncSecrets
+	}
 
+	oktaFilterEmailDomains := make([]string, 0)
+	for _, item := range r.OktaFilterEmailDomains {
+		oktaFilterEmailDomains = append(oktaFilterEmailDomains, item.ValueString())
+	}
+	if len(oktaFilterEmailDomains) > 0 {
+		configValues["okta_filter_email_domains"] = strings.Join(oktaFilterEmailDomains, ",")
+	}
 
-    
-
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationOktaV2ResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -155,7 +146,7 @@ func (r *IntegrationOktaV2ResourceModel) getConfig() (map[string]interface{}, bo
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -212,63 +203,60 @@ func (r *IntegrationOktaV2ResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["okta_v2_domain"]; ok {
-if val, ok := getStringValue(values, "okta_v2_domain"); ok {
-r.OktaV2Domain = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["okta_v2_domain"]; ok {
+					if val, ok := getStringValue(values, "okta_v2_domain"); ok {
+						r.OktaV2Domain = types.StringValue(val)
+					}
+				}
 
-               
-               if _, ok := configValues["okta_sync_custom_roles"]; ok {
-if val, ok := getStringValue(values, "okta_sync_custom_roles"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.OktaSyncCustomRoles = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["okta_sync_custom_roles"]; ok {
+					if val, ok := getStringValue(values, "okta_sync_custom_roles"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.OktaSyncCustomRoles = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["okta_skip_secondary_emails"]; ok {
-if val, ok := getStringValue(values, "okta_skip_secondary_emails"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.OktaSkipSecondaryEmails = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["okta_skip_secondary_emails"]; ok {
+					if val, ok := getStringValue(values, "okta_skip_secondary_emails"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.OktaSkipSecondaryEmails = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["okta_sync_secrets"]; ok {
-if val, ok := getStringValue(values, "okta_sync_secrets"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.OktaSyncSecrets = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["okta_sync_secrets"]; ok {
+					if val, ok := getStringValue(values, "okta_sync_secrets"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.OktaSyncSecrets = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["okta_filter_email_domains"]; ok {
-if val, ok := getStringValue(values, "okta_filter_email_domains"); ok {
-var valLists []types.String
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-r.OktaFilterEmailDomains = valLists
-}
-}
+				if _, ok := configValues["okta_filter_email_domains"]; ok {
+					if val, ok := getStringValue(values, "okta_filter_email_domains"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.OktaFilterEmailDomains = valLists
+					}
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationOktaV2ResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -306,61 +294,58 @@ func (r *IntegrationOktaV2ResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["okta_v2_domain"]; ok {
-if val, ok := getStringValue(values, "okta_v2_domain"); ok {
-r.OktaV2Domain = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["okta_v2_domain"]; ok {
+					if val, ok := getStringValue(values, "okta_v2_domain"); ok {
+						r.OktaV2Domain = types.StringValue(val)
+					}
+				}
 
-                  
-                  if _, ok := configValues["okta_sync_custom_roles"]; ok {
-if val, ok := getStringValue(values, "okta_sync_custom_roles"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.OktaSyncCustomRoles = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["okta_sync_custom_roles"]; ok {
+					if val, ok := getStringValue(values, "okta_sync_custom_roles"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.OktaSyncCustomRoles = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["okta_skip_secondary_emails"]; ok {
-if val, ok := getStringValue(values, "okta_skip_secondary_emails"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.OktaSkipSecondaryEmails = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["okta_skip_secondary_emails"]; ok {
+					if val, ok := getStringValue(values, "okta_skip_secondary_emails"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.OktaSkipSecondaryEmails = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["okta_sync_secrets"]; ok {
-if val, ok := getStringValue(values, "okta_sync_secrets"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.OktaSyncSecrets = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["okta_sync_secrets"]; ok {
+					if val, ok := getStringValue(values, "okta_sync_secrets"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.OktaSyncSecrets = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["okta_filter_email_domains"]; ok {
-if val, ok := getStringValue(values, "okta_filter_email_domains"); ok {
-var valLists []types.String
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-r.OktaFilterEmailDomains = valLists
-}
-}
+				if _, ok := configValues["okta_filter_email_domains"]; ok {
+					if val, ok := getStringValue(values, "okta_filter_email_domains"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.OktaFilterEmailDomains = valLists
+					}
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

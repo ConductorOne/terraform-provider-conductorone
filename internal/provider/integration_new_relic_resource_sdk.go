@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationNewRelicResourceModel) ToCreateDelegatedSDKType() *shared.Co
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("New Relic"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationNewRelicResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationNewRelicResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationNewRelicResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("New Relic"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(newRelicCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("New Relic"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(newRelicCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,20 +93,18 @@ func (r *IntegrationNewRelicResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 
 func (r *IntegrationNewRelicResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		newrelicApiKey := new(string)
-if !r.NewrelicApiKey.IsUnknown() && !r.NewrelicApiKey.IsNull() {
-*newrelicApiKey = r.NewrelicApiKey.ValueString()
-configValues["newrelic_api_key"] = newrelicApiKey
-}
 
-    
+	newrelicApiKey := new(string)
+	if !r.NewrelicApiKey.IsUnknown() && !r.NewrelicApiKey.IsNull() {
+		*newrelicApiKey = r.NewrelicApiKey.ValueString()
+		configValues["newrelic_api_key"] = newrelicApiKey
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationNewRelicResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -117,7 +113,7 @@ func (r *IntegrationNewRelicResourceModel) getConfig() (map[string]interface{}, 
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -174,7 +170,6 @@ func (r *IntegrationNewRelicResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
 }
 
 func (r *IntegrationNewRelicResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -212,5 +207,4 @@ func (r *IntegrationNewRelicResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
 }

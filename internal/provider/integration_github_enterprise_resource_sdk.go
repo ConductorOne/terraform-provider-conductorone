@@ -2,16 +2,16 @@
 package provider
 
 import (
-    "fmt"
+	"fmt"
 	"strconv"
-	"time"
 	"strings"
+	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	"github.com/hashicorp/terraform-plugin-framework/attr" 
-	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 const githubEnterpriseCatalogID = "2GjkbaX83ElxXZ7PUvBTjaCuNs4"
@@ -24,8 +24,8 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToCreateDelegatedSDKType() *s
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("GitHub Enterprise"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +38,20 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToCreateSDKType() (*shared.Co
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +61,17 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Co
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +82,12 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Co
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("GitHub Enterprise"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(githubEnterpriseCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("GitHub Enterprise"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(githubEnterpriseCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,8 +95,7 @@ func (r *IntegrationGithubEnterpriseResourceModel) ToUpdateSDKType() (*shared.Co
 
 func (r *IntegrationGithubEnterpriseResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		
+
 	if !r.GithubPersonalAccessTokenGroup.IsUnknown() && !r.GithubPersonalAccessTokenGroup.IsNull() {
 		configValues["C1_selected_field_group_name"] = "github_personal_access_token_group"
 		for k, v := range r.GithubPersonalAccessTokenGroup.Attributes() {
@@ -121,9 +120,7 @@ func (r *IntegrationGithubEnterpriseResourceModel) populateConfig() map[string]i
 			}
 		}
 	}
-	
-    
-		
+
 	if !r.GithubAppGroup.IsUnknown() && !r.GithubAppGroup.IsNull() {
 		configValues["C1_selected_field_group_name"] = "github_app_group"
 		for k, v := range r.GithubAppGroup.Attributes() {
@@ -148,14 +145,12 @@ func (r *IntegrationGithubEnterpriseResourceModel) populateConfig() map[string]i
 			}
 		}
 	}
-	
-    
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationGithubEnterpriseResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -164,7 +159,7 @@ func (r *IntegrationGithubEnterpriseResourceModel) getConfig() (map[string]inter
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -221,135 +216,135 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromGetResponse(resp *
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-		if groupName == "github_personal_access_token_group" {
-		attributeTypes := make(map[string]attr.Type, len(values))
-		attributeValues := make(map[string]attr.Value, len(values))
-	
-			if val, ok := getStringValue(values, "github_instance_url"); ok {
-				attributeTypes["github_instance_url"] = types.StringType
-				attributeValues["github_instance_url"] = types.StringValue(val)
-			}
-		
-				attributeTypes["github_access_token"] = types.StringType
-				if sv, ok := configValues["github_access_token"].(string); ok {
-					attributeValues["github_access_token"] = types.StringValue(sv)
-				} else {
-				 	attributeValues["github_access_token"] = types.StringNull()
-				}
-			if val, ok := getStringValue(values, "github_org_list"); ok {
-var valLists []attr.Value
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-attributeTypes["github_org_list"] = types.ListType{ElemType: types.StringType}
-		if len(valLists) == 0 {
-			attributeValues["github_org_list"] = types.ListNull(types.StringType)
-		} else {
-			attributeValues["github_org_list"] = types.ListValueMust(types.StringType, valLists)
-		}
-		}
-if val, ok := getStringValue(values, "enterprises"); ok {
-var valLists []attr.Value
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
-		if len(valLists) == 0 {
-			attributeValues["enterprises"] = types.ListNull(types.StringType)
-		} else {
-			attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
-		}
-		}
-if _, ok := configValues["omit-archived-repositories"]; ok {
-if val, ok := getStringValue(values, "omit-archived-repositories"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["omit-archived-repositories"] = types.BoolType
-				attributeValues["omit-archived-repositories"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["omit-archived-repositories"] = types.BoolType
-			attributeValues["omit-archived-repositories"] = types.BoolNull()
-		}
-		r.GithubPersonalAccessTokenGroup = types.ObjectValueMust(attributeTypes, attributeValues)
-	}}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "github_personal_access_token_group" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-               if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-		if groupName == "github_app_group" {
-		attributeTypes := make(map[string]attr.Type, len(values))
-		attributeValues := make(map[string]attr.Value, len(values))
-	
-			if val, ok := getStringValue(values, "github_instance_url"); ok {
-				attributeTypes["github_instance_url"] = types.StringType
-				attributeValues["github_instance_url"] = types.StringValue(val)
-			}
-		
-			if val, ok := getStringValue(values, "github_app_id"); ok {
-				attributeTypes["github_app_id"] = types.StringType
-				attributeValues["github_app_id"] = types.StringValue(val)
-			}
-		
-				attributeTypes["github_app_private_key"] = types.StringType
-				if sv, ok := configValues["github_app_private_key"].(string); ok {
-					attributeValues["github_app_private_key"] = types.StringValue(sv)
-				} else {
-				 	attributeValues["github_app_private_key"] = types.StringNull()
-				}
-			
-			if val, ok := getStringValue(values, "github_app_org"); ok {
-				attributeTypes["github_app_org"] = types.StringType
-				attributeValues["github_app_org"] = types.StringValue(val)
-			}
-		if val, ok := getStringValue(values, "enterprises"); ok {
-var valLists []attr.Value
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
-		if len(valLists) == 0 {
-			attributeValues["enterprises"] = types.ListNull(types.StringType)
-		} else {
-			attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
-		}
-		}
-if _, ok := configValues["omit-archived-repositories"]; ok {
-if val, ok := getStringValue(values, "omit-archived-repositories"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["omit-archived-repositories"] = types.BoolType
-				attributeValues["omit-archived-repositories"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["omit-archived-repositories"] = types.BoolType
-			attributeValues["omit-archived-repositories"] = types.BoolNull()
-		}
-		r.GithubAppGroup = types.ObjectValueMust(attributeTypes, attributeValues)
-	}}
+						if val, ok := getStringValue(values, "github_instance_url"); ok {
+							attributeTypes["github_instance_url"] = types.StringType
+							attributeValues["github_instance_url"] = types.StringValue(val)
+						}
 
-               
-           }
-       }
-    }
+						attributeTypes["github_access_token"] = types.StringType
+						if sv, ok := configValues["github_access_token"].(string); ok {
+							attributeValues["github_access_token"] = types.StringValue(sv)
+						} else {
+							attributeValues["github_access_token"] = types.StringNull()
+						}
+						if val, ok := getStringValue(values, "github_org_list"); ok {
+							var valLists []attr.Value
+							tmpList := strings.Split(val, ",")
+							for _, item := range tmpList {
+								item = strings.TrimSpace(item)
+								if item != "" {
+									valLists = append(valLists, types.StringValue(item))
+								}
+							}
+							attributeTypes["github_org_list"] = types.ListType{ElemType: types.StringType}
+							if len(valLists) == 0 {
+								attributeValues["github_org_list"] = types.ListNull(types.StringType)
+							} else {
+								attributeValues["github_org_list"] = types.ListValueMust(types.StringType, valLists)
+							}
+						}
+						if val, ok := getStringValue(values, "enterprises"); ok {
+							var valLists []attr.Value
+							tmpList := strings.Split(val, ",")
+							for _, item := range tmpList {
+								item = strings.TrimSpace(item)
+								if item != "" {
+									valLists = append(valLists, types.StringValue(item))
+								}
+							}
+							attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
+							if len(valLists) == 0 {
+								attributeValues["enterprises"] = types.ListNull(types.StringType)
+							} else {
+								attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+							}
+						}
+						if _, ok := configValues["omit-archived-repositories"]; ok {
+							if val, ok := getStringValue(values, "omit-archived-repositories"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["omit-archived-repositories"] = types.BoolType
+									attributeValues["omit-archived-repositories"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["omit-archived-repositories"] = types.BoolType
+							attributeValues["omit-archived-repositories"] = types.BoolNull()
+						}
+						r.GithubPersonalAccessTokenGroup = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
+				}
+
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "github_app_group" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "github_instance_url"); ok {
+							attributeTypes["github_instance_url"] = types.StringType
+							attributeValues["github_instance_url"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "github_app_id"); ok {
+							attributeTypes["github_app_id"] = types.StringType
+							attributeValues["github_app_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["github_app_private_key"] = types.StringType
+						if sv, ok := configValues["github_app_private_key"].(string); ok {
+							attributeValues["github_app_private_key"] = types.StringValue(sv)
+						} else {
+							attributeValues["github_app_private_key"] = types.StringNull()
+						}
+
+						if val, ok := getStringValue(values, "github_app_org"); ok {
+							attributeTypes["github_app_org"] = types.StringType
+							attributeValues["github_app_org"] = types.StringValue(val)
+						}
+						if val, ok := getStringValue(values, "enterprises"); ok {
+							var valLists []attr.Value
+							tmpList := strings.Split(val, ",")
+							for _, item := range tmpList {
+								item = strings.TrimSpace(item)
+								if item != "" {
+									valLists = append(valLists, types.StringValue(item))
+								}
+							}
+							attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
+							if len(valLists) == 0 {
+								attributeValues["enterprises"] = types.ListNull(types.StringType)
+							} else {
+								attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+							}
+						}
+						if _, ok := configValues["omit-archived-repositories"]; ok {
+							if val, ok := getStringValue(values, "omit-archived-repositories"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["omit-archived-repositories"] = types.BoolType
+									attributeValues["omit-archived-repositories"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["omit-archived-repositories"] = types.BoolType
+							attributeValues["omit-archived-repositories"] = types.BoolNull()
+						}
+						r.GithubAppGroup = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -387,133 +382,133 @@ func (r *IntegrationGithubEnterpriseResourceModel) RefreshFromCreateResponse(res
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-		if groupName == "github_personal_access_token_group" {
-		attributeTypes := make(map[string]attr.Type, len(values))
-		attributeValues := make(map[string]attr.Value, len(values))
-	
-			if val, ok := getStringValue(values, "github_instance_url"); ok {
-				attributeTypes["github_instance_url"] = types.StringType
-				attributeValues["github_instance_url"] = types.StringValue(val)
-			}
-		
-				attributeTypes["github_access_token"] = types.StringType
-				if sv, ok := configValues["github_access_token"].(string); ok {
-					attributeValues["github_access_token"] = types.StringValue(sv)
-				} else {
-				 	attributeValues["github_access_token"] = types.StringNull()
-				}
-			if val, ok := getStringValue(values, "github_org_list"); ok {
-var valLists []attr.Value
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-attributeTypes["github_org_list"] = types.ListType{ElemType: types.StringType}
-		if len(valLists) == 0 {
-			attributeValues["github_org_list"] = types.ListNull(types.StringType)
-		} else {
-			attributeValues["github_org_list"] = types.ListValueMust(types.StringType, valLists)
-		}
-		}
-if val, ok := getStringValue(values, "enterprises"); ok {
-var valLists []attr.Value
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
-		if len(valLists) == 0 {
-			attributeValues["enterprises"] = types.ListNull(types.StringType)
-		} else {
-			attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
-		}
-		}
-if _, ok := configValues["omit-archived-repositories"]; ok {
-if val, ok := getStringValue(values, "omit-archived-repositories"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["omit-archived-repositories"] = types.BoolType
-				attributeValues["omit-archived-repositories"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["omit-archived-repositories"] = types.BoolType
-			attributeValues["omit-archived-repositories"] = types.BoolNull()
-		}
-		r.GithubPersonalAccessTokenGroup = types.ObjectValueMust(attributeTypes, attributeValues)
-	}}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "github_personal_access_token_group" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
 
-                  if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
-		if groupName == "github_app_group" {
-		attributeTypes := make(map[string]attr.Type, len(values))
-		attributeValues := make(map[string]attr.Value, len(values))
-	
-			if val, ok := getStringValue(values, "github_instance_url"); ok {
-				attributeTypes["github_instance_url"] = types.StringType
-				attributeValues["github_instance_url"] = types.StringValue(val)
-			}
-		
-			if val, ok := getStringValue(values, "github_app_id"); ok {
-				attributeTypes["github_app_id"] = types.StringType
-				attributeValues["github_app_id"] = types.StringValue(val)
-			}
-		
-				attributeTypes["github_app_private_key"] = types.StringType
-				if sv, ok := configValues["github_app_private_key"].(string); ok {
-					attributeValues["github_app_private_key"] = types.StringValue(sv)
-				} else {
-				 	attributeValues["github_app_private_key"] = types.StringNull()
-				}
-			
-			if val, ok := getStringValue(values, "github_app_org"); ok {
-				attributeTypes["github_app_org"] = types.StringType
-				attributeValues["github_app_org"] = types.StringValue(val)
-			}
-		if val, ok := getStringValue(values, "enterprises"); ok {
-var valLists []attr.Value
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
-		if len(valLists) == 0 {
-			attributeValues["enterprises"] = types.ListNull(types.StringType)
-		} else {
-			attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
-		}
-		}
-if _, ok := configValues["omit-archived-repositories"]; ok {
-if val, ok := getStringValue(values, "omit-archived-repositories"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-attributeTypes["omit-archived-repositories"] = types.BoolType
-				attributeValues["omit-archived-repositories"] = types.BoolValue(bv)
-				}
-			} 
-		} else {
-		 	attributeTypes["omit-archived-repositories"] = types.BoolType
-			attributeValues["omit-archived-repositories"] = types.BoolNull()
-		}
-		r.GithubAppGroup = types.ObjectValueMust(attributeTypes, attributeValues)
-	}}
+						if val, ok := getStringValue(values, "github_instance_url"); ok {
+							attributeTypes["github_instance_url"] = types.StringType
+							attributeValues["github_instance_url"] = types.StringValue(val)
+						}
 
-                  
-              }
-          }
-       }
+						attributeTypes["github_access_token"] = types.StringType
+						if sv, ok := configValues["github_access_token"].(string); ok {
+							attributeValues["github_access_token"] = types.StringValue(sv)
+						} else {
+							attributeValues["github_access_token"] = types.StringNull()
+						}
+						if val, ok := getStringValue(values, "github_org_list"); ok {
+							var valLists []attr.Value
+							tmpList := strings.Split(val, ",")
+							for _, item := range tmpList {
+								item = strings.TrimSpace(item)
+								if item != "" {
+									valLists = append(valLists, types.StringValue(item))
+								}
+							}
+							attributeTypes["github_org_list"] = types.ListType{ElemType: types.StringType}
+							if len(valLists) == 0 {
+								attributeValues["github_org_list"] = types.ListNull(types.StringType)
+							} else {
+								attributeValues["github_org_list"] = types.ListValueMust(types.StringType, valLists)
+							}
+						}
+						if val, ok := getStringValue(values, "enterprises"); ok {
+							var valLists []attr.Value
+							tmpList := strings.Split(val, ",")
+							for _, item := range tmpList {
+								item = strings.TrimSpace(item)
+								if item != "" {
+									valLists = append(valLists, types.StringValue(item))
+								}
+							}
+							attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
+							if len(valLists) == 0 {
+								attributeValues["enterprises"] = types.ListNull(types.StringType)
+							} else {
+								attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+							}
+						}
+						if _, ok := configValues["omit-archived-repositories"]; ok {
+							if val, ok := getStringValue(values, "omit-archived-repositories"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["omit-archived-repositories"] = types.BoolType
+									attributeValues["omit-archived-repositories"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["omit-archived-repositories"] = types.BoolType
+							attributeValues["omit-archived-repositories"] = types.BoolNull()
+						}
+						r.GithubPersonalAccessTokenGroup = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
+				}
+
+				if groupName, ok := getStringValue(values, "C1_selected_field_group_name"); ok {
+					if groupName == "github_app_group" {
+						attributeTypes := make(map[string]attr.Type, len(values))
+						attributeValues := make(map[string]attr.Value, len(values))
+
+						if val, ok := getStringValue(values, "github_instance_url"); ok {
+							attributeTypes["github_instance_url"] = types.StringType
+							attributeValues["github_instance_url"] = types.StringValue(val)
+						}
+
+						if val, ok := getStringValue(values, "github_app_id"); ok {
+							attributeTypes["github_app_id"] = types.StringType
+							attributeValues["github_app_id"] = types.StringValue(val)
+						}
+
+						attributeTypes["github_app_private_key"] = types.StringType
+						if sv, ok := configValues["github_app_private_key"].(string); ok {
+							attributeValues["github_app_private_key"] = types.StringValue(sv)
+						} else {
+							attributeValues["github_app_private_key"] = types.StringNull()
+						}
+
+						if val, ok := getStringValue(values, "github_app_org"); ok {
+							attributeTypes["github_app_org"] = types.StringType
+							attributeValues["github_app_org"] = types.StringValue(val)
+						}
+						if val, ok := getStringValue(values, "enterprises"); ok {
+							var valLists []attr.Value
+							tmpList := strings.Split(val, ",")
+							for _, item := range tmpList {
+								item = strings.TrimSpace(item)
+								if item != "" {
+									valLists = append(valLists, types.StringValue(item))
+								}
+							}
+							attributeTypes["enterprises"] = types.ListType{ElemType: types.StringType}
+							if len(valLists) == 0 {
+								attributeValues["enterprises"] = types.ListNull(types.StringType)
+							} else {
+								attributeValues["enterprises"] = types.ListValueMust(types.StringType, valLists)
+							}
+						}
+						if _, ok := configValues["omit-archived-repositories"]; ok {
+							if val, ok := getStringValue(values, "omit-archived-repositories"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["omit-archived-repositories"] = types.BoolType
+									attributeValues["omit-archived-repositories"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["omit-archived-repositories"] = types.BoolType
+							attributeValues["omit-archived-repositories"] = types.BoolNull()
+						}
+						r.GithubAppGroup = types.ObjectValueMust(attributeTypes, attributeValues)
+					}
+				}
+
+			}
+		}
+	}
 }

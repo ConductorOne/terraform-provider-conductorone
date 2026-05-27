@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationZoomResourceModel) ToCreateDelegatedSDKType() *shared.Connec
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Zoom"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationZoomResourceModel) ToCreateSDKType() (*shared.ConnectorServi
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationZoomResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationZoomResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Zoom"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(zoomCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Zoom"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(zoomCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,34 +93,30 @@ func (r *IntegrationZoomResourceModel) ToUpdateSDKType() (*shared.ConnectorInput
 
 func (r *IntegrationZoomResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		zoomAccountId := new(string)
-if !r.ZoomAccountId.IsUnknown() && !r.ZoomAccountId.IsNull() {
-*zoomAccountId = r.ZoomAccountId.ValueString()
-configValues["zoom_account_id"] = zoomAccountId
-}
 
-    
-		zoomClientId := new(string)
-if !r.ZoomClientId.IsUnknown() && !r.ZoomClientId.IsNull() {
-*zoomClientId = r.ZoomClientId.ValueString()
-configValues["zoom_client_id"] = zoomClientId
-}
+	zoomAccountId := new(string)
+	if !r.ZoomAccountId.IsUnknown() && !r.ZoomAccountId.IsNull() {
+		*zoomAccountId = r.ZoomAccountId.ValueString()
+		configValues["zoom_account_id"] = zoomAccountId
+	}
 
-    
-		zoomClientSecret := new(string)
-if !r.ZoomClientSecret.IsUnknown() && !r.ZoomClientSecret.IsNull() {
-*zoomClientSecret = r.ZoomClientSecret.ValueString()
-configValues["zoom_client_secret"] = zoomClientSecret
-}
+	zoomClientId := new(string)
+	if !r.ZoomClientId.IsUnknown() && !r.ZoomClientId.IsNull() {
+		*zoomClientId = r.ZoomClientId.ValueString()
+		configValues["zoom_client_id"] = zoomClientId
+	}
 
-    
+	zoomClientSecret := new(string)
+	if !r.ZoomClientSecret.IsUnknown() && !r.ZoomClientSecret.IsNull() {
+		*zoomClientSecret = r.ZoomClientSecret.ValueString()
+		configValues["zoom_client_secret"] = zoomClientSecret
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationZoomResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -131,7 +125,7 @@ func (r *IntegrationZoomResourceModel) getConfig() (map[string]interface{}, bool
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -188,28 +182,25 @@ func (r *IntegrationZoomResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["zoom_account_id"]; ok {
-if val, ok := getStringValue(values, "zoom_account_id"); ok {
-r.ZoomAccountId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["zoom_account_id"]; ok {
+					if val, ok := getStringValue(values, "zoom_account_id"); ok {
+						r.ZoomAccountId = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["zoom_client_id"]; ok {
-if val, ok := getStringValue(values, "zoom_client_id"); ok {
-r.ZoomClientId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["zoom_client_id"]; ok {
+					if val, ok := getStringValue(values, "zoom_client_id"); ok {
+						r.ZoomClientId = types.StringValue(val)
+					}
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationZoomResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -247,26 +238,23 @@ func (r *IntegrationZoomResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["zoom_account_id"]; ok {
-if val, ok := getStringValue(values, "zoom_account_id"); ok {
-r.ZoomAccountId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["zoom_account_id"]; ok {
+					if val, ok := getStringValue(values, "zoom_account_id"); ok {
+						r.ZoomAccountId = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["zoom_client_id"]; ok {
-if val, ok := getStringValue(values, "zoom_client_id"); ok {
-r.ZoomClientId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["zoom_client_id"]; ok {
+					if val, ok := getStringValue(values, "zoom_client_id"); ok {
+						r.ZoomClientId = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

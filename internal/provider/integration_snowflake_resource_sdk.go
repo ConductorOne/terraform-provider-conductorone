@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationSnowflakeResourceModel) ToCreateDelegatedSDKType() *shared.C
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Snowflake"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationSnowflakeResourceModel) ToCreateSDKType() (*shared.Connector
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Snowflake"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(snowflakeCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Snowflake"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(snowflakeCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,41 +93,36 @@ func (r *IntegrationSnowflakeResourceModel) ToUpdateSDKType() (*shared.Connector
 
 func (r *IntegrationSnowflakeResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		snowflakeAccount := new(string)
-if !r.SnowflakeAccount.IsUnknown() && !r.SnowflakeAccount.IsNull() {
-*snowflakeAccount = r.SnowflakeAccount.ValueString()
-configValues["snowflake_account"] = snowflakeAccount
-}
 
-    
-		snowflakeUsername := new(string)
-if !r.SnowflakeUsername.IsUnknown() && !r.SnowflakeUsername.IsNull() {
-*snowflakeUsername = r.SnowflakeUsername.ValueString()
-configValues["snowflake_username"] = snowflakeUsername
-}
+	snowflakeAccount := new(string)
+	if !r.SnowflakeAccount.IsUnknown() && !r.SnowflakeAccount.IsNull() {
+		*snowflakeAccount = r.SnowflakeAccount.ValueString()
+		configValues["snowflake_account"] = snowflakeAccount
+	}
 
-    
-		snowflakePassword := new(string)
-if !r.SnowflakePassword.IsUnknown() && !r.SnowflakePassword.IsNull() {
-*snowflakePassword = r.SnowflakePassword.ValueString()
-configValues["snowflake_password"] = snowflakePassword
-}
+	snowflakeUsername := new(string)
+	if !r.SnowflakeUsername.IsUnknown() && !r.SnowflakeUsername.IsNull() {
+		*snowflakeUsername = r.SnowflakeUsername.ValueString()
+		configValues["snowflake_username"] = snowflakeUsername
+	}
 
-    
-		snowflakeUserRole := new(string)
-if !r.SnowflakeUserRole.IsUnknown() && !r.SnowflakeUserRole.IsNull() {
-*snowflakeUserRole = r.SnowflakeUserRole.ValueString()
-configValues["snowflake_user_role"] = snowflakeUserRole
-}
+	snowflakePassword := new(string)
+	if !r.SnowflakePassword.IsUnknown() && !r.SnowflakePassword.IsNull() {
+		*snowflakePassword = r.SnowflakePassword.ValueString()
+		configValues["snowflake_password"] = snowflakePassword
+	}
 
-    
+	snowflakeUserRole := new(string)
+	if !r.SnowflakeUserRole.IsUnknown() && !r.SnowflakeUserRole.IsNull() {
+		*snowflakeUserRole = r.SnowflakeUserRole.ValueString()
+		configValues["snowflake_user_role"] = snowflakeUserRole
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationSnowflakeResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -138,7 +131,7 @@ func (r *IntegrationSnowflakeResourceModel) getConfig() (map[string]interface{},
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -195,34 +188,31 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["snowflake_account"]; ok {
-if val, ok := getStringValue(values, "snowflake_account"); ok {
-r.SnowflakeAccount = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["snowflake_account"]; ok {
+					if val, ok := getStringValue(values, "snowflake_account"); ok {
+						r.SnowflakeAccount = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["snowflake_username"]; ok {
-if val, ok := getStringValue(values, "snowflake_username"); ok {
-r.SnowflakeUsername = types.StringValue(val)
-}
-}
+				if _, ok := configValues["snowflake_username"]; ok {
+					if val, ok := getStringValue(values, "snowflake_username"); ok {
+						r.SnowflakeUsername = types.StringValue(val)
+					}
+				}
 
-               
-               if _, ok := configValues["snowflake_user_role"]; ok {
-if val, ok := getStringValue(values, "snowflake_user_role"); ok {
-r.SnowflakeUserRole = types.StringValue(val)
-}
-}
+				if _, ok := configValues["snowflake_user_role"]; ok {
+					if val, ok := getStringValue(values, "snowflake_user_role"); ok {
+						r.SnowflakeUserRole = types.StringValue(val)
+					}
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationSnowflakeResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -260,32 +250,29 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["snowflake_account"]; ok {
-if val, ok := getStringValue(values, "snowflake_account"); ok {
-r.SnowflakeAccount = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["snowflake_account"]; ok {
+					if val, ok := getStringValue(values, "snowflake_account"); ok {
+						r.SnowflakeAccount = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["snowflake_username"]; ok {
-if val, ok := getStringValue(values, "snowflake_username"); ok {
-r.SnowflakeUsername = types.StringValue(val)
-}
-}
+				if _, ok := configValues["snowflake_username"]; ok {
+					if val, ok := getStringValue(values, "snowflake_username"); ok {
+						r.SnowflakeUsername = types.StringValue(val)
+					}
+				}
 
-                  
-                  if _, ok := configValues["snowflake_user_role"]; ok {
-if val, ok := getStringValue(values, "snowflake_user_role"); ok {
-r.SnowflakeUserRole = types.StringValue(val)
-}
-}
+				if _, ok := configValues["snowflake_user_role"]; ok {
+					if val, ok := getStringValue(values, "snowflake_user_role"); ok {
+						r.SnowflakeUserRole = types.StringValue(val)
+					}
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

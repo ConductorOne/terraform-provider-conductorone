@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationBatonResourceModel) ToCreateDelegatedSDKType() *shared.Conne
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Baton"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationBatonResourceModel) ToCreateSDKType() (*shared.ConnectorServ
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationBatonResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationBatonResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Baton"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(batonCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Baton"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(batonCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,13 +93,12 @@ func (r *IntegrationBatonResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 
 func (r *IntegrationBatonResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationBatonResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -110,7 +107,7 @@ func (r *IntegrationBatonResourceModel) getConfig() (map[string]interface{}, boo
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -167,7 +164,6 @@ func (r *IntegrationBatonResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
 }
 
 func (r *IntegrationBatonResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -205,5 +201,4 @@ func (r *IntegrationBatonResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
 }

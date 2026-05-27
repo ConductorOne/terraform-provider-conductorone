@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
+	"fmt"
 	"strconv"
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationConfluenceV2ResourceModel) ToCreateDelegatedSDKType() *share
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Confluence v2"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationConfluenceV2ResourceModel) ToCreateSDKType() (*shared.Connec
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationConfluenceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationConfluenceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Confluence v2"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(confluenceV2CatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Confluence v2"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(confluenceV2CatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,41 +93,36 @@ func (r *IntegrationConfluenceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 
 func (r *IntegrationConfluenceV2ResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		domainUrl := new(string)
-if !r.DomainUrl.IsUnknown() && !r.DomainUrl.IsNull() {
-*domainUrl = r.DomainUrl.ValueString()
-configValues["domain-url"] = domainUrl
-}
 
-    
-		username := new(string)
-if !r.Username.IsUnknown() && !r.Username.IsNull() {
-*username = r.Username.ValueString()
-configValues["username"] = username
-}
+	domainUrl := new(string)
+	if !r.DomainUrl.IsUnknown() && !r.DomainUrl.IsNull() {
+		*domainUrl = r.DomainUrl.ValueString()
+		configValues["domain-url"] = domainUrl
+	}
 
-    
-		apiKey := new(string)
-if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
-*apiKey = r.ApiKey.ValueString()
-configValues["api-key"] = apiKey
-}
+	username := new(string)
+	if !r.Username.IsUnknown() && !r.Username.IsNull() {
+		*username = r.Username.ValueString()
+		configValues["username"] = username
+	}
 
-    
-		skipPersonalSpaces := new(string)
-if !r.SkipPersonalSpaces.IsUnknown() && !r.SkipPersonalSpaces.IsNull() {
-*skipPersonalSpaces = strconv.FormatBool(r.SkipPersonalSpaces.ValueBool())
-configValues["skip-personal-spaces"] = skipPersonalSpaces
-}
+	apiKey := new(string)
+	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
+		*apiKey = r.ApiKey.ValueString()
+		configValues["api-key"] = apiKey
+	}
 
-    
+	skipPersonalSpaces := new(string)
+	if !r.SkipPersonalSpaces.IsUnknown() && !r.SkipPersonalSpaces.IsNull() {
+		*skipPersonalSpaces = strconv.FormatBool(r.SkipPersonalSpaces.ValueBool())
+		configValues["skip-personal-spaces"] = skipPersonalSpaces
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationConfluenceV2ResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -138,7 +131,7 @@ func (r *IntegrationConfluenceV2ResourceModel) getConfig() (map[string]interface
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -195,37 +188,34 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromGetResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["domain-url"]; ok {
-if val, ok := getStringValue(values, "domain-url"); ok {
-r.DomainUrl = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["domain-url"]; ok {
+					if val, ok := getStringValue(values, "domain-url"); ok {
+						r.DomainUrl = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["username"]; ok {
-if val, ok := getStringValue(values, "username"); ok {
-r.Username = types.StringValue(val)
-}
-}
+				if _, ok := configValues["username"]; ok {
+					if val, ok := getStringValue(values, "username"); ok {
+						r.Username = types.StringValue(val)
+					}
+				}
 
-               
-               if _, ok := configValues["skip-personal-spaces"]; ok {
-if val, ok := getStringValue(values, "skip-personal-spaces"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.SkipPersonalSpaces = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["skip-personal-spaces"]; ok {
+					if val, ok := getStringValue(values, "skip-personal-spaces"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.SkipPersonalSpaces = types.BoolValue(bv)
+						}
+					}
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationConfluenceV2ResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -263,35 +253,32 @@ func (r *IntegrationConfluenceV2ResourceModel) RefreshFromCreateResponse(resp *s
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["domain-url"]; ok {
-if val, ok := getStringValue(values, "domain-url"); ok {
-r.DomainUrl = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["domain-url"]; ok {
+					if val, ok := getStringValue(values, "domain-url"); ok {
+						r.DomainUrl = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["username"]; ok {
-if val, ok := getStringValue(values, "username"); ok {
-r.Username = types.StringValue(val)
-}
-}
+				if _, ok := configValues["username"]; ok {
+					if val, ok := getStringValue(values, "username"); ok {
+						r.Username = types.StringValue(val)
+					}
+				}
 
-                  
-                  if _, ok := configValues["skip-personal-spaces"]; ok {
-if val, ok := getStringValue(values, "skip-personal-spaces"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.SkipPersonalSpaces = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["skip-personal-spaces"]; ok {
+					if val, ok := getStringValue(values, "skip-personal-spaces"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.SkipPersonalSpaces = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

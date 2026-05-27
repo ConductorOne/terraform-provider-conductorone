@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationTableauResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Tableau"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationTableauResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationTableauResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationTableauResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Tableau"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(tableauCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Tableau"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(tableauCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,41 +93,36 @@ func (r *IntegrationTableauResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationTableauResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		tableauSiteId := new(string)
-if !r.TableauSiteId.IsUnknown() && !r.TableauSiteId.IsNull() {
-*tableauSiteId = r.TableauSiteId.ValueString()
-configValues["tableau_site_id"] = tableauSiteId
-}
 
-    
-		tableauServerPath := new(string)
-if !r.TableauServerPath.IsUnknown() && !r.TableauServerPath.IsNull() {
-*tableauServerPath = r.TableauServerPath.ValueString()
-configValues["tableau_server_path"] = tableauServerPath
-}
+	tableauSiteId := new(string)
+	if !r.TableauSiteId.IsUnknown() && !r.TableauSiteId.IsNull() {
+		*tableauSiteId = r.TableauSiteId.ValueString()
+		configValues["tableau_site_id"] = tableauSiteId
+	}
 
-    
-		tableauAccessTokenName := new(string)
-if !r.TableauAccessTokenName.IsUnknown() && !r.TableauAccessTokenName.IsNull() {
-*tableauAccessTokenName = r.TableauAccessTokenName.ValueString()
-configValues["tableau_access_token_name"] = tableauAccessTokenName
-}
+	tableauServerPath := new(string)
+	if !r.TableauServerPath.IsUnknown() && !r.TableauServerPath.IsNull() {
+		*tableauServerPath = r.TableauServerPath.ValueString()
+		configValues["tableau_server_path"] = tableauServerPath
+	}
 
-    
-		tableauAccessTokenSecret := new(string)
-if !r.TableauAccessTokenSecret.IsUnknown() && !r.TableauAccessTokenSecret.IsNull() {
-*tableauAccessTokenSecret = r.TableauAccessTokenSecret.ValueString()
-configValues["tableau_access_token_secret"] = tableauAccessTokenSecret
-}
+	tableauAccessTokenName := new(string)
+	if !r.TableauAccessTokenName.IsUnknown() && !r.TableauAccessTokenName.IsNull() {
+		*tableauAccessTokenName = r.TableauAccessTokenName.ValueString()
+		configValues["tableau_access_token_name"] = tableauAccessTokenName
+	}
 
-    
+	tableauAccessTokenSecret := new(string)
+	if !r.TableauAccessTokenSecret.IsUnknown() && !r.TableauAccessTokenSecret.IsNull() {
+		*tableauAccessTokenSecret = r.TableauAccessTokenSecret.ValueString()
+		configValues["tableau_access_token_secret"] = tableauAccessTokenSecret
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationTableauResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -138,7 +131,7 @@ func (r *IntegrationTableauResourceModel) getConfig() (map[string]interface{}, b
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -195,34 +188,31 @@ func (r *IntegrationTableauResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["tableau_site_id"]; ok {
-if val, ok := getStringValue(values, "tableau_site_id"); ok {
-r.TableauSiteId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["tableau_site_id"]; ok {
+					if val, ok := getStringValue(values, "tableau_site_id"); ok {
+						r.TableauSiteId = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["tableau_server_path"]; ok {
-if val, ok := getStringValue(values, "tableau_server_path"); ok {
-r.TableauServerPath = types.StringValue(val)
-}
-}
+				if _, ok := configValues["tableau_server_path"]; ok {
+					if val, ok := getStringValue(values, "tableau_server_path"); ok {
+						r.TableauServerPath = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["tableau_access_token_name"]; ok {
-if val, ok := getStringValue(values, "tableau_access_token_name"); ok {
-r.TableauAccessTokenName = types.StringValue(val)
-}
-}
+				if _, ok := configValues["tableau_access_token_name"]; ok {
+					if val, ok := getStringValue(values, "tableau_access_token_name"); ok {
+						r.TableauAccessTokenName = types.StringValue(val)
+					}
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationTableauResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -260,32 +250,29 @@ func (r *IntegrationTableauResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["tableau_site_id"]; ok {
-if val, ok := getStringValue(values, "tableau_site_id"); ok {
-r.TableauSiteId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["tableau_site_id"]; ok {
+					if val, ok := getStringValue(values, "tableau_site_id"); ok {
+						r.TableauSiteId = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["tableau_server_path"]; ok {
-if val, ok := getStringValue(values, "tableau_server_path"); ok {
-r.TableauServerPath = types.StringValue(val)
-}
-}
+				if _, ok := configValues["tableau_server_path"]; ok {
+					if val, ok := getStringValue(values, "tableau_server_path"); ok {
+						r.TableauServerPath = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["tableau_access_token_name"]; ok {
-if val, ok := getStringValue(values, "tableau_access_token_name"); ok {
-r.TableauAccessTokenName = types.StringValue(val)
-}
-}
+				if _, ok := configValues["tableau_access_token_name"]; ok {
+					if val, ok := getStringValue(values, "tableau_access_token_name"); ok {
+						r.TableauAccessTokenName = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

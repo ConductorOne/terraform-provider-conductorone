@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
+	"fmt"
 	"strconv"
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationMongodbAtlasResourceModel) ToCreateDelegatedSDKType() *share
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("MongoDB Atlas"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationMongodbAtlasResourceModel) ToCreateSDKType() (*shared.Connec
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationMongodbAtlasResourceModel) ToUpdateSDKType() (*shared.Connec
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationMongodbAtlasResourceModel) ToUpdateSDKType() (*shared.Connec
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("MongoDB Atlas"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(mongodbAtlasCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("MongoDB Atlas"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(mongodbAtlasCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,55 +93,48 @@ func (r *IntegrationMongodbAtlasResourceModel) ToUpdateSDKType() (*shared.Connec
 
 func (r *IntegrationMongodbAtlasResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		mongodbatlasPublicKey := new(string)
-if !r.MongodbatlasPublicKey.IsUnknown() && !r.MongodbatlasPublicKey.IsNull() {
-*mongodbatlasPublicKey = r.MongodbatlasPublicKey.ValueString()
-configValues["mongodbatlas_public_key"] = mongodbatlasPublicKey
-}
 
-    
-		mongodbatlasPrivateKey := new(string)
-if !r.MongodbatlasPrivateKey.IsUnknown() && !r.MongodbatlasPrivateKey.IsNull() {
-*mongodbatlasPrivateKey = r.MongodbatlasPrivateKey.ValueString()
-configValues["mongodbatlas_private_key"] = mongodbatlasPrivateKey
-}
+	mongodbatlasPublicKey := new(string)
+	if !r.MongodbatlasPublicKey.IsUnknown() && !r.MongodbatlasPublicKey.IsNull() {
+		*mongodbatlasPublicKey = r.MongodbatlasPublicKey.ValueString()
+		configValues["mongodbatlas_public_key"] = mongodbatlasPublicKey
+	}
 
-    
-		mongodbatlasCreateInvite := new(string)
-if !r.MongodbatlasCreateInvite.IsUnknown() && !r.MongodbatlasCreateInvite.IsNull() {
-*mongodbatlasCreateInvite = strconv.FormatBool(r.MongodbatlasCreateInvite.ValueBool())
-configValues["mongodbatlas_create_invite"] = mongodbatlasCreateInvite
-}
+	mongodbatlasPrivateKey := new(string)
+	if !r.MongodbatlasPrivateKey.IsUnknown() && !r.MongodbatlasPrivateKey.IsNull() {
+		*mongodbatlasPrivateKey = r.MongodbatlasPrivateKey.ValueString()
+		configValues["mongodbatlas_private_key"] = mongodbatlasPrivateKey
+	}
 
-    
-		mongodbatlasEnableSyncDatabase := new(string)
-if !r.MongodbatlasEnableSyncDatabase.IsUnknown() && !r.MongodbatlasEnableSyncDatabase.IsNull() {
-*mongodbatlasEnableSyncDatabase = strconv.FormatBool(r.MongodbatlasEnableSyncDatabase.ValueBool())
-configValues["mongodbatlas_enable_sync_database"] = mongodbatlasEnableSyncDatabase
-}
+	mongodbatlasCreateInvite := new(string)
+	if !r.MongodbatlasCreateInvite.IsUnknown() && !r.MongodbatlasCreateInvite.IsNull() {
+		*mongodbatlasCreateInvite = strconv.FormatBool(r.MongodbatlasCreateInvite.ValueBool())
+		configValues["mongodbatlas_create_invite"] = mongodbatlasCreateInvite
+	}
 
-    
-		mongodbatlasEnableMongoDriver := new(string)
-if !r.MongodbatlasEnableMongoDriver.IsUnknown() && !r.MongodbatlasEnableMongoDriver.IsNull() {
-*mongodbatlasEnableMongoDriver = strconv.FormatBool(r.MongodbatlasEnableMongoDriver.ValueBool())
-configValues["mongodbatlas_enable_mongo_driver"] = mongodbatlasEnableMongoDriver
-}
+	mongodbatlasEnableSyncDatabase := new(string)
+	if !r.MongodbatlasEnableSyncDatabase.IsUnknown() && !r.MongodbatlasEnableSyncDatabase.IsNull() {
+		*mongodbatlasEnableSyncDatabase = strconv.FormatBool(r.MongodbatlasEnableSyncDatabase.ValueBool())
+		configValues["mongodbatlas_enable_sync_database"] = mongodbatlasEnableSyncDatabase
+	}
 
-    
-		mongodbatlasEnableDeleteDatabaseUserWithReadOnly := new(string)
-if !r.MongodbatlasEnableDeleteDatabaseUserWithReadOnly.IsUnknown() && !r.MongodbatlasEnableDeleteDatabaseUserWithReadOnly.IsNull() {
-*mongodbatlasEnableDeleteDatabaseUserWithReadOnly = strconv.FormatBool(r.MongodbatlasEnableDeleteDatabaseUserWithReadOnly.ValueBool())
-configValues["mongodbatlas_enable_delete_database_user_with_read_only"] = mongodbatlasEnableDeleteDatabaseUserWithReadOnly
-}
+	mongodbatlasEnableMongoDriver := new(string)
+	if !r.MongodbatlasEnableMongoDriver.IsUnknown() && !r.MongodbatlasEnableMongoDriver.IsNull() {
+		*mongodbatlasEnableMongoDriver = strconv.FormatBool(r.MongodbatlasEnableMongoDriver.ValueBool())
+		configValues["mongodbatlas_enable_mongo_driver"] = mongodbatlasEnableMongoDriver
+	}
 
-    
+	mongodbatlasEnableDeleteDatabaseUserWithReadOnly := new(string)
+	if !r.MongodbatlasEnableDeleteDatabaseUserWithReadOnly.IsUnknown() && !r.MongodbatlasEnableDeleteDatabaseUserWithReadOnly.IsNull() {
+		*mongodbatlasEnableDeleteDatabaseUserWithReadOnly = strconv.FormatBool(r.MongodbatlasEnableDeleteDatabaseUserWithReadOnly.ValueBool())
+		configValues["mongodbatlas_enable_delete_database_user_with_read_only"] = mongodbatlasEnableDeleteDatabaseUserWithReadOnly
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationMongodbAtlasResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -152,7 +143,7 @@ func (r *IntegrationMongodbAtlasResourceModel) getConfig() (map[string]interface
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -209,58 +200,55 @@ func (r *IntegrationMongodbAtlasResourceModel) RefreshFromGetResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["mongodbatlas_public_key"]; ok {
-if val, ok := getStringValue(values, "mongodbatlas_public_key"); ok {
-r.MongodbatlasPublicKey = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["mongodbatlas_public_key"]; ok {
+					if val, ok := getStringValue(values, "mongodbatlas_public_key"); ok {
+						r.MongodbatlasPublicKey = types.StringValue(val)
+					}
+				}
 
-               
-               if _, ok := configValues["mongodbatlas_create_invite"]; ok {
-if val, ok := getStringValue(values, "mongodbatlas_create_invite"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.MongodbatlasCreateInvite = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["mongodbatlas_create_invite"]; ok {
+					if val, ok := getStringValue(values, "mongodbatlas_create_invite"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.MongodbatlasCreateInvite = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["mongodbatlas_enable_sync_database"]; ok {
-if val, ok := getStringValue(values, "mongodbatlas_enable_sync_database"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.MongodbatlasEnableSyncDatabase = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["mongodbatlas_enable_sync_database"]; ok {
+					if val, ok := getStringValue(values, "mongodbatlas_enable_sync_database"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.MongodbatlasEnableSyncDatabase = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["mongodbatlas_enable_mongo_driver"]; ok {
-if val, ok := getStringValue(values, "mongodbatlas_enable_mongo_driver"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.MongodbatlasEnableMongoDriver = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["mongodbatlas_enable_mongo_driver"]; ok {
+					if val, ok := getStringValue(values, "mongodbatlas_enable_mongo_driver"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.MongodbatlasEnableMongoDriver = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["mongodbatlas_enable_delete_database_user_with_read_only"]; ok {
-if val, ok := getStringValue(values, "mongodbatlas_enable_delete_database_user_with_read_only"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.MongodbatlasEnableDeleteDatabaseUserWithReadOnly = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["mongodbatlas_enable_delete_database_user_with_read_only"]; ok {
+					if val, ok := getStringValue(values, "mongodbatlas_enable_delete_database_user_with_read_only"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.MongodbatlasEnableDeleteDatabaseUserWithReadOnly = types.BoolValue(bv)
+						}
+					}
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationMongodbAtlasResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -298,56 +286,53 @@ func (r *IntegrationMongodbAtlasResourceModel) RefreshFromCreateResponse(resp *s
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["mongodbatlas_public_key"]; ok {
-if val, ok := getStringValue(values, "mongodbatlas_public_key"); ok {
-r.MongodbatlasPublicKey = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["mongodbatlas_public_key"]; ok {
+					if val, ok := getStringValue(values, "mongodbatlas_public_key"); ok {
+						r.MongodbatlasPublicKey = types.StringValue(val)
+					}
+				}
 
-                  
-                  if _, ok := configValues["mongodbatlas_create_invite"]; ok {
-if val, ok := getStringValue(values, "mongodbatlas_create_invite"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.MongodbatlasCreateInvite = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["mongodbatlas_create_invite"]; ok {
+					if val, ok := getStringValue(values, "mongodbatlas_create_invite"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.MongodbatlasCreateInvite = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["mongodbatlas_enable_sync_database"]; ok {
-if val, ok := getStringValue(values, "mongodbatlas_enable_sync_database"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.MongodbatlasEnableSyncDatabase = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["mongodbatlas_enable_sync_database"]; ok {
+					if val, ok := getStringValue(values, "mongodbatlas_enable_sync_database"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.MongodbatlasEnableSyncDatabase = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["mongodbatlas_enable_mongo_driver"]; ok {
-if val, ok := getStringValue(values, "mongodbatlas_enable_mongo_driver"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.MongodbatlasEnableMongoDriver = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["mongodbatlas_enable_mongo_driver"]; ok {
+					if val, ok := getStringValue(values, "mongodbatlas_enable_mongo_driver"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.MongodbatlasEnableMongoDriver = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["mongodbatlas_enable_delete_database_user_with_read_only"]; ok {
-if val, ok := getStringValue(values, "mongodbatlas_enable_delete_database_user_with_read_only"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.MongodbatlasEnableDeleteDatabaseUserWithReadOnly = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["mongodbatlas_enable_delete_database_user_with_read_only"]; ok {
+					if val, ok := getStringValue(values, "mongodbatlas_enable_delete_database_user_with_read_only"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.MongodbatlasEnableDeleteDatabaseUserWithReadOnly = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

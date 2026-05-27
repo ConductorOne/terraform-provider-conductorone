@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationCouchdbResourceModel) ToCreateDelegatedSDKType() *shared.Con
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("CouchDB"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationCouchdbResourceModel) ToCreateSDKType() (*shared.ConnectorSe
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationCouchdbResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationCouchdbResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("CouchDB"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(couchdbCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("CouchDB"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(couchdbCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,34 +93,30 @@ func (r *IntegrationCouchdbResourceModel) ToUpdateSDKType() (*shared.ConnectorIn
 
 func (r *IntegrationCouchdbResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		couchdbUrl := new(string)
-if !r.CouchdbUrl.IsUnknown() && !r.CouchdbUrl.IsNull() {
-*couchdbUrl = r.CouchdbUrl.ValueString()
-configValues["couchdb_url"] = couchdbUrl
-}
 
-    
-		couchdbUsername := new(string)
-if !r.CouchdbUsername.IsUnknown() && !r.CouchdbUsername.IsNull() {
-*couchdbUsername = r.CouchdbUsername.ValueString()
-configValues["couchdb_username"] = couchdbUsername
-}
+	couchdbUrl := new(string)
+	if !r.CouchdbUrl.IsUnknown() && !r.CouchdbUrl.IsNull() {
+		*couchdbUrl = r.CouchdbUrl.ValueString()
+		configValues["couchdb_url"] = couchdbUrl
+	}
 
-    
-		couchdbPassword := new(string)
-if !r.CouchdbPassword.IsUnknown() && !r.CouchdbPassword.IsNull() {
-*couchdbPassword = r.CouchdbPassword.ValueString()
-configValues["couchdb_password"] = couchdbPassword
-}
+	couchdbUsername := new(string)
+	if !r.CouchdbUsername.IsUnknown() && !r.CouchdbUsername.IsNull() {
+		*couchdbUsername = r.CouchdbUsername.ValueString()
+		configValues["couchdb_username"] = couchdbUsername
+	}
 
-    
+	couchdbPassword := new(string)
+	if !r.CouchdbPassword.IsUnknown() && !r.CouchdbPassword.IsNull() {
+		*couchdbPassword = r.CouchdbPassword.ValueString()
+		configValues["couchdb_password"] = couchdbPassword
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationCouchdbResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -131,7 +125,7 @@ func (r *IntegrationCouchdbResourceModel) getConfig() (map[string]interface{}, b
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -188,28 +182,25 @@ func (r *IntegrationCouchdbResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["couchdb_url"]; ok {
-if val, ok := getStringValue(values, "couchdb_url"); ok {
-r.CouchdbUrl = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["couchdb_url"]; ok {
+					if val, ok := getStringValue(values, "couchdb_url"); ok {
+						r.CouchdbUrl = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["couchdb_username"]; ok {
-if val, ok := getStringValue(values, "couchdb_username"); ok {
-r.CouchdbUsername = types.StringValue(val)
-}
-}
+				if _, ok := configValues["couchdb_username"]; ok {
+					if val, ok := getStringValue(values, "couchdb_username"); ok {
+						r.CouchdbUsername = types.StringValue(val)
+					}
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationCouchdbResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -247,26 +238,23 @@ func (r *IntegrationCouchdbResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["couchdb_url"]; ok {
-if val, ok := getStringValue(values, "couchdb_url"); ok {
-r.CouchdbUrl = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["couchdb_url"]; ok {
+					if val, ok := getStringValue(values, "couchdb_url"); ok {
+						r.CouchdbUrl = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["couchdb_username"]; ok {
-if val, ok := getStringValue(values, "couchdb_username"); ok {
-r.CouchdbUsername = types.StringValue(val)
-}
-}
+				if _, ok := configValues["couchdb_username"]; ok {
+					if val, ok := getStringValue(values, "couchdb_username"); ok {
+						r.CouchdbUsername = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

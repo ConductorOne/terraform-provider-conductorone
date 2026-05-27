@@ -2,15 +2,14 @@
 package provider
 
 import (
-    "fmt"
-	
-	"time"
+	"fmt"
+
 	"strings"
+	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +23,8 @@ func (r *IntegrationWizIdResourceModel) ToCreateDelegatedSDKType() *shared.Conne
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Wiz ID"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +37,20 @@ func (r *IntegrationWizIdResourceModel) ToCreateSDKType() (*shared.ConnectorServ
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +60,17 @@ func (r *IntegrationWizIdResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +81,12 @@ func (r *IntegrationWizIdResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Wiz ID"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(wizIdCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Wiz ID"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(wizIdCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,82 +94,70 @@ func (r *IntegrationWizIdResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 
 func (r *IntegrationWizIdResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		wizClientId := new(string)
-if !r.WizClientId.IsUnknown() && !r.WizClientId.IsNull() {
-*wizClientId = r.WizClientId.ValueString()
-configValues["wiz_client_id"] = wizClientId
-}
 
-    
-		wizClientSecret := new(string)
-if !r.WizClientSecret.IsUnknown() && !r.WizClientSecret.IsNull() {
-*wizClientSecret = r.WizClientSecret.ValueString()
-configValues["wiz_client_secret"] = wizClientSecret
-}
+	wizClientId := new(string)
+	if !r.WizClientId.IsUnknown() && !r.WizClientId.IsNull() {
+		*wizClientId = r.WizClientId.ValueString()
+		configValues["wiz_client_id"] = wizClientId
+	}
 
-    
-		endpointUrl := new(string)
-if !r.EndpointUrl.IsUnknown() && !r.EndpointUrl.IsNull() {
-*endpointUrl = r.EndpointUrl.ValueString()
-configValues["endpoint_url"] = endpointUrl
-}
+	wizClientSecret := new(string)
+	if !r.WizClientSecret.IsUnknown() && !r.WizClientSecret.IsNull() {
+		*wizClientSecret = r.WizClientSecret.ValueString()
+		configValues["wiz_client_secret"] = wizClientSecret
+	}
 
-    
-		authUrl := new(string)
-if !r.AuthUrl.IsUnknown() && !r.AuthUrl.IsNull() {
-*authUrl = r.AuthUrl.ValueString()
-configValues["auth_url"] = authUrl
-}
+	endpointUrl := new(string)
+	if !r.EndpointUrl.IsUnknown() && !r.EndpointUrl.IsNull() {
+		*endpointUrl = r.EndpointUrl.ValueString()
+		configValues["endpoint_url"] = endpointUrl
+	}
 
-    
-		audience := new(string)
-if !r.Audience.IsUnknown() && !r.Audience.IsNull() {
-*audience = r.Audience.ValueString()
-configValues["audience"] = audience
-}
+	authUrl := new(string)
+	if !r.AuthUrl.IsUnknown() && !r.AuthUrl.IsNull() {
+		*authUrl = r.AuthUrl.ValueString()
+		configValues["auth_url"] = authUrl
+	}
 
-    
-		projectId := new(string)
-if !r.ProjectId.IsUnknown() && !r.ProjectId.IsNull() {
-*projectId = r.ProjectId.ValueString()
-configValues["project_id"] = projectId
-}
+	audience := new(string)
+	if !r.Audience.IsUnknown() && !r.Audience.IsNull() {
+		*audience = r.Audience.ValueString()
+		configValues["audience"] = audience
+	}
 
-    
-		resourceIds := make([]string, 0)
-for _, item := range r.ResourceIds {
-resourceIds = append(resourceIds, item.ValueString())
-}
-if len(resourceIds) > 0 {
-configValues["resource_ids"] = strings.Join(resourceIds, ",")
-}
+	projectId := new(string)
+	if !r.ProjectId.IsUnknown() && !r.ProjectId.IsNull() {
+		*projectId = r.ProjectId.ValueString()
+		configValues["project_id"] = projectId
+	}
 
+	resourceIds := make([]string, 0)
+	for _, item := range r.ResourceIds {
+		resourceIds = append(resourceIds, item.ValueString())
+	}
+	if len(resourceIds) > 0 {
+		configValues["resource_ids"] = strings.Join(resourceIds, ",")
+	}
 
-    
-		resourceTags := new(string)
-if !r.ResourceTags.IsUnknown() && !r.ResourceTags.IsNull() {
-*resourceTags = r.ResourceTags.ValueString()
-configValues["resource_tags"] = resourceTags
-}
+	resourceTags := new(string)
+	if !r.ResourceTags.IsUnknown() && !r.ResourceTags.IsNull() {
+		*resourceTags = r.ResourceTags.ValueString()
+		configValues["resource_tags"] = resourceTags
+	}
 
-    
-		resourceTypes := make([]string, 0)
-for _, item := range r.ResourceTypes {
-resourceTypes = append(resourceTypes, item.ValueString())
-}
-if len(resourceTypes) > 0 {
-configValues["resource_types"] = strings.Join(resourceTypes, ",")
-}
+	resourceTypes := make([]string, 0)
+	for _, item := range r.ResourceTypes {
+		resourceTypes = append(resourceTypes, item.ValueString())
+	}
+	if len(resourceTypes) > 0 {
+		configValues["resource_types"] = strings.Join(resourceTypes, ",")
+	}
 
-
-    
-
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationWizIdResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -179,7 +166,7 @@ func (r *IntegrationWizIdResourceModel) getConfig() (map[string]interface{}, boo
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -236,80 +223,77 @@ func (r *IntegrationWizIdResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["wiz_client_id"]; ok {
-if val, ok := getStringValue(values, "wiz_client_id"); ok {
-r.WizClientId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["wiz_client_id"]; ok {
+					if val, ok := getStringValue(values, "wiz_client_id"); ok {
+						r.WizClientId = types.StringValue(val)
+					}
+				}
 
-               
-               if _, ok := configValues["endpoint_url"]; ok {
-if val, ok := getStringValue(values, "endpoint_url"); ok {
-r.EndpointUrl = types.StringValue(val)
-}
-}
+				if _, ok := configValues["endpoint_url"]; ok {
+					if val, ok := getStringValue(values, "endpoint_url"); ok {
+						r.EndpointUrl = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["auth_url"]; ok {
-if val, ok := getStringValue(values, "auth_url"); ok {
-r.AuthUrl = types.StringValue(val)
-}
-}
+				if _, ok := configValues["auth_url"]; ok {
+					if val, ok := getStringValue(values, "auth_url"); ok {
+						r.AuthUrl = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["audience"]; ok {
-if val, ok := getStringValue(values, "audience"); ok {
-r.Audience = types.StringValue(val)
-}
-}
+				if _, ok := configValues["audience"]; ok {
+					if val, ok := getStringValue(values, "audience"); ok {
+						r.Audience = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["project_id"]; ok {
-if val, ok := getStringValue(values, "project_id"); ok {
-r.ProjectId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["project_id"]; ok {
+					if val, ok := getStringValue(values, "project_id"); ok {
+						r.ProjectId = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["resource_ids"]; ok {
-if val, ok := getStringValue(values, "resource_ids"); ok {
-var valLists []types.String
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-r.ResourceIds = valLists
-}
-}
+				if _, ok := configValues["resource_ids"]; ok {
+					if val, ok := getStringValue(values, "resource_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.ResourceIds = valLists
+					}
+				}
 
-               if _, ok := configValues["resource_tags"]; ok {
-if val, ok := getStringValue(values, "resource_tags"); ok {
-r.ResourceTags = types.StringValue(val)
-}
-}
+				if _, ok := configValues["resource_tags"]; ok {
+					if val, ok := getStringValue(values, "resource_tags"); ok {
+						r.ResourceTags = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["resource_types"]; ok {
-if val, ok := getStringValue(values, "resource_types"); ok {
-var valLists []types.String
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-r.ResourceTypes = valLists
-}
-}
+				if _, ok := configValues["resource_types"]; ok {
+					if val, ok := getStringValue(values, "resource_types"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.ResourceTypes = valLists
+					}
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationWizIdResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -347,78 +331,75 @@ func (r *IntegrationWizIdResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["wiz_client_id"]; ok {
-if val, ok := getStringValue(values, "wiz_client_id"); ok {
-r.WizClientId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["wiz_client_id"]; ok {
+					if val, ok := getStringValue(values, "wiz_client_id"); ok {
+						r.WizClientId = types.StringValue(val)
+					}
+				}
 
-                  
-                  if _, ok := configValues["endpoint_url"]; ok {
-if val, ok := getStringValue(values, "endpoint_url"); ok {
-r.EndpointUrl = types.StringValue(val)
-}
-}
+				if _, ok := configValues["endpoint_url"]; ok {
+					if val, ok := getStringValue(values, "endpoint_url"); ok {
+						r.EndpointUrl = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["auth_url"]; ok {
-if val, ok := getStringValue(values, "auth_url"); ok {
-r.AuthUrl = types.StringValue(val)
-}
-}
+				if _, ok := configValues["auth_url"]; ok {
+					if val, ok := getStringValue(values, "auth_url"); ok {
+						r.AuthUrl = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["audience"]; ok {
-if val, ok := getStringValue(values, "audience"); ok {
-r.Audience = types.StringValue(val)
-}
-}
+				if _, ok := configValues["audience"]; ok {
+					if val, ok := getStringValue(values, "audience"); ok {
+						r.Audience = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["project_id"]; ok {
-if val, ok := getStringValue(values, "project_id"); ok {
-r.ProjectId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["project_id"]; ok {
+					if val, ok := getStringValue(values, "project_id"); ok {
+						r.ProjectId = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["resource_ids"]; ok {
-if val, ok := getStringValue(values, "resource_ids"); ok {
-var valLists []types.String
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-r.ResourceIds = valLists
-}
-}
+				if _, ok := configValues["resource_ids"]; ok {
+					if val, ok := getStringValue(values, "resource_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.ResourceIds = valLists
+					}
+				}
 
-                  if _, ok := configValues["resource_tags"]; ok {
-if val, ok := getStringValue(values, "resource_tags"); ok {
-r.ResourceTags = types.StringValue(val)
-}
-}
+				if _, ok := configValues["resource_tags"]; ok {
+					if val, ok := getStringValue(values, "resource_tags"); ok {
+						r.ResourceTags = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["resource_types"]; ok {
-if val, ok := getStringValue(values, "resource_types"); ok {
-var valLists []types.String
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-r.ResourceTypes = valLists
-}
-}
+				if _, ok := configValues["resource_types"]; ok {
+					if val, ok := getStringValue(values, "resource_types"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.ResourceTypes = valLists
+					}
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationFluidTopicsResourceModel) ToCreateDelegatedSDKType() *shared
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Fluid Topics"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationFluidTopicsResourceModel) ToCreateSDKType() (*shared.Connect
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationFluidTopicsResourceModel) ToUpdateSDKType() (*shared.Connect
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationFluidTopicsResourceModel) ToUpdateSDKType() (*shared.Connect
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Fluid Topics"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(fluidTopicsCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Fluid Topics"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(fluidTopicsCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,27 +93,24 @@ func (r *IntegrationFluidTopicsResourceModel) ToUpdateSDKType() (*shared.Connect
 
 func (r *IntegrationFluidTopicsResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		fluidTopicsDomain := new(string)
-if !r.FluidTopicsDomain.IsUnknown() && !r.FluidTopicsDomain.IsNull() {
-*fluidTopicsDomain = r.FluidTopicsDomain.ValueString()
-configValues["fluid-topics-domain"] = fluidTopicsDomain
-}
 
-    
-		fluidTopicsApiToken := new(string)
-if !r.FluidTopicsApiToken.IsUnknown() && !r.FluidTopicsApiToken.IsNull() {
-*fluidTopicsApiToken = r.FluidTopicsApiToken.ValueString()
-configValues["fluid-topics-api-token"] = fluidTopicsApiToken
-}
+	fluidTopicsDomain := new(string)
+	if !r.FluidTopicsDomain.IsUnknown() && !r.FluidTopicsDomain.IsNull() {
+		*fluidTopicsDomain = r.FluidTopicsDomain.ValueString()
+		configValues["fluid-topics-domain"] = fluidTopicsDomain
+	}
 
-    
+	fluidTopicsApiToken := new(string)
+	if !r.FluidTopicsApiToken.IsUnknown() && !r.FluidTopicsApiToken.IsNull() {
+		*fluidTopicsApiToken = r.FluidTopicsApiToken.ValueString()
+		configValues["fluid-topics-api-token"] = fluidTopicsApiToken
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationFluidTopicsResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -124,7 +119,7 @@ func (r *IntegrationFluidTopicsResourceModel) getConfig() (map[string]interface{
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -181,22 +176,19 @@ func (r *IntegrationFluidTopicsResourceModel) RefreshFromGetResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["fluid-topics-domain"]; ok {
-if val, ok := getStringValue(values, "fluid-topics-domain"); ok {
-r.FluidTopicsDomain = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["fluid-topics-domain"]; ok {
+					if val, ok := getStringValue(values, "fluid-topics-domain"); ok {
+						r.FluidTopicsDomain = types.StringValue(val)
+					}
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationFluidTopicsResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -234,20 +226,17 @@ func (r *IntegrationFluidTopicsResourceModel) RefreshFromCreateResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["fluid-topics-domain"]; ok {
-if val, ok := getStringValue(values, "fluid-topics-domain"); ok {
-r.FluidTopicsDomain = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["fluid-topics-domain"]; ok {
+					if val, ok := getStringValue(values, "fluid-topics-domain"); ok {
+						r.FluidTopicsDomain = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

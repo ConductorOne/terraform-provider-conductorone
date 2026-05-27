@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationMicrosoft365ResourceModel) ToCreateDelegatedSDKType() *share
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Microsoft 365"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationMicrosoft365ResourceModel) ToCreateSDKType() (*shared.Connec
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationMicrosoft365ResourceModel) ToUpdateSDKType() (*shared.Connec
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationMicrosoft365ResourceModel) ToUpdateSDKType() (*shared.Connec
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Microsoft 365"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(microsoft365CatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Microsoft 365"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(microsoft365CatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,34 +93,30 @@ func (r *IntegrationMicrosoft365ResourceModel) ToUpdateSDKType() (*shared.Connec
 
 func (r *IntegrationMicrosoft365ResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		ms365TenantId := new(string)
-if !r.Ms365TenantId.IsUnknown() && !r.Ms365TenantId.IsNull() {
-*ms365TenantId = r.Ms365TenantId.ValueString()
-configValues["ms365_tenant_id"] = ms365TenantId
-}
 
-    
-		ms365ClientId := new(string)
-if !r.Ms365ClientId.IsUnknown() && !r.Ms365ClientId.IsNull() {
-*ms365ClientId = r.Ms365ClientId.ValueString()
-configValues["ms365_client_id"] = ms365ClientId
-}
+	ms365TenantId := new(string)
+	if !r.Ms365TenantId.IsUnknown() && !r.Ms365TenantId.IsNull() {
+		*ms365TenantId = r.Ms365TenantId.ValueString()
+		configValues["ms365_tenant_id"] = ms365TenantId
+	}
 
-    
-		ms365ClientSecret := new(string)
-if !r.Ms365ClientSecret.IsUnknown() && !r.Ms365ClientSecret.IsNull() {
-*ms365ClientSecret = r.Ms365ClientSecret.ValueString()
-configValues["ms365_client_secret"] = ms365ClientSecret
-}
+	ms365ClientId := new(string)
+	if !r.Ms365ClientId.IsUnknown() && !r.Ms365ClientId.IsNull() {
+		*ms365ClientId = r.Ms365ClientId.ValueString()
+		configValues["ms365_client_id"] = ms365ClientId
+	}
 
-    
+	ms365ClientSecret := new(string)
+	if !r.Ms365ClientSecret.IsUnknown() && !r.Ms365ClientSecret.IsNull() {
+		*ms365ClientSecret = r.Ms365ClientSecret.ValueString()
+		configValues["ms365_client_secret"] = ms365ClientSecret
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationMicrosoft365ResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -131,7 +125,7 @@ func (r *IntegrationMicrosoft365ResourceModel) getConfig() (map[string]interface
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -188,28 +182,25 @@ func (r *IntegrationMicrosoft365ResourceModel) RefreshFromGetResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["ms365_tenant_id"]; ok {
-if val, ok := getStringValue(values, "ms365_tenant_id"); ok {
-r.Ms365TenantId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["ms365_tenant_id"]; ok {
+					if val, ok := getStringValue(values, "ms365_tenant_id"); ok {
+						r.Ms365TenantId = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["ms365_client_id"]; ok {
-if val, ok := getStringValue(values, "ms365_client_id"); ok {
-r.Ms365ClientId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["ms365_client_id"]; ok {
+					if val, ok := getStringValue(values, "ms365_client_id"); ok {
+						r.Ms365ClientId = types.StringValue(val)
+					}
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationMicrosoft365ResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -247,26 +238,23 @@ func (r *IntegrationMicrosoft365ResourceModel) RefreshFromCreateResponse(resp *s
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["ms365_tenant_id"]; ok {
-if val, ok := getStringValue(values, "ms365_tenant_id"); ok {
-r.Ms365TenantId = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["ms365_tenant_id"]; ok {
+					if val, ok := getStringValue(values, "ms365_tenant_id"); ok {
+						r.Ms365TenantId = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["ms365_client_id"]; ok {
-if val, ok := getStringValue(values, "ms365_client_id"); ok {
-r.Ms365ClientId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["ms365_client_id"]; ok {
+					if val, ok := getStringValue(values, "ms365_client_id"); ok {
+						r.Ms365ClientId = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationPingFederateResourceModel) ToCreateDelegatedSDKType() *share
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("PingFederate"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationPingFederateResourceModel) ToCreateSDKType() (*shared.Connec
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationPingFederateResourceModel) ToUpdateSDKType() (*shared.Connec
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationPingFederateResourceModel) ToUpdateSDKType() (*shared.Connec
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("PingFederate"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(pingFederateCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("PingFederate"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(pingFederateCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,34 +93,30 @@ func (r *IntegrationPingFederateResourceModel) ToUpdateSDKType() (*shared.Connec
 
 func (r *IntegrationPingFederateResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		pingfedInstanceUrl := new(string)
-if !r.PingfedInstanceUrl.IsUnknown() && !r.PingfedInstanceUrl.IsNull() {
-*pingfedInstanceUrl = r.PingfedInstanceUrl.ValueString()
-configValues["pingfed-instance-url"] = pingfedInstanceUrl
-}
 
-    
-		pingfedUsername := new(string)
-if !r.PingfedUsername.IsUnknown() && !r.PingfedUsername.IsNull() {
-*pingfedUsername = r.PingfedUsername.ValueString()
-configValues["pingfed-username"] = pingfedUsername
-}
+	pingfedInstanceUrl := new(string)
+	if !r.PingfedInstanceUrl.IsUnknown() && !r.PingfedInstanceUrl.IsNull() {
+		*pingfedInstanceUrl = r.PingfedInstanceUrl.ValueString()
+		configValues["pingfed-instance-url"] = pingfedInstanceUrl
+	}
 
-    
-		pingfedPassword := new(string)
-if !r.PingfedPassword.IsUnknown() && !r.PingfedPassword.IsNull() {
-*pingfedPassword = r.PingfedPassword.ValueString()
-configValues["pingfed-password"] = pingfedPassword
-}
+	pingfedUsername := new(string)
+	if !r.PingfedUsername.IsUnknown() && !r.PingfedUsername.IsNull() {
+		*pingfedUsername = r.PingfedUsername.ValueString()
+		configValues["pingfed-username"] = pingfedUsername
+	}
 
-    
+	pingfedPassword := new(string)
+	if !r.PingfedPassword.IsUnknown() && !r.PingfedPassword.IsNull() {
+		*pingfedPassword = r.PingfedPassword.ValueString()
+		configValues["pingfed-password"] = pingfedPassword
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationPingFederateResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -131,7 +125,7 @@ func (r *IntegrationPingFederateResourceModel) getConfig() (map[string]interface
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -188,28 +182,25 @@ func (r *IntegrationPingFederateResourceModel) RefreshFromGetResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["pingfed-instance-url"]; ok {
-if val, ok := getStringValue(values, "pingfed-instance-url"); ok {
-r.PingfedInstanceUrl = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["pingfed-instance-url"]; ok {
+					if val, ok := getStringValue(values, "pingfed-instance-url"); ok {
+						r.PingfedInstanceUrl = types.StringValue(val)
+					}
+				}
 
-               if _, ok := configValues["pingfed-username"]; ok {
-if val, ok := getStringValue(values, "pingfed-username"); ok {
-r.PingfedUsername = types.StringValue(val)
-}
-}
+				if _, ok := configValues["pingfed-username"]; ok {
+					if val, ok := getStringValue(values, "pingfed-username"); ok {
+						r.PingfedUsername = types.StringValue(val)
+					}
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationPingFederateResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -247,26 +238,23 @@ func (r *IntegrationPingFederateResourceModel) RefreshFromCreateResponse(resp *s
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["pingfed-instance-url"]; ok {
-if val, ok := getStringValue(values, "pingfed-instance-url"); ok {
-r.PingfedInstanceUrl = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["pingfed-instance-url"]; ok {
+					if val, ok := getStringValue(values, "pingfed-instance-url"); ok {
+						r.PingfedInstanceUrl = types.StringValue(val)
+					}
+				}
 
-                  if _, ok := configValues["pingfed-username"]; ok {
-if val, ok := getStringValue(values, "pingfed-username"); ok {
-r.PingfedUsername = types.StringValue(val)
-}
-}
+				if _, ok := configValues["pingfed-username"]; ok {
+					if val, ok := getStringValue(values, "pingfed-username"); ok {
+						r.PingfedUsername = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
+	"fmt"
 	"strconv"
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationFreshserviceResourceModel) ToCreateDelegatedSDKType() *share
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Freshservice"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationFreshserviceResourceModel) ToCreateSDKType() (*shared.Connec
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationFreshserviceResourceModel) ToUpdateSDKType() (*shared.Connec
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationFreshserviceResourceModel) ToUpdateSDKType() (*shared.Connec
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Freshservice"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(freshserviceCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Freshservice"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(freshserviceCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,41 +93,36 @@ func (r *IntegrationFreshserviceResourceModel) ToUpdateSDKType() (*shared.Connec
 
 func (r *IntegrationFreshserviceResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		domain := new(string)
-if !r.Domain.IsUnknown() && !r.Domain.IsNull() {
-*domain = r.Domain.ValueString()
-configValues["domain"] = domain
-}
 
-    
-		apiKey := new(string)
-if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
-*apiKey = r.ApiKey.ValueString()
-configValues["api_key"] = apiKey
-}
+	domain := new(string)
+	if !r.Domain.IsUnknown() && !r.Domain.IsNull() {
+		*domain = r.Domain.ValueString()
+		configValues["domain"] = domain
+	}
 
-    
-		enableExternalTicketProvisioning := new(string)
-if !r.EnableExternalTicketProvisioning.IsUnknown() && !r.EnableExternalTicketProvisioning.IsNull() {
-*enableExternalTicketProvisioning = strconv.FormatBool(r.EnableExternalTicketProvisioning.ValueBool())
-configValues["enable_external_ticket_provisioning"] = enableExternalTicketProvisioning
-}
+	apiKey := new(string)
+	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
+		*apiKey = r.ApiKey.ValueString()
+		configValues["api_key"] = apiKey
+	}
 
-    
-		categoryId := new(string)
-if !r.CategoryId.IsUnknown() && !r.CategoryId.IsNull() {
-*categoryId = r.CategoryId.ValueString()
-configValues["category_id"] = categoryId
-}
+	enableExternalTicketProvisioning := new(string)
+	if !r.EnableExternalTicketProvisioning.IsUnknown() && !r.EnableExternalTicketProvisioning.IsNull() {
+		*enableExternalTicketProvisioning = strconv.FormatBool(r.EnableExternalTicketProvisioning.ValueBool())
+		configValues["enable_external_ticket_provisioning"] = enableExternalTicketProvisioning
+	}
 
-    
+	categoryId := new(string)
+	if !r.CategoryId.IsUnknown() && !r.CategoryId.IsNull() {
+		*categoryId = r.CategoryId.ValueString()
+		configValues["category_id"] = categoryId
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationFreshserviceResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -138,7 +131,7 @@ func (r *IntegrationFreshserviceResourceModel) getConfig() (map[string]interface
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -195,37 +188,34 @@ func (r *IntegrationFreshserviceResourceModel) RefreshFromGetResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["domain"]; ok {
-if val, ok := getStringValue(values, "domain"); ok {
-r.Domain = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["domain"]; ok {
+					if val, ok := getStringValue(values, "domain"); ok {
+						r.Domain = types.StringValue(val)
+					}
+				}
 
-               
-               if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
-if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.EnableExternalTicketProvisioning = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
+					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+						}
+					}
+				}
 
-               if _, ok := configValues["category_id"]; ok {
-if val, ok := getStringValue(values, "category_id"); ok {
-r.CategoryId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["category_id"]; ok {
+					if val, ok := getStringValue(values, "category_id"); ok {
+						r.CategoryId = types.StringValue(val)
+					}
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationFreshserviceResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -263,35 +253,32 @@ func (r *IntegrationFreshserviceResourceModel) RefreshFromCreateResponse(resp *s
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["domain"]; ok {
-if val, ok := getStringValue(values, "domain"); ok {
-r.Domain = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["domain"]; ok {
+					if val, ok := getStringValue(values, "domain"); ok {
+						r.Domain = types.StringValue(val)
+					}
+				}
 
-                  
-                  if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
-if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
-bv, err := strconv.ParseBool(val)
-if err == nil {
-r.EnableExternalTicketProvisioning = types.BoolValue(bv)
-}
-}
-}
+				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
+					if val, ok := getStringValue(values, "enable_external_ticket_provisioning"); ok {
+						bv, err := strconv.ParseBool(val)
+						if err == nil {
+							r.EnableExternalTicketProvisioning = types.BoolValue(bv)
+						}
+					}
+				}
 
-                  if _, ok := configValues["category_id"]; ok {
-if val, ok := getStringValue(values, "category_id"); ok {
-r.CategoryId = types.StringValue(val)
-}
-}
+				if _, ok := configValues["category_id"]; ok {
+					if val, ok := getStringValue(values, "category_id"); ok {
+						r.CategoryId = types.StringValue(val)
+					}
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

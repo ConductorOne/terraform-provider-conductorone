@@ -2,15 +2,14 @@
 package provider
 
 import (
-    "fmt"
-	
-	"time"
+	"fmt"
+
 	"strings"
+	"time"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +23,8 @@ func (r *IntegrationLitmosResourceModel) ToCreateDelegatedSDKType() *shared.Conn
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Litmos"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +37,20 @@ func (r *IntegrationLitmosResourceModel) ToCreateSDKType() (*shared.ConnectorSer
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +60,17 @@ func (r *IntegrationLitmosResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +81,12 @@ func (r *IntegrationLitmosResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Litmos"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(litmosCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Litmos"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(litmosCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,37 +94,32 @@ func (r *IntegrationLitmosResourceModel) ToUpdateSDKType() (*shared.ConnectorInp
 
 func (r *IntegrationLitmosResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		litmosSource := new(string)
-if !r.LitmosSource.IsUnknown() && !r.LitmosSource.IsNull() {
-*litmosSource = r.LitmosSource.ValueString()
-configValues["litmos_source"] = litmosSource
-}
 
-    
-		litmosApiKey := new(string)
-if !r.LitmosApiKey.IsUnknown() && !r.LitmosApiKey.IsNull() {
-*litmosApiKey = r.LitmosApiKey.ValueString()
-configValues["litmos_api_key"] = litmosApiKey
-}
+	litmosSource := new(string)
+	if !r.LitmosSource.IsUnknown() && !r.LitmosSource.IsNull() {
+		*litmosSource = r.LitmosSource.ValueString()
+		configValues["litmos_source"] = litmosSource
+	}
 
-    
-		litmosCourseIds := make([]string, 0)
-for _, item := range r.LitmosCourseIds {
-litmosCourseIds = append(litmosCourseIds, item.ValueString())
-}
-if len(litmosCourseIds) > 0 {
-configValues["litmos_course_ids"] = strings.Join(litmosCourseIds, ",")
-}
+	litmosApiKey := new(string)
+	if !r.LitmosApiKey.IsUnknown() && !r.LitmosApiKey.IsNull() {
+		*litmosApiKey = r.LitmosApiKey.ValueString()
+		configValues["litmos_api_key"] = litmosApiKey
+	}
 
+	litmosCourseIds := make([]string, 0)
+	for _, item := range r.LitmosCourseIds {
+		litmosCourseIds = append(litmosCourseIds, item.ValueString())
+	}
+	if len(litmosCourseIds) > 0 {
+		configValues["litmos_course_ids"] = strings.Join(litmosCourseIds, ",")
+	}
 
-    
-
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationLitmosResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -134,7 +128,7 @@ func (r *IntegrationLitmosResourceModel) getConfig() (map[string]interface{}, bo
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -191,36 +185,33 @@ func (r *IntegrationLitmosResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["litmos_source"]; ok {
-if val, ok := getStringValue(values, "litmos_source"); ok {
-r.LitmosSource = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["litmos_source"]; ok {
+					if val, ok := getStringValue(values, "litmos_source"); ok {
+						r.LitmosSource = types.StringValue(val)
+					}
+				}
 
-               
-               if _, ok := configValues["litmos_course_ids"]; ok {
-if val, ok := getStringValue(values, "litmos_course_ids"); ok {
-var valLists []types.String
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-r.LitmosCourseIds = valLists
-}
-}
+				if _, ok := configValues["litmos_course_ids"]; ok {
+					if val, ok := getStringValue(values, "litmos_course_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.LitmosCourseIds = valLists
+					}
+				}
 
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationLitmosResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -258,34 +249,31 @@ func (r *IntegrationLitmosResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["litmos_source"]; ok {
-if val, ok := getStringValue(values, "litmos_source"); ok {
-r.LitmosSource = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["litmos_source"]; ok {
+					if val, ok := getStringValue(values, "litmos_source"); ok {
+						r.LitmosSource = types.StringValue(val)
+					}
+				}
 
-                  
-                  if _, ok := configValues["litmos_course_ids"]; ok {
-if val, ok := getStringValue(values, "litmos_course_ids"); ok {
-var valLists []types.String
-tmpList := strings.Split(val, ",")
-for _, item := range tmpList {
-item = strings.TrimSpace(item)
-if item != "" {
-valLists = append(valLists, types.StringValue(item))
-}
-}
-r.LitmosCourseIds = valLists
-}
-}
+				if _, ok := configValues["litmos_course_ids"]; ok {
+					if val, ok := getStringValue(values, "litmos_course_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.LitmosCourseIds = valLists
+					}
+				}
 
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

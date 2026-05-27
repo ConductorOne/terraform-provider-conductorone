@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationVultrResourceModel) ToCreateDelegatedSDKType() *shared.Conne
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Vultr"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationVultrResourceModel) ToCreateSDKType() (*shared.ConnectorServ
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationVultrResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationVultrResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Vultr"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(vultrCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Vultr"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(vultrCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,20 +93,18 @@ func (r *IntegrationVultrResourceModel) ToUpdateSDKType() (*shared.ConnectorInpu
 
 func (r *IntegrationVultrResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		vultrApiKey := new(string)
-if !r.VultrApiKey.IsUnknown() && !r.VultrApiKey.IsNull() {
-*vultrApiKey = r.VultrApiKey.ValueString()
-configValues["vultr-api-key"] = vultrApiKey
-}
 
-    
+	vultrApiKey := new(string)
+	if !r.VultrApiKey.IsUnknown() && !r.VultrApiKey.IsNull() {
+		*vultrApiKey = r.VultrApiKey.ValueString()
+		configValues["vultr-api-key"] = vultrApiKey
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationVultrResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -117,7 +113,7 @@ func (r *IntegrationVultrResourceModel) getConfig() (map[string]interface{}, boo
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -174,7 +170,6 @@ func (r *IntegrationVultrResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
 }
 
 func (r *IntegrationVultrResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -212,5 +207,4 @@ func (r *IntegrationVultrResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
 }

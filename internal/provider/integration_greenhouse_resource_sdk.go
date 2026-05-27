@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationGreenhouseResourceModel) ToCreateDelegatedSDKType() *shared.
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("Greenhouse"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationGreenhouseResourceModel) ToCreateSDKType() (*shared.Connecto
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationGreenhouseResourceModel) ToUpdateSDKType() (*shared.Connecto
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationGreenhouseResourceModel) ToUpdateSDKType() (*shared.Connecto
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("Greenhouse"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(greenhouseCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("Greenhouse"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(greenhouseCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,27 +93,24 @@ func (r *IntegrationGreenhouseResourceModel) ToUpdateSDKType() (*shared.Connecto
 
 func (r *IntegrationGreenhouseResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		greenhouseUsername := new(string)
-if !r.GreenhouseUsername.IsUnknown() && !r.GreenhouseUsername.IsNull() {
-*greenhouseUsername = r.GreenhouseUsername.ValueString()
-configValues["greenhouse_username"] = greenhouseUsername
-}
 
-    
-		greenhouseOnBehalfOf := new(string)
-if !r.GreenhouseOnBehalfOf.IsUnknown() && !r.GreenhouseOnBehalfOf.IsNull() {
-*greenhouseOnBehalfOf = r.GreenhouseOnBehalfOf.ValueString()
-configValues["greenhouse_on_behalf_of"] = greenhouseOnBehalfOf
-}
+	greenhouseUsername := new(string)
+	if !r.GreenhouseUsername.IsUnknown() && !r.GreenhouseUsername.IsNull() {
+		*greenhouseUsername = r.GreenhouseUsername.ValueString()
+		configValues["greenhouse_username"] = greenhouseUsername
+	}
 
-    
+	greenhouseOnBehalfOf := new(string)
+	if !r.GreenhouseOnBehalfOf.IsUnknown() && !r.GreenhouseOnBehalfOf.IsNull() {
+		*greenhouseOnBehalfOf = r.GreenhouseOnBehalfOf.ValueString()
+		configValues["greenhouse_on_behalf_of"] = greenhouseOnBehalfOf
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationGreenhouseResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -124,7 +119,7 @@ func (r *IntegrationGreenhouseResourceModel) getConfig() (map[string]interface{}
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -181,22 +176,20 @@ func (r *IntegrationGreenhouseResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               
-               if _, ok := configValues["greenhouse_on_behalf_of"]; ok {
-if val, ok := getStringValue(values, "greenhouse_on_behalf_of"); ok {
-r.GreenhouseOnBehalfOf = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-               
-           }
-       }
-    }
+				if _, ok := configValues["greenhouse_on_behalf_of"]; ok {
+					if val, ok := getStringValue(values, "greenhouse_on_behalf_of"); ok {
+						r.GreenhouseOnBehalfOf = types.StringValue(val)
+					}
+				}
+
+			}
+		}
+	}
 }
 
 func (r *IntegrationGreenhouseResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -234,20 +227,18 @@ func (r *IntegrationGreenhouseResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  
-                  if _, ok := configValues["greenhouse_on_behalf_of"]; ok {
-if val, ok := getStringValue(values, "greenhouse_on_behalf_of"); ok {
-r.GreenhouseOnBehalfOf = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-                  
-              }
-          }
-       }
+				if _, ok := configValues["greenhouse_on_behalf_of"]; ok {
+					if val, ok := getStringValue(values, "greenhouse_on_behalf_of"); ok {
+						r.GreenhouseOnBehalfOf = types.StringValue(val)
+					}
+				}
+
+			}
+		}
+	}
 }

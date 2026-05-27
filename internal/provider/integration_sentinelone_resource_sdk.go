@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationSentineloneResourceModel) ToCreateDelegatedSDKType() *shared
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("SentinelOne"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationSentineloneResourceModel) ToCreateSDKType() (*shared.Connect
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationSentineloneResourceModel) ToUpdateSDKType() (*shared.Connect
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationSentineloneResourceModel) ToUpdateSDKType() (*shared.Connect
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("SentinelOne"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(sentineloneCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("SentinelOne"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(sentineloneCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,27 +93,24 @@ func (r *IntegrationSentineloneResourceModel) ToUpdateSDKType() (*shared.Connect
 
 func (r *IntegrationSentineloneResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		sentineloneBaseUrl := new(string)
-if !r.SentineloneBaseUrl.IsUnknown() && !r.SentineloneBaseUrl.IsNull() {
-*sentineloneBaseUrl = r.SentineloneBaseUrl.ValueString()
-configValues["sentinelone_base_url"] = sentineloneBaseUrl
-}
 
-    
-		sentineloneToken := new(string)
-if !r.SentineloneToken.IsUnknown() && !r.SentineloneToken.IsNull() {
-*sentineloneToken = r.SentineloneToken.ValueString()
-configValues["sentinelone_token"] = sentineloneToken
-}
+	sentineloneBaseUrl := new(string)
+	if !r.SentineloneBaseUrl.IsUnknown() && !r.SentineloneBaseUrl.IsNull() {
+		*sentineloneBaseUrl = r.SentineloneBaseUrl.ValueString()
+		configValues["sentinelone_base_url"] = sentineloneBaseUrl
+	}
 
-    
+	sentineloneToken := new(string)
+	if !r.SentineloneToken.IsUnknown() && !r.SentineloneToken.IsNull() {
+		*sentineloneToken = r.SentineloneToken.ValueString()
+		configValues["sentinelone_token"] = sentineloneToken
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationSentineloneResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -124,7 +119,7 @@ func (r *IntegrationSentineloneResourceModel) getConfig() (map[string]interface{
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -181,22 +176,19 @@ func (r *IntegrationSentineloneResourceModel) RefreshFromGetResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["sentinelone_base_url"]; ok {
-if val, ok := getStringValue(values, "sentinelone_base_url"); ok {
-r.SentineloneBaseUrl = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["sentinelone_base_url"]; ok {
+					if val, ok := getStringValue(values, "sentinelone_base_url"); ok {
+						r.SentineloneBaseUrl = types.StringValue(val)
+					}
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationSentineloneResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -234,20 +226,17 @@ func (r *IntegrationSentineloneResourceModel) RefreshFromCreateResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["sentinelone_base_url"]; ok {
-if val, ok := getStringValue(values, "sentinelone_base_url"); ok {
-r.SentineloneBaseUrl = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["sentinelone_base_url"]; ok {
+					if val, ok := getStringValue(values, "sentinelone_base_url"); ok {
+						r.SentineloneBaseUrl = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }

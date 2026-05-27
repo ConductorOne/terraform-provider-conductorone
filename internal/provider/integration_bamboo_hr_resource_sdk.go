@@ -2,15 +2,13 @@
 package provider
 
 import (
-    "fmt"
-	
+	"fmt"
+
 	"time"
-	
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
-	
-	
+
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -24,8 +22,8 @@ func (r *IntegrationBambooHrResourceModel) ToCreateDelegatedSDKType() *shared.Co
 	}
 	out := shared.ConnectorServiceCreateDelegatedRequest{
 		DisplayName: sdk.String("BambooHR"),
-		CatalogID: catalogID,
-		UserIds:   userIds,
+		CatalogID:   catalogID,
+		UserIds:     userIds,
 	}
 	return &out
 }
@@ -38,20 +36,20 @@ func (r *IntegrationBambooHrResourceModel) ToCreateSDKType() (*shared.ConnectorS
 	}
 
 	configOut, configSet := r.getConfig()
-    if !configSet {
-        return nil, fmt.Errorf("config must be set for create request")
-    }
+	if !configSet {
+		return nil, fmt.Errorf("config must be set for create request")
+	}
 
-    out := shared.ConnectorServiceCreateRequest{
-        CatalogID: catalogID,
-        UserIds:   userIds,
-        Config: &shared.ConnectorServiceCreateRequestConfig{
-            AtType: sdk.String(envConfigType),
-            AdditionalProperties: map[string]interface{}{
-                "configuration": configOut,
-            },
-        },
-    }
+	out := shared.ConnectorServiceCreateRequest{
+		CatalogID: catalogID,
+		UserIds:   userIds,
+		Config: &shared.ConnectorServiceCreateRequestConfig{
+			AtType: sdk.String(envConfigType),
+			AdditionalProperties: map[string]interface{}{
+				"configuration": configOut,
+			},
+		},
+	}
 	return &out, nil
 }
 
@@ -61,17 +59,17 @@ func (r *IntegrationBambooHrResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 		userIds = append(userIds, userIdsItem.ValueString())
 	}
 
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 
-    configOut := make(map[string]interface{})
-    configSet := false
-    for key, configValue := range configValues {
+	configOut := make(map[string]interface{})
+	configSet := false
+	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -82,12 +80,12 @@ func (r *IntegrationBambooHrResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 	}
 
 	out := shared.ConnectorInput{
-	    DisplayName: sdk.String("BambooHR"),
-		AppID:     sdk.String(r.AppID.ValueString()),
-		CatalogID: sdk.String(bambooHrCatalogID),
-		ID:        sdk.String(r.ID.ValueString()),
-		UserIds:   userIds,
-		Config: makeConnectorConfig(configOut),
+		DisplayName: sdk.String("BambooHR"),
+		AppID:       sdk.String(r.AppID.ValueString()),
+		CatalogID:   sdk.String(bambooHrCatalogID),
+		ID:          sdk.String(r.ID.ValueString()),
+		UserIds:     userIds,
+		Config:      makeConnectorConfig(configOut),
 	}
 
 	return &out, configSet
@@ -95,27 +93,24 @@ func (r *IntegrationBambooHrResourceModel) ToUpdateSDKType() (*shared.ConnectorI
 
 func (r *IntegrationBambooHrResourceModel) populateConfig() map[string]interface{} {
 	configValues := make(map[string]interface{})
-    
-		companyDomain := new(string)
-if !r.CompanyDomain.IsUnknown() && !r.CompanyDomain.IsNull() {
-*companyDomain = r.CompanyDomain.ValueString()
-configValues["company_domain"] = companyDomain
-}
 
-    
-		apiKey := new(string)
-if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
-*apiKey = r.ApiKey.ValueString()
-configValues["api_key"] = apiKey
-}
+	companyDomain := new(string)
+	if !r.CompanyDomain.IsUnknown() && !r.CompanyDomain.IsNull() {
+		*companyDomain = r.CompanyDomain.ValueString()
+		configValues["company_domain"] = companyDomain
+	}
 
-    
+	apiKey := new(string)
+	if !r.ApiKey.IsUnknown() && !r.ApiKey.IsNull() {
+		*apiKey = r.ApiKey.ValueString()
+		configValues["api_key"] = apiKey
+	}
 
-    return configValues
+	return configValues
 }
 
 func (r *IntegrationBambooHrResourceModel) getConfig() (map[string]interface{}, bool) {
-    configValues := r.populateConfig()
+	configValues := r.populateConfig()
 	configOut := make(map[string]interface{})
 	configSet := false
 	for key, configValue := range configValues {
@@ -124,7 +119,7 @@ func (r *IntegrationBambooHrResourceModel) getConfig() (map[string]interface{}, 
 			mv := makeMapValue(configValue)
 			if mv != nil {
 				configOut[key] = mv
-			} else {	
+			} else {
 				configOut[key] = makeStringValue(configValue)
 			}
 			configSet = true
@@ -181,22 +176,19 @@ func (r *IntegrationBambooHrResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-    
-    configValues := r.populateConfig()
-    if resp.Config != nil && *resp.Config.AtType == envConfigType {
-       if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-           if values, ok := config["configuration"].(map[string]interface{}); ok {
-               if _, ok := configValues["company_domain"]; ok {
-if val, ok := getStringValue(values, "company_domain"); ok {
-r.CompanyDomain = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["company_domain"]; ok {
+					if val, ok := getStringValue(values, "company_domain"); ok {
+						r.CompanyDomain = types.StringValue(val)
+					}
+				}
 
-               
-               
-           }
-       }
-    }
+			}
+		}
+	}
 }
 
 func (r *IntegrationBambooHrResourceModel) RefreshFromUpdateResponse(resp *shared.Connector) {
@@ -234,20 +226,17 @@ func (r *IntegrationBambooHrResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
-   
-       configValues := r.populateConfig()
-       if resp.Config != nil && *resp.Config.AtType == envConfigType {
-          if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
-              if values, ok := config["configuration"].(map[string]interface{}); ok {
-                  if _, ok := configValues["company_domain"]; ok {
-if val, ok := getStringValue(values, "company_domain"); ok {
-r.CompanyDomain = types.StringValue(val)
-}
-}
+	configValues := r.populateConfig()
+	if resp.Config != nil && *resp.Config.AtType == envConfigType {
+		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
+			if values, ok := config["configuration"].(map[string]interface{}); ok {
+				if _, ok := configValues["company_domain"]; ok {
+					if val, ok := getStringValue(values, "company_domain"); ok {
+						r.CompanyDomain = types.StringValue(val)
+					}
+				}
 
-                  
-                  
-              }
-          }
-       }
+			}
+		}
+	}
 }
