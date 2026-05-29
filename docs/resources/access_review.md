@@ -218,6 +218,8 @@ This message contains a oneof named resource_scope. Only a single field of the f
 - `read` (Boolean) The read field.
 - `review_instructions` (String) Optional instructions displayed to reviewers when completing their review tasks.
 - `review_signature_config` (Attributes) Signature configuration for access review submissions (see [below for nested schema](#nestedatt--review_signature_config))
+- `reviewer_attribute_config` (Attributes) Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+ Empty = reviewers see no profile attributes in the AppUser tooltip. (see [below for nested schema](#nestedatt--reviewer_attribute_config))
 - `scheduled_start_date` (String)
 - `scoping_version` (String) Internal version counter incremented when the campaign scope changes.
 - `single_app_setup` (Attributes) The SingleAppSetup message. (see [below for nested schema](#nestedatt--single_app_setup))
@@ -545,6 +547,23 @@ Read-Only:
 - `require_signature` (Boolean) The requireSignature field.
 - `step_up_provider_id` (String) The stepUpProviderId field.
 - `tsp_url` (String) The tspUrl field.
+
+
+<a id="nestedatt--reviewer_attribute_config"></a>
+### Nested Schema for `reviewer_attribute_config`
+
+Read-Only:
+
+- `bindings` (Attributes List) The bindings field. (see [below for nested schema](#nestedatt--reviewer_attribute_config--bindings))
+
+<a id="nestedatt--reviewer_attribute_config--bindings"></a>
+### Nested Schema for `reviewer_attribute_config.bindings`
+
+Read-Only:
+
+- `app_id` (String) The appId field.
+- `attribute_key` (String) The attributeKey field.
+
 
 
 <a id="nestedatt--single_app_setup"></a>

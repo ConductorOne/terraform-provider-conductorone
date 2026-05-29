@@ -157,6 +157,14 @@ resource "conductorone_access_review_template" "my_access_review_template" {
     step_up_provider_id  = "...my_step_up_provider_id..."
     tsp_url              = "...my_tsp_url..."
   }
+  reviewer_attribute_config = {
+    bindings = [
+      {
+        app_id        = "...my_app_id..."
+        attribute_key = "...my_attribute_key..."
+      }
+    ]
+  }
   scope_type          = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
   use_policy_override = true
 }
@@ -231,6 +239,8 @@ This message contains a oneof named end_condition. Only a single field of the fo
   - occurrences (see [below for nested schema](#nestedatt--recurrence_rule))
 - `review_instructions` (String) The reviewInstructions field.
 - `review_signature_config` (Attributes) Signature configuration for access review submissions (see [below for nested schema](#nestedatt--review_signature_config))
+- `reviewer_attribute_config` (Attributes) Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+ Empty = reviewers see no profile attributes in the AppUser tooltip. (see [below for nested schema](#nestedatt--reviewer_attribute_config))
 - `scope_type` (String) The scopeType field. possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"]
 - `use_policy_override` (Boolean) The usePolicyOverride field.
 
@@ -467,6 +477,23 @@ Optional:
 - `require_signature` (Boolean) The requireSignature field.
 - `step_up_provider_id` (String) The stepUpProviderId field.
 - `tsp_url` (String) The tspUrl field.
+
+
+<a id="nestedatt--reviewer_attribute_config"></a>
+### Nested Schema for `reviewer_attribute_config`
+
+Optional:
+
+- `bindings` (Attributes List) The bindings field. (see [below for nested schema](#nestedatt--reviewer_attribute_config--bindings))
+
+<a id="nestedatt--reviewer_attribute_config--bindings"></a>
+### Nested Schema for `reviewer_attribute_config.bindings`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `attribute_key` (String) The attributeKey field.
+
 
 
 <a id="nestedatt--access_review_inclusion_scope"></a>

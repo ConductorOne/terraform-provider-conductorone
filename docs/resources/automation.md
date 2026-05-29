@@ -1290,7 +1290,10 @@ Optional:
 
 Optional:
 
-- `args` (Map of String) The args field.
+- `args` (Map of String) Arg name → CEL expression. Each value is evaluated against the
+ workflow execution context (subject + completed step outputs) and the
+ resolved values are passed to the function as JSON. Plain literals
+ must be quoted as CEL strings (e.g. "'static-value'").
 - `function_id` (String) The functionId field.
 
 
@@ -2137,7 +2140,10 @@ Optional:
 
 Optional:
 
-- `args` (Map of String) The args field.
+- `args` (Map of String) Arg name → CEL expression. Each value is evaluated against the
+ workflow execution context (subject + completed step outputs) and the
+ resolved values are passed to the function as JSON. Plain literals
+ must be quoted as CEL strings (e.g. "'static-value'").
 - `function_id` (String) The functionId field.
 
 
