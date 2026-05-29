@@ -1446,6 +1446,8 @@ components:
                     description: Optional instructions displayed to reviewers when completing their review tasks.
                     readOnly: false
                     type: string
+                reviewerAttributeConfig:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.ReviewerAttributeConfig'
                 scheduledStartDate:
                     format: date-time
                     readOnly: false
@@ -2237,6 +2239,8 @@ components:
                     description: The reviewInstructions field.
                     readOnly: false
                     type: string
+                reviewerAttributeConfig:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.ReviewerAttributeConfig'
                 scope:
                     $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewScopeV2'
                 scopeType:
@@ -2370,6 +2374,8 @@ components:
                     description: The reviewInstructions field.
                     readOnly: false
                     type: string
+                reviewerAttributeConfig:
+                    $ref: '#/components/schemas/c1.api.accessreview.v1.ReviewerAttributeConfig'
                 scope:
                     $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewScopeV2'
                 scopeType:
@@ -3057,6 +3063,35 @@ components:
             title: Review Signature Config
             type: object
             x-speakeasy-name-override: ReviewSignatureConfig
+        c1.api.accessreview.v1.ReviewerAttributeBinding:
+            description: Pair of an app and one of that app's user profile attribute keys.
+            properties:
+                appId:
+                    description: The appId field.
+                    readOnly: false
+                    type: string
+                attributeKey:
+                    description: The attributeKey field.
+                    readOnly: false
+                    type: string
+            title: Reviewer Attribute Binding
+            type: object
+            x-speakeasy-name-override: ReviewerAttributeBinding
+        c1.api.accessreview.v1.ReviewerAttributeConfig:
+            description: |-
+                Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+                 Empty = reviewers see no profile attributes in the AppUser tooltip.
+            properties:
+                bindings:
+                    description: The bindings field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.accessreview.v1.ReviewerAttributeBinding'
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Reviewer Attribute Config
+            type: object
+            x-speakeasy-name-override: ReviewerAttributeConfig
         c1.api.accessreview.v1.SelectedUsersScope:
             description: The SelectedUsersScope message.
             nullable: true
@@ -10125,7 +10160,11 @@ components:
                 args:
                     additionalProperties:
                         type: string
-                    description: The args field.
+                    description: |-
+                        Arg name → CEL expression. Each value is evaluated against the
+                         workflow execution context (subject + completed step outputs) and the
+                         resolved values are passed to the function as JSON. Plain literals
+                         must be quoted as CEL strings (e.g. "'static-value'").
                     readOnly: false
                     type: object
                 functionId:
@@ -12290,9 +12329,8 @@ components:
             x-speakeasy-name-override: WebhookListenerAuthJWT
         c1.api.decoy.v1.Decoy:
             description: |-
-                Decoy is the public projection of a planted honey-credential. Read-only
-                 surface; the variant-specific back-references live in c1models and are
-                 not exposed here.
+                Decoy is the read projection of a planted honey-credential. All
+                 fields except annotations are server-managed.
             properties:
                 annotations:
                     additionalProperties:
@@ -12300,8 +12338,8 @@ components:
                     description: |-
                         Customer-defined grouping/filtering bag. PATCH semantics on Update:
                          keys in the request overwrite, keys missing stay, keys set to empty
-                         string delete. Copied into the resulting Finding's custom_tags so
-                         routing rules can condition on the same keys.
+                         string delete. Copied onto the Finding produced when a decoy fires,
+                         so routing rules can condition on the same keys.
                     readOnly: false
                     type: object
                     x-speakeasy-terraform-plan-modifier:
@@ -12348,8 +12386,8 @@ components:
             x-speakeasy-name-override: Decoy
         c1.api.decoy.v1.DecoyAccessTokenInput:
             description: |-
-                DecoyAccessTokenInput requests a freestanding session access-token
-                 decoy minted under an existing User.
+                DecoyAccessTokenInput mints a session access-token decoy under an
+                 existing User.
             nullable: true
             properties:
                 expiresIn:
@@ -12393,21 +12431,86 @@ components:
             x-speakeasy-name-override: DecoyClientCredentialMaterial
         c1.api.decoy.v1.DecoyConnectorClientInput:
             description: |-
-                DecoyConnectorClientInput requests a ConnectorClientCredential decoy
-                 planted under an existing app+connector.
+                DecoyConnectorClientInput plants a connector-shaped credential decoy.
+                 The server allocates placement under the tenant's ConductorOne app;
+                 the customer makes no app/connector choice.
             nullable: true
-            properties:
-                appId:
-                    description: The appId field.
-                    readOnly: false
-                    type: string
-                connectorId:
-                    description: The connectorId field.
-                    readOnly: false
-                    type: string
             title: Decoy Connector Client Input
             type: object
             x-speakeasy-name-override: DecoyConnectorClientInput
+        c1.api.decoy.v1.DecoySearchRequest:
+            description: The DecoySearchRequest message.
+            properties:
+                annotationKeys:
+                    description: |-
+                        Filter to decoys that have at least one of these annotation keys
+                         set. Empty means no annotation filter.
+                    items:
+                        type: string
+                    nullable: true
+                    readOnly: false
+                    type: array
+                kinds:
+                    description: Filter by kind (OR within the list). Empty means any kind.
+                    items:
+                        enum:
+                            - DECOY_KIND_UNSPECIFIED
+                            - DECOY_KIND_USER_CLIENT_CREDENTIAL
+                            - DECOY_KIND_CONNECTOR_CLIENT
+                            - DECOY_KIND_WORKLOAD_FEDERATION
+                            - DECOY_KIND_ACCESS_TOKEN
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    readOnly: false
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    readOnly: false
+                    type: string
+                query:
+                    description: |-
+                        Free-text query against display_name and description. Empty means
+                         no text filter.
+                    readOnly: false
+                    type: string
+                statuses:
+                    description: Filter by status (OR within the list). Empty means any status.
+                    items:
+                        enum:
+                            - DECOY_STATUS_FILTER_UNSPECIFIED
+                            - DECOY_STATUS_FILTER_ACTIVE
+                            - DECOY_STATUS_FILTER_DISABLED
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    nullable: true
+                    readOnly: false
+                    type: array
+            title: Decoy Search Request
+            type: object
+            x-speakeasy-name-override: DecoySearchRequest
+        c1.api.decoy.v1.DecoySearchResponse:
+            description: The DecoySearchResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.decoy.v1.Decoy'
+                    nullable: true
+                    readOnly: false
+                    type: array
+                nextPageToken:
+                    description: The nextPageToken field.
+                    readOnly: false
+                    type: string
+            title: Decoy Search Response
+            type: object
+            x-speakeasy-name-override: DecoySearchResponse
         c1.api.decoy.v1.DecoyServiceCreateRequest:
             description: |
                 The DecoyServiceCreateRequest message.
@@ -12525,16 +12628,12 @@ components:
             x-speakeasy-name-override: DecoyServiceUpdateResponse
         c1.api.decoy.v1.DecoyUserClientCredentialInput:
             description: |-
-                DecoyUserClientCredentialInput requests a UserClientCredential decoy
-                 planted under an existing User. The User's typ selects the credential
-                 usage: HUMAN -> pcc, SERVICE -> spc. Any other typ (SYSTEM, AGENT)
-                 is rejected at the handler.
+                DecoyUserClientCredentialInput plants a client-credential decoy
+                 under an existing User. The User must be typ=HUMAN or typ=SERVICE.
             nullable: true
             properties:
                 userId:
-                    description: |-
-                        Existing User to plant the decoy credential under. Must be
-                         typ=HUMAN or typ=SERVICE.
+                    description: Existing User to plant the decoy credential under.
                     readOnly: false
                     type: string
             title: Decoy User Client Credential Input
@@ -12561,20 +12660,15 @@ components:
             x-speakeasy-name-override: DecoyVendingMaterial
         c1.api.decoy.v1.DecoyWorkloadFederationInput:
             description: |-
-                DecoyWorkloadFederationInput requests a WorkloadFederationTrust decoy
-                 bound to an existing Provider. Decoys reuse an already-registered
-                 Provider because Trust matching requires a real JWKS for JWT signature
-                 verification before the decoy_id check fires.
-
-                 `condition_expression` is the same CEL shape the regular WF Trust API
-                 takes -- operators express whatever matching they want against the
-                 JWT claims map (`claims.aud`, `claims.sub`, custom claims). Compiled
-                 + validated by the WF controller's CreateTrust at create time.
+                DecoyWorkloadFederationInput plants a workload-federation-trust decoy
+                 under an existing Provider. The Provider must already be registered
+                 so its JWKS is reachable for signature verification.
             nullable: true
             properties:
                 conditionExpression:
                     description: |-
-                        CEL boolean evaluated against the presented JWT's claims map.
+                        CEL boolean evaluated against the presented JWT's claims map. Same
+                         shape as the regular WorkloadFederationTrust condition expression.
                          Example: `claims.sub.startsWith("repo:acme/fake-infra:")`.
                     readOnly: false
                     type: string
@@ -12583,9 +12677,7 @@ components:
                     readOnly: false
                     type: string
                 servicePrincipalUserId:
-                    description: |-
-                        Existing SERVICE-typed User the Trust binds to. An attacker
-                         tripping the decoy would otherwise be act-as'ing this principal.
+                    description: Existing SERVICE-typed User the Trust would act-as on match.
                     readOnly: false
                     type: string
             title: Decoy Workload Federation Input
@@ -14800,7 +14892,9 @@ components:
                     readOnly: false
                     type: string
                 functionType:
-                    description: The type of function to create, controlling its execution environment and capabilities.
+                    description: |-
+                        The type of function to create. Use FUNCTION_TYPE_ANY for user functions —
+                         that is the type the Functions UI lists. Do not use any other value.
                     enum:
                         - FUNCTION_TYPE_UNSPECIFIED
                         - FUNCTION_TYPE_ANY
@@ -14812,7 +14906,20 @@ components:
                     additionalProperties:
                         format: base64
                         type: string
-                    description: Map of filename to file content for the initial code commit.
+                    description: |-
+                        File map for the initial code commit. Keys are file paths in the
+                         function root (e.g. "main.ts", "main.test.ts"); values are file
+                         contents as bytes.
+
+                         Runtime: TypeScript. The entry file MUST be "main.ts" exporting a
+                         default async handler:
+
+                           import { JSONObject } from "@c1/functions-sdk";
+                           export default async function main(input: JSONObject): Promise<JSONObject> {
+                             return { ok: true, echo: input };
+                           }
+
+                         The handler MUST return a JSON object — not a primitive, array, or null.
                     readOnly: false
                     type: object
             title: Functions Service Create Function Request
@@ -28156,6 +28263,36 @@ components:
             title: Get User Profile Types Response
             type: object
             x-speakeasy-name-override: GetUserProfileTypesResponse
+        c1.api.user.v1.IntrospectRequest:
+            description: The IntrospectRequest message.
+            properties:
+                expandMask:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserExpandMask'
+            title: Introspect Request
+            type: object
+            x-speakeasy-name-override: UserIntrospectRequest
+        c1.api.user.v1.IntrospectResponse:
+            description: The IntrospectResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        readOnly: false
+                        type: object
+                    nullable: true
+                    readOnly: false
+                    type: array
+                userView:
+                    $ref: '#/components/schemas/c1.api.user.v1.UserView'
+            title: Introspect Response
+            type: object
+            x-speakeasy-name-override: UserIntrospectResponse
         c1.api.user.v1.SearchUsersRequest:
             description: Search for users based on some filters.
             properties:
@@ -36368,7 +36505,15 @@ paths:
             x-speakeasy-group: Automation
             x-speakeasy-name-override: ListAutomations
         post:
-            description: Create a new automation with the specified steps, triggers, and configuration.
+            description: |-
+                Create a new automation with the specified steps, triggers, and
+                 configuration. See get_authoring_guide for the AutomationStep contract
+                 (step kinds, evaluate_expressions shape, CEL identifier scope).
+
+                 At create time, draft_automation_steps and draft_triggers default to
+                 their published counterparts when omitted — callers writing a single
+                 working version don't need to populate both. The draft/publish
+                 distinction matters only on subsequent edits.
             operationId: c1.api.automations.v1.AutomationService.CreateAutomation
             requestBody:
                 content:
@@ -37490,6 +37635,29 @@ paths:
                 - Decoy
             x-speakeasy-group: Decoy
             x-speakeasy-name-override: Rotate
+    /api/v1/decoys/search:
+        post:
+            description: |-
+                Search decoys with free-text query and filters for kind, status,
+                 and annotation key.
+            operationId: c1.api.decoy.v1.DecoySearchService.Search
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.decoy.v1.DecoySearchRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.decoy.v1.DecoySearchResponse'
+                    description: Successful response
+            summary: Search
+            tags:
+                - Decoy
+            x-speakeasy-group: DecoySearch
+            x-speakeasy-name-override: Search
     /api/v1/directories:
         get:
             description: List directories.
@@ -37922,7 +38090,15 @@ paths:
             x-speakeasy-name-override: ListFunctions
             x-stability-level: draft
         post:
-            description: CreateFunction registers a new serverless function and creates its initial code commit.
+            description: |-
+                CreateFunction registers a new serverless function and creates its
+                 initial code commit. Functions run as TypeScript modules in a sandboxed
+                 runtime; see initial_content for the entry-file signature and SDK import.
+
+                 The new function is unpublished. To make the commit the default
+                 runnable version (and have the function appear as runnable in the
+                 Functions UI), call UpdateFunction with function.published_commit_id
+                 set and update_mask=["published_commit_id"].
             operationId: c1.api.functions.v1.FunctionsService.CreateFunction
             requestBody:
                 content:
@@ -38377,7 +38553,10 @@ paths:
             x-stability-level: draft
     /api/v1/functions/update:
         post:
-            description: Update updates an existing function's metadata
+            description: |-
+                Update an existing function's metadata. Also the publish path: set
+                 function.published_commit_id and include "published_commit_id" in
+                 update_mask to make a commit the default runnable version.
             operationId: c1.api.functions.v1.FunctionsService.UpdateFunction
             requestBody:
                 content:
@@ -42585,7 +42764,13 @@ paths:
             x-speakeasy-name-override: ApproveWithStepUp
     /api/v1/tasks/{task_id}/action/close:
         post:
-            description: Close a task, ending its workflow.
+            description: |-
+                Close a task, ending its workflow. Async — returns a ticketActionId on
+                 accept and queues the close; the task's state field is not updated
+                 synchronously. Poll task_service_get to observe the transition to
+                 TASK_STATE_CLOSED. When the task has an active provision step, close
+                 may no-op — finish or cancel the provision step first
+                 (mark_provision_complete / _errored / _cancelled) before closing.
             operationId: c1.api.task.v1.TaskActionsService.Close
             parameters:
                 - in: path
@@ -43028,6 +43213,29 @@ paths:
                 - User
             x-speakeasy-group: User
             x-speakeasy-name-override: SetExpiringUserDelegationBindingByAdmin
+    /api/v1/users/introspect:
+        post:
+            description: |-
+                Introspect returns the calling user's full UserView (profile, manager, attributes)
+                 resolved from the passport on the request.
+            operationId: c1.api.user.v1.UserService.Introspect
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.user.v1.IntrospectRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.user.v1.IntrospectResponse'
+                    description: Successful response
+            summary: Introspect
+            tags:
+                - User
+            x-speakeasy-group: User
+            x-speakeasy-name-override: Introspect
     /api/v1/vaults:
         post:
             description: Create provisions a new external secret storage vault and returns it.

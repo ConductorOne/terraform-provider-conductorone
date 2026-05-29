@@ -142,6 +142,14 @@ resource "conductorone_access_review_template" "my_access_review_template" {
     step_up_provider_id  = "...my_step_up_provider_id..."
     tsp_url              = "...my_tsp_url..."
   }
+  reviewer_attribute_config = {
+    bindings = [
+      {
+        app_id        = "...my_app_id..."
+        attribute_key = "...my_attribute_key..."
+      }
+    ]
+  }
   scope_type          = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
   use_policy_override = true
 }

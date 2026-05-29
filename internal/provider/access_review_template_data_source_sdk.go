@@ -383,6 +383,25 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 			r.RecurrenceRule.Occurrences = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.RecurrenceRule.Occurrences))
 			r.RecurrenceRule.StartDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.RecurrenceRule.StartDate))
 		}
+		if resp.ReviewerAttributeConfig == nil {
+			r.ReviewerAttributeConfig = nil
+		} else {
+			r.ReviewerAttributeConfig = &tfTypes.ReviewerAttributeConfig{}
+			if resp.ReviewerAttributeConfig.Bindings != nil {
+				r.ReviewerAttributeConfig.Bindings = []tfTypes.ReviewerAttributeBinding{}
+
+				for _, bindingsItem := range resp.ReviewerAttributeConfig.Bindings {
+					var bindings tfTypes.ReviewerAttributeBinding
+
+					bindings.AppID = types.StringPointerValue(bindingsItem.AppID)
+					bindings.AttributeKey = types.StringPointerValue(bindingsItem.AttributeKey)
+
+					r.ReviewerAttributeConfig.Bindings = append(r.ReviewerAttributeConfig.Bindings, bindings)
+				}
+			} else {
+				r.ReviewerAttributeConfig.Bindings = nil
+			}
+		}
 		r.ReviewInstructions = types.StringPointerValue(resp.ReviewInstructions)
 		if resp.ReviewSignatureConfig == nil {
 			r.ReviewSignatureConfig = nil

@@ -473,6 +473,25 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
 		}
 		r.PolicyID = types.StringPointerValue(resp.PolicyID)
+		if resp.ReviewerAttributeConfig == nil {
+			r.ReviewerAttributeConfig = nil
+		} else {
+			r.ReviewerAttributeConfig = &tfTypes.ReviewerAttributeConfig{}
+			if resp.ReviewerAttributeConfig.Bindings != nil {
+				r.ReviewerAttributeConfig.Bindings = []tfTypes.ReviewerAttributeBinding{}
+
+				for _, bindingsItem := range resp.ReviewerAttributeConfig.Bindings {
+					var bindings tfTypes.ReviewerAttributeBinding
+
+					bindings.AppID = types.StringPointerValue(bindingsItem.AppID)
+					bindings.AttributeKey = types.StringPointerValue(bindingsItem.AttributeKey)
+
+					r.ReviewerAttributeConfig.Bindings = append(r.ReviewerAttributeConfig.Bindings, bindings)
+				}
+			} else {
+				r.ReviewerAttributeConfig.Bindings = nil
+			}
+		}
 		r.ReviewInstructions = types.StringPointerValue(resp.ReviewInstructions)
 		if resp.ReviewSignatureConfig == nil {
 			r.ReviewSignatureConfig = nil
@@ -1009,6 +1028,34 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 	} else {
 		reviewInstructions = nil
 	}
+	var reviewerAttributeConfig *shared.ReviewerAttributeConfig
+	if r.ReviewerAttributeConfig != nil {
+		var bindings []shared.ReviewerAttributeBinding
+		if r.ReviewerAttributeConfig.Bindings != nil {
+			bindings = make([]shared.ReviewerAttributeBinding, 0, len(r.ReviewerAttributeConfig.Bindings))
+			for bindingsIndex := range r.ReviewerAttributeConfig.Bindings {
+				appId2 := new(string)
+				if !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.IsUnknown() && !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.IsNull() {
+					*appId2 = r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.ValueString()
+				} else {
+					appId2 = nil
+				}
+				attributeKey := new(string)
+				if !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.IsUnknown() && !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.IsNull() {
+					*attributeKey = r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.ValueString()
+				} else {
+					attributeKey = nil
+				}
+				bindings = append(bindings, shared.ReviewerAttributeBinding{
+					AppID:        appId2,
+					AttributeKey: attributeKey,
+				})
+			}
+		}
+		reviewerAttributeConfig = &shared.ReviewerAttributeConfig{
+			Bindings: bindings,
+		}
+	}
 	scheduledStartDate := new(time.Time)
 	if !r.ScheduledStartDate.IsUnknown() && !r.ScheduledStartDate.IsNull() {
 		*scheduledStartDate, _ = time.Parse(time.RFC3339Nano, r.ScheduledStartDate.ValueString())
@@ -1268,11 +1315,11 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 			if r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef != nil {
 				groupAppEntitlementsRef = make([]shared.AppEntitlementRef, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef))
 				for groupAppEntitlementsRefIndex := range r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef {
-					appId2 := new(string)
+					appId3 := new(string)
 					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsNull() {
-						*appId2 = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
+						*appId3 = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
 					} else {
-						appId2 = nil
+						appId3 = nil
 					}
 					id1 := new(string)
 					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsNull() {
@@ -1281,7 +1328,7 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 						id1 = nil
 					}
 					groupAppEntitlementsRef = append(groupAppEntitlementsRef, shared.AppEntitlementRef{
-						AppID: appId2,
+						AppID: appId3,
 						ID:    id1,
 					})
 				}
@@ -1389,14 +1436,14 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 	}
 	var singleAppSetup *shared.SingleAppSetup
 	if r.SingleAppSetup != nil {
-		appId3 := new(string)
+		appId4 := new(string)
 		if !r.SingleAppSetup.AppID.IsUnknown() && !r.SingleAppSetup.AppID.IsNull() {
-			*appId3 = r.SingleAppSetup.AppID.ValueString()
+			*appId4 = r.SingleAppSetup.AppID.ValueString()
 		} else {
-			appId3 = nil
+			appId4 = nil
 		}
 		singleAppSetup = &shared.SingleAppSetup{
-			AppID: appId3,
+			AppID: appId4,
 		}
 	}
 	startedAt := new(time.Time)
@@ -1446,6 +1493,7 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 		NotificationConfig:             notificationConfig,
 		PolicyID:                       policyId1,
 		ReviewInstructions:             reviewInstructions,
+		ReviewerAttributeConfig:        reviewerAttributeConfig,
 		ScheduledStartDate:             scheduledStartDate,
 		AccessReviewScope:              accessReviewScope,
 		ScopeType:                      scopeType,

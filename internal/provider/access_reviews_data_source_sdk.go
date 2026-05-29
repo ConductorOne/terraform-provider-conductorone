@@ -486,6 +486,25 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 						list.AccessReview.NotificationConfig.SendReminders = types.BoolPointerValue(listItem.AccessReview.NotificationConfig.SendReminders)
 					}
 					list.AccessReview.PolicyID = types.StringPointerValue(listItem.AccessReview.PolicyID)
+					if listItem.AccessReview.ReviewerAttributeConfig == nil {
+						list.AccessReview.ReviewerAttributeConfig = nil
+					} else {
+						list.AccessReview.ReviewerAttributeConfig = &tfTypes.ReviewerAttributeConfig{}
+						if listItem.AccessReview.ReviewerAttributeConfig.Bindings != nil {
+							list.AccessReview.ReviewerAttributeConfig.Bindings = []tfTypes.ReviewerAttributeBinding{}
+
+							for _, bindingsItem := range listItem.AccessReview.ReviewerAttributeConfig.Bindings {
+								var bindings tfTypes.ReviewerAttributeBinding
+
+								bindings.AppID = types.StringPointerValue(bindingsItem.AppID)
+								bindings.AttributeKey = types.StringPointerValue(bindingsItem.AttributeKey)
+
+								list.AccessReview.ReviewerAttributeConfig.Bindings = append(list.AccessReview.ReviewerAttributeConfig.Bindings, bindings)
+							}
+						} else {
+							list.AccessReview.ReviewerAttributeConfig.Bindings = nil
+						}
+					}
 					list.AccessReview.ReviewInstructions = types.StringPointerValue(listItem.AccessReview.ReviewInstructions)
 					if listItem.AccessReview.ReviewSignatureConfig == nil {
 						list.AccessReview.ReviewSignatureConfig = nil

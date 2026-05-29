@@ -231,8 +231,11 @@ type AccessReview struct {
 	// The ID of the review policy that governs how review tasks are assigned and resolved.
 	PolicyID *string `json:"policyId,omitempty"`
 	// Optional instructions displayed to reviewers when completing their review tasks.
-	ReviewInstructions *string    `json:"reviewInstructions,omitempty"`
-	ScheduledStartDate *time.Time `json:"scheduledStartDate,omitempty"`
+	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	// Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+	//  Empty = reviewers see no profile attributes in the AppUser tooltip.
+	ReviewerAttributeConfig *ReviewerAttributeConfig `json:"reviewerAttributeConfig,omitempty"`
+	ScheduledStartDate      *time.Time               `json:"scheduledStartDate,omitempty"`
 	// The AccessReviewScope message.
 	AccessReviewScope *AccessReviewScope `json:"scope,omitempty"`
 	// this sets the scope type for the access review
@@ -509,6 +512,13 @@ func (a *AccessReview) GetReviewInstructions() *string {
 	return a.ReviewInstructions
 }
 
+func (a *AccessReview) GetReviewerAttributeConfig() *ReviewerAttributeConfig {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewerAttributeConfig
+}
+
 func (a *AccessReview) GetScheduledStartDate() *time.Time {
 	if a == nil {
 		return nil
@@ -646,8 +656,11 @@ type AccessReviewInput struct {
 	// The ID of the review policy that governs how review tasks are assigned and resolved.
 	PolicyID *string `json:"policyId,omitempty"`
 	// Optional instructions displayed to reviewers when completing their review tasks.
-	ReviewInstructions *string    `json:"reviewInstructions,omitempty"`
-	ScheduledStartDate *time.Time `json:"scheduledStartDate,omitempty"`
+	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	// Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+	//  Empty = reviewers see no profile attributes in the AppUser tooltip.
+	ReviewerAttributeConfig *ReviewerAttributeConfig `json:"reviewerAttributeConfig,omitempty"`
+	ScheduledStartDate      *time.Time               `json:"scheduledStartDate,omitempty"`
 	// The AccessReviewScope message.
 	AccessReviewScope *AccessReviewScope `json:"scope,omitempty"`
 	// this sets the scope type for the access review
@@ -907,6 +920,13 @@ func (a *AccessReviewInput) GetReviewInstructions() *string {
 		return nil
 	}
 	return a.ReviewInstructions
+}
+
+func (a *AccessReviewInput) GetReviewerAttributeConfig() *ReviewerAttributeConfig {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewerAttributeConfig
 }
 
 func (a *AccessReviewInput) GetScheduledStartDate() *time.Time {

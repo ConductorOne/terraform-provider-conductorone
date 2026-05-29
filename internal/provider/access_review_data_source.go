@@ -67,6 +67,7 @@ type AccessReviewDataSourceModel struct {
 	PolicyID                       types.String                                     `tfsdk:"policy_id"`
 	PolicyPath                     types.String                                     `tfsdk:"policy_path"`
 	Read                           types.Bool                                       `tfsdk:"read"`
+	ReviewerAttributeConfig        *tfTypes.ReviewerAttributeConfig                 `tfsdk:"reviewer_attribute_config"`
 	ReviewInstructions             types.String                                     `tfsdk:"review_instructions"`
 	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig                   `tfsdk:"review_signature_config"`
 	ScheduledStartDate             types.String                                     `tfsdk:"scheduled_start_date"`
@@ -686,6 +687,29 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 					},
 				},
 				Description: `Signature configuration for access review submissions`,
+			},
+			"reviewer_attribute_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"bindings": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The appId field.`,
+								},
+								"attribute_key": schema.StringAttribute{
+									Computed:    true,
+									Description: `The attributeKey field.`,
+								},
+							},
+						},
+						Description: `The bindings field.`,
+					},
+				},
+				MarkdownDescription: `Allowlist of AppUser.profile keys visible to reviewers, scoped per app.` + "\n" +
+					` Empty = reviewers see no profile attributes in the AppUser tooltip.`,
 			},
 			"scheduled_start_date": schema.StringAttribute{
 				Computed: true,

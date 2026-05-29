@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.887.0
+// Generated from OpenAPI doc version 0.1.0-alpha and generator version 2.882.0
 
 import (
 	"context"
@@ -83,6 +83,7 @@ type ConductoroneAPI struct {
 	RequestCatalogManagement             *RequestCatalogManagement
 	ConnectorCatalog                     *ConnectorCatalog
 	Decoy                                *Decoy
+	DecoySearch                          *DecoySearch
 	Directory                            *Directory
 	Finding                              *Finding
 	FindingRoutingRule                   *FindingRoutingRule
@@ -236,9 +237,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.4.1",
+		SDKVersion: "1.4.2",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.4.1 2.887.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.4.2 2.882.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{
@@ -296,6 +297,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.RequestCatalogManagement = newRequestCatalogManagement(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConnectorCatalog = newConnectorCatalog(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Decoy = newDecoy(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.DecoySearch = newDecoySearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Directory = newDirectory(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Finding = newFinding(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FindingRoutingRule = newFindingRoutingRule(sdk, sdk.sdkConfiguration, sdk.hooks)

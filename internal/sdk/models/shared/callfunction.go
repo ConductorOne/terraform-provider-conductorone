@@ -4,7 +4,10 @@ package shared
 
 // The CallFunction message.
 type CallFunction struct {
-	// The args field.
+	// Arg name → CEL expression. Each value is evaluated against the
+	//  workflow execution context (subject + completed step outputs) and the
+	//  resolved values are passed to the function as JSON. Plain literals
+	//  must be quoted as CEL strings (e.g. "'static-value'").
 	Args map[string]string `json:"args,omitempty"`
 	// The functionId field.
 	FunctionID *string `json:"functionId,omitempty"`

@@ -171,6 +171,9 @@ type AccessReviewTemplate struct {
 	RecurrenceRule *RecurrenceRule `json:"recurrenceRule,omitempty"`
 	// The reviewInstructions field.
 	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	// Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+	//  Empty = reviewers see no profile attributes in the AppUser tooltip.
+	ReviewerAttributeConfig *ReviewerAttributeConfig `json:"reviewerAttributeConfig,omitempty"`
 	// The AccessReviewScopeV2 message.
 	//
 	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
@@ -390,6 +393,13 @@ func (a *AccessReviewTemplate) GetReviewInstructions() *string {
 	return a.ReviewInstructions
 }
 
+func (a *AccessReviewTemplate) GetReviewerAttributeConfig() *ReviewerAttributeConfig {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewerAttributeConfig
+}
+
 func (a *AccessReviewTemplate) GetAccessReviewScopeV2() *AccessReviewScopeV2 {
 	if a == nil {
 		return nil
@@ -493,6 +503,9 @@ type AccessReviewTemplateInput struct {
 	RecurrenceRule *RecurrenceRule `json:"recurrenceRule,omitempty"`
 	// The reviewInstructions field.
 	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	// Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+	//  Empty = reviewers see no profile attributes in the AppUser tooltip.
+	ReviewerAttributeConfig *ReviewerAttributeConfig `json:"reviewerAttributeConfig,omitempty"`
 	// The AccessReviewScopeV2 message.
 	//
 	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
@@ -695,6 +708,13 @@ func (a *AccessReviewTemplateInput) GetReviewInstructions() *string {
 		return nil
 	}
 	return a.ReviewInstructions
+}
+
+func (a *AccessReviewTemplateInput) GetReviewerAttributeConfig() *ReviewerAttributeConfig {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewerAttributeConfig
 }
 
 func (a *AccessReviewTemplateInput) GetAccessReviewScopeV2() *AccessReviewScopeV2 {

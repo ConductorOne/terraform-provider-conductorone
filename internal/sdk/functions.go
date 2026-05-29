@@ -161,7 +161,15 @@ func (s *Functions) ListFunctions(ctx context.Context, opts ...operations.Option
 }
 
 // CreateFunction - Create Function
-// CreateFunction registers a new serverless function and creates its initial code commit.
+// CreateFunction registers a new serverless function and creates its
+//
+//	initial code commit. Functions run as TypeScript modules in a sandboxed
+//	runtime; see initial_content for the entry-file signature and SDK import.
+//
+//	The new function is unpublished. To make the commit the default
+//	runnable version (and have the function appear as runnable in the
+//	Functions UI), call UpdateFunction with function.published_commit_id
+//	set and update_mask=["published_commit_id"].
 func (s *Functions) CreateFunction(ctx context.Context, request *shared.FunctionsServiceCreateFunctionRequest, opts ...operations.Option) (*operations.C1APIFunctionsV1FunctionsServiceCreateFunctionResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1778,7 +1786,10 @@ func (s *Functions) GetFunction(ctx context.Context, request operations.C1APIFun
 }
 
 // UpdateFunction - Update Function
-// Update updates an existing function's metadata
+// Update an existing function's metadata. Also the publish path: set
+//
+//	function.published_commit_id and include "published_commit_id" in
+//	update_mask to make a commit the default runnable version.
 func (s *Functions) UpdateFunction(ctx context.Context, request *shared.FunctionsServiceUpdateFunctionRequest, opts ...operations.Option) (*operations.C1APIFunctionsV1FunctionsServiceUpdateFunctionResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

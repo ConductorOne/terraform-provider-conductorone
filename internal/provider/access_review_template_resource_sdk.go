@@ -384,6 +384,25 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 			r.RecurrenceRule.Occurrences = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.RecurrenceRule.Occurrences))
 			r.RecurrenceRule.StartDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.RecurrenceRule.StartDate))
 		}
+		if resp.ReviewerAttributeConfig == nil {
+			r.ReviewerAttributeConfig = nil
+		} else {
+			r.ReviewerAttributeConfig = &tfTypes.ReviewerAttributeConfig{}
+			if resp.ReviewerAttributeConfig.Bindings != nil {
+				r.ReviewerAttributeConfig.Bindings = []tfTypes.ReviewerAttributeBinding{}
+
+				for _, bindingsItem := range resp.ReviewerAttributeConfig.Bindings {
+					var bindings tfTypes.ReviewerAttributeBinding
+
+					bindings.AppID = types.StringPointerValue(bindingsItem.AppID)
+					bindings.AttributeKey = types.StringPointerValue(bindingsItem.AttributeKey)
+
+					r.ReviewerAttributeConfig.Bindings = append(r.ReviewerAttributeConfig.Bindings, bindings)
+				}
+			} else {
+				r.ReviewerAttributeConfig.Bindings = nil
+			}
+		}
 		r.ReviewInstructions = types.StringPointerValue(resp.ReviewInstructions)
 		if resp.ReviewSignatureConfig == nil {
 			r.ReviewSignatureConfig = nil
@@ -773,6 +792,34 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 	} else {
 		reviewInstructions = nil
 	}
+	var reviewerAttributeConfig *shared.ReviewerAttributeConfig
+	if r.ReviewerAttributeConfig != nil {
+		var bindings []shared.ReviewerAttributeBinding
+		if r.ReviewerAttributeConfig.Bindings != nil {
+			bindings = make([]shared.ReviewerAttributeBinding, 0, len(r.ReviewerAttributeConfig.Bindings))
+			for bindingsIndex := range r.ReviewerAttributeConfig.Bindings {
+				appID := new(string)
+				if !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.IsUnknown() && !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.IsNull() {
+					*appID = r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.ValueString()
+				} else {
+					appID = nil
+				}
+				attributeKey := new(string)
+				if !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.IsUnknown() && !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.IsNull() {
+					*attributeKey = r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.ValueString()
+				} else {
+					attributeKey = nil
+				}
+				bindings = append(bindings, shared.ReviewerAttributeBinding{
+					AppID:        appID,
+					AttributeKey: attributeKey,
+				})
+			}
+		}
+		reviewerAttributeConfig = &shared.ReviewerAttributeConfig{
+			Bindings: bindings,
+		}
+	}
 	var accessReviewScopeV2 *shared.AccessReviewScopeV2
 	if r.AccessReviewScopeV2 != nil {
 		var celExpressionScope *shared.CelExpressionScope
@@ -999,11 +1046,11 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 			if r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef != nil {
 				groupAppEntitlementsRef = make([]shared.AppEntitlementRef, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef))
 				for groupAppEntitlementsRefIndex := range r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef {
-					appID := new(string)
+					appId1 := new(string)
 					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsNull() {
-						*appID = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
+						*appId1 = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
 					} else {
-						appID = nil
+						appId1 = nil
 					}
 					id1 := new(string)
 					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsNull() {
@@ -1012,7 +1059,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 						id1 = nil
 					}
 					groupAppEntitlementsRef = append(groupAppEntitlementsRef, shared.AppEntitlementRef{
-						AppID: appID,
+						AppID: appId1,
 						ID:    id1,
 					})
 				}
@@ -1165,6 +1212,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		PolicyID:                       policyID,
 		RecurrenceRule:                 recurrenceRule,
 		ReviewInstructions:             reviewInstructions,
+		ReviewerAttributeConfig:        reviewerAttributeConfig,
 		AccessReviewScopeV2:            accessReviewScopeV2,
 		ScopeType:                      scopeType,
 		ReviewSignatureConfig:          reviewSignatureConfig,
@@ -1348,6 +1396,34 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		*reviewInstructions = r.ReviewInstructions.ValueString()
 	} else {
 		reviewInstructions = nil
+	}
+	var reviewerAttributeConfig *shared.ReviewerAttributeConfig
+	if r.ReviewerAttributeConfig != nil {
+		var bindings []shared.ReviewerAttributeBinding
+		if r.ReviewerAttributeConfig.Bindings != nil {
+			bindings = make([]shared.ReviewerAttributeBinding, 0, len(r.ReviewerAttributeConfig.Bindings))
+			for bindingsIndex := range r.ReviewerAttributeConfig.Bindings {
+				appID := new(string)
+				if !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.IsUnknown() && !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.IsNull() {
+					*appID = r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.ValueString()
+				} else {
+					appID = nil
+				}
+				attributeKey := new(string)
+				if !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.IsUnknown() && !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.IsNull() {
+					*attributeKey = r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.ValueString()
+				} else {
+					attributeKey = nil
+				}
+				bindings = append(bindings, shared.ReviewerAttributeBinding{
+					AppID:        appID,
+					AttributeKey: attributeKey,
+				})
+			}
+		}
+		reviewerAttributeConfig = &shared.ReviewerAttributeConfig{
+			Bindings: bindings,
+		}
 	}
 	var accessReviewScopeV2 *shared.AccessReviewScopeV2
 	if r.AccessReviewScopeV2 != nil {
@@ -1575,11 +1651,11 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 			if r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef != nil {
 				groupAppEntitlementsRef = make([]shared.AppEntitlementRef, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef))
 				for groupAppEntitlementsRefIndex := range r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef {
-					appID := new(string)
+					appId1 := new(string)
 					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsNull() {
-						*appID = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
+						*appId1 = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
 					} else {
-						appID = nil
+						appId1 = nil
 					}
 					id := new(string)
 					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsNull() {
@@ -1588,7 +1664,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 						id = nil
 					}
 					groupAppEntitlementsRef = append(groupAppEntitlementsRef, shared.AppEntitlementRef{
-						AppID: appID,
+						AppID: appId1,
 						ID:    id,
 					})
 				}
@@ -1719,6 +1795,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		PolicyID:                       policyID,
 		RecurrenceRule:                 recurrenceRule,
 		ReviewInstructions:             reviewInstructions,
+		ReviewerAttributeConfig:        reviewerAttributeConfig,
 		AccessReviewScopeV2:            accessReviewScopeV2,
 		ScopeType:                      scopeType,
 		ReviewSignatureConfig:          reviewSignatureConfig,

@@ -152,6 +152,9 @@ type AccessReviewTemplateServiceCreateRequest struct {
 	RecurrenceRule *RecurrenceRule `json:"recurrenceRule,omitempty"`
 	// The reviewInstructions field.
 	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	// Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+	//  Empty = reviewers see no profile attributes in the AppUser tooltip.
+	ReviewerAttributeConfig *ReviewerAttributeConfig `json:"reviewerAttributeConfig,omitempty"`
 	// The AccessReviewScopeV2 message.
 	//
 	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
@@ -320,6 +323,13 @@ func (a *AccessReviewTemplateServiceCreateRequest) GetReviewInstructions() *stri
 		return nil
 	}
 	return a.ReviewInstructions
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetReviewerAttributeConfig() *ReviewerAttributeConfig {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewerAttributeConfig
 }
 
 func (a *AccessReviewTemplateServiceCreateRequest) GetAccessReviewScopeV2() *AccessReviewScopeV2 {

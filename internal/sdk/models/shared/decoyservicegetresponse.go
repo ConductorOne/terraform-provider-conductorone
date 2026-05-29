@@ -4,9 +4,8 @@ package shared
 
 // The DecoyServiceGetResponse message.
 type DecoyServiceGetResponse struct {
-	// Decoy is the public projection of a planted honey-credential. Read-only
-	//  surface; the variant-specific back-references live in c1models and are
-	//  not exposed here.
+	// Decoy is the read projection of a planted honey-credential. All
+	//  fields except annotations are server-managed.
 	Decoy *Decoy `json:"decoy,omitempty"`
 }
 

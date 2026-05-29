@@ -92,9 +92,11 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 				Description: `The functionId field.`,
 			},
 			"function_type": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The type of function to create, controlling its execution environment and capabilities. possible known values include one of ["FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE"]`,
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `The type of function to create. Use FUNCTION_TYPE_ANY for user functions —` + "\n" +
+					` that is the type the Functions UI lists. Do not use any other value.` + "\n" +
+					`possible known values include one of ["FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE"]`,
 			},
 			"functions_service_delete_function_request": schema.SingleNestedAttribute{
 				Optional:    true,
@@ -114,7 +116,20 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 					mapplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				ElementType: types.StringType,
-				Description: `Map of filename to file content for the initial code commit. Requires replacement if changed.`,
+				MarkdownDescription: `File map for the initial code commit. Keys are file paths in the` + "\n" +
+					` function root (e.g. "main.ts", "main.test.ts"); values are file` + "\n" +
+					` contents as bytes.` + "\n" +
+					`` + "\n" +
+					` Runtime: TypeScript. The entry file MUST be "main.ts" exporting a` + "\n" +
+					` default async handler:` + "\n" +
+					`` + "\n" +
+					`   import { JSONObject } from "@c1/functions-sdk";` + "\n" +
+					`   export default async function main(input: JSONObject): Promise<JSONObject> {` + "\n" +
+					`     return { ok: true, echo: input };` + "\n" +
+					`   }` + "\n" +
+					`` + "\n" +
+					` The handler MUST return a JSON object — not a primitive, array, or null.` + "\n" +
+					`Requires replacement if changed.`,
 			},
 			"is_draft": schema.BoolAttribute{
 				Computed:    true,

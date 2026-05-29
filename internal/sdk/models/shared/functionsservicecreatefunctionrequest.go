@@ -2,7 +2,9 @@
 
 package shared
 
-// FunctionsServiceCreateFunctionRequestFunctionType - The type of function to create, controlling its execution environment and capabilities.
+// FunctionsServiceCreateFunctionRequestFunctionType - The type of function to create. Use FUNCTION_TYPE_ANY for user functions —
+//
+//	that is the type the Functions UI lists. Do not use any other value.
 type FunctionsServiceCreateFunctionRequestFunctionType string
 
 const (
@@ -34,9 +36,22 @@ type FunctionsServiceCreateFunctionRequest struct {
 	Description *string `json:"description,omitempty"`
 	// The human-readable name for the function.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The type of function to create, controlling its execution environment and capabilities.
+	// The type of function to create. Use FUNCTION_TYPE_ANY for user functions —
+	//  that is the type the Functions UI lists. Do not use any other value.
 	FunctionType *FunctionsServiceCreateFunctionRequestFunctionType `json:"functionType,omitempty"`
-	// Map of filename to file content for the initial code commit.
+	// File map for the initial code commit. Keys are file paths in the
+	//  function root (e.g. "main.ts", "main.test.ts"); values are file
+	//  contents as bytes.
+	//
+	//  Runtime: TypeScript. The entry file MUST be "main.ts" exporting a
+	//  default async handler:
+	//
+	//    import { JSONObject } from "@c1/functions-sdk";
+	//    export default async function main(input: JSONObject): Promise<JSONObject> {
+	//      return { ok: true, echo: input };
+	//    }
+	//
+	//  The handler MUST return a JSON object — not a primitive, array, or null.
 	InitialContent map[string]string `json:"initialContent,omitempty"`
 }
 

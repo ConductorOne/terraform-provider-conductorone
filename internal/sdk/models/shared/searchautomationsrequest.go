@@ -56,20 +56,20 @@ func (e *SortField) IsExact() bool {
 	return false
 }
 
-type Statuses string
+type SearchAutomationsRequestStatuses string
 
 const (
-	StatusesAutomationStatusFilterUnspecified Statuses = "AUTOMATION_STATUS_FILTER_UNSPECIFIED"
-	StatusesAutomationStatusFilterOn          Statuses = "AUTOMATION_STATUS_FILTER_ON"
-	StatusesAutomationStatusFilterOff         Statuses = "AUTOMATION_STATUS_FILTER_OFF"
+	SearchAutomationsRequestStatusesAutomationStatusFilterUnspecified SearchAutomationsRequestStatuses = "AUTOMATION_STATUS_FILTER_UNSPECIFIED"
+	SearchAutomationsRequestStatusesAutomationStatusFilterOn          SearchAutomationsRequestStatuses = "AUTOMATION_STATUS_FILTER_ON"
+	SearchAutomationsRequestStatusesAutomationStatusFilterOff         SearchAutomationsRequestStatuses = "AUTOMATION_STATUS_FILTER_OFF"
 )
 
-func (e Statuses) ToPointer() *Statuses {
+func (e SearchAutomationsRequestStatuses) ToPointer() *SearchAutomationsRequestStatuses {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Statuses) IsExact() bool {
+func (e *SearchAutomationsRequestStatuses) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "AUTOMATION_STATUS_FILTER_UNSPECIFIED", "AUTOMATION_STATUS_FILTER_ON", "AUTOMATION_STATUS_FILTER_OFF":
@@ -140,7 +140,7 @@ type SearchAutomationsRequest struct {
 	SortField *SortField `json:"sortField,omitempty"`
 	// Filter results by automation status. Empty or containing both ON and OFF
 	//  applies no status filter.
-	Statuses []Statuses `json:"statuses,omitempty"`
+	Statuses []SearchAutomationsRequestStatuses `json:"statuses,omitempty"`
 	// Filter results to automations with any of the specified trigger types.
 	TriggerTypes []TriggerTypes `json:"triggerTypes,omitempty"`
 }
@@ -208,7 +208,7 @@ func (s *SearchAutomationsRequest) GetSortField() *SortField {
 	return s.SortField
 }
 
-func (s *SearchAutomationsRequest) GetStatuses() []Statuses {
+func (s *SearchAutomationsRequest) GetStatuses() []SearchAutomationsRequestStatuses {
 	if s == nil {
 		return nil
 	}

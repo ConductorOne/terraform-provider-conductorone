@@ -161,7 +161,10 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
-									Description: `The args field.`,
+									MarkdownDescription: `Arg name → CEL expression. Each value is evaluated against the` + "\n" +
+										` workflow execution context (subject + completed step outputs) and the` + "\n" +
+										` resolved values are passed to the function as JSON. Plain literals` + "\n" +
+										` must be quoted as CEL strings (e.g. "'static-value'").`,
 								},
 								"function_id": schema.StringAttribute{
 									Computed:    true,
@@ -1627,7 +1630,10 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
-									Description: `The args field.`,
+									MarkdownDescription: `Arg name → CEL expression. Each value is evaluated against the` + "\n" +
+										` workflow execution context (subject + completed step outputs) and the` + "\n" +
+										` resolved values are passed to the function as JSON. Plain literals` + "\n" +
+										` must be quoted as CEL strings (e.g. "'static-value'").`,
 								},
 								"function_id": schema.StringAttribute{
 									Computed:    true,

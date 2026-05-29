@@ -52,6 +52,7 @@ type AccessReviewTemplateDataSourceModel struct {
 	Occurrences                    types.Int32                         `tfsdk:"occurrences"`
 	PolicyID                       types.String                        `tfsdk:"policy_id"`
 	RecurrenceRule                 *tfTypes.RecurrenceRule             `tfsdk:"recurrence_rule"`
+	ReviewerAttributeConfig        *tfTypes.ReviewerAttributeConfig    `tfsdk:"reviewer_attribute_config"`
 	ReviewInstructions             types.String                        `tfsdk:"review_instructions"`
 	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig      `tfsdk:"review_signature_config"`
 	ScopeType                      types.String                        `tfsdk:"scope_type"`
@@ -551,6 +552,29 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 					},
 				},
 				Description: `Signature configuration for access review submissions`,
+			},
+			"reviewer_attribute_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"bindings": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The appId field.`,
+								},
+								"attribute_key": schema.StringAttribute{
+									Computed:    true,
+									Description: `The attributeKey field.`,
+								},
+							},
+						},
+						Description: `The bindings field.`,
+					},
+				},
+				MarkdownDescription: `Allowlist of AppUser.profile keys visible to reviewers, scoped per app.` + "\n" +
+					` Empty = reviewers see no profile attributes in the AppUser tooltip.`,
 			},
 			"scope_type": schema.StringAttribute{
 				Computed:    true,
