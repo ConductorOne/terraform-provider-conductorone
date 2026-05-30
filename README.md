@@ -160,7 +160,7 @@ Your `<PATH>` may vary depending on how your Go environment variables are config
 
 ## Versions with breaking changes
 ### [v1.0.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v1.0.0)
-- This version introduces a breaking change to the `request_catalog` resource and datasource. The `request_catalog` resource and datasource are now the `access_profile` resource and datasource. 
+- This Version introduces a breaking change to the `request_catalog` resource and datasource. The `request_catalog` resource and datasource are now the `access_profile` resource and datasource. 
 - There are also breaking changes to many of the datasources, as we switched to using search endpoints to give more options on how to filter the result. This may require you to update your Terraform configurations to use the proper fields for the datasources as some of the field names have changed. 
 
 ### [v0.4.0](https://github.com/ConductorOne/terraform-provider-conductorone/releases/tag/v0.4.0)
@@ -214,7 +214,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.5.0"
+      version = "1.4.1"
     }
   }
 }
