@@ -1,0 +1,105 @@
+From: Brandon High <759848+highb@users.noreply.github.com>
+Date: Mon Jun 01 2026
+Subject: [PATCH] request_schema: reach steady state on form fields (IGA-743)
+
+Speakeasy generates the request_schema `fields` list with each field's
+`name` as a plain Optional+Computed string. The server ignores the
+configured name and regenerates it as `<sanitized display_name>_<0-based
+occurrence index>` on every write (pkg/models/request_schema/create.go
+ValidateForm), so a configured "field1" perpetually diffs against the
+stored "Field_One_0" and churns the whole fields list on every plan.
+
+Two further Speakeasy gaps keep the resource from ever reaching "No
+changes" even once the name is stable:
+  - the field's nested Optional+Computed sub-attributes (bool_field,
+    string_field and its children, etc.) replan as unknown whenever any
+    sibling changes, so they never settle; and
+  - created_at, field_groups, field_relationships and
+    justification_visibility lack the SuppressDiff modifier Speakeasy
+    only attaches to `id`, so each replans as "known after apply".
+
+Fix:
+  - attach requestschemaplanmodifier.NormalizeFields() to `fields`. It
+    keeps the server-normalized name from state when display_name still
+    normalizes to it (and leaves the configured value otherwise, since
+    Terraform forbids planning an Optional+Computed value that matches
+    neither config nor prior state), and copies prior-state values into
+    planned-unknown computed leaves across the element tree.
+  - attach the existing speakeasy SuppressDiff modifier to created_at,
+    field_groups, field_relationships and justification_visibility, the
+    same treatment `id` already receives.
+
+The NormalizeFields modifier is hand-written in
+internal/planmodifiers/requestschemaplanmodifier/ (outside the
+Speakeasy-generated planmodifier packages) so regen does not wipe it;
+this patch only reapplies the generated-schema wiring.
+
+Refs: IGA-743
+---
+diff --git a/internal/provider/request_schema_resource.go b/internal/provider/request_schema_resource.go
+index d704eb02..b6dc2719 100644
+--- a/internal/provider/request_schema_resource.go
++++ b/internal/provider/request_schema_resource.go
+@@ -5,6 +5,8 @@ package provider
+ import (
+ 	"context"
+ 	"fmt"
++	speakeasy_listplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/listplanmodifier"
++	"github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/requestschemaplanmodifier"
+ 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
+ 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
+ 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+@@ -55,6 +57,9 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
+ 		Attributes: map[string]schema.Attribute{
+ 			"created_at": schema.StringAttribute{
+ 				Computed: true,
++				PlanModifiers: []planmodifier.String{
++					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
++				},
+ 			},
+ 			"description": schema.StringAttribute{
+ 				Computed:    true,
+@@ -64,6 +69,9 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
+ 			"field_groups": schema.ListNestedAttribute{
+ 				Computed: true,
+ 				Optional: true,
++				PlanModifiers: []planmodifier.List{
++					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
++				},
+ 				NestedObject: schema.NestedAttributeObject{
+ 					Validators: []validator.Object{
+ 						speakeasy_objectvalidators.NotNull(),
+@@ -102,6 +110,9 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
+ 			"field_relationships": schema.ListNestedAttribute{
+ 				Computed: true,
+ 				Optional: true,
++				PlanModifiers: []planmodifier.List{
++					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
++				},
+ 				NestedObject: schema.NestedAttributeObject{
+ 					Validators: []validator.Object{
+ 						speakeasy_objectvalidators.NotNull(),
+@@ -149,6 +160,9 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
+ 			"fields": schema.ListNestedAttribute{
+ 				Computed: true,
+ 				Optional: true,
++				PlanModifiers: []planmodifier.List{
++					requestschemaplanmodifier.NormalizeFields(),
++				},
+ 				NestedObject: schema.NestedAttributeObject{
+ 					Validators: []validator.Object{
+ 						speakeasy_objectvalidators.NotNull(),
+@@ -680,8 +694,11 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
+ 				Description: `The unique identifier of this request schema.`,
+ 			},
+ 			"justification_visibility": schema.StringAttribute{
+-				Computed:    true,
+-				Optional:    true,
++				Computed: true,
++				Optional: true,
++				PlanModifiers: []planmodifier.String{
++					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
++				},
+ 				Description: `Controls whether the justification field is shown or hidden on the request form. possible known values include one of ["JUSTIFICATION_VISIBILITY_UNSPECIFIED", "JUSTIFICATION_VISIBILITY_SHOW", "JUSTIFICATION_VISIBILITY_HIDE"]`,
+ 			},
+ 			"name": schema.StringAttribute{

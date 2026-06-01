@@ -200,3 +200,39 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 		}
 	}
 }
+
+// TestRequestSchemaSteadyState verifies that patch 03
+// (request-schema-steady-state) stays applied: the request_schema resource
+// schema must wire the plan modifiers that let a schema with form fields reach
+// "No changes" after apply.
+//
+// Regression: the server regenerates each field's name as
+// <sanitized display_name>_<idx>, and several Computed attributes lack a
+// SuppressDiff modifier, so an unchanged schema churns the fields list and
+// top-level computed attributes forever (IGA-743). If regen drops this wiring
+// the perpetual diff returns.
+func TestRequestSchemaSteadyState(t *testing.T) {
+	data, err := os.ReadFile("request_schema_resource.go")
+	if err != nil {
+		t.Fatalf("reading request_schema_resource.go: %v", err)
+	}
+	content := string(data)
+
+	markers := map[string]string{
+		"requestschemaplanmodifier.NormalizeFields()": "fields list normalizes server-derived names and preserves computed sub-attributes",
+		`speakeasy_listplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/listplanmodifier"`: "listplanmodifier import for SuppressDiff on computed lists",
+	}
+	for marker, what := range markers {
+		if !strings.Contains(content, marker) {
+			t.Errorf("request_schema steady-state wiring missing (%s): %q not found. Patch 03 was likely wiped by regen; reapply patches/03-request-schema-steady-state.patch.", what, marker)
+		}
+	}
+
+	// created_at, field_groups, field_relationships and justification_visibility
+	// each need a SuppressDiff modifier or they replan as "known after apply".
+	suppressCount := strings.Count(content, "SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress)") +
+		strings.Count(content, "SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress)")
+	if suppressCount < 4 {
+		t.Errorf("expected at least 4 SuppressDiff modifiers (created_at, field_groups, field_relationships, justification_visibility plus id), found %d; patch 03 may be partially applied", suppressCount)
+	}
+}
