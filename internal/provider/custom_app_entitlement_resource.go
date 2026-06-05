@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
@@ -468,10 +467,8 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"duration_unset": schema.SingleNestedAttribute{
+				Computed: true,
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					speakeasy_objectplanmodifier.UseConfigValue(),
-				},
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("duration_grant"),
