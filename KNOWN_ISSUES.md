@@ -91,6 +91,38 @@ Filed upstream as [speakeasy-api/speakeasy#2031](https://github.com/speakeasy-ap
 
 We confirmed `terraform.respectRequiredFields: true` in `gen.yaml` does NOT fix this — that flag improves nullable handling for ordinary nested struct fields but does not affect the flatten-promotion case. Documented in the upstream issue.
 
+## Optional scalar fields drift `false`/`""` → `null` on refresh — STILL PRESENT
+
+### Summary
+
+Speakeasy's `RefreshFrom*` converters emit `types.BoolPointerValue` / `types.StringPointerValue` for optional scalar fields. The C1 API is protobuf-backed and omits zero-valued optional fields on the wire, so on refresh those pointers arrive `nil` and the converters write `null` into state — while the value `Create`/`Update` persisted (and which prior state holds) is the Go zero value (`false` / `""`). terraform-plugin-framework then reports a perpetual `false → null` (or `"" → null`) diff on every `plan`, with no config change.
+
+Observed on `conductorone_policy` (~246 affected resources; Klaviyo, Pylon #10854) across the approval-block fields: `allow_delegation`, `allow_reassignment`, `assigned`, `require_approval_reason`, `require_denial_reason`, `require_reassignment_reason`, `escalation_enabled`, `requires_step_up_provider_id`, and the per-approver `allow_self_approval` / `require_distinct_approvers` / `is_group_fallback_enabled` / `fallback` leaves. These schema attributes are all `Computed: true, Optional: true`, so a refresh that writes a consistent zero value (not `null`) is sufficient to close the loop — no plan-only/`UseConfigValue` change is required for these scalars (that is a separate regression affecting nested plan-only *objects* like `provision_policy`). Tracked as IGA-1899 (and its duplicate IGA-1898).
+
+### Affected Files (current count: 2)
+
+- `internal/provider/policy_resource_sdk.go`
+- `internal/provider/policy_data_source_sdk.go`
+
+### The Patch
+
+`patches/03-policy-null-zero-value-drift.patch` rewrites every optional-scalar conversion in the two files from `types.BoolPointerValue` / `types.StringPointerValue` to the null-coalescing helpers in the non-generated `internal/provider/typeconvert` package:
+
+```go
+steps.Approval.AllowDelegation = typeconvert.BoolPointerOrFalse(stepsItem.Approval.AllowDelegation)
+steps.Approval.RequiresStepUpProviderID = typeconvert.StringPointerOrEmpty(stepsItem.Approval.RequiresStepUpProviderID)
+```
+
+`BoolPointerOrFalse(nil)` returns `types.BoolValue(false)` and `StringPointerOrEmpty(nil)` returns `types.StringValue("")` instead of the null the pointer-value constructors emit. Genuinely-nullable strings (free-form IDs, descriptions, messages) keep `types.StringPointerValue`; only `requires_step_up_provider_id` is coalesced, matching the ticket's field list. List-typed `allowed_reassignees` is unaffected — its `nil → nil` handling is already consistent.
+
+### Tripwire
+
+`TestPolicySDKUsesBoolPointerOrFalse` in `internal/provider/speakeasy_regen_test.go` fails if a regen reintroduces `types.BoolPointerValue` in either file, or drops the `typeconvert.BoolPointerOrFalse` / `typeconvert.StringPointerOrEmpty` calls. Catch it before merging the regen PR, then re-run `make apply-patches`.
+
+### Status
+
+Same upstream root cause as the broader "protobuf omits zero values, generator writes null" family. The SDK-layer coalescing is a local fix; the `TestAccPolicyResource` / `TestAccPolicyDataSource` acceptance tests remain skipped pending the separate nested plan-only-object propagation work, but unit-level `typeconvert` tests plus the tripwire provide regression coverage.
+
 ## `conductorone_app_entitlement` resource is hand-written — schema and SDK can drift
 
 ### Summary

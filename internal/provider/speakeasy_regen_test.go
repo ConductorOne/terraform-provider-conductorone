@@ -223,5 +223,12 @@ func TestPolicySDKUsesBoolPointerOrFalse(t *testing.T) {
 		if !strings.Contains(content, "typeconvert.BoolPointerOrFalse(") {
 			t.Errorf("%s: does not use typeconvert.BoolPointerOrFalse — approval-block bools will drift false→null on every refresh", f)
 		}
+		// RequiresStepUpProviderID is the lone optional string with the same
+		// zero-value/null drift; guard its coalescing helper too. We can't
+		// assert absence of types.StringPointerValue here — it's correct for
+		// genuinely-nullable IDs/paths in these files.
+		if !strings.Contains(content, "typeconvert.StringPointerOrEmpty(") {
+			t.Errorf("%s: does not use typeconvert.StringPointerOrEmpty — requires_step_up_provider_id will drift \"\"→null on every refresh", f)
+		}
 	}
 }
