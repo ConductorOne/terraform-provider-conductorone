@@ -39,6 +39,22 @@ Pre-existing latent constructors that predate v1.0.40 are out of scope for any s
 
 For history: late 2025 versions silently dropped `Computed: true` on fields tagged `x-speakeasy-terraform-plan-only`, producing perpetual diffs on resources like `conductorone_custom_app_entitlement` (visible as `provision_policy`, `duration_grant`, `duration_unset` flapping on every refresh). Robert Chiniquy hit this in Dec 2025, defensively pinned 1.658.1, and the pin held until 1.761.10 in PR #199 (2026-04-30). The pin was applied 32 days before the upstream fix landed; nobody re-tested after the fix shipped, so the pin outlived the bug by ~5 months.
 
+## `conductorone_policy` approval bools drift `false → null` — FIXED (do not re-add object-level plan-only)
+
+### Status
+
+**Fixed** in this repo via `overlay.yaml` (IGA-1898 / IGA-1899). Do not mark the `c1.api.policy.v1.Approval` schema `x-speakeasy-terraform-plan-only: true`.
+
+### Background
+
+An approval step that leaves its optional scalar bools unset (`allow_delegation`, `allow_reassignment`, `assigned`, `escalation_enabled`, `require_approval_reason`, `require_denial_reason`, `require_reassignment_reason`, and the per-approver `allow_self_approval` / `require_distinct_approvers` / `is_group_fallback_enabled` / `fallback`, plus the optional list fields) showed a perpetual `false → null` diff on every `terraform plan`.
+
+Root cause is **plan-side, not read-side**. The C1 API marshals proto3 with `EmitUnpopulated=true`, so these scalars always come back as literal `false` — refresh writes `false` into state correctly. The drift came from object-level plan-only (`UseConfigValue`) on the parent `Approval` object: it stamped the *config* object onto the plan, and config-unset leaves are `null`, so the plan wanted `null` while state held `false`. A read-path coalesce (`BoolPointerOrFalse`) is a no-op for this because the API never omits the field.
+
+### Fix
+
+Do **not** put `x-speakeasy-terraform-plan-only` on `Approval`. Instead follow the same treatment already used for the `ProvisionPolicy` union: leave the parent object alone and set `x-speakeasy-param-computed: false` on each approver oneof member schema (`AgentApproval`, `ManagerApproval`, `AppGroupApproval`, `AppOwnerApproval`, `EntitlementOwnerApproval`, `ResourceOwnerApproval`, `SelfApproval`, `UserApproval`, `ExpressionApproval`, `WebhookApproval`). Unselected members then plan as `null` (config-driven), while a selected member's Computed scalar leaves retain the server's value — no cascade re-nulling them. `TestAccPolicyResource` (re-enabled) locks the apply→plan=no-diff invariant, including approver oneof switching.
+
 ## Speakeasy nullable-nested-struct flatten regression — STILL PRESENT
 
 ### Summary
