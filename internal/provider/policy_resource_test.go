@@ -6,16 +6,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
+// TestAccPolicyResource locks the IGA-1898/1899 invariant: an approval step
+// whose optional scalar bools are left unset must not perpetually diff
+// false → null. The two steps also exercise approver oneof switching
+// (app_owner_approval → manager_approval). terraform-plugin-testing runs an
+// implicit plan after each apply and fails the step on a non-empty plan, so a
+// re-introduction of the drift fails here. Was skipped while the parent
+// c1.api.policy.v1.Approval schema carried object-level plan-only
+// (UseConfigValue), which stamped config-null leaves back into the plan; the
+// fix drops that cascade and disables computed on the approver oneof members
+// (overlay.yaml), mirroring the existing ProvisionPolicy union treatment.
 func TestAccPolicyResource(t *testing.T) {
-	// Skipped pending upstream Speakeasy fix. Approval-block fields
-	// (allow_delegation, assigned, escalation_enabled, etc.) drift
-	// false → null on refresh because x-speakeasy-terraform-plan-only on
-	// the parent c1.api.policy.v1.Approval schema does not propagate the
-	// UseConfigValue plan modifier into nested leaf fields. Same root
-	// cause family as speakeasy-api/speakeasy#2031 (nullable nested
-	// flatten); separate upstream issue covering nested plan-only
-	// propagation pending.
-	t.Skip("upstream: plan-only annotation does not propagate to nested fields in Speakeasy 1.761.10")
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{

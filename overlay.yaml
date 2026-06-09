@@ -74,9 +74,14 @@ actions:
   - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlementAutomationRuleNone"]
     update:
       x-speakeasy-terraform-plan-only: true
-  - target: $["components"]["schemas"]["c1.api.policy.v1.Approval"]
-    update:
-      x-speakeasy-terraform-plan-only: true
+  # Approval: do NOT mark the whole object plan-only. Object-level plan-only
+  # (UseConfigValue) stamps the config object onto the plan, re-nulling the
+  # Computed+Optional scalar leaves (allowDelegation, escalationEnabled, …)
+  # that the API always returns as literal `false` — a perpetual `false -> null`
+  # diff (IGA-1898 / IGA-1899). Mirror the ProvisionPolicy union treatment
+  # below instead: leave the parent alone and disable computed on each approver
+  # oneof member so unselected members go null while a selected member's scalar
+  # leaves keep their server value.
   # ProvisionPolicy: keep Computed: true on the parent union so API-returned
   # defaults (unconfigured_provision) don't cause perpetual diffs. Instead,
   # disable computed on each individual union member below.
@@ -100,6 +105,41 @@ actions:
     update:
       x-speakeasy-param-computed: false
   - target: $["components"]["schemas"]["c1.api.policy.v1.WebhookProvision"]
+    update:
+      x-speakeasy-param-computed: false
+  # Approval typ-oneof members: disable computed on each so unselected members
+  # plan as null (config-driven) instead of retaining stale/computed state, and
+  # so the parent Approval object no longer needs object-level plan-only. A
+  # selected member's own scalar leaves stay Computed and keep their server
+  # value, eliminating the IGA-1898/1899 `false -> null` drift.
+  - target: $["components"]["schemas"]["c1.api.policy.v1.AgentApproval"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.AppGroupApproval"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.AppOwnerApproval"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.EntitlementOwnerApproval"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ExpressionApproval"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ManagerApproval"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.ResourceOwnerApproval"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.SelfApproval"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.UserApproval"]
+    update:
+      x-speakeasy-param-computed: false
+  - target: $["components"]["schemas"]["c1.api.policy.v1.WebhookApproval"]
     update:
       x-speakeasy-param-computed: false
   - target: $["components"]["schemas"]["c1.api.app.v1.App"]["properties"]["appOwners"]
