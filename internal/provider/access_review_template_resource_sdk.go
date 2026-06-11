@@ -1746,8 +1746,14 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceU
 		return nil, diags
 	}
 
+	updateMask := "accessReviewDuration,accuracyIssueAction,annotations,autoCloseCampaign,autoCloseDecision," +
+		"autoGenerateReport,autoStartCampaign,columnConfig,defaultView,description,displayName," +
+		"exemptCertifiedAccessConflicts,inclusionScope,isCampaignScheduleEnabled,nextScheduledCampaignAt," +
+		"notificationConfig,policyId,recurrenceRule,reviewInstructions,scope,scopeType,signatureConfig," +
+		"slackChannel,usePolicyOverride"
 	out := shared.AccessReviewTemplateServiceUpdateRequest{
 		AccessReviewTemplate: accessReviewTemplate,
+		UpdateMask:           &updateMask,
 	}
 
 	return &out, diags
