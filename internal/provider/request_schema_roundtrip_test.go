@@ -11,8 +11,8 @@ import (
 
 // TestRequestSchemaFormFieldRoundTrips exercises the full Terraform <-> API
 // conversion for every FormField union variant. For each case we build a
-// resource model, convert it to the shared API model (ToSharedForm), convert
-// the result back (RefreshFromSharedForm), and assert the field survives the
+// resource model, convert it to the shared API model (ToSharedRequestSchemaForm), convert
+// the result back (RefreshFromSharedRequestSchemaForm), and assert the field survives the
 // round-trip unchanged.
 //
 // This covers the IGA-743 customer repro (a bool_field with default_value), the
@@ -106,14 +106,14 @@ func TestRequestSchemaFormFieldRoundTrips(t *testing.T) {
 				Fields: []tfTypes.FormField{field},
 			}
 
-			apiForm, diags := in.ToSharedForm(ctx)
+			apiForm, diags := in.ToSharedRequestSchemaForm(ctx)
 			if diags.HasError() {
-				t.Fatalf("ToSharedForm: %v", diags)
+				t.Fatalf("ToSharedRequestSchemaForm: %v", diags)
 			}
 
 			out := &RequestSchemaResourceModel{}
-			if d := out.RefreshFromSharedForm(ctx, apiForm); d.HasError() {
-				t.Fatalf("RefreshFromSharedForm: %v", d)
+			if d := out.RefreshFromSharedRequestSchemaForm(ctx, apiForm); d.HasError() {
+				t.Fatalf("RefreshFromSharedRequestSchemaForm: %v", d)
 			}
 
 			if len(out.Fields) != 1 {

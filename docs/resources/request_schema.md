@@ -203,15 +203,62 @@ resource "conductorone_request_schema" "my_request_schema" {
 
 ### Optional
 
-- `description` (String) The description field.
-- `fields` (Attributes List) The fields field. (see [below for nested schema](#nestedatt--fields))
-- `name` (String) The name field.
+- `description` (String) An optional description of the request schema's purpose.
+- `field_groups` (Attributes List) Logical groupings of fields for display purposes. (see [below for nested schema](#nestedatt--field_groups))
+- `field_relationships` (Attributes List) Dependencies between fields that control conditional visibility or validation. (see [below for nested schema](#nestedatt--field_relationships))
+- `fields` (Attributes List) The form fields that users must fill out when requesting access. (see [below for nested schema](#nestedatt--fields))
+- `justification_visibility` (String) Controls whether the justification field is shown or hidden on the request form. possible known values include one of ["JUSTIFICATION_VISIBILITY_UNSPECIFIED", "JUSTIFICATION_VISIBILITY_SHOW", "JUSTIFICATION_VISIBILITY_HIDE"]
+- `name` (String) The human-readable name for the request schema.
 
 ### Read-Only
 
 - `created_at` (String)
-- `field_relationships` (Attributes List) The fieldRelationships field. (see [below for nested schema](#nestedatt--field_relationships))
-- `id` (String) The id field.
+- `id` (String) The unique identifier of this request schema.
+
+<a id="nestedatt--field_groups"></a>
+### Nested Schema for `field_groups`
+
+Optional:
+
+- `default` (Boolean) The default field.
+- `display_name` (String) The displayName field.
+- `fields` (List of String) The fields field.
+- `help_text` (String) The helpText field.
+- `name` (String) The name field.
+
+
+<a id="nestedatt--field_relationships"></a>
+### Nested Schema for `field_relationships`
+
+Optional:
+
+- `at_least_one` (Attributes) The AtLeastOne message. (see [below for nested schema](#nestedatt--field_relationships--at_least_one))
+- `dependent_on` (Attributes) DependentOn means the fields in field_names are only valid if all fields
+ in dependency_field_names are also present (see [below for nested schema](#nestedatt--field_relationships--dependent_on))
+- `field_names` (List of String) The names of the fields that share this relationship
+- `mutually_exclusive` (Attributes) The MutuallyExclusive message. (see [below for nested schema](#nestedatt--field_relationships--mutually_exclusive))
+- `required_together` (Attributes) The RequiredTogether message. (see [below for nested schema](#nestedatt--field_relationships--required_together))
+
+<a id="nestedatt--field_relationships--at_least_one"></a>
+### Nested Schema for `field_relationships.at_least_one`
+
+
+<a id="nestedatt--field_relationships--dependent_on"></a>
+### Nested Schema for `field_relationships.dependent_on`
+
+Optional:
+
+- `dependency_field_names` (List of String) The fields that must be present for the primary field_names to be valid
+
+
+<a id="nestedatt--field_relationships--mutually_exclusive"></a>
+### Nested Schema for `field_relationships.mutually_exclusive`
+
+
+<a id="nestedatt--field_relationships--required_together"></a>
+### Nested Schema for `field_relationships.required_together`
+
+
 
 <a id="nestedatt--fields"></a>
 ### Nested Schema for `fields`
@@ -374,7 +421,7 @@ Optional:
 Optional:
 
 - `options` (Attributes List) The options field. (see [below for nested schema](#nestedatt--fields--form_string_field--select_field--options))
-- `type` (String) The type field.
+- `type` (String) The type field. possible known values include one of ["SELECT_TYPE_UNSPECIFIED", "SELECT_TYPE_DROPDOWN", "SELECT_TYPE_RADIO", "SELECT_TYPE_BUTTONS"]
 
 <a id="nestedatt--fields--form_string_field--select_field--options"></a>
 ### Nested Schema for `fields.form_string_field.select_field.options`
@@ -470,7 +517,7 @@ See the documentation for `validate.StringRules` for more details.
 - `well_known_regex` (String) WellKnownRegex specifies a common well known pattern defined as a regex.
 This field is part of the `well_known` oneof.
 See the documentation for `validate.StringRules` for more details.
-must be one of ["UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE"]
+possible known values include one of ["UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE"]
 
 
 <a id="nestedatt--fields--form_string_field--text_field"></a>
@@ -574,26 +621,3 @@ Optional:
 Optional:
 
 - `input_transformation_cel` (String) The inputTransformationCel field.
-
-
-
-<a id="nestedatt--field_relationships"></a>
-### Nested Schema for `field_relationships`
-
-Read-Only:
-
-- `at_least_one` (Attributes) The AtLeastOne message. (see [below for nested schema](#nestedatt--field_relationships--at_least_one))
-- `field_names` (List of String) The names of the fields that share this relationship
-- `mutually_exclusive` (Attributes) The MutuallyExclusive message. (see [below for nested schema](#nestedatt--field_relationships--mutually_exclusive))
-- `required_together` (Attributes) The RequiredTogether message. (see [below for nested schema](#nestedatt--field_relationships--required_together))
-
-<a id="nestedatt--field_relationships--at_least_one"></a>
-### Nested Schema for `field_relationships.at_least_one`
-
-
-<a id="nestedatt--field_relationships--mutually_exclusive"></a>
-### Nested Schema for `field_relationships.mutually_exclusive`
-
-
-<a id="nestedatt--field_relationships--required_together"></a>
-### Nested Schema for `field_relationships.required_together`

@@ -246,7 +246,7 @@ trackedFiles:
     pristine_git_object: cbbe422a1a74c6c026e9648210d723901bd6aaf2
   examples/provider/provider.tf:
     id: 954e955c0240
-    last_write_checksum: sha1:6d2f3b657ad83e5fde4f377c1cac59ed241ee3d0
+    last_write_checksum: sha1:0352db5ced6953661f41527325bd247d0a836b90
     pristine_git_object: 1dce016e5ee2a8ae3a5e4fba462b0f111906ad43
   examples/resources/conductorone_access_conflict/import-by-string-id.tf:
     id: 75fb8f5a6d65
@@ -1500,6 +1500,10 @@ trackedFiles:
     id: 733ed6f8a30a
     last_write_checksum: sha1:24f07c46fdddc1fc5519451e9e521debfa351d0e
     pristine_git_object: 59a89d4a489181ecf9e1d2590182f6e2041cd442
+  internal/provider/request_schema_resource.go:
+    last_write_checksum: sha1:4cad97aeda637d58824dc61de6e74cb3bc703a5d
+  internal/provider/request_schema_resource_sdk.go:
+    last_write_checksum: sha1:367c00e6654d31715a085af024dcd96088747f03
   internal/provider/risk_level_data_source.go:
     id: 8fa89eec3bfc
     last_write_checksum: sha1:e88f9632b0955a555b0530ce2e293be4efaffe27
@@ -3174,7 +3178,7 @@ trackedFiles:
     pristine_git_object: ccda06344d8f1db2a6155a8b5a2fda6be064d9bb
   internal/sdk/conductoroneapi.go:
     id: 84087b0a6f93
-    last_write_checksum: sha1:fa378467b996c1b2c7bea058736be8f11efdfa48
+    last_write_checksum: sha1:64a5920af2c0db18d6929bd66e0a8d8d516b72e6
     pristine_git_object: 1631c5f8d0fd33c7dba06c1f3075a153291f108b
   internal/sdk/connector.go:
     id: 41e2af88fe9e
