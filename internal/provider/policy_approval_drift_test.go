@@ -54,16 +54,19 @@ func approvalAttr(t *testing.T) schema.SingleNestedAttribute {
 
 // TestApprovalParentHasNoObjectPlanModifier is the core regression guard: the
 // parent approval object must carry no object plan modifier (the UseConfigValue
-// that caused the drift) and must not be Computed. If a regen re-introduces
+// that caused the drift). If a regen re-introduces
 // x-speakeasy-terraform-plan-only on c1.api.policy.v1.Approval, this fails.
+//
+// The parent IS Computed+Optional, mirroring the ProvisionPolicy union (see
+// overlay.yaml): keeping Computed: true on the parent while disabling computed
+// on each oneof member is the documented fix. Computed alone does not drift —
+// only the object-level plan modifier did. The guard is the absence of that
+// modifier, not the absence of Computed.
 func TestApprovalParentHasNoObjectPlanModifier(t *testing.T) {
 	approval := approvalAttr(t)
 
 	if mods := approval.ObjectPlanModifiers(); len(mods) != 0 {
 		t.Errorf("approval object must have no plan modifiers (UseConfigValue re-introduces the false->null drift); got %d: %#v", len(mods), mods)
-	}
-	if approval.IsComputed() {
-		t.Errorf("approval object must be Optional-only, not Computed")
 	}
 	if !approval.IsOptional() {
 		t.Errorf("approval object must be Optional")

@@ -166,6 +166,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											`  - clientIdApproval`,
 									},
 									"approval": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"agent_approval": schema.SingleNestedAttribute{
