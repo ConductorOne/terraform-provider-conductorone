@@ -5,6 +5,10 @@ package provider
 import (
 	"context"
 	"fmt"
+	speakeasy_boolplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
@@ -1065,27 +1069,48 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																},
 																"field_groups": schema.ListNestedAttribute{
 																	Computed: true,
+																	PlanModifiers: []planmodifier.List{
+																		speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+																	},
 																	NestedObject: schema.NestedAttributeObject{
+																		PlanModifiers: []planmodifier.Object{
+																			speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																		},
 																		Attributes: map[string]schema.Attribute{
 																			"default": schema.BoolAttribute{
-																				Computed:    true,
+																				Computed: true,
+																				PlanModifiers: []planmodifier.Bool{
+																					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+																				},
 																				Description: `The default field.`,
 																			},
 																			"display_name": schema.StringAttribute{
-																				Computed:    true,
+																				Computed: true,
+																				PlanModifiers: []planmodifier.String{
+																					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+																				},
 																				Description: `The displayName field.`,
 																			},
 																			"fields": schema.ListAttribute{
-																				Computed:    true,
+																				Computed: true,
+																				PlanModifiers: []planmodifier.List{
+																					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+																				},
 																				ElementType: types.StringType,
 																				Description: `The fields field.`,
 																			},
 																			"help_text": schema.StringAttribute{
-																				Computed:    true,
+																				Computed: true,
+																				PlanModifiers: []planmodifier.String{
+																					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+																				},
 																				Description: `The helpText field.`,
 																			},
 																			"name": schema.StringAttribute{
-																				Computed:    true,
+																				Computed: true,
+																				PlanModifiers: []planmodifier.String{
+																					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+																				},
 																				Description: `The name field.`,
 																			},
 																		},
@@ -1094,17 +1119,32 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																},
 																"field_relationships": schema.ListNestedAttribute{
 																	Computed: true,
+																	PlanModifiers: []planmodifier.List{
+																		speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+																	},
 																	NestedObject: schema.NestedAttributeObject{
+																		PlanModifiers: []planmodifier.Object{
+																			speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																		},
 																		Attributes: map[string]schema.Attribute{
 																			"at_least_one": schema.SingleNestedAttribute{
-																				Computed:    true,
+																				Computed: true,
+																				PlanModifiers: []planmodifier.Object{
+																					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																				},
 																				Description: `The AtLeastOne message.`,
 																			},
 																			"dependent_on": schema.SingleNestedAttribute{
 																				Computed: true,
+																				PlanModifiers: []planmodifier.Object{
+																					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																				},
 																				Attributes: map[string]schema.Attribute{
 																					"dependency_field_names": schema.ListAttribute{
-																						Computed:    true,
+																						Computed: true,
+																						PlanModifiers: []planmodifier.List{
+																							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+																						},
 																						ElementType: types.StringType,
 																						Description: `The fields that must be present for the primary field_names to be valid`,
 																					},
@@ -1113,16 +1153,25 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																					` in dependency_field_names are also present`,
 																			},
 																			"field_names": schema.ListAttribute{
-																				Computed:    true,
+																				Computed: true,
+																				PlanModifiers: []planmodifier.List{
+																					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+																				},
 																				ElementType: types.StringType,
 																				Description: `The names of the fields that share this relationship`,
 																			},
 																			"mutually_exclusive": schema.SingleNestedAttribute{
-																				Computed:    true,
+																				Computed: true,
+																				PlanModifiers: []planmodifier.Object{
+																					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																				},
 																				Description: `The MutuallyExclusive message.`,
 																			},
 																			"required_together": schema.SingleNestedAttribute{
-																				Computed:    true,
+																				Computed: true,
+																				PlanModifiers: []planmodifier.Object{
+																					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																				},
 																				Description: `The RequiredTogether message.`,
 																			},
 																		},
@@ -1603,7 +1652,10 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																					`  - numberField`,
 																			},
 																			"name": schema.StringAttribute{
-																				Computed:    true,
+																				Computed: true,
+																				PlanModifiers: []planmodifier.String{
+																					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+																				},
 																				Description: `The name field.`,
 																			},
 																			"oauth2_field": schema.SingleNestedAttribute{
@@ -5093,27 +5145,48 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 															},
 															"field_groups": schema.ListNestedAttribute{
 																Computed: true,
+																PlanModifiers: []planmodifier.List{
+																	speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+																},
 																NestedObject: schema.NestedAttributeObject{
+																	PlanModifiers: []planmodifier.Object{
+																		speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																	},
 																	Attributes: map[string]schema.Attribute{
 																		"default": schema.BoolAttribute{
-																			Computed:    true,
+																			Computed: true,
+																			PlanModifiers: []planmodifier.Bool{
+																				speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+																			},
 																			Description: `The default field.`,
 																		},
 																		"display_name": schema.StringAttribute{
-																			Computed:    true,
+																			Computed: true,
+																			PlanModifiers: []planmodifier.String{
+																				speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+																			},
 																			Description: `The displayName field.`,
 																		},
 																		"fields": schema.ListAttribute{
-																			Computed:    true,
+																			Computed: true,
+																			PlanModifiers: []planmodifier.List{
+																				speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+																			},
 																			ElementType: types.StringType,
 																			Description: `The fields field.`,
 																		},
 																		"help_text": schema.StringAttribute{
-																			Computed:    true,
+																			Computed: true,
+																			PlanModifiers: []planmodifier.String{
+																				speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+																			},
 																			Description: `The helpText field.`,
 																		},
 																		"name": schema.StringAttribute{
-																			Computed:    true,
+																			Computed: true,
+																			PlanModifiers: []planmodifier.String{
+																				speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+																			},
 																			Description: `The name field.`,
 																		},
 																	},
@@ -5122,17 +5195,32 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 															},
 															"field_relationships": schema.ListNestedAttribute{
 																Computed: true,
+																PlanModifiers: []planmodifier.List{
+																	speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+																},
 																NestedObject: schema.NestedAttributeObject{
+																	PlanModifiers: []planmodifier.Object{
+																		speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																	},
 																	Attributes: map[string]schema.Attribute{
 																		"at_least_one": schema.SingleNestedAttribute{
-																			Computed:    true,
+																			Computed: true,
+																			PlanModifiers: []planmodifier.Object{
+																				speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																			},
 																			Description: `The AtLeastOne message.`,
 																		},
 																		"dependent_on": schema.SingleNestedAttribute{
 																			Computed: true,
+																			PlanModifiers: []planmodifier.Object{
+																				speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																			},
 																			Attributes: map[string]schema.Attribute{
 																				"dependency_field_names": schema.ListAttribute{
-																					Computed:    true,
+																					Computed: true,
+																					PlanModifiers: []planmodifier.List{
+																						speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+																					},
 																					ElementType: types.StringType,
 																					Description: `The fields that must be present for the primary field_names to be valid`,
 																				},
@@ -5141,16 +5229,25 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																				` in dependency_field_names are also present`,
 																		},
 																		"field_names": schema.ListAttribute{
-																			Computed:    true,
+																			Computed: true,
+																			PlanModifiers: []planmodifier.List{
+																				speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+																			},
 																			ElementType: types.StringType,
 																			Description: `The names of the fields that share this relationship`,
 																		},
 																		"mutually_exclusive": schema.SingleNestedAttribute{
-																			Computed:    true,
+																			Computed: true,
+																			PlanModifiers: []planmodifier.Object{
+																				speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																			},
 																			Description: `The MutuallyExclusive message.`,
 																		},
 																		"required_together": schema.SingleNestedAttribute{
-																			Computed:    true,
+																			Computed: true,
+																			PlanModifiers: []planmodifier.Object{
+																				speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+																			},
 																			Description: `The RequiredTogether message.`,
 																		},
 																	},
@@ -5631,7 +5728,10 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 																				`  - numberField`,
 																		},
 																		"name": schema.StringAttribute{
-																			Computed:    true,
+																			Computed: true,
+																			PlanModifiers: []planmodifier.String{
+																				speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+																			},
 																			Description: `The name field.`,
 																		},
 																		"oauth2_field": schema.SingleNestedAttribute{
@@ -6366,27 +6466,48 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 									},
 									"field_groups": schema.ListNestedAttribute{
 										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
 										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
 											Attributes: map[string]schema.Attribute{
 												"default": schema.BoolAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.Bool{
+														speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+													},
 													Description: `The default field.`,
 												},
 												"display_name": schema.StringAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
 													Description: `The displayName field.`,
 												},
 												"fields": schema.ListAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.List{
+														speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+													},
 													ElementType: types.StringType,
 													Description: `The fields field.`,
 												},
 												"help_text": schema.StringAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
 													Description: `The helpText field.`,
 												},
 												"name": schema.StringAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
 													Description: `The name field.`,
 												},
 											},
@@ -6395,17 +6516,32 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 									},
 									"field_relationships": schema.ListNestedAttribute{
 										Computed: true,
+										PlanModifiers: []planmodifier.List{
+											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+										},
 										NestedObject: schema.NestedAttributeObject{
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
 											Attributes: map[string]schema.Attribute{
 												"at_least_one": schema.SingleNestedAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.Object{
+														speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+													},
 													Description: `The AtLeastOne message.`,
 												},
 												"dependent_on": schema.SingleNestedAttribute{
 													Computed: true,
+													PlanModifiers: []planmodifier.Object{
+														speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+													},
 													Attributes: map[string]schema.Attribute{
 														"dependency_field_names": schema.ListAttribute{
-															Computed:    true,
+															Computed: true,
+															PlanModifiers: []planmodifier.List{
+																speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+															},
 															ElementType: types.StringType,
 															Description: `The fields that must be present for the primary field_names to be valid`,
 														},
@@ -6414,16 +6550,25 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 														` in dependency_field_names are also present`,
 												},
 												"field_names": schema.ListAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.List{
+														speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+													},
 													ElementType: types.StringType,
 													Description: `The names of the fields that share this relationship`,
 												},
 												"mutually_exclusive": schema.SingleNestedAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.Object{
+														speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+													},
 													Description: `The MutuallyExclusive message.`,
 												},
 												"required_together": schema.SingleNestedAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.Object{
+														speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+													},
 													Description: `The RequiredTogether message.`,
 												},
 											},
@@ -6904,7 +7049,10 @@ func (r *TaskOffboardingResource) Schema(ctx context.Context, req resource.Schem
 														`  - numberField`,
 												},
 												"name": schema.StringAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
 													Description: `The name field.`,
 												},
 												"oauth2_field": schema.SingleNestedAttribute{
