@@ -16,18 +16,26 @@ import (
 //
 // This is the exact repro from the issue, encoded as three steps:
 //
-//	Step 1 — explicit falses + escalation + user_approval: every drift-prone
+//	Step 1 — explicit falses + escalation + app_owner_approval: every drift-prone
 //	         scalar bool is spelled out as false, an escalation block is set,
-//	         and a user_approval approver is selected. After apply the plan
-//	         must be empty (no false → null churn).
+//	         and an app_owner_approval approver is selected (its own drift bools
+//	         allow_self_approval / require_distinct_approvers spelled false too).
+//	         After apply the plan must be empty (no false → null churn).
 //	Step 2 — NOTHING specified: an approval step with a single approver and
 //	         none of the optional scalar bools set. This is the original bug
 //	         shape — config-unset leaves planned null while the API returned
-//	         literal false. After apply the plan must be empty. It also
-//	         exercises approver oneof switching (user_approval → app_owner).
+//	         literal false. After apply the plan must be empty.
 //	Step 3 — read-only `assigned`: re-applies step 1's config to confirm the
 //	         read-only `assigned` field (which cannot be set in config and
 //	         still drifted under the old object plan modifier) is stable.
+//
+// NOTE (IGA-1898): the selected approver is app_owner_approval rather
+// than user_approval. A user_approval step requires a non-empty user_ids list
+// (live API: 1–32 items), which has no stable CI-tenant fixture; app_owner_approval
+// carries the same per-member drift bools with no required user list, so the
+// false→null drift signature is still fully exercised under ExpectEmptyPlan.
+// user_ids serialization on CREATE is locked separately by the unit tests in
+// policy_userids_serialization_test.go.
 //
 // Each step asserts an empty post-apply / post-refresh plan via
 // plancheck.ExpectEmptyPlan(); terraform-plugin-testing also fails any step on
@@ -52,12 +60,12 @@ func TestAccPolicyResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
-			// Step 1: explicit falses + escalation + user_approval.
+			// Step 1: explicit falses + escalation + app_owner_approval.
 			{
 				Config: providerConfig + `
 				resource "conductorone_policy" "test" {
 					display_name                = "Terraform Created Certify Policy"
-					description                 = "explicit falses + escalation + user_approval"
+					description                 = "explicit falses + escalation + app_owner_approval"
 					policy_type                 = "POLICY_TYPE_CERTIFY"
 					reassign_tasks_to_delegates = "false"
 					policy_steps = {
@@ -74,7 +82,7 @@ func TestAccPolicyResource(t *testing.T) {
 										escalation = {
 											skip_step = {}
 										}
-										user_approval = {
+										app_owner_approval = {
 											allow_self_approval        = "false"
 											require_distinct_approvers = "false"
 										}
@@ -94,8 +102,8 @@ func TestAccPolicyResource(t *testing.T) {
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.require_denial_reason", "false"),
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.require_reassignment_reason", "false"),
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.escalation_enabled", "false"),
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.user_approval.allow_self_approval", "false"),
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.user_approval.require_distinct_approvers", "false"),
+					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owner_approval.allow_self_approval", "false"),
+					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owner_approval.require_distinct_approvers", "false"),
 					// assigned is read-only; the server returns literal false and it
 					// must be stored as false (not null) in state.
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.assigned", "false"),
@@ -139,7 +147,7 @@ func TestAccPolicyResource(t *testing.T) {
 				Config: providerConfig + `
 				resource "conductorone_policy" "test" {
 					display_name                = "Terraform Created Certify Policy"
-					description                 = "explicit falses + escalation + user_approval"
+					description                 = "explicit falses + escalation + app_owner_approval"
 					policy_type                 = "POLICY_TYPE_CERTIFY"
 					reassign_tasks_to_delegates = "false"
 					policy_steps = {
@@ -156,7 +164,7 @@ func TestAccPolicyResource(t *testing.T) {
 										escalation = {
 											skip_step = {}
 										}
-										user_approval = {
+										app_owner_approval = {
 											allow_self_approval        = "false"
 											require_distinct_approvers = "false"
 										}
@@ -170,7 +178,7 @@ func TestAccPolicyResource(t *testing.T) {
 				ConfigPlanChecks: emptyPlanAfterApply,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.assigned", "false"),
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.user_approval.allow_self_approval", "false"),
+					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owner_approval.allow_self_approval", "false"),
 				),
 			},
 		},
