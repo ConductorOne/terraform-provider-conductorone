@@ -16,11 +16,21 @@ import (
 //
 // This is the exact repro from the issue, encoded as three steps:
 //
-//	Step 1 — explicit falses + escalation + app_owner_approval: every drift-prone
-//	         scalar bool is spelled out as false, an escalation block is set,
-//	         and an app_owner_approval approver is selected (its own drift bools
+//	Step 1 — explicit falses + app_owner_approval: every drift-prone scalar bool
+//	         is spelled out as false (including escalation_enabled = false) and an
+//	         app_owner_approval approver is selected (its own drift bools
 //	         allow_self_approval / require_distinct_approvers spelled false too).
 //	         After apply the plan must be empty (no false → null churn).
+//
+//	         NOTE: this step does NOT set an `escalation = { skip_step = {} }`
+//	         object. With escalation_enabled = false, live C1 does not persist or
+//	         return the escalation block, so a config-set escalation object reads
+//	         back as null — a permanent null↔object [update] that is NOT the
+//	         IGA-1898 bool drift and is not fixable via any plan modifier (a known
+//	         config value can't be suppressed). It was a self-contradictory config;
+//	         the escalation_enabled bool (which IS a drift-prone IGA-1898 scalar)
+//	         stays covered. Drift attribution proven by the diagnostic PlanCheck in
+//	         the separate PR (ExpectEmptyPlanWithDriftLog).
 //	Step 2 — NOTHING specified: an approval step with a single approver and
 //	         none of the optional scalar bools set. This is the original bug
 //	         shape — config-unset leaves planned null while the API returned
@@ -60,12 +70,12 @@ func TestAccPolicyResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
-			// Step 1: explicit falses + escalation + app_owner_approval.
+			// Step 1: explicit falses + app_owner_approval.
 			{
 				Config: providerConfig + `
 				resource "conductorone_policy" "test" {
 					display_name                = "Terraform Created Certify Policy"
-					description                 = "explicit falses + escalation + app_owner_approval"
+					description                 = "explicit falses + app_owner_approval"
 					policy_type                 = "POLICY_TYPE_CERTIFY"
 					reassign_tasks_to_delegates = "false"
 					policy_steps = {
@@ -79,9 +89,6 @@ func TestAccPolicyResource(t *testing.T) {
 										require_denial_reason       = "false"
 										require_reassignment_reason = "false"
 										escalation_enabled          = "false"
-										escalation = {
-											skip_step = {}
-										}
 										app_owner_approval = {
 											allow_self_approval        = "false"
 											require_distinct_approvers = "false"
@@ -150,7 +157,7 @@ func TestAccPolicyResource(t *testing.T) {
 				Config: providerConfig + `
 				resource "conductorone_policy" "test" {
 					display_name                = "Terraform Created Certify Policy"
-					description                 = "explicit falses + escalation + app_owner_approval"
+					description                 = "explicit falses + app_owner_approval"
 					policy_type                 = "POLICY_TYPE_CERTIFY"
 					reassign_tasks_to_delegates = "false"
 					policy_steps = {
@@ -164,9 +171,6 @@ func TestAccPolicyResource(t *testing.T) {
 										require_denial_reason       = "false"
 										require_reassignment_reason = "false"
 										escalation_enabled          = "false"
-										escalation = {
-											skip_step = {}
-										}
 										app_owner_approval = {
 											allow_self_approval        = "false"
 											require_distinct_approvers = "false"
