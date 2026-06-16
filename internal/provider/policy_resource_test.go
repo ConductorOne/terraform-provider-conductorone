@@ -104,13 +104,15 @@ func TestAccPolicyResource(t *testing.T) {
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.escalation_enabled", "false"),
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owner_approval.allow_self_approval", "false"),
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owner_approval.require_distinct_approvers", "false"),
-					// assigned is read-only; the server returns literal false and it
-					// must be stored as false (not null) in state.
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.assigned", "false"),
+					// assigned is read-only; live C1 returns it as null on a fresh
+					// policy-definition read (it is populated per-task at runtime, not
+					// on the template). Drift is covered by ExpectEmptyPlan +
+					// TestApprovalAssignedIsComputedOnly, so just assert it stays absent.
+					resource.TestCheckNoResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.assigned"),
 				),
 			},
 			// Step 2: NOTHING specified — a single approver, no optional scalar
-			// bools. The original drift shape; also switches the oneof member.
+			// bools. The original drift shape.
 			{
 				Config: providerConfig + `
 				resource "conductorone_policy" "test" {
@@ -138,7 +140,8 @@ func TestAccPolicyResource(t *testing.T) {
 					// API and must be stable (not flapping false → null).
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.allow_delegation", "false"),
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.require_approval_reason", "false"),
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.assigned", "false"),
+					// assigned is read-only and null on a fresh policy-definition read (see Step 1).
+					resource.TestCheckNoResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.assigned"),
 				),
 			},
 			// Step 3: re-apply step 1 to confirm read-only `assigned` and the
@@ -177,7 +180,8 @@ func TestAccPolicyResource(t *testing.T) {
 				`,
 				ConfigPlanChecks: emptyPlanAfterApply,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.assigned", "false"),
+					// assigned is read-only and null on a fresh policy-definition read (see Step 1).
+					resource.TestCheckNoResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.assigned"),
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owner_approval.allow_self_approval", "false"),
 				),
 			},
