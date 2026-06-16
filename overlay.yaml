@@ -619,6 +619,28 @@ actions:
   - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["id"]
     update:
       x-speakeasy-param-suppress-computed-diff: allow
+  # IGA-743 convergence: these attributes are server-derived/computed. Without a
+  # plan-stability modifier they re-plan as "(known after apply)" on every plan
+  # after the first apply, so a config that matches the read-back never reaches
+  # an empty plan. Mirror the `id` treatment above so the prior state value is
+  # carried forward when the planned value is unknown (SuppressDiff == the
+  # framework's UseStateForUnknown). A field the user explicitly sets is left
+  # untouched (the modifier is a no-op when the planned value is known).
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["createdAt"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
+  - target: $["components"]["schemas"]["c1.api.request_schema.v1.RequestSchema"]["properties"]["justificationVisibility"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
+  - target: $["components"]["schemas"]["c1.api.form.v1.Form"]["properties"]["fieldGroups"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
+  - target: $["components"]["schemas"]["c1.api.form.v1.Form"]["properties"]["fieldRelationships"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
+  - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["name"]
+    update:
+      x-speakeasy-param-suppress-computed-diff: allow
   - target: $["components"]["schemas"]["c1.api.form.v1.Field"]["properties"]["stringSliceField"]
     remove: true
   ## len is a builtin function in golang, we have to rename `len` with a different name.
