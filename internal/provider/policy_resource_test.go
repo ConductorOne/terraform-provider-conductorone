@@ -143,10 +143,14 @@ func TestAccPolicyResource(t *testing.T) {
 				ConfigPlanChecks: emptyPlanAfterApply,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("conductorone_policy.test", "description", "nothing specified"),
-					// Unset optional scalar bools come back as literal false from the
-					// API and must be stable (not flapping false → null).
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.allow_delegation", "false"),
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.require_approval_reason", "false"),
+					// Never-set optional scalar bools read back absent (null) from a
+					// fresh policy-definition read on live C1 — the same shape as the
+					// read-only `assigned` field below. The IGA-1898 invariant locked
+					// here is convergence (an empty post-apply plan via ExpectEmptyPlan),
+					// not a literal `false`: these are stable at null (no false↔null
+					// flapping), so assert absence rather than "false".
+					resource.TestCheckNoResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.allow_delegation"),
+					resource.TestCheckNoResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.require_approval_reason"),
 					// assigned is read-only and null on a fresh policy-definition read (see Step 1).
 					resource.TestCheckNoResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.assigned"),
 				),
