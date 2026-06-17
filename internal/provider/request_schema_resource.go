@@ -5,13 +5,13 @@ package provider
 import (
 	"context"
 	"fmt"
-
+	speakeasy_boolplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
-	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -37,13 +37,15 @@ type RequestSchemaResource struct {
 
 // RequestSchemaResourceModel describes the resource data model.
 type RequestSchemaResourceModel struct {
-	CreatedAt          types.String                `tfsdk:"created_at"`
-	DeletedAt          types.String                `tfsdk:"-"`
-	Description        types.String                `tfsdk:"description"`
-	FieldRelationships []tfTypes.FieldRelationship `tfsdk:"field_relationships"`
-	Fields             []tfTypes.FormField             `tfsdk:"fields"`
-	ID                 types.String                `tfsdk:"id"`
-	Name               types.String                `tfsdk:"name"`
+	CreatedAt               types.String                `tfsdk:"created_at"`
+	DeletedAt               types.String                `tfsdk:"-"`
+	Description             types.String                `tfsdk:"description"`
+	FieldGroups             []tfTypes.FormFieldGroup    `tfsdk:"field_groups"`
+	FieldRelationships      []tfTypes.FieldRelationship `tfsdk:"field_relationships"`
+	Fields                  []tfTypes.FormField         `tfsdk:"fields"`
+	ID                      types.String                `tfsdk:"id"`
+	JustificationVisibility types.String                `tfsdk:"justification_visibility"`
+	Name                    types.String                `tfsdk:"name"`
 }
 
 func (r *RequestSchemaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -56,39 +58,144 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 		Attributes: map[string]schema.Attribute{
 			"created_at": schema.StringAttribute{
 				Computed: true,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The description field.`,
+				Description: `An optional description of the request schema's purpose.`,
+			},
+			"field_groups": schema.ListNestedAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.List{
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
+				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
+					PlanModifiers: []planmodifier.Object{
+						speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+					},
+					Attributes: map[string]schema.Attribute{
+						"default": schema.BoolAttribute{
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.Bool{
+								speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+							},
+							Description: `The default field.`,
+						},
+						"display_name": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
+							Description: `The displayName field.`,
+						},
+						"fields": schema.ListAttribute{
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.List{
+								speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+							},
+							ElementType: types.StringType,
+							Description: `The fields field.`,
+						},
+						"help_text": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
+							Description: `The helpText field.`,
+						},
+						"name": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
+							Description: `The name field.`,
+						},
+					},
+				},
+				Description: `Logical groupings of fields for display purposes.`,
 			},
 			"field_relationships": schema.ListNestedAttribute{
 				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.List{
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
+					PlanModifiers: []planmodifier.Object{
+						speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+					},
 					Attributes: map[string]schema.Attribute{
 						"at_least_one": schema.SingleNestedAttribute{
-							Computed:    true,
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+							},
 							Description: `The AtLeastOne message.`,
 						},
+						"dependent_on": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+							},
+							Attributes: map[string]schema.Attribute{
+								"dependency_field_names": schema.ListAttribute{
+									Computed: true,
+									Optional: true,
+									PlanModifiers: []planmodifier.List{
+										speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+									},
+									ElementType: types.StringType,
+									Description: `The fields that must be present for the primary field_names to be valid`,
+								},
+							},
+							MarkdownDescription: `DependentOn means the fields in field_names are only valid if all fields` + "\n" +
+								` in dependency_field_names are also present`,
+						},
 						"field_names": schema.ListAttribute{
-							Computed:    true,
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.List{
+								speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+							},
 							ElementType: types.StringType,
 							Description: `The names of the fields that share this relationship`,
 						},
 						"mutually_exclusive": schema.SingleNestedAttribute{
-							Computed:    true,
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+							},
 							Description: `The MutuallyExclusive message.`,
 						},
 						"required_together": schema.SingleNestedAttribute{
-							Computed:    true,
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+							},
 							Description: `The RequiredTogether message.`,
 						},
 					},
 				},
-				Description: `The fieldRelationships field.`,
+				Description: `Dependencies between fields that control conditional visibility or validation.`,
 			},
 			"fields": schema.ListNestedAttribute{
 				Computed: true,
@@ -98,6 +205,23 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
+						"admin_provider_config": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"default_value_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The defaultValueCel field.`,
+								},
+								"show_to_user": schema.BoolAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The showToUser field.`,
+								},
+							},
+							Description: `The AdminProviderConfig message.`,
+						},
 						"bool_field": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
@@ -124,15 +248,17 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 									Optional:    true,
 									Description: `The defaultValue field.`,
 								},
+								"toggle_field": schema.SingleNestedAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The ToggleField message.`,
+								},
 							},
 							MarkdownDescription: `The BoolField message.` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - checkboxField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - rules`,
+								`  - toggleField`,
 						},
 						"description": schema.StringAttribute{
 							Computed:    true,
@@ -160,138 +286,17 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 									Description: `The FileInputField message.`,
 								},
 								"max_file_size": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The maxFileSize field.` + "\n" +
-										`This field is part of the ` + "`" + `_max_file_size` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.form.v1.FileField` + "`" + ` for more details.`,
+									Computed:    true,
+									Optional:    true,
+									Description: `The maxFileSize field.`,
 								},
 							},
 							MarkdownDescription: `The FileField message.` + "\n" +
 								`` + "\n" +
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - fileInputField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _max_file_size. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - maxFileSize`,
+								`  - fileInputField`,
 						},
-						"int64_field": schema.SingleNestedAttribute{
-							Computed: true,
-							Optional: true,
-							Attributes: map[string]schema.Attribute{
-								"default_value": schema.StringAttribute{
-									Computed: true,
-									Optional: true,
-									MarkdownDescription: `The defaultValue field.` + "\n" +
-										`This field is part of the ` + "`" + `_default_value` + "`" + ` oneof.` + "\n" +
-										`See the documentation for ` + "`" + `c1.api.form.v1.Int64Field` + "`" + ` for more details.`,
-								},
-								"int64_rules": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"const": schema.StringAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `Const specifies that this field must be exactly the specified value`,
-										},
-										"gt": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Gt specifies that this field must be greater than the specified value,` + "\n" +
-												` exclusive. If the value of Gt is larger than a specified Lt or Lte, the` + "\n" +
-												` range is reversed.`,
-										},
-										"gte": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Gte specifies that this field must be greater than or equal to the` + "\n" +
-												` specified value, inclusive. If the value of Gte is larger than a` + "\n" +
-												` specified Lt or Lte, the range is reversed.`,
-										},
-										"ignore_empty": schema.BoolAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `IgnoreEmpty specifies that the validation rules of this field should be` + "\n" +
-												` evaluated only if the field is not empty`,
-										},
-										"in": schema.ListAttribute{
-											Computed:    true,
-											Optional:    true,
-											ElementType: types.StringType,
-											MarkdownDescription: `In specifies that this field must be equal to one of the specified` + "\n" +
-												` values`,
-										},
-										"lt": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Lt specifies that this field must be less than the specified value,` + "\n" +
-												` exclusive`,
-										},
-										"lte": schema.StringAttribute{
-											Computed: true,
-											Optional: true,
-											MarkdownDescription: `Lte specifies that this field must be less than or equal to the` + "\n" +
-												` specified value, inclusive`,
-										},
-										"not_in": schema.ListAttribute{
-											Computed:    true,
-											Optional:    true,
-											ElementType: types.StringType,
-											MarkdownDescription: `NotIn specifies that this field cannot be equal to one of the specified` + "\n" +
-												` values`,
-										},
-									},
-									Description: `Int64Rules describes the constraints applied to ` + "`" + `int64` + "`" + ` values`,
-								},
-								"number_field": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"max_value": schema.StringAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `The maxValue field.`,
-										},
-										"min_value": schema.StringAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `The minValue field.`,
-										},
-										"step": schema.StringAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `The step field.`,
-										},
-									},
-									Description: `The NumberField message.`,
-								},
-								"placeholder": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `The placeholder field.`,
-								},
-							},
-							MarkdownDescription: `The Int64Field message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - numberField` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _default_value. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - defaultValue` + "\n" +
-								`` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - rules`,
-						},
-						"name": schema.StringAttribute{
-							Computed:    true,
-							Optional:    true,
-							Description: `The name field.`,
-						},
-						"string_field": schema.SingleNestedAttribute{
+						"form_string_field": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -304,6 +309,53 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 									Computed:    true,
 									Optional:    true,
 									Description: `The PasswordField message.`,
+								},
+								"picker_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"app_resource_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"app_id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The appId field.`,
+												},
+												"resource_type_id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The resourceTypeId field.`,
+												},
+											},
+											Description: `The AppResourceFilter message.`,
+										},
+										"app_user_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"app_id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The appId field.`,
+												},
+											},
+											Description: `The AppUserFilter message.`,
+										},
+										"c1_user_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
+												` This is distinct from AppUserFilter which selects accounts within a connected app.`,
+										},
+									},
+									MarkdownDescription: `The PickerField message.` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named type. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - appUserPicker` + "\n" +
+										`  - resourcePicker` + "\n" +
+										`  - c1UserPicker`,
 								},
 								"placeholder": schema.StringAttribute{
 									Computed:    true,
@@ -322,6 +374,11 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 													speakeasy_objectvalidators.NotNull(),
 												},
 												Attributes: map[string]schema.Attribute{
+													"description": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Used for type BUTTONS`,
+													},
 													"display_name": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
@@ -335,6 +392,11 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 												},
 											},
 											Description: `The options field.`,
+										},
+										"type": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The type field. possible known values include one of ["SELECT_TYPE_UNSPECIFIED", "SELECT_TYPE_DROPDOWN", "SELECT_TYPE_RADIO", "SELECT_TYPE_BUTTONS"]`,
 										},
 									},
 									Description: `The SelectField message.`,
@@ -526,14 +588,7 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 											MarkdownDescription: `WellKnownRegex specifies a common well known pattern defined as a regex.` + "\n" +
 												`This field is part of the ` + "`" + `well_known` + "`" + ` oneof.` + "\n" +
 												`See the documentation for ` + "`" + `validate.StringRules` + "`" + ` for more details.` + "\n" +
-												`must be one of ["UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"UNKNOWN",
-													"HTTP_HEADER_NAME",
-													"HTTP_HEADER_VALUE",
-												),
-											},
+												`possible known values include one of ["UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE"]`,
 										},
 									},
 									MarkdownDescription: `StringRules describe the constraints applied to ` + "`" + `string` + "`" + ` values` + "\n" +
@@ -559,6 +614,11 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 											Optional:    true,
 											Description: `The multiline field.`,
 										},
+										"suffix": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `Static text displayed as an end adornment (e.g. ".example.com" for domain fields).`,
+										},
 									},
 									Description: `The TextField message.`,
 								},
@@ -569,26 +629,228 @@ func (r *RequestSchemaResource) Schema(ctx context.Context, req resource.SchemaR
 								`  - textField` + "\n" +
 								`  - passwordField` + "\n" +
 								`  - selectField` + "\n" +
+								`  - pickerField`,
+						},
+						"form_string_map_field": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"default_value": schema.MapAttribute{
+									Computed:    true,
+									Optional:    true,
+									ElementType: types.StringType,
+									Description: `The defaultValue field.`,
+								},
+								"string_map_rules": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"is_required": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The isRequired field.`,
+										},
+										"validate_empty": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The validateEmpty field.`,
+										},
+									},
+									Description: `The StringMapRules message.`,
+								},
+							},
+							Description: `The StringMapField message.`,
+						},
+						"int64_field": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"default_value": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The defaultValue field.`,
+								},
+								"int64_rules": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"const": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `Const specifies that this field must be exactly the specified value`,
+										},
+										"gt": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `Gt specifies that this field must be greater than the specified value,` + "\n" +
+												` exclusive. If the value of Gt is larger than a specified Lt or Lte, the` + "\n" +
+												` range is reversed.`,
+										},
+										"gte": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `Gte specifies that this field must be greater than or equal to the` + "\n" +
+												` specified value, inclusive. If the value of Gte is larger than a` + "\n" +
+												` specified Lt or Lte, the range is reversed.`,
+										},
+										"ignore_empty": schema.BoolAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `IgnoreEmpty specifies that the validation rules of this field should be` + "\n" +
+												` evaluated only if the field is not empty`,
+										},
+										"in": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											MarkdownDescription: `In specifies that this field must be equal to one of the specified` + "\n" +
+												` values`,
+										},
+										"lt": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `Lt specifies that this field must be less than the specified value,` + "\n" +
+												` exclusive`,
+										},
+										"lte": schema.StringAttribute{
+											Computed: true,
+											Optional: true,
+											MarkdownDescription: `Lte specifies that this field must be less than or equal to the` + "\n" +
+												` specified value, inclusive`,
+										},
+										"not_in": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											MarkdownDescription: `NotIn specifies that this field cannot be equal to one of the specified` + "\n" +
+												` values`,
+										},
+									},
+									Description: `Int64Rules describes the constraints applied to ` + "`" + `int64` + "`" + ` values`,
+								},
+								"number_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"max_value": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The maxValue field.`,
+										},
+										"min_value": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The minValue field.`,
+										},
+										"step": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The step field.`,
+										},
+									},
+									Description: `The NumberField message.`,
+								},
+								"placeholder": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The placeholder field.`,
+								},
+							},
+							MarkdownDescription: `The Int64Field message.` + "\n" +
 								`` + "\n" +
+								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - numberField`,
+						},
+						"name": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
+							Description: `The name field.`,
+						},
+						"oauth2_field": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"oauth2_field_view": schema.SingleNestedAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The Oauth2FieldView message.`,
+								},
+							},
+							MarkdownDescription: `The Oauth2Field message.` + "\n" +
 								`` + "\n" +
-								`This message contains a oneof named _rules. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - rules`,
+								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - oauth2FieldView`,
+						},
+						"read_only": schema.BoolAttribute{
+							Computed:    true,
+							Optional:    true,
+							Description: `When true, this field is displayed to the user but cannot be edited.`,
+						},
+						"required": schema.BoolAttribute{
+							Computed:    true,
+							Optional:    true,
+							Description: `The required field.`,
+						},
+						"shared_provider_config": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"default_value_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The defaultValueCel field.`,
+								},
+								"input_transformation_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The inputTransformationCel field.`,
+								},
+								"lock_default_values": schema.BoolAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The lockDefaultValues field.`,
+								},
+							},
+							Description: `The SharedProviderConfig message.`,
+						},
+						"user_provider_config": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							Attributes: map[string]schema.Attribute{
+								"input_transformation_cel": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The inputTransformationCel field.`,
+								},
+							},
+							Description: `The UserProviderConfig message.`,
 						},
 					},
 				},
-				Description: `The fields field.`,
+				Description: `The form fields that users must fill out when requesting access.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The id field.`,
+				Description: `The unique identifier of this request schema.`,
+			},
+			"justification_visibility": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Controls whether the justification field is shown or hidden on the request form. possible known values include one of ["JUSTIFICATION_VISIBILITY_UNSPECIFIED", "JUSTIFICATION_VISIBILITY_SHOW", "JUSTIFICATION_VISIBILITY_HIDE"]`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The name field.`,
+				Description: `The human-readable name for the request schema.`,
 			},
 		},
 	}
@@ -654,16 +916,11 @@ func (r *RequestSchemaResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceCreateResponse != nil && res.RequestSchemaServiceCreateResponse.RequestSchema != nil && res.RequestSchemaServiceCreateResponse.RequestSchema.RequestSchemaForm != nil) {
+	if !(res.RequestSchemaServiceCreateResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-
-	// ManualChange. We store the requestSchema into the terraform state.
-	// Once speakeasy team fixes it, we can remove it.
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceCreateResponse.RequestSchema)...)
-
-	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceCreateResponse.RequestSchema.RequestSchemaForm)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceCreateResponse(ctx, res.RequestSchemaServiceCreateResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -723,16 +980,11 @@ func (r *RequestSchemaResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceGetResponse != nil && res.RequestSchemaServiceGetResponse.RequestSchema != nil && res.RequestSchemaServiceGetResponse.RequestSchema.RequestSchemaForm != nil) {
+	if !(res.RequestSchemaServiceGetResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-
-	// ManualChange. We store the requestSchema into the terraform state.
-	// Once speakeasy team fixes it, we can remove it.
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceGetResponse.RequestSchema)...)
-
-	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceGetResponse.RequestSchema.RequestSchemaForm)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceGetResponse(ctx, res.RequestSchemaServiceGetResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -783,56 +1035,11 @@ func (r *RequestSchemaResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RequestSchemaServiceUpdateResponse != nil && res.RequestSchemaServiceUpdateResponse.RequestSchema != nil && res.RequestSchemaServiceUpdateResponse.RequestSchema.RequestSchemaForm != nil) {
+	if !(res.RequestSchemaServiceUpdateResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	// ManualChange. We store the requestSchema into the terraform state.
-	// Once speakeasy team fixes it, we can remove it.
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res.RequestSchemaServiceUpdateResponse.RequestSchema)...)
-
-	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res.RequestSchemaServiceUpdateResponse.RequestSchema.RequestSchemaForm)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsC1APIRequestSchemaV1RequestSchemaServiceGetRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.RequestSchema.Get(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.RequestSchemaServiceGetResponse != nil && res1.RequestSchemaServiceGetResponse.RequestSchema != nil && res1.RequestSchemaServiceGetResponse.RequestSchema.RequestSchemaForm != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	// ManualChange. We store the requestSchema into the terraform state.
-	// Once speakeasy team fixes it, we can remove it.
-	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchema(ctx, res1.RequestSchemaServiceGetResponse.RequestSchema)...)
-
-	resp.Diagnostics.Append(data.RefreshFromSharedForm(ctx, res1.RequestSchemaServiceGetResponse.RequestSchema.RequestSchemaForm)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestSchemaServiceUpdateResponse(ctx, res.RequestSchemaServiceUpdateResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -884,7 +1091,10 @@ func (r *RequestSchemaResource) Delete(ctx context.Context, req resource.DeleteR
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
