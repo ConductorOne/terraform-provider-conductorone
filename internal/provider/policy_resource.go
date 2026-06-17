@@ -5,7 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/objectplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	speakeasy_objectvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/objectvalidators"
@@ -15,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -168,13 +166,10 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											`  - clientIdApproval`,
 									},
 									"approval": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
-										PlanModifiers: []planmodifier.Object{
-											speakeasy_objectplanmodifier.UseConfigValue(),
-										},
 										Attributes: map[string]schema.Attribute{
 											"agent_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"agent_failure_action": schema.StringAttribute{
@@ -229,7 +224,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Description: `List of users for whom this step can be reassigned.`,
 											},
 											"app_group_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -306,7 +300,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 											},
 											"app_owner_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -339,7 +332,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Description: `A field indicating whether this step is assigned.`,
 											},
 											"entitlement_owner_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -469,7 +461,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Description: `Whether escalation is enabled for this step.`,
 											},
 											"expression_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -547,7 +538,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 											},
 											"manager_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -640,7 +630,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													` If set, approvers must complete the step-up authentication flow before they can approve.`,
 											},
 											"resource_owner_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -707,7 +696,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 											},
 											"self_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"assigned_user_ids": schema.ListAttribute{
@@ -769,7 +757,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 											},
 											"user_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -804,7 +791,6 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 											},
 											"webhook_approval": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"webhook_id": schema.StringAttribute{
