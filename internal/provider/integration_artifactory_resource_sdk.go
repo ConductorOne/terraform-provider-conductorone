@@ -223,20 +223,28 @@ func (r *IntegrationArtifactoryResourceModel) RefreshFromGetResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "log-level"); ok {
-					r.LogLevel = types.StringValue(val)
+				if _, ok := configValues["log-level"]; ok {
+					if val, ok := getStringValue(values, "log-level"); ok {
+						r.LogLevel = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint"); ok {
-					r.OtelCollectorEndpoint = types.StringValue(val)
+				if _, ok := configValues["otel-collector-endpoint"]; ok {
+					if val, ok := getStringValue(values, "otel-collector-endpoint"); ok {
+						r.OtelCollectorEndpoint = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert"); ok {
-					r.OtelCollectorEndpointTlsCert = types.StringValue(val)
+				if _, ok := configValues["otel-collector-endpoint-tls-cert"]; ok {
+					if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert"); ok {
+						r.OtelCollectorEndpointTlsCert = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert-path"); ok {
-					r.OtelCollectorEndpointTlsCertPath = types.StringValue(val)
+				if _, ok := configValues["otel-collector-endpoint-tls-cert-path"]; ok {
+					if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert-path"); ok {
+						r.OtelCollectorEndpointTlsCertPath = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["otel-collector-endpoint-tls-insecure"]; ok {
@@ -311,20 +319,28 @@ func (r *IntegrationArtifactoryResourceModel) RefreshFromCreateResponse(resp *sh
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "log-level"); ok {
-					r.LogLevel = types.StringValue(val)
+				if _, ok := configValues["log-level"]; ok {
+					if val, ok := getStringValue(values, "log-level"); ok {
+						r.LogLevel = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint"); ok {
-					r.OtelCollectorEndpoint = types.StringValue(val)
+				if _, ok := configValues["otel-collector-endpoint"]; ok {
+					if val, ok := getStringValue(values, "otel-collector-endpoint"); ok {
+						r.OtelCollectorEndpoint = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert"); ok {
-					r.OtelCollectorEndpointTlsCert = types.StringValue(val)
+				if _, ok := configValues["otel-collector-endpoint-tls-cert"]; ok {
+					if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert"); ok {
+						r.OtelCollectorEndpointTlsCert = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert-path"); ok {
-					r.OtelCollectorEndpointTlsCertPath = types.StringValue(val)
+				if _, ok := configValues["otel-collector-endpoint-tls-cert-path"]; ok {
+					if val, ok := getStringValue(values, "otel-collector-endpoint-tls-cert-path"); ok {
+						r.OtelCollectorEndpointTlsCertPath = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["otel-collector-endpoint-tls-insecure"]; ok {

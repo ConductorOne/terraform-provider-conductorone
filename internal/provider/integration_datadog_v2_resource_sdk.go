@@ -182,8 +182,10 @@ func (r *IntegrationDatadogV2ResourceModel) RefreshFromGetResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "datadog_site"); ok {
-					r.DatadogSite = types.StringValue(val)
+				if _, ok := configValues["datadog_site"]; ok {
+					if val, ok := getStringValue(values, "datadog_site"); ok {
+						r.DatadogSite = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["sync_secrets"]; ok {
@@ -239,8 +241,10 @@ func (r *IntegrationDatadogV2ResourceModel) RefreshFromCreateResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "datadog_site"); ok {
-					r.DatadogSite = types.StringValue(val)
+				if _, ok := configValues["datadog_site"]; ok {
+					if val, ok := getStringValue(values, "datadog_site"); ok {
+						r.DatadogSite = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["sync_secrets"]; ok {

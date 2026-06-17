@@ -166,11 +166,14 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromGetResponse(res
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "account_id"); ok {
-					r.AccountId = types.StringValue(val)
+				if _, ok := configValues["account_id"]; ok {
+					if val, ok := getStringValue(values, "account_id"); ok {
+						r.AccountId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -213,11 +216,14 @@ func (r *IntegrationCloudflareZeroTrustResourceModel) RefreshFromCreateResponse(
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "account_id"); ok {
-					r.AccountId = types.StringValue(val)
+				if _, ok := configValues["account_id"]; ok {
+					if val, ok := getStringValue(values, "account_id"); ok {
+						r.AccountId = types.StringValue(val)
+					}
 				}
 
 			}

@@ -178,19 +178,26 @@ func (r *IntegrationJdEdwardsResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "jdedwards_ais_url"); ok {
-					r.JdedwardsAisUrl = types.StringValue(val)
+				if _, ok := configValues["jdedwards_ais_url"]; ok {
+					if val, ok := getStringValue(values, "jdedwards_ais_url"); ok {
+						r.JdedwardsAisUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "jdedwards_username"); ok {
-					r.JdedwardsUsername = types.StringValue(val)
+				if _, ok := configValues["jdedwards_username"]; ok {
+					if val, ok := getStringValue(values, "jdedwards_username"); ok {
+						r.JdedwardsUsername = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "jdedwards_env"); ok {
-					r.JdedwardsEnv = types.StringValue(val)
+				if _, ok := configValues["jdedwards_env"]; ok {
+					if val, ok := getStringValue(values, "jdedwards_env"); ok {
+						r.JdedwardsEnv = types.StringValue(val)
+					}
 				}
 
 			}
@@ -233,19 +240,26 @@ func (r *IntegrationJdEdwardsResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "jdedwards_ais_url"); ok {
-					r.JdedwardsAisUrl = types.StringValue(val)
+				if _, ok := configValues["jdedwards_ais_url"]; ok {
+					if val, ok := getStringValue(values, "jdedwards_ais_url"); ok {
+						r.JdedwardsAisUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "jdedwards_username"); ok {
-					r.JdedwardsUsername = types.StringValue(val)
+				if _, ok := configValues["jdedwards_username"]; ok {
+					if val, ok := getStringValue(values, "jdedwards_username"); ok {
+						r.JdedwardsUsername = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "jdedwards_env"); ok {
-					r.JdedwardsEnv = types.StringValue(val)
+				if _, ok := configValues["jdedwards_env"]; ok {
+					if val, ok := getStringValue(values, "jdedwards_env"); ok {
+						r.JdedwardsEnv = types.StringValue(val)
+					}
 				}
 
 			}

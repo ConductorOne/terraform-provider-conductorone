@@ -166,12 +166,15 @@ func (r *IntegrationLinodeResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "linode-api-url"); ok {
-					r.LinodeApiUrl = types.StringValue(val)
+				if _, ok := configValues["linode-api-url"]; ok {
+					if val, ok := getStringValue(values, "linode-api-url"); ok {
+						r.LinodeApiUrl = types.StringValue(val)
+					}
 				}
 
 			}
@@ -214,12 +217,15 @@ func (r *IntegrationLinodeResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "linode-api-url"); ok {
-					r.LinodeApiUrl = types.StringValue(val)
+				if _, ok := configValues["linode-api-url"]; ok {
+					if val, ok := getStringValue(values, "linode-api-url"); ok {
+						r.LinodeApiUrl = types.StringValue(val)
+					}
 				}
 
 			}

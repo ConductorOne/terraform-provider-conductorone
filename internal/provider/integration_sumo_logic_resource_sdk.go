@@ -182,12 +182,16 @@ func (r *IntegrationSumoLogicResourceModel) RefreshFromGetResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "api-access-id"); ok {
-					r.ApiAccessId = types.StringValue(val)
+				if _, ok := configValues["api-access-id"]; ok {
+					if val, ok := getStringValue(values, "api-access-id"); ok {
+						r.ApiAccessId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "api-base-url"); ok {
-					r.ApiBaseUrl = types.StringValue(val)
+				if _, ok := configValues["api-base-url"]; ok {
+					if val, ok := getStringValue(values, "api-base-url"); ok {
+						r.ApiBaseUrl = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["include-service-accounts"]; ok {
@@ -243,12 +247,16 @@ func (r *IntegrationSumoLogicResourceModel) RefreshFromCreateResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "api-access-id"); ok {
-					r.ApiAccessId = types.StringValue(val)
+				if _, ok := configValues["api-access-id"]; ok {
+					if val, ok := getStringValue(values, "api-access-id"); ok {
+						r.ApiAccessId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "api-base-url"); ok {
-					r.ApiBaseUrl = types.StringValue(val)
+				if _, ok := configValues["api-base-url"]; ok {
+					if val, ok := getStringValue(values, "api-base-url"); ok {
+						r.ApiBaseUrl = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["include-service-accounts"]; ok {

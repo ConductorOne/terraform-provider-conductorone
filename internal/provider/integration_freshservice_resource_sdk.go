@@ -182,8 +182,10 @@ func (r *IntegrationFreshserviceResourceModel) RefreshFromGetResponse(resp *shar
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "domain"); ok {
-					r.Domain = types.StringValue(val)
+				if _, ok := configValues["domain"]; ok {
+					if val, ok := getStringValue(values, "domain"); ok {
+						r.Domain = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
@@ -195,8 +197,10 @@ func (r *IntegrationFreshserviceResourceModel) RefreshFromGetResponse(resp *shar
 					}
 				}
 
-				if val, ok := getStringValue(values, "category_id"); ok {
-					r.CategoryId = types.StringValue(val)
+				if _, ok := configValues["category_id"]; ok {
+					if val, ok := getStringValue(values, "category_id"); ok {
+						r.CategoryId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -243,8 +247,10 @@ func (r *IntegrationFreshserviceResourceModel) RefreshFromCreateResponse(resp *s
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "domain"); ok {
-					r.Domain = types.StringValue(val)
+				if _, ok := configValues["domain"]; ok {
+					if val, ok := getStringValue(values, "domain"); ok {
+						r.Domain = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
@@ -256,8 +262,10 @@ func (r *IntegrationFreshserviceResourceModel) RefreshFromCreateResponse(resp *s
 					}
 				}
 
-				if val, ok := getStringValue(values, "category_id"); ok {
-					r.CategoryId = types.StringValue(val)
+				if _, ok := configValues["category_id"]; ok {
+					if val, ok := getStringValue(values, "category_id"); ok {
+						r.CategoryId = types.StringValue(val)
+					}
 				}
 
 			}

@@ -166,12 +166,15 @@ func (r *IntegrationContentfulResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "contentful_organization_id"); ok {
-					r.ContentfulOrganizationId = types.StringValue(val)
+				if _, ok := configValues["contentful_organization_id"]; ok {
+					if val, ok := getStringValue(values, "contentful_organization_id"); ok {
+						r.ContentfulOrganizationId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -214,12 +217,15 @@ func (r *IntegrationContentfulResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "contentful_organization_id"); ok {
-					r.ContentfulOrganizationId = types.StringValue(val)
+				if _, ok := configValues["contentful_organization_id"]; ok {
+					if val, ok := getStringValue(values, "contentful_organization_id"); ok {
+						r.ContentfulOrganizationId = types.StringValue(val)
+					}
 				}
 
 			}

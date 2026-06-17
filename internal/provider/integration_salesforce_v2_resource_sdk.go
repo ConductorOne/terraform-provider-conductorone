@@ -68,7 +68,12 @@ func (r *IntegrationSalesforceV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -151,7 +156,12 @@ func (r *IntegrationSalesforceV2ResourceModel) getConfig() (map[string]interface
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -215,9 +225,11 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromGetResponse(resp *shar
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
-							attributeTypes["salesforce_instance_url"] = types.StringType
-							attributeValues["salesforce_instance_url"] = types.StringValue(val)
+						if _, ok := configValues["salesforce_instance_url"]; ok {
+							if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+								attributeTypes["salesforce_instance_url"] = types.StringType
+								attributeValues["salesforce_instance_url"] = types.StringValue(val)
+							}
 						}
 						if _, ok := configValues["salesforce_username_for_email"]; ok {
 							if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
@@ -243,6 +255,37 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromGetResponse(resp *shar
 							attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
 							attributeValues["salesforce_sync_connected_apps"] = types.BoolNull()
 						}
+						if _, ok := configValues["salesforce_sync_deactivated_users"]; ok {
+							if val, ok := getStringValue(values, "salesforce_sync_deactivated_users"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_sync_deactivated_users"] = types.BoolType
+									attributeValues["salesforce_sync_deactivated_users"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_sync_deactivated_users"] = types.BoolType
+							attributeValues["salesforce_sync_deactivated_users"] = types.BoolNull()
+						}
+						if _, ok := configValues["sync-non-standard-users"]; ok {
+							if val, ok := getStringValue(values, "sync-non-standard-users"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync-non-standard-users"] = types.BoolType
+									attributeValues["sync-non-standard-users"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync-non-standard-users"] = types.BoolType
+							attributeValues["sync-non-standard-users"] = types.BoolNull()
+						}
+
+						if _, ok := configValues["salesforce_user_license_least_privilege"]; ok {
+							if val, ok := getStringValue(values, "salesforce_user_license_least_privilege"); ok {
+								attributeTypes["salesforce_user_license_least_privilege"] = types.StringType
+								attributeValues["salesforce_user_license_least_privilege"] = types.StringValue(val)
+							}
+						}
 						r.SalesforceGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
 				}
@@ -252,9 +295,11 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromGetResponse(resp *shar
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "salesforce_username"); ok {
-							attributeTypes["salesforce_username"] = types.StringType
-							attributeValues["salesforce_username"] = types.StringValue(val)
+						if _, ok := configValues["salesforce_username"]; ok {
+							if val, ok := getStringValue(values, "salesforce_username"); ok {
+								attributeTypes["salesforce_username"] = types.StringType
+								attributeValues["salesforce_username"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["salesforce_password"] = types.StringType
@@ -271,9 +316,11 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromGetResponse(resp *shar
 							attributeValues["salesforce_security_token"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
-							attributeTypes["salesforce_instance_url"] = types.StringType
-							attributeValues["salesforce_instance_url"] = types.StringValue(val)
+						if _, ok := configValues["salesforce_instance_url"]; ok {
+							if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+								attributeTypes["salesforce_instance_url"] = types.StringType
+								attributeValues["salesforce_instance_url"] = types.StringValue(val)
+							}
 						}
 						if _, ok := configValues["salesforce_username_for_email"]; ok {
 							if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
@@ -298,6 +345,37 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromGetResponse(resp *shar
 						} else {
 							attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
 							attributeValues["salesforce_sync_connected_apps"] = types.BoolNull()
+						}
+						if _, ok := configValues["salesforce_sync_deactivated_users"]; ok {
+							if val, ok := getStringValue(values, "salesforce_sync_deactivated_users"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_sync_deactivated_users"] = types.BoolType
+									attributeValues["salesforce_sync_deactivated_users"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_sync_deactivated_users"] = types.BoolType
+							attributeValues["salesforce_sync_deactivated_users"] = types.BoolNull()
+						}
+						if _, ok := configValues["sync-non-standard-users"]; ok {
+							if val, ok := getStringValue(values, "sync-non-standard-users"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync-non-standard-users"] = types.BoolType
+									attributeValues["sync-non-standard-users"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync-non-standard-users"] = types.BoolType
+							attributeValues["sync-non-standard-users"] = types.BoolNull()
+						}
+
+						if _, ok := configValues["salesforce_user_license_least_privilege"]; ok {
+							if val, ok := getStringValue(values, "salesforce_user_license_least_privilege"); ok {
+								attributeTypes["salesforce_user_license_least_privilege"] = types.StringType
+								attributeValues["salesforce_user_license_least_privilege"] = types.StringValue(val)
+							}
 						}
 						r.SalesforceGroupAccessToken = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
@@ -352,9 +430,11 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromCreateResponse(resp *s
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
-							attributeTypes["salesforce_instance_url"] = types.StringType
-							attributeValues["salesforce_instance_url"] = types.StringValue(val)
+						if _, ok := configValues["salesforce_instance_url"]; ok {
+							if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+								attributeTypes["salesforce_instance_url"] = types.StringType
+								attributeValues["salesforce_instance_url"] = types.StringValue(val)
+							}
 						}
 						if _, ok := configValues["salesforce_username_for_email"]; ok {
 							if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
@@ -380,6 +460,37 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromCreateResponse(resp *s
 							attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
 							attributeValues["salesforce_sync_connected_apps"] = types.BoolNull()
 						}
+						if _, ok := configValues["salesforce_sync_deactivated_users"]; ok {
+							if val, ok := getStringValue(values, "salesforce_sync_deactivated_users"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_sync_deactivated_users"] = types.BoolType
+									attributeValues["salesforce_sync_deactivated_users"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_sync_deactivated_users"] = types.BoolType
+							attributeValues["salesforce_sync_deactivated_users"] = types.BoolNull()
+						}
+						if _, ok := configValues["sync-non-standard-users"]; ok {
+							if val, ok := getStringValue(values, "sync-non-standard-users"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync-non-standard-users"] = types.BoolType
+									attributeValues["sync-non-standard-users"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync-non-standard-users"] = types.BoolType
+							attributeValues["sync-non-standard-users"] = types.BoolNull()
+						}
+
+						if _, ok := configValues["salesforce_user_license_least_privilege"]; ok {
+							if val, ok := getStringValue(values, "salesforce_user_license_least_privilege"); ok {
+								attributeTypes["salesforce_user_license_least_privilege"] = types.StringType
+								attributeValues["salesforce_user_license_least_privilege"] = types.StringValue(val)
+							}
+						}
 						r.SalesforceGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
 				}
@@ -389,9 +500,11 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromCreateResponse(resp *s
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "salesforce_username"); ok {
-							attributeTypes["salesforce_username"] = types.StringType
-							attributeValues["salesforce_username"] = types.StringValue(val)
+						if _, ok := configValues["salesforce_username"]; ok {
+							if val, ok := getStringValue(values, "salesforce_username"); ok {
+								attributeTypes["salesforce_username"] = types.StringType
+								attributeValues["salesforce_username"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["salesforce_password"] = types.StringType
@@ -408,9 +521,11 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromCreateResponse(resp *s
 							attributeValues["salesforce_security_token"] = types.StringNull()
 						}
 
-						if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
-							attributeTypes["salesforce_instance_url"] = types.StringType
-							attributeValues["salesforce_instance_url"] = types.StringValue(val)
+						if _, ok := configValues["salesforce_instance_url"]; ok {
+							if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+								attributeTypes["salesforce_instance_url"] = types.StringType
+								attributeValues["salesforce_instance_url"] = types.StringValue(val)
+							}
 						}
 						if _, ok := configValues["salesforce_username_for_email"]; ok {
 							if val, ok := getStringValue(values, "salesforce_username_for_email"); ok {
@@ -435,6 +550,37 @@ func (r *IntegrationSalesforceV2ResourceModel) RefreshFromCreateResponse(resp *s
 						} else {
 							attributeTypes["salesforce_sync_connected_apps"] = types.BoolType
 							attributeValues["salesforce_sync_connected_apps"] = types.BoolNull()
+						}
+						if _, ok := configValues["salesforce_sync_deactivated_users"]; ok {
+							if val, ok := getStringValue(values, "salesforce_sync_deactivated_users"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["salesforce_sync_deactivated_users"] = types.BoolType
+									attributeValues["salesforce_sync_deactivated_users"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["salesforce_sync_deactivated_users"] = types.BoolType
+							attributeValues["salesforce_sync_deactivated_users"] = types.BoolNull()
+						}
+						if _, ok := configValues["sync-non-standard-users"]; ok {
+							if val, ok := getStringValue(values, "sync-non-standard-users"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["sync-non-standard-users"] = types.BoolType
+									attributeValues["sync-non-standard-users"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["sync-non-standard-users"] = types.BoolType
+							attributeValues["sync-non-standard-users"] = types.BoolNull()
+						}
+
+						if _, ok := configValues["salesforce_user_license_least_privilege"]; ok {
+							if val, ok := getStringValue(values, "salesforce_user_license_least_privilege"); ok {
+								attributeTypes["salesforce_user_license_least_privilege"] = types.StringType
+								attributeValues["salesforce_user_license_least_privilege"] = types.StringValue(val)
+							}
 						}
 						r.SalesforceGroupAccessToken = types.ObjectValueMust(attributeTypes, attributeValues)
 					}

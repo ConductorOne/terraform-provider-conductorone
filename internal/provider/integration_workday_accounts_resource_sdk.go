@@ -219,12 +219,16 @@ func (r *IntegrationWorkdayAccountsResourceModel) RefreshFromGetResponse(resp *s
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "workday_rest_api_endpoint"); ok {
-					r.WorkdayRestApiEndpoint = types.StringValue(val)
+				if _, ok := configValues["workday_rest_api_endpoint"]; ok {
+					if val, ok := getStringValue(values, "workday_rest_api_endpoint"); ok {
+						r.WorkdayRestApiEndpoint = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "workday_client_id"); ok {
-					r.WorkdayClientId = types.StringValue(val)
+				if _, ok := configValues["workday_client_id"]; ok {
+					if val, ok := getStringValue(values, "workday_client_id"); ok {
+						r.WorkdayClientId = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["workday_sync_service_centers"]; ok {
@@ -245,40 +249,46 @@ func (r *IntegrationWorkdayAccountsResourceModel) RefreshFromGetResponse(resp *s
 					}
 				}
 
-				if val, ok := getStringValue(values, "workday_user_based_security_groups"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["workday_user_based_security_groups"]; ok {
+					if val, ok := getStringValue(values, "workday_user_based_security_groups"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.WorkdayUserBasedSecurityGroups = valLists
 					}
-					r.WorkdayUserBasedSecurityGroups = valLists
 				}
 
-				if val, ok := getStringValue(values, "workday_security_group_types"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["workday_security_group_types"]; ok {
+					if val, ok := getStringValue(values, "workday_security_group_types"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.WorkdaySecurityGroupTypes = valLists
 					}
-					r.WorkdaySecurityGroupTypes = valLists
 				}
 
-				if val, ok := getStringValue(values, "workday_security_groups"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["workday_security_groups"]; ok {
+					if val, ok := getStringValue(values, "workday_security_groups"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.WorkdaySecurityGroups = valLists
 					}
-					r.WorkdaySecurityGroups = valLists
 				}
 
 			}
@@ -325,12 +335,16 @@ func (r *IntegrationWorkdayAccountsResourceModel) RefreshFromCreateResponse(resp
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "workday_rest_api_endpoint"); ok {
-					r.WorkdayRestApiEndpoint = types.StringValue(val)
+				if _, ok := configValues["workday_rest_api_endpoint"]; ok {
+					if val, ok := getStringValue(values, "workday_rest_api_endpoint"); ok {
+						r.WorkdayRestApiEndpoint = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "workday_client_id"); ok {
-					r.WorkdayClientId = types.StringValue(val)
+				if _, ok := configValues["workday_client_id"]; ok {
+					if val, ok := getStringValue(values, "workday_client_id"); ok {
+						r.WorkdayClientId = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["workday_sync_service_centers"]; ok {
@@ -351,40 +365,46 @@ func (r *IntegrationWorkdayAccountsResourceModel) RefreshFromCreateResponse(resp
 					}
 				}
 
-				if val, ok := getStringValue(values, "workday_user_based_security_groups"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["workday_user_based_security_groups"]; ok {
+					if val, ok := getStringValue(values, "workday_user_based_security_groups"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.WorkdayUserBasedSecurityGroups = valLists
 					}
-					r.WorkdayUserBasedSecurityGroups = valLists
 				}
 
-				if val, ok := getStringValue(values, "workday_security_group_types"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["workday_security_group_types"]; ok {
+					if val, ok := getStringValue(values, "workday_security_group_types"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.WorkdaySecurityGroupTypes = valLists
 					}
-					r.WorkdaySecurityGroupTypes = valLists
 				}
 
-				if val, ok := getStringValue(values, "workday_security_groups"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["workday_security_groups"]; ok {
+					if val, ok := getStringValue(values, "workday_security_groups"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.WorkdaySecurityGroups = valLists
 					}
-					r.WorkdaySecurityGroups = valLists
 				}
 
 			}
