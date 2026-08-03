@@ -215,12 +215,9 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 // required"), so without this, every terraform apply that updates an
 // existing resource of any of these three types fails outright.
 //
-// Each patch sets UpdateMask to a static comma-joined list of every
-// writable field. AccessReview's list deliberately omits scope_v2 and
-// policy_id: the backend rejects those paths in update_mask once a campaign
-// leaves PENDING state regardless of whether the value changed, so a static
-// full mask would break unrelated field updates (e.g. display_name) on any
-// running campaign.
+// Function and AccessReview use payload-aware masks and then narrow them to
+// Terraform attributes that changed. This avoids invalid paths that the API
+// does not accept and paths omitted from the JSON payload by omitempty.
 func TestUpdateRequestsSetUpdateMask(t *testing.T) {
 	cases := []struct {
 		file     string
@@ -259,6 +256,34 @@ func TestUpdateRequestsSetUpdateMask(t *testing.T) {
 				"The backend requires a non-empty update_mask and will reject every "+
 				"Update() call with InvalidArgument otherwise. Re-apply patches/04-function-update-mask.patch "+
 				"or patches/05-access-review-update-mask.patch (whichever matches %s).", c.file, c.funcName, c.file)
+		}
+	}
+
+	forbiddenPaths := map[string]string{
+		"function_resource_sdk.go":      "provisionedConcurrency",
+		"access_review_resource_sdk.go": "reviewerAttributeConfig",
+	}
+	for file, path := range forbiddenPaths {
+		data, err := os.ReadFile(file)
+		if err != nil {
+			t.Fatalf("reading %s: %v", file, err)
+		}
+		if strings.Contains(string(data), path) {
+			t.Errorf("%s still includes unsupported update-mask path %q", file, path)
+		}
+	}
+
+	changeAwareMasks := map[string]string{
+		"function_resource.go":      "functionUpdateMaskForChanges(state, plan, request.Function)",
+		"access_review_resource.go": "accessReviewUpdateMaskForChanges(state, plan, request.AccessReviewServiceUpdateRequest.AccessReview)",
+	}
+	for file, marker := range changeAwareMasks {
+		data, err := os.ReadFile(file)
+		if err != nil {
+			t.Fatalf("reading %s: %v", file, err)
+		}
+		if !strings.Contains(string(data), marker) {
+			t.Errorf("%s does not narrow the update mask to changed, serialized fields", file)
 		}
 	}
 }

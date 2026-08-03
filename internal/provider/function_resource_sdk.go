@@ -285,11 +285,14 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceUpdateFunctionRequest(ct
 		return nil, diags
 	}
 
-	updateMask := "displayName,description,functionType,publishedCommitId,isDraft,secret," +
-		"outboundNetworkAllowlist,scopedRoleIds,provisionedConcurrency"
+	updateMask, updateMaskDiags := functionUpdateMask(function)
+	diags.Append(updateMaskDiags...)
+	if diags.HasError() {
+		return nil, diags
+	}
 	out := shared.FunctionsServiceUpdateFunctionRequest{
 		Function:   function,
-		UpdateMask: &updateMask,
+		UpdateMask: updateMask,
 	}
 
 	return &out, diags

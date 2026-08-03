@@ -1872,18 +1872,14 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceUpdateRequest(ctx
 		return nil, diags
 	}
 
-	// scope_v2 and policy_id are deliberately excluded: the backend rejects
-	// any update carrying either path in update_mask once the campaign has
-	// left PENDING state, regardless of whether the value actually changed.
-	// Including them here would break every other-field update (e.g. just
-	// display_name) on a running campaign. See IGA-2302 follow-up discussion.
-	updateMask := "displayName,description,reviewInstructions,defaultView,completionDate,autoResolve," +
-		"usePolicyOverride,autoGenerateReport,scopeType,exemptCertifiedAccessConflicts,autoStartCampaign," +
-		"scheduledStartDate,accuracyIssueAction,autoCloseCampaign,autoCloseDecision,columnConfig," +
-		"reviewerAttributeConfig,notificationConfig,signatureConfig,inclusionScope"
+	updateMask, updateMaskDiags := accessReviewUpdateMask(accessReview)
+	diags.Append(updateMaskDiags...)
+	if diags.HasError() {
+		return nil, diags
+	}
 	out := shared.AccessReviewServiceUpdateRequest{
 		AccessReview: accessReview,
-		UpdateMask:   &updateMask,
+		UpdateMask:   updateMask,
 	}
 
 	return &out, diags

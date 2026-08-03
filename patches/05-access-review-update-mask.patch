@@ -1,23 +1,50 @@
+diff --git a/internal/provider/access_review_resource.go b/internal/provider/access_review_resource.go
+--- a/internal/provider/access_review_resource.go
++++ b/internal/provider/access_review_resource.go
+@@ -961,8 +961,14 @@ func (r *AccessReviewResource) Read(ctx context.Context, req resource.ReadReques
+ 
+ func (r *AccessReviewResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+ 	var data *AccessReviewResourceModel
++	var state types.Object
+ 	var plan types.Object
+ 
++	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
++	if resp.Diagnostics.HasError() {
++		return
++	}
++
+ 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+ 	if resp.Diagnostics.HasError() {
+ 		return
+@@ -979,6 +985,12 @@ func (r *AccessReviewResource) Update(ctx context.Context, req resource.UpdateRe
+ 	if resp.Diagnostics.HasError() {
+ 		return
+ 	}
++	updateMask, updateMaskDiags := accessReviewUpdateMaskForChanges(state, plan, request.AccessReviewServiceUpdateRequest.AccessReview)
++	resp.Diagnostics.Append(updateMaskDiags...)
++	if resp.Diagnostics.HasError() {
++		return
++	}
++	request.AccessReviewServiceUpdateRequest.UpdateMask = updateMask
+ 	res, err := r.client.AccessReview.Update(ctx, *request)
+ 	if err != nil {
+ 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 diff --git a/internal/provider/access_review_resource_sdk.go b/internal/provider/access_review_resource_sdk.go
-index 83cf6273..4f2398cd 100644
 --- a/internal/provider/access_review_resource_sdk.go
 +++ b/internal/provider/access_review_resource_sdk.go
-@@ -1872,8 +1872,18 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceUpdateRequest(ctx
+@@ -1872,8 +1872,14 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceUpdateRequest(ctx
  		return nil, diags
  	}
  
-+	// scope_v2 and policy_id are deliberately excluded: the backend rejects
-+	// any update carrying either path in update_mask once the campaign has
-+	// left PENDING state, regardless of whether the value actually changed.
-+	// Including them here would break every other-field update (e.g. just
-+	// display_name) on a running campaign. See IGA-2302 follow-up discussion.
-+	updateMask := "displayName,description,reviewInstructions,defaultView,completionDate,autoResolve," +
-+		"usePolicyOverride,autoGenerateReport,scopeType,exemptCertifiedAccessConflicts,autoStartCampaign," +
-+		"scheduledStartDate,accuracyIssueAction,autoCloseCampaign,autoCloseDecision,columnConfig," +
-+		"reviewerAttributeConfig,notificationConfig,signatureConfig,inclusionScope"
++	updateMask, updateMaskDiags := accessReviewUpdateMask(accessReview)
++	diags.Append(updateMaskDiags...)
++	if diags.HasError() {
++		return nil, diags
++	}
  	out := shared.AccessReviewServiceUpdateRequest{
- 		AccessReview: accessReview,
-+		UpdateMask:   &updateMask,
+-		AccessReview: accessReview,
++		AccessReview: accessReview,
++		UpdateMask:   updateMask,
  	}
  
  	return &out, diags

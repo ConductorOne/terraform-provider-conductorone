@@ -961,7 +961,13 @@ func (r *AccessReviewResource) Read(ctx context.Context, req resource.ReadReques
 
 func (r *AccessReviewResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *AccessReviewResourceModel
+	var state types.Object
 	var plan types.Object
+
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
@@ -979,6 +985,12 @@ func (r *AccessReviewResource) Update(ctx context.Context, req resource.UpdateRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	updateMask, updateMaskDiags := accessReviewUpdateMaskForChanges(state, plan, request.AccessReviewServiceUpdateRequest.AccessReview)
+	resp.Diagnostics.Append(updateMaskDiags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request.AccessReviewServiceUpdateRequest.UpdateMask = updateMask
 	res, err := r.client.AccessReview.Update(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
