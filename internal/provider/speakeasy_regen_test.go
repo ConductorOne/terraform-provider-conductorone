@@ -200,3 +200,62 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 		}
 	}
 }
+
+// TestUpdateRequestsSetUpdateMask verifies that every listed resource's
+// ToShared*ServiceUpdateRequest / ToShared*ServiceUpdateFunctionRequest
+// function actually populates UpdateMask on the outgoing shared request.
+//
+// Regression: Speakeasy does not auto-generate update_mask population for
+// these operations (nothing in the OAS distinguishes them from
+// access_review_template, which Speakeasy also doesn't handle — that one is
+// hand-patched too, see patches/03). The backend RPCs behind Function and
+// AccessReview hard-reject a request with a nil/empty update_mask
+// (InvalidArgument: "update_mask is required"), so without this, every
+// terraform apply that updates an existing conductorone_function or
+// conductorone_access_review fails outright. Fixed by patches/04 and
+// patches/05, which set UpdateMask to a static comma-joined list of every
+// writable field. AccessReview's list deliberately omits scope_v2 and
+// policy_id: the backend rejects those paths in update_mask once a campaign
+// leaves PENDING state regardless of whether the value changed, so a static
+// full mask would break unrelated field updates (e.g. display_name) on any
+// running campaign.
+func TestUpdateRequestsSetUpdateMask(t *testing.T) {
+	cases := []struct {
+		file     string
+		funcName string
+	}{
+		{"function_resource_sdk.go", "ToSharedFunctionsServiceUpdateFunctionRequest"},
+		{"access_review_resource_sdk.go", "ToSharedAccessReviewServiceUpdateRequest"},
+	}
+
+	funcBody := regexp.MustCompile(`(?s)func \(r \*\w+\) (\w+)\(ctx context\.Context\).*?\n}\n`)
+
+	for _, c := range cases {
+		data, err := os.ReadFile(c.file)
+		if err != nil {
+			t.Fatalf("reading %s: %v", c.file, err)
+		}
+		content := string(data)
+
+		matches := funcBody.FindAllStringSubmatch(content, -1)
+		var body string
+		found := false
+		for _, m := range matches {
+			if m[1] == c.funcName {
+				body = m[0]
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("%s: could not find function %s", c.file, c.funcName)
+		}
+
+		if !strings.Contains(body, "UpdateMask:") {
+			t.Errorf("%s: %s does not set UpdateMask on the outgoing request. "+
+				"The backend requires a non-empty update_mask and will reject every "+
+				"Update() call with InvalidArgument otherwise. Re-apply patches/04-function-update-mask.patch "+
+				"or patches/05-access-review-update-mask.patch (whichever matches %s).", c.file, c.funcName, c.file)
+		}
+	}
+}

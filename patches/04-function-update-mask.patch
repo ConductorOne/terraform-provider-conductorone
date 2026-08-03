@@ -1,0 +1,17 @@
+diff --git a/internal/provider/function_resource_sdk.go b/internal/provider/function_resource_sdk.go
+index ca09e5d0..2cc9ff38 100644
+--- a/internal/provider/function_resource_sdk.go
++++ b/internal/provider/function_resource_sdk.go
+@@ -285,8 +285,11 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceUpdateFunctionRequest(ct
+ 		return nil, diags
+ 	}
+ 
++	updateMask := "displayName,description,functionType,publishedCommitId,isDraft,secret," +
++		"outboundNetworkAllowlist,scopedRoleIds,provisionedConcurrency"
+ 	out := shared.FunctionsServiceUpdateFunctionRequest{
+-		Function: function,
++		Function:   function,
++		UpdateMask: &updateMask,
+ 	}
+ 
+ 	return &out, diags
