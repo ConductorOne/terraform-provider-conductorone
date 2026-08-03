@@ -206,14 +206,16 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 // function actually populates UpdateMask on the outgoing shared request.
 //
 // Regression: Speakeasy does not auto-generate update_mask population for
-// these operations (nothing in the OAS distinguishes them from
-// access_review_template, which Speakeasy also doesn't handle — that one is
-// hand-patched too, see patches/03). The backend RPCs behind Function and
-// AccessReview hard-reject a request with a nil/empty update_mask
-// (InvalidArgument: "update_mask is required"), so without this, every
-// terraform apply that updates an existing conductorone_function or
-// conductorone_access_review fails outright. Fixed by patches/04 and
-// patches/05, which set UpdateMask to a static comma-joined list of every
+// these operations — nothing in the OAS distinguishes any of the three
+// resources below from each other. access_review_template hit this first
+// and was hand-patched (patches/03, PR #231 / IGA-2302) with no tripwire
+// test added at the time; function and access_review hit the identical bug
+// later (patches/04, patches/05). All three backend RPCs hard-reject a
+// request with a nil/empty update_mask (InvalidArgument: "update_mask is
+// required"), so without this, every terraform apply that updates an
+// existing resource of any of these three types fails outright.
+//
+// Each patch sets UpdateMask to a static comma-joined list of every
 // writable field. AccessReview's list deliberately omits scope_v2 and
 // policy_id: the backend rejects those paths in update_mask once a campaign
 // leaves PENDING state regardless of whether the value changed, so a static
@@ -226,6 +228,7 @@ func TestUpdateRequestsSetUpdateMask(t *testing.T) {
 	}{
 		{"function_resource_sdk.go", "ToSharedFunctionsServiceUpdateFunctionRequest"},
 		{"access_review_resource_sdk.go", "ToSharedAccessReviewServiceUpdateRequest"},
+		{"access_review_template_resource_sdk.go", "ToSharedAccessReviewTemplateServiceUpdateRequest"},
 	}
 
 	funcBody := regexp.MustCompile(`(?s)func \(r \*\w+\) (\w+)\(ctx context\.Context\).*?\n}\n`)
