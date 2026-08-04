@@ -1,50 +1,35 @@
 diff --git a/internal/provider/access_review_resource.go b/internal/provider/access_review_resource.go
---- a/internal/provider/access_review_resource.go
-+++ b/internal/provider/access_review_resource.go
-@@ -961,8 +961,14 @@ func (r *AccessReviewResource) Read(ctx context.Context, req resource.ReadReques
- 
- func (r *AccessReviewResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
- 	var data *AccessReviewResourceModel
-+	var state types.Object
- 	var plan types.Object
- 
-+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-+	if resp.Diagnostics.HasError() {
-+		return
-+	}
-+
- 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
- 	if resp.Diagnostics.HasError() {
- 		return
-@@ -979,6 +985,12 @@ func (r *AccessReviewResource) Update(ctx context.Context, req resource.UpdateRe
- 	if resp.Diagnostics.HasError() {
- 		return
- 	}
-+	updateMask, updateMaskDiags := accessReviewUpdateMaskForChanges(state, plan, request.AccessReviewServiceUpdateRequest.AccessReview)
-+	resp.Diagnostics.Append(updateMaskDiags...)
-+	if resp.Diagnostics.HasError() {
-+		return
-+	}
-+	request.AccessReviewServiceUpdateRequest.UpdateMask = updateMask
- 	res, err := r.client.AccessReview.Update(ctx, *request)
- 	if err != nil {
- 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+index 89102abe6cf25957e766093a5ea0365750937815..ee432cb69631e6ba9a47f8f54d428ab19f5c9ccd 100644
+GIT binary patch
+delta 305
+zcmcb-n`!GorVYBxtocb<smYt~Fj=WiR!ET(_6KoGs<}8p04!HBIWWb1vzW#*-^l_M
+zT$5|#MSuz$CjTh4oBSa~Z?kh*nY2)GNn%N=LP=#oYOx-~gvtHQW|JRu39y2tCLf&P
+zxB2PBaK_Nmf)t=q-^Ai<9R&p2B{MO-Si#CxAu%~QwYWGawJbBWJQS|fEx*V)BQY;M
+zwO9jeoQ^_4PGX*pLQ!gAX=-ta-sFQF!jsQW;^otGMAEN0d18l@Fq$QLdU~3Z8z<;<
+Wa-wUN&_h_LV2k9q%~q3VasdDvl5^1j
+
+delta 62
+zcmV-E0KxyY!2;8}0<bLuvx5WaB$FR<FS7$FcTJNpY7LV+U<#8@WFM0fcSN&ycY_;~
+U)`WSp@{<YylUSW1vp|-03Ju~I_5c6?
+
 diff --git a/internal/provider/access_review_resource_sdk.go b/internal/provider/access_review_resource_sdk.go
---- a/internal/provider/access_review_resource_sdk.go
-+++ b/internal/provider/access_review_resource_sdk.go
-@@ -1872,8 +1872,14 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceUpdateRequest(ctx
- 		return nil, diags
- 	}
- 
-+	updateMask, updateMaskDiags := accessReviewUpdateMask(accessReview)
-+	diags.Append(updateMaskDiags...)
-+	if diags.HasError() {
-+		return nil, diags
-+	}
- 	out := shared.AccessReviewServiceUpdateRequest{
--		AccessReview: accessReview,
-+		AccessReview: accessReview,
-+		UpdateMask:   updateMask,
- 	}
- 
- 	return &out, diags
+index 4f2398cd98b989a9e74c2ed474899547fda08a73..2df77c7c2371f17fd6bac691e9f226328986c7bf 100644
+GIT binary patch
+delta 140
+zcmZ2@oAuN+)`l&NhFPhl1u2OoslJKD**Xdcwo7JWda;6)twLgQa%ypLP-<CbYI!JJ
+zsRpvJCKqQ4NV%S4K|yL>iUyh~dU|@A)3O-#r<<lRDotKc$}#yt1M76JTt<WG)wzsn
+E0HX0TG5`Po
+
+delta 772
+zcmYL{J&qGG6o8c?5?RCzKza%i0x`)hp<9U}N>G%7u-YKn=*50B<HWH?{z;f>_5?I3
+zR-%GCa0(7UL&G6B0JbxM_WgYR-h2M>v-|B=_wIY=)uy?;1j}?qtNjR2aj3KutX>HY
+zXb3n-u_l9#WDWF*NzaL2gDVNv$hH(33~h)xd(jIdR5kdDhjL(OOf6IaBto@;3S9|8
+zwdvIk?H06R4J8=EU4^1hP~wRsDR*%5b}^kVW?)?)X5pm*4VPps=o}6uC2(}vqx1yG
+zoJSc%S&6D3K1@z?6|JL5sN6wtAvkC+Ijjv~vjy6dsX<5BAQu!8?Fi3lSPWs~txF&-
+zY$dT?DcsSE;0_4JD;3FS{UI!gU_KiUMz60%kZURRVc;tWz06xHv<gxu{JXe;>*fvg
+zTks-qGftKnQMpi=8QKdv%$0S<vly`<ouilTV~A%=?<z?#K8@=^@ANHME%%i5;pIiI
+z*Y}og(mCIU5sl!dq8X`l(OastdE~Nm{ttCU867)co-~QHbZFe9y~>$qSxMYW;wgK2
+zl`(IS)pKh-jgw{SpGa-#Uw?E<kts0|w-Dr|->HdKxhT%~)4WqMW9N)mdq-_vX(w{Q
+yFwWYBZ1^nbyg8SMc;!f5#?Rcp|6F#S9>4kr$KQ9|`#+n`)x&51*M6*;$A1A<C>P!U
+
+# End of patch
