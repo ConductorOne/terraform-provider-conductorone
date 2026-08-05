@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"context"
 	"testing"
 
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
@@ -95,7 +96,7 @@ func TestPayloadMasksContainOnlySerializedBackendPaths(t *testing.T) {
 func updateMaskObjects(state, plan map[string]attr.Value) (types.Object, types.Object) {
 	attributeTypes := make(map[string]attr.Type, len(state))
 	for name, value := range state {
-		attributeTypes[name] = value.Type(nil)
+		attributeTypes[name] = value.Type(context.Background())
 	}
 	return types.ObjectValueMust(attributeTypes, state), types.ObjectValueMust(attributeTypes, plan)
 }
