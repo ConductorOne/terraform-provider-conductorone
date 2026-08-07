@@ -200,3 +200,90 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 		}
 	}
 }
+
+// TestUpdateRequestsSetUpdateMask verifies that every listed resource's
+// ToShared*ServiceUpdateRequest / ToShared*ServiceUpdateFunctionRequest
+// function actually populates UpdateMask on the outgoing shared request.
+//
+// Regression: Speakeasy does not auto-generate update_mask population for
+// these operations — nothing in the OAS distinguishes any of the three
+// resources below from each other. access_review_template hit this first
+// and was hand-patched (patches/03, PR #231 / IGA-2302) with no tripwire
+// test added at the time; function and access_review hit the identical bug
+// later (patches/04, patches/05). All three backend RPCs hard-reject a
+// request with a nil/empty update_mask (InvalidArgument: "update_mask is
+// required"), so without this, every terraform apply that updates an
+// existing resource of any of these three types fails outright.
+//
+// Function and AccessReview use payload-aware masks and then narrow them to
+// Terraform attributes that changed. This avoids invalid paths that the API
+// does not accept and paths omitted from the JSON payload by omitempty.
+func TestUpdateRequestsSetUpdateMask(t *testing.T) {
+	cases := []struct {
+		file     string
+		funcName string
+	}{
+		{"function_resource_sdk.go", "ToSharedFunctionsServiceUpdateFunctionRequest"},
+		{"access_review_resource_sdk.go", "ToSharedAccessReviewServiceUpdateRequest"},
+		{"access_review_template_resource_sdk.go", "ToSharedAccessReviewTemplateServiceUpdateRequest"},
+	}
+
+	funcBody := regexp.MustCompile(`(?s)func \(r \*\w+\) (\w+)\(ctx context\.Context\).*?\n}\n`)
+
+	for _, c := range cases {
+		data, err := os.ReadFile(c.file)
+		if err != nil {
+			t.Fatalf("reading %s: %v", c.file, err)
+		}
+		content := string(data)
+
+		matches := funcBody.FindAllStringSubmatch(content, -1)
+		var body string
+		found := false
+		for _, m := range matches {
+			if m[1] == c.funcName {
+				body = m[0]
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("%s: could not find function %s", c.file, c.funcName)
+		}
+
+		if !strings.Contains(body, "UpdateMask:") {
+			t.Errorf("%s: %s does not set UpdateMask on the outgoing request. "+
+				"The backend requires a non-empty update_mask and will reject every "+
+				"Update() call with InvalidArgument otherwise. Re-apply patches/04-function-update-mask.patch "+
+				"or patches/05-access-review-update-mask.patch (whichever matches %s).", c.file, c.funcName, c.file)
+		}
+	}
+
+	forbiddenPaths := map[string]string{
+		"function_resource_sdk.go":      "provisionedConcurrency",
+		"access_review_resource_sdk.go": "reviewerAttributeConfig",
+	}
+	for file, path := range forbiddenPaths {
+		data, err := os.ReadFile(file)
+		if err != nil {
+			t.Fatalf("reading %s: %v", file, err)
+		}
+		if strings.Contains(string(data), path) {
+			t.Errorf("%s still includes unsupported update-mask path %q", file, path)
+		}
+	}
+
+	changeAwareMasks := map[string]string{
+		"function_resource.go":      "functionUpdateMaskForChanges(state, plan, request.Function)",
+		"access_review_resource.go": "accessReviewUpdateMaskForChanges(state, plan, request.AccessReviewServiceUpdateRequest.AccessReview)",
+	}
+	for file, marker := range changeAwareMasks {
+		data, err := os.ReadFile(file)
+		if err != nil {
+			t.Fatalf("reading %s: %v", file, err)
+		}
+		if !strings.Contains(string(data), marker) {
+			t.Errorf("%s does not narrow the update mask to changed, serialized fields", file)
+		}
+	}
+}

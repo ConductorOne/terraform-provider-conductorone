@@ -177,7 +177,7 @@ This message contains a oneof named resource_scope. Only a single field of the f
 - `duplicate_from` (String) The ID of an existing campaign to copy scope and entitlement configuration from. Optional. Requires replacement if changed.
 - `notification_config` (Attributes) Controls which email notifications are sent during the access review lifecycle. (see [below for nested schema](#nestedatt--notification_config))
 - `owner_ids` (List of String) The IDs of the users who own and manage this campaign. At least one owner is required. Requires replacement if changed.
-- `policy_id` (String) The ID of the review policy that governs task assignment and resolution.
+- `policy_id` (String) The ID of the review policy that governs task assignment and resolution. Requires replacement if changed.
 - `scope_type` (String) The type of scoping method for the campaign (e.g., by entitlements, by access conflicts, or by resource). possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"]
 
 ### Read-Only

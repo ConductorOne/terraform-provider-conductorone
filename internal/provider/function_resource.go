@@ -309,7 +309,13 @@ func (r *FunctionResource) Read(ctx context.Context, req resource.ReadRequest, r
 
 func (r *FunctionResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *FunctionResourceModel
+	var state types.Object
 	var plan types.Object
+
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
@@ -327,6 +333,12 @@ func (r *FunctionResource) Update(ctx context.Context, req resource.UpdateReques
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	updateMask, updateMaskDiags := functionUpdateMaskForChanges(state, plan, request.Function)
+	resp.Diagnostics.Append(updateMaskDiags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request.UpdateMask = updateMask
 	res, err := r.client.Functions.UpdateFunction(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
