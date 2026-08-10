@@ -285,14 +285,8 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceUpdateFunctionRequest(ct
 		return nil, diags
 	}
 
-	updateMask, updateMaskDiags := functionUpdateMask(function)
-	diags.Append(updateMaskDiags...)
-	if diags.HasError() {
-		return nil, diags
-	}
 	out := shared.FunctionsServiceUpdateFunctionRequest{
-		Function:   function,
-		UpdateMask: updateMask,
+		Function: function,
 	}
 
 	return &out, diags
