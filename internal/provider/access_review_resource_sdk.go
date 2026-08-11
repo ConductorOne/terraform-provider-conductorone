@@ -1872,14 +1872,8 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceUpdateRequest(ctx
 		return nil, diags
 	}
 
-	updateMask, updateMaskDiags := accessReviewUpdateMask(accessReview)
-	diags.Append(updateMaskDiags...)
-	if diags.HasError() {
-		return nil, diags
-	}
 	out := shared.AccessReviewServiceUpdateRequest{
 		AccessReview: accessReview,
-		UpdateMask:   updateMask,
 	}
 
 	return &out, diags

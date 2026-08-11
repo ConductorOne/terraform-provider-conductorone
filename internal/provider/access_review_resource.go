@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -199,9 +198,6 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			"access_review_scope_v2": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Attributes: map[string]schema.Attribute{
 					"account_criteria_scope": schema.SingleNestedAttribute{
 						Computed: true,
@@ -746,12 +742,9 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `The IDs of the users who own and manage this campaign. At least one owner is required. Requires replacement if changed.`,
 			},
 			"policy_id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `The ID of the review policy that governs task assignment and resolution. Requires replacement if changed.`,
+				Computed:    true,
+				Optional:    true,
+				Description: `The ID of the review policy that governs task assignment and resolution.`,
 			},
 			"policy_path": schema.StringAttribute{
 				Computed:    true,
@@ -968,13 +961,7 @@ func (r *AccessReviewResource) Read(ctx context.Context, req resource.ReadReques
 
 func (r *AccessReviewResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data *AccessReviewResourceModel
-	var state types.Object
 	var plan types.Object
-
-	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
@@ -992,12 +979,6 @@ func (r *AccessReviewResource) Update(ctx context.Context, req resource.UpdateRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	updateMask, updateMaskDiags := accessReviewUpdateMaskForChanges(state, plan, request.AccessReviewServiceUpdateRequest.AccessReview)
-	resp.Diagnostics.Append(updateMaskDiags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request.AccessReviewServiceUpdateRequest.UpdateMask = updateMask
 	res, err := r.client.AccessReview.Update(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
