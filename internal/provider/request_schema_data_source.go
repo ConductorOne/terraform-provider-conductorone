@@ -210,6 +210,41 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 						"form_string_field": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
+								"date_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"default_to_today": schema.BoolAttribute{
+											Computed:    true,
+											Description: `Default the field to the render date when the StringField has no default_value.`,
+										},
+										"max_date": schema.StringAttribute{
+											Computed:    true,
+											Description: `Latest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.`,
+										},
+										"max_days_from_today": schema.Int32Attribute{
+											Computed: true,
+											MarkdownDescription: `Latest selectable date expressed as an offset in days from the date the` + "\n" +
+												` form is rendered; negative is in the past. Set this to 365 to cap a date at` + "\n" +
+												` one year out. When both are set, the earlier of this and max_date applies.` + "\n" +
+												` Enforcement is one day slack in each direction: the picker anchors today at` + "\n" +
+												` the submitter's local midnight and the server anchors in UTC, so 365 admits` + "\n" +
+												` 366 days rather than reject a date the picker itself offered.`,
+										},
+										"min_date": schema.StringAttribute{
+											Computed:    true,
+											Description: `Earliest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.`,
+										},
+										"min_days_from_today": schema.Int32Attribute{
+											Computed: true,
+											MarkdownDescription: `Earliest selectable date expressed as an offset in days from the date the` + "\n" +
+												` form is rendered; negative is in the past. Prefer this over min_date for a` + "\n" +
+												` rolling window, which would otherwise go stale. When both are set, the` + "\n" +
+												` later of the two applies.`,
+										},
+									},
+									MarkdownDescription: `DateField renders a date picker. The value is an ISO-8601 calendar date` + "\n" +
+										` ("YYYY-MM-DD") stored in the enclosing StringField's string value.`,
+								},
 								"default_value": schema.StringAttribute{
 									Computed:    true,
 									Description: `The defaultValue field.`,
@@ -247,6 +282,23 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 										},
 										"c1_user_filter": schema.SingleNestedAttribute{
 											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"exclude_user_ids": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													Description: `Remove these users from the selectable set, after user_ids is applied.`,
+												},
+												"include_deactivated": schema.BoolAttribute{
+													Computed:    true,
+													Description: `Make deactivated and deleted users selectable. Defaults to enabled-only.`,
+												},
+												"user_ids": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Restrict the selectable set to these users. Empty means every user is selectable.` + "\n" +
+														` Capped at the number of refs SearchUsers accepts in one request.`,
+												},
+											},
 											MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
 												` This is distinct from AppUserFilter which selects accounts within a connected app.`,
 										},
@@ -489,7 +541,8 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								`  - textField` + "\n" +
 								`  - passwordField` + "\n" +
 								`  - selectField` + "\n" +
-								`  - pickerField`,
+								`  - pickerField` + "\n" +
+								`  - dateField`,
 						},
 						"form_string_map_field": schema.SingleNestedAttribute{
 							Computed: true,

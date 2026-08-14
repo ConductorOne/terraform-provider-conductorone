@@ -2,13 +2,39 @@
 
 package shared
 
+// PaperSecretServiceCreateResponseAgeSuite - Exact Age suite required for this submission.
+type PaperSecretServiceCreateResponseAgeSuite string
+
+const (
+	PaperSecretServiceCreateResponseAgeSuiteAgeSuiteUnspecified    PaperSecretServiceCreateResponseAgeSuite = "AGE_SUITE_UNSPECIFIED"
+	PaperSecretServiceCreateResponseAgeSuiteAgeSuiteX25519         PaperSecretServiceCreateResponseAgeSuite = "AGE_SUITE_X25519"
+	PaperSecretServiceCreateResponseAgeSuiteAgeSuiteMlkem768X25519 PaperSecretServiceCreateResponseAgeSuite = "AGE_SUITE_MLKEM768X25519"
+)
+
+func (e PaperSecretServiceCreateResponseAgeSuite) ToPointer() *PaperSecretServiceCreateResponseAgeSuite {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceCreateResponseAgeSuite) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AGE_SUITE_UNSPECIFIED", "AGE_SUITE_X25519", "AGE_SUITE_MLKEM768X25519":
+			return true
+		}
+	}
+	return false
+}
+
 // The PaperSecretServiceCreateResponse message.
 type PaperSecretServiceCreateResponse struct {
-	// Age X25519 recipient public key (format: "age1...") for client-side encryption.
+	// Canonical recipient public key for the exact age_suite returned below.
 	//  All content MUST be encrypted to this recipient using the Age encryption format
 	//  before calling SetTextContent or uploading to upload_url.
 	//  See: https://age-encryption.org
 	AgeRecipient *string `json:"ageRecipient,omitempty"`
+	// Exact Age suite required for this submission.
+	AgeSuite *PaperSecretServiceCreateResponseAgeSuite `json:"ageSuite,omitempty"`
 	// PaperSecret is the API view of a secret (combines Vault + PaperVault fields).
 	//  The vault_id is the primary identifier (Vault.id).
 	PaperSecret *PaperSecret `json:"secret,omitempty"`
@@ -27,6 +53,13 @@ func (p *PaperSecretServiceCreateResponse) GetAgeRecipient() *string {
 		return nil
 	}
 	return p.AgeRecipient
+}
+
+func (p *PaperSecretServiceCreateResponse) GetAgeSuite() *PaperSecretServiceCreateResponseAgeSuite {
+	if p == nil {
+		return nil
+	}
+	return p.AgeSuite
 }
 
 func (p *PaperSecretServiceCreateResponse) GetPaperSecret() *PaperSecret {

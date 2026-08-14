@@ -7,6 +7,40 @@ import (
 	"time"
 )
 
+// FindingType - The findingType field.
+type FindingType string
+
+const (
+	FindingTypeFindingTypeUnspecified                       FindingType = "FINDING_TYPE_UNSPECIFIED"
+	FindingTypeFindingTypeSimilarUsernameMatch              FindingType = "FINDING_TYPE_SIMILAR_USERNAME_MATCH"
+	FindingTypeFindingTypeServiceAccountMisclassification   FindingType = "FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION"
+	FindingTypeFindingTypeNhiUnowned                        FindingType = "FINDING_TYPE_NHI_UNOWNED"
+	FindingTypeFindingTypeServiceAccountUnowned             FindingType = "FINDING_TYPE_SERVICE_ACCOUNT_UNOWNED"
+	FindingTypeFindingTypeDecoyCredentialUsed               FindingType = "FINDING_TYPE_DECOY_CREDENTIAL_USED"
+	FindingTypeFindingTypeCustom                            FindingType = "FINDING_TYPE_CUSTOM"
+	FindingTypeFindingTypeConnectorAnomalyDetectionDisabled FindingType = "FINDING_TYPE_CONNECTOR_ANOMALY_DETECTION_DISABLED"
+	FindingTypeFindingTypeDeactivatedOwner                  FindingType = "FINDING_TYPE_DEACTIVATED_OWNER"
+	FindingTypeFindingTypeUnusedSecret                      FindingType = "FINDING_TYPE_UNUSED_SECRET"
+	FindingTypeFindingTypeCredentialPubliclyExposed         FindingType = "FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED"
+	FindingTypeFindingTypeDecoyPubliclyExposed              FindingType = "FINDING_TYPE_DECOY_PUBLICLY_EXPOSED"
+	FindingTypeFindingTypeCredentialExpiring                FindingType = "FINDING_TYPE_CREDENTIAL_EXPIRING"
+)
+
+func (e FindingType) ToPointer() *FindingType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FindingType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FINDING_TYPE_UNSPECIFIED", "FINDING_TYPE_SIMILAR_USERNAME_MATCH", "FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION", "FINDING_TYPE_NHI_UNOWNED", "FINDING_TYPE_SERVICE_ACCOUNT_UNOWNED", "FINDING_TYPE_DECOY_CREDENTIAL_USED", "FINDING_TYPE_CUSTOM", "FINDING_TYPE_CONNECTOR_ANOMALY_DETECTION_DISABLED", "FINDING_TYPE_DEACTIVATED_OWNER", "FINDING_TYPE_UNUSED_SECRET", "FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED", "FINDING_TYPE_DECOY_PUBLICLY_EXPOSED", "FINDING_TYPE_CREDENTIAL_EXPIRING":
+			return true
+		}
+	}
+	return false
+}
+
 // The FindingRoutingRule message.
 type FindingRoutingRule struct {
 	// The FindingRoutingRuleAction message.
@@ -14,7 +48,8 @@ type FindingRoutingRule struct {
 	// This message contains a oneof named action. Only a single field of the following list may be set at a time:
 	//   - createTask
 	//   - suppress
-	//   - notify
+	//   - snooze
+	//   - acceptRisk
 	//
 	FindingRoutingRuleAction *FindingRoutingRuleAction `json:"action,omitempty"`
 	// The appId field.
@@ -24,10 +59,14 @@ type FindingRoutingRule struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
+	// Dispatchers that fire when the rule matches ("Then dispatch"). Max 10.
+	Dispatchers []FindingDispatcher `json:"dispatchers,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
+	// The findingType field.
+	FindingType *FindingType `json:"findingType,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
 	// The priority field.
@@ -83,6 +122,13 @@ func (f *FindingRoutingRule) GetDescription() *string {
 	return f.Description
 }
 
+func (f *FindingRoutingRule) GetDispatchers() []FindingDispatcher {
+	if f == nil {
+		return nil
+	}
+	return f.Dispatchers
+}
+
 func (f *FindingRoutingRule) GetDisplayName() *string {
 	if f == nil {
 		return nil
@@ -95,6 +141,13 @@ func (f *FindingRoutingRule) GetEnabled() *bool {
 		return nil
 	}
 	return f.Enabled
+}
+
+func (f *FindingRoutingRule) GetFindingType() *FindingType {
+	if f == nil {
+		return nil
+	}
+	return f.FindingType
 }
 
 func (f *FindingRoutingRule) GetID() *string {

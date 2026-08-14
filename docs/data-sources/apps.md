@@ -96,6 +96,7 @@ Read-Only:
 - `is_manually_managed` (Boolean) The isManuallyManaged field.
 - `monthly_cost_usd` (Number) The cost of an app per-seat, so that total cost can be calculated by the grant count.
 - `parent_app_id` (String) The ID of the app that created this app, if any.
+- `revoke_grant_sources` (Boolean) When enabled, revoking a grant also revokes the grants that source it.
 - `revoke_policy_id` (String) The ID of the Revoke Policy associated with this App.
 - `strict_access_entitlement_provisioning` (Boolean) The strictAccessEntitlementProvisioning field.
 - `updated_at` (String)
@@ -106,6 +107,7 @@ Read-Only:
 
 Read-Only:
 
+- `app_id` (String) The app this mapper belongs to.
 - `mapping_cases` (Attributes List) Ordered list of match cases. Each case defines a pair of CEL key extractors. (see [below for nested schema](#nestedatt--list--app_user_mapper--mapping_cases))
 
 <a id="nestedatt--list--app_user_mapper--mapping_cases"></a>
@@ -113,5 +115,7 @@ Read-Only:
 
 Read-Only:
 
+- `app_id` (String) The app this match case belongs to.
 - `app_user_key_cel` (String) CEL expression evaluated against an AppUser to produce match key(s).
+- `case_index` (Number) The ordered index of this match case within the mapper.
 - `user_key_cel` (String) CEL expression evaluated against a User to produce match key(s).

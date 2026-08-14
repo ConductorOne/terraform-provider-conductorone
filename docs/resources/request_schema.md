@@ -79,6 +79,13 @@ resource "conductorone_request_schema" "my_request_schema" {
         max_file_size = "...my_max_file_size..."
       }
       form_string_field = {
+        date_field = {
+          default_to_today    = true
+          max_date            = "...my_max_date..."
+          max_days_from_today = 8
+          min_date            = "...my_min_date..."
+          min_days_from_today = 9
+        }
         default_value = "...my_default_value..."
         password_field = {
           # ...
@@ -92,7 +99,13 @@ resource "conductorone_request_schema" "my_request_schema" {
             app_id = "...my_app_id..."
           }
           c1_user_filter = {
-            # ...
+            exclude_user_ids = [
+              "..."
+            ]
+            include_deactivated = false
+            user_ids = [
+              "..."
+            ]
           }
         }
         placeholder = "...my_placeholder..."
@@ -283,7 +296,8 @@ This message contains a oneof named view. Only a single field of the following l
   - textField
   - passwordField
   - selectField
-  - pickerField (see [below for nested schema](#nestedatt--fields--form_string_field))
+  - pickerField
+  - dateField (see [below for nested schema](#nestedatt--fields--form_string_field))
 - `form_string_map_field` (Attributes) The StringMapField message. (see [below for nested schema](#nestedatt--fields--form_string_map_field))
 - `int64_field` (Attributes) The Int64Field message.
 
@@ -354,6 +368,8 @@ Optional:
 
 Optional:
 
+- `date_field` (Attributes) DateField renders a date picker. The value is an ISO-8601 calendar date
+ ("YYYY-MM-DD") stored in the enclosing StringField's string value. (see [below for nested schema](#nestedatt--fields--form_string_field--date_field))
 - `default_value` (String) The defaultValue field.
 - `password_field` (Attributes) The PasswordField message. (see [below for nested schema](#nestedatt--fields--form_string_field--password_field))
 - `picker_field` (Attributes) The PickerField message.
@@ -378,6 +394,26 @@ This message contains a oneof named well_known. Only a single field of the follo
   - uuid
   - wellKnownRegex (see [below for nested schema](#nestedatt--fields--form_string_field--string_rules))
 - `text_field` (Attributes) The TextField message. (see [below for nested schema](#nestedatt--fields--form_string_field--text_field))
+
+<a id="nestedatt--fields--form_string_field--date_field"></a>
+### Nested Schema for `fields.form_string_field.date_field`
+
+Optional:
+
+- `default_to_today` (Boolean) Default the field to the render date when the StringField has no default_value.
+- `max_date` (String) Latest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.
+- `max_days_from_today` (Number) Latest selectable date expressed as an offset in days from the date the
+ form is rendered; negative is in the past. Set this to 365 to cap a date at
+ one year out. When both are set, the earlier of this and max_date applies.
+ Enforcement is one day slack in each direction: the picker anchors today at
+ the submitter's local midnight and the server anchors in UTC, so 365 admits
+ 366 days rather than reject a date the picker itself offered.
+- `min_date` (String) Earliest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.
+- `min_days_from_today` (Number) Earliest selectable date expressed as an offset in days from the date the
+ form is rendered; negative is in the past. Prefer this over min_date for a
+ rolling window, which would otherwise go stale. When both are set, the
+ later of the two applies.
+
 
 <a id="nestedatt--fields--form_string_field--password_field"></a>
 ### Nested Schema for `fields.form_string_field.password_field`
@@ -412,6 +448,13 @@ Optional:
 
 <a id="nestedatt--fields--form_string_field--picker_field--c1_user_filter"></a>
 ### Nested Schema for `fields.form_string_field.picker_field.c1_user_filter`
+
+Optional:
+
+- `exclude_user_ids` (List of String) Remove these users from the selectable set, after user_ids is applied.
+- `include_deactivated` (Boolean) Make deactivated and deleted users selectable. Defaults to enabled-only.
+- `user_ids` (List of String) Restrict the selectable set to these users. Empty means every user is selectable.
+ Capped at the number of refs SearchUsers accepts in one request.
 
 
 

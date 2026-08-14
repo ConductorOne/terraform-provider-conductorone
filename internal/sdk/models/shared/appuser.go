@@ -7,6 +7,34 @@ import (
 	"time"
 )
 
+// AgentStatus - AI-agent lifecycle status when this app user carries the agent trait.
+//
+//	UNSPECIFIED marks a non-agent account. Read-only; translated from the
+//	model's agent_trait at the API boundary.
+type AgentStatus string
+
+const (
+	AgentStatusAppUserAgentStatusUnspecified AgentStatus = "APP_USER_AGENT_STATUS_UNSPECIFIED"
+	AgentStatusAppUserAgentStatusReady       AgentStatus = "APP_USER_AGENT_STATUS_READY"
+	AgentStatusAppUserAgentStatusDisabled    AgentStatus = "APP_USER_AGENT_STATUS_DISABLED"
+	AgentStatusAppUserAgentStatusDeleted     AgentStatus = "APP_USER_AGENT_STATUS_DELETED"
+)
+
+func (e AgentStatus) ToPointer() *AgentStatus {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AgentStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_AGENT_STATUS_UNSPECIFIED", "APP_USER_AGENT_STATUS_READY", "APP_USER_AGENT_STATUS_DISABLED", "APP_USER_AGENT_STATUS_DELETED":
+			return true
+		}
+	}
+	return false
+}
+
 // AppUserType - The appplication user type. Type can be user, system or service.
 type AppUserType string
 
@@ -32,11 +60,42 @@ func (e *AppUserType) IsExact() bool {
 	return false
 }
 
-type AppUserProfile struct {
+// NhiType - NHI classification when this app user carries the non-human-identity trait.
+//
+//	Read-only; translated from the model's nhi_trait at the API boundary.
+type NhiType string
+
+const (
+	NhiTypeAppUserNhiTypeUnspecified     NhiType = "APP_USER_NHI_TYPE_UNSPECIFIED"
+	NhiTypeAppUserNhiTypeAppRegistration NhiType = "APP_USER_NHI_TYPE_APP_REGISTRATION"
+	NhiTypeAppUserNhiTypeAssumableRole   NhiType = "APP_USER_NHI_TYPE_ASSUMABLE_ROLE"
+	NhiTypeAppUserNhiTypeManagedIdentity NhiType = "APP_USER_NHI_TYPE_MANAGED_IDENTITY"
+)
+
+func (e NhiType) ToPointer() *NhiType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *NhiType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_NHI_TYPE_UNSPECIFIED", "APP_USER_NHI_TYPE_APP_REGISTRATION", "APP_USER_NHI_TYPE_ASSUMABLE_ROLE", "APP_USER_NHI_TYPE_MANAGED_IDENTITY":
+			return true
+		}
+	}
+	return false
+}
+
+type Profile struct {
 }
 
 // AppUser - Application User that represents an account in the application.
 type AppUser struct {
+	// AI-agent lifecycle status when this app user carries the agent trait.
+	//  UNSPECIFIED marks a non-agent account. Read-only; translated from the
+	//  model's agent_trait at the API boundary.
+	AgentStatus *AgentStatus `json:"agentStatus,omitempty"`
 	// The ID of the application.
 	AppID *string `json:"appId,omitempty"`
 	// The appplication user type. Type can be user, system or service.
@@ -56,8 +115,13 @@ type AppUser struct {
 	// The conductor one user ID of the account owner.
 	IdentityUserID *string `json:"identityUserId,omitempty"`
 	// The isExternal field.
-	IsExternal *bool           `json:"isExternal,omitempty"`
-	Profile    *AppUserProfile `json:"profile,omitempty"`
+	IsExternal *bool `json:"isExternal,omitempty"`
+	// Axis-2 detail refining nhi_type (e.g. "aws.role.lambda"). Read-only.
+	NhiDetail *string `json:"nhiDetail,omitempty"`
+	// NHI classification when this app user carries the non-human-identity trait.
+	//  Read-only; translated from the model's nhi_trait at the API boundary.
+	NhiType *NhiType `json:"nhiType,omitempty"`
+	Profile *Profile `json:"profile,omitempty"`
 	// The satus of the applicaiton user.
 	AppUserStatus *AppUserStatus `json:"status,omitempty"`
 	UpdatedAt     *time.Time     `json:"updatedAt,omitempty"`
@@ -76,6 +140,13 @@ func (a *AppUser) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AppUser) GetAgentStatus() *AgentStatus {
+	if a == nil {
+		return nil
+	}
+	return a.AgentStatus
 }
 
 func (a *AppUser) GetAppID() *string {
@@ -155,7 +226,21 @@ func (a *AppUser) GetIsExternal() *bool {
 	return a.IsExternal
 }
 
-func (a *AppUser) GetProfile() *AppUserProfile {
+func (a *AppUser) GetNhiDetail() *string {
+	if a == nil {
+		return nil
+	}
+	return a.NhiDetail
+}
+
+func (a *AppUser) GetNhiType() *NhiType {
+	if a == nil {
+		return nil
+	}
+	return a.NhiType
+}
+
+func (a *AppUser) GetProfile() *Profile {
 	if a == nil {
 		return nil
 	}

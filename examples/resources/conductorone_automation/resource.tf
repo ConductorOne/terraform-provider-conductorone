@@ -148,8 +148,9 @@ resource "conductorone_automation" "my_automation" {
         entitlement_inclusion_list_cel = {
           app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         }
-        use_subject_user = false
-        user_id_cel      = "...my_user_id_cel..."
+        grant_source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
+        use_subject_user    = false
+        user_id_cel         = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
@@ -269,6 +270,7 @@ resource "conductorone_automation" "my_automation" {
       }
       send_slack_message = {
         body             = "...my_body..."
+        channel_is_id    = true
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
         use_subject_user = false
@@ -507,8 +509,9 @@ resource "conductorone_automation" "my_automation" {
         entitlement_inclusion_list_cel = {
           app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         }
-        use_subject_user = false
-        user_id_cel      = "...my_user_id_cel..."
+        grant_source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
+        use_subject_user    = false
+        user_id_cel         = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
@@ -628,6 +631,7 @@ resource "conductorone_automation" "my_automation" {
       }
       send_slack_message = {
         body             = "...my_body..."
+        channel_is_id    = true
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
         use_subject_user = true

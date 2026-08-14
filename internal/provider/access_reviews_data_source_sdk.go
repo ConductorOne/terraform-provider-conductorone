@@ -42,6 +42,24 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 						} else {
 							list.AccessReview.AccessReviewColumnConfig.Columns = nil
 						}
+						if listItem.AccessReview.AccessReviewColumnConfig.OrderedColumns != nil {
+							list.AccessReview.AccessReviewColumnConfig.OrderedColumns = []tfTypes.AccessReviewTaskColumnRef{}
+
+							for _, orderedColumnsItem := range listItem.AccessReview.AccessReviewColumnConfig.OrderedColumns {
+								var orderedColumns tfTypes.AccessReviewTaskColumnRef
+
+								orderedColumns.AppUserAttributeKey = types.StringPointerValue(orderedColumnsItem.AppUserAttributeKey)
+								if orderedColumnsItem.Builtin != nil {
+									orderedColumns.Builtin = types.StringValue(string(*orderedColumnsItem.Builtin))
+								} else {
+									orderedColumns.Builtin = types.StringNull()
+								}
+
+								list.AccessReview.AccessReviewColumnConfig.OrderedColumns = append(list.AccessReview.AccessReviewColumnConfig.OrderedColumns, orderedColumns)
+							}
+						} else {
+							list.AccessReview.AccessReviewColumnConfig.OrderedColumns = nil
+						}
 					}
 					if listItem.AccessReview.AccessReviewExclusionScope == nil {
 						list.AccessReview.AccessReviewExclusionScope = nil
@@ -292,6 +310,11 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 								list.AccessReview.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter = types.StringNull()
 							}
 						}
+						if listItem.AccessReview.AccessReviewScopeV2.PrincipalTypeFilter != nil {
+							list.AccessReview.AccessReviewScopeV2.PrincipalTypeFilter = types.StringValue(string(*listItem.AccessReview.AccessReviewScopeV2.PrincipalTypeFilter))
+						} else {
+							list.AccessReview.AccessReviewScopeV2.PrincipalTypeFilter = types.StringNull()
+						}
 						if listItem.AccessReview.AccessReviewScopeV2.ResourceSelectionScope == nil {
 							list.AccessReview.AccessReviewScopeV2.ResourceSelectionScope = nil
 						} else {
@@ -301,6 +324,16 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 							list.AccessReview.AccessReviewScopeV2.ResourceTypeSelectionScope = nil
 						} else {
 							list.AccessReview.AccessReviewScopeV2.ResourceTypeSelectionScope = &tfTypes.ResourceTypeSelectionScope{}
+						}
+						if listItem.AccessReview.AccessReviewScopeV2.ResourceTypeSelectionScope1 == nil {
+							list.AccessReview.AccessReviewScopeV2.ResourceTypeSelectionScope1 = nil
+						} else {
+							list.AccessReview.AccessReviewScopeV2.ResourceTypeSelectionScope1 = &tfTypes.ResourceTypeSelectionScope{}
+						}
+						if listItem.AccessReview.AccessReviewScopeV2.ScopeRoleSelectionScope == nil {
+							list.AccessReview.AccessReviewScopeV2.ScopeRoleSelectionScope = nil
+						} else {
+							list.AccessReview.AccessReviewScopeV2.ScopeRoleSelectionScope = &tfTypes.ScopeRoleSelectionScope{}
 						}
 						if listItem.AccessReview.AccessReviewScopeV2.SelectedUsersScope == nil {
 							list.AccessReview.AccessReviewScopeV2.SelectedUsersScope = nil
@@ -324,6 +357,11 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 							list.AccessReview.AccessReviewScopeV2.SpecificResourcesScope = nil
 						} else {
 							list.AccessReview.AccessReviewScopeV2.SpecificResourcesScope = &tfTypes.SpecificResourcesScope{}
+						}
+						if listItem.AccessReview.AccessReviewScopeV2.SpecificResourcesScope1 == nil {
+							list.AccessReview.AccessReviewScopeV2.SpecificResourcesScope1 = nil
+						} else {
+							list.AccessReview.AccessReviewScopeV2.SpecificResourcesScope1 = &tfTypes.SpecificResourcesScope{}
 						}
 						if listItem.AccessReview.AccessReviewScopeV2.UserCriteriaScope == nil {
 							list.AccessReview.AccessReviewScopeV2.UserCriteriaScope = nil
@@ -486,6 +524,25 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 						list.AccessReview.NotificationConfig.SendReminders = types.BoolPointerValue(listItem.AccessReview.NotificationConfig.SendReminders)
 					}
 					list.AccessReview.PolicyID = types.StringPointerValue(listItem.AccessReview.PolicyID)
+					if listItem.AccessReview.ReviewerAttributeConfig == nil {
+						list.AccessReview.ReviewerAttributeConfig = nil
+					} else {
+						list.AccessReview.ReviewerAttributeConfig = &tfTypes.ReviewerAttributeConfig{}
+						if listItem.AccessReview.ReviewerAttributeConfig.Bindings != nil {
+							list.AccessReview.ReviewerAttributeConfig.Bindings = []tfTypes.ReviewerAttributeBinding{}
+
+							for _, bindingsItem := range listItem.AccessReview.ReviewerAttributeConfig.Bindings {
+								var bindings tfTypes.ReviewerAttributeBinding
+
+								bindings.AppID = types.StringPointerValue(bindingsItem.AppID)
+								bindings.AttributeKey = types.StringPointerValue(bindingsItem.AttributeKey)
+
+								list.AccessReview.ReviewerAttributeConfig.Bindings = append(list.AccessReview.ReviewerAttributeConfig.Bindings, bindings)
+							}
+						} else {
+							list.AccessReview.ReviewerAttributeConfig.Bindings = nil
+						}
+					}
 					list.AccessReview.ReviewInstructions = types.StringPointerValue(listItem.AccessReview.ReviewInstructions)
 					if listItem.AccessReview.ReviewSignatureConfig == nil {
 						list.AccessReview.ReviewSignatureConfig = nil

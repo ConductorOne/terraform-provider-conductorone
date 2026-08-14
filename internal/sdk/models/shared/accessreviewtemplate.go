@@ -91,6 +91,7 @@ const (
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByAccessConflicts AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByResource        AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByInheritance     AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"
+	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByUsers           AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"
 )
 
 func (e AccessReviewTemplateScopeType) ToPointer() *AccessReviewTemplateScopeType {
@@ -101,7 +102,7 @@ func (e AccessReviewTemplateScopeType) ToPointer() *AccessReviewTemplateScopeTyp
 func (e *AccessReviewTemplateScopeType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE":
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS":
 			return true
 		}
 	}
@@ -171,6 +172,9 @@ type AccessReviewTemplate struct {
 	RecurrenceRule *RecurrenceRule `json:"recurrenceRule,omitempty"`
 	// The reviewInstructions field.
 	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	// Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+	//  Empty = reviewers see no profile attributes in the AppUser tooltip.
+	ReviewerAttributeConfig *ReviewerAttributeConfig `json:"reviewerAttributeConfig,omitempty"`
 	// The AccessReviewScopeV2 message.
 	//
 	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
@@ -205,6 +209,11 @@ type AccessReviewTemplate struct {
 	//
 	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
 	//   - resourceSelection
+	//
+	//
+	// This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
+	//   - excludedSpecificResources
+	//   - excludedResourceTypeSelections
 	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scope,omitempty"`
 	// The scopeType field.
@@ -390,6 +399,13 @@ func (a *AccessReviewTemplate) GetReviewInstructions() *string {
 	return a.ReviewInstructions
 }
 
+func (a *AccessReviewTemplate) GetReviewerAttributeConfig() *ReviewerAttributeConfig {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewerAttributeConfig
+}
+
 func (a *AccessReviewTemplate) GetAccessReviewScopeV2() *AccessReviewScopeV2 {
 	if a == nil {
 		return nil
@@ -493,6 +509,9 @@ type AccessReviewTemplateInput struct {
 	RecurrenceRule *RecurrenceRule `json:"recurrenceRule,omitempty"`
 	// The reviewInstructions field.
 	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	// Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+	//  Empty = reviewers see no profile attributes in the AppUser tooltip.
+	ReviewerAttributeConfig *ReviewerAttributeConfig `json:"reviewerAttributeConfig,omitempty"`
 	// The AccessReviewScopeV2 message.
 	//
 	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
@@ -527,6 +546,11 @@ type AccessReviewTemplateInput struct {
 	//
 	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
 	//   - resourceSelection
+	//
+	//
+	// This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
+	//   - excludedSpecificResources
+	//   - excludedResourceTypeSelections
 	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scope,omitempty"`
 	// The scopeType field.
@@ -695,6 +719,13 @@ func (a *AccessReviewTemplateInput) GetReviewInstructions() *string {
 		return nil
 	}
 	return a.ReviewInstructions
+}
+
+func (a *AccessReviewTemplateInput) GetReviewerAttributeConfig() *ReviewerAttributeConfig {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewerAttributeConfig
 }
 
 func (a *AccessReviewTemplateInput) GetAccessReviewScopeV2() *AccessReviewScopeV2 {

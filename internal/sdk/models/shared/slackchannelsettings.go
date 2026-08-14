@@ -24,8 +24,12 @@ type SlackChannelSettings struct {
 	IsConfigured *bool `json:"isConfigured,omitempty"`
 	// The ProvisioningRequestPreference message.
 	ProvisioningRequestPreference *ProvisioningRequestPreference `json:"provisioningRequest,omitempty"`
+	// The RequestCreatedPreference message.
+	RequestCreatedPreference *RequestCreatedPreference `json:"requestCreated,omitempty"`
 	// The ReviewsPreference message.
 	ReviewsPreference *ReviewsPreference `json:"reviews,omitempty"`
+	// The SystemPreference message.
+	SystemPreference *SystemPreference `json:"system,omitempty"`
 	// The TaskRemindersPreference message.
 	TaskRemindersPreference *TaskRemindersPreference `json:"taskReminders,omitempty"`
 }
@@ -100,11 +104,25 @@ func (s *SlackChannelSettings) GetProvisioningRequestPreference() *ProvisioningR
 	return s.ProvisioningRequestPreference
 }
 
+func (s *SlackChannelSettings) GetRequestCreatedPreference() *RequestCreatedPreference {
+	if s == nil {
+		return nil
+	}
+	return s.RequestCreatedPreference
+}
+
 func (s *SlackChannelSettings) GetReviewsPreference() *ReviewsPreference {
 	if s == nil {
 		return nil
 	}
 	return s.ReviewsPreference
+}
+
+func (s *SlackChannelSettings) GetSystemPreference() *SystemPreference {
+	if s == nil {
+		return nil
+	}
+	return s.SystemPreference
 }
 
 func (s *SlackChannelSettings) GetTaskRemindersPreference() *TaskRemindersPreference {

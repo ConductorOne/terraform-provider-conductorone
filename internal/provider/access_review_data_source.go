@@ -67,6 +67,7 @@ type AccessReviewDataSourceModel struct {
 	PolicyID                       types.String                                     `tfsdk:"policy_id"`
 	PolicyPath                     types.String                                     `tfsdk:"policy_path"`
 	Read                           types.Bool                                       `tfsdk:"read"`
+	ReviewerAttributeConfig        *tfTypes.ReviewerAttributeConfig                 `tfsdk:"reviewer_attribute_config"`
 	ReviewInstructions             types.String                                     `tfsdk:"review_instructions"`
 	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig                   `tfsdk:"review_signature_config"`
 	ScheduledStartDate             types.String                                     `tfsdk:"scheduled_start_date"`
@@ -94,10 +95,33 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"columns": schema.ListAttribute{
-						Computed:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
-							` If empty, the default column set for the campaign's default_view is used.`,
+						Computed:           true,
+						ElementType:        types.StringType,
+						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+						MarkdownDescription: `Deprecated: use ` + "`" + `ordered_columns` + "`" + `, which can also include app user` + "\n" +
+							` attribute columns.`,
+					},
+					"ordered_columns": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"app_user_attribute_key": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `The appUserAttributeKey field.` + "\n" +
+										`This field is part of the ` + "`" + `column` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.accessreview.v1.AccessReviewTaskColumnRef` + "`" + ` for more details.`,
+								},
+								"builtin": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `The builtin field.` + "\n" +
+										`This field is part of the ` + "`" + `column` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.accessreview.v1.AccessReviewTaskColumnRef` + "`" + ` for more details.`,
+								},
+							},
+						},
+						MarkdownDescription: `Ordered columns visible to reviewers, built-ins and attributes` + "\n" +
+							` interleaved. Falls back to ` + "`" + `columns` + "`" + `, then to the default set for the` + "\n" +
+							` campaign's default_view.`,
 					},
 				},
 				Description: `Configuration for which columns are visible in the reviewer task list.`,
@@ -336,6 +360,10 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 							`  - daysSinceReviewed` + "\n" +
 							`  - grantsAddedBetween`,
 					},
+					"principal_type_filter": schema.StringAttribute{
+						Computed:    true,
+						Description: `Filters principals included in the scope. Unspecified is treated as users.`,
+					},
 					"resource_selection_scope": schema.SingleNestedAttribute{
 						Computed:    true,
 						Description: `The ResourceSelectionScope message.`,
@@ -343,6 +371,16 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 					"resource_type_selection_scope": schema.SingleNestedAttribute{
 						Computed:    true,
 						Description: `The ResourceTypeSelectionScope message.`,
+					},
+					"resource_type_selection_scope1": schema.SingleNestedAttribute{
+						Computed:    true,
+						Description: `The ResourceTypeSelectionScope message.`,
+					},
+					"scope_role_selection_scope": schema.SingleNestedAttribute{
+						Computed: true,
+						MarkdownDescription: `Empty marker for scope+role pair scoping on IaaS-type apps.` + "\n" +
+							` Actual selections stored in AccessReviewScopeRoleSelection rows.` + "\n" +
+							` May coexist with ResourceSelectionScope on the same campaign; prepare unions both.`,
 					},
 					"selected_users_scope": schema.SingleNestedAttribute{
 						Computed: true,
@@ -360,6 +398,10 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 						Description: `The SpecificAccessConflictsScope message.`,
 					},
 					"specific_resources_scope": schema.SingleNestedAttribute{
+						Computed:    true,
+						Description: `The SpecificResourcesScope message.`,
+					},
+					"specific_resources_scope1": schema.SingleNestedAttribute{
 						Computed:    true,
 						Description: `The SpecificResourcesScope message.`,
 					},
@@ -449,7 +491,12 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 					`` + "\n" +
 					`` + "\n" +
 					`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
-					`  - resourceSelection`,
+					`  - resourceSelection` + "\n" +
+					`` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - excludedSpecificResources` + "\n" +
+					`  - excludedResourceTypeSelections`,
 			},
 			"access_review_template_id": schema.StringAttribute{
 				Computed:    true,
@@ -686,6 +733,29 @@ func (r *AccessReviewDataSource) Schema(ctx context.Context, req datasource.Sche
 					},
 				},
 				Description: `Signature configuration for access review submissions`,
+			},
+			"reviewer_attribute_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"bindings": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The appId field.`,
+								},
+								"attribute_key": schema.StringAttribute{
+									Computed:    true,
+									Description: `The attributeKey field.`,
+								},
+							},
+						},
+						Description: `The bindings field.`,
+					},
+				},
+				MarkdownDescription: `Allowlist of AppUser.profile keys visible to reviewers, scoped per app.` + "\n" +
+					` Empty = reviewers see no profile attributes in the AppUser tooltip.`,
 			},
 			"scheduled_start_date": schema.StringAttribute{
 				Computed: true,

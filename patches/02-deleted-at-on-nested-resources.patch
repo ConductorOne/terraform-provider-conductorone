@@ -1,5 +1,5 @@
 From: Brandon High <759848+highb@users.noreply.github.com>
-Date: Wed May 13 2026 (re-cut Thu Aug 14 2026)
+Date: Wed May 13 2026
 Subject: [PATCH] Re-add deleted_at to nested resource schemas (IGA-1774)
 
 Speakeasy's x-speakeasy-soft-delete-property handling has a known bug on
@@ -26,14 +26,6 @@ these entity-root types. Files:
   - connector_owner_entitlement_resource.go       (latent same-class bug, found by v1.4.0 smoke test)
   - connector_owner_user_resource.go              (latent same-class bug, found by v1.4.0 smoke test)
   - directory_resource.go                         (latent same-class bug)
-
-Re-cut against the current insulator spec: six of the seven hunks still
-applied with a line-offset only. directory_resource.go's did not --
-the nested "directory view" attribute map reordered/changed shape
-enough that the created_at/directory_account_filter_all context this
-hunk searched for no longer exists; the fix (insert deleted_at after
-created_at) is unchanged, just re-anchored against the new neighbor
-(merge_config).
 
 The patch will go away when upstream Speakeasy fixes
 x-speakeasy-soft-delete-property propagation to nested struct uses;
@@ -126,16 +118,16 @@ index 1af3af88..ff7b0646 100644
  						Computed:    true,
  						Description: `The department which the user belongs to in the organization.`,
 diff --git a/internal/provider/directory_resource.go b/internal/provider/directory_resource.go
-index 0000000..0000000 100644
+index da606749..5ba19b1f 100644
 --- a/internal/provider/directory_resource.go
 +++ b/internal/provider/directory_resource.go
-@@ -95,6 +95,9 @@
+@@ -103,6 +103,9 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
  							"created_at": schema.StringAttribute{
  								Computed: true,
  							},
 +							"deleted_at": schema.StringAttribute{
 +								Computed: true,
 +							},
- 							"merge_config": schema.SingleNestedAttribute{
- 								Computed: true,
- 								Attributes: map[string]schema.Attribute{
+ 							"directory_account_filter_all": schema.SingleNestedAttribute{
+ 								Computed:    true,
+ 								Description: `The DirectoryAccountFilterAll message.`,

@@ -161,7 +161,15 @@ func (s *Automation) ListAutomations(ctx context.Context, opts ...operations.Opt
 }
 
 // CreateAutomation - Create Automation
-// Create a new automation with the specified steps, triggers, and configuration.
+// Create a new automation with the specified steps, triggers, and
+//
+//	configuration. See get_authoring_guide for the AutomationStep contract
+//	(step kinds, evaluate_expressions shape, CEL identifier scope).
+//
+//	At create time, draft_automation_steps and draft_triggers default to
+//	their published counterparts when omitted — callers writing a single
+//	working version don't need to populate both. The draft/publish
+//	distinction matters only on subsequent edits.
 func (s *Automation) CreateAutomation(ctx context.Context, request *shared.AutomationsCreateAutomationRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationServiceCreateAutomationResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

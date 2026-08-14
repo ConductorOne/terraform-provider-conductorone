@@ -31,6 +31,7 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 						list.Annotations[key] = types.StringValue(value)
 					}
 				}
+				list.BaselinePolicyID = types.StringPointerValue(listItem.BaselinePolicyID)
 				list.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.CreatedAt))
 				list.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.DeletedAt))
 				list.Description = types.StringPointerValue(listItem.Description)
@@ -535,6 +536,12 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 											steps.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
 											steps.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
 										}
+										if stepsItem.Provision.ProvisionPolicy.DevicePlacementProvision == nil {
+											steps.Provision.ProvisionPolicy.DevicePlacementProvision = nil
+										} else {
+											steps.Provision.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+											steps.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
+										}
 										if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
 											steps.Provision.ProvisionPolicy.ExternalTicketProvision = nil
 										} else {
@@ -776,7 +783,9 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 						var rules tfTypes.Rule
 
 						rules.Condition = types.StringPointerValue(rulesItem.Condition)
+						rules.PolicyID = types.StringPointerValue(rulesItem.PolicyID)
 						rules.PolicyKey = types.StringPointerValue(rulesItem.PolicyKey)
+						rules.StepKey = types.StringPointerValue(rulesItem.StepKey)
 
 						list.Rules = append(list.Rules, rules)
 					}

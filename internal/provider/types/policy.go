@@ -8,6 +8,7 @@ import (
 
 type Policy struct {
 	Annotations              map[string]types.String `tfsdk:"annotations"`
+	BaselinePolicyID         types.String            `tfsdk:"baseline_policy_id"`
 	CreatedAt                types.String            `tfsdk:"created_at"`
 	DeletedAt                types.String            `tfsdk:"deleted_at"`
 	Description              types.String            `tfsdk:"description"`

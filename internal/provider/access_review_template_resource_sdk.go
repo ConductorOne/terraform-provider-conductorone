@@ -29,6 +29,24 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 			} else {
 				r.AccessReviewColumnConfig.Columns = nil
 			}
+			if resp.AccessReviewColumnConfig.OrderedColumns != nil {
+				r.AccessReviewColumnConfig.OrderedColumns = []tfTypes.AccessReviewTaskColumnRef{}
+
+				for _, orderedColumnsItem := range resp.AccessReviewColumnConfig.OrderedColumns {
+					var orderedColumns tfTypes.AccessReviewTaskColumnRef
+
+					orderedColumns.AppUserAttributeKey = types.StringPointerValue(orderedColumnsItem.AppUserAttributeKey)
+					if orderedColumnsItem.Builtin != nil {
+						orderedColumns.Builtin = types.StringValue(string(*orderedColumnsItem.Builtin))
+					} else {
+						orderedColumns.Builtin = types.StringNull()
+					}
+
+					r.AccessReviewColumnConfig.OrderedColumns = append(r.AccessReviewColumnConfig.OrderedColumns, orderedColumns)
+				}
+			} else {
+				r.AccessReviewColumnConfig.OrderedColumns = nil
+			}
 		}
 		r.AccessReviewDuration = types.StringPointerValue(resp.AccessReviewDuration)
 		if resp.AccessReviewInclusionScope == nil {
@@ -238,6 +256,11 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 					r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter = types.StringNull()
 				}
 			}
+			if resp.AccessReviewScopeV2.PrincipalTypeFilter != nil {
+				r.AccessReviewScopeV2.PrincipalTypeFilter = types.StringValue(string(*resp.AccessReviewScopeV2.PrincipalTypeFilter))
+			} else {
+				r.AccessReviewScopeV2.PrincipalTypeFilter = types.StringNull()
+			}
 			if resp.AccessReviewScopeV2.ResourceSelectionScope == nil {
 				r.AccessReviewScopeV2.ResourceSelectionScope = nil
 			} else {
@@ -247,6 +270,16 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = nil
 			} else {
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.AccessReviewScopeV2.ResourceTypeSelectionScope1 == nil {
+				r.AccessReviewScopeV2.ResourceTypeSelectionScope1 = nil
+			} else {
+				r.AccessReviewScopeV2.ResourceTypeSelectionScope1 = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.AccessReviewScopeV2.ScopeRoleSelectionScope == nil {
+				r.AccessReviewScopeV2.ScopeRoleSelectionScope = nil
+			} else {
+				r.AccessReviewScopeV2.ScopeRoleSelectionScope = &tfTypes.ScopeRoleSelectionScope{}
 			}
 			if resp.AccessReviewScopeV2.SelectedUsersScope == nil {
 				r.AccessReviewScopeV2.SelectedUsersScope = nil
@@ -270,6 +303,11 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 				r.AccessReviewScopeV2.SpecificResourcesScope = nil
 			} else {
 				r.AccessReviewScopeV2.SpecificResourcesScope = &tfTypes.SpecificResourcesScope{}
+			}
+			if resp.AccessReviewScopeV2.SpecificResourcesScope1 == nil {
+				r.AccessReviewScopeV2.SpecificResourcesScope1 = nil
+			} else {
+				r.AccessReviewScopeV2.SpecificResourcesScope1 = &tfTypes.SpecificResourcesScope{}
 			}
 			if resp.AccessReviewScopeV2.UserCriteriaScope == nil {
 				r.AccessReviewScopeV2.UserCriteriaScope = nil
@@ -384,6 +422,25 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 			r.RecurrenceRule.Occurrences = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.RecurrenceRule.Occurrences))
 			r.RecurrenceRule.StartDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.RecurrenceRule.StartDate))
 		}
+		if resp.ReviewerAttributeConfig == nil {
+			r.ReviewerAttributeConfig = nil
+		} else {
+			r.ReviewerAttributeConfig = &tfTypes.ReviewerAttributeConfig{}
+			if resp.ReviewerAttributeConfig.Bindings != nil {
+				r.ReviewerAttributeConfig.Bindings = []tfTypes.ReviewerAttributeBinding{}
+
+				for _, bindingsItem := range resp.ReviewerAttributeConfig.Bindings {
+					var bindings tfTypes.ReviewerAttributeBinding
+
+					bindings.AppID = types.StringPointerValue(bindingsItem.AppID)
+					bindings.AttributeKey = types.StringPointerValue(bindingsItem.AttributeKey)
+
+					r.ReviewerAttributeConfig.Bindings = append(r.ReviewerAttributeConfig.Bindings, bindings)
+				}
+			} else {
+				r.ReviewerAttributeConfig.Bindings = nil
+			}
+		}
 		r.ReviewInstructions = types.StringPointerValue(resp.ReviewInstructions)
 		if resp.ReviewSignatureConfig == nil {
 			r.ReviewSignatureConfig = nil
@@ -403,7 +460,9 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 			r.SlackChannel = nil
 		} else {
 			r.SlackChannel = &tfTypes.SlackChannel{}
+			r.SlackChannel.ChannelID = types.StringPointerValue(resp.SlackChannel.ChannelID)
 			r.SlackChannel.Description = types.StringPointerValue(resp.SlackChannel.Description)
+			r.SlackChannel.IsChannelID = types.BoolPointerValue(resp.SlackChannel.IsChannelID)
 			r.SlackChannel.Name = types.StringPointerValue(resp.SlackChannel.Name)
 		}
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
@@ -568,8 +627,31 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 				columns = append(columns, shared.Columns(columnsItem.ValueString()))
 			}
 		}
+		var orderedColumns []shared.AccessReviewTaskColumnRef
+		if r.AccessReviewColumnConfig.OrderedColumns != nil {
+			orderedColumns = make([]shared.AccessReviewTaskColumnRef, 0, len(r.AccessReviewColumnConfig.OrderedColumns))
+			for orderedColumnsIndex := range r.AccessReviewColumnConfig.OrderedColumns {
+				appUserAttributeKey := new(string)
+				if !r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].AppUserAttributeKey.IsUnknown() && !r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].AppUserAttributeKey.IsNull() {
+					*appUserAttributeKey = r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].AppUserAttributeKey.ValueString()
+				} else {
+					appUserAttributeKey = nil
+				}
+				builtin := new(shared.Builtin)
+				if !r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].Builtin.IsUnknown() && !r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].Builtin.IsNull() {
+					*builtin = shared.Builtin(r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].Builtin.ValueString())
+				} else {
+					builtin = nil
+				}
+				orderedColumns = append(orderedColumns, shared.AccessReviewTaskColumnRef{
+					AppUserAttributeKey: appUserAttributeKey,
+					Builtin:             builtin,
+				})
+			}
+		}
 		accessReviewColumnConfig = &shared.AccessReviewColumnConfig{
-			Columns: columns,
+			Columns:        columns,
+			OrderedColumns: orderedColumns,
 		}
 	}
 	defaultView := new(shared.AccessReviewTemplateDefaultView)
@@ -773,6 +855,34 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 	} else {
 		reviewInstructions = nil
 	}
+	var reviewerAttributeConfig *shared.ReviewerAttributeConfig
+	if r.ReviewerAttributeConfig != nil {
+		var bindings []shared.ReviewerAttributeBinding
+		if r.ReviewerAttributeConfig.Bindings != nil {
+			bindings = make([]shared.ReviewerAttributeBinding, 0, len(r.ReviewerAttributeConfig.Bindings))
+			for bindingsIndex := range r.ReviewerAttributeConfig.Bindings {
+				appID := new(string)
+				if !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.IsUnknown() && !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.IsNull() {
+					*appID = r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.ValueString()
+				} else {
+					appID = nil
+				}
+				attributeKey := new(string)
+				if !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.IsUnknown() && !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.IsNull() {
+					*attributeKey = r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.ValueString()
+				} else {
+					attributeKey = nil
+				}
+				bindings = append(bindings, shared.ReviewerAttributeBinding{
+					AppID:        appID,
+					AttributeKey: attributeKey,
+				})
+			}
+		}
+		reviewerAttributeConfig = &shared.ReviewerAttributeConfig{
+			Bindings: bindings,
+		}
+	}
 	var accessReviewScopeV2 *shared.AccessReviewScopeV2
 	if r.AccessReviewScopeV2 != nil {
 		var celExpressionScope *shared.CelExpressionScope
@@ -875,6 +985,14 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 				Expression: expression1,
 			}
 		}
+		var resourceTypeSelectionScope *shared.ResourceTypeSelectionScope
+		if r.AccessReviewScopeV2.ResourceTypeSelectionScope != nil {
+			resourceTypeSelectionScope = &shared.ResourceTypeSelectionScope{}
+		}
+		var specificResourcesScope *shared.SpecificResourcesScope
+		if r.AccessReviewScopeV2.SpecificResourcesScope != nil {
+			specificResourcesScope = &shared.SpecificResourcesScope{}
+		}
 		var grantsByCriteriaScope *shared.GrantsByCriteriaScope
 		if r.AccessReviewScopeV2.GrantsByCriteriaScope != nil {
 			var grantAccessProfileFilter *shared.GrantAccessProfileFilter
@@ -964,13 +1082,23 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 				TypeFilter:               typeFilter,
 			}
 		}
+		principalTypeFilter := new(shared.PrincipalTypeFilter)
+		if !r.AccessReviewScopeV2.PrincipalTypeFilter.IsUnknown() && !r.AccessReviewScopeV2.PrincipalTypeFilter.IsNull() {
+			*principalTypeFilter = shared.PrincipalTypeFilter(r.AccessReviewScopeV2.PrincipalTypeFilter.ValueString())
+		} else {
+			principalTypeFilter = nil
+		}
 		var resourceSelectionScope *shared.ResourceSelectionScope
 		if r.AccessReviewScopeV2.ResourceSelectionScope != nil {
 			resourceSelectionScope = &shared.ResourceSelectionScope{}
 		}
-		var resourceTypeSelectionScope *shared.ResourceTypeSelectionScope
-		if r.AccessReviewScopeV2.ResourceTypeSelectionScope != nil {
-			resourceTypeSelectionScope = &shared.ResourceTypeSelectionScope{}
+		var resourceTypeSelectionScope1 *shared.ResourceTypeSelectionScope
+		if r.AccessReviewScopeV2.ResourceTypeSelectionScope1 != nil {
+			resourceTypeSelectionScope1 = &shared.ResourceTypeSelectionScope{}
+		}
+		var scopeRoleSelectionScope *shared.ScopeRoleSelectionScope
+		if r.AccessReviewScopeV2.ScopeRoleSelectionScope != nil {
+			scopeRoleSelectionScope = &shared.ScopeRoleSelectionScope{}
 		}
 		var selectedUsersScope *shared.SelectedUsersScope
 		if r.AccessReviewScopeV2.SelectedUsersScope != nil {
@@ -989,9 +1117,9 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		if r.AccessReviewScopeV2.SpecificAccessConflictsScope != nil {
 			specificAccessConflictsScope = &shared.SpecificAccessConflictsScope{}
 		}
-		var specificResourcesScope *shared.SpecificResourcesScope
-		if r.AccessReviewScopeV2.SpecificResourcesScope != nil {
-			specificResourcesScope = &shared.SpecificResourcesScope{}
+		var specificResourcesScope1 *shared.SpecificResourcesScope
+		if r.AccessReviewScopeV2.SpecificResourcesScope1 != nil {
+			specificResourcesScope1 = &shared.SpecificResourcesScope{}
 		}
 		var userCriteriaScope *shared.UserCriteriaScope
 		if r.AccessReviewScopeV2.UserCriteriaScope != nil {
@@ -999,11 +1127,11 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 			if r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef != nil {
 				groupAppEntitlementsRef = make([]shared.AppEntitlementRef, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef))
 				for groupAppEntitlementsRefIndex := range r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef {
-					appID := new(string)
+					appId1 := new(string)
 					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsNull() {
-						*appID = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
+						*appId1 = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
 					} else {
-						appID = nil
+						appId1 = nil
 					}
 					id1 := new(string)
 					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsNull() {
@@ -1012,7 +1140,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 						id1 = nil
 					}
 					groupAppEntitlementsRef = append(groupAppEntitlementsRef, shared.AppEntitlementRef{
-						AppID: appID,
+						AppID: appId1,
 						ID:    id1,
 					})
 				}
@@ -1070,12 +1198,16 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 			ApplicationAccessScope:       applicationAccessScope,
 			AppSelectionCriteriaScope:    appSelectionCriteriaScope,
 			CelExpressionScope1:          celExpressionScope1,
-			GrantsByCriteriaScope:        grantsByCriteriaScope,
-			ResourceSelectionScope:       resourceSelectionScope,
 			ResourceTypeSelectionScope:   resourceTypeSelectionScope,
+			SpecificResourcesScope:       specificResourcesScope,
+			GrantsByCriteriaScope:        grantsByCriteriaScope,
+			PrincipalTypeFilter:          principalTypeFilter,
+			ResourceSelectionScope:       resourceSelectionScope,
+			ResourceTypeSelectionScope1:  resourceTypeSelectionScope1,
+			ScopeRoleSelectionScope:      scopeRoleSelectionScope,
 			SelectedUsersScope:           selectedUsersScope,
 			SpecificAccessConflictsScope: specificAccessConflictsScope,
-			SpecificResourcesScope:       specificResourcesScope,
+			SpecificResourcesScope1:      specificResourcesScope1,
 			UserCriteriaScope:            userCriteriaScope,
 		}
 	}
@@ -1120,11 +1252,23 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 	}
 	var slackChannel *shared.SlackChannel
 	if r.SlackChannel != nil {
+		channelID := new(string)
+		if !r.SlackChannel.ChannelID.IsUnknown() && !r.SlackChannel.ChannelID.IsNull() {
+			*channelID = r.SlackChannel.ChannelID.ValueString()
+		} else {
+			channelID = nil
+		}
 		description1 := new(string)
 		if !r.SlackChannel.Description.IsUnknown() && !r.SlackChannel.Description.IsNull() {
 			*description1 = r.SlackChannel.Description.ValueString()
 		} else {
 			description1 = nil
+		}
+		isChannelID := new(bool)
+		if !r.SlackChannel.IsChannelID.IsUnknown() && !r.SlackChannel.IsChannelID.IsNull() {
+			*isChannelID = r.SlackChannel.IsChannelID.ValueBool()
+		} else {
+			isChannelID = nil
 		}
 		name := new(string)
 		if !r.SlackChannel.Name.IsUnknown() && !r.SlackChannel.Name.IsNull() {
@@ -1133,7 +1277,9 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 			name = nil
 		}
 		slackChannel = &shared.SlackChannel{
+			ChannelID:   channelID,
 			Description: description1,
+			IsChannelID: isChannelID,
 			Name:        name,
 		}
 	}
@@ -1165,6 +1311,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		PolicyID:                       policyID,
 		RecurrenceRule:                 recurrenceRule,
 		ReviewInstructions:             reviewInstructions,
+		ReviewerAttributeConfig:        reviewerAttributeConfig,
 		AccessReviewScopeV2:            accessReviewScopeV2,
 		ScopeType:                      scopeType,
 		ReviewSignatureConfig:          reviewSignatureConfig,
@@ -1230,8 +1377,31 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 				columns = append(columns, shared.Columns(columnsItem.ValueString()))
 			}
 		}
+		var orderedColumns []shared.AccessReviewTaskColumnRef
+		if r.AccessReviewColumnConfig.OrderedColumns != nil {
+			orderedColumns = make([]shared.AccessReviewTaskColumnRef, 0, len(r.AccessReviewColumnConfig.OrderedColumns))
+			for orderedColumnsIndex := range r.AccessReviewColumnConfig.OrderedColumns {
+				appUserAttributeKey := new(string)
+				if !r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].AppUserAttributeKey.IsUnknown() && !r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].AppUserAttributeKey.IsNull() {
+					*appUserAttributeKey = r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].AppUserAttributeKey.ValueString()
+				} else {
+					appUserAttributeKey = nil
+				}
+				builtin := new(shared.Builtin)
+				if !r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].Builtin.IsUnknown() && !r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].Builtin.IsNull() {
+					*builtin = shared.Builtin(r.AccessReviewColumnConfig.OrderedColumns[orderedColumnsIndex].Builtin.ValueString())
+				} else {
+					builtin = nil
+				}
+				orderedColumns = append(orderedColumns, shared.AccessReviewTaskColumnRef{
+					AppUserAttributeKey: appUserAttributeKey,
+					Builtin:             builtin,
+				})
+			}
+		}
 		accessReviewColumnConfig = &shared.AccessReviewColumnConfig{
-			Columns: columns,
+			Columns:        columns,
+			OrderedColumns: orderedColumns,
 		}
 	}
 	defaultView := new(shared.AccessReviewTemplateServiceCreateRequestDefaultView)
@@ -1349,6 +1519,34 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 	} else {
 		reviewInstructions = nil
 	}
+	var reviewerAttributeConfig *shared.ReviewerAttributeConfig
+	if r.ReviewerAttributeConfig != nil {
+		var bindings []shared.ReviewerAttributeBinding
+		if r.ReviewerAttributeConfig.Bindings != nil {
+			bindings = make([]shared.ReviewerAttributeBinding, 0, len(r.ReviewerAttributeConfig.Bindings))
+			for bindingsIndex := range r.ReviewerAttributeConfig.Bindings {
+				appID := new(string)
+				if !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.IsUnknown() && !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.IsNull() {
+					*appID = r.ReviewerAttributeConfig.Bindings[bindingsIndex].AppID.ValueString()
+				} else {
+					appID = nil
+				}
+				attributeKey := new(string)
+				if !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.IsUnknown() && !r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.IsNull() {
+					*attributeKey = r.ReviewerAttributeConfig.Bindings[bindingsIndex].AttributeKey.ValueString()
+				} else {
+					attributeKey = nil
+				}
+				bindings = append(bindings, shared.ReviewerAttributeBinding{
+					AppID:        appID,
+					AttributeKey: attributeKey,
+				})
+			}
+		}
+		reviewerAttributeConfig = &shared.ReviewerAttributeConfig{
+			Bindings: bindings,
+		}
+	}
 	var accessReviewScopeV2 *shared.AccessReviewScopeV2
 	if r.AccessReviewScopeV2 != nil {
 		var celExpressionScope *shared.CelExpressionScope
@@ -1451,6 +1649,14 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 				Expression: expression1,
 			}
 		}
+		var resourceTypeSelectionScope *shared.ResourceTypeSelectionScope
+		if r.AccessReviewScopeV2.ResourceTypeSelectionScope != nil {
+			resourceTypeSelectionScope = &shared.ResourceTypeSelectionScope{}
+		}
+		var specificResourcesScope *shared.SpecificResourcesScope
+		if r.AccessReviewScopeV2.SpecificResourcesScope != nil {
+			specificResourcesScope = &shared.SpecificResourcesScope{}
+		}
 		var grantsByCriteriaScope *shared.GrantsByCriteriaScope
 		if r.AccessReviewScopeV2.GrantsByCriteriaScope != nil {
 			var grantAccessProfileFilter *shared.GrantAccessProfileFilter
@@ -1540,13 +1746,23 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 				TypeFilter:               typeFilter,
 			}
 		}
+		principalTypeFilter := new(shared.PrincipalTypeFilter)
+		if !r.AccessReviewScopeV2.PrincipalTypeFilter.IsUnknown() && !r.AccessReviewScopeV2.PrincipalTypeFilter.IsNull() {
+			*principalTypeFilter = shared.PrincipalTypeFilter(r.AccessReviewScopeV2.PrincipalTypeFilter.ValueString())
+		} else {
+			principalTypeFilter = nil
+		}
 		var resourceSelectionScope *shared.ResourceSelectionScope
 		if r.AccessReviewScopeV2.ResourceSelectionScope != nil {
 			resourceSelectionScope = &shared.ResourceSelectionScope{}
 		}
-		var resourceTypeSelectionScope *shared.ResourceTypeSelectionScope
-		if r.AccessReviewScopeV2.ResourceTypeSelectionScope != nil {
-			resourceTypeSelectionScope = &shared.ResourceTypeSelectionScope{}
+		var resourceTypeSelectionScope1 *shared.ResourceTypeSelectionScope
+		if r.AccessReviewScopeV2.ResourceTypeSelectionScope1 != nil {
+			resourceTypeSelectionScope1 = &shared.ResourceTypeSelectionScope{}
+		}
+		var scopeRoleSelectionScope *shared.ScopeRoleSelectionScope
+		if r.AccessReviewScopeV2.ScopeRoleSelectionScope != nil {
+			scopeRoleSelectionScope = &shared.ScopeRoleSelectionScope{}
 		}
 		var selectedUsersScope *shared.SelectedUsersScope
 		if r.AccessReviewScopeV2.SelectedUsersScope != nil {
@@ -1565,9 +1781,9 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		if r.AccessReviewScopeV2.SpecificAccessConflictsScope != nil {
 			specificAccessConflictsScope = &shared.SpecificAccessConflictsScope{}
 		}
-		var specificResourcesScope *shared.SpecificResourcesScope
-		if r.AccessReviewScopeV2.SpecificResourcesScope != nil {
-			specificResourcesScope = &shared.SpecificResourcesScope{}
+		var specificResourcesScope1 *shared.SpecificResourcesScope
+		if r.AccessReviewScopeV2.SpecificResourcesScope1 != nil {
+			specificResourcesScope1 = &shared.SpecificResourcesScope{}
 		}
 		var userCriteriaScope *shared.UserCriteriaScope
 		if r.AccessReviewScopeV2.UserCriteriaScope != nil {
@@ -1575,11 +1791,11 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 			if r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef != nil {
 				groupAppEntitlementsRef = make([]shared.AppEntitlementRef, 0, len(r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef))
 				for groupAppEntitlementsRefIndex := range r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef {
-					appID := new(string)
+					appId1 := new(string)
 					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsNull() {
-						*appID = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
+						*appId1 = r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
 					} else {
-						appID = nil
+						appId1 = nil
 					}
 					id := new(string)
 					if !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsUnknown() && !r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsNull() {
@@ -1588,7 +1804,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 						id = nil
 					}
 					groupAppEntitlementsRef = append(groupAppEntitlementsRef, shared.AppEntitlementRef{
-						AppID: appID,
+						AppID: appId1,
 						ID:    id,
 					})
 				}
@@ -1646,12 +1862,16 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 			ApplicationAccessScope:       applicationAccessScope,
 			AppSelectionCriteriaScope:    appSelectionCriteriaScope,
 			CelExpressionScope1:          celExpressionScope1,
-			GrantsByCriteriaScope:        grantsByCriteriaScope,
-			ResourceSelectionScope:       resourceSelectionScope,
 			ResourceTypeSelectionScope:   resourceTypeSelectionScope,
+			SpecificResourcesScope:       specificResourcesScope,
+			GrantsByCriteriaScope:        grantsByCriteriaScope,
+			PrincipalTypeFilter:          principalTypeFilter,
+			ResourceSelectionScope:       resourceSelectionScope,
+			ResourceTypeSelectionScope1:  resourceTypeSelectionScope1,
+			ScopeRoleSelectionScope:      scopeRoleSelectionScope,
 			SelectedUsersScope:           selectedUsersScope,
 			SpecificAccessConflictsScope: specificAccessConflictsScope,
-			SpecificResourcesScope:       specificResourcesScope,
+			SpecificResourcesScope1:      specificResourcesScope1,
 			UserCriteriaScope:            userCriteriaScope,
 		}
 	}
@@ -1719,6 +1939,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceC
 		PolicyID:                       policyID,
 		RecurrenceRule:                 recurrenceRule,
 		ReviewInstructions:             reviewInstructions,
+		ReviewerAttributeConfig:        reviewerAttributeConfig,
 		AccessReviewScopeV2:            accessReviewScopeV2,
 		ScopeType:                      scopeType,
 		ReviewSignatureConfig:          reviewSignatureConfig,

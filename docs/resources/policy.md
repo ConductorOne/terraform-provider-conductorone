@@ -19,8 +19,9 @@ resource "conductorone_policy" "my_policy" {
   annotations = {
     key = "value"
   }
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
+  baseline_policy_id = "...my_baseline_policy_id..."
+  description        = "...my_description..."
+  display_name       = "...my_display_name..."
   policy_steps = {
     key = {
       steps = [
@@ -223,6 +224,9 @@ resource "conductorone_policy" "my_policy" {
                 app_id         = "...my_app_id..."
                 entitlement_id = "...my_entitlement_id..."
               }
+              device_placement_provision = {
+                vault_boundary_id = "...my_vault_boundary_id..."
+              }
               external_ticket_provision = {
                 app_id                                = "...my_app_id..."
                 connector_id                          = "...my_connector_id..."
@@ -327,7 +331,9 @@ resource "conductorone_policy" "my_policy" {
   rules = [
     {
       condition  = "...my_condition..."
+      policy_id  = "...my_policy_id..."
       policy_key = "...my_policy_key..."
+      step_key   = "...my_step_key..."
     }
   ]
 }
@@ -350,6 +356,11 @@ resource "conductorone_policy" "my_policy" {
 
  Well-known keys: `managed_by`, `iac_workspace`,
  `iac_resource_address`, `iac_tool_version`.
+- `baseline_policy_id` (String) When set, the new policy's baseline defers to another policy of the same
+ type when no rule matches, instead of an inline baseline step list.
+ Mutually exclusive with the baseline entry in policy_steps. Requires the
+ POLICY_REFERENCES_POLICY feature; obeys the same depth/cycle/self rules as
+ Rule.policy_id.
 - `description` (String) The description of the new policy.
 - `policy_steps` (Attributes Map) Step sequences for this policy. The map must include a baseline entry keyed
  by the lowercased policy type (e.g., "grant"). Additional entries with
@@ -491,7 +502,8 @@ Optional:
 
 - `agent_failure_action` (String) The action to take if the agent fails to approve, deny, or reassign the task. possible known values include one of ["APPROVAL_AGENT_FAILURE_ACTION_UNSPECIFIED", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS", "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_SUPER_ADMINS", "APPROVAL_AGENT_FAILURE_ACTION_SKIP_POLICY_STEP"]
 - `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only. possible known values include one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]
-- `agent_user_id` (String) The agent user ID to assign the task to.
+- `agent_user_id` (String, Deprecated) Deprecated: agent steps are evaluated by the system; no agent user is
+ selected. Retained so pre-migration policies still validate.
 - `instructions` (String) Instructions for the agent.
 - `policy_ids` (List of String) The allow list of policy IDs to re-route the task to.
 - `reassign_to_user_ids` (List of String) The users to reassign the task to if the agent failure action is reassign to users.
@@ -723,7 +735,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - multiStep
   - externalTicket
   - unconfigured
-  - action (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy))
+  - action
+  - devicePlacement (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy))
 - `provision_target` (Attributes) ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_target))
 
 <a id="nestedatt--policy_steps--steps--provision--provision_policy"></a>
@@ -739,6 +752,7 @@ This message contains a oneof named provision_type. Only a single field of the f
   - account
   - deleteAccount (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--connector_provision))
 - `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--delegated_provision))
+- `device_placement_provision` (Attributes) This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--device_placement_provision))
 - `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--external_ticket_provision))
 - `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--policy_steps--steps--provision--provision_policy--manual_provision))
 - `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
@@ -818,6 +832,14 @@ Optional:
 
 - `app_id` (String) The AppID of the entitlement to delegate provisioning to.
 - `entitlement_id` (String) The ID of the entitlement we are delegating provisioning to.
+
+
+<a id="nestedatt--policy_steps--steps--provision--provision_policy--device_placement_provision"></a>
+### Nested Schema for `policy_steps.steps.provision.provision_policy.device_placement_provision`
+
+Optional:
+
+- `vault_boundary_id` (String) The vaultBoundaryId field.
 
 
 <a id="nestedatt--policy_steps--steps--provision--provision_policy--external_ticket_provision"></a>
@@ -1012,6 +1034,18 @@ See the documentation for `c1.api.policy.v1.PolicyPostActions` for more details.
 Optional:
 
 - `condition` (String) A CEL expression that is evaluated against the request context. If it
- returns true, the step sequence identified by policy_key is used.
-- `policy_key` (String) A key into the policy's policy_steps map identifying which step sequence
- to execute when this rule's condition matches.
+ returns true, the step sequence identified by the outcome is used.
+- `policy_id` (String) The ID of another Policy that is evaluated recursively when this
+ rule matches. The referenced policy must share this policy's
+ policy_type, must not introduce a cycle, and must not push any
+ reachable chain over depth 5. Gated by the
+ POLICY_REFERENCES_POLICY feature flag.
+This field is part of the `outcome` oneof.
+See the documentation for `c1.api.policy.v1.Rule` for more details.
+- `policy_key` (String, Deprecated) Deprecated: prefer outcome.step_key. Still read by the request path
+ for backward compatibility with rules persisted before the outcome
+ oneof existed.
+- `step_key` (String) A key into the policy's policy_steps map identifying which step
+ sequence to execute when this rule's condition matches.
+This field is part of the `outcome` oneof.
+See the documentation for `c1.api.policy.v1.Rule` for more details.

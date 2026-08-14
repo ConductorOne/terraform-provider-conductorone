@@ -4,8 +4,17 @@ package shared
 
 // AppUserMapper configures custom account mapping for uplift.
 type AppUserMapper struct {
+	// The app this mapper belongs to.
+	AppID *string `json:"appId,omitempty"`
 	// Ordered list of match cases. Each case defines a pair of CEL key extractors.
 	MappingCases []AppUserMapperMatchCase `json:"mappingCases,omitempty"`
+}
+
+func (a *AppUserMapper) GetAppID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AppID
 }
 
 func (a *AppUserMapper) GetMappingCases() []AppUserMapperMatchCase {

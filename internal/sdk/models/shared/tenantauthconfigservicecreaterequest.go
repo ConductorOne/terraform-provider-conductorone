@@ -54,7 +54,7 @@ type TenantAuthConfigServiceCreateRequest struct {
 	// The human-readable name for this authentication provider.
 	DisplayName string `json:"displayName"`
 	// The AuthConfigGoogle message.
-	AuthConfigGoogle *AuthConfigGoogle `json:"google,omitempty"`
+	AuthConfigGoogle *AuthConfigGoogleInput `json:"google,omitempty"`
 	// Whether this provider is the default for users whose email domain has no explicit mapping.
 	IsDefaultBootstrap *bool `json:"isDefaultBootstrap,omitempty"`
 	// The AuthConfigJumpCloud message.
@@ -119,7 +119,7 @@ func (t *TenantAuthConfigServiceCreateRequest) GetDisplayName() string {
 	return t.DisplayName
 }
 
-func (t *TenantAuthConfigServiceCreateRequest) GetAuthConfigGoogle() *AuthConfigGoogle {
+func (t *TenantAuthConfigServiceCreateRequest) GetAuthConfigGoogle() *AuthConfigGoogleInput {
 	if t == nil {
 		return nil
 	}

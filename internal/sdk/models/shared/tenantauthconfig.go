@@ -268,7 +268,7 @@ type TenantAuthConfigInput struct {
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The AuthConfigGoogle message.
-	AuthConfigGoogle *AuthConfigGoogle `json:"google,omitempty"`
+	AuthConfigGoogle *AuthConfigGoogleInput `json:"google,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
 	// The isDefaultBootstrap field.
@@ -335,7 +335,7 @@ func (t *TenantAuthConfigInput) GetDisplayName() *string {
 	return t.DisplayName
 }
 
-func (t *TenantAuthConfigInput) GetAuthConfigGoogle() *AuthConfigGoogle {
+func (t *TenantAuthConfigInput) GetAuthConfigGoogle() *AuthConfigGoogleInput {
 	if t == nil {
 		return nil
 	}

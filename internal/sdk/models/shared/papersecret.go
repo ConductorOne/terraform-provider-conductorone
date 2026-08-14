@@ -7,6 +7,30 @@ import (
 	"time"
 )
 
+// AgeSuite - Exact Age suite used by the stored ciphertext.
+type AgeSuite string
+
+const (
+	AgeSuiteAgeSuiteUnspecified    AgeSuite = "AGE_SUITE_UNSPECIFIED"
+	AgeSuiteAgeSuiteX25519         AgeSuite = "AGE_SUITE_X25519"
+	AgeSuiteAgeSuiteMlkem768X25519 AgeSuite = "AGE_SUITE_MLKEM768X25519"
+)
+
+func (e AgeSuite) ToPointer() *AgeSuite {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AgeSuite) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AGE_SUITE_UNSPECIFIED", "AGE_SUITE_X25519", "AGE_SUITE_MLKEM768X25519":
+			return true
+		}
+	}
+	return false
+}
+
 // InputFormat - The inputFormat field.
 type InputFormat string
 
@@ -112,6 +136,8 @@ func (e *PaperSecretStatus) IsExact() bool {
 //
 //	The vault_id is the primary identifier (Vault.id).
 type PaperSecret struct {
+	// Exact Age suite used by the stored ciphertext.
+	AgeSuite *AgeSuite `json:"ageSuite,omitempty"`
 	// The allowedEmails field.
 	AllowedEmails []string `json:"allowedEmails,omitempty"`
 	// Access control
@@ -163,6 +189,13 @@ func (p *PaperSecret) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (p *PaperSecret) GetAgeSuite() *AgeSuite {
+	if p == nil {
+		return nil
+	}
+	return p.AgeSuite
 }
 
 func (p *PaperSecret) GetAllowedEmails() []string {

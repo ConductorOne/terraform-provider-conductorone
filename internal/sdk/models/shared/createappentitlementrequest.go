@@ -82,6 +82,7 @@ type CreateAppEntitlementRequest struct {
 	//   - externalTicket
 	//   - unconfigured
 	//   - action
+	//   - devicePlacement
 	//
 	ProvisionPolicy *ProvisionPolicy `json:"provisionPolicy,omitempty"`
 	// The purpose of the entitlement (e.g., assignment, permission, ownership).

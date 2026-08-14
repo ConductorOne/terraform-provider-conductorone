@@ -173,6 +173,16 @@ func (r *RequestSchemaResourceModel) RefreshFromSharedRequestSchemaForm(ctx cont
 					fields.FormStringField = nil
 				} else {
 					fields.FormStringField = &tfTypes.FormStringField{}
+					if fieldsItem.FormStringField.DateField == nil {
+						fields.FormStringField.DateField = nil
+					} else {
+						fields.FormStringField.DateField = &tfTypes.DateField{}
+						fields.FormStringField.DateField.DefaultToToday = types.BoolPointerValue(fieldsItem.FormStringField.DateField.DefaultToToday)
+						fields.FormStringField.DateField.MaxDate = types.StringPointerValue(fieldsItem.FormStringField.DateField.MaxDate)
+						fields.FormStringField.DateField.MaxDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem.FormStringField.DateField.MaxDaysFromToday))
+						fields.FormStringField.DateField.MinDate = types.StringPointerValue(fieldsItem.FormStringField.DateField.MinDate)
+						fields.FormStringField.DateField.MinDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem.FormStringField.DateField.MinDaysFromToday))
+					}
 					fields.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem.FormStringField.DefaultValue)
 					if fieldsItem.FormStringField.PasswordField == nil {
 						fields.FormStringField.PasswordField = nil
@@ -200,6 +210,23 @@ func (r *RequestSchemaResourceModel) RefreshFromSharedRequestSchemaForm(ctx cont
 							fields.FormStringField.PickerField.C1UserFilter = nil
 						} else {
 							fields.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
+							if fieldsItem.FormStringField.PickerField.C1UserFilter.ExcludeUserIds != nil {
+								fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = make([]types.String, 0, len(fieldsItem.FormStringField.PickerField.C1UserFilter.ExcludeUserIds))
+								for _, v := range fieldsItem.FormStringField.PickerField.C1UserFilter.ExcludeUserIds {
+									fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = append(fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds, types.StringValue(v))
+								}
+							} else {
+								fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = nil
+							}
+							fields.FormStringField.PickerField.C1UserFilter.IncludeDeactivated = types.BoolPointerValue(fieldsItem.FormStringField.PickerField.C1UserFilter.IncludeDeactivated)
+							if fieldsItem.FormStringField.PickerField.C1UserFilter.UserIds != nil {
+								fields.FormStringField.PickerField.C1UserFilter.UserIds = make([]types.String, 0, len(fieldsItem.FormStringField.PickerField.C1UserFilter.UserIds))
+								for _, v := range fieldsItem.FormStringField.PickerField.C1UserFilter.UserIds {
+									fields.FormStringField.PickerField.C1UserFilter.UserIds = append(fields.FormStringField.PickerField.C1UserFilter.UserIds, types.StringValue(v))
+								}
+							} else {
+								fields.FormStringField.PickerField.C1UserFilter.UserIds = nil
+							}
 						}
 					}
 					fields.FormStringField.Placeholder = types.StringPointerValue(fieldsItem.FormStringField.Placeholder)
@@ -886,6 +913,46 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaForm(ctx context.Conte
 			}
 			var formStringField *shared.FormStringField
 			if r.Fields[fieldsIndex1].FormStringField != nil {
+				var dateField *shared.DateField
+				if r.Fields[fieldsIndex1].FormStringField.DateField != nil {
+					defaultToToday := new(bool)
+					if !r.Fields[fieldsIndex1].FormStringField.DateField.DefaultToToday.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DateField.DefaultToToday.IsNull() {
+						*defaultToToday = r.Fields[fieldsIndex1].FormStringField.DateField.DefaultToToday.ValueBool()
+					} else {
+						defaultToToday = nil
+					}
+					maxDate := new(string)
+					if !r.Fields[fieldsIndex1].FormStringField.DateField.MaxDate.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DateField.MaxDate.IsNull() {
+						*maxDate = r.Fields[fieldsIndex1].FormStringField.DateField.MaxDate.ValueString()
+					} else {
+						maxDate = nil
+					}
+					maxDaysFromToday := new(int)
+					if !r.Fields[fieldsIndex1].FormStringField.DateField.MaxDaysFromToday.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DateField.MaxDaysFromToday.IsNull() {
+						*maxDaysFromToday = int(r.Fields[fieldsIndex1].FormStringField.DateField.MaxDaysFromToday.ValueInt32())
+					} else {
+						maxDaysFromToday = nil
+					}
+					minDate := new(string)
+					if !r.Fields[fieldsIndex1].FormStringField.DateField.MinDate.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DateField.MinDate.IsNull() {
+						*minDate = r.Fields[fieldsIndex1].FormStringField.DateField.MinDate.ValueString()
+					} else {
+						minDate = nil
+					}
+					minDaysFromToday := new(int)
+					if !r.Fields[fieldsIndex1].FormStringField.DateField.MinDaysFromToday.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DateField.MinDaysFromToday.IsNull() {
+						*minDaysFromToday = int(r.Fields[fieldsIndex1].FormStringField.DateField.MinDaysFromToday.ValueInt32())
+					} else {
+						minDaysFromToday = nil
+					}
+					dateField = &shared.DateField{
+						DefaultToToday:   defaultToToday,
+						MaxDate:          maxDate,
+						MaxDaysFromToday: maxDaysFromToday,
+						MinDate:          minDate,
+						MinDaysFromToday: minDaysFromToday,
+					}
+				}
 				defaultValue2 := new(string)
 				if !r.Fields[fieldsIndex1].FormStringField.DefaultValue.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DefaultValue.IsNull() {
 					*defaultValue2 = r.Fields[fieldsIndex1].FormStringField.DefaultValue.ValueString()
@@ -912,7 +979,31 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaForm(ctx context.Conte
 					}
 					var c1UserFilter *shared.C1UserFilter
 					if r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter != nil {
-						c1UserFilter = &shared.C1UserFilter{}
+						var excludeUserIds []string
+						if r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.ExcludeUserIds != nil {
+							excludeUserIds = make([]string, 0, len(r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.ExcludeUserIds))
+							for excludeUserIdsIndex := range r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.ExcludeUserIds {
+								excludeUserIds = append(excludeUserIds, r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.ExcludeUserIds[excludeUserIdsIndex].ValueString())
+							}
+						}
+						includeDeactivated := new(bool)
+						if !r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.IncludeDeactivated.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.IncludeDeactivated.IsNull() {
+							*includeDeactivated = r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.IncludeDeactivated.ValueBool()
+						} else {
+							includeDeactivated = nil
+						}
+						var userIds []string
+						if r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.UserIds != nil {
+							userIds = make([]string, 0, len(r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.UserIds))
+							for userIdsIndex := range r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.UserIds {
+								userIds = append(userIds, r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.UserIds[userIdsIndex].ValueString())
+							}
+						}
+						c1UserFilter = &shared.C1UserFilter{
+							ExcludeUserIds:     excludeUserIds,
+							IncludeDeactivated: includeDeactivated,
+							UserIds:            userIds,
+						}
 					}
 					var appResourceFilter *shared.AppResourceFilter
 					if r.Fields[fieldsIndex1].FormStringField.PickerField.AppResourceFilter != nil {
@@ -1196,6 +1287,7 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaForm(ctx context.Conte
 					}
 				}
 				formStringField = &shared.FormStringField{
+					DateField:     dateField,
 					DefaultValue:  defaultValue2,
 					PasswordField: passwordField,
 					PickerField:   pickerField,
@@ -1638,6 +1730,46 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 			}
 			var formStringField *shared.FormStringField
 			if r.Fields[fieldsIndex1].FormStringField != nil {
+				var dateField *shared.DateField
+				if r.Fields[fieldsIndex1].FormStringField.DateField != nil {
+					defaultToToday := new(bool)
+					if !r.Fields[fieldsIndex1].FormStringField.DateField.DefaultToToday.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DateField.DefaultToToday.IsNull() {
+						*defaultToToday = r.Fields[fieldsIndex1].FormStringField.DateField.DefaultToToday.ValueBool()
+					} else {
+						defaultToToday = nil
+					}
+					maxDate := new(string)
+					if !r.Fields[fieldsIndex1].FormStringField.DateField.MaxDate.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DateField.MaxDate.IsNull() {
+						*maxDate = r.Fields[fieldsIndex1].FormStringField.DateField.MaxDate.ValueString()
+					} else {
+						maxDate = nil
+					}
+					maxDaysFromToday := new(int)
+					if !r.Fields[fieldsIndex1].FormStringField.DateField.MaxDaysFromToday.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DateField.MaxDaysFromToday.IsNull() {
+						*maxDaysFromToday = int(r.Fields[fieldsIndex1].FormStringField.DateField.MaxDaysFromToday.ValueInt32())
+					} else {
+						maxDaysFromToday = nil
+					}
+					minDate := new(string)
+					if !r.Fields[fieldsIndex1].FormStringField.DateField.MinDate.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DateField.MinDate.IsNull() {
+						*minDate = r.Fields[fieldsIndex1].FormStringField.DateField.MinDate.ValueString()
+					} else {
+						minDate = nil
+					}
+					minDaysFromToday := new(int)
+					if !r.Fields[fieldsIndex1].FormStringField.DateField.MinDaysFromToday.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DateField.MinDaysFromToday.IsNull() {
+						*minDaysFromToday = int(r.Fields[fieldsIndex1].FormStringField.DateField.MinDaysFromToday.ValueInt32())
+					} else {
+						minDaysFromToday = nil
+					}
+					dateField = &shared.DateField{
+						DefaultToToday:   defaultToToday,
+						MaxDate:          maxDate,
+						MaxDaysFromToday: maxDaysFromToday,
+						MinDate:          minDate,
+						MinDaysFromToday: minDaysFromToday,
+					}
+				}
 				defaultValue2 := new(string)
 				if !r.Fields[fieldsIndex1].FormStringField.DefaultValue.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.DefaultValue.IsNull() {
 					*defaultValue2 = r.Fields[fieldsIndex1].FormStringField.DefaultValue.ValueString()
@@ -1664,7 +1796,31 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 					}
 					var c1UserFilter *shared.C1UserFilter
 					if r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter != nil {
-						c1UserFilter = &shared.C1UserFilter{}
+						var excludeUserIds []string
+						if r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.ExcludeUserIds != nil {
+							excludeUserIds = make([]string, 0, len(r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.ExcludeUserIds))
+							for excludeUserIdsIndex := range r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.ExcludeUserIds {
+								excludeUserIds = append(excludeUserIds, r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.ExcludeUserIds[excludeUserIdsIndex].ValueString())
+							}
+						}
+						includeDeactivated := new(bool)
+						if !r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.IncludeDeactivated.IsUnknown() && !r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.IncludeDeactivated.IsNull() {
+							*includeDeactivated = r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.IncludeDeactivated.ValueBool()
+						} else {
+							includeDeactivated = nil
+						}
+						var userIds []string
+						if r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.UserIds != nil {
+							userIds = make([]string, 0, len(r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.UserIds))
+							for userIdsIndex := range r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.UserIds {
+								userIds = append(userIds, r.Fields[fieldsIndex1].FormStringField.PickerField.C1UserFilter.UserIds[userIdsIndex].ValueString())
+							}
+						}
+						c1UserFilter = &shared.C1UserFilter{
+							ExcludeUserIds:     excludeUserIds,
+							IncludeDeactivated: includeDeactivated,
+							UserIds:            userIds,
+						}
 					}
 					var appResourceFilter *shared.AppResourceFilter
 					if r.Fields[fieldsIndex1].FormStringField.PickerField.AppResourceFilter != nil {
@@ -1948,6 +2104,7 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 					}
 				}
 				formStringField = &shared.FormStringField{
+					DateField:     dateField,
 					DefaultValue:  defaultValue2,
 					PasswordField: passwordField,
 					PickerField:   pickerField,

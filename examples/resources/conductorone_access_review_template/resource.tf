@@ -1,7 +1,13 @@
 resource "conductorone_access_review_template" "my_access_review_template" {
   access_review_column_config = {
     columns = [
-      "ACCESS_REVIEW_TASK_COLUMN_APP_USER_USERNAME"
+      "ACCESS_REVIEW_TASK_COLUMN_COMPLIANCE_FRAMEWORK"
+    ]
+    ordered_columns = [
+      {
+        app_user_attribute_key = "...my_app_user_attribute_key..."
+        builtin                = "ACCESS_REVIEW_TASK_COLUMN_RISK_LEVEL"
+      }
     ]
   }
   access_review_duration = "...my_access_review_duration..."
@@ -65,10 +71,17 @@ resource "conductorone_access_review_template" "my_access_review_template" {
       source_filter = "GRANT_SOURCE_FILTER_INHERITED"
       type_filter   = "GRANT_FILTER_TYPE_PERMANENT"
     }
+    principal_type_filter = "PRINCIPAL_TYPE_FILTER_USERS_AND_RESOURCES"
     resource_selection_scope = {
       # ...
     }
     resource_type_selection_scope = {
+      # ...
+    }
+    resource_type_selection_scope1 = {
+      # ...
+    }
+    scope_role_selection_scope = {
       # ...
     }
     selected_users_scope = {
@@ -80,6 +93,9 @@ resource "conductorone_access_review_template" "my_access_review_template" {
       # ...
     }
     specific_resources_scope = {
+      # ...
+    }
+    specific_resources_scope1 = {
       # ...
     }
     user_criteria_scope = {
@@ -141,6 +157,14 @@ resource "conductorone_access_review_template" "my_access_review_template" {
     require_signature    = true
     step_up_provider_id  = "...my_step_up_provider_id..."
     tsp_url              = "...my_tsp_url..."
+  }
+  reviewer_attribute_config = {
+    bindings = [
+      {
+        app_id        = "...my_app_id..."
+        attribute_key = "...my_attribute_key..."
+      }
+    ]
   }
   scope_type          = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
   use_policy_override = true

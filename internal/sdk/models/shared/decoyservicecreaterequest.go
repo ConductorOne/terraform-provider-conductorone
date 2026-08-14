@@ -10,32 +10,25 @@ package shared
 //   - workloadFed
 //   - accessToken
 type DecoyServiceCreateRequest struct {
-	// DecoyAccessTokenInput requests a freestanding session access-token
-	//  decoy minted under an existing User.
+	// DecoyAccessTokenInput mints a session access-token decoy under an
+	//  existing User.
 	DecoyAccessTokenInput *DecoyAccessTokenInput `json:"accessToken,omitempty"`
 	// The annotations field.
 	Annotations map[string]string `json:"annotations,omitempty"`
-	// DecoyConnectorClientInput requests a ConnectorClientCredential decoy
-	//  planted under an existing app+connector.
+	// DecoyConnectorClientInput plants a connector-shaped credential decoy.
+	//  The server allocates placement under the tenant's ConductorOne app;
+	//  the customer makes no app/connector choice.
 	DecoyConnectorClientInput *DecoyConnectorClientInput `json:"connectorClient,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
-	// DecoyUserClientCredentialInput requests a UserClientCredential decoy
-	//  planted under an existing User. The User's typ selects the credential
-	//  usage: HUMAN -> pcc, SERVICE -> spc. Any other typ (SYSTEM, AGENT)
-	//  is rejected at the handler.
+	// DecoyUserClientCredentialInput plants a client-credential decoy
+	//  under an existing User. The User must be typ=HUMAN or typ=SERVICE.
 	DecoyUserClientCredentialInput *DecoyUserClientCredentialInput `json:"userClientCredential,omitempty"`
-	// DecoyWorkloadFederationInput requests a WorkloadFederationTrust decoy
-	//  bound to an existing Provider. Decoys reuse an already-registered
-	//  Provider because Trust matching requires a real JWKS for JWT signature
-	//  verification before the decoy_id check fires.
-	//
-	//  `condition_expression` is the same CEL shape the regular WF Trust API
-	//  takes -- operators express whatever matching they want against the
-	//  JWT claims map (`claims.aud`, `claims.sub`, custom claims). Compiled
-	//  + validated by the WF controller's CreateTrust at create time.
+	// DecoyWorkloadFederationInput plants a workload-federation-trust decoy
+	//  under an existing Provider. The Provider must already be registered
+	//  so its JWKS is reachable for signature verification.
 	DecoyWorkloadFederationInput *DecoyWorkloadFederationInput `json:"workloadFed,omitempty"`
 }
 

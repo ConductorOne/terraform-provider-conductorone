@@ -16,9 +16,15 @@ type TaskType struct {
 	//
 	// This message contains a oneof named target_object. Only a single field of the following list may be set at a time:
 	//   - scopeRole
+	//   - toolCall
+	//   - finding
 	//
 	TaskTypeAction *TaskTypeAction `json:"action,omitempty"`
 	// The TaskTypeCertify message indicates that a task is a certify task and all related details.
+	//
+	// This message contains a oneof named principal. Only a single field of the following list may be set at a time:
+	//   - resource
+	//
 	TaskTypeCertify *TaskTypeCertify `json:"certify,omitempty"`
 	// The TaskTypeFinding message.
 	TaskTypeFinding *TaskTypeFinding `json:"finding,omitempty"`
@@ -27,6 +33,10 @@ type TaskType struct {
 	// The TaskTypeOffboarding message.
 	TaskTypeOffboarding *TaskTypeOffboarding `json:"offboarding,omitempty"`
 	// The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
+	//
+	// This message contains a oneof named principal. Only a single field of the following list may be set at a time:
+	//   - resource
+	//
 	TaskTypeRevoke *TaskTypeRevoke `json:"revoke,omitempty"`
 }
 

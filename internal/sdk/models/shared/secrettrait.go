@@ -9,6 +9,14 @@ import (
 
 // The SecretTrait message.
 type SecretTrait struct {
+	// The AppUser id that created this credential. Read-only; resolved from
+	//  the model during uplift. Distinct from identity_app_user_id (the
+	//  holder) and from the resource's Owner (a separate assignment, not
+	//  part of this message).
+	CreatedByAppUserID *string `json:"createdByAppUserId,omitempty"`
+	// Platform-specific credential subtype detail, finer than credential_type
+	//  (e.g. "GCP service-account key"). Read-only; translated from the model.
+	CredentialDetail *string `json:"credentialDetail,omitempty"`
 	// The identityAppUserId field.
 	IdentityAppUserID *string    `json:"identityAppUserId,omitempty"`
 	LastUsedAt        *time.Time `json:"lastUsedAt,omitempty"`
@@ -25,6 +33,20 @@ func (s *SecretTrait) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (s *SecretTrait) GetCreatedByAppUserID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.CreatedByAppUserID
+}
+
+func (s *SecretTrait) GetCredentialDetail() *string {
+	if s == nil {
+		return nil
+	}
+	return s.CredentialDetail
 }
 
 func (s *SecretTrait) GetIdentityAppUserID() *string {

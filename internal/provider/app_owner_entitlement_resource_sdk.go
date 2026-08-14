@@ -112,6 +112,12 @@ func (r *AppOwnerEntitlementResourceModel) RefreshFromSharedAppOwnerEntitlement(
 					r.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.AppID)
 					r.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.EntitlementID)
 				}
+				if resp.AppEntitlement.DeprovisionerPolicy.DevicePlacementProvision == nil {
+					r.AppEntitlement.DeprovisionerPolicy.DevicePlacementProvision = nil
+				} else {
+					r.AppEntitlement.DeprovisionerPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+					r.AppEntitlement.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(resp.AppEntitlement.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID)
+				}
 				if resp.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision == nil {
 					r.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision = nil
 				} else {
@@ -337,6 +343,12 @@ func (r *AppOwnerEntitlementResourceModel) RefreshFromSharedAppOwnerEntitlement(
 					r.AppEntitlement.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
 					r.AppEntitlement.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.AppEntitlement.ProvisionPolicy.DelegatedProvision.AppID)
 					r.AppEntitlement.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.AppEntitlement.ProvisionPolicy.DelegatedProvision.EntitlementID)
+				}
+				if resp.AppEntitlement.ProvisionPolicy.DevicePlacementProvision == nil {
+					r.AppEntitlement.ProvisionPolicy.DevicePlacementProvision = nil
+				} else {
+					r.AppEntitlement.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+					r.AppEntitlement.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(resp.AppEntitlement.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
 				}
 				if resp.AppEntitlement.ProvisionPolicy.ExternalTicketProvision == nil {
 					r.AppEntitlement.ProvisionPolicy.ExternalTicketProvision = nil

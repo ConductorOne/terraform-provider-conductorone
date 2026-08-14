@@ -10,7 +10,10 @@ type AppResourceView struct {
 	//   - secretTrait
 	//
 	AppResource *AppResource `json:"appResource,omitempty"`
-	// The ActorObjectPermissions message.
+	// Legacy: do not use for new objects. Retained only for the existing
+	//  AppResource / AppEntitlement / access-review consumers, which will migrate to
+	//  c1.api.authorization.v1.ActorObjectPermissions in IGA-2331. New object views
+	//  should reference c1.api.authorization.v1.ActorObjectPermissions instead.
 	ActorObjectPermissions *ActorObjectPermissions `json:"objectPermissions,omitempty"`
 }
 

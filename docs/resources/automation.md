@@ -163,8 +163,9 @@ resource "conductorone_automation" "my_automation" {
         entitlement_inclusion_list_cel = {
           app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         }
-        use_subject_user = false
-        user_id_cel      = "...my_user_id_cel..."
+        grant_source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
+        use_subject_user    = false
+        user_id_cel         = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
@@ -284,6 +285,7 @@ resource "conductorone_automation" "my_automation" {
       }
       send_slack_message = {
         body             = "...my_body..."
+        channel_is_id    = true
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
         use_subject_user = false
@@ -522,8 +524,9 @@ resource "conductorone_automation" "my_automation" {
         entitlement_inclusion_list_cel = {
           app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         }
-        use_subject_user = false
-        user_id_cel      = "...my_user_id_cel..."
+        grant_source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
+        use_subject_user    = false
+        user_id_cel         = "...my_user_id_cel..."
         user_ref = {
           id = "...my_id..."
         }
@@ -643,6 +646,7 @@ resource "conductorone_automation" "my_automation" {
       }
       send_slack_message = {
         body             = "...my_body..."
+        channel_is_id    = true
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
         use_subject_user = true
@@ -1290,7 +1294,10 @@ Optional:
 
 Optional:
 
-- `args` (Map of String) The args field.
+- `args` (Map of String) Arg name → CEL expression. Each value is evaluated against the
+ workflow execution context (subject + completed step outputs) and the
+ resolved values are passed to the function as JSON. Plain literals
+ must be quoted as CEL strings (e.g. "'static-value'").
 - `function_id` (String) The functionId field.
 
 
@@ -1431,6 +1438,10 @@ Optional:
 - `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_criteria))
 - `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list))
 - `entitlement_inclusion_list_cel` (Attributes) The EntitlementInclusionListCel message. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list_cel))
+- `grant_source_filter` (String) Restricts the step to grants of either DIRECT (grants the user holds directly,
+ including grants that are also inherited) or UNSPECIFIED (all grants).
+ Composes with every inclusion mode, including inclusion_list_cel.
+possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT"]
 - `use_subject_user` (Boolean) The useSubjectUser field.
 This field is part of the `user` oneof.
 See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
@@ -1781,6 +1792,10 @@ Optional:
 Optional:
 
 - `body` (String) The body field.
+- `channel_is_id` (Boolean) When true, the channel value (channel_name / channel_name_cel) is a Slack
+ channel ID rather than a name. The backend looks the channel up by ID and
+ fails permanently if it does not exist or the bot cannot access it — it does
+ not create or search by name. Only applies to channel delivery.
 - `channel_name` (String) The channelName field.
 This field is part of the `channel` oneof.
 See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
@@ -1830,8 +1845,10 @@ Optional:
 - `expiry` (String)
 - `label_cel` (String) Optional display label for the vault
 - `max_views` (Number) Maximum number of views (0 = unlimited, default 1) (Paper Vault only)
-- `recipient_cel` (String) CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)
-- `recipient_email_cel` (String) CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)
+- `recipient_cel` (String) CEL expression resolving to one or more recipient C1 user IDs — a string or list<string>,
+ e.g. '["u1","u2"]' (SSO_INTERNAL / App Vault). App Vault accepts a single user only.
+- `recipient_email_cel` (String) CEL expression resolving to one or more recipient email addresses — a string or list<string>,
+ e.g. '["a@x.com","b@x.com"]' (Paper Vault + VERIFY_EMAIL only).
 - `ttl` (String)
 - `vault_type` (String) Vault type selector (default: PAPER_VAULT for backward compatibility). possible known values include one of ["STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT", "STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT"]
 
@@ -2137,7 +2154,10 @@ Optional:
 
 Optional:
 
-- `args` (Map of String) The args field.
+- `args` (Map of String) Arg name → CEL expression. Each value is evaluated against the
+ workflow execution context (subject + completed step outputs) and the
+ resolved values are passed to the function as JSON. Plain literals
+ must be quoted as CEL strings (e.g. "'static-value'").
 - `function_id` (String) The functionId field.
 
 
@@ -2278,6 +2298,10 @@ Optional:
 - `entitlement_inclusion_criteria` (Attributes) The EntitlementInclusionCriteria message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_criteria))
 - `entitlement_inclusion_list` (Attributes) The EntitlementInclusionList message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list))
 - `entitlement_inclusion_list_cel` (Attributes) The EntitlementInclusionListCel message. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--entitlement_inclusion_list_cel))
+- `grant_source_filter` (String) Restricts the step to grants of either DIRECT (grants the user holds directly,
+ including grants that are also inherited) or UNSPECIFIED (all grants).
+ Composes with every inclusion mode, including inclusion_list_cel.
+possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT"]
 - `use_subject_user` (Boolean) The useSubjectUser field.
 This field is part of the `user` oneof.
 See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
@@ -2628,6 +2652,10 @@ Optional:
 Optional:
 
 - `body` (String) The body field.
+- `channel_is_id` (Boolean) When true, the channel value (channel_name / channel_name_cel) is a Slack
+ channel ID rather than a name. The backend looks the channel up by ID and
+ fails permanently if it does not exist or the bot cannot access it — it does
+ not create or search by name. Only applies to channel delivery.
 - `channel_name` (String) The channelName field.
 This field is part of the `channel` oneof.
 See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
@@ -2677,8 +2705,10 @@ Optional:
 - `expiry` (String)
 - `label_cel` (String) Optional display label for the vault
 - `max_views` (Number) Maximum number of views (0 = unlimited, default 1) (Paper Vault only)
-- `recipient_cel` (String) CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)
-- `recipient_email_cel` (String) CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)
+- `recipient_cel` (String) CEL expression resolving to one or more recipient C1 user IDs — a string or list<string>,
+ e.g. '["u1","u2"]' (SSO_INTERNAL / App Vault). App Vault accepts a single user only.
+- `recipient_email_cel` (String) CEL expression resolving to one or more recipient email addresses — a string or list<string>,
+ e.g. '["a@x.com","b@x.com"]' (Paper Vault + VERIFY_EMAIL only).
 - `ttl` (String)
 - `vault_type` (String) Vault type selector (default: PAPER_VAULT for backward compatibility). possible known values include one of ["STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED", "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT", "STORE_CREDENTIAL_VAULT_TYPE_APP_VAULT"]
 

@@ -71,6 +71,9 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
       app_id         = "...my_app_id..."
       entitlement_id = "...my_entitlement_id..."
     }
+    device_placement_provision = {
+      vault_boundary_id = "...my_vault_boundary_id..."
+    }
     external_ticket_provision = {
       app_id                                = "...my_app_id..."
       connector_id                          = "...my_connector_id..."
@@ -182,7 +185,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - multiStep
   - externalTicket
   - unconfigured
-  - action (see [below for nested schema](#nestedatt--provision_policy))
+  - action
+  - devicePlacement (see [below for nested schema](#nestedatt--provision_policy))
 - `purpose` (String) The purpose of the entitlement (e.g., assignment, permission, ownership). possible known values include one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]
 - `revoke_policy_id` (String) The ID of the policy to use for revoke request tasks.
 - `risk_level_value_id` (String) The ID of the risk level to assign to this entitlement.
@@ -203,7 +207,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - multiStep
   - externalTicket
   - unconfigured
-  - action (see [below for nested schema](#nestedatt--deprovisioner_policy))
+  - action
+  - devicePlacement (see [below for nested schema](#nestedatt--deprovisioner_policy))
 - `edit` (Boolean) The edit field.
 - `expanded` (Attributes List) List of serialized related objects. (see [below for nested schema](#nestedatt--expanded))
 - `external_id` (String) The upstream product's native external ID for this entitlement (e.g. an Okta group ID).
@@ -236,6 +241,7 @@ This message contains a oneof named provision_type. Only a single field of the f
   - account
   - deleteAccount (see [below for nested schema](#nestedatt--provision_policy--connector_provision))
 - `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--provision_policy--delegated_provision))
+- `device_placement_provision` (Attributes) This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable. (see [below for nested schema](#nestedatt--provision_policy--device_placement_provision))
 - `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--provision_policy--external_ticket_provision))
 - `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--provision_policy--manual_provision))
 - `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
@@ -315,6 +321,14 @@ Optional:
 
 - `app_id` (String) The AppID of the entitlement to delegate provisioning to.
 - `entitlement_id` (String) The ID of the entitlement we are delegating provisioning to.
+
+
+<a id="nestedatt--provision_policy--device_placement_provision"></a>
+### Nested Schema for `provision_policy.device_placement_provision`
+
+Optional:
+
+- `vault_boundary_id` (String) The vaultBoundaryId field.
 
 
 <a id="nestedatt--provision_policy--external_ticket_provision"></a>
@@ -443,6 +457,7 @@ This message contains a oneof named provision_type. Only a single field of the f
   - account
   - deleteAccount (see [below for nested schema](#nestedatt--deprovisioner_policy--connector_provision))
 - `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--deprovisioner_policy--delegated_provision))
+- `device_placement_provision` (Attributes) This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable. (see [below for nested schema](#nestedatt--deprovisioner_policy--device_placement_provision))
 - `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--deprovisioner_policy--external_ticket_provision))
 - `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--deprovisioner_policy--manual_provision))
 - `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
@@ -522,6 +537,14 @@ Read-Only:
 
 - `app_id` (String) The AppID of the entitlement to delegate provisioning to.
 - `entitlement_id` (String) The ID of the entitlement we are delegating provisioning to.
+
+
+<a id="nestedatt--deprovisioner_policy--device_placement_provision"></a>
+### Nested Schema for `deprovisioner_policy.device_placement_provision`
+
+Read-Only:
+
+- `vault_boundary_id` (String) The vaultBoundaryId field.
 
 
 <a id="nestedatt--deprovisioner_policy--external_ticket_provision"></a>

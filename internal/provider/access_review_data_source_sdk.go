@@ -28,6 +28,24 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 			} else {
 				r.AccessReviewColumnConfig.Columns = nil
 			}
+			if resp.AccessReviewColumnConfig.OrderedColumns != nil {
+				r.AccessReviewColumnConfig.OrderedColumns = []tfTypes.AccessReviewTaskColumnRef{}
+
+				for _, orderedColumnsItem := range resp.AccessReviewColumnConfig.OrderedColumns {
+					var orderedColumns tfTypes.AccessReviewTaskColumnRef
+
+					orderedColumns.AppUserAttributeKey = types.StringPointerValue(orderedColumnsItem.AppUserAttributeKey)
+					if orderedColumnsItem.Builtin != nil {
+						orderedColumns.Builtin = types.StringValue(string(*orderedColumnsItem.Builtin))
+					} else {
+						orderedColumns.Builtin = types.StringNull()
+					}
+
+					r.AccessReviewColumnConfig.OrderedColumns = append(r.AccessReviewColumnConfig.OrderedColumns, orderedColumns)
+				}
+			} else {
+				r.AccessReviewColumnConfig.OrderedColumns = nil
+			}
 		}
 		if resp.AccessReviewExclusionScope == nil {
 			r.AccessReviewExclusionScope = nil
@@ -278,6 +296,11 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 					r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter = types.StringNull()
 				}
 			}
+			if resp.AccessReviewScopeV2.PrincipalTypeFilter != nil {
+				r.AccessReviewScopeV2.PrincipalTypeFilter = types.StringValue(string(*resp.AccessReviewScopeV2.PrincipalTypeFilter))
+			} else {
+				r.AccessReviewScopeV2.PrincipalTypeFilter = types.StringNull()
+			}
 			if resp.AccessReviewScopeV2.ResourceSelectionScope == nil {
 				r.AccessReviewScopeV2.ResourceSelectionScope = nil
 			} else {
@@ -287,6 +310,16 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = nil
 			} else {
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.AccessReviewScopeV2.ResourceTypeSelectionScope1 == nil {
+				r.AccessReviewScopeV2.ResourceTypeSelectionScope1 = nil
+			} else {
+				r.AccessReviewScopeV2.ResourceTypeSelectionScope1 = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.AccessReviewScopeV2.ScopeRoleSelectionScope == nil {
+				r.AccessReviewScopeV2.ScopeRoleSelectionScope = nil
+			} else {
+				r.AccessReviewScopeV2.ScopeRoleSelectionScope = &tfTypes.ScopeRoleSelectionScope{}
 			}
 			if resp.AccessReviewScopeV2.SelectedUsersScope == nil {
 				r.AccessReviewScopeV2.SelectedUsersScope = nil
@@ -310,6 +343,11 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 				r.AccessReviewScopeV2.SpecificResourcesScope = nil
 			} else {
 				r.AccessReviewScopeV2.SpecificResourcesScope = &tfTypes.SpecificResourcesScope{}
+			}
+			if resp.AccessReviewScopeV2.SpecificResourcesScope1 == nil {
+				r.AccessReviewScopeV2.SpecificResourcesScope1 = nil
+			} else {
+				r.AccessReviewScopeV2.SpecificResourcesScope1 = &tfTypes.SpecificResourcesScope{}
 			}
 			if resp.AccessReviewScopeV2.UserCriteriaScope == nil {
 				r.AccessReviewScopeV2.UserCriteriaScope = nil
@@ -472,6 +510,25 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
 		}
 		r.PolicyID = types.StringPointerValue(resp.PolicyID)
+		if resp.ReviewerAttributeConfig == nil {
+			r.ReviewerAttributeConfig = nil
+		} else {
+			r.ReviewerAttributeConfig = &tfTypes.ReviewerAttributeConfig{}
+			if resp.ReviewerAttributeConfig.Bindings != nil {
+				r.ReviewerAttributeConfig.Bindings = []tfTypes.ReviewerAttributeBinding{}
+
+				for _, bindingsItem := range resp.ReviewerAttributeConfig.Bindings {
+					var bindings tfTypes.ReviewerAttributeBinding
+
+					bindings.AppID = types.StringPointerValue(bindingsItem.AppID)
+					bindings.AttributeKey = types.StringPointerValue(bindingsItem.AttributeKey)
+
+					r.ReviewerAttributeConfig.Bindings = append(r.ReviewerAttributeConfig.Bindings, bindings)
+				}
+			} else {
+				r.ReviewerAttributeConfig.Bindings = nil
+			}
+		}
 		r.ReviewInstructions = types.StringPointerValue(resp.ReviewInstructions)
 		if resp.ReviewSignatureConfig == nil {
 			r.ReviewSignatureConfig = nil

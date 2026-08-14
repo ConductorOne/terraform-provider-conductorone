@@ -11,6 +11,7 @@ type ProvisionInstance struct {
 	CompletedAction                   *CompletedAction         `tfsdk:"completed_action"`
 	ErroredAction                     *ErroredAction           `tfsdk:"errored_action"`
 	Provision                         *Provision               `tfsdk:"provision"`
+	ProvisionWaitingOn                *ProvisionWaitingOn      `tfsdk:"provision_waiting_on"`
 	ReassignedByErrorAction           *ReassignedByErrorAction `tfsdk:"reassigned_by_error_action"`
 	SkippedAction                     *SkippedAction           `tfsdk:"skipped_action"`
 	BatonActionInvocationID           types.String             `tfsdk:"baton_action_invocation_id"`

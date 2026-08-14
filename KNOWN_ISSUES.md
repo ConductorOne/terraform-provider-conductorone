@@ -107,6 +107,69 @@ Filed upstream as [speakeasy-api/speakeasy#2031](https://github.com/speakeasy-ap
 
 We confirmed `terraform.respectRequiredFields: true` in `gen.yaml` does NOT fix this — that flag improves nullable handling for ordinary nested struct fields but does not affect the flatten-promotion case. Documented in the upstream issue.
 
+## Nullable `oneOf`-of-`$ref` in the spec silently renames attributes — MITIGATED in `make gen`
+
+### Summary
+
+Speakeasy's Terraform generator names a nested attribute from the **referenced
+schema** when a property is a bare `$ref`, and from the **property** when the
+same property is wrapped in a nullable `oneOf`:
+
+```yaml
+# bare $ref -> attribute is named after ActionProvision: action_provision
+action:
+    $ref: '#/components/schemas/c1.api.policy.v1.ActionProvision'
+
+# nullable oneOf -> attribute is named after the property: action
+action:
+    oneOf:
+        - $ref: '#/components/schemas/c1.api.policy.v1.ActionProvision'
+        - type: "null"
+```
+
+Between provider 1.4.0 and 1.5.0 the insulator spec moved **every** property
+from the first shape to the second — 1,023 bare `$ref` properties went to 0,
+and nullable `oneOf`s went from 0 to 1,322. Regenerating against it renames
+**250 customer-visible attributes across 71 model types and ~30 resources**:
+`conductorone_policy`'s entire `Approval` block, every `conductorone_automation`
+trigger, `provision_policy` → `provisioner_policy` on
+`conductorone_app_entitlement`, every `AccessReviewScopeV2` member, and more.
+
+No resource type is renamed, so `terraform state mv` cannot express any of it,
+and Speakeasy-generated resources carry no `SchemaVersion` to hang a state
+upgrader on. This is the same failure that shipped as `v1.1.0` (see the
+"1.1.0 — do not use" table in `templates/index.md.tmpl`); the mechanism was
+never identified at the time.
+
+### Mitigation
+
+`tools/specnorm` collapses the nullable `oneOf` back to a bare `$ref` between
+`speakeasy overlay apply` and `speakeasy generate sdk` in `make gen`. Only a
+mapping whose sole key is `oneOf` over exactly one `$ref` and one `type: "null"`
+is rewritten; three-way unions and annotated `oneOf`s are untouched.
+
+### Tripwire
+
+Diff the `tfsdk:` tags before and after a regen. A regen that removes any tag
+that existed in the previous release is a rename, and must be treated as a
+breaking change rather than merged:
+
+```sh
+git stash && <extract tags> > /tmp/before && git stash pop && <extract tags> > /tmp/after
+comm -23 /tmp/before /tmp/after   # must be empty
+```
+
+`terraform providers schema -json`, flattened to attribute paths and compared
+across two provider builds, is the authoritative version of the same check.
+
+### Status
+
+The durable fix belongs upstream in whatever emits the public spec: nullable
+object properties should keep emitting a bare `$ref`, or every downstream SDK
+generator inherits the same rename risk. `specnorm` is a holding action, and
+should be deleted once the emitter is fixed — with the tag diff above as the
+proof that it is safe to delete.
+
 ## `conductorone_app_entitlement` resource is hand-written — schema and SDK can drift
 
 ### Summary

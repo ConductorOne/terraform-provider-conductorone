@@ -66,11 +66,23 @@ func (r *AppEntitlementUsersDataSource) Schema(ctx context.Context, req datasour
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"app_entitlement_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The ID of the app entitlement that the app user has access to.`,
+						},
 						"app_entitlement_user_binding_created_at": schema.StringAttribute{
 							Computed: true,
 						},
 						"app_entitlement_user_binding_deprovision_at": schema.StringAttribute{
 							Computed: true,
+						},
+						"app_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The ID of the app associated with the grant.`,
+						},
+						"app_user_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The ID of the app user that has access to the app entitlement.`,
 						},
 						"app_user_view": schema.SingleNestedAttribute{
 							Computed: true,
@@ -82,6 +94,12 @@ func (r *AppEntitlementUsersDataSource) Schema(ctx context.Context, req datasour
 								"app_user": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
+										"agent_status": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `AI-agent lifecycle status when this app user carries the agent trait.` + "\n" +
+												` UNSPECIFIED marks a non-agent account. Read-only; translated from the` + "\n" +
+												` model's agent_trait at the API boundary.`,
+										},
 										"app_id": schema.StringAttribute{
 											Computed:    true,
 											Description: `The ID of the application.`,
@@ -139,6 +157,15 @@ func (r *AppEntitlementUsersDataSource) Schema(ctx context.Context, req datasour
 										"is_external": schema.BoolAttribute{
 											Computed:    true,
 											Description: `The isExternal field.`,
+										},
+										"nhi_detail": schema.StringAttribute{
+											Computed:    true,
+											Description: `Axis-2 detail refining nhi_type (e.g. "aws.role.lambda"). Read-only.`,
+										},
+										"nhi_type": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `NHI classification when this app user carries the non-human-identity trait.` + "\n" +
+												` Read-only; translated from the model's nhi_trait at the API boundary.`,
 										},
 										"profile": schema.SingleNestedAttribute{
 											Computed: true,

@@ -161,7 +161,10 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
-									Description: `The args field.`,
+									MarkdownDescription: `Arg name → CEL expression. Each value is evaluated against the` + "\n" +
+										` workflow execution context (subject + completed step outputs) and the` + "\n" +
+										` resolved values are passed to the function as JSON. Plain literals` + "\n" +
+										` must be quoted as CEL strings (e.g. "'static-value'").`,
 								},
 								"function_id": schema.StringAttribute{
 									Computed:    true,
@@ -582,6 +585,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The EntitlementInclusionListCel message.`,
+								},
+								"grant_source_filter": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `Restricts the step to grants of either DIRECT (grants the user holds directly,` + "\n" +
+										` including grants that are also inherited) or UNSPECIFIED (all grants).` + "\n" +
+										` Composes with every inclusion mode, including inclusion_list_cel.` + "\n" +
+										`possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT"]`,
 								},
 								"use_subject_user": schema.BoolAttribute{
 									Computed: true,
@@ -1087,6 +1098,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `The body field.`,
 								},
+								"channel_is_id": schema.BoolAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `When true, the channel value (channel_name / channel_name_cel) is a Slack` + "\n" +
+										` channel ID rather than a name. The backend looks the channel up by ID and` + "\n" +
+										` fails permanently if it does not exist or the bot cannot access it — it does` + "\n" +
+										` not create or search by name. Only applies to channel delivery.`,
+								},
 								"channel_name": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
@@ -1225,14 +1244,16 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Description: `Maximum number of views (0 = unlimited, default 1) (Paper Vault only)`,
 								},
 								"recipient_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)`,
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression resolving to one or more recipient C1 user IDs — a string or list<string>,` + "\n" +
+										` e.g. '["u1","u2"]' (SSO_INTERNAL / App Vault). App Vault accepts a single user only.`,
 								},
 								"recipient_email_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)`,
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression resolving to one or more recipient email addresses — a string or list<string>,` + "\n" +
+										` e.g. '["a@x.com","b@x.com"]' (Paper Vault + VERIFY_EMAIL only).`,
 								},
 								"ttl": schema.StringAttribute{
 									Computed: true,
@@ -1627,7 +1648,10 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
-									Description: `The args field.`,
+									MarkdownDescription: `Arg name → CEL expression. Each value is evaluated against the` + "\n" +
+										` workflow execution context (subject + completed step outputs) and the` + "\n" +
+										` resolved values are passed to the function as JSON. Plain literals` + "\n" +
+										` must be quoted as CEL strings (e.g. "'static-value'").`,
 								},
 								"function_id": schema.StringAttribute{
 									Computed:    true,
@@ -2048,6 +2072,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The EntitlementInclusionListCel message.`,
+								},
+								"grant_source_filter": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `Restricts the step to grants of either DIRECT (grants the user holds directly,` + "\n" +
+										` including grants that are also inherited) or UNSPECIFIED (all grants).` + "\n" +
+										` Composes with every inclusion mode, including inclusion_list_cel.` + "\n" +
+										`possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT"]`,
 								},
 								"use_subject_user": schema.BoolAttribute{
 									Computed: true,
@@ -2553,6 +2585,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Optional:    true,
 									Description: `The body field.`,
 								},
+								"channel_is_id": schema.BoolAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `When true, the channel value (channel_name / channel_name_cel) is a Slack` + "\n" +
+										` channel ID rather than a name. The backend looks the channel up by ID and` + "\n" +
+										` fails permanently if it does not exist or the bot cannot access it — it does` + "\n" +
+										` not create or search by name. Only applies to channel delivery.`,
+								},
 								"channel_name": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
@@ -2691,14 +2731,16 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Description: `Maximum number of views (0 = unlimited, default 1) (Paper Vault only)`,
 								},
 								"recipient_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)`,
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression resolving to one or more recipient C1 user IDs — a string or list<string>,` + "\n" +
+										` e.g. '["u1","u2"]' (SSO_INTERNAL / App Vault). App Vault accepts a single user only.`,
 								},
 								"recipient_email_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)`,
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression resolving to one or more recipient email addresses — a string or list<string>,` + "\n" +
+										` e.g. '["a@x.com","b@x.com"]' (Paper Vault + VERIFY_EMAIL only).`,
 								},
 								"ttl": schema.StringAttribute{
 									Computed: true,

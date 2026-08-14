@@ -2,14 +2,11 @@
 
 package shared
 
-// DecoyUserClientCredentialInput requests a UserClientCredential decoy
+// DecoyUserClientCredentialInput plants a client-credential decoy
 //
-//	planted under an existing User. The User's typ selects the credential
-//	usage: HUMAN -> pcc, SERVICE -> spc. Any other typ (SYSTEM, AGENT)
-//	is rejected at the handler.
+//	under an existing User. The User must be typ=HUMAN or typ=SERVICE.
 type DecoyUserClientCredentialInput struct {
-	// Existing User to plant the decoy credential under. Must be
-	//  typ=HUMAN or typ=SERVICE.
+	// Existing User to plant the decoy credential under.
 	UserID *string `json:"userId,omitempty"`
 }
 

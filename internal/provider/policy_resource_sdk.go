@@ -54,6 +54,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 				r.Annotations[key] = types.StringValue(value)
 			}
 		}
+		r.BaselinePolicyID = types.StringPointerValue(resp.BaselinePolicyID)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
@@ -512,6 +513,12 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									steps.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
 									steps.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
 								}
+								if stepsItem.Provision.ProvisionPolicy.DevicePlacementProvision == nil {
+									steps.Provision.ProvisionPolicy.DevicePlacementProvision = nil
+								} else {
+									steps.Provision.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+									steps.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
+								}
 								if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
 									steps.Provision.ProvisionPolicy.ExternalTicketProvision = nil
 								} else {
@@ -733,7 +740,9 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 				var rules tfTypes.Rule
 
 				rules.Condition = types.StringPointerValue(rulesItem.Condition)
+				rules.PolicyID = types.StringPointerValue(rulesItem.PolicyID)
 				rules.PolicyKey = types.StringPointerValue(rulesItem.PolicyKey)
+				rules.StepKey = types.StringPointerValue(rulesItem.StepKey)
 
 				r.Rules = append(r.Rules, rules)
 			}
@@ -818,6 +827,12 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 		annotationsInst = r.Annotations[annotationsKey].ValueString()
 
 		annotations[annotationsKey] = annotationsInst
+	}
+	baselinePolicyID := new(string)
+	if !r.BaselinePolicyID.IsUnknown() && !r.BaselinePolicyID.IsNull() {
+		*baselinePolicyID = r.BaselinePolicyID.ValueString()
+	} else {
+		baselinePolicyID = nil
 	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -1651,6 +1666,18 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								EntitlementID: entitlementID,
 							}
 						}
+						var devicePlacementProvision *shared.DevicePlacementProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacementProvision != nil {
+							vaultBoundaryID := new(string)
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.IsNull() {
+								*vaultBoundaryID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.ValueString()
+							} else {
+								vaultBoundaryID = nil
+							}
+							devicePlacementProvision = &shared.DevicePlacementProvision{
+								VaultBoundaryID: vaultBoundaryID,
+							}
+						}
 						var externalTicketProvision *shared.ExternalTicketProvision
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision != nil {
 							appId9 := new(string)
@@ -1879,14 +1906,15 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 						}
 						provisionPolicy = &shared.ProvisionPolicy{
-							ActionProvision:         actionProvision,
-							ConnectorProvision:      connectorProvision,
-							DelegatedProvision:      delegatedProvision,
-							ExternalTicketProvision: externalTicketProvision,
-							ManualProvision:         manualProvision,
-							MultiStep:               multiStep,
-							UnconfiguredProvision:   unconfiguredProvision,
-							WebhookProvision:        webhookProvision,
+							ActionProvision:          actionProvision,
+							ConnectorProvision:       connectorProvision,
+							DelegatedProvision:       delegatedProvision,
+							DevicePlacementProvision: devicePlacementProvision,
+							ExternalTicketProvision:  externalTicketProvision,
+							ManualProvision:          manualProvision,
+							MultiStep:                multiStep,
+							UnconfiguredProvision:    unconfiguredProvision,
+							WebhookProvision:         webhookProvision,
 						}
 					}
 					var provisionTarget *shared.ProvisionTarget
@@ -2079,20 +2107,35 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 			} else {
 				condition1 = nil
 			}
+			policyId1 := new(string)
+			if !r.Rules[rulesIndex].PolicyID.IsUnknown() && !r.Rules[rulesIndex].PolicyID.IsNull() {
+				*policyId1 = r.Rules[rulesIndex].PolicyID.ValueString()
+			} else {
+				policyId1 = nil
+			}
 			policyKey := new(string)
 			if !r.Rules[rulesIndex].PolicyKey.IsUnknown() && !r.Rules[rulesIndex].PolicyKey.IsNull() {
 				*policyKey = r.Rules[rulesIndex].PolicyKey.ValueString()
 			} else {
 				policyKey = nil
 			}
+			stepKey := new(string)
+			if !r.Rules[rulesIndex].StepKey.IsUnknown() && !r.Rules[rulesIndex].StepKey.IsNull() {
+				*stepKey = r.Rules[rulesIndex].StepKey.ValueString()
+			} else {
+				stepKey = nil
+			}
 			rules = append(rules, shared.Rule{
 				Condition: condition1,
+				PolicyID:  policyId1,
 				PolicyKey: policyKey,
+				StepKey:   stepKey,
 			})
 		}
 	}
 	out := shared.CreatePolicyRequest{
 		Annotations:              annotations,
+		BaselinePolicyID:         baselinePolicyID,
 		Description:              description,
 		DisplayName:              displayName,
 		PolicySteps:              policySteps,
@@ -2122,6 +2165,12 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 		annotationsInst = r.Annotations[annotationsKey].ValueString()
 
 		annotations[annotationsKey] = annotationsInst
+	}
+	baselinePolicyID := new(string)
+	if !r.BaselinePolicyID.IsUnknown() && !r.BaselinePolicyID.IsNull() {
+		*baselinePolicyID = r.BaselinePolicyID.ValueString()
+	} else {
+		baselinePolicyID = nil
 	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -2958,6 +3007,18 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								EntitlementID: entitlementID,
 							}
 						}
+						var devicePlacementProvision *shared.DevicePlacementProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacementProvision != nil {
+							vaultBoundaryID := new(string)
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.IsNull() {
+								*vaultBoundaryID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.ValueString()
+							} else {
+								vaultBoundaryID = nil
+							}
+							devicePlacementProvision = &shared.DevicePlacementProvision{
+								VaultBoundaryID: vaultBoundaryID,
+							}
+						}
 						var externalTicketProvision *shared.ExternalTicketProvision
 						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision != nil {
 							appId9 := new(string)
@@ -3186,14 +3247,15 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 						}
 						provisionPolicy = &shared.ProvisionPolicy{
-							ActionProvision:         actionProvision,
-							ConnectorProvision:      connectorProvision,
-							DelegatedProvision:      delegatedProvision,
-							ExternalTicketProvision: externalTicketProvision,
-							ManualProvision:         manualProvision,
-							MultiStep:               multiStep,
-							UnconfiguredProvision:   unconfiguredProvision,
-							WebhookProvision:        webhookProvision,
+							ActionProvision:          actionProvision,
+							ConnectorProvision:       connectorProvision,
+							DelegatedProvision:       delegatedProvision,
+							DevicePlacementProvision: devicePlacementProvision,
+							ExternalTicketProvision:  externalTicketProvision,
+							ManualProvision:          manualProvision,
+							MultiStep:                multiStep,
+							UnconfiguredProvision:    unconfiguredProvision,
+							WebhookProvision:         webhookProvision,
 						}
 					}
 					var provisionTarget *shared.ProvisionTarget
@@ -3386,20 +3448,35 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 			} else {
 				condition1 = nil
 			}
+			policyId1 := new(string)
+			if !r.Rules[rulesIndex].PolicyID.IsUnknown() && !r.Rules[rulesIndex].PolicyID.IsNull() {
+				*policyId1 = r.Rules[rulesIndex].PolicyID.ValueString()
+			} else {
+				policyId1 = nil
+			}
 			policyKey := new(string)
 			if !r.Rules[rulesIndex].PolicyKey.IsUnknown() && !r.Rules[rulesIndex].PolicyKey.IsNull() {
 				*policyKey = r.Rules[rulesIndex].PolicyKey.ValueString()
 			} else {
 				policyKey = nil
 			}
+			stepKey := new(string)
+			if !r.Rules[rulesIndex].StepKey.IsUnknown() && !r.Rules[rulesIndex].StepKey.IsNull() {
+				*stepKey = r.Rules[rulesIndex].StepKey.ValueString()
+			} else {
+				stepKey = nil
+			}
 			rules = append(rules, shared.Rule{
 				Condition: condition1,
+				PolicyID:  policyId1,
 				PolicyKey: policyKey,
+				StepKey:   stepKey,
 			})
 		}
 	}
 	out := shared.PolicyInput{
 		Annotations:              annotations,
+		BaselinePolicyID:         baselinePolicyID,
 		Description:              description,
 		DisplayName:              displayName,
 		PolicySteps:              policySteps,

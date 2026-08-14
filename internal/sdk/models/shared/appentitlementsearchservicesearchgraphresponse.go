@@ -8,6 +8,10 @@ type AppEntitlementSearchServiceSearchGraphResponse struct {
 	Edges []GraphEdge `json:"edges,omitempty"`
 	// The hasMore field.
 	HasMore *bool `json:"hasMore,omitempty"`
+	// True if the server-side node budget stopped the traversal before it
+	//  finished walking the graph. Distinct from has_more, which can also be set
+	//  by a request timeout or scan limit.
+	NodeCeilingHit *bool `json:"nodeCeilingHit,omitempty"`
 	// The nodes field.
 	Nodes []GraphNode `json:"nodes,omitempty"`
 	// The pageToken field.
@@ -30,6 +34,13 @@ func (a *AppEntitlementSearchServiceSearchGraphResponse) GetHasMore() *bool {
 		return nil
 	}
 	return a.HasMore
+}
+
+func (a *AppEntitlementSearchServiceSearchGraphResponse) GetNodeCeilingHit() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.NodeCeilingHit
 }
 
 func (a *AppEntitlementSearchServiceSearchGraphResponse) GetNodes() []GraphNode {

@@ -111,6 +111,12 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 				r.DeprovisionerPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.DeprovisionerPolicy.DelegatedProvision.AppID)
 				r.DeprovisionerPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.DeprovisionerPolicy.DelegatedProvision.EntitlementID)
 			}
+			if resp.DeprovisionerPolicy.DevicePlacementProvision == nil {
+				r.DeprovisionerPolicy.DevicePlacementProvision = nil
+			} else {
+				r.DeprovisionerPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+				r.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(resp.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID)
+			}
 			if resp.DeprovisionerPolicy.ExternalTicketProvision == nil {
 				r.DeprovisionerPolicy.ExternalTicketProvision = nil
 			} else {
@@ -354,6 +360,12 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlement(ctx cont
 				r.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
 				r.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.DelegatedProvision.AppID)
 				r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.ProvisionPolicy.DelegatedProvision.EntitlementID)
+			}
+			if resp.ProvisionPolicy.DevicePlacementProvision == nil {
+				r.ProvisionPolicy.DevicePlacementProvision = nil
+			} else {
+				r.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+				r.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(resp.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
 			}
 			if resp.ProvisionPolicy.ExternalTicketProvision == nil {
 				r.ProvisionPolicy.ExternalTicketProvision = nil

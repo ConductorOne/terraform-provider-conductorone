@@ -12,22 +12,52 @@ package shared
 //   - queryScopeLimit
 //   - writeAuthorization
 //   - sensitiveFileGuard
+//   - toolOutputSizeGuard
+//   - secretsMasking
+//   - linkFilter
+//   - encodedContentGuard
+//   - promptInjectionScan
+//   - blockOutput
 type BuiltInPattern struct {
+	// BlockOutputConfig denies the in-flight response chunk when its hook's
+	//  filter matches. Only valid for HOOK_EVENT_TYPE_PRE_OUTPUT.
+	BlockOutputConfig *BlockOutputConfig `json:"blockOutput,omitempty"`
 	// CreditCardBlockingConfig denies any tool call whose output contains a
 	//  Luhn-valid credit card number. No configuration fields today; the
 	//  presence of the oneof arm is the whole configuration.
 	CreditCardBlockingConfig *CreditCardBlockingConfig `json:"creditCardBlocking,omitempty"`
+	// EncodedContentGuardConfig detects encoded/obfuscated smuggling in tool input:
+	//  long base64 blobs, long hex runs, and invisible/zero-width unicode.
+	EncodedContentGuardConfig *EncodedContentGuardConfig `json:"encodedContentGuard,omitempty"`
+	// LinkFilterConfig strips or annotates URLs and markdown images in tool output
+	//  whose host is not in allowed_hosts.
+	LinkFilterConfig *LinkFilterConfig `json:"linkFilter,omitempty"`
 	// PIIRedactionConfig configures post-tool-use redaction of sensitive fields.
 	PIIRedactionConfig *PIIRedactionConfig `json:"piiRedaction,omitempty"`
+	// PromptInjectionScanConfig scans tool output for prompt-injection using the
+	//  aigov A2 judge and acts when the verdict is at or above threshold.
+	PromptInjectionScanConfig *PromptInjectionScanConfig `json:"promptInjectionScan,omitempty"`
 	// QueryScopeLimitConfig caps numeric fields (e.g. limit, page_size) in tool
 	//  input so callers cannot request unbounded data.
 	QueryScopeLimitConfig *QueryScopeLimitConfig `json:"queryScopeLimit,omitempty"`
+	// SecretsMaskingConfig configures post-tool-use redaction of secret-shaped
+	//  substrings (API keys, tokens, private keys) in tool output.
+	SecretsMaskingConfig *SecretsMaskingConfig `json:"secretsMasking,omitempty"`
 	// SensitiveFileGuardConfig blocks tool calls that reference sensitive file
 	//  paths or directories.
 	SensitiveFileGuardConfig *SensitiveFileGuardConfig `json:"sensitiveFileGuard,omitempty"`
+	// ToolOutputSizeGuardConfig caps post-tool-use output size in bytes.
+	ToolOutputSizeGuardConfig *ToolOutputSizeGuardConfig `json:"toolOutputSizeGuard,omitempty"`
 	// WriteAuthorizationConfig blocks tool calls whose ToolClassification is in
 	//  blocked_classifications, optionally permitting them within business hours.
 	WriteAuthorizationConfig *WriteAuthorizationConfig `json:"writeAuthorization,omitempty"`
+}
+
+func (b *BuiltInPattern) GetBlockOutputConfig() *BlockOutputConfig {
+	if b == nil {
+		return nil
+	}
+	return b.BlockOutputConfig
 }
 
 func (b *BuiltInPattern) GetCreditCardBlockingConfig() *CreditCardBlockingConfig {
@@ -37,11 +67,32 @@ func (b *BuiltInPattern) GetCreditCardBlockingConfig() *CreditCardBlockingConfig
 	return b.CreditCardBlockingConfig
 }
 
+func (b *BuiltInPattern) GetEncodedContentGuardConfig() *EncodedContentGuardConfig {
+	if b == nil {
+		return nil
+	}
+	return b.EncodedContentGuardConfig
+}
+
+func (b *BuiltInPattern) GetLinkFilterConfig() *LinkFilterConfig {
+	if b == nil {
+		return nil
+	}
+	return b.LinkFilterConfig
+}
+
 func (b *BuiltInPattern) GetPIIRedactionConfig() *PIIRedactionConfig {
 	if b == nil {
 		return nil
 	}
 	return b.PIIRedactionConfig
+}
+
+func (b *BuiltInPattern) GetPromptInjectionScanConfig() *PromptInjectionScanConfig {
+	if b == nil {
+		return nil
+	}
+	return b.PromptInjectionScanConfig
 }
 
 func (b *BuiltInPattern) GetQueryScopeLimitConfig() *QueryScopeLimitConfig {
@@ -51,11 +102,25 @@ func (b *BuiltInPattern) GetQueryScopeLimitConfig() *QueryScopeLimitConfig {
 	return b.QueryScopeLimitConfig
 }
 
+func (b *BuiltInPattern) GetSecretsMaskingConfig() *SecretsMaskingConfig {
+	if b == nil {
+		return nil
+	}
+	return b.SecretsMaskingConfig
+}
+
 func (b *BuiltInPattern) GetSensitiveFileGuardConfig() *SensitiveFileGuardConfig {
 	if b == nil {
 		return nil
 	}
 	return b.SensitiveFileGuardConfig
+}
+
+func (b *BuiltInPattern) GetToolOutputSizeGuardConfig() *ToolOutputSizeGuardConfig {
+	if b == nil {
+		return nil
+	}
+	return b.ToolOutputSizeGuardConfig
 }
 
 func (b *BuiltInPattern) GetWriteAuthorizationConfig() *WriteAuthorizationConfig {

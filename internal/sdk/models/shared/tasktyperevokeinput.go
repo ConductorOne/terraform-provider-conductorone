@@ -3,7 +3,12 @@
 package shared
 
 // TaskTypeRevokeInput - The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
+//
+// This message contains a oneof named principal. Only a single field of the following list may be set at a time:
+//   - resource
 type TaskTypeRevokeInput struct {
+	// A reference to a specific app resource by its composite key.
+	AppResourceRef *AppResourceRef `json:"resource,omitempty"`
 	// The TaskRevokeSource message indicates the source of the revoke task is one of expired, nonUsage, request, or review.
 	//
 	// This message contains a oneof named origin. Only a single field of the following list may be set at a time:
@@ -13,6 +18,13 @@ type TaskTypeRevokeInput struct {
 	//   - nonUsage
 	//
 	TaskRevokeSource *TaskRevokeSource `json:"source,omitempty"`
+}
+
+func (t *TaskTypeRevokeInput) GetAppResourceRef() *AppResourceRef {
+	if t == nil {
+		return nil
+	}
+	return t.AppResourceRef
 }
 
 func (t *TaskTypeRevokeInput) GetTaskRevokeSource() *TaskRevokeSource {

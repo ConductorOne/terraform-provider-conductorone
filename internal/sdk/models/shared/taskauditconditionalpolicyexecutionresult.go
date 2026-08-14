@@ -4,6 +4,8 @@ package shared
 
 // The TaskAuditConditionalPolicyExecutionResult message.
 type TaskAuditConditionalPolicyExecutionResult struct {
+	// The depth of this policy in the chain (0 = root, 1 = first hop, etc.).
+	ChainDepth *int `json:"chainDepth,omitempty"`
 	// The condition field.
 	Condition *string `json:"condition,omitempty"`
 	// The conditionMatched field.
@@ -12,8 +14,22 @@ type TaskAuditConditionalPolicyExecutionResult struct {
 	DefaultCondition *bool `json:"defaultCondition,omitempty"`
 	// The error field.
 	Error *string `json:"error,omitempty"`
+	// When this rule's outcome is a reference to another Policy, the ID of
+	//  that referenced policy. Empty when the outcome is an inline policy_key.
+	OutcomePolicyID *string `json:"outcomePolicyId,omitempty"`
+	// The policy in which this rule was evaluated. Empty for results recorded
+	//  before chained policy references existed; populated for every result
+	//  emitted by recursive evaluation.
+	PolicyID *string `json:"policyId,omitempty"`
 	// The policyKey field.
 	PolicyKey *string `json:"policyKey,omitempty"`
+}
+
+func (t *TaskAuditConditionalPolicyExecutionResult) GetChainDepth() *int {
+	if t == nil {
+		return nil
+	}
+	return t.ChainDepth
 }
 
 func (t *TaskAuditConditionalPolicyExecutionResult) GetCondition() *string {
@@ -42,6 +58,20 @@ func (t *TaskAuditConditionalPolicyExecutionResult) GetError() *string {
 		return nil
 	}
 	return t.Error
+}
+
+func (t *TaskAuditConditionalPolicyExecutionResult) GetOutcomePolicyID() *string {
+	if t == nil {
+		return nil
+	}
+	return t.OutcomePolicyID
+}
+
+func (t *TaskAuditConditionalPolicyExecutionResult) GetPolicyID() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PolicyID
 }
 
 func (t *TaskAuditConditionalPolicyExecutionResult) GetPolicyKey() *string {

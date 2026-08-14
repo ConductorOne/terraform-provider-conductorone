@@ -108,6 +108,12 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 				r.DeprovisionerPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.DeprovisionerPolicy.DelegatedProvision.AppID)
 				r.DeprovisionerPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.DeprovisionerPolicy.DelegatedProvision.EntitlementID)
 			}
+			if resp.DeprovisionerPolicy.DevicePlacementProvision == nil {
+				r.DeprovisionerPolicy.DevicePlacementProvision = nil
+			} else {
+				r.DeprovisionerPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+				r.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(resp.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID)
+			}
 			if resp.DeprovisionerPolicy.ExternalTicketProvision == nil {
 				r.DeprovisionerPolicy.ExternalTicketProvision = nil
 			} else {
@@ -333,6 +339,12 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 				r.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
 				r.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.DelegatedProvision.AppID)
 				r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.ProvisionPolicy.DelegatedProvision.EntitlementID)
+			}
+			if resp.ProvisionPolicy.DevicePlacementProvision == nil {
+				r.ProvisionPolicy.DevicePlacementProvision = nil
+			} else {
+				r.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+				r.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(resp.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
 			}
 			if resp.ProvisionPolicy.ExternalTicketProvision == nil {
 				r.ProvisionPolicy.ExternalTicketProvision = nil
@@ -904,6 +916,18 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 				EntitlementID: entitlementID,
 			}
 		}
+		var devicePlacementProvision *shared.DevicePlacementProvision
+		if r.ProvisionPolicy.DevicePlacementProvision != nil {
+			vaultBoundaryID := new(string)
+			if !r.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.IsUnknown() && !r.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.IsNull() {
+				*vaultBoundaryID = r.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.ValueString()
+			} else {
+				vaultBoundaryID = nil
+			}
+			devicePlacementProvision = &shared.DevicePlacementProvision{
+				VaultBoundaryID: vaultBoundaryID,
+			}
+		}
 		var externalTicketProvision *shared.ExternalTicketProvision
 		if r.ProvisionPolicy.ExternalTicketProvision != nil {
 			appId3 := new(string)
@@ -1132,14 +1156,15 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 		}
 		provisionPolicy = &shared.ProvisionPolicy{
-			ActionProvision:         actionProvision,
-			ConnectorProvision:      connectorProvision,
-			DelegatedProvision:      delegatedProvision,
-			ExternalTicketProvision: externalTicketProvision,
-			ManualProvision:         manualProvision,
-			MultiStep:               multiStep,
-			UnconfiguredProvision:   unconfiguredProvision,
-			WebhookProvision:        webhookProvision,
+			ActionProvision:          actionProvision,
+			ConnectorProvision:       connectorProvision,
+			DelegatedProvision:       delegatedProvision,
+			DevicePlacementProvision: devicePlacementProvision,
+			ExternalTicketProvision:  externalTicketProvision,
+			ManualProvision:          manualProvision,
+			MultiStep:                multiStep,
+			UnconfiguredProvision:    unconfiguredProvision,
+			WebhookProvision:         webhookProvision,
 		}
 	}
 	purpose := new(shared.Purpose)
@@ -1306,6 +1331,18 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			delegatedProvision1 = &shared.DelegatedProvision{
 				AppID:         appId6,
 				EntitlementID: entitlementId1,
+			}
+		}
+		var devicePlacementProvision1 *shared.DevicePlacementProvision
+		if r.DeprovisionerPolicy.DevicePlacementProvision != nil {
+			vaultBoundaryId1 := new(string)
+			if !r.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID.IsUnknown() && !r.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID.IsNull() {
+				*vaultBoundaryId1 = r.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID.ValueString()
+			} else {
+				vaultBoundaryId1 = nil
+			}
+			devicePlacementProvision1 = &shared.DevicePlacementProvision{
+				VaultBoundaryID: vaultBoundaryId1,
 			}
 		}
 		var externalTicketProvision1 *shared.ExternalTicketProvision
@@ -1536,14 +1573,15 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 		}
 		deprovisionerPolicy = &shared.DeprovisionerPolicy{
-			ActionProvision:         actionProvision1,
-			ConnectorProvision:      connectorProvision1,
-			DelegatedProvision:      delegatedProvision1,
-			ExternalTicketProvision: externalTicketProvision1,
-			ManualProvision:         manualProvision1,
-			MultiStep:               multiStep1,
-			UnconfiguredProvision:   unconfiguredProvision1,
-			WebhookProvision:        webhookProvision1,
+			ActionProvision:          actionProvision1,
+			ConnectorProvision:       connectorProvision1,
+			DelegatedProvision:       delegatedProvision1,
+			DevicePlacementProvision: devicePlacementProvision1,
+			ExternalTicketProvision:  externalTicketProvision1,
+			ManualProvision:          manualProvision1,
+			MultiStep:                multiStep1,
+			UnconfiguredProvision:    unconfiguredProvision1,
+			WebhookProvision:         webhookProvision1,
 		}
 	}
 	out := shared.AppEntitlementInput{
@@ -1797,6 +1835,18 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 				EntitlementID: entitlementID,
 			}
 		}
+		var devicePlacementProvision *shared.DevicePlacementProvision
+		if r.ProvisionPolicy.DevicePlacementProvision != nil {
+			vaultBoundaryID := new(string)
+			if !r.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.IsUnknown() && !r.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.IsNull() {
+				*vaultBoundaryID = r.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID.ValueString()
+			} else {
+				vaultBoundaryID = nil
+			}
+			devicePlacementProvision = &shared.DevicePlacementProvision{
+				VaultBoundaryID: vaultBoundaryID,
+			}
+		}
 		var externalTicketProvision *shared.ExternalTicketProvision
 		if r.ProvisionPolicy.ExternalTicketProvision != nil {
 			appId2 := new(string)
@@ -2025,14 +2075,15 @@ func (r *CustomAppEntitlementResourceModel) ToSharedCreateAppEntitlementRequest(
 			}
 		}
 		provisionPolicy = &shared.ProvisionPolicy{
-			ActionProvision:         actionProvision,
-			ConnectorProvision:      connectorProvision,
-			DelegatedProvision:      delegatedProvision,
-			ExternalTicketProvision: externalTicketProvision,
-			ManualProvision:         manualProvision,
-			MultiStep:               multiStep,
-			UnconfiguredProvision:   unconfiguredProvision,
-			WebhookProvision:        webhookProvision,
+			ActionProvision:          actionProvision,
+			ConnectorProvision:       connectorProvision,
+			DelegatedProvision:       delegatedProvision,
+			DevicePlacementProvision: devicePlacementProvision,
+			ExternalTicketProvision:  externalTicketProvision,
+			ManualProvision:          manualProvision,
+			MultiStep:                multiStep,
+			UnconfiguredProvision:    unconfiguredProvision,
+			WebhookProvision:         webhookProvision,
 		}
 	}
 	purpose := new(shared.CreateAppEntitlementRequestPurpose)

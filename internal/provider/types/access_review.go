@@ -18,6 +18,7 @@ type AccessReview struct {
 	MultiAppSetup                  *MultiAppSetup              `tfsdk:"multi_app_setup"`
 	NotificationConfig             *NotificationConfig         `tfsdk:"notification_config"`
 	ReviewSignatureConfig          *ReviewSignatureConfig      `tfsdk:"review_signature_config"`
+	ReviewerAttributeConfig        *ReviewerAttributeConfig    `tfsdk:"reviewer_attribute_config"`
 	SingleAppSetup                 *SingleAppSetup             `tfsdk:"single_app_setup"`
 	AccessReviewTemplateID         types.String                `tfsdk:"access_review_template_id"`
 	AccuracyIssueAction            types.String                `tfsdk:"accuracy_issue_action"`

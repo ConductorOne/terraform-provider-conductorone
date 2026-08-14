@@ -34,6 +34,30 @@ func (e *FindingSeverity) IsExact() bool {
 	return false
 }
 
+// SourceKind - Who authored the finding (detector, user, external).
+type SourceKind string
+
+const (
+	SourceKindFindingSourceKindUnspecified SourceKind = "FINDING_SOURCE_KIND_UNSPECIFIED"
+	SourceKindFindingSourceKindDetector    SourceKind = "FINDING_SOURCE_KIND_DETECTOR"
+	SourceKindFindingSourceKindExternal    SourceKind = "FINDING_SOURCE_KIND_EXTERNAL"
+)
+
+func (e SourceKind) ToPointer() *SourceKind {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SourceKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FINDING_SOURCE_KIND_UNSPECIFIED", "FINDING_SOURCE_KIND_DETECTOR", "FINDING_SOURCE_KIND_EXTERNAL":
+			return true
+		}
+	}
+	return false
+}
+
 // FindingState - The state field.
 type FindingState string
 
@@ -67,18 +91,43 @@ func (e *FindingState) IsExact() bool {
 // This message contains a oneof named finding_type. Only a single field of the following list may be set at a time:
 //   - similarUsernameMatch
 //   - serviceAccountMisclassification
+//   - nhiUnowned
+//   - serviceAccountUnowned
 //   - decoyCredentialUsed
+//   - custom
+//   - connectorAnomalyDetectionDisabled
+//   - deactivatedOwner
+//   - unusedSecret
+//   - credentialPubliclyExposed
+//   - decoyPubliclyExposed
+//   - credentialExpiring
 //
 // This message contains a oneof named target. Only a single field of the following list may be set at a time:
 //   - identityUserTarget
 //   - appUserTarget
+//   - decoyTarget
+//   - appResourceTarget
+//   - tenantTarget
+//   - connectorTarget
 //
 // This message contains a oneof named evidence. Only a single field of the following list may be set at a time:
 //   - similarUsernameMatchEvidence
 //   - serviceAccountMisclassificationEvidence
+//   - deactivatedOwnerEvidence
+//   - unusedSecretEvidence
+//   - credentialPubliclyExposedEvidence
+//   - decoyPubliclyExposedEvidence
+//   - credentialExpiringEvidence
 type Finding struct {
+	// Bounded key/value metadata bag. Limits: ≤16 entries; keys 1-128 chars
+	//  matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0-256 chars; total
+	//  serialized ≤4096 bytes. Keys matching ^c1/ are reserved. Also readable
+	//  (and settable) via CEL as both finding.annotations and finding.custom_tags.
+	Annotations map[string]string `json:"annotations,omitempty"`
 	// The appId field.
 	AppID *string `json:"appId,omitempty"`
+	// AppResourceTarget points at the app resource the finding is about.
+	AppResourceTarget *AppResourceTarget `json:"appResourceTarget,omitempty"`
 	// The AppUserTarget message.
 	AppUserTarget *AppUserTarget `json:"appUserTarget,omitempty"`
 	// The FindingOwnerRef message.
@@ -99,12 +148,72 @@ type Finding struct {
 	//   - userSetId
 	//
 	FindingOwnerRef1 *FindingOwnerRef `json:"computedOwner,omitempty"`
-	CreatedAt        *time.Time       `json:"createdAt,omitempty"`
-	// The customTags field.
+	// ConnectorAnomalyDetectionDisabledType: a connector has sync anomaly
+	//  detection turned off, so a sudden drop in synced data will not trip the
+	//  circuit breaker. Target: ConnectorTarget.
+	ConnectorAnomalyDetectionDisabledType *ConnectorAnomalyDetectionDisabledType `json:"connectorAnomalyDetectionDisabled,omitempty"`
+	// ConnectorTarget points at the connector that produced this finding.
+	ConnectorTarget *ConnectorTarget `json:"connectorTarget,omitempty"`
+	CreatedAt       *time.Time       `json:"createdAt,omitempty"`
+	// CredentialExpiringType: a ConductorOne-managed credential is inside the
+	//  detector's expiry warning window, or already past it. Dedup is
+	//  (credential arm, credential_id). Target: IdentityUserTarget -- the identity
+	//  holding the credential.
+	//
+	// This message contains a oneof named credential. Only a single field of the following list may be set at a time:
+	//   - userClientId
+	//
+	CredentialExpiringType *CredentialExpiringType `json:"credentialExpiring,omitempty"`
+	// The CredentialExpiringEvidence message.
+	CredentialExpiringEvidence *CredentialExpiringEvidence `json:"credentialExpiringEvidence,omitempty"`
+	// CredentialPubliclyExposedType: a live credential was reported as publicly exposed.
+	//  Dedup is (credential arm, credential_id).
+	//
+	// This message contains a oneof named credential. Only a single field of the following list may be set at a time:
+	//   - userClientId
+	//   - connectorClientId
+	//   - connectorManagedCredentialId
+	//   - functionClientId
+	//
+	CredentialPubliclyExposedType *CredentialPubliclyExposedType `json:"credentialPubliclyExposed,omitempty"`
+	// CredentialPubliclyExposedEvidence carries scanner attribution for a public exposure.
+	CredentialPubliclyExposedEvidence *CredentialPubliclyExposedEvidence `json:"credentialPubliclyExposedEvidence,omitempty"`
+	// CustomFindingType: a user- or integration-authored finding. The discriminator
+	//  carries no payload; the finding's content lives in description /
+	//  remediation_description / custom_tags.
+	CustomFindingType *CustomFindingType `json:"custom,omitempty"`
+	// User-supplied sub-classification for custom findings (e.g. "shadow_it").
+	CustomSubType *string `json:"customSubType,omitempty"`
+	// Deprecated: use annotations instead. Read-only mirror of annotations;
+	//  writes to this field are ignored.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	CustomTags map[string]string `json:"customTags,omitempty"`
+	// DeactivatedOwnerType: the human responsible for a target -- either the
+	//  AppUser's own correlated identity, or the ownership_v2-assigned owner of an
+	//  AppResource/service-account AppUser -- is deactivated. Target: AppUserTarget
+	//  or AppResourceTarget.
+	DeactivatedOwnerType *DeactivatedOwnerType `json:"deactivatedOwner,omitempty"`
+	// The DeactivatedOwnerEvidence message.
+	DeactivatedOwnerEvidence *DeactivatedOwnerEvidence `json:"deactivatedOwnerEvidence,omitempty"`
 	// DecoyCredentialUsedType: a planted decoy credential authenticated
 	//  successfully.
 	DecoyCredentialUsedType *DecoyCredentialUsedType `json:"decoyCredentialUsed,omitempty"`
+	// DecoyPubliclyExposedType: a planted decoy was reported as publicly exposed.
+	//  Dedup is decoy_id.
+	DecoyPubliclyExposedType *DecoyPubliclyExposedType `json:"decoyPubliclyExposed,omitempty"`
+	// DecoyPubliclyExposedEvidence mirrors CredentialPubliclyExposedEvidence for decoys.
+	DecoyPubliclyExposedEvidence *DecoyPubliclyExposedEvidence `json:"decoyPubliclyExposedEvidence,omitempty"`
+	// DecoyTarget points at the planted decoy that produced this finding.
+	//  Populated for findings whose subject is the decoy artifact itself
+	//  (e.g. decoy_credential_used), giving the UI and routing rules a
+	//  uniform handle to the decoy alongside the finding_type payload.
+	DecoyTarget *DecoyTarget `json:"decoyTarget,omitempty"`
+	// Caller-supplied dedup identity for custom findings; echoed back so IaC
+	//  clients can roundtrip it. Empty for detector findings.
+	DedupKeyParts []string `json:"dedupKeyParts,omitempty"`
+	// User-authored finding body (markdown by convention). Set for custom findings.
+	Description *string `json:"description,omitempty"`
 	// The fingerprint field.
 	Fingerprint     *string    `json:"fingerprint,omitempty"`
 	FirstObservedAt *time.Time `json:"firstObservedAt,omitempty"`
@@ -112,7 +221,11 @@ type Finding struct {
 	ID *string `json:"id,omitempty"`
 	// The IdentityUserTarget message.
 	IdentityUserTarget *IdentityUserTarget `json:"identityUserTarget,omitempty"`
+	LastAppearedAt     *time.Time          `json:"lastAppearedAt,omitempty"`
 	LastObservedAt     *time.Time          `json:"lastObservedAt,omitempty"`
+	// NhiUnownedType: an AppResource with a non-human-identity type has no
+	//  primary owner. Target: AppResourceTarget (the unowned NHI resource).
+	NhiUnownedType *NhiUnownedType `json:"nhiUnowned,omitempty"`
 	// The recurrenceCount field.
 	RecurrenceCount *int64 `json:"recurrenceCount,omitempty"`
 	// The remediationDescription field.
@@ -127,6 +240,9 @@ type Finding struct {
 	ServiceAccountMisclassificationType *ServiceAccountMisclassificationType `json:"serviceAccountMisclassification,omitempty"`
 	// The ServiceAccountMisclassificationEvidence message.
 	ServiceAccountMisclassificationEvidence *ServiceAccountMisclassificationEvidence `json:"serviceAccountMisclassificationEvidence,omitempty"`
+	// ServiceAccountUnownedType: a service-account-classified AppUser has no
+	//  primary owner. Target: AppUserTarget (the unowned service account).
+	ServiceAccountUnownedType *ServiceAccountUnownedType `json:"serviceAccountUnowned,omitempty"`
 	// The severity field.
 	Severity *FindingSeverity `json:"severity,omitempty"`
 	// The SimilarUsernameMatchType message.
@@ -138,6 +254,8 @@ type Finding struct {
 	SnoozeUntil  *time.Time `json:"snoozeUntil,omitempty"`
 	// The sourceDetectorId field.
 	SourceDetectorID *string `json:"sourceDetectorId,omitempty"`
+	// Who authored the finding (detector, user, external).
+	SourceKind *SourceKind `json:"sourceKind,omitempty"`
 	// The state field.
 	State *FindingState `json:"state,omitempty"`
 	// The stateUpdatedById field.
@@ -145,8 +263,16 @@ type Finding struct {
 	// The suppressReason field.
 	SuppressReason *string `json:"suppressReason,omitempty"`
 	// The taskId field.
-	TaskID    *string    `json:"taskId,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	TaskID *string `json:"taskId,omitempty"`
+	// TenantTarget scopes a finding to the whole tenant. It carries no subject id;
+	//  the finding's tenant is the scope.
+	TenantTarget *TenantTarget `json:"tenantTarget,omitempty"`
+	// UnusedSecretType: a secret-trait AppResource has not been used in over the
+	//  detector's staleness threshold. Target: AppResourceTarget.
+	UnusedSecretType *UnusedSecretType `json:"unusedSecret,omitempty"`
+	// The UnusedSecretEvidence message.
+	UnusedSecretEvidence *UnusedSecretEvidence `json:"unusedSecretEvidence,omitempty"`
+	UpdatedAt            *time.Time            `json:"updatedAt,omitempty"`
 }
 
 func (f Finding) MarshalJSON() ([]byte, error) {
@@ -160,11 +286,25 @@ func (f *Finding) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (f *Finding) GetAnnotations() map[string]string {
+	if f == nil {
+		return nil
+	}
+	return f.Annotations
+}
+
 func (f *Finding) GetAppID() *string {
 	if f == nil {
 		return nil
 	}
 	return f.AppID
+}
+
+func (f *Finding) GetAppResourceTarget() *AppResourceTarget {
+	if f == nil {
+		return nil
+	}
+	return f.AppResourceTarget
 }
 
 func (f *Finding) GetAppUserTarget() *AppUserTarget {
@@ -188,11 +328,67 @@ func (f *Finding) GetFindingOwnerRef1() *FindingOwnerRef {
 	return f.FindingOwnerRef1
 }
 
+func (f *Finding) GetConnectorAnomalyDetectionDisabledType() *ConnectorAnomalyDetectionDisabledType {
+	if f == nil {
+		return nil
+	}
+	return f.ConnectorAnomalyDetectionDisabledType
+}
+
+func (f *Finding) GetConnectorTarget() *ConnectorTarget {
+	if f == nil {
+		return nil
+	}
+	return f.ConnectorTarget
+}
+
 func (f *Finding) GetCreatedAt() *time.Time {
 	if f == nil {
 		return nil
 	}
 	return f.CreatedAt
+}
+
+func (f *Finding) GetCredentialExpiringType() *CredentialExpiringType {
+	if f == nil {
+		return nil
+	}
+	return f.CredentialExpiringType
+}
+
+func (f *Finding) GetCredentialExpiringEvidence() *CredentialExpiringEvidence {
+	if f == nil {
+		return nil
+	}
+	return f.CredentialExpiringEvidence
+}
+
+func (f *Finding) GetCredentialPubliclyExposedType() *CredentialPubliclyExposedType {
+	if f == nil {
+		return nil
+	}
+	return f.CredentialPubliclyExposedType
+}
+
+func (f *Finding) GetCredentialPubliclyExposedEvidence() *CredentialPubliclyExposedEvidence {
+	if f == nil {
+		return nil
+	}
+	return f.CredentialPubliclyExposedEvidence
+}
+
+func (f *Finding) GetCustomFindingType() *CustomFindingType {
+	if f == nil {
+		return nil
+	}
+	return f.CustomFindingType
+}
+
+func (f *Finding) GetCustomSubType() *string {
+	if f == nil {
+		return nil
+	}
+	return f.CustomSubType
 }
 
 func (f *Finding) GetCustomTags() map[string]string {
@@ -202,11 +398,60 @@ func (f *Finding) GetCustomTags() map[string]string {
 	return f.CustomTags
 }
 
+func (f *Finding) GetDeactivatedOwnerType() *DeactivatedOwnerType {
+	if f == nil {
+		return nil
+	}
+	return f.DeactivatedOwnerType
+}
+
+func (f *Finding) GetDeactivatedOwnerEvidence() *DeactivatedOwnerEvidence {
+	if f == nil {
+		return nil
+	}
+	return f.DeactivatedOwnerEvidence
+}
+
 func (f *Finding) GetDecoyCredentialUsedType() *DecoyCredentialUsedType {
 	if f == nil {
 		return nil
 	}
 	return f.DecoyCredentialUsedType
+}
+
+func (f *Finding) GetDecoyPubliclyExposedType() *DecoyPubliclyExposedType {
+	if f == nil {
+		return nil
+	}
+	return f.DecoyPubliclyExposedType
+}
+
+func (f *Finding) GetDecoyPubliclyExposedEvidence() *DecoyPubliclyExposedEvidence {
+	if f == nil {
+		return nil
+	}
+	return f.DecoyPubliclyExposedEvidence
+}
+
+func (f *Finding) GetDecoyTarget() *DecoyTarget {
+	if f == nil {
+		return nil
+	}
+	return f.DecoyTarget
+}
+
+func (f *Finding) GetDedupKeyParts() []string {
+	if f == nil {
+		return nil
+	}
+	return f.DedupKeyParts
+}
+
+func (f *Finding) GetDescription() *string {
+	if f == nil {
+		return nil
+	}
+	return f.Description
 }
 
 func (f *Finding) GetFingerprint() *string {
@@ -237,11 +482,25 @@ func (f *Finding) GetIdentityUserTarget() *IdentityUserTarget {
 	return f.IdentityUserTarget
 }
 
+func (f *Finding) GetLastAppearedAt() *time.Time {
+	if f == nil {
+		return nil
+	}
+	return f.LastAppearedAt
+}
+
 func (f *Finding) GetLastObservedAt() *time.Time {
 	if f == nil {
 		return nil
 	}
 	return f.LastObservedAt
+}
+
+func (f *Finding) GetNhiUnownedType() *NhiUnownedType {
+	if f == nil {
+		return nil
+	}
+	return f.NhiUnownedType
 }
 
 func (f *Finding) GetRecurrenceCount() *int64 {
@@ -300,6 +559,13 @@ func (f *Finding) GetServiceAccountMisclassificationEvidence() *ServiceAccountMi
 	return f.ServiceAccountMisclassificationEvidence
 }
 
+func (f *Finding) GetServiceAccountUnownedType() *ServiceAccountUnownedType {
+	if f == nil {
+		return nil
+	}
+	return f.ServiceAccountUnownedType
+}
+
 func (f *Finding) GetSeverity() *FindingSeverity {
 	if f == nil {
 		return nil
@@ -342,6 +608,13 @@ func (f *Finding) GetSourceDetectorID() *string {
 	return f.SourceDetectorID
 }
 
+func (f *Finding) GetSourceKind() *SourceKind {
+	if f == nil {
+		return nil
+	}
+	return f.SourceKind
+}
+
 func (f *Finding) GetState() *FindingState {
 	if f == nil {
 		return nil
@@ -368,6 +641,27 @@ func (f *Finding) GetTaskID() *string {
 		return nil
 	}
 	return f.TaskID
+}
+
+func (f *Finding) GetTenantTarget() *TenantTarget {
+	if f == nil {
+		return nil
+	}
+	return f.TenantTarget
+}
+
+func (f *Finding) GetUnusedSecretType() *UnusedSecretType {
+	if f == nil {
+		return nil
+	}
+	return f.UnusedSecretType
+}
+
+func (f *Finding) GetUnusedSecretEvidence() *UnusedSecretEvidence {
+	if f == nil {
+		return nil
+	}
+	return f.UnusedSecretEvidence
 }
 
 func (f *Finding) GetUpdatedAt() *time.Time {

@@ -22,6 +22,7 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 			r.Annotations[key] = types.StringValue(value)
 		}
 	}
+	r.BaselinePolicyID = types.StringPointerValue(resp.BaselinePolicyID)
 	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 	r.Description = types.StringPointerValue(resp.Description)
@@ -526,6 +527,12 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 								steps.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
 								steps.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
 							}
+							if stepsItem.Provision.ProvisionPolicy.DevicePlacementProvision == nil {
+								steps.Provision.ProvisionPolicy.DevicePlacementProvision = nil
+							} else {
+								steps.Provision.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+								steps.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
+							}
 							if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
 								steps.Provision.ProvisionPolicy.ExternalTicketProvision = nil
 							} else {
@@ -767,7 +774,9 @@ func (r *PolicyDataSourceModel) RefreshFromSharedPolicy(ctx context.Context, res
 			var rules tfTypes.Rule
 
 			rules.Condition = types.StringPointerValue(rulesItem.Condition)
+			rules.PolicyID = types.StringPointerValue(rulesItem.PolicyID)
 			rules.PolicyKey = types.StringPointerValue(rulesItem.PolicyKey)
+			rules.StepKey = types.StringPointerValue(rulesItem.StepKey)
 
 			r.Rules = append(r.Rules, rules)
 		}

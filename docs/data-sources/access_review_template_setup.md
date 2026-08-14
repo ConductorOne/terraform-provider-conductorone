@@ -60,7 +60,12 @@ This message contains a oneof named access_conflicts_scope. Only a single field 
 
 
 This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
-  - resourceSelection (see [below for nested schema](#nestedatt--access_review_scope_v2))
+  - resourceSelection
+
+
+This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
+  - excludedSpecificResources
+  - excludedResourceTypeSelections (see [below for nested schema](#nestedatt--access_review_scope_v2))
 - `expanded` (Attributes List) Related objects requested via the expand mask. (see [below for nested schema](#nestedatt--expanded))
 - `list` (Attributes List) The current list of setup entitlements for the template. (see [below for nested schema](#nestedatt--list))
 
@@ -84,11 +89,17 @@ This message contains a oneof named criteria_filter. Only a single field of the 
   - daysSinceAdded
   - daysSinceReviewed
   - grantsAddedBetween (see [below for nested schema](#nestedatt--access_review_scope_v2--grants_by_criteria_scope))
+- `principal_type_filter` (String) Filters principals included in the scope. Unspecified is treated as users.
 - `resource_selection_scope` (Attributes) The ResourceSelectionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--resource_selection_scope))
 - `resource_type_selection_scope` (Attributes) The ResourceTypeSelectionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--resource_type_selection_scope))
+- `resource_type_selection_scope1` (Attributes) The ResourceTypeSelectionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--resource_type_selection_scope1))
+- `scope_role_selection_scope` (Attributes) Empty marker for scope+role pair scoping on IaaS-type apps.
+ Actual selections stored in AccessReviewScopeRoleSelection rows.
+ May coexist with ResourceSelectionScope on the same campaign; prepare unions both. (see [below for nested schema](#nestedatt--access_review_scope_v2--scope_role_selection_scope))
 - `selected_users_scope` (Attributes) The SelectedUsersScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--selected_users_scope))
 - `specific_access_conflicts_scope` (Attributes) The SpecificAccessConflictsScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--specific_access_conflicts_scope))
 - `specific_resources_scope` (Attributes) The SpecificResourcesScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--specific_resources_scope))
+- `specific_resources_scope1` (Attributes) The SpecificResourcesScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--specific_resources_scope1))
 - `user_criteria_scope` (Attributes) The UserCriteriaScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--user_criteria_scope))
 
 <a id="nestedatt--access_review_scope_v2--account_criteria_scope"></a>
@@ -192,6 +203,14 @@ Read-Only:
 ### Nested Schema for `access_review_scope_v2.resource_type_selection_scope`
 
 
+<a id="nestedatt--access_review_scope_v2--resource_type_selection_scope1"></a>
+### Nested Schema for `access_review_scope_v2.resource_type_selection_scope1`
+
+
+<a id="nestedatt--access_review_scope_v2--scope_role_selection_scope"></a>
+### Nested Schema for `access_review_scope_v2.scope_role_selection_scope`
+
+
 <a id="nestedatt--access_review_scope_v2--selected_users_scope"></a>
 ### Nested Schema for `access_review_scope_v2.selected_users_scope`
 
@@ -206,6 +225,10 @@ Read-Only:
 
 <a id="nestedatt--access_review_scope_v2--specific_resources_scope"></a>
 ### Nested Schema for `access_review_scope_v2.specific_resources_scope`
+
+
+<a id="nestedatt--access_review_scope_v2--specific_resources_scope1"></a>
+### Nested Schema for `access_review_scope_v2.specific_resources_scope1`
 
 
 <a id="nestedatt--access_review_scope_v2--user_criteria_scope"></a>

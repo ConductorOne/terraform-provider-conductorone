@@ -236,6 +236,11 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 							`  - daysSinceReviewed` + "\n" +
 							`  - grantsAddedBetween`,
 					},
+					"principal_type_filter": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Filters principals included in the scope. Unspecified is treated as users. possible known values include one of ["PRINCIPAL_TYPE_FILTER_UNSPECIFIED", "PRINCIPAL_TYPE_FILTER_USERS", "PRINCIPAL_TYPE_FILTER_RESOURCES", "PRINCIPAL_TYPE_FILTER_USERS_AND_RESOURCES"]`,
+					},
 					"resource_selection_scope": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -245,6 +250,18 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Description: `The ResourceTypeSelectionScope message.`,
+					},
+					"resource_type_selection_scope1": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The ResourceTypeSelectionScope message.`,
+					},
+					"scope_role_selection_scope": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `Empty marker for scope+role pair scoping on IaaS-type apps.` + "\n" +
+							` Actual selections stored in AccessReviewScopeRoleSelection rows.` + "\n" +
+							` May coexist with ResourceSelectionScope on the same campaign; prepare unions both.`,
 					},
 					"selected_users_scope": schema.SingleNestedAttribute{
 						Computed: true,
@@ -265,6 +282,11 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 						Description: `The SpecificAccessConflictsScope message.`,
 					},
 					"specific_resources_scope": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The SpecificResourcesScope message.`,
+					},
+					"specific_resources_scope1": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The SpecificResourcesScope message.`,
@@ -373,7 +395,12 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 					`` + "\n" +
 					`` + "\n" +
 					`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
-					`  - resourceSelection`,
+					`  - resourceSelection` + "\n" +
+					`` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - excludedSpecificResources` + "\n" +
+					`  - excludedResourceTypeSelections`,
 			},
 			"access_review_setup_entitlement_expand_mask": schema.SingleNestedAttribute{
 				Optional: true,

@@ -22,7 +22,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.4.3"
+      version = "1.5.0"
     }
   }
 }
@@ -63,6 +63,16 @@ to inject secrets using something like the [vault provider](https://registry.ter
 
 
 ## Breaking changes
+
+### 1.5.0 — no migration required
+
+`v1.5.0` adds resources, data sources and attributes. It renames and removes
+nothing: every resource address, data-source address and attribute name from
+`v1.4.3` is present and unchanged. Upgrading is a version bump — no
+`terraform state mv`, no config edits, no re-import.
+
+If you are coming from `v1.1.0`, the note below still applies; `v1.5.0` matches
+`v1.1.1`+ naming.
 
 ### 1.3.0
 

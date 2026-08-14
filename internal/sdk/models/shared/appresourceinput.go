@@ -10,6 +10,8 @@ type AppResourceInput struct {
 	// The access config ID for this resource. May be empty.
 	//  Must be one of the builtin access config IDs or empty.
 	AccessConfigID *string `json:"accessConfigId,omitempty"`
+	// AgentTrait carries metadata for AI-agent resources surfaced in the Inventory.
+	AgentTrait *AgentTrait `json:"agentTrait,omitempty"`
 	// Bounded key/value metadata bag for IaC marking and customer tags.
 	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
 	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
@@ -53,6 +55,13 @@ func (a *AppResourceInput) GetAccessConfigID() *string {
 		return nil
 	}
 	return a.AccessConfigID
+}
+
+func (a *AppResourceInput) GetAgentTrait() *AgentTrait {
+	if a == nil {
+		return nil
+	}
+	return a.AgentTrait
 }
 
 func (a *AppResourceInput) GetAnnotations() map[string]string {

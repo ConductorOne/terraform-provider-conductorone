@@ -7,6 +7,34 @@ import (
 	"time"
 )
 
+// AppResourceNhiType - The NHI classification (K3 spine) for this resource. Populated for
+//
+//	non-human-identity resources; UNSPECIFIED for everything else. Mirrors
+//	agent_trait: read-only and translated from the model enum at the API boundary.
+type AppResourceNhiType string
+
+const (
+	AppResourceNhiTypeNhiTypeUnspecified     AppResourceNhiType = "NHI_TYPE_UNSPECIFIED"
+	AppResourceNhiTypeNhiTypeAppRegistration AppResourceNhiType = "NHI_TYPE_APP_REGISTRATION"
+	AppResourceNhiTypeNhiTypeAssumableRole   AppResourceNhiType = "NHI_TYPE_ASSUMABLE_ROLE"
+	AppResourceNhiTypeNhiTypeManagedIdentity AppResourceNhiType = "NHI_TYPE_MANAGED_IDENTITY"
+)
+
+func (e AppResourceNhiType) ToPointer() *AppResourceNhiType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppResourceNhiType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "NHI_TYPE_UNSPECIFIED", "NHI_TYPE_APP_REGISTRATION", "NHI_TYPE_ASSUMABLE_ROLE", "NHI_TYPE_MANAGED_IDENTITY":
+			return true
+		}
+	}
+	return false
+}
+
 type AppResourceProfile struct {
 }
 
@@ -18,6 +46,8 @@ type AppResource struct {
 	// The access config ID for this resource. May be empty.
 	//  Must be one of the builtin access config IDs or empty.
 	AccessConfigID *string `json:"accessConfigId,omitempty"`
+	// AgentTrait carries metadata for AI-agent resources surfaced in the Inventory.
+	AgentTrait *AgentTrait `json:"agentTrait,omitempty"`
 	// Bounded key/value metadata bag for IaC marking and customer tags.
 	//  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
 	//  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
@@ -53,6 +83,13 @@ type AppResource struct {
 	ID *string `json:"id,omitempty"`
 	// The matchBatonId field.
 	MatchBatonID *string `json:"matchBatonId,omitempty"`
+	// Axis-2 detail refining nhi_type (e.g. "aws.role.lambda"). Read-only;
+	//  translated from the model.
+	NhiDetail *string `json:"nhiDetail,omitempty"`
+	// The NHI classification (K3 spine) for this resource. Populated for
+	//  non-human-identity resources; UNSPECIFIED for everything else. Mirrors
+	//  agent_trait: read-only and translated from the model enum at the API boundary.
+	NhiType *AppResourceNhiType `json:"nhiType,omitempty"`
 	// The parent resource id, if this resource is a child of another resource.
 	ParentAppResourceID *string `json:"parentAppResourceId,omitempty"`
 	// The parent resource type id, if this resource is a child of another resource.
@@ -79,6 +116,13 @@ func (a *AppResource) GetAccessConfigID() *string {
 		return nil
 	}
 	return a.AccessConfigID
+}
+
+func (a *AppResource) GetAgentTrait() *AgentTrait {
+	if a == nil {
+		return nil
+	}
+	return a.AgentTrait
 }
 
 func (a *AppResource) GetAnnotations() map[string]string {
@@ -163,6 +207,20 @@ func (a *AppResource) GetMatchBatonID() *string {
 		return nil
 	}
 	return a.MatchBatonID
+}
+
+func (a *AppResource) GetNhiDetail() *string {
+	if a == nil {
+		return nil
+	}
+	return a.NhiDetail
+}
+
+func (a *AppResource) GetNhiType() *AppResourceNhiType {
+	if a == nil {
+		return nil
+	}
+	return a.NhiType
 }
 
 func (a *AppResource) GetParentAppResourceID() *string {

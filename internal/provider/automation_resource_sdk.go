@@ -328,6 +328,11 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						automationSteps.CreateRevokeTasksV2.EntitlementInclusionListCel = &tfTypes.EntitlementInclusionListCel{}
 						automationSteps.CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel)
 					}
+					if automationStepsItem.CreateRevokeTasksV2.GrantSourceFilter != nil {
+						automationSteps.CreateRevokeTasksV2.GrantSourceFilter = types.StringValue(string(*automationStepsItem.CreateRevokeTasksV2.GrantSourceFilter))
+					} else {
+						automationSteps.CreateRevokeTasksV2.GrantSourceFilter = types.StringNull()
+					}
 					automationSteps.CreateRevokeTasksV2.UserIDCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasksV2.UserIDCel)
 					if automationStepsItem.CreateRevokeTasksV2.UserRef == nil {
 						automationSteps.CreateRevokeTasksV2.UserRef = nil
@@ -575,6 +580,7 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					automationSteps.SendSlackMessage = &tfTypes.SendSlackMessage{}
 					automationSteps.SendSlackMessage.Body = types.StringPointerValue(automationStepsItem.SendSlackMessage.Body)
+					automationSteps.SendSlackMessage.ChannelIsID = types.BoolPointerValue(automationStepsItem.SendSlackMessage.ChannelIsID)
 					automationSteps.SendSlackMessage.ChannelName = types.StringPointerValue(automationStepsItem.SendSlackMessage.ChannelName)
 					automationSteps.SendSlackMessage.ChannelNameCel = types.StringPointerValue(automationStepsItem.SendSlackMessage.ChannelNameCel)
 					automationSteps.SendSlackMessage.UserIdsCel = types.StringPointerValue(automationStepsItem.SendSlackMessage.UserIdsCel)
@@ -1073,6 +1079,11 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionListCel = &tfTypes.EntitlementInclusionListCel{}
 						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel)
 					}
+					if draftAutomationStepsItem.CreateRevokeTasksV2.GrantSourceFilter != nil {
+						draftAutomationSteps.CreateRevokeTasksV2.GrantSourceFilter = types.StringValue(string(*draftAutomationStepsItem.CreateRevokeTasksV2.GrantSourceFilter))
+					} else {
+						draftAutomationSteps.CreateRevokeTasksV2.GrantSourceFilter = types.StringNull()
+					}
 					draftAutomationSteps.CreateRevokeTasksV2.UserIDCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasksV2.UserIDCel)
 					if draftAutomationStepsItem.CreateRevokeTasksV2.UserRef == nil {
 						draftAutomationSteps.CreateRevokeTasksV2.UserRef = nil
@@ -1320,6 +1331,7 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					draftAutomationSteps.SendSlackMessage = &tfTypes.SendSlackMessage{}
 					draftAutomationSteps.SendSlackMessage.Body = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.Body)
+					draftAutomationSteps.SendSlackMessage.ChannelIsID = types.BoolPointerValue(draftAutomationStepsItem.SendSlackMessage.ChannelIsID)
 					draftAutomationSteps.SendSlackMessage.ChannelName = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.ChannelName)
 					draftAutomationSteps.SendSlackMessage.ChannelNameCel = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.ChannelNameCel)
 					draftAutomationSteps.SendSlackMessage.UserIdsCel = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.UserIdsCel)
@@ -2858,6 +2870,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
 					entitlementExclusionNone = &shared.EntitlementExclusionNone{}
 				}
+				grantSourceFilter := new(shared.GrantSourceFilter)
+				if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsNull() {
+					*grantSourceFilter = shared.GrantSourceFilter(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.ValueString())
+				} else {
+					grantSourceFilter = nil
+				}
 				var entitlementInclusionAccessOnly *shared.EntitlementInclusionAccessOnly
 				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
 					entitlementInclusionAccessOnly = &shared.EntitlementInclusionAccessOnly{}
@@ -2972,6 +2990,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					EntitlementExclusionList:       entitlementExclusionList,
 					EntitlementExclusionListCel:    entitlementExclusionListCel,
 					EntitlementExclusionNone:       entitlementExclusionNone,
+					GrantSourceFilter:              grantSourceFilter,
 					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly,
 					EntitlementInclusionAll:        entitlementInclusionAll,
 					EntitlementInclusionCriteria:   entitlementInclusionCriteria,
@@ -3445,6 +3464,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					body1 = nil
 				}
+				channelIsID := new(bool)
+				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.IsNull() {
+					*channelIsID = r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.ValueBool()
+				} else {
+					channelIsID = nil
+				}
 				channelName := new(string)
 				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.IsNull() {
 					*channelName = r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.ValueString()
@@ -3486,6 +3511,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				sendSlackMessage = &shared.SendSlackMessage{
 					Body:           body1,
+					ChannelIsID:    channelIsID,
 					ChannelName:    channelName,
 					ChannelNameCel: channelNameCel,
 					UseSubjectUser: useSubjectUser6,
@@ -4399,6 +4425,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
 					entitlementExclusionNone1 = &shared.EntitlementExclusionNone{}
 				}
+				grantSourceFilter1 := new(shared.GrantSourceFilter)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsNull() {
+					*grantSourceFilter1 = shared.GrantSourceFilter(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.ValueString())
+				} else {
+					grantSourceFilter1 = nil
+				}
 				var entitlementInclusionAccessOnly1 *shared.EntitlementInclusionAccessOnly
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
 					entitlementInclusionAccessOnly1 = &shared.EntitlementInclusionAccessOnly{}
@@ -4513,6 +4545,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					EntitlementExclusionList:       entitlementExclusionList1,
 					EntitlementExclusionListCel:    entitlementExclusionListCel1,
 					EntitlementExclusionNone:       entitlementExclusionNone1,
+					GrantSourceFilter:              grantSourceFilter1,
 					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly1,
 					EntitlementInclusionAll:        entitlementInclusionAll1,
 					EntitlementInclusionCriteria:   entitlementInclusionCriteria1,
@@ -4986,6 +5019,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					body3 = nil
 				}
+				channelIsId1 := new(bool)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.IsNull() {
+					*channelIsId1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.ValueBool()
+				} else {
+					channelIsId1 = nil
+				}
 				channelName1 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.IsNull() {
 					*channelName1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.ValueString()
@@ -5027,6 +5066,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				sendSlackMessage1 = &shared.SendSlackMessage{
 					Body:           body3,
+					ChannelIsID:    channelIsId1,
 					ChannelName:    channelName1,
 					ChannelNameCel: channelNameCel1,
 					UseSubjectUser: useSubjectUser17,
@@ -5552,16 +5592,16 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							grantJustificationType = nil
 						}
-						grantSourceFilter := new(shared.GrantSourceFilter)
+						grantSourceFilter2 := new(shared.GrantFilterGrantSourceFilter)
 						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter = shared.GrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+							*grantSourceFilter2 = shared.GrantFilterGrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter = nil
+							grantSourceFilter2 = nil
 						}
 						grantFilter = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType,
 							GrantJustificationType: grantJustificationType,
-							GrantSourceFilter:      grantSourceFilter,
+							GrantSourceFilter:      grantSourceFilter2,
 						}
 					}
 					var entitlementInclusionAll2 *shared.EntitlementInclusionAll
@@ -5688,16 +5728,16 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							grantJustificationType1 = nil
 						}
-						grantSourceFilter1 := new(shared.GrantSourceFilter)
+						grantSourceFilter3 := new(shared.GrantFilterGrantSourceFilter)
 						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter1 = shared.GrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+							*grantSourceFilter3 = shared.GrantFilterGrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter1 = nil
+							grantSourceFilter3 = nil
 						}
 						grantFilter1 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType1,
 							GrantJustificationType: grantJustificationType1,
-							GrantSourceFilter:      grantSourceFilter1,
+							GrantSourceFilter:      grantSourceFilter3,
 						}
 					}
 					var entitlementInclusionAll3 *shared.EntitlementInclusionAll
@@ -6251,16 +6291,16 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							grantJustificationType2 = nil
 						}
-						grantSourceFilter2 := new(shared.GrantSourceFilter)
+						grantSourceFilter4 := new(shared.GrantFilterGrantSourceFilter)
 						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter2 = shared.GrantSourceFilter(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+							*grantSourceFilter4 = shared.GrantFilterGrantSourceFilter(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter2 = nil
+							grantSourceFilter4 = nil
 						}
 						grantFilter2 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType2,
 							GrantJustificationType: grantJustificationType2,
-							GrantSourceFilter:      grantSourceFilter2,
+							GrantSourceFilter:      grantSourceFilter4,
 						}
 					}
 					var entitlementInclusionAll4 *shared.EntitlementInclusionAll
@@ -6387,16 +6427,16 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						} else {
 							grantJustificationType3 = nil
 						}
-						grantSourceFilter3 := new(shared.GrantSourceFilter)
+						grantSourceFilter5 := new(shared.GrantFilterGrantSourceFilter)
 						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter3 = shared.GrantSourceFilter(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+							*grantSourceFilter5 = shared.GrantFilterGrantSourceFilter(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter3 = nil
+							grantSourceFilter5 = nil
 						}
 						grantFilter3 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType3,
 							GrantJustificationType: grantJustificationType3,
-							GrantSourceFilter:      grantSourceFilter3,
+							GrantSourceFilter:      grantSourceFilter5,
 						}
 					}
 					var entitlementInclusionAll5 *shared.EntitlementInclusionAll
@@ -7282,6 +7322,12 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
 					entitlementExclusionNone = &shared.EntitlementExclusionNone{}
 				}
+				grantSourceFilter := new(shared.GrantSourceFilter)
+				if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsNull() {
+					*grantSourceFilter = shared.GrantSourceFilter(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.ValueString())
+				} else {
+					grantSourceFilter = nil
+				}
 				var entitlementInclusionAccessOnly *shared.EntitlementInclusionAccessOnly
 				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
 					entitlementInclusionAccessOnly = &shared.EntitlementInclusionAccessOnly{}
@@ -7396,6 +7442,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					EntitlementExclusionList:       entitlementExclusionList,
 					EntitlementExclusionListCel:    entitlementExclusionListCel,
 					EntitlementExclusionNone:       entitlementExclusionNone,
+					GrantSourceFilter:              grantSourceFilter,
 					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly,
 					EntitlementInclusionAll:        entitlementInclusionAll,
 					EntitlementInclusionCriteria:   entitlementInclusionCriteria,
@@ -7869,6 +7916,12 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					body1 = nil
 				}
+				channelIsID := new(bool)
+				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.IsNull() {
+					*channelIsID = r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.ValueBool()
+				} else {
+					channelIsID = nil
+				}
 				channelName := new(string)
 				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.IsNull() {
 					*channelName = r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.ValueString()
@@ -7910,6 +7963,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				}
 				sendSlackMessage = &shared.SendSlackMessage{
 					Body:           body1,
+					ChannelIsID:    channelIsID,
 					ChannelName:    channelName,
 					ChannelNameCel: channelNameCel,
 					UseSubjectUser: useSubjectUser6,
@@ -8778,6 +8832,12 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
 					entitlementExclusionNone1 = &shared.EntitlementExclusionNone{}
 				}
+				grantSourceFilter1 := new(shared.GrantSourceFilter)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsNull() {
+					*grantSourceFilter1 = shared.GrantSourceFilter(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.ValueString())
+				} else {
+					grantSourceFilter1 = nil
+				}
 				var entitlementInclusionAccessOnly1 *shared.EntitlementInclusionAccessOnly
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
 					entitlementInclusionAccessOnly1 = &shared.EntitlementInclusionAccessOnly{}
@@ -8892,6 +8952,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					EntitlementExclusionList:       entitlementExclusionList1,
 					EntitlementExclusionListCel:    entitlementExclusionListCel1,
 					EntitlementExclusionNone:       entitlementExclusionNone1,
+					GrantSourceFilter:              grantSourceFilter1,
 					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly1,
 					EntitlementInclusionAll:        entitlementInclusionAll1,
 					EntitlementInclusionCriteria:   entitlementInclusionCriteria1,
@@ -9365,6 +9426,12 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					body3 = nil
 				}
+				channelIsId1 := new(bool)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.IsNull() {
+					*channelIsId1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.ValueBool()
+				} else {
+					channelIsId1 = nil
+				}
 				channelName1 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.IsNull() {
 					*channelName1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.ValueString()
@@ -9406,6 +9473,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				}
 				sendSlackMessage1 = &shared.SendSlackMessage{
 					Body:           body3,
+					ChannelIsID:    channelIsId1,
 					ChannelName:    channelName1,
 					ChannelNameCel: channelNameCel1,
 					UseSubjectUser: useSubjectUser17,
@@ -9931,16 +9999,16 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						} else {
 							grantJustificationType = nil
 						}
-						grantSourceFilter := new(shared.GrantSourceFilter)
+						grantSourceFilter2 := new(shared.GrantFilterGrantSourceFilter)
 						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter = shared.GrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+							*grantSourceFilter2 = shared.GrantFilterGrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter = nil
+							grantSourceFilter2 = nil
 						}
 						grantFilter = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType,
 							GrantJustificationType: grantJustificationType,
-							GrantSourceFilter:      grantSourceFilter,
+							GrantSourceFilter:      grantSourceFilter2,
 						}
 					}
 					var entitlementInclusionAll2 *shared.EntitlementInclusionAll
@@ -10067,16 +10135,16 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						} else {
 							grantJustificationType1 = nil
 						}
-						grantSourceFilter1 := new(shared.GrantSourceFilter)
+						grantSourceFilter3 := new(shared.GrantFilterGrantSourceFilter)
 						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter1 = shared.GrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+							*grantSourceFilter3 = shared.GrantFilterGrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter1 = nil
+							grantSourceFilter3 = nil
 						}
 						grantFilter1 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType1,
 							GrantJustificationType: grantJustificationType1,
-							GrantSourceFilter:      grantSourceFilter1,
+							GrantSourceFilter:      grantSourceFilter3,
 						}
 					}
 					var entitlementInclusionAll3 *shared.EntitlementInclusionAll
@@ -10618,16 +10686,16 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						} else {
 							grantJustificationType2 = nil
 						}
-						grantSourceFilter2 := new(shared.GrantSourceFilter)
+						grantSourceFilter4 := new(shared.GrantFilterGrantSourceFilter)
 						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter2 = shared.GrantSourceFilter(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+							*grantSourceFilter4 = shared.GrantFilterGrantSourceFilter(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter2 = nil
+							grantSourceFilter4 = nil
 						}
 						grantFilter2 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType2,
 							GrantJustificationType: grantJustificationType2,
-							GrantSourceFilter:      grantSourceFilter2,
+							GrantSourceFilter:      grantSourceFilter4,
 						}
 					}
 					var entitlementInclusionAll4 *shared.EntitlementInclusionAll
@@ -10754,16 +10822,16 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						} else {
 							grantJustificationType3 = nil
 						}
-						grantSourceFilter3 := new(shared.GrantSourceFilter)
+						grantSourceFilter5 := new(shared.GrantFilterGrantSourceFilter)
 						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter3 = shared.GrantSourceFilter(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+							*grantSourceFilter5 = shared.GrantFilterGrantSourceFilter(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter3 = nil
+							grantSourceFilter5 = nil
 						}
 						grantFilter3 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType3,
 							GrantJustificationType: grantJustificationType3,
-							GrantSourceFilter:      grantSourceFilter3,
+							GrantSourceFilter:      grantSourceFilter5,
 						}
 					}
 					var entitlementInclusionAll5 *shared.EntitlementInclusionAll

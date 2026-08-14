@@ -59,6 +59,7 @@ type AccessReviewTemplateResourceModel struct {
 	OwnerIds                       []types.String                      `tfsdk:"owner_ids"`
 	PolicyID                       types.String                        `tfsdk:"policy_id"`
 	RecurrenceRule                 *tfTypes.RecurrenceRule             `tfsdk:"recurrence_rule"`
+	ReviewerAttributeConfig        *tfTypes.ReviewerAttributeConfig    `tfsdk:"reviewer_attribute_config"`
 	ReviewInstructions             types.String                        `tfsdk:"review_instructions"`
 	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig      `tfsdk:"review_signature_config"`
 	ScopeType                      types.String                        `tfsdk:"scope_type"`
@@ -80,11 +81,41 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"columns": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
-							` If empty, the default column set for the campaign's default_view is used.`,
+						Computed:           true,
+						Optional:           true,
+						ElementType:        types.StringType,
+						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+						MarkdownDescription: `Deprecated: use ` + "`" + `ordered_columns` + "`" + `, which can also include app user` + "\n" +
+							` attribute columns.`,
+					},
+					"ordered_columns": schema.ListNestedAttribute{
+						Computed: true,
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"app_user_attribute_key": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The appUserAttributeKey field.` + "\n" +
+										`This field is part of the ` + "`" + `column` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.accessreview.v1.AccessReviewTaskColumnRef` + "`" + ` for more details.`,
+								},
+								"builtin": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The builtin field.` + "\n" +
+										`This field is part of the ` + "`" + `column` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.accessreview.v1.AccessReviewTaskColumnRef` + "`" + ` for more details.` + "\n" +
+										`possible known values include one of ["ACCESS_REVIEW_TASK_COLUMN_UNSPECIFIED", "ACCESS_REVIEW_TASK_COLUMN_VIEW_LINK", "ACCESS_REVIEW_TASK_COLUMN_CURRENT_STATE", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT_OWNER", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT_DESCRIPTION", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_TYPE", "ACCESS_REVIEW_TASK_COLUMN_INSIGHTS", "ACCESS_REVIEW_TASK_COLUMN_RECOMMENDATION", "ACCESS_REVIEW_TASK_COLUMN_ASSIGNED_TO", "ACCESS_REVIEW_TASK_COLUMN_STATUS", "ACCESS_REVIEW_TASK_COLUMN_APP", "ACCESS_REVIEW_TASK_COLUMN_DUE", "ACCESS_REVIEW_TASK_COLUMN_PROJECT", "ACCESS_REVIEW_TASK_COLUMN_CREATED_ON", "ACCESS_REVIEW_TASK_COLUMN_TASK_AGE", "ACCESS_REVIEW_TASK_COLUMN_RESOLVED_ON", "ACCESS_REVIEW_TASK_COLUMN_ENROLLMENT_STATUS", "ACCESS_REVIEW_TASK_COLUMN_INHERITED_FROM", "ACCESS_REVIEW_TASK_COLUMN_DEPARTMENT", "ACCESS_REVIEW_TASK_COLUMN_JOB_TITLE", "ACCESS_REVIEW_TASK_COLUMN_CREATED_BY", "ACCESS_REVIEW_TASK_COLUMN_LAST_LOGIN", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_PARENT", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_CHILDREN", "ACCESS_REVIEW_TASK_COLUMN_APP_USER_USERNAME", "ACCESS_REVIEW_TASK_COLUMN_ACCESS_HOLDER_TYPE", "ACCESS_REVIEW_TASK_COLUMN_RISK_LEVEL", "ACCESS_REVIEW_TASK_COLUMN_COMPLIANCE_FRAMEWORK"]`,
+								},
+							},
+						},
+						MarkdownDescription: `Ordered columns visible to reviewers, built-ins and attributes` + "\n" +
+							` interleaved. Falls back to ` + "`" + `columns` + "`" + `, then to the default set for the` + "\n" +
+							` campaign's default_view.`,
 					},
 				},
 				Description: `Configuration for which columns are visible in the reviewer task list.`,
@@ -332,6 +363,11 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 							`  - daysSinceReviewed` + "\n" +
 							`  - grantsAddedBetween`,
 					},
+					"principal_type_filter": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Filters principals included in the scope. Unspecified is treated as users. possible known values include one of ["PRINCIPAL_TYPE_FILTER_UNSPECIFIED", "PRINCIPAL_TYPE_FILTER_USERS", "PRINCIPAL_TYPE_FILTER_RESOURCES", "PRINCIPAL_TYPE_FILTER_USERS_AND_RESOURCES"]`,
+					},
 					"resource_selection_scope": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -341,6 +377,18 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Optional:    true,
 						Description: `The ResourceTypeSelectionScope message.`,
+					},
+					"resource_type_selection_scope1": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The ResourceTypeSelectionScope message.`,
+					},
+					"scope_role_selection_scope": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `Empty marker for scope+role pair scoping on IaaS-type apps.` + "\n" +
+							` Actual selections stored in AccessReviewScopeRoleSelection rows.` + "\n" +
+							` May coexist with ResourceSelectionScope on the same campaign; prepare unions both.`,
 					},
 					"selected_users_scope": schema.SingleNestedAttribute{
 						Computed: true,
@@ -361,6 +409,11 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 						Description: `The SpecificAccessConflictsScope message.`,
 					},
 					"specific_resources_scope": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The SpecificResourcesScope message.`,
+					},
+					"specific_resources_scope1": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The SpecificResourcesScope message.`,
@@ -469,7 +522,12 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 					`` + "\n" +
 					`` + "\n" +
 					`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
-					`  - resourceSelection`,
+					`  - resourceSelection` + "\n" +
+					`` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - excludedSpecificResources` + "\n" +
+					`  - excludedResourceTypeSelections`,
 			},
 			"accuracy_issue_action": schema.StringAttribute{
 				Computed:    true,
@@ -657,21 +715,62 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 				},
 				Description: `Signature configuration for access review submissions`,
 			},
+			"reviewer_attribute_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"bindings": schema.ListNestedAttribute{
+						Computed: true,
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The appId field.`,
+								},
+								"attribute_key": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The attributeKey field.`,
+								},
+							},
+						},
+						Description: `The bindings field.`,
+					},
+				},
+				MarkdownDescription: `Allowlist of AppUser.profile keys visible to reviewers, scoped per app.` + "\n" +
+					` Empty = reviewers see no profile attributes in the AppUser tooltip.`,
+			},
 			"scope_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The scopeType field. possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"]`,
+				Description: `The scopeType field. possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"]`,
 			},
 			"slack_channel": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"channel_id": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `Existing Slack channel ID (e.g. "C0123ABCD"). Set with is_channel_id=true to` + "\n" +
+							` target an existing channel instead of creating one by name.`,
+					},
 					"description": schema.StringAttribute{
 						Computed:    true,
 						Description: `The description field.`,
 					},
+					"is_channel_id": schema.BoolAttribute{
+						Computed: true,
+						MarkdownDescription: `When true, channel_id identifies an existing channel to use as-is: the` + "\n" +
+							` backend resolves it by ID (conversations.info) and fails if it is missing or` + "\n" +
+							` the bot cannot access it. It never creates or searches by name.`,
+					},
 					"name": schema.StringAttribute{
 						Computed:    true,
-						Description: `The name field.`,
+						Description: `Channel name to create/resolve. Required unless is_channel_id is true.`,
 					},
 				},
 				Description: `The SlackChannel message.`,

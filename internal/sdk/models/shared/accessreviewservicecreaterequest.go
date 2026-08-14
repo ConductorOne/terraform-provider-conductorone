@@ -16,6 +16,7 @@ const (
 	ScopeTypeAccessReviewScopeTypeByAccessConflicts ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
 	ScopeTypeAccessReviewScopeTypeByResource        ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 	ScopeTypeAccessReviewScopeTypeByInheritance     ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"
+	ScopeTypeAccessReviewScopeTypeByUsers           ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"
 )
 
 func (e ScopeType) ToPointer() *ScopeType {
@@ -26,7 +27,7 @@ func (e ScopeType) ToPointer() *ScopeType {
 func (e *ScopeType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE":
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS":
 			return true
 		}
 	}
@@ -84,6 +85,11 @@ type AccessReviewServiceCreateRequest struct {
 	//
 	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
 	//   - resourceSelection
+	//
+	//
+	// This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
+	//   - excludedSpecificResources
+	//   - excludedResourceTypeSelections
 	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
 }

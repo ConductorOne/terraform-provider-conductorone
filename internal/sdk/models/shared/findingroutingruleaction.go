@@ -7,14 +7,27 @@ package shared
 // This message contains a oneof named action. Only a single field of the following list may be set at a time:
 //   - createTask
 //   - suppress
-//   - notify
+//   - snooze
+//   - acceptRisk
 type FindingRoutingRuleAction struct {
+	// AcceptRiskRoutingAction accepts the risk for a matched finding for a
+	//  relative duration (resolved to risk_acceptance_expires_at = now + duration
+	//  at execution time).
+	AcceptRiskRoutingAction *AcceptRiskRoutingAction `json:"acceptRisk,omitempty"`
 	// The CreateTaskAction message.
 	CreateTaskAction *CreateTaskAction `json:"createTask,omitempty"`
-	// The NotifyAction message.
-	NotifyAction *NotifyAction `json:"notify,omitempty"`
+	// SnoozeRoutingAction snoozes a matched finding for a relative duration
+	//  (resolved to snooze_until = now + duration at execution time).
+	SnoozeRoutingAction *SnoozeRoutingAction `json:"snooze,omitempty"`
 	// The SuppressRoutingAction message.
 	SuppressRoutingAction *SuppressRoutingAction `json:"suppress,omitempty"`
+}
+
+func (f *FindingRoutingRuleAction) GetAcceptRiskRoutingAction() *AcceptRiskRoutingAction {
+	if f == nil {
+		return nil
+	}
+	return f.AcceptRiskRoutingAction
 }
 
 func (f *FindingRoutingRuleAction) GetCreateTaskAction() *CreateTaskAction {
@@ -24,11 +37,11 @@ func (f *FindingRoutingRuleAction) GetCreateTaskAction() *CreateTaskAction {
 	return f.CreateTaskAction
 }
 
-func (f *FindingRoutingRuleAction) GetNotifyAction() *NotifyAction {
+func (f *FindingRoutingRuleAction) GetSnoozeRoutingAction() *SnoozeRoutingAction {
 	if f == nil {
 		return nil
 	}
-	return f.NotifyAction
+	return f.SnoozeRoutingAction
 }
 
 func (f *FindingRoutingRuleAction) GetSuppressRoutingAction() *SuppressRoutingAction {

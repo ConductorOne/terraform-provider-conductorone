@@ -260,6 +260,16 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 					},
+					"device_placement_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"vault_boundary_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `The vaultBoundaryId field.`,
+							},
+						},
+						Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+					},
 					"external_ticket_provision": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -445,7 +455,8 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 					`  - multiStep` + "\n" +
 					`  - externalTicket` + "\n" +
 					`  - unconfigured` + "\n" +
-					`  - action`,
+					`  - action` + "\n" +
+					`  - devicePlacement`,
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
@@ -687,6 +698,18 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 								path.MatchRelative().AtParent().AtName("webhook_provision"),
 							}...),
 						},
+					},
+					"device_placement_provision": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"vault_boundary_id": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The vaultBoundaryId field.`,
+							},
+						},
+						Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
 					},
 					"external_ticket_provision": schema.SingleNestedAttribute{
 						Optional: true,
@@ -940,7 +963,8 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 					`  - multiStep` + "\n" +
 					`  - externalTicket` + "\n" +
 					`  - unconfigured` + "\n" +
-					`  - action`,
+					`  - action` + "\n" +
+					`  - devicePlacement`,
 			},
 			"purpose": schema.StringAttribute{
 				Computed:    true,

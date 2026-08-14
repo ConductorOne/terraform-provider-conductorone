@@ -9,6 +9,7 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"time"
 )
 
 func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesResponse(ctx context.Context, resp *shared.SearchAppResourcesResponse) diag.Diagnostics {
@@ -46,6 +47,17 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 				} else {
 					list.AppResource = &tfTypes.AppResource{}
 					list.AppResource.AccessConfigID = types.StringPointerValue(listItem.AppResource.AccessConfigID)
+					if listItem.AppResource.AgentTrait == nil {
+						list.AppResource.AgentTrait = nil
+					} else {
+						list.AppResource.AgentTrait = &tfTypes.AgentTrait{}
+						list.AppResource.AgentTrait.IdentityAppUserID = types.StringPointerValue(listItem.AppResource.AgentTrait.IdentityAppUserID)
+						if listItem.AppResource.AgentTrait.Status != nil {
+							list.AppResource.AgentTrait.Status = types.StringValue(string(*listItem.AppResource.AgentTrait.Status))
+						} else {
+							list.AppResource.AgentTrait.Status = types.StringNull()
+						}
+					}
 					if len(listItem.AppResource.Annotations) > 0 {
 						list.AppResource.Annotations = make(map[string]types.String, len(listItem.AppResource.Annotations))
 						for key1, value1 := range listItem.AppResource.Annotations {
@@ -62,6 +74,12 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 					list.AppResource.GrantCount = types.StringPointerValue(listItem.AppResource.GrantCount)
 					list.AppResource.ID = types.StringPointerValue(listItem.AppResource.ID)
 					list.AppResource.MatchBatonID = types.StringPointerValue(listItem.AppResource.MatchBatonID)
+					list.AppResource.NhiDetail = types.StringPointerValue(listItem.AppResource.NhiDetail)
+					if listItem.AppResource.NhiType != nil {
+						list.AppResource.NhiType = types.StringValue(string(*listItem.AppResource.NhiType))
+					} else {
+						list.AppResource.NhiType = types.StringNull()
+					}
 					list.AppResource.ParentAppResourceID = types.StringPointerValue(listItem.AppResource.ParentAppResourceID)
 					list.AppResource.ParentAppResourceTypeID = types.StringPointerValue(listItem.AppResource.ParentAppResourceTypeID)
 					if listItem.AppResource.Profile == nil {
@@ -73,6 +91,8 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 						list.AppResource.SecretTrait = nil
 					} else {
 						list.AppResource.SecretTrait = &tfTypes.SecretTrait{}
+						list.AppResource.SecretTrait.CreatedByAppUserID = types.StringPointerValue(listItem.AppResource.SecretTrait.CreatedByAppUserID)
+						list.AppResource.SecretTrait.CredentialDetail = types.StringPointerValue(listItem.AppResource.SecretTrait.CredentialDetail)
 						list.AppResource.SecretTrait.IdentityAppUserID = types.StringPointerValue(listItem.AppResource.SecretTrait.IdentityAppUserID)
 						list.AppResource.SecretTrait.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.SecretTrait.LastUsedAt))
 						list.AppResource.SecretTrait.SecretCreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppResource.SecretTrait.SecretCreatedAt))
@@ -95,11 +115,25 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx context.Context) (*shared.SearchAppResourcesRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	var agentStatuses []shared.AgentStatuses
+	if r.AgentStatuses != nil {
+		agentStatuses = make([]shared.AgentStatuses, 0, len(r.AgentStatuses))
+		for _, agentStatusesItem := range r.AgentStatuses {
+			agentStatuses = append(agentStatuses, shared.AgentStatuses(agentStatusesItem.ValueString()))
+		}
+	}
 	appID := new(string)
 	if !r.AppID.IsUnknown() && !r.AppID.IsNull() {
 		*appID = r.AppID.ValueString()
 	} else {
 		appID = nil
+	}
+	var appIds []string
+	if r.AppIds != nil {
+		appIds = make([]string, 0, len(r.AppIds))
+		for appIdsIndex := range r.AppIds {
+			appIds = append(appIds, r.AppIds[appIdsIndex].ValueString())
+		}
 	}
 	var appUserIds []string
 	if r.AppUserIds != nil {
@@ -107,6 +141,25 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 		for appUserIdsIndex := range r.AppUserIds {
 			appUserIds = append(appUserIds, r.AppUserIds[appUserIdsIndex].ValueString())
 		}
+	}
+	var credentialTypes []shared.CredentialTypes
+	if r.CredentialTypes != nil {
+		credentialTypes = make([]shared.CredentialTypes, 0, len(r.CredentialTypes))
+		for _, credentialTypesItem := range r.CredentialTypes {
+			credentialTypes = append(credentialTypes, shared.CredentialTypes(credentialTypesItem.ValueString()))
+		}
+	}
+	direction := new(shared.Direction)
+	if !r.Direction.IsUnknown() && !r.Direction.IsNull() {
+		*direction = shared.Direction(r.Direction.ValueString())
+	} else {
+		direction = nil
+	}
+	excludeDeletedApps := new(bool)
+	if !r.ExcludeDeletedApps.IsUnknown() && !r.ExcludeDeletedApps.IsNull() {
+		*excludeDeletedApps = r.ExcludeDeletedApps.ValueBool()
+	} else {
+		excludeDeletedApps = nil
 	}
 	excludeDeletedResourceBindings := new(bool)
 	if !r.ExcludeDeletedResourceBindings.IsUnknown() && !r.ExcludeDeletedResourceBindings.IsNull() {
@@ -126,6 +179,13 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 		excludeResourceTypeTraitIds = make([]string, 0, len(r.ExcludeResourceTypeTraitIds))
 		for excludeResourceTypeTraitIdsIndex := range r.ExcludeResourceTypeTraitIds {
 			excludeResourceTypeTraitIds = append(excludeResourceTypeTraitIds, r.ExcludeResourceTypeTraitIds[excludeResourceTypeTraitIdsIndex].ValueString())
+		}
+	}
+	var nhiTypes []shared.SearchAppResourcesRequestNhiTypes
+	if r.NhiTypes != nil {
+		nhiTypes = make([]shared.SearchAppResourcesRequestNhiTypes, 0, len(r.NhiTypes))
+		for _, nhiTypesItem := range r.NhiTypes {
+			nhiTypes = append(nhiTypes, shared.SearchAppResourcesRequestNhiTypes(nhiTypesItem.ValueString()))
 		}
 	}
 	var ownerUserIds []string
@@ -197,12 +257,83 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 			resourceTypeTraitIds = append(resourceTypeTraitIds, r.ResourceTypeTraitIds[resourceTypeTraitIdsIndex].ValueString())
 		}
 	}
+	var secretAgingFilter *shared.SecretAgingFilter
+	if r.SecretAgingFilter != nil {
+		lastUsedAfter := new(time.Time)
+		if !r.SecretAgingFilter.LastUsedAfter.IsUnknown() && !r.SecretAgingFilter.LastUsedAfter.IsNull() {
+			*lastUsedAfter, _ = time.Parse(time.RFC3339Nano, r.SecretAgingFilter.LastUsedAfter.ValueString())
+		} else {
+			lastUsedAfter = nil
+		}
+		lastUsedBefore := new(time.Time)
+		if !r.SecretAgingFilter.LastUsedBefore.IsUnknown() && !r.SecretAgingFilter.LastUsedBefore.IsNull() {
+			*lastUsedBefore, _ = time.Parse(time.RFC3339Nano, r.SecretAgingFilter.LastUsedBefore.ValueString())
+		} else {
+			lastUsedBefore = nil
+		}
+		secretCreatedAfter := new(time.Time)
+		if !r.SecretAgingFilter.SecretCreatedAfter.IsUnknown() && !r.SecretAgingFilter.SecretCreatedAfter.IsNull() {
+			*secretCreatedAfter, _ = time.Parse(time.RFC3339Nano, r.SecretAgingFilter.SecretCreatedAfter.ValueString())
+		} else {
+			secretCreatedAfter = nil
+		}
+		secretCreatedBefore := new(time.Time)
+		if !r.SecretAgingFilter.SecretCreatedBefore.IsUnknown() && !r.SecretAgingFilter.SecretCreatedBefore.IsNull() {
+			*secretCreatedBefore, _ = time.Parse(time.RFC3339Nano, r.SecretAgingFilter.SecretCreatedBefore.ValueString())
+		} else {
+			secretCreatedBefore = nil
+		}
+		secretExpiresAfter := new(time.Time)
+		if !r.SecretAgingFilter.SecretExpiresAfter.IsUnknown() && !r.SecretAgingFilter.SecretExpiresAfter.IsNull() {
+			*secretExpiresAfter, _ = time.Parse(time.RFC3339Nano, r.SecretAgingFilter.SecretExpiresAfter.ValueString())
+		} else {
+			secretExpiresAfter = nil
+		}
+		secretExpiresBefore := new(time.Time)
+		if !r.SecretAgingFilter.SecretExpiresBefore.IsUnknown() && !r.SecretAgingFilter.SecretExpiresBefore.IsNull() {
+			*secretExpiresBefore, _ = time.Parse(time.RFC3339Nano, r.SecretAgingFilter.SecretExpiresBefore.ValueString())
+		} else {
+			secretExpiresBefore = nil
+		}
+		secretAgingFilter = &shared.SecretAgingFilter{
+			LastUsedAfter:       lastUsedAfter,
+			LastUsedBefore:      lastUsedBefore,
+			SecretCreatedAfter:  secretCreatedAfter,
+			SecretCreatedBefore: secretCreatedBefore,
+			SecretExpiresAfter:  secretExpiresAfter,
+			SecretExpiresBefore: secretExpiresBefore,
+		}
+	}
+	sortField := new(shared.SortField)
+	if !r.SortField.IsUnknown() && !r.SortField.IsNull() {
+		*sortField = shared.SortField(r.SortField.ValueString())
+	} else {
+		sortField = nil
+	}
+	unownedOnly := new(bool)
+	if !r.UnownedOnly.IsUnknown() && !r.UnownedOnly.IsNull() {
+		*unownedOnly = r.UnownedOnly.ValueBool()
+	} else {
+		unownedOnly = nil
+	}
+	withOpenFindings := new(bool)
+	if !r.WithOpenFindings.IsUnknown() && !r.WithOpenFindings.IsNull() {
+		*withOpenFindings = r.WithOpenFindings.ValueBool()
+	} else {
+		withOpenFindings = nil
+	}
 	out := shared.SearchAppResourcesRequest{
+		AgentStatuses:                  agentStatuses,
 		AppID:                          appID,
+		AppIds:                         appIds,
 		AppUserIds:                     appUserIds,
+		CredentialTypes:                credentialTypes,
+		Direction:                      direction,
+		ExcludeDeletedApps:             excludeDeletedApps,
 		ExcludeDeletedResourceBindings: excludeDeletedResourceBindings,
 		ExcludeResourceIds:             excludeResourceIds,
 		ExcludeResourceTypeTraitIds:    excludeResourceTypeTraitIds,
+		NhiTypes:                       nhiTypes,
 		OwnerUserIds:                   ownerUserIds,
 		PageSize:                       pageSize,
 		Query:                          query,
@@ -210,6 +341,10 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 		ResourceIds:                    resourceIds,
 		ResourceTypeIds:                resourceTypeIds,
 		ResourceTypeTraitIds:           resourceTypeTraitIds,
+		SecretAgingFilter:              secretAgingFilter,
+		SortField:                      sortField,
+		UnownedOnly:                    unownedOnly,
+		WithOpenFindings:               withOpenFindings,
 	}
 
 	return &out, diags
