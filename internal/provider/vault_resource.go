@@ -271,6 +271,12 @@ func (r *VaultResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	updateMask, updateMaskDiags := vaultUpdateMask(request.VaultServiceUpdateRequest.Vault)
+	resp.Diagnostics.Append(updateMaskDiags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request.VaultServiceUpdateRequest.UpdateMask = updateMask
 	res, err := r.client.Vault.Update(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())

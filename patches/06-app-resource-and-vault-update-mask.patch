@@ -1,0 +1,49 @@
+diff --git a/internal/provider/app_resource_resource.go b/internal/provider/app_resource_resource.go
+index 13fc311f..1cfbebbe 100644
+--- a/internal/provider/app_resource_resource.go
++++ b/internal/provider/app_resource_resource.go
+@@ -373,8 +373,14 @@ func (r *AppResourceResource) Read(ctx context.Context, req resource.ReadRequest
+ 
+ func (r *AppResourceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+ 	var data *AppResourceResourceModel
++	var state types.Object
+ 	var plan types.Object
+ 
++	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
++	if resp.Diagnostics.HasError() {
++		return
++	}
++
+ 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+ 	if resp.Diagnostics.HasError() {
+ 		return
+@@ -391,6 +397,12 @@ func (r *AppResourceResource) Update(ctx context.Context, req resource.UpdateReq
+ 	if resp.Diagnostics.HasError() {
+ 		return
+ 	}
++	updateMask, updateMaskDiags := appResourceUpdateMaskForChanges(state, plan, request.AppResourceServiceUpdateRequest.AppResource)
++	resp.Diagnostics.Append(updateMaskDiags...)
++	if resp.Diagnostics.HasError() {
++		return
++	}
++	request.AppResourceServiceUpdateRequest.UpdateMask = updateMask
+ 	res, err := r.client.AppResource.Update(ctx, *request)
+ 	if err != nil {
+ 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+diff --git a/internal/provider/vault_resource.go b/internal/provider/vault_resource.go
+index c8c0a9af..3bbb2f09 100644
+--- a/internal/provider/vault_resource.go
++++ b/internal/provider/vault_resource.go
+@@ -271,6 +271,12 @@ func (r *VaultResource) Update(ctx context.Context, req resource.UpdateRequest,
+ 	if resp.Diagnostics.HasError() {
+ 		return
+ 	}
++	updateMask, updateMaskDiags := vaultUpdateMask(request.VaultServiceUpdateRequest.Vault)
++	resp.Diagnostics.Append(updateMaskDiags...)
++	if resp.Diagnostics.HasError() {
++		return
++	}
++	request.VaultServiceUpdateRequest.UpdateMask = updateMask
+ 	res, err := r.client.Vault.Update(ctx, *request)
+ 	if err != nil {
+ 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
