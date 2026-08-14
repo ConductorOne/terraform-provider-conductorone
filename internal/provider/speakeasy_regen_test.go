@@ -200,3 +200,81 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 		}
 	}
 }
+
+// TestUpdateRequestsSetUpdateMask verifies that every listed resource's
+// ToShared*ServiceUpdateRequest function actually populates UpdateMask on the
+// outgoing shared request, and that the resources whose masks are built in the
+// resource layer keep narrowing them to changed, serialized fields.
+//
+// Regression: Speakeasy does not auto-generate update_mask population for
+// these operations — nothing in the OAS distinguishes them from any other
+// update. access_review_template hit this first and was hand-patched
+// (patches/03, PR #231 / IGA-2302) with no tripwire test added at the time.
+// Its backend RPC hard-rejects a request with a nil/empty update_mask
+// (InvalidArgument: "update_mask is required"), so without this every
+// terraform apply that updates an existing template fails outright.
+//
+// app_resource and vault are the same missing-mask bug with a quieter failure:
+// their RPCs accept a nil mask and treat it as full replace over every writable
+// field, including the ones the payload left empty. app_resource loses
+// custom_description on any update, and vault stops mirroring display_name and
+// description onto its app resource and owner entitlement while clearing that
+// entitlement's policy bindings. Both apply cleanly and report success.
+//
+// function and access_review deliberately have no case here. PR #238 added
+// them, PR #241 reverted it pending upstream apigw rework, and this tripwire
+// must not assert on call sites that no longer exist.
+func TestUpdateRequestsSetUpdateMask(t *testing.T) {
+	cases := []struct {
+		file     string
+		funcName string
+	}{
+		{"access_review_template_resource_sdk.go", "ToSharedAccessReviewTemplateServiceUpdateRequest"},
+	}
+
+	funcBody := regexp.MustCompile(`(?s)func \(r \*\w+\) (\w+)\(ctx context\.Context\).*?\n}\n`)
+
+	for _, c := range cases {
+		data, err := os.ReadFile(c.file)
+		if err != nil {
+			t.Fatalf("reading %s: %v", c.file, err)
+		}
+		content := string(data)
+
+		matches := funcBody.FindAllStringSubmatch(content, -1)
+		var body string
+		found := false
+		for _, m := range matches {
+			if m[1] == c.funcName {
+				body = m[0]
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("%s: could not find function %s", c.file, c.funcName)
+		}
+
+		if !strings.Contains(body, "UpdateMask:") {
+			t.Errorf("%s: %s does not set UpdateMask on the outgoing request. "+
+				"The backend requires a non-empty update_mask and will reject every "+
+				"Update() call with InvalidArgument otherwise. Re-apply "+
+				"patches/03-access-review-template-update-mask.patch.", c.file, c.funcName)
+		}
+	}
+
+	changeAwareMasks := map[string]string{
+		"app_resource_resource.go": "appResourceUpdateMaskForChanges(state, plan, request.AppResourceServiceUpdateRequest.AppResource)",
+		"vault_resource.go":        "vaultUpdateMask(request.VaultServiceUpdateRequest.Vault)",
+	}
+	for file, marker := range changeAwareMasks {
+		data, err := os.ReadFile(file)
+		if err != nil {
+			t.Fatalf("reading %s: %v", file, err)
+		}
+		if !strings.Contains(string(data), marker) {
+			t.Errorf("%s does not narrow the update mask to changed, serialized fields "+
+				"(expected call site %q); re-apply patches/06-app-resource-and-vault-update-mask.patch", file, marker)
+		}
+	}
+}

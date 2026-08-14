@@ -8,6 +8,19 @@ Unified-diff patches applied by `make gen` after Speakeasy generates the SDK + p
 2. `git diff <files...> > patches/NN-<short-description>.patch` (or use `git format-patch` from a commit so the message header is preserved).
 3. Confirm a clean re-run: `make gen` should succeed end-to-end.
 
+**Cut the diff against the regen baseline, not against your branch.** `git diff` on a
+branch that already carries an earlier attempt produces hunks whose pre-image is your own
+intermediate commit — text Speakeasy never emits. Those patches apply and reverse cleanly
+within the branch and fail on the next real regen, which nothing in CI exercises: CI runs
+`make generate` (tfplugindocs), never `make gen`. Patches 04 and 05 shipped this way and
+had to be re-cut.
+
+**A hand-written file in a generated directory belongs in `.genignore`, not in a patch.**
+Do not write a patch that re-creates it. `.genignore` already preserves `provider.go`,
+`token_source.go` and `extra_sdk_options.go` that way; `update_mask.go` joins them. A
+new-file hunk is a bet that regen deletes the file, and it fails with "already exists" the
+moment that bet is wrong.
+
 ## Removing a patch
 
 When upstream Speakeasy resolves the regression and we bump the pinned CLI past the fix:
