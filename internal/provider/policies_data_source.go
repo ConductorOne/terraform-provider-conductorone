@@ -82,6 +82,16 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 								` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
 								` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
 						},
+						"baseline_policy_id": schema.StringAttribute{
+							Computed: true,
+							MarkdownDescription: `When set, the baseline defers to another policy of the same type when no` + "\n" +
+								` rule matches, instead of the baseline entry in policy_steps (keyed by the` + "\n" +
+								` lowercased policy_type). Mutually exclusive with that baseline entry: set` + "\n" +
+								` one or the other, not both. The referenced policy must share this` + "\n" +
+								` policy's policy_type, must not introduce a cycle or self-reference, and` + "\n" +
+								` must not push any reachable chain over depth 5. Gated by the` + "\n" +
+								` POLICY_REFERENCES_POLICY feature flag.`,
+						},
 						"created_at": schema.StringAttribute{
 							Computed: true,
 						},
@@ -169,8 +179,10 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																	Description: `The mode of the agent, full control, change policy only, or comment only.`,
 																},
 																"agent_user_id": schema.StringAttribute{
-																	Computed:    true,
-																	Description: `The agent user ID to assign the task to.`,
+																	Computed:           true,
+																	DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+																	MarkdownDescription: `Deprecated: agent steps are evaluated by the system; no agent user is` + "\n" +
+																		` selected. Retained so pre-migration policies still validate.`,
 																},
 																"instructions": schema.StringAttribute{
 																	Computed:    true,
@@ -733,6 +745,16 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																	},
 																	Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 																},
+																"device_placement_provision": schema.SingleNestedAttribute{
+																	Computed: true,
+																	Attributes: map[string]schema.Attribute{
+																		"vault_boundary_id": schema.StringAttribute{
+																			Computed:    true,
+																			Description: `The vaultBoundaryId field.`,
+																		},
+																	},
+																	Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+																},
 																"external_ticket_provision": schema.SingleNestedAttribute{
 																	Computed: true,
 																	Attributes: map[string]schema.Attribute{
@@ -918,7 +940,8 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																`  - multiStep` + "\n" +
 																`  - externalTicket` + "\n" +
 																`  - unconfigured` + "\n" +
-																`  - action`,
+																`  - action` + "\n" +
+																`  - devicePlacement`,
 														},
 														"provision_target": schema.SingleNestedAttribute{
 															Computed: true,
@@ -1062,12 +1085,31 @@ func (r *PoliciesDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 									"condition": schema.StringAttribute{
 										Computed: true,
 										MarkdownDescription: `A CEL expression that is evaluated against the request context. If it` + "\n" +
-											` returns true, the step sequence identified by policy_key is used.`,
+											` returns true, the step sequence identified by the outcome is used.`,
+									},
+									"policy_id": schema.StringAttribute{
+										Computed: true,
+										MarkdownDescription: `The ID of another Policy that is evaluated recursively when this` + "\n" +
+											` rule matches. The referenced policy must share this policy's` + "\n" +
+											` policy_type, must not introduce a cycle, and must not push any` + "\n" +
+											` reachable chain over depth 5. Gated by the` + "\n" +
+											` POLICY_REFERENCES_POLICY feature flag.` + "\n" +
+											`This field is part of the ` + "`" + `outcome` + "`" + ` oneof.` + "\n" +
+											`See the documentation for ` + "`" + `c1.api.policy.v1.Rule` + "`" + ` for more details.`,
 									},
 									"policy_key": schema.StringAttribute{
+										Computed:           true,
+										DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+										MarkdownDescription: `Deprecated: prefer outcome.step_key. Still read by the request path` + "\n" +
+											` for backward compatibility with rules persisted before the outcome` + "\n" +
+											` oneof existed.`,
+									},
+									"step_key": schema.StringAttribute{
 										Computed: true,
-										MarkdownDescription: `A key into the policy's policy_steps map identifying which step sequence` + "\n" +
-											` to execute when this rule's condition matches.`,
+										MarkdownDescription: `A key into the policy's policy_steps map identifying which step` + "\n" +
+											` sequence to execute when this rule's condition matches.` + "\n" +
+											`This field is part of the ` + "`" + `outcome` + "`" + ` oneof.` + "\n" +
+											`See the documentation for ` + "`" + `c1.api.policy.v1.Rule` + "`" + ` for more details.`,
 									},
 								},
 							},

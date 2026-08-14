@@ -134,6 +134,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Computed:    true,
 						Description: `JSONPATH expression indicating the location of the Insights objects in the expanded array`,
 					},
+					"principal_resource_path": schema.StringAttribute{
+						Computed:    true,
+						Description: `JSONPATH expression indicating the location of the AppResource under review for a resource-principal certify task in the expanded array.`,
+					},
 					"resource_bindings_path": schema.StringAttribute{
 						Computed:    true,
 						Description: `JSONPATH expression indicating the location of the EntitlementScopeBindingList object in the expanded array.`,
@@ -410,8 +414,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																			Description: `The mode of the agent, full control, change policy only, or comment only.`,
 																		},
 																		"agent_user_id": schema.StringAttribute{
-																			Computed:    true,
-																			Description: `The agent user ID to assign the task to.`,
+																			Computed:           true,
+																			DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+																			MarkdownDescription: `Deprecated: agent steps are evaluated by the system; no agent user is` + "\n" +
+																				` selected. Retained so pre-migration policies still validate.`,
 																		},
 																		"instructions": schema.StringAttribute{
 																			Computed:    true,
@@ -1285,6 +1291,41 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																			"form_string_field": schema.SingleNestedAttribute{
 																				Computed: true,
 																				Attributes: map[string]schema.Attribute{
+																					"date_field": schema.SingleNestedAttribute{
+																						Computed: true,
+																						Attributes: map[string]schema.Attribute{
+																							"default_to_today": schema.BoolAttribute{
+																								Computed:    true,
+																								Description: `Default the field to the render date when the StringField has no default_value.`,
+																							},
+																							"max_date": schema.StringAttribute{
+																								Computed:    true,
+																								Description: `Latest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.`,
+																							},
+																							"max_days_from_today": schema.Int32Attribute{
+																								Computed: true,
+																								MarkdownDescription: `Latest selectable date expressed as an offset in days from the date the` + "\n" +
+																									` form is rendered; negative is in the past. Set this to 365 to cap a date at` + "\n" +
+																									` one year out. When both are set, the earlier of this and max_date applies.` + "\n" +
+																									` Enforcement is one day slack in each direction: the picker anchors today at` + "\n" +
+																									` the submitter's local midnight and the server anchors in UTC, so 365 admits` + "\n" +
+																									` 366 days rather than reject a date the picker itself offered.`,
+																							},
+																							"min_date": schema.StringAttribute{
+																								Computed:    true,
+																								Description: `Earliest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.`,
+																							},
+																							"min_days_from_today": schema.Int32Attribute{
+																								Computed: true,
+																								MarkdownDescription: `Earliest selectable date expressed as an offset in days from the date the` + "\n" +
+																									` form is rendered; negative is in the past. Prefer this over min_date for a` + "\n" +
+																									` rolling window, which would otherwise go stale. When both are set, the` + "\n" +
+																									` later of the two applies.`,
+																							},
+																						},
+																						MarkdownDescription: `DateField renders a date picker. The value is an ISO-8601 calendar date` + "\n" +
+																							` ("YYYY-MM-DD") stored in the enclosing StringField's string value.`,
+																					},
 																					"default_value": schema.StringAttribute{
 																						Computed:    true,
 																						Description: `The defaultValue field.`,
@@ -1322,6 +1363,23 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																							},
 																							"c1_user_filter": schema.SingleNestedAttribute{
 																								Computed: true,
+																								Attributes: map[string]schema.Attribute{
+																									"exclude_user_ids": schema.ListAttribute{
+																										Computed:    true,
+																										ElementType: types.StringType,
+																										Description: `Remove these users from the selectable set, after user_ids is applied.`,
+																									},
+																									"include_deactivated": schema.BoolAttribute{
+																										Computed:    true,
+																										Description: `Make deactivated and deleted users selectable. Defaults to enabled-only.`,
+																									},
+																									"user_ids": schema.ListAttribute{
+																										Computed:    true,
+																										ElementType: types.StringType,
+																										MarkdownDescription: `Restrict the selectable set to these users. Empty means every user is selectable.` + "\n" +
+																											` Capped at the number of refs SearchUsers accepts in one request.`,
+																									},
+																								},
 																								MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
 																									` This is distinct from AppUserFilter which selects accounts within a connected app.`,
 																							},
@@ -1564,7 +1622,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																					`  - textField` + "\n" +
 																					`  - passwordField` + "\n" +
 																					`  - selectField` + "\n" +
-																					`  - pickerField`,
+																					`  - pickerField` + "\n" +
+																					`  - dateField`,
 																			},
 																			"form_string_map_field": schema.SingleNestedAttribute{
 																				Computed: true,
@@ -1991,6 +2050,16 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																			},
 																			Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 																		},
+																		"device_placement_provision": schema.SingleNestedAttribute{
+																			Computed: true,
+																			Attributes: map[string]schema.Attribute{
+																				"vault_boundary_id": schema.StringAttribute{
+																					Computed:    true,
+																					Description: `The vaultBoundaryId field.`,
+																				},
+																			},
+																			Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+																		},
 																		"external_ticket_provision": schema.SingleNestedAttribute{
 																			Computed: true,
 																			Attributes: map[string]schema.Attribute{
@@ -2176,7 +2245,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																		`  - multiStep` + "\n" +
 																		`  - externalTicket` + "\n" +
 																		`  - unconfigured` + "\n" +
-																		`  - action`,
+																		`  - action` + "\n" +
+																		`  - devicePlacement`,
 																},
 																"provision_target": schema.SingleNestedAttribute{
 																	Computed: true,
@@ -2201,6 +2271,50 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																},
 															},
 															Description: `The provision step references a provision policy for this step.`,
+														},
+														"provision_waiting_on": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"fallback_at": schema.StringAttribute{
+																	Computed: true,
+																},
+																"started_waiting_at": schema.StringAttribute{
+																	Computed: true,
+																},
+																"waiting_for_device_placement": schema.SingleNestedAttribute{
+																	Computed: true,
+																	Attributes: map[string]schema.Attribute{
+																		"recipient_user_id": schema.StringAttribute{
+																			Computed:    true,
+																			Description: `The ID of the user being placed.`,
+																		},
+																		"vault_boundary_id": schema.StringAttribute{
+																			Computed:    true,
+																			Description: `The ID of the vault boundary the recipient is being placed in.`,
+																		},
+																	},
+																	Description: `Describes a provision step that is paused until the recipient joins the vault's MLS group.`,
+																},
+																"waiting_for_entitlement_merge": schema.SingleNestedAttribute{
+																	Computed: true,
+																	Attributes: map[string]schema.Attribute{
+																		"app_entitlement_id": schema.StringAttribute{
+																			Computed:    true,
+																			Description: `The ID of the entitlement being waited on.`,
+																		},
+																		"app_id": schema.StringAttribute{
+																			Computed:    true,
+																			Description: `The ID of the app the awaited entitlement belongs to.`,
+																		},
+																	},
+																	Description: `Describes a provision step that is paused until the target entitlement, created ahead of connector sync with a Baton match ID, is merged with its connector-synced counterpart.`,
+																},
+															},
+															MarkdownDescription: `Describes why a provision step is paused in the WAITING state.` + "\n" +
+																`` + "\n" +
+																`This message contains a oneof named kind. Only a single field of the following list may be set at a time:` + "\n" +
+																`  - entitlementMerge` + "\n" +
+																`  - devicePlacement`,
 														},
 														"reassigned_by_error_action": schema.SingleNestedAttribute{
 															Computed: true,
@@ -2451,8 +2565,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																	Description: `The mode of the agent, full control, change policy only, or comment only.`,
 																},
 																"agent_user_id": schema.StringAttribute{
-																	Computed:    true,
-																	Description: `The agent user ID to assign the task to.`,
+																	Computed:           true,
+																	DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+																	MarkdownDescription: `Deprecated: agent steps are evaluated by the system; no agent user is` + "\n" +
+																		` selected. Retained so pre-migration policies still validate.`,
 																},
 																"instructions": schema.StringAttribute{
 																	Computed:    true,
@@ -3015,6 +3131,16 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																	},
 																	Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 																},
+																"device_placement_provision": schema.SingleNestedAttribute{
+																	Computed: true,
+																	Attributes: map[string]schema.Attribute{
+																		"vault_boundary_id": schema.StringAttribute{
+																			Computed:    true,
+																			Description: `The vaultBoundaryId field.`,
+																		},
+																	},
+																	Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+																},
 																"external_ticket_provision": schema.SingleNestedAttribute{
 																	Computed: true,
 																	Attributes: map[string]schema.Attribute{
@@ -3200,7 +3326,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																`  - multiStep` + "\n" +
 																`  - externalTicket` + "\n" +
 																`  - unconfigured` + "\n" +
-																`  - action`,
+																`  - action` + "\n" +
+																`  - devicePlacement`,
 														},
 														"provision_target": schema.SingleNestedAttribute{
 															Computed: true,
@@ -3318,6 +3445,16 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 													` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
 													` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
 											},
+											"baseline_policy_id": schema.StringAttribute{
+												Computed: true,
+												MarkdownDescription: `When set, the baseline defers to another policy of the same type when no` + "\n" +
+													` rule matches, instead of the baseline entry in policy_steps (keyed by the` + "\n" +
+													` lowercased policy_type). Mutually exclusive with that baseline entry: set` + "\n" +
+													` one or the other, not both. The referenced policy must share this` + "\n" +
+													` policy's policy_type, must not introduce a cycle or self-reference, and` + "\n" +
+													` must not push any reachable chain over depth 5. Gated by the` + "\n" +
+													` POLICY_REFERENCES_POLICY feature flag.`,
+											},
 											"created_at": schema.StringAttribute{
 												Computed: true,
 											},
@@ -3402,8 +3539,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																						Description: `The mode of the agent, full control, change policy only, or comment only.`,
 																					},
 																					"agent_user_id": schema.StringAttribute{
-																						Computed:    true,
-																						Description: `The agent user ID to assign the task to.`,
+																						Computed:           true,
+																						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+																						MarkdownDescription: `Deprecated: agent steps are evaluated by the system; no agent user is` + "\n" +
+																							` selected. Retained so pre-migration policies still validate.`,
 																					},
 																					"instructions": schema.StringAttribute{
 																						Computed:    true,
@@ -3966,6 +4105,16 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																						},
 																						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 																					},
+																					"device_placement_provision": schema.SingleNestedAttribute{
+																						Computed: true,
+																						Attributes: map[string]schema.Attribute{
+																							"vault_boundary_id": schema.StringAttribute{
+																								Computed:    true,
+																								Description: `The vaultBoundaryId field.`,
+																							},
+																						},
+																						Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+																					},
 																					"external_ticket_provision": schema.SingleNestedAttribute{
 																						Computed: true,
 																						Attributes: map[string]schema.Attribute{
@@ -4151,7 +4300,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																					`  - multiStep` + "\n" +
 																					`  - externalTicket` + "\n" +
 																					`  - unconfigured` + "\n" +
-																					`  - action`,
+																					`  - action` + "\n" +
+																					`  - devicePlacement`,
 																			},
 																			"provision_target": schema.SingleNestedAttribute{
 																				Computed: true,
@@ -4295,12 +4445,31 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 														"condition": schema.StringAttribute{
 															Computed: true,
 															MarkdownDescription: `A CEL expression that is evaluated against the request context. If it` + "\n" +
-																` returns true, the step sequence identified by policy_key is used.`,
+																` returns true, the step sequence identified by the outcome is used.`,
+														},
+														"policy_id": schema.StringAttribute{
+															Computed: true,
+															MarkdownDescription: `The ID of another Policy that is evaluated recursively when this` + "\n" +
+																` rule matches. The referenced policy must share this policy's` + "\n" +
+																` policy_type, must not introduce a cycle, and must not push any` + "\n" +
+																` reachable chain over depth 5. Gated by the` + "\n" +
+																` POLICY_REFERENCES_POLICY feature flag.` + "\n" +
+																`This field is part of the ` + "`" + `outcome` + "`" + ` oneof.` + "\n" +
+																`See the documentation for ` + "`" + `c1.api.policy.v1.Rule` + "`" + ` for more details.`,
 														},
 														"policy_key": schema.StringAttribute{
+															Computed:           true,
+															DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+															MarkdownDescription: `Deprecated: prefer outcome.step_key. Still read by the request path` + "\n" +
+																` for backward compatibility with rules persisted before the outcome` + "\n" +
+																` oneof existed.`,
+														},
+														"step_key": schema.StringAttribute{
 															Computed: true,
-															MarkdownDescription: `A key into the policy's policy_steps map identifying which step sequence` + "\n" +
-																` to execute when this rule's condition matches.`,
+															MarkdownDescription: `A key into the policy's policy_steps map identifying which step` + "\n" +
+																` sequence to execute when this rule's condition matches.` + "\n" +
+																`This field is part of the ` + "`" + `outcome` + "`" + ` oneof.` + "\n" +
+																`See the documentation for ` + "`" + `c1.api.policy.v1.Rule` + "`" + ` for more details.`,
 														},
 													},
 												},
@@ -4486,8 +4655,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																		Description: `The mode of the agent, full control, change policy only, or comment only.`,
 																	},
 																	"agent_user_id": schema.StringAttribute{
-																		Computed:    true,
-																		Description: `The agent user ID to assign the task to.`,
+																		Computed:           true,
+																		DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+																		MarkdownDescription: `Deprecated: agent steps are evaluated by the system; no agent user is` + "\n" +
+																			` selected. Retained so pre-migration policies still validate.`,
 																	},
 																	"instructions": schema.StringAttribute{
 																		Computed:    true,
@@ -5361,6 +5532,41 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																		"form_string_field": schema.SingleNestedAttribute{
 																			Computed: true,
 																			Attributes: map[string]schema.Attribute{
+																				"date_field": schema.SingleNestedAttribute{
+																					Computed: true,
+																					Attributes: map[string]schema.Attribute{
+																						"default_to_today": schema.BoolAttribute{
+																							Computed:    true,
+																							Description: `Default the field to the render date when the StringField has no default_value.`,
+																						},
+																						"max_date": schema.StringAttribute{
+																							Computed:    true,
+																							Description: `Latest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.`,
+																						},
+																						"max_days_from_today": schema.Int32Attribute{
+																							Computed: true,
+																							MarkdownDescription: `Latest selectable date expressed as an offset in days from the date the` + "\n" +
+																								` form is rendered; negative is in the past. Set this to 365 to cap a date at` + "\n" +
+																								` one year out. When both are set, the earlier of this and max_date applies.` + "\n" +
+																								` Enforcement is one day slack in each direction: the picker anchors today at` + "\n" +
+																								` the submitter's local midnight and the server anchors in UTC, so 365 admits` + "\n" +
+																								` 366 days rather than reject a date the picker itself offered.`,
+																						},
+																						"min_date": schema.StringAttribute{
+																							Computed:    true,
+																							Description: `Earliest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.`,
+																						},
+																						"min_days_from_today": schema.Int32Attribute{
+																							Computed: true,
+																							MarkdownDescription: `Earliest selectable date expressed as an offset in days from the date the` + "\n" +
+																								` form is rendered; negative is in the past. Prefer this over min_date for a` + "\n" +
+																								` rolling window, which would otherwise go stale. When both are set, the` + "\n" +
+																								` later of the two applies.`,
+																						},
+																					},
+																					MarkdownDescription: `DateField renders a date picker. The value is an ISO-8601 calendar date` + "\n" +
+																						` ("YYYY-MM-DD") stored in the enclosing StringField's string value.`,
+																				},
 																				"default_value": schema.StringAttribute{
 																					Computed:    true,
 																					Description: `The defaultValue field.`,
@@ -5398,6 +5604,23 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																						},
 																						"c1_user_filter": schema.SingleNestedAttribute{
 																							Computed: true,
+																							Attributes: map[string]schema.Attribute{
+																								"exclude_user_ids": schema.ListAttribute{
+																									Computed:    true,
+																									ElementType: types.StringType,
+																									Description: `Remove these users from the selectable set, after user_ids is applied.`,
+																								},
+																								"include_deactivated": schema.BoolAttribute{
+																									Computed:    true,
+																									Description: `Make deactivated and deleted users selectable. Defaults to enabled-only.`,
+																								},
+																								"user_ids": schema.ListAttribute{
+																									Computed:    true,
+																									ElementType: types.StringType,
+																									MarkdownDescription: `Restrict the selectable set to these users. Empty means every user is selectable.` + "\n" +
+																										` Capped at the number of refs SearchUsers accepts in one request.`,
+																								},
+																							},
 																							MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
 																								` This is distinct from AppUserFilter which selects accounts within a connected app.`,
 																						},
@@ -5640,7 +5863,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																				`  - textField` + "\n" +
 																				`  - passwordField` + "\n" +
 																				`  - selectField` + "\n" +
-																				`  - pickerField`,
+																				`  - pickerField` + "\n" +
+																				`  - dateField`,
 																		},
 																		"form_string_map_field": schema.SingleNestedAttribute{
 																			Computed: true,
@@ -6067,6 +6291,16 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																		},
 																		Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 																	},
+																	"device_placement_provision": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Attributes: map[string]schema.Attribute{
+																			"vault_boundary_id": schema.StringAttribute{
+																				Computed:    true,
+																				Description: `The vaultBoundaryId field.`,
+																			},
+																		},
+																		Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+																	},
 																	"external_ticket_provision": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
@@ -6252,7 +6486,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																	`  - multiStep` + "\n" +
 																	`  - externalTicket` + "\n" +
 																	`  - unconfigured` + "\n" +
-																	`  - action`,
+																	`  - action` + "\n" +
+																	`  - devicePlacement`,
 															},
 															"provision_target": schema.SingleNestedAttribute{
 																Computed: true,
@@ -6277,6 +6512,50 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 															},
 														},
 														Description: `The provision step references a provision policy for this step.`,
+													},
+													"provision_waiting_on": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"fallback_at": schema.StringAttribute{
+																Computed: true,
+															},
+															"started_waiting_at": schema.StringAttribute{
+																Computed: true,
+															},
+															"waiting_for_device_placement": schema.SingleNestedAttribute{
+																Computed: true,
+																Attributes: map[string]schema.Attribute{
+																	"recipient_user_id": schema.StringAttribute{
+																		Computed:    true,
+																		Description: `The ID of the user being placed.`,
+																	},
+																	"vault_boundary_id": schema.StringAttribute{
+																		Computed:    true,
+																		Description: `The ID of the vault boundary the recipient is being placed in.`,
+																	},
+																},
+																Description: `Describes a provision step that is paused until the recipient joins the vault's MLS group.`,
+															},
+															"waiting_for_entitlement_merge": schema.SingleNestedAttribute{
+																Computed: true,
+																Attributes: map[string]schema.Attribute{
+																	"app_entitlement_id": schema.StringAttribute{
+																		Computed:    true,
+																		Description: `The ID of the entitlement being waited on.`,
+																	},
+																	"app_id": schema.StringAttribute{
+																		Computed:    true,
+																		Description: `The ID of the app the awaited entitlement belongs to.`,
+																	},
+																},
+																Description: `Describes a provision step that is paused until the target entitlement, created ahead of connector sync with a Baton match ID, is merged with its connector-synced counterpart.`,
+															},
+														},
+														MarkdownDescription: `Describes why a provision step is paused in the WAITING state.` + "\n" +
+															`` + "\n" +
+															`This message contains a oneof named kind. Only a single field of the following list may be set at a time:` + "\n" +
+															`  - entitlementMerge` + "\n" +
+															`  - devicePlacement`,
 													},
 													"reassigned_by_error_action": schema.SingleNestedAttribute{
 														Computed: true,
@@ -6682,6 +6961,41 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"form_string_field": schema.SingleNestedAttribute{
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
+														"date_field": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"default_to_today": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `Default the field to the render date when the StringField has no default_value.`,
+																},
+																"max_date": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `Latest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.`,
+																},
+																"max_days_from_today": schema.Int32Attribute{
+																	Computed: true,
+																	MarkdownDescription: `Latest selectable date expressed as an offset in days from the date the` + "\n" +
+																		` form is rendered; negative is in the past. Set this to 365 to cap a date at` + "\n" +
+																		` one year out. When both are set, the earlier of this and max_date applies.` + "\n" +
+																		` Enforcement is one day slack in each direction: the picker anchors today at` + "\n" +
+																		` the submitter's local midnight and the server anchors in UTC, so 365 admits` + "\n" +
+																		` 366 days rather than reject a date the picker itself offered.`,
+																},
+																"min_date": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `Earliest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.`,
+																},
+																"min_days_from_today": schema.Int32Attribute{
+																	Computed: true,
+																	MarkdownDescription: `Earliest selectable date expressed as an offset in days from the date the` + "\n" +
+																		` form is rendered; negative is in the past. Prefer this over min_date for a` + "\n" +
+																		` rolling window, which would otherwise go stale. When both are set, the` + "\n" +
+																		` later of the two applies.`,
+																},
+															},
+															MarkdownDescription: `DateField renders a date picker. The value is an ISO-8601 calendar date` + "\n" +
+																` ("YYYY-MM-DD") stored in the enclosing StringField's string value.`,
+														},
 														"default_value": schema.StringAttribute{
 															Computed:    true,
 															Description: `The defaultValue field.`,
@@ -6719,6 +7033,23 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																},
 																"c1_user_filter": schema.SingleNestedAttribute{
 																	Computed: true,
+																	Attributes: map[string]schema.Attribute{
+																		"exclude_user_ids": schema.ListAttribute{
+																			Computed:    true,
+																			ElementType: types.StringType,
+																			Description: `Remove these users from the selectable set, after user_ids is applied.`,
+																		},
+																		"include_deactivated": schema.BoolAttribute{
+																			Computed:    true,
+																			Description: `Make deactivated and deleted users selectable. Defaults to enabled-only.`,
+																		},
+																		"user_ids": schema.ListAttribute{
+																			Computed:    true,
+																			ElementType: types.StringType,
+																			MarkdownDescription: `Restrict the selectable set to these users. Empty means every user is selectable.` + "\n" +
+																				` Capped at the number of refs SearchUsers accepts in one request.`,
+																		},
+																	},
 																	MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
 																		` This is distinct from AppUserFilter which selects accounts within a connected app.`,
 																},
@@ -6961,7 +7292,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 														`  - textField` + "\n" +
 														`  - passwordField` + "\n" +
 														`  - selectField` + "\n" +
-														`  - pickerField`,
+														`  - pickerField` + "\n" +
+														`  - dateField`,
 												},
 												"form_string_map_field": schema.SingleNestedAttribute{
 													Computed: true,
@@ -7183,6 +7515,25 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 													` action tickets (e.g. scope-role grants) — those carry dispatch` + "\n" +
 													` configuration on action_instance and target_object instead.`,
 											},
+											"created_app_entitlement_ids": schema.ListAttribute{
+												Computed:    true,
+												ElementType: types.StringType,
+												MarkdownDescription: `The C1 IDs of the AppEntitlements materialized from the connector response` + "\n" +
+													` (for a group, typically its members and owners entitlements). Use these to` + "\n" +
+													` request access, attach a virtual entitlement, or otherwise manage the new` + "\n" +
+													` resource. Empty until outcome is SUCCESS; may be empty on SUCCESS if` + "\n" +
+													` materialization was skipped or failed, in which case the entitlements` + "\n" +
+													` appear after the next connector sync.`,
+											},
+											"created_app_resource_id": schema.StringAttribute{
+												Computed: true,
+												MarkdownDescription: `Populated when a resource-create action completes: the C1 ID of the` + "\n" +
+													` AppResource materialized from the connector response.`,
+											},
+											"created_app_resource_type_id": schema.StringAttribute{
+												Computed:    true,
+												Description: `The resource type ID of the materialized AppResource.`,
+											},
 											"display_name": schema.StringAttribute{
 												Computed: true,
 												MarkdownDescription: `Display label captured on the action snapshot at ticket-creation time.` + "\n" +
@@ -7190,8 +7541,92 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 													` synthesized tickets that have no Action row at all. UI reads this to` + "\n" +
 													` render the task title without an Action fetch.`,
 											},
+											"finding_target": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"finding_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `Reference to the source finding.`,
+													},
+													"finding_type": schema.StringAttribute{
+														Computed:    true,
+														Description: `The finding type discriminator.`,
+													},
+												},
+												Description: `The finding an inert TYPE_MANUAL action ticket remediates.`,
+											},
 											"form_values": schema.SingleNestedAttribute{
 												Computed: true,
+											},
+											"gated_tool_call_target": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"app_entitlement_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The appEntitlementId field.`,
+													},
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The appId field.`,
+													},
+													"caller_kind": schema.StringAttribute{
+														Computed:    true,
+														Description: `The callerKind field.`,
+													},
+													"connector_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The connectorId field.`,
+													},
+													"gate_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The gateId field.`,
+													},
+													"input_size_bytes": schema.Int32Attribute{
+														Computed:    true,
+														Description: `The inputSizeBytes field.`,
+													},
+													"tool_error": schema.StringAttribute{
+														Computed:    true,
+														Description: `The toolError field.`,
+													},
+													"tool_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The toolId field.`,
+													},
+													"tool_input": schema.SingleNestedAttribute{
+														Computed: true,
+													},
+													"tool_kind": schema.StringAttribute{
+														Computed:    true,
+														Description: `The toolKind field.`,
+													},
+													"tool_name": schema.StringAttribute{
+														Computed:    true,
+														Description: `The toolName field.`,
+													},
+													"tool_output": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"array_of_any": schema.ListAttribute{
+																Computed:    true,
+																ElementType: jsontypes.NormalizedType{},
+															},
+															"boolean": schema.BoolAttribute{
+																Computed: true,
+															},
+															"number": schema.Float64Attribute{
+																Computed: true,
+															},
+															"str": schema.StringAttribute{
+																Computed: true,
+															},
+															"three": schema.SingleNestedAttribute{
+																Computed: true,
+															},
+														},
+													},
+												},
+												Description: `The GatedToolCallTarget message.`,
 											},
 											"outcome": schema.StringAttribute{
 												Computed:    true,
@@ -7234,6 +7669,34 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 											"task_action_instance": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
+													"baton_resource_action_ref": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"app_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The app the resource is created in.`,
+															},
+															"baton_action_display_name": schema.StringAttribute{
+																Computed:    true,
+																Description: `The connector-defined display name of the resource-create action.`,
+															},
+															"baton_action_name": schema.StringAttribute{
+																Computed:    true,
+																Description: `The connector-defined name of the resource-create action.`,
+															},
+															"connector_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The connector that executes the resource-create action.`,
+															},
+															"resource_type_id": schema.StringAttribute{
+																Computed:    true,
+																Description: `The type of resource the action creates (for example, "group").`,
+															},
+														},
+														MarkdownDescription: `BatonResourceActionRef describes dispatch to a connector resource-create` + "\n" +
+															` action (for example, a group template that creates a group in the connected` + "\n" +
+															` application).`,
+													},
 													"connector_action_ref": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
@@ -7265,6 +7728,7 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 													` Action captured on a TaskTypeAction at ticket-creation time.` + "\n" +
 													`` + "\n" +
 													`This message contains a oneof named target_ref. Only a single field of the following list may be set at a time:` + "\n" +
+													`  - batonResourceActionRef` + "\n" +
 													`  - connectorActionRef`,
 											},
 											"type": schema.StringAttribute{
@@ -7276,7 +7740,9 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 										MarkdownDescription: `The TaskTypeAction message.` + "\n" +
 											`` + "\n" +
 											`This message contains a oneof named target_object. Only a single field of the following list may be set at a time:` + "\n" +
-											`  - scopeRole`,
+											`  - scopeRole` + "\n" +
+											`  - toolCall` + "\n" +
+											`  - finding`,
 									},
 									"task_type_certify": schema.SingleNestedAttribute{
 										Computed: true,
@@ -7297,6 +7763,24 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 												Computed:    true,
 												Description: `The ID of the app.`,
 											},
+											"app_resource_ref": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The ID of the app that owns the resource.`,
+													},
+													"app_resource_type_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The ID of the resource type that classifies this resource.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The unique ID of the app resource.`,
+													},
+												},
+												Description: `A reference to a specific app resource by its composite key.`,
+											},
 											"app_user_id": schema.StringAttribute{
 												Computed:    true,
 												Description: `The ID of the app user.`,
@@ -7313,7 +7797,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 												Computed: true,
 											},
 										},
-										Description: `The TaskTypeCertify message indicates that a task is a certify task and all related details.`,
+										MarkdownDescription: `The TaskTypeCertify message indicates that a task is a certify task and all related details.` + "\n" +
+											`` + "\n" +
+											`This message contains a oneof named principal. Only a single field of the following list may be set at a time:` + "\n" +
+											`  - resource`,
 									},
 									"task_type_finding": schema.SingleNestedAttribute{
 										Computed: true,
@@ -7422,6 +7909,24 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 												Computed:    true,
 												Description: `The ID of the app.`,
 											},
+											"app_resource_ref": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The ID of the app that owns the resource.`,
+													},
+													"app_resource_type_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The ID of the resource type that classifies this resource.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The unique ID of the app resource.`,
+													},
+												},
+												Description: `A reference to a specific app resource by its composite key.`,
+											},
 											"app_user_id": schema.StringAttribute{
 												Computed:    true,
 												Description: `The ID of the app user.`,
@@ -7495,7 +8000,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 													`  - nonUsage`,
 											},
 										},
-										Description: `The TaskTypeRevoke message indicates that a task is a revoke task and all related details.`,
+										MarkdownDescription: `The TaskTypeRevoke message indicates that a task is a revoke task and all related details.` + "\n" +
+											`` + "\n" +
+											`This message contains a oneof named principal. Only a single field of the following list may be set at a time:` + "\n" +
+											`  - resource`,
 									},
 								},
 								MarkdownDescription: `Task Type provides configuration for the type of task: certify, grant, or revoke` + "\n" +
@@ -7517,6 +8025,29 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 						},
 						Description: `A fully-fleged task object. Includes its policy, references to external apps, its type, its processing history, and more.`,
+					},
+					"user_actor_object_permissions": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"delete": schema.BoolAttribute{
+								Computed:    true,
+								Description: `The delete field.`,
+							},
+							"edit": schema.BoolAttribute{
+								Computed:    true,
+								Description: `The edit field.`,
+							},
+							"extra": schema.MapAttribute{
+								Computed:    true,
+								ElementType: types.BoolType,
+								Description: `The extra field.`,
+							},
+							"read": schema.BoolAttribute{
+								Computed:    true,
+								Description: `The read field.`,
+							},
+						},
+						Description: `ActorObjectPermissions describes which actions the calling user is permitted to perform on an object, as determined by policy.`,
 					},
 					"user_path": schema.StringAttribute{
 						Computed:    true,

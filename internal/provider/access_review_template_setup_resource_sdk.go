@@ -157,6 +157,11 @@ func (r *AccessReviewTemplateSetupResourceModel) RefreshFromSharedAccessReviewTe
 					r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter = types.StringNull()
 				}
 			}
+			if resp.AccessReviewScopeV2.PrincipalTypeFilter != nil {
+				r.AccessReviewScopeV2.PrincipalTypeFilter = types.StringValue(string(*resp.AccessReviewScopeV2.PrincipalTypeFilter))
+			} else {
+				r.AccessReviewScopeV2.PrincipalTypeFilter = types.StringNull()
+			}
 			if resp.AccessReviewScopeV2.ResourceSelectionScope == nil {
 				r.AccessReviewScopeV2.ResourceSelectionScope = nil
 			} else {
@@ -166,6 +171,16 @@ func (r *AccessReviewTemplateSetupResourceModel) RefreshFromSharedAccessReviewTe
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = nil
 			} else {
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.AccessReviewScopeV2.ResourceTypeSelectionScope1 == nil {
+				r.AccessReviewScopeV2.ResourceTypeSelectionScope1 = nil
+			} else {
+				r.AccessReviewScopeV2.ResourceTypeSelectionScope1 = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.AccessReviewScopeV2.ScopeRoleSelectionScope == nil {
+				r.AccessReviewScopeV2.ScopeRoleSelectionScope = nil
+			} else {
+				r.AccessReviewScopeV2.ScopeRoleSelectionScope = &tfTypes.ScopeRoleSelectionScope{}
 			}
 			if resp.AccessReviewScopeV2.SelectedUsersScope == nil {
 				r.AccessReviewScopeV2.SelectedUsersScope = nil
@@ -189,6 +204,11 @@ func (r *AccessReviewTemplateSetupResourceModel) RefreshFromSharedAccessReviewTe
 				r.AccessReviewScopeV2.SpecificResourcesScope = nil
 			} else {
 				r.AccessReviewScopeV2.SpecificResourcesScope = &tfTypes.SpecificResourcesScope{}
+			}
+			if resp.AccessReviewScopeV2.SpecificResourcesScope1 == nil {
+				r.AccessReviewScopeV2.SpecificResourcesScope1 = nil
+			} else {
+				r.AccessReviewScopeV2.SpecificResourcesScope1 = &tfTypes.SpecificResourcesScope{}
 			}
 			if resp.AccessReviewScopeV2.UserCriteriaScope == nil {
 				r.AccessReviewScopeV2.UserCriteriaScope = nil
@@ -460,6 +480,14 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 				Expression: expression1,
 			}
 		}
+		var resourceTypeSelectionScope *shared.ResourceTypeSelectionScope
+		if r.AccessReviewScopeV2.ResourceTypeSelectionScope != nil {
+			resourceTypeSelectionScope = &shared.ResourceTypeSelectionScope{}
+		}
+		var specificResourcesScope *shared.SpecificResourcesScope
+		if r.AccessReviewScopeV2.SpecificResourcesScope != nil {
+			specificResourcesScope = &shared.SpecificResourcesScope{}
+		}
 		var grantsByCriteriaScope *shared.GrantsByCriteriaScope
 		if r.AccessReviewScopeV2.GrantsByCriteriaScope != nil {
 			var grantAccessProfileFilter *shared.GrantAccessProfileFilter
@@ -549,13 +577,23 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 				TypeFilter:               typeFilter,
 			}
 		}
+		principalTypeFilter := new(shared.PrincipalTypeFilter)
+		if !r.AccessReviewScopeV2.PrincipalTypeFilter.IsUnknown() && !r.AccessReviewScopeV2.PrincipalTypeFilter.IsNull() {
+			*principalTypeFilter = shared.PrincipalTypeFilter(r.AccessReviewScopeV2.PrincipalTypeFilter.ValueString())
+		} else {
+			principalTypeFilter = nil
+		}
 		var resourceSelectionScope *shared.ResourceSelectionScope
 		if r.AccessReviewScopeV2.ResourceSelectionScope != nil {
 			resourceSelectionScope = &shared.ResourceSelectionScope{}
 		}
-		var resourceTypeSelectionScope *shared.ResourceTypeSelectionScope
-		if r.AccessReviewScopeV2.ResourceTypeSelectionScope != nil {
-			resourceTypeSelectionScope = &shared.ResourceTypeSelectionScope{}
+		var resourceTypeSelectionScope1 *shared.ResourceTypeSelectionScope
+		if r.AccessReviewScopeV2.ResourceTypeSelectionScope1 != nil {
+			resourceTypeSelectionScope1 = &shared.ResourceTypeSelectionScope{}
+		}
+		var scopeRoleSelectionScope *shared.ScopeRoleSelectionScope
+		if r.AccessReviewScopeV2.ScopeRoleSelectionScope != nil {
+			scopeRoleSelectionScope = &shared.ScopeRoleSelectionScope{}
 		}
 		var selectedUsersScope *shared.SelectedUsersScope
 		if r.AccessReviewScopeV2.SelectedUsersScope != nil {
@@ -574,9 +612,9 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 		if r.AccessReviewScopeV2.SpecificAccessConflictsScope != nil {
 			specificAccessConflictsScope = &shared.SpecificAccessConflictsScope{}
 		}
-		var specificResourcesScope *shared.SpecificResourcesScope
-		if r.AccessReviewScopeV2.SpecificResourcesScope != nil {
-			specificResourcesScope = &shared.SpecificResourcesScope{}
+		var specificResourcesScope1 *shared.SpecificResourcesScope
+		if r.AccessReviewScopeV2.SpecificResourcesScope1 != nil {
+			specificResourcesScope1 = &shared.SpecificResourcesScope{}
 		}
 		var userCriteriaScope *shared.UserCriteriaScope
 		if r.AccessReviewScopeV2.UserCriteriaScope != nil {
@@ -655,12 +693,16 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 			ApplicationAccessScope:       applicationAccessScope,
 			AppSelectionCriteriaScope:    appSelectionCriteriaScope,
 			CelExpressionScope1:          celExpressionScope1,
-			GrantsByCriteriaScope:        grantsByCriteriaScope,
-			ResourceSelectionScope:       resourceSelectionScope,
 			ResourceTypeSelectionScope:   resourceTypeSelectionScope,
+			SpecificResourcesScope:       specificResourcesScope,
+			GrantsByCriteriaScope:        grantsByCriteriaScope,
+			PrincipalTypeFilter:          principalTypeFilter,
+			ResourceSelectionScope:       resourceSelectionScope,
+			ResourceTypeSelectionScope1:  resourceTypeSelectionScope1,
+			ScopeRoleSelectionScope:      scopeRoleSelectionScope,
 			SelectedUsersScope:           selectedUsersScope,
 			SpecificAccessConflictsScope: specificAccessConflictsScope,
-			SpecificResourcesScope:       specificResourcesScope,
+			SpecificResourcesScope1:      specificResourcesScope1,
 			UserCriteriaScope:            userCriteriaScope,
 		}
 	}

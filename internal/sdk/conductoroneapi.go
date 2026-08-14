@@ -53,26 +53,39 @@ type ConductoroneAPI struct {
 	SDKVersion                           string
 	A2UI                                 *A2UI
 	AccessReview                         *AccessReview
+	AccessReviewReport                   *AccessReviewReport
+	AccessReviewActions                  *AccessReviewActions
 	AccessReviewSetupEntitlement         *AccessReviewSetupEntitlement
 	AccessReviewTemplate                 *AccessReviewTemplate
 	AccessReviewTemplateSetupEntitlement *AccessReviewTemplateSetupEntitlement
 	AccessConflict                       *AccessConflict
+	AppUser                              *AppUser
 	AppEntitlementMonitorBinding         *AppEntitlementMonitorBinding
 	Apps                                 *Apps
 	AppAccessRequestsDefaults            *AppAccessRequestsDefaults
-	AppUser                              *AppUser
 	Connector                            *Connector
+	MCPResource                          *MCPResource
+	MCPTool                              *MCPTool
+	MCPAccessProfile                     *MCPAccessProfile
+	MCPAccessProfileToolBinding          *MCPAccessProfileToolBinding
+	AppEntitlementRoutingRule            *AppEntitlementRoutingRule
 	AppEntitlements                      *AppEntitlements
 	AppEntitlementSearch                 *AppEntitlementSearch
 	AppEntitlementUserBinding            *AppEntitlementUserBinding
 	AppEntitlementOwners                 *AppEntitlementOwners
+	MCPServer                            *MCPServer
 	AppOwners                            *AppOwners
 	AppReport                            *AppReport
 	AppReportAction                      *AppReportAction
 	AppResourceType                      *AppResourceType
 	AppResource                          *AppResource
 	AppResourceOwners                    *AppResourceOwners
+	SSOApplication                       *SSOApplication
 	AppUsageControls                     *AppUsageControls
+	XAAAccessProfile                     *XAAAccessProfile
+	XAAAccessProfileScopeBinding         *XAAAccessProfileScopeBinding
+	XAAResourceServer                    *XAAResourceServer
+	XAAScope                             *XAAScope
 	AppEntitlementsProxy                 *AppEntitlementsProxy
 	Attributes                           *Attributes
 	TenantAuthConfig                     *TenantAuthConfig
@@ -81,23 +94,34 @@ type ConductoroneAPI struct {
 	AutomationExecutionActions           *AutomationExecutionActions
 	Automation                           *Automation
 	RequestCatalogManagement             *RequestCatalogManagement
+	ConnectorAuthoringActivation         *ConnectorAuthoringActivation
 	ConnectorCatalog                     *ConnectorCatalog
+	UIConversations                      *UIConversations
+	CredentialInventoryPolicy            *CredentialInventoryPolicy
 	Decoy                                *Decoy
+	DecoySearch                          *DecoySearch
 	Directory                            *Directory
 	Finding                              *Finding
 	FindingRoutingRule                   *FindingRoutingRule
 	FindingSearch                        *FindingSearch
+	FindingSettings                      *FindingSettings
+	FindingTransformationRule            *FindingTransformationRule
 	Functions                            *Functions
 	FunctionsInvocation                  *FunctionsInvocation
 	FunctionsInvocationSearch            *FunctionsInvocationSearch
 	Hooks                                *Hooks
 	PersonalClient                       *PersonalClient
+	PersonalDevice                       *PersonalDevice
 	Roles                                *Roles
+	TunnelCredentials                    *TunnelCredentials
+	GatewayKey                           *GatewayKey
+	ProviderCredential                   *ProviderCredential
 	LocalDirectoryConfig                 *LocalDirectoryConfig
 	LocalUserInvitation                  *LocalUserInvitation
 	Policies                             *Policies
 	AccountProvisionPolicyTest           *AccountProvisionPolicyTest
 	PolicyValidate                       *PolicyValidate
+	RecoveryPolicy                       *RecoveryPolicy
 	RequestSchema                        *RequestSchema
 	RoleMiningManagement                 *RoleMiningManagement
 	AutomationExecutionSearch            *AutomationExecutionSearch
@@ -105,6 +129,7 @@ type ConductoroneAPI struct {
 	AppSearch                            *AppSearch
 	AttributeSearch                      *AttributeSearch
 	AutomationSearch                     *AutomationSearch
+	FindingAudit                         *FindingAudit
 	FunctionsSearch                      *FunctionsSearch
 	HooksSearch                          *HooksSearch
 	ExternalClientSearch                 *ExternalClientSearch
@@ -114,6 +139,8 @@ type ConductoroneAPI struct {
 	RoleMiningManagementSearch           *RoleMiningManagementSearch
 	PaperSecretAdmin                     *PaperSecretAdmin
 	PaperSecret                          *PaperSecret
+	SessionPolicy                        *SessionPolicy
+	SignInPolicy                         *SignInPolicy
 	SSFReceiverEventSearch               *SSFReceiverEventSearch
 	StepUpProvider                       *StepUpProvider
 	StepUpTransaction                    *StepUpTransaction
@@ -122,23 +149,28 @@ type ConductoroneAPI struct {
 	UserSearch                           *UserSearch
 	WebhooksSearch                       *WebhooksSearch
 	WorkloadFederation                   *WorkloadFederation
+	XAAClientAudienceMapping             *XAAClientAudienceMapping
 	Principal                            *Principal
+	AIGovernanceSettings                 *AIGovernanceSettings
 	AWSExternalIDSettings                *AWSExternalIDSettings
 	Contacts                             *Contacts
+	XAASettings                          *XAASettings
 	UserDeveloperPreferences             *UserDeveloperPreferences
 	OrgDomain                            *OrgDomain
 	TenantEmailProvider                  *TenantEmailProvider
+	IdentityPolicyTenantDefaults         *IdentityPolicyTenantDefaults
 	OrgNotificationSettings              *OrgNotificationSettings
 	UserNotificationSettings             *UserNotificationSettings
 	OnboardingSettings                   *OnboardingSettings
 	RequestSettings                      *RequestSettings
 	SessionSettings                      *SessionSettings
+	SSOSettings                          *SSOSettings
 	SSFReceiverStream                    *SSFReceiverStream
 	SSFReceiverEvent                     *SSFReceiverEvent
 	SystemLog                            *SystemLog
 	Export                               *Export
-	TaskAudit                            *TaskAudit
 	Task                                 *Task
+	TaskAudit                            *TaskAudit
 	TaskActions                          *TaskActions
 	TerraformExport                      *TerraformExport
 	User                                 *User
@@ -148,6 +180,8 @@ type ConductoroneAPI struct {
 	AppEntitlementOwnersV2               *AppEntitlementOwnersV2
 	AppOwnersV2                          *AppOwnersV2
 	AppResourceOwnersV2                  *AppResourceOwnersV2
+	AppUserOwnersV2                      *AppUserOwnersV2
+	UserOwnersV2                         *UserOwnersV2
 
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
@@ -236,9 +270,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.4.3",
+		SDKVersion: "1.5.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.4.3 2.882.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.5.0 2.882.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{
@@ -266,26 +300,39 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 
 	sdk.A2UI = newA2UI(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessReview = newAccessReview(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AccessReviewReport = newAccessReviewReport(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AccessReviewActions = newAccessReviewActions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessReviewSetupEntitlement = newAccessReviewSetupEntitlement(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessReviewTemplate = newAccessReviewTemplate(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessReviewTemplateSetupEntitlement = newAccessReviewTemplateSetupEntitlement(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccessConflict = newAccessConflict(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppUser = newAppUser(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppEntitlementMonitorBinding = newAppEntitlementMonitorBinding(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Apps = newApps(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppAccessRequestsDefaults = newAppAccessRequestsDefaults(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.AppUser = newAppUser(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Connector = newConnector(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MCPResource = newMCPResource(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MCPTool = newMCPTool(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MCPAccessProfile = newMCPAccessProfile(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MCPAccessProfileToolBinding = newMCPAccessProfileToolBinding(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppEntitlementRoutingRule = newAppEntitlementRoutingRule(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppEntitlements = newAppEntitlements(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppEntitlementSearch = newAppEntitlementSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppEntitlementUserBinding = newAppEntitlementUserBinding(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppEntitlementOwners = newAppEntitlementOwners(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MCPServer = newMCPServer(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppOwners = newAppOwners(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppReport = newAppReport(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppReportAction = newAppReportAction(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppResourceType = newAppResourceType(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppResource = newAppResource(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppResourceOwners = newAppResourceOwners(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SSOApplication = newSSOApplication(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppUsageControls = newAppUsageControls(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.XAAAccessProfile = newXAAAccessProfile(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.XAAAccessProfileScopeBinding = newXAAAccessProfileScopeBinding(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.XAAResourceServer = newXAAResourceServer(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.XAAScope = newXAAScope(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppEntitlementsProxy = newAppEntitlementsProxy(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Attributes = newAttributes(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.TenantAuthConfig = newTenantAuthConfig(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -294,23 +341,34 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.AutomationExecutionActions = newAutomationExecutionActions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Automation = newAutomation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.RequestCatalogManagement = newRequestCatalogManagement(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ConnectorAuthoringActivation = newConnectorAuthoringActivation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ConnectorCatalog = newConnectorCatalog(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.UIConversations = newUIConversations(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.CredentialInventoryPolicy = newCredentialInventoryPolicy(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Decoy = newDecoy(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.DecoySearch = newDecoySearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Directory = newDirectory(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Finding = newFinding(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FindingRoutingRule = newFindingRoutingRule(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FindingSearch = newFindingSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.FindingSettings = newFindingSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.FindingTransformationRule = newFindingTransformationRule(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Functions = newFunctions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FunctionsInvocation = newFunctionsInvocation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FunctionsInvocationSearch = newFunctionsInvocationSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Hooks = newHooks(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PersonalClient = newPersonalClient(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PersonalDevice = newPersonalDevice(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Roles = newRoles(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.TunnelCredentials = newTunnelCredentials(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.GatewayKey = newGatewayKey(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.ProviderCredential = newProviderCredential(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.LocalDirectoryConfig = newLocalDirectoryConfig(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.LocalUserInvitation = newLocalUserInvitation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Policies = newPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AccountProvisionPolicyTest = newAccountProvisionPolicyTest(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PolicyValidate = newPolicyValidate(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.RecoveryPolicy = newRecoveryPolicy(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.RequestSchema = newRequestSchema(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.RoleMiningManagement = newRoleMiningManagement(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AutomationExecutionSearch = newAutomationExecutionSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -318,6 +376,7 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.AppSearch = newAppSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AttributeSearch = newAttributeSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AutomationSearch = newAutomationSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.FindingAudit = newFindingAudit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FunctionsSearch = newFunctionsSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.HooksSearch = newHooksSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.ExternalClientSearch = newExternalClientSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -327,6 +386,8 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.RoleMiningManagementSearch = newRoleMiningManagementSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PaperSecretAdmin = newPaperSecretAdmin(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PaperSecret = newPaperSecret(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SessionPolicy = newSessionPolicy(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SignInPolicy = newSignInPolicy(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SSFReceiverEventSearch = newSSFReceiverEventSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.StepUpProvider = newStepUpProvider(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.StepUpTransaction = newStepUpTransaction(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -335,23 +396,28 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.UserSearch = newUserSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.WebhooksSearch = newWebhooksSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.WorkloadFederation = newWorkloadFederation(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.XAAClientAudienceMapping = newXAAClientAudienceMapping(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Principal = newPrincipal(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AIGovernanceSettings = newAIGovernanceSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AWSExternalIDSettings = newAWSExternalIDSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Contacts = newContacts(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.XAASettings = newXAASettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.UserDeveloperPreferences = newUserDeveloperPreferences(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.OrgDomain = newOrgDomain(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.TenantEmailProvider = newTenantEmailProvider(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.IdentityPolicyTenantDefaults = newIdentityPolicyTenantDefaults(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.OrgNotificationSettings = newOrgNotificationSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.UserNotificationSettings = newUserNotificationSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.OnboardingSettings = newOnboardingSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.RequestSettings = newRequestSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SessionSettings = newSessionSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.SSOSettings = newSSOSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SSFReceiverStream = newSSFReceiverStream(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SSFReceiverEvent = newSSFReceiverEvent(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemLog = newSystemLog(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Export = newExport(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.TaskAudit = newTaskAudit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Task = newTask(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.TaskAudit = newTaskAudit(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.TaskActions = newTaskActions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.TerraformExport = newTerraformExport(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.User = newUser(sdk, sdk.sdkConfiguration, sdk.hooks)
@@ -361,6 +427,8 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.AppEntitlementOwnersV2 = newAppEntitlementOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppOwnersV2 = newAppOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AppResourceOwnersV2 = newAppResourceOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppUserOwnersV2 = newAppUserOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.UserOwnersV2 = newUserOwnersV2(sdk, sdk.sdkConfiguration, sdk.hooks)
 
 	return sdk
 }

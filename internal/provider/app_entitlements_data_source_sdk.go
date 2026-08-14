@@ -137,6 +137,12 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							list.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.AppID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.AppID)
 							list.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.DelegatedProvision.EntitlementID)
 						}
+						if listItem.AppEntitlement.DeprovisionerPolicy.DevicePlacementProvision == nil {
+							list.AppEntitlement.DeprovisionerPolicy.DevicePlacementProvision = nil
+						} else {
+							list.AppEntitlement.DeprovisionerPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+							list.AppEntitlement.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(listItem.AppEntitlement.DeprovisionerPolicy.DevicePlacementProvision.VaultBoundaryID)
+						}
 						if listItem.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision == nil {
 							list.AppEntitlement.DeprovisionerPolicy.ExternalTicketProvision = nil
 						} else {
@@ -380,6 +386,12 @@ func (r *AppEntitlementsDataSourceModel) RefreshFromSharedAppEntitlementSearchSe
 							list.AppEntitlement.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
 							list.AppEntitlement.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.DelegatedProvision.AppID)
 							list.AppEntitlement.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.DelegatedProvision.EntitlementID)
+						}
+						if listItem.AppEntitlement.ProvisionPolicy.DevicePlacementProvision == nil {
+							list.AppEntitlement.ProvisionPolicy.DevicePlacementProvision = nil
+						} else {
+							list.AppEntitlement.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+							list.AppEntitlement.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(listItem.AppEntitlement.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
 						}
 						if listItem.AppEntitlement.ProvisionPolicy.ExternalTicketProvision == nil {
 							list.AppEntitlement.ProvisionPolicy.ExternalTicketProvision = nil

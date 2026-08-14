@@ -58,6 +58,7 @@ type AppDataSourceModel struct {
 	ParentAppID                         types.String            `tfsdk:"parent_app_id"`
 	PolicyRefs                          []tfTypes.PolicyRef     `tfsdk:"policy_refs"`
 	Query                               types.String            `tfsdk:"query"`
+	RevokeGrantSources                  types.Bool              `tfsdk:"revoke_grant_sources"`
 	RevokePolicyID                      types.String            `tfsdk:"revoke_policy_id"`
 	StrictAccessEntitlementProvisioning types.Bool              `tfsdk:"strict_access_entitlement_provisioning"`
 	UpdatedAt                           types.String            `tfsdk:"updated_at"`
@@ -108,13 +109,25 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"app_user_mapper": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"app_id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The app this mapper belongs to.`,
+					},
 					"mapping_cases": schema.ListNestedAttribute{
 						Computed: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The app this match case belongs to.`,
+								},
 								"app_user_key_cel": schema.StringAttribute{
 									Computed:    true,
 									Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+								},
+								"case_index": schema.Int64Attribute{
+									Computed:    true,
+									Description: `The ordered index of this match case within the mapper.`,
 								},
 								"user_key_cel": schema.StringAttribute{
 									Computed:    true,
@@ -228,6 +241,10 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"query": schema.StringAttribute{
 				Optional:    true,
 				Description: `Query the apps with a fuzzy search on display name and description.`,
+			},
+			"revoke_grant_sources": schema.BoolAttribute{
+				Computed:    true,
+				Description: `When enabled, revoking a grant also revokes the grants that source it.`,
 			},
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,

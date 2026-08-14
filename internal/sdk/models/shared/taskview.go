@@ -22,6 +22,10 @@ type TaskView struct {
 	IdentityUserPath *string `json:"identityUserPath,omitempty"`
 	// JSONPATH expression indicating the location of the Insights objects in the expanded array
 	InsightsPath *string `json:"insightsPath,omitempty"`
+	// ActorObjectPermissions describes which actions the calling user is permitted to perform on an object, as determined by policy.
+	UserActorObjectPermissions *UserActorObjectPermissions `json:"objectPermissions,omitempty"`
+	// JSONPATH expression indicating the location of the AppResource under review for a resource-principal certify task in the expanded array.
+	PrincipalResourcePath *string `json:"principalResourcePath,omitempty"`
 	// JSONPATH expression indicating the location of the EntitlementScopeBindingList object in the expanded array.
 	ResourceBindingsPath *string `json:"resourceBindingsPath,omitempty"`
 	// JSONPATH expression indicating the location of the role AppResource for a scope-role action task in the expanded array.
@@ -97,6 +101,20 @@ func (t *TaskView) GetInsightsPath() *string {
 		return nil
 	}
 	return t.InsightsPath
+}
+
+func (t *TaskView) GetUserActorObjectPermissions() *UserActorObjectPermissions {
+	if t == nil {
+		return nil
+	}
+	return t.UserActorObjectPermissions
+}
+
+func (t *TaskView) GetPrincipalResourcePath() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PrincipalResourcePath
 }
 
 func (t *TaskView) GetResourceBindingsPath() *string {

@@ -36,6 +36,7 @@ type PolicyResource struct {
 // PolicyResourceModel describes the resource data model.
 type PolicyResourceModel struct {
 	Annotations              map[string]types.String        `tfsdk:"annotations"`
+	BaselinePolicyID         types.String                   `tfsdk:"baseline_policy_id"`
 	CreatedAt                types.String                   `tfsdk:"created_at"`
 	DeletedAt                types.String                   `tfsdk:"-"`
 	Description              types.String                   `tfsdk:"description"`
@@ -70,6 +71,15 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					`` + "\n" +
 					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
 					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
+			"baseline_policy_id": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `When set, the new policy's baseline defers to another policy of the same` + "\n" +
+					` type when no rule matches, instead of an inline baseline step list.` + "\n" +
+					` Mutually exclusive with the baseline entry in policy_steps. Requires the` + "\n" +
+					` POLICY_REFERENCES_POLICY feature; obeys the same depth/cycle/self rules as` + "\n" +
+					` Rule.policy_id.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -183,9 +193,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Description: `The mode of the agent, full control, change policy only, or comment only. possible known values include one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]`,
 													},
 													"agent_user_id": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The agent user ID to assign the task to.`,
+														Computed:           true,
+														Optional:           true,
+														DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+														MarkdownDescription: `Deprecated: agent steps are evaluated by the system; no agent user is` + "\n" +
+															` selected. Retained so pre-migration policies still validate.`,
 													},
 													"instructions": schema.StringAttribute{
 														Computed:    true,
@@ -996,6 +1008,18 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 															}...),
 														},
 													},
+													"device_placement_provision": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"vault_boundary_id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The vaultBoundaryId field.`,
+															},
+														},
+														Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+													},
 													"external_ticket_provision": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
@@ -1248,7 +1272,8 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													`  - multiStep` + "\n" +
 													`  - externalTicket` + "\n" +
 													`  - unconfigured` + "\n" +
-													`  - action`,
+													`  - action` + "\n" +
+													`  - devicePlacement`,
 											},
 											"provision_target": schema.SingleNestedAttribute{
 												Computed: true,
@@ -1445,13 +1470,34 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							Computed: true,
 							Optional: true,
 							MarkdownDescription: `A CEL expression that is evaluated against the request context. If it` + "\n" +
-								` returns true, the step sequence identified by policy_key is used.`,
+								` returns true, the step sequence identified by the outcome is used.`,
 						},
-						"policy_key": schema.StringAttribute{
+						"policy_id": schema.StringAttribute{
 							Computed: true,
 							Optional: true,
-							MarkdownDescription: `A key into the policy's policy_steps map identifying which step sequence` + "\n" +
-								` to execute when this rule's condition matches.`,
+							MarkdownDescription: `The ID of another Policy that is evaluated recursively when this` + "\n" +
+								` rule matches. The referenced policy must share this policy's` + "\n" +
+								` policy_type, must not introduce a cycle, and must not push any` + "\n" +
+								` reachable chain over depth 5. Gated by the` + "\n" +
+								` POLICY_REFERENCES_POLICY feature flag.` + "\n" +
+								`This field is part of the ` + "`" + `outcome` + "`" + ` oneof.` + "\n" +
+								`See the documentation for ` + "`" + `c1.api.policy.v1.Rule` + "`" + ` for more details.`,
+						},
+						"policy_key": schema.StringAttribute{
+							Computed:           true,
+							Optional:           true,
+							DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+							MarkdownDescription: `Deprecated: prefer outcome.step_key. Still read by the request path` + "\n" +
+								` for backward compatibility with rules persisted before the outcome` + "\n" +
+								` oneof existed.`,
+						},
+						"step_key": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							MarkdownDescription: `A key into the policy's policy_steps map identifying which step` + "\n" +
+								` sequence to execute when this rule's condition matches.` + "\n" +
+								`This field is part of the ` + "`" + `outcome` + "`" + ` oneof.` + "\n" +
+								`See the documentation for ` + "`" + `c1.api.policy.v1.Rule` + "`" + ` for more details.`,
 						},
 					},
 				},

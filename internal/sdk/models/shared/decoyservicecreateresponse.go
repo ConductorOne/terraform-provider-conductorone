@@ -4,9 +4,8 @@ package shared
 
 // The DecoyServiceCreateResponse message.
 type DecoyServiceCreateResponse struct {
-	// Decoy is the public projection of a planted honey-credential. Read-only
-	//  surface; the variant-specific back-references live in c1models and are
-	//  not exposed here.
+	// Decoy is the read projection of a planted honey-credential. All
+	//  fields except annotations are server-managed.
 	Decoy *Decoy `json:"decoy,omitempty"`
 	// DecoyVendingMaterial carries the freshly-vended secret material returned
 	//  exactly once at Create or Rotate.

@@ -55,23 +55,23 @@ func (e *SharingMode) IsExact() bool {
 	return false
 }
 
-// SortBy - Sort order
-type SortBy string
+// PaperSecretAdminServiceSearchRequestSortBy - Sort order
+type PaperSecretAdminServiceSearchRequestSortBy string
 
 const (
-	SortBySearchSortByUnspecified SortBy = "SEARCH_SORT_BY_UNSPECIFIED"
-	SortBySearchSortByCreatedDesc SortBy = "SEARCH_SORT_BY_CREATED_DESC"
-	SortBySearchSortByCreatedAsc  SortBy = "SEARCH_SORT_BY_CREATED_ASC"
-	SortBySearchSortByExpiresAsc  SortBy = "SEARCH_SORT_BY_EXPIRES_ASC"
-	SortBySearchSortByNameAsc     SortBy = "SEARCH_SORT_BY_NAME_ASC"
+	PaperSecretAdminServiceSearchRequestSortBySearchSortByUnspecified PaperSecretAdminServiceSearchRequestSortBy = "SEARCH_SORT_BY_UNSPECIFIED"
+	PaperSecretAdminServiceSearchRequestSortBySearchSortByCreatedDesc PaperSecretAdminServiceSearchRequestSortBy = "SEARCH_SORT_BY_CREATED_DESC"
+	PaperSecretAdminServiceSearchRequestSortBySearchSortByCreatedAsc  PaperSecretAdminServiceSearchRequestSortBy = "SEARCH_SORT_BY_CREATED_ASC"
+	PaperSecretAdminServiceSearchRequestSortBySearchSortByExpiresAsc  PaperSecretAdminServiceSearchRequestSortBy = "SEARCH_SORT_BY_EXPIRES_ASC"
+	PaperSecretAdminServiceSearchRequestSortBySearchSortByNameAsc     PaperSecretAdminServiceSearchRequestSortBy = "SEARCH_SORT_BY_NAME_ASC"
 )
 
-func (e SortBy) ToPointer() *SortBy {
+func (e PaperSecretAdminServiceSearchRequestSortBy) ToPointer() *PaperSecretAdminServiceSearchRequestSortBy {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SortBy) IsExact() bool {
+func (e *PaperSecretAdminServiceSearchRequestSortBy) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "SEARCH_SORT_BY_UNSPECIFIED", "SEARCH_SORT_BY_CREATED_DESC", "SEARCH_SORT_BY_CREATED_ASC", "SEARCH_SORT_BY_EXPIRES_ASC", "SEARCH_SORT_BY_NAME_ASC":
@@ -126,7 +126,7 @@ type PaperSecretAdminServiceSearchRequest struct {
 	// Filter by sharing mode (optional)
 	SharingMode *SharingMode `json:"sharingMode,omitempty"`
 	// Sort order
-	SortBy *SortBy `json:"sortBy,omitempty"`
+	SortBy *PaperSecretAdminServiceSearchRequestSortBy `json:"sortBy,omitempty"`
 	// Filter by status (optional)
 	Statuses []PaperSecretAdminServiceSearchRequestStatuses `json:"statuses,omitempty"`
 }
@@ -205,7 +205,7 @@ func (p *PaperSecretAdminServiceSearchRequest) GetSharingMode() *SharingMode {
 	return p.SharingMode
 }
 
-func (p *PaperSecretAdminServiceSearchRequest) GetSortBy() *SortBy {
+func (p *PaperSecretAdminServiceSearchRequest) GetSortBy() *PaperSecretAdminServiceSearchRequestSortBy {
 	if p == nil {
 		return nil
 	}

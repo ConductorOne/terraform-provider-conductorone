@@ -2,6 +2,32 @@
 
 package shared
 
+// UpdateOnboardingSettingsResponseMcpOnboardingStatus - The updated AIAM MCP onboarding status.
+type UpdateOnboardingSettingsResponseMcpOnboardingStatus string
+
+const (
+	UpdateOnboardingSettingsResponseMcpOnboardingStatusMcpOnboardingStatusUnspecified UpdateOnboardingSettingsResponseMcpOnboardingStatus = "MCP_ONBOARDING_STATUS_UNSPECIFIED"
+	UpdateOnboardingSettingsResponseMcpOnboardingStatusMcpOnboardingStatusNotStarted  UpdateOnboardingSettingsResponseMcpOnboardingStatus = "MCP_ONBOARDING_STATUS_NOT_STARTED"
+	UpdateOnboardingSettingsResponseMcpOnboardingStatusMcpOnboardingStatusInProgress  UpdateOnboardingSettingsResponseMcpOnboardingStatus = "MCP_ONBOARDING_STATUS_IN_PROGRESS"
+	UpdateOnboardingSettingsResponseMcpOnboardingStatusMcpOnboardingStatusComplete    UpdateOnboardingSettingsResponseMcpOnboardingStatus = "MCP_ONBOARDING_STATUS_COMPLETE"
+	UpdateOnboardingSettingsResponseMcpOnboardingStatusMcpOnboardingStatusDismissed   UpdateOnboardingSettingsResponseMcpOnboardingStatus = "MCP_ONBOARDING_STATUS_DISMISSED"
+)
+
+func (e UpdateOnboardingSettingsResponseMcpOnboardingStatus) ToPointer() *UpdateOnboardingSettingsResponseMcpOnboardingStatus {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpdateOnboardingSettingsResponseMcpOnboardingStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "MCP_ONBOARDING_STATUS_UNSPECIFIED", "MCP_ONBOARDING_STATUS_NOT_STARTED", "MCP_ONBOARDING_STATUS_IN_PROGRESS", "MCP_ONBOARDING_STATUS_COMPLETE", "MCP_ONBOARDING_STATUS_DISMISSED":
+			return true
+		}
+	}
+	return false
+}
+
 // UpdateOnboardingSettingsResponseStatus - The updated onboarding status.
 type UpdateOnboardingSettingsResponseStatus string
 
@@ -30,8 +56,35 @@ func (e *UpdateOnboardingSettingsResponseStatus) IsExact() bool {
 
 // The UpdateOnboardingSettingsResponse message.
 type UpdateOnboardingSettingsResponse struct {
+	// The updated AIAM onboarding goal.
+	McpOnboardingGoal *string `json:"mcpOnboardingGoal,omitempty"`
+	// The updated AIAM MCP onboarding status.
+	McpOnboardingStatus *UpdateOnboardingSettingsResponseMcpOnboardingStatus `json:"mcpOnboardingStatus,omitempty"`
+	// The updated AIAM onboarding targets.
+	McpOnboardingTargets []McpOnboardingTarget `json:"mcpOnboardingTargets,omitempty"`
 	// The updated onboarding status.
 	Status *UpdateOnboardingSettingsResponseStatus `json:"status,omitempty"`
+}
+
+func (u *UpdateOnboardingSettingsResponse) GetMcpOnboardingGoal() *string {
+	if u == nil {
+		return nil
+	}
+	return u.McpOnboardingGoal
+}
+
+func (u *UpdateOnboardingSettingsResponse) GetMcpOnboardingStatus() *UpdateOnboardingSettingsResponseMcpOnboardingStatus {
+	if u == nil {
+		return nil
+	}
+	return u.McpOnboardingStatus
+}
+
+func (u *UpdateOnboardingSettingsResponse) GetMcpOnboardingTargets() []McpOnboardingTarget {
+	if u == nil {
+		return nil
+	}
+	return u.McpOnboardingTargets
 }
 
 func (u *UpdateOnboardingSettingsResponse) GetStatus() *UpdateOnboardingSettingsResponseStatus {

@@ -196,6 +196,10 @@ func (r *AccessReviewSetupDataSource) Schema(ctx context.Context, req datasource
 							`  - daysSinceReviewed` + "\n" +
 							`  - grantsAddedBetween`,
 					},
+					"principal_type_filter": schema.StringAttribute{
+						Computed:    true,
+						Description: `Filters principals included in the scope. Unspecified is treated as users.`,
+					},
 					"resource_selection_scope": schema.SingleNestedAttribute{
 						Computed:    true,
 						Description: `The ResourceSelectionScope message.`,
@@ -203,6 +207,16 @@ func (r *AccessReviewSetupDataSource) Schema(ctx context.Context, req datasource
 					"resource_type_selection_scope": schema.SingleNestedAttribute{
 						Computed:    true,
 						Description: `The ResourceTypeSelectionScope message.`,
+					},
+					"resource_type_selection_scope1": schema.SingleNestedAttribute{
+						Computed:    true,
+						Description: `The ResourceTypeSelectionScope message.`,
+					},
+					"scope_role_selection_scope": schema.SingleNestedAttribute{
+						Computed: true,
+						MarkdownDescription: `Empty marker for scope+role pair scoping on IaaS-type apps.` + "\n" +
+							` Actual selections stored in AccessReviewScopeRoleSelection rows.` + "\n" +
+							` May coexist with ResourceSelectionScope on the same campaign; prepare unions both.`,
 					},
 					"selected_users_scope": schema.SingleNestedAttribute{
 						Computed: true,
@@ -220,6 +234,10 @@ func (r *AccessReviewSetupDataSource) Schema(ctx context.Context, req datasource
 						Description: `The SpecificAccessConflictsScope message.`,
 					},
 					"specific_resources_scope": schema.SingleNestedAttribute{
+						Computed:    true,
+						Description: `The SpecificResourcesScope message.`,
+					},
+					"specific_resources_scope1": schema.SingleNestedAttribute{
 						Computed:    true,
 						Description: `The SpecificResourcesScope message.`,
 					},
@@ -309,7 +327,12 @@ func (r *AccessReviewSetupDataSource) Schema(ctx context.Context, req datasource
 					`` + "\n" +
 					`` + "\n" +
 					`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
-					`  - resourceSelection`,
+					`  - resourceSelection` + "\n" +
+					`` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - excludedSpecificResources` + "\n" +
+					`  - excludedResourceTypeSelections`,
 			},
 			"expanded": schema.ListNestedAttribute{
 				Computed: true,

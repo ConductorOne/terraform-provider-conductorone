@@ -34,6 +34,7 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 			r.TaskView.EntitlementsPath = types.StringPointerValue(resp.TaskView.EntitlementsPath)
 			r.TaskView.IdentityUserPath = types.StringPointerValue(resp.TaskView.IdentityUserPath)
 			r.TaskView.InsightsPath = types.StringPointerValue(resp.TaskView.InsightsPath)
+			r.TaskView.PrincipalResourcePath = types.StringPointerValue(resp.TaskView.PrincipalResourcePath)
 			r.TaskView.ResourceBindingsPath = types.StringPointerValue(resp.TaskView.ResourceBindingsPath)
 			r.TaskView.RoleResourcePath = types.StringPointerValue(resp.TaskView.RoleResourcePath)
 			r.TaskView.ScopeResourcePath = types.StringPointerValue(resp.TaskView.ScopeResourcePath)
@@ -811,6 +812,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 												fields.FormStringField = nil
 											} else {
 												fields.FormStringField = &tfTypes.FormStringField{}
+												if fieldsItem.FormStringField.DateField == nil {
+													fields.FormStringField.DateField = nil
+												} else {
+													fields.FormStringField.DateField = &tfTypes.DateField{}
+													fields.FormStringField.DateField.DefaultToToday = types.BoolPointerValue(fieldsItem.FormStringField.DateField.DefaultToToday)
+													fields.FormStringField.DateField.MaxDate = types.StringPointerValue(fieldsItem.FormStringField.DateField.MaxDate)
+													fields.FormStringField.DateField.MaxDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem.FormStringField.DateField.MaxDaysFromToday))
+													fields.FormStringField.DateField.MinDate = types.StringPointerValue(fieldsItem.FormStringField.DateField.MinDate)
+													fields.FormStringField.DateField.MinDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem.FormStringField.DateField.MinDaysFromToday))
+												}
 												fields.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem.FormStringField.DefaultValue)
 												if fieldsItem.FormStringField.PasswordField == nil {
 													fields.FormStringField.PasswordField = nil
@@ -838,6 +849,23 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 														fields.FormStringField.PickerField.C1UserFilter = nil
 													} else {
 														fields.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
+														if fieldsItem.FormStringField.PickerField.C1UserFilter.ExcludeUserIds != nil {
+															fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = make([]types.String, 0, len(fieldsItem.FormStringField.PickerField.C1UserFilter.ExcludeUserIds))
+															for _, v := range fieldsItem.FormStringField.PickerField.C1UserFilter.ExcludeUserIds {
+																fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = append(fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds, types.StringValue(v))
+															}
+														} else {
+															fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = nil
+														}
+														fields.FormStringField.PickerField.C1UserFilter.IncludeDeactivated = types.BoolPointerValue(fieldsItem.FormStringField.PickerField.C1UserFilter.IncludeDeactivated)
+														if fieldsItem.FormStringField.PickerField.C1UserFilter.UserIds != nil {
+															fields.FormStringField.PickerField.C1UserFilter.UserIds = make([]types.String, 0, len(fieldsItem.FormStringField.PickerField.C1UserFilter.UserIds))
+															for _, v := range fieldsItem.FormStringField.PickerField.C1UserFilter.UserIds {
+																fields.FormStringField.PickerField.C1UserFilter.UserIds = append(fields.FormStringField.PickerField.C1UserFilter.UserIds, types.StringValue(v))
+															}
+														} else {
+															fields.FormStringField.PickerField.C1UserFilter.UserIds = nil
+														}
 													}
 												}
 												fields.FormStringField.Placeholder = types.StringPointerValue(fieldsItem.FormStringField.Placeholder)
@@ -1159,6 +1187,12 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											history.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.AppID)
 											history.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
 										}
+										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.DevicePlacementProvision == nil {
+											history.ProvisionInstance.Provision.ProvisionPolicy.DevicePlacementProvision = nil
+										} else {
+											history.ProvisionInstance.Provision.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+											history.ProvisionInstance.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
+										}
 										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
 											history.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision = nil
 										} else {
@@ -1307,6 +1341,27 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										history.ProvisionInstance.Provision.ProvisionTarget.AppID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionTarget.AppID)
 										history.ProvisionInstance.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionTarget.AppUserID)
 										history.ProvisionInstance.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionTarget.GrantDuration)
+									}
+								}
+								if historyItem.ProvisionInstance.ProvisionWaitingOn == nil {
+									history.ProvisionInstance.ProvisionWaitingOn = nil
+								} else {
+									history.ProvisionInstance.ProvisionWaitingOn = &tfTypes.ProvisionWaitingOn{}
+									history.ProvisionInstance.ProvisionWaitingOn.FallbackAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ProvisionInstance.ProvisionWaitingOn.FallbackAt))
+									history.ProvisionInstance.ProvisionWaitingOn.StartedWaitingAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ProvisionInstance.ProvisionWaitingOn.StartedWaitingAt))
+									if historyItem.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement == nil {
+										history.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement = nil
+									} else {
+										history.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement = &tfTypes.WaitingForDevicePlacement{}
+										history.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement.RecipientUserID = types.StringPointerValue(historyItem.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement.RecipientUserID)
+										history.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement.VaultBoundaryID = types.StringPointerValue(historyItem.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement.VaultBoundaryID)
+									}
+									if historyItem.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge == nil {
+										history.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge = nil
+									} else {
+										history.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge = &tfTypes.WaitingForEntitlementMerge{}
+										history.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge.AppEntitlementID = types.StringPointerValue(historyItem.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge.AppEntitlementID)
+										history.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge.AppID = types.StringPointerValue(historyItem.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge.AppID)
 									}
 								}
 								if historyItem.ProvisionInstance.ReassignedByErrorAction == nil {
@@ -1851,6 +1906,12 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										next.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
 										next.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
 									}
+									if nextItem.Provision.ProvisionPolicy.DevicePlacementProvision == nil {
+										next.Provision.ProvisionPolicy.DevicePlacementProvision = nil
+									} else {
+										next.Provision.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+										next.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
+									}
 									if nextItem.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
 										next.Provision.ProvisionPolicy.ExternalTicketProvision = nil
 									} else {
@@ -2052,6 +2113,7 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 								r.TaskView.Task.PolicyInstance.Policy.Annotations[key1] = types.StringValue(value1)
 							}
 						}
+						r.TaskView.Task.PolicyInstance.Policy.BaselinePolicyID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.Policy.BaselinePolicyID)
 						r.TaskView.Task.PolicyInstance.Policy.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.CreatedAt))
 						r.TaskView.Task.PolicyInstance.Policy.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.DeletedAt))
 						r.TaskView.Task.PolicyInstance.Policy.Description = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.Policy.Description)
@@ -2510,6 +2572,12 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													steps.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
 													steps.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
 												}
+												if stepsItem.Provision.ProvisionPolicy.DevicePlacementProvision == nil {
+													steps.Provision.ProvisionPolicy.DevicePlacementProvision = nil
+												} else {
+													steps.Provision.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+													steps.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
+												}
 												if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
 													steps.Provision.ProvisionPolicy.ExternalTicketProvision = nil
 												} else {
@@ -2731,7 +2799,9 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 								var rules tfTypes.Rule
 
 								rules.Condition = types.StringPointerValue(rulesItem.Condition)
+								rules.PolicyID = types.StringPointerValue(rulesItem.PolicyID)
 								rules.PolicyKey = types.StringPointerValue(rulesItem.PolicyKey)
+								rules.StepKey = types.StringPointerValue(rulesItem.StepKey)
 
 								r.TaskView.Task.PolicyInstance.Policy.Rules = append(r.TaskView.Task.PolicyInstance.Policy.Rules, rules)
 							}
@@ -3436,6 +3506,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 											fields1.FormStringField = nil
 										} else {
 											fields1.FormStringField = &tfTypes.FormStringField{}
+											if fieldsItem1.FormStringField.DateField == nil {
+												fields1.FormStringField.DateField = nil
+											} else {
+												fields1.FormStringField.DateField = &tfTypes.DateField{}
+												fields1.FormStringField.DateField.DefaultToToday = types.BoolPointerValue(fieldsItem1.FormStringField.DateField.DefaultToToday)
+												fields1.FormStringField.DateField.MaxDate = types.StringPointerValue(fieldsItem1.FormStringField.DateField.MaxDate)
+												fields1.FormStringField.DateField.MaxDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem1.FormStringField.DateField.MaxDaysFromToday))
+												fields1.FormStringField.DateField.MinDate = types.StringPointerValue(fieldsItem1.FormStringField.DateField.MinDate)
+												fields1.FormStringField.DateField.MinDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem1.FormStringField.DateField.MinDaysFromToday))
+											}
 											fields1.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem1.FormStringField.DefaultValue)
 											if fieldsItem1.FormStringField.PasswordField == nil {
 												fields1.FormStringField.PasswordField = nil
@@ -3463,6 +3543,23 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													fields1.FormStringField.PickerField.C1UserFilter = nil
 												} else {
 													fields1.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
+													if fieldsItem1.FormStringField.PickerField.C1UserFilter.ExcludeUserIds != nil {
+														fields1.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = make([]types.String, 0, len(fieldsItem1.FormStringField.PickerField.C1UserFilter.ExcludeUserIds))
+														for _, v := range fieldsItem1.FormStringField.PickerField.C1UserFilter.ExcludeUserIds {
+															fields1.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = append(fields1.FormStringField.PickerField.C1UserFilter.ExcludeUserIds, types.StringValue(v))
+														}
+													} else {
+														fields1.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = nil
+													}
+													fields1.FormStringField.PickerField.C1UserFilter.IncludeDeactivated = types.BoolPointerValue(fieldsItem1.FormStringField.PickerField.C1UserFilter.IncludeDeactivated)
+													if fieldsItem1.FormStringField.PickerField.C1UserFilter.UserIds != nil {
+														fields1.FormStringField.PickerField.C1UserFilter.UserIds = make([]types.String, 0, len(fieldsItem1.FormStringField.PickerField.C1UserFilter.UserIds))
+														for _, v := range fieldsItem1.FormStringField.PickerField.C1UserFilter.UserIds {
+															fields1.FormStringField.PickerField.C1UserFilter.UserIds = append(fields1.FormStringField.PickerField.C1UserFilter.UserIds, types.StringValue(v))
+														}
+													} else {
+														fields1.FormStringField.PickerField.C1UserFilter.UserIds = nil
+													}
 												}
 											}
 											fields1.FormStringField.Placeholder = types.StringPointerValue(fieldsItem1.FormStringField.Placeholder)
@@ -3784,6 +3881,12 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.AppID)
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
 									}
+									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DevicePlacementProvision == nil {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DevicePlacementProvision = nil
+									} else {
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DevicePlacementProvision = &tfTypes.DevicePlacementProvision{}
+										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DevicePlacementProvision.VaultBoundaryID)
+									}
 									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
 										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision = nil
 									} else {
@@ -3932,6 +4035,27 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.AppID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.AppID)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.AppUserID)
 									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.GrantDuration)
+								}
+							}
+							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn == nil {
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn = nil
+							} else {
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn = &tfTypes.ProvisionWaitingOn{}
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.FallbackAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.FallbackAt))
+								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.StartedWaitingAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.StartedWaitingAt))
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement = nil
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement = &tfTypes.WaitingForDevicePlacement{}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement.RecipientUserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement.RecipientUserID)
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement.VaultBoundaryID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForDevicePlacement.VaultBoundaryID)
+								}
+								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge == nil {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge = nil
+								} else {
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge = &tfTypes.WaitingForEntitlementMerge{}
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge.AppEntitlementID)
+									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge.AppID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ProvisionWaitingOn.WaitingForEntitlementMerge.AppID)
 								}
 							}
 							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction == nil {
@@ -4170,6 +4294,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 								fields2.FormStringField = nil
 							} else {
 								fields2.FormStringField = &tfTypes.FormStringField{}
+								if fieldsItem2.FormStringField.DateField == nil {
+									fields2.FormStringField.DateField = nil
+								} else {
+									fields2.FormStringField.DateField = &tfTypes.DateField{}
+									fields2.FormStringField.DateField.DefaultToToday = types.BoolPointerValue(fieldsItem2.FormStringField.DateField.DefaultToToday)
+									fields2.FormStringField.DateField.MaxDate = types.StringPointerValue(fieldsItem2.FormStringField.DateField.MaxDate)
+									fields2.FormStringField.DateField.MaxDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem2.FormStringField.DateField.MaxDaysFromToday))
+									fields2.FormStringField.DateField.MinDate = types.StringPointerValue(fieldsItem2.FormStringField.DateField.MinDate)
+									fields2.FormStringField.DateField.MinDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem2.FormStringField.DateField.MinDaysFromToday))
+								}
 								fields2.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem2.FormStringField.DefaultValue)
 								if fieldsItem2.FormStringField.PasswordField == nil {
 									fields2.FormStringField.PasswordField = nil
@@ -4197,6 +4331,23 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 										fields2.FormStringField.PickerField.C1UserFilter = nil
 									} else {
 										fields2.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
+										if fieldsItem2.FormStringField.PickerField.C1UserFilter.ExcludeUserIds != nil {
+											fields2.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = make([]types.String, 0, len(fieldsItem2.FormStringField.PickerField.C1UserFilter.ExcludeUserIds))
+											for _, v := range fieldsItem2.FormStringField.PickerField.C1UserFilter.ExcludeUserIds {
+												fields2.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = append(fields2.FormStringField.PickerField.C1UserFilter.ExcludeUserIds, types.StringValue(v))
+											}
+										} else {
+											fields2.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = nil
+										}
+										fields2.FormStringField.PickerField.C1UserFilter.IncludeDeactivated = types.BoolPointerValue(fieldsItem2.FormStringField.PickerField.C1UserFilter.IncludeDeactivated)
+										if fieldsItem2.FormStringField.PickerField.C1UserFilter.UserIds != nil {
+											fields2.FormStringField.PickerField.C1UserFilter.UserIds = make([]types.String, 0, len(fieldsItem2.FormStringField.PickerField.C1UserFilter.UserIds))
+											for _, v := range fieldsItem2.FormStringField.PickerField.C1UserFilter.UserIds {
+												fields2.FormStringField.PickerField.C1UserFilter.UserIds = append(fields2.FormStringField.PickerField.C1UserFilter.UserIds, types.StringValue(v))
+											}
+										} else {
+											fields2.FormStringField.PickerField.C1UserFilter.UserIds = nil
+										}
 									}
 								}
 								fields2.FormStringField.Placeholder = types.StringPointerValue(fieldsItem2.FormStringField.Placeholder)
@@ -4418,11 +4569,74 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 					} else {
 						r.TaskView.Task.TaskType.TaskTypeAction = &tfTypes.TaskTypeAction{}
 						r.TaskView.Task.TaskType.TaskTypeAction.ActionID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ActionID)
+						if resp.TaskView.Task.TaskType.TaskTypeAction.CreatedAppEntitlementIds != nil {
+							r.TaskView.Task.TaskType.TaskTypeAction.CreatedAppEntitlementIds = make([]types.String, 0, len(resp.TaskView.Task.TaskType.TaskTypeAction.CreatedAppEntitlementIds))
+							for _, v := range resp.TaskView.Task.TaskType.TaskTypeAction.CreatedAppEntitlementIds {
+								r.TaskView.Task.TaskType.TaskTypeAction.CreatedAppEntitlementIds = append(r.TaskView.Task.TaskType.TaskTypeAction.CreatedAppEntitlementIds, types.StringValue(v))
+							}
+						} else {
+							r.TaskView.Task.TaskType.TaskTypeAction.CreatedAppEntitlementIds = nil
+						}
+						r.TaskView.Task.TaskType.TaskTypeAction.CreatedAppResourceID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.CreatedAppResourceID)
+						r.TaskView.Task.TaskType.TaskTypeAction.CreatedAppResourceTypeID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.CreatedAppResourceTypeID)
 						r.TaskView.Task.TaskType.TaskTypeAction.DisplayName = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.DisplayName)
+						if resp.TaskView.Task.TaskType.TaskTypeAction.FindingTarget == nil {
+							r.TaskView.Task.TaskType.TaskTypeAction.FindingTarget = nil
+						} else {
+							r.TaskView.Task.TaskType.TaskTypeAction.FindingTarget = &tfTypes.FindingTarget{}
+							r.TaskView.Task.TaskType.TaskTypeAction.FindingTarget.FindingID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.FindingTarget.FindingID)
+							r.TaskView.Task.TaskType.TaskTypeAction.FindingTarget.FindingType = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.FindingTarget.FindingType)
+						}
 						if resp.TaskView.Task.TaskType.TaskTypeAction.FormValues == nil {
 							r.TaskView.Task.TaskType.TaskTypeAction.FormValues = nil
 						} else {
 							r.TaskView.Task.TaskType.TaskTypeAction.FormValues = &tfTypes.FormValues{}
+						}
+						if resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget == nil {
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget = nil
+						} else {
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget = &tfTypes.GatedToolCallTarget{}
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.AppEntitlementID)
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.AppID)
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.CallerKind = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.CallerKind)
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ConnectorID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ConnectorID)
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.GateID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.GateID)
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.InputSizeBytes = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.InputSizeBytes))
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolError = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolError)
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolID)
+							if resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolInput == nil {
+								r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolInput = nil
+							} else {
+								r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolInput = &tfTypes.ToolInput{}
+							}
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolKind = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolKind)
+							r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolName = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolName)
+							if resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput != nil {
+								r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput = &tfTypes.ToolOutput{}
+								if resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Str != nil {
+									r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Str = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Str)
+								}
+								if resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Number != nil {
+									r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Number = types.Float64PointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Number)
+								}
+								if resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.ArrayOfAny != nil {
+									r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.ArrayOfAny = make([]jsontypes.Normalized, 0, len(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.ArrayOfAny))
+									for _, arrayOfAnyItem := range resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.ArrayOfAny {
+										var arrayOfAny jsontypes.Normalized
+
+										arrayOfAnyResult, _ := json.Marshal(arrayOfAnyItem)
+										arrayOfAny = jsontypes.NewNormalizedValue(string(arrayOfAnyResult))
+
+										r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.ArrayOfAny = append(r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.ArrayOfAny, arrayOfAny)
+									}
+								}
+								if resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Boolean != nil {
+									r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Boolean = types.BoolPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Boolean)
+								}
+								if resp.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Three != nil {
+									r.TaskView.Task.TaskType.TaskTypeAction.GatedToolCallTarget.ToolOutput.Three = &tfTypes.Three{}
+								}
+							}
 						}
 						if resp.TaskView.Task.TaskType.TaskTypeAction.Outcome != nil {
 							r.TaskView.Task.TaskType.TaskTypeAction.Outcome = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeAction.Outcome))
@@ -4445,6 +4659,16 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 							r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance = nil
 						} else {
 							r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance = &tfTypes.TaskActionInstance{}
+							if resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef == nil {
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef = nil
+							} else {
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef = &tfTypes.BatonResourceActionRef{}
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef.AppID)
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef.BatonActionDisplayName = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef.BatonActionDisplayName)
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef.BatonActionName = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef.BatonActionName)
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef.ConnectorID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef.ConnectorID)
+								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef.ResourceTypeID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.BatonResourceActionRef.ResourceTypeID)
+							}
 							if resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef == nil {
 								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef = nil
 							} else {
@@ -4473,6 +4697,14 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 						r.TaskView.Task.TaskType.TaskTypeCertify.AccessReviewSelection = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AccessReviewSelection)
 						r.TaskView.Task.TaskType.TaskTypeCertify.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AppEntitlementID)
 						r.TaskView.Task.TaskType.TaskTypeCertify.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AppID)
+						if resp.TaskView.Task.TaskType.TaskTypeCertify.AppResourceRef == nil {
+							r.TaskView.Task.TaskType.TaskTypeCertify.AppResourceRef = nil
+						} else {
+							r.TaskView.Task.TaskType.TaskTypeCertify.AppResourceRef = &tfTypes.AppResourceRef{}
+							r.TaskView.Task.TaskType.TaskTypeCertify.AppResourceRef.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AppResourceRef.AppID)
+							r.TaskView.Task.TaskType.TaskTypeCertify.AppResourceRef.AppResourceTypeID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AppResourceRef.AppResourceTypeID)
+							r.TaskView.Task.TaskType.TaskTypeCertify.AppResourceRef.ID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AppResourceRef.ID)
+						}
 						r.TaskView.Task.TaskType.TaskTypeCertify.AppUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AppUserID)
 						r.TaskView.Task.TaskType.TaskTypeCertify.IdentityUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.IdentityUserID)
 						if resp.TaskView.Task.TaskType.TaskTypeCertify.Outcome != nil {
@@ -4539,6 +4771,14 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 						r.TaskView.Task.TaskType.TaskTypeRevoke = &tfTypes.TaskTypeRevoke{}
 						r.TaskView.Task.TaskType.TaskTypeRevoke.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.AppEntitlementID)
 						r.TaskView.Task.TaskType.TaskTypeRevoke.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.AppID)
+						if resp.TaskView.Task.TaskType.TaskTypeRevoke.AppResourceRef == nil {
+							r.TaskView.Task.TaskType.TaskTypeRevoke.AppResourceRef = nil
+						} else {
+							r.TaskView.Task.TaskType.TaskTypeRevoke.AppResourceRef = &tfTypes.AppResourceRef{}
+							r.TaskView.Task.TaskType.TaskTypeRevoke.AppResourceRef.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.AppResourceRef.AppID)
+							r.TaskView.Task.TaskType.TaskTypeRevoke.AppResourceRef.AppResourceTypeID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.AppResourceRef.AppResourceTypeID)
+							r.TaskView.Task.TaskType.TaskTypeRevoke.AppResourceRef.ID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.AppResourceRef.ID)
+						}
 						r.TaskView.Task.TaskType.TaskTypeRevoke.AppUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.AppUserID)
 						r.TaskView.Task.TaskType.TaskTypeRevoke.IdentityUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.IdentityUserID)
 						if resp.TaskView.Task.TaskType.TaskTypeRevoke.Outcome != nil {
@@ -4582,6 +4822,20 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 				}
 				r.TaskView.Task.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.UpdatedAt))
 				r.TaskView.Task.UserID = types.StringPointerValue(resp.TaskView.Task.UserID)
+			}
+			if resp.TaskView.UserActorObjectPermissions == nil {
+				r.TaskView.UserActorObjectPermissions = nil
+			} else {
+				r.TaskView.UserActorObjectPermissions = &tfTypes.UserActorObjectPermissions{}
+				r.TaskView.UserActorObjectPermissions.Delete = types.BoolPointerValue(resp.TaskView.UserActorObjectPermissions.Delete)
+				r.TaskView.UserActorObjectPermissions.Edit = types.BoolPointerValue(resp.TaskView.UserActorObjectPermissions.Edit)
+				if len(resp.TaskView.UserActorObjectPermissions.Extra) > 0 {
+					r.TaskView.UserActorObjectPermissions.Extra = make(map[string]types.Bool, len(resp.TaskView.UserActorObjectPermissions.Extra))
+					for key4, value4 := range resp.TaskView.UserActorObjectPermissions.Extra {
+						r.TaskView.UserActorObjectPermissions.Extra[key4] = types.BoolValue(value4)
+					}
+				}
+				r.TaskView.UserActorObjectPermissions.Read = types.BoolPointerValue(resp.TaskView.UserActorObjectPermissions.Read)
 			}
 			r.TaskView.UserPath = types.StringPointerValue(resp.TaskView.UserPath)
 		}

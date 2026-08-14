@@ -16,9 +16,15 @@ type TaskTypeInput struct {
 	//
 	// This message contains a oneof named target_object. Only a single field of the following list may be set at a time:
 	//   - scopeRole
+	//   - toolCall
+	//   - finding
 	//
 	TaskTypeAction *TaskTypeActionInput `json:"action,omitempty"`
 	// The TaskTypeCertify message indicates that a task is a certify task and all related details.
+	//
+	// This message contains a oneof named principal. Only a single field of the following list may be set at a time:
+	//   - resource
+	//
 	TaskTypeCertify *TaskTypeCertifyInput `json:"certify,omitempty"`
 	// The TaskTypeFinding message.
 	TaskTypeFinding *TaskTypeFindingInput `json:"finding,omitempty"`
@@ -27,6 +33,10 @@ type TaskTypeInput struct {
 	// The TaskTypeOffboarding message.
 	TaskTypeOffboarding *TaskTypeOffboardingInput `json:"offboarding,omitempty"`
 	// The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
+	//
+	// This message contains a oneof named principal. Only a single field of the following list may be set at a time:
+	//   - resource
+	//
 	TaskTypeRevoke *TaskTypeRevokeInput `json:"revoke,omitempty"`
 }
 

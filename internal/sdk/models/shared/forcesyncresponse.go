@@ -2,6 +2,8 @@
 
 package shared
 
-// ForceSyncResponse - Empty response body. Status code indicates success.
+// ForceSyncResponse - Empty response body. Status code indicates success. Poll the connector sync status
+//
+//	for progress after ForceSync accepts the request.
 type ForceSyncResponse struct {
 }

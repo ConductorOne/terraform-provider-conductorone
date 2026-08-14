@@ -2,18 +2,41 @@
 
 package shared
 
-// Rule - A conditional routing rule that maps a CEL expression to a step sequence.
+// Rule - A conditional routing rule that maps a CEL expression to an outcome.
 //
-//	Rules are evaluated top-to-bottom; the first matching rule's policy_key
-//	selects the step sequence from the policy's policy_steps map. If no rule
-//	matches, the baseline entry is used.
+//	Rules are evaluated top-to-bottom; the first matching rule's outcome
+//	determines which steps run. If the outcome is policy_key, the step sequence
+//	of that key in this policy's policy_steps map is used. If the outcome is
+//	policy_id, the referenced policy is evaluated recursively (depth-bounded,
+//	cycle-free, same policy_type). If no rule matches, the baseline entry of
+//	policy_steps is used.
+//
+// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
+//   - stepKey
+//   - policyId
 type Rule struct {
 	// A CEL expression that is evaluated against the request context. If it
-	//  returns true, the step sequence identified by policy_key is used.
+	//  returns true, the step sequence identified by the outcome is used.
 	Condition *string `json:"condition,omitempty"`
-	// A key into the policy's policy_steps map identifying which step sequence
-	//  to execute when this rule's condition matches.
+	// The ID of another Policy that is evaluated recursively when this
+	//  rule matches. The referenced policy must share this policy's
+	//  policy_type, must not introduce a cycle, and must not push any
+	//  reachable chain over depth 5. Gated by the
+	//  POLICY_REFERENCES_POLICY feature flag.
+	// This field is part of the `outcome` oneof.
+	// See the documentation for `c1.api.policy.v1.Rule` for more details.
+	PolicyID *string `json:"policyId,omitempty"`
+	// Deprecated: prefer outcome.step_key. Still read by the request path
+	//  for backward compatibility with rules persisted before the outcome
+	//  oneof existed.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	PolicyKey *string `json:"policyKey,omitempty"`
+	// A key into the policy's policy_steps map identifying which step
+	//  sequence to execute when this rule's condition matches.
+	// This field is part of the `outcome` oneof.
+	// See the documentation for `c1.api.policy.v1.Rule` for more details.
+	StepKey *string `json:"stepKey,omitempty"`
 }
 
 func (r *Rule) GetCondition() *string {
@@ -23,9 +46,23 @@ func (r *Rule) GetCondition() *string {
 	return r.Condition
 }
 
+func (r *Rule) GetPolicyID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.PolicyID
+}
+
 func (r *Rule) GetPolicyKey() *string {
 	if r == nil {
 		return nil
 	}
 	return r.PolicyKey
+}
+
+func (r *Rule) GetStepKey() *string {
+	if r == nil {
+		return nil
+	}
+	return r.StepKey
 }

@@ -31,7 +31,7 @@ func (e *TextFieldComponentVariant) IsExact() bool {
 // TextFieldComponent is a text input field.
 type TextFieldComponent struct {
 	// The checks field.
-	Checks []*FunctionCall `json:"checks,omitempty"`
+	Checks []FunctionCall `json:"checks,omitempty"`
 	// DynamicString can be a literal value, a JSON pointer path, or a function call.
 	//
 	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
@@ -60,7 +60,7 @@ type TextFieldComponent struct {
 	Variant *TextFieldComponentVariant `json:"variant,omitempty"`
 }
 
-func (t *TextFieldComponent) GetChecks() []*FunctionCall {
+func (t *TextFieldComponent) GetChecks() []FunctionCall {
 	if t == nil {
 		return nil
 	}

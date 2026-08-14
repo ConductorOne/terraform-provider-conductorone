@@ -4,6 +4,13 @@ package shared
 
 // C1ResourcePickerComponent allows selecting C1 resources.
 type C1ResourcePickerComponent struct {
+	// Scoping for resource_type "mcp_tool": the app and connector whose tools the
+	//  paginated picker searches, and an optional tool-state filter (the
+	//  MCPToolState enum name, e.g. "MCP_TOOL_STATE_PENDING_REVIEW"; empty = no
+	//  filter). Ignored by other resource types.
+	AppID *string `json:"appId,omitempty"`
+	// The connectorId field.
+	ConnectorID *string `json:"connectorId,omitempty"`
 	// DynamicString can be a literal value, a JSON pointer path, or a function call.
 	//
 	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
@@ -12,6 +19,8 @@ type C1ResourcePickerComponent struct {
 	//   - call
 	//
 	DynamicString *DynamicString `json:"label,omitempty"`
+	// The mcpToolState field.
+	McpToolState *string `json:"mcpToolState,omitempty"`
 	// The multiSelect field.
 	MultiSelect *bool `json:"multiSelect,omitempty"`
 	// The resourceType field.
@@ -26,11 +35,32 @@ type C1ResourcePickerComponent struct {
 	DynamicString1 *DynamicString `json:"value,omitempty"`
 }
 
+func (c *C1ResourcePickerComponent) GetAppID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AppID
+}
+
+func (c *C1ResourcePickerComponent) GetConnectorID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ConnectorID
+}
+
 func (c *C1ResourcePickerComponent) GetDynamicString() *DynamicString {
 	if c == nil {
 		return nil
 	}
 	return c.DynamicString
+}
+
+func (c *C1ResourcePickerComponent) GetMcpToolState() *string {
+	if c == nil {
+		return nil
+	}
+	return c.McpToolState
 }
 
 func (c *C1ResourcePickerComponent) GetMultiSelect() *bool {

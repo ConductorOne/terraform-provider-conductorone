@@ -2,21 +2,21 @@
 
 package shared
 
-// Format - The format field.
-type Format string
+// ExportToDatasourceFormat - The format field.
+type ExportToDatasourceFormat string
 
 const (
-	FormatExportFormatUnspecified  Format = "EXPORT_FORMAT_UNSPECIFIED"
-	FormatExportFormatOcsfJSONZstd Format = "EXPORT_FORMAT_OCSF_JSON_ZSTD"
-	FormatExportFormatOcsfJSONGzip Format = "EXPORT_FORMAT_OCSF_JSON_GZIP"
+	ExportToDatasourceFormatExportFormatUnspecified  ExportToDatasourceFormat = "EXPORT_FORMAT_UNSPECIFIED"
+	ExportToDatasourceFormatExportFormatOcsfJSONZstd ExportToDatasourceFormat = "EXPORT_FORMAT_OCSF_JSON_ZSTD"
+	ExportToDatasourceFormatExportFormatOcsfJSONGzip ExportToDatasourceFormat = "EXPORT_FORMAT_OCSF_JSON_GZIP"
 )
 
-func (e Format) ToPointer() *Format {
+func (e ExportToDatasourceFormat) ToPointer() *ExportToDatasourceFormat {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Format) IsExact() bool {
+func (e *ExportToDatasourceFormat) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "EXPORT_FORMAT_UNSPECIFIED", "EXPORT_FORMAT_OCSF_JSON_ZSTD", "EXPORT_FORMAT_OCSF_JSON_GZIP":
@@ -31,7 +31,7 @@ type ExportToDatasource struct {
 	// The datasourceId field.
 	DatasourceID *string `json:"datasourceId,omitempty"`
 	// The format field.
-	Format *Format `json:"format,omitempty"`
+	Format *ExportToDatasourceFormat `json:"format,omitempty"`
 	// The prefix field.
 	Prefix *string `json:"prefix,omitempty"`
 }
@@ -43,7 +43,7 @@ func (e *ExportToDatasource) GetDatasourceID() *string {
 	return e.DatasourceID
 }
 
-func (e *ExportToDatasource) GetFormat() *Format {
+func (e *ExportToDatasource) GetFormat() *ExportToDatasourceFormat {
 	if e == nil {
 		return nil
 	}

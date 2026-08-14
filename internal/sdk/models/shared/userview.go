@@ -10,10 +10,14 @@ type UserView struct {
 	DirectoriesPath *string `json:"directoriesPath,omitempty"`
 	// JSONPATH expression indicating the location of the user objects that managed the current user in the expanded array.
 	ManagersPath *string `json:"managersPath,omitempty"`
+	// ActorObjectPermissions describes which actions the calling user is permitted to perform on an object, as determined by policy.
+	UserActorObjectPermissions *UserActorObjectPermissions `json:"objectPermissions,omitempty"`
 	// JSONPATH expression indicating the location of the roles of the current user in the expanded array.
 	RolesPath *string `json:"rolesPath,omitempty"`
 	// The User object provides all of the details for an user, as well as some configuration.
 	User *User `json:"user,omitempty"`
+	// The id of the user.
+	UserID *string `json:"userId,omitempty"`
 }
 
 func (u *UserView) GetDelegatedUserPath() *string {
@@ -37,6 +41,13 @@ func (u *UserView) GetManagersPath() *string {
 	return u.ManagersPath
 }
 
+func (u *UserView) GetUserActorObjectPermissions() *UserActorObjectPermissions {
+	if u == nil {
+		return nil
+	}
+	return u.UserActorObjectPermissions
+}
+
 func (u *UserView) GetRolesPath() *string {
 	if u == nil {
 		return nil
@@ -49,4 +60,11 @@ func (u *UserView) GetUser() *User {
 		return nil
 	}
 	return u.User
+}
+
+func (u *UserView) GetUserID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.UserID
 }

@@ -7,6 +7,7 @@ import (
 )
 
 type FormStringField struct {
+	DateField     *DateField     `tfsdk:"date_field"`
 	PasswordField *PasswordField `tfsdk:"password_field"`
 	PickerField   *PickerField   `tfsdk:"picker_field"`
 	SelectField   *SelectField   `tfsdk:"select_field"`

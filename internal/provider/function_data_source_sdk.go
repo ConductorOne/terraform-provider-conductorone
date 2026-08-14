@@ -23,6 +23,14 @@ func (r *FunctionDataSourceModel) RefreshFromSharedFunction(ctx context.Context,
 		r.FunctionType = types.StringNull()
 	}
 	r.Head = types.StringPointerValue(resp.Head)
+	if resp.HookRefs != nil {
+		r.HookRefs = make([]types.String, 0, len(resp.HookRefs))
+		for _, v := range resp.HookRefs {
+			r.HookRefs = append(r.HookRefs, types.StringValue(v))
+		}
+	} else {
+		r.HookRefs = nil
+	}
 	r.ID = types.StringPointerValue(resp.ID)
 	r.IsDraft = types.BoolPointerValue(resp.IsDraft)
 	if resp.OutboundNetworkAllowlist != nil {
@@ -33,6 +41,7 @@ func (r *FunctionDataSourceModel) RefreshFromSharedFunction(ctx context.Context,
 	} else {
 		r.OutboundNetworkAllowlist = nil
 	}
+	r.ProvisionedConcurrency = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.ProvisionedConcurrency))
 	r.PublishedCommitID = types.StringPointerValue(resp.PublishedCommitID)
 	if resp.ScopedRoleIds != nil {
 		r.ScopedRoleIds = make([]types.String, 0, len(resp.ScopedRoleIds))
@@ -50,6 +59,14 @@ func (r *FunctionDataSourceModel) RefreshFromSharedFunction(ctx context.Context,
 	}
 	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	r.UseSpn = types.BoolPointerValue(resp.UseSpn)
+	if resp.WorkflowTemplateRefs != nil {
+		r.WorkflowTemplateRefs = make([]types.String, 0, len(resp.WorkflowTemplateRefs))
+		for _, v := range resp.WorkflowTemplateRefs {
+			r.WorkflowTemplateRefs = append(r.WorkflowTemplateRefs, types.StringValue(v))
+		}
+	} else {
+		r.WorkflowTemplateRefs = nil
+	}
 
 	return diags
 }

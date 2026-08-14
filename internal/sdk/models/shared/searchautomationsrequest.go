@@ -2,24 +2,24 @@
 
 package shared
 
-// Direction to sort in. Unspecified falls back to ASC when sort_field is set;
+// SearchAutomationsRequestDirection - Direction to sort in. Unspecified falls back to ASC when sort_field is set;
 //
 //	when sort_field is also unspecified, the server default order (created_at
 //	DESC) applies.
-type Direction string
+type SearchAutomationsRequestDirection string
 
 const (
-	DirectionSortDirectionUnspecified Direction = "SORT_DIRECTION_UNSPECIFIED"
-	DirectionSortDirectionAsc         Direction = "SORT_DIRECTION_ASC"
-	DirectionSortDirectionDesc        Direction = "SORT_DIRECTION_DESC"
+	SearchAutomationsRequestDirectionSortDirectionUnspecified SearchAutomationsRequestDirection = "SORT_DIRECTION_UNSPECIFIED"
+	SearchAutomationsRequestDirectionSortDirectionAsc         SearchAutomationsRequestDirection = "SORT_DIRECTION_ASC"
+	SearchAutomationsRequestDirectionSortDirectionDesc        SearchAutomationsRequestDirection = "SORT_DIRECTION_DESC"
 )
 
-func (e Direction) ToPointer() *Direction {
+func (e SearchAutomationsRequestDirection) ToPointer() *SearchAutomationsRequestDirection {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Direction) IsExact() bool {
+func (e *SearchAutomationsRequestDirection) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC":
@@ -29,24 +29,24 @@ func (e *Direction) IsExact() bool {
 	return false
 }
 
-// SortField - Column to sort by. Unspecified (0) means sort by created_at desc (server default).
-type SortField string
+// SearchAutomationsRequestSortField - Column to sort by. Unspecified (0) means sort by created_at desc (server default).
+type SearchAutomationsRequestSortField string
 
 const (
-	SortFieldAutomationSortFieldUnspecified        SortField = "AUTOMATION_SORT_FIELD_UNSPECIFIED"
-	SortFieldAutomationSortFieldDisplayName        SortField = "AUTOMATION_SORT_FIELD_DISPLAY_NAME"
-	SortFieldAutomationSortFieldCreatedAt          SortField = "AUTOMATION_SORT_FIELD_CREATED_AT"
-	SortFieldAutomationSortFieldLastExecutedAt     SortField = "AUTOMATION_SORT_FIELD_LAST_EXECUTED_AT"
-	SortFieldAutomationSortFieldEnabled            SortField = "AUTOMATION_SORT_FIELD_ENABLED"
-	SortFieldAutomationSortFieldPrimaryTriggerType SortField = "AUTOMATION_SORT_FIELD_PRIMARY_TRIGGER_TYPE"
+	SearchAutomationsRequestSortFieldAutomationSortFieldUnspecified        SearchAutomationsRequestSortField = "AUTOMATION_SORT_FIELD_UNSPECIFIED"
+	SearchAutomationsRequestSortFieldAutomationSortFieldDisplayName        SearchAutomationsRequestSortField = "AUTOMATION_SORT_FIELD_DISPLAY_NAME"
+	SearchAutomationsRequestSortFieldAutomationSortFieldCreatedAt          SearchAutomationsRequestSortField = "AUTOMATION_SORT_FIELD_CREATED_AT"
+	SearchAutomationsRequestSortFieldAutomationSortFieldLastExecutedAt     SearchAutomationsRequestSortField = "AUTOMATION_SORT_FIELD_LAST_EXECUTED_AT"
+	SearchAutomationsRequestSortFieldAutomationSortFieldEnabled            SearchAutomationsRequestSortField = "AUTOMATION_SORT_FIELD_ENABLED"
+	SearchAutomationsRequestSortFieldAutomationSortFieldPrimaryTriggerType SearchAutomationsRequestSortField = "AUTOMATION_SORT_FIELD_PRIMARY_TRIGGER_TYPE"
 )
 
-func (e SortField) ToPointer() *SortField {
+func (e SearchAutomationsRequestSortField) ToPointer() *SearchAutomationsRequestSortField {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SortField) IsExact() bool {
+func (e *SearchAutomationsRequestSortField) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "AUTOMATION_SORT_FIELD_UNSPECIFIED", "AUTOMATION_SORT_FIELD_DISPLAY_NAME", "AUTOMATION_SORT_FIELD_CREATED_AT", "AUTOMATION_SORT_FIELD_LAST_EXECUTED_AT", "AUTOMATION_SORT_FIELD_ENABLED", "AUTOMATION_SORT_FIELD_PRIMARY_TRIGGER_TYPE":
@@ -56,20 +56,20 @@ func (e *SortField) IsExact() bool {
 	return false
 }
 
-type Statuses string
+type SearchAutomationsRequestStatuses string
 
 const (
-	StatusesAutomationStatusFilterUnspecified Statuses = "AUTOMATION_STATUS_FILTER_UNSPECIFIED"
-	StatusesAutomationStatusFilterOn          Statuses = "AUTOMATION_STATUS_FILTER_ON"
-	StatusesAutomationStatusFilterOff         Statuses = "AUTOMATION_STATUS_FILTER_OFF"
+	SearchAutomationsRequestStatusesAutomationStatusFilterUnspecified SearchAutomationsRequestStatuses = "AUTOMATION_STATUS_FILTER_UNSPECIFIED"
+	SearchAutomationsRequestStatusesAutomationStatusFilterOn          SearchAutomationsRequestStatuses = "AUTOMATION_STATUS_FILTER_ON"
+	SearchAutomationsRequestStatusesAutomationStatusFilterOff         SearchAutomationsRequestStatuses = "AUTOMATION_STATUS_FILTER_OFF"
 )
 
-func (e Statuses) ToPointer() *Statuses {
+func (e SearchAutomationsRequestStatuses) ToPointer() *SearchAutomationsRequestStatuses {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Statuses) IsExact() bool {
+func (e *SearchAutomationsRequestStatuses) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "AUTOMATION_STATUS_FILTER_UNSPECIFIED", "AUTOMATION_STATUS_FILTER_ON", "AUTOMATION_STATUS_FILTER_OFF":
@@ -124,7 +124,7 @@ type SearchAutomationsRequest struct {
 	// Direction to sort in. Unspecified falls back to ASC when sort_field is set;
 	//  when sort_field is also unspecified, the server default order (created_at
 	//  DESC) applies.
-	Direction *Direction `json:"direction,omitempty"`
+	Direction *SearchAutomationsRequestDirection `json:"direction,omitempty"`
 	// Tri-state draft filter. Unset = include both drafts and published;
 	//  `true` = drafts only; `false` = published only.
 	IsDraft *bool `json:"isDraft,omitempty"`
@@ -135,12 +135,12 @@ type SearchAutomationsRequest struct {
 	// Free-text search query to filter automations by name or description.
 	Query *string `json:"query,omitempty"`
 	// Restrict results to automations matching these template references.
-	Refs []*AutomationTemplateRef `json:"refs,omitempty"`
+	Refs []AutomationTemplateRef `json:"refs,omitempty"`
 	// Column to sort by. Unspecified (0) means sort by created_at desc (server default).
-	SortField *SortField `json:"sortField,omitempty"`
+	SortField *SearchAutomationsRequestSortField `json:"sortField,omitempty"`
 	// Filter results by automation status. Empty or containing both ON and OFF
 	//  applies no status filter.
-	Statuses []Statuses `json:"statuses,omitempty"`
+	Statuses []SearchAutomationsRequestStatuses `json:"statuses,omitempty"`
 	// Filter results to automations with any of the specified trigger types.
 	TriggerTypes []TriggerTypes `json:"triggerTypes,omitempty"`
 }
@@ -159,7 +159,7 @@ func (s *SearchAutomationsRequest) GetAppIds() []string {
 	return s.AppIds
 }
 
-func (s *SearchAutomationsRequest) GetDirection() *Direction {
+func (s *SearchAutomationsRequest) GetDirection() *SearchAutomationsRequestDirection {
 	if s == nil {
 		return nil
 	}
@@ -194,21 +194,21 @@ func (s *SearchAutomationsRequest) GetQuery() *string {
 	return s.Query
 }
 
-func (s *SearchAutomationsRequest) GetRefs() []*AutomationTemplateRef {
+func (s *SearchAutomationsRequest) GetRefs() []AutomationTemplateRef {
 	if s == nil {
 		return nil
 	}
 	return s.Refs
 }
 
-func (s *SearchAutomationsRequest) GetSortField() *SortField {
+func (s *SearchAutomationsRequest) GetSortField() *SearchAutomationsRequestSortField {
 	if s == nil {
 		return nil
 	}
 	return s.SortField
 }
 
-func (s *SearchAutomationsRequest) GetStatuses() []Statuses {
+func (s *SearchAutomationsRequest) GetStatuses() []SearchAutomationsRequestStatuses {
 	if s == nil {
 		return nil
 	}

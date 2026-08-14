@@ -14,6 +14,11 @@ package shared
 type SendSlackMessage struct {
 	// The body field.
 	Body *string `json:"body,omitempty"`
+	// When true, the channel value (channel_name / channel_name_cel) is a Slack
+	//  channel ID rather than a name. The backend looks the channel up by ID and
+	//  fails permanently if it does not exist or the bot cannot access it — it does
+	//  not create or search by name. Only applies to channel delivery.
+	ChannelIsID *bool `json:"channelIsId,omitempty"`
 	// The channelName field.
 	// This field is part of the `channel` oneof.
 	// See the documentation for `c1.api.automations.v1.SendSlackMessage` for more details.
@@ -35,6 +40,13 @@ func (s *SendSlackMessage) GetBody() *string {
 		return nil
 	}
 	return s.Body
+}
+
+func (s *SendSlackMessage) GetChannelIsID() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.ChannelIsID
 }
 
 func (s *SendSlackMessage) GetChannelName() *string {

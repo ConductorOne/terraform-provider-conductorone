@@ -2,6 +2,10 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type AccessReviewScopeV2 struct {
 	AccountCriteriaScope         *AccountCriteriaScope         `tfsdk:"account_criteria_scope"`
 	AllAccessConflictsScope      *AllAccessConflictsScope      `tfsdk:"all_access_conflicts_scope"`
@@ -15,8 +19,12 @@ type AccessReviewScopeV2 struct {
 	GrantsByCriteriaScope        *GrantsByCriteriaScope        `tfsdk:"grants_by_criteria_scope"`
 	ResourceSelectionScope       *ResourceSelectionScope       `tfsdk:"resource_selection_scope"`
 	ResourceTypeSelectionScope   *ResourceTypeSelectionScope   `tfsdk:"resource_type_selection_scope"`
+	ResourceTypeSelectionScope1  *ResourceTypeSelectionScope   `tfsdk:"resource_type_selection_scope1"`
+	ScopeRoleSelectionScope      *ScopeRoleSelectionScope      `tfsdk:"scope_role_selection_scope"`
 	SelectedUsersScope           *SelectedUsersScope           `tfsdk:"selected_users_scope"`
 	SpecificAccessConflictsScope *SpecificAccessConflictsScope `tfsdk:"specific_access_conflicts_scope"`
 	SpecificResourcesScope       *SpecificResourcesScope       `tfsdk:"specific_resources_scope"`
+	SpecificResourcesScope1      *SpecificResourcesScope       `tfsdk:"specific_resources_scope1"`
 	UserCriteriaScope            *UserCriteriaScope            `tfsdk:"user_criteria_scope"`
+	PrincipalTypeFilter          types.String                  `tfsdk:"principal_type_filter"`
 }

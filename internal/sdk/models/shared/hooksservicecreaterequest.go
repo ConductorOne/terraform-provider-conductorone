@@ -9,6 +9,7 @@ const (
 	HooksServiceCreateRequestEventHookEventTypeUnspecified HooksServiceCreateRequestEvent = "HOOK_EVENT_TYPE_UNSPECIFIED"
 	HooksServiceCreateRequestEventHookEventTypePreToolUse  HooksServiceCreateRequestEvent = "HOOK_EVENT_TYPE_PRE_TOOL_USE"
 	HooksServiceCreateRequestEventHookEventTypePostToolUse HooksServiceCreateRequestEvent = "HOOK_EVENT_TYPE_POST_TOOL_USE"
+	HooksServiceCreateRequestEventHookEventTypePreOutput   HooksServiceCreateRequestEvent = "HOOK_EVENT_TYPE_PRE_OUTPUT"
 )
 
 func (e HooksServiceCreateRequestEvent) ToPointer() *HooksServiceCreateRequestEvent {
@@ -19,7 +20,7 @@ func (e HooksServiceCreateRequestEvent) ToPointer() *HooksServiceCreateRequestEv
 func (e *HooksServiceCreateRequestEvent) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "HOOK_EVENT_TYPE_UNSPECIFIED", "HOOK_EVENT_TYPE_PRE_TOOL_USE", "HOOK_EVENT_TYPE_POST_TOOL_USE":
+		case "HOOK_EVENT_TYPE_UNSPECIFIED", "HOOK_EVENT_TYPE_PRE_TOOL_USE", "HOOK_EVENT_TYPE_POST_TOOL_USE", "HOOK_EVENT_TYPE_PRE_OUTPUT":
 			return true
 		}
 	}
@@ -41,6 +42,12 @@ type HooksServiceCreateRequest struct {
 	//   - queryScopeLimit
 	//   - writeAuthorization
 	//   - sensitiveFileGuard
+	//   - toolOutputSizeGuard
+	//   - secretsMasking
+	//   - linkFilter
+	//   - encodedContentGuard
+	//   - promptInjectionScan
+	//   - blockOutput
 	//
 	BuiltInPattern *BuiltInPattern `json:"builtinPattern,omitempty"`
 	// The description field.
@@ -51,10 +58,13 @@ type HooksServiceCreateRequest struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// The event field.
 	Event *HooksServiceCreateRequestEvent `json:"event,omitempty"`
-	// HookFilter determines which tool calls a hook applies to.
+	// HookFilter determines which calls (or, for HOOK_EVENT_TYPE_PRE_OUTPUT,
+	//  which outgoing response chunks) a hook applies to.
 	HookFilter *HookFilter `json:"filter,omitempty"`
 	// HookFunctionRef identifies a customer-authored function to invoke.
 	HookFunctionRef *HookFunctionRef `json:"function,omitempty"`
+	// The managedByGuardrails field.
+	ManagedByGuardrails *bool `json:"managedByGuardrails,omitempty"`
 	// The priority field.
 	Priority *int `json:"priority,omitempty"`
 }
@@ -106,6 +116,13 @@ func (h *HooksServiceCreateRequest) GetHookFunctionRef() *HookFunctionRef {
 		return nil
 	}
 	return h.HookFunctionRef
+}
+
+func (h *HooksServiceCreateRequest) GetManagedByGuardrails() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.ManagedByGuardrails
 }
 
 func (h *HooksServiceCreateRequest) GetPriority() *int {

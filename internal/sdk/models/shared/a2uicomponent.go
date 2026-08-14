@@ -31,9 +31,21 @@ package shared
 //   - c1OnboardingWelcome
 //   - c1OnboardingPlan
 //   - c1ConnectorSyncDetail
+//   - c1Chart
+//   - c1MetricCards
+//   - c1Table
 type A2UIComponent struct {
 	// ButtonComponent triggers actions.
 	ButtonComponent *ButtonComponent `json:"button,omitempty"`
+	// C1ChartComponent renders a chart from typed data. The data oneof is keyed by
+	//  shape — each shape carries its own style enum, so an invalid combination
+	//  (e.g. a pie chart with a time axis) is unrepresentable.
+	//
+	// This message contains a oneof named data. Only a single field of the following list may be set at a time:
+	//   - timeSeries
+	//   - categorical
+	//
+	C1ChartComponent *C1ChartComponent `json:"c1Chart,omitempty"`
 	// C1CodeBlockComponent displays code with syntax highlighting.
 	C1CodeBlockComponent *C1CodeBlockComponent `json:"c1CodeBlock,omitempty"`
 	// C1ConnectorConfigFormComponent renders the shared admin connector-settings form inside an
@@ -54,6 +66,8 @@ type A2UIComponent struct {
 	// C1DurationPickerComponent is the access-request duration picker (presets + custom with number/unit).
 	//  Value is duration in seconds bound to the given path.
 	C1DurationPickerComponent *C1DurationPickerComponent `json:"c1DurationPicker,omitempty"`
+	// C1MetricCardsComponent renders a row of aggregate stat cards.
+	C1MetricCardsComponent *C1MetricCardsComponent `json:"c1MetricCards,omitempty"`
 	// C1MSTeamsNotificationsComponent renders a self-contained Microsoft Teams integration card.
 	//  Fetches status and consent URLs via frontend API calls.
 	C1MSTeamsNotificationsComponent *C1MSTeamsNotificationsComponent `json:"c1MsTeamsNotifications,omitempty"`
@@ -71,6 +85,9 @@ type A2UIComponent struct {
 	C1SlackNotificationsComponent *C1SlackNotificationsComponent `json:"c1SlackNotifications,omitempty"`
 	// C1StatusIndicatorComponent shows agent progress status.
 	C1StatusIndicatorComponent *C1StatusIndicatorComponent `json:"c1StatusIndicator,omitempty"`
+	// C1TableComponent renders a tabular view: typed columns + rows, capped and
+	//  paginated client-side; the full data set lives behind the artifact link.
+	C1TableComponent *C1TableComponent `json:"c1Table,omitempty"`
 	// C1TodoListComponent renders a phase/step checklist with progress tracking.
 	C1TodoListComponent *C1TodoListComponent `json:"c1TodoList,omitempty"`
 	// CardComponent is a container with styling.
@@ -108,6 +125,13 @@ func (a *A2UIComponent) GetButtonComponent() *ButtonComponent {
 	return a.ButtonComponent
 }
 
+func (a *A2UIComponent) GetC1ChartComponent() *C1ChartComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1ChartComponent
+}
+
 func (a *A2UIComponent) GetC1CodeBlockComponent() *C1CodeBlockComponent {
 	if a == nil {
 		return nil
@@ -141,6 +165,13 @@ func (a *A2UIComponent) GetC1DurationPickerComponent() *C1DurationPickerComponen
 		return nil
 	}
 	return a.C1DurationPickerComponent
+}
+
+func (a *A2UIComponent) GetC1MetricCardsComponent() *C1MetricCardsComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1MetricCardsComponent
 }
 
 func (a *A2UIComponent) GetC1MSTeamsNotificationsComponent() *C1MSTeamsNotificationsComponent {
@@ -183,6 +214,13 @@ func (a *A2UIComponent) GetC1StatusIndicatorComponent() *C1StatusIndicatorCompon
 		return nil
 	}
 	return a.C1StatusIndicatorComponent
+}
+
+func (a *A2UIComponent) GetC1TableComponent() *C1TableComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1TableComponent
 }
 
 func (a *A2UIComponent) GetC1TodoListComponent() *C1TodoListComponent {

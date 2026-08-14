@@ -31,6 +31,7 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 		r.AppUserMapper = nil
 	} else {
 		r.AppUserMapper = &tfTypes.AppUserMapper{}
+		r.AppUserMapper.AppID = types.StringPointerValue(resp.AppUserMapper.AppID)
 		if resp.AppUserMapper.MappingCases != nil {
 			if r.AppUserMapper.MappingCases == nil {
 				r.AppUserMapper.MappingCases = []tfTypes.AppUserMapperMatchCase{}
@@ -39,7 +40,9 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 			for _, mappingCasesItem := range resp.AppUserMapper.MappingCases {
 				var mappingCases tfTypes.AppUserMapperMatchCase
 
+				mappingCases.AppID = types.StringPointerValue(mappingCasesItem.AppID)
 				mappingCases.AppUserKeyCel = types.StringPointerValue(mappingCasesItem.AppUserKeyCel)
+				mappingCases.CaseIndex = types.Int64PointerValue(mappingCasesItem.CaseIndex)
 				mappingCases.UserKeyCel = types.StringPointerValue(mappingCasesItem.UserKeyCel)
 
 				r.AppUserMapper.MappingCases = append(r.AppUserMapper.MappingCases, mappingCases)
@@ -68,6 +71,7 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 	r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
 	r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))
 	r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
+	r.RevokeGrantSources = types.BoolPointerValue(resp.RevokeGrantSources)
 	r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)
 	r.StrictAccessEntitlementProvisioning = types.BoolPointerValue(resp.StrictAccessEntitlementProvisioning)
 	r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))

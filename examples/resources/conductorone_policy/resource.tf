@@ -2,8 +2,9 @@ resource "conductorone_policy" "my_policy" {
   annotations = {
     key = "value"
   }
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
+  baseline_policy_id = "...my_baseline_policy_id..."
+  description        = "...my_description..."
+  display_name       = "...my_display_name..."
   policy_steps = {
     key = {
       steps = [
@@ -206,6 +207,9 @@ resource "conductorone_policy" "my_policy" {
                 app_id         = "...my_app_id..."
                 entitlement_id = "...my_entitlement_id..."
               }
+              device_placement_provision = {
+                vault_boundary_id = "...my_vault_boundary_id..."
+              }
               external_ticket_provision = {
                 app_id                                = "...my_app_id..."
                 connector_id                          = "...my_connector_id..."
@@ -310,7 +314,9 @@ resource "conductorone_policy" "my_policy" {
   rules = [
     {
       condition  = "...my_condition..."
+      policy_id  = "...my_policy_id..."
       policy_key = "...my_policy_key..."
+      step_key   = "...my_step_key..."
     }
   ]
 }

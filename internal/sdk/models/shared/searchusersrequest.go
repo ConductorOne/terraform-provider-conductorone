@@ -159,6 +159,10 @@ type SearchUsersRequest struct {
 	Refs []UserRef `json:"refs,omitempty"`
 	// Search for users that have any of the role IDs on this list.
 	RoleIds []string `json:"roleIds,omitempty"`
+	// Filter to include only users sourced from any of these apps (directories).
+	//  Each value is an app ID; a user matches when its source_app_ids map
+	//  contains any of the listed app IDs. Combined with `origins` using OR.
+	SourceAppIds []string `json:"sourceAppIds,omitempty"`
 	// Search for users that have any of the statuses on this list. This can only be ENABLED, DISABLED, and DELETED
 	UserStatuses []SearchUsersRequestUserStatuses `json:"userStatuses,omitempty"`
 }
@@ -280,6 +284,13 @@ func (s *SearchUsersRequest) GetRoleIds() []string {
 		return nil
 	}
 	return s.RoleIds
+}
+
+func (s *SearchUsersRequest) GetSourceAppIds() []string {
+	if s == nil {
+		return nil
+	}
+	return s.SourceAppIds
 }
 
 func (s *SearchUsersRequest) GetUserStatuses() []SearchUsersRequestUserStatuses {

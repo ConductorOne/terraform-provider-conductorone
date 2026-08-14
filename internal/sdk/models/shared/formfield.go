@@ -64,6 +64,7 @@ type FormField struct {
 	//   - passwordField
 	//   - selectField
 	//   - pickerField
+	//   - dateField
 	//
 	FormStringField *FormStringField `json:"stringField,omitempty"`
 	// The StringMapField message.

@@ -172,6 +172,16 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedRequestSchemaForm(ctx co
 					fields.FormStringField = nil
 				} else {
 					fields.FormStringField = &tfTypes.FormStringField{}
+					if fieldsItem.FormStringField.DateField == nil {
+						fields.FormStringField.DateField = nil
+					} else {
+						fields.FormStringField.DateField = &tfTypes.DateField{}
+						fields.FormStringField.DateField.DefaultToToday = types.BoolPointerValue(fieldsItem.FormStringField.DateField.DefaultToToday)
+						fields.FormStringField.DateField.MaxDate = types.StringPointerValue(fieldsItem.FormStringField.DateField.MaxDate)
+						fields.FormStringField.DateField.MaxDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem.FormStringField.DateField.MaxDaysFromToday))
+						fields.FormStringField.DateField.MinDate = types.StringPointerValue(fieldsItem.FormStringField.DateField.MinDate)
+						fields.FormStringField.DateField.MinDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem.FormStringField.DateField.MinDaysFromToday))
+					}
 					fields.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem.FormStringField.DefaultValue)
 					if fieldsItem.FormStringField.PasswordField == nil {
 						fields.FormStringField.PasswordField = nil
@@ -199,6 +209,23 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedRequestSchemaForm(ctx co
 							fields.FormStringField.PickerField.C1UserFilter = nil
 						} else {
 							fields.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
+							if fieldsItem.FormStringField.PickerField.C1UserFilter.ExcludeUserIds != nil {
+								fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = make([]types.String, 0, len(fieldsItem.FormStringField.PickerField.C1UserFilter.ExcludeUserIds))
+								for _, v := range fieldsItem.FormStringField.PickerField.C1UserFilter.ExcludeUserIds {
+									fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = append(fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds, types.StringValue(v))
+								}
+							} else {
+								fields.FormStringField.PickerField.C1UserFilter.ExcludeUserIds = nil
+							}
+							fields.FormStringField.PickerField.C1UserFilter.IncludeDeactivated = types.BoolPointerValue(fieldsItem.FormStringField.PickerField.C1UserFilter.IncludeDeactivated)
+							if fieldsItem.FormStringField.PickerField.C1UserFilter.UserIds != nil {
+								fields.FormStringField.PickerField.C1UserFilter.UserIds = make([]types.String, 0, len(fieldsItem.FormStringField.PickerField.C1UserFilter.UserIds))
+								for _, v := range fieldsItem.FormStringField.PickerField.C1UserFilter.UserIds {
+									fields.FormStringField.PickerField.C1UserFilter.UserIds = append(fields.FormStringField.PickerField.C1UserFilter.UserIds, types.StringValue(v))
+								}
+							} else {
+								fields.FormStringField.PickerField.C1UserFilter.UserIds = nil
+							}
 						}
 					}
 					fields.FormStringField.Placeholder = types.StringPointerValue(fieldsItem.FormStringField.Placeholder)

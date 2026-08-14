@@ -17,6 +17,17 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 
 	if resp != nil {
 		r.AccessConfigID = types.StringPointerValue(resp.AccessConfigID)
+		if resp.AgentTrait == nil {
+			r.AgentTrait = nil
+		} else {
+			r.AgentTrait = &tfTypes.AgentTrait{}
+			r.AgentTrait.IdentityAppUserID = types.StringPointerValue(resp.AgentTrait.IdentityAppUserID)
+			if resp.AgentTrait.Status != nil {
+				r.AgentTrait.Status = types.StringValue(string(*resp.AgentTrait.Status))
+			} else {
+				r.AgentTrait.Status = types.StringNull()
+			}
+		}
 		if len(resp.Annotations) > 0 {
 			r.Annotations = make(map[string]types.String, len(resp.Annotations))
 			for key, value := range resp.Annotations {
@@ -33,6 +44,12 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
+		r.NhiDetail = types.StringPointerValue(resp.NhiDetail)
+		if resp.NhiType != nil {
+			r.NhiType = types.StringValue(string(*resp.NhiType))
+		} else {
+			r.NhiType = types.StringNull()
+		}
 		r.ParentAppResourceID = types.StringPointerValue(resp.ParentAppResourceID)
 		r.ParentAppResourceTypeID = types.StringPointerValue(resp.ParentAppResourceTypeID)
 		if resp.Profile == nil {
@@ -44,6 +61,8 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 			r.SecretTrait = nil
 		} else {
 			r.SecretTrait = &tfTypes.SecretTrait{}
+			r.SecretTrait.CreatedByAppUserID = types.StringPointerValue(resp.SecretTrait.CreatedByAppUserID)
+			r.SecretTrait.CredentialDetail = types.StringPointerValue(resp.SecretTrait.CredentialDetail)
 			r.SecretTrait.IdentityAppUserID = types.StringPointerValue(resp.SecretTrait.IdentityAppUserID)
 			r.SecretTrait.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.LastUsedAt))
 			r.SecretTrait.SecretCreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.SecretCreatedAt))

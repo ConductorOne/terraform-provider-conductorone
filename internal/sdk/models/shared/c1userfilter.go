@@ -6,6 +6,34 @@ package shared
 //
 //	This is distinct from AppUserFilter which selects accounts within a connected app.
 type C1UserFilter struct {
+	// Remove these users from the selectable set, after user_ids is applied.
+	ExcludeUserIds []string `json:"excludeUserIds,omitempty"`
+	// Make deactivated and deleted users selectable. Defaults to enabled-only.
+	IncludeDeactivated *bool `json:"includeDeactivated,omitempty"`
+	// Restrict the selectable set to these users. Empty means every user is selectable.
+	//  Capped at the number of refs SearchUsers accepts in one request.
+	UserIds []string `json:"userIds,omitempty"`
+}
+
+func (c *C1UserFilter) GetExcludeUserIds() []string {
+	if c == nil {
+		return nil
+	}
+	return c.ExcludeUserIds
+}
+
+func (c *C1UserFilter) GetIncludeDeactivated() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.IncludeDeactivated
+}
+
+func (c *C1UserFilter) GetUserIds() []string {
+	if c == nil {
+		return nil
+	}
+	return c.UserIds
 }
 
 // #region class-body-c1userfilter

@@ -43,6 +43,11 @@ type AccessReviewTemplateSetupEntitlementServiceSetRequest struct {
 	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
 	//   - resourceSelection
 	//
+	//
+	// This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
+	//   - excludedSpecificResources
+	//   - excludedResourceTypeSelections
+	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scope,omitempty"`
 }
 

@@ -4,10 +4,21 @@ package shared
 
 // AppUserMapperMatchCase defines a single matching rule for uplift account mapping.
 type AppUserMapperMatchCase struct {
+	// The app this match case belongs to.
+	AppID *string `json:"appId,omitempty"`
 	// CEL expression evaluated against an AppUser to produce match key(s).
 	AppUserKeyCel *string `json:"appUserKeyCel,omitempty"`
+	// The ordered index of this match case within the mapper.
+	CaseIndex *int64 `json:"caseIndex,omitempty"`
 	// CEL expression evaluated against a User to produce match key(s).
 	UserKeyCel *string `json:"userKeyCel,omitempty"`
+}
+
+func (a *AppUserMapperMatchCase) GetAppID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AppID
 }
 
 func (a *AppUserMapperMatchCase) GetAppUserKeyCel() *string {
@@ -15,6 +26,13 @@ func (a *AppUserMapperMatchCase) GetAppUserKeyCel() *string {
 		return nil
 	}
 	return a.AppUserKeyCel
+}
+
+func (a *AppUserMapperMatchCase) GetCaseIndex() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.CaseIndex
 }
 
 func (a *AppUserMapperMatchCase) GetUserKeyCel() *string {

@@ -166,7 +166,10 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 									Description: `The read field.`,
 								},
 							},
-							Description: `The ActorObjectPermissions message.`,
+							MarkdownDescription: `Legacy: do not use for new objects. Retained only for the existing` + "\n" +
+								` AppResource / AppEntitlement / access-review consumers, which will migrate to` + "\n" +
+								` c1.api.authorization.v1.ActorObjectPermissions in IGA-2331. New object views` + "\n" +
+								` should reference c1.api.authorization.v1.ActorObjectPermissions instead.`,
 						},
 						"app_entitlement": schema.SingleNestedAttribute{
 							Computed: true,
@@ -326,6 +329,16 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 												},
 											},
 											Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
+										},
+										"device_placement_provision": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"vault_boundary_id": schema.StringAttribute{
+													Computed:    true,
+													Description: `The vaultBoundaryId field.`,
+												},
+											},
+											Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
 										},
 										"external_ticket_provision": schema.SingleNestedAttribute{
 											Computed: true,
@@ -512,7 +525,8 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 										`  - multiStep` + "\n" +
 										`  - externalTicket` + "\n" +
 										`  - unconfigured` + "\n" +
-										`  - action`,
+										`  - action` + "\n" +
+										`  - devicePlacement`,
 								},
 								"description": schema.StringAttribute{
 									Computed:    true,
@@ -678,6 +692,16 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 											},
 											Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 										},
+										"device_placement_provision": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"vault_boundary_id": schema.StringAttribute{
+													Computed:    true,
+													Description: `The vaultBoundaryId field.`,
+												},
+											},
+											Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+										},
 										"external_ticket_provision": schema.SingleNestedAttribute{
 											Computed: true,
 											Attributes: map[string]schema.Attribute{
@@ -863,7 +887,8 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 										`  - multiStep` + "\n" +
 										`  - externalTicket` + "\n" +
 										`  - unconfigured` + "\n" +
-										`  - action`,
+										`  - action` + "\n" +
+										`  - devicePlacement`,
 								},
 								"purpose": schema.StringAttribute{
 									Computed:    true,

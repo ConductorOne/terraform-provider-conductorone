@@ -17,6 +17,7 @@ const (
 	ProvisionInstanceStateProvisionInstanceStateExternalTicketWaiting           ProvisionInstanceState = "PROVISION_INSTANCE_STATE_EXTERNAL_TICKET_WAITING"
 	ProvisionInstanceStateProvisionInstanceStateAccountLifecycleActions         ProvisionInstanceState = "PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS"
 	ProvisionInstanceStateProvisionInstanceStateAccountLifecycleActionsWaiting  ProvisionInstanceState = "PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS_WAITING"
+	ProvisionInstanceStateProvisionInstanceStateDevicePlacement                 ProvisionInstanceState = "PROVISION_INSTANCE_STATE_DEVICE_PLACEMENT"
 	ProvisionInstanceStateProvisionInstanceStateDone                            ProvisionInstanceState = "PROVISION_INSTANCE_STATE_DONE"
 )
 
@@ -28,7 +29,7 @@ func (e ProvisionInstanceState) ToPointer() *ProvisionInstanceState {
 func (e *ProvisionInstanceState) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "PROVISION_INSTANCE_STATE_UNSPECIFIED", "PROVISION_INSTANCE_STATE_INIT", "PROVISION_INSTANCE_STATE_CREATE_CONNECTOR_ACTIONS_FOR_TARGET", "PROVISION_INSTANCE_STATE_SENDING_NOTIFICATIONS", "PROVISION_INSTANCE_STATE_WAITING", "PROVISION_INSTANCE_STATE_WEBHOOK", "PROVISION_INSTANCE_STATE_WEBHOOK_WAITING", "PROVISION_INSTANCE_STATE_EXTERNAL_TICKET", "PROVISION_INSTANCE_STATE_EXTERNAL_TICKET_WAITING", "PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS", "PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS_WAITING", "PROVISION_INSTANCE_STATE_DONE":
+		case "PROVISION_INSTANCE_STATE_UNSPECIFIED", "PROVISION_INSTANCE_STATE_INIT", "PROVISION_INSTANCE_STATE_CREATE_CONNECTOR_ACTIONS_FOR_TARGET", "PROVISION_INSTANCE_STATE_SENDING_NOTIFICATIONS", "PROVISION_INSTANCE_STATE_WAITING", "PROVISION_INSTANCE_STATE_WEBHOOK", "PROVISION_INSTANCE_STATE_WEBHOOK_WAITING", "PROVISION_INSTANCE_STATE_EXTERNAL_TICKET", "PROVISION_INSTANCE_STATE_EXTERNAL_TICKET_WAITING", "PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS", "PROVISION_INSTANCE_STATE_ACCOUNT_LIFECYCLE_ACTIONS_WAITING", "PROVISION_INSTANCE_STATE_DEVICE_PLACEMENT", "PROVISION_INSTANCE_STATE_DONE":
 			return true
 		}
 	}
@@ -66,6 +67,13 @@ type ProvisionInstance struct {
 	SkippedAction *SkippedAction `json:"skipped,omitempty"`
 	// This property indicates the current state of this step.
 	State *ProvisionInstanceState `json:"state,omitempty"`
+	// Describes why a provision step is paused in the WAITING state.
+	//
+	// This message contains a oneof named kind. Only a single field of the following list may be set at a time:
+	//   - entitlementMerge
+	//   - devicePlacement
+	//
+	ProvisionWaitingOn *ProvisionWaitingOn `json:"waitingOn,omitempty"`
 	// This indicates the webhook id for this step.
 	WebhookID *string `json:"webhookId,omitempty"`
 	// This indicates the webhook instance id for this step.
@@ -147,6 +155,13 @@ func (p *ProvisionInstance) GetState() *ProvisionInstanceState {
 		return nil
 	}
 	return p.State
+}
+
+func (p *ProvisionInstance) GetProvisionWaitingOn() *ProvisionWaitingOn {
+	if p == nil {
+		return nil
+	}
+	return p.ProvisionWaitingOn
 }
 
 func (p *ProvisionInstance) GetWebhookID() *string {

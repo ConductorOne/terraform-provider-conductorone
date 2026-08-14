@@ -30,6 +30,7 @@ type AppResourceDataSource struct {
 // AppResourceDataSourceModel describes the data model.
 type AppResourceDataSourceModel struct {
 	AccessConfigID          types.String                                    `tfsdk:"access_config_id"`
+	AgentTrait              *tfTypes.AgentTrait                             `tfsdk:"agent_trait"`
 	Annotations             map[string]types.String                         `tfsdk:"annotations"`
 	AppID                   types.String                                    `tfsdk:"app_id"`
 	AppResourceTypeID       types.String                                    `tfsdk:"app_resource_type_id"`
@@ -45,6 +46,8 @@ type AppResourceDataSourceModel struct {
 	GrantCount              types.String                                    `tfsdk:"grant_count"`
 	ID                      types.String                                    `tfsdk:"id"`
 	MatchBatonID            types.String                                    `tfsdk:"match_baton_id"`
+	NhiDetail               types.String                                    `tfsdk:"nhi_detail"`
+	NhiType                 types.String                                    `tfsdk:"nhi_type"`
 	ParentAppResourceID     types.String                                    `tfsdk:"parent_app_resource_id"`
 	ParentAppResourceTypeID types.String                                    `tfsdk:"parent_app_resource_type_id"`
 	Profile                 *tfTypes.AppResourceProfile                     `tfsdk:"profile"`
@@ -68,6 +71,21 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				Computed: true,
 				MarkdownDescription: `The access config ID for this resource. May be empty.` + "\n" +
 					` Must be one of the builtin access config IDs or empty.`,
+			},
+			"agent_trait": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"identity_app_user_id": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `The C1 app user ID of the service-account identity this agent authenticates as.` + "\n" +
+							` Empty if the backing identity has not yet been resolved.`,
+					},
+					"status": schema.StringAttribute{
+						Computed:    true,
+						Description: `The agent's lifecycle status (READY, DISABLED, DELETED).`,
+					},
+				},
+				Description: `AgentTrait carries metadata for AI-agent resources surfaced in the Inventory.`,
 			},
 			"annotations": schema.MapAttribute{
 				Computed:    true,
@@ -145,6 +163,17 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 				Computed:    true,
 				Description: `The matchBatonId field.`,
 			},
+			"nhi_detail": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `Axis-2 detail refining nhi_type (e.g. "aws.role.lambda"). Read-only;` + "\n" +
+					` translated from the model.`,
+			},
+			"nhi_type": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `The NHI classification (K3 spine) for this resource. Populated for` + "\n" +
+					` non-human-identity resources; UNSPECIFIED for everything else. Mirrors` + "\n" +
+					` agent_trait: read-only and translated from the model enum at the API boundary.`,
+			},
 			"parent_app_resource_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The parent resource id, if this resource is a child of another resource.`,
@@ -163,6 +192,18 @@ func (r *AppResourceDataSource) Schema(ctx context.Context, req datasource.Schem
 			"secret_trait": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"created_by_app_user_id": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `The AppUser id that created this credential. Read-only; resolved from` + "\n" +
+							` the model during uplift. Distinct from identity_app_user_id (the` + "\n" +
+							` holder) and from the resource's Owner (a separate assignment, not` + "\n" +
+							` part of this message).`,
+					},
+					"credential_detail": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `Platform-specific credential subtype detail, finer than credential_type` + "\n" +
+							` (e.g. "GCP service-account key"). Read-only; translated from the model.`,
+					},
 					"identity_app_user_id": schema.StringAttribute{
 						Computed:    true,
 						Description: `The identityAppUserId field.`,

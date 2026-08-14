@@ -62,6 +62,13 @@ resource "conductorone_request_schema" "my_request_schema" {
         max_file_size = "...my_max_file_size..."
       }
       form_string_field = {
+        date_field = {
+          default_to_today    = true
+          max_date            = "...my_max_date..."
+          max_days_from_today = 8
+          min_date            = "...my_min_date..."
+          min_days_from_today = 9
+        }
         default_value = "...my_default_value..."
         password_field = {
           # ...
@@ -75,7 +82,13 @@ resource "conductorone_request_schema" "my_request_schema" {
             app_id = "...my_app_id..."
           }
           c1_user_filter = {
-            # ...
+            exclude_user_ids = [
+              "..."
+            ]
+            include_deactivated = false
+            user_ids = [
+              "..."
+            ]
           }
         }
         placeholder = "...my_placeholder..."

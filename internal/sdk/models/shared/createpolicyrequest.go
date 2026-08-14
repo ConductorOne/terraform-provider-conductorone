@@ -40,6 +40,12 @@ type CreatePolicyRequest struct {
 	//  Well-known keys: `managed_by`, `iac_workspace`,
 	//  `iac_resource_address`, `iac_tool_version`.
 	Annotations map[string]string `json:"annotations,omitempty"`
+	// When set, the new policy's baseline defers to another policy of the same
+	//  type when no rule matches, instead of an inline baseline step list.
+	//  Mutually exclusive with the baseline entry in policy_steps. Requires the
+	//  POLICY_REFERENCES_POLICY feature; obeys the same depth/cycle/self rules as
+	//  Rule.policy_id.
+	BaselinePolicyID *string `json:"baselinePolicyId,omitempty"`
 	// The description of the new policy.
 	Description *string `json:"description,omitempty"`
 	// The display name of the new policy.
@@ -65,6 +71,13 @@ func (c *CreatePolicyRequest) GetAnnotations() map[string]string {
 		return nil
 	}
 	return c.Annotations
+}
+
+func (c *CreatePolicyRequest) GetBaselinePolicyID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.BaselinePolicyID
 }
 
 func (c *CreatePolicyRequest) GetDescription() *string {

@@ -7,6 +7,8 @@ import (
 )
 
 type SlackChannel struct {
+	ChannelID   types.String `tfsdk:"channel_id"`
 	Description types.String `tfsdk:"description"`
+	IsChannelID types.Bool   `tfsdk:"is_channel_id"`
 	Name        types.String `tfsdk:"name"`
 }

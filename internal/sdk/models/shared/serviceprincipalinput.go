@@ -6,6 +6,8 @@ package shared
 type ServicePrincipalInput struct {
 	// The display name of the service principal.
 	DisplayName *string `json:"displayName,omitempty"`
+	// ActorObjectPermissions describes which actions the calling user is permitted to perform on an object, as determined by policy.
+	UserActorObjectPermissions *UserActorObjectPermissions `json:"objectPermissions,omitempty"`
 	// The User object provides all of the details for an user, as well as some configuration.
 	User *UserInput `json:"user,omitempty"`
 }
@@ -15,6 +17,13 @@ func (s *ServicePrincipalInput) GetDisplayName() *string {
 		return nil
 	}
 	return s.DisplayName
+}
+
+func (s *ServicePrincipalInput) GetUserActorObjectPermissions() *UserActorObjectPermissions {
+	if s == nil {
+		return nil
+	}
+	return s.UserActorObjectPermissions
 }
 
 func (s *ServicePrincipalInput) GetUser() *UserInput {

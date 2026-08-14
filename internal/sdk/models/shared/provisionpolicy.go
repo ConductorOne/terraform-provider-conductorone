@@ -13,6 +13,7 @@ package shared
 //   - externalTicket
 //   - unconfigured
 //   - action
+//   - devicePlacement
 type ProvisionPolicy struct {
 	// This provision step indicates that account lifecycle action should be called to provision this entitlement.
 	ActionProvision *ActionProvision `json:"action,omitempty"`
@@ -26,6 +27,8 @@ type ProvisionPolicy struct {
 	ConnectorProvision *ConnectorProvision `json:"connector,omitempty"`
 	// This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.
 	DelegatedProvision *DelegatedProvision `json:"delegated,omitempty"`
+	// This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.
+	DevicePlacementProvision *DevicePlacementProvision `json:"devicePlacement,omitempty"`
 	// This provision step indicates that we should check an external ticket to provision this entitlement
 	ExternalTicketProvision *ExternalTicketProvision `json:"externalTicket,omitempty"`
 	// Manual provisioning indicates that a human must intervene for the provisioning of this step.
@@ -57,6 +60,13 @@ func (p *ProvisionPolicy) GetDelegatedProvision() *DelegatedProvision {
 		return nil
 	}
 	return p.DelegatedProvision
+}
+
+func (p *ProvisionPolicy) GetDevicePlacementProvision() *DevicePlacementProvision {
+	if p == nil {
+		return nil
+	}
+	return p.DevicePlacementProvision
 }
 
 func (p *ProvisionPolicy) GetExternalTicketProvision() *ExternalTicketProvision {

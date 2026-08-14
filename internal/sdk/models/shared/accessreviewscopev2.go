@@ -2,6 +2,31 @@
 
 package shared
 
+// PrincipalTypeFilter - Filters principals included in the scope. Unspecified is treated as users.
+type PrincipalTypeFilter string
+
+const (
+	PrincipalTypeFilterPrincipalTypeFilterUnspecified       PrincipalTypeFilter = "PRINCIPAL_TYPE_FILTER_UNSPECIFIED"
+	PrincipalTypeFilterPrincipalTypeFilterUsers             PrincipalTypeFilter = "PRINCIPAL_TYPE_FILTER_USERS"
+	PrincipalTypeFilterPrincipalTypeFilterResources         PrincipalTypeFilter = "PRINCIPAL_TYPE_FILTER_RESOURCES"
+	PrincipalTypeFilterPrincipalTypeFilterUsersAndResources PrincipalTypeFilter = "PRINCIPAL_TYPE_FILTER_USERS_AND_RESOURCES"
+)
+
+func (e PrincipalTypeFilter) ToPointer() *PrincipalTypeFilter {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PrincipalTypeFilter) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PRINCIPAL_TYPE_FILTER_UNSPECIFIED", "PRINCIPAL_TYPE_FILTER_USERS", "PRINCIPAL_TYPE_FILTER_RESOURCES", "PRINCIPAL_TYPE_FILTER_USERS_AND_RESOURCES":
+			return true
+		}
+	}
+	return false
+}
+
 // The AccessReviewScopeV2 message.
 //
 // This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
@@ -31,6 +56,10 @@ package shared
 //
 // This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
 //   - resourceSelection
+//
+// This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
+//   - excludedSpecificResources
+//   - excludedResourceTypeSelections
 type AccessReviewScopeV2 struct {
 	// The CelExpressionScope message.
 	CelExpressionScope *CelExpressionScope `json:"accountCelExpression,omitempty"`
@@ -50,6 +79,10 @@ type AccessReviewScopeV2 struct {
 	AppSelectionCriteriaScope *AppSelectionCriteriaScope `json:"appSelectionCriteria,omitempty"`
 	// The CelExpressionScope message.
 	CelExpressionScope1 *CelExpressionScope `json:"celExpression,omitempty"`
+	// The ResourceTypeSelectionScope message.
+	ResourceTypeSelectionScope *ResourceTypeSelectionScope `json:"excludedResourceTypeSelections,omitempty"`
+	// The SpecificResourcesScope message.
+	SpecificResourcesScope *SpecificResourcesScope `json:"excludedSpecificResources,omitempty"`
 	// The GrantsByCriteriaScope message.
 	//
 	// This message contains a oneof named criteria_filter. Only a single field of the following list may be set at a time:
@@ -58,16 +91,22 @@ type AccessReviewScopeV2 struct {
 	//   - grantsAddedBetween
 	//
 	GrantsByCriteriaScope *GrantsByCriteriaScope `json:"grantsByCriteria,omitempty"`
+	// Filters principals included in the scope. Unspecified is treated as users.
+	PrincipalTypeFilter *PrincipalTypeFilter `json:"principalTypeFilter,omitempty"`
 	// The ResourceSelectionScope message.
 	ResourceSelectionScope *ResourceSelectionScope `json:"resourceSelection,omitempty"`
 	// The ResourceTypeSelectionScope message.
-	ResourceTypeSelectionScope *ResourceTypeSelectionScope `json:"resourceTypeSelections,omitempty"`
+	ResourceTypeSelectionScope1 *ResourceTypeSelectionScope `json:"resourceTypeSelections,omitempty"`
+	// Empty marker for scope+role pair scoping on IaaS-type apps.
+	//  Actual selections stored in AccessReviewScopeRoleSelection rows.
+	//  May coexist with ResourceSelectionScope on the same campaign; prepare unions both.
+	ScopeRoleSelectionScope *ScopeRoleSelectionScope `json:"scopeRoleSelection,omitempty"`
 	// The SelectedUsersScope message.
 	SelectedUsersScope *SelectedUsersScope `json:"selectedUsers,omitempty"`
 	// The SpecificAccessConflictsScope message.
 	SpecificAccessConflictsScope *SpecificAccessConflictsScope `json:"specificAccessConflicts,omitempty"`
 	// The SpecificResourcesScope message.
-	SpecificResourcesScope *SpecificResourcesScope `json:"specificResources,omitempty"`
+	SpecificResourcesScope1 *SpecificResourcesScope `json:"specificResources,omitempty"`
 	// The UserCriteriaScope message.
 	UserCriteriaScope *UserCriteriaScope `json:"userCriteria,omitempty"`
 }
@@ -135,11 +174,32 @@ func (a *AccessReviewScopeV2) GetCelExpressionScope1() *CelExpressionScope {
 	return a.CelExpressionScope1
 }
 
+func (a *AccessReviewScopeV2) GetResourceTypeSelectionScope() *ResourceTypeSelectionScope {
+	if a == nil {
+		return nil
+	}
+	return a.ResourceTypeSelectionScope
+}
+
+func (a *AccessReviewScopeV2) GetSpecificResourcesScope() *SpecificResourcesScope {
+	if a == nil {
+		return nil
+	}
+	return a.SpecificResourcesScope
+}
+
 func (a *AccessReviewScopeV2) GetGrantsByCriteriaScope() *GrantsByCriteriaScope {
 	if a == nil {
 		return nil
 	}
 	return a.GrantsByCriteriaScope
+}
+
+func (a *AccessReviewScopeV2) GetPrincipalTypeFilter() *PrincipalTypeFilter {
+	if a == nil {
+		return nil
+	}
+	return a.PrincipalTypeFilter
 }
 
 func (a *AccessReviewScopeV2) GetResourceSelectionScope() *ResourceSelectionScope {
@@ -149,11 +209,18 @@ func (a *AccessReviewScopeV2) GetResourceSelectionScope() *ResourceSelectionScop
 	return a.ResourceSelectionScope
 }
 
-func (a *AccessReviewScopeV2) GetResourceTypeSelectionScope() *ResourceTypeSelectionScope {
+func (a *AccessReviewScopeV2) GetResourceTypeSelectionScope1() *ResourceTypeSelectionScope {
 	if a == nil {
 		return nil
 	}
-	return a.ResourceTypeSelectionScope
+	return a.ResourceTypeSelectionScope1
+}
+
+func (a *AccessReviewScopeV2) GetScopeRoleSelectionScope() *ScopeRoleSelectionScope {
+	if a == nil {
+		return nil
+	}
+	return a.ScopeRoleSelectionScope
 }
 
 func (a *AccessReviewScopeV2) GetSelectedUsersScope() *SelectedUsersScope {
@@ -170,11 +237,11 @@ func (a *AccessReviewScopeV2) GetSpecificAccessConflictsScope() *SpecificAccessC
 	return a.SpecificAccessConflictsScope
 }
 
-func (a *AccessReviewScopeV2) GetSpecificResourcesScope() *SpecificResourcesScope {
+func (a *AccessReviewScopeV2) GetSpecificResourcesScope1() *SpecificResourcesScope {
 	if a == nil {
 		return nil
 	}
-	return a.SpecificResourcesScope
+	return a.SpecificResourcesScope1
 }
 
 func (a *AccessReviewScopeV2) GetUserCriteriaScope() *UserCriteriaScope {

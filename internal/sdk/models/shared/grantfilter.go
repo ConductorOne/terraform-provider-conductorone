@@ -51,21 +51,21 @@ func (e *GrantJustificationType) IsExact() bool {
 	return false
 }
 
-// GrantSourceFilter - The grantSourceFilter field.
-type GrantSourceFilter string
+// GrantFilterGrantSourceFilter - The grantSourceFilter field.
+type GrantFilterGrantSourceFilter string
 
 const (
-	GrantSourceFilterGrantSourceFilterUnspecified GrantSourceFilter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
-	GrantSourceFilterGrantSourceFilterDirect      GrantSourceFilter = "GRANT_SOURCE_FILTER_DIRECT"
-	GrantSourceFilterGrantSourceFilterInherited   GrantSourceFilter = "GRANT_SOURCE_FILTER_INHERITED"
+	GrantFilterGrantSourceFilterGrantSourceFilterUnspecified GrantFilterGrantSourceFilter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
+	GrantFilterGrantSourceFilterGrantSourceFilterDirect      GrantFilterGrantSourceFilter = "GRANT_SOURCE_FILTER_DIRECT"
+	GrantFilterGrantSourceFilterGrantSourceFilterInherited   GrantFilterGrantSourceFilter = "GRANT_SOURCE_FILTER_INHERITED"
 )
 
-func (e GrantSourceFilter) ToPointer() *GrantSourceFilter {
+func (e GrantFilterGrantSourceFilter) ToPointer() *GrantFilterGrantSourceFilter {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *GrantSourceFilter) IsExact() bool {
+func (e *GrantFilterGrantSourceFilter) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED":
@@ -82,7 +82,7 @@ type GrantFilter struct {
 	// The grantJustificationType field.
 	GrantJustificationType *GrantJustificationType `json:"grantJustificationType,omitempty"`
 	// The grantSourceFilter field.
-	GrantSourceFilter *GrantSourceFilter `json:"grantSourceFilter,omitempty"`
+	GrantSourceFilter *GrantFilterGrantSourceFilter `json:"grantSourceFilter,omitempty"`
 }
 
 func (g *GrantFilter) GetGrantFilterType() *GrantFilterType {
@@ -99,7 +99,7 @@ func (g *GrantFilter) GetGrantJustificationType() *GrantJustificationType {
 	return g.GrantJustificationType
 }
 
-func (g *GrantFilter) GetGrantSourceFilter() *GrantSourceFilter {
+func (g *GrantFilter) GetGrantSourceFilter() *GrantFilterGrantSourceFilter {
 	if g == nil {
 		return nil
 	}

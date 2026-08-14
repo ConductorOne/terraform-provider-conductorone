@@ -59,10 +59,17 @@ resource "conductorone_access_review_template_setup" "my_access_review_template_
       source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
       type_filter   = "GRANT_FILTER_TYPE_PERMANENT"
     }
+    principal_type_filter = "PRINCIPAL_TYPE_FILTER_UNSPECIFIED"
     resource_selection_scope = {
       # ...
     }
     resource_type_selection_scope = {
+      # ...
+    }
+    resource_type_selection_scope1 = {
+      # ...
+    }
+    scope_role_selection_scope = {
       # ...
     }
     selected_users_scope = {
@@ -74,6 +81,9 @@ resource "conductorone_access_review_template_setup" "my_access_review_template_
       # ...
     }
     specific_resources_scope = {
+      # ...
+    }
+    specific_resources_scope1 = {
       # ...
     }
     user_criteria_scope = {

@@ -25,6 +25,9 @@ type ConflictMonitor struct {
 	EntitlementSetBID *string `json:"entitlementSetBId,omitempty"`
 	// The unique identifier of this conflict monitor.
 	ID *string `json:"id,omitempty"`
+	// When true, the rule flags users who are in set A but NOT in set B ("is not
+	//  in"), instead of the default A-and-B intersection.
+	NegateGroupB *bool `json:"negateGroupB,omitempty"`
 	// The NotificationConfig message.
 	AccessConflictNotificationConfig *AccessConflictNotificationConfig `json:"notificationConfig,omitempty"`
 	UpdatedAt                        *time.Time                        `json:"updatedAt,omitempty"`
@@ -95,6 +98,13 @@ func (c *ConflictMonitor) GetID() *string {
 		return nil
 	}
 	return c.ID
+}
+
+func (c *ConflictMonitor) GetNegateGroupB() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.NegateGroupB
 }
 
 func (c *ConflictMonitor) GetAccessConflictNotificationConfig() *AccessConflictNotificationConfig {

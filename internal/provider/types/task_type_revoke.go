@@ -7,6 +7,7 @@ import (
 )
 
 type TaskTypeRevoke struct {
+	AppResourceRef   *AppResourceRef   `tfsdk:"app_resource_ref"`
 	TaskRevokeSource *TaskRevokeSource `tfsdk:"task_revoke_source"`
 	AppEntitlementID types.String      `tfsdk:"app_entitlement_id"`
 	AppID            types.String      `tfsdk:"app_id"`

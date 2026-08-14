@@ -55,23 +55,23 @@ func (e *TaskAuditViewEventType) IsExact() bool {
 	return false
 }
 
-// Source - The source field.
-type Source string
+// TaskAuditViewSource - The source field.
+type TaskAuditViewSource string
 
 const (
-	SourceSourceUnspecified   Source = "SOURCE_UNSPECIFIED"
-	SourceSourceC1            Source = "SOURCE_C1"
-	SourceSourceJira          Source = "SOURCE_JIRA"
-	SourceSourceSlack         Source = "SOURCE_SLACK"
-	SourceSourceCopilotAgents Source = "SOURCE_COPILOT_AGENTS"
+	TaskAuditViewSourceSourceUnspecified   TaskAuditViewSource = "SOURCE_UNSPECIFIED"
+	TaskAuditViewSourceSourceC1            TaskAuditViewSource = "SOURCE_C1"
+	TaskAuditViewSourceSourceJira          TaskAuditViewSource = "SOURCE_JIRA"
+	TaskAuditViewSourceSourceSlack         TaskAuditViewSource = "SOURCE_SLACK"
+	TaskAuditViewSourceSourceCopilotAgents TaskAuditViewSource = "SOURCE_COPILOT_AGENTS"
 )
 
-func (e Source) ToPointer() *Source {
+func (e TaskAuditViewSource) ToPointer() *TaskAuditViewSource {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Source) IsExact() bool {
+func (e *TaskAuditViewSource) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "SOURCE_UNSPECIFIED", "SOURCE_C1", "SOURCE_JIRA", "SOURCE_SLACK", "SOURCE_COPILOT_AGENTS":
@@ -145,9 +145,18 @@ func (e *Source) IsExact() bool {
 //   - createdReplacementExtensionGrantTask
 //   - taskCreatedFrom
 //   - reassignmentFallbackToAdmin
+//   - requestDefaultsApplied
+//   - provisionWaitingForEntitlementMerge
+//   - provisionEntitlementMergeCompleted
+//   - provisionEntitlementMergeTimedOut
+//   - accountDeleted
+//   - automationTriggered
 type TaskAuditView struct {
 	// The TaskAuditAccessRequestOutcome message.
 	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
+	// TaskAuditAccountDeleted records an account deletion reported by a connector
+	//  while completing a revoke action.
+	TaskAuditAccountDeleted *TaskAuditAccountDeleted `json:"accountDeleted,omitempty"`
 	// The TaskAuditAccountLifecycleActionCreated message.
 	TaskAuditAccountLifecycleActionCreated *TaskAuditAccountLifecycleActionCreated `json:"accountLifecycleActionCreated,omitempty"`
 	// The TaskAuditAccountLifecycleActionFailed message.
@@ -179,6 +188,9 @@ type TaskAuditView struct {
 	TaskAuditPolicyApprovalReassigned *TaskAuditPolicyApprovalReassigned `json:"approvalReassigned,omitempty"`
 	// The TaskAuditApprovalHappenedAutomatically message.
 	TaskAuditApprovalHappenedAutomatically *TaskAuditApprovalHappenedAutomatically `json:"approvedAutomatically,omitempty"`
+	// TaskAuditAutomationTriggered attributes a system-created task to the
+	//  automation execution that created it.
+	TaskAuditAutomationTriggered *TaskAuditAutomationTriggered `json:"automationTriggered,omitempty"`
 	// The TaskAuditBulkActionError message.
 	TaskAuditBulkActionError *TaskAuditBulkActionError `json:"bulkActionError,omitempty"`
 	// The TaskAuditCertifyOutcome message.
@@ -227,10 +239,16 @@ type TaskAuditView struct {
 	TaskAuditPolicyEvaluationStep *TaskAuditPolicyEvaluationStep `json:"policyEvaluationStep,omitempty"`
 	// The TaskAuditPolicyProvisionCancelled message.
 	TaskAuditPolicyProvisionCancelled *TaskAuditPolicyProvisionCancelled `json:"provisionCancelled,omitempty"`
+	// The TaskAuditProvisionEntitlementMergeCompleted message.
+	TaskAuditProvisionEntitlementMergeCompleted *TaskAuditProvisionEntitlementMergeCompleted `json:"provisionEntitlementMergeCompleted,omitempty"`
+	// The TaskAuditProvisionEntitlementMergeTimedOut message.
+	TaskAuditProvisionEntitlementMergeTimedOut *TaskAuditProvisionEntitlementMergeTimedOut `json:"provisionEntitlementMergeTimedOut,omitempty"`
 	// The TaskAuditPolicyProvisionError message.
 	TaskAuditPolicyProvisionError *TaskAuditPolicyProvisionError `json:"provisionError,omitempty"`
 	// The TaskAuditPolicyProvisionReassigned message.
 	TaskAuditPolicyProvisionReassigned *TaskAuditPolicyProvisionReassigned `json:"provisionReassigned,omitempty"`
+	// The TaskAuditProvisionWaitingForEntitlementMerge message.
+	TaskAuditProvisionWaitingForEntitlementMerge *TaskAuditProvisionWaitingForEntitlementMerge `json:"provisionWaitingForEntitlementMerge,omitempty"`
 	// The TaskAuditReassignedToDelegate message.
 	TaskAuditReassignedToDelegate *TaskAuditReassignedToDelegate `json:"reassignedToDelegate,omitempty"`
 	// TaskAuditReassignmentFallbackToAdmin is used when no eligible reviewers are found
@@ -239,12 +257,17 @@ type TaskAuditView struct {
 	TaskAuditReassignmentFallbackToAdmin *TaskAuditReassignmentFallbackToAdmin `json:"reassignmentFallbackToAdmin,omitempty"`
 	// The TaskAuditReassignmentListError message.
 	TaskAuditReassignmentListError *TaskAuditReassignmentListError `json:"reassignmentListError,omitempty"`
+	// TaskAuditRequestDefaultsApplied records which tier of the request-settings
+	//  precedence chain supplied the defaults for a grant request. The rule ID, not
+	//  its name, is stored; consumers resolve the current display name via
+	//  (app_id, routing_rule_id).
+	TaskAuditRequestDefaultsApplied *TaskAuditRequestDefaultsApplied `json:"requestDefaultsApplied,omitempty"`
 	// The TaskAuditRevokeOutcome message.
 	TaskAuditRevokeOutcome *TaskAuditRevokeOutcome `json:"revokeOutcome,omitempty"`
 	// The TaskAuditSLAEscalation message.
 	TaskAuditSLAEscalation *TaskAuditSLAEscalation `json:"slaEscalation,omitempty"`
 	// The source field.
-	Source *Source `json:"source,omitempty"`
+	Source *TaskAuditViewSource `json:"source,omitempty"`
 	// The TaskAuditStateChange message.
 	TaskAuditStateChange *TaskAuditStateChange `json:"stateChange,omitempty"`
 	// The TaskAuditStepSkipped message.
@@ -315,6 +338,13 @@ func (t *TaskAuditView) GetTaskAuditAccessRequestOutcome() *TaskAuditAccessReque
 		return nil
 	}
 	return t.TaskAuditAccessRequestOutcome
+}
+
+func (t *TaskAuditView) GetTaskAuditAccountDeleted() *TaskAuditAccountDeleted {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditAccountDeleted
 }
 
 func (t *TaskAuditView) GetTaskAuditAccountLifecycleActionCreated() *TaskAuditAccountLifecycleActionCreated {
@@ -399,6 +429,13 @@ func (t *TaskAuditView) GetTaskAuditApprovalHappenedAutomatically() *TaskAuditAp
 		return nil
 	}
 	return t.TaskAuditApprovalHappenedAutomatically
+}
+
+func (t *TaskAuditView) GetTaskAuditAutomationTriggered() *TaskAuditAutomationTriggered {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditAutomationTriggered
 }
 
 func (t *TaskAuditView) GetTaskAuditBulkActionError() *TaskAuditBulkActionError {
@@ -569,6 +606,20 @@ func (t *TaskAuditView) GetTaskAuditPolicyProvisionCancelled() *TaskAuditPolicyP
 	return t.TaskAuditPolicyProvisionCancelled
 }
 
+func (t *TaskAuditView) GetTaskAuditProvisionEntitlementMergeCompleted() *TaskAuditProvisionEntitlementMergeCompleted {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditProvisionEntitlementMergeCompleted
+}
+
+func (t *TaskAuditView) GetTaskAuditProvisionEntitlementMergeTimedOut() *TaskAuditProvisionEntitlementMergeTimedOut {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditProvisionEntitlementMergeTimedOut
+}
+
 func (t *TaskAuditView) GetTaskAuditPolicyProvisionError() *TaskAuditPolicyProvisionError {
 	if t == nil {
 		return nil
@@ -581,6 +632,13 @@ func (t *TaskAuditView) GetTaskAuditPolicyProvisionReassigned() *TaskAuditPolicy
 		return nil
 	}
 	return t.TaskAuditPolicyProvisionReassigned
+}
+
+func (t *TaskAuditView) GetTaskAuditProvisionWaitingForEntitlementMerge() *TaskAuditProvisionWaitingForEntitlementMerge {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditProvisionWaitingForEntitlementMerge
 }
 
 func (t *TaskAuditView) GetTaskAuditReassignedToDelegate() *TaskAuditReassignedToDelegate {
@@ -604,6 +662,13 @@ func (t *TaskAuditView) GetTaskAuditReassignmentListError() *TaskAuditReassignme
 	return t.TaskAuditReassignmentListError
 }
 
+func (t *TaskAuditView) GetTaskAuditRequestDefaultsApplied() *TaskAuditRequestDefaultsApplied {
+	if t == nil {
+		return nil
+	}
+	return t.TaskAuditRequestDefaultsApplied
+}
+
 func (t *TaskAuditView) GetTaskAuditRevokeOutcome() *TaskAuditRevokeOutcome {
 	if t == nil {
 		return nil
@@ -618,7 +683,7 @@ func (t *TaskAuditView) GetTaskAuditSLAEscalation() *TaskAuditSLAEscalation {
 	return t.TaskAuditSLAEscalation
 }
 
-func (t *TaskAuditView) GetSource() *Source {
+func (t *TaskAuditView) GetSource() *TaskAuditViewSource {
 	if t == nil {
 		return nil
 	}

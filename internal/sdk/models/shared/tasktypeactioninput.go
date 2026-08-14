@@ -6,18 +6,25 @@ package shared
 //
 // This message contains a oneof named target_object. Only a single field of the following list may be set at a time:
 //   - scopeRole
+//   - toolCall
+//   - finding
 type TaskTypeActionInput struct {
 	// ActionInstance is the API mirror of the internal immutable snapshot of an
 	//  Action captured on a TaskTypeAction at ticket-creation time.
 	//
 	// This message contains a oneof named target_ref. Only a single field of the following list may be set at a time:
+	//   - batonResourceActionRef
 	//   - connectorActionRef
 	//
 	TaskActionInstance *TaskActionInstanceInput `json:"actionInstance,omitempty"`
+	// The finding an inert TYPE_MANUAL action ticket remediates.
+	FindingTarget *FindingTargetInput `json:"finding,omitempty"`
 	// Scope-role variant of TaskTypeAction.target_object. The UI uses the
 	//  embedded identifiers to build links and title strings without a separate
 	//  Action fetch.
 	ScopeRole *ScopeRoleInput `json:"scopeRole,omitempty"`
+	// The GatedToolCallTarget message.
+	GatedToolCallTarget *GatedToolCallTargetInput `json:"toolCall,omitempty"`
 }
 
 func (t *TaskTypeActionInput) GetTaskActionInstance() *TaskActionInstanceInput {
@@ -27,9 +34,23 @@ func (t *TaskTypeActionInput) GetTaskActionInstance() *TaskActionInstanceInput {
 	return t.TaskActionInstance
 }
 
+func (t *TaskTypeActionInput) GetFindingTarget() *FindingTargetInput {
+	if t == nil {
+		return nil
+	}
+	return t.FindingTarget
+}
+
 func (t *TaskTypeActionInput) GetScopeRole() *ScopeRoleInput {
 	if t == nil {
 		return nil
 	}
 	return t.ScopeRole
+}
+
+func (t *TaskTypeActionInput) GetGatedToolCallTarget() *GatedToolCallTargetInput {
+	if t == nil {
+		return nil
+	}
+	return t.GatedToolCallTarget
 }

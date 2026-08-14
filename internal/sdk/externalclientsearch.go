@@ -32,6 +32,8 @@ func newExternalClientSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfi
 
 // Search - NOTE: Searches external client grants for all users
 // Search returns external client grants for all users in the tenant.
+//
+//	Request a modest page_size (≤25) to keep responses small.
 func (s *ExternalClientSearch) Search(ctx context.Context, request *shared.ExternalClientSearchServiceSearchRequest, opts ...operations.Option) (*operations.C1APIIamV1ExternalClientSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

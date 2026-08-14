@@ -7,9 +7,11 @@ import (
 )
 
 type UserView struct {
-	User              *User        `tfsdk:"user"`
-	DelegatedUserPath types.String `tfsdk:"delegated_user_path"`
-	DirectoriesPath   types.String `tfsdk:"directories_path"`
-	ManagersPath      types.String `tfsdk:"managers_path"`
-	RolesPath         types.String `tfsdk:"roles_path"`
+	User                       *User                       `tfsdk:"user"`
+	UserActorObjectPermissions *UserActorObjectPermissions `tfsdk:"user_actor_object_permissions"`
+	DelegatedUserPath          types.String                `tfsdk:"delegated_user_path"`
+	DirectoriesPath            types.String                `tfsdk:"directories_path"`
+	ManagersPath               types.String                `tfsdk:"managers_path"`
+	RolesPath                  types.String                `tfsdk:"roles_path"`
+	UserID                     types.String                `tfsdk:"user_id"`
 }

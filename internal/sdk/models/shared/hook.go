@@ -14,6 +14,7 @@ const (
 	EventHookEventTypeUnspecified Event = "HOOK_EVENT_TYPE_UNSPECIFIED"
 	EventHookEventTypePreToolUse  Event = "HOOK_EVENT_TYPE_PRE_TOOL_USE"
 	EventHookEventTypePostToolUse Event = "HOOK_EVENT_TYPE_POST_TOOL_USE"
+	EventHookEventTypePreOutput   Event = "HOOK_EVENT_TYPE_PRE_OUTPUT"
 )
 
 func (e Event) ToPointer() *Event {
@@ -24,7 +25,7 @@ func (e Event) ToPointer() *Event {
 func (e *Event) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "HOOK_EVENT_TYPE_UNSPECIFIED", "HOOK_EVENT_TYPE_PRE_TOOL_USE", "HOOK_EVENT_TYPE_POST_TOOL_USE":
+		case "HOOK_EVENT_TYPE_UNSPECIFIED", "HOOK_EVENT_TYPE_PRE_TOOL_USE", "HOOK_EVENT_TYPE_POST_TOOL_USE", "HOOK_EVENT_TYPE_PRE_OUTPUT":
 			return true
 		}
 	}
@@ -46,6 +47,12 @@ type Hook struct {
 	//   - queryScopeLimit
 	//   - writeAuthorization
 	//   - sensitiveFileGuard
+	//   - toolOutputSizeGuard
+	//   - secretsMasking
+	//   - linkFilter
+	//   - encodedContentGuard
+	//   - promptInjectionScan
+	//   - blockOutput
 	//
 	BuiltInPattern *BuiltInPattern `json:"builtinPattern,omitempty"`
 	CreatedAt      *time.Time      `json:"createdAt,omitempty"`
@@ -57,12 +64,18 @@ type Hook struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// The event field.
 	Event *Event `json:"event,omitempty"`
-	// HookFilter determines which tool calls a hook applies to.
+	// HookFilter determines which calls (or, for HOOK_EVENT_TYPE_PRE_OUTPUT,
+	//  which outgoing response chunks) a hook applies to.
 	HookFilter *HookFilter `json:"filter,omitempty"`
 	// HookFunctionRef identifies a customer-authored function to invoke.
 	HookFunctionRef *HookFunctionRef `json:"function,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
+	// managed_by_guardrails marks a hook as selectable in a guardrail rule's
+	//  curated pre_hook_ids/post_hook_ids. A hook left false (the default,
+	//  including every pre-existing hook) always runs regardless of guardrail
+	//  state; a hook set true only runs when a matched rule selects it.
+	ManagedByGuardrails *bool `json:"managedByGuardrails,omitempty"`
 	// The priority field.
 	Priority  *int       `json:"priority,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -142,6 +155,13 @@ func (h *Hook) GetID() *string {
 	return h.ID
 }
 
+func (h *Hook) GetManagedByGuardrails() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.ManagedByGuardrails
+}
+
 func (h *Hook) GetPriority() *int {
 	if h == nil {
 		return nil
@@ -171,6 +191,12 @@ type HookInput struct {
 	//   - queryScopeLimit
 	//   - writeAuthorization
 	//   - sensitiveFileGuard
+	//   - toolOutputSizeGuard
+	//   - secretsMasking
+	//   - linkFilter
+	//   - encodedContentGuard
+	//   - promptInjectionScan
+	//   - blockOutput
 	//
 	BuiltInPattern *BuiltInPattern `json:"builtinPattern,omitempty"`
 	// The description field.
@@ -181,12 +207,18 @@ type HookInput struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// The event field.
 	Event *Event `json:"event,omitempty"`
-	// HookFilter determines which tool calls a hook applies to.
+	// HookFilter determines which calls (or, for HOOK_EVENT_TYPE_PRE_OUTPUT,
+	//  which outgoing response chunks) a hook applies to.
 	HookFilter *HookFilter `json:"filter,omitempty"`
 	// HookFunctionRef identifies a customer-authored function to invoke.
 	HookFunctionRef *HookFunctionRef `json:"function,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
+	// managed_by_guardrails marks a hook as selectable in a guardrail rule's
+	//  curated pre_hook_ids/post_hook_ids. A hook left false (the default,
+	//  including every pre-existing hook) always runs regardless of guardrail
+	//  state; a hook set true only runs when a matched rule selects it.
+	ManagedByGuardrails *bool `json:"managedByGuardrails,omitempty"`
 	// The priority field.
 	Priority *int `json:"priority,omitempty"`
 }
@@ -245,6 +277,13 @@ func (h *HookInput) GetID() *string {
 		return nil
 	}
 	return h.ID
+}
+
+func (h *HookInput) GetManagedByGuardrails() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.ManagedByGuardrails
 }
 
 func (h *HookInput) GetPriority() *int {

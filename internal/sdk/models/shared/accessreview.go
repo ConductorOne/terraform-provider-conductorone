@@ -116,6 +116,7 @@ const (
 	AccessReviewScopeTypeAccessReviewScopeTypeByAccessConflicts AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
 	AccessReviewScopeTypeAccessReviewScopeTypeByResource        AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 	AccessReviewScopeTypeAccessReviewScopeTypeByInheritance     AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"
+	AccessReviewScopeTypeAccessReviewScopeTypeByUsers           AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"
 )
 
 func (e AccessReviewScopeType) ToPointer() *AccessReviewScopeType {
@@ -126,7 +127,7 @@ func (e AccessReviewScopeType) ToPointer() *AccessReviewScopeType {
 func (e *AccessReviewScopeType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE":
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS":
 			return true
 		}
 	}
@@ -231,8 +232,11 @@ type AccessReview struct {
 	// The ID of the review policy that governs how review tasks are assigned and resolved.
 	PolicyID *string `json:"policyId,omitempty"`
 	// Optional instructions displayed to reviewers when completing their review tasks.
-	ReviewInstructions *string    `json:"reviewInstructions,omitempty"`
-	ScheduledStartDate *time.Time `json:"scheduledStartDate,omitempty"`
+	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	// Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+	//  Empty = reviewers see no profile attributes in the AppUser tooltip.
+	ReviewerAttributeConfig *ReviewerAttributeConfig `json:"reviewerAttributeConfig,omitempty"`
+	ScheduledStartDate      *time.Time               `json:"scheduledStartDate,omitempty"`
 	// The AccessReviewScope message.
 	AccessReviewScope *AccessReviewScope `json:"scope,omitempty"`
 	// this sets the scope type for the access review
@@ -271,6 +275,11 @@ type AccessReview struct {
 	//
 	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
 	//   - resourceSelection
+	//
+	//
+	// This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
+	//   - excludedSpecificResources
+	//   - excludedResourceTypeSelections
 	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
 	// Internal version counter incremented when the campaign scope changes.
@@ -509,6 +518,13 @@ func (a *AccessReview) GetReviewInstructions() *string {
 	return a.ReviewInstructions
 }
 
+func (a *AccessReview) GetReviewerAttributeConfig() *ReviewerAttributeConfig {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewerAttributeConfig
+}
+
 func (a *AccessReview) GetScheduledStartDate() *time.Time {
 	if a == nil {
 		return nil
@@ -646,8 +662,11 @@ type AccessReviewInput struct {
 	// The ID of the review policy that governs how review tasks are assigned and resolved.
 	PolicyID *string `json:"policyId,omitempty"`
 	// Optional instructions displayed to reviewers when completing their review tasks.
-	ReviewInstructions *string    `json:"reviewInstructions,omitempty"`
-	ScheduledStartDate *time.Time `json:"scheduledStartDate,omitempty"`
+	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
+	// Allowlist of AppUser.profile keys visible to reviewers, scoped per app.
+	//  Empty = reviewers see no profile attributes in the AppUser tooltip.
+	ReviewerAttributeConfig *ReviewerAttributeConfig `json:"reviewerAttributeConfig,omitempty"`
+	ScheduledStartDate      *time.Time               `json:"scheduledStartDate,omitempty"`
 	// The AccessReviewScope message.
 	AccessReviewScope *AccessReviewScope `json:"scope,omitempty"`
 	// this sets the scope type for the access review
@@ -686,6 +705,11 @@ type AccessReviewInput struct {
 	//
 	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
 	//   - resourceSelection
+	//
+	//
+	// This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
+	//   - excludedSpecificResources
+	//   - excludedResourceTypeSelections
 	//
 	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
 	// Internal version counter incremented when the campaign scope changes.
@@ -907,6 +931,13 @@ func (a *AccessReviewInput) GetReviewInstructions() *string {
 		return nil
 	}
 	return a.ReviewInstructions
+}
+
+func (a *AccessReviewInput) GetReviewerAttributeConfig() *ReviewerAttributeConfig {
+	if a == nil {
+		return nil
+	}
+	return a.ReviewerAttributeConfig
 }
 
 func (a *AccessReviewInput) GetScheduledStartDate() *time.Time {

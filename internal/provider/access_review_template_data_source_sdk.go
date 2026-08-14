@@ -28,6 +28,24 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 			} else {
 				r.AccessReviewColumnConfig.Columns = nil
 			}
+			if resp.AccessReviewColumnConfig.OrderedColumns != nil {
+				r.AccessReviewColumnConfig.OrderedColumns = []tfTypes.AccessReviewTaskColumnRef{}
+
+				for _, orderedColumnsItem := range resp.AccessReviewColumnConfig.OrderedColumns {
+					var orderedColumns tfTypes.AccessReviewTaskColumnRef
+
+					orderedColumns.AppUserAttributeKey = types.StringPointerValue(orderedColumnsItem.AppUserAttributeKey)
+					if orderedColumnsItem.Builtin != nil {
+						orderedColumns.Builtin = types.StringValue(string(*orderedColumnsItem.Builtin))
+					} else {
+						orderedColumns.Builtin = types.StringNull()
+					}
+
+					r.AccessReviewColumnConfig.OrderedColumns = append(r.AccessReviewColumnConfig.OrderedColumns, orderedColumns)
+				}
+			} else {
+				r.AccessReviewColumnConfig.OrderedColumns = nil
+			}
 		}
 		r.AccessReviewDuration = types.StringPointerValue(resp.AccessReviewDuration)
 		if resp.AccessReviewInclusionScope == nil {
@@ -237,6 +255,11 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 					r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter = types.StringNull()
 				}
 			}
+			if resp.AccessReviewScopeV2.PrincipalTypeFilter != nil {
+				r.AccessReviewScopeV2.PrincipalTypeFilter = types.StringValue(string(*resp.AccessReviewScopeV2.PrincipalTypeFilter))
+			} else {
+				r.AccessReviewScopeV2.PrincipalTypeFilter = types.StringNull()
+			}
 			if resp.AccessReviewScopeV2.ResourceSelectionScope == nil {
 				r.AccessReviewScopeV2.ResourceSelectionScope = nil
 			} else {
@@ -246,6 +269,16 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = nil
 			} else {
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.AccessReviewScopeV2.ResourceTypeSelectionScope1 == nil {
+				r.AccessReviewScopeV2.ResourceTypeSelectionScope1 = nil
+			} else {
+				r.AccessReviewScopeV2.ResourceTypeSelectionScope1 = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.AccessReviewScopeV2.ScopeRoleSelectionScope == nil {
+				r.AccessReviewScopeV2.ScopeRoleSelectionScope = nil
+			} else {
+				r.AccessReviewScopeV2.ScopeRoleSelectionScope = &tfTypes.ScopeRoleSelectionScope{}
 			}
 			if resp.AccessReviewScopeV2.SelectedUsersScope == nil {
 				r.AccessReviewScopeV2.SelectedUsersScope = nil
@@ -269,6 +302,11 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 				r.AccessReviewScopeV2.SpecificResourcesScope = nil
 			} else {
 				r.AccessReviewScopeV2.SpecificResourcesScope = &tfTypes.SpecificResourcesScope{}
+			}
+			if resp.AccessReviewScopeV2.SpecificResourcesScope1 == nil {
+				r.AccessReviewScopeV2.SpecificResourcesScope1 = nil
+			} else {
+				r.AccessReviewScopeV2.SpecificResourcesScope1 = &tfTypes.SpecificResourcesScope{}
 			}
 			if resp.AccessReviewScopeV2.UserCriteriaScope == nil {
 				r.AccessReviewScopeV2.UserCriteriaScope = nil
@@ -383,6 +421,25 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 			r.RecurrenceRule.Occurrences = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.RecurrenceRule.Occurrences))
 			r.RecurrenceRule.StartDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.RecurrenceRule.StartDate))
 		}
+		if resp.ReviewerAttributeConfig == nil {
+			r.ReviewerAttributeConfig = nil
+		} else {
+			r.ReviewerAttributeConfig = &tfTypes.ReviewerAttributeConfig{}
+			if resp.ReviewerAttributeConfig.Bindings != nil {
+				r.ReviewerAttributeConfig.Bindings = []tfTypes.ReviewerAttributeBinding{}
+
+				for _, bindingsItem := range resp.ReviewerAttributeConfig.Bindings {
+					var bindings tfTypes.ReviewerAttributeBinding
+
+					bindings.AppID = types.StringPointerValue(bindingsItem.AppID)
+					bindings.AttributeKey = types.StringPointerValue(bindingsItem.AttributeKey)
+
+					r.ReviewerAttributeConfig.Bindings = append(r.ReviewerAttributeConfig.Bindings, bindings)
+				}
+			} else {
+				r.ReviewerAttributeConfig.Bindings = nil
+			}
+		}
 		r.ReviewInstructions = types.StringPointerValue(resp.ReviewInstructions)
 		if resp.ReviewSignatureConfig == nil {
 			r.ReviewSignatureConfig = nil
@@ -402,7 +459,9 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 			r.SlackChannel = nil
 		} else {
 			r.SlackChannel = &tfTypes.SlackChannel{}
+			r.SlackChannel.ChannelID = types.StringPointerValue(resp.SlackChannel.ChannelID)
 			r.SlackChannel.Description = types.StringPointerValue(resp.SlackChannel.Description)
+			r.SlackChannel.IsChannelID = types.BoolPointerValue(resp.SlackChannel.IsChannelID)
 			r.SlackChannel.Name = types.StringPointerValue(resp.SlackChannel.Name)
 		}
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))

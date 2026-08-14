@@ -2,11 +2,15 @@
 
 package shared
 
-// HookFilter determines which tool calls a hook applies to.
+// HookFilter determines which calls (or, for HOOK_EVENT_TYPE_PRE_OUTPUT,
+//
+//	which outgoing response chunks) a hook applies to.
 type HookFilter struct {
-	// CEL expression evaluated against tool call context.
-	//  Available variable: ctx.tool_name (string).
-	//  Must evaluate to bool. Empty matches all tools.
+	// CEL expression evaluated against event context. Must evaluate to bool,
+	//  empty = matches everything for the event type.
+	//  HOOK_EVENT_TYPE_PRE_TOOL_USE / POST_TOOL_USE: ctx.tool_name (string).
+	//  HOOK_EVENT_TYPE_PRE_OUTPUT: ctx.untrusted_class (string), ctx.surface
+	//  (string, "slack" or "web").
 	CelExpression *string `json:"celExpression,omitempty"`
 }
 

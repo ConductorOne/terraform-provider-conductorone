@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -43,16 +42,19 @@ type FunctionResourceModel struct {
 	FunctionsServiceDeleteFunctionRequest *tfTypes.FunctionsServiceDeleteFunctionRequest `tfsdk:"functions_service_delete_function_request"`
 	FunctionType                          types.String                                   `tfsdk:"function_type"`
 	Head                                  types.String                                   `tfsdk:"head"`
+	HookRefs                              []types.String                                 `tfsdk:"hook_refs"`
 	ID                                    types.String                                   `tfsdk:"id"`
 	InitialContent                        map[string]types.String                        `tfsdk:"initial_content"`
 	IsDraft                               types.Bool                                     `tfsdk:"is_draft"`
 	Message                               types.String                                   `tfsdk:"message"`
 	OutboundNetworkAllowlist              []types.String                                 `tfsdk:"outbound_network_allowlist"`
+	ProvisionedConcurrency                types.Int32                                    `tfsdk:"provisioned_concurrency"`
 	PublishedCommitID                     types.String                                   `tfsdk:"published_commit_id"`
 	ScopedRoleIds                         []types.String                                 `tfsdk:"scoped_role_ids"`
 	Secret                                map[string]types.String                        `tfsdk:"secret"`
 	UpdatedAt                             types.String                                   `tfsdk:"updated_at"`
 	UseSpn                                types.Bool                                     `tfsdk:"use_spn"`
+	WorkflowTemplateRefs                  []types.String                                 `tfsdk:"workflow_template_refs"`
 }
 
 func (r *FunctionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -68,11 +70,8 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 				Description: `The author field.`,
 			},
 			"commit_message": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `The commit message describing the initial code submission. Requires replacement if changed.`,
+				Optional:    true,
+				Description: `The commit message describing the initial code submission.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -92,9 +91,11 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 				Description: `The functionId field.`,
 			},
 			"function_type": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The type of function to create, controlling its execution environment and capabilities. possible known values include one of ["FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE"]`,
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `The type of function to create. Use FUNCTION_TYPE_ANY for user functions —` + "\n" +
+					` that is the type the Functions UI lists. Do not use any other value.` + "\n" +
+					`possible known values include one of ["FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE"]`,
 			},
 			"functions_service_delete_function_request": schema.SingleNestedAttribute{
 				Optional:    true,
@@ -103,6 +104,14 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 			"head": schema.StringAttribute{
 				Computed:    true,
 				Description: `The head field.`,
+			},
+			"hook_refs": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `IDs of every non-deleted hook that still references this function.` + "\n" +
+					` Read-only: maintained by the Hook API, not by CreateFunction/UpdateFunction.` + "\n" +
+					` Non-empty means DeleteFunction will refuse to delete until these are` + "\n" +
+					` removed or retargeted.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -114,7 +123,20 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 					mapplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				ElementType: types.StringType,
-				Description: `Map of filename to file content for the initial code commit. Requires replacement if changed.`,
+				MarkdownDescription: `File map for the initial code commit. Keys are file paths in the` + "\n" +
+					` function root (e.g. "main.ts", "main.test.ts"); values are file` + "\n" +
+					` contents as bytes.` + "\n" +
+					`` + "\n" +
+					` Runtime: TypeScript. The entry file MUST be "main.ts" exporting a` + "\n" +
+					` default async handler:` + "\n" +
+					`` + "\n" +
+					`   import { JSONObject } from "@c1/functions-sdk";` + "\n" +
+					`   export default async function main(input: JSONObject): Promise<JSONObject> {` + "\n" +
+					`     return { ok: true, echo: input };` + "\n" +
+					`   }` + "\n" +
+					`` + "\n" +
+					` The handler MUST return a JSON object — not a primitive, array, or null.` + "\n" +
+					`Requires replacement if changed.`,
 			},
 			"is_draft": schema.BoolAttribute{
 				Computed:    true,
@@ -128,6 +150,14 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `The outboundNetworkAllowlist field.`,
+			},
+			"provisioned_concurrency": schema.Int32Attribute{
+				Computed: true,
+				MarkdownDescription: `Number of pre-warmed Lambda instances. 0 (default) leaves the function` + "\n" +
+					` cold-started on first invoke. > 0 reserves and provisions that many` + "\n" +
+					` execution environments via AWS Lambda provisioned concurrency.` + "\n" +
+					` Ignored for FUNCTION_TYPE_CODE_MODE functions — that value is driven` + "\n" +
+					` by AIGovernanceSettings.code_mode_concurrency.`,
 			},
 			"published_commit_id": schema.StringAttribute{
 				Computed:    true,
@@ -159,6 +189,12 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 					` function:<id>. Read-only from clients: set by CreateFunction (when the` + "\n" +
 					` tenant has completed the FunctionsToSPN migration) and by the migration` + "\n" +
 					` itself, never by UpdateFunction. Retired once all functions are on SPN.`,
+			},
+			"workflow_template_refs": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `IDs of every non-deleted workflow template whose CallFunction step still` + "\n" +
+					` references this function. Read-only, same semantics as hook_refs.`,
 			},
 		},
 	}

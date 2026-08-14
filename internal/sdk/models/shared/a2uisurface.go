@@ -7,6 +7,31 @@ import (
 	"time"
 )
 
+// A2UISurfaceRole - The role field.
+type A2UISurfaceRole string
+
+const (
+	A2UISurfaceRoleSurfaceRoleUnspecified A2UISurfaceRole = "SURFACE_ROLE_UNSPECIFIED"
+	A2UISurfaceRoleSurfaceRolePrimary     A2UISurfaceRole = "SURFACE_ROLE_PRIMARY"
+	A2UISurfaceRoleSurfaceRoleStatus      A2UISurfaceRole = "SURFACE_ROLE_STATUS"
+	A2UISurfaceRoleSurfaceRolePrompt      A2UISurfaceRole = "SURFACE_ROLE_PROMPT"
+)
+
+func (e A2UISurfaceRole) ToPointer() *A2UISurfaceRole {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *A2UISurfaceRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SURFACE_ROLE_UNSPECIFIED", "SURFACE_ROLE_PRIMARY", "SURFACE_ROLE_STATUS", "SURFACE_ROLE_PROMPT":
+			return true
+		}
+	}
+	return false
+}
+
 // State - The state field.
 type State string
 
@@ -44,6 +69,8 @@ type A2UISurface struct {
 	// The dataModelJson field.
 	DataModelJSON *string    `json:"dataModelJson,omitempty"`
 	DeletedAt     *time.Time `json:"deletedAt,omitempty"`
+	// The role field.
+	Role *A2UISurfaceRole `json:"role,omitempty"`
 	// The schemaVersion field.
 	SchemaVersion *string `json:"schemaVersion,omitempty"`
 	// The sendDataModel field.
@@ -108,6 +135,13 @@ func (a *A2UISurface) GetDeletedAt() *time.Time {
 		return nil
 	}
 	return a.DeletedAt
+}
+
+func (a *A2UISurface) GetRole() *A2UISurfaceRole {
+	if a == nil {
+		return nil
+	}
+	return a.Role
 }
 
 func (a *A2UISurface) GetSchemaVersion() *string {

@@ -13,8 +13,10 @@ type ServicePrincipal struct {
 	// The display name of the service principal.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The unique user ID of the service principal.
-	ID        *string    `json:"id,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	ID *string `json:"id,omitempty"`
+	// ActorObjectPermissions describes which actions the calling user is permitted to perform on an object, as determined by policy.
+	UserActorObjectPermissions *UserActorObjectPermissions `json:"objectPermissions,omitempty"`
+	UpdatedAt                  *time.Time                  `json:"updatedAt,omitempty"`
 	// The User object provides all of the details for an user, as well as some configuration.
 	User *User `json:"user,omitempty"`
 }
@@ -49,6 +51,13 @@ func (s *ServicePrincipal) GetID() *string {
 		return nil
 	}
 	return s.ID
+}
+
+func (s *ServicePrincipal) GetUserActorObjectPermissions() *UserActorObjectPermissions {
+	if s == nil {
+		return nil
+	}
+	return s.UserActorObjectPermissions
 }
 
 func (s *ServicePrincipal) GetUpdatedAt() *time.Time {

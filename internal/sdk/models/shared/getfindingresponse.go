@@ -15,17 +15,35 @@ type GetFindingResponse struct {
 	// This message contains a oneof named finding_type. Only a single field of the following list may be set at a time:
 	//   - similarUsernameMatch
 	//   - serviceAccountMisclassification
+	//   - nhiUnowned
+	//   - serviceAccountUnowned
 	//   - decoyCredentialUsed
+	//   - custom
+	//   - connectorAnomalyDetectionDisabled
+	//   - deactivatedOwner
+	//   - unusedSecret
+	//   - credentialPubliclyExposed
+	//   - decoyPubliclyExposed
+	//   - credentialExpiring
 	//
 	//
 	// This message contains a oneof named target. Only a single field of the following list may be set at a time:
 	//   - identityUserTarget
 	//   - appUserTarget
+	//   - decoyTarget
+	//   - appResourceTarget
+	//   - tenantTarget
+	//   - connectorTarget
 	//
 	//
 	// This message contains a oneof named evidence. Only a single field of the following list may be set at a time:
 	//   - similarUsernameMatchEvidence
 	//   - serviceAccountMisclassificationEvidence
+	//   - deactivatedOwnerEvidence
+	//   - unusedSecretEvidence
+	//   - credentialPubliclyExposedEvidence
+	//   - decoyPubliclyExposedEvidence
+	//   - credentialExpiringEvidence
 	//
 	Finding *Finding `json:"finding,omitempty"`
 }

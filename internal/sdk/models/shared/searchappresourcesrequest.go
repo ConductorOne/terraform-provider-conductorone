@@ -2,19 +2,170 @@
 
 package shared
 
+type AgentStatuses string
+
+const (
+	AgentStatusesAgentStatusUnspecified AgentStatuses = "AGENT_STATUS_UNSPECIFIED"
+	AgentStatusesAgentStatusReady       AgentStatuses = "AGENT_STATUS_READY"
+	AgentStatusesAgentStatusDisabled    AgentStatuses = "AGENT_STATUS_DISABLED"
+	AgentStatusesAgentStatusDeleted     AgentStatuses = "AGENT_STATUS_DELETED"
+)
+
+func (e AgentStatuses) ToPointer() *AgentStatuses {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AgentStatuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AGENT_STATUS_UNSPECIFIED", "AGENT_STATUS_READY", "AGENT_STATUS_DISABLED", "AGENT_STATUS_DELETED":
+			return true
+		}
+	}
+	return false
+}
+
+type CredentialTypes string
+
+const (
+	CredentialTypesCredentialTypeUnspecified   CredentialTypes = "CREDENTIAL_TYPE_UNSPECIFIED"
+	CredentialTypesCredentialTypeStaticSecret  CredentialTypes = "CREDENTIAL_TYPE_STATIC_SECRET"
+	CredentialTypesCredentialTypeAsymmetricKey CredentialTypes = "CREDENTIAL_TYPE_ASYMMETRIC_KEY"
+	CredentialTypesCredentialTypeCertificate   CredentialTypes = "CREDENTIAL_TYPE_CERTIFICATE"
+)
+
+func (e CredentialTypes) ToPointer() *CredentialTypes {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CredentialTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CREDENTIAL_TYPE_UNSPECIFIED", "CREDENTIAL_TYPE_STATIC_SECRET", "CREDENTIAL_TYPE_ASYMMETRIC_KEY", "CREDENTIAL_TYPE_CERTIFICATE":
+			return true
+		}
+	}
+	return false
+}
+
+// Direction to sort in. Unspecified falls back to ASC when sort_field is set.
+//
+//	No defined_only validation here: protoc-gen-validate mis-resolves the
+//	cross-package enum name map to this file's c1.models.app.v1 import alias
+//	instead of c1.api.search.v1, which fails to compile. The query builder
+//	already treats any unrecognized value as ASC, so this is safe to omit.
+type Direction string
+
+const (
+	DirectionSortDirectionUnspecified Direction = "SORT_DIRECTION_UNSPECIFIED"
+	DirectionSortDirectionAsc         Direction = "SORT_DIRECTION_ASC"
+	DirectionSortDirectionDesc        Direction = "SORT_DIRECTION_DESC"
+)
+
+func (e Direction) ToPointer() *Direction {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Direction) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC":
+			return true
+		}
+	}
+	return false
+}
+
+type SearchAppResourcesRequestNhiTypes string
+
+const (
+	SearchAppResourcesRequestNhiTypesNhiTypeUnspecified     SearchAppResourcesRequestNhiTypes = "NHI_TYPE_UNSPECIFIED"
+	SearchAppResourcesRequestNhiTypesNhiTypeAppRegistration SearchAppResourcesRequestNhiTypes = "NHI_TYPE_APP_REGISTRATION"
+	SearchAppResourcesRequestNhiTypesNhiTypeAssumableRole   SearchAppResourcesRequestNhiTypes = "NHI_TYPE_ASSUMABLE_ROLE"
+	SearchAppResourcesRequestNhiTypesNhiTypeManagedIdentity SearchAppResourcesRequestNhiTypes = "NHI_TYPE_MANAGED_IDENTITY"
+)
+
+func (e SearchAppResourcesRequestNhiTypes) ToPointer() *SearchAppResourcesRequestNhiTypes {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SearchAppResourcesRequestNhiTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "NHI_TYPE_UNSPECIFIED", "NHI_TYPE_APP_REGISTRATION", "NHI_TYPE_ASSUMABLE_ROLE", "NHI_TYPE_MANAGED_IDENTITY":
+			return true
+		}
+	}
+	return false
+}
+
+// SortField - Column to sort by. Unspecified (0) keeps the server's default order (app, then display name).
+type SortField string
+
+const (
+	SortFieldAppResourceSortFieldUnspecified     SortField = "APP_RESOURCE_SORT_FIELD_UNSPECIFIED"
+	SortFieldAppResourceSortFieldSecretCreatedAt SortField = "APP_RESOURCE_SORT_FIELD_SECRET_CREATED_AT"
+	SortFieldAppResourceSortFieldSecretExpiresAt SortField = "APP_RESOURCE_SORT_FIELD_SECRET_EXPIRES_AT"
+	SortFieldAppResourceSortFieldLastUsedAt      SortField = "APP_RESOURCE_SORT_FIELD_LAST_USED_AT"
+)
+
+func (e SortField) ToPointer() *SortField {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SortField) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_RESOURCE_SORT_FIELD_UNSPECIFIED", "APP_RESOURCE_SORT_FIELD_SECRET_CREATED_AT", "APP_RESOURCE_SORT_FIELD_SECRET_EXPIRES_AT", "APP_RESOURCE_SORT_FIELD_LAST_USED_AT":
+			return true
+		}
+	}
+	return false
+}
+
 // SearchAppResourcesRequest - Search app resources based on filters specified in the request body.
 type SearchAppResourcesRequest struct {
+	// Restrict the search to AI-agent resources with one of the given agent
+	//  lifecycle statuses (READY, DISABLED, DELETED). When empty, agent status is
+	//  not used as a filter.
+	AgentStatuses []AgentStatuses `json:"agentStatuses,omitempty"`
 	// The app ID to restrict the search to.
 	AppID *string `json:"appId,omitempty"`
+	// A list of app IDs to restrict the search to. Mirrors the singular app_id;
+	//  both fold into the same filter, so callers may set either or both.
+	AppIds []string `json:"appIds,omitempty"`
 	// A list of app user IDs to restrict the search by.
 	AppUserIds []string `json:"appUserIds,omitempty"`
+	// Restrict the search to resources whose credential material spine (K1) matches
+	//  one of the given CredentialType values. Applies to resources with a
+	//  secret_trait. When empty, credential_type is not used as a filter.
+	CredentialTypes []CredentialTypes `json:"credentialTypes,omitempty"`
+	// Direction to sort in. Unspecified falls back to ASC when sort_field is set.
+	//  No defined_only validation here: protoc-gen-validate mis-resolves the
+	//  cross-package enum name map to this file's c1.models.app.v1 import alias
+	//  instead of c1.api.search.v1, which fails to compile. The query builder
+	//  already treats any unrecognized value as ASC, so this is safe to omit.
+	Direction *Direction `json:"direction,omitempty"`
+	// When true, excludes resources belonging to soft-deleted apps.
+	ExcludeDeletedApps *bool `json:"excludeDeletedApps,omitempty"`
 	// If true, exclude resources whose bindings have been deleted.
 	ExcludeDeletedResourceBindings *bool `json:"excludeDeletedResourceBindings,omitempty"`
 	// A list of resource IDs to exclude from the search results.
 	ExcludeResourceIds []string `json:"excludeResourceIds,omitempty"`
 	// A list of resource type trait IDs to exclude from the search.
 	ExcludeResourceTypeTraitIds []string `json:"excludeResourceTypeTraitIds,omitempty"`
-	// A list of C1 user IDs to filter resources by ownership.
+	// Restrict the search to resources whose NHI classification spine (K3) is one
+	//  of the given NhiType values. When empty, nhi_type is not used as a filter.
+	NhiTypes []SearchAppResourcesRequestNhiTypes `json:"nhiTypes,omitempty"`
+	// A list of C1 user IDs to filter resources by ownership. The sentinel
+	//  value "none" matches resources with no owner. Mutually exclusive with
+	//  unowned_only — combine "none" with real owner IDs instead of setting
+	//  unowned_only alongside them.
 	OwnerUserIds []string `json:"ownerUserIds,omitempty"`
 	// The maximum number of results to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
@@ -30,6 +181,27 @@ type SearchAppResourcesRequest struct {
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
 	// A list of resource type trait IDs to restrict the search by.
 	ResourceTypeTraitIds []string `json:"resourceTypeTraitIds,omitempty"`
+	// SecretAgingFilter restricts a resource search to secrets (credential_type != 0)
+	//  whose secret-trait timestamps fall in the given half-open ranges. Each bound is
+	//  optional; leave one unset for an open-ended range. All set bounds are ANDed.
+	//  Callers pass absolute timestamps (computed against their reference "now").
+	SecretAgingFilter *SecretAgingFilter `json:"secretAging,omitempty"`
+	// Column to sort by. Unspecified (0) keeps the server's default order (app, then display name).
+	SortField *SortField `json:"sortField,omitempty"`
+	// When true, restrict results to resources with no ownership-v2 primary-role
+	//  owner. Mutually exclusive with owner_user_ids — use owner_user_ids:
+	//  ["none"] instead if you also need to combine it with real owner IDs.
+	UnownedOnly *bool `json:"unownedOnly,omitempty"`
+	// When true, restrict results to resources that have at least one open finding
+	//  (index-backed EXISTS semi-join). When false/unset, results are unfiltered.
+	WithOpenFindings *bool `json:"withOpenFindings,omitempty"`
+}
+
+func (s *SearchAppResourcesRequest) GetAgentStatuses() []AgentStatuses {
+	if s == nil {
+		return nil
+	}
+	return s.AgentStatuses
 }
 
 func (s *SearchAppResourcesRequest) GetAppID() *string {
@@ -39,11 +211,39 @@ func (s *SearchAppResourcesRequest) GetAppID() *string {
 	return s.AppID
 }
 
+func (s *SearchAppResourcesRequest) GetAppIds() []string {
+	if s == nil {
+		return nil
+	}
+	return s.AppIds
+}
+
 func (s *SearchAppResourcesRequest) GetAppUserIds() []string {
 	if s == nil {
 		return nil
 	}
 	return s.AppUserIds
+}
+
+func (s *SearchAppResourcesRequest) GetCredentialTypes() []CredentialTypes {
+	if s == nil {
+		return nil
+	}
+	return s.CredentialTypes
+}
+
+func (s *SearchAppResourcesRequest) GetDirection() *Direction {
+	if s == nil {
+		return nil
+	}
+	return s.Direction
+}
+
+func (s *SearchAppResourcesRequest) GetExcludeDeletedApps() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.ExcludeDeletedApps
 }
 
 func (s *SearchAppResourcesRequest) GetExcludeDeletedResourceBindings() *bool {
@@ -65,6 +265,13 @@ func (s *SearchAppResourcesRequest) GetExcludeResourceTypeTraitIds() []string {
 		return nil
 	}
 	return s.ExcludeResourceTypeTraitIds
+}
+
+func (s *SearchAppResourcesRequest) GetNhiTypes() []SearchAppResourcesRequestNhiTypes {
+	if s == nil {
+		return nil
+	}
+	return s.NhiTypes
 }
 
 func (s *SearchAppResourcesRequest) GetOwnerUserIds() []string {
@@ -121,4 +328,32 @@ func (s *SearchAppResourcesRequest) GetResourceTypeTraitIds() []string {
 		return nil
 	}
 	return s.ResourceTypeTraitIds
+}
+
+func (s *SearchAppResourcesRequest) GetSecretAgingFilter() *SecretAgingFilter {
+	if s == nil {
+		return nil
+	}
+	return s.SecretAgingFilter
+}
+
+func (s *SearchAppResourcesRequest) GetSortField() *SortField {
+	if s == nil {
+		return nil
+	}
+	return s.SortField
+}
+
+func (s *SearchAppResourcesRequest) GetUnownedOnly() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.UnownedOnly
+}
+
+func (s *SearchAppResourcesRequest) GetWithOpenFindings() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.WithOpenFindings
 }

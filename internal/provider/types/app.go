@@ -28,6 +28,7 @@ type App struct {
 	IsManuallyManaged                   types.Bool              `tfsdk:"is_manually_managed"`
 	MonthlyCostUsd                      types.Int32             `tfsdk:"monthly_cost_usd"`
 	ParentAppID                         types.String            `tfsdk:"parent_app_id"`
+	RevokeGrantSources                  types.Bool              `tfsdk:"revoke_grant_sources"`
 	RevokePolicyID                      types.String            `tfsdk:"revoke_policy_id"`
 	StrictAccessEntitlementProvisioning types.Bool              `tfsdk:"strict_access_entitlement_provisioning"`
 	UpdatedAt                           types.String            `tfsdk:"updated_at"`

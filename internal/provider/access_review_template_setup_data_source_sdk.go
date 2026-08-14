@@ -156,6 +156,11 @@ func (r *AccessReviewTemplateSetupDataSourceModel) RefreshFromSharedAccessReview
 					r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter = types.StringNull()
 				}
 			}
+			if resp.AccessReviewScopeV2.PrincipalTypeFilter != nil {
+				r.AccessReviewScopeV2.PrincipalTypeFilter = types.StringValue(string(*resp.AccessReviewScopeV2.PrincipalTypeFilter))
+			} else {
+				r.AccessReviewScopeV2.PrincipalTypeFilter = types.StringNull()
+			}
 			if resp.AccessReviewScopeV2.ResourceSelectionScope == nil {
 				r.AccessReviewScopeV2.ResourceSelectionScope = nil
 			} else {
@@ -165,6 +170,16 @@ func (r *AccessReviewTemplateSetupDataSourceModel) RefreshFromSharedAccessReview
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = nil
 			} else {
 				r.AccessReviewScopeV2.ResourceTypeSelectionScope = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.AccessReviewScopeV2.ResourceTypeSelectionScope1 == nil {
+				r.AccessReviewScopeV2.ResourceTypeSelectionScope1 = nil
+			} else {
+				r.AccessReviewScopeV2.ResourceTypeSelectionScope1 = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.AccessReviewScopeV2.ScopeRoleSelectionScope == nil {
+				r.AccessReviewScopeV2.ScopeRoleSelectionScope = nil
+			} else {
+				r.AccessReviewScopeV2.ScopeRoleSelectionScope = &tfTypes.ScopeRoleSelectionScope{}
 			}
 			if resp.AccessReviewScopeV2.SelectedUsersScope == nil {
 				r.AccessReviewScopeV2.SelectedUsersScope = nil
@@ -188,6 +203,11 @@ func (r *AccessReviewTemplateSetupDataSourceModel) RefreshFromSharedAccessReview
 				r.AccessReviewScopeV2.SpecificResourcesScope = nil
 			} else {
 				r.AccessReviewScopeV2.SpecificResourcesScope = &tfTypes.SpecificResourcesScope{}
+			}
+			if resp.AccessReviewScopeV2.SpecificResourcesScope1 == nil {
+				r.AccessReviewScopeV2.SpecificResourcesScope1 = nil
+			} else {
+				r.AccessReviewScopeV2.SpecificResourcesScope1 = &tfTypes.SpecificResourcesScope{}
 			}
 			if resp.AccessReviewScopeV2.UserCriteriaScope == nil {
 				r.AccessReviewScopeV2.UserCriteriaScope = nil

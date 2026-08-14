@@ -51,6 +51,7 @@ func (r *AccessConflictResourceModel) RefreshFromSharedConflictMonitor(ctx conte
 		r.EntitlementSetAID = types.StringPointerValue(resp.EntitlementSetAID)
 		r.EntitlementSetBID = types.StringPointerValue(resp.EntitlementSetBID)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.NegateGroupB = types.BoolPointerValue(resp.NegateGroupB)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
@@ -209,6 +210,12 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorUpdateRequest(ctx c
 	} else {
 		displayName = nil
 	}
+	negateGroupB := new(bool)
+	if !r.NegateGroupB.IsUnknown() && !r.NegateGroupB.IsNull() {
+		*negateGroupB = r.NegateGroupB.ValueBool()
+	} else {
+		negateGroupB = nil
+	}
 	var accessConflictNotificationConfig *shared.AccessConflictNotificationConfig
 	if r.AccessConflictNotificationConfig != nil {
 		var emailNotifications *shared.EmailNotifications
@@ -265,6 +272,7 @@ func (r *AccessConflictResourceModel) ToSharedConflictMonitorUpdateRequest(ctx c
 	out := shared.ConflictMonitorUpdateRequest{
 		Description:                      description,
 		DisplayName:                      displayName,
+		NegateGroupB:                     negateGroupB,
 		AccessConflictNotificationConfig: accessConflictNotificationConfig,
 	}
 

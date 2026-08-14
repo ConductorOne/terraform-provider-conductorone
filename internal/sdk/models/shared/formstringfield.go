@@ -9,7 +9,11 @@ package shared
 //   - passwordField
 //   - selectField
 //   - pickerField
+//   - dateField
 type FormStringField struct {
+	// DateField renders a date picker. The value is an ISO-8601 calendar date
+	//  ("YYYY-MM-DD") stored in the enclosing StringField's string value.
+	DateField *DateField `json:"dateField,omitempty"`
 	// The defaultValue field.
 	DefaultValue *string `json:"defaultValue,omitempty"`
 	// The PasswordField message.
@@ -43,6 +47,13 @@ type FormStringField struct {
 	SelectField *SelectField `json:"selectField,omitempty"`
 	// The TextField message.
 	TextField *TextField `json:"textField,omitempty"`
+}
+
+func (f *FormStringField) GetDateField() *DateField {
+	if f == nil {
+		return nil
+	}
+	return f.DateField
 }
 
 func (f *FormStringField) GetDefaultValue() *string {

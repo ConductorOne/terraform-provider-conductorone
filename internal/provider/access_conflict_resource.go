@@ -39,6 +39,7 @@ type AccessConflictResourceModel struct {
 	EntitlementSetAID                types.String                              `tfsdk:"entitlement_set_a_id"`
 	EntitlementSetBID                types.String                              `tfsdk:"entitlement_set_b_id"`
 	ID                               types.String                              `tfsdk:"id"`
+	NegateGroupB                     types.Bool                                `tfsdk:"negate_group_b"`
 	UpdatedAt                        types.String                              `tfsdk:"updated_at"`
 }
 
@@ -124,6 +125,11 @@ func (r *AccessConflictResource) Schema(ctx context.Context, req resource.Schema
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The unique identifier of this conflict monitor.`,
+			},
+			"negate_group_b": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `When true, the rule flags users who are in set A but NOT in set B ("is not` + "\n" +
+					` in"), instead of the default A-and-B intersection.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

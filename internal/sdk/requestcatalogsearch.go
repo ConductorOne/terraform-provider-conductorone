@@ -32,6 +32,8 @@ func newRequestCatalogSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfi
 
 // SearchEntitlements - Search Entitlements
 // Search request catalogs based on filters specified in the request body.
+//
+//	Rows are heavy (each entitlement carries its user bindings) — request a small page_size (≤10) and set expand_mask to only the paths you need; broad expansion inlines whole related objects and bloats the response.
 func (s *RequestCatalogSearch) SearchEntitlements(ctx context.Context, request *shared.RequestCatalogSearchServiceSearchEntitlementsRequest, opts ...operations.Option) (*operations.C1APIRequestcatalogV1RequestCatalogSearchServiceSearchEntitlementsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

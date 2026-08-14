@@ -2,6 +2,32 @@
 
 package shared
 
+// GrantSourceFilter - Restricts the step to grants of either DIRECT (grants the user holds directly,
+//
+//	including grants that are also inherited) or UNSPECIFIED (all grants).
+//	Composes with every inclusion mode, including inclusion_list_cel.
+type GrantSourceFilter string
+
+const (
+	GrantSourceFilterGrantSourceFilterUnspecified GrantSourceFilter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
+	GrantSourceFilterGrantSourceFilterDirect      GrantSourceFilter = "GRANT_SOURCE_FILTER_DIRECT"
+)
+
+func (e GrantSourceFilter) ToPointer() *GrantSourceFilter {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GrantSourceFilter) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT":
+			return true
+		}
+	}
+	return false
+}
+
 // The CreateRevokeTasksV2 message.
 //
 // This message contains a oneof named user. Only a single field of the following list may be set at a time:
@@ -30,6 +56,10 @@ type CreateRevokeTasksV2 struct {
 	EntitlementExclusionListCel *EntitlementExclusionListCel `json:"exclusionListCel,omitempty"`
 	// The EntitlementExclusionNone message.
 	EntitlementExclusionNone *EntitlementExclusionNone `json:"exclusionNone,omitempty"`
+	// Restricts the step to grants of either DIRECT (grants the user holds directly,
+	//  including grants that are also inherited) or UNSPECIFIED (all grants).
+	//  Composes with every inclusion mode, including inclusion_list_cel.
+	GrantSourceFilter *GrantSourceFilter `json:"grantSourceFilter,omitempty"`
 	// EntitlementInclusionAccessOnly resolves to the system-managed access
 	//  entitlement on every app the subject user has an AppUser on. Use this to
 	//  deprovision app accounts without fanning out to every group, role, or
@@ -81,6 +111,13 @@ func (c *CreateRevokeTasksV2) GetEntitlementExclusionNone() *EntitlementExclusio
 		return nil
 	}
 	return c.EntitlementExclusionNone
+}
+
+func (c *CreateRevokeTasksV2) GetGrantSourceFilter() *GrantSourceFilter {
+	if c == nil {
+		return nil
+	}
+	return c.GrantSourceFilter
 }
 
 func (c *CreateRevokeTasksV2) GetEntitlementInclusionAccessOnly() *EntitlementInclusionAccessOnly {
