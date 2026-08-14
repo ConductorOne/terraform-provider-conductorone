@@ -42,8 +42,8 @@ func TestMarshalJSONStripNulls(t *testing.T) {
 			expected: `{"items":[null,"a","b"]}`,
 		},
 		{
-			name: "multi-step entitlement scenario",
-			input: `{"provisionSteps":[{"delegated":{"appId":"abc","entitlementId":"def","implicit":false}},{"manual":{"assignee":null,"instructions":"repro","userIds":["ghi"]}}]}`,
+			name:     "multi-step entitlement scenario",
+			input:    `{"provisionSteps":[{"delegated":{"appId":"abc","entitlementId":"def","implicit":false}},{"manual":{"assignee":null,"instructions":"repro","userIds":["ghi"]}}]}`,
 			expected: `{"provisionSteps":[{"delegated":{"appId":"abc","entitlementId":"def","implicit":false}},{"manual":{"instructions":"repro","userIds":["ghi"]}}]}`,
 		},
 	}
