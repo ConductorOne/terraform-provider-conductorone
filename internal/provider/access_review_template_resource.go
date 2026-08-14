@@ -12,8 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -571,12 +569,9 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 				Description: `The number of campaigns that have been created from this template.`,
 			},
 			"owner_ids": schema.ListAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-				},
+				Optional:    true,
 				ElementType: types.StringType,
-				Description: `The IDs of the users who own this template. At least one owner is required. Requires replacement if changed.`,
+				Description: `The IDs of the users who own this template. At least one owner is required.`,
 			},
 			"policy_id": schema.StringAttribute{
 				Computed:    true,

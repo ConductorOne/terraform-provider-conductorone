@@ -720,6 +720,20 @@ actions:
   - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewTemplateServiceDeleteRequestInput"]
     update:
       x-speakeasy-terraform-ignore: true
+  # EPD-2734: ownerIds is a create-only field that the GET API does not return.
+  # Speakeasy auto-generates RequiresReplaceIfConfigured for create-only fields,
+  # but that causes destructive template ID churn on import. Adding ownerIds to
+  # the entity schema as plan-only prevents the force-replace behavior and
+  # preserves the configured value across reads.
+  - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewTemplate"]["properties"]
+    update:
+      ownerIds:
+        description: The IDs of the users who own this template. At least one owner is required.
+        items:
+          type: string
+        nullable: true
+        type: array
+        x-speakeasy-terraform-plan-only: true
   - target: $["components"]["schemas"]["c1.api.accessreview.v1.AccessReviewExpandMask"]
     update:
       x-speakeasy-ignore: true
