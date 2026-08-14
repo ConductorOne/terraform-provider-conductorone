@@ -1,0 +1,25 @@
+diff --git a/internal/provider/app_entitlement_data_source_sdk.go b/internal/provider/app_entitlement_data_source_sdk.go
+index bd1ecb50..51e9923c 100644
+--- a/internal/provider/app_entitlement_data_source_sdk.go
++++ b/internal/provider/app_entitlement_data_source_sdk.go
+@@ -537,15 +537,12 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlementSearchSer
+ 	var diags diag.Diagnostics
+ 
+ 	if resp != nil {
+-		if len(resp.List) == 0 {
+-			diags.AddError("Unexpected response from API", "Missing response body array data.")
+-			return diags
+-		}
+-
+-		diags.Append(r.RefreshFromSharedAppEntitlementView(ctx, &resp.List[0])...)
++		if len(resp.List) > 0 {
++			diags.Append(r.RefreshFromSharedAppEntitlementView(ctx, &resp.List[0])...)
+ 
+-		if diags.HasError() {
+-			return diags
++			if diags.HasError() {
++				return diags
++			}
+ 		}
+ 
+ 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
