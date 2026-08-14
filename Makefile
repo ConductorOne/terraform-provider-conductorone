@@ -34,6 +34,12 @@ vendor:
 # for details on the perpetual diff regression in newer Speakeasy versions.
 #
 # After regeneration, verify the pagination fix is intact (see CLAUDE.md).
+#
+# tools/specnorm runs between the overlay and generation: the spec now emits
+# nullable object properties as `oneOf: [$$ref, null]` rather than a bare
+# `$$ref`, and Speakeasy names those two shapes differently. Without the
+# collapse, a regen silently renames ~250 customer-visible attributes. See the
+# tool's package comment.
 .PHONY: gen
 gen:
 	@PINNED_VERSION=$$(grep 'speakeasyVersion:' .speakeasy/workflow.yaml | head -1 | awk '{print $$2}'); \
@@ -53,10 +59,12 @@ gen:
 	fi; \
 	DATE=$$(date +%Y%m%d%H%M%S); \
 	COMBINED="combined_$$DATE.yaml"; \
-	trap 'rm -f $$COMBINED' EXIT; \
+	NORMALIZED="combined_$$DATE.normalized.yaml"; \
+	trap 'rm -f $$COMBINED $$NORMALIZED' EXIT; \
 	curl -sSL -o openapi.yaml https://insulator.conductor.one/api/v1/openapi.yaml && \
 	speakeasy overlay apply -s openapi.yaml -o overlay.yaml >> $$COMBINED && \
-	speakeasy generate sdk -s $$COMBINED -o . -l terraform -d
+	go run ./tools/specnorm -in $$COMBINED -out $$NORMALIZED && \
+	speakeasy generate sdk -s $$NORMALIZED -o . -l terraform -d
 	$(MAKE) apply-patches
 	$(MAKE) vendor
 	@$(MAKE) check
