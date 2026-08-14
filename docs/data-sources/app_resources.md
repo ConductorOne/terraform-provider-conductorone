@@ -26,16 +26,30 @@ The app resources datasource allows you to retrieve ConductorOne App Resources u
 
 ```terraform
 data "conductorone_app_resources" "my_app_resources" {
+  agent_statuses = [
+    "AGENT_STATUS_DELETED"
+  ]
   app_id = "...my_app_id..."
+  app_ids = [
+    "..."
+  ]
   app_user_ids = [
     "..."
   ]
+  credential_types = [
+    "CREDENTIAL_TYPE_STATIC_SECRET"
+  ]
+  direction                         = "SORT_DIRECTION_DESC"
+  exclude_deleted_apps              = false
   exclude_deleted_resource_bindings = false
   exclude_resource_ids = [
     "..."
   ]
   exclude_resource_type_trait_ids = [
     "..."
+  ]
+  nhi_types = [
+    "NHI_TYPE_ASSUMABLE_ROLE"
   ]
   owner_user_ids = [
     "..."
@@ -59,6 +73,17 @@ data "conductorone_app_resources" "my_app_resources" {
   resource_type_trait_ids = [
     "..."
   ]
+  secret_aging_filter = {
+    last_used_after       = "2022-05-16T14:37:08.306Z"
+    last_used_before      = "2022-02-03T20:33:50.527Z"
+    secret_created_after  = "2022-12-06T02:32:52.852Z"
+    secret_created_before = "2021-05-15T13:32:27.740Z"
+    secret_expires_after  = "2022-10-07T06:31:43.579Z"
+    secret_expires_before = "2022-06-04T02:07:04.673Z"
+  }
+  sort_field         = "APP_RESOURCE_SORT_FIELD_SECRET_CREATED_AT"
+  unowned_only       = false
+  with_open_findings = true
 }
 ```
 
@@ -67,12 +92,32 @@ data "conductorone_app_resources" "my_app_resources" {
 
 ### Optional
 
+- `agent_statuses` (List of String) Restrict the search to AI-agent resources with one of the given agent
+ lifecycle statuses (READY, DISABLED, DELETED). When empty, agent status is
+ not used as a filter.
 - `app_id` (String) The app ID to restrict the search to.
+- `app_ids` (List of String) A list of app IDs to restrict the search to. Mirrors the singular app_id;
+ both fold into the same filter, so callers may set either or both.
 - `app_user_ids` (List of String) A list of app user IDs to restrict the search by.
+- `credential_types` (List of String) Restrict the search to resources whose credential material spine (K1) matches
+ one of the given CredentialType values. Applies to resources with a
+ secret_trait. When empty, credential_type is not used as a filter.
+- `direction` (String) Direction to sort in. Unspecified falls back to ASC when sort_field is set.
+ No defined_only validation here: protoc-gen-validate mis-resolves the
+ cross-package enum name map to this file's c1.models.app.v1 import alias
+ instead of c1.api.search.v1, which fails to compile. The query builder
+ already treats any unrecognized value as ASC, so this is safe to omit.
+possible known values include one of ["SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC"]
+- `exclude_deleted_apps` (Boolean) When true, excludes resources belonging to soft-deleted apps.
 - `exclude_deleted_resource_bindings` (Boolean) If true, exclude resources whose bindings have been deleted.
 - `exclude_resource_ids` (List of String) A list of resource IDs to exclude from the search results.
 - `exclude_resource_type_trait_ids` (List of String) A list of resource type trait IDs to exclude from the search.
-- `owner_user_ids` (List of String) A list of C1 user IDs to filter resources by ownership.
+- `nhi_types` (List of String) Restrict the search to resources whose NHI classification spine (K3) is one
+ of the given NhiType values. When empty, nhi_type is not used as a filter.
+- `owner_user_ids` (List of String) A list of C1 user IDs to filter resources by ownership. The sentinel
+ value "none" matches resources with no owner. Mutually exclusive with
+ unowned_only — combine "none" with real owner IDs instead of setting
+ unowned_only alongside them.
 - `page_size` (Number) The maximum number of results to return per page.
 - `page_token` (String) The token for fetching the next page of results.
 - `query` (String) Fuzzy search the display name of resources.
@@ -80,6 +125,16 @@ data "conductorone_app_resources" "my_app_resources" {
 - `resource_ids` (List of String) A list of resource IDs to restrict the search to.
 - `resource_type_ids` (List of String) A list of resource type IDs to restrict the search by.
 - `resource_type_trait_ids` (List of String) A list of resource type trait IDs to restrict the search by.
+- `secret_aging_filter` (Attributes) SecretAgingFilter restricts a resource search to secrets (credential_type != 0)
+ whose secret-trait timestamps fall in the given half-open ranges. Each bound is
+ optional; leave one unset for an open-ended range. All set bounds are ANDed.
+ Callers pass absolute timestamps (computed against their reference "now"). (see [below for nested schema](#nestedatt--secret_aging_filter))
+- `sort_field` (String) Column to sort by. Unspecified (0) keeps the server's default order (app, then display name). possible known values include one of ["APP_RESOURCE_SORT_FIELD_UNSPECIFIED", "APP_RESOURCE_SORT_FIELD_SECRET_CREATED_AT", "APP_RESOURCE_SORT_FIELD_SECRET_EXPIRES_AT", "APP_RESOURCE_SORT_FIELD_LAST_USED_AT"]
+- `unowned_only` (Boolean) When true, restrict results to resources with no ownership-v2 primary-role
+ owner. Mutually exclusive with owner_user_ids — use owner_user_ids:
+ ["none"] instead if you also need to combine it with real owner IDs.
+- `with_open_findings` (Boolean) When true, restrict results to resources that have at least one open finding
+ (index-backed EXISTS semi-join). When false/unset, results are unfiltered.
 
 ### Read-Only
 
@@ -97,6 +152,19 @@ Optional:
 - `id` (String) The unique ID of the app resource.
 
 
+<a id="nestedatt--secret_aging_filter"></a>
+### Nested Schema for `secret_aging_filter`
+
+Optional:
+
+- `last_used_after` (String)
+- `last_used_before` (String)
+- `secret_created_after` (String)
+- `secret_created_before` (String)
+- `secret_expires_after` (String)
+- `secret_expires_before` (String)
+
+
 <a id="nestedatt--expanded"></a>
 ### Nested Schema for `expanded`
 
@@ -106,7 +174,10 @@ Optional:
 
 Read-Only:
 
-- `actor_object_permissions` (Attributes) The ActorObjectPermissions message. (see [below for nested schema](#nestedatt--list--actor_object_permissions))
+- `actor_object_permissions` (Attributes) Legacy: do not use for new objects. Retained only for the existing
+ AppResource / AppEntitlement / access-review consumers, which will migrate to
+ c1.api.authorization.v1.ActorObjectPermissions in IGA-2331. New object views
+ should reference c1.api.authorization.v1.ActorObjectPermissions instead. (see [below for nested schema](#nestedatt--list--actor_object_permissions))
 - `app_resource` (Attributes) The app resource message is a single resource that can have entitlements.
 
 This message contains a oneof named metadata. Only a single field of the following list may be set at a time:
@@ -130,6 +201,7 @@ Read-Only:
 
 - `access_config_id` (String) The access config ID for this resource. May be empty.
  Must be one of the builtin access config IDs or empty.
+- `agent_trait` (Attributes) AgentTrait carries metadata for AI-agent resources surfaced in the Inventory. (see [below for nested schema](#nestedatt--list--app_resource--agent_trait))
 - `annotations` (Map of String) Bounded key/value metadata bag for IaC marking and customer tags.
  See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128
  chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars
@@ -154,11 +226,26 @@ Read-Only:
 - `grant_count` (String) The number of grants to this resource.
 - `id` (String) The id of the resource.
 - `match_baton_id` (String) The matchBatonId field.
+- `nhi_detail` (String) Axis-2 detail refining nhi_type (e.g. "aws.role.lambda"). Read-only;
+ translated from the model.
+- `nhi_type` (String) The NHI classification (K3 spine) for this resource. Populated for
+ non-human-identity resources; UNSPECIFIED for everything else. Mirrors
+ agent_trait: read-only and translated from the model enum at the API boundary.
 - `parent_app_resource_id` (String) The parent resource id, if this resource is a child of another resource.
 - `parent_app_resource_type_id` (String) The parent resource type id, if this resource is a child of another resource.
 - `profile` (Attributes) (see [below for nested schema](#nestedatt--list--app_resource--profile))
 - `secret_trait` (Attributes) The SecretTrait message. (see [below for nested schema](#nestedatt--list--app_resource--secret_trait))
 - `updated_at` (String)
+
+<a id="nestedatt--list--app_resource--agent_trait"></a>
+### Nested Schema for `list.app_resource.agent_trait`
+
+Read-Only:
+
+- `identity_app_user_id` (String) The C1 app user ID of the service-account identity this agent authenticates as.
+ Empty if the backing identity has not yet been resolved.
+- `status` (String) The agent's lifecycle status (READY, DISABLED, DELETED).
+
 
 <a id="nestedatt--list--app_resource--profile"></a>
 ### Nested Schema for `list.app_resource.profile`
@@ -169,6 +256,12 @@ Read-Only:
 
 Read-Only:
 
+- `created_by_app_user_id` (String) The AppUser id that created this credential. Read-only; resolved from
+ the model during uplift. Distinct from identity_app_user_id (the
+ holder) and from the resource's Owner (a separate assignment, not
+ part of this message).
+- `credential_detail` (String) Platform-specific credential subtype detail, finer than credential_type
+ (e.g. "GCP service-account key"). Read-only; translated from the model.
 - `identity_app_user_id` (String) The identityAppUserId field.
 - `last_used_at` (String)
 - `secret_created_at` (String)

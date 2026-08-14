@@ -53,6 +53,8 @@ resource "conductorone_access_conflict" "my_access_conflict" {
 - `entitlement_set_a_id` (String) The identifier of entitlement set A in the conflict rule.
 - `entitlement_set_b_id` (String) The identifier of entitlement set B in the conflict rule.
 - `id` (String) The unique identifier of this conflict monitor.
+- `negate_group_b` (Boolean) When true, the rule flags users who are in set A but NOT in set B ("is not
+ in"), instead of the default A-and-B intersection.
 - `updated_at` (String)
 
 <a id="nestedatt--access_conflict_notification_config"></a>
