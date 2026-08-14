@@ -1,8 +1,8 @@
 diff --git a/internal/provider/custom_app_entitlement_resource.go b/internal/provider/custom_app_entitlement_resource.go
-index 3a951206..433a8090 100644
+index 3ef0082c..7cf13207 100644
 --- a/internal/provider/custom_app_entitlement_resource.go
 +++ b/internal/provider/custom_app_entitlement_resource.go
-@@ -153,61 +153,96 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -153,61 +153,97 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  			},
  			"deprovisioner_policy": schema.SingleNestedAttribute{
  				Computed: true,
@@ -38,6 +38,7 @@ index 3a951206..433a8090 100644
 +							objectvalidator.ConflictsWith(path.Expressions{
 +								path.MatchRelative().AtParent().AtName("connector_provision"),
 +								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
 +								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
 +								path.MatchRelative().AtParent().AtName("manual_provision"),
 +								path.MatchRelative().AtParent().AtName("multi_step"),
@@ -99,7 +100,7 @@ index 3a951206..433a8090 100644
  										Description: `The schemaId field.`,
  									},
  								},
-@@ -216,27 +251,49 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -216,27 +252,49 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  									`This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:` + "\n" +
  									`  - saveToVault` + "\n" +
  									`  - doNotSave`,
@@ -149,7 +150,7 @@ index 3a951206..433a8090 100644
  							},
  						},
  						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
-@@ -245,62 +302,109 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -245,20 +303,47 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  							`  - defaultBehavior` + "\n" +
  							`  - account` + "\n" +
  							`  - deleteAccount`,
@@ -157,6 +158,7 @@ index 3a951206..433a8090 100644
 +							objectvalidator.ConflictsWith(path.Expressions{
 +								path.MatchRelative().AtParent().AtName("action_provision"),
 +								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
 +								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
 +								path.MatchRelative().AtParent().AtName("manual_provision"),
 +								path.MatchRelative().AtParent().AtName("multi_step"),
@@ -185,6 +187,26 @@ index 3a951206..433a8090 100644
 +							objectvalidator.ConflictsWith(path.Expressions{
 +								path.MatchRelative().AtParent().AtName("action_provision"),
 +								path.MatchRelative().AtParent().AtName("connector_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
++								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
++								path.MatchRelative().AtParent().AtName("manual_provision"),
++								path.MatchRelative().AtParent().AtName("multi_step"),
++								path.MatchRelative().AtParent().AtName("unconfigured_provision"),
++								path.MatchRelative().AtParent().AtName("webhook_provision"),
++							}...),
++						},
+ 					},
+ 					"device_placement_provision": schema.SingleNestedAttribute{
+ 						Computed: true,
+@@ -269,48 +354,83 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+ 							},
+ 						},
+ 						Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
++						Validators: []validator.Object{
++							objectvalidator.ConflictsWith(path.Expressions{
++								path.MatchRelative().AtParent().AtName("action_provision"),
++								path.MatchRelative().AtParent().AtName("connector_provision"),
++								path.MatchRelative().AtParent().AtName("delegated_provision"),
 +								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
 +								path.MatchRelative().AtParent().AtName("manual_provision"),
 +								path.MatchRelative().AtParent().AtName("multi_step"),
@@ -224,6 +246,7 @@ index 3a951206..433a8090 100644
 +								path.MatchRelative().AtParent().AtName("action_provision"),
 +								path.MatchRelative().AtParent().AtName("connector_provision"),
 +								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
 +								path.MatchRelative().AtParent().AtName("manual_provision"),
 +								path.MatchRelative().AtParent().AtName("multi_step"),
 +								path.MatchRelative().AtParent().AtName("unconfigured_provision"),
@@ -259,7 +282,7 @@ index 3a951206..433a8090 100644
  												ElementType: types.StringType,
  												Description: `Fallback user IDs if no app owners are found.`,
  											},
-@@ -309,13 +413,16 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -319,13 +439,16 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  									},
  									"entitlement_owner_provisioner": schema.SingleNestedAttribute{
  										Computed: true,
@@ -276,7 +299,7 @@ index 3a951206..433a8090 100644
  												ElementType: types.StringType,
  												Description: `Fallback user IDs if no entitlement owners are found.`,
  											},
-@@ -324,18 +431,22 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -334,18 +457,22 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  									},
  									"expression_provisioner": schema.SingleNestedAttribute{
  										Computed: true,
@@ -299,7 +322,7 @@ index 3a951206..433a8090 100644
  												ElementType: types.StringType,
  												Description: `Fallback user IDs if expression evaluation yields no users.`,
  											},
-@@ -344,21 +455,26 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -354,21 +481,26 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  									},
  									"group_provisioner": schema.SingleNestedAttribute{
  										Computed: true,
@@ -326,7 +349,7 @@ index 3a951206..433a8090 100644
  												ElementType: types.StringType,
  												Description: `Fallback user IDs if no group members are found.`,
  											},
-@@ -367,13 +483,16 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -377,13 +509,16 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  									},
  									"manager_provisioner": schema.SingleNestedAttribute{
  										Computed: true,
@@ -343,7 +366,7 @@ index 3a951206..433a8090 100644
  												ElementType: types.StringType,
  												Description: `Fallback user IDs if no manager is found.`,
  											},
-@@ -382,13 +501,16 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -392,13 +527,16 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  									},
  									"user_provisioner": schema.SingleNestedAttribute{
  										Computed: true,
@@ -360,7 +383,7 @@ index 3a951206..433a8090 100644
  												ElementType: types.StringType,
  												Description: `The user IDs to assign as provisioners.`,
  											},
-@@ -408,31 +530,80 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -418,31 +556,84 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  							},
  							"user_ids": schema.ListAttribute{
  								Computed:    true,
@@ -376,6 +399,7 @@ index 3a951206..433a8090 100644
 +								path.MatchRelative().AtParent().AtName("action_provision"),
 +								path.MatchRelative().AtParent().AtName("connector_provision"),
 +								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
 +								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
 +								path.MatchRelative().AtParent().AtName("multi_step"),
 +								path.MatchRelative().AtParent().AtName("unconfigured_provision"),
@@ -393,6 +417,7 @@ index 3a951206..433a8090 100644
 +								path.MatchRelative().AtParent().AtName("action_provision"),
 +								path.MatchRelative().AtParent().AtName("connector_provision"),
 +								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
 +								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
 +								path.MatchRelative().AtParent().AtName("manual_provision"),
 +								path.MatchRelative().AtParent().AtName("unconfigured_provision"),
@@ -409,6 +434,7 @@ index 3a951206..433a8090 100644
 +								path.MatchRelative().AtParent().AtName("action_provision"),
 +								path.MatchRelative().AtParent().AtName("connector_provision"),
 +								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
 +								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
 +								path.MatchRelative().AtParent().AtName("manual_provision"),
 +								path.MatchRelative().AtParent().AtName("multi_step"),
@@ -432,6 +458,7 @@ index 3a951206..433a8090 100644
 +								path.MatchRelative().AtParent().AtName("action_provision"),
 +								path.MatchRelative().AtParent().AtName("connector_provision"),
 +								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
 +								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
 +								path.MatchRelative().AtParent().AtName("manual_provision"),
 +								path.MatchRelative().AtParent().AtName("multi_step"),
@@ -441,7 +468,7 @@ index 3a951206..433a8090 100644
  					},
  				},
  				MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
-@@ -572,6 +743,17 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -583,6 +774,18 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  							},
  						},
  						Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
@@ -449,6 +476,7 @@ index 3a951206..433a8090 100644
 +							objectvalidator.ConflictsWith(path.Expressions{
 +								path.MatchRelative().AtParent().AtName("connector_provision"),
 +								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
 +								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
 +								path.MatchRelative().AtParent().AtName("manual_provision"),
 +								path.MatchRelative().AtParent().AtName("multi_step"),
@@ -459,7 +487,7 @@ index 3a951206..433a8090 100644
  					},
  					"connector_provision": schema.SingleNestedAttribute{
  						Optional: true,
-@@ -595,6 +777,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -606,6 +809,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  										Computed:    true,
  										Optional:    true,
  										Description: `The DoNotSave message.`,
@@ -471,7 +499,7 @@ index 3a951206..433a8090 100644
  									},
  									"save_to_vault": schema.SingleNestedAttribute{
  										Computed: true,
-@@ -608,6 +795,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -619,6 +827,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  											},
  										},
  										Description: `The SaveToVault message.`,
@@ -483,7 +511,7 @@ index 3a951206..433a8090 100644
  									},
  									"schema_id": schema.StringAttribute{
  										Computed:    true,
-@@ -620,6 +812,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -631,6 +844,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  									`This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:` + "\n" +
  									`  - saveToVault` + "\n" +
  									`  - doNotSave`,
@@ -496,7 +524,7 @@ index 3a951206..433a8090 100644
  							},
  							"default_behavior": schema.SingleNestedAttribute{
  								Computed: true,
-@@ -633,6 +831,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -644,6 +863,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  									},
  								},
  								Description: `The DefaultBehavior message.`,
@@ -509,7 +537,7 @@ index 3a951206..433a8090 100644
  							},
  							"delete_account": schema.SingleNestedAttribute{
  								Computed: true,
-@@ -645,6 +849,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -656,6 +881,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  									},
  								},
  								Description: `The DeleteAccount message.`,
@@ -522,12 +550,13 @@ index 3a951206..433a8090 100644
  							},
  						},
  						MarkdownDescription: `Indicates that a connector should perform the provisioning. This object has no fields.` + "\n" +
-@@ -655,10 +865,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -666,10 +897,13 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  							`  - deleteAccount`,
  						Validators: []validator.Object{
  							objectvalidator.ConflictsWith(path.Expressions{
 +								path.MatchRelative().AtParent().AtName("action_provision"),
  								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
  								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
  								path.MatchRelative().AtParent().AtName("manual_provision"),
  								path.MatchRelative().AtParent().AtName("multi_step"),
@@ -535,12 +564,13 @@ index 3a951206..433a8090 100644
  								path.MatchRelative().AtParent().AtName("webhook_provision"),
  							}...),
  						},
-@@ -680,10 +892,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -691,10 +925,13 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
  						Validators: []validator.Object{
  							objectvalidator.ConflictsWith(path.Expressions{
 +								path.MatchRelative().AtParent().AtName("action_provision"),
  								path.MatchRelative().AtParent().AtName("connector_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
  								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
  								path.MatchRelative().AtParent().AtName("manual_provision"),
  								path.MatchRelative().AtParent().AtName("multi_step"),
@@ -548,46 +578,68 @@ index 3a951206..433a8090 100644
  								path.MatchRelative().AtParent().AtName("webhook_provision"),
  							}...),
  						},
-@@ -715,10 +929,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -710,6 +947,18 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+ 							},
+ 						},
+ 						Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
++						Validators: []validator.Object{
++							objectvalidator.ConflictsWith(path.Expressions{
++								path.MatchRelative().AtParent().AtName("action_provision"),
++								path.MatchRelative().AtParent().AtName("connector_provision"),
++								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
++								path.MatchRelative().AtParent().AtName("manual_provision"),
++								path.MatchRelative().AtParent().AtName("multi_step"),
++								path.MatchRelative().AtParent().AtName("unconfigured_provision"),
++								path.MatchRelative().AtParent().AtName("webhook_provision"),
++							}...),
++						},
+ 					},
+ 					"external_ticket_provision": schema.SingleNestedAttribute{
+ 						Optional: true,
+@@ -738,10 +987,13 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
  						Validators: []validator.Object{
  							objectvalidator.ConflictsWith(path.Expressions{
 +								path.MatchRelative().AtParent().AtName("action_provision"),
  								path.MatchRelative().AtParent().AtName("connector_provision"),
  								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
  								path.MatchRelative().AtParent().AtName("manual_provision"),
  								path.MatchRelative().AtParent().AtName("multi_step"),
 +								path.MatchRelative().AtParent().AtName("unconfigured_provision"),
  								path.MatchRelative().AtParent().AtName("webhook_provision"),
  							}...),
  						},
-@@ -881,10 +1097,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -904,10 +1156,13 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
  						Validators: []validator.Object{
  							objectvalidator.ConflictsWith(path.Expressions{
 +								path.MatchRelative().AtParent().AtName("action_provision"),
  								path.MatchRelative().AtParent().AtName("connector_provision"),
  								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
  								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
  								path.MatchRelative().AtParent().AtName("multi_step"),
 +								path.MatchRelative().AtParent().AtName("unconfigured_provision"),
  								path.MatchRelative().AtParent().AtName("webhook_provision"),
  							}...),
  						},
-@@ -896,10 +1114,12 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -919,10 +1174,13 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  						Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
  						Validators: []validator.String{
  							stringvalidator.ConflictsWith(path.Expressions{
 +								path.MatchRelative().AtParent().AtName("action_provision"),
  								path.MatchRelative().AtParent().AtName("connector_provision"),
  								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
  								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
  								path.MatchRelative().AtParent().AtName("manual_provision"),
 +								path.MatchRelative().AtParent().AtName("unconfigured_provision"),
  								path.MatchRelative().AtParent().AtName("webhook_provision"),
  							}...),
  						},
-@@ -908,6 +1128,17 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -931,6 +1189,18 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  						Computed:    true,
  						Optional:    true,
  						Description: `The UnconfiguredProvision message.`,
@@ -596,6 +648,7 @@ index 3a951206..433a8090 100644
 +								path.MatchRelative().AtParent().AtName("action_provision"),
 +								path.MatchRelative().AtParent().AtName("connector_provision"),
 +								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
 +								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
 +								path.MatchRelative().AtParent().AtName("manual_provision"),
 +								path.MatchRelative().AtParent().AtName("multi_step"),
@@ -605,13 +658,14 @@ index 3a951206..433a8090 100644
  					},
  					"webhook_provision": schema.SingleNestedAttribute{
  						Optional: true,
-@@ -921,11 +1152,13 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
+@@ -944,11 +1214,14 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
  						Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
  						Validators: []validator.Object{
  							objectvalidator.ConflictsWith(path.Expressions{
 +								path.MatchRelative().AtParent().AtName("action_provision"),
  								path.MatchRelative().AtParent().AtName("connector_provision"),
  								path.MatchRelative().AtParent().AtName("delegated_provision"),
++								path.MatchRelative().AtParent().AtName("device_placement_provision"),
  								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
  								path.MatchRelative().AtParent().AtName("manual_provision"),
  								path.MatchRelative().AtParent().AtName("multi_step"),
@@ -619,7 +673,7 @@ index 3a951206..433a8090 100644
  							}...),
  						},
  					},
-@@ -1143,6 +1376,11 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
+@@ -1167,6 +1440,11 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
  		return
  	}
  
