@@ -222,7 +222,7 @@ This message contains a oneof named resource_scope. Only a single field of the f
 - `exempt_certified_access_conflicts` (Boolean) The exemptCertifiedAccessConflicts field.
 - `is_campaign_schedule_enabled` (Boolean) The isCampaignScheduleEnabled field.
 - `notification_config` (Attributes) Controls which email notifications are sent during the access review lifecycle. (see [below for nested schema](#nestedatt--notification_config))
-- `owner_ids` (List of String) The IDs of the users who own this template. At least one owner is required. Requires replacement if changed.
+- `owner_ids` (List of String) The IDs of the users who own this template. At least one owner is required.
 - `policy_id` (String) The ID of the default review policy for campaigns created from this template.
 - `recurrence_rule` (Attributes) The RecurrenceRule message.
 
