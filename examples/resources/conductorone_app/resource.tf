@@ -8,18 +8,18 @@ resource "conductorone_app" "my_app" {
       id     = "...my_id..."
     }
   ]
-  certify_policy_id                      = "...my_certify_policy_id..."
-  description                            = "...my_description..."
-  display_name                           = "...my_display_name..."
-  grant_policy_id                        = "...my_grant_policy_id..."
-  idempotency_key                       = "terraform/workspace/conductorone_app.my_app"
-  identity_matching                      = "APP_USER_IDENTITY_MATCHING_CUSTOM"
+  certify_policy_id = "...my_certify_policy_id..."
+  description       = "...my_description..."
+  display_name      = "...my_display_name..."
+  grant_policy_id   = "...my_grant_policy_id..."
+  idempotency_key   = "...my_idempotency_key..."
+  identity_matching = "APP_USER_IDENTITY_MATCHING_CUSTOM"
+  instructions      = "...my_instructions..."
   match_baton_ref = {
-    app_id       = "...connector_app_id..."
-    connector_id = "...connector_id..."
-    external_id  = "app::0oa123"
+    app_id       = "...my_app_id..."
+    connector_id = "...my_connector_id..."
+    external_id  = "...my_external_id..."
   }
-  instructions                           = "...my_instructions..."
   monthly_cost_usd                       = 1
   revoke_policy_id                       = "...my_revoke_policy_id..."
   strict_access_entitlement_provisioning = true

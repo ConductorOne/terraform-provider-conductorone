@@ -66,6 +66,14 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 		r.Instructions = types.StringPointerValue(resp.Instructions)
 		r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
 		r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
+		if resp.MatchBatonRef == nil {
+			r.MatchBatonRef = nil
+		} else {
+			r.MatchBatonRef = &tfTypes.AppMatchBatonRef{}
+			r.MatchBatonRef.AppID = types.StringValue(resp.MatchBatonRef.AppID)
+			r.MatchBatonRef.ConnectorID = types.StringValue(resp.MatchBatonRef.ConnectorID)
+			r.MatchBatonRef.ExternalID = types.StringValue(resp.MatchBatonRef.ExternalID)
+		}
 		r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))
 		r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
 		r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)
@@ -273,6 +281,23 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	} else {
 		isManuallyManaged = nil
 	}
+	var matchBatonRef *shared.AppMatchBatonRef
+	if r.MatchBatonRef != nil {
+		var appID string
+		appID = r.MatchBatonRef.AppID.ValueString()
+
+		var connectorID string
+		connectorID = r.MatchBatonRef.ConnectorID.ValueString()
+
+		var externalID string
+		externalID = r.MatchBatonRef.ExternalID.ValueString()
+
+		matchBatonRef = &shared.AppMatchBatonRef{
+			AppID:       appID,
+			ConnectorID: connectorID,
+			ExternalID:  externalID,
+		}
+	}
 	monthlyCostUsd := new(int)
 	if !r.MonthlyCostUsd.IsUnknown() && !r.MonthlyCostUsd.IsNull() {
 		*monthlyCostUsd = int(r.MonthlyCostUsd.ValueInt32())
@@ -305,6 +330,7 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 		IdentityMatching:                    identityMatching,
 		Instructions:                        instructions,
 		IsManuallyManaged:                   isManuallyManaged,
+		MatchBatonRef:                       matchBatonRef,
 		MonthlyCostUsd:                      monthlyCostUsd,
 		RevokePolicyID:                      revokePolicyID,
 		StrictAccessEntitlementProvisioning: strictAccessEntitlementProvisioning,
@@ -366,6 +392,12 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 	} else {
 		grantPolicyID = nil
 	}
+	idempotencyKey := new(string)
+	if !r.IdempotencyKey.IsUnknown() && !r.IdempotencyKey.IsNull() {
+		*idempotencyKey = r.IdempotencyKey.ValueString()
+	} else {
+		idempotencyKey = nil
+	}
 	identityMatching := new(shared.CreateAppRequestIdentityMatching)
 	if !r.IdentityMatching.IsUnknown() && !r.IdentityMatching.IsNull() {
 		*identityMatching = shared.CreateAppRequestIdentityMatching(r.IdentityMatching.ValueString())
@@ -377,6 +409,23 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 		*instructions = r.Instructions.ValueString()
 	} else {
 		instructions = nil
+	}
+	var matchBatonRef *shared.AppMatchBatonRef
+	if r.MatchBatonRef != nil {
+		var appId1 string
+		appId1 = r.MatchBatonRef.AppID.ValueString()
+
+		var connectorID string
+		connectorID = r.MatchBatonRef.ConnectorID.ValueString()
+
+		var externalID string
+		externalID = r.MatchBatonRef.ExternalID.ValueString()
+
+		matchBatonRef = &shared.AppMatchBatonRef{
+			AppID:       appId1,
+			ConnectorID: connectorID,
+			ExternalID:  externalID,
+		}
 	}
 	monthlyCostUsd := new(int)
 	if !r.MonthlyCostUsd.IsUnknown() && !r.MonthlyCostUsd.IsNull() {
@@ -403,8 +452,10 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 		Description:                         description,
 		DisplayName:                         displayName,
 		GrantPolicyID:                       grantPolicyID,
+		IdempotencyKey:                      idempotencyKey,
 		IdentityMatching:                    identityMatching,
 		Instructions:                        instructions,
+		MatchBatonRef:                       matchBatonRef,
 		MonthlyCostUsd:                      monthlyCostUsd,
 		RevokePolicyID:                      revokePolicyID,
 		StrictAccessEntitlementProvisioning: strictAccessEntitlementProvisioning,

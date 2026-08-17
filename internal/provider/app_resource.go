@@ -7,6 +7,7 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	speakeasy_stringvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/stringvalidators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -14,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -50,10 +52,12 @@ type AppResourceModel struct {
 	EnableConnectorSourcedOwnership     types.Bool                  `tfsdk:"enable_connector_sourced_ownership"`
 	GrantPolicyID                       types.String                `tfsdk:"grant_policy_id"`
 	ID                                  types.String                `tfsdk:"id"`
+	IdempotencyKey                      types.String                `tfsdk:"idempotency_key"`
 	IdentityMatching                    types.String                `tfsdk:"identity_matching"`
 	Instructions                        types.String                `tfsdk:"instructions"`
 	IsDirectory                         types.Bool                  `tfsdk:"is_directory"`
 	IsManuallyManaged                   types.Bool                  `tfsdk:"is_manually_managed"`
+	MatchBatonRef                       *tfTypes.AppMatchBatonRef   `tfsdk:"match_baton_ref"`
 	MonthlyCostUsd                      types.Int32                 `tfsdk:"monthly_cost_usd"`
 	ParentAppID                         types.String                `tfsdk:"parent_app_id"`
 	RevokePolicyID                      types.String                `tfsdk:"revoke_policy_id"`
@@ -184,6 +188,13 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Computed:    true,
 				Description: `The ID of the app.`,
 			},
+			"idempotency_key": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Stable key that distinguishes a retry from another create for the same connector identity. Required with match_baton_ref. Requires replacement if changed.`,
+			},
 			"identity_matching": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -201,6 +212,39 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"is_manually_managed": schema.BoolAttribute{
 				Computed:    true,
 				Description: `The isManuallyManaged field.`,
+			},
+			"match_baton_ref": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"app_id": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Application that owns the connector. Not Null`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+						},
+					},
+					"connector_id": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Connector that discovers the application. Not Null`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+						},
+					},
+					"external_id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `Canonical connector-v2 application resource ID in` + "\n" +
+							` ` + "`" + `<resource_type>::<resource_id>` + "`" + ` form (for example, ` + "`" + `app::0oa123` + "`" + `).` + "\n" +
+							`Not Null`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+						},
+					},
+				},
+				Description: `AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift.`,
 			},
 			"monthly_cost_usd": schema.Int32Attribute{
 				Computed:    true,

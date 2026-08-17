@@ -48,10 +48,13 @@ type CreateAppRequest struct {
 	DisplayName string `json:"displayName"`
 	// Creates the app with this grant policy.
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
+	// Stable key that distinguishes a retry from another create for the same connector identity. Required with match_baton_ref.
+	IdempotencyKey *string `json:"idempotencyKey,omitempty"`
 	// Define the app user identity matching strategy for this app.
 	IdentityMatching *CreateAppRequestIdentityMatching `json:"identityMatching,omitempty"`
 	// Instructions shown to users in the access request form when requesting access for this app.
-	Instructions *string `json:"instructions,omitempty"`
+	Instructions  *string           `json:"instructions,omitempty"`
+	MatchBatonRef *AppMatchBatonRef `json:"matchBatonRef,omitempty"`
 	// Creates the app with this monthly cost per seat.
 	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
 	// Creates the app with this array of user owners.
@@ -104,6 +107,13 @@ func (c *CreateAppRequest) GetGrantPolicyID() *string {
 	return c.GrantPolicyID
 }
 
+func (c *CreateAppRequest) GetIdempotencyKey() *string {
+	if c == nil {
+		return nil
+	}
+	return c.IdempotencyKey
+}
+
 func (c *CreateAppRequest) GetIdentityMatching() *CreateAppRequestIdentityMatching {
 	if c == nil {
 		return nil
@@ -116,6 +126,13 @@ func (c *CreateAppRequest) GetInstructions() *string {
 		return nil
 	}
 	return c.Instructions
+}
+
+func (c *CreateAppRequest) GetMatchBatonRef() *AppMatchBatonRef {
+	if c == nil {
+		return nil
+	}
+	return c.MatchBatonRef
 }
 
 func (c *CreateAppRequest) GetMonthlyCostUsd() *int {
