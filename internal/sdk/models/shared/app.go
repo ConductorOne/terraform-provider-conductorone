@@ -111,7 +111,8 @@ type App struct {
 	// The isManuallyManaged field.
 	IsManuallyManaged *bool `json:"isManuallyManaged,omitempty"`
 	// The URL of a logo to display for the app.
-	LogoURI *string `json:"logoUri,omitempty"`
+	LogoURI       *string           `json:"logoUri,omitempty"`
+	MatchBatonRef *AppMatchBatonRef `json:"matchBatonRef,omitempty"`
 	// The cost of an app per-seat, so that total cost can be calculated by the grant count.
 	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
 	// The ID of the app that created this app, if any.
@@ -297,6 +298,13 @@ func (a *App) GetLogoURI() *string {
 	return a.LogoURI
 }
 
+func (a *App) GetMatchBatonRef() *AppMatchBatonRef {
+	if a == nil {
+		return nil
+	}
+	return a.MatchBatonRef
+}
+
 func (a *App) GetMonthlyCostUsd() *int {
 	if a == nil {
 		return nil
@@ -376,7 +384,8 @@ type AppInput struct {
 	// If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
 	Instructions *string `json:"instructions,omitempty"`
 	// The isManuallyManaged field.
-	IsManuallyManaged *bool `json:"isManuallyManaged,omitempty"`
+	IsManuallyManaged *bool             `json:"isManuallyManaged,omitempty"`
+	MatchBatonRef     *AppMatchBatonRef `json:"matchBatonRef,omitempty"`
 	// The cost of an app per-seat, so that total cost can be calculated by the grant count.
 	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
 	// The ID of the Revoke Policy associated with this App.
@@ -481,6 +490,13 @@ func (a *AppInput) GetIsManuallyManaged() *bool {
 		return nil
 	}
 	return a.IsManuallyManaged
+}
+
+func (a *AppInput) GetMatchBatonRef() *AppMatchBatonRef {
+	if a == nil {
+		return nil
+	}
+	return a.MatchBatonRef
 }
 
 func (a *AppInput) GetMonthlyCostUsd() *int {

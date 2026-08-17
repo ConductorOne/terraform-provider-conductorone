@@ -253,6 +253,7 @@ C1ApiAppV1AppsListResponse (ContentType: string, StatusCode: int32, RawResponse:
     AppUserMapper (mappingCases: array)
       AppUserMapperMatchCase (appUserKeyCel: string, userKeyCel: string)
     IdentityMatching (enum: APP_USER_IDENTITY_MATCHING_UNSPECIFIED, APP_USER_IDENTITY_MATCHING_STRICT, APP_USER_IDENTITY_MATCHING_DISPLAY_NAME ...)
+    AppMatchBatonRef (appId: string, connectorId: string, externalId: string)
 CreateAppRequest (annotations: map, appEntitlementOwnerRefs: array, certifyPolicyId: string ...)
  CreateAppRequestIdentityMatching (enum: APP_USER_IDENTITY_MATCHING_UNSPECIFIED, APP_USER_IDENTITY_MATCHING_STRICT, APP_USER_IDENTITY_MATCHING_DISPLAY_NAME ...)
 C1ApiAppV1AppsCreateResponse (ContentType: string, StatusCode: int32, RawResponse: response ...)

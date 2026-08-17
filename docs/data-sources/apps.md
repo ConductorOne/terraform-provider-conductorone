@@ -94,6 +94,7 @@ Read-Only:
 - `instructions` (String) If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
 - `is_directory` (Boolean) Specifies if the app is a directory.
 - `is_manually_managed` (Boolean) The isManuallyManaged field.
+- `match_baton_ref` (Attributes) AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift. (see [below for nested schema](#nestedatt--list--match_baton_ref))
 - `monthly_cost_usd` (Number) The cost of an app per-seat, so that total cost can be calculated by the grant count.
 - `parent_app_id` (String) The ID of the app that created this app, if any.
 - `revoke_policy_id` (String) The ID of the Revoke Policy associated with this App.
@@ -115,3 +116,15 @@ Read-Only:
 
 - `app_user_key_cel` (String) CEL expression evaluated against an AppUser to produce match key(s).
 - `user_key_cel` (String) CEL expression evaluated against a User to produce match key(s).
+
+
+
+<a id="nestedatt--list--match_baton_ref"></a>
+### Nested Schema for `list.match_baton_ref`
+
+Read-Only:
+
+- `app_id` (String) Application that owns the connector.
+- `connector_id` (String) Connector that discovers the application.
+- `external_id` (String) Canonical connector-v2 application resource ID in
+ `<resource_type>::<resource_id>` form (for example, `app::0oa123`).

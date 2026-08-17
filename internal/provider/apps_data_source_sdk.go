@@ -75,6 +75,14 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 				list.Instructions = types.StringPointerValue(listItem.Instructions)
 				list.IsDirectory = types.BoolPointerValue(listItem.IsDirectory)
 				list.IsManuallyManaged = types.BoolPointerValue(listItem.IsManuallyManaged)
+				if listItem.MatchBatonRef == nil {
+					list.MatchBatonRef = nil
+				} else {
+					list.MatchBatonRef = &tfTypes.AppMatchBatonRef{}
+					list.MatchBatonRef.AppID = types.StringValue(listItem.MatchBatonRef.AppID)
+					list.MatchBatonRef.ConnectorID = types.StringValue(listItem.MatchBatonRef.ConnectorID)
+					list.MatchBatonRef.ExternalID = types.StringValue(listItem.MatchBatonRef.ExternalID)
+				}
 				list.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(listItem.MonthlyCostUsd))
 				list.ParentAppID = types.StringPointerValue(listItem.ParentAppID)
 				list.RevokePolicyID = types.StringPointerValue(listItem.RevokePolicyID)

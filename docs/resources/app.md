@@ -27,12 +27,18 @@ resource "conductorone_app" "my_app" {
       id     = "...my_id..."
     }
   ]
-  certify_policy_id                      = "...my_certify_policy_id..."
-  description                            = "...my_description..."
-  display_name                           = "...my_display_name..."
-  grant_policy_id                        = "...my_grant_policy_id..."
-  identity_matching                      = "APP_USER_IDENTITY_MATCHING_CUSTOM"
-  instructions                           = "...my_instructions..."
+  certify_policy_id = "...my_certify_policy_id..."
+  description       = "...my_description..."
+  display_name      = "...my_display_name..."
+  grant_policy_id   = "...my_grant_policy_id..."
+  idempotency_key   = "...my_idempotency_key..."
+  identity_matching = "APP_USER_IDENTITY_MATCHING_CUSTOM"
+  instructions      = "...my_instructions..."
+  match_baton_ref = {
+    app_id       = "...my_app_id..."
+    connector_id = "...my_connector_id..."
+    external_id  = "...my_external_id..."
+  }
   monthly_cost_usd                       = 1
   revoke_policy_id                       = "...my_revoke_policy_id..."
   strict_access_entitlement_provisioning = true
@@ -60,8 +66,10 @@ resource "conductorone_app" "my_app" {
 - `certify_policy_id` (String) Creates the app with this certify policy.
 - `description` (String) Creates the app with this description.
 - `grant_policy_id` (String) Creates the app with this grant policy.
+- `idempotency_key` (String) Stable key that distinguishes a retry from another create for the same connector identity. Required with match_baton_ref. Requires replacement if changed.
 - `identity_matching` (String) Define the app user identity matching strategy for this app. possible known values include one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM"]
 - `instructions` (String) Instructions shown to users in the access request form when requesting access for this app.
+- `match_baton_ref` (Attributes) AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift. (see [below for nested schema](#nestedatt--match_baton_ref))
 - `monthly_cost_usd` (Number) Creates the app with this monthly cost per seat.
 - `revoke_policy_id` (String) Creates the app with this revoke policy.
 - `strict_access_entitlement_provisioning` (Boolean) This flag enforces a provisioning mode where the access entitlement is always included in the provisioning flow, if the app user doesn't exist
@@ -91,6 +99,18 @@ Optional:
 
 - `app_id` (String) The appId field. Requires replacement if changed.
 - `id` (String) The id field. Requires replacement if changed.
+
+
+<a id="nestedatt--match_baton_ref"></a>
+### Nested Schema for `match_baton_ref`
+
+Optional:
+
+- `app_id` (String) Application that owns the connector. Not Null
+- `connector_id` (String) Connector that discovers the application. Not Null
+- `external_id` (String) Canonical connector-v2 application resource ID in
+ `<resource_type>::<resource_id>` form (for example, `app::0oa123`).
+Not Null
 
 
 <a id="nestedatt--app_user_mapper"></a>

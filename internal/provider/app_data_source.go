@@ -29,39 +29,40 @@ type AppDataSource struct {
 
 // AppDataSourceModel describes the data model.
 type AppDataSourceModel struct {
-	AccessModel                         types.String            `tfsdk:"access_model"`
-	Annotations                         map[string]types.String `tfsdk:"annotations"`
-	AppAccountID                        types.String            `tfsdk:"app_account_id"`
-	AppAccountName                      types.String            `tfsdk:"app_account_name"`
-	AppIds                              []types.String          `tfsdk:"app_ids"`
-	AppUserMapper                       *tfTypes.AppUserMapper  `tfsdk:"app_user_mapper"`
-	CertifyPolicyID                     types.String            `tfsdk:"certify_policy_id"`
-	ConnectorVersion                    types.Int64             `tfsdk:"connector_version"`
-	CreatedAt                           types.String            `tfsdk:"created_at"`
-	DefaultRequestCatalogID             types.String            `tfsdk:"default_request_catalog_id"`
-	DeletedAt                           types.String            `tfsdk:"deleted_at"`
-	Description                         types.String            `tfsdk:"description"`
-	DisplayName                         types.String            `tfsdk:"display_name"`
-	EnableConnectorSourcedOwnership     types.Bool              `tfsdk:"enable_connector_sourced_ownership"`
-	ExcludeAppIds                       []types.String          `tfsdk:"exclude_app_ids"`
-	GrantPolicyID                       types.String            `tfsdk:"grant_policy_id"`
-	ID                                  types.String            `tfsdk:"id"`
-	IdentityMatching                    types.String            `tfsdk:"identity_matching"`
-	Instructions                        types.String            `tfsdk:"instructions"`
-	IsDirectory                         types.Bool              `tfsdk:"is_directory"`
-	IsManuallyManaged                   types.Bool              `tfsdk:"is_manually_managed"`
-	MonthlyCostUsd                      types.Int32             `tfsdk:"monthly_cost_usd"`
-	NextPageToken                       types.String            `tfsdk:"next_page_token"`
-	OnlyDirectories                     types.Bool              `tfsdk:"only_directories"`
-	PageSize                            types.Int32             `tfsdk:"page_size"`
-	PageToken                           types.String            `tfsdk:"page_token"`
-	ParentAppID                         types.String            `tfsdk:"parent_app_id"`
-	PolicyRefs                          []tfTypes.PolicyRef     `tfsdk:"policy_refs"`
-	Query                               types.String            `tfsdk:"query"`
-	RevokePolicyID                      types.String            `tfsdk:"revoke_policy_id"`
-	StrictAccessEntitlementProvisioning types.Bool              `tfsdk:"strict_access_entitlement_provisioning"`
-	UpdatedAt                           types.String            `tfsdk:"updated_at"`
-	UserCount                           types.String            `tfsdk:"user_count"`
+	AccessModel                         types.String              `tfsdk:"access_model"`
+	Annotations                         map[string]types.String   `tfsdk:"annotations"`
+	AppAccountID                        types.String              `tfsdk:"app_account_id"`
+	AppAccountName                      types.String              `tfsdk:"app_account_name"`
+	AppIds                              []types.String            `tfsdk:"app_ids"`
+	AppUserMapper                       *tfTypes.AppUserMapper    `tfsdk:"app_user_mapper"`
+	CertifyPolicyID                     types.String              `tfsdk:"certify_policy_id"`
+	ConnectorVersion                    types.Int64               `tfsdk:"connector_version"`
+	CreatedAt                           types.String              `tfsdk:"created_at"`
+	DefaultRequestCatalogID             types.String              `tfsdk:"default_request_catalog_id"`
+	DeletedAt                           types.String              `tfsdk:"deleted_at"`
+	Description                         types.String              `tfsdk:"description"`
+	DisplayName                         types.String              `tfsdk:"display_name"`
+	EnableConnectorSourcedOwnership     types.Bool                `tfsdk:"enable_connector_sourced_ownership"`
+	ExcludeAppIds                       []types.String            `tfsdk:"exclude_app_ids"`
+	GrantPolicyID                       types.String              `tfsdk:"grant_policy_id"`
+	ID                                  types.String              `tfsdk:"id"`
+	IdentityMatching                    types.String              `tfsdk:"identity_matching"`
+	Instructions                        types.String              `tfsdk:"instructions"`
+	IsDirectory                         types.Bool                `tfsdk:"is_directory"`
+	IsManuallyManaged                   types.Bool                `tfsdk:"is_manually_managed"`
+	MatchBatonRef                       *tfTypes.AppMatchBatonRef `tfsdk:"match_baton_ref"`
+	MonthlyCostUsd                      types.Int32               `tfsdk:"monthly_cost_usd"`
+	NextPageToken                       types.String              `tfsdk:"next_page_token"`
+	OnlyDirectories                     types.Bool                `tfsdk:"only_directories"`
+	PageSize                            types.Int32               `tfsdk:"page_size"`
+	PageToken                           types.String              `tfsdk:"page_token"`
+	ParentAppID                         types.String              `tfsdk:"parent_app_id"`
+	PolicyRefs                          []tfTypes.PolicyRef       `tfsdk:"policy_refs"`
+	Query                               types.String              `tfsdk:"query"`
+	RevokePolicyID                      types.String              `tfsdk:"revoke_policy_id"`
+	StrictAccessEntitlementProvisioning types.Bool                `tfsdk:"strict_access_entitlement_provisioning"`
+	UpdatedAt                           types.String              `tfsdk:"updated_at"`
+	UserCount                           types.String              `tfsdk:"user_count"`
 }
 
 // Metadata returns the data source type name.
@@ -186,6 +187,25 @@ func (r *AppDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"is_manually_managed": schema.BoolAttribute{
 				Computed:    true,
 				Description: `The isManuallyManaged field.`,
+			},
+			"match_baton_ref": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"app_id": schema.StringAttribute{
+						Computed:    true,
+						Description: `Application that owns the connector.`,
+					},
+					"connector_id": schema.StringAttribute{
+						Computed:    true,
+						Description: `Connector that discovers the application.`,
+					},
+					"external_id": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `Canonical connector-v2 application resource ID in` + "\n" +
+							` ` + "`" + `<resource_type>::<resource_id>` + "`" + ` form (for example, ` + "`" + `app::0oa123` + "`" + `).`,
+					},
+				},
+				Description: `AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift.`,
 			},
 			"monthly_cost_usd": schema.Int32Attribute{
 				Computed:    true,

@@ -171,6 +171,25 @@ func (r *AppsDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							Computed:    true,
 							Description: `The isManuallyManaged field.`,
 						},
+						"match_baton_ref": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `Application that owns the connector.`,
+								},
+								"connector_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `Connector that discovers the application.`,
+								},
+								"external_id": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `Canonical connector-v2 application resource ID in` + "\n" +
+										` ` + "`" + `<resource_type>::<resource_id>` + "`" + ` form (for example, ` + "`" + `app::0oa123` + "`" + `).`,
+								},
+							},
+							Description: `AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift.`,
+						},
 						"monthly_cost_usd": schema.Int32Attribute{
 							Computed:    true,
 							Description: `The cost of an app per-seat, so that total cost can be calculated by the grant count.`,
