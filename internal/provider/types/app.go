@@ -26,6 +26,7 @@ type App struct {
 	Instructions                        types.String            `tfsdk:"instructions"`
 	IsDirectory                         types.Bool              `tfsdk:"is_directory"`
 	IsManuallyManaged                   types.Bool              `tfsdk:"is_manually_managed"`
+	MatchBatonRef                       *AppMatchBatonRef       `tfsdk:"match_baton_ref"`
 	MonthlyCostUsd                      types.Int32             `tfsdk:"monthly_cost_usd"`
 	ParentAppID                         types.String            `tfsdk:"parent_app_id"`
 	RevokePolicyID                      types.String            `tfsdk:"revoke_policy_id"`

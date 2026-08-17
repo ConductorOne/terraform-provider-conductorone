@@ -66,6 +66,14 @@ func (r *AppDataSourceModel) RefreshFromSharedApp(ctx context.Context, resp *sha
 	r.Instructions = types.StringPointerValue(resp.Instructions)
 	r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
 	r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
+	if resp.MatchBatonRef == nil {
+		r.MatchBatonRef = nil
+	} else {
+		r.MatchBatonRef = &tfTypes.AppMatchBatonRef{}
+		r.MatchBatonRef.AppID = types.StringValue(resp.MatchBatonRef.AppID)
+		r.MatchBatonRef.ConnectorID = types.StringValue(resp.MatchBatonRef.ConnectorID)
+		r.MatchBatonRef.ExternalID = types.StringValue(resp.MatchBatonRef.ExternalID)
+	}
 	r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))
 	r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
 	r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)

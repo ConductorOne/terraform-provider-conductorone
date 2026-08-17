@@ -108,9 +108,6 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 						Computed:    true,
 						Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
 					},
-					"deleted_at": schema.StringAttribute{
-						Computed: true,
-					},
 					"deprovisioner_policy": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
