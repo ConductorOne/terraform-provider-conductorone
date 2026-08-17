@@ -31,7 +31,6 @@ resource "conductorone_app" "my_app" {
   description       = "...my_description..."
   display_name      = "...my_display_name..."
   grant_policy_id   = "...my_grant_policy_id..."
-  idempotency_key   = "terraform/workspace/conductorone_app.my_app"
   identity_matching = "APP_USER_IDENTITY_MATCHING_CUSTOM"
   instructions      = "...my_instructions..."
   match_baton_ref = {
@@ -66,7 +65,6 @@ resource "conductorone_app" "my_app" {
 - `certify_policy_id` (String) Creates the app with this certify policy.
 - `description` (String) Creates the app with this description.
 - `grant_policy_id` (String) Creates the app with this grant policy.
-- `idempotency_key` (String) Stable key that distinguishes a retry from another create for the same connector identity. Required with match_baton_ref. Requires replacement if changed.
 - `identity_matching` (String) Define the app user identity matching strategy for this app. possible known values include one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM"]
 - `instructions` (String) Instructions shown to users in the access request form when requesting access for this app.
 - `match_baton_ref` (Attributes) AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift. (see [below for nested schema](#nestedatt--match_baton_ref))

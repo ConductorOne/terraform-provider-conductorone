@@ -52,7 +52,6 @@ type AppResourceModel struct {
 	EnableConnectorSourcedOwnership     types.Bool                  `tfsdk:"enable_connector_sourced_ownership"`
 	GrantPolicyID                       types.String                `tfsdk:"grant_policy_id"`
 	ID                                  types.String                `tfsdk:"id"`
-	IdempotencyKey                      types.String                `tfsdk:"idempotency_key"`
 	IdentityMatching                    types.String                `tfsdk:"identity_matching"`
 	Instructions                        types.String                `tfsdk:"instructions"`
 	IsDirectory                         types.Bool                  `tfsdk:"is_directory"`
@@ -188,13 +187,6 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Computed:    true,
 				Description: `The ID of the app.`,
 			},
-			"idempotency_key": schema.StringAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `Stable key that distinguishes a retry from another create for the same connector identity. Required with match_baton_ref. Requires replacement if changed.`,
-			},
 			"identity_matching": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -215,6 +207,9 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			},
 			"match_baton_ref": schema.SingleNestedAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"app_id": schema.StringAttribute{

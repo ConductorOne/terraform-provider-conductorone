@@ -12,7 +12,6 @@ resource "conductorone_app" "my_app" {
   description       = "...my_description..."
   display_name      = "...my_display_name..."
   grant_policy_id   = "...my_grant_policy_id..."
-  idempotency_key   = "terraform/workspace/conductorone_app.my_app"
   identity_matching = "APP_USER_IDENTITY_MATCHING_CUSTOM"
   instructions      = "...my_instructions..."
   match_baton_ref = {

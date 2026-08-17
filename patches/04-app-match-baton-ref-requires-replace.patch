@@ -1,0 +1,25 @@
+Subject: [PATCH] Preserve replacement semantics for app match baton reference
+
+The app update request embeds the full App object, so Speakeasy treats
+match_baton_ref as updateable even though the API enforces it as immutable.
+Without this modifier Terraform plans an in-place update that the API rejects.
+
+---
+ internal/provider/app_resource.go | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/internal/provider/app_resource.go b/internal/provider/app_resource.go
+--- a/internal/provider/app_resource.go
++++ b/internal/provider/app_resource.go
+@@ -207,6 +207,9 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, res
+ 			},
+ 			"match_baton_ref": schema.SingleNestedAttribute{
+ 				Computed: true,
++				PlanModifiers: []planmodifier.Object{
++					objectplanmodifier.RequiresReplaceIfConfigured(),
++				},
+ 				Optional: true,
+ 				Attributes: map[string]schema.Attribute{
+ 					"app_id": schema.StringAttribute{
+-- 
+2.47.3

@@ -392,12 +392,6 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 	} else {
 		grantPolicyID = nil
 	}
-	idempotencyKey := new(string)
-	if !r.IdempotencyKey.IsUnknown() && !r.IdempotencyKey.IsNull() {
-		*idempotencyKey = r.IdempotencyKey.ValueString()
-	} else {
-		idempotencyKey = nil
-	}
 	identityMatching := new(shared.CreateAppRequestIdentityMatching)
 	if !r.IdentityMatching.IsUnknown() && !r.IdentityMatching.IsNull() {
 		*identityMatching = shared.CreateAppRequestIdentityMatching(r.IdentityMatching.ValueString())
@@ -452,7 +446,6 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 		Description:                         description,
 		DisplayName:                         displayName,
 		GrantPolicyID:                       grantPolicyID,
-		IdempotencyKey:                      idempotencyKey,
 		IdentityMatching:                    identityMatching,
 		Instructions:                        instructions,
 		MatchBatonRef:                       matchBatonRef,

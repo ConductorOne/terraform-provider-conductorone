@@ -48,8 +48,6 @@ type CreateAppRequest struct {
 	DisplayName string `json:"displayName"`
 	// Creates the app with this grant policy.
 	GrantPolicyID *string `json:"grantPolicyId,omitempty"`
-	// Stable key that distinguishes a retry from another create for the same connector identity. Required with match_baton_ref.
-	IdempotencyKey *string `json:"idempotencyKey,omitempty"`
 	// Define the app user identity matching strategy for this app.
 	IdentityMatching *CreateAppRequestIdentityMatching `json:"identityMatching,omitempty"`
 	// Instructions shown to users in the access request form when requesting access for this app.
@@ -105,13 +103,6 @@ func (c *CreateAppRequest) GetGrantPolicyID() *string {
 		return nil
 	}
 	return c.GrantPolicyID
-}
-
-func (c *CreateAppRequest) GetIdempotencyKey() *string {
-	if c == nil {
-		return nil
-	}
-	return c.IdempotencyKey
 }
 
 func (c *CreateAppRequest) GetIdentityMatching() *CreateAppRequestIdentityMatching {
