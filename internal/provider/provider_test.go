@@ -57,6 +57,26 @@ func TestRegistersAccessReviewSetupDataSources(t *testing.T) {
 	}
 }
 
+func TestRegistersProvider15Surfaces(t *testing.T) {
+	t.Parallel()
+
+	wants := []string{
+		"conductorone_app_resource_owner_entitlement",
+		"conductorone_app_resource_owner_user",
+		"conductorone_credential_inventory_policy",
+		"conductorone_recovery_policy",
+		"conductorone_session_policy",
+		"conductorone_sign_in_policy",
+	}
+	for _, names := range [][]string{registeredResourceNames(t), registeredDataSourceNames(t)} {
+		for _, want := range wants {
+			if !slices.Contains(names, want) {
+				t.Fatalf("%q is not registered; got %v", want, names)
+			}
+		}
+	}
+}
+
 func registeredResourceNames(t *testing.T) []string {
 	ctx := context.Background()
 	p := mustTestProvider(t)
