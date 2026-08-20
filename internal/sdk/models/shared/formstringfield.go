@@ -9,40 +9,25 @@ package shared
 //   - passwordField
 //   - selectField
 //   - pickerField
+//   - dateField
 type FormStringField struct {
+	DateField *DateField `json:"dateField,omitempty"`
 	// The defaultValue field.
-	DefaultValue *string `json:"defaultValue,omitempty"`
-	// The PasswordField message.
+	DefaultValue  *string        `json:"defaultValue,omitempty"`
 	PasswordField *PasswordField `json:"passwordField,omitempty"`
-	// The PickerField message.
-	//
-	// This message contains a oneof named type. Only a single field of the following list may be set at a time:
-	//   - appUserPicker
-	//   - resourcePicker
-	//   - c1UserPicker
-	//
-	PickerField *PickerField `json:"pickerField,omitempty"`
+	PickerField   *PickerField   `json:"pickerField,omitempty"`
 	// The placeholder field.
-	Placeholder *string `json:"placeholder,omitempty"`
-	// StringRules describe the constraints applied to `string` values
-	//
-	// This message contains a oneof named well_known. Only a single field of the following list may be set at a time:
-	//   - email
-	//   - hostname
-	//   - ip
-	//   - ipv4
-	//   - ipv6
-	//   - uri
-	//   - uriRef
-	//   - address
-	//   - uuid
-	//   - wellKnownRegex
-	//
-	StringRules *StringRules `json:"rules,omitempty"`
-	// The SelectField message.
+	Placeholder *string      `json:"placeholder,omitempty"`
+	Rules       *StringRules `json:"rules,omitempty"`
 	SelectField *SelectField `json:"selectField,omitempty"`
-	// The TextField message.
-	TextField *TextField `json:"textField,omitempty"`
+	TextField   *TextField   `json:"textField,omitempty"`
+}
+
+func (f *FormStringField) GetDateField() *DateField {
+	if f == nil {
+		return nil
+	}
+	return f.DateField
 }
 
 func (f *FormStringField) GetDefaultValue() *string {
@@ -73,11 +58,11 @@ func (f *FormStringField) GetPlaceholder() *string {
 	return f.Placeholder
 }
 
-func (f *FormStringField) GetStringRules() *StringRules {
+func (f *FormStringField) GetRules() *StringRules {
 	if f == nil {
 		return nil
 	}
-	return f.StringRules
+	return f.Rules
 }
 
 func (f *FormStringField) GetSelectField() *SelectField {

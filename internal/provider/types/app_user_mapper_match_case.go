@@ -7,6 +7,8 @@ import (
 )
 
 type AppUserMapperMatchCase struct {
+	AppID         types.String `tfsdk:"app_id"`
 	AppUserKeyCel types.String `tfsdk:"app_user_key_cel"`
+	CaseIndex     types.Int64  `tfsdk:"case_index"`
 	UserKeyCel    types.String `tfsdk:"user_key_cel"`
 }

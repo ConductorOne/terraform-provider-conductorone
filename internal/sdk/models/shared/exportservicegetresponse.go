@@ -4,11 +4,6 @@ package shared
 
 // The ExportServiceGetResponse message contains the system log exporter object.
 type ExportServiceGetResponse struct {
-	// The Exporter message.
-	//
-	// This message contains a oneof named export_to. Only a single field of the following list may be set at a time:
-	//   - datasource
-	//
 	Exporter *Exporter `json:"exporter,omitempty"`
 }
 

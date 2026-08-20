@@ -4,34 +4,20 @@ package shared
 
 // CheckBoxComponent is a boolean checkbox.
 type CheckBoxComponent struct {
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString *DynamicString `json:"label,omitempty"`
-	// DynamicBool can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicBool *DynamicBool `json:"value,omitempty"`
+	Label *DynamicString `json:"label,omitempty"`
+	Value *DynamicBool   `json:"value,omitempty"`
 }
 
-func (c *CheckBoxComponent) GetDynamicString() *DynamicString {
+func (c *CheckBoxComponent) GetLabel() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString
+	return c.Label
 }
 
-func (c *CheckBoxComponent) GetDynamicBool() *DynamicBool {
+func (c *CheckBoxComponent) GetValue() *DynamicBool {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicBool
+	return c.Value
 }

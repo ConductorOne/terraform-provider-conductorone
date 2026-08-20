@@ -32,6 +32,8 @@ func newSSFReceiverEventSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKCon
 
 // Search
 // Search performs a full-text search across received SSF events with optional filters for stream, event type, outcome, and matched user.
+//
+//	Request a modest page_size (≤25) to keep responses small.
 func (s *SSFReceiverEventSearch) Search(ctx context.Context, request *shared.SSFReceiverEventSearchServiceSearchRequest, opts ...operations.Option) (*operations.C1APISSFReceiverV1SSFReceiverEventSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

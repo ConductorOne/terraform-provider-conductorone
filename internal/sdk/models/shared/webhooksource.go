@@ -11,49 +11,44 @@ package shared
 //   - provisionStep
 //   - workflowStep
 type WebhookSource struct {
-	// The WebhookSourceApprovalStep message.
-	WebhookSourceApprovalStep *WebhookSourceApprovalStep `json:"approvalStep,omitempty"`
-	// The WebhookSourcePolicyPostAction message.
-	WebhookSourcePolicyPostAction *WebhookSourcePolicyPostAction `json:"policyPostAction,omitempty"`
-	// The WebhookSourceProvisionStep message.
-	WebhookSourceProvisionStep *WebhookSourceProvisionStep `json:"provisionStep,omitempty"`
-	// The WebhookSourceTest message.
-	WebhookSourceTest *WebhookSourceTest `json:"test,omitempty"`
-	// The WebhookSourceWorkflowStep message.
-	WebhookSourceWorkflowStep *WebhookSourceWorkflowStep `json:"workflowStep,omitempty"`
+	ApprovalStep     *WebhookSourceApprovalStep     `json:"approvalStep,omitempty"`
+	PolicyPostAction *WebhookSourcePolicyPostAction `json:"policyPostAction,omitempty"`
+	ProvisionStep    *WebhookSourceProvisionStep    `json:"provisionStep,omitempty"`
+	Test             *WebhookSourceTest             `json:"test,omitempty"`
+	WorkflowStep     *WebhookSourceWorkflowStep     `json:"workflowStep,omitempty"`
 }
 
-func (w *WebhookSource) GetWebhookSourceApprovalStep() *WebhookSourceApprovalStep {
+func (w *WebhookSource) GetApprovalStep() *WebhookSourceApprovalStep {
 	if w == nil {
 		return nil
 	}
-	return w.WebhookSourceApprovalStep
+	return w.ApprovalStep
 }
 
-func (w *WebhookSource) GetWebhookSourcePolicyPostAction() *WebhookSourcePolicyPostAction {
+func (w *WebhookSource) GetPolicyPostAction() *WebhookSourcePolicyPostAction {
 	if w == nil {
 		return nil
 	}
-	return w.WebhookSourcePolicyPostAction
+	return w.PolicyPostAction
 }
 
-func (w *WebhookSource) GetWebhookSourceProvisionStep() *WebhookSourceProvisionStep {
+func (w *WebhookSource) GetProvisionStep() *WebhookSourceProvisionStep {
 	if w == nil {
 		return nil
 	}
-	return w.WebhookSourceProvisionStep
+	return w.ProvisionStep
 }
 
-func (w *WebhookSource) GetWebhookSourceTest() *WebhookSourceTest {
+func (w *WebhookSource) GetTest() *WebhookSourceTest {
 	if w == nil {
 		return nil
 	}
-	return w.WebhookSourceTest
+	return w.Test
 }
 
-func (w *WebhookSource) GetWebhookSourceWorkflowStep() *WebhookSourceWorkflowStep {
+func (w *WebhookSource) GetWorkflowStep() *WebhookSourceWorkflowStep {
 	if w == nil {
 		return nil
 	}
-	return w.WebhookSourceWorkflowStep
+	return w.WorkflowStep
 }

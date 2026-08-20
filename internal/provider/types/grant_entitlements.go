@@ -7,14 +7,14 @@ import (
 )
 
 type GrantEntitlements struct {
-	GrantEntitlementExclusionCriteria *GrantEntitlementExclusionCriteria `tfsdk:"grant_entitlement_exclusion_criteria"`
-	GrantEntitlementExclusionList     *GrantEntitlementExclusionList     `tfsdk:"grant_entitlement_exclusion_list"`
-	GrantEntitlementExclusionListCel  *GrantEntitlementExclusionListCel  `tfsdk:"grant_entitlement_exclusion_list_cel"`
-	GrantEntitlementExclusionNone     *GrantEntitlementExclusionNone     `tfsdk:"grant_entitlement_exclusion_none"`
-	GrantEntitlementInclusionCriteria *GrantEntitlementInclusionCriteria `tfsdk:"grant_entitlement_inclusion_criteria"`
-	GrantEntitlementInclusionList     *GrantEntitlementInclusionList     `tfsdk:"grant_entitlement_inclusion_list"`
-	GrantEntitlementInclusionListCel  *GrantEntitlementInclusionListCel  `tfsdk:"grant_entitlement_inclusion_list_cel"`
-	UserRef                           *UserRef                           `tfsdk:"user_ref"`
-	UseSubjectUser                    types.Bool                         `tfsdk:"use_subject_user"`
-	UserIDCel                         types.String                       `tfsdk:"user_id_cel"`
+	ExclusionCriteria *GrantEntitlementExclusionCriteria `tfsdk:"exclusion_criteria"`
+	ExclusionList     *GrantEntitlementExclusionList     `tfsdk:"exclusion_list"`
+	ExclusionListCel  *GrantEntitlementExclusionListCel  `tfsdk:"exclusion_list_cel"`
+	ExclusionNone     *GrantEntitlementExclusionNone     `tfsdk:"exclusion_none"`
+	InclusionCriteria *GrantEntitlementInclusionCriteria `tfsdk:"inclusion_criteria"`
+	InclusionList     *GrantEntitlementInclusionList     `tfsdk:"inclusion_list"`
+	InclusionListCel  *GrantEntitlementInclusionListCel  `tfsdk:"inclusion_list_cel"`
+	UseSubjectUser    types.Bool                         `tfsdk:"use_subject_user"`
+	UserIDCel         types.String                       `tfsdk:"user_id_cel"`
+	UserRef           *UserRef                           `tfsdk:"user_ref"`
 }

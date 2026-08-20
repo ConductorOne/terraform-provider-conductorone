@@ -4,7 +4,6 @@ package shared
 
 // The ServicePrincipalServiceUpdateRequest message.
 type ServicePrincipalServiceUpdateRequest struct {
-	// ServicePrincipal represents a tenant-managed non-human identity.
 	ServicePrincipal *ServicePrincipalInput `json:"servicePrincipal,omitempty"`
 	UpdateMask       *string                `json:"updateMask,omitempty"`
 }

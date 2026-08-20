@@ -12,38 +12,29 @@ package shared
 //   - assignOwner
 //   - reopen
 type BulkUpdateFindingStateRequest struct {
-	// The BulkAcceptRiskAction message.
-	BulkAcceptRiskAction *BulkAcceptRiskAction `json:"acceptRisk,omitempty"`
-	// The BulkAssignOwnerAction message.
-	BulkAssignOwnerAction *BulkAssignOwnerAction `json:"assignOwner,omitempty"`
+	AcceptRisk  *BulkAcceptRiskAction  `json:"acceptRisk,omitempty"`
+	AssignOwner *BulkAssignOwnerAction `json:"assignOwner,omitempty"`
 	// By-ID mode: specify individual finding refs.
-	Refs []FindingRef `json:"refs,omitempty"`
-	// The BulkReopenAction message.
-	BulkReopenAction *BulkReopenAction `json:"reopen,omitempty"`
-	// The FindingSearchRequest message.
-	FindingSearchRequest *FindingSearchRequest `json:"searchRequest,omitempty"`
-	// The BulkSnoozeAction message.
-	BulkSnoozeAction *BulkSnoozeAction `json:"snooze,omitempty"`
-	// The BulkSuppressAction message.
-	BulkSuppressAction *BulkSuppressAction `json:"suppress,omitempty"`
-	// The BulkUnsuppressAction message.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	BulkUnsuppressAction *BulkUnsuppressAction `json:"unsuppress,omitempty"`
+	Refs          []FindingRef          `json:"refs,omitempty"`
+	Reopen        *BulkReopenAction     `json:"reopen,omitempty"`
+	SearchRequest *FindingSearchRequest `json:"searchRequest,omitempty"`
+	Snooze        *BulkSnoozeAction     `json:"snooze,omitempty"`
+	Suppress      *BulkSuppressAction   `json:"suppress,omitempty"`
+	Unsuppress    *BulkUnsuppressAction `json:"unsuppress,omitempty"`
 }
 
-func (b *BulkUpdateFindingStateRequest) GetBulkAcceptRiskAction() *BulkAcceptRiskAction {
+func (b *BulkUpdateFindingStateRequest) GetAcceptRisk() *BulkAcceptRiskAction {
 	if b == nil {
 		return nil
 	}
-	return b.BulkAcceptRiskAction
+	return b.AcceptRisk
 }
 
-func (b *BulkUpdateFindingStateRequest) GetBulkAssignOwnerAction() *BulkAssignOwnerAction {
+func (b *BulkUpdateFindingStateRequest) GetAssignOwner() *BulkAssignOwnerAction {
 	if b == nil {
 		return nil
 	}
-	return b.BulkAssignOwnerAction
+	return b.AssignOwner
 }
 
 func (b *BulkUpdateFindingStateRequest) GetRefs() []FindingRef {
@@ -53,37 +44,37 @@ func (b *BulkUpdateFindingStateRequest) GetRefs() []FindingRef {
 	return b.Refs
 }
 
-func (b *BulkUpdateFindingStateRequest) GetBulkReopenAction() *BulkReopenAction {
+func (b *BulkUpdateFindingStateRequest) GetReopen() *BulkReopenAction {
 	if b == nil {
 		return nil
 	}
-	return b.BulkReopenAction
+	return b.Reopen
 }
 
-func (b *BulkUpdateFindingStateRequest) GetFindingSearchRequest() *FindingSearchRequest {
+func (b *BulkUpdateFindingStateRequest) GetSearchRequest() *FindingSearchRequest {
 	if b == nil {
 		return nil
 	}
-	return b.FindingSearchRequest
+	return b.SearchRequest
 }
 
-func (b *BulkUpdateFindingStateRequest) GetBulkSnoozeAction() *BulkSnoozeAction {
+func (b *BulkUpdateFindingStateRequest) GetSnooze() *BulkSnoozeAction {
 	if b == nil {
 		return nil
 	}
-	return b.BulkSnoozeAction
+	return b.Snooze
 }
 
-func (b *BulkUpdateFindingStateRequest) GetBulkSuppressAction() *BulkSuppressAction {
+func (b *BulkUpdateFindingStateRequest) GetSuppress() *BulkSuppressAction {
 	if b == nil {
 		return nil
 	}
-	return b.BulkSuppressAction
+	return b.Suppress
 }
 
-func (b *BulkUpdateFindingStateRequest) GetBulkUnsuppressAction() *BulkUnsuppressAction {
+func (b *BulkUpdateFindingStateRequest) GetUnsuppress() *BulkUnsuppressAction {
 	if b == nil {
 		return nil
 	}
-	return b.BulkUnsuppressAction
+	return b.Unsuppress
 }

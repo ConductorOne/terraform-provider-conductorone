@@ -2,24 +2,18 @@
 
 package shared
 
-// DecoyWorkloadFederationInput requests a WorkloadFederationTrust decoy
+// DecoyWorkloadFederationInput plants a workload-federation-trust decoy
 //
-//	bound to an existing Provider. Decoys reuse an already-registered
-//	Provider because Trust matching requires a real JWKS for JWT signature
-//	verification before the decoy_id check fires.
-//
-//	`condition_expression` is the same CEL shape the regular WF Trust API
-//	takes -- operators express whatever matching they want against the
-//	JWT claims map (`claims.aud`, `claims.sub`, custom claims). Compiled
-//	+ validated by the WF controller's CreateTrust at create time.
+//	under an existing Provider. The Provider must already be registered
+//	so its JWKS is reachable for signature verification.
 type DecoyWorkloadFederationInput struct {
-	// CEL boolean evaluated against the presented JWT's claims map.
+	// CEL boolean evaluated against the presented JWT's claims map. Same
+	//  shape as the regular WorkloadFederationTrust condition expression.
 	//  Example: `claims.sub.startsWith("repo:acme/fake-infra:")`.
 	ConditionExpression *string `json:"conditionExpression,omitempty"`
 	// Existing WorkloadFederationProvider to bind the decoy Trust under.
 	ProviderID *string `json:"providerId,omitempty"`
-	// Existing SERVICE-typed User the Trust binds to. An attacker
-	//  tripping the decoy would otherwise be act-as'ing this principal.
+	// Existing SERVICE-typed User the Trust would act-as on match.
 	ServicePrincipalUserID *string `json:"servicePrincipalUserId,omitempty"`
 }
 

@@ -4,14 +4,6 @@ package shared
 
 // The AppEntitlementServiceUpdateAutomationResponse message.
 type AppEntitlementServiceUpdateAutomationResponse struct {
-	// The AppEntitlementAutomation message.
-	//
-	// This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
-	//   - none
-	//   - entitlements
-	//   - cel
-	//   - basic
-	//
 	AppEntitlementAutomation *AppEntitlementAutomation `json:"AppEntitlementAutomation,omitempty"`
 }
 

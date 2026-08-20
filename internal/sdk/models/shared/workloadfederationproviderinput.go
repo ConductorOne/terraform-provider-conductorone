@@ -23,15 +23,9 @@ type WorkloadFederationProviderInput struct {
 	// Whether the provider is disabled. Disabled providers reject all token exchanges.
 	Disabled *bool `json:"disabled,omitempty"`
 	// The display name of the provider.
-	DisplayName *string `json:"displayName,omitempty"`
-	// OIDCSettings is the kind-specific configuration block for classic OIDC
-	//  providers (GitHub Actions, GitLab CI, HCP Terraform, AWS IAM Outbound,
-	//  any CUSTOM provider). Empty for now; future fields like custom_jwks_url,
-	//  audience overrides, and required_claims land here.
-	OIDCSettings *OIDCSettings `json:"oidc,omitempty"`
-	// SPIFFESettings is the kind-specific configuration block for SPIFFE
-	//  trust-domain providers (issuer_url = spiffe://<trust-domain>).
-	SPIFFESettings *SPIFFESettings `json:"spiffe,omitempty"`
+	DisplayName *string         `json:"displayName,omitempty"`
+	Oidc        *OIDCSettings   `json:"oidc,omitempty"`
+	Spiffe      *SPIFFESettings `json:"spiffe,omitempty"`
 }
 
 func (w *WorkloadFederationProviderInput) GetDescription() *string {
@@ -55,16 +49,16 @@ func (w *WorkloadFederationProviderInput) GetDisplayName() *string {
 	return w.DisplayName
 }
 
-func (w *WorkloadFederationProviderInput) GetOIDCSettings() *OIDCSettings {
+func (w *WorkloadFederationProviderInput) GetOidc() *OIDCSettings {
 	if w == nil {
 		return nil
 	}
-	return w.OIDCSettings
+	return w.Oidc
 }
 
-func (w *WorkloadFederationProviderInput) GetSPIFFESettings() *SPIFFESettings {
+func (w *WorkloadFederationProviderInput) GetSpiffe() *SPIFFESettings {
 	if w == nil {
 		return nil
 	}
-	return w.SPIFFESettings
+	return w.Spiffe
 }

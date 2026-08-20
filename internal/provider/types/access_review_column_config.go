@@ -7,5 +7,6 @@ import (
 )
 
 type AccessReviewColumnConfig struct {
-	Columns []types.String `tfsdk:"columns"`
+	Columns        []types.String              `tfsdk:"columns"`
+	OrderedColumns []AccessReviewTaskColumnRef `tfsdk:"ordered_columns"`
 }

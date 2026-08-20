@@ -7,11 +7,11 @@ import (
 )
 
 type App struct {
-	AppUserMapper                       *AppUserMapper          `tfsdk:"app_user_mapper"`
 	AccessModel                         types.String            `tfsdk:"access_model"`
 	Annotations                         map[string]types.String `tfsdk:"annotations"`
 	AppAccountID                        types.String            `tfsdk:"app_account_id"`
 	AppAccountName                      types.String            `tfsdk:"app_account_name"`
+	AppUserMapper                       *AppUserMapper          `tfsdk:"app_user_mapper"`
 	CertifyPolicyID                     types.String            `tfsdk:"certify_policy_id"`
 	ConnectorVersion                    types.Int64             `tfsdk:"connector_version"`
 	CreatedAt                           types.String            `tfsdk:"created_at"`
@@ -29,6 +29,7 @@ type App struct {
 	MatchBatonRef                       *AppMatchBatonRef       `tfsdk:"match_baton_ref"`
 	MonthlyCostUsd                      types.Int32             `tfsdk:"monthly_cost_usd"`
 	ParentAppID                         types.String            `tfsdk:"parent_app_id"`
+	RevokeGrantSources                  types.Bool              `tfsdk:"revoke_grant_sources"`
 	RevokePolicyID                      types.String            `tfsdk:"revoke_policy_id"`
 	StrictAccessEntitlementProvisioning types.Bool              `tfsdk:"strict_access_entitlement_provisioning"`
 	UpdatedAt                           types.String            `tfsdk:"updated_at"`

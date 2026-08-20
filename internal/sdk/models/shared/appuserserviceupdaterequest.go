@@ -4,7 +4,6 @@ package shared
 
 // The AppUserServiceUpdateRequest message contains the app user and the fields to be updated.
 type AppUserServiceUpdateRequest struct {
-	// Application User that represents an account in the application.
 	AppUser    *AppUserInput `json:"appUser,omitempty"`
 	UpdateMask *string       `json:"updateMask,omitempty"`
 }

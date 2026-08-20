@@ -43,12 +43,23 @@ type Function struct {
 	FunctionType *FunctionType `json:"functionType,omitempty"`
 	// The head field.
 	Head *string `json:"head,omitempty"`
+	// IDs of every non-deleted hook that still references this function.
+	//  Read-only: maintained by the Hook API, not by CreateFunction/UpdateFunction.
+	//  Non-empty means DeleteFunction will refuse to delete until these are
+	//  removed or retargeted.
+	HookRefs []string `json:"hookRefs,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
 	// The isDraft field.
 	IsDraft *bool `json:"isDraft,omitempty"`
 	// The outboundNetworkAllowlist field.
 	OutboundNetworkAllowlist []string `json:"outboundNetworkAllowlist,omitempty"`
+	// Number of pre-warmed Lambda instances. 0 (default) leaves the function
+	//  cold-started on first invoke. > 0 reserves and provisions that many
+	//  execution environments via AWS Lambda provisioned concurrency.
+	//  Ignored for FUNCTION_TYPE_CODE_MODE functions — that value is driven
+	//  by AIGovernanceSettings.code_mode_concurrency.
+	ProvisionedConcurrency *int `json:"provisionedConcurrency,omitempty"`
 	// The publishedCommitId field.
 	PublishedCommitID *string `json:"publishedCommitId,omitempty"`
 	// Scoped role IDs define the permissions granted to this function when calling
@@ -68,6 +79,9 @@ type Function struct {
 	//  tenant has completed the FunctionsToSPN migration) and by the migration
 	//  itself, never by UpdateFunction. Retired once all functions are on SPN.
 	UseSpn *bool `json:"useSpn,omitempty"`
+	// IDs of every non-deleted workflow template whose CallFunction step still
+	//  references this function. Read-only, same semantics as hook_refs.
+	WorkflowTemplateRefs []string `json:"workflowTemplateRefs,omitempty"`
 }
 
 func (f Function) MarshalJSON() ([]byte, error) {
@@ -123,6 +137,13 @@ func (f *Function) GetHead() *string {
 	return f.Head
 }
 
+func (f *Function) GetHookRefs() []string {
+	if f == nil {
+		return nil
+	}
+	return f.HookRefs
+}
+
 func (f *Function) GetID() *string {
 	if f == nil {
 		return nil
@@ -142,6 +163,13 @@ func (f *Function) GetOutboundNetworkAllowlist() []string {
 		return nil
 	}
 	return f.OutboundNetworkAllowlist
+}
+
+func (f *Function) GetProvisionedConcurrency() *int {
+	if f == nil {
+		return nil
+	}
+	return f.ProvisionedConcurrency
 }
 
 func (f *Function) GetPublishedCommitID() *string {
@@ -179,6 +207,13 @@ func (f *Function) GetUseSpn() *bool {
 	return f.UseSpn
 }
 
+func (f *Function) GetWorkflowTemplateRefs() []string {
+	if f == nil {
+		return nil
+	}
+	return f.WorkflowTemplateRefs
+}
+
 // FunctionInput - Function represents a customer-provided code extension in the API
 type FunctionInput struct {
 	// The description field.
@@ -195,6 +230,12 @@ type FunctionInput struct {
 	IsDraft *bool `json:"isDraft,omitempty"`
 	// The outboundNetworkAllowlist field.
 	OutboundNetworkAllowlist []string `json:"outboundNetworkAllowlist,omitempty"`
+	// Number of pre-warmed Lambda instances. 0 (default) leaves the function
+	//  cold-started on first invoke. > 0 reserves and provisions that many
+	//  execution environments via AWS Lambda provisioned concurrency.
+	//  Ignored for FUNCTION_TYPE_CODE_MODE functions — that value is driven
+	//  by AIGovernanceSettings.code_mode_concurrency.
+	ProvisionedConcurrency *int `json:"provisionedConcurrency,omitempty"`
 	// The publishedCommitId field.
 	PublishedCommitID *string `json:"publishedCommitId,omitempty"`
 	// Scoped role IDs define the permissions granted to this function when calling
@@ -255,6 +296,13 @@ func (f *FunctionInput) GetOutboundNetworkAllowlist() []string {
 		return nil
 	}
 	return f.OutboundNetworkAllowlist
+}
+
+func (f *FunctionInput) GetProvisionedConcurrency() *int {
+	if f == nil {
+		return nil
+	}
+	return f.ProvisionedConcurrency
 }
 
 func (f *FunctionInput) GetPublishedCommitID() *string {

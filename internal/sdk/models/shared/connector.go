@@ -51,8 +51,7 @@ type Connector struct {
 	Config          *Config    `json:"config,omitempty"`
 	ConfigUpdatedAt *time.Time `json:"configUpdatedAt,omitempty"`
 	// The connectorApiVersion field.
-	ConnectorAPIVersion *int64 `json:"connectorApiVersion,omitempty"`
-	// The ConnectorSyncCronSchedule message.
+	ConnectorAPIVersion       *int64                     `json:"connectorApiVersion,omitempty"`
 	ConnectorSyncCronSchedule *ConnectorSyncCronSchedule `json:"connectorSyncCronSchedule,omitempty"`
 	CreatedAt                 *time.Time                 `json:"createdAt,omitempty"`
 	DeletedAt                 *time.Time                 `json:"deletedAt,omitempty"`
@@ -65,20 +64,17 @@ type Connector struct {
 	// The downloadUrl for a spreadsheet if the connector was created from uploading a file.
 	DownloadURL *string `json:"downloadUrl,omitempty"`
 	// The id of the connector.
-	ID *string `json:"id,omitempty"`
-	// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
-	OAuth2AuthorizedAs *OAuth2AuthorizedAs `json:"oauthAuthorizedAs,omitempty"`
+	ID                *string             `json:"id,omitempty"`
+	OauthAuthorizedAs *OAuth2AuthorizedAs `json:"oauthAuthorizedAs,omitempty"`
 	// Number of sync workers to use for parallel sync, when the PARALLEL_SYNC feature is enabled. Zero disables parallel sync. Optional on write: omit the field in UpdateAdvancedConfig to leave the stored value unchanged. The public API allows setting up to 4.
 	ParallelSyncWorkerCount *int `json:"parallelSyncWorkerCount,omitempty"`
 	// List of profile attributes to sync, when set only these attributes will be synced
 	ProfileAllowList []string `json:"profileAllowList,omitempty"`
 	// List of profile attributes to ignore (not sync), when set other attributes will be synced, but these will not.
-	ProfileIgnoreList []string `json:"profileIgnoreList,omitempty"`
-	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
-	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
-	// The SyncConfig message.
-	SyncConfig     *SyncConfig `json:"syncConfig,omitempty"`
-	SyncDisabledAt *time.Time  `json:"syncDisabledAt,omitempty"`
+	ProfileIgnoreList []string         `json:"profileIgnoreList,omitempty"`
+	Status            *ConnectorStatus `json:"status,omitempty"`
+	SyncConfig        *SyncConfig      `json:"syncConfig,omitempty"`
+	SyncDisabledAt    *time.Time       `json:"syncDisabledAt,omitempty"`
 	// The category of the connector sync that was disabled.
 	SyncDisabledCategory *string `json:"syncDisabledCategory,omitempty"`
 	// The reason the connector sync was disabled.
@@ -197,11 +193,11 @@ func (c *Connector) GetID() *string {
 	return c.ID
 }
 
-func (c *Connector) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAs {
+func (c *Connector) GetOauthAuthorizedAs() *OAuth2AuthorizedAs {
 	if c == nil {
 		return nil
 	}
-	return c.OAuth2AuthorizedAs
+	return c.OauthAuthorizedAs
 }
 
 func (c *Connector) GetParallelSyncWorkerCount() *int {
@@ -225,11 +221,11 @@ func (c *Connector) GetProfileIgnoreList() []string {
 	return c.ProfileIgnoreList
 }
 
-func (c *Connector) GetConnectorStatus() *ConnectorStatus {
+func (c *Connector) GetStatus() *ConnectorStatus {
 	if c == nil {
 		return nil
 	}
-	return c.ConnectorStatus
+	return c.Status
 }
 
 func (c *Connector) GetSyncConfig() *SyncConfig {
@@ -283,8 +279,7 @@ type ConnectorInput struct {
 	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
 	CatalogID *string `json:"catalogId,omitempty"`
 	// Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-	Config *Config `json:"config,omitempty"`
-	// The ConnectorSyncCronSchedule message.
+	Config                    *Config                    `json:"config,omitempty"`
 	ConnectorSyncCronSchedule *ConnectorSyncCronSchedule `json:"connectorSyncCronSchedule,omitempty"`
 	// The description of the connector.
 	Description *string `json:"description,omitempty"`
@@ -293,19 +288,16 @@ type ConnectorInput struct {
 	// The display name of the connector.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The id of the connector.
-	ID *string `json:"id,omitempty"`
-	// OAuth2AuthorizedAs tracks the user that OAuthed with the connector.
-	OAuth2AuthorizedAs *OAuth2AuthorizedAsInput `json:"oauthAuthorizedAs,omitempty"`
+	ID                *string                  `json:"id,omitempty"`
+	OauthAuthorizedAs *OAuth2AuthorizedAsInput `json:"oauthAuthorizedAs,omitempty"`
 	// Number of sync workers to use for parallel sync, when the PARALLEL_SYNC feature is enabled. Zero disables parallel sync. Optional on write: omit the field in UpdateAdvancedConfig to leave the stored value unchanged. The public API allows setting up to 4.
 	ParallelSyncWorkerCount *int `json:"parallelSyncWorkerCount,omitempty"`
 	// List of profile attributes to sync, when set only these attributes will be synced
 	ProfileAllowList []string `json:"profileAllowList,omitempty"`
 	// List of profile attributes to ignore (not sync), when set other attributes will be synced, but these will not.
-	ProfileIgnoreList []string `json:"profileIgnoreList,omitempty"`
-	// The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
-	ConnectorStatus *ConnectorStatus `json:"status,omitempty"`
-	// The SyncConfig message.
-	SyncConfig *SyncConfig `json:"syncConfig,omitempty"`
+	ProfileIgnoreList []string         `json:"profileIgnoreList,omitempty"`
+	Status            *ConnectorStatus `json:"status,omitempty"`
+	SyncConfig        *SyncConfig      `json:"syncConfig,omitempty"`
 	// The category of the connector sync that was disabled.
 	SyncDisabledCategory *string `json:"syncDisabledCategory,omitempty"`
 	// The reason the connector sync was disabled.
@@ -377,11 +369,11 @@ func (c *ConnectorInput) GetID() *string {
 	return c.ID
 }
 
-func (c *ConnectorInput) GetOAuth2AuthorizedAs() *OAuth2AuthorizedAsInput {
+func (c *ConnectorInput) GetOauthAuthorizedAs() *OAuth2AuthorizedAsInput {
 	if c == nil {
 		return nil
 	}
-	return c.OAuth2AuthorizedAs
+	return c.OauthAuthorizedAs
 }
 
 func (c *ConnectorInput) GetParallelSyncWorkerCount() *int {
@@ -405,11 +397,11 @@ func (c *ConnectorInput) GetProfileIgnoreList() []string {
 	return c.ProfileIgnoreList
 }
 
-func (c *ConnectorInput) GetConnectorStatus() *ConnectorStatus {
+func (c *ConnectorInput) GetStatus() *ConnectorStatus {
 	if c == nil {
 		return nil
 	}
-	return c.ConnectorStatus
+	return c.Status
 }
 
 func (c *ConnectorInput) GetSyncConfig() *SyncConfig {

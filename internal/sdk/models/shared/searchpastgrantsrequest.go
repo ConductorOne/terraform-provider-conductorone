@@ -9,9 +9,8 @@ type SearchPastGrantsRequest struct {
 	// A list of app IDs to restrict the search to.
 	AppIds []string `json:"appIds,omitempty"`
 	// A list of app user references to restrict the search to.
-	AppUserRefs []AppUserRef `json:"appUserRefs,omitempty"`
-	// The AppEntitlementUserBindingExpandHistoryMask message.
-	AppEntitlementUserBindingExpandHistoryMask *AppEntitlementUserBindingExpandHistoryMask `json:"expandMask,omitempty"`
+	AppUserRefs []AppUserRef                                `json:"appUserRefs,omitempty"`
+	ExpandMask  *AppEntitlementUserBindingExpandHistoryMask `json:"expandMask,omitempty"`
 	// The maximum number of results to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
 	// The token for fetching the next page of results.
@@ -39,11 +38,11 @@ func (s *SearchPastGrantsRequest) GetAppUserRefs() []AppUserRef {
 	return s.AppUserRefs
 }
 
-func (s *SearchPastGrantsRequest) GetAppEntitlementUserBindingExpandHistoryMask() *AppEntitlementUserBindingExpandHistoryMask {
+func (s *SearchPastGrantsRequest) GetExpandMask() *AppEntitlementUserBindingExpandHistoryMask {
 	if s == nil {
 		return nil
 	}
-	return s.AppEntitlementUserBindingExpandHistoryMask
+	return s.ExpandMask
 }
 
 func (s *SearchPastGrantsRequest) GetPageSize() *int {

@@ -41,6 +41,9 @@ type GraphNode struct {
 	ID *string `json:"id,omitempty"`
 	// The resourceTypeId field.
 	ResourceTypeID *string `json:"resourceTypeId,omitempty"`
+	// Optional secondary line shown under the display name (e.g. an account's
+	//  email/username, or an identity's email).
+	SecondaryText *string `json:"secondaryText,omitempty"`
 	// The type field.
 	Type *GraphNodeType `json:"type,omitempty"`
 }
@@ -71,6 +74,13 @@ func (g *GraphNode) GetResourceTypeID() *string {
 		return nil
 	}
 	return g.ResourceTypeID
+}
+
+func (g *GraphNode) GetSecondaryText() *string {
+	if g == nil {
+		return nil
+	}
+	return g.SecondaryText
 }
 
 func (g *GraphNode) GetType() *GraphNodeType {

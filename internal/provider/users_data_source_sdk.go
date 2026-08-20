@@ -30,6 +30,20 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 				list.DelegatedUserPath = types.StringPointerValue(listItem.DelegatedUserPath)
 				list.DirectoriesPath = types.StringPointerValue(listItem.DirectoriesPath)
 				list.ManagersPath = types.StringPointerValue(listItem.ManagersPath)
+				if listItem.ObjectPermissions == nil {
+					list.ObjectPermissions = nil
+				} else {
+					list.ObjectPermissions = &tfTypes.UserActorObjectPermissions{}
+					list.ObjectPermissions.Delete = types.BoolPointerValue(listItem.ObjectPermissions.Delete)
+					list.ObjectPermissions.Edit = types.BoolPointerValue(listItem.ObjectPermissions.Edit)
+					if len(listItem.ObjectPermissions.Extra) > 0 {
+						list.ObjectPermissions.Extra = make(map[string]types.Bool, len(listItem.ObjectPermissions.Extra))
+						for key, value := range listItem.ObjectPermissions.Extra {
+							list.ObjectPermissions.Extra[key] = types.BoolValue(value)
+						}
+					}
+					list.ObjectPermissions.Read = types.BoolPointerValue(listItem.ObjectPermissions.Read)
+				}
 				list.RolesPath = types.StringPointerValue(listItem.RolesPath)
 				if listItem.User == nil {
 					list.User = nil
@@ -50,6 +64,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 							departmentSources.AppID = types.StringPointerValue(departmentSourcesItem.AppID)
 							departmentSources.AppUserID = types.StringPointerValue(departmentSourcesItem.AppUserID)
 							departmentSources.AppUserProfileAttributeKey = types.StringPointerValue(departmentSourcesItem.AppUserProfileAttributeKey)
+							departmentSources.Priority = types.Int64PointerValue(departmentSourcesItem.Priority)
 							departmentSources.UserAttributeMappingID = types.StringPointerValue(departmentSourcesItem.UserAttributeMappingID)
 							departmentSources.Value = types.StringPointerValue(departmentSourcesItem.Value)
 
@@ -84,6 +99,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 							directoryStatusSources.AppID = types.StringPointerValue(directoryStatusSourcesItem.AppID)
 							directoryStatusSources.AppUserID = types.StringPointerValue(directoryStatusSourcesItem.AppUserID)
 							directoryStatusSources.AppUserProfileAttributeKey = types.StringPointerValue(directoryStatusSourcesItem.AppUserProfileAttributeKey)
+							directoryStatusSources.Priority = types.Int64PointerValue(directoryStatusSourcesItem.Priority)
 							directoryStatusSources.UserAttributeMappingID = types.StringPointerValue(directoryStatusSourcesItem.UserAttributeMappingID)
 							directoryStatusSources.Value = types.StringPointerValue(directoryStatusSourcesItem.Value)
 
@@ -115,6 +131,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 							emailSources.AppID = types.StringPointerValue(emailSourcesItem.AppID)
 							emailSources.AppUserID = types.StringPointerValue(emailSourcesItem.AppUserID)
 							emailSources.AppUserProfileAttributeKey = types.StringPointerValue(emailSourcesItem.AppUserProfileAttributeKey)
+							emailSources.Priority = types.Int64PointerValue(emailSourcesItem.Priority)
 							emailSources.UserAttributeMappingID = types.StringPointerValue(emailSourcesItem.UserAttributeMappingID)
 							emailSources.Value = types.StringPointerValue(emailSourcesItem.Value)
 
@@ -144,6 +161,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 							employeeIDSources.AppID = types.StringPointerValue(employeeIDSourcesItem.AppID)
 							employeeIDSources.AppUserID = types.StringPointerValue(employeeIDSourcesItem.AppUserID)
 							employeeIDSources.AppUserProfileAttributeKey = types.StringPointerValue(employeeIDSourcesItem.AppUserProfileAttributeKey)
+							employeeIDSources.Priority = types.Int64PointerValue(employeeIDSourcesItem.Priority)
 							employeeIDSources.UserAttributeMappingID = types.StringPointerValue(employeeIDSourcesItem.UserAttributeMappingID)
 							employeeIDSources.Value = types.StringPointerValue(employeeIDSourcesItem.Value)
 
@@ -164,6 +182,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 							employmentStatusSources.AppID = types.StringPointerValue(employmentStatusSourcesItem.AppID)
 							employmentStatusSources.AppUserID = types.StringPointerValue(employmentStatusSourcesItem.AppUserID)
 							employmentStatusSources.AppUserProfileAttributeKey = types.StringPointerValue(employmentStatusSourcesItem.AppUserProfileAttributeKey)
+							employmentStatusSources.Priority = types.Int64PointerValue(employmentStatusSourcesItem.Priority)
 							employmentStatusSources.UserAttributeMappingID = types.StringPointerValue(employmentStatusSourcesItem.UserAttributeMappingID)
 							employmentStatusSources.Value = types.StringPointerValue(employmentStatusSourcesItem.Value)
 
@@ -184,6 +203,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 							employmentTypeSources.AppID = types.StringPointerValue(employmentTypeSourcesItem.AppID)
 							employmentTypeSources.AppUserID = types.StringPointerValue(employmentTypeSourcesItem.AppUserID)
 							employmentTypeSources.AppUserProfileAttributeKey = types.StringPointerValue(employmentTypeSourcesItem.AppUserProfileAttributeKey)
+							employmentTypeSources.Priority = types.Int64PointerValue(employmentTypeSourcesItem.Priority)
 							employmentTypeSources.UserAttributeMappingID = types.StringPointerValue(employmentTypeSourcesItem.UserAttributeMappingID)
 							employmentTypeSources.Value = types.StringPointerValue(employmentTypeSourcesItem.Value)
 
@@ -205,6 +225,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 							jobTitleSources.AppID = types.StringPointerValue(jobTitleSourcesItem.AppID)
 							jobTitleSources.AppUserID = types.StringPointerValue(jobTitleSourcesItem.AppUserID)
 							jobTitleSources.AppUserProfileAttributeKey = types.StringPointerValue(jobTitleSourcesItem.AppUserProfileAttributeKey)
+							jobTitleSources.Priority = types.Int64PointerValue(jobTitleSourcesItem.Priority)
 							jobTitleSources.UserAttributeMappingID = types.StringPointerValue(jobTitleSourcesItem.UserAttributeMappingID)
 							jobTitleSources.Value = types.StringPointerValue(jobTitleSourcesItem.Value)
 
@@ -234,6 +255,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 							managerSources.AppID = types.StringPointerValue(managerSourcesItem.AppID)
 							managerSources.AppUserID = types.StringPointerValue(managerSourcesItem.AppUserID)
 							managerSources.AppUserProfileAttributeKey = types.StringPointerValue(managerSourcesItem.AppUserProfileAttributeKey)
+							managerSources.Priority = types.Int64PointerValue(managerSourcesItem.Priority)
 							managerSources.UserAttributeMappingID = types.StringPointerValue(managerSourcesItem.UserAttributeMappingID)
 							managerSources.Value = types.StringPointerValue(managerSourcesItem.Value)
 
@@ -250,7 +272,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 					if listItem.User.Profile == nil {
 						list.User.Profile = nil
 					} else {
-						list.User.Profile = &tfTypes.Profile{}
+						list.User.Profile = &tfTypes.UserProfile{}
 					}
 					if listItem.User.RoleIds != nil {
 						if list.User.RoleIds == nil {
@@ -295,6 +317,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 							usernameSources.AppID = types.StringPointerValue(usernameSourcesItem.AppID)
 							usernameSources.AppUserID = types.StringPointerValue(usernameSourcesItem.AppUserID)
 							usernameSources.AppUserProfileAttributeKey = types.StringPointerValue(usernameSourcesItem.AppUserProfileAttributeKey)
+							usernameSources.Priority = types.Int64PointerValue(usernameSourcesItem.Priority)
 							usernameSources.UserAttributeMappingID = types.StringPointerValue(usernameSourcesItem.UserAttributeMappingID)
 							usernameSources.Value = types.StringPointerValue(usernameSourcesItem.Value)
 
@@ -304,6 +327,7 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 						list.User.UsernameSources = nil
 					}
 				}
+				list.UserID = types.StringPointerValue(listItem.UserID)
 
 				r.List = append(r.List, list)
 			}
@@ -434,6 +458,13 @@ func (r *UsersDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (
 			roleIds = append(roleIds, r.RoleIds[roleIdsIndex].ValueString())
 		}
 	}
+	var sourceAppIds []string
+	if r.SourceAppIds != nil {
+		sourceAppIds = make([]string, 0, len(r.SourceAppIds))
+		for sourceAppIdsIndex := range r.SourceAppIds {
+			sourceAppIds = append(sourceAppIds, r.SourceAppIds[sourceAppIdsIndex].ValueString())
+		}
+	}
 	var userStatuses []shared.SearchUsersRequestUserStatuses
 	if r.UserStatuses != nil {
 		userStatuses = make([]shared.SearchUsersRequestUserStatuses, 0, len(r.UserStatuses))
@@ -458,6 +489,7 @@ func (r *UsersDataSourceModel) ToSharedSearchUsersRequest(ctx context.Context) (
 		Query:            query,
 		Refs:             refs,
 		RoleIds:          roleIds,
+		SourceAppIds:     sourceAppIds,
 		UserStatuses:     userStatuses,
 	}
 

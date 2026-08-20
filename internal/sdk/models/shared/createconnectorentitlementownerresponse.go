@@ -4,7 +4,6 @@ package shared
 
 // CreateConnectorEntitlementOwnerResponse is the response for creating an entitlement ownership source on a connector.
 type CreateConnectorEntitlementOwnerResponse struct {
-	// ConnectorOwnerEntitlement represents an entitlement ownership source for a connector.
 	ConnectorOwnerEntitlement *ConnectorOwnerEntitlement `json:"connectorOwnerEntitlement,omitempty"`
 }
 

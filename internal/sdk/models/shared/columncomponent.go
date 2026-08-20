@@ -5,19 +5,11 @@ package shared
 // ColumnComponent arranges children vertically.
 type ColumnComponent struct {
 	// The alignment field.
-	Alignment *string `json:"alignment,omitempty"`
-	// ChildList contains references to child component IDs.
-	ChildList *ChildList `json:"children,omitempty"`
+	Alignment *string    `json:"alignment,omitempty"`
+	Children  *ChildList `json:"children,omitempty"`
 	// The distribution field.
-	Distribution *string `json:"distribution,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber *DynamicNumber `json:"gap,omitempty"`
+	Distribution *string        `json:"distribution,omitempty"`
+	Gap          *DynamicNumber `json:"gap,omitempty"`
 }
 
 func (c *ColumnComponent) GetAlignment() *string {
@@ -27,11 +19,11 @@ func (c *ColumnComponent) GetAlignment() *string {
 	return c.Alignment
 }
 
-func (c *ColumnComponent) GetChildList() *ChildList {
+func (c *ColumnComponent) GetChildren() *ChildList {
 	if c == nil {
 		return nil
 	}
-	return c.ChildList
+	return c.Children
 }
 
 func (c *ColumnComponent) GetDistribution() *string {
@@ -41,9 +33,9 @@ func (c *ColumnComponent) GetDistribution() *string {
 	return c.Distribution
 }
 
-func (c *ColumnComponent) GetDynamicNumber() *DynamicNumber {
+func (c *ColumnComponent) GetGap() *DynamicNumber {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicNumber
+	return c.Gap
 }

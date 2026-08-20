@@ -4,20 +4,12 @@ package shared
 
 // The CreateAutomationRequest message.
 type CreateAutomationRequest struct {
-	// The AppEntitlementAutomation message.
-	//
-	// This message contains a oneof named conditions. Only a single field of the following list may be set at a time:
-	//   - none
-	//   - entitlements
-	//   - cel
-	//   - basic
-	//
-	AppEntitlementAutomation *AppEntitlementAutomationInput `json:"automation,omitempty"`
+	Automation *AppEntitlementAutomationInput `json:"automation,omitempty"`
 }
 
-func (c *CreateAutomationRequest) GetAppEntitlementAutomation() *AppEntitlementAutomationInput {
+func (c *CreateAutomationRequest) GetAutomation() *AppEntitlementAutomationInput {
 	if c == nil {
 		return nil
 	}
-	return c.AppEntitlementAutomation
+	return c.Automation
 }

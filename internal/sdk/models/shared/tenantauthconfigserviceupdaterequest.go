@@ -4,27 +4,15 @@ package shared
 
 // The TenantAuthConfigServiceUpdateRequest message.
 type TenantAuthConfigServiceUpdateRequest struct {
-	// The TenantAuthConfig message.
-	//
-	// This message contains a oneof named provider_config. Only a single field of the following list may be set at a time:
-	//   - google
-	//   - microsoft
-	//   - okta
-	//   - onelogin
-	//   - jumpcloud
-	//   - pingone
-	//   - oidc
-	//   - c1Local
-	//
-	TenantAuthConfig *TenantAuthConfigInput `json:"authConfig,omitempty"`
-	UpdateMask       *string                `json:"updateMask,omitempty"`
+	AuthConfig *TenantAuthConfigInput `json:"authConfig,omitempty"`
+	UpdateMask *string                `json:"updateMask,omitempty"`
 }
 
-func (t *TenantAuthConfigServiceUpdateRequest) GetTenantAuthConfig() *TenantAuthConfigInput {
+func (t *TenantAuthConfigServiceUpdateRequest) GetAuthConfig() *TenantAuthConfigInput {
 	if t == nil {
 		return nil
 	}
-	return t.TenantAuthConfig
+	return t.AuthConfig
 }
 
 func (t *TenantAuthConfigServiceUpdateRequest) GetUpdateMask() *string {

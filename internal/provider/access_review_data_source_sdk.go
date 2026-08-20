@@ -16,358 +16,6 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.AccessReviewColumnConfig == nil {
-			r.AccessReviewColumnConfig = nil
-		} else {
-			r.AccessReviewColumnConfig = &tfTypes.AccessReviewColumnConfig{}
-			if resp.AccessReviewColumnConfig.Columns != nil {
-				r.AccessReviewColumnConfig.Columns = make([]types.String, 0, len(resp.AccessReviewColumnConfig.Columns))
-				for _, v := range resp.AccessReviewColumnConfig.Columns {
-					r.AccessReviewColumnConfig.Columns = append(r.AccessReviewColumnConfig.Columns, types.StringValue(string(v)))
-				}
-			} else {
-				r.AccessReviewColumnConfig.Columns = nil
-			}
-		}
-		if resp.AccessReviewExclusionScope == nil {
-			r.AccessReviewExclusionScope = nil
-		} else {
-			r.AccessReviewExclusionScope = &tfTypes.AccessReviewExclusionScope{}
-			if resp.AccessReviewExclusionScope.AppUserStatuses != nil {
-				r.AccessReviewExclusionScope.AppUserStatuses = make([]types.String, 0, len(resp.AccessReviewExclusionScope.AppUserStatuses))
-				for _, v := range resp.AccessReviewExclusionScope.AppUserStatuses {
-					r.AccessReviewExclusionScope.AppUserStatuses = append(r.AccessReviewExclusionScope.AppUserStatuses, types.StringValue(string(v)))
-				}
-			} else {
-				r.AccessReviewExclusionScope.AppUserStatuses = nil
-			}
-			if resp.AccessReviewExclusionScope.AppUserTypes != nil {
-				r.AccessReviewExclusionScope.AppUserTypes = make([]types.String, 0, len(resp.AccessReviewExclusionScope.AppUserTypes))
-				for _, v := range resp.AccessReviewExclusionScope.AppUserTypes {
-					r.AccessReviewExclusionScope.AppUserTypes = append(r.AccessReviewExclusionScope.AppUserTypes, types.StringValue(string(v)))
-				}
-			} else {
-				r.AccessReviewExclusionScope.AppUserTypes = nil
-			}
-		}
-		if resp.AccessReviewInclusionScope == nil {
-			r.AccessReviewInclusionScope = nil
-		} else {
-			r.AccessReviewInclusionScope = &tfTypes.AccessReviewInclusionScope{}
-			if resp.AccessReviewInclusionScope.AppUserStatuses != nil {
-				r.AccessReviewInclusionScope.AppUserStatuses = make([]types.String, 0, len(resp.AccessReviewInclusionScope.AppUserStatuses))
-				for _, v := range resp.AccessReviewInclusionScope.AppUserStatuses {
-					r.AccessReviewInclusionScope.AppUserStatuses = append(r.AccessReviewInclusionScope.AppUserStatuses, types.StringValue(string(v)))
-				}
-			} else {
-				r.AccessReviewInclusionScope.AppUserStatuses = nil
-			}
-			if resp.AccessReviewInclusionScope.AppUserTypes != nil {
-				r.AccessReviewInclusionScope.AppUserTypes = make([]types.String, 0, len(resp.AccessReviewInclusionScope.AppUserTypes))
-				for _, v := range resp.AccessReviewInclusionScope.AppUserTypes {
-					r.AccessReviewInclusionScope.AppUserTypes = append(r.AccessReviewInclusionScope.AppUserTypes, types.StringValue(string(v)))
-				}
-			} else {
-				r.AccessReviewInclusionScope.AppUserTypes = nil
-			}
-			if resp.AccessReviewInclusionScope.ManagerIds != nil {
-				r.AccessReviewInclusionScope.ManagerIds = make([]types.String, 0, len(resp.AccessReviewInclusionScope.ManagerIds))
-				for _, v := range resp.AccessReviewInclusionScope.ManagerIds {
-					r.AccessReviewInclusionScope.ManagerIds = append(r.AccessReviewInclusionScope.ManagerIds, types.StringValue(v))
-				}
-			} else {
-				r.AccessReviewInclusionScope.ManagerIds = nil
-			}
-			if len(resp.AccessReviewInclusionScope.MultiUserProfileAttributes) > 0 {
-				r.AccessReviewInclusionScope.MultiUserProfileAttributes = make(map[string]tfTypes.IncludedUserAttributeValues, len(resp.AccessReviewInclusionScope.MultiUserProfileAttributes))
-				for includedUserAttributeValuesKey, includedUserAttributeValuesValue := range resp.AccessReviewInclusionScope.MultiUserProfileAttributes {
-					var includedUserAttributeValuesResult tfTypes.IncludedUserAttributeValues
-					if includedUserAttributeValuesValue.Values != nil {
-						includedUserAttributeValuesResult.Values = []tfTypes.IncludedUserAttributeValue{}
-
-						for _, valuesItem := range includedUserAttributeValuesValue.Values {
-							var values tfTypes.IncludedUserAttributeValue
-
-							values.Value = types.StringPointerValue(valuesItem.Value)
-
-							includedUserAttributeValuesResult.Values = append(includedUserAttributeValuesResult.Values, values)
-						}
-					} else {
-						includedUserAttributeValuesResult.Values = nil
-					}
-
-					r.AccessReviewInclusionScope.MultiUserProfileAttributes[includedUserAttributeValuesKey] = includedUserAttributeValuesResult
-				}
-			}
-			r.AccessReviewInclusionScope.NoAccountOwners = types.BoolPointerValue(resp.AccessReviewInclusionScope.NoAccountOwners)
-			if resp.AccessReviewInclusionScope.UserIds != nil {
-				r.AccessReviewInclusionScope.UserIds = make([]types.String, 0, len(resp.AccessReviewInclusionScope.UserIds))
-				for _, v := range resp.AccessReviewInclusionScope.UserIds {
-					r.AccessReviewInclusionScope.UserIds = append(r.AccessReviewInclusionScope.UserIds, types.StringValue(v))
-				}
-			} else {
-				r.AccessReviewInclusionScope.UserIds = nil
-			}
-			if resp.AccessReviewInclusionScope.UserStatuses != nil {
-				r.AccessReviewInclusionScope.UserStatuses = make([]types.String, 0, len(resp.AccessReviewInclusionScope.UserStatuses))
-				for _, v := range resp.AccessReviewInclusionScope.UserStatuses {
-					r.AccessReviewInclusionScope.UserStatuses = append(r.AccessReviewInclusionScope.UserStatuses, types.StringValue(string(v)))
-				}
-			} else {
-				r.AccessReviewInclusionScope.UserStatuses = nil
-			}
-		}
-		if resp.AccessReviewScope == nil {
-			r.AccessReviewScope = nil
-		} else {
-			r.AccessReviewScope = &tfTypes.AccessReviewScope{}
-			if resp.AccessReviewScope.AppUserStatuses != nil {
-				r.AccessReviewScope.AppUserStatuses = make([]types.String, 0, len(resp.AccessReviewScope.AppUserStatuses))
-				for _, v := range resp.AccessReviewScope.AppUserStatuses {
-					r.AccessReviewScope.AppUserStatuses = append(r.AccessReviewScope.AppUserStatuses, types.StringValue(string(v)))
-				}
-			} else {
-				r.AccessReviewScope.AppUserStatuses = nil
-			}
-			if resp.AccessReviewScope.AppUserTypes != nil {
-				r.AccessReviewScope.AppUserTypes = make([]types.String, 0, len(resp.AccessReviewScope.AppUserTypes))
-				for _, v := range resp.AccessReviewScope.AppUserTypes {
-					r.AccessReviewScope.AppUserTypes = append(r.AccessReviewScope.AppUserTypes, types.StringValue(string(v)))
-				}
-			} else {
-				r.AccessReviewScope.AppUserTypes = nil
-			}
-		}
-		if resp.AccessReviewScopeV2 == nil {
-			r.AccessReviewScopeV2 = nil
-		} else {
-			r.AccessReviewScopeV2 = &tfTypes.AccessReviewScopeV2{}
-			if resp.AccessReviewScopeV2.AccountCriteriaScope == nil {
-				r.AccessReviewScopeV2.AccountCriteriaScope = nil
-			} else {
-				r.AccessReviewScopeV2.AccountCriteriaScope = &tfTypes.AccountCriteriaScope{}
-				if resp.AccessReviewScopeV2.AccountCriteriaScope.AccountDomain != nil {
-					r.AccessReviewScopeV2.AccountCriteriaScope.AccountDomain = types.StringValue(string(*resp.AccessReviewScopeV2.AccountCriteriaScope.AccountDomain))
-				} else {
-					r.AccessReviewScopeV2.AccountCriteriaScope.AccountDomain = types.StringNull()
-				}
-				if resp.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes != nil {
-					r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes = make([]types.String, 0, len(resp.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes))
-					for _, v := range resp.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes {
-						r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes = append(r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes, types.StringValue(string(v)))
-					}
-				} else {
-					r.AccessReviewScopeV2.AccountCriteriaScope.AccountTypes = nil
-				}
-				if resp.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses != nil {
-					r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses = make([]types.String, 0, len(resp.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses))
-					for _, v := range resp.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses {
-						r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses = append(r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses, types.StringValue(string(v)))
-					}
-				} else {
-					r.AccessReviewScopeV2.AccountCriteriaScope.AppUserStatuses = nil
-				}
-				r.AccessReviewScopeV2.AccountCriteriaScope.NoAccountOwner = types.BoolPointerValue(resp.AccessReviewScopeV2.AccountCriteriaScope.NoAccountOwner)
-			}
-			if resp.AccessReviewScopeV2.AllAccessConflictsScope == nil {
-				r.AccessReviewScopeV2.AllAccessConflictsScope = nil
-			} else {
-				r.AccessReviewScopeV2.AllAccessConflictsScope = &tfTypes.AllAccessConflictsScope{}
-			}
-			if resp.AccessReviewScopeV2.AllAccountsScope == nil {
-				r.AccessReviewScopeV2.AllAccountsScope = nil
-			} else {
-				r.AccessReviewScopeV2.AllAccountsScope = &tfTypes.AllAccountsScope{}
-			}
-			if resp.AccessReviewScopeV2.AllGrantsScope == nil {
-				r.AccessReviewScopeV2.AllGrantsScope = nil
-			} else {
-				r.AccessReviewScopeV2.AllGrantsScope = &tfTypes.AllGrantsScope{}
-			}
-			if resp.AccessReviewScopeV2.AllUsersScope == nil {
-				r.AccessReviewScopeV2.AllUsersScope = nil
-			} else {
-				r.AccessReviewScopeV2.AllUsersScope = &tfTypes.AllUsersScope{}
-			}
-			if resp.AccessReviewScopeV2.ApplicationAccessScope == nil {
-				r.AccessReviewScopeV2.ApplicationAccessScope = nil
-			} else {
-				r.AccessReviewScopeV2.ApplicationAccessScope = &tfTypes.ApplicationAccessScope{}
-			}
-			if resp.AccessReviewScopeV2.AppSelectionCriteriaScope == nil {
-				r.AccessReviewScopeV2.AppSelectionCriteriaScope = nil
-			} else {
-				r.AccessReviewScopeV2.AppSelectionCriteriaScope = &tfTypes.AppSelectionCriteriaScope{}
-				if resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds != nil {
-					r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds))
-					for _, v := range resp.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds {
-						r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = append(r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds, types.StringValue(v))
-					}
-				} else {
-					r.AccessReviewScopeV2.AppSelectionCriteriaScope.ComplianceFrameworkAttributeValueIds = nil
-				}
-				if resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds != nil {
-					r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds))
-					for _, v := range resp.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds {
-						r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = append(r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds, types.StringValue(v))
-					}
-				} else {
-					r.AccessReviewScopeV2.AppSelectionCriteriaScope.RiskLevelAttributeValueIds = nil
-				}
-			}
-			if resp.AccessReviewScopeV2.CelExpressionScope == nil {
-				r.AccessReviewScopeV2.CelExpressionScope = nil
-			} else {
-				r.AccessReviewScopeV2.CelExpressionScope = &tfTypes.CelExpressionScope{}
-				r.AccessReviewScopeV2.CelExpressionScope.Expression = types.StringPointerValue(resp.AccessReviewScopeV2.CelExpressionScope.Expression)
-			}
-			if resp.AccessReviewScopeV2.CelExpressionScope1 == nil {
-				r.AccessReviewScopeV2.CelExpressionScope1 = nil
-			} else {
-				r.AccessReviewScopeV2.CelExpressionScope1 = &tfTypes.CelExpressionScope{}
-				r.AccessReviewScopeV2.CelExpressionScope1.Expression = types.StringPointerValue(resp.AccessReviewScopeV2.CelExpressionScope1.Expression)
-			}
-			if resp.AccessReviewScopeV2.GrantsByCriteriaScope == nil {
-				r.AccessReviewScopeV2.GrantsByCriteriaScope = nil
-			} else {
-				r.AccessReviewScopeV2.GrantsByCriteriaScope = &tfTypes.GrantsByCriteriaScope{}
-				r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceAdded = types.StringPointerValue(resp.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceAdded)
-				r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceLastUsed = types.StringPointerValue(resp.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceLastUsed)
-				r.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceReviewed = types.StringPointerValue(resp.AccessReviewScopeV2.GrantsByCriteriaScope.DaysSinceReviewed)
-				if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter == nil {
-					r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter = nil
-				} else {
-					r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter = &tfTypes.GrantAccessProfileFilter{}
-					if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds != nil {
-						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds))
-						for _, v := range resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds {
-							r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds = append(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds, types.StringValue(v))
-						}
-					} else {
-						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.ExcludedAccessProfileIds = nil
-					}
-					if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType != nil {
-						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType = types.StringValue(string(*resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType))
-					} else {
-						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.FilterType = types.StringNull()
-					}
-					if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds != nil {
-						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds))
-						for _, v := range resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds {
-							r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = append(r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds, types.StringValue(v))
-						}
-					} else {
-						r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantAccessProfileFilter.IncludedAccessProfileIds = nil
-					}
-				}
-				if resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween == nil {
-					r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween = nil
-				} else {
-					r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween = &tfTypes.GrantsAddedBetween{}
-					r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.EndDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.EndDate))
-					r.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.StartDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.AccessReviewScopeV2.GrantsByCriteriaScope.GrantsAddedBetween.StartDate))
-				}
-				if resp.AccessReviewScopeV2.GrantsByCriteriaScope.SourceFilter != nil {
-					r.AccessReviewScopeV2.GrantsByCriteriaScope.SourceFilter = types.StringValue(string(*resp.AccessReviewScopeV2.GrantsByCriteriaScope.SourceFilter))
-				} else {
-					r.AccessReviewScopeV2.GrantsByCriteriaScope.SourceFilter = types.StringNull()
-				}
-				if resp.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter != nil {
-					r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter = types.StringValue(string(*resp.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter))
-				} else {
-					r.AccessReviewScopeV2.GrantsByCriteriaScope.TypeFilter = types.StringNull()
-				}
-			}
-			if resp.AccessReviewScopeV2.ResourceSelectionScope == nil {
-				r.AccessReviewScopeV2.ResourceSelectionScope = nil
-			} else {
-				r.AccessReviewScopeV2.ResourceSelectionScope = &tfTypes.ResourceSelectionScope{}
-			}
-			if resp.AccessReviewScopeV2.ResourceTypeSelectionScope == nil {
-				r.AccessReviewScopeV2.ResourceTypeSelectionScope = nil
-			} else {
-				r.AccessReviewScopeV2.ResourceTypeSelectionScope = &tfTypes.ResourceTypeSelectionScope{}
-			}
-			if resp.AccessReviewScopeV2.SelectedUsersScope == nil {
-				r.AccessReviewScopeV2.SelectedUsersScope = nil
-			} else {
-				r.AccessReviewScopeV2.SelectedUsersScope = &tfTypes.SelectedUsersScope{}
-				if resp.AccessReviewScopeV2.SelectedUsersScope.UserIds != nil {
-					r.AccessReviewScopeV2.SelectedUsersScope.UserIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.SelectedUsersScope.UserIds))
-					for _, v := range resp.AccessReviewScopeV2.SelectedUsersScope.UserIds {
-						r.AccessReviewScopeV2.SelectedUsersScope.UserIds = append(r.AccessReviewScopeV2.SelectedUsersScope.UserIds, types.StringValue(v))
-					}
-				} else {
-					r.AccessReviewScopeV2.SelectedUsersScope.UserIds = nil
-				}
-			}
-			if resp.AccessReviewScopeV2.SpecificAccessConflictsScope == nil {
-				r.AccessReviewScopeV2.SpecificAccessConflictsScope = nil
-			} else {
-				r.AccessReviewScopeV2.SpecificAccessConflictsScope = &tfTypes.SpecificAccessConflictsScope{}
-			}
-			if resp.AccessReviewScopeV2.SpecificResourcesScope == nil {
-				r.AccessReviewScopeV2.SpecificResourcesScope = nil
-			} else {
-				r.AccessReviewScopeV2.SpecificResourcesScope = &tfTypes.SpecificResourcesScope{}
-			}
-			if resp.AccessReviewScopeV2.UserCriteriaScope == nil {
-				r.AccessReviewScopeV2.UserCriteriaScope = nil
-			} else {
-				r.AccessReviewScopeV2.UserCriteriaScope = &tfTypes.UserCriteriaScope{}
-				if resp.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef != nil {
-					r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef = []tfTypes.AppEntitlementRef{}
-
-					for _, groupAppEntitlementsRefItem := range resp.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef {
-						var groupAppEntitlementsRef tfTypes.AppEntitlementRef
-
-						groupAppEntitlementsRef.AppID = types.StringPointerValue(groupAppEntitlementsRefItem.AppID)
-						groupAppEntitlementsRef.ID = types.StringPointerValue(groupAppEntitlementsRefItem.ID)
-
-						r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef = append(r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef, groupAppEntitlementsRef)
-					}
-				} else {
-					r.AccessReviewScopeV2.UserCriteriaScope.GroupAppEntitlementsRef = nil
-				}
-				if resp.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds != nil {
-					r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds = make([]types.String, 0, len(resp.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds))
-					for _, v := range resp.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds {
-						r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds = append(r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds, types.StringValue(v))
-					}
-				} else {
-					r.AccessReviewScopeV2.UserCriteriaScope.ManagerUserIds = nil
-				}
-				if len(resp.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes) > 0 {
-					r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes = make(map[string]tfTypes.IncludedUserAttributeValues, len(resp.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes))
-					for includedUserAttributeValuesKey1, includedUserAttributeValuesValue1 := range resp.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes {
-						var includedUserAttributeValuesResult1 tfTypes.IncludedUserAttributeValues
-						if includedUserAttributeValuesValue1.Values != nil {
-							includedUserAttributeValuesResult1.Values = []tfTypes.IncludedUserAttributeValue{}
-
-							for _, valuesItem1 := range includedUserAttributeValuesValue1.Values {
-								var values1 tfTypes.IncludedUserAttributeValue
-
-								values1.Value = types.StringPointerValue(valuesItem1.Value)
-
-								includedUserAttributeValuesResult1.Values = append(includedUserAttributeValuesResult1.Values, values1)
-							}
-						} else {
-							includedUserAttributeValuesResult1.Values = nil
-						}
-
-						r.AccessReviewScopeV2.UserCriteriaScope.MultiUserProfileAttributes[includedUserAttributeValuesKey1] = includedUserAttributeValuesResult1
-					}
-				}
-				if resp.AccessReviewScopeV2.UserCriteriaScope.UserStatus != nil {
-					r.AccessReviewScopeV2.UserCriteriaScope.UserStatus = make([]types.String, 0, len(resp.AccessReviewScopeV2.UserCriteriaScope.UserStatus))
-					for _, v := range resp.AccessReviewScopeV2.UserCriteriaScope.UserStatus {
-						r.AccessReviewScopeV2.UserCriteriaScope.UserStatus = append(r.AccessReviewScopeV2.UserCriteriaScope.UserStatus, types.StringValue(string(v)))
-					}
-				} else {
-					r.AccessReviewScopeV2.UserCriteriaScope.UserStatus = nil
-				}
-			}
-		}
 		r.AccessReviewTemplateID = types.StringPointerValue(resp.AccessReviewTemplateID)
 		if resp.AccuracyIssueAction != nil {
 			r.AccuracyIssueAction = types.StringValue(string(*resp.AccuracyIssueAction))
@@ -383,17 +31,17 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 		r.AutoGenerateReport = types.BoolPointerValue(resp.AutoGenerateReport)
 		r.AutoResolve = types.BoolPointerValue(resp.AutoResolve)
 		r.AutoStartCampaign = types.BoolPointerValue(resp.AutoStartCampaign)
-		if resp.BindingObjectSetup == nil {
-			r.BindingObjectSetup = nil
+		if resp.Bindings == nil {
+			r.Bindings = nil
 		} else {
-			r.BindingObjectSetup = &tfTypes.BindingObjectSetup{}
+			r.Bindings = &tfTypes.BindingObjectSetup{}
 		}
-		if resp.CampaignHealthSnapshot == nil {
-			r.CampaignHealthSnapshot = nil
+		if resp.CampaignHealth == nil {
+			r.CampaignHealth = nil
 		} else {
-			r.CampaignHealthSnapshot = &tfTypes.CampaignHealthSnapshot{}
-			r.CampaignHealthSnapshot.CheckedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CampaignHealthSnapshot.CheckedAt))
-			r.CampaignHealthSnapshot.PhantomLockedCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.CampaignHealthSnapshot.PhantomLockedCount))
+			r.CampaignHealth = &tfTypes.CampaignHealthSnapshot{}
+			r.CampaignHealth.CheckedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CampaignHealth.CheckedAt))
+			r.CampaignHealth.PhantomLockedCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.CampaignHealth.PhantomLockedCount))
 		}
 		if resp.CampaignInsights == nil {
 			r.CampaignInsights = nil
@@ -402,6 +50,37 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 			r.CampaignInsights.Markdown = types.StringPointerValue(resp.CampaignInsights.Markdown)
 		}
 		r.ClosedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ClosedAt))
+		if resp.ColumnConfig == nil {
+			r.ColumnConfig = nil
+		} else {
+			r.ColumnConfig = &tfTypes.AccessReviewColumnConfig{}
+			if resp.ColumnConfig.Columns != nil {
+				r.ColumnConfig.Columns = make([]types.String, 0, len(resp.ColumnConfig.Columns))
+				for _, v := range resp.ColumnConfig.Columns {
+					r.ColumnConfig.Columns = append(r.ColumnConfig.Columns, types.StringValue(string(v)))
+				}
+			} else {
+				r.ColumnConfig.Columns = nil
+			}
+			if resp.ColumnConfig.OrderedColumns != nil {
+				r.ColumnConfig.OrderedColumns = []tfTypes.AccessReviewTaskColumnRef{}
+
+				for _, orderedColumnsItem := range resp.ColumnConfig.OrderedColumns {
+					var orderedColumns tfTypes.AccessReviewTaskColumnRef
+
+					orderedColumns.AppUserAttributeKey = types.StringPointerValue(orderedColumnsItem.AppUserAttributeKey)
+					if orderedColumnsItem.Builtin != nil {
+						orderedColumns.Builtin = types.StringValue(string(*orderedColumnsItem.Builtin))
+					} else {
+						orderedColumns.Builtin = types.StringNull()
+					}
+
+					r.ColumnConfig.OrderedColumns = append(r.ColumnConfig.OrderedColumns, orderedColumns)
+				}
+			} else {
+				r.ColumnConfig.OrderedColumns = nil
+			}
+		}
 		r.CompletionDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CompletionDate))
 		r.ConnectorSourcesFrozenAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ConnectorSourcesFrozenAt))
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
@@ -418,17 +97,105 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 		} else {
 			r.ErrorState = types.StringNull()
 		}
+		if resp.ExclusionScope == nil {
+			r.ExclusionScope = nil
+		} else {
+			r.ExclusionScope = &tfTypes.AccessReviewExclusionScope{}
+			if resp.ExclusionScope.AppUserStatuses != nil {
+				r.ExclusionScope.AppUserStatuses = make([]types.String, 0, len(resp.ExclusionScope.AppUserStatuses))
+				for _, v := range resp.ExclusionScope.AppUserStatuses {
+					r.ExclusionScope.AppUserStatuses = append(r.ExclusionScope.AppUserStatuses, types.StringValue(string(v)))
+				}
+			} else {
+				r.ExclusionScope.AppUserStatuses = nil
+			}
+			if resp.ExclusionScope.AppUserTypes != nil {
+				r.ExclusionScope.AppUserTypes = make([]types.String, 0, len(resp.ExclusionScope.AppUserTypes))
+				for _, v := range resp.ExclusionScope.AppUserTypes {
+					r.ExclusionScope.AppUserTypes = append(r.ExclusionScope.AppUserTypes, types.StringValue(string(v)))
+				}
+			} else {
+				r.ExclusionScope.AppUserTypes = nil
+			}
+		}
 		r.ExemptCertifiedAccessConflicts = types.BoolPointerValue(resp.ExemptCertifiedAccessConflicts)
 		r.ExpectedTicketCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.ExpectedTicketCount))
 		r.HasAccuracySupport = types.BoolPointerValue(resp.HasAccuracySupport)
 		r.ID = types.StringPointerValue(resp.ID)
-		if resp.MultiAppSetup == nil {
-			r.MultiAppSetup = nil
+		if resp.InclusionScope == nil {
+			r.InclusionScope = nil
 		} else {
-			r.MultiAppSetup = &tfTypes.MultiAppSetup{}
-			if len(resp.MultiAppSetup.AppEntitlementDetails) > 0 {
-				r.MultiAppSetup.AppEntitlementDetails = make(map[string]tfTypes.EntitlementToDetails, len(resp.MultiAppSetup.AppEntitlementDetails))
-				for entitlementToDetailsKey, entitlementToDetailsValue := range resp.MultiAppSetup.AppEntitlementDetails {
+			r.InclusionScope = &tfTypes.AccessReviewInclusionScope{}
+			if resp.InclusionScope.AppUserStatuses != nil {
+				r.InclusionScope.AppUserStatuses = make([]types.String, 0, len(resp.InclusionScope.AppUserStatuses))
+				for _, v := range resp.InclusionScope.AppUserStatuses {
+					r.InclusionScope.AppUserStatuses = append(r.InclusionScope.AppUserStatuses, types.StringValue(string(v)))
+				}
+			} else {
+				r.InclusionScope.AppUserStatuses = nil
+			}
+			if resp.InclusionScope.AppUserTypes != nil {
+				r.InclusionScope.AppUserTypes = make([]types.String, 0, len(resp.InclusionScope.AppUserTypes))
+				for _, v := range resp.InclusionScope.AppUserTypes {
+					r.InclusionScope.AppUserTypes = append(r.InclusionScope.AppUserTypes, types.StringValue(string(v)))
+				}
+			} else {
+				r.InclusionScope.AppUserTypes = nil
+			}
+			if resp.InclusionScope.ManagerIds != nil {
+				r.InclusionScope.ManagerIds = make([]types.String, 0, len(resp.InclusionScope.ManagerIds))
+				for _, v := range resp.InclusionScope.ManagerIds {
+					r.InclusionScope.ManagerIds = append(r.InclusionScope.ManagerIds, types.StringValue(v))
+				}
+			} else {
+				r.InclusionScope.ManagerIds = nil
+			}
+			if len(resp.InclusionScope.MultiUserProfileAttributes) > 0 {
+				r.InclusionScope.MultiUserProfileAttributes = make(map[string]tfTypes.IncludedUserAttributeValues, len(resp.InclusionScope.MultiUserProfileAttributes))
+				for includedUserAttributeValuesKey, includedUserAttributeValuesValue := range resp.InclusionScope.MultiUserProfileAttributes {
+					var includedUserAttributeValuesResult tfTypes.IncludedUserAttributeValues
+					if includedUserAttributeValuesValue.Values != nil {
+						includedUserAttributeValuesResult.Values = []tfTypes.IncludedUserAttributeValue{}
+
+						for _, valuesItem := range includedUserAttributeValuesValue.Values {
+							var values tfTypes.IncludedUserAttributeValue
+
+							values.Value = types.StringPointerValue(valuesItem.Value)
+
+							includedUserAttributeValuesResult.Values = append(includedUserAttributeValuesResult.Values, values)
+						}
+					} else {
+						includedUserAttributeValuesResult.Values = nil
+					}
+
+					r.InclusionScope.MultiUserProfileAttributes[includedUserAttributeValuesKey] = includedUserAttributeValuesResult
+				}
+			}
+			r.InclusionScope.NoAccountOwners = types.BoolPointerValue(resp.InclusionScope.NoAccountOwners)
+			if resp.InclusionScope.UserIds != nil {
+				r.InclusionScope.UserIds = make([]types.String, 0, len(resp.InclusionScope.UserIds))
+				for _, v := range resp.InclusionScope.UserIds {
+					r.InclusionScope.UserIds = append(r.InclusionScope.UserIds, types.StringValue(v))
+				}
+			} else {
+				r.InclusionScope.UserIds = nil
+			}
+			if resp.InclusionScope.UserStatuses != nil {
+				r.InclusionScope.UserStatuses = make([]types.String, 0, len(resp.InclusionScope.UserStatuses))
+				for _, v := range resp.InclusionScope.UserStatuses {
+					r.InclusionScope.UserStatuses = append(r.InclusionScope.UserStatuses, types.StringValue(string(v)))
+				}
+			} else {
+				r.InclusionScope.UserStatuses = nil
+			}
+		}
+		if resp.MultiApp == nil {
+			r.MultiApp = nil
+		} else {
+			r.MultiApp = &tfTypes.MultiAppSetup{}
+			if len(resp.MultiApp.AppEntitlementDetails) > 0 {
+				r.MultiApp.AppEntitlementDetails = make(map[string]tfTypes.EntitlementToDetails, len(resp.MultiApp.AppEntitlementDetails))
+				for entitlementToDetailsKey, entitlementToDetailsValue := range resp.MultiApp.AppEntitlementDetails {
 					var entitlementToDetailsResult tfTypes.EntitlementToDetails
 					if len(entitlementToDetailsValue.EntitlementDetails) > 0 {
 						entitlementToDetailsResult.EntitlementDetails = make(map[string]tfTypes.CampaignEntitlementDetails, len(entitlementToDetailsValue.EntitlementDetails))
@@ -442,12 +209,12 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 						}
 					}
 
-					r.MultiAppSetup.AppEntitlementDetails[entitlementToDetailsKey] = entitlementToDetailsResult
+					r.MultiApp.AppEntitlementDetails[entitlementToDetailsKey] = entitlementToDetailsResult
 				}
 			}
-			if len(resp.MultiAppSetup.AppEntitlements) > 0 {
-				r.MultiAppSetup.AppEntitlements = make(map[string]tfTypes.MultiAppEntitlement, len(resp.MultiAppSetup.AppEntitlements))
-				for multiAppEntitlementKey, multiAppEntitlementValue := range resp.MultiAppSetup.AppEntitlements {
+			if len(resp.MultiApp.AppEntitlements) > 0 {
+				r.MultiApp.AppEntitlements = make(map[string]tfTypes.MultiAppEntitlement, len(resp.MultiApp.AppEntitlements))
+				for multiAppEntitlementKey, multiAppEntitlementValue := range resp.MultiApp.AppEntitlements {
 					var multiAppEntitlementResult tfTypes.MultiAppEntitlement
 					multiAppEntitlementResult.AppID = types.StringPointerValue(multiAppEntitlementValue.AppID)
 					if multiAppEntitlementValue.EntitlementIds != nil {
@@ -459,7 +226,7 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 						multiAppEntitlementResult.EntitlementIds = nil
 					}
 
-					r.MultiAppSetup.AppEntitlements[multiAppEntitlementKey] = multiAppEntitlementResult
+					r.MultiApp.AppEntitlements[multiAppEntitlementKey] = multiAppEntitlementResult
 				}
 			}
 		}
@@ -472,28 +239,318 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 			r.NotificationConfig.SendReminders = types.BoolPointerValue(resp.NotificationConfig.SendReminders)
 		}
 		r.PolicyID = types.StringPointerValue(resp.PolicyID)
-		r.ReviewInstructions = types.StringPointerValue(resp.ReviewInstructions)
-		if resp.ReviewSignatureConfig == nil {
-			r.ReviewSignatureConfig = nil
+		if resp.ReviewerAttributeConfig == nil {
+			r.ReviewerAttributeConfig = nil
 		} else {
-			r.ReviewSignatureConfig = &tfTypes.ReviewSignatureConfig{}
-			r.ReviewSignatureConfig.MeaningOfSignature = types.StringPointerValue(resp.ReviewSignatureConfig.MeaningOfSignature)
-			r.ReviewSignatureConfig.RequireSignature = types.BoolPointerValue(resp.ReviewSignatureConfig.RequireSignature)
-			r.ReviewSignatureConfig.StepUpProviderID = types.StringPointerValue(resp.ReviewSignatureConfig.StepUpProviderID)
-			r.ReviewSignatureConfig.TspURL = types.StringPointerValue(resp.ReviewSignatureConfig.TspURL)
+			r.ReviewerAttributeConfig = &tfTypes.ReviewerAttributeConfig{}
+			if resp.ReviewerAttributeConfig.Bindings != nil {
+				r.ReviewerAttributeConfig.Bindings = []tfTypes.ReviewerAttributeBinding{}
+
+				for _, bindingsItem := range resp.ReviewerAttributeConfig.Bindings {
+					var bindings tfTypes.ReviewerAttributeBinding
+
+					bindings.AppID = types.StringPointerValue(bindingsItem.AppID)
+					bindings.AttributeKey = types.StringPointerValue(bindingsItem.AttributeKey)
+
+					r.ReviewerAttributeConfig.Bindings = append(r.ReviewerAttributeConfig.Bindings, bindings)
+				}
+			} else {
+				r.ReviewerAttributeConfig.Bindings = nil
+			}
 		}
+		r.ReviewInstructions = types.StringPointerValue(resp.ReviewInstructions)
 		r.ScheduledStartDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ScheduledStartDate))
+		if resp.Scope == nil {
+			r.Scope = nil
+		} else {
+			r.Scope = &tfTypes.AccessReviewScope{}
+			if resp.Scope.AppUserStatuses != nil {
+				r.Scope.AppUserStatuses = make([]types.String, 0, len(resp.Scope.AppUserStatuses))
+				for _, v := range resp.Scope.AppUserStatuses {
+					r.Scope.AppUserStatuses = append(r.Scope.AppUserStatuses, types.StringValue(string(v)))
+				}
+			} else {
+				r.Scope.AppUserStatuses = nil
+			}
+			if resp.Scope.AppUserTypes != nil {
+				r.Scope.AppUserTypes = make([]types.String, 0, len(resp.Scope.AppUserTypes))
+				for _, v := range resp.Scope.AppUserTypes {
+					r.Scope.AppUserTypes = append(r.Scope.AppUserTypes, types.StringValue(string(v)))
+				}
+			} else {
+				r.Scope.AppUserTypes = nil
+			}
+		}
 		if resp.ScopeType != nil {
 			r.ScopeType = types.StringValue(string(*resp.ScopeType))
 		} else {
 			r.ScopeType = types.StringNull()
 		}
-		r.ScopingVersion = types.StringPointerValue(resp.ScopingVersion)
-		if resp.SingleAppSetup == nil {
-			r.SingleAppSetup = nil
+		if resp.ScopeV2 == nil {
+			r.ScopeV2 = nil
 		} else {
-			r.SingleAppSetup = &tfTypes.SingleAppSetup{}
-			r.SingleAppSetup.AppID = types.StringPointerValue(resp.SingleAppSetup.AppID)
+			r.ScopeV2 = &tfTypes.AccessReviewScopeV2{}
+			if resp.ScopeV2.AccountCelExpression == nil {
+				r.ScopeV2.AccountCelExpression = nil
+			} else {
+				r.ScopeV2.AccountCelExpression = &tfTypes.CelExpressionScope{}
+				r.ScopeV2.AccountCelExpression.Expression = types.StringPointerValue(resp.ScopeV2.AccountCelExpression.Expression)
+			}
+			if resp.ScopeV2.AccountCriteria == nil {
+				r.ScopeV2.AccountCriteria = nil
+			} else {
+				r.ScopeV2.AccountCriteria = &tfTypes.AccountCriteriaScope{}
+				if resp.ScopeV2.AccountCriteria.AccountDomain != nil {
+					r.ScopeV2.AccountCriteria.AccountDomain = types.StringValue(string(*resp.ScopeV2.AccountCriteria.AccountDomain))
+				} else {
+					r.ScopeV2.AccountCriteria.AccountDomain = types.StringNull()
+				}
+				if resp.ScopeV2.AccountCriteria.AccountTypes != nil {
+					r.ScopeV2.AccountCriteria.AccountTypes = make([]types.String, 0, len(resp.ScopeV2.AccountCriteria.AccountTypes))
+					for _, v := range resp.ScopeV2.AccountCriteria.AccountTypes {
+						r.ScopeV2.AccountCriteria.AccountTypes = append(r.ScopeV2.AccountCriteria.AccountTypes, types.StringValue(string(v)))
+					}
+				} else {
+					r.ScopeV2.AccountCriteria.AccountTypes = nil
+				}
+				if resp.ScopeV2.AccountCriteria.AppUserStatuses != nil {
+					r.ScopeV2.AccountCriteria.AppUserStatuses = make([]types.String, 0, len(resp.ScopeV2.AccountCriteria.AppUserStatuses))
+					for _, v := range resp.ScopeV2.AccountCriteria.AppUserStatuses {
+						r.ScopeV2.AccountCriteria.AppUserStatuses = append(r.ScopeV2.AccountCriteria.AppUserStatuses, types.StringValue(string(v)))
+					}
+				} else {
+					r.ScopeV2.AccountCriteria.AppUserStatuses = nil
+				}
+				r.ScopeV2.AccountCriteria.NoAccountOwner = types.BoolPointerValue(resp.ScopeV2.AccountCriteria.NoAccountOwner)
+			}
+			if resp.ScopeV2.AllAccessConflicts == nil {
+				r.ScopeV2.AllAccessConflicts = nil
+			} else {
+				r.ScopeV2.AllAccessConflicts = &tfTypes.AllAccessConflictsScope{}
+			}
+			if resp.ScopeV2.AllAccounts == nil {
+				r.ScopeV2.AllAccounts = nil
+			} else {
+				r.ScopeV2.AllAccounts = &tfTypes.AllAccountsScope{}
+			}
+			if resp.ScopeV2.AllGrants == nil {
+				r.ScopeV2.AllGrants = nil
+			} else {
+				r.ScopeV2.AllGrants = &tfTypes.AllGrantsScope{}
+			}
+			if resp.ScopeV2.AllUsers == nil {
+				r.ScopeV2.AllUsers = nil
+			} else {
+				r.ScopeV2.AllUsers = &tfTypes.AllUsersScope{}
+			}
+			if resp.ScopeV2.AppAccess == nil {
+				r.ScopeV2.AppAccess = nil
+			} else {
+				r.ScopeV2.AppAccess = &tfTypes.ApplicationAccessScope{}
+			}
+			if resp.ScopeV2.AppSelectionCriteria == nil {
+				r.ScopeV2.AppSelectionCriteria = nil
+			} else {
+				r.ScopeV2.AppSelectionCriteria = &tfTypes.AppSelectionCriteriaScope{}
+				if resp.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds != nil {
+					r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = make([]types.String, 0, len(resp.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds))
+					for _, v := range resp.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds {
+						r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = append(r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds, types.StringValue(v))
+					}
+				} else {
+					r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = nil
+				}
+				if resp.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds != nil {
+					r.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds = make([]types.String, 0, len(resp.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds))
+					for _, v := range resp.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds {
+						r.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds = append(r.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds, types.StringValue(v))
+					}
+				} else {
+					r.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds = nil
+				}
+			}
+			if resp.ScopeV2.CelExpression == nil {
+				r.ScopeV2.CelExpression = nil
+			} else {
+				r.ScopeV2.CelExpression = &tfTypes.CelExpressionScope{}
+				r.ScopeV2.CelExpression.Expression = types.StringPointerValue(resp.ScopeV2.CelExpression.Expression)
+			}
+			if resp.ScopeV2.ExcludedResourceTypeSelections == nil {
+				r.ScopeV2.ExcludedResourceTypeSelections = nil
+			} else {
+				r.ScopeV2.ExcludedResourceTypeSelections = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.ScopeV2.ExcludedSpecificResources == nil {
+				r.ScopeV2.ExcludedSpecificResources = nil
+			} else {
+				r.ScopeV2.ExcludedSpecificResources = &tfTypes.SpecificResourcesScope{}
+			}
+			if resp.ScopeV2.GrantsByCriteria == nil {
+				r.ScopeV2.GrantsByCriteria = nil
+			} else {
+				r.ScopeV2.GrantsByCriteria = &tfTypes.GrantsByCriteriaScope{}
+				if resp.ScopeV2.GrantsByCriteria.AccessProfileFilter == nil {
+					r.ScopeV2.GrantsByCriteria.AccessProfileFilter = nil
+				} else {
+					r.ScopeV2.GrantsByCriteria.AccessProfileFilter = &tfTypes.GrantAccessProfileFilter{}
+					if resp.ScopeV2.GrantsByCriteria.AccessProfileFilter.ExcludedAccessProfileIds != nil {
+						r.ScopeV2.GrantsByCriteria.AccessProfileFilter.ExcludedAccessProfileIds = make([]types.String, 0, len(resp.ScopeV2.GrantsByCriteria.AccessProfileFilter.ExcludedAccessProfileIds))
+						for _, v := range resp.ScopeV2.GrantsByCriteria.AccessProfileFilter.ExcludedAccessProfileIds {
+							r.ScopeV2.GrantsByCriteria.AccessProfileFilter.ExcludedAccessProfileIds = append(r.ScopeV2.GrantsByCriteria.AccessProfileFilter.ExcludedAccessProfileIds, types.StringValue(v))
+						}
+					} else {
+						r.ScopeV2.GrantsByCriteria.AccessProfileFilter.ExcludedAccessProfileIds = nil
+					}
+					if resp.ScopeV2.GrantsByCriteria.AccessProfileFilter.FilterType != nil {
+						r.ScopeV2.GrantsByCriteria.AccessProfileFilter.FilterType = types.StringValue(string(*resp.ScopeV2.GrantsByCriteria.AccessProfileFilter.FilterType))
+					} else {
+						r.ScopeV2.GrantsByCriteria.AccessProfileFilter.FilterType = types.StringNull()
+					}
+					if resp.ScopeV2.GrantsByCriteria.AccessProfileFilter.IncludedAccessProfileIds != nil {
+						r.ScopeV2.GrantsByCriteria.AccessProfileFilter.IncludedAccessProfileIds = make([]types.String, 0, len(resp.ScopeV2.GrantsByCriteria.AccessProfileFilter.IncludedAccessProfileIds))
+						for _, v := range resp.ScopeV2.GrantsByCriteria.AccessProfileFilter.IncludedAccessProfileIds {
+							r.ScopeV2.GrantsByCriteria.AccessProfileFilter.IncludedAccessProfileIds = append(r.ScopeV2.GrantsByCriteria.AccessProfileFilter.IncludedAccessProfileIds, types.StringValue(v))
+						}
+					} else {
+						r.ScopeV2.GrantsByCriteria.AccessProfileFilter.IncludedAccessProfileIds = nil
+					}
+				}
+				r.ScopeV2.GrantsByCriteria.DaysSinceAdded = types.StringPointerValue(resp.ScopeV2.GrantsByCriteria.DaysSinceAdded)
+				r.ScopeV2.GrantsByCriteria.DaysSinceLastUsed = types.StringPointerValue(resp.ScopeV2.GrantsByCriteria.DaysSinceLastUsed)
+				r.ScopeV2.GrantsByCriteria.DaysSinceReviewed = types.StringPointerValue(resp.ScopeV2.GrantsByCriteria.DaysSinceReviewed)
+				if resp.ScopeV2.GrantsByCriteria.GrantsAddedBetween == nil {
+					r.ScopeV2.GrantsByCriteria.GrantsAddedBetween = nil
+				} else {
+					r.ScopeV2.GrantsByCriteria.GrantsAddedBetween = &tfTypes.GrantsAddedBetween{}
+					r.ScopeV2.GrantsByCriteria.GrantsAddedBetween.EndDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ScopeV2.GrantsByCriteria.GrantsAddedBetween.EndDate))
+					r.ScopeV2.GrantsByCriteria.GrantsAddedBetween.StartDate = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ScopeV2.GrantsByCriteria.GrantsAddedBetween.StartDate))
+				}
+				if resp.ScopeV2.GrantsByCriteria.SourceFilter != nil {
+					r.ScopeV2.GrantsByCriteria.SourceFilter = types.StringValue(string(*resp.ScopeV2.GrantsByCriteria.SourceFilter))
+				} else {
+					r.ScopeV2.GrantsByCriteria.SourceFilter = types.StringNull()
+				}
+				if resp.ScopeV2.GrantsByCriteria.TypeFilter != nil {
+					r.ScopeV2.GrantsByCriteria.TypeFilter = types.StringValue(string(*resp.ScopeV2.GrantsByCriteria.TypeFilter))
+				} else {
+					r.ScopeV2.GrantsByCriteria.TypeFilter = types.StringNull()
+				}
+			}
+			if resp.ScopeV2.PrincipalTypeFilter != nil {
+				r.ScopeV2.PrincipalTypeFilter = types.StringValue(string(*resp.ScopeV2.PrincipalTypeFilter))
+			} else {
+				r.ScopeV2.PrincipalTypeFilter = types.StringNull()
+			}
+			if resp.ScopeV2.ResourceSelection == nil {
+				r.ScopeV2.ResourceSelection = nil
+			} else {
+				r.ScopeV2.ResourceSelection = &tfTypes.ResourceSelectionScope{}
+			}
+			if resp.ScopeV2.ResourceTypeSelections == nil {
+				r.ScopeV2.ResourceTypeSelections = nil
+			} else {
+				r.ScopeV2.ResourceTypeSelections = &tfTypes.ResourceTypeSelectionScope{}
+			}
+			if resp.ScopeV2.ScopeRoleSelection == nil {
+				r.ScopeV2.ScopeRoleSelection = nil
+			} else {
+				r.ScopeV2.ScopeRoleSelection = &tfTypes.ScopeRoleSelectionScope{}
+			}
+			if resp.ScopeV2.SelectedUsers == nil {
+				r.ScopeV2.SelectedUsers = nil
+			} else {
+				r.ScopeV2.SelectedUsers = &tfTypes.SelectedUsersScope{}
+				if resp.ScopeV2.SelectedUsers.UserIds != nil {
+					r.ScopeV2.SelectedUsers.UserIds = make([]types.String, 0, len(resp.ScopeV2.SelectedUsers.UserIds))
+					for _, v := range resp.ScopeV2.SelectedUsers.UserIds {
+						r.ScopeV2.SelectedUsers.UserIds = append(r.ScopeV2.SelectedUsers.UserIds, types.StringValue(v))
+					}
+				} else {
+					r.ScopeV2.SelectedUsers.UserIds = nil
+				}
+			}
+			if resp.ScopeV2.SpecificAccessConflicts == nil {
+				r.ScopeV2.SpecificAccessConflicts = nil
+			} else {
+				r.ScopeV2.SpecificAccessConflicts = &tfTypes.SpecificAccessConflictsScope{}
+			}
+			if resp.ScopeV2.SpecificResources == nil {
+				r.ScopeV2.SpecificResources = nil
+			} else {
+				r.ScopeV2.SpecificResources = &tfTypes.SpecificResourcesScope{}
+			}
+			if resp.ScopeV2.UserCriteria == nil {
+				r.ScopeV2.UserCriteria = nil
+			} else {
+				r.ScopeV2.UserCriteria = &tfTypes.UserCriteriaScope{}
+				if resp.ScopeV2.UserCriteria.GroupAppEntitlementsRef != nil {
+					r.ScopeV2.UserCriteria.GroupAppEntitlementsRef = []tfTypes.AppEntitlementRef{}
+
+					for _, groupAppEntitlementsRefItem := range resp.ScopeV2.UserCriteria.GroupAppEntitlementsRef {
+						var groupAppEntitlementsRef tfTypes.AppEntitlementRef
+
+						groupAppEntitlementsRef.AppID = types.StringPointerValue(groupAppEntitlementsRefItem.AppID)
+						groupAppEntitlementsRef.ID = types.StringPointerValue(groupAppEntitlementsRefItem.ID)
+
+						r.ScopeV2.UserCriteria.GroupAppEntitlementsRef = append(r.ScopeV2.UserCriteria.GroupAppEntitlementsRef, groupAppEntitlementsRef)
+					}
+				} else {
+					r.ScopeV2.UserCriteria.GroupAppEntitlementsRef = nil
+				}
+				if resp.ScopeV2.UserCriteria.ManagerUserIds != nil {
+					r.ScopeV2.UserCriteria.ManagerUserIds = make([]types.String, 0, len(resp.ScopeV2.UserCriteria.ManagerUserIds))
+					for _, v := range resp.ScopeV2.UserCriteria.ManagerUserIds {
+						r.ScopeV2.UserCriteria.ManagerUserIds = append(r.ScopeV2.UserCriteria.ManagerUserIds, types.StringValue(v))
+					}
+				} else {
+					r.ScopeV2.UserCriteria.ManagerUserIds = nil
+				}
+				if len(resp.ScopeV2.UserCriteria.MultiUserProfileAttributes) > 0 {
+					r.ScopeV2.UserCriteria.MultiUserProfileAttributes = make(map[string]tfTypes.IncludedUserAttributeValues, len(resp.ScopeV2.UserCriteria.MultiUserProfileAttributes))
+					for includedUserAttributeValuesKey1, includedUserAttributeValuesValue1 := range resp.ScopeV2.UserCriteria.MultiUserProfileAttributes {
+						var includedUserAttributeValuesResult1 tfTypes.IncludedUserAttributeValues
+						if includedUserAttributeValuesValue1.Values != nil {
+							includedUserAttributeValuesResult1.Values = []tfTypes.IncludedUserAttributeValue{}
+
+							for _, valuesItem1 := range includedUserAttributeValuesValue1.Values {
+								var values1 tfTypes.IncludedUserAttributeValue
+
+								values1.Value = types.StringPointerValue(valuesItem1.Value)
+
+								includedUserAttributeValuesResult1.Values = append(includedUserAttributeValuesResult1.Values, values1)
+							}
+						} else {
+							includedUserAttributeValuesResult1.Values = nil
+						}
+
+						r.ScopeV2.UserCriteria.MultiUserProfileAttributes[includedUserAttributeValuesKey1] = includedUserAttributeValuesResult1
+					}
+				}
+				if resp.ScopeV2.UserCriteria.UserStatus != nil {
+					r.ScopeV2.UserCriteria.UserStatus = make([]types.String, 0, len(resp.ScopeV2.UserCriteria.UserStatus))
+					for _, v := range resp.ScopeV2.UserCriteria.UserStatus {
+						r.ScopeV2.UserCriteria.UserStatus = append(r.ScopeV2.UserCriteria.UserStatus, types.StringValue(string(v)))
+					}
+				} else {
+					r.ScopeV2.UserCriteria.UserStatus = nil
+				}
+			}
+		}
+		r.ScopingVersion = types.StringPointerValue(resp.ScopingVersion)
+		if resp.SignatureConfig == nil {
+			r.SignatureConfig = nil
+		} else {
+			r.SignatureConfig = &tfTypes.ReviewSignatureConfig{}
+			r.SignatureConfig.MeaningOfSignature = types.StringPointerValue(resp.SignatureConfig.MeaningOfSignature)
+			r.SignatureConfig.RequireSignature = types.BoolPointerValue(resp.SignatureConfig.RequireSignature)
+			r.SignatureConfig.StepUpProviderID = types.StringPointerValue(resp.SignatureConfig.StepUpProviderID)
+			r.SignatureConfig.TspURL = types.StringPointerValue(resp.SignatureConfig.TspURL)
+		}
+		if resp.SingleApp == nil {
+			r.SingleApp = nil
+		} else {
+			r.SingleApp = &tfTypes.SingleAppSetup{}
+			r.SingleApp.AppID = types.StringPointerValue(resp.SingleApp.AppID)
 		}
 		r.StartedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.StartedAt))
 		if resp.State != nil {
@@ -512,7 +569,7 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReviewServiceGetRes
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedAccessReviewView(ctx, resp.AccessReviewView)...)
+		diags.Append(r.RefreshFromSharedAccessReviewView(ctx, resp.AccessReview)...)
 
 		if diags.HasError() {
 			return diags
@@ -537,23 +594,18 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReviewView(ctx cont
 			return diags
 		}
 
-		if resp.ActorObjectPermissions != nil {
-			r.Delete = types.BoolPointerValue(resp.ActorObjectPermissions.Delete)
-			r.Edit = types.BoolPointerValue(resp.ActorObjectPermissions.Edit)
-			if len(resp.ActorObjectPermissions.Extra) > 0 {
-				r.Extra = make(map[string]types.Bool, len(resp.ActorObjectPermissions.Extra))
-				for key, value := range resp.ActorObjectPermissions.Extra {
+		r.CreatedByUserPath = types.StringPointerValue(resp.CreatedByUserPath)
+		if resp.ObjectPermissions != nil {
+			r.Delete = types.BoolPointerValue(resp.ObjectPermissions.Delete)
+			r.Edit = types.BoolPointerValue(resp.ObjectPermissions.Edit)
+			if len(resp.ObjectPermissions.Extra) > 0 {
+				r.Extra = make(map[string]types.Bool, len(resp.ObjectPermissions.Extra))
+				for key, value := range resp.ObjectPermissions.Extra {
 					r.Extra[key] = types.BoolValue(value)
 				}
 			}
-			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
-		} else {
-			r.Delete = types.BoolNull()
-			r.Edit = types.BoolNull()
-			r.Extra = nil
-			r.Read = types.BoolNull()
+			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
 		}
-		r.CreatedByUserPath = types.StringPointerValue(resp.CreatedByUserPath)
 		r.PolicyPath = types.StringPointerValue(resp.PolicyPath)
 	}
 

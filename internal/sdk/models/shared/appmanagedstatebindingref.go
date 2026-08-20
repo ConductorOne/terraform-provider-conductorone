@@ -2,13 +2,13 @@
 
 package shared
 
-// The AppManagedStateBindingRef message.
+// AppManagedStateBindingRef identifies an application discovered by a connector.
 type AppManagedStateBindingRef struct {
-	// The appId field.
+	// ID of the application that owns the connector.
 	AppID *string `json:"appId,omitempty"`
-	// The resourceId field.
+	// Resource ID of the discovered application.
 	ResourceID *string `json:"resourceId,omitempty"`
-	// The resourceTypeId field.
+	// ID of the resource type used for discovered applications.
 	ResourceTypeID *string `json:"resourceTypeId,omitempty"`
 }
 

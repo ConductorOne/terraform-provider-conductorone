@@ -10,8 +10,7 @@ package shared
 //   - connectorRef
 type SetCredential struct {
 	// The accountIdCel field.
-	AccountIDCel *string `json:"accountIdCel,omitempty"`
-	// The ConnectorRef message.
+	AccountIDCel *string       `json:"accountIdCel,omitempty"`
 	ConnectorRef *ConnectorRef `json:"connectorRef,omitempty"`
 	// The passwordCel field.
 	PasswordCel *string `json:"passwordCel,omitempty"`

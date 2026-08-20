@@ -7,7 +7,6 @@ package shared
 // This message contains a oneof named view. Only a single field of the following list may be set at a time:
 //   - oauth2FieldView
 type Oauth2Field struct {
-	// The Oauth2FieldView message.
 	Oauth2FieldView *Oauth2FieldView `json:"oauth2FieldView,omitempty"`
 }
 

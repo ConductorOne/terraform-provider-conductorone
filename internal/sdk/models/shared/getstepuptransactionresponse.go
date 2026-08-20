@@ -4,18 +4,12 @@ package shared
 
 // GetStepUpTransactionResponse - Response message containing the requested step-up transaction
 type GetStepUpTransactionResponse struct {
-	// StepUpTransaction represents a record of a step-up authentication attempt
-	//
-	// This message contains a oneof named target. Only a single field of the following list may be set at a time:
-	//   - approveTask
-	//   - test
-	//
-	StepUpTransaction *StepUpTransaction `json:"transaction,omitempty"`
+	Transaction *StepUpTransaction `json:"transaction,omitempty"`
 }
 
-func (g *GetStepUpTransactionResponse) GetStepUpTransaction() *StepUpTransaction {
+func (g *GetStepUpTransactionResponse) GetTransaction() *StepUpTransaction {
 	if g == nil {
 		return nil
 	}
-	return g.StepUpTransaction
+	return g.Transaction
 }

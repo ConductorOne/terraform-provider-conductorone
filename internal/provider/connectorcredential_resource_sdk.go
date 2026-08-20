@@ -35,7 +35,7 @@ func (r *ConnectorCredentialResourceModel) RefreshFromSharedConnectorServiceGetC
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedConnectorCredential(ctx, resp.ConnectorCredential)...)
+		diags.Append(r.RefreshFromSharedConnectorCredential(ctx, resp.Credential)...)
 
 		if diags.HasError() {
 			return diags
@@ -50,7 +50,7 @@ func (r *ConnectorCredentialResourceModel) RefreshFromSharedConnectorServiceRota
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedConnectorCredential(ctx, resp.ConnectorCredential)...)
+		diags.Append(r.RefreshFromSharedConnectorCredential(ctx, resp.Credential)...)
 
 		if diags.HasError() {
 			return diags

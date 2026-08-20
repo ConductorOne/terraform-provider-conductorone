@@ -7,12 +7,17 @@ import (
 )
 
 type TaskTypeAction struct {
-	ScopeRole          *ScopeRole          `tfsdk:"scope_role"`
-	TaskActionInstance *TaskActionInstance `tfsdk:"task_action_instance"`
-	ActionID           types.String        `tfsdk:"action_id"`
-	DisplayName        types.String        `tfsdk:"display_name"`
-	FormValues         *FormValues         `tfsdk:"form_values"`
-	Outcome            types.String        `tfsdk:"outcome"`
-	OutcomeTime        types.String        `tfsdk:"outcome_time"`
-	Type               types.String        `tfsdk:"type"`
+	ActionID                 types.String         `tfsdk:"action_id"`
+	ActionInstance           *TaskActionInstance  `tfsdk:"action_instance"`
+	CreatedAppEntitlementIds []types.String       `tfsdk:"created_app_entitlement_ids"`
+	CreatedAppResourceID     types.String         `tfsdk:"created_app_resource_id"`
+	CreatedAppResourceTypeID types.String         `tfsdk:"created_app_resource_type_id"`
+	DisplayName              types.String         `tfsdk:"display_name"`
+	Finding                  *FindingTarget       `tfsdk:"finding"`
+	FormValues               *FormValues          `tfsdk:"form_values"`
+	Outcome                  types.String         `tfsdk:"outcome"`
+	OutcomeTime              types.String         `tfsdk:"outcome_time"`
+	ScopeRole                *ScopeRole           `tfsdk:"scope_role"`
+	ToolCall                 *GatedToolCallTarget `tfsdk:"tool_call"`
+	Type                     types.String         `tfsdk:"type"`
 }

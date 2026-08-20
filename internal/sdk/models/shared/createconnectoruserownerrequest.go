@@ -4,7 +4,6 @@ package shared
 
 // CreateConnectorUserOwnerRequest is the request for creating a user ownership source on a connector.
 type CreateConnectorUserOwnerRequest struct {
-	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
 }
 

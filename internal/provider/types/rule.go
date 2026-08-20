@@ -8,5 +8,7 @@ import (
 
 type Rule struct {
 	Condition types.String `tfsdk:"condition"`
+	PolicyID  types.String `tfsdk:"policy_id"`
 	PolicyKey types.String `tfsdk:"policy_key"`
+	StepKey   types.String `tfsdk:"step_key"`
 }

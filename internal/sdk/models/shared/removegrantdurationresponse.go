@@ -4,13 +4,12 @@ package shared
 
 // RemoveGrantDurationResponse - The response message for removing the expiration time from a grant.
 type RemoveGrantDurationResponse struct {
-	// The AppEntitlementUserBinding represents the relationship that gives an app user access to an app entitlement
-	AppEntitlementUserBinding *AppEntitlementUserBinding `json:"binding,omitempty"`
+	Binding *AppEntitlementUserBinding `json:"binding,omitempty"`
 }
 
-func (r *RemoveGrantDurationResponse) GetAppEntitlementUserBinding() *AppEntitlementUserBinding {
+func (r *RemoveGrantDurationResponse) GetBinding() *AppEntitlementUserBinding {
 	if r == nil {
 		return nil
 	}
-	return r.AppEntitlementUserBinding
+	return r.Binding
 }

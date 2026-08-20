@@ -4,12 +4,6 @@ package shared
 
 // VaultServiceUpdateResponse is the response message containing the updated vault.
 type VaultServiceUpdateResponse struct {
-	// Vault represents an external secret storage integration used to store connector credentials securely.
-	//
-	// This message contains a oneof named vault. Only a single field of the following list may be set at a time:
-	//   - groupAuthzVault
-	//   - magicVault
-	//
 	Vault *Vault `json:"vault,omitempty"`
 }
 

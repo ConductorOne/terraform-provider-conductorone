@@ -12,62 +12,52 @@ package shared
 //   - action
 //   - finding
 type TaskType struct {
-	// The TaskTypeAction message.
-	//
-	// This message contains a oneof named target_object. Only a single field of the following list may be set at a time:
-	//   - scopeRole
-	//
-	TaskTypeAction *TaskTypeAction `json:"action,omitempty"`
-	// The TaskTypeCertify message indicates that a task is a certify task and all related details.
-	TaskTypeCertify *TaskTypeCertify `json:"certify,omitempty"`
-	// The TaskTypeFinding message.
-	TaskTypeFinding *TaskTypeFinding `json:"finding,omitempty"`
-	// The TaskTypeGrant message indicates that a task is a grant task and all related details.
-	TaskTypeGrant *TaskTypeGrant `json:"grant,omitempty"`
-	// The TaskTypeOffboarding message.
-	TaskTypeOffboarding *TaskTypeOffboarding `json:"offboarding,omitempty"`
-	// The TaskTypeRevoke message indicates that a task is a revoke task and all related details.
-	TaskTypeRevoke *TaskTypeRevoke `json:"revoke,omitempty"`
+	Action      *TaskTypeAction      `json:"action,omitempty"`
+	Certify     *TaskTypeCertify     `json:"certify,omitempty"`
+	Finding     *TaskTypeFinding     `json:"finding,omitempty"`
+	Grant       *TaskTypeGrant       `json:"grant,omitempty"`
+	Offboarding *TaskTypeOffboarding `json:"offboarding,omitempty"`
+	Revoke      *TaskTypeRevoke      `json:"revoke,omitempty"`
 }
 
-func (t *TaskType) GetTaskTypeAction() *TaskTypeAction {
+func (t *TaskType) GetAction() *TaskTypeAction {
 	if t == nil {
 		return nil
 	}
-	return t.TaskTypeAction
+	return t.Action
 }
 
-func (t *TaskType) GetTaskTypeCertify() *TaskTypeCertify {
+func (t *TaskType) GetCertify() *TaskTypeCertify {
 	if t == nil {
 		return nil
 	}
-	return t.TaskTypeCertify
+	return t.Certify
 }
 
-func (t *TaskType) GetTaskTypeFinding() *TaskTypeFinding {
+func (t *TaskType) GetFinding() *TaskTypeFinding {
 	if t == nil {
 		return nil
 	}
-	return t.TaskTypeFinding
+	return t.Finding
 }
 
-func (t *TaskType) GetTaskTypeGrant() *TaskTypeGrant {
+func (t *TaskType) GetGrant() *TaskTypeGrant {
 	if t == nil {
 		return nil
 	}
-	return t.TaskTypeGrant
+	return t.Grant
 }
 
-func (t *TaskType) GetTaskTypeOffboarding() *TaskTypeOffboarding {
+func (t *TaskType) GetOffboarding() *TaskTypeOffboarding {
 	if t == nil {
 		return nil
 	}
-	return t.TaskTypeOffboarding
+	return t.Offboarding
 }
 
-func (t *TaskType) GetTaskTypeRevoke() *TaskTypeRevoke {
+func (t *TaskType) GetRevoke() *TaskTypeRevoke {
 	if t == nil {
 		return nil
 	}
-	return t.TaskTypeRevoke
+	return t.Revoke
 }

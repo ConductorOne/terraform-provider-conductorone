@@ -54,6 +54,7 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 				r.Annotations[key] = types.StringValue(value)
 			}
 		}
+		r.BaselinePolicyID = types.StringPointerValue(resp.BaselinePolicyID)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
@@ -79,59 +80,59 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 							steps.Action = nil
 						} else {
 							steps.Action = &tfTypes.Action{}
-							if stepsItem.Action.ActionTargetAutomation == nil {
-								steps.Action.ActionTargetAutomation = nil
+							if stepsItem.Action.Automation == nil {
+								steps.Action.Automation = nil
 							} else {
-								steps.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
-								steps.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(stepsItem.Action.ActionTargetAutomation.AutomationTemplateID)
+								steps.Action.Automation = &tfTypes.ActionTargetAutomation{}
+								steps.Action.Automation.AutomationTemplateID = types.StringPointerValue(stepsItem.Action.Automation.AutomationTemplateID)
 							}
-							if stepsItem.Action.ActionTargetBatonResourceAction == nil {
-								steps.Action.ActionTargetBatonResourceAction = nil
+							if stepsItem.Action.BatonResourceAction == nil {
+								steps.Action.BatonResourceAction = nil
 							} else {
-								steps.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
-								steps.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(stepsItem.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+								steps.Action.BatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
+								steps.Action.BatonResourceAction.BatonResourceActionID = types.StringPointerValue(stepsItem.Action.BatonResourceAction.BatonResourceActionID)
 							}
-							if stepsItem.Action.ActionTargetClientIDApproval == nil {
-								steps.Action.ActionTargetClientIDApproval = nil
+							if stepsItem.Action.ClientIDApproval == nil {
+								steps.Action.ClientIDApproval = nil
 							} else {
-								steps.Action.ActionTargetClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
+								steps.Action.ClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
 							}
 						}
 						if stepsItem.Approval == nil {
 							steps.Approval = nil
 						} else {
 							steps.Approval = &tfTypes.Approval{}
-							if stepsItem.Approval.AgentApproval == nil {
-								steps.Approval.AgentApproval = nil
+							if stepsItem.Approval.Agent == nil {
+								steps.Approval.Agent = nil
 							} else {
-								steps.Approval.AgentApproval = &tfTypes.AgentApproval{}
-								if stepsItem.Approval.AgentApproval.AgentFailureAction != nil {
-									steps.Approval.AgentApproval.AgentFailureAction = types.StringValue(string(*stepsItem.Approval.AgentApproval.AgentFailureAction))
+								steps.Approval.Agent = &tfTypes.AgentApproval{}
+								if stepsItem.Approval.Agent.AgentFailureAction != nil {
+									steps.Approval.Agent.AgentFailureAction = types.StringValue(string(*stepsItem.Approval.Agent.AgentFailureAction))
 								} else {
-									steps.Approval.AgentApproval.AgentFailureAction = types.StringNull()
+									steps.Approval.Agent.AgentFailureAction = types.StringNull()
 								}
-								if stepsItem.Approval.AgentApproval.AgentMode != nil {
-									steps.Approval.AgentApproval.AgentMode = types.StringValue(string(*stepsItem.Approval.AgentApproval.AgentMode))
+								if stepsItem.Approval.Agent.AgentMode != nil {
+									steps.Approval.Agent.AgentMode = types.StringValue(string(*stepsItem.Approval.Agent.AgentMode))
 								} else {
-									steps.Approval.AgentApproval.AgentMode = types.StringNull()
+									steps.Approval.Agent.AgentMode = types.StringNull()
 								}
-								steps.Approval.AgentApproval.AgentUserID = types.StringPointerValue(stepsItem.Approval.AgentApproval.AgentUserID)
-								steps.Approval.AgentApproval.Instructions = types.StringPointerValue(stepsItem.Approval.AgentApproval.Instructions)
-								if stepsItem.Approval.AgentApproval.PolicyIds != nil {
-									steps.Approval.AgentApproval.PolicyIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.PolicyIds))
-									for _, v := range stepsItem.Approval.AgentApproval.PolicyIds {
-										steps.Approval.AgentApproval.PolicyIds = append(steps.Approval.AgentApproval.PolicyIds, types.StringValue(v))
+								steps.Approval.Agent.AgentUserID = types.StringPointerValue(stepsItem.Approval.Agent.AgentUserID)
+								steps.Approval.Agent.Instructions = types.StringPointerValue(stepsItem.Approval.Agent.Instructions)
+								if stepsItem.Approval.Agent.PolicyIds != nil {
+									steps.Approval.Agent.PolicyIds = make([]types.String, 0, len(stepsItem.Approval.Agent.PolicyIds))
+									for _, v := range stepsItem.Approval.Agent.PolicyIds {
+										steps.Approval.Agent.PolicyIds = append(steps.Approval.Agent.PolicyIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.AgentApproval.PolicyIds = nil
+									steps.Approval.Agent.PolicyIds = nil
 								}
-								if stepsItem.Approval.AgentApproval.ReassignToUserIds != nil {
-									steps.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.ReassignToUserIds))
-									for _, v := range stepsItem.Approval.AgentApproval.ReassignToUserIds {
-										steps.Approval.AgentApproval.ReassignToUserIds = append(steps.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
+								if stepsItem.Approval.Agent.ReassignToUserIds != nil {
+									steps.Approval.Agent.ReassignToUserIds = make([]types.String, 0, len(stepsItem.Approval.Agent.ReassignToUserIds))
+									for _, v := range stepsItem.Approval.Agent.ReassignToUserIds {
+										steps.Approval.Agent.ReassignToUserIds = append(steps.Approval.Agent.ReassignToUserIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.AgentApproval.ReassignToUserIds = nil
+									steps.Approval.Agent.ReassignToUserIds = nil
 								}
 							}
 							steps.Approval.AllowDelegation = types.BoolPointerValue(stepsItem.Approval.AllowDelegation)
@@ -144,77 +145,44 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Approval.AllowedReassignees = nil
 							}
 							steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
-							if stepsItem.Approval.AppGroupApproval == nil {
-								steps.Approval.AppGroupApproval = nil
+							if stepsItem.Approval.AppOwners == nil {
+								steps.Approval.AppOwners = nil
 							} else {
-								steps.Approval.AppGroupApproval = &tfTypes.AppGroupApproval{}
-								steps.Approval.AppGroupApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.AllowSelfApproval)
-								steps.Approval.AppGroupApproval.AppGroupID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppGroupID)
-								steps.Approval.AppGroupApproval.AppID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppID)
-								steps.Approval.AppGroupApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.Fallback)
-								if stepsItem.Approval.AppGroupApproval.FallbackGroupIds != nil {
-									steps.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+								steps.Approval.AppOwners = &tfTypes.AppOwnerApproval{}
+								steps.Approval.AppOwners.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppOwners.AllowSelfApproval)
+								steps.Approval.AppOwners.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppOwners.RequireDistinctApprovers)
+							}
+							steps.Approval.Assigned = types.BoolPointerValue(stepsItem.Approval.Assigned)
+							if stepsItem.Approval.EntitlementOwners == nil {
+								steps.Approval.EntitlementOwners = nil
+							} else {
+								steps.Approval.EntitlementOwners = &tfTypes.EntitlementOwnerApproval{}
+								steps.Approval.EntitlementOwners.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.EntitlementOwners.AllowSelfApproval)
+								steps.Approval.EntitlementOwners.Fallback = types.BoolPointerValue(stepsItem.Approval.EntitlementOwners.Fallback)
+								if stepsItem.Approval.EntitlementOwners.FallbackGroupIds != nil {
+									steps.Approval.EntitlementOwners.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
 
-									for _, fallbackGroupIdsItem := range stepsItem.Approval.AppGroupApproval.FallbackGroupIds {
+									for _, fallbackGroupIdsItem := range stepsItem.Approval.EntitlementOwners.FallbackGroupIds {
 										var fallbackGroupIds tfTypes.AppEntitlementReference
 
 										fallbackGroupIds.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem.AppEntitlementID)
 										fallbackGroupIds.AppID = types.StringPointerValue(fallbackGroupIdsItem.AppID)
 
-										steps.Approval.AppGroupApproval.FallbackGroupIds = append(steps.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds)
+										steps.Approval.EntitlementOwners.FallbackGroupIds = append(steps.Approval.EntitlementOwners.FallbackGroupIds, fallbackGroupIds)
 									}
 								} else {
-									steps.Approval.AppGroupApproval.FallbackGroupIds = nil
+									steps.Approval.EntitlementOwners.FallbackGroupIds = nil
 								}
-								if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
-									steps.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
-									for _, v := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
-										steps.Approval.AppGroupApproval.FallbackUserIds = append(steps.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
+								if stepsItem.Approval.EntitlementOwners.FallbackUserIds != nil {
+									steps.Approval.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwners.FallbackUserIds))
+									for _, v := range stepsItem.Approval.EntitlementOwners.FallbackUserIds {
+										steps.Approval.EntitlementOwners.FallbackUserIds = append(steps.Approval.EntitlementOwners.FallbackUserIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.AppGroupApproval.FallbackUserIds = nil
+									steps.Approval.EntitlementOwners.FallbackUserIds = nil
 								}
-								steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
-								steps.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers)
-							}
-							if stepsItem.Approval.AppOwnerApproval == nil {
-								steps.Approval.AppOwnerApproval = nil
-							} else {
-								steps.Approval.AppOwnerApproval = &tfTypes.AppOwnerApproval{}
-								steps.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
-								steps.Approval.AppOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers)
-							}
-							steps.Approval.Assigned = types.BoolPointerValue(stepsItem.Approval.Assigned)
-							if stepsItem.Approval.EntitlementOwnerApproval == nil {
-								steps.Approval.EntitlementOwnerApproval = nil
-							} else {
-								steps.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
-								steps.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
-								steps.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.Fallback)
-								if stepsItem.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
-									steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-									for _, fallbackGroupIdsItem1 := range stepsItem.Approval.EntitlementOwnerApproval.FallbackGroupIds {
-										var fallbackGroupIds1 tfTypes.AppEntitlementReference
-
-										fallbackGroupIds1.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem1.AppEntitlementID)
-										fallbackGroupIds1.AppID = types.StringPointerValue(fallbackGroupIdsItem1.AppID)
-
-										steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(steps.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds1)
-									}
-								} else {
-									steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
-								}
-								if stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
-									steps.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
-									for _, v := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
-										steps.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
-									}
-								} else {
-									steps.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
-								}
-								steps.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
-								steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
+								steps.Approval.EntitlementOwners.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.EntitlementOwners.IsGroupFallbackEnabled)
+								steps.Approval.EntitlementOwners.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwners.RequireDistinctApprovers)
 							}
 							if stepsItem.Approval.Escalation == nil {
 								steps.Approval.Escalation = nil
@@ -253,184 +221,217 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								}
 							}
 							steps.Approval.EscalationEnabled = types.BoolPointerValue(stepsItem.Approval.EscalationEnabled)
-							if stepsItem.Approval.ExpressionApproval == nil {
-								steps.Approval.ExpressionApproval = nil
+							if stepsItem.Approval.Expression == nil {
+								steps.Approval.Expression = nil
 							} else {
-								steps.Approval.ExpressionApproval = &tfTypes.ExpressionApproval{}
-								steps.Approval.ExpressionApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.AllowSelfApproval)
-								if stepsItem.Approval.ExpressionApproval.AssignedUserIds != nil {
-									steps.Approval.ExpressionApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.AssignedUserIds))
-									for _, v := range stepsItem.Approval.ExpressionApproval.AssignedUserIds {
-										steps.Approval.ExpressionApproval.AssignedUserIds = append(steps.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
+								steps.Approval.Expression = &tfTypes.ExpressionApproval{}
+								steps.Approval.Expression.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.Expression.AllowSelfApproval)
+								if stepsItem.Approval.Expression.AssignedUserIds != nil {
+									steps.Approval.Expression.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.Expression.AssignedUserIds))
+									for _, v := range stepsItem.Approval.Expression.AssignedUserIds {
+										steps.Approval.Expression.AssignedUserIds = append(steps.Approval.Expression.AssignedUserIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.ExpressionApproval.AssignedUserIds = nil
+									steps.Approval.Expression.AssignedUserIds = nil
 								}
-								if stepsItem.Approval.ExpressionApproval.Expressions != nil {
-									steps.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.Expressions))
-									for _, v := range stepsItem.Approval.ExpressionApproval.Expressions {
-										steps.Approval.ExpressionApproval.Expressions = append(steps.Approval.ExpressionApproval.Expressions, types.StringValue(v))
+								if stepsItem.Approval.Expression.Expressions != nil {
+									steps.Approval.Expression.Expressions = make([]types.String, 0, len(stepsItem.Approval.Expression.Expressions))
+									for _, v := range stepsItem.Approval.Expression.Expressions {
+										steps.Approval.Expression.Expressions = append(steps.Approval.Expression.Expressions, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.ExpressionApproval.Expressions = nil
+									steps.Approval.Expression.Expressions = nil
 								}
-								steps.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.Fallback)
-								if stepsItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
-									steps.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+								steps.Approval.Expression.Fallback = types.BoolPointerValue(stepsItem.Approval.Expression.Fallback)
+								if stepsItem.Approval.Expression.FallbackGroupIds != nil {
+									steps.Approval.Expression.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
 
-									for _, fallbackGroupIdsItem2 := range stepsItem.Approval.ExpressionApproval.FallbackGroupIds {
+									for _, fallbackGroupIdsItem1 := range stepsItem.Approval.Expression.FallbackGroupIds {
+										var fallbackGroupIds1 tfTypes.AppEntitlementReference
+
+										fallbackGroupIds1.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem1.AppEntitlementID)
+										fallbackGroupIds1.AppID = types.StringPointerValue(fallbackGroupIdsItem1.AppID)
+
+										steps.Approval.Expression.FallbackGroupIds = append(steps.Approval.Expression.FallbackGroupIds, fallbackGroupIds1)
+									}
+								} else {
+									steps.Approval.Expression.FallbackGroupIds = nil
+								}
+								if stepsItem.Approval.Expression.FallbackUserIds != nil {
+									steps.Approval.Expression.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.Expression.FallbackUserIds))
+									for _, v := range stepsItem.Approval.Expression.FallbackUserIds {
+										steps.Approval.Expression.FallbackUserIds = append(steps.Approval.Expression.FallbackUserIds, types.StringValue(v))
+									}
+								} else {
+									steps.Approval.Expression.FallbackUserIds = nil
+								}
+								steps.Approval.Expression.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.Expression.IsGroupFallbackEnabled)
+								steps.Approval.Expression.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.Expression.RequireDistinctApprovers)
+							}
+							if stepsItem.Approval.Group == nil {
+								steps.Approval.Group = nil
+							} else {
+								steps.Approval.Group = &tfTypes.AppGroupApproval{}
+								steps.Approval.Group.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.Group.AllowSelfApproval)
+								steps.Approval.Group.AppGroupID = types.StringPointerValue(stepsItem.Approval.Group.AppGroupID)
+								steps.Approval.Group.AppID = types.StringPointerValue(stepsItem.Approval.Group.AppID)
+								steps.Approval.Group.Fallback = types.BoolPointerValue(stepsItem.Approval.Group.Fallback)
+								if stepsItem.Approval.Group.FallbackGroupIds != nil {
+									steps.Approval.Group.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+									for _, fallbackGroupIdsItem2 := range stepsItem.Approval.Group.FallbackGroupIds {
 										var fallbackGroupIds2 tfTypes.AppEntitlementReference
 
 										fallbackGroupIds2.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem2.AppEntitlementID)
 										fallbackGroupIds2.AppID = types.StringPointerValue(fallbackGroupIdsItem2.AppID)
 
-										steps.Approval.ExpressionApproval.FallbackGroupIds = append(steps.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds2)
+										steps.Approval.Group.FallbackGroupIds = append(steps.Approval.Group.FallbackGroupIds, fallbackGroupIds2)
 									}
 								} else {
-									steps.Approval.ExpressionApproval.FallbackGroupIds = nil
+									steps.Approval.Group.FallbackGroupIds = nil
 								}
-								if stepsItem.Approval.ExpressionApproval.FallbackUserIds != nil {
-									steps.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
-									for _, v := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
-										steps.Approval.ExpressionApproval.FallbackUserIds = append(steps.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
+								if stepsItem.Approval.Group.FallbackUserIds != nil {
+									steps.Approval.Group.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.Group.FallbackUserIds))
+									for _, v := range stepsItem.Approval.Group.FallbackUserIds {
+										steps.Approval.Group.FallbackUserIds = append(steps.Approval.Group.FallbackUserIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.ExpressionApproval.FallbackUserIds = nil
+									steps.Approval.Group.FallbackUserIds = nil
 								}
-								steps.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
-								steps.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
+								steps.Approval.Group.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.Group.IsGroupFallbackEnabled)
+								steps.Approval.Group.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.Group.RequireDistinctApprovers)
 							}
-							if stepsItem.Approval.ManagerApproval == nil {
-								steps.Approval.ManagerApproval = nil
+							if stepsItem.Approval.Manager == nil {
+								steps.Approval.Manager = nil
 							} else {
-								steps.Approval.ManagerApproval = &tfTypes.ManagerApproval{}
-								steps.Approval.ManagerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.AllowSelfApproval)
-								if stepsItem.Approval.ManagerApproval.AssignedUserIds != nil {
-									steps.Approval.ManagerApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.AssignedUserIds))
-									for _, v := range stepsItem.Approval.ManagerApproval.AssignedUserIds {
-										steps.Approval.ManagerApproval.AssignedUserIds = append(steps.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
+								steps.Approval.Manager = &tfTypes.ManagerApproval{}
+								steps.Approval.Manager.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.Manager.AllowSelfApproval)
+								if stepsItem.Approval.Manager.AssignedUserIds != nil {
+									steps.Approval.Manager.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.Manager.AssignedUserIds))
+									for _, v := range stepsItem.Approval.Manager.AssignedUserIds {
+										steps.Approval.Manager.AssignedUserIds = append(steps.Approval.Manager.AssignedUserIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.ManagerApproval.AssignedUserIds = nil
+									steps.Approval.Manager.AssignedUserIds = nil
 								}
-								steps.Approval.ManagerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.Fallback)
-								if stepsItem.Approval.ManagerApproval.FallbackGroupIds != nil {
-									steps.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+								steps.Approval.Manager.Fallback = types.BoolPointerValue(stepsItem.Approval.Manager.Fallback)
+								if stepsItem.Approval.Manager.FallbackGroupIds != nil {
+									steps.Approval.Manager.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
 
-									for _, fallbackGroupIdsItem3 := range stepsItem.Approval.ManagerApproval.FallbackGroupIds {
+									for _, fallbackGroupIdsItem3 := range stepsItem.Approval.Manager.FallbackGroupIds {
 										var fallbackGroupIds3 tfTypes.AppEntitlementReference
 
 										fallbackGroupIds3.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem3.AppEntitlementID)
 										fallbackGroupIds3.AppID = types.StringPointerValue(fallbackGroupIdsItem3.AppID)
 
-										steps.Approval.ManagerApproval.FallbackGroupIds = append(steps.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds3)
+										steps.Approval.Manager.FallbackGroupIds = append(steps.Approval.Manager.FallbackGroupIds, fallbackGroupIds3)
 									}
 								} else {
-									steps.Approval.ManagerApproval.FallbackGroupIds = nil
+									steps.Approval.Manager.FallbackGroupIds = nil
 								}
-								if stepsItem.Approval.ManagerApproval.FallbackUserIds != nil {
-									steps.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
-									for _, v := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
-										steps.Approval.ManagerApproval.FallbackUserIds = append(steps.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
+								if stepsItem.Approval.Manager.FallbackUserIds != nil {
+									steps.Approval.Manager.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.Manager.FallbackUserIds))
+									for _, v := range stepsItem.Approval.Manager.FallbackUserIds {
+										steps.Approval.Manager.FallbackUserIds = append(steps.Approval.Manager.FallbackUserIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.ManagerApproval.FallbackUserIds = nil
+									steps.Approval.Manager.FallbackUserIds = nil
 								}
-								steps.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
-								steps.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
+								steps.Approval.Manager.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.Manager.IsGroupFallbackEnabled)
+								steps.Approval.Manager.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.Manager.RequireDistinctApprovers)
 							}
 							steps.Approval.RequireApprovalReason = types.BoolPointerValue(stepsItem.Approval.RequireApprovalReason)
 							steps.Approval.RequireDenialReason = types.BoolPointerValue(stepsItem.Approval.RequireDenialReason)
 							steps.Approval.RequireReassignmentReason = types.BoolPointerValue(stepsItem.Approval.RequireReassignmentReason)
 							steps.Approval.RequiresStepUpProviderID = types.StringPointerValue(stepsItem.Approval.RequiresStepUpProviderID)
-							if stepsItem.Approval.ResourceOwnerApproval == nil {
-								steps.Approval.ResourceOwnerApproval = nil
+							if stepsItem.Approval.ResourceOwners == nil {
+								steps.Approval.ResourceOwners = nil
 							} else {
-								steps.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
-								steps.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval)
-								steps.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.Fallback)
-								if stepsItem.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
-									steps.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+								steps.Approval.ResourceOwners = &tfTypes.ResourceOwnerApproval{}
+								steps.Approval.ResourceOwners.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ResourceOwners.AllowSelfApproval)
+								steps.Approval.ResourceOwners.Fallback = types.BoolPointerValue(stepsItem.Approval.ResourceOwners.Fallback)
+								if stepsItem.Approval.ResourceOwners.FallbackGroupIds != nil {
+									steps.Approval.ResourceOwners.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
 
-									for _, fallbackGroupIdsItem4 := range stepsItem.Approval.ResourceOwnerApproval.FallbackGroupIds {
+									for _, fallbackGroupIdsItem4 := range stepsItem.Approval.ResourceOwners.FallbackGroupIds {
 										var fallbackGroupIds4 tfTypes.AppEntitlementReference
 
 										fallbackGroupIds4.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem4.AppEntitlementID)
 										fallbackGroupIds4.AppID = types.StringPointerValue(fallbackGroupIdsItem4.AppID)
 
-										steps.Approval.ResourceOwnerApproval.FallbackGroupIds = append(steps.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds4)
+										steps.Approval.ResourceOwners.FallbackGroupIds = append(steps.Approval.ResourceOwners.FallbackGroupIds, fallbackGroupIds4)
 									}
 								} else {
-									steps.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
+									steps.Approval.ResourceOwners.FallbackGroupIds = nil
 								}
-								if stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
-									steps.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
-									for _, v := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
-										steps.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
+								if stepsItem.Approval.ResourceOwners.FallbackUserIds != nil {
+									steps.Approval.ResourceOwners.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwners.FallbackUserIds))
+									for _, v := range stepsItem.Approval.ResourceOwners.FallbackUserIds {
+										steps.Approval.ResourceOwners.FallbackUserIds = append(steps.Approval.ResourceOwners.FallbackUserIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.ResourceOwnerApproval.FallbackUserIds = nil
+									steps.Approval.ResourceOwners.FallbackUserIds = nil
 								}
-								steps.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
-								steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
+								steps.Approval.ResourceOwners.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ResourceOwners.IsGroupFallbackEnabled)
+								steps.Approval.ResourceOwners.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwners.RequireDistinctApprovers)
 							}
-							if stepsItem.Approval.SelfApproval == nil {
-								steps.Approval.SelfApproval = nil
+							if stepsItem.Approval.Self == nil {
+								steps.Approval.Self = nil
 							} else {
-								steps.Approval.SelfApproval = &tfTypes.SelfApproval{}
-								if stepsItem.Approval.SelfApproval.AssignedUserIds != nil {
-									steps.Approval.SelfApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.AssignedUserIds))
-									for _, v := range stepsItem.Approval.SelfApproval.AssignedUserIds {
-										steps.Approval.SelfApproval.AssignedUserIds = append(steps.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
+								steps.Approval.Self = &tfTypes.SelfApproval{}
+								if stepsItem.Approval.Self.AssignedUserIds != nil {
+									steps.Approval.Self.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.Self.AssignedUserIds))
+									for _, v := range stepsItem.Approval.Self.AssignedUserIds {
+										steps.Approval.Self.AssignedUserIds = append(steps.Approval.Self.AssignedUserIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.SelfApproval.AssignedUserIds = nil
+									steps.Approval.Self.AssignedUserIds = nil
 								}
-								steps.Approval.SelfApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.SelfApproval.Fallback)
-								if stepsItem.Approval.SelfApproval.FallbackGroupIds != nil {
-									steps.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+								steps.Approval.Self.Fallback = types.BoolPointerValue(stepsItem.Approval.Self.Fallback)
+								if stepsItem.Approval.Self.FallbackGroupIds != nil {
+									steps.Approval.Self.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
 
-									for _, fallbackGroupIdsItem5 := range stepsItem.Approval.SelfApproval.FallbackGroupIds {
+									for _, fallbackGroupIdsItem5 := range stepsItem.Approval.Self.FallbackGroupIds {
 										var fallbackGroupIds5 tfTypes.AppEntitlementReference
 
 										fallbackGroupIds5.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem5.AppEntitlementID)
 										fallbackGroupIds5.AppID = types.StringPointerValue(fallbackGroupIdsItem5.AppID)
 
-										steps.Approval.SelfApproval.FallbackGroupIds = append(steps.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds5)
+										steps.Approval.Self.FallbackGroupIds = append(steps.Approval.Self.FallbackGroupIds, fallbackGroupIds5)
 									}
 								} else {
-									steps.Approval.SelfApproval.FallbackGroupIds = nil
+									steps.Approval.Self.FallbackGroupIds = nil
 								}
-								if stepsItem.Approval.SelfApproval.FallbackUserIds != nil {
-									steps.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
-									for _, v := range stepsItem.Approval.SelfApproval.FallbackUserIds {
-										steps.Approval.SelfApproval.FallbackUserIds = append(steps.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
+								if stepsItem.Approval.Self.FallbackUserIds != nil {
+									steps.Approval.Self.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.Self.FallbackUserIds))
+									for _, v := range stepsItem.Approval.Self.FallbackUserIds {
+										steps.Approval.Self.FallbackUserIds = append(steps.Approval.Self.FallbackUserIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.SelfApproval.FallbackUserIds = nil
+									steps.Approval.Self.FallbackUserIds = nil
 								}
-								steps.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.SelfApproval.IsGroupFallbackEnabled)
+								steps.Approval.Self.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.Self.IsGroupFallbackEnabled)
 							}
-							if stepsItem.Approval.UserApproval == nil {
-								steps.Approval.UserApproval = nil
+							if stepsItem.Approval.Users == nil {
+								steps.Approval.Users = nil
 							} else {
-								steps.Approval.UserApproval = &tfTypes.UserApproval{}
-								steps.Approval.UserApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.UserApproval.AllowSelfApproval)
-								steps.Approval.UserApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.UserApproval.RequireDistinctApprovers)
-								if stepsItem.Approval.UserApproval.UserIds != nil {
-									steps.Approval.UserApproval.UserIds = make([]types.String, 0, len(stepsItem.Approval.UserApproval.UserIds))
-									for _, v := range stepsItem.Approval.UserApproval.UserIds {
-										steps.Approval.UserApproval.UserIds = append(steps.Approval.UserApproval.UserIds, types.StringValue(v))
+								steps.Approval.Users = &tfTypes.UserApproval{}
+								steps.Approval.Users.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.Users.AllowSelfApproval)
+								steps.Approval.Users.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.Users.RequireDistinctApprovers)
+								if stepsItem.Approval.Users.UserIds != nil {
+									steps.Approval.Users.UserIds = make([]types.String, 0, len(stepsItem.Approval.Users.UserIds))
+									for _, v := range stepsItem.Approval.Users.UserIds {
+										steps.Approval.Users.UserIds = append(steps.Approval.Users.UserIds, types.StringValue(v))
 									}
 								} else {
-									steps.Approval.UserApproval.UserIds = nil
+									steps.Approval.Users.UserIds = nil
 								}
 							}
-							if stepsItem.Approval.WebhookApproval == nil {
-								steps.Approval.WebhookApproval = nil
+							if stepsItem.Approval.Webhook == nil {
+								steps.Approval.Webhook = nil
 							} else {
-								steps.Approval.WebhookApproval = &tfTypes.WebhookApproval{}
-								steps.Approval.WebhookApproval.WebhookID = types.StringPointerValue(stepsItem.Approval.WebhookApproval.WebhookID)
+								steps.Approval.Webhook = &tfTypes.WebhookApproval{}
+								steps.Approval.Webhook.WebhookID = types.StringPointerValue(stepsItem.Approval.Webhook.WebhookID)
 							}
 						}
 						if stepsItem.Form == nil {
@@ -448,190 +449,196 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 								steps.Provision.ProvisionPolicy = nil
 							} else {
 								steps.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
-								if stepsItem.Provision.ProvisionPolicy.ActionProvision == nil {
-									steps.Provision.ProvisionPolicy.ActionProvision = nil
+								if stepsItem.Provision.ProvisionPolicy.Action == nil {
+									steps.Provision.ProvisionPolicy.Action = nil
 								} else {
-									steps.Provision.ProvisionPolicy.ActionProvision = &tfTypes.ActionProvision{}
-									steps.Provision.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName)
-									steps.Provision.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID)
-									steps.Provision.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID)
-									steps.Provision.ProvisionPolicy.ActionProvision.DisplayName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.DisplayName)
+									steps.Provision.ProvisionPolicy.Action = &tfTypes.ActionProvision{}
+									steps.Provision.ProvisionPolicy.Action.ActionName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Action.ActionName)
+									steps.Provision.ProvisionPolicy.Action.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Action.AppID)
+									steps.Provision.ProvisionPolicy.Action.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Action.ConnectorID)
+									steps.Provision.ProvisionPolicy.Action.DisplayName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Action.DisplayName)
 								}
-								if stepsItem.Provision.ProvisionPolicy.ConnectorProvision == nil {
-									steps.Provision.ProvisionPolicy.ConnectorProvision = nil
+								if stepsItem.Provision.ProvisionPolicy.Connector == nil {
+									steps.Provision.ProvisionPolicy.Connector = nil
 								} else {
-									steps.Provision.ProvisionPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
-									if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision == nil {
-										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = nil
+									steps.Provision.ProvisionPolicy.Connector = &tfTypes.ConnectorProvision{}
+									if stepsItem.Provision.ProvisionPolicy.Connector.Account == nil {
+										steps.Provision.ProvisionPolicy.Connector.Account = nil
 									} else {
-										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
-										if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
+										steps.Provision.ProvisionPolicy.Connector.Account = &tfTypes.AccountProvision{}
+										if stepsItem.Provision.ProvisionPolicy.Connector.Account.Config == nil {
+											steps.Provision.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedNull()
 										} else {
-											configResult, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config)
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult))
+											configResult, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.Connector.Account.Config)
+											steps.Provision.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedValue(string(configResult))
 										}
-										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
-										if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
+										steps.Provision.ProvisionPolicy.Connector.Account.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Connector.Account.ConnectorID)
+										if stepsItem.Provision.ProvisionPolicy.Connector.Account.DoNotSave == nil {
+											steps.Provision.ProvisionPolicy.Connector.Account.DoNotSave = nil
 										} else {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
+											steps.Provision.ProvisionPolicy.Connector.Account.DoNotSave = &tfTypes.DoNotSave{}
 										}
-										if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
+										if stepsItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault == nil {
+											steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault = nil
 										} else {
-											steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
-											if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-												steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-												for _, v := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-													steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
+											steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault = &tfTypes.SaveToVault{}
+											if stepsItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+												steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds))
+												for _, v := range stepsItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds {
+													steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = append(steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds, types.StringValue(v))
 												}
 											} else {
-												steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
+												steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = nil
 											}
 										}
-										steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
+										steps.Provision.ProvisionPolicy.Connector.Account.SchemaID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Connector.Account.SchemaID)
 									}
-									if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
-										steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = nil
+									if stepsItem.Provision.ProvisionPolicy.Connector.DefaultBehavior == nil {
+										steps.Provision.ProvisionPolicy.Connector.DefaultBehavior = nil
 									} else {
-										steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
-										steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+										steps.Provision.ProvisionPolicy.Connector.DefaultBehavior = &tfTypes.DefaultBehavior{}
+										steps.Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID)
 									}
-									if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
-										steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
+									if stepsItem.Provision.ProvisionPolicy.Connector.DeleteAccount == nil {
+										steps.Provision.ProvisionPolicy.Connector.DeleteAccount = nil
 									} else {
-										steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
-										steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
+										steps.Provision.ProvisionPolicy.Connector.DeleteAccount = &tfTypes.DeleteAccount{}
+										steps.Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID)
 									}
 								}
-								if stepsItem.Provision.ProvisionPolicy.DelegatedProvision == nil {
-									steps.Provision.ProvisionPolicy.DelegatedProvision = nil
+								if stepsItem.Provision.ProvisionPolicy.Delegated == nil {
+									steps.Provision.ProvisionPolicy.Delegated = nil
 								} else {
-									steps.Provision.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
-									steps.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
-									steps.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
+									steps.Provision.ProvisionPolicy.Delegated = &tfTypes.DelegatedProvision{}
+									steps.Provision.ProvisionPolicy.Delegated.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Delegated.AppID)
+									steps.Provision.ProvisionPolicy.Delegated.EntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Delegated.EntitlementID)
 								}
-								if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision = nil
+								if stepsItem.Provision.ProvisionPolicy.DevicePlacement == nil {
+									steps.Provision.ProvisionPolicy.DevicePlacement = nil
 								} else {
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID)
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
-									steps.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions)
+									steps.Provision.ProvisionPolicy.DevicePlacement = &tfTypes.DevicePlacementProvision{}
+									steps.Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID)
 								}
-								if stepsItem.Provision.ProvisionPolicy.ManualProvision == nil {
-									steps.Provision.ProvisionPolicy.ManualProvision = nil
+								if stepsItem.Provision.ProvisionPolicy.ExternalTicket == nil {
+									steps.Provision.ProvisionPolicy.ExternalTicket = nil
 								} else {
-									steps.Provision.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
-									steps.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions)
-									if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment == nil {
-										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = nil
+									steps.Provision.ProvisionPolicy.ExternalTicket = &tfTypes.ExternalTicketProvision{}
+									steps.Provision.ProvisionPolicy.ExternalTicket.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicket.AppID)
+									steps.Provision.ProvisionPolicy.ExternalTicket.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicket.ConnectorID)
+									steps.Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
+									steps.Provision.ProvisionPolicy.ExternalTicket.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicket.Instructions)
+								}
+								if stepsItem.Provision.ProvisionPolicy.Manual == nil {
+									steps.Provision.ProvisionPolicy.Manual = nil
+								} else {
+									steps.Provision.ProvisionPolicy.Manual = &tfTypes.ManualProvision{}
+									if stepsItem.Provision.ProvisionPolicy.Manual.Assignee == nil {
+										steps.Provision.ProvisionPolicy.Manual.Assignee = nil
 									} else {
-										steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}
-										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner == nil {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = nil
+										steps.Provision.ProvisionPolicy.Manual.Assignee = &tfTypes.ProvisionerAssignment{}
+										if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners == nil {
+											steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners = nil
 										} else {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = &tfTypes.AppOwnerProvisioner{}
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment)
-											if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
-												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
-													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
+											steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners = &tfTypes.AppOwnerProvisioner{}
+											steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment)
+											if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
+												steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
+												for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
+													steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds, types.StringValue(v))
 												}
 											} else {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
+												steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = nil
 											}
 										}
-										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = nil
+										if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners == nil {
+											steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners = nil
 										} else {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = &tfTypes.EntitlementOwnerProvisioner{}
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment)
-											if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
-												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
-													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
+											steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners = &tfTypes.EntitlementOwnerProvisioner{}
+											steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment)
+											if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
+												steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
+												for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
+													steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds, types.StringValue(v))
 												}
 											} else {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
+												steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = nil
 											}
 										}
-										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = nil
+										if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression == nil {
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Expression = nil
 										} else {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = &tfTypes.ExpressionProvisioner{}
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment)
-											if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
-												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
-													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Expression = &tfTypes.ExpressionProvisioner{}
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment)
+											if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions != nil {
+												steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions))
+												for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions {
+													steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = append(steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions, types.StringValue(v))
 												}
 											} else {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
+												steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = nil
 											}
-											if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
-												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
-													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
+											if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
+												steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds))
+												for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds {
+													steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds, types.StringValue(v))
 												}
 											} else {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
-											}
-										}
-										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = nil
-										} else {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = &tfTypes.GroupProvisioner{}
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment)
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID)
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID)
-											if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds))
-												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
-													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
-												}
-											} else {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
+												steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = nil
 											}
 										}
-										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = nil
+										if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group == nil {
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Group = nil
 										} else {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = &tfTypes.ManagerProvisioner{}
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment)
-											if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
-												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
-													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Group = &tfTypes.GroupProvisioner{}
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment)
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID)
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Group.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.AppID)
+											if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
+												steps.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds))
+												for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds {
+													steps.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds, types.StringValue(v))
 												}
 											} else {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
+												steps.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = nil
 											}
 										}
-										if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = nil
+										if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Manager == nil {
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Manager = nil
 										} else {
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = &tfTypes.UserProvisioner{}
-											steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment)
-											if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
-												for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
-													steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Manager = &tfTypes.ManagerProvisioner{}
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment)
+											if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
+												steps.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds))
+												for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds {
+													steps.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds, types.StringValue(v))
 												}
 											} else {
-												steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
+												steps.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = nil
+											}
+										}
+										if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Users == nil {
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Users = nil
+										} else {
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Users = &tfTypes.UserProvisioner{}
+											steps.Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment)
+											if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds != nil {
+												steps.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds))
+												for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds {
+													steps.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds, types.StringValue(v))
+												}
+											} else {
+												steps.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = nil
 											}
 										}
 									}
-									if stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
-										steps.Provision.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds))
-										for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
-											steps.Provision.ProvisionPolicy.ManualProvision.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
+									steps.Provision.ProvisionPolicy.Manual.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Instructions)
+									if stepsItem.Provision.ProvisionPolicy.Manual.UserIds != nil {
+										steps.Provision.ProvisionPolicy.Manual.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.UserIds))
+										for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.UserIds {
+											steps.Provision.ProvisionPolicy.Manual.UserIds = append(steps.Provision.ProvisionPolicy.Manual.UserIds, types.StringValue(v))
 										}
 									} else {
-										steps.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
+										steps.Provision.ProvisionPolicy.Manual.UserIds = nil
 									}
 								}
 								if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
@@ -640,16 +647,16 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 									multiStepResult, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.MultiStep)
 									steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
 								}
-								if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
-									steps.Provision.ProvisionPolicy.UnconfiguredProvision = nil
+								if stepsItem.Provision.ProvisionPolicy.Unconfigured == nil {
+									steps.Provision.ProvisionPolicy.Unconfigured = nil
 								} else {
-									steps.Provision.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
+									steps.Provision.ProvisionPolicy.Unconfigured = &tfTypes.UnconfiguredProvision{}
 								}
-								if stepsItem.Provision.ProvisionPolicy.WebhookProvision == nil {
-									steps.Provision.ProvisionPolicy.WebhookProvision = nil
+								if stepsItem.Provision.ProvisionPolicy.Webhook == nil {
+									steps.Provision.ProvisionPolicy.Webhook = nil
 								} else {
-									steps.Provision.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
-									steps.Provision.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID)
+									steps.Provision.ProvisionPolicy.Webhook = &tfTypes.WebhookProvision{}
+									steps.Provision.ProvisionPolicy.Webhook.WebhookID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Webhook.WebhookID)
 								}
 							}
 							if stepsItem.Provision.ProvisionTarget == nil {
@@ -674,27 +681,27 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 							steps.Wait = &tfTypes.Wait{}
 							steps.Wait.CommentOnFirstWait = types.StringPointerValue(stepsItem.Wait.CommentOnFirstWait)
 							steps.Wait.CommentOnTimeout = types.StringPointerValue(stepsItem.Wait.CommentOnTimeout)
+							if stepsItem.Wait.Condition == nil {
+								steps.Wait.Condition = nil
+							} else {
+								steps.Wait.Condition = &tfTypes.WaitCondition{}
+								steps.Wait.Condition.Condition = types.StringPointerValue(stepsItem.Wait.Condition.Condition)
+							}
+							if stepsItem.Wait.Duration == nil {
+								steps.Wait.Duration = nil
+							} else {
+								steps.Wait.Duration = &tfTypes.WaitDuration{}
+								steps.Wait.Duration.Duration = types.StringPointerValue(stepsItem.Wait.Duration.Duration)
+							}
 							steps.Wait.Name = types.StringPointerValue(stepsItem.Wait.Name)
 							steps.Wait.TimeoutDuration = types.StringPointerValue(stepsItem.Wait.TimeoutDuration)
-							if stepsItem.Wait.WaitCondition == nil {
-								steps.Wait.WaitCondition = nil
+							if stepsItem.Wait.UntilTime == nil {
+								steps.Wait.UntilTime = nil
 							} else {
-								steps.Wait.WaitCondition = &tfTypes.WaitCondition{}
-								steps.Wait.WaitCondition.Condition = types.StringPointerValue(stepsItem.Wait.WaitCondition.Condition)
-							}
-							if stepsItem.Wait.WaitDuration == nil {
-								steps.Wait.WaitDuration = nil
-							} else {
-								steps.Wait.WaitDuration = &tfTypes.WaitDuration{}
-								steps.Wait.WaitDuration.Duration = types.StringPointerValue(stepsItem.Wait.WaitDuration.Duration)
-							}
-							if stepsItem.Wait.WaitUntilTime == nil {
-								steps.Wait.WaitUntilTime = nil
-							} else {
-								steps.Wait.WaitUntilTime = &tfTypes.WaitUntilTime{}
-								steps.Wait.WaitUntilTime.Hours = types.Int64PointerValue(stepsItem.Wait.WaitUntilTime.Hours)
-								steps.Wait.WaitUntilTime.Minutes = types.Int64PointerValue(stepsItem.Wait.WaitUntilTime.Minutes)
-								steps.Wait.WaitUntilTime.Timezone = types.StringPointerValue(stepsItem.Wait.WaitUntilTime.Timezone)
+								steps.Wait.UntilTime = &tfTypes.WaitUntilTime{}
+								steps.Wait.UntilTime.Hours = types.Int64PointerValue(stepsItem.Wait.UntilTime.Hours)
+								steps.Wait.UntilTime.Minutes = types.Int64PointerValue(stepsItem.Wait.UntilTime.Minutes)
+								steps.Wait.UntilTime.Timezone = types.StringPointerValue(stepsItem.Wait.UntilTime.Timezone)
 							}
 						}
 
@@ -733,12 +740,26 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 				var rules tfTypes.Rule
 
 				rules.Condition = types.StringPointerValue(rulesItem.Condition)
+				rules.PolicyID = types.StringPointerValue(rulesItem.PolicyID)
 				rules.PolicyKey = types.StringPointerValue(rulesItem.PolicyKey)
+				rules.StepKey = types.StringPointerValue(rulesItem.StepKey)
 
 				r.Rules = append(r.Rules, rules)
 			}
 		} else {
 			r.Rules = nil
+		}
+		if resp.Scope == nil {
+			r.Scope = nil
+		} else {
+			r.Scope = &tfTypes.PolicyScope{}
+			r.Scope.AppEntitlementID = types.StringPointerValue(resp.Scope.AppEntitlementID)
+			r.Scope.AppID = types.StringPointerValue(resp.Scope.AppID)
+			if resp.Scope.Slot != nil {
+				r.Scope.Slot = types.StringValue(string(*resp.Scope.Slot))
+			} else {
+				r.Scope.Slot = types.StringNull()
+			}
 		}
 		r.SystemBuiltin = types.BoolPointerValue(resp.SystemBuiltin)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
@@ -819,6 +840,12 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 
 		annotations[annotationsKey] = annotationsInst
 	}
+	baselinePolicyID := new(string)
+	if !r.BaselinePolicyID.IsUnknown() && !r.BaselinePolicyID.IsNull() {
+		*baselinePolicyID = r.BaselinePolicyID.ValueString()
+	} else {
+		baselinePolicyID = nil
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -848,83 +875,83 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 				}
 				var action *shared.Action
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action != nil {
-					var actionTargetAutomation *shared.ActionTargetAutomation
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation != nil {
+					var automation *shared.ActionTargetAutomation
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.Automation != nil {
 						automationTemplateID := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation.AutomationTemplateID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation.AutomationTemplateID.IsNull() {
-							*automationTemplateID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation.AutomationTemplateID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.Automation.AutomationTemplateID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.Automation.AutomationTemplateID.IsNull() {
+							*automationTemplateID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.Automation.AutomationTemplateID.ValueString()
 						} else {
 							automationTemplateID = nil
 						}
-						actionTargetAutomation = &shared.ActionTargetAutomation{
+						automation = &shared.ActionTargetAutomation{
 							AutomationTemplateID: automationTemplateID,
 						}
 					}
-					var actionTargetBatonResourceAction *shared.ActionTargetBatonResourceAction
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction != nil {
+					var batonResourceAction *shared.ActionTargetBatonResourceAction
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.BatonResourceAction != nil {
 						batonResourceActionID := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.IsNull() {
-							*batonResourceActionID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.BatonResourceAction.BatonResourceActionID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.BatonResourceAction.BatonResourceActionID.IsNull() {
+							*batonResourceActionID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.BatonResourceAction.BatonResourceActionID.ValueString()
 						} else {
 							batonResourceActionID = nil
 						}
-						actionTargetBatonResourceAction = &shared.ActionTargetBatonResourceAction{
+						batonResourceAction = &shared.ActionTargetBatonResourceAction{
 							BatonResourceActionID: batonResourceActionID,
 						}
 					}
-					var actionTargetClientIDApproval *shared.ActionTargetClientIDApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetClientIDApproval != nil {
-						actionTargetClientIDApproval = &shared.ActionTargetClientIDApproval{}
+					var clientIDApproval *shared.ActionTargetClientIDApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ClientIDApproval != nil {
+						clientIDApproval = &shared.ActionTargetClientIDApproval{}
 					}
 					action = &shared.Action{
-						ActionTargetAutomation:          actionTargetAutomation,
-						ActionTargetBatonResourceAction: actionTargetBatonResourceAction,
-						ActionTargetClientIDApproval:    actionTargetClientIDApproval,
+						Automation:          automation,
+						BatonResourceAction: batonResourceAction,
+						ClientIDApproval:    clientIDApproval,
 					}
 				}
 				var approval *shared.ApprovalInput
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval != nil {
-					var agentApproval *shared.AgentApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval != nil {
+					var agent *shared.AgentApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent != nil {
 						agentFailureAction := new(shared.AgentFailureAction)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentFailureAction.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentFailureAction.IsNull() {
-							*agentFailureAction = shared.AgentFailureAction(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentFailureAction.ValueString())
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentFailureAction.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentFailureAction.IsNull() {
+							*agentFailureAction = shared.AgentFailureAction(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentFailureAction.ValueString())
 						} else {
 							agentFailureAction = nil
 						}
 						agentMode := new(shared.AgentMode)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentMode.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentMode.IsNull() {
-							*agentMode = shared.AgentMode(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentMode.ValueString())
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentMode.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentMode.IsNull() {
+							*agentMode = shared.AgentMode(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentMode.ValueString())
 						} else {
 							agentMode = nil
 						}
 						agentUserID := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentUserID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentUserID.IsNull() {
-							*agentUserID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentUserID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentUserID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentUserID.IsNull() {
+							*agentUserID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentUserID.ValueString()
 						} else {
 							agentUserID = nil
 						}
 						instructions := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.Instructions.IsNull() {
-							*instructions = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.Instructions.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.Instructions.IsNull() {
+							*instructions = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.Instructions.ValueString()
 						} else {
 							instructions = nil
 						}
 						var policyIds []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.PolicyIds != nil {
-							policyIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.PolicyIds))
-							for policyIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.PolicyIds {
-								policyIds = append(policyIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.PolicyIds[policyIdsIndex].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.PolicyIds != nil {
+							policyIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.PolicyIds))
+							for policyIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.PolicyIds {
+								policyIds = append(policyIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.PolicyIds[policyIdsIndex].ValueString())
 							}
 						}
 						var reassignToUserIds []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.ReassignToUserIds != nil {
-							reassignToUserIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.ReassignToUserIds))
-							for reassignToUserIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.ReassignToUserIds {
-								reassignToUserIds = append(reassignToUserIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.ReassignToUserIds[reassignToUserIdsIndex].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.ReassignToUserIds != nil {
+							reassignToUserIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.ReassignToUserIds))
+							for reassignToUserIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.ReassignToUserIds {
+								reassignToUserIds = append(reassignToUserIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.ReassignToUserIds[reassignToUserIdsIndex].ValueString())
 							}
 						}
-						agentApproval = &shared.AgentApproval{
+						agent = &shared.AgentApproval{
 							AgentFailureAction: agentFailureAction,
 							AgentMode:          agentMode,
 							AgentUserID:        agentUserID,
@@ -952,52 +979,52 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							allowedReassignees = append(allowedReassignees, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AllowedReassignees[allowedReassigneesIndex].ValueString())
 						}
 					}
-					var appOwnerApproval *shared.AppOwnerApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval != nil {
+					var appOwners *shared.AppOwnerApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners != nil {
 						allowSelfApproval := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.AllowSelfApproval.IsNull() {
+							*allowSelfApproval = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval = nil
 						}
 						requireDistinctApprovers := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers = nil
 						}
-						appOwnerApproval = &shared.AppOwnerApproval{
+						appOwners = &shared.AppOwnerApproval{
 							AllowSelfApproval:        allowSelfApproval,
 							RequireDistinctApprovers: requireDistinctApprovers,
 						}
 					}
-					var entitlementOwnerApproval *shared.EntitlementOwnerApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval != nil {
+					var entitlementOwners *shared.EntitlementOwnerApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners != nil {
 						allowSelfApproval1 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.AllowSelfApproval.IsNull() {
+							*allowSelfApproval1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval1 = nil
 						}
 						fallback := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.Fallback.IsNull() {
-							*fallback = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.Fallback.IsNull() {
+							*fallback = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.Fallback.ValueBool()
 						} else {
 							fallback = nil
 						}
 						var fallbackGroupIds []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
-							fallbackGroupIds = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds != nil {
+							fallbackGroupIds = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds))
+							for fallbackGroupIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds {
 								appEntitlementID := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsNull() {
-									*appEntitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsNull() {
+									*appEntitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementID = nil
 								}
 								appID := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsNull() {
-									*appID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsNull() {
+									*appID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppID.ValueString()
 								} else {
 									appID = nil
 								}
@@ -1008,25 +1035,25 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 						}
 						var fallbackUserIds []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
-							fallbackUserIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds))
-							for fallbackUserIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds {
-								fallbackUserIds = append(fallbackUserIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds[fallbackUserIdsIndex].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackUserIds != nil {
+							fallbackUserIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackUserIds))
+							for fallbackUserIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackUserIds {
+								fallbackUserIds = append(fallbackUserIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackUserIds[fallbackUserIdsIndex].ValueString())
 							}
 						}
 						isGroupFallbackEnabled := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled = nil
 						}
 						requireDistinctApprovers1 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers1 = nil
 						}
-						entitlementOwnerApproval = &shared.EntitlementOwnerApproval{
+						entitlementOwners = &shared.EntitlementOwnerApproval{
 							AllowSelfApproval:        allowSelfApproval1,
 							Fallback:                 fallback,
 							FallbackGroupIds:         fallbackGroupIds,
@@ -1097,40 +1124,40 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					} else {
 						escalationEnabled = nil
 					}
-					var expressionApproval *shared.ExpressionApprovalInput
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval != nil {
+					var expression *shared.ExpressionApprovalInput
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression != nil {
 						allowSelfApproval2 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.AllowSelfApproval.IsNull() {
+							*allowSelfApproval2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval2 = nil
 						}
 						var expressions []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Expressions != nil {
-							expressions = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Expressions))
-							for expressionsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Expressions {
-								expressions = append(expressions, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Expressions[expressionsIndex].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Expressions != nil {
+							expressions = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Expressions))
+							for expressionsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Expressions {
+								expressions = append(expressions, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Expressions[expressionsIndex].ValueString())
 							}
 						}
 						fallback1 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Fallback.IsNull() {
-							*fallback1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Fallback.IsNull() {
+							*fallback1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Fallback.ValueBool()
 						} else {
 							fallback1 = nil
 						}
 						var fallbackGroupIds1 []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds != nil {
-							fallbackGroupIds1 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds != nil {
+							fallbackGroupIds1 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds))
+							for fallbackGroupIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds {
 								appEntitlementId1 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsNull() {
-									*appEntitlementId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsNull() {
+									*appEntitlementId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementId1 = nil
 								}
 								appId1 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsNull() {
-									*appId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsNull() {
+									*appId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.ValueString()
 								} else {
 									appId1 = nil
 								}
@@ -1141,25 +1168,25 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 						}
 						var fallbackUserIds1 []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds != nil {
-							fallbackUserIds1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds))
-							for fallbackUserIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds {
-								fallbackUserIds1 = append(fallbackUserIds1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds[fallbackUserIdsIndex1].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackUserIds != nil {
+							fallbackUserIds1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackUserIds))
+							for fallbackUserIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackUserIds {
+								fallbackUserIds1 = append(fallbackUserIds1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackUserIds[fallbackUserIdsIndex1].ValueString())
 							}
 						}
 						isGroupFallbackEnabled1 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled1 = nil
 						}
 						requireDistinctApprovers2 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers2 = nil
 						}
-						expressionApproval = &shared.ExpressionApprovalInput{
+						expression = &shared.ExpressionApprovalInput{
 							AllowSelfApproval:        allowSelfApproval2,
 							Expressions:              expressions,
 							Fallback:                 fallback1,
@@ -1169,45 +1196,45 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							RequireDistinctApprovers: requireDistinctApprovers2,
 						}
 					}
-					var appGroupApproval *shared.AppGroupApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval != nil {
+					var group *shared.AppGroupApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group != nil {
 						allowSelfApproval3 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AllowSelfApproval.IsNull() {
+							*allowSelfApproval3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval3 = nil
 						}
 						appGroupID := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppGroupID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppGroupID.IsNull() {
-							*appGroupID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppGroupID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppGroupID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppGroupID.IsNull() {
+							*appGroupID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppGroupID.ValueString()
 						} else {
 							appGroupID = nil
 						}
 						appId2 := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.IsNull() {
-							*appId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppID.IsNull() {
+							*appId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppID.ValueString()
 						} else {
 							appId2 = nil
 						}
 						fallback2 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.Fallback.IsNull() {
-							*fallback2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.Fallback.IsNull() {
+							*fallback2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.Fallback.ValueBool()
 						} else {
 							fallback2 = nil
 						}
 						var fallbackGroupIds2 []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds != nil {
-							fallbackGroupIds2 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds != nil {
+							fallbackGroupIds2 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds))
+							for fallbackGroupIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds {
 								appEntitlementId2 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsNull() {
-									*appEntitlementId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsNull() {
+									*appEntitlementId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementId2 = nil
 								}
 								appId3 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsNull() {
-									*appId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsNull() {
+									*appId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.ValueString()
 								} else {
 									appId3 = nil
 								}
@@ -1218,25 +1245,25 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 						}
 						var fallbackUserIds2 []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackUserIds != nil {
-							fallbackUserIds2 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackUserIds))
-							for fallbackUserIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackUserIds {
-								fallbackUserIds2 = append(fallbackUserIds2, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackUserIds[fallbackUserIdsIndex2].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackUserIds != nil {
+							fallbackUserIds2 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackUserIds))
+							for fallbackUserIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackUserIds {
+								fallbackUserIds2 = append(fallbackUserIds2, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackUserIds[fallbackUserIdsIndex2].ValueString())
 							}
 						}
 						isGroupFallbackEnabled2 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled2 = nil
 						}
 						requireDistinctApprovers3 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers3 = nil
 						}
-						appGroupApproval = &shared.AppGroupApproval{
+						group = &shared.AppGroupApproval{
 							AllowSelfApproval:        allowSelfApproval3,
 							AppGroupID:               appGroupID,
 							AppID:                    appId2,
@@ -1247,33 +1274,33 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							RequireDistinctApprovers: requireDistinctApprovers3,
 						}
 					}
-					var managerApproval *shared.ManagerApprovalInput
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval != nil {
+					var manager *shared.ManagerApprovalInput
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager != nil {
 						allowSelfApproval4 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.AllowSelfApproval.IsNull() {
+							*allowSelfApproval4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval4 = nil
 						}
 						fallback3 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.Fallback.IsNull() {
-							*fallback3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.Fallback.IsNull() {
+							*fallback3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.Fallback.ValueBool()
 						} else {
 							fallback3 = nil
 						}
 						var fallbackGroupIds3 []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds != nil {
-							fallbackGroupIds3 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds != nil {
+							fallbackGroupIds3 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds))
+							for fallbackGroupIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds {
 								appEntitlementId3 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsNull() {
-									*appEntitlementId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsNull() {
+									*appEntitlementId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementId3 = nil
 								}
 								appId4 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsNull() {
-									*appId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsNull() {
+									*appId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.ValueString()
 								} else {
 									appId4 = nil
 								}
@@ -1284,25 +1311,25 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 						}
 						var fallbackUserIds3 []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds != nil {
-							fallbackUserIds3 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds))
-							for fallbackUserIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds {
-								fallbackUserIds3 = append(fallbackUserIds3, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds[fallbackUserIdsIndex3].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackUserIds != nil {
+							fallbackUserIds3 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackUserIds))
+							for fallbackUserIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackUserIds {
+								fallbackUserIds3 = append(fallbackUserIds3, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackUserIds[fallbackUserIdsIndex3].ValueString())
 							}
 						}
 						isGroupFallbackEnabled3 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled3 = nil
 						}
 						requireDistinctApprovers4 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers4 = nil
 						}
-						managerApproval = &shared.ManagerApprovalInput{
+						manager = &shared.ManagerApprovalInput{
 							AllowSelfApproval:        allowSelfApproval4,
 							Fallback:                 fallback3,
 							FallbackGroupIds:         fallbackGroupIds3,
@@ -1335,33 +1362,33 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					} else {
 						requiresStepUpProviderID = nil
 					}
-					var resourceOwnerApproval *shared.ResourceOwnerApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval != nil {
+					var resourceOwners *shared.ResourceOwnerApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners != nil {
 						allowSelfApproval5 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.AllowSelfApproval.IsNull() {
+							*allowSelfApproval5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval5 = nil
 						}
 						fallback4 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.Fallback.IsNull() {
-							*fallback4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.Fallback.IsNull() {
+							*fallback4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.Fallback.ValueBool()
 						} else {
 							fallback4 = nil
 						}
 						var fallbackGroupIds4 []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
-							fallbackGroupIds4 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds != nil {
+							fallbackGroupIds4 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds))
+							for fallbackGroupIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds {
 								appEntitlementId4 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsNull() {
-									*appEntitlementId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsNull() {
+									*appEntitlementId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementId4 = nil
 								}
 								appId5 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsNull() {
-									*appId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsNull() {
+									*appId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.ValueString()
 								} else {
 									appId5 = nil
 								}
@@ -1372,25 +1399,25 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 						}
 						var fallbackUserIds4 []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds != nil {
-							fallbackUserIds4 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds))
-							for fallbackUserIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds {
-								fallbackUserIds4 = append(fallbackUserIds4, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds[fallbackUserIdsIndex4].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackUserIds != nil {
+							fallbackUserIds4 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackUserIds))
+							for fallbackUserIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackUserIds {
+								fallbackUserIds4 = append(fallbackUserIds4, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackUserIds[fallbackUserIdsIndex4].ValueString())
 							}
 						}
 						isGroupFallbackEnabled4 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled4 = nil
 						}
 						requireDistinctApprovers5 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers5 = nil
 						}
-						resourceOwnerApproval = &shared.ResourceOwnerApproval{
+						resourceOwners = &shared.ResourceOwnerApproval{
 							AllowSelfApproval:        allowSelfApproval5,
 							Fallback:                 fallback4,
 							FallbackGroupIds:         fallbackGroupIds4,
@@ -1399,27 +1426,27 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							RequireDistinctApprovers: requireDistinctApprovers5,
 						}
 					}
-					var selfApproval *shared.SelfApprovalInput
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval != nil {
+					var self *shared.SelfApprovalInput
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self != nil {
 						fallback5 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.Fallback.IsNull() {
-							*fallback5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.Fallback.IsNull() {
+							*fallback5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.Fallback.ValueBool()
 						} else {
 							fallback5 = nil
 						}
 						var fallbackGroupIds5 []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds != nil {
-							fallbackGroupIds5 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex5 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds != nil {
+							fallbackGroupIds5 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds))
+							for fallbackGroupIdsIndex5 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds {
 								appEntitlementId5 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsNull() {
-									*appEntitlementId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsNull() {
+									*appEntitlementId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementId5 = nil
 								}
 								appId6 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsNull() {
-									*appId6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsNull() {
+									*appId6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.ValueString()
 								} else {
 									appId6 = nil
 								}
@@ -1430,84 +1457,84 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 							}
 						}
 						var fallbackUserIds5 []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds != nil {
-							fallbackUserIds5 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds))
-							for fallbackUserIdsIndex5 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds {
-								fallbackUserIds5 = append(fallbackUserIds5, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds[fallbackUserIdsIndex5].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackUserIds != nil {
+							fallbackUserIds5 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackUserIds))
+							for fallbackUserIdsIndex5 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackUserIds {
+								fallbackUserIds5 = append(fallbackUserIds5, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackUserIds[fallbackUserIdsIndex5].ValueString())
 							}
 						}
 						isGroupFallbackEnabled5 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled5 = nil
 						}
-						selfApproval = &shared.SelfApprovalInput{
+						self = &shared.SelfApprovalInput{
 							Fallback:               fallback5,
 							FallbackGroupIds:       fallbackGroupIds5,
 							FallbackUserIds:        fallbackUserIds5,
 							IsGroupFallbackEnabled: isGroupFallbackEnabled5,
 						}
 					}
-					var userApproval *shared.UserApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval != nil {
+					var users *shared.UserApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users != nil {
 						allowSelfApproval6 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.AllowSelfApproval.IsNull() {
+							*allowSelfApproval6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval6 = nil
 						}
 						requireDistinctApprovers6 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers6 = nil
 						}
 						var userIds []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.UserIds != nil {
-							userIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.UserIds))
-							for userIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.UserIds {
-								userIds = append(userIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.UserIds[userIdsIndex].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.UserIds != nil {
+							userIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.UserIds))
+							for userIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.UserIds {
+								userIds = append(userIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.UserIds[userIdsIndex].ValueString())
 							}
 						}
-						userApproval = &shared.UserApproval{
+						users = &shared.UserApproval{
 							AllowSelfApproval:        allowSelfApproval6,
 							RequireDistinctApprovers: requireDistinctApprovers6,
 							UserIds:                  userIds,
 						}
 					}
-					var webhookApproval *shared.WebhookApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.WebhookApproval != nil {
+					var webhook *shared.WebhookApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Webhook != nil {
 						webhookID := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.WebhookApproval.WebhookID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.WebhookApproval.WebhookID.IsNull() {
-							*webhookID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.WebhookApproval.WebhookID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Webhook.WebhookID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Webhook.WebhookID.IsNull() {
+							*webhookID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Webhook.WebhookID.ValueString()
 						} else {
 							webhookID = nil
 						}
-						webhookApproval = &shared.WebhookApproval{
+						webhook = &shared.WebhookApproval{
 							WebhookID: webhookID,
 						}
 					}
 					approval = &shared.ApprovalInput{
-						AgentApproval:             agentApproval,
+						Agent:                     agent,
 						AllowDelegation:           allowDelegation,
 						AllowReassignment:         allowReassignment,
 						AllowedReassignees:        allowedReassignees,
-						AppOwnerApproval:          appOwnerApproval,
-						EntitlementOwnerApproval:  entitlementOwnerApproval,
+						AppOwners:                 appOwners,
+						EntitlementOwners:         entitlementOwners,
 						Escalation:                escalation,
 						EscalationEnabled:         escalationEnabled,
-						ExpressionApproval:        expressionApproval,
-						AppGroupApproval:          appGroupApproval,
-						ManagerApproval:           managerApproval,
+						Expression:                expression,
+						Group:                     group,
+						Manager:                   manager,
 						RequireApprovalReason:     requireApprovalReason,
 						RequireDenialReason:       requireDenialReason,
 						RequireReassignmentReason: requireReassignmentReason,
 						RequiresStepUpProviderID:  requiresStepUpProviderID,
-						ResourceOwnerApproval:     resourceOwnerApproval,
-						SelfApproval:              selfApproval,
-						UserApproval:              userApproval,
-						WebhookApproval:           webhookApproval,
+						ResourceOwners:            resourceOwners,
+						Self:                      self,
+						Users:                     users,
+						Webhook:                   webhook,
 					}
 				}
 				var form interface{}
@@ -1524,64 +1551,64 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					}
 					var provisionPolicy *shared.ProvisionPolicy
 					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy != nil {
-						var actionProvision *shared.ActionProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision != nil {
+						var action1 *shared.ActionProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action != nil {
 							actionName := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ActionName.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ActionName.IsNull() {
-								*actionName = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ActionName.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ActionName.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ActionName.IsNull() {
+								*actionName = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ActionName.ValueString()
 							} else {
 								actionName = nil
 							}
 							appId7 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.IsNull() {
-								*appId7 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.AppID.IsNull() {
+								*appId7 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.AppID.ValueString()
 							} else {
 								appId7 = nil
 							}
 							connectorID := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsNull() {
-								*connectorID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ConnectorID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ConnectorID.IsNull() {
+								*connectorID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ConnectorID.ValueString()
 							} else {
 								connectorID = nil
 							}
 							displayName1 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.DisplayName.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.DisplayName.IsNull() {
-								*displayName1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.DisplayName.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.DisplayName.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.DisplayName.IsNull() {
+								*displayName1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.DisplayName.ValueString()
 							} else {
 								displayName1 = nil
 							}
-							actionProvision = &shared.ActionProvision{
+							action1 = &shared.ActionProvision{
 								ActionName:  actionName,
 								AppID:       appId7,
 								ConnectorID: connectorID,
 								DisplayName: displayName1,
 							}
 						}
-						var connectorProvision *shared.ConnectorProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision != nil {
-							var accountProvision *shared.AccountProvision
-							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
+						var connector *shared.ConnectorProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector != nil {
+							var account *shared.AccountProvision
+							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account != nil {
 								var config interface{}
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.IsNull() {
-									_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.ValueString()), &config)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.Config.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.Config.IsNull() {
+									_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.Config.ValueString()), &config)
 								}
 								connectorId1 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
-									*connectorId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.ConnectorID.IsNull() {
+									*connectorId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.ConnectorID.ValueString()
 								} else {
 									connectorId1 = nil
 								}
 								var doNotSave *shared.DoNotSave
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.DoNotSave != nil {
 									doNotSave = &shared.DoNotSave{}
 								}
 								var saveToVault *shared.SaveToVault
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault != nil {
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SaveToVault != nil {
 									var vaultIds []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-										vaultIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-										for vaultIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-											vaultIds = append(vaultIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds[vaultIdsIndex].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+										vaultIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds))
+										for vaultIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds {
+											vaultIds = append(vaultIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds[vaultIdsIndex].ValueString())
 										}
 									}
 									saveToVault = &shared.SaveToVault{
@@ -1589,12 +1616,12 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 									}
 								}
 								schemaID := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
-									*schemaID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SchemaID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SchemaID.IsNull() {
+									*schemaID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SchemaID.ValueString()
 								} else {
 									schemaID = nil
 								}
-								accountProvision = &shared.AccountProvision{
+								account = &shared.AccountProvision{
 									Config:      config,
 									ConnectorID: connectorId1,
 									DoNotSave:   doNotSave,
@@ -1603,10 +1630,10 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								}
 							}
 							var defaultBehavior *shared.DefaultBehavior
-							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior != nil {
+							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DefaultBehavior != nil {
 								connectorId2 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
-									*connectorId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID.IsNull() {
+									*connectorId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID.ValueString()
 								} else {
 									connectorId2 = nil
 								}
@@ -1615,10 +1642,10 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 								}
 							}
 							var deleteAccount *shared.DeleteAccount
-							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount != nil {
+							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DeleteAccount != nil {
 								connectorId3 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
-									*connectorId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID.IsNull() {
+									*connectorId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID.ValueString()
 								} else {
 									connectorId3 = nil
 								}
@@ -1626,267 +1653,280 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 									ConnectorID: connectorId3,
 								}
 							}
-							connectorProvision = &shared.ConnectorProvision{
-								AccountProvision: accountProvision,
-								DefaultBehavior:  defaultBehavior,
-								DeleteAccount:    deleteAccount,
+							connector = &shared.ConnectorProvision{
+								Account:         account,
+								DefaultBehavior: defaultBehavior,
+								DeleteAccount:   deleteAccount,
 							}
 						}
-						var delegatedProvision *shared.DelegatedProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision != nil {
+						var delegated *shared.DelegatedProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated != nil {
 							appId8 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-								*appId8 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.AppID.IsNull() {
+								*appId8 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.AppID.ValueString()
 							} else {
 								appId8 = nil
 							}
 							entitlementID := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
-								*entitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.EntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.EntitlementID.IsNull() {
+								*entitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.EntitlementID.ValueString()
 							} else {
 								entitlementID = nil
 							}
-							delegatedProvision = &shared.DelegatedProvision{
+							delegated = &shared.DelegatedProvision{
 								AppID:         appId8,
 								EntitlementID: entitlementID,
 							}
 						}
-						var externalTicketProvision *shared.ExternalTicketProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision != nil {
+						var devicePlacement *shared.DevicePlacementProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacement != nil {
+							vaultBoundaryID := new(string)
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID.IsNull() {
+								*vaultBoundaryID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID.ValueString()
+							} else {
+								vaultBoundaryID = nil
+							}
+							devicePlacement = &shared.DevicePlacementProvision{
+								VaultBoundaryID: vaultBoundaryID,
+							}
+						}
+						var externalTicket *shared.ExternalTicketProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket != nil {
 							appId9 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
-								*appId9 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.AppID.IsNull() {
+								*appId9 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.AppID.ValueString()
 							} else {
 								appId9 = nil
 							}
 							connectorId4 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-								*connectorId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ConnectorID.IsNull() {
+								*connectorId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ConnectorID.ValueString()
 							} else {
 								connectorId4 = nil
 							}
 							externalTicketProvisionerConfigID := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
-								*externalTicketProvisionerConfigID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.IsNull() {
+								*externalTicketProvisionerConfigID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.ValueString()
 							} else {
 								externalTicketProvisionerConfigID = nil
 							}
 							instructions1 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsNull() {
-								*instructions1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.Instructions.IsNull() {
+								*instructions1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.Instructions.ValueString()
 							} else {
 								instructions1 = nil
 							}
-							externalTicketProvision = &shared.ExternalTicketProvision{
+							externalTicket = &shared.ExternalTicketProvision{
 								AppID:                             appId9,
 								ConnectorID:                       connectorId4,
 								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 								Instructions:                      instructions1,
 							}
 						}
-						var manualProvision *shared.ManualProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision != nil {
-							var provisionerAssignment *shared.ProvisionerAssignment
-							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment != nil {
-								var appOwnerProvisioner *shared.AppOwnerProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner != nil {
+						var manual *shared.ManualProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual != nil {
+							var assignee *shared.ProvisionerAssignment
+							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee != nil {
+								var appOwners1 *shared.AppOwnerProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners != nil {
 									allowReassignment1 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment.IsNull() {
+										*allowReassignment1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment1 = nil
 									}
 									var fallbackUserIds6 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
-										fallbackUserIds6 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
-										for fallbackUserIdsIndex6 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
-											fallbackUserIds6 = append(fallbackUserIds6, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds[fallbackUserIdsIndex6].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
+										fallbackUserIds6 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
+										for fallbackUserIdsIndex6 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
+											fallbackUserIds6 = append(fallbackUserIds6, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds[fallbackUserIdsIndex6].ValueString())
 										}
 									}
-									appOwnerProvisioner = &shared.AppOwnerProvisioner{
+									appOwners1 = &shared.AppOwnerProvisioner{
 										AllowReassignment: allowReassignment1,
 										FallbackUserIds:   fallbackUserIds6,
 									}
 								}
-								var entitlementOwnerProvisioner *shared.EntitlementOwnerProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner != nil {
+								var entitlementOwners1 *shared.EntitlementOwnerProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners != nil {
 									allowReassignment2 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.IsNull() {
+										*allowReassignment2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment2 = nil
 									}
 									var fallbackUserIds7 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
-										fallbackUserIds7 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
-										for fallbackUserIdsIndex7 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
-											fallbackUserIds7 = append(fallbackUserIds7, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds[fallbackUserIdsIndex7].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
+										fallbackUserIds7 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
+										for fallbackUserIdsIndex7 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
+											fallbackUserIds7 = append(fallbackUserIds7, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds[fallbackUserIdsIndex7].ValueString())
 										}
 									}
-									entitlementOwnerProvisioner = &shared.EntitlementOwnerProvisioner{
+									entitlementOwners1 = &shared.EntitlementOwnerProvisioner{
 										AllowReassignment: allowReassignment2,
 										FallbackUserIds:   fallbackUserIds7,
 									}
 								}
-								var expressionProvisioner *shared.ExpressionProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner != nil {
+								var expression1 *shared.ExpressionProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression != nil {
 									allowReassignment3 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment.IsNull() {
+										*allowReassignment3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment3 = nil
 									}
 									var expressions1 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
-										expressions1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
-										for expressionsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
-											expressions1 = append(expressions1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions[expressionsIndex1].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions != nil {
+										expressions1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions))
+										for expressionsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions {
+											expressions1 = append(expressions1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions[expressionsIndex1].ValueString())
 										}
 									}
 									var fallbackUserIds8 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
-										fallbackUserIds8 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
-										for fallbackUserIdsIndex8 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
-											fallbackUserIds8 = append(fallbackUserIds8, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds[fallbackUserIdsIndex8].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
+										fallbackUserIds8 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds))
+										for fallbackUserIdsIndex8 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds {
+											fallbackUserIds8 = append(fallbackUserIds8, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds[fallbackUserIdsIndex8].ValueString())
 										}
 									}
-									expressionProvisioner = &shared.ExpressionProvisioner{
+									expression1 = &shared.ExpressionProvisioner{
 										AllowReassignment: allowReassignment3,
 										Expressions:       expressions1,
 										FallbackUserIds:   fallbackUserIds8,
 									}
 								}
-								var groupProvisioner *shared.GroupProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner != nil {
+								var group1 *shared.GroupProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group != nil {
 									allowReassignment4 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment.IsNull() {
+										*allowReassignment4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment4 = nil
 									}
 									appGroupId1 := new(string)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID.IsNull() {
-										*appGroupId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID.ValueString()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID.IsNull() {
+										*appGroupId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID.ValueString()
 									} else {
 										appGroupId1 = nil
 									}
 									appId10 := new(string)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID.IsNull() {
-										*appId10 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID.ValueString()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppID.IsNull() {
+										*appId10 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppID.ValueString()
 									} else {
 										appId10 = nil
 									}
 									var fallbackUserIds9 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
-										fallbackUserIds9 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds))
-										for fallbackUserIdsIndex9 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
-											fallbackUserIds9 = append(fallbackUserIds9, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds[fallbackUserIdsIndex9].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
+										fallbackUserIds9 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds))
+										for fallbackUserIdsIndex9 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds {
+											fallbackUserIds9 = append(fallbackUserIds9, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds[fallbackUserIdsIndex9].ValueString())
 										}
 									}
-									groupProvisioner = &shared.GroupProvisioner{
+									group1 = &shared.GroupProvisioner{
 										AllowReassignment: allowReassignment4,
 										AppGroupID:        appGroupId1,
 										AppID:             appId10,
 										FallbackUserIds:   fallbackUserIds9,
 									}
 								}
-								var managerProvisioner *shared.ManagerProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner != nil {
+								var manager1 *shared.ManagerProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager != nil {
 									allowReassignment5 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment.IsNull() {
+										*allowReassignment5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment5 = nil
 									}
 									var fallbackUserIds10 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
-										fallbackUserIds10 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
-										for fallbackUserIdsIndex10 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
-											fallbackUserIds10 = append(fallbackUserIds10, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds[fallbackUserIdsIndex10].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
+										fallbackUserIds10 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds))
+										for fallbackUserIdsIndex10 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds {
+											fallbackUserIds10 = append(fallbackUserIds10, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds[fallbackUserIdsIndex10].ValueString())
 										}
 									}
-									managerProvisioner = &shared.ManagerProvisioner{
+									manager1 = &shared.ManagerProvisioner{
 										AllowReassignment: allowReassignment5,
 										FallbackUserIds:   fallbackUserIds10,
 									}
 								}
-								var userProvisioner *shared.UserProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner != nil {
+								var users1 *shared.UserProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users != nil {
 									allowReassignment6 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment.IsNull() {
+										*allowReassignment6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment6 = nil
 									}
 									var userIds1 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
-										userIds1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
-										for userIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
-											userIds1 = append(userIds1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds[userIdsIndex1].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds != nil {
+										userIds1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds))
+										for userIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds {
+											userIds1 = append(userIds1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds[userIdsIndex1].ValueString())
 										}
 									}
-									userProvisioner = &shared.UserProvisioner{
+									users1 = &shared.UserProvisioner{
 										AllowReassignment: allowReassignment6,
 										UserIds:           userIds1,
 									}
 								}
-								provisionerAssignment = &shared.ProvisionerAssignment{
-									AppOwnerProvisioner:         appOwnerProvisioner,
-									EntitlementOwnerProvisioner: entitlementOwnerProvisioner,
-									ExpressionProvisioner:       expressionProvisioner,
-									GroupProvisioner:            groupProvisioner,
-									ManagerProvisioner:          managerProvisioner,
-									UserProvisioner:             userProvisioner,
+								assignee = &shared.ProvisionerAssignment{
+									AppOwners:         appOwners1,
+									EntitlementOwners: entitlementOwners1,
+									Expression:        expression1,
+									Group:             group1,
+									Manager:           manager1,
+									Users:             users1,
 								}
 							}
 							instructions2 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
-								*instructions2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.Instructions.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Instructions.IsNull() {
+								*instructions2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Instructions.ValueString()
 							} else {
 								instructions2 = nil
 							}
 							var userIds2 []string
-							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
-								userIds2 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.UserIds))
-								for userIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.UserIds {
-									userIds2 = append(userIds2, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.UserIds[userIdsIndex2].ValueString())
+							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.UserIds != nil {
+								userIds2 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.UserIds))
+								for userIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.UserIds {
+									userIds2 = append(userIds2, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.UserIds[userIdsIndex2].ValueString())
 								}
 							}
-							manualProvision = &shared.ManualProvision{
-								ProvisionerAssignment: provisionerAssignment,
-								Instructions:          instructions2,
-								UserIds:               userIds2,
+							manual = &shared.ManualProvision{
+								Assignee:     assignee,
+								Instructions: instructions2,
+								UserIds:      userIds2,
 							}
 						}
 						var multiStep interface{}
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.MultiStep.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.MultiStep.IsNull() {
 							_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.MultiStep.ValueString()), &multiStep)
 						}
-						var unconfiguredProvision *shared.UnconfiguredProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.UnconfiguredProvision != nil {
-							unconfiguredProvision = &shared.UnconfiguredProvision{}
+						var unconfigured *shared.UnconfiguredProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Unconfigured != nil {
+							unconfigured = &shared.UnconfiguredProvision{}
 						}
-						var webhookProvision *shared.WebhookProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.WebhookProvision != nil {
+						var webhook1 *shared.WebhookProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Webhook != nil {
 							webhookId1 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsNull() {
-								*webhookId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.WebhookProvision.WebhookID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Webhook.WebhookID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Webhook.WebhookID.IsNull() {
+								*webhookId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Webhook.WebhookID.ValueString()
 							} else {
 								webhookId1 = nil
 							}
-							webhookProvision = &shared.WebhookProvision{
+							webhook1 = &shared.WebhookProvision{
 								WebhookID: webhookId1,
 							}
 						}
 						provisionPolicy = &shared.ProvisionPolicy{
-							ActionProvision:         actionProvision,
-							ConnectorProvision:      connectorProvision,
-							DelegatedProvision:      delegatedProvision,
-							ExternalTicketProvision: externalTicketProvision,
-							ManualProvision:         manualProvision,
-							MultiStep:               multiStep,
-							UnconfiguredProvision:   unconfiguredProvision,
-							WebhookProvision:        webhookProvision,
+							Action:          action1,
+							Connector:       connector,
+							Delegated:       delegated,
+							DevicePlacement: devicePlacement,
+							ExternalTicket:  externalTicket,
+							Manual:          manual,
+							MultiStep:       multiStep,
+							Unconfigured:    unconfigured,
+							Webhook:         webhook1,
 						}
 					}
 					var provisionTarget *shared.ProvisionTarget
@@ -1954,28 +1994,28 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					} else {
 						commentOnTimeout = nil
 					}
-					var waitCondition *shared.WaitCondition
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitCondition != nil {
-						condition := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitCondition.Condition.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitCondition.Condition.IsNull() {
-							*condition = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitCondition.Condition.ValueString()
+					var condition *shared.WaitCondition
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Condition != nil {
+						condition1 := new(string)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Condition.Condition.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Condition.Condition.IsNull() {
+							*condition1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Condition.Condition.ValueString()
 						} else {
-							condition = nil
+							condition1 = nil
 						}
-						waitCondition = &shared.WaitCondition{
-							Condition: condition,
+						condition = &shared.WaitCondition{
+							Condition: condition1,
 						}
 					}
-					var waitDuration *shared.WaitDuration
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitDuration != nil {
-						duration := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitDuration.Duration.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitDuration.Duration.IsNull() {
-							*duration = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitDuration.Duration.ValueString()
+					var duration *shared.WaitDuration
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Duration != nil {
+						duration1 := new(string)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Duration.Duration.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Duration.Duration.IsNull() {
+							*duration1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Duration.Duration.ValueString()
 						} else {
-							duration = nil
+							duration1 = nil
 						}
-						waitDuration = &shared.WaitDuration{
-							Duration: duration,
+						duration = &shared.WaitDuration{
+							Duration: duration1,
 						}
 					}
 					name := new(string)
@@ -1990,27 +2030,27 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					} else {
 						timeoutDuration = nil
 					}
-					var waitUntilTime *shared.WaitUntilTime
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime != nil {
+					var untilTime *shared.WaitUntilTime
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime != nil {
 						hours := new(int64)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Hours.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Hours.IsNull() {
-							*hours = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Hours.ValueInt64()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Hours.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Hours.IsNull() {
+							*hours = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Hours.ValueInt64()
 						} else {
 							hours = nil
 						}
 						minutes := new(int64)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Minutes.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Minutes.IsNull() {
-							*minutes = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Minutes.ValueInt64()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Minutes.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Minutes.IsNull() {
+							*minutes = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Minutes.ValueInt64()
 						} else {
 							minutes = nil
 						}
 						timezone := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Timezone.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Timezone.IsNull() {
-							*timezone = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Timezone.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Timezone.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Timezone.IsNull() {
+							*timezone = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Timezone.ValueString()
 						} else {
 							timezone = nil
 						}
-						waitUntilTime = &shared.WaitUntilTime{
+						untilTime = &shared.WaitUntilTime{
 							Hours:    hours,
 							Minutes:  minutes,
 							Timezone: timezone,
@@ -2019,11 +2059,11 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 					wait = &shared.Wait{
 						CommentOnFirstWait: commentOnFirstWait,
 						CommentOnTimeout:   commentOnTimeout,
-						WaitCondition:      waitCondition,
-						WaitDuration:       waitDuration,
+						Condition:          condition,
+						Duration:           duration,
 						Name:               name,
 						TimeoutDuration:    timeoutDuration,
-						WaitUntilTime:      waitUntilTime,
+						UntilTime:          untilTime,
 					}
 				}
 				steps = append(steps, shared.PolicyStepInput{
@@ -2073,11 +2113,17 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 	if r.Rules != nil {
 		rules = make([]shared.Rule, 0, len(r.Rules))
 		for rulesIndex := range r.Rules {
-			condition1 := new(string)
+			condition2 := new(string)
 			if !r.Rules[rulesIndex].Condition.IsUnknown() && !r.Rules[rulesIndex].Condition.IsNull() {
-				*condition1 = r.Rules[rulesIndex].Condition.ValueString()
+				*condition2 = r.Rules[rulesIndex].Condition.ValueString()
 			} else {
-				condition1 = nil
+				condition2 = nil
+			}
+			policyId1 := new(string)
+			if !r.Rules[rulesIndex].PolicyID.IsUnknown() && !r.Rules[rulesIndex].PolicyID.IsNull() {
+				*policyId1 = r.Rules[rulesIndex].PolicyID.ValueString()
+			} else {
+				policyId1 = nil
 			}
 			policyKey := new(string)
 			if !r.Rules[rulesIndex].PolicyKey.IsUnknown() && !r.Rules[rulesIndex].PolicyKey.IsNull() {
@@ -2085,14 +2131,49 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 			} else {
 				policyKey = nil
 			}
+			stepKey := new(string)
+			if !r.Rules[rulesIndex].StepKey.IsUnknown() && !r.Rules[rulesIndex].StepKey.IsNull() {
+				*stepKey = r.Rules[rulesIndex].StepKey.ValueString()
+			} else {
+				stepKey = nil
+			}
 			rules = append(rules, shared.Rule{
-				Condition: condition1,
+				Condition: condition2,
+				PolicyID:  policyId1,
 				PolicyKey: policyKey,
+				StepKey:   stepKey,
 			})
+		}
+	}
+	var scope *shared.PolicyScope
+	if r.Scope != nil {
+		appEntitlementId7 := new(string)
+		if !r.Scope.AppEntitlementID.IsUnknown() && !r.Scope.AppEntitlementID.IsNull() {
+			*appEntitlementId7 = r.Scope.AppEntitlementID.ValueString()
+		} else {
+			appEntitlementId7 = nil
+		}
+		appId12 := new(string)
+		if !r.Scope.AppID.IsUnknown() && !r.Scope.AppID.IsNull() {
+			*appId12 = r.Scope.AppID.ValueString()
+		} else {
+			appId12 = nil
+		}
+		slot := new(shared.Slot)
+		if !r.Scope.Slot.IsUnknown() && !r.Scope.Slot.IsNull() {
+			*slot = shared.Slot(r.Scope.Slot.ValueString())
+		} else {
+			slot = nil
+		}
+		scope = &shared.PolicyScope{
+			AppEntitlementID: appEntitlementId7,
+			AppID:            appId12,
+			Slot:             slot,
 		}
 	}
 	out := shared.CreatePolicyRequest{
 		Annotations:              annotations,
+		BaselinePolicyID:         baselinePolicyID,
 		Description:              description,
 		DisplayName:              displayName,
 		PolicySteps:              policySteps,
@@ -2100,6 +2181,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 		PostActions:              postActions,
 		ReassignTasksToDelegates: reassignTasksToDelegates,
 		Rules:                    rules,
+		Scope:                    scope,
 	}
 
 	return &out, diags
@@ -2122,6 +2204,12 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 		annotationsInst = r.Annotations[annotationsKey].ValueString()
 
 		annotations[annotationsKey] = annotationsInst
+	}
+	baselinePolicyID := new(string)
+	if !r.BaselinePolicyID.IsUnknown() && !r.BaselinePolicyID.IsNull() {
+		*baselinePolicyID = r.BaselinePolicyID.ValueString()
+	} else {
+		baselinePolicyID = nil
 	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
@@ -2155,83 +2243,83 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 				}
 				var action *shared.Action
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action != nil {
-					var actionTargetAutomation *shared.ActionTargetAutomation
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation != nil {
+					var automation *shared.ActionTargetAutomation
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.Automation != nil {
 						automationTemplateID := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation.AutomationTemplateID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation.AutomationTemplateID.IsNull() {
-							*automationTemplateID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetAutomation.AutomationTemplateID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.Automation.AutomationTemplateID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.Automation.AutomationTemplateID.IsNull() {
+							*automationTemplateID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.Automation.AutomationTemplateID.ValueString()
 						} else {
 							automationTemplateID = nil
 						}
-						actionTargetAutomation = &shared.ActionTargetAutomation{
+						automation = &shared.ActionTargetAutomation{
 							AutomationTemplateID: automationTemplateID,
 						}
 					}
-					var actionTargetBatonResourceAction *shared.ActionTargetBatonResourceAction
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction != nil {
+					var batonResourceAction *shared.ActionTargetBatonResourceAction
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.BatonResourceAction != nil {
 						batonResourceActionID := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.IsNull() {
-							*batonResourceActionID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetBatonResourceAction.BatonResourceActionID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.BatonResourceAction.BatonResourceActionID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.BatonResourceAction.BatonResourceActionID.IsNull() {
+							*batonResourceActionID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.BatonResourceAction.BatonResourceActionID.ValueString()
 						} else {
 							batonResourceActionID = nil
 						}
-						actionTargetBatonResourceAction = &shared.ActionTargetBatonResourceAction{
+						batonResourceAction = &shared.ActionTargetBatonResourceAction{
 							BatonResourceActionID: batonResourceActionID,
 						}
 					}
-					var actionTargetClientIDApproval *shared.ActionTargetClientIDApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ActionTargetClientIDApproval != nil {
-						actionTargetClientIDApproval = &shared.ActionTargetClientIDApproval{}
+					var clientIDApproval *shared.ActionTargetClientIDApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Action.ClientIDApproval != nil {
+						clientIDApproval = &shared.ActionTargetClientIDApproval{}
 					}
 					action = &shared.Action{
-						ActionTargetAutomation:          actionTargetAutomation,
-						ActionTargetBatonResourceAction: actionTargetBatonResourceAction,
-						ActionTargetClientIDApproval:    actionTargetClientIDApproval,
+						Automation:          automation,
+						BatonResourceAction: batonResourceAction,
+						ClientIDApproval:    clientIDApproval,
 					}
 				}
 				var approval *shared.ApprovalInput
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval != nil {
-					var agentApproval *shared.AgentApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval != nil {
+					var agent *shared.AgentApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent != nil {
 						agentFailureAction := new(shared.AgentFailureAction)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentFailureAction.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentFailureAction.IsNull() {
-							*agentFailureAction = shared.AgentFailureAction(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentFailureAction.ValueString())
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentFailureAction.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentFailureAction.IsNull() {
+							*agentFailureAction = shared.AgentFailureAction(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentFailureAction.ValueString())
 						} else {
 							agentFailureAction = nil
 						}
 						agentMode := new(shared.AgentMode)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentMode.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentMode.IsNull() {
-							*agentMode = shared.AgentMode(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentMode.ValueString())
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentMode.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentMode.IsNull() {
+							*agentMode = shared.AgentMode(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentMode.ValueString())
 						} else {
 							agentMode = nil
 						}
 						agentUserID := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentUserID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentUserID.IsNull() {
-							*agentUserID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.AgentUserID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentUserID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentUserID.IsNull() {
+							*agentUserID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.AgentUserID.ValueString()
 						} else {
 							agentUserID = nil
 						}
 						instructions := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.Instructions.IsNull() {
-							*instructions = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.Instructions.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.Instructions.IsNull() {
+							*instructions = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.Instructions.ValueString()
 						} else {
 							instructions = nil
 						}
 						var policyIds []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.PolicyIds != nil {
-							policyIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.PolicyIds))
-							for policyIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.PolicyIds {
-								policyIds = append(policyIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.PolicyIds[policyIdsIndex].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.PolicyIds != nil {
+							policyIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.PolicyIds))
+							for policyIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.PolicyIds {
+								policyIds = append(policyIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.PolicyIds[policyIdsIndex].ValueString())
 							}
 						}
 						var reassignToUserIds []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.ReassignToUserIds != nil {
-							reassignToUserIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.ReassignToUserIds))
-							for reassignToUserIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.ReassignToUserIds {
-								reassignToUserIds = append(reassignToUserIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AgentApproval.ReassignToUserIds[reassignToUserIdsIndex].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.ReassignToUserIds != nil {
+							reassignToUserIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.ReassignToUserIds))
+							for reassignToUserIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.ReassignToUserIds {
+								reassignToUserIds = append(reassignToUserIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent.ReassignToUserIds[reassignToUserIdsIndex].ValueString())
 							}
 						}
-						agentApproval = &shared.AgentApproval{
+						agent = &shared.AgentApproval{
 							AgentFailureAction: agentFailureAction,
 							AgentMode:          agentMode,
 							AgentUserID:        agentUserID,
@@ -2259,52 +2347,52 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							allowedReassignees = append(allowedReassignees, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AllowedReassignees[allowedReassigneesIndex].ValueString())
 						}
 					}
-					var appOwnerApproval *shared.AppOwnerApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval != nil {
+					var appOwners *shared.AppOwnerApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners != nil {
 						allowSelfApproval := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.AllowSelfApproval.IsNull() {
+							*allowSelfApproval = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval = nil
 						}
 						requireDistinctApprovers := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwnerApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppOwners.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers = nil
 						}
-						appOwnerApproval = &shared.AppOwnerApproval{
+						appOwners = &shared.AppOwnerApproval{
 							AllowSelfApproval:        allowSelfApproval,
 							RequireDistinctApprovers: requireDistinctApprovers,
 						}
 					}
-					var entitlementOwnerApproval *shared.EntitlementOwnerApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval != nil {
+					var entitlementOwners *shared.EntitlementOwnerApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners != nil {
 						allowSelfApproval1 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.AllowSelfApproval.IsNull() {
+							*allowSelfApproval1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval1 = nil
 						}
 						fallback := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.Fallback.IsNull() {
-							*fallback = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.Fallback.IsNull() {
+							*fallback = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.Fallback.ValueBool()
 						} else {
 							fallback = nil
 						}
 						var fallbackGroupIds []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
-							fallbackGroupIds = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds != nil {
+							fallbackGroupIds = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds))
+							for fallbackGroupIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds {
 								appEntitlementID := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsNull() {
-									*appEntitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.IsNull() {
+									*appEntitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementID = nil
 								}
 								appID := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsNull() {
-									*appID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppID.IsNull() {
+									*appID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackGroupIds[fallbackGroupIdsIndex].AppID.ValueString()
 								} else {
 									appID = nil
 								}
@@ -2315,25 +2403,25 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 						}
 						var fallbackUserIds []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
-							fallbackUserIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds))
-							for fallbackUserIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds {
-								fallbackUserIds = append(fallbackUserIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.FallbackUserIds[fallbackUserIdsIndex].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackUserIds != nil {
+							fallbackUserIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackUserIds))
+							for fallbackUserIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackUserIds {
+								fallbackUserIds = append(fallbackUserIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.FallbackUserIds[fallbackUserIdsIndex].ValueString())
 							}
 						}
 						isGroupFallbackEnabled := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled = nil
 						}
 						requireDistinctApprovers1 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwnerApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.EntitlementOwners.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers1 = nil
 						}
-						entitlementOwnerApproval = &shared.EntitlementOwnerApproval{
+						entitlementOwners = &shared.EntitlementOwnerApproval{
 							AllowSelfApproval:        allowSelfApproval1,
 							Fallback:                 fallback,
 							FallbackGroupIds:         fallbackGroupIds,
@@ -2404,40 +2492,40 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					} else {
 						escalationEnabled = nil
 					}
-					var expressionApproval *shared.ExpressionApprovalInput
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval != nil {
+					var expression *shared.ExpressionApprovalInput
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression != nil {
 						allowSelfApproval2 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.AllowSelfApproval.IsNull() {
+							*allowSelfApproval2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval2 = nil
 						}
 						var expressions []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Expressions != nil {
-							expressions = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Expressions))
-							for expressionsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Expressions {
-								expressions = append(expressions, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Expressions[expressionsIndex].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Expressions != nil {
+							expressions = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Expressions))
+							for expressionsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Expressions {
+								expressions = append(expressions, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Expressions[expressionsIndex].ValueString())
 							}
 						}
 						fallback1 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Fallback.IsNull() {
-							*fallback1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Fallback.IsNull() {
+							*fallback1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.Fallback.ValueBool()
 						} else {
 							fallback1 = nil
 						}
 						var fallbackGroupIds1 []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds != nil {
-							fallbackGroupIds1 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds != nil {
+							fallbackGroupIds1 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds))
+							for fallbackGroupIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds {
 								appEntitlementId1 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsNull() {
-									*appEntitlementId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.IsNull() {
+									*appEntitlementId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementId1 = nil
 								}
 								appId1 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsNull() {
-									*appId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.IsNull() {
+									*appId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackGroupIds[fallbackGroupIdsIndex1].AppID.ValueString()
 								} else {
 									appId1 = nil
 								}
@@ -2448,25 +2536,25 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 						}
 						var fallbackUserIds1 []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds != nil {
-							fallbackUserIds1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds))
-							for fallbackUserIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds {
-								fallbackUserIds1 = append(fallbackUserIds1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.FallbackUserIds[fallbackUserIdsIndex1].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackUserIds != nil {
+							fallbackUserIds1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackUserIds))
+							for fallbackUserIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackUserIds {
+								fallbackUserIds1 = append(fallbackUserIds1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.FallbackUserIds[fallbackUserIdsIndex1].ValueString())
 							}
 						}
 						isGroupFallbackEnabled1 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled1 = nil
 						}
 						requireDistinctApprovers2 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ExpressionApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Expression.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers2 = nil
 						}
-						expressionApproval = &shared.ExpressionApprovalInput{
+						expression = &shared.ExpressionApprovalInput{
 							AllowSelfApproval:        allowSelfApproval2,
 							Expressions:              expressions,
 							Fallback:                 fallback1,
@@ -2476,45 +2564,45 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							RequireDistinctApprovers: requireDistinctApprovers2,
 						}
 					}
-					var appGroupApproval *shared.AppGroupApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval != nil {
+					var group *shared.AppGroupApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group != nil {
 						allowSelfApproval3 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AllowSelfApproval.IsNull() {
+							*allowSelfApproval3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval3 = nil
 						}
 						appGroupID := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppGroupID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppGroupID.IsNull() {
-							*appGroupID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppGroupID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppGroupID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppGroupID.IsNull() {
+							*appGroupID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppGroupID.ValueString()
 						} else {
 							appGroupID = nil
 						}
 						appId2 := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.IsNull() {
-							*appId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.AppID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppID.IsNull() {
+							*appId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.AppID.ValueString()
 						} else {
 							appId2 = nil
 						}
 						fallback2 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.Fallback.IsNull() {
-							*fallback2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.Fallback.IsNull() {
+							*fallback2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.Fallback.ValueBool()
 						} else {
 							fallback2 = nil
 						}
 						var fallbackGroupIds2 []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds != nil {
-							fallbackGroupIds2 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds != nil {
+							fallbackGroupIds2 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds))
+							for fallbackGroupIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds {
 								appEntitlementId2 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsNull() {
-									*appEntitlementId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.IsNull() {
+									*appEntitlementId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementId2 = nil
 								}
 								appId3 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsNull() {
-									*appId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.IsNull() {
+									*appId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackGroupIds[fallbackGroupIdsIndex2].AppID.ValueString()
 								} else {
 									appId3 = nil
 								}
@@ -2525,25 +2613,25 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 						}
 						var fallbackUserIds2 []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackUserIds != nil {
-							fallbackUserIds2 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackUserIds))
-							for fallbackUserIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackUserIds {
-								fallbackUserIds2 = append(fallbackUserIds2, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.FallbackUserIds[fallbackUserIdsIndex2].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackUserIds != nil {
+							fallbackUserIds2 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackUserIds))
+							for fallbackUserIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackUserIds {
+								fallbackUserIds2 = append(fallbackUserIds2, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.FallbackUserIds[fallbackUserIdsIndex2].ValueString())
 							}
 						}
 						isGroupFallbackEnabled2 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled2 = nil
 						}
 						requireDistinctApprovers3 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AppGroupApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Group.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers3 = nil
 						}
-						appGroupApproval = &shared.AppGroupApproval{
+						group = &shared.AppGroupApproval{
 							AllowSelfApproval:        allowSelfApproval3,
 							AppGroupID:               appGroupID,
 							AppID:                    appId2,
@@ -2554,33 +2642,33 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							RequireDistinctApprovers: requireDistinctApprovers3,
 						}
 					}
-					var managerApproval *shared.ManagerApprovalInput
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval != nil {
+					var manager *shared.ManagerApprovalInput
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager != nil {
 						allowSelfApproval4 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.AllowSelfApproval.IsNull() {
+							*allowSelfApproval4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval4 = nil
 						}
 						fallback3 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.Fallback.IsNull() {
-							*fallback3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.Fallback.IsNull() {
+							*fallback3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.Fallback.ValueBool()
 						} else {
 							fallback3 = nil
 						}
 						var fallbackGroupIds3 []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds != nil {
-							fallbackGroupIds3 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds != nil {
+							fallbackGroupIds3 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds))
+							for fallbackGroupIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds {
 								appEntitlementId3 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsNull() {
-									*appEntitlementId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.IsNull() {
+									*appEntitlementId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementId3 = nil
 								}
 								appId4 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsNull() {
-									*appId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.IsNull() {
+									*appId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackGroupIds[fallbackGroupIdsIndex3].AppID.ValueString()
 								} else {
 									appId4 = nil
 								}
@@ -2591,25 +2679,25 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 						}
 						var fallbackUserIds3 []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds != nil {
-							fallbackUserIds3 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds))
-							for fallbackUserIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds {
-								fallbackUserIds3 = append(fallbackUserIds3, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.FallbackUserIds[fallbackUserIdsIndex3].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackUserIds != nil {
+							fallbackUserIds3 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackUserIds))
+							for fallbackUserIdsIndex3 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackUserIds {
+								fallbackUserIds3 = append(fallbackUserIds3, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.FallbackUserIds[fallbackUserIdsIndex3].ValueString())
 							}
 						}
 						isGroupFallbackEnabled3 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled3 = nil
 						}
 						requireDistinctApprovers4 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ManagerApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Manager.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers4 = nil
 						}
-						managerApproval = &shared.ManagerApprovalInput{
+						manager = &shared.ManagerApprovalInput{
 							AllowSelfApproval:        allowSelfApproval4,
 							Fallback:                 fallback3,
 							FallbackGroupIds:         fallbackGroupIds3,
@@ -2642,33 +2730,33 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					} else {
 						requiresStepUpProviderID = nil
 					}
-					var resourceOwnerApproval *shared.ResourceOwnerApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval != nil {
+					var resourceOwners *shared.ResourceOwnerApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners != nil {
 						allowSelfApproval5 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.AllowSelfApproval.IsNull() {
+							*allowSelfApproval5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval5 = nil
 						}
 						fallback4 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.Fallback.IsNull() {
-							*fallback4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.Fallback.IsNull() {
+							*fallback4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.Fallback.ValueBool()
 						} else {
 							fallback4 = nil
 						}
 						var fallbackGroupIds4 []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
-							fallbackGroupIds4 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds != nil {
+							fallbackGroupIds4 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds))
+							for fallbackGroupIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds {
 								appEntitlementId4 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsNull() {
-									*appEntitlementId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.IsNull() {
+									*appEntitlementId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementId4 = nil
 								}
 								appId5 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsNull() {
-									*appId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.IsNull() {
+									*appId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackGroupIds[fallbackGroupIdsIndex4].AppID.ValueString()
 								} else {
 									appId5 = nil
 								}
@@ -2679,25 +2767,25 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 						}
 						var fallbackUserIds4 []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds != nil {
-							fallbackUserIds4 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds))
-							for fallbackUserIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds {
-								fallbackUserIds4 = append(fallbackUserIds4, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.FallbackUserIds[fallbackUserIdsIndex4].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackUserIds != nil {
+							fallbackUserIds4 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackUserIds))
+							for fallbackUserIdsIndex4 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackUserIds {
+								fallbackUserIds4 = append(fallbackUserIds4, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.FallbackUserIds[fallbackUserIdsIndex4].ValueString())
 							}
 						}
 						isGroupFallbackEnabled4 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled4 = nil
 						}
 						requireDistinctApprovers5 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwnerApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.ResourceOwners.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers5 = nil
 						}
-						resourceOwnerApproval = &shared.ResourceOwnerApproval{
+						resourceOwners = &shared.ResourceOwnerApproval{
 							AllowSelfApproval:        allowSelfApproval5,
 							Fallback:                 fallback4,
 							FallbackGroupIds:         fallbackGroupIds4,
@@ -2706,27 +2794,27 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							RequireDistinctApprovers: requireDistinctApprovers5,
 						}
 					}
-					var selfApproval *shared.SelfApprovalInput
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval != nil {
+					var self *shared.SelfApprovalInput
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self != nil {
 						fallback5 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.Fallback.IsNull() {
-							*fallback5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.Fallback.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.Fallback.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.Fallback.IsNull() {
+							*fallback5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.Fallback.ValueBool()
 						} else {
 							fallback5 = nil
 						}
 						var fallbackGroupIds5 []shared.AppEntitlementReference
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds != nil {
-							fallbackGroupIds5 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds))
-							for fallbackGroupIdsIndex5 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds {
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds != nil {
+							fallbackGroupIds5 = make([]shared.AppEntitlementReference, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds))
+							for fallbackGroupIdsIndex5 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds {
 								appEntitlementId5 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsNull() {
-									*appEntitlementId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.IsNull() {
+									*appEntitlementId5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppEntitlementID.ValueString()
 								} else {
 									appEntitlementId5 = nil
 								}
 								appId6 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsNull() {
-									*appId6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.IsNull() {
+									*appId6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackGroupIds[fallbackGroupIdsIndex5].AppID.ValueString()
 								} else {
 									appId6 = nil
 								}
@@ -2737,84 +2825,84 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 							}
 						}
 						var fallbackUserIds5 []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds != nil {
-							fallbackUserIds5 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds))
-							for fallbackUserIdsIndex5 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds {
-								fallbackUserIds5 = append(fallbackUserIds5, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.FallbackUserIds[fallbackUserIdsIndex5].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackUserIds != nil {
+							fallbackUserIds5 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackUserIds))
+							for fallbackUserIdsIndex5 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackUserIds {
+								fallbackUserIds5 = append(fallbackUserIds5, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.FallbackUserIds[fallbackUserIdsIndex5].ValueString())
 							}
 						}
 						isGroupFallbackEnabled5 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.IsNull() {
-							*isGroupFallbackEnabled5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.SelfApproval.IsGroupFallbackEnabled.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.IsGroupFallbackEnabled.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.IsGroupFallbackEnabled.IsNull() {
+							*isGroupFallbackEnabled5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Self.IsGroupFallbackEnabled.ValueBool()
 						} else {
 							isGroupFallbackEnabled5 = nil
 						}
-						selfApproval = &shared.SelfApprovalInput{
+						self = &shared.SelfApprovalInput{
 							Fallback:               fallback5,
 							FallbackGroupIds:       fallbackGroupIds5,
 							FallbackUserIds:        fallbackUserIds5,
 							IsGroupFallbackEnabled: isGroupFallbackEnabled5,
 						}
 					}
-					var userApproval *shared.UserApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval != nil {
+					var users *shared.UserApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users != nil {
 						allowSelfApproval6 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.AllowSelfApproval.IsNull() {
-							*allowSelfApproval6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.AllowSelfApproval.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.AllowSelfApproval.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.AllowSelfApproval.IsNull() {
+							*allowSelfApproval6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.AllowSelfApproval.ValueBool()
 						} else {
 							allowSelfApproval6 = nil
 						}
 						requireDistinctApprovers6 := new(bool)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.RequireDistinctApprovers.IsNull() {
-							*requireDistinctApprovers6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.RequireDistinctApprovers.ValueBool()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.RequireDistinctApprovers.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.RequireDistinctApprovers.IsNull() {
+							*requireDistinctApprovers6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.RequireDistinctApprovers.ValueBool()
 						} else {
 							requireDistinctApprovers6 = nil
 						}
 						var userIds []string
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.UserIds != nil {
-							userIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.UserIds))
-							for userIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.UserIds {
-								userIds = append(userIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.UserApproval.UserIds[userIdsIndex].ValueString())
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.UserIds != nil {
+							userIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.UserIds))
+							for userIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.UserIds {
+								userIds = append(userIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Users.UserIds[userIdsIndex].ValueString())
 							}
 						}
-						userApproval = &shared.UserApproval{
+						users = &shared.UserApproval{
 							AllowSelfApproval:        allowSelfApproval6,
 							RequireDistinctApprovers: requireDistinctApprovers6,
 							UserIds:                  userIds,
 						}
 					}
-					var webhookApproval *shared.WebhookApproval
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.WebhookApproval != nil {
+					var webhook *shared.WebhookApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Webhook != nil {
 						webhookID := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.WebhookApproval.WebhookID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.WebhookApproval.WebhookID.IsNull() {
-							*webhookID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.WebhookApproval.WebhookID.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Webhook.WebhookID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Webhook.WebhookID.IsNull() {
+							*webhookID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Webhook.WebhookID.ValueString()
 						} else {
 							webhookID = nil
 						}
-						webhookApproval = &shared.WebhookApproval{
+						webhook = &shared.WebhookApproval{
 							WebhookID: webhookID,
 						}
 					}
 					approval = &shared.ApprovalInput{
-						AgentApproval:             agentApproval,
+						Agent:                     agent,
 						AllowDelegation:           allowDelegation,
 						AllowReassignment:         allowReassignment,
 						AllowedReassignees:        allowedReassignees,
-						AppOwnerApproval:          appOwnerApproval,
-						EntitlementOwnerApproval:  entitlementOwnerApproval,
+						AppOwners:                 appOwners,
+						EntitlementOwners:         entitlementOwners,
 						Escalation:                escalation,
 						EscalationEnabled:         escalationEnabled,
-						ExpressionApproval:        expressionApproval,
-						AppGroupApproval:          appGroupApproval,
-						ManagerApproval:           managerApproval,
+						Expression:                expression,
+						Group:                     group,
+						Manager:                   manager,
 						RequireApprovalReason:     requireApprovalReason,
 						RequireDenialReason:       requireDenialReason,
 						RequireReassignmentReason: requireReassignmentReason,
 						RequiresStepUpProviderID:  requiresStepUpProviderID,
-						ResourceOwnerApproval:     resourceOwnerApproval,
-						SelfApproval:              selfApproval,
-						UserApproval:              userApproval,
-						WebhookApproval:           webhookApproval,
+						ResourceOwners:            resourceOwners,
+						Self:                      self,
+						Users:                     users,
+						Webhook:                   webhook,
 					}
 				}
 				var form interface{}
@@ -2831,64 +2919,64 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					}
 					var provisionPolicy *shared.ProvisionPolicy
 					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy != nil {
-						var actionProvision *shared.ActionProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision != nil {
+						var action1 *shared.ActionProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action != nil {
 							actionName := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ActionName.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ActionName.IsNull() {
-								*actionName = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ActionName.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ActionName.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ActionName.IsNull() {
+								*actionName = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ActionName.ValueString()
 							} else {
 								actionName = nil
 							}
 							appId7 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.IsNull() {
-								*appId7 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.AppID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.AppID.IsNull() {
+								*appId7 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.AppID.ValueString()
 							} else {
 								appId7 = nil
 							}
 							connectorID := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ConnectorID.IsNull() {
-								*connectorID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.ConnectorID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ConnectorID.IsNull() {
+								*connectorID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.ConnectorID.ValueString()
 							} else {
 								connectorID = nil
 							}
 							displayName1 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.DisplayName.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.DisplayName.IsNull() {
-								*displayName1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ActionProvision.DisplayName.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.DisplayName.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.DisplayName.IsNull() {
+								*displayName1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Action.DisplayName.ValueString()
 							} else {
 								displayName1 = nil
 							}
-							actionProvision = &shared.ActionProvision{
+							action1 = &shared.ActionProvision{
 								ActionName:  actionName,
 								AppID:       appId7,
 								ConnectorID: connectorID,
 								DisplayName: displayName1,
 							}
 						}
-						var connectorProvision *shared.ConnectorProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision != nil {
-							var accountProvision *shared.AccountProvision
-							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision != nil {
+						var connector *shared.ConnectorProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector != nil {
+							var account *shared.AccountProvision
+							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account != nil {
 								var config interface{}
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.IsNull() {
-									_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config.ValueString()), &config)
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.Config.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.Config.IsNull() {
+									_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.Config.ValueString()), &config)
 								}
 								connectorId1 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.IsNull() {
-									*connectorId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.ConnectorID.IsNull() {
+									*connectorId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.ConnectorID.ValueString()
 								} else {
 									connectorId1 = nil
 								}
 								var doNotSave *shared.DoNotSave
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave != nil {
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.DoNotSave != nil {
 									doNotSave = &shared.DoNotSave{}
 								}
 								var saveToVault *shared.SaveToVault
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault != nil {
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SaveToVault != nil {
 									var vaultIds []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-										vaultIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-										for vaultIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-											vaultIds = append(vaultIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds[vaultIdsIndex].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+										vaultIds = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds))
+										for vaultIdsIndex := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds {
+											vaultIds = append(vaultIds, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds[vaultIdsIndex].ValueString())
 										}
 									}
 									saveToVault = &shared.SaveToVault{
@@ -2896,12 +2984,12 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 									}
 								}
 								schemaID := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.IsNull() {
-									*schemaID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SchemaID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SchemaID.IsNull() {
+									*schemaID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.Account.SchemaID.ValueString()
 								} else {
 									schemaID = nil
 								}
-								accountProvision = &shared.AccountProvision{
+								account = &shared.AccountProvision{
 									Config:      config,
 									ConnectorID: connectorId1,
 									DoNotSave:   doNotSave,
@@ -2910,10 +2998,10 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								}
 							}
 							var defaultBehavior *shared.DefaultBehavior
-							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior != nil {
+							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DefaultBehavior != nil {
 								connectorId2 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.IsNull() {
-									*connectorId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID.IsNull() {
+									*connectorId2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID.ValueString()
 								} else {
 									connectorId2 = nil
 								}
@@ -2922,10 +3010,10 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 								}
 							}
 							var deleteAccount *shared.DeleteAccount
-							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount != nil {
+							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DeleteAccount != nil {
 								connectorId3 := new(string)
-								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.IsNull() {
-									*connectorId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID.ValueString()
+								if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID.IsNull() {
+									*connectorId3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID.ValueString()
 								} else {
 									connectorId3 = nil
 								}
@@ -2933,267 +3021,280 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 									ConnectorID: connectorId3,
 								}
 							}
-							connectorProvision = &shared.ConnectorProvision{
-								AccountProvision: accountProvision,
-								DefaultBehavior:  defaultBehavior,
-								DeleteAccount:    deleteAccount,
+							connector = &shared.ConnectorProvision{
+								Account:         account,
+								DefaultBehavior: defaultBehavior,
+								DeleteAccount:   deleteAccount,
 							}
 						}
-						var delegatedProvision *shared.DelegatedProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision != nil {
+						var delegated *shared.DelegatedProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated != nil {
 							appId8 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.IsNull() {
-								*appId8 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.AppID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.AppID.IsNull() {
+								*appId8 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.AppID.ValueString()
 							} else {
 								appId8 = nil
 							}
 							entitlementID := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.IsNull() {
-								*entitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DelegatedProvision.EntitlementID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.EntitlementID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.EntitlementID.IsNull() {
+								*entitlementID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Delegated.EntitlementID.ValueString()
 							} else {
 								entitlementID = nil
 							}
-							delegatedProvision = &shared.DelegatedProvision{
+							delegated = &shared.DelegatedProvision{
 								AppID:         appId8,
 								EntitlementID: entitlementID,
 							}
 						}
-						var externalTicketProvision *shared.ExternalTicketProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision != nil {
+						var devicePlacement *shared.DevicePlacementProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacement != nil {
+							vaultBoundaryID := new(string)
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID.IsNull() {
+								*vaultBoundaryID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID.ValueString()
+							} else {
+								vaultBoundaryID = nil
+							}
+							devicePlacement = &shared.DevicePlacementProvision{
+								VaultBoundaryID: vaultBoundaryID,
+							}
+						}
+						var externalTicket *shared.ExternalTicketProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket != nil {
 							appId9 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.IsNull() {
-								*appId9 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.AppID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.AppID.IsNull() {
+								*appId9 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.AppID.ValueString()
 							} else {
 								appId9 = nil
 							}
 							connectorId4 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.IsNull() {
-								*connectorId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ConnectorID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ConnectorID.IsNull() {
+								*connectorId4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ConnectorID.ValueString()
 							} else {
 								connectorId4 = nil
 							}
 							externalTicketProvisionerConfigID := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.IsNull() {
-								*externalTicketProvisionerConfigID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.IsNull() {
+								*externalTicketProvisionerConfigID = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.ValueString()
 							} else {
 								externalTicketProvisionerConfigID = nil
 							}
 							instructions1 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.IsNull() {
-								*instructions1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicketProvision.Instructions.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.Instructions.IsNull() {
+								*instructions1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ExternalTicket.Instructions.ValueString()
 							} else {
 								instructions1 = nil
 							}
-							externalTicketProvision = &shared.ExternalTicketProvision{
+							externalTicket = &shared.ExternalTicketProvision{
 								AppID:                             appId9,
 								ConnectorID:                       connectorId4,
 								ExternalTicketProvisionerConfigID: externalTicketProvisionerConfigID,
 								Instructions:                      instructions1,
 							}
 						}
-						var manualProvision *shared.ManualProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision != nil {
-							var provisionerAssignment *shared.ProvisionerAssignment
-							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment != nil {
-								var appOwnerProvisioner *shared.AppOwnerProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner != nil {
+						var manual *shared.ManualProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual != nil {
+							var assignee *shared.ProvisionerAssignment
+							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee != nil {
+								var appOwners1 *shared.AppOwnerProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners != nil {
 									allowReassignment1 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment.IsNull() {
+										*allowReassignment1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment1 = nil
 									}
 									var fallbackUserIds6 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
-										fallbackUserIds6 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
-										for fallbackUserIdsIndex6 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
-											fallbackUserIds6 = append(fallbackUserIds6, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds[fallbackUserIdsIndex6].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
+										fallbackUserIds6 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
+										for fallbackUserIdsIndex6 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
+											fallbackUserIds6 = append(fallbackUserIds6, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds[fallbackUserIdsIndex6].ValueString())
 										}
 									}
-									appOwnerProvisioner = &shared.AppOwnerProvisioner{
+									appOwners1 = &shared.AppOwnerProvisioner{
 										AllowReassignment: allowReassignment1,
 										FallbackUserIds:   fallbackUserIds6,
 									}
 								}
-								var entitlementOwnerProvisioner *shared.EntitlementOwnerProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner != nil {
+								var entitlementOwners1 *shared.EntitlementOwnerProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners != nil {
 									allowReassignment2 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.IsNull() {
+										*allowReassignment2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment2 = nil
 									}
 									var fallbackUserIds7 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
-										fallbackUserIds7 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
-										for fallbackUserIdsIndex7 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
-											fallbackUserIds7 = append(fallbackUserIds7, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds[fallbackUserIdsIndex7].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
+										fallbackUserIds7 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
+										for fallbackUserIdsIndex7 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
+											fallbackUserIds7 = append(fallbackUserIds7, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds[fallbackUserIdsIndex7].ValueString())
 										}
 									}
-									entitlementOwnerProvisioner = &shared.EntitlementOwnerProvisioner{
+									entitlementOwners1 = &shared.EntitlementOwnerProvisioner{
 										AllowReassignment: allowReassignment2,
 										FallbackUserIds:   fallbackUserIds7,
 									}
 								}
-								var expressionProvisioner *shared.ExpressionProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner != nil {
+								var expression1 *shared.ExpressionProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression != nil {
 									allowReassignment3 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment.IsNull() {
+										*allowReassignment3 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment3 = nil
 									}
 									var expressions1 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
-										expressions1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
-										for expressionsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
-											expressions1 = append(expressions1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions[expressionsIndex1].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions != nil {
+										expressions1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions))
+										for expressionsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions {
+											expressions1 = append(expressions1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions[expressionsIndex1].ValueString())
 										}
 									}
 									var fallbackUserIds8 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
-										fallbackUserIds8 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
-										for fallbackUserIdsIndex8 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
-											fallbackUserIds8 = append(fallbackUserIds8, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds[fallbackUserIdsIndex8].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
+										fallbackUserIds8 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds))
+										for fallbackUserIdsIndex8 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds {
+											fallbackUserIds8 = append(fallbackUserIds8, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds[fallbackUserIdsIndex8].ValueString())
 										}
 									}
-									expressionProvisioner = &shared.ExpressionProvisioner{
+									expression1 = &shared.ExpressionProvisioner{
 										AllowReassignment: allowReassignment3,
 										Expressions:       expressions1,
 										FallbackUserIds:   fallbackUserIds8,
 									}
 								}
-								var groupProvisioner *shared.GroupProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner != nil {
+								var group1 *shared.GroupProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group != nil {
 									allowReassignment4 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment.IsNull() {
+										*allowReassignment4 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment4 = nil
 									}
 									appGroupId1 := new(string)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID.IsNull() {
-										*appGroupId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID.ValueString()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID.IsNull() {
+										*appGroupId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID.ValueString()
 									} else {
 										appGroupId1 = nil
 									}
 									appId10 := new(string)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID.IsNull() {
-										*appId10 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID.ValueString()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppID.IsNull() {
+										*appId10 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.AppID.ValueString()
 									} else {
 										appId10 = nil
 									}
 									var fallbackUserIds9 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
-										fallbackUserIds9 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds))
-										for fallbackUserIdsIndex9 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
-											fallbackUserIds9 = append(fallbackUserIds9, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds[fallbackUserIdsIndex9].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
+										fallbackUserIds9 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds))
+										for fallbackUserIdsIndex9 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds {
+											fallbackUserIds9 = append(fallbackUserIds9, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds[fallbackUserIdsIndex9].ValueString())
 										}
 									}
-									groupProvisioner = &shared.GroupProvisioner{
+									group1 = &shared.GroupProvisioner{
 										AllowReassignment: allowReassignment4,
 										AppGroupID:        appGroupId1,
 										AppID:             appId10,
 										FallbackUserIds:   fallbackUserIds9,
 									}
 								}
-								var managerProvisioner *shared.ManagerProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner != nil {
+								var manager1 *shared.ManagerProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager != nil {
 									allowReassignment5 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment.IsNull() {
+										*allowReassignment5 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment5 = nil
 									}
 									var fallbackUserIds10 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
-										fallbackUserIds10 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
-										for fallbackUserIdsIndex10 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
-											fallbackUserIds10 = append(fallbackUserIds10, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds[fallbackUserIdsIndex10].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
+										fallbackUserIds10 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds))
+										for fallbackUserIdsIndex10 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds {
+											fallbackUserIds10 = append(fallbackUserIds10, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds[fallbackUserIdsIndex10].ValueString())
 										}
 									}
-									managerProvisioner = &shared.ManagerProvisioner{
+									manager1 = &shared.ManagerProvisioner{
 										AllowReassignment: allowReassignment5,
 										FallbackUserIds:   fallbackUserIds10,
 									}
 								}
-								var userProvisioner *shared.UserProvisioner
-								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner != nil {
+								var users1 *shared.UserProvisioner
+								if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users != nil {
 									allowReassignment6 := new(bool)
-									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment.IsNull() {
-										*allowReassignment6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment.ValueBool()
+									if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment.IsNull() {
+										*allowReassignment6 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment.ValueBool()
 									} else {
 										allowReassignment6 = nil
 									}
 									var userIds1 []string
-									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
-										userIds1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
-										for userIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
-											userIds1 = append(userIds1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds[userIdsIndex1].ValueString())
+									if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds != nil {
+										userIds1 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds))
+										for userIdsIndex1 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds {
+											userIds1 = append(userIds1, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds[userIdsIndex1].ValueString())
 										}
 									}
-									userProvisioner = &shared.UserProvisioner{
+									users1 = &shared.UserProvisioner{
 										AllowReassignment: allowReassignment6,
 										UserIds:           userIds1,
 									}
 								}
-								provisionerAssignment = &shared.ProvisionerAssignment{
-									AppOwnerProvisioner:         appOwnerProvisioner,
-									EntitlementOwnerProvisioner: entitlementOwnerProvisioner,
-									ExpressionProvisioner:       expressionProvisioner,
-									GroupProvisioner:            groupProvisioner,
-									ManagerProvisioner:          managerProvisioner,
-									UserProvisioner:             userProvisioner,
+								assignee = &shared.ProvisionerAssignment{
+									AppOwners:         appOwners1,
+									EntitlementOwners: entitlementOwners1,
+									Expression:        expression1,
+									Group:             group1,
+									Manager:           manager1,
+									Users:             users1,
 								}
 							}
 							instructions2 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.Instructions.IsNull() {
-								*instructions2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.Instructions.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Instructions.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Instructions.IsNull() {
+								*instructions2 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.Instructions.ValueString()
 							} else {
 								instructions2 = nil
 							}
 							var userIds2 []string
-							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
-								userIds2 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.UserIds))
-								for userIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.UserIds {
-									userIds2 = append(userIds2, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.ManualProvision.UserIds[userIdsIndex2].ValueString())
+							if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.UserIds != nil {
+								userIds2 = make([]string, 0, len(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.UserIds))
+								for userIdsIndex2 := range r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.UserIds {
+									userIds2 = append(userIds2, r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Manual.UserIds[userIdsIndex2].ValueString())
 								}
 							}
-							manualProvision = &shared.ManualProvision{
-								ProvisionerAssignment: provisionerAssignment,
-								Instructions:          instructions2,
-								UserIds:               userIds2,
+							manual = &shared.ManualProvision{
+								Assignee:     assignee,
+								Instructions: instructions2,
+								UserIds:      userIds2,
 							}
 						}
 						var multiStep interface{}
 						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.MultiStep.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.MultiStep.IsNull() {
 							_ = json.Unmarshal([]byte(r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.MultiStep.ValueString()), &multiStep)
 						}
-						var unconfiguredProvision *shared.UnconfiguredProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.UnconfiguredProvision != nil {
-							unconfiguredProvision = &shared.UnconfiguredProvision{}
+						var unconfigured *shared.UnconfiguredProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Unconfigured != nil {
+							unconfigured = &shared.UnconfiguredProvision{}
 						}
-						var webhookProvision *shared.WebhookProvision
-						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.WebhookProvision != nil {
+						var webhook1 *shared.WebhookProvision
+						if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Webhook != nil {
 							webhookId1 := new(string)
-							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.WebhookProvision.WebhookID.IsNull() {
-								*webhookId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.WebhookProvision.WebhookID.ValueString()
+							if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Webhook.WebhookID.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Webhook.WebhookID.IsNull() {
+								*webhookId1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Provision.ProvisionPolicy.Webhook.WebhookID.ValueString()
 							} else {
 								webhookId1 = nil
 							}
-							webhookProvision = &shared.WebhookProvision{
+							webhook1 = &shared.WebhookProvision{
 								WebhookID: webhookId1,
 							}
 						}
 						provisionPolicy = &shared.ProvisionPolicy{
-							ActionProvision:         actionProvision,
-							ConnectorProvision:      connectorProvision,
-							DelegatedProvision:      delegatedProvision,
-							ExternalTicketProvision: externalTicketProvision,
-							ManualProvision:         manualProvision,
-							MultiStep:               multiStep,
-							UnconfiguredProvision:   unconfiguredProvision,
-							WebhookProvision:        webhookProvision,
+							Action:          action1,
+							Connector:       connector,
+							Delegated:       delegated,
+							DevicePlacement: devicePlacement,
+							ExternalTicket:  externalTicket,
+							Manual:          manual,
+							MultiStep:       multiStep,
+							Unconfigured:    unconfigured,
+							Webhook:         webhook1,
 						}
 					}
 					var provisionTarget *shared.ProvisionTarget
@@ -3261,28 +3362,28 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					} else {
 						commentOnTimeout = nil
 					}
-					var waitCondition *shared.WaitCondition
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitCondition != nil {
-						condition := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitCondition.Condition.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitCondition.Condition.IsNull() {
-							*condition = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitCondition.Condition.ValueString()
+					var condition *shared.WaitCondition
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Condition != nil {
+						condition1 := new(string)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Condition.Condition.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Condition.Condition.IsNull() {
+							*condition1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Condition.Condition.ValueString()
 						} else {
-							condition = nil
+							condition1 = nil
 						}
-						waitCondition = &shared.WaitCondition{
-							Condition: condition,
+						condition = &shared.WaitCondition{
+							Condition: condition1,
 						}
 					}
-					var waitDuration *shared.WaitDuration
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitDuration != nil {
-						duration := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitDuration.Duration.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitDuration.Duration.IsNull() {
-							*duration = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitDuration.Duration.ValueString()
+					var duration *shared.WaitDuration
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Duration != nil {
+						duration1 := new(string)
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Duration.Duration.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Duration.Duration.IsNull() {
+							*duration1 = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.Duration.Duration.ValueString()
 						} else {
-							duration = nil
+							duration1 = nil
 						}
-						waitDuration = &shared.WaitDuration{
-							Duration: duration,
+						duration = &shared.WaitDuration{
+							Duration: duration1,
 						}
 					}
 					name := new(string)
@@ -3297,27 +3398,27 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					} else {
 						timeoutDuration = nil
 					}
-					var waitUntilTime *shared.WaitUntilTime
-					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime != nil {
+					var untilTime *shared.WaitUntilTime
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime != nil {
 						hours := new(int64)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Hours.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Hours.IsNull() {
-							*hours = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Hours.ValueInt64()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Hours.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Hours.IsNull() {
+							*hours = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Hours.ValueInt64()
 						} else {
 							hours = nil
 						}
 						minutes := new(int64)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Minutes.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Minutes.IsNull() {
-							*minutes = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Minutes.ValueInt64()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Minutes.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Minutes.IsNull() {
+							*minutes = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Minutes.ValueInt64()
 						} else {
 							minutes = nil
 						}
 						timezone := new(string)
-						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Timezone.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Timezone.IsNull() {
-							*timezone = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.WaitUntilTime.Timezone.ValueString()
+						if !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Timezone.IsUnknown() && !r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Timezone.IsNull() {
+							*timezone = r.PolicySteps[policyStepsKey].Steps[stepsIndex].Wait.UntilTime.Timezone.ValueString()
 						} else {
 							timezone = nil
 						}
-						waitUntilTime = &shared.WaitUntilTime{
+						untilTime = &shared.WaitUntilTime{
 							Hours:    hours,
 							Minutes:  minutes,
 							Timezone: timezone,
@@ -3326,11 +3427,11 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 					wait = &shared.Wait{
 						CommentOnFirstWait: commentOnFirstWait,
 						CommentOnTimeout:   commentOnTimeout,
-						WaitCondition:      waitCondition,
-						WaitDuration:       waitDuration,
+						Condition:          condition,
+						Duration:           duration,
 						Name:               name,
 						TimeoutDuration:    timeoutDuration,
-						WaitUntilTime:      waitUntilTime,
+						UntilTime:          untilTime,
 					}
 				}
 				steps = append(steps, shared.PolicyStepInput{
@@ -3380,11 +3481,17 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 	if r.Rules != nil {
 		rules = make([]shared.Rule, 0, len(r.Rules))
 		for rulesIndex := range r.Rules {
-			condition1 := new(string)
+			condition2 := new(string)
 			if !r.Rules[rulesIndex].Condition.IsUnknown() && !r.Rules[rulesIndex].Condition.IsNull() {
-				*condition1 = r.Rules[rulesIndex].Condition.ValueString()
+				*condition2 = r.Rules[rulesIndex].Condition.ValueString()
 			} else {
-				condition1 = nil
+				condition2 = nil
+			}
+			policyId1 := new(string)
+			if !r.Rules[rulesIndex].PolicyID.IsUnknown() && !r.Rules[rulesIndex].PolicyID.IsNull() {
+				*policyId1 = r.Rules[rulesIndex].PolicyID.ValueString()
+			} else {
+				policyId1 = nil
 			}
 			policyKey := new(string)
 			if !r.Rules[rulesIndex].PolicyKey.IsUnknown() && !r.Rules[rulesIndex].PolicyKey.IsNull() {
@@ -3392,14 +3499,49 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 			} else {
 				policyKey = nil
 			}
+			stepKey := new(string)
+			if !r.Rules[rulesIndex].StepKey.IsUnknown() && !r.Rules[rulesIndex].StepKey.IsNull() {
+				*stepKey = r.Rules[rulesIndex].StepKey.ValueString()
+			} else {
+				stepKey = nil
+			}
 			rules = append(rules, shared.Rule{
-				Condition: condition1,
+				Condition: condition2,
+				PolicyID:  policyId1,
 				PolicyKey: policyKey,
+				StepKey:   stepKey,
 			})
+		}
+	}
+	var scope *shared.PolicyScope
+	if r.Scope != nil {
+		appEntitlementId7 := new(string)
+		if !r.Scope.AppEntitlementID.IsUnknown() && !r.Scope.AppEntitlementID.IsNull() {
+			*appEntitlementId7 = r.Scope.AppEntitlementID.ValueString()
+		} else {
+			appEntitlementId7 = nil
+		}
+		appId12 := new(string)
+		if !r.Scope.AppID.IsUnknown() && !r.Scope.AppID.IsNull() {
+			*appId12 = r.Scope.AppID.ValueString()
+		} else {
+			appId12 = nil
+		}
+		slot := new(shared.Slot)
+		if !r.Scope.Slot.IsUnknown() && !r.Scope.Slot.IsNull() {
+			*slot = shared.Slot(r.Scope.Slot.ValueString())
+		} else {
+			slot = nil
+		}
+		scope = &shared.PolicyScope{
+			AppEntitlementID: appEntitlementId7,
+			AppID:            appId12,
+			Slot:             slot,
 		}
 	}
 	out := shared.PolicyInput{
 		Annotations:              annotations,
+		BaselinePolicyID:         baselinePolicyID,
 		Description:              description,
 		DisplayName:              displayName,
 		PolicySteps:              policySteps,
@@ -3407,6 +3549,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 		PostActions:              postActions,
 		ReassignTasksToDelegates: reassignTasksToDelegates,
 		Rules:                    rules,
+		Scope:                    scope,
 	}
 
 	return &out, diags

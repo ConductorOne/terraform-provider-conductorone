@@ -7,7 +7,7 @@ import (
 )
 
 type ManualProvision struct {
-	ProvisionerAssignment *ProvisionerAssignment `tfsdk:"provisioner_assignment"`
-	Instructions          types.String           `tfsdk:"instructions"`
-	UserIds               []types.String         `tfsdk:"user_ids"`
+	Assignee     *ProvisionerAssignment `tfsdk:"assignee"`
+	Instructions types.String           `tfsdk:"instructions"`
+	UserIds      []types.String         `tfsdk:"user_ids"`
 }

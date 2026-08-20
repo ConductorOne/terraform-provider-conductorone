@@ -40,6 +40,9 @@ data "conductorone_users" "my_users" {
   role_ids = [
     "..."
   ]
+  source_app_ids = [
+    "..."
+  ]
   user_statuses = [
     "DELETED"
   ]

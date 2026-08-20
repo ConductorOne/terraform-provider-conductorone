@@ -35,6 +35,8 @@ func newAppEntitlementSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfi
 
 // SearchAppEntitlementsWithExpired - Search App Entitlements With Expired
 // Search app entitlements, include app users, users, expires, discovered.
+//
+//	Response rows are large — request a small page_size (≤10) to keep responses small.
 func (s *AppEntitlementSearch) SearchAppEntitlementsWithExpired(ctx context.Context, request operations.C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsWithExpiredResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -169,6 +171,8 @@ func (s *AppEntitlementSearch) SearchAppEntitlementsWithExpired(ctx context.Cont
 
 // SearchAppEntitlementsForAppUser - Search App Entitlements For App User
 // Search for app entitlements associated with a specific app user, with optional resource type trait filtering.
+//
+//	Each AppEntitlementView row is large — request a small page_size (≤10) and set expand_mask to only the paths you need; broad expansion inlines whole related objects and bloats the response.
 func (s *AppEntitlementSearch) SearchAppEntitlementsForAppUser(ctx context.Context, request operations.C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsForAppUserRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementSearchServiceSearchAppEntitlementsForAppUserResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -303,6 +307,8 @@ func (s *AppEntitlementSearch) SearchAppEntitlementsForAppUser(ctx context.Conte
 
 // Search
 // Search app entitlements based on filters specified in the request body.
+//
+//	Each AppEntitlementView row is large — request a small page_size (≤10) and set expand_mask to only the paths you need; broad expansion inlines whole related objects and bloats the response.
 func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEntitlementSearchServiceSearchRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -483,6 +489,8 @@ func (s *AppEntitlementSearch) Search(ctx context.Context, request *shared.AppEn
 
 // SearchGrants - Search Grants
 // Search grants (user-to-entitlement bindings) across apps, with filters for app, user, resource type, and entitlement.
+//
+//	Rows are heavy (each binding carries a full entitlement + user view) — request a small page_size (≤10) and set expand_mask to only the paths you need; broad expansion inlines whole related objects and bloats the response.
 func (s *AppEntitlementSearch) SearchGrants(ctx context.Context, request *shared.AppEntitlementSearchServiceSearchGrantsRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementSearchServiceSearchGrantsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -738,6 +746,290 @@ func (s *AppEntitlementSearch) SearchGraph(ctx context.Context, request *shared.
 			}
 
 			res.AppEntitlementSearchServiceSearchGraphResponse = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
+// CountGrantsForUserByApp - Count Grants For User By App
+// CountGrantsForUserByApp returns, for a user, the number of grants held per
+//
+//	application. Use it to size or filter an access graph before calling
+//	SearchGraph: counts are computed directly from grant bindings and are an
+//	upper bound on what SearchGraph will render for the same user and app
+//	filter (SearchGraph applies additional filters that this count does not).
+func (s *AppEntitlementSearch) CountGrantsForUserByApp(ctx context.Context, request *shared.AppEntitlementSearchServiceCountGrantsForUserByAppRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementSearchServiceCountGrantsForUserByAppResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := url.JoinPath(baseURL, "/api/v1/search/graph/counts")
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "c1.api.app.v1.AppEntitlementSearchService.CountGrantsForUserByApp",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.C1APIAppV1AppEntitlementSearchServiceCountGrantsForUserByAppResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.AppEntitlementSearchServiceCountGrantsForUserByAppResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.AppEntitlementSearchServiceCountGrantsForUserByAppResponse = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
+// SearchReachableResourcesForUser - Search Reachable Resources For User
+// SearchReachableResourcesForUser returns the distinct app resources a user
+//
+//	can reach through any of their grants, deduplicated across entitlements
+//	(a resource reachable via more than one grant appears once). Powers the
+//	Resources lane of the access graph's list view: supports free-text search
+//	over resource display name and narrowing to specific applications.
+func (s *AppEntitlementSearch) SearchReachableResourcesForUser(ctx context.Context, request *shared.AppEntitlementSearchServiceSearchReachableResourcesForUserRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementSearchServiceSearchReachableResourcesForUserResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := url.JoinPath(baseURL, "/api/v1/search/graph/resources")
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "c1.api.app.v1.AppEntitlementSearchService.SearchReachableResourcesForUser",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.C1APIAppV1AppEntitlementSearchServiceSearchReachableResourcesForUserResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.AppEntitlementSearchServiceSearchReachableResourcesForUserResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.AppEntitlementSearchServiceSearchReachableResourcesForUserResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

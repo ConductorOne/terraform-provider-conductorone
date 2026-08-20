@@ -30,12 +30,12 @@ type DirectoryResource struct {
 
 // DirectoryResourceModel describes the resource data model.
 type DirectoryResourceModel struct {
-	AppID                     types.String                                  `tfsdk:"app_id"`
-	DirectoryAccountFilterAll *tfTypes.DirectoryAccountFilterAll            `tfsdk:"directory_account_filter_all"`
-	DirectoryAccountFilterCel *tfTypes.DirectoryAccountFilterCel            `tfsdk:"directory_account_filter_cel"`
-	DirectoryMergeConfig      *tfTypes.DirectoryMergeConfig                 `tfsdk:"directory_merge_config"`
-	DirectoryView             *tfTypes.DirectoryView                        `tfsdk:"directory_view"`
-	Expanded                  []tfTypes.DirectoryServiceGetResponseExpanded `tfsdk:"expanded"`
+	All           *tfTypes.DirectoryAccountFilterAll            `tfsdk:"all"`
+	AppID         types.String                                  `tfsdk:"app_id"`
+	CelExpression *tfTypes.DirectoryAccountFilterCel            `tfsdk:"cel_expression"`
+	DirectoryView *tfTypes.DirectoryView                        `tfsdk:"directory_view"`
+	Expanded      []tfTypes.DirectoryServiceGetResponseExpanded `tfsdk:"expanded"`
+	MergeConfig   *tfTypes.DirectoryMergeConfig                 `tfsdk:"merge_config"`
 }
 
 func (r *DirectoryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -46,15 +46,15 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Directory Resource",
 		Attributes: map[string]schema.Attribute{
+			"all": schema.SingleNestedAttribute{
+				Optional:    true,
+				Description: `The DirectoryAccountFilterAll message.`,
+			},
 			"app_id": schema.StringAttribute{
 				Optional:    true,
 				Description: `The AppID to make into a directory, providing identities and more for the C1 app.`,
 			},
-			"directory_account_filter_all": schema.SingleNestedAttribute{
-				Optional:    true,
-				Description: `The DirectoryAccountFilterAll message.`,
-			},
-			"directory_account_filter_cel": schema.SingleNestedAttribute{
+			"cel_expression": schema.SingleNestedAttribute{
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"expression": schema.StringAttribute{
@@ -63,28 +63,6 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
 					},
 				},
 				Description: `The DirectoryAccountFilterCel message.`,
-			},
-			"directory_merge_config": schema.SingleNestedAttribute{
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"match_cases": schema.ListNestedAttribute{
-						Optional: true,
-						NestedObject: schema.NestedAttributeObject{
-							Attributes: map[string]schema.Attribute{
-								"app_user_key_cel": schema.StringAttribute{
-									Optional:    true,
-									Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
-								},
-								"user_key_cel": schema.StringAttribute{
-									Optional:    true,
-									Description: `CEL expression evaluated against a User to produce match key(s).`,
-								},
-							},
-						},
-						Description: `Ordered list of match cases evaluated in sequence. First match wins.`,
-					},
-				},
-				Description: `DirectoryMergeConfig configures how AppUsers from this directory are matched to C1 Users.`,
 			},
 			"directory_view": schema.SingleNestedAttribute{
 				Computed: true,
@@ -96,21 +74,15 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
 					"directory": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
+							"all": schema.SingleNestedAttribute{
+								Computed:    true,
+								Description: `The DirectoryAccountFilterAll message.`,
+							},
 							"app_id": schema.StringAttribute{
 								Computed:    true,
 								Description: `The ID of the app associated with the directory.`,
 							},
-							"created_at": schema.StringAttribute{
-								Computed: true,
-							},
-							"deleted_at": schema.StringAttribute{
-								Computed: true,
-							},
-							"directory_account_filter_all": schema.SingleNestedAttribute{
-								Computed:    true,
-								Description: `The DirectoryAccountFilterAll message.`,
-							},
-							"directory_account_filter_cel": schema.SingleNestedAttribute{
+							"cel_expression": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"expression": schema.StringAttribute{
@@ -120,7 +92,10 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
 								},
 								Description: `The DirectoryAccountFilterCel message.`,
 							},
-							"directory_merge_config": schema.SingleNestedAttribute{
+							"created_at": schema.StringAttribute{
+								Computed: true,
+							},
+							"merge_config": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"match_cases": schema.ListNestedAttribute{
@@ -161,6 +136,28 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
 					Attributes: map[string]schema.Attribute{},
 				},
 				Description: `List of serialized related objects.`,
+			},
+			"merge_config": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"match_cases": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"app_user_key_cel": schema.StringAttribute{
+									Optional:    true,
+									Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+								},
+								"user_key_cel": schema.StringAttribute{
+									Optional:    true,
+									Description: `CEL expression evaluated against a User to produce match key(s).`,
+								},
+							},
+						},
+						Description: `Ordered list of match cases evaluated in sequence. First match wins.`,
+					},
+				},
+				Description: `DirectoryMergeConfig configures how AppUsers from this directory are matched to C1 Users.`,
 			},
 		},
 	}

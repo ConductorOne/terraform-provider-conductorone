@@ -5,8 +5,7 @@ package shared
 // The ConnectorServiceCreateDelegatedRequest message contains the fields required to create a connector.
 type ConnectorServiceCreateDelegatedRequest struct {
 	// Sets entitlement owners on the app.
-	AppEntitlementOwnerRefs []AppEntitlementRef `json:"appEntitlementOwnerRefs,omitempty"`
-	// The AppManagedStateBindingRef message.
+	AppEntitlementOwnerRefs   []AppEntitlementRef        `json:"appEntitlementOwnerRefs,omitempty"`
 	AppManagedStateBindingRef *AppManagedStateBindingRef `json:"appManagedStateBindingRef,omitempty"`
 	// The catalogId describes which catalog entry this connector is an instance of. For example, every Okta connector will have the same catalogId indicating it is an Okta connector.
 	CatalogID *string `json:"catalogId,omitempty"`

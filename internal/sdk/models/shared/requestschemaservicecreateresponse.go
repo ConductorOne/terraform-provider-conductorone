@@ -4,7 +4,6 @@ package shared
 
 // RequestSchemaServiceCreateResponse - The response message for creating a request schema.
 type RequestSchemaServiceCreateResponse struct {
-	// A request schema defines a form template that users fill out when requesting access.
 	RequestSchema *RequestSchema `json:"requestSchema,omitempty"`
 }
 

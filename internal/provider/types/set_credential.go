@@ -7,7 +7,7 @@ import (
 )
 
 type SetCredential struct {
-	ConnectorRef *ConnectorRef `tfsdk:"connector_ref"`
 	AccountIDCel types.String  `tfsdk:"account_id_cel"`
+	ConnectorRef *ConnectorRef `tfsdk:"connector_ref"`
 	PasswordCel  types.String  `tfsdk:"password_cel"`
 }

@@ -4,7 +4,6 @@ package shared
 
 // The GetRequestSettingsResponse message.
 type GetRequestSettingsResponse struct {
-	// RequestSettings holds tenant-wide configuration for the access-request flow.
 	RequestSettings *RequestSettings `json:"requestSettings,omitempty"`
 }
 

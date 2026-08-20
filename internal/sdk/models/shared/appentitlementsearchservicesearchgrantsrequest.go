@@ -35,7 +35,8 @@ type AppEntitlementSearchServiceSearchGrantsRequest struct {
 	// Search for grants of an entitlement
 	EntitlementRefs []AppEntitlementRef `json:"entitlementRefs,omitempty"`
 	// Filter for entitlements whose slug is in this list (e.g. "enrollment" for access profiles)
-	EntitlementSlugs []string `json:"entitlementSlugs,omitempty"`
+	EntitlementSlugs []string                  `json:"entitlementSlugs,omitempty"`
+	ExpandMask       *AppEntitlementExpandMask `json:"expandMask,omitempty"`
 	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
@@ -76,6 +77,13 @@ func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetEntitlementSlugs() [
 		return nil
 	}
 	return a.EntitlementSlugs
+}
+
+func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetExpandMask() *AppEntitlementExpandMask {
+	if a == nil {
+		return nil
+	}
+	return a.ExpandMask
 }
 
 func (a *AppEntitlementSearchServiceSearchGrantsRequest) GetPageSize() *int {

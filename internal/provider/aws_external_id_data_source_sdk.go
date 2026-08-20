@@ -23,7 +23,7 @@ func (r *AwsExternalIDDataSourceModel) RefreshFromSharedGetAWSExternalIDResponse
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedAWSExternalID(ctx, resp.AWSExternalID)...)
+		diags.Append(r.RefreshFromSharedAWSExternalID(ctx, resp.AwsExternalID)...)
 
 		if diags.HasError() {
 			return diags

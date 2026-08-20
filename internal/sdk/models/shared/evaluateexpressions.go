@@ -3,6 +3,8 @@
 package shared
 
 // The EvaluateExpressions message.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type EvaluateExpressions struct {
 	// The expressions field.
 	Expressions []Expression `json:"expressions,omitempty"`

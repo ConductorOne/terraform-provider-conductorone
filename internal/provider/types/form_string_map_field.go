@@ -7,6 +7,6 @@ import (
 )
 
 type FormStringMapField struct {
-	StringMapRules *StringMapRules         `tfsdk:"string_map_rules"`
-	DefaultValue   map[string]types.String `tfsdk:"default_value"`
+	DefaultValue map[string]types.String `tfsdk:"default_value"`
+	Rules        *StringMapRules         `tfsdk:"rules"`
 }

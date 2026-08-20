@@ -4,9 +4,30 @@ package shared
 
 // The FunctionsServiceUpdateFunctionRequest message.
 type FunctionsServiceUpdateFunctionRequest struct {
-	// Function represents a customer-provided code extension in the API
-	Function   *FunctionInput `json:"function,omitempty"`
-	UpdateMask *string        `json:"updateMask,omitempty"`
+	// The commit message describing this code update. Defaults to a generic
+	//  message if content is set and this is empty. Ignored if content is empty.
+	CommitMessage *string `json:"commitMessage,omitempty"`
+	// File map for a new code commit, applied as the function's new head
+	//  commit. Keys are file paths in the function root; values are file
+	//  contents as bytes. See CreateFunctionRequest.initial_content for the
+	//  required entry-file signature. Independent of update_mask.
+	Content    map[string]string `json:"content,omitempty"`
+	Function   *FunctionInput    `json:"function,omitempty"`
+	UpdateMask *string           `json:"updateMask,omitempty"`
+}
+
+func (f *FunctionsServiceUpdateFunctionRequest) GetCommitMessage() *string {
+	if f == nil {
+		return nil
+	}
+	return f.CommitMessage
+}
+
+func (f *FunctionsServiceUpdateFunctionRequest) GetContent() map[string]string {
+	if f == nil {
+		return nil
+	}
+	return f.Content
 }
 
 func (f *FunctionsServiceUpdateFunctionRequest) GetFunction() *FunctionInput {

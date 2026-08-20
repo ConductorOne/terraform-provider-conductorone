@@ -4,20 +4,12 @@ package shared
 
 // The BulkAssignOwnerAction message.
 type BulkAssignOwnerAction struct {
-	// The FindingOwnerRef message.
-	//
-	// This message contains a oneof named owner. Only a single field of the following list may be set at a time:
-	//   - identityUserId
-	//   - appOwnerAppId
-	//   - managerOfUserId
-	//   - userSetId
-	//
-	FindingOwnerRef *FindingOwnerRef `json:"owner,omitempty"`
+	Owner *FindingOwnerRef `json:"owner,omitempty"`
 }
 
-func (b *BulkAssignOwnerAction) GetFindingOwnerRef() *FindingOwnerRef {
+func (b *BulkAssignOwnerAction) GetOwner() *FindingOwnerRef {
 	if b == nil {
 		return nil
 	}
-	return b.FindingOwnerRef
+	return b.Owner
 }

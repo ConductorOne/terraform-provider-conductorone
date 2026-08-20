@@ -18,6 +18,17 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Cont
 
 	if resp != nil {
 		r.AccessConfigID = types.StringPointerValue(resp.AccessConfigID)
+		if resp.AgentTrait == nil {
+			r.AgentTrait = nil
+		} else {
+			r.AgentTrait = &tfTypes.AgentTrait{}
+			r.AgentTrait.IdentityAppUserID = types.StringPointerValue(resp.AgentTrait.IdentityAppUserID)
+			if resp.AgentTrait.Status != nil {
+				r.AgentTrait.Status = types.StringValue(string(*resp.AgentTrait.Status))
+			} else {
+				r.AgentTrait.Status = types.StringNull()
+			}
+		}
 		if len(resp.Annotations) > 0 {
 			r.Annotations = make(map[string]types.String, len(resp.Annotations))
 			for key, value := range resp.Annotations {
@@ -34,6 +45,12 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Cont
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
+		r.NhiDetail = types.StringPointerValue(resp.NhiDetail)
+		if resp.NhiType != nil {
+			r.NhiType = types.StringValue(string(*resp.NhiType))
+		} else {
+			r.NhiType = types.StringNull()
+		}
 		r.ParentAppResourceID = types.StringPointerValue(resp.ParentAppResourceID)
 		r.ParentAppResourceTypeID = types.StringPointerValue(resp.ParentAppResourceTypeID)
 		if resp.Profile == nil {
@@ -45,6 +62,8 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResource(ctx context.Cont
 			r.SecretTrait = nil
 		} else {
 			r.SecretTrait = &tfTypes.SecretTrait{}
+			r.SecretTrait.CreatedByAppUserID = types.StringPointerValue(resp.SecretTrait.CreatedByAppUserID)
+			r.SecretTrait.CredentialDetail = types.StringPointerValue(resp.SecretTrait.CredentialDetail)
 			r.SecretTrait.IdentityAppUserID = types.StringPointerValue(resp.SecretTrait.IdentityAppUserID)
 			r.SecretTrait.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.LastUsedAt))
 			r.SecretTrait.SecretCreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.SecretTrait.SecretCreatedAt))
@@ -98,28 +117,23 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceView(ctx context.
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.ActorObjectPermissions != nil {
-			r.Delete = types.BoolPointerValue(resp.ActorObjectPermissions.Delete)
-			r.Edit = types.BoolPointerValue(resp.ActorObjectPermissions.Edit)
-			if len(resp.ActorObjectPermissions.Extra) > 0 {
-				r.Extra = make(map[string]types.Bool, len(resp.ActorObjectPermissions.Extra))
-				for key, value := range resp.ActorObjectPermissions.Extra {
-					r.Extra[key] = types.BoolValue(value)
-				}
-			}
-			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
-		} else {
-			r.Delete = types.BoolNull()
-			r.Edit = types.BoolNull()
-			r.Extra = nil
-			r.Read = types.BoolNull()
-		}
 		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
 
 		if diags.HasError() {
 			return diags
 		}
 
+		if resp.ObjectPermissions != nil {
+			r.Delete = types.BoolPointerValue(resp.ObjectPermissions.Delete)
+			r.Edit = types.BoolPointerValue(resp.ObjectPermissions.Edit)
+			if len(resp.ObjectPermissions.Extra) > 0 {
+				r.Extra = make(map[string]types.Bool, len(resp.ObjectPermissions.Extra))
+				for key, value := range resp.ObjectPermissions.Extra {
+					r.Extra[key] = types.BoolValue(value)
+				}
+			}
+			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
+		}
 	}
 
 	return diags
@@ -134,13 +148,6 @@ func (r *AppResourceResourceModel) RefreshFromSharedCreateManuallyManagedAppReso
 		if diags.HasError() {
 			return diags
 		}
-
-		// CreateManuallyManagedAppResourceResponse returns AppResource, not AppResourceView,
-		// so ActorObjectPermissions fields are not available. Set them to null explicitly.
-		r.Delete = types.BoolNull()
-		r.Edit = types.BoolNull()
-		r.Extra = nil
-		r.Read = types.BoolNull()
 
 	}
 
@@ -252,6 +259,25 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context)
 	} else {
 		accessConfigID = nil
 	}
+	var agentTrait *shared.AgentTrait
+	if r.AgentTrait != nil {
+		identityAppUserID := new(string)
+		if !r.AgentTrait.IdentityAppUserID.IsUnknown() && !r.AgentTrait.IdentityAppUserID.IsNull() {
+			*identityAppUserID = r.AgentTrait.IdentityAppUserID.ValueString()
+		} else {
+			identityAppUserID = nil
+		}
+		status := new(shared.AgentTraitStatus)
+		if !r.AgentTrait.Status.IsUnknown() && !r.AgentTrait.Status.IsNull() {
+			*status = shared.AgentTraitStatus(r.AgentTrait.Status.ValueString())
+		} else {
+			status = nil
+		}
+		agentTrait = &shared.AgentTrait{
+			IdentityAppUserID: identityAppUserID,
+			Status:            status,
+		}
+	}
 	annotations := make(map[string]string)
 	for annotationsKey := range r.Annotations {
 		var annotationsInst string
@@ -315,11 +341,23 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context)
 	}
 	var secretTrait *shared.SecretTrait
 	if r.SecretTrait != nil {
-		identityAppUserID := new(string)
-		if !r.SecretTrait.IdentityAppUserID.IsUnknown() && !r.SecretTrait.IdentityAppUserID.IsNull() {
-			*identityAppUserID = r.SecretTrait.IdentityAppUserID.ValueString()
+		createdByAppUserID := new(string)
+		if !r.SecretTrait.CreatedByAppUserID.IsUnknown() && !r.SecretTrait.CreatedByAppUserID.IsNull() {
+			*createdByAppUserID = r.SecretTrait.CreatedByAppUserID.ValueString()
 		} else {
-			identityAppUserID = nil
+			createdByAppUserID = nil
+		}
+		credentialDetail := new(string)
+		if !r.SecretTrait.CredentialDetail.IsUnknown() && !r.SecretTrait.CredentialDetail.IsNull() {
+			*credentialDetail = r.SecretTrait.CredentialDetail.ValueString()
+		} else {
+			credentialDetail = nil
+		}
+		identityAppUserId1 := new(string)
+		if !r.SecretTrait.IdentityAppUserID.IsUnknown() && !r.SecretTrait.IdentityAppUserID.IsNull() {
+			*identityAppUserId1 = r.SecretTrait.IdentityAppUserID.ValueString()
+		} else {
+			identityAppUserId1 = nil
 		}
 		lastUsedAt := new(time.Time)
 		if !r.SecretTrait.LastUsedAt.IsUnknown() && !r.SecretTrait.LastUsedAt.IsNull() {
@@ -340,14 +378,17 @@ func (r *AppResourceResourceModel) ToSharedAppResourceInput(ctx context.Context)
 			secretExpiresAt = nil
 		}
 		secretTrait = &shared.SecretTrait{
-			IdentityAppUserID: identityAppUserID,
-			LastUsedAt:        lastUsedAt,
-			SecretCreatedAt:   secretCreatedAt,
-			SecretExpiresAt:   secretExpiresAt,
+			CreatedByAppUserID: createdByAppUserID,
+			CredentialDetail:   credentialDetail,
+			IdentityAppUserID:  identityAppUserId1,
+			LastUsedAt:         lastUsedAt,
+			SecretCreatedAt:    secretCreatedAt,
+			SecretExpiresAt:    secretExpiresAt,
 		}
 	}
 	out := shared.AppResourceInput{
 		AccessConfigID:          accessConfigID,
+		AgentTrait:              agentTrait,
 		Annotations:             annotations,
 		AppID:                   appID,
 		AppResourceTypeID:       appResourceTypeID,

@@ -16,34 +16,22 @@ import (
 //   - microsoftGraph
 //   - googleWorkspace
 type TenantEmailProvider struct {
-	// AWSSESProviderConfig configures sending via a customer's AWS SES account.
-	AWSSESProviderConfig *AWSSESProviderConfig `json:"awsSes,omitempty"`
-	// C1BuiltInProviderConfig selects the ConductorOne built-in email provider.
-	//  Emails are sent from no-reply@conductorone.com via the platform SendGrid account.
-	//  Only supports sending to C1 users — external email addresses are not supported.
-	//  No configuration fields required.
-	C1BuiltInProviderConfig *C1BuiltInProviderConfig `json:"c1Builtin,omitempty"`
-	CreatedAt               *time.Time               `json:"createdAt,omitempty"`
+	AwsSes    *AWSSESProviderConfig    `json:"awsSes,omitempty"`
+	C1Builtin *C1BuiltInProviderConfig `json:"c1Builtin,omitempty"`
+	CreatedAt *time.Time               `json:"createdAt,omitempty"`
 	// Sender email address. Must be verified with the provider.
 	//  Ignored when using the C1 built-in provider (uses no-reply@conductorone.com).
 	FromAddress *string `json:"fromAddress,omitempty"`
 	// Sender display name shown in the recipient's inbox (e.g., "Acme Corp IT").
 	//  Used as the RFC 5322 display-name: "Acme Corp IT" <no-reply@acme.com>.
 	//  Ignored when using the C1 built-in provider.
-	FromName *string `json:"fromName,omitempty"`
-	// GoogleWorkspaceProviderConfig configures sending via Google Workspace Gmail API
-	//  using domain-wide delegation with a service account.
-	//  Requires: customer Workspace super admin grants DWD to the service account's
-	//  OAuth client ID for the gmail.send scope.
-	GoogleWorkspaceProviderConfig *GoogleWorkspaceProviderConfig `json:"googleWorkspace,omitempty"`
-	// MicrosoftGraphProviderConfig configures sending via Microsoft Graph sendMail API.
-	//  Requires an Azure AD app registration with Mail.Send application permission (admin-consented).
-	MicrosoftGraphProviderConfig *MicrosoftGraphProviderConfig `json:"microsoftGraph,omitempty"`
+	FromName        *string                        `json:"fromName,omitempty"`
+	GoogleWorkspace *GoogleWorkspaceProviderConfig `json:"googleWorkspace,omitempty"`
+	MicrosoftGraph  *MicrosoftGraphProviderConfig  `json:"microsoftGraph,omitempty"`
 	// Optional reply-to address.
-	ReplyToAddress *string `json:"replyToAddress,omitempty"`
-	// SendGridProviderConfig configures sending via a customer's SendGrid account.
-	SendGridProviderConfig *SendGridProviderConfig `json:"sendgrid,omitempty"`
-	UpdatedAt              *time.Time              `json:"updatedAt,omitempty"`
+	ReplyToAddress *string                 `json:"replyToAddress,omitempty"`
+	Sendgrid       *SendGridProviderConfig `json:"sendgrid,omitempty"`
+	UpdatedAt      *time.Time              `json:"updatedAt,omitempty"`
 }
 
 func (t TenantEmailProvider) MarshalJSON() ([]byte, error) {
@@ -57,18 +45,18 @@ func (t *TenantEmailProvider) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (t *TenantEmailProvider) GetAWSSESProviderConfig() *AWSSESProviderConfig {
+func (t *TenantEmailProvider) GetAwsSes() *AWSSESProviderConfig {
 	if t == nil {
 		return nil
 	}
-	return t.AWSSESProviderConfig
+	return t.AwsSes
 }
 
-func (t *TenantEmailProvider) GetC1BuiltInProviderConfig() *C1BuiltInProviderConfig {
+func (t *TenantEmailProvider) GetC1Builtin() *C1BuiltInProviderConfig {
 	if t == nil {
 		return nil
 	}
-	return t.C1BuiltInProviderConfig
+	return t.C1Builtin
 }
 
 func (t *TenantEmailProvider) GetCreatedAt() *time.Time {
@@ -92,18 +80,18 @@ func (t *TenantEmailProvider) GetFromName() *string {
 	return t.FromName
 }
 
-func (t *TenantEmailProvider) GetGoogleWorkspaceProviderConfig() *GoogleWorkspaceProviderConfig {
+func (t *TenantEmailProvider) GetGoogleWorkspace() *GoogleWorkspaceProviderConfig {
 	if t == nil {
 		return nil
 	}
-	return t.GoogleWorkspaceProviderConfig
+	return t.GoogleWorkspace
 }
 
-func (t *TenantEmailProvider) GetMicrosoftGraphProviderConfig() *MicrosoftGraphProviderConfig {
+func (t *TenantEmailProvider) GetMicrosoftGraph() *MicrosoftGraphProviderConfig {
 	if t == nil {
 		return nil
 	}
-	return t.MicrosoftGraphProviderConfig
+	return t.MicrosoftGraph
 }
 
 func (t *TenantEmailProvider) GetReplyToAddress() *string {
@@ -113,11 +101,11 @@ func (t *TenantEmailProvider) GetReplyToAddress() *string {
 	return t.ReplyToAddress
 }
 
-func (t *TenantEmailProvider) GetSendGridProviderConfig() *SendGridProviderConfig {
+func (t *TenantEmailProvider) GetSendgrid() *SendGridProviderConfig {
 	if t == nil {
 		return nil
 	}
-	return t.SendGridProviderConfig
+	return t.Sendgrid
 }
 
 func (t *TenantEmailProvider) GetUpdatedAt() *time.Time {

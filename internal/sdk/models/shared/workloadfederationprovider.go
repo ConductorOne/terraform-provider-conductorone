@@ -64,16 +64,10 @@ type WorkloadFederationProvider struct {
 	ID *string `json:"id,omitempty"`
 	// Canonical issuer URL. https:// for OIDC providers, spiffe:// for SPIFFE
 	//  trust domains. Unique within tenant. Immutable after creation.
-	IssuerURL *string `json:"issuerUrl,omitempty"`
-	// OIDCSettings is the kind-specific configuration block for classic OIDC
-	//  providers (GitHub Actions, GitLab CI, HCP Terraform, AWS IAM Outbound,
-	//  any CUSTOM provider). Empty for now; future fields like custom_jwks_url,
-	//  audience overrides, and required_claims land here.
-	OIDCSettings *OIDCSettings `json:"oidc,omitempty"`
-	// SPIFFESettings is the kind-specific configuration block for SPIFFE
-	//  trust-domain providers (issuer_url = spiffe://<trust-domain>).
-	SPIFFESettings *SPIFFESettings `json:"spiffe,omitempty"`
-	UpdatedAt      *time.Time      `json:"updatedAt,omitempty"`
+	IssuerURL *string         `json:"issuerUrl,omitempty"`
+	Oidc      *OIDCSettings   `json:"oidc,omitempty"`
+	Spiffe    *SPIFFESettings `json:"spiffe,omitempty"`
+	UpdatedAt *time.Time      `json:"updatedAt,omitempty"`
 	// Well-known provider type. Drives UX (wizard presets, docs, icons).
 	//  Set at creation time, immutable.
 	WellKnownProvider *WellKnownProvider `json:"wellKnownProvider,omitempty"`
@@ -132,18 +126,18 @@ func (w *WorkloadFederationProvider) GetIssuerURL() *string {
 	return w.IssuerURL
 }
 
-func (w *WorkloadFederationProvider) GetOIDCSettings() *OIDCSettings {
+func (w *WorkloadFederationProvider) GetOidc() *OIDCSettings {
 	if w == nil {
 		return nil
 	}
-	return w.OIDCSettings
+	return w.Oidc
 }
 
-func (w *WorkloadFederationProvider) GetSPIFFESettings() *SPIFFESettings {
+func (w *WorkloadFederationProvider) GetSpiffe() *SPIFFESettings {
 	if w == nil {
 		return nil
 	}
-	return w.SPIFFESettings
+	return w.Spiffe
 }
 
 func (w *WorkloadFederationProvider) GetUpdatedAt() *time.Time {

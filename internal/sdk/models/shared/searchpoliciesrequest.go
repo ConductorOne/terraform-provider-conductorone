@@ -28,6 +28,87 @@ func (e *PolicyTypes) IsExact() bool {
 	return false
 }
 
+// ScopeObjectType - When scope_view is POLICY_SCOPE_VIEW_SCOPED, narrow local policies to a
+//
+//	coarse object type (app-local vs entitlement-local).
+type ScopeObjectType string
+
+const (
+	ScopeObjectTypePolicyScopeObjectTypeUnspecified ScopeObjectType = "POLICY_SCOPE_OBJECT_TYPE_UNSPECIFIED"
+	ScopeObjectTypePolicyScopeObjectTypeApp         ScopeObjectType = "POLICY_SCOPE_OBJECT_TYPE_APP"
+	ScopeObjectTypePolicyScopeObjectTypeEntitlement ScopeObjectType = "POLICY_SCOPE_OBJECT_TYPE_ENTITLEMENT"
+)
+
+func (e ScopeObjectType) ToPointer() *ScopeObjectType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ScopeObjectType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "POLICY_SCOPE_OBJECT_TYPE_UNSPECIFIED", "POLICY_SCOPE_OBJECT_TYPE_APP", "POLICY_SCOPE_OBJECT_TYPE_ENTITLEMENT":
+			return true
+		}
+	}
+	return false
+}
+
+// ScopeSlot - When scope_view narrows to one object, only return that object's local
+//
+//	policies in this slot. Ignored when no object is identified by
+//	scope_app_id, which lists every local policy regardless of slot.
+type ScopeSlot string
+
+const (
+	ScopeSlotPolicyScopeSlotUnspecified ScopeSlot = "POLICY_SCOPE_SLOT_UNSPECIFIED"
+	ScopeSlotPolicyScopeSlotEmergency   ScopeSlot = "POLICY_SCOPE_SLOT_EMERGENCY"
+)
+
+func (e ScopeSlot) ToPointer() *ScopeSlot {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ScopeSlot) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "POLICY_SCOPE_SLOT_UNSPECIFIED", "POLICY_SCOPE_SLOT_EMERGENCY":
+			return true
+		}
+	}
+	return false
+}
+
+// ScopeView - Which policies to return based on scope. Defaults to global-only, so
+//
+//	app/entitlement-scoped policies never appear unless explicitly requested.
+//	Ignored when refs are provided (explicit ID lookups always resolve).
+type ScopeView string
+
+const (
+	ScopeViewPolicyScopeViewUnspecified     ScopeView = "POLICY_SCOPE_VIEW_UNSPECIFIED"
+	ScopeViewPolicyScopeViewGlobal          ScopeView = "POLICY_SCOPE_VIEW_GLOBAL"
+	ScopeViewPolicyScopeViewScoped          ScopeView = "POLICY_SCOPE_VIEW_SCOPED"
+	ScopeViewPolicyScopeViewAll             ScopeView = "POLICY_SCOPE_VIEW_ALL"
+	ScopeViewPolicyScopeViewGlobalAndObject ScopeView = "POLICY_SCOPE_VIEW_GLOBAL_AND_OBJECT"
+)
+
+func (e ScopeView) ToPointer() *ScopeView {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ScopeView) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "POLICY_SCOPE_VIEW_UNSPECIFIED", "POLICY_SCOPE_VIEW_GLOBAL", "POLICY_SCOPE_VIEW_SCOPED", "POLICY_SCOPE_VIEW_ALL", "POLICY_SCOPE_VIEW_GLOBAL_AND_OBJECT":
+			return true
+		}
+	}
+	return false
+}
+
 // SearchPoliciesRequest - Search Policies by a few properties.
 type SearchPoliciesRequest struct {
 	// Search for policies with a case insensitive match on the display name.
@@ -46,6 +127,23 @@ type SearchPoliciesRequest struct {
 	Query *string `json:"query,omitempty"`
 	// The refs field.
 	Refs []PolicyRef `json:"refs,omitempty"`
+	// When scope_view is POLICY_SCOPE_VIEW_SCOPED, only return policies scoped
+	//  to this entitlement.
+	ScopeAppEntitlementID *string `json:"scopeAppEntitlementId,omitempty"`
+	// When scope_view is POLICY_SCOPE_VIEW_SCOPED, only return policies scoped
+	//  to this app.
+	ScopeAppID *string `json:"scopeAppId,omitempty"`
+	// When scope_view is POLICY_SCOPE_VIEW_SCOPED, narrow local policies to a
+	//  coarse object type (app-local vs entitlement-local).
+	ScopeObjectType *ScopeObjectType `json:"scopeObjectType,omitempty"`
+	// When scope_view narrows to one object, only return that object's local
+	//  policies in this slot. Ignored when no object is identified by
+	//  scope_app_id, which lists every local policy regardless of slot.
+	ScopeSlot *ScopeSlot `json:"scopeSlot,omitempty"`
+	// Which policies to return based on scope. Defaults to global-only, so
+	//  app/entitlement-scoped policies never appear unless explicitly requested.
+	//  Ignored when refs are provided (explicit ID lookups always resolve).
+	ScopeView *ScopeView `json:"scopeView,omitempty"`
 }
 
 func (s *SearchPoliciesRequest) GetDisplayName() *string {
@@ -102,4 +200,39 @@ func (s *SearchPoliciesRequest) GetRefs() []PolicyRef {
 		return nil
 	}
 	return s.Refs
+}
+
+func (s *SearchPoliciesRequest) GetScopeAppEntitlementID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ScopeAppEntitlementID
+}
+
+func (s *SearchPoliciesRequest) GetScopeAppID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ScopeAppID
+}
+
+func (s *SearchPoliciesRequest) GetScopeObjectType() *ScopeObjectType {
+	if s == nil {
+		return nil
+	}
+	return s.ScopeObjectType
+}
+
+func (s *SearchPoliciesRequest) GetScopeSlot() *ScopeSlot {
+	if s == nil {
+		return nil
+	}
+	return s.ScopeSlot
+}
+
+func (s *SearchPoliciesRequest) GetScopeView() *ScopeView {
+	if s == nil {
+		return nil
+	}
+	return s.ScopeView
 }

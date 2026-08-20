@@ -2,13 +2,46 @@
 
 package shared
 
+type FindingSearchRequestAppUserTypes string
+
+const (
+	FindingSearchRequestAppUserTypesAppUserTypeUnspecified    FindingSearchRequestAppUserTypes = "APP_USER_TYPE_UNSPECIFIED"
+	FindingSearchRequestAppUserTypesAppUserTypeUser           FindingSearchRequestAppUserTypes = "APP_USER_TYPE_USER"
+	FindingSearchRequestAppUserTypesAppUserTypeServiceAccount FindingSearchRequestAppUserTypes = "APP_USER_TYPE_SERVICE_ACCOUNT"
+	FindingSearchRequestAppUserTypesAppUserTypeSystemAccount  FindingSearchRequestAppUserTypes = "APP_USER_TYPE_SYSTEM_ACCOUNT"
+)
+
+func (e FindingSearchRequestAppUserTypes) ToPointer() *FindingSearchRequestAppUserTypes {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FindingSearchRequestAppUserTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_USER_TYPE_UNSPECIFIED", "APP_USER_TYPE_USER", "APP_USER_TYPE_SERVICE_ACCOUNT", "APP_USER_TYPE_SYSTEM_ACCOUNT":
+			return true
+		}
+	}
+	return false
+}
+
 type FindingTypes string
 
 const (
-	FindingTypesFindingTypeUnspecified                     FindingTypes = "FINDING_TYPE_UNSPECIFIED"
-	FindingTypesFindingTypeSimilarUsernameMatch            FindingTypes = "FINDING_TYPE_SIMILAR_USERNAME_MATCH"
-	FindingTypesFindingTypeServiceAccountMisclassification FindingTypes = "FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION"
-	FindingTypesFindingTypeDecoyCredentialUsed             FindingTypes = "FINDING_TYPE_DECOY_CREDENTIAL_USED"
+	FindingTypesFindingTypeUnspecified                       FindingTypes = "FINDING_TYPE_UNSPECIFIED"
+	FindingTypesFindingTypeSimilarUsernameMatch              FindingTypes = "FINDING_TYPE_SIMILAR_USERNAME_MATCH"
+	FindingTypesFindingTypeServiceAccountMisclassification   FindingTypes = "FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION"
+	FindingTypesFindingTypeNhiUnowned                        FindingTypes = "FINDING_TYPE_NHI_UNOWNED"
+	FindingTypesFindingTypeServiceAccountUnowned             FindingTypes = "FINDING_TYPE_SERVICE_ACCOUNT_UNOWNED"
+	FindingTypesFindingTypeDecoyCredentialUsed               FindingTypes = "FINDING_TYPE_DECOY_CREDENTIAL_USED"
+	FindingTypesFindingTypeCustom                            FindingTypes = "FINDING_TYPE_CUSTOM"
+	FindingTypesFindingTypeConnectorAnomalyDetectionDisabled FindingTypes = "FINDING_TYPE_CONNECTOR_ANOMALY_DETECTION_DISABLED"
+	FindingTypesFindingTypeDeactivatedOwner                  FindingTypes = "FINDING_TYPE_DEACTIVATED_OWNER"
+	FindingTypesFindingTypeUnusedSecret                      FindingTypes = "FINDING_TYPE_UNUSED_SECRET"
+	FindingTypesFindingTypeCredentialPubliclyExposed         FindingTypes = "FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED"
+	FindingTypesFindingTypeDecoyPubliclyExposed              FindingTypes = "FINDING_TYPE_DECOY_PUBLICLY_EXPOSED"
+	FindingTypesFindingTypeCredentialExpiring                FindingTypes = "FINDING_TYPE_CREDENTIAL_EXPIRING"
 )
 
 func (e FindingTypes) ToPointer() *FindingTypes {
@@ -19,7 +52,31 @@ func (e FindingTypes) ToPointer() *FindingTypes {
 func (e *FindingTypes) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "FINDING_TYPE_UNSPECIFIED", "FINDING_TYPE_SIMILAR_USERNAME_MATCH", "FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION", "FINDING_TYPE_DECOY_CREDENTIAL_USED":
+		case "FINDING_TYPE_UNSPECIFIED", "FINDING_TYPE_SIMILAR_USERNAME_MATCH", "FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION", "FINDING_TYPE_NHI_UNOWNED", "FINDING_TYPE_SERVICE_ACCOUNT_UNOWNED", "FINDING_TYPE_DECOY_CREDENTIAL_USED", "FINDING_TYPE_CUSTOM", "FINDING_TYPE_CONNECTOR_ANOMALY_DETECTION_DISABLED", "FINDING_TYPE_DEACTIVATED_OWNER", "FINDING_TYPE_UNUSED_SECRET", "FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED", "FINDING_TYPE_DECOY_PUBLICLY_EXPOSED", "FINDING_TYPE_CREDENTIAL_EXPIRING":
+			return true
+		}
+	}
+	return false
+}
+
+type NhiTypes string
+
+const (
+	NhiTypesNhiTypeUnspecified     NhiTypes = "NHI_TYPE_UNSPECIFIED"
+	NhiTypesNhiTypeAppRegistration NhiTypes = "NHI_TYPE_APP_REGISTRATION"
+	NhiTypesNhiTypeAssumableRole   NhiTypes = "NHI_TYPE_ASSUMABLE_ROLE"
+	NhiTypesNhiTypeManagedIdentity NhiTypes = "NHI_TYPE_MANAGED_IDENTITY"
+)
+
+func (e NhiTypes) ToPointer() *NhiTypes {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *NhiTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "NHI_TYPE_UNSPECIFIED", "NHI_TYPE_APP_REGISTRATION", "NHI_TYPE_ASSUMABLE_ROLE", "NHI_TYPE_MANAGED_IDENTITY":
 			return true
 		}
 	}
@@ -46,6 +103,29 @@ func (e *Severities) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "FINDING_SEVERITY_UNSPECIFIED", "FINDING_SEVERITY_INFO", "FINDING_SEVERITY_LOW", "FINDING_SEVERITY_MEDIUM", "FINDING_SEVERITY_HIGH", "FINDING_SEVERITY_CRITICAL":
+			return true
+		}
+	}
+	return false
+}
+
+type SourceKinds string
+
+const (
+	SourceKindsFindingSourceKindUnspecified SourceKinds = "FINDING_SOURCE_KIND_UNSPECIFIED"
+	SourceKindsFindingSourceKindDetector    SourceKinds = "FINDING_SOURCE_KIND_DETECTOR"
+	SourceKindsFindingSourceKindExternal    SourceKinds = "FINDING_SOURCE_KIND_EXTERNAL"
+)
+
+func (e SourceKinds) ToPointer() *SourceKinds {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SourceKinds) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FINDING_SOURCE_KIND_UNSPECIFIED", "FINDING_SOURCE_KIND_DETECTOR", "FINDING_SOURCE_KIND_EXTERNAL":
 			return true
 		}
 	}
@@ -83,19 +163,68 @@ func (e *States) IsExact() bool {
 type FindingSearchRequest struct {
 	// Filter by app IDs (OR within field).
 	AppIds []string `json:"appIds,omitempty"`
+	// Filter by app resource IDs (OR within field). Matches findings whose
+	//  target.app_resource_target.app_resource_id is in this list. An app resource
+	//  is app-scoped, so pair with app_ids (and app_resource_type_ids) to hit the
+	//  composite (tenant_id, app_id, app_resource_type_id, app_resource_id) index.
+	AppResourceIds []string `json:"appResourceIds,omitempty"`
+	// Filter to findings whose target resource's type carries any of these traits
+	//  (e.g. the builtin agent / secret trait ids). OR within field; empty = not
+	//  applied.
+	AppResourceTraitIds []string `json:"appResourceTraitIds,omitempty"`
+	// Filter by app resource type IDs (OR within field). Matches findings whose
+	//  target.app_resource_target.app_resource_type_id is in this list.
+	AppResourceTypeIds []string `json:"appResourceTypeIds,omitempty"`
 	// Filter by app user IDs (OR within field). Matches findings whose
 	//  target.app_user_target.app_user_id is in this list.
 	AppUserIds []string `json:"appUserIds,omitempty"`
+	// Filter to findings whose target is an app user of these types (OR within
+	//  field). Empty = not applied.
+	AppUserTypes []FindingSearchRequestAppUserTypes `json:"appUserTypes,omitempty"`
+	// Filter by connector IDs (OR within field). Matches findings whose
+	//  target.connector_target.connector_id is in this list.
+	ConnectorIds []string `json:"connectorIds,omitempty"`
+	// Filter by custom sub-type (OR within field). Matches custom findings whose
+	//  custom_sub_type equals any listed value.
+	CustomSubTypes []string `json:"customSubTypes,omitempty"`
+	// Filter by decoy IDs (OR within field). Matches findings whose
+	//  target.decoy_target.decoy_id is in this list.
+	DecoyIds []string `json:"decoyIds,omitempty"`
 	// Filter by finding type (OR within field).
 	FindingTypes []FindingTypes `json:"findingTypes,omitempty"`
+	// When true, includes findings with no effective identity-user owner. An
+	//  explicit predicate for direct API callers who prefer a bool over the
+	//  "unassigned" sentinel in owner_identity_user_ids; both signals are accepted.
+	IncludeUnassigned *bool `json:"includeUnassigned,omitempty"`
+	// Filter to findings whose target resource's nhi_type is one of these (OR
+	//  within field). Empty = not applied; pass all NhiType values to match any
+	//  nhi resource.
+	NhiTypes []NhiTypes `json:"nhiTypes,omitempty"`
+	// Filter by effective owner identity-user IDs (OR within field). Matches
+	//  findings whose effective owner (assigned_owner if set, else computed_owner)
+	//  resolves to an identity user in this list. The reserved "unassigned"
+	//  sentinel token selects findings with no effective identity-user owner; real
+	//  identity-user IDs are exactly 27 alphanumerics so the token cannot collide.
+	OwnerIdentityUserIds []string `json:"ownerIdentityUserIds,omitempty"`
 	// Maximum number of findings to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
 	// Pagination token from a previous response.
 	PageToken *string `json:"pageToken,omitempty"`
 	// Free text search query.
 	Query *string `json:"query,omitempty"`
+	// Restrict results to these finding refs by ID (OR within field). Backs the
+	//  websocket-notify re-query, which refetches just the changed finding(s) to
+	//  patch a row in place or detect it dropping out of the filter; empty = not
+	//  applied. Hits the (tenant_id, id) primary key.
+	Refs []FindingRef `json:"refs,omitempty"`
+	// When true, restricts results to findings for apps you own. The caller is
+	//  resolved from request credentials (no user id is read from the request),
+	//  so results are always limited to your own apps.
+	ScopeToAppOwner *bool `json:"scopeToAppOwner,omitempty"`
 	// Filter by severities (OR within field).
 	Severities []Severities `json:"severities,omitempty"`
+	// Filter by source kind (OR within field).
+	SourceKinds []SourceKinds `json:"sourceKinds,omitempty"`
 	// Filter by states (OR within field).
 	States []States `json:"states,omitempty"`
 }
@@ -107,6 +236,27 @@ func (f *FindingSearchRequest) GetAppIds() []string {
 	return f.AppIds
 }
 
+func (f *FindingSearchRequest) GetAppResourceIds() []string {
+	if f == nil {
+		return nil
+	}
+	return f.AppResourceIds
+}
+
+func (f *FindingSearchRequest) GetAppResourceTraitIds() []string {
+	if f == nil {
+		return nil
+	}
+	return f.AppResourceTraitIds
+}
+
+func (f *FindingSearchRequest) GetAppResourceTypeIds() []string {
+	if f == nil {
+		return nil
+	}
+	return f.AppResourceTypeIds
+}
+
 func (f *FindingSearchRequest) GetAppUserIds() []string {
 	if f == nil {
 		return nil
@@ -114,11 +264,60 @@ func (f *FindingSearchRequest) GetAppUserIds() []string {
 	return f.AppUserIds
 }
 
+func (f *FindingSearchRequest) GetAppUserTypes() []FindingSearchRequestAppUserTypes {
+	if f == nil {
+		return nil
+	}
+	return f.AppUserTypes
+}
+
+func (f *FindingSearchRequest) GetConnectorIds() []string {
+	if f == nil {
+		return nil
+	}
+	return f.ConnectorIds
+}
+
+func (f *FindingSearchRequest) GetCustomSubTypes() []string {
+	if f == nil {
+		return nil
+	}
+	return f.CustomSubTypes
+}
+
+func (f *FindingSearchRequest) GetDecoyIds() []string {
+	if f == nil {
+		return nil
+	}
+	return f.DecoyIds
+}
+
 func (f *FindingSearchRequest) GetFindingTypes() []FindingTypes {
 	if f == nil {
 		return nil
 	}
 	return f.FindingTypes
+}
+
+func (f *FindingSearchRequest) GetIncludeUnassigned() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.IncludeUnassigned
+}
+
+func (f *FindingSearchRequest) GetNhiTypes() []NhiTypes {
+	if f == nil {
+		return nil
+	}
+	return f.NhiTypes
+}
+
+func (f *FindingSearchRequest) GetOwnerIdentityUserIds() []string {
+	if f == nil {
+		return nil
+	}
+	return f.OwnerIdentityUserIds
 }
 
 func (f *FindingSearchRequest) GetPageSize() *int {
@@ -142,11 +341,32 @@ func (f *FindingSearchRequest) GetQuery() *string {
 	return f.Query
 }
 
+func (f *FindingSearchRequest) GetRefs() []FindingRef {
+	if f == nil {
+		return nil
+	}
+	return f.Refs
+}
+
+func (f *FindingSearchRequest) GetScopeToAppOwner() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.ScopeToAppOwner
+}
+
 func (f *FindingSearchRequest) GetSeverities() []Severities {
 	if f == nil {
 		return nil
 	}
 	return f.Severities
+}
+
+func (f *FindingSearchRequest) GetSourceKinds() []SourceKinds {
+	if f == nil {
+		return nil
+	}
+	return f.SourceKinds
 }
 
 func (f *FindingSearchRequest) GetStates() []States {

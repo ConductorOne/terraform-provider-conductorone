@@ -30,6 +30,30 @@ func (e *PaperSecretServiceCreateExternalRequestInputFormat) IsExact() bool {
 	return false
 }
 
+// RequiredAgeSuite - Exact Age suite required for this submission. UNSPECIFIED preserves legacy X25519 behavior.
+type RequiredAgeSuite string
+
+const (
+	RequiredAgeSuiteAgeSuiteUnspecified    RequiredAgeSuite = "AGE_SUITE_UNSPECIFIED"
+	RequiredAgeSuiteAgeSuiteX25519         RequiredAgeSuite = "AGE_SUITE_X25519"
+	RequiredAgeSuiteAgeSuiteMlkem768X25519 RequiredAgeSuite = "AGE_SUITE_MLKEM768X25519"
+)
+
+func (e RequiredAgeSuite) ToPointer() *RequiredAgeSuite {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequiredAgeSuite) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AGE_SUITE_UNSPECIFIED", "AGE_SUITE_X25519", "AGE_SUITE_MLKEM768X25519":
+			return true
+		}
+	}
+	return false
+}
+
 // PaperSecretServiceCreateExternalRequestSecretType - Secret type: TEXT or FILE.
 //
 //	TEXT secrets use SetTextContent to upload encrypted content (max 64KB).
@@ -77,6 +101,8 @@ type PaperSecretServiceCreateExternalRequest struct {
 	InputFormat *PaperSecretServiceCreateExternalRequestInputFormat `json:"inputFormat,omitempty"`
 	// Maximum number of views before the secret is burned (0 = unlimited).
 	MaxViews *int64 `json:"maxViews,omitempty"`
+	// Exact Age suite required for this submission. UNSPECIFIED preserves legacy X25519 behavior.
+	RequiredAgeSuite *RequiredAgeSuite `json:"requiredAgeSuite,omitempty"`
 	// Secret type: TEXT or FILE.
 	//  TEXT secrets use SetTextContent to upload encrypted content (max 64KB).
 	//  FILE secrets use the upload_url from CreateResponse to upload encrypted content (max 1GB).
@@ -137,6 +163,13 @@ func (p *PaperSecretServiceCreateExternalRequest) GetMaxViews() *int64 {
 		return nil
 	}
 	return p.MaxViews
+}
+
+func (p *PaperSecretServiceCreateExternalRequest) GetRequiredAgeSuite() *RequiredAgeSuite {
+	if p == nil {
+		return nil
+	}
+	return p.RequiredAgeSuite
 }
 
 func (p *PaperSecretServiceCreateExternalRequest) GetSecretType() *PaperSecretServiceCreateExternalRequestSecretType {

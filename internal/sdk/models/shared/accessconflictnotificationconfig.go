@@ -4,9 +4,7 @@ package shared
 
 // AccessConflictNotificationConfig - The NotificationConfig message.
 type AccessConflictNotificationConfig struct {
-	// The EmailNotifications message.
 	EmailNotifications *EmailNotifications `json:"emailNotifications,omitempty"`
-	// The SlackNotifications message.
 	SlackNotifications *SlackNotifications `json:"slackNotifications,omitempty"`
 }
 

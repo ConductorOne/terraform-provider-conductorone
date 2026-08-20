@@ -4,20 +4,12 @@ package shared
 
 // The GetSchemaResponse message.
 type GetSchemaResponse struct {
-	// TFSchemaMapping describes how to translate one C1 API object into a
-	//  single Terraform block. Variant-specific metadata (e.g. `import_id` for
-	//  resources) lives on the `block` oneof.
-	//
-	// This message contains a oneof named block. Only a single field of the following list may be set at a time:
-	//   - resource
-	//   - dataSource
-	//
-	TFSchemaMapping *TFSchemaMapping `json:"schema,omitempty"`
+	Schema *TFSchemaMapping `json:"schema,omitempty"`
 }
 
-func (g *GetSchemaResponse) GetTFSchemaMapping() *TFSchemaMapping {
+func (g *GetSchemaResponse) GetSchema() *TFSchemaMapping {
 	if g == nil {
 		return nil
 	}
-	return g.TFSchemaMapping
+	return g.Schema
 }

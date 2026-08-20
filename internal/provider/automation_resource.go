@@ -36,15 +36,15 @@ type AutomationResource struct {
 type AutomationResourceModel struct {
 	Annotations                        map[string]types.String                     `tfsdk:"annotations"`
 	AppID                              types.String                                `tfsdk:"app_id"`
-	AutomationContext                  *tfTypes.AutomationContext                  `tfsdk:"automation_context"`
 	AutomationsDeleteAutomationRequest *tfTypes.AutomationsDeleteAutomationRequest `tfsdk:"automations_delete_automation_request"`
 	AutomationSteps                    []tfTypes.AutomationStep                    `tfsdk:"automation_steps"`
+	CircuitBreaker                     *tfTypes.DisabledReasonCircuitBreaker       `tfsdk:"circuit_breaker"`
 	CircuitBreakerMax                  types.Int64                                 `tfsdk:"circuit_breaker_max"`
 	CircuitBreakerPeriod               types.String                                `tfsdk:"circuit_breaker_period"`
+	Context                            *tfTypes.AutomationContext                  `tfsdk:"context"`
 	CreatedAt                          types.String                                `tfsdk:"created_at"`
 	CurrentVersion                     types.String                                `tfsdk:"current_version"`
 	Description                        types.String                                `tfsdk:"description"`
-	DisabledReasonCircuitBreaker       *tfTypes.DisabledReasonCircuitBreaker       `tfsdk:"disabled_reason_circuit_breaker"`
 	DisplayName                        types.String                                `tfsdk:"display_name"`
 	DraftAutomationSteps               []tfTypes.AutomationStep                    `tfsdk:"draft_automation_steps"`
 	DraftTriggers                      []tfTypes.AutomationTrigger                 `tfsdk:"draft_triggers"`
@@ -83,17 +83,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 				Optional:    true,
 				Description: `the app id this workflow_template belongs to`,
-			},
-			"automation_context": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"context": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-					},
-				},
-				Description: `The AutomationContext message.`,
 			},
 			"automation_steps": schema.ListNestedAttribute{
 				Computed: true,
@@ -161,7 +150,10 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
-									Description: `The args field.`,
+									MarkdownDescription: `Arg name → CEL expression. Each value is evaluated against the` + "\n" +
+										` workflow execution context (subject + completed step outputs) and the` + "\n" +
+										` resolved values are passed to the function as JSON. Plain literals` + "\n" +
+										` must be quoted as CEL strings (e.g. "'static-value'").`,
 								},
 								"function_id": schema.StringAttribute{
 									Computed:    true,
@@ -421,7 +413,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"entitlement_exclusion_criteria": schema.SingleNestedAttribute{
+								"exclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -452,7 +444,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The EntitlementExclusionCriteria message.`,
 								},
-								"entitlement_exclusion_list": schema.SingleNestedAttribute{
+								"exclusion_list": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -481,7 +473,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The EntitlementExclusionList message.`,
 								},
-								"entitlement_exclusion_list_cel": schema.SingleNestedAttribute{
+								"exclusion_list_cel": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -493,12 +485,20 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The EntitlementExclusionListCel message.`,
 								},
-								"entitlement_exclusion_none": schema.SingleNestedAttribute{
+								"exclusion_none": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The EntitlementExclusionNone message.`,
 								},
-								"entitlement_inclusion_access_only": schema.SingleNestedAttribute{
+								"grant_source_filter": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `Restricts the step to grants of either DIRECT (grants the user holds directly,` + "\n" +
+										` including grants that are also inherited) or UNSPECIFIED (all grants).` + "\n" +
+										` Composes with every inclusion mode, including inclusion_list_cel.` + "\n" +
+										`possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT"]`,
+								},
+								"inclusion_access_only": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									MarkdownDescription: `EntitlementInclusionAccessOnly resolves to the system-managed access` + "\n" +
@@ -506,12 +506,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										` deprovision app accounts without fanning out to every group, role, or` + "\n" +
 										` permission inside each app — produces at most one revoke ticket per app.`,
 								},
-								"entitlement_inclusion_all": schema.SingleNestedAttribute{
+								"inclusion_all": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The EntitlementInclusionAll message.`,
 								},
-								"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+								"inclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -542,7 +542,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The EntitlementInclusionCriteria message.`,
 								},
-								"entitlement_inclusion_list": schema.SingleNestedAttribute{
+								"inclusion_list": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -571,7 +571,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The EntitlementInclusionList message.`,
 								},
-								"entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+								"inclusion_list_cel": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -664,13 +664,20 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Description: `The expressions field.`,
 								},
 							},
-							Description: `The EvaluateExpressions message.`,
+							DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+							Description:        `The EvaluateExpressions message.`,
 						},
 						"generate_password": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"generate_password_policy": schema.SingleNestedAttribute{
+								"password_policy_id": schema.StringAttribute{
+									Computed:           true,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `Deprecated: password policy ID lookup is no longer used.`,
+								},
+								"policy": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -733,12 +740,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`  - customCharacters` + "\n" +
 										`  - excludedCharacters`,
 								},
-								"password_policy_id": schema.StringAttribute{
-									Computed:           true,
-									Optional:           true,
-									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-									Description:        `Deprecated: password policy ID lookup is no longer used.`,
-								},
 							},
 							Description: `The GeneratePassword message.`,
 						},
@@ -746,7 +747,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"grant_entitlement_exclusion_criteria": schema.SingleNestedAttribute{
+								"exclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -771,7 +772,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The GrantEntitlementExclusionCriteria message.`,
 								},
-								"grant_entitlement_exclusion_list": schema.SingleNestedAttribute{
+								"exclusion_list": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -800,7 +801,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The GrantEntitlementExclusionList message.`,
 								},
-								"grant_entitlement_exclusion_list_cel": schema.SingleNestedAttribute{
+								"exclusion_list_cel": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -812,12 +813,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The GrantEntitlementExclusionListCel message.`,
 								},
-								"grant_entitlement_exclusion_none": schema.SingleNestedAttribute{
+								"exclusion_none": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The GrantEntitlementExclusionNone message.`,
 								},
-								"grant_entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+								"inclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -842,7 +843,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The GrantEntitlementInclusionCriteria message.`,
 								},
-								"grant_entitlement_inclusion_list": schema.SingleNestedAttribute{
+								"inclusion_list": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -871,7 +872,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The GrantEntitlementInclusionList message.`,
 								},
-								"grant_entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+								"inclusion_list_cel": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -931,6 +932,18 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`This field is part of the ` + "`" + `replacement_user` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.automations.v1.RemoveFromDelegation` + "`" + ` for more details.`,
 								},
+								"replacement_user_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id of the user.`,
+										},
+									},
+									Description: `A reference to a user.`,
+								},
 								"use_subject_user": schema.BoolAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -953,18 +966,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `A reference to a user.`,
 								},
-								"user_ref1": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"id": schema.StringAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `The id of the user.`,
-										},
-									},
-									Description: `A reference to a user.`,
-								},
 							},
 							MarkdownDescription: `RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.` + "\n" +
 								`` + "\n" +
@@ -976,17 +977,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"automation_context": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"context": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-										},
-									},
-									Description: `The AutomationContext message.`,
-								},
 								"automation_template_id_cel": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
@@ -1005,6 +995,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The AutomationTemplateRef message.`,
+								},
+								"context": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"context": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+										},
+									},
+									Description: `The AutomationContext message.`,
 								},
 							},
 							MarkdownDescription: `RunAutomation: kick off the execution of an automation template.` + "\n" +
@@ -1086,6 +1087,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Computed:    true,
 									Optional:    true,
 									Description: `The body field.`,
+								},
+								"channel_is_id": schema.BoolAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `When true, the channel value (channel_name / channel_name_cel) is a Slack` + "\n" +
+										` channel ID rather than a name. The backend looks the channel up by ID and` + "\n" +
+										` fails permanently if it does not exist or the bot cannot access it — it does` + "\n" +
+										` not create or search by name. Only applies to channel delivery.`,
 								},
 								"channel_name": schema.StringAttribute{
 									Computed: true,
@@ -1225,14 +1234,16 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Description: `Maximum number of views (0 = unlimited, default 1) (Paper Vault only)`,
 								},
 								"recipient_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)`,
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression resolving to one or more recipient C1 user IDs — a string or list<string>,` + "\n" +
+										` e.g. '["u1","u2"]' (SSO_INTERNAL / App Vault). App Vault accepts a single user only.`,
 								},
 								"recipient_email_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)`,
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression resolving to one or more recipient email addresses — a string or list<string>,` + "\n" +
+										` e.g. '["a@x.com","b@x.com"]' (Paper Vault + VERIFY_EMAIL only).`,
 								},
 								"ttl": schema.StringAttribute{
 									Computed: true,
@@ -1251,7 +1262,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"close_action": schema.SingleNestedAttribute{
+								"close": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -1286,7 +1297,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`  - userIdCel` + "\n" +
 										`  - userRef`,
 								},
-								"reassign_action": schema.SingleNestedAttribute{
+								"reassign": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -1297,6 +1308,18 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
 												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
 										},
+										"assignee_user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
 										"subject_user_id_cel": schema.StringAttribute{
 											Computed: true,
 											Optional: true,
@@ -1304,34 +1327,22 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
 												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
 										},
+										"subject_user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
 										"use_subject_user": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
 											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-										"user_ref1": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
 										},
 									},
 									MarkdownDescription: `The ReassignAction message.` + "\n" +
@@ -1511,29 +1522,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional:    true,
 				Description: `The DeleteAutomationRequest message.`,
 			},
-			"circuit_breaker_max": schema.Int64Attribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Circuit breaker rate cap. See Automation.circuit_breaker_max for semantics.`,
-			},
-			"circuit_breaker_period": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The circuitBreakerPeriod field. possible known values include one of ["CIRCUIT_BREAKER_PERIOD_UNSPECIFIED", "CIRCUIT_BREAKER_PERIOD_HOUR", "CIRCUIT_BREAKER_PERIOD_DAY", "CIRCUIT_BREAKER_PERIOD_WEEK", "CIRCUIT_BREAKER_PERIOD_MONTH"]`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"current_version": schema.StringAttribute{
-				Computed:    true,
-				Description: `The currentVersion field.`,
-			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Optional description explaining the automation's purpose.`,
-			},
-			"disabled_reason_circuit_breaker": schema.SingleNestedAttribute{
+			"circuit_breaker": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"observed_count": schema.Int64Attribute{
@@ -1555,6 +1544,39 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: `DisabledReasonCircuitBreaker carries the trip context when an automation` + "\n" +
 					` has been auto-disabled by its rate cap. Returned on the parent Automation` + "\n" +
 					` when read; not directly settable.`,
+			},
+			"circuit_breaker_max": schema.Int64Attribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Circuit breaker rate cap. See Automation.circuit_breaker_max for semantics.`,
+			},
+			"circuit_breaker_period": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The circuitBreakerPeriod field. possible known values include one of ["CIRCUIT_BREAKER_PERIOD_UNSPECIFIED", "CIRCUIT_BREAKER_PERIOD_HOUR", "CIRCUIT_BREAKER_PERIOD_DAY", "CIRCUIT_BREAKER_PERIOD_WEEK", "CIRCUIT_BREAKER_PERIOD_MONTH"]`,
+			},
+			"context": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"context": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+					},
+				},
+				Description: `The AutomationContext message.`,
+			},
+			"created_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"current_version": schema.StringAttribute{
+				Computed:    true,
+				Description: `The currentVersion field.`,
+			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Optional description explaining the automation's purpose.`,
 			},
 			"display_name": schema.StringAttribute{
 				Computed:    true,
@@ -1627,7 +1649,10 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
-									Description: `The args field.`,
+									MarkdownDescription: `Arg name → CEL expression. Each value is evaluated against the` + "\n" +
+										` workflow execution context (subject + completed step outputs) and the` + "\n" +
+										` resolved values are passed to the function as JSON. Plain literals` + "\n" +
+										` must be quoted as CEL strings (e.g. "'static-value'").`,
 								},
 								"function_id": schema.StringAttribute{
 									Computed:    true,
@@ -1887,7 +1912,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"entitlement_exclusion_criteria": schema.SingleNestedAttribute{
+								"exclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -1918,7 +1943,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The EntitlementExclusionCriteria message.`,
 								},
-								"entitlement_exclusion_list": schema.SingleNestedAttribute{
+								"exclusion_list": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -1947,7 +1972,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The EntitlementExclusionList message.`,
 								},
-								"entitlement_exclusion_list_cel": schema.SingleNestedAttribute{
+								"exclusion_list_cel": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -1959,12 +1984,20 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The EntitlementExclusionListCel message.`,
 								},
-								"entitlement_exclusion_none": schema.SingleNestedAttribute{
+								"exclusion_none": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The EntitlementExclusionNone message.`,
 								},
-								"entitlement_inclusion_access_only": schema.SingleNestedAttribute{
+								"grant_source_filter": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `Restricts the step to grants of either DIRECT (grants the user holds directly,` + "\n" +
+										` including grants that are also inherited) or UNSPECIFIED (all grants).` + "\n" +
+										` Composes with every inclusion mode, including inclusion_list_cel.` + "\n" +
+										`possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT"]`,
+								},
+								"inclusion_access_only": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									MarkdownDescription: `EntitlementInclusionAccessOnly resolves to the system-managed access` + "\n" +
@@ -1972,12 +2005,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										` deprovision app accounts without fanning out to every group, role, or` + "\n" +
 										` permission inside each app — produces at most one revoke ticket per app.`,
 								},
-								"entitlement_inclusion_all": schema.SingleNestedAttribute{
+								"inclusion_all": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The EntitlementInclusionAll message.`,
 								},
-								"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+								"inclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2008,7 +2041,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The EntitlementInclusionCriteria message.`,
 								},
-								"entitlement_inclusion_list": schema.SingleNestedAttribute{
+								"inclusion_list": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2037,7 +2070,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The EntitlementInclusionList message.`,
 								},
-								"entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+								"inclusion_list_cel": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2130,13 +2163,20 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Description: `The expressions field.`,
 								},
 							},
-							Description: `The EvaluateExpressions message.`,
+							DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+							Description:        `The EvaluateExpressions message.`,
 						},
 						"generate_password": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"generate_password_policy": schema.SingleNestedAttribute{
+								"password_policy_id": schema.StringAttribute{
+									Computed:           true,
+									Optional:           true,
+									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+									Description:        `Deprecated: password policy ID lookup is no longer used.`,
+								},
+								"policy": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2199,12 +2239,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`  - customCharacters` + "\n" +
 										`  - excludedCharacters`,
 								},
-								"password_policy_id": schema.StringAttribute{
-									Computed:           true,
-									Optional:           true,
-									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-									Description:        `Deprecated: password policy ID lookup is no longer used.`,
-								},
 							},
 							Description: `The GeneratePassword message.`,
 						},
@@ -2212,7 +2246,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"grant_entitlement_exclusion_criteria": schema.SingleNestedAttribute{
+								"exclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2237,7 +2271,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The GrantEntitlementExclusionCriteria message.`,
 								},
-								"grant_entitlement_exclusion_list": schema.SingleNestedAttribute{
+								"exclusion_list": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2266,7 +2300,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The GrantEntitlementExclusionList message.`,
 								},
-								"grant_entitlement_exclusion_list_cel": schema.SingleNestedAttribute{
+								"exclusion_list_cel": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2278,12 +2312,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The GrantEntitlementExclusionListCel message.`,
 								},
-								"grant_entitlement_exclusion_none": schema.SingleNestedAttribute{
+								"exclusion_none": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The GrantEntitlementExclusionNone message.`,
 								},
-								"grant_entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+								"inclusion_criteria": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2308,7 +2342,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The GrantEntitlementInclusionCriteria message.`,
 								},
-								"grant_entitlement_inclusion_list": schema.SingleNestedAttribute{
+								"inclusion_list": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2337,7 +2371,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `The GrantEntitlementInclusionList message.`,
 								},
-								"grant_entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+								"inclusion_list_cel": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2397,6 +2431,18 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`This field is part of the ` + "`" + `replacement_user` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.automations.v1.RemoveFromDelegation` + "`" + ` for more details.`,
 								},
+								"replacement_user_ref": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id of the user.`,
+										},
+									},
+									Description: `A reference to a user.`,
+								},
 								"use_subject_user": schema.BoolAttribute{
 									Computed:    true,
 									Optional:    true,
@@ -2419,18 +2465,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Description: `A reference to a user.`,
 								},
-								"user_ref1": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"id": schema.StringAttribute{
-											Computed:    true,
-											Optional:    true,
-											Description: `The id of the user.`,
-										},
-									},
-									Description: `A reference to a user.`,
-								},
 							},
 							MarkdownDescription: `RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.` + "\n" +
 								`` + "\n" +
@@ -2442,17 +2476,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"automation_context": schema.SingleNestedAttribute{
-									Computed: true,
-									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"context": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-										},
-									},
-									Description: `The AutomationContext message.`,
-								},
 								"automation_template_id_cel": schema.StringAttribute{
 									Computed: true,
 									Optional: true,
@@ -2471,6 +2494,17 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The AutomationTemplateRef message.`,
+								},
+								"context": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"context": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+										},
+									},
+									Description: `The AutomationContext message.`,
 								},
 							},
 							MarkdownDescription: `RunAutomation: kick off the execution of an automation template.` + "\n" +
@@ -2552,6 +2586,14 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Computed:    true,
 									Optional:    true,
 									Description: `The body field.`,
+								},
+								"channel_is_id": schema.BoolAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `When true, the channel value (channel_name / channel_name_cel) is a Slack` + "\n" +
+										` channel ID rather than a name. The backend looks the channel up by ID and` + "\n" +
+										` fails permanently if it does not exist or the bot cannot access it — it does` + "\n" +
+										` not create or search by name. Only applies to channel delivery.`,
 								},
 								"channel_name": schema.StringAttribute{
 									Computed: true,
@@ -2691,14 +2733,16 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 									Description: `Maximum number of views (0 = unlimited, default 1) (Paper Vault only)`,
 								},
 								"recipient_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)`,
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression resolving to one or more recipient C1 user IDs — a string or list<string>,` + "\n" +
+										` e.g. '["u1","u2"]' (SSO_INTERNAL / App Vault). App Vault accepts a single user only.`,
 								},
 								"recipient_email_cel": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)`,
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `CEL expression resolving to one or more recipient email addresses — a string or list<string>,` + "\n" +
+										` e.g. '["a@x.com","b@x.com"]' (Paper Vault + VERIFY_EMAIL only).`,
 								},
 								"ttl": schema.StringAttribute{
 									Computed: true,
@@ -2717,7 +2761,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"close_action": schema.SingleNestedAttribute{
+								"close": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2752,7 +2796,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										`  - userIdCel` + "\n" +
 										`  - userRef`,
 								},
-								"reassign_action": schema.SingleNestedAttribute{
+								"reassign": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -2763,6 +2807,18 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												`This field is part of the ` + "`" + `assignee_user_identifier` + "`" + ` oneof.` + "\n" +
 												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
 										},
+										"assignee_user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
 										"subject_user_id_cel": schema.StringAttribute{
 											Computed: true,
 											Optional: true,
@@ -2770,34 +2826,22 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												`This field is part of the ` + "`" + `subject_user_identifier` + "`" + ` oneof.` + "\n" +
 												`See the documentation for ` + "`" + `c1.api.automations.v1.ReassignAction` + "`" + ` for more details.`,
 										},
+										"subject_user_ref": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"id": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The id of the user.`,
+												},
+											},
+											Description: `A reference to a user.`,
+										},
 										"use_subject_user": schema.BoolAttribute{
 											Computed:    true,
 											Optional:    true,
 											Description: `If true, the step will use the subject user of the automation as the subject.`,
-										},
-										"user_ref": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
-										},
-										"user_ref1": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"id": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The id of the user.`,
-												},
-											},
-											Description: `A reference to a user.`,
 										},
 									},
 									MarkdownDescription: `The ReassignAction message.` + "\n" +
@@ -2981,7 +3025,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
-						"access_conflict_trigger": schema.SingleNestedAttribute{
+						"access_conflict": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3023,7 +3067,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - conflictMonitorRefs` + "\n" +
 								`  - allConflictMonitors`,
 						},
-						"app_user_created_trigger": schema.SingleNestedAttribute{
+						"app_user_created": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3053,7 +3097,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"app_user_updated_trigger": schema.SingleNestedAttribute{
+						"app_user_updated": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3083,7 +3127,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"grant_deleted_trigger": schema.SingleNestedAttribute{
+						"grant_deleted": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3103,12 +3147,34 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The AccountFilter message.`,
 										},
-										"entitlement_inclusion_all": schema.SingleNestedAttribute{
+										"grant_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"grant_filter_type": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
+												},
+												"grant_justification_type": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
+												},
+												"grant_source_filter": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
+												},
+											},
+											Description: `The GrantFilter message.`,
+										},
+										"inclusion_all": schema.SingleNestedAttribute{
 											Computed:    true,
 											Optional:    true,
 											Description: `The EntitlementInclusionAll message.`,
 										},
-										"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+										"inclusion_criteria": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3139,7 +3205,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The EntitlementInclusionCriteria message.`,
 										},
-										"entitlement_inclusion_list": schema.SingleNestedAttribute{
+										"inclusion_list": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3168,7 +3234,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The EntitlementInclusionList message.`,
 										},
-										"entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+										"inclusion_list_cel": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3179,28 +3245,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												},
 											},
 											Description: `The EntitlementInclusionListCel message.`,
-										},
-										"grant_filter": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"grant_filter_type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-												},
-												"grant_justification_type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-												},
-												"grant_source_filter": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-												},
-											},
-											Description: `The GrantFilter message.`,
 										},
 									},
 									MarkdownDescription: `The GrantTriggerFilter message.` + "\n" +
@@ -3214,7 +3258,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The GrantDeletedTrigger message.`,
 						},
-						"grant_found_trigger": schema.SingleNestedAttribute{
+						"grant_found": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3234,12 +3278,34 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The AccountFilter message.`,
 										},
-										"entitlement_inclusion_all": schema.SingleNestedAttribute{
+										"grant_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"grant_filter_type": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
+												},
+												"grant_justification_type": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
+												},
+												"grant_source_filter": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
+												},
+											},
+											Description: `The GrantFilter message.`,
+										},
+										"inclusion_all": schema.SingleNestedAttribute{
 											Computed:    true,
 											Optional:    true,
 											Description: `The EntitlementInclusionAll message.`,
 										},
-										"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+										"inclusion_criteria": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3270,7 +3336,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The EntitlementInclusionCriteria message.`,
 										},
-										"entitlement_inclusion_list": schema.SingleNestedAttribute{
+										"inclusion_list": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3299,7 +3365,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The EntitlementInclusionList message.`,
 										},
-										"entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+										"inclusion_list_cel": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3310,28 +3376,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												},
 											},
 											Description: `The EntitlementInclusionListCel message.`,
-										},
-										"grant_filter": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"grant_filter_type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-												},
-												"grant_justification_type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-												},
-												"grant_source_filter": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-												},
-											},
-											Description: `The GrantFilter message.`,
 										},
 									},
 									MarkdownDescription: `The GrantTriggerFilter message.` + "\n" +
@@ -3345,7 +3389,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The GrantFoundTrigger message.`,
 						},
-						"schedule_trigger": schema.SingleNestedAttribute{
+						"schedule": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3385,7 +3429,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The ScheduleTrigger message.`,
 						},
-						"schedule_trigger_app_user": schema.SingleNestedAttribute{
+						"schedule_app_user": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3419,7 +3463,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The ScheduleTriggerAppUser message.`,
 						},
-						"schedule_trigger_no_user": schema.SingleNestedAttribute{
+						"schedule_no_user": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3449,7 +3493,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							MarkdownDescription: `ScheduleTriggerNoUser fires on a cron schedule with no subject user (e.g. reports, syncs, orchestration).` + "\n" +
 								` Minimum cron interval is enforced at 1 hour in validation.`,
 						},
-						"usage_based_revocation_trigger": schema.SingleNestedAttribute{
+						"usage_based_revocation": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3569,7 +3613,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - runImmediately` + "\n" +
 								`  - runDelayed`,
 						},
-						"user_created_trigger": schema.SingleNestedAttribute{
+						"user_created": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3581,7 +3625,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The UserCreatedTrigger message.`,
 						},
-						"user_profile_change_trigger": schema.SingleNestedAttribute{
+						"user_profile_change": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3593,16 +3637,11 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The UserProfileChangeTrigger message.`,
 						},
-						"webhook_automation_trigger": schema.SingleNestedAttribute{
+						"webhook": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"listener_id": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `Optional existing listener ID (hidden field from frontend)`,
-								},
-								"webhook_listener_auth_capability_url": schema.SingleNestedAttribute{
+								"capability_url": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									MarkdownDescription: `Capability URL authentication: the URL itself contains an unguessable token that acts` + "\n" +
@@ -3610,12 +3649,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										` the token can leak via server logs, referrer headers, and URL sharing.` + "\n" +
 										` See https://www.w3.org/TR/capability-urls/ for background.`,
 								},
-								"webhook_listener_auth_hmac": schema.SingleNestedAttribute{
+								"hmac": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The WebhookListenerAuthHMAC message.`,
 								},
-								"webhook_listener_auth_jwt": schema.SingleNestedAttribute{
+								"jwt": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -3626,6 +3665,11 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The WebhookListenerAuthJWT message.`,
+								},
+								"listener_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Optional existing listener ID (hidden field from frontend)`,
 								},
 							},
 							MarkdownDescription: `The WebhookAutomationTrigger message.` + "\n" +
@@ -3668,7 +3712,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 						speakeasy_objectvalidators.NotNull(),
 					},
 					Attributes: map[string]schema.Attribute{
-						"access_conflict_trigger": schema.SingleNestedAttribute{
+						"access_conflict": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3710,7 +3754,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - conflictMonitorRefs` + "\n" +
 								`  - allConflictMonitors`,
 						},
-						"app_user_created_trigger": schema.SingleNestedAttribute{
+						"app_user_created": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3740,7 +3784,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"app_user_updated_trigger": schema.SingleNestedAttribute{
+						"app_user_updated": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3770,7 +3814,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - appId` + "\n" +
 								`  - appIdCel`,
 						},
-						"grant_deleted_trigger": schema.SingleNestedAttribute{
+						"grant_deleted": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3790,12 +3834,34 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The AccountFilter message.`,
 										},
-										"entitlement_inclusion_all": schema.SingleNestedAttribute{
+										"grant_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"grant_filter_type": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
+												},
+												"grant_justification_type": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
+												},
+												"grant_source_filter": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
+												},
+											},
+											Description: `The GrantFilter message.`,
+										},
+										"inclusion_all": schema.SingleNestedAttribute{
 											Computed:    true,
 											Optional:    true,
 											Description: `The EntitlementInclusionAll message.`,
 										},
-										"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+										"inclusion_criteria": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3826,7 +3892,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The EntitlementInclusionCriteria message.`,
 										},
-										"entitlement_inclusion_list": schema.SingleNestedAttribute{
+										"inclusion_list": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3855,7 +3921,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The EntitlementInclusionList message.`,
 										},
-										"entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+										"inclusion_list_cel": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3866,28 +3932,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												},
 											},
 											Description: `The EntitlementInclusionListCel message.`,
-										},
-										"grant_filter": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"grant_filter_type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-												},
-												"grant_justification_type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-												},
-												"grant_source_filter": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-												},
-											},
-											Description: `The GrantFilter message.`,
 										},
 									},
 									MarkdownDescription: `The GrantTriggerFilter message.` + "\n" +
@@ -3901,7 +3945,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The GrantDeletedTrigger message.`,
 						},
-						"grant_found_trigger": schema.SingleNestedAttribute{
+						"grant_found": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -3921,12 +3965,34 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The AccountFilter message.`,
 										},
-										"entitlement_inclusion_all": schema.SingleNestedAttribute{
+										"grant_filter": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"grant_filter_type": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
+												},
+												"grant_justification_type": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
+												},
+												"grant_source_filter": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
+												},
+											},
+											Description: `The GrantFilter message.`,
+										},
+										"inclusion_all": schema.SingleNestedAttribute{
 											Computed:    true,
 											Optional:    true,
 											Description: `The EntitlementInclusionAll message.`,
 										},
-										"entitlement_inclusion_criteria": schema.SingleNestedAttribute{
+										"inclusion_criteria": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3957,7 +4023,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The EntitlementInclusionCriteria message.`,
 										},
-										"entitlement_inclusion_list": schema.SingleNestedAttribute{
+										"inclusion_list": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3986,7 +4052,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											},
 											Description: `The EntitlementInclusionList message.`,
 										},
-										"entitlement_inclusion_list_cel": schema.SingleNestedAttribute{
+										"inclusion_list_cel": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
@@ -3997,28 +4063,6 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 												},
 											},
 											Description: `The EntitlementInclusionListCel message.`,
-										},
-										"grant_filter": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
-											Attributes: map[string]schema.Attribute{
-												"grant_filter_type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantFilterType field. possible known values include one of ["GRANT_FILTER_TYPE_UNSPECIFIED", "GRANT_FILTER_TYPE_PERMANENT", "GRANT_FILTER_TYPE_TEMPORARY"]`,
-												},
-												"grant_justification_type": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantJustificationType field. possible known values include one of ["GRANT_JUSTIFICATION_TYPE_UNSPECIFIED", "GRANT_JUSTIFICATION_TYPE_ALL", "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE", "GRANT_JUSTIFICATION_TYPE_DIRECT"]`,
-												},
-												"grant_source_filter": schema.StringAttribute{
-													Computed:    true,
-													Optional:    true,
-													Description: `The grantSourceFilter field. possible known values include one of ["GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT", "GRANT_SOURCE_FILTER_INHERITED"]`,
-												},
-											},
-											Description: `The GrantFilter message.`,
 										},
 									},
 									MarkdownDescription: `The GrantTriggerFilter message.` + "\n" +
@@ -4032,7 +4076,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The GrantFoundTrigger message.`,
 						},
-						"schedule_trigger": schema.SingleNestedAttribute{
+						"schedule": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -4072,7 +4116,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The ScheduleTrigger message.`,
 						},
-						"schedule_trigger_app_user": schema.SingleNestedAttribute{
+						"schedule_app_user": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -4106,7 +4150,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The ScheduleTriggerAppUser message.`,
 						},
-						"schedule_trigger_no_user": schema.SingleNestedAttribute{
+						"schedule_no_user": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -4136,7 +4180,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							MarkdownDescription: `ScheduleTriggerNoUser fires on a cron schedule with no subject user (e.g. reports, syncs, orchestration).` + "\n" +
 								` Minimum cron interval is enforced at 1 hour in validation.`,
 						},
-						"usage_based_revocation_trigger": schema.SingleNestedAttribute{
+						"usage_based_revocation": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -4256,7 +4300,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 								`  - runImmediately` + "\n" +
 								`  - runDelayed`,
 						},
-						"user_created_trigger": schema.SingleNestedAttribute{
+						"user_created": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -4268,7 +4312,7 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The UserCreatedTrigger message.`,
 						},
-						"user_profile_change_trigger": schema.SingleNestedAttribute{
+						"user_profile_change": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
@@ -4280,16 +4324,11 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 							},
 							Description: `The UserProfileChangeTrigger message.`,
 						},
-						"webhook_automation_trigger": schema.SingleNestedAttribute{
+						"webhook": schema.SingleNestedAttribute{
 							Computed: true,
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
-								"listener_id": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `Optional existing listener ID (hidden field from frontend)`,
-								},
-								"webhook_listener_auth_capability_url": schema.SingleNestedAttribute{
+								"capability_url": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									MarkdownDescription: `Capability URL authentication: the URL itself contains an unguessable token that acts` + "\n" +
@@ -4297,12 +4336,12 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										` the token can leak via server logs, referrer headers, and URL sharing.` + "\n" +
 										` See https://www.w3.org/TR/capability-urls/ for background.`,
 								},
-								"webhook_listener_auth_hmac": schema.SingleNestedAttribute{
+								"hmac": schema.SingleNestedAttribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The WebhookListenerAuthHMAC message.`,
 								},
-								"webhook_listener_auth_jwt": schema.SingleNestedAttribute{
+								"jwt": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
@@ -4313,6 +4352,11 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 										},
 									},
 									Description: `The WebhookListenerAuthJWT message.`,
+								},
+								"listener_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `Optional existing listener ID (hidden field from frontend)`,
 								},
 							},
 							MarkdownDescription: `The WebhookAutomationTrigger message.` + "\n" +

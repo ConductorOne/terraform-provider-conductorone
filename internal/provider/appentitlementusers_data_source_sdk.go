@@ -26,76 +26,90 @@ func (r *AppEntitlementUsersDataSourceModel) RefreshFromSharedListAppEntitlement
 			for _, listItem := range resp.List {
 				var list tfTypes.AppEntitlementUserView
 
+				list.AppEntitlementID = types.StringPointerValue(listItem.AppEntitlementID)
 				list.AppEntitlementUserBindingCreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppEntitlementUserBindingCreatedAt))
 				list.AppEntitlementUserBindingDeprovisionAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppEntitlementUserBindingDeprovisionAt))
-				if listItem.AppUserView == nil {
-					list.AppUserView = nil
+				list.AppID = types.StringPointerValue(listItem.AppID)
+				if listItem.AppUser == nil {
+					list.AppUser = nil
 				} else {
-					list.AppUserView = &tfTypes.AppUserView{}
-					list.AppUserView.AppPath = types.StringPointerValue(listItem.AppUserView.AppPath)
-					if listItem.AppUserView.AppUser == nil {
-						list.AppUserView.AppUser = nil
+					list.AppUser = &tfTypes.AppUserView{}
+					list.AppUser.AppPath = types.StringPointerValue(listItem.AppUser.AppPath)
+					if listItem.AppUser.AppUser == nil {
+						list.AppUser.AppUser = nil
 					} else {
-						list.AppUserView.AppUser = &tfTypes.AppUser{}
-						list.AppUserView.AppUser.AppID = types.StringPointerValue(listItem.AppUserView.AppUser.AppID)
-						if listItem.AppUserView.AppUser.AppUserStatus == nil {
-							list.AppUserView.AppUser.AppUserStatus = nil
+						list.AppUser.AppUser = &tfTypes.AppUser{}
+						if listItem.AppUser.AppUser.AgentStatus != nil {
+							list.AppUser.AppUser.AgentStatus = types.StringValue(string(*listItem.AppUser.AppUser.AgentStatus))
 						} else {
-							list.AppUserView.AppUser.AppUserStatus = &tfTypes.AppUserStatus{}
-							list.AppUserView.AppUser.AppUserStatus.Details = types.StringPointerValue(listItem.AppUserView.AppUser.AppUserStatus.Details)
-							if listItem.AppUserView.AppUser.AppUserStatus.Status != nil {
-								list.AppUserView.AppUser.AppUserStatus.Status = types.StringValue(string(*listItem.AppUserView.AppUser.AppUserStatus.Status))
+							list.AppUser.AppUser.AgentStatus = types.StringNull()
+						}
+						list.AppUser.AppUser.AppID = types.StringPointerValue(listItem.AppUser.AppUser.AppID)
+						if listItem.AppUser.AppUser.AppUserType != nil {
+							list.AppUser.AppUser.AppUserType = types.StringValue(string(*listItem.AppUser.AppUser.AppUserType))
+						} else {
+							list.AppUser.AppUser.AppUserType = types.StringNull()
+						}
+						list.AppUser.AppUser.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppUser.AppUser.CreatedAt))
+						list.AppUser.AppUser.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppUser.AppUser.DeletedAt))
+						list.AppUser.AppUser.DisplayName = types.StringPointerValue(listItem.AppUser.AppUser.DisplayName)
+						list.AppUser.AppUser.Email = types.StringPointerValue(listItem.AppUser.AppUser.Email)
+						if listItem.AppUser.AppUser.Emails != nil {
+							list.AppUser.AppUser.Emails = make([]types.String, 0, len(listItem.AppUser.AppUser.Emails))
+							for _, v := range listItem.AppUser.AppUser.Emails {
+								list.AppUser.AppUser.Emails = append(list.AppUser.AppUser.Emails, types.StringValue(v))
+							}
+						} else {
+							list.AppUser.AppUser.Emails = nil
+						}
+						if listItem.AppUser.AppUser.EmployeeIds != nil {
+							list.AppUser.AppUser.EmployeeIds = make([]types.String, 0, len(listItem.AppUser.AppUser.EmployeeIds))
+							for _, v := range listItem.AppUser.AppUser.EmployeeIds {
+								list.AppUser.AppUser.EmployeeIds = append(list.AppUser.AppUser.EmployeeIds, types.StringValue(v))
+							}
+						} else {
+							list.AppUser.AppUser.EmployeeIds = nil
+						}
+						list.AppUser.AppUser.ID = types.StringPointerValue(listItem.AppUser.AppUser.ID)
+						list.AppUser.AppUser.IdentityUserID = types.StringPointerValue(listItem.AppUser.AppUser.IdentityUserID)
+						list.AppUser.AppUser.IsExternal = types.BoolPointerValue(listItem.AppUser.AppUser.IsExternal)
+						list.AppUser.AppUser.NhiDetail = types.StringPointerValue(listItem.AppUser.AppUser.NhiDetail)
+						if listItem.AppUser.AppUser.NhiType != nil {
+							list.AppUser.AppUser.NhiType = types.StringValue(string(*listItem.AppUser.AppUser.NhiType))
+						} else {
+							list.AppUser.AppUser.NhiType = types.StringNull()
+						}
+						if listItem.AppUser.AppUser.Profile == nil {
+							list.AppUser.AppUser.Profile = nil
+						} else {
+							list.AppUser.AppUser.Profile = &tfTypes.Profile{}
+						}
+						if listItem.AppUser.AppUser.Status == nil {
+							list.AppUser.AppUser.Status = nil
+						} else {
+							list.AppUser.AppUser.Status = &tfTypes.AppUserStatus{}
+							list.AppUser.AppUser.Status.Details = types.StringPointerValue(listItem.AppUser.AppUser.Status.Details)
+							if listItem.AppUser.AppUser.Status.Status != nil {
+								list.AppUser.AppUser.Status.Status = types.StringValue(string(*listItem.AppUser.AppUser.Status.Status))
 							} else {
-								list.AppUserView.AppUser.AppUserStatus.Status = types.StringNull()
+								list.AppUser.AppUser.Status.Status = types.StringNull()
 							}
 						}
-						if listItem.AppUserView.AppUser.AppUserType != nil {
-							list.AppUserView.AppUser.AppUserType = types.StringValue(string(*listItem.AppUserView.AppUser.AppUserType))
-						} else {
-							list.AppUserView.AppUser.AppUserType = types.StringNull()
-						}
-						list.AppUserView.AppUser.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppUserView.AppUser.CreatedAt))
-						list.AppUserView.AppUser.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppUserView.AppUser.DeletedAt))
-						list.AppUserView.AppUser.DisplayName = types.StringPointerValue(listItem.AppUserView.AppUser.DisplayName)
-						list.AppUserView.AppUser.Email = types.StringPointerValue(listItem.AppUserView.AppUser.Email)
-						if listItem.AppUserView.AppUser.Emails != nil {
-							list.AppUserView.AppUser.Emails = make([]types.String, 0, len(listItem.AppUserView.AppUser.Emails))
-							for _, v := range listItem.AppUserView.AppUser.Emails {
-								list.AppUserView.AppUser.Emails = append(list.AppUserView.AppUser.Emails, types.StringValue(v))
+						list.AppUser.AppUser.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppUser.AppUser.UpdatedAt))
+						list.AppUser.AppUser.Username = types.StringPointerValue(listItem.AppUser.AppUser.Username)
+						if listItem.AppUser.AppUser.Usernames != nil {
+							list.AppUser.AppUser.Usernames = make([]types.String, 0, len(listItem.AppUser.AppUser.Usernames))
+							for _, v := range listItem.AppUser.AppUser.Usernames {
+								list.AppUser.AppUser.Usernames = append(list.AppUser.AppUser.Usernames, types.StringValue(v))
 							}
 						} else {
-							list.AppUserView.AppUser.Emails = nil
-						}
-						if listItem.AppUserView.AppUser.EmployeeIds != nil {
-							list.AppUserView.AppUser.EmployeeIds = make([]types.String, 0, len(listItem.AppUserView.AppUser.EmployeeIds))
-							for _, v := range listItem.AppUserView.AppUser.EmployeeIds {
-								list.AppUserView.AppUser.EmployeeIds = append(list.AppUserView.AppUser.EmployeeIds, types.StringValue(v))
-							}
-						} else {
-							list.AppUserView.AppUser.EmployeeIds = nil
-						}
-						list.AppUserView.AppUser.ID = types.StringPointerValue(listItem.AppUserView.AppUser.ID)
-						list.AppUserView.AppUser.IdentityUserID = types.StringPointerValue(listItem.AppUserView.AppUser.IdentityUserID)
-						list.AppUserView.AppUser.IsExternal = types.BoolPointerValue(listItem.AppUserView.AppUser.IsExternal)
-						if listItem.AppUserView.AppUser.Profile == nil {
-							list.AppUserView.AppUser.Profile = nil
-						} else {
-							list.AppUserView.AppUser.Profile = &tfTypes.AppUserProfile{}
-						}
-						list.AppUserView.AppUser.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AppUserView.AppUser.UpdatedAt))
-						list.AppUserView.AppUser.Username = types.StringPointerValue(listItem.AppUserView.AppUser.Username)
-						if listItem.AppUserView.AppUser.Usernames != nil {
-							list.AppUserView.AppUser.Usernames = make([]types.String, 0, len(listItem.AppUserView.AppUser.Usernames))
-							for _, v := range listItem.AppUserView.AppUser.Usernames {
-								list.AppUserView.AppUser.Usernames = append(list.AppUserView.AppUser.Usernames, types.StringValue(v))
-							}
-						} else {
-							list.AppUserView.AppUser.Usernames = nil
+							list.AppUser.AppUser.Usernames = nil
 						}
 					}
-					list.AppUserView.IdentityUserPath = types.StringPointerValue(listItem.AppUserView.IdentityUserPath)
-					list.AppUserView.LastUsagePath = types.StringPointerValue(listItem.AppUserView.LastUsagePath)
+					list.AppUser.IdentityUserPath = types.StringPointerValue(listItem.AppUser.IdentityUserPath)
+					list.AppUser.LastUsagePath = types.StringPointerValue(listItem.AppUser.LastUsagePath)
 				}
+				list.AppUserID = types.StringPointerValue(listItem.AppUserID)
 				if listItem.GrantSources != nil {
 					list.GrantSources = []tfTypes.AppEntitlementRef{}
 

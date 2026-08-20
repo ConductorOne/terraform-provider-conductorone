@@ -2,7 +2,40 @@
 
 package shared
 
-// UpdateOnboardingSettingsRequestStatus - The new onboarding status to set.
+// UpdateOnboardingSettingsRequestMcpOnboardingStatus - The new MCP onboarding status to set. Omit (or UNSPECIFIED) to leave it
+//
+//	unchanged. Setting NOT_STARTED restarts the briefing and clears the stored
+//	mcp_onboarding_goal and mcp_onboarding_targets, unless this same request also
+//	sets them (those win).
+type UpdateOnboardingSettingsRequestMcpOnboardingStatus string
+
+const (
+	UpdateOnboardingSettingsRequestMcpOnboardingStatusMcpOnboardingStatusUnspecified UpdateOnboardingSettingsRequestMcpOnboardingStatus = "MCP_ONBOARDING_STATUS_UNSPECIFIED"
+	UpdateOnboardingSettingsRequestMcpOnboardingStatusMcpOnboardingStatusNotStarted  UpdateOnboardingSettingsRequestMcpOnboardingStatus = "MCP_ONBOARDING_STATUS_NOT_STARTED"
+	UpdateOnboardingSettingsRequestMcpOnboardingStatusMcpOnboardingStatusInProgress  UpdateOnboardingSettingsRequestMcpOnboardingStatus = "MCP_ONBOARDING_STATUS_IN_PROGRESS"
+	UpdateOnboardingSettingsRequestMcpOnboardingStatusMcpOnboardingStatusComplete    UpdateOnboardingSettingsRequestMcpOnboardingStatus = "MCP_ONBOARDING_STATUS_COMPLETE"
+	UpdateOnboardingSettingsRequestMcpOnboardingStatusMcpOnboardingStatusDismissed   UpdateOnboardingSettingsRequestMcpOnboardingStatus = "MCP_ONBOARDING_STATUS_DISMISSED"
+)
+
+func (e UpdateOnboardingSettingsRequestMcpOnboardingStatus) ToPointer() *UpdateOnboardingSettingsRequestMcpOnboardingStatus {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpdateOnboardingSettingsRequestMcpOnboardingStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "MCP_ONBOARDING_STATUS_UNSPECIFIED", "MCP_ONBOARDING_STATUS_NOT_STARTED", "MCP_ONBOARDING_STATUS_IN_PROGRESS", "MCP_ONBOARDING_STATUS_COMPLETE", "MCP_ONBOARDING_STATUS_DISMISSED":
+			return true
+		}
+	}
+	return false
+}
+
+// UpdateOnboardingSettingsRequestStatus - The new onboarding status to set. UNSPECIFIED leaves the core onboarding
+//
+//	status unchanged (set mcp_onboarding_status alone to retire the AIAM
+//	briefing without touching the core wizard).
 type UpdateOnboardingSettingsRequestStatus string
 
 const (
@@ -32,7 +65,17 @@ func (e *UpdateOnboardingSettingsRequestStatus) IsExact() bool {
 type UpdateOnboardingSettingsRequest struct {
 	// The identifier of the onboarding conversation thread to associate.
 	ConversationID *string `json:"conversationId,omitempty"`
-	// The new onboarding status to set.
+	// The admin's AIAM onboarding goal. Omit to leave unchanged; set to "" to clear.
+	McpOnboardingGoal *string `json:"mcpOnboardingGoal,omitempty"`
+	// The new MCP onboarding status to set. Omit (or UNSPECIFIED) to leave it
+	//  unchanged. Setting NOT_STARTED restarts the briefing and clears the stored
+	//  mcp_onboarding_goal and mcp_onboarding_targets, unless this same request also
+	//  sets them (those win).
+	McpOnboardingStatus  *UpdateOnboardingSettingsRequestMcpOnboardingStatus `json:"mcpOnboardingStatus,omitempty"`
+	McpOnboardingTargets *McpOnboardingTargetList                            `json:"mcpOnboardingTargets,omitempty"`
+	// The new onboarding status to set. UNSPECIFIED leaves the core onboarding
+	//  status unchanged (set mcp_onboarding_status alone to retire the AIAM
+	//  briefing without touching the core wizard).
 	Status *UpdateOnboardingSettingsRequestStatus `json:"status,omitempty"`
 }
 
@@ -41,6 +84,27 @@ func (u *UpdateOnboardingSettingsRequest) GetConversationID() *string {
 		return nil
 	}
 	return u.ConversationID
+}
+
+func (u *UpdateOnboardingSettingsRequest) GetMcpOnboardingGoal() *string {
+	if u == nil {
+		return nil
+	}
+	return u.McpOnboardingGoal
+}
+
+func (u *UpdateOnboardingSettingsRequest) GetMcpOnboardingStatus() *UpdateOnboardingSettingsRequestMcpOnboardingStatus {
+	if u == nil {
+		return nil
+	}
+	return u.McpOnboardingStatus
+}
+
+func (u *UpdateOnboardingSettingsRequest) GetMcpOnboardingTargets() *McpOnboardingTargetList {
+	if u == nil {
+		return nil
+	}
+	return u.McpOnboardingTargets
 }
 
 func (u *UpdateOnboardingSettingsRequest) GetStatus() *UpdateOnboardingSettingsRequestStatus {

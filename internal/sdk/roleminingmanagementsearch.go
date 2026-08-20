@@ -32,6 +32,8 @@ func newRoleMiningManagementSearch(rootSDK *ConductoroneAPI, sdkConfig config.SD
 
 // Search
 // Search role mining suggestions by name, description, or cohort filter values with optional state and type filters.
+//
+//	Each suggestion row is large (cohort filters, entitlements, insights, profile matches) — request a small page_size (≤10) to keep responses small.
 func (s *RoleMiningManagementSearch) Search(ctx context.Context, request *shared.RoleMiningSearchSuggestionsRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

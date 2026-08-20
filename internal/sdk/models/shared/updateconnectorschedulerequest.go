@@ -7,13 +7,12 @@ package shared
 // This message contains a oneof named schedule. Only a single field of the following list may be set at a time:
 //   - cron
 type UpdateConnectorScheduleRequest struct {
-	// A cron-based schedule definition for connector syncs.
-	ConnectorScheduleCron *ConnectorScheduleCron `json:"cron,omitempty"`
+	Cron *ConnectorScheduleCron `json:"cron,omitempty"`
 }
 
-func (u *UpdateConnectorScheduleRequest) GetConnectorScheduleCron() *ConnectorScheduleCron {
+func (u *UpdateConnectorScheduleRequest) GetCron() *ConnectorScheduleCron {
 	if u == nil {
 		return nil
 	}
-	return u.ConnectorScheduleCron
+	return u.Cron
 }

@@ -32,6 +32,8 @@ func newPersonalClientSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfi
 
 // Search - NOTE: Searches personal clients for all users
 // Search finds personal client credentials across all users, with optional filtering by query text or user.
+//
+//	Request a modest page_size (≤25) to keep responses small.
 func (s *PersonalClientSearch) Search(ctx context.Context, request *shared.PersonalClientSearchServiceSearchRequest, opts ...operations.Option) (*operations.C1APIIamV1PersonalClientSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

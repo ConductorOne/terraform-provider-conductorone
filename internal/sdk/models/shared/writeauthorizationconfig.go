@@ -35,8 +35,7 @@ type WriteAuthorizationConfig struct {
 	// Tool classifications to block. Must have at least one entry; a hook
 	//  with no blocked classifications would be a silent misconfiguration.
 	BlockedClassifications []BlockedClassifications `json:"blockedClassifications,omitempty"`
-	// BusinessHours defines a weekly time window in a specific timezone.
-	BusinessHours *BusinessHours `json:"businessHours,omitempty"`
+	BusinessHours          *BusinessHours           `json:"businessHours,omitempty"`
 }
 
 func (w *WriteAuthorizationConfig) GetBlockedClassifications() []BlockedClassifications {

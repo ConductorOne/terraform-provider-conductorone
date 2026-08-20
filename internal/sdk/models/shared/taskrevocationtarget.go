@@ -4,13 +4,12 @@ package shared
 
 // TaskRevocationTarget - An ancestor entitlement that will be revoked as part of an inheritance revocation.
 type TaskRevocationTarget struct {
-	// The AppEntitlementRef message.
-	AppEntitlementRef *AppEntitlementRef `json:"entitlementRef,omitempty"`
+	EntitlementRef *AppEntitlementRef `json:"entitlementRef,omitempty"`
 }
 
-func (t *TaskRevocationTarget) GetAppEntitlementRef() *AppEntitlementRef {
+func (t *TaskRevocationTarget) GetEntitlementRef() *AppEntitlementRef {
 	if t == nil {
 		return nil
 	}
-	return t.AppEntitlementRef
+	return t.EntitlementRef
 }

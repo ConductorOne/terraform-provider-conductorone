@@ -31,207 +31,195 @@ package shared
 //   - c1OnboardingWelcome
 //   - c1OnboardingPlan
 //   - c1ConnectorSyncDetail
+//   - c1Chart
+//   - c1MetricCards
+//   - c1Table
 type A2UIComponent struct {
-	// ButtonComponent triggers actions.
-	ButtonComponent *ButtonComponent `json:"button,omitempty"`
-	// C1CodeBlockComponent displays code with syntax highlighting.
-	C1CodeBlockComponent *C1CodeBlockComponent `json:"c1CodeBlock,omitempty"`
-	// C1ConnectorConfigFormComponent renders the shared admin connector-settings form inside an
-	//  A2UI surface. The frontend resolves the catalog, connector, and config schema itself from
-	//  the ids below, keeping the configuration field values out of the agent's data model — the
-	//  agent never receives API keys, passwords, or other secrets entered by the user.
-	C1ConnectorConfigFormComponent *C1ConnectorConfigFormComponent `json:"c1ConnectorConfigForm,omitempty"`
-	// C1ConnectorSyncDetailComponent renders the same live card as
-	//  C1ConnectorSyncProgressComponent but pre-expanded with the phase checklist,
-	//  live count tiles, and "What's happening" explainer visible from the first
-	//  paint. Intended for message-body placement — emit one after each
-	//  `submit_app_config` so the transcript carries a clear "this is what just
-	//  happened" receipt for the connector the user just connected.
-	C1ConnectorSyncDetailComponent *C1ConnectorSyncDetailComponent `json:"c1ConnectorSyncDetail,omitempty"`
-	// C1ConnectorSyncProgressComponent renders a live connector sync status card.
-	//  Subscribes to WebSocket updates for real-time sync lifecycle status.
-	C1ConnectorSyncProgressComponent *C1ConnectorSyncProgressComponent `json:"c1ConnectorSyncProgress,omitempty"`
-	// C1DurationPickerComponent is the access-request duration picker (presets + custom with number/unit).
-	//  Value is duration in seconds bound to the given path.
-	C1DurationPickerComponent *C1DurationPickerComponent `json:"c1DurationPicker,omitempty"`
-	// C1MSTeamsNotificationsComponent renders a self-contained Microsoft Teams integration card.
-	//  Fetches status and consent URLs via frontend API calls.
-	C1MSTeamsNotificationsComponent *C1MSTeamsNotificationsComponent `json:"c1MsTeamsNotifications,omitempty"`
-	// C1OnboardingPlanComponent renders a personalized onboarding plan with categorized steps.
-	//  The agent dynamically populates categories and steps based on user intent and context.
-	C1OnboardingPlanComponent *C1OnboardingPlanComponent `json:"c1OnboardingPlan,omitempty"`
-	// C1OnboardingWelcomeComponent renders the onboarding welcome screen with org context and intent collection.
-	//  Backend pre-populates recommended_catalog_id / recommended_display_name from detected IDP.
-	//  Frontend detects auth backend via introspect for contextual UI text.
-	C1OnboardingWelcomeComponent *C1OnboardingWelcomeComponent `json:"c1OnboardingWelcome,omitempty"`
-	// C1ResourcePickerComponent allows selecting C1 resources.
-	C1ResourcePickerComponent *C1ResourcePickerComponent `json:"c1ResourcePicker,omitempty"`
-	// C1SlackNotificationsComponent renders a self-contained Slack integration card.
-	//  Fetches status and OAuth URLs via frontend API calls.
-	C1SlackNotificationsComponent *C1SlackNotificationsComponent `json:"c1SlackNotifications,omitempty"`
-	// C1StatusIndicatorComponent shows agent progress status.
-	C1StatusIndicatorComponent *C1StatusIndicatorComponent `json:"c1StatusIndicator,omitempty"`
-	// C1TodoListComponent renders a phase/step checklist with progress tracking.
-	C1TodoListComponent *C1TodoListComponent `json:"c1TodoList,omitempty"`
-	// CardComponent is a container with styling.
-	CardComponent *CardComponent `json:"card,omitempty"`
-	// CheckBoxComponent is a boolean checkbox.
-	CheckBoxComponent *CheckBoxComponent `json:"checkBox,omitempty"`
-	// ChoicePickerComponent allows selection from predefined choices.
-	ChoicePickerComponent *ChoicePickerComponent `json:"choicePicker,omitempty"`
-	// ColumnComponent arranges children vertically.
-	ColumnComponent *ColumnComponent `json:"column,omitempty"`
-	// DateTimeInputComponent for date/time selection.
-	DateTimeInputComponent *DateTimeInputComponent `json:"dateTimeInput,omitempty"`
-	// DividerComponent is a visual separator.
-	DividerComponent *DividerComponent `json:"divider,omitempty"`
+	Button                  *ButtonComponent                  `json:"button,omitempty"`
+	C1Chart                 *C1ChartComponent                 `json:"c1Chart,omitempty"`
+	C1CodeBlock             *C1CodeBlockComponent             `json:"c1CodeBlock,omitempty"`
+	C1ConnectorConfigForm   *C1ConnectorConfigFormComponent   `json:"c1ConnectorConfigForm,omitempty"`
+	C1ConnectorSyncDetail   *C1ConnectorSyncDetailComponent   `json:"c1ConnectorSyncDetail,omitempty"`
+	C1ConnectorSyncProgress *C1ConnectorSyncProgressComponent `json:"c1ConnectorSyncProgress,omitempty"`
+	C1DurationPicker        *C1DurationPickerComponent        `json:"c1DurationPicker,omitempty"`
+	C1MetricCards           *C1MetricCardsComponent           `json:"c1MetricCards,omitempty"`
+	C1MsTeamsNotifications  *C1MSTeamsNotificationsComponent  `json:"c1MsTeamsNotifications,omitempty"`
+	C1OnboardingPlan        *C1OnboardingPlanComponent        `json:"c1OnboardingPlan,omitempty"`
+	C1OnboardingWelcome     *C1OnboardingWelcomeComponent     `json:"c1OnboardingWelcome,omitempty"`
+	C1ResourcePicker        *C1ResourcePickerComponent        `json:"c1ResourcePicker,omitempty"`
+	C1SlackNotifications    *C1SlackNotificationsComponent    `json:"c1SlackNotifications,omitempty"`
+	C1StatusIndicator       *C1StatusIndicatorComponent       `json:"c1StatusIndicator,omitempty"`
+	C1Table                 *C1TableComponent                 `json:"c1Table,omitempty"`
+	C1TodoList              *C1TodoListComponent              `json:"c1TodoList,omitempty"`
+	Card                    *CardComponent                    `json:"card,omitempty"`
+	CheckBox                *CheckBoxComponent                `json:"checkBox,omitempty"`
+	ChoicePicker            *ChoicePickerComponent            `json:"choicePicker,omitempty"`
+	Column                  *ColumnComponent                  `json:"column,omitempty"`
+	DateTimeInput           *DateTimeInputComponent           `json:"dateTimeInput,omitempty"`
+	Divider                 *DividerComponent                 `json:"divider,omitempty"`
 	// The id field.
-	ID *string `json:"id,omitempty"`
-	// ProgressBarComponent shows a read-only progress bar (label, value %, min/max).
-	ProgressBarComponent *ProgressBarComponent `json:"progressBar,omitempty"`
-	// RowComponent arranges children horizontally.
-	RowComponent *RowComponent `json:"row,omitempty"`
-	// SliderComponent is an interactive numeric range input (e.g. for forms).
-	SliderComponent *SliderComponent `json:"slider,omitempty"`
-	// TextComponent displays text content.
-	TextComponent *TextComponent `json:"text,omitempty"`
-	// TextFieldComponent is a text input field.
-	TextFieldComponent *TextFieldComponent `json:"textField,omitempty"`
+	ID          *string               `json:"id,omitempty"`
+	ProgressBar *ProgressBarComponent `json:"progressBar,omitempty"`
+	Row         *RowComponent         `json:"row,omitempty"`
+	Slider      *SliderComponent      `json:"slider,omitempty"`
+	Text        *TextComponent        `json:"text,omitempty"`
+	TextField   *TextFieldComponent   `json:"textField,omitempty"`
 	// The weight field.
 	Weight *int `json:"weight,omitempty"`
 }
 
-func (a *A2UIComponent) GetButtonComponent() *ButtonComponent {
+func (a *A2UIComponent) GetButton() *ButtonComponent {
 	if a == nil {
 		return nil
 	}
-	return a.ButtonComponent
+	return a.Button
 }
 
-func (a *A2UIComponent) GetC1CodeBlockComponent() *C1CodeBlockComponent {
+func (a *A2UIComponent) GetC1Chart() *C1ChartComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1CodeBlockComponent
+	return a.C1Chart
 }
 
-func (a *A2UIComponent) GetC1ConnectorConfigFormComponent() *C1ConnectorConfigFormComponent {
+func (a *A2UIComponent) GetC1CodeBlock() *C1CodeBlockComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1ConnectorConfigFormComponent
+	return a.C1CodeBlock
 }
 
-func (a *A2UIComponent) GetC1ConnectorSyncDetailComponent() *C1ConnectorSyncDetailComponent {
+func (a *A2UIComponent) GetC1ConnectorConfigForm() *C1ConnectorConfigFormComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1ConnectorSyncDetailComponent
+	return a.C1ConnectorConfigForm
 }
 
-func (a *A2UIComponent) GetC1ConnectorSyncProgressComponent() *C1ConnectorSyncProgressComponent {
+func (a *A2UIComponent) GetC1ConnectorSyncDetail() *C1ConnectorSyncDetailComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1ConnectorSyncProgressComponent
+	return a.C1ConnectorSyncDetail
 }
 
-func (a *A2UIComponent) GetC1DurationPickerComponent() *C1DurationPickerComponent {
+func (a *A2UIComponent) GetC1ConnectorSyncProgress() *C1ConnectorSyncProgressComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1DurationPickerComponent
+	return a.C1ConnectorSyncProgress
 }
 
-func (a *A2UIComponent) GetC1MSTeamsNotificationsComponent() *C1MSTeamsNotificationsComponent {
+func (a *A2UIComponent) GetC1DurationPicker() *C1DurationPickerComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1MSTeamsNotificationsComponent
+	return a.C1DurationPicker
 }
 
-func (a *A2UIComponent) GetC1OnboardingPlanComponent() *C1OnboardingPlanComponent {
+func (a *A2UIComponent) GetC1MetricCards() *C1MetricCardsComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1OnboardingPlanComponent
+	return a.C1MetricCards
 }
 
-func (a *A2UIComponent) GetC1OnboardingWelcomeComponent() *C1OnboardingWelcomeComponent {
+func (a *A2UIComponent) GetC1MsTeamsNotifications() *C1MSTeamsNotificationsComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1OnboardingWelcomeComponent
+	return a.C1MsTeamsNotifications
 }
 
-func (a *A2UIComponent) GetC1ResourcePickerComponent() *C1ResourcePickerComponent {
+func (a *A2UIComponent) GetC1OnboardingPlan() *C1OnboardingPlanComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1ResourcePickerComponent
+	return a.C1OnboardingPlan
 }
 
-func (a *A2UIComponent) GetC1SlackNotificationsComponent() *C1SlackNotificationsComponent {
+func (a *A2UIComponent) GetC1OnboardingWelcome() *C1OnboardingWelcomeComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1SlackNotificationsComponent
+	return a.C1OnboardingWelcome
 }
 
-func (a *A2UIComponent) GetC1StatusIndicatorComponent() *C1StatusIndicatorComponent {
+func (a *A2UIComponent) GetC1ResourcePicker() *C1ResourcePickerComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1StatusIndicatorComponent
+	return a.C1ResourcePicker
 }
 
-func (a *A2UIComponent) GetC1TodoListComponent() *C1TodoListComponent {
+func (a *A2UIComponent) GetC1SlackNotifications() *C1SlackNotificationsComponent {
 	if a == nil {
 		return nil
 	}
-	return a.C1TodoListComponent
+	return a.C1SlackNotifications
 }
 
-func (a *A2UIComponent) GetCardComponent() *CardComponent {
+func (a *A2UIComponent) GetC1StatusIndicator() *C1StatusIndicatorComponent {
 	if a == nil {
 		return nil
 	}
-	return a.CardComponent
+	return a.C1StatusIndicator
 }
 
-func (a *A2UIComponent) GetCheckBoxComponent() *CheckBoxComponent {
+func (a *A2UIComponent) GetC1Table() *C1TableComponent {
 	if a == nil {
 		return nil
 	}
-	return a.CheckBoxComponent
+	return a.C1Table
 }
 
-func (a *A2UIComponent) GetChoicePickerComponent() *ChoicePickerComponent {
+func (a *A2UIComponent) GetC1TodoList() *C1TodoListComponent {
 	if a == nil {
 		return nil
 	}
-	return a.ChoicePickerComponent
+	return a.C1TodoList
 }
 
-func (a *A2UIComponent) GetColumnComponent() *ColumnComponent {
+func (a *A2UIComponent) GetCard() *CardComponent {
 	if a == nil {
 		return nil
 	}
-	return a.ColumnComponent
+	return a.Card
 }
 
-func (a *A2UIComponent) GetDateTimeInputComponent() *DateTimeInputComponent {
+func (a *A2UIComponent) GetCheckBox() *CheckBoxComponent {
 	if a == nil {
 		return nil
 	}
-	return a.DateTimeInputComponent
+	return a.CheckBox
 }
 
-func (a *A2UIComponent) GetDividerComponent() *DividerComponent {
+func (a *A2UIComponent) GetChoicePicker() *ChoicePickerComponent {
 	if a == nil {
 		return nil
 	}
-	return a.DividerComponent
+	return a.ChoicePicker
+}
+
+func (a *A2UIComponent) GetColumn() *ColumnComponent {
+	if a == nil {
+		return nil
+	}
+	return a.Column
+}
+
+func (a *A2UIComponent) GetDateTimeInput() *DateTimeInputComponent {
+	if a == nil {
+		return nil
+	}
+	return a.DateTimeInput
+}
+
+func (a *A2UIComponent) GetDivider() *DividerComponent {
+	if a == nil {
+		return nil
+	}
+	return a.Divider
 }
 
 func (a *A2UIComponent) GetID() *string {
@@ -241,39 +229,39 @@ func (a *A2UIComponent) GetID() *string {
 	return a.ID
 }
 
-func (a *A2UIComponent) GetProgressBarComponent() *ProgressBarComponent {
+func (a *A2UIComponent) GetProgressBar() *ProgressBarComponent {
 	if a == nil {
 		return nil
 	}
-	return a.ProgressBarComponent
+	return a.ProgressBar
 }
 
-func (a *A2UIComponent) GetRowComponent() *RowComponent {
+func (a *A2UIComponent) GetRow() *RowComponent {
 	if a == nil {
 		return nil
 	}
-	return a.RowComponent
+	return a.Row
 }
 
-func (a *A2UIComponent) GetSliderComponent() *SliderComponent {
+func (a *A2UIComponent) GetSlider() *SliderComponent {
 	if a == nil {
 		return nil
 	}
-	return a.SliderComponent
+	return a.Slider
 }
 
-func (a *A2UIComponent) GetTextComponent() *TextComponent {
+func (a *A2UIComponent) GetText() *TextComponent {
 	if a == nil {
 		return nil
 	}
-	return a.TextComponent
+	return a.Text
 }
 
-func (a *A2UIComponent) GetTextFieldComponent() *TextFieldComponent {
+func (a *A2UIComponent) GetTextField() *TextFieldComponent {
 	if a == nil {
 		return nil
 	}
-	return a.TextFieldComponent
+	return a.TextField
 }
 
 func (a *A2UIComponent) GetWeight() *int {

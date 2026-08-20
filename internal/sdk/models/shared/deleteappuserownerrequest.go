@@ -4,7 +4,6 @@ package shared
 
 // DeleteAppUserOwnerRequest - DeleteUserOwnerRequest is the request for deleting a user ownership source.
 type DeleteAppUserOwnerRequest struct {
-	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
 }
 

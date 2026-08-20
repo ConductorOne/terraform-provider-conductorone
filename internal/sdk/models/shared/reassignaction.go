@@ -15,15 +15,13 @@ type ReassignAction struct {
 	// The assigneeUserIdCel field.
 	// This field is part of the `assignee_user_identifier` oneof.
 	// See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
-	AssigneeUserIDCel *string `json:"assigneeUserIdCel,omitempty"`
-	// A reference to a user.
-	UserRef *UserRef `json:"assigneeUserRef,omitempty"`
+	AssigneeUserIDCel *string  `json:"assigneeUserIdCel,omitempty"`
+	AssigneeUserRef   *UserRef `json:"assigneeUserRef,omitempty"`
 	// The subjectUserIdCel field.
 	// This field is part of the `subject_user_identifier` oneof.
 	// See the documentation for `c1.api.automations.v1.ReassignAction` for more details.
-	SubjectUserIDCel *string `json:"subjectUserIdCel,omitempty"`
-	// A reference to a user.
-	UserRef1 *UserRef `json:"subjectUserRef,omitempty"`
+	SubjectUserIDCel *string  `json:"subjectUserIdCel,omitempty"`
+	SubjectUserRef   *UserRef `json:"subjectUserRef,omitempty"`
 	// If true, the step will use the subject user of the automation as the subject.
 	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 }
@@ -35,11 +33,11 @@ func (r *ReassignAction) GetAssigneeUserIDCel() *string {
 	return r.AssigneeUserIDCel
 }
 
-func (r *ReassignAction) GetUserRef() *UserRef {
+func (r *ReassignAction) GetAssigneeUserRef() *UserRef {
 	if r == nil {
 		return nil
 	}
-	return r.UserRef
+	return r.AssigneeUserRef
 }
 
 func (r *ReassignAction) GetSubjectUserIDCel() *string {
@@ -49,11 +47,11 @@ func (r *ReassignAction) GetSubjectUserIDCel() *string {
 	return r.SubjectUserIDCel
 }
 
-func (r *ReassignAction) GetUserRef1() *UserRef {
+func (r *ReassignAction) GetSubjectUserRef() *UserRef {
 	if r == nil {
 		return nil
 	}
-	return r.UserRef1
+	return r.SubjectUserRef
 }
 
 func (r *ReassignAction) GetUseSubjectUser() *bool {

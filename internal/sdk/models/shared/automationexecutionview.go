@@ -4,7 +4,6 @@ package shared
 
 // The AutomationExecutionView message.
 type AutomationExecutionView struct {
-	// The AutomationExecution message.
 	AutomationExecution *AutomationExecution `json:"automationExecution,omitempty"`
 	// The automationExecutionTriggerPath field.
 	AutomationExecutionTriggerPath *string `json:"automationExecutionTriggerPath,omitempty"`

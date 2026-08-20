@@ -5,45 +5,9 @@ package shared
 // The AccessReviewSetupEntitlementAndScopeServiceSetRequest message.
 type AccessReviewSetupEntitlementAndScopeServiceSetRequest struct {
 	// The entitlements to include in the campaign. Replaces all previously selected entitlements.
-	Entitlements []AccessReviewSetupEntitlementInput `json:"entitlements,omitempty"`
-	// The AccessReviewSetupEntitlementExpandMask message.
-	AccessReviewSetupEntitlementExpandMask *AccessReviewSetupEntitlementExpandMask `json:"expandMask,omitempty"`
-	// The AccessReviewScopeV2 message.
-	//
-	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
-	//   - appAccess
-	//   - specificResources
-	//   - appSelectionCriteria
-	//   - resourceTypeSelections
-	//
-	//
-	// This message contains a oneof named users_scope. Only a single field of the following list may be set at a time:
-	//   - allUsers
-	//   - selectedUsers
-	//   - userCriteria
-	//   - celExpression
-	//
-	//
-	// This message contains a oneof named accounts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccounts
-	//   - accountCriteria
-	//   - accountCelExpression
-	//
-	//
-	// This message contains a oneof named grants_scope. Only a single field of the following list may be set at a time:
-	//   - allGrants
-	//   - grantsByCriteria
-	//
-	//
-	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccessConflicts
-	//   - specificAccessConflicts
-	//
-	//
-	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
-	//   - resourceSelection
-	//
-	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
+	Entitlements []AccessReviewSetupEntitlementInput     `json:"entitlements,omitempty"`
+	ExpandMask   *AccessReviewSetupEntitlementExpandMask `json:"expandMask,omitempty"`
+	ScopeV2      *AccessReviewScopeV2                    `json:"scopeV2,omitempty"`
 }
 
 func (a *AccessReviewSetupEntitlementAndScopeServiceSetRequest) GetEntitlements() []AccessReviewSetupEntitlementInput {
@@ -53,16 +17,16 @@ func (a *AccessReviewSetupEntitlementAndScopeServiceSetRequest) GetEntitlements(
 	return a.Entitlements
 }
 
-func (a *AccessReviewSetupEntitlementAndScopeServiceSetRequest) GetAccessReviewSetupEntitlementExpandMask() *AccessReviewSetupEntitlementExpandMask {
+func (a *AccessReviewSetupEntitlementAndScopeServiceSetRequest) GetExpandMask() *AccessReviewSetupEntitlementExpandMask {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewSetupEntitlementExpandMask
+	return a.ExpandMask
 }
 
-func (a *AccessReviewSetupEntitlementAndScopeServiceSetRequest) GetAccessReviewScopeV2() *AccessReviewScopeV2 {
+func (a *AccessReviewSetupEntitlementAndScopeServiceSetRequest) GetScopeV2() *AccessReviewScopeV2 {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewScopeV2
+	return a.ScopeV2
 }

@@ -4,13 +4,12 @@ package shared
 
 // TaskTypeGrantInput - The TaskTypeGrant message indicates that a task is a grant task and all related details.
 type TaskTypeGrantInput struct {
-	// The TaskGrantSource message tracks which external URL was the source of the specificed grant ticket.
-	TaskGrantSource *TaskGrantSource `json:"source,omitempty"`
+	Source *TaskGrantSource `json:"source,omitempty"`
 }
 
-func (t *TaskTypeGrantInput) GetTaskGrantSource() *TaskGrantSource {
+func (t *TaskTypeGrantInput) GetSource() *TaskGrantSource {
 	if t == nil {
 		return nil
 	}
-	return t.TaskGrantSource
+	return t.Source
 }

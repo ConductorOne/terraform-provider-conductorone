@@ -4,7 +4,6 @@ package shared
 
 // The GetContactsResponse message.
 type GetContactsResponse struct {
-	// Contacts represents the contact configuration for an organization.
 	Contacts *Contacts `json:"contacts,omitempty"`
 }
 

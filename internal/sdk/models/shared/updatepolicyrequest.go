@@ -4,10 +4,6 @@ package shared
 
 // The UpdatePolicyRequest message contains the policy object to update and a field mask to indicate which fields to update. It uses URL value for input.
 type UpdatePolicyRequest struct {
-	// A policy defines a workflow (sequence of steps) that runs when processing
-	//  access requests, reviews, or revocations. Policies support conditional
-	//  routing: different conditions can trigger different step sequences, with a
-	//  baseline fallback.
 	Policy     *PolicyInput `json:"policy,omitempty"`
 	UpdateMask *string      `json:"updateMask,omitempty"`
 }

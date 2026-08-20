@@ -9,32 +9,28 @@ package shared
 //   - batonResourceAction
 //   - clientIdApproval
 type Action struct {
-	// ActionTargetAutomation targets automation templates for policy actions.
-	ActionTargetAutomation *ActionTargetAutomation `json:"automation,omitempty"`
-	// ActionTargetResource targets resource actions for policy actions.
-	ActionTargetBatonResourceAction *ActionTargetBatonResourceAction `json:"batonResourceAction,omitempty"`
-	// ActionTargetClientIdApproval targets administrator review of an external
-	//  OAuth client registration (CIMD or DCR) for policy actions.
-	ActionTargetClientIDApproval *ActionTargetClientIDApproval `json:"clientIdApproval,omitempty"`
+	Automation          *ActionTargetAutomation          `json:"automation,omitempty"`
+	BatonResourceAction *ActionTargetBatonResourceAction `json:"batonResourceAction,omitempty"`
+	ClientIDApproval    *ActionTargetClientIDApproval    `json:"clientIdApproval,omitempty"`
 }
 
-func (a *Action) GetActionTargetAutomation() *ActionTargetAutomation {
+func (a *Action) GetAutomation() *ActionTargetAutomation {
 	if a == nil {
 		return nil
 	}
-	return a.ActionTargetAutomation
+	return a.Automation
 }
 
-func (a *Action) GetActionTargetBatonResourceAction() *ActionTargetBatonResourceAction {
+func (a *Action) GetBatonResourceAction() *ActionTargetBatonResourceAction {
 	if a == nil {
 		return nil
 	}
-	return a.ActionTargetBatonResourceAction
+	return a.BatonResourceAction
 }
 
-func (a *Action) GetActionTargetClientIDApproval() *ActionTargetClientIDApproval {
+func (a *Action) GetClientIDApproval() *ActionTargetClientIDApproval {
 	if a == nil {
 		return nil
 	}
-	return a.ActionTargetClientIDApproval
+	return a.ClientIDApproval
 }

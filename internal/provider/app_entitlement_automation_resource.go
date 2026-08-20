@@ -39,19 +39,19 @@ type AppEntitlementAutomationResource struct {
 
 // AppEntitlementAutomationResourceModel describes the resource data model.
 type AppEntitlementAutomationResourceModel struct {
-	AppEntitlementAutomationLastRunStatus   *tfTypes.AppEntitlementAutomationLastRunStatus   `tfsdk:"app_entitlement_automation_last_run_status"`
-	AppEntitlementAutomationRuleBasic       *tfTypes.AppEntitlementAutomationRuleBasic       `tfsdk:"app_entitlement_automation_rule_basic"`
-	AppEntitlementAutomationRuleCEL         *tfTypes.AppEntitlementAutomationRuleCEL         `tfsdk:"app_entitlement_automation_rule_cel"`
-	AppEntitlementAutomationRuleEntitlement *tfTypes.AppEntitlementAutomationRuleEntitlement `tfsdk:"app_entitlement_automation_rule_entitlement"`
-	AppEntitlementAutomationRuleNone        *tfTypes.AppEntitlementAutomationRuleNone        `tfsdk:"app_entitlement_automation_rule_none"`
-	AppEntitlementID                        types.String                                     `tfsdk:"app_entitlement_id"`
-	AppID                                   types.String                                     `tfsdk:"app_id"`
-	CreatedAt                               types.String                                     `tfsdk:"created_at"`
-	DeletedAt                               types.String                                     `tfsdk:"-"`
-	Description                             types.String                                     `tfsdk:"description"`
-	DisplayName                             types.String                                     `tfsdk:"display_name"`
-	ManagedByRequestCatalogID               types.String                                     `tfsdk:"managed_by_request_catalog_id"`
-	UpdatedAt                               types.String                                     `tfsdk:"updated_at"`
+	AppEntitlementID          types.String                                     `tfsdk:"app_entitlement_id"`
+	AppID                     types.String                                     `tfsdk:"app_id"`
+	Basic                     *tfTypes.AppEntitlementAutomationRuleBasic       `tfsdk:"basic"`
+	Cel                       *tfTypes.AppEntitlementAutomationRuleCEL         `tfsdk:"cel"`
+	CreatedAt                 types.String                                     `tfsdk:"created_at"`
+	DeletedAt                 types.String                                     `tfsdk:"-"`
+	Description               types.String                                     `tfsdk:"description"`
+	DisplayName               types.String                                     `tfsdk:"display_name"`
+	Entitlements              *tfTypes.AppEntitlementAutomationRuleEntitlement `tfsdk:"entitlements"`
+	LastRunStatus             *tfTypes.AppEntitlementAutomationLastRunStatus   `tfsdk:"last_run_status"`
+	ManagedByRequestCatalogID types.String                                     `tfsdk:"managed_by_request_catalog_id"`
+	None                      *tfTypes.AppEntitlementAutomationRuleNone        `tfsdk:"none"`
+	UpdatedAt                 types.String                                     `tfsdk:"updated_at"`
 }
 
 func (r *AppEntitlementAutomationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,38 +62,15 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AppEntitlementAutomation Resource",
 		Attributes: map[string]schema.Attribute{
-			"app_entitlement_automation_last_run_status": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
-				Attributes: map[string]schema.Attribute{
-					"error_message": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `The errorMessage field.`,
-					},
-					"last_completed_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-					},
-					"status": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `The status field.`,
-					},
-				},
-				Description: `The AppEntitlementAutomationLastRunStatus message. Requires replacement if changed.`,
+			"app_entitlement_id": schema.StringAttribute{
+				Required:    true,
+				Description: `The unique ID for the App Entitlement.`,
 			},
-			"app_entitlement_automation_rule_basic": schema.SingleNestedAttribute{
+			"app_id": schema.StringAttribute{
+				Required:    true,
+				Description: `The ID of the app that is associated with the app entitlement.`,
+			},
+			"basic": schema.SingleNestedAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					speakeasy_objectplanmodifier.UseConfigValue(),
@@ -114,7 +91,7 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 					}...),
 				},
 			},
-			"app_entitlement_automation_rule_cel": schema.SingleNestedAttribute{
+			"cel": schema.SingleNestedAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					speakeasy_objectplanmodifier.UseConfigValue(),
@@ -135,7 +112,20 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 					}...),
 				},
 			},
-			"app_entitlement_automation_rule_entitlement": schema.SingleNestedAttribute{
+			"created_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The description of the app entitlement.`,
+			},
+			"display_name": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The display name of the app entitlement.`,
+			},
+			"entitlements": schema.SingleNestedAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					speakeasy_objectplanmodifier.UseConfigValue(),
@@ -173,7 +163,43 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 					}...),
 				},
 			},
-			"app_entitlement_automation_rule_none": schema.SingleNestedAttribute{
+			"last_run_status": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
+				Attributes: map[string]schema.Attribute{
+					"error_message": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `The errorMessage field.`,
+					},
+					"last_completed_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+					},
+					"status": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `The status field.`,
+					},
+				},
+				Description: `The AppEntitlementAutomationLastRunStatus message. Requires replacement if changed.`,
+			},
+			"managed_by_request_catalog_id": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `When set, this automation is managed by an access profile's bundle automation.` + "\n" +
+					` Read-only. Not settable via this API.`,
+			},
+			"none": schema.SingleNestedAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					speakeasy_objectplanmodifier.UseConfigValue(),
@@ -186,32 +212,6 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_entitlement"),
 					}...),
 				},
-			},
-			"app_entitlement_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The unique ID for the App Entitlement.`,
-			},
-			"app_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The ID of the app that is associated with the app entitlement.`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The description of the app entitlement.`,
-			},
-			"display_name": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The display name of the app entitlement.`,
-			},
-			"managed_by_request_catalog_id": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `When set, this automation is managed by an access profile's bundle automation.` + "\n" +
-					` Read-only. Not settable via this API.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

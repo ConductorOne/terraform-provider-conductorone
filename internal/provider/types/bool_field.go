@@ -7,8 +7,8 @@ import (
 )
 
 type BoolField struct {
-	BoolRules     *BoolRules     `tfsdk:"bool_rules"`
 	CheckboxField *CheckboxField `tfsdk:"checkbox_field"`
-	ToggleField   *ToggleField   `tfsdk:"toggle_field"`
 	DefaultValue  types.Bool     `tfsdk:"default_value"`
+	Rules         *BoolRules     `tfsdk:"rules"`
+	ToggleField   *ToggleField   `tfsdk:"toggle_field"`
 }

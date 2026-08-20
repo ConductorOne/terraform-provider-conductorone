@@ -4,7 +4,6 @@ package shared
 
 // CreateAppEntitlementOwnerResponse - CreateEntitlementOwnerResponse is the response for creating an entitlement ownership source.
 type CreateAppEntitlementOwnerResponse struct {
-	// AppOwnerEntitlement represents an entitlement ownership source for an app.
 	AppOwnerEntitlement *AppOwnerEntitlement `json:"appOwnerEntitlement,omitempty"`
 }
 

@@ -300,15 +300,15 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceDele
 func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceUpdateRequest(ctx context.Context) (*shared.RequestCatalogManagementServiceUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	requestCatalog, requestCatalogDiags := r.ToSharedRequestCatalogInput(ctx)
-	diags.Append(requestCatalogDiags...)
+	catalog, catalogDiags := r.ToSharedRequestCatalogInput(ctx)
+	diags.Append(catalogDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := shared.RequestCatalogManagementServiceUpdateRequest{
-		RequestCatalog: requestCatalog,
+		Catalog: catalog,
 	}
 
 	return &out, diags

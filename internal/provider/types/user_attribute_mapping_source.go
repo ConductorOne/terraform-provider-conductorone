@@ -10,6 +10,7 @@ type UserAttributeMappingSource struct {
 	AppID                      types.String `tfsdk:"app_id"`
 	AppUserID                  types.String `tfsdk:"app_user_id"`
 	AppUserProfileAttributeKey types.String `tfsdk:"app_user_profile_attribute_key"`
+	Priority                   types.Int64  `tfsdk:"priority"`
 	UserAttributeMappingID     types.String `tfsdk:"user_attribute_mapping_id"`
 	Value                      types.String `tfsdk:"value"`
 }

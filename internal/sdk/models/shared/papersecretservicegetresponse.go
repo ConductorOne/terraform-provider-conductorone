@@ -4,14 +4,12 @@ package shared
 
 // The PaperSecretServiceGetResponse message.
 type PaperSecretServiceGetResponse struct {
-	// PaperSecret is the API view of a secret (combines Vault + PaperVault fields).
-	//  The vault_id is the primary identifier (Vault.id).
-	PaperSecret *PaperSecret `json:"secret,omitempty"`
+	Secret *PaperSecret `json:"secret,omitempty"`
 }
 
-func (p *PaperSecretServiceGetResponse) GetPaperSecret() *PaperSecret {
+func (p *PaperSecretServiceGetResponse) GetSecret() *PaperSecret {
 	if p == nil {
 		return nil
 	}
-	return p.PaperSecret
+	return p.Secret
 }

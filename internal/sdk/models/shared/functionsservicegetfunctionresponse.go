@@ -4,7 +4,6 @@ package shared
 
 // The FunctionsServiceGetFunctionResponse message.
 type FunctionsServiceGetFunctionResponse struct {
-	// Function represents a customer-provided code extension in the API
 	Function *Function `json:"function,omitempty"`
 }
 

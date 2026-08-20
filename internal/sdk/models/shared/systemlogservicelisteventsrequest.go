@@ -7,21 +7,21 @@ import (
 	"time"
 )
 
-// SortDirection - The sortDirection field.
-type SortDirection string
+// SystemLogServiceListEventsRequestSortDirection - The sortDirection field.
+type SystemLogServiceListEventsRequestSortDirection string
 
 const (
-	SortDirectionSortDirectionUnspecified SortDirection = "SORT_DIRECTION_UNSPECIFIED"
-	SortDirectionSortDirectionAsc         SortDirection = "SORT_DIRECTION_ASC"
-	SortDirectionSortDirectionDesc        SortDirection = "SORT_DIRECTION_DESC"
+	SystemLogServiceListEventsRequestSortDirectionSortDirectionUnspecified SystemLogServiceListEventsRequestSortDirection = "SORT_DIRECTION_UNSPECIFIED"
+	SystemLogServiceListEventsRequestSortDirectionSortDirectionAsc         SystemLogServiceListEventsRequestSortDirection = "SORT_DIRECTION_ASC"
+	SystemLogServiceListEventsRequestSortDirectionSortDirectionDesc        SystemLogServiceListEventsRequestSortDirection = "SORT_DIRECTION_DESC"
 )
 
-func (e SortDirection) ToPointer() *SortDirection {
+func (e SystemLogServiceListEventsRequestSortDirection) ToPointer() *SystemLogServiceListEventsRequestSortDirection {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SortDirection) IsExact() bool {
+func (e *SystemLogServiceListEventsRequestSortDirection) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC":
@@ -41,8 +41,8 @@ type SystemLogServiceListEventsRequest struct {
 	// The sinceEventUid field.
 	SinceEventUID *string `json:"sinceEventUid,omitempty"`
 	// The sortDirection field.
-	SortDirection *SortDirection `json:"sortDirection,omitempty"`
-	Until         *time.Time     `json:"until,omitempty"`
+	SortDirection *SystemLogServiceListEventsRequestSortDirection `json:"sortDirection,omitempty"`
+	Until         *time.Time                                      `json:"until,omitempty"`
 	// The untilEventUid field.
 	UntilEventUID *string `json:"untilEventUid,omitempty"`
 }
@@ -86,7 +86,7 @@ func (s *SystemLogServiceListEventsRequest) GetSinceEventUID() *string {
 	return s.SinceEventUID
 }
 
-func (s *SystemLogServiceListEventsRequest) GetSortDirection() *SortDirection {
+func (s *SystemLogServiceListEventsRequest) GetSortDirection() *SystemLogServiceListEventsRequestSortDirection {
 	if s == nil {
 		return nil
 	}

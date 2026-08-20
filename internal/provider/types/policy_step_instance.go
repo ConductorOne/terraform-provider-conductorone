@@ -7,14 +7,14 @@ import (
 )
 
 type PolicyStepInstance struct {
-	AcceptInstance     *AcceptInstance    `tfsdk:"accept_instance"`
-	ActionInstance     *ActionInstance    `tfsdk:"action_instance"`
-	ApprovalInstance   *ApprovalInstance  `tfsdk:"approval_instance"`
-	FormInstance       *FormInstance      `tfsdk:"form_instance"`
-	ProvisionInstance  *ProvisionInstance `tfsdk:"provision_instance"`
-	RejectInstance     *RejectInstance    `tfsdk:"reject_instance"`
-	WaitInstance       *WaitInstance      `tfsdk:"wait_instance"`
+	Accept             *AcceptInstance    `tfsdk:"accept"`
+	Action             *ActionInstance    `tfsdk:"action"`
+	Approval           *ApprovalInstance  `tfsdk:"approval"`
+	Form               *FormInstance      `tfsdk:"form"`
 	ID                 types.String       `tfsdk:"id"`
 	PolicyGenerationID types.String       `tfsdk:"policy_generation_id"`
+	Provision          *ProvisionInstance `tfsdk:"provision"`
+	Reject             *RejectInstance    `tfsdk:"reject"`
 	State              types.String       `tfsdk:"state"`
+	Wait               *WaitInstance      `tfsdk:"wait"`
 }

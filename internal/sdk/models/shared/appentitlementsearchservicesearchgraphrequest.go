@@ -17,11 +17,16 @@ type AppEntitlementSearchServiceSearchGraphRequest struct {
 	EntitlementNameQuery *string `json:"entitlementNameQuery,omitempty"`
 	// Traversal controls
 	MaxDepth *int `json:"maxDepth,omitempty"`
-	// The maxFanOut field.
+	// Legacy per-parent fan-out limit. Superseded by max_nodes and server-computed
+	//  per-parent budgets, but still honored for callers that set it.
 	MaxFanOut *int `json:"maxFanOut,omitempty"`
-	// The pageSize field.
+	// Overall node budget for the returned subgraph. 0 uses the server default.
+	MaxNodes *int `json:"maxNodes,omitempty"`
+	// Legacy traversal page size. Superseded by max_nodes, but still honored for
+	//  callers that set it.
 	PageSize *int `json:"pageSize,omitempty"`
-	// The pageToken field.
+	// Legacy pagination token. Superseded by max_nodes-based traversal, but still
+	//  honored for callers that set it.
 	PageToken *string `json:"pageToken,omitempty"`
 	// The resourceId field.
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -75,6 +80,13 @@ func (a *AppEntitlementSearchServiceSearchGraphRequest) GetMaxFanOut() *int {
 		return nil
 	}
 	return a.MaxFanOut
+}
+
+func (a *AppEntitlementSearchServiceSearchGraphRequest) GetMaxNodes() *int {
+	if a == nil {
+		return nil
+	}
+	return a.MaxNodes
 }
 
 func (a *AppEntitlementSearchServiceSearchGraphRequest) GetPageSize() *int {

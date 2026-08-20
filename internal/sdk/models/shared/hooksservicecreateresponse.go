@@ -4,12 +4,6 @@ package shared
 
 // The HooksServiceCreateResponse message.
 type HooksServiceCreateResponse struct {
-	// Hook represents a customer-configured interception point for tool calls.
-	//
-	// This message contains a oneof named hook_type. Only a single field of the following list may be set at a time:
-	//   - function
-	//   - builtinPattern
-	//
 	Hook *Hook `json:"hook,omitempty"`
 }
 

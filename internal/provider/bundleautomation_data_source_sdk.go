@@ -16,72 +16,28 @@ func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx 
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.BundleAutomationCircuitBreaker == nil {
-			r.BundleAutomationCircuitBreaker = nil
+		if resp.Cel == nil {
+			r.Cel = nil
 		} else {
-			r.BundleAutomationCircuitBreaker = &tfTypes.BundleAutomationCircuitBreaker{}
-			r.BundleAutomationCircuitBreaker.RemovedMembersThresholdPercentage = types.StringPointerValue(resp.BundleAutomationCircuitBreaker.RemovedMembersThresholdPercentage)
-			if resp.BundleAutomationCircuitBreaker.State != nil {
-				r.BundleAutomationCircuitBreaker.State = types.StringValue(string(*resp.BundleAutomationCircuitBreaker.State))
-			} else {
-				r.BundleAutomationCircuitBreaker.State = types.StringNull()
-			}
-			r.BundleAutomationCircuitBreaker.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationCircuitBreaker.UpdatedAt))
-			if resp.BundleAutomationCircuitBreaker.UserRef == nil {
-				r.BundleAutomationCircuitBreaker.UserRef = nil
-			} else {
-				r.BundleAutomationCircuitBreaker.UserRef = &tfTypes.UserRef{}
-				r.BundleAutomationCircuitBreaker.UserRef.ID = types.StringPointerValue(resp.BundleAutomationCircuitBreaker.UserRef.ID)
-			}
+			r.Cel = &tfTypes.BundleAutomationRuleCEL{}
+			r.Cel.Expression = types.StringPointerValue(resp.Cel.Expression)
 		}
-		if resp.BundleAutomationLastRunState == nil {
-			r.BundleAutomationLastRunState = nil
+		if resp.CircuitBreaker == nil {
+			r.CircuitBreaker = nil
 		} else {
-			r.BundleAutomationLastRunState = &tfTypes.BundleAutomationLastRunState{}
-			if resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState == nil {
-				r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState = nil
+			r.CircuitBreaker = &tfTypes.BundleAutomationCircuitBreaker{}
+			r.CircuitBreaker.RemovedMembersThresholdPercentage = types.StringPointerValue(resp.CircuitBreaker.RemovedMembersThresholdPercentage)
+			if resp.CircuitBreaker.State != nil {
+				r.CircuitBreaker.State = types.StringValue(string(*resp.CircuitBreaker.State))
 			} else {
-				r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState = &tfTypes.BundleAutomationCelEvaluationState{}
-				r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.ErrorMessage = types.StringPointerValue(resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.ErrorMessage)
-				r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.LastEvaluatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.LastEvaluatedAt))
-				r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.MatchedUsers = types.StringPointerValue(resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.MatchedUsers)
-				if resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.Status != nil {
-					r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.Status = types.StringValue(string(*resp.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.Status))
-				} else {
-					r.BundleAutomationLastRunState.BundleAutomationCelEvaluationState.Status = types.StringNull()
-				}
+				r.CircuitBreaker.State = types.StringNull()
 			}
-			r.BundleAutomationLastRunState.ErrorMessage = types.StringPointerValue(resp.BundleAutomationLastRunState.ErrorMessage)
-			r.BundleAutomationLastRunState.LastRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.BundleAutomationLastRunState.LastRunAt))
-			if resp.BundleAutomationLastRunState.Status != nil {
-				r.BundleAutomationLastRunState.Status = types.StringValue(string(*resp.BundleAutomationLastRunState.Status))
+			r.CircuitBreaker.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CircuitBreaker.UpdatedAt))
+			if resp.CircuitBreaker.UserRef == nil {
+				r.CircuitBreaker.UserRef = nil
 			} else {
-				r.BundleAutomationLastRunState.Status = types.StringNull()
-			}
-		}
-		if resp.BundleAutomationRuleCEL == nil {
-			r.BundleAutomationRuleCEL = nil
-		} else {
-			r.BundleAutomationRuleCEL = &tfTypes.BundleAutomationRuleCEL{}
-			r.BundleAutomationRuleCEL.Expression = types.StringPointerValue(resp.BundleAutomationRuleCEL.Expression)
-		}
-		if resp.BundleAutomationRuleEntitlement == nil {
-			r.BundleAutomationRuleEntitlement = nil
-		} else {
-			r.BundleAutomationRuleEntitlement = &tfTypes.BundleAutomationRuleEntitlement{}
-			if resp.BundleAutomationRuleEntitlement.EntitlementRefs != nil {
-				r.BundleAutomationRuleEntitlement.EntitlementRefs = []tfTypes.AppEntitlementRef{}
-
-				for _, entitlementRefsItem := range resp.BundleAutomationRuleEntitlement.EntitlementRefs {
-					var entitlementRefs tfTypes.AppEntitlementRef
-
-					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
-					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
-
-					r.BundleAutomationRuleEntitlement.EntitlementRefs = append(r.BundleAutomationRuleEntitlement.EntitlementRefs, entitlementRefs)
-				}
-			} else {
-				r.BundleAutomationRuleEntitlement.EntitlementRefs = nil
+				r.CircuitBreaker.UserRef = &tfTypes.UserRef{}
+				r.CircuitBreaker.UserRef.ID = types.StringPointerValue(resp.CircuitBreaker.UserRef.ID)
 			}
 		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
@@ -90,8 +46,52 @@ func (r *BundleAutomationDataSourceModel) RefreshFromSharedBundleAutomation(ctx 
 		r.DisableCircuitBreaker = types.BoolPointerValue(resp.DisableCircuitBreaker)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.EnforceOnSmallProfiles = types.BoolPointerValue(resp.EnforceOnSmallProfiles)
+		if resp.Entitlements == nil {
+			r.Entitlements = nil
+		} else {
+			r.Entitlements = &tfTypes.BundleAutomationRuleEntitlement{}
+			if resp.Entitlements.EntitlementRefs != nil {
+				r.Entitlements.EntitlementRefs = []tfTypes.AppEntitlementRef{}
+
+				for _, entitlementRefsItem := range resp.Entitlements.EntitlementRefs {
+					var entitlementRefs tfTypes.AppEntitlementRef
+
+					entitlementRefs.AppID = types.StringPointerValue(entitlementRefsItem.AppID)
+					entitlementRefs.ID = types.StringPointerValue(entitlementRefsItem.ID)
+
+					r.Entitlements.EntitlementRefs = append(r.Entitlements.EntitlementRefs, entitlementRefs)
+				}
+			} else {
+				r.Entitlements.EntitlementRefs = nil
+			}
+		}
 		r.RemovedMembersThresholdPercent = types.StringPointerValue(resp.RemovedMembersThresholdPercent)
 		r.RequestCatalogID = types.StringPointerValue(resp.RequestCatalogID)
+		if resp.State == nil {
+			r.State = nil
+		} else {
+			r.State = &tfTypes.BundleAutomationLastRunState{}
+			if resp.State.CelEvaluation == nil {
+				r.State.CelEvaluation = nil
+			} else {
+				r.State.CelEvaluation = &tfTypes.BundleAutomationCelEvaluationState{}
+				r.State.CelEvaluation.ErrorMessage = types.StringPointerValue(resp.State.CelEvaluation.ErrorMessage)
+				r.State.CelEvaluation.LastEvaluatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.State.CelEvaluation.LastEvaluatedAt))
+				r.State.CelEvaluation.MatchedUsers = types.StringPointerValue(resp.State.CelEvaluation.MatchedUsers)
+				if resp.State.CelEvaluation.Status != nil {
+					r.State.CelEvaluation.Status = types.StringValue(string(*resp.State.CelEvaluation.Status))
+				} else {
+					r.State.CelEvaluation.Status = types.StringNull()
+				}
+			}
+			r.State.ErrorMessage = types.StringPointerValue(resp.State.ErrorMessage)
+			r.State.LastRunAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.State.LastRunAt))
+			if resp.State.Status != nil {
+				r.State.Status = types.StringValue(string(*resp.State.Status))
+			} else {
+				r.State.Status = types.StringNull()
+			}
+		}
 		r.TenantID = types.StringPointerValue(resp.TenantID)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}

@@ -16,6 +16,7 @@ const (
 	ScopeTypeAccessReviewScopeTypeByAccessConflicts ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
 	ScopeTypeAccessReviewScopeTypeByResource        ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 	ScopeTypeAccessReviewScopeTypeByInheritance     ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"
+	ScopeTypeAccessReviewScopeTypeByUsers           ScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"
 )
 
 func (e ScopeType) ToPointer() *ScopeType {
@@ -26,7 +27,7 @@ func (e ScopeType) ToPointer() *ScopeType {
 func (e *ScopeType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE":
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS":
 			return true
 		}
 	}
@@ -41,51 +42,16 @@ type AccessReviewServiceCreateRequest struct {
 	// The display name for the new campaign.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The ID of an existing campaign to copy scope and entitlement configuration from. Optional.
-	DuplicateFrom *string `json:"duplicateFrom,omitempty"`
-	// Controls which email notifications are sent during the access review lifecycle.
-	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
+	DuplicateFrom      *string                 `json:"duplicateFrom,omitempty"`
+	ExpandMask         *AccessReviewExpandMask `json:"expandMask,omitempty"`
+	NotificationConfig *NotificationConfig     `json:"notificationConfig,omitempty"`
 	// The IDs of the users who own and manage this campaign. At least one owner is required.
 	OwnerIds []string `json:"ownerIds,omitempty"`
 	// The ID of the review policy that governs task assignment and resolution.
 	PolicyID *string `json:"policyId,omitempty"`
 	// The type of scoping method for the campaign (e.g., by entitlements, by access conflicts, or by resource).
-	ScopeType *ScopeType `json:"scopeType,omitempty"`
-	// The AccessReviewScopeV2 message.
-	//
-	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
-	//   - appAccess
-	//   - specificResources
-	//   - appSelectionCriteria
-	//   - resourceTypeSelections
-	//
-	//
-	// This message contains a oneof named users_scope. Only a single field of the following list may be set at a time:
-	//   - allUsers
-	//   - selectedUsers
-	//   - userCriteria
-	//   - celExpression
-	//
-	//
-	// This message contains a oneof named accounts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccounts
-	//   - accountCriteria
-	//   - accountCelExpression
-	//
-	//
-	// This message contains a oneof named grants_scope. Only a single field of the following list may be set at a time:
-	//   - allGrants
-	//   - grantsByCriteria
-	//
-	//
-	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccessConflicts
-	//   - specificAccessConflicts
-	//
-	//
-	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
-	//   - resourceSelection
-	//
-	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
+	ScopeType *ScopeType           `json:"scopeType,omitempty"`
+	ScopeV2   *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
 }
 
 func (a AccessReviewServiceCreateRequest) MarshalJSON() ([]byte, error) {
@@ -127,6 +93,13 @@ func (a *AccessReviewServiceCreateRequest) GetDuplicateFrom() *string {
 	return a.DuplicateFrom
 }
 
+func (a *AccessReviewServiceCreateRequest) GetExpandMask() *AccessReviewExpandMask {
+	if a == nil {
+		return nil
+	}
+	return a.ExpandMask
+}
+
 func (a *AccessReviewServiceCreateRequest) GetNotificationConfig() *NotificationConfig {
 	if a == nil {
 		return nil
@@ -155,9 +128,9 @@ func (a *AccessReviewServiceCreateRequest) GetScopeType() *ScopeType {
 	return a.ScopeType
 }
 
-func (a *AccessReviewServiceCreateRequest) GetAccessReviewScopeV2() *AccessReviewScopeV2 {
+func (a *AccessReviewServiceCreateRequest) GetScopeV2() *AccessReviewScopeV2 {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewScopeV2
+	return a.ScopeV2
 }

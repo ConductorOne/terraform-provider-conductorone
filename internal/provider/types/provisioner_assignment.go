@@ -3,10 +3,10 @@
 package types
 
 type ProvisionerAssignment struct {
-	AppOwnerProvisioner         *AppOwnerProvisioner         `tfsdk:"app_owner_provisioner"`
-	EntitlementOwnerProvisioner *EntitlementOwnerProvisioner `tfsdk:"entitlement_owner_provisioner"`
-	ExpressionProvisioner       *ExpressionProvisioner       `tfsdk:"expression_provisioner"`
-	GroupProvisioner            *GroupProvisioner            `tfsdk:"group_provisioner"`
-	ManagerProvisioner          *ManagerProvisioner          `tfsdk:"manager_provisioner"`
-	UserProvisioner             *UserProvisioner             `tfsdk:"user_provisioner"`
+	AppOwners         *AppOwnerProvisioner         `tfsdk:"app_owners"`
+	EntitlementOwners *EntitlementOwnerProvisioner `tfsdk:"entitlement_owners"`
+	Expression        *ExpressionProvisioner       `tfsdk:"expression"`
+	Group             *GroupProvisioner            `tfsdk:"group"`
+	Manager           *ManagerProvisioner          `tfsdk:"manager"`
+	Users             *UserProvisioner             `tfsdk:"users"`
 }

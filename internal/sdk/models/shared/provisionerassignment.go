@@ -12,58 +12,52 @@ package shared
 //   - expression
 //   - entitlementOwners
 type ProvisionerAssignment struct {
-	// AppOwnerProvisioner resolves to app owners.
-	AppOwnerProvisioner *AppOwnerProvisioner `json:"appOwners,omitempty"`
-	// EntitlementOwnerProvisioner resolves to entitlement owners.
-	EntitlementOwnerProvisioner *EntitlementOwnerProvisioner `json:"entitlementOwners,omitempty"`
-	// ExpressionProvisioner evaluates CEL expressions to determine provisioners.
-	ExpressionProvisioner *ExpressionProvisioner `json:"expression,omitempty"`
-	// GroupProvisioner resolves to members of a specific group.
-	GroupProvisioner *GroupProvisioner `json:"group,omitempty"`
-	// ManagerProvisioner resolves to the user's manager.
-	ManagerProvisioner *ManagerProvisioner `json:"manager,omitempty"`
-	// UserProvisioner assigns specific users as provisioners.
-	UserProvisioner *UserProvisioner `json:"users,omitempty"`
+	AppOwners         *AppOwnerProvisioner         `json:"appOwners,omitempty"`
+	EntitlementOwners *EntitlementOwnerProvisioner `json:"entitlementOwners,omitempty"`
+	Expression        *ExpressionProvisioner       `json:"expression,omitempty"`
+	Group             *GroupProvisioner            `json:"group,omitempty"`
+	Manager           *ManagerProvisioner          `json:"manager,omitempty"`
+	Users             *UserProvisioner             `json:"users,omitempty"`
 }
 
-func (p *ProvisionerAssignment) GetAppOwnerProvisioner() *AppOwnerProvisioner {
+func (p *ProvisionerAssignment) GetAppOwners() *AppOwnerProvisioner {
 	if p == nil {
 		return nil
 	}
-	return p.AppOwnerProvisioner
+	return p.AppOwners
 }
 
-func (p *ProvisionerAssignment) GetEntitlementOwnerProvisioner() *EntitlementOwnerProvisioner {
+func (p *ProvisionerAssignment) GetEntitlementOwners() *EntitlementOwnerProvisioner {
 	if p == nil {
 		return nil
 	}
-	return p.EntitlementOwnerProvisioner
+	return p.EntitlementOwners
 }
 
-func (p *ProvisionerAssignment) GetExpressionProvisioner() *ExpressionProvisioner {
+func (p *ProvisionerAssignment) GetExpression() *ExpressionProvisioner {
 	if p == nil {
 		return nil
 	}
-	return p.ExpressionProvisioner
+	return p.Expression
 }
 
-func (p *ProvisionerAssignment) GetGroupProvisioner() *GroupProvisioner {
+func (p *ProvisionerAssignment) GetGroup() *GroupProvisioner {
 	if p == nil {
 		return nil
 	}
-	return p.GroupProvisioner
+	return p.Group
 }
 
-func (p *ProvisionerAssignment) GetManagerProvisioner() *ManagerProvisioner {
+func (p *ProvisionerAssignment) GetManager() *ManagerProvisioner {
 	if p == nil {
 		return nil
 	}
-	return p.ManagerProvisioner
+	return p.Manager
 }
 
-func (p *ProvisionerAssignment) GetUserProvisioner() *UserProvisioner {
+func (p *ProvisionerAssignment) GetUsers() *UserProvisioner {
 	if p == nil {
 		return nil
 	}
-	return p.UserProvisioner
+	return p.Users
 }

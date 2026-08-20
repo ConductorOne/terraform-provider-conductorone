@@ -33,10 +33,9 @@ func (e *RequestSchemaJustificationVisibility) IsExact() bool {
 
 // RequestSchema - A request schema defines a form template that users fill out when requesting access.
 type RequestSchema struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
-	// A form is a collection of fields to be filled out by a user
-	RequestSchemaForm *RequestSchemaForm `json:"form,omitempty"`
+	CreatedAt *time.Time         `json:"createdAt,omitempty"`
+	DeletedAt *time.Time         `json:"deletedAt,omitempty"`
+	Form      *RequestSchemaForm `json:"form,omitempty"`
 	// The unique identifier of this request schema.
 	ID *string `json:"id,omitempty"`
 	// Controls whether the justification field is shown or hidden on the request form.
@@ -68,11 +67,11 @@ func (r *RequestSchema) GetDeletedAt() *time.Time {
 	return r.DeletedAt
 }
 
-func (r *RequestSchema) GetRequestSchemaForm() *RequestSchemaForm {
+func (r *RequestSchema) GetForm() *RequestSchemaForm {
 	if r == nil {
 		return nil
 	}
-	return r.RequestSchemaForm
+	return r.Form
 }
 
 func (r *RequestSchema) GetID() *string {

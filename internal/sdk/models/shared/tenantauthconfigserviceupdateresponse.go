@@ -4,24 +4,12 @@ package shared
 
 // The TenantAuthConfigServiceUpdateResponse message.
 type TenantAuthConfigServiceUpdateResponse struct {
-	// The TenantAuthConfig message.
-	//
-	// This message contains a oneof named provider_config. Only a single field of the following list may be set at a time:
-	//   - google
-	//   - microsoft
-	//   - okta
-	//   - onelogin
-	//   - jumpcloud
-	//   - pingone
-	//   - oidc
-	//   - c1Local
-	//
-	TenantAuthConfig *TenantAuthConfig `json:"authConfig,omitempty"`
+	AuthConfig *TenantAuthConfig `json:"authConfig,omitempty"`
 }
 
-func (t *TenantAuthConfigServiceUpdateResponse) GetTenantAuthConfig() *TenantAuthConfig {
+func (t *TenantAuthConfigServiceUpdateResponse) GetAuthConfig() *TenantAuthConfig {
 	if t == nil {
 		return nil
 	}
-	return t.TenantAuthConfig
+	return t.AuthConfig
 }

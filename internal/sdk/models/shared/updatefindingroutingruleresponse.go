@@ -4,13 +4,12 @@ package shared
 
 // The UpdateFindingRoutingRuleResponse message.
 type UpdateFindingRoutingRuleResponse struct {
-	// The FindingRoutingRule message.
-	FindingRoutingRule *FindingRoutingRule `json:"routingRule,omitempty"`
+	RoutingRule *FindingRoutingRule `json:"routingRule,omitempty"`
 }
 
-func (u *UpdateFindingRoutingRuleResponse) GetFindingRoutingRule() *FindingRoutingRule {
+func (u *UpdateFindingRoutingRuleResponse) GetRoutingRule() *FindingRoutingRule {
 	if u == nil {
 		return nil
 	}
-	return u.FindingRoutingRule
+	return u.RoutingRule
 }

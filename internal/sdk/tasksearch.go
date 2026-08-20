@@ -32,6 +32,8 @@ func newTaskSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, 
 
 // Search
 // Search tasks based on filters specified in the request body.
+//
+//	Each TaskView row is large — request a small page_size (≤10) and set expand_mask to only the paths you need; broad expansion inlines whole related objects (app, entitlement, user, policy) and bloats the response.
 func (s *TaskSearch) Search(ctx context.Context, request *shared.TaskSearchRequest, opts ...operations.Option) (*operations.C1APITaskV1TaskSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

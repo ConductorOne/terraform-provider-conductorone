@@ -3,6 +3,6 @@
 package types
 
 type AppEntitlementView struct {
-	ActorObjectPermissions *ActorObjectPermissions `tfsdk:"actor_object_permissions"`
-	AppEntitlement         *AppEntitlement         `tfsdk:"app_entitlement"`
+	AppEntitlement    *AppEntitlement         `tfsdk:"app_entitlement"`
+	ObjectPermissions *ActorObjectPermissions `tfsdk:"object_permissions"`
 }

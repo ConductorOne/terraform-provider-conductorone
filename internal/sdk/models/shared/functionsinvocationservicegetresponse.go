@@ -4,13 +4,12 @@ package shared
 
 // The FunctionsInvocationServiceGetResponse message.
 type FunctionsInvocationServiceGetResponse struct {
-	// The FunctionInvocation message.
-	FunctionInvocation *FunctionInvocation `json:"invocation,omitempty"`
+	Invocation *FunctionInvocation `json:"invocation,omitempty"`
 }
 
-func (f *FunctionsInvocationServiceGetResponse) GetFunctionInvocation() *FunctionInvocation {
+func (f *FunctionsInvocationServiceGetResponse) GetInvocation() *FunctionInvocation {
 	if f == nil {
 		return nil
 	}
-	return f.FunctionInvocation
+	return f.Invocation
 }

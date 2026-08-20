@@ -78,8 +78,7 @@ type App struct {
 	// The AccountName of the app. For example, AWS is AccountID, Github is Org Name, and Okta is Okta Subdomain.
 	AppAccountName *string `json:"appAccountName,omitempty"`
 	// The owners of the app.
-	AppOwners []User `json:"appOwners,omitempty"`
-	// AppUserMapper configures custom account mapping for uplift.
+	AppOwners     []User         `json:"appOwners,omitempty"`
 	AppUserMapper *AppUserMapper `json:"appUserMapper,omitempty"`
 	// The ID of the Certify Policy associated with this App.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
@@ -117,6 +116,8 @@ type App struct {
 	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
 	// The ID of the app that created this app, if any.
 	ParentAppID *string `json:"parentAppId,omitempty"`
+	// When enabled, revoking a grant also revokes the grants that source it.
+	RevokeGrantSources *bool `json:"revokeGrantSources,omitempty"`
 	// The ID of the Revoke Policy associated with this App.
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
 	// The strictAccessEntitlementProvisioning field.
@@ -319,6 +320,13 @@ func (a *App) GetParentAppID() *string {
 	return a.ParentAppID
 }
 
+func (a *App) GetRevokeGrantSources() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.RevokeGrantSources
+}
+
 func (a *App) GetRevokePolicyID() *string {
 	if a == nil {
 		return nil
@@ -360,9 +368,8 @@ type AppInput struct {
 	//
 	//  Well-known keys: `managed_by`, `iac_workspace`,
 	//  `iac_resource_address`, `iac_tool_version`.
-	Annotations map[string]string `json:"annotations,omitempty"`
-	// AppUserMapper configures custom account mapping for uplift.
-	AppUserMapper *AppUserMapper `json:"appUserMapper,omitempty"`
+	Annotations   map[string]string   `json:"annotations,omitempty"`
+	AppUserMapper *AppUserMapperInput `json:"appUserMapper,omitempty"`
 	// The ID of the Certify Policy associated with this App.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
 	// The connectorVersion field.
@@ -388,6 +395,8 @@ type AppInput struct {
 	MatchBatonRef     *AppMatchBatonRef `json:"matchBatonRef,omitempty"`
 	// The cost of an app per-seat, so that total cost can be calculated by the grant count.
 	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
+	// When enabled, revoking a grant also revokes the grants that source it.
+	RevokeGrantSources *bool `json:"revokeGrantSources,omitempty"`
 	// The ID of the Revoke Policy associated with this App.
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
 	// The strictAccessEntitlementProvisioning field.
@@ -408,7 +417,7 @@ func (a *AppInput) GetAnnotations() map[string]string {
 	return a.Annotations
 }
 
-func (a *AppInput) GetAppUserMapper() *AppUserMapper {
+func (a *AppInput) GetAppUserMapper() *AppUserMapperInput {
 	if a == nil {
 		return nil
 	}
@@ -504,6 +513,13 @@ func (a *AppInput) GetMonthlyCostUsd() *int {
 		return nil
 	}
 	return a.MonthlyCostUsd
+}
+
+func (a *AppInput) GetRevokeGrantSources() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.RevokeGrantSources
 }
 
 func (a *AppInput) GetRevokePolicyID() *string {

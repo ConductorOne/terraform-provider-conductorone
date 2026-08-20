@@ -9,7 +9,7 @@ resource "conductorone_task_grant" "my_taskgrant" {
   request_data = {
     # ...
   }
-  task_grant_source = {
+  source = {
     conversation_id = "...my_conversation_id..."
     external_url    = "...my_external_url..."
     integration_id  = "...my_integration_id..."

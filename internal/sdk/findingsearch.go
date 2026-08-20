@@ -32,6 +32,8 @@ func newFindingSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguratio
 
 // Search
 // Search findings using full-text query and filters for severity, state, type, and app.
+//
+//	Each Finding row is large (risk factors, evidence, target, tags) — request a small page_size (≤10) to keep responses small.
 func (s *FindingSearch) Search(ctx context.Context, request *shared.FindingSearchRequest, opts ...operations.Option) (*operations.C1APIFindingV1FindingSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

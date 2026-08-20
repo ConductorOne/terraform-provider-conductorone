@@ -104,6 +104,10 @@ func (r *AppOwnerUserDataSource) Schema(ctx context.Context, req datasource.Sche
 									Computed:    true,
 									Description: `The appUserProfileAttributeKey field.`,
 								},
+								"priority": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Lower number = higher precedence; sources[0] is the winning source.`,
+								},
 								"user_attribute_mapping_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The userAttributeMappingId field.`,
@@ -141,6 +145,10 @@ func (r *AppOwnerUserDataSource) Schema(ctx context.Context, req datasource.Sche
 									Computed:    true,
 									Description: `The appUserProfileAttributeKey field.`,
 								},
+								"priority": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Lower number = higher precedence; sources[0] is the winning source.`,
+								},
 								"user_attribute_mapping_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The userAttributeMappingId field.`,
@@ -177,6 +185,10 @@ func (r *AppOwnerUserDataSource) Schema(ctx context.Context, req datasource.Sche
 									Computed:    true,
 									Description: `The appUserProfileAttributeKey field.`,
 								},
+								"priority": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Lower number = higher precedence; sources[0] is the winning source.`,
+								},
 								"user_attribute_mapping_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The userAttributeMappingId field.`,
@@ -209,6 +221,10 @@ func (r *AppOwnerUserDataSource) Schema(ctx context.Context, req datasource.Sche
 								"app_user_profile_attribute_key": schema.StringAttribute{
 									Computed:    true,
 									Description: `The appUserProfileAttributeKey field.`,
+								},
+								"priority": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Lower number = higher precedence; sources[0] is the winning source.`,
 								},
 								"user_attribute_mapping_id": schema.StringAttribute{
 									Computed:    true,
@@ -247,6 +263,10 @@ func (r *AppOwnerUserDataSource) Schema(ctx context.Context, req datasource.Sche
 									Computed:    true,
 									Description: `The appUserProfileAttributeKey field.`,
 								},
+								"priority": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Lower number = higher precedence; sources[0] is the winning source.`,
+								},
 								"user_attribute_mapping_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The userAttributeMappingId field.`,
@@ -278,6 +298,10 @@ func (r *AppOwnerUserDataSource) Schema(ctx context.Context, req datasource.Sche
 								"app_user_profile_attribute_key": schema.StringAttribute{
 									Computed:    true,
 									Description: `The appUserProfileAttributeKey field.`,
+								},
+								"priority": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Lower number = higher precedence; sources[0] is the winning source.`,
 								},
 								"user_attribute_mapping_id": schema.StringAttribute{
 									Computed:    true,
@@ -315,6 +339,10 @@ func (r *AppOwnerUserDataSource) Schema(ctx context.Context, req datasource.Sche
 									Computed:    true,
 									Description: `The appUserProfileAttributeKey field.`,
 								},
+								"priority": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Lower number = higher precedence; sources[0] is the winning source.`,
+								},
 								"user_attribute_mapping_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The userAttributeMappingId field.`,
@@ -347,6 +375,10 @@ func (r *AppOwnerUserDataSource) Schema(ctx context.Context, req datasource.Sche
 								"app_user_profile_attribute_key": schema.StringAttribute{
 									Computed:    true,
 									Description: `The appUserProfileAttributeKey field.`,
+								},
+								"priority": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Lower number = higher precedence; sources[0] is the winning source.`,
 								},
 								"user_attribute_mapping_id": schema.StringAttribute{
 									Computed:    true,
@@ -402,6 +434,10 @@ func (r *AppOwnerUserDataSource) Schema(ctx context.Context, req datasource.Sche
 								"app_user_profile_attribute_key": schema.StringAttribute{
 									Computed:    true,
 									Description: `The appUserProfileAttributeKey field.`,
+								},
+								"priority": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Lower number = higher precedence; sources[0] is the winning source.`,
 								},
 								"user_attribute_mapping_id": schema.StringAttribute{
 									Computed:    true,

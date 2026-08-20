@@ -4,7 +4,6 @@ package shared
 
 // GetConnectorEntitlementOwnerResponse is the response for getting an entitlement ownership source on a connector.
 type GetConnectorEntitlementOwnerResponse struct {
-	// ConnectorOwnerEntitlement represents an entitlement ownership source for a connector.
 	ConnectorOwnerEntitlement *ConnectorOwnerEntitlement `json:"connectorOwnerEntitlement,omitempty"`
 }
 

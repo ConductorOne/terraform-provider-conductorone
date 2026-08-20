@@ -3,16 +3,16 @@
 package types
 
 type AutomationTrigger struct {
-	AccessConflictTrigger       *AccessConflictTrigger       `tfsdk:"access_conflict_trigger"`
-	AppUserCreatedTrigger       *AppUserCreatedTrigger       `tfsdk:"app_user_created_trigger"`
-	AppUserUpdatedTrigger       *AppUserUpdatedTrigger       `tfsdk:"app_user_updated_trigger"`
-	GrantDeletedTrigger         *GrantDeletedTrigger         `tfsdk:"grant_deleted_trigger"`
-	GrantFoundTrigger           *GrantFoundTrigger           `tfsdk:"grant_found_trigger"`
-	ScheduleTrigger             *ScheduleTrigger             `tfsdk:"schedule_trigger"`
-	ScheduleTriggerAppUser      *ScheduleTriggerAppUser      `tfsdk:"schedule_trigger_app_user"`
-	ScheduleTriggerNoUser       *ScheduleTriggerNoUser       `tfsdk:"schedule_trigger_no_user"`
-	UsageBasedRevocationTrigger *UsageBasedRevocationTrigger `tfsdk:"usage_based_revocation_trigger"`
-	UserCreatedTrigger          *UserCreatedTrigger          `tfsdk:"user_created_trigger"`
-	UserProfileChangeTrigger    *UserProfileChangeTrigger    `tfsdk:"user_profile_change_trigger"`
-	WebhookAutomationTrigger    *WebhookAutomationTrigger    `tfsdk:"webhook_automation_trigger"`
+	AccessConflict       *AccessConflictTrigger       `tfsdk:"access_conflict"`
+	AppUserCreated       *AppUserCreatedTrigger       `tfsdk:"app_user_created"`
+	AppUserUpdated       *AppUserUpdatedTrigger       `tfsdk:"app_user_updated"`
+	GrantDeleted         *GrantDeletedTrigger         `tfsdk:"grant_deleted"`
+	GrantFound           *GrantFoundTrigger           `tfsdk:"grant_found"`
+	Schedule             *ScheduleTrigger             `tfsdk:"schedule"`
+	ScheduleAppUser      *ScheduleTriggerAppUser      `tfsdk:"schedule_app_user"`
+	ScheduleNoUser       *ScheduleTriggerNoUser       `tfsdk:"schedule_no_user"`
+	UsageBasedRevocation *UsageBasedRevocationTrigger `tfsdk:"usage_based_revocation"`
+	UserCreated          *UserCreatedTrigger          `tfsdk:"user_created"`
+	UserProfileChange    *UserProfileChangeTrigger    `tfsdk:"user_profile_change"`
+	Webhook              *WebhookAutomationTrigger    `tfsdk:"webhook"`
 }

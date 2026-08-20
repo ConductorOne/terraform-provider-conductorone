@@ -11,33 +11,28 @@ package shared
 //   - accessToken
 //   - workloadFederation
 type DecoyVendingMaterial struct {
-	// DecoyAccessTokenMaterial is returned for AccessToken decoys.
-	DecoyAccessTokenMaterial *DecoyAccessTokenMaterial `json:"accessToken,omitempty"`
-	// DecoyClientCredentialMaterial is returned for UserClientCredential and
-	//  ConnectorClient decoys.
-	DecoyClientCredentialMaterial *DecoyClientCredentialMaterial `json:"clientCredential,omitempty"`
-	// DecoyWorkloadFederationMaterial is returned for WorkloadFederation
-	//  decoys. No vended secret; the operator binds the trust on the IdP side.
-	DecoyWorkloadFederationMaterial *DecoyWorkloadFederationMaterial `json:"workloadFederation,omitempty"`
+	AccessToken        *DecoyAccessTokenMaterial        `json:"accessToken,omitempty"`
+	ClientCredential   *DecoyClientCredentialMaterial   `json:"clientCredential,omitempty"`
+	WorkloadFederation *DecoyWorkloadFederationMaterial `json:"workloadFederation,omitempty"`
 }
 
-func (d *DecoyVendingMaterial) GetDecoyAccessTokenMaterial() *DecoyAccessTokenMaterial {
+func (d *DecoyVendingMaterial) GetAccessToken() *DecoyAccessTokenMaterial {
 	if d == nil {
 		return nil
 	}
-	return d.DecoyAccessTokenMaterial
+	return d.AccessToken
 }
 
-func (d *DecoyVendingMaterial) GetDecoyClientCredentialMaterial() *DecoyClientCredentialMaterial {
+func (d *DecoyVendingMaterial) GetClientCredential() *DecoyClientCredentialMaterial {
 	if d == nil {
 		return nil
 	}
-	return d.DecoyClientCredentialMaterial
+	return d.ClientCredential
 }
 
-func (d *DecoyVendingMaterial) GetDecoyWorkloadFederationMaterial() *DecoyWorkloadFederationMaterial {
+func (d *DecoyVendingMaterial) GetWorkloadFederation() *DecoyWorkloadFederationMaterial {
 	if d == nil {
 		return nil
 	}
-	return d.DecoyWorkloadFederationMaterial
+	return d.WorkloadFederation
 }

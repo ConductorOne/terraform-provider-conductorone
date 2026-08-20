@@ -4,18 +4,10 @@ package shared
 
 // The AccessReviewView message.
 type AccessReviewView struct {
-	// An access review campaign (also called a certification campaign) that verifies whether users still need their access entitlements.
-	//
-	// This message contains a oneof named setup_metadata. Only a single field of the following list may be set at a time:
-	//   - singleApp
-	//   - multiApp
-	//   - bindings
-	//
 	AccessReview *AccessReview `json:"accessReview,omitempty"`
 	// The createdByUserPath field.
-	CreatedByUserPath *string `json:"createdByUserPath,omitempty"`
-	// The ActorObjectPermissions message.
-	ActorObjectPermissions *ActorObjectPermissions `json:"objectPermissions,omitempty"`
+	CreatedByUserPath *string                 `json:"createdByUserPath,omitempty"`
+	ObjectPermissions *ActorObjectPermissions `json:"objectPermissions,omitempty"`
 	// The policyPath field.
 	PolicyPath *string `json:"policyPath,omitempty"`
 }
@@ -34,11 +26,11 @@ func (a *AccessReviewView) GetCreatedByUserPath() *string {
 	return a.CreatedByUserPath
 }
 
-func (a *AccessReviewView) GetActorObjectPermissions() *ActorObjectPermissions {
+func (a *AccessReviewView) GetObjectPermissions() *ActorObjectPermissions {
 	if a == nil {
 		return nil
 	}
-	return a.ActorObjectPermissions
+	return a.ObjectPermissions
 }
 
 func (a *AccessReviewView) GetPolicyPath() *string {

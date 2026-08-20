@@ -35,16 +35,14 @@ type AccessReviewTemplateResource struct {
 
 // AccessReviewTemplateResourceModel describes the resource data model.
 type AccessReviewTemplateResourceModel struct {
-	AccessReviewColumnConfig       *tfTypes.AccessReviewColumnConfig   `tfsdk:"access_review_column_config"`
 	AccessReviewDuration           types.String                        `tfsdk:"access_review_duration"`
-	AccessReviewInclusionScope     *tfTypes.AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
-	AccessReviewScopeV2            *tfTypes.AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
 	AccuracyIssueAction            types.String                        `tfsdk:"accuracy_issue_action"`
 	Annotations                    map[string]types.String             `tfsdk:"annotations"`
 	AutoCloseCampaign              types.Bool                          `tfsdk:"auto_close_campaign"`
 	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
 	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
+	ColumnConfig                   *tfTypes.AccessReviewColumnConfig   `tfsdk:"column_config"`
 	CreatedAt                      types.String                        `tfsdk:"created_at"`
 	DefaultView                    types.String                        `tfsdk:"default_view"`
 	DeletedAt                      types.String                        `tfsdk:"-"`
@@ -52,6 +50,7 @@ type AccessReviewTemplateResourceModel struct {
 	DisplayName                    types.String                        `tfsdk:"display_name"`
 	ExemptCertifiedAccessConflicts types.Bool                          `tfsdk:"exempt_certified_access_conflicts"`
 	ID                             types.String                        `tfsdk:"id"`
+	InclusionScope                 *tfTypes.AccessReviewInclusionScope `tfsdk:"inclusion_scope"`
 	IsCampaignScheduleEnabled      types.Bool                          `tfsdk:"is_campaign_schedule_enabled"`
 	NextScheduledCampaignAt        types.String                        `tfsdk:"next_scheduled_campaign_at"`
 	NotificationConfig             *tfTypes.NotificationConfig         `tfsdk:"notification_config"`
@@ -59,9 +58,11 @@ type AccessReviewTemplateResourceModel struct {
 	OwnerIds                       []types.String                      `tfsdk:"owner_ids"`
 	PolicyID                       types.String                        `tfsdk:"policy_id"`
 	RecurrenceRule                 *tfTypes.RecurrenceRule             `tfsdk:"recurrence_rule"`
+	ReviewerAttributeConfig        *tfTypes.ReviewerAttributeConfig    `tfsdk:"reviewer_attribute_config"`
 	ReviewInstructions             types.String                        `tfsdk:"review_instructions"`
-	ReviewSignatureConfig          *tfTypes.ReviewSignatureConfig      `tfsdk:"review_signature_config"`
+	Scope                          *tfTypes.AccessReviewScopeV2        `tfsdk:"scope"`
 	ScopeType                      types.String                        `tfsdk:"scope_type"`
+	SignatureConfig                *tfTypes.ReviewSignatureConfig      `tfsdk:"signature_config"`
 	SlackChannel                   *tfTypes.SlackChannel               `tfsdk:"slack_channel"`
 	UpdatedAt                      types.String                        `tfsdk:"updated_at"`
 	UsePolicyOverride              types.Bool                          `tfsdk:"use_policy_override"`
@@ -75,25 +76,120 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AccessReviewTemplate Resource",
 		Attributes: map[string]schema.Attribute{
-			"access_review_column_config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"columns": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
-						ElementType: types.StringType,
-						MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
-							` If empty, the default column set for the campaign's default_view is used.`,
-					},
-				},
-				Description: `Configuration for which columns are visible in the reviewer task list.`,
-			},
 			"access_review_duration": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
 			},
-			"access_review_inclusion_scope": schema.SingleNestedAttribute{
+			"accuracy_issue_action": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The accuracyIssueAction field. possible known values include one of ["ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT"]`,
+			},
+			"annotations": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
+					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
+					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
+					` matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting` + "\n" +
+					` with ` + "`" + `c1/` + "`" + ` are reserved for server-managed use and rejected on write.` + "\n" +
+					`` + "\n" +
+					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
+					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
+			"auto_close_campaign": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The autoCloseCampaign field.`,
+			},
+			"auto_close_decision": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The autoCloseDecision field. possible known values include one of ["CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION"]`,
+			},
+			"auto_generate_report": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `auto generate report when campaign is closed`,
+			},
+			"auto_start_campaign": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The autoStartCampaign field.`,
+			},
+			"column_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"columns": schema.ListAttribute{
+						Computed:           true,
+						Optional:           true,
+						ElementType:        types.StringType,
+						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+						MarkdownDescription: `Deprecated: use ` + "`" + `ordered_columns` + "`" + `, which can also include app user` + "\n" +
+							` attribute columns.`,
+					},
+					"ordered_columns": schema.ListNestedAttribute{
+						Computed: true,
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"app_user_attribute_key": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The appUserAttributeKey field.` + "\n" +
+										`This field is part of the ` + "`" + `column` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.accessreview.v1.AccessReviewTaskColumnRef` + "`" + ` for more details.`,
+								},
+								"builtin": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+									MarkdownDescription: `The builtin field.` + "\n" +
+										`This field is part of the ` + "`" + `column` + "`" + ` oneof.` + "\n" +
+										`See the documentation for ` + "`" + `c1.api.accessreview.v1.AccessReviewTaskColumnRef` + "`" + ` for more details.` + "\n" +
+										`possible known values include one of ["ACCESS_REVIEW_TASK_COLUMN_UNSPECIFIED", "ACCESS_REVIEW_TASK_COLUMN_VIEW_LINK", "ACCESS_REVIEW_TASK_COLUMN_CURRENT_STATE", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT_OWNER", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT_DESCRIPTION", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_TYPE", "ACCESS_REVIEW_TASK_COLUMN_INSIGHTS", "ACCESS_REVIEW_TASK_COLUMN_RECOMMENDATION", "ACCESS_REVIEW_TASK_COLUMN_ASSIGNED_TO", "ACCESS_REVIEW_TASK_COLUMN_STATUS", "ACCESS_REVIEW_TASK_COLUMN_APP", "ACCESS_REVIEW_TASK_COLUMN_DUE", "ACCESS_REVIEW_TASK_COLUMN_PROJECT", "ACCESS_REVIEW_TASK_COLUMN_CREATED_ON", "ACCESS_REVIEW_TASK_COLUMN_TASK_AGE", "ACCESS_REVIEW_TASK_COLUMN_RESOLVED_ON", "ACCESS_REVIEW_TASK_COLUMN_ENROLLMENT_STATUS", "ACCESS_REVIEW_TASK_COLUMN_INHERITED_FROM", "ACCESS_REVIEW_TASK_COLUMN_DEPARTMENT", "ACCESS_REVIEW_TASK_COLUMN_JOB_TITLE", "ACCESS_REVIEW_TASK_COLUMN_CREATED_BY", "ACCESS_REVIEW_TASK_COLUMN_LAST_LOGIN", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_PARENT", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_CHILDREN", "ACCESS_REVIEW_TASK_COLUMN_APP_USER_USERNAME", "ACCESS_REVIEW_TASK_COLUMN_ACCESS_HOLDER_TYPE", "ACCESS_REVIEW_TASK_COLUMN_RISK_LEVEL", "ACCESS_REVIEW_TASK_COLUMN_COMPLIANCE_FRAMEWORK"]`,
+								},
+							},
+						},
+						MarkdownDescription: `Ordered columns visible to reviewers, built-ins and attributes` + "\n" +
+							` interleaved. Falls back to ` + "`" + `columns` + "`" + `, then to the default set for the` + "\n" +
+							` campaign's default_view.`,
+					},
+				},
+				Description: `Configuration for which columns are visible in the reviewer task list.`,
+			},
+			"created_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"default_view": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The defaultView field. possible known values include one of ["ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED", "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE"]`,
+			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `An optional description providing context about the template.`,
+			},
+			"display_name": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The display name for the new template.`,
+			},
+			"exempt_certified_access_conflicts": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The exemptCertifiedAccessConflicts field.`,
+			},
+			"id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The unique identifier of this template.`,
+			},
+			"inclusion_scope": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"app_user_statuses": schema.ListAttribute{
@@ -148,11 +244,147 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 				},
 				Description: `The AccessReviewInclusionScope message.`,
 			},
-			"access_review_scope_v2": schema.SingleNestedAttribute{
+			"is_campaign_schedule_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The isCampaignScheduleEnabled field.`,
+			},
+			"next_scheduled_campaign_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"notification_config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"account_criteria_scope": schema.SingleNestedAttribute{
+					"send_close": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send a notification when the campaign is closed.`,
+					},
+					"send_kickoff": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send a notification when the campaign is started.`,
+					},
+					"send_reminders": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
+					},
+				},
+				Description: `Controls which email notifications are sent during the access review lifecycle.`,
+			},
+			"occurrences": schema.Int32Attribute{
+				Computed:    true,
+				Description: `The number of campaigns that have been created from this template.`,
+			},
+			"owner_ids": schema.ListAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				ElementType: types.StringType,
+				Description: `The IDs of the users who own this template. At least one owner is required. Requires replacement if changed.`,
+			},
+			"policy_id": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The ID of the default review policy for campaigns created from this template.`,
+			},
+			"recurrence_rule": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"end_date": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"frequency": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The frequency field. possible known values include one of ["FREQUENCY_UNSPECIFIED", "FREQUENCY_NONE", "FREQUENCY_DAILY", "FREQUENCY_WEEKLY", "FREQUENCY_MONTHLY", "FREQUENCY_YEARLY"]`,
+					},
+					"interval": schema.Int32Attribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The interval field.`,
+					},
+					"occurrences": schema.Int32Attribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `The occurrences field.` + "\n" +
+							`This field is part of the ` + "`" + `end_condition` + "`" + ` oneof.` + "\n" +
+							`See the documentation for ` + "`" + `c1.api.accessreview.v1.RecurrenceRule` + "`" + ` for more details.`,
+					},
+					"start_date": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+				},
+				MarkdownDescription: `The RecurrenceRule message.` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named end_condition. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - endDate` + "\n" +
+					`  - occurrences`,
+			},
+			"review_instructions": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The reviewInstructions field.`,
+			},
+			"reviewer_attribute_config": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"bindings": schema.ListNestedAttribute{
+						Computed: true,
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The appId field.`,
+								},
+								"attribute_key": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The attributeKey field.`,
+								},
+							},
+						},
+						Description: `The bindings field.`,
+					},
+				},
+				MarkdownDescription: `Allowlist of AppUser.profile keys visible to reviewers, scoped per app.` + "\n" +
+					` Empty = reviewers see no profile attributes in the AppUser tooltip.`,
+			},
+			"scope": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"account_cel_expression": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"expression": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The expression field.`,
+							},
+						},
+						Description: `The CelExpressionScope message.`,
+					},
+					"account_criteria": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
@@ -181,27 +413,32 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 						},
 						Description: `The AccountCriteriaScope message.`,
 					},
-					"all_access_conflicts_scope": schema.SingleNestedAttribute{
+					"all_access_conflicts": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The AllAccessConflictsScope message.`,
 					},
-					"all_accounts_scope": schema.SingleNestedAttribute{
+					"all_accounts": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The AllAccountsScope message.`,
 					},
-					"all_grants_scope": schema.SingleNestedAttribute{
+					"all_grants": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The AllGrantsScope message.`,
 					},
-					"all_users_scope": schema.SingleNestedAttribute{
+					"all_users": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The AllUsersScope message.`,
 					},
-					"app_selection_criteria_scope": schema.SingleNestedAttribute{
+					"app_access": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The ApplicationAccessScope message.`,
+					},
+					"app_selection_criteria": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
@@ -220,52 +457,33 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 						},
 						Description: `The AppSelectionCriteriaScope message.`,
 					},
-					"application_access_scope": schema.SingleNestedAttribute{
+					"cel_expression": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"expression": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The expression field.`,
+							},
+						},
+						Description: `The CelExpressionScope message.`,
+					},
+					"excluded_resource_type_selections": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The ApplicationAccessScope message.`,
+						Description: `The ResourceTypeSelectionScope message.`,
 					},
-					"cel_expression_scope": schema.SingleNestedAttribute{
+					"excluded_specific_resources": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The SpecificResourcesScope message.`,
+					},
+					"grants_by_criteria": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"expression": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The expression field.`,
-							},
-						},
-						Description: `The CelExpressionScope message.`,
-					},
-					"cel_expression_scope1": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"expression": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The expression field.`,
-							},
-						},
-						Description: `The CelExpressionScope message.`,
-					},
-					"grants_by_criteria_scope": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"days_since_added": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-							},
-							"days_since_last_used": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-							},
-							"days_since_reviewed": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-							},
-							"grant_access_profile_filter": schema.SingleNestedAttribute{
+							"access_profile_filter": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
@@ -292,6 +510,18 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								Description: `The GrantAccessProfileFilter message.`,
+							},
+							"days_since_added": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+							},
+							"days_since_last_used": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+							},
+							"days_since_reviewed": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
 							},
 							"grants_added_between": schema.SingleNestedAttribute{
 								Computed: true,
@@ -332,17 +562,29 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 							`  - daysSinceReviewed` + "\n" +
 							`  - grantsAddedBetween`,
 					},
-					"resource_selection_scope": schema.SingleNestedAttribute{
+					"principal_type_filter": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Filters principals included in the scope. Unspecified is treated as users. possible known values include one of ["PRINCIPAL_TYPE_FILTER_UNSPECIFIED", "PRINCIPAL_TYPE_FILTER_USERS", "PRINCIPAL_TYPE_FILTER_RESOURCES", "PRINCIPAL_TYPE_FILTER_USERS_AND_RESOURCES"]`,
+					},
+					"resource_selection": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The ResourceSelectionScope message.`,
 					},
-					"resource_type_selection_scope": schema.SingleNestedAttribute{
+					"resource_type_selections": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The ResourceTypeSelectionScope message.`,
 					},
-					"selected_users_scope": schema.SingleNestedAttribute{
+					"scope_role_selection": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `Empty marker for scope+role pair scoping on IaaS-type apps.` + "\n" +
+							` Actual selections stored in AccessReviewScopeRoleSelection rows.` + "\n" +
+							` May coexist with ResourceSelectionScope on the same campaign; prepare unions both.`,
+					},
+					"selected_users": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
@@ -355,17 +597,17 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 						},
 						Description: `The SelectedUsersScope message.`,
 					},
-					"specific_access_conflicts_scope": schema.SingleNestedAttribute{
+					"specific_access_conflicts": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The SpecificAccessConflictsScope message.`,
 					},
-					"specific_resources_scope": schema.SingleNestedAttribute{
+					"specific_resources": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The SpecificResourcesScope message.`,
 					},
-					"user_criteria_scope": schema.SingleNestedAttribute{
+					"user_criteria": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
@@ -469,168 +711,19 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 					`` + "\n" +
 					`` + "\n" +
 					`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
-					`  - resourceSelection`,
-			},
-			"accuracy_issue_action": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The accuracyIssueAction field. possible known values include one of ["ACCURACY_ISSUE_ACTION_UNSPECIFIED", "ACCURACY_ISSUE_ACTION_CONTINUE", "ACCURACY_ISSUE_ACTION_WAIT"]`,
-			},
-			"annotations": schema.MapAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
-				MarkdownDescription: `Bounded key/value metadata bag for IaC marking and customer tags.` + "\n" +
-					` See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys 1–128` + "\n" +
-					` chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256 chars` + "\n" +
-					` matching URL-safe ASCII; total serialized ≤4096 bytes. Keys starting` + "\n" +
-					` with ` + "`" + `c1/` + "`" + ` are reserved for server-managed use and rejected on write.` + "\n" +
+					`  - resourceSelection` + "\n" +
 					`` + "\n" +
-					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
-					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
-			},
-			"auto_close_campaign": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The autoCloseCampaign field.`,
-			},
-			"auto_close_decision": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The autoCloseDecision field. possible known values include one of ["CLOSE_DECISION_UNSPECIFIED", "CLOSE_DECISION_REVOKED", "CLOSE_DECISION_SKIP", "CLOSE_DECISION_NO_ACTION"]`,
-			},
-			"auto_generate_report": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `auto generate report when campaign is closed`,
-			},
-			"auto_start_campaign": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The autoStartCampaign field.`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"default_view": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The defaultView field. possible known values include one of ["ACCESS_REVIEW_VIEW_TYPE_UNSPECIFIED", "ACCESS_REVIEW_VIEW_TYPE_BY_APP", "ACCESS_REVIEW_VIEW_TYPE_BY_USER", "ACCESS_REVIEW_VIEW_TYPE_UNSTRUCTURED", "ACCESS_REVIEW_VIEW_TYPE_BY_RESOURCE"]`,
-			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `An optional description providing context about the template.`,
-			},
-			"display_name": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The display name for the new template.`,
-			},
-			"exempt_certified_access_conflicts": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The exemptCertifiedAccessConflicts field.`,
-			},
-			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The unique identifier of this template.`,
-			},
-			"is_campaign_schedule_enabled": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The isCampaignScheduleEnabled field.`,
-			},
-			"next_scheduled_campaign_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"notification_config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"send_close": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Whether to send a notification when the campaign is closed.`,
-					},
-					"send_kickoff": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Whether to send a notification when the campaign is started.`,
-					},
-					"send_reminders": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
-					},
-				},
-				Description: `Controls which email notifications are sent during the access review lifecycle.`,
-			},
-			"occurrences": schema.Int32Attribute{
-				Computed:    true,
-				Description: `The number of campaigns that have been created from this template.`,
-			},
-			"owner_ids": schema.ListAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				ElementType: types.StringType,
-				Description: `The IDs of the users who own this template. At least one owner is required. Requires replacement if changed.`,
-			},
-			"policy_id": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The ID of the default review policy for campaigns created from this template.`,
-			},
-			"recurrence_rule": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"end_date": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-					"frequency": schema.StringAttribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The frequency field. possible known values include one of ["FREQUENCY_UNSPECIFIED", "FREQUENCY_NONE", "FREQUENCY_DAILY", "FREQUENCY_WEEKLY", "FREQUENCY_MONTHLY", "FREQUENCY_YEARLY"]`,
-					},
-					"interval": schema.Int32Attribute{
-						Computed:    true,
-						Optional:    true,
-						Description: `The interval field.`,
-					},
-					"occurrences": schema.Int32Attribute{
-						Computed: true,
-						Optional: true,
-						MarkdownDescription: `The occurrences field.` + "\n" +
-							`This field is part of the ` + "`" + `end_condition` + "`" + ` oneof.` + "\n" +
-							`See the documentation for ` + "`" + `c1.api.accessreview.v1.RecurrenceRule` + "`" + ` for more details.`,
-					},
-					"start_date": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
-				},
-				MarkdownDescription: `The RecurrenceRule message.` + "\n" +
 					`` + "\n" +
-					`This message contains a oneof named end_condition. Only a single field of the following list may be set at a time:` + "\n" +
-					`  - endDate` + "\n" +
-					`  - occurrences`,
+					`This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - excludedSpecificResources` + "\n" +
+					`  - excludedResourceTypeSelections`,
 			},
-			"review_instructions": schema.StringAttribute{
+			"scope_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The reviewInstructions field.`,
+				Description: `The scopeType field. possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"]`,
 			},
-			"review_signature_config": schema.SingleNestedAttribute{
+			"signature_config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
@@ -657,21 +750,27 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 				},
 				Description: `Signature configuration for access review submissions`,
 			},
-			"scope_type": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The scopeType field. possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"]`,
-			},
 			"slack_channel": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"channel_id": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `Existing Slack channel ID (e.g. "C0123ABCD"). Set with is_channel_id=true to` + "\n" +
+							` target an existing channel instead of creating one by name.`,
+					},
 					"description": schema.StringAttribute{
 						Computed:    true,
 						Description: `The description field.`,
 					},
+					"is_channel_id": schema.BoolAttribute{
+						Computed: true,
+						MarkdownDescription: `When true, channel_id identifies an existing channel to use as-is: the` + "\n" +
+							` backend resolves it by ID (conversations.info) and fails if it is missing or` + "\n" +
+							` the bot cannot access it. It never creates or searches by name.`,
+					},
 					"name": schema.StringAttribute{
 						Computed:    true,
-						Description: `The name field.`,
+						Description: `Channel name to create/resolve. Required unless is_channel_id is true.`,
 					},
 				},
 				Description: `The SlackChannel message.`,

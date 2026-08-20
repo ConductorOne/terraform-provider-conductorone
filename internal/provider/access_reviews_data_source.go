@@ -61,19 +61,131 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 						"access_review": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
-								"access_review_column_config": schema.SingleNestedAttribute{
+								"access_review_template_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The ID of the template if the campaign was created from one`,
+								},
+								"accuracy_issue_action": schema.StringAttribute{
+									Computed:    true,
+									Description: `The accuracyIssueAction field.`,
+								},
+								"auto_close_campaign": schema.BoolAttribute{
+									Computed: true,
+									MarkdownDescription: `Auto-close configuration` + "\n" +
+										` completion_date is used as the scheduled close date`,
+								},
+								"auto_close_decision": schema.StringAttribute{
+									Computed:    true,
+									Description: `The autoCloseDecision field.`,
+								},
+								"auto_generate_report": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The autoGenerateReport field.`,
+								},
+								"auto_resolve": schema.BoolAttribute{
+									Computed:    true,
+									Description: `When true, selections are automatically resolved if the entitlement grant no longer exists.`,
+								},
+								"auto_start_campaign": schema.BoolAttribute{
+									Computed:    true,
+									Description: `Auto-start configuration`,
+								},
+								"bindings": schema.SingleNestedAttribute{
+									Computed:    true,
+									Description: `The BindingObjectSetup message.`,
+								},
+								"campaign_health": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"checked_at": schema.StringAttribute{
+											Computed: true,
+										},
+										"phantom_locked_count": schema.Int32Attribute{
+											Computed:    true,
+											Description: `Number of pending actions locked by terminal (dead) submissions.`,
+										},
+									},
+									Description: `Campaign health snapshot. Read-only; updated by backend maintenance processors.`,
+								},
+								"campaign_insights": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"markdown": schema.StringAttribute{
+											Computed:    true,
+											Description: `The markdown field.`,
+										},
+									},
+									Description: `AI-generated campaign insights (markdown). Read-only; set by backend when campaign is closed.`,
+								},
+								"closed_at": schema.StringAttribute{
+									Computed: true,
+								},
+								"column_config": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"columns": schema.ListAttribute{
-											Computed:    true,
-											ElementType: types.StringType,
-											MarkdownDescription: `Ordered list of columns visible to reviewers.` + "\n" +
-												` If empty, the default column set for the campaign's default_view is used.`,
+											Computed:           true,
+											ElementType:        types.StringType,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											MarkdownDescription: `Deprecated: use ` + "`" + `ordered_columns` + "`" + `, which can also include app user` + "\n" +
+												` attribute columns.`,
+										},
+										"ordered_columns": schema.ListNestedAttribute{
+											Computed: true,
+											NestedObject: schema.NestedAttributeObject{
+												Attributes: map[string]schema.Attribute{
+													"app_user_attribute_key": schema.StringAttribute{
+														Computed: true,
+														MarkdownDescription: `The appUserAttributeKey field.` + "\n" +
+															`This field is part of the ` + "`" + `column` + "`" + ` oneof.` + "\n" +
+															`See the documentation for ` + "`" + `c1.api.accessreview.v1.AccessReviewTaskColumnRef` + "`" + ` for more details.`,
+													},
+													"builtin": schema.StringAttribute{
+														Computed: true,
+														MarkdownDescription: `The builtin field.` + "\n" +
+															`This field is part of the ` + "`" + `column` + "`" + ` oneof.` + "\n" +
+															`See the documentation for ` + "`" + `c1.api.accessreview.v1.AccessReviewTaskColumnRef` + "`" + ` for more details.`,
+													},
+												},
+											},
+											MarkdownDescription: `Ordered columns visible to reviewers, built-ins and attributes` + "\n" +
+												` interleaved. Falls back to ` + "`" + `columns` + "`" + `, then to the default set for the` + "\n" +
+												` campaign's default_view.`,
 										},
 									},
 									Description: `Configuration for which columns are visible in the reviewer task list.`,
 								},
-								"access_review_exclusion_scope": schema.SingleNestedAttribute{
+								"completion_date": schema.StringAttribute{
+									Computed: true,
+								},
+								"connector_sources_frozen_at": schema.StringAttribute{
+									Computed: true,
+								},
+								"created_at": schema.StringAttribute{
+									Computed: true,
+								},
+								"created_by_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The ID of the user who created this campaign.`,
+								},
+								"default_view": schema.StringAttribute{
+									Computed:    true,
+									Description: `the default view that reviewers will see when they complete their access reviews`,
+								},
+								"description": schema.StringAttribute{
+									Computed:    true,
+									Description: `An optional description providing context about this campaign.`,
+								},
+								"display_name": schema.StringAttribute{
+									Computed:    true,
+									Description: `The human-readable name of this campaign.`,
+								},
+								"error_state": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `Error state set when a prepare action fails with a recoverable condition.` + "\n" +
+										` Cleared when the campaign scope is changed.`,
+								},
+								"exclusion_scope": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"app_user_statuses": schema.ListAttribute{
@@ -89,7 +201,23 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 									},
 									Description: `The AccessReviewExclusionScope message.`,
 								},
-								"access_review_inclusion_scope": schema.SingleNestedAttribute{
+								"exempt_certified_access_conflicts": schema.BoolAttribute{
+									Computed:    true,
+									Description: `this setting is used for access conflict type scope`,
+								},
+								"expected_ticket_count": schema.Int32Attribute{
+									Computed:    true,
+									Description: `The estimated number of review tasks that will be generated when the campaign starts.`,
+								},
+								"has_accuracy_support": schema.BoolAttribute{
+									Computed:    true,
+									Description: `Whether the connectors in this campaign support accuracy checking.`,
+								},
+								"id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The unique identifier of this access review campaign.`,
+								},
+								"inclusion_scope": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"app_user_statuses": schema.ListAttribute{
@@ -144,7 +272,110 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 									},
 									Description: `The AccessReviewInclusionScope message.`,
 								},
-								"access_review_scope": schema.SingleNestedAttribute{
+								"multi_app": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"app_entitlement_details": schema.MapNestedAttribute{
+											Computed: true,
+											NestedObject: schema.NestedAttributeObject{
+												Attributes: map[string]schema.Attribute{
+													"entitlement_details": schema.MapNestedAttribute{
+														Computed: true,
+														NestedObject: schema.NestedAttributeObject{
+															Attributes: map[string]schema.Attribute{
+																"app_id": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The appId field.`,
+																},
+																"entitlement_id": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The entitlementId field.`,
+																},
+																"policy_id": schema.StringAttribute{
+																	Computed:    true,
+																	Description: `The policyId field.`,
+																},
+															},
+														},
+														Description: `The entitlementDetails field.`,
+													},
+												},
+											},
+											Description: `The appEntitlementDetails field.`,
+										},
+										"app_entitlements": schema.MapNestedAttribute{
+											Computed: true,
+											NestedObject: schema.NestedAttributeObject{
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The appId field.`,
+													},
+													"entitlement_ids": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `The entitlementIds field.`,
+													},
+												},
+											},
+											Description: `The appEntitlements field.`,
+										},
+									},
+									Description: `The MultiAppSetup message.`,
+								},
+								"notification_config": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"send_close": schema.BoolAttribute{
+											Computed:    true,
+											Description: `Whether to send a notification when the campaign is closed.`,
+										},
+										"send_kickoff": schema.BoolAttribute{
+											Computed:    true,
+											Description: `Whether to send a notification when the campaign is started.`,
+										},
+										"send_reminders": schema.BoolAttribute{
+											Computed:    true,
+											Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
+										},
+									},
+									Description: `Controls which email notifications are sent during the access review lifecycle.`,
+								},
+								"policy_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The ID of the review policy that governs how review tasks are assigned and resolved.`,
+								},
+								"review_instructions": schema.StringAttribute{
+									Computed:    true,
+									Description: `Optional instructions displayed to reviewers when completing their review tasks.`,
+								},
+								"reviewer_attribute_config": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"bindings": schema.ListNestedAttribute{
+											Computed: true,
+											NestedObject: schema.NestedAttributeObject{
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The appId field.`,
+													},
+													"attribute_key": schema.StringAttribute{
+														Computed:    true,
+														Description: `The attributeKey field.`,
+													},
+												},
+											},
+											Description: `The bindings field.`,
+										},
+									},
+									MarkdownDescription: `Allowlist of AppUser.profile keys visible to reviewers, scoped per app.` + "\n" +
+										` Empty = reviewers see no profile attributes in the AppUser tooltip.`,
+								},
+								"scheduled_start_date": schema.StringAttribute{
+									Computed: true,
+								},
+								"scope": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"app_user_statuses": schema.ListAttribute{
@@ -160,10 +391,24 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 									},
 									Description: `The AccessReviewScope message.`,
 								},
-								"access_review_scope_v2": schema.SingleNestedAttribute{
+								"scope_type": schema.StringAttribute{
+									Computed:    true,
+									Description: `this sets the scope type for the access review`,
+								},
+								"scope_v2": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
-										"account_criteria_scope": schema.SingleNestedAttribute{
+										"account_cel_expression": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"expression": schema.StringAttribute{
+													Computed:    true,
+													Description: `The expression field.`,
+												},
+											},
+											Description: `The CelExpressionScope message.`,
+										},
+										"account_criteria": schema.SingleNestedAttribute{
 											Computed: true,
 											Attributes: map[string]schema.Attribute{
 												"account_domain": schema.StringAttribute{
@@ -187,23 +432,27 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 											},
 											Description: `The AccountCriteriaScope message.`,
 										},
-										"all_access_conflicts_scope": schema.SingleNestedAttribute{
+										"all_access_conflicts": schema.SingleNestedAttribute{
 											Computed:    true,
 											Description: `The AllAccessConflictsScope message.`,
 										},
-										"all_accounts_scope": schema.SingleNestedAttribute{
+										"all_accounts": schema.SingleNestedAttribute{
 											Computed:    true,
 											Description: `The AllAccountsScope message.`,
 										},
-										"all_grants_scope": schema.SingleNestedAttribute{
+										"all_grants": schema.SingleNestedAttribute{
 											Computed:    true,
 											Description: `The AllGrantsScope message.`,
 										},
-										"all_users_scope": schema.SingleNestedAttribute{
+										"all_users": schema.SingleNestedAttribute{
 											Computed:    true,
 											Description: `The AllUsersScope message.`,
 										},
-										"app_selection_criteria_scope": schema.SingleNestedAttribute{
+										"app_access": schema.SingleNestedAttribute{
+											Computed:    true,
+											Description: `The ApplicationAccessScope message.`,
+										},
+										"app_selection_criteria": schema.SingleNestedAttribute{
 											Computed: true,
 											Attributes: map[string]schema.Attribute{
 												"compliance_framework_attribute_value_ids": schema.ListAttribute{
@@ -219,43 +468,28 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 											},
 											Description: `The AppSelectionCriteriaScope message.`,
 										},
-										"application_access_scope": schema.SingleNestedAttribute{
+										"cel_expression": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"expression": schema.StringAttribute{
+													Computed:    true,
+													Description: `The expression field.`,
+												},
+											},
+											Description: `The CelExpressionScope message.`,
+										},
+										"excluded_resource_type_selections": schema.SingleNestedAttribute{
 											Computed:    true,
-											Description: `The ApplicationAccessScope message.`,
+											Description: `The ResourceTypeSelectionScope message.`,
 										},
-										"cel_expression_scope": schema.SingleNestedAttribute{
+										"excluded_specific_resources": schema.SingleNestedAttribute{
+											Computed:    true,
+											Description: `The SpecificResourcesScope message.`,
+										},
+										"grants_by_criteria": schema.SingleNestedAttribute{
 											Computed: true,
 											Attributes: map[string]schema.Attribute{
-												"expression": schema.StringAttribute{
-													Computed:    true,
-													Description: `The expression field.`,
-												},
-											},
-											Description: `The CelExpressionScope message.`,
-										},
-										"cel_expression_scope1": schema.SingleNestedAttribute{
-											Computed: true,
-											Attributes: map[string]schema.Attribute{
-												"expression": schema.StringAttribute{
-													Computed:    true,
-													Description: `The expression field.`,
-												},
-											},
-											Description: `The CelExpressionScope message.`,
-										},
-										"grants_by_criteria_scope": schema.SingleNestedAttribute{
-											Computed: true,
-											Attributes: map[string]schema.Attribute{
-												"days_since_added": schema.StringAttribute{
-													Computed: true,
-												},
-												"days_since_last_used": schema.StringAttribute{
-													Computed: true,
-												},
-												"days_since_reviewed": schema.StringAttribute{
-													Computed: true,
-												},
-												"grant_access_profile_filter": schema.SingleNestedAttribute{
+												"access_profile_filter": schema.SingleNestedAttribute{
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
 														"excluded_access_profile_ids": schema.ListAttribute{
@@ -278,6 +512,15 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 														},
 													},
 													Description: `The GrantAccessProfileFilter message.`,
+												},
+												"days_since_added": schema.StringAttribute{
+													Computed: true,
+												},
+												"days_since_last_used": schema.StringAttribute{
+													Computed: true,
+												},
+												"days_since_reviewed": schema.StringAttribute{
+													Computed: true,
 												},
 												"grants_added_between": schema.SingleNestedAttribute{
 													Computed: true,
@@ -307,15 +550,25 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 												`  - daysSinceReviewed` + "\n" +
 												`  - grantsAddedBetween`,
 										},
-										"resource_selection_scope": schema.SingleNestedAttribute{
+										"principal_type_filter": schema.StringAttribute{
+											Computed:    true,
+											Description: `Filters principals included in the scope. Unspecified is treated as users.`,
+										},
+										"resource_selection": schema.SingleNestedAttribute{
 											Computed:    true,
 											Description: `The ResourceSelectionScope message.`,
 										},
-										"resource_type_selection_scope": schema.SingleNestedAttribute{
+										"resource_type_selections": schema.SingleNestedAttribute{
 											Computed:    true,
 											Description: `The ResourceTypeSelectionScope message.`,
 										},
-										"selected_users_scope": schema.SingleNestedAttribute{
+										"scope_role_selection": schema.SingleNestedAttribute{
+											Computed: true,
+											MarkdownDescription: `Empty marker for scope+role pair scoping on IaaS-type apps.` + "\n" +
+												` Actual selections stored in AccessReviewScopeRoleSelection rows.` + "\n" +
+												` May coexist with ResourceSelectionScope on the same campaign; prepare unions both.`,
+										},
+										"selected_users": schema.SingleNestedAttribute{
 											Computed: true,
 											Attributes: map[string]schema.Attribute{
 												"user_ids": schema.ListAttribute{
@@ -326,15 +579,15 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 											},
 											Description: `The SelectedUsersScope message.`,
 										},
-										"specific_access_conflicts_scope": schema.SingleNestedAttribute{
+										"specific_access_conflicts": schema.SingleNestedAttribute{
 											Computed:    true,
 											Description: `The SpecificAccessConflictsScope message.`,
 										},
-										"specific_resources_scope": schema.SingleNestedAttribute{
+										"specific_resources": schema.SingleNestedAttribute{
 											Computed:    true,
 											Description: `The SpecificResourcesScope message.`,
 										},
-										"user_criteria_scope": schema.SingleNestedAttribute{
+										"user_criteria": schema.SingleNestedAttribute{
 											Computed: true,
 											Attributes: map[string]schema.Attribute{
 												"group_app_entitlements_ref": schema.ListNestedAttribute{
@@ -420,191 +673,18 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 										`` + "\n" +
 										`` + "\n" +
 										`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
-										`  - resourceSelection`,
+										`  - resourceSelection` + "\n" +
+										`` + "\n" +
+										`` + "\n" +
+										`This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:` + "\n" +
+										`  - excludedSpecificResources` + "\n" +
+										`  - excludedResourceTypeSelections`,
 								},
-								"access_review_template_id": schema.StringAttribute{
+								"scoping_version": schema.StringAttribute{
 									Computed:    true,
-									Description: `The ID of the template if the campaign was created from one`,
+									Description: `Internal version counter incremented when the campaign scope changes.`,
 								},
-								"accuracy_issue_action": schema.StringAttribute{
-									Computed:    true,
-									Description: `The accuracyIssueAction field.`,
-								},
-								"auto_close_campaign": schema.BoolAttribute{
-									Computed: true,
-									MarkdownDescription: `Auto-close configuration` + "\n" +
-										` completion_date is used as the scheduled close date`,
-								},
-								"auto_close_decision": schema.StringAttribute{
-									Computed:    true,
-									Description: `The autoCloseDecision field.`,
-								},
-								"auto_generate_report": schema.BoolAttribute{
-									Computed:    true,
-									Description: `The autoGenerateReport field.`,
-								},
-								"auto_resolve": schema.BoolAttribute{
-									Computed:    true,
-									Description: `When true, selections are automatically resolved if the entitlement grant no longer exists.`,
-								},
-								"auto_start_campaign": schema.BoolAttribute{
-									Computed:    true,
-									Description: `Auto-start configuration`,
-								},
-								"binding_object_setup": schema.SingleNestedAttribute{
-									Computed:    true,
-									Description: `The BindingObjectSetup message.`,
-								},
-								"campaign_health_snapshot": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"checked_at": schema.StringAttribute{
-											Computed: true,
-										},
-										"phantom_locked_count": schema.Int32Attribute{
-											Computed:    true,
-											Description: `Number of pending actions locked by terminal (dead) submissions.`,
-										},
-									},
-									Description: `Campaign health snapshot. Read-only; updated by backend maintenance processors.`,
-								},
-								"campaign_insights": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"markdown": schema.StringAttribute{
-											Computed:    true,
-											Description: `The markdown field.`,
-										},
-									},
-									Description: `AI-generated campaign insights (markdown). Read-only; set by backend when campaign is closed.`,
-								},
-								"closed_at": schema.StringAttribute{
-									Computed: true,
-								},
-								"completion_date": schema.StringAttribute{
-									Computed: true,
-								},
-								"connector_sources_frozen_at": schema.StringAttribute{
-									Computed: true,
-								},
-								"created_at": schema.StringAttribute{
-									Computed: true,
-								},
-								"created_by_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The ID of the user who created this campaign.`,
-								},
-								"default_view": schema.StringAttribute{
-									Computed:    true,
-									Description: `the default view that reviewers will see when they complete their access reviews`,
-								},
-								"description": schema.StringAttribute{
-									Computed:    true,
-									Description: `An optional description providing context about this campaign.`,
-								},
-								"display_name": schema.StringAttribute{
-									Computed:    true,
-									Description: `The human-readable name of this campaign.`,
-								},
-								"error_state": schema.StringAttribute{
-									Computed: true,
-									MarkdownDescription: `Error state set when a prepare action fails with a recoverable condition.` + "\n" +
-										` Cleared when the campaign scope is changed.`,
-								},
-								"exempt_certified_access_conflicts": schema.BoolAttribute{
-									Computed:    true,
-									Description: `this setting is used for access conflict type scope`,
-								},
-								"expected_ticket_count": schema.Int32Attribute{
-									Computed:    true,
-									Description: `The estimated number of review tasks that will be generated when the campaign starts.`,
-								},
-								"has_accuracy_support": schema.BoolAttribute{
-									Computed:    true,
-									Description: `Whether the connectors in this campaign support accuracy checking.`,
-								},
-								"id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The unique identifier of this access review campaign.`,
-								},
-								"multi_app_setup": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"app_entitlement_details": schema.MapNestedAttribute{
-											Computed: true,
-											NestedObject: schema.NestedAttributeObject{
-												Attributes: map[string]schema.Attribute{
-													"entitlement_details": schema.MapNestedAttribute{
-														Computed: true,
-														NestedObject: schema.NestedAttributeObject{
-															Attributes: map[string]schema.Attribute{
-																"app_id": schema.StringAttribute{
-																	Computed:    true,
-																	Description: `The appId field.`,
-																},
-																"entitlement_id": schema.StringAttribute{
-																	Computed:    true,
-																	Description: `The entitlementId field.`,
-																},
-																"policy_id": schema.StringAttribute{
-																	Computed:    true,
-																	Description: `The policyId field.`,
-																},
-															},
-														},
-														Description: `The entitlementDetails field.`,
-													},
-												},
-											},
-											Description: `The appEntitlementDetails field.`,
-										},
-										"app_entitlements": schema.MapNestedAttribute{
-											Computed: true,
-											NestedObject: schema.NestedAttributeObject{
-												Attributes: map[string]schema.Attribute{
-													"app_id": schema.StringAttribute{
-														Computed:    true,
-														Description: `The appId field.`,
-													},
-													"entitlement_ids": schema.ListAttribute{
-														Computed:    true,
-														ElementType: types.StringType,
-														Description: `The entitlementIds field.`,
-													},
-												},
-											},
-											Description: `The appEntitlements field.`,
-										},
-									},
-									Description: `The MultiAppSetup message.`,
-								},
-								"notification_config": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"send_close": schema.BoolAttribute{
-											Computed:    true,
-											Description: `Whether to send a notification when the campaign is closed.`,
-										},
-										"send_kickoff": schema.BoolAttribute{
-											Computed:    true,
-											Description: `Whether to send a notification when the campaign is started.`,
-										},
-										"send_reminders": schema.BoolAttribute{
-											Computed:    true,
-											Description: `Whether to send periodic reminder emails to reviewers with outstanding tasks.`,
-										},
-									},
-									Description: `Controls which email notifications are sent during the access review lifecycle.`,
-								},
-								"policy_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The ID of the review policy that governs how review tasks are assigned and resolved.`,
-								},
-								"review_instructions": schema.StringAttribute{
-									Computed:    true,
-									Description: `Optional instructions displayed to reviewers when completing their review tasks.`,
-								},
-								"review_signature_config": schema.SingleNestedAttribute{
+								"signature_config": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"meaning_of_signature": schema.StringAttribute{
@@ -626,18 +706,7 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 									},
 									Description: `Signature configuration for access review submissions`,
 								},
-								"scheduled_start_date": schema.StringAttribute{
-									Computed: true,
-								},
-								"scope_type": schema.StringAttribute{
-									Computed:    true,
-									Description: `this sets the scope type for the access review`,
-								},
-								"scoping_version": schema.StringAttribute{
-									Computed:    true,
-									Description: `Internal version counter incremented when the campaign scope changes.`,
-								},
-								"single_app_setup": schema.SingleNestedAttribute{
+								"single_app": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"app_id": schema.StringAttribute{
@@ -670,7 +739,11 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 								`  - multiApp` + "\n" +
 								`  - bindings`,
 						},
-						"actor_object_permissions": schema.SingleNestedAttribute{
+						"created_by_user_path": schema.StringAttribute{
+							Computed:    true,
+							Description: `The createdByUserPath field.`,
+						},
+						"object_permissions": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
 								"delete": schema.BoolAttribute{
@@ -691,11 +764,10 @@ func (r *AccessReviewsDataSource) Schema(ctx context.Context, req datasource.Sch
 									Description: `The read field.`,
 								},
 							},
-							Description: `The ActorObjectPermissions message.`,
-						},
-						"created_by_user_path": schema.StringAttribute{
-							Computed:    true,
-							Description: `The createdByUserPath field.`,
+							MarkdownDescription: `Legacy: do not use for new objects. Retained only for the existing` + "\n" +
+								` AppResource / AppEntitlement / access-review consumers, which will migrate to` + "\n" +
+								` c1.api.authorization.v1.ActorObjectPermissions in IGA-2331. New object views` + "\n" +
+								` should reference c1.api.authorization.v1.ActorObjectPermissions instead.`,
 						},
 						"policy_path": schema.StringAttribute{
 							Computed:    true,

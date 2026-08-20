@@ -4,39 +4,18 @@ package shared
 
 // C1CodeBlockComponent displays code with syntax highlighting.
 type C1CodeBlockComponent struct {
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString *DynamicString `json:"code,omitempty"`
+	Code *DynamicString `json:"code,omitempty"`
 	// The copyable field.
-	Copyable *bool `json:"copyable,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString1 *DynamicString `json:"language,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString2 *DynamicString `json:"title,omitempty"`
+	Copyable *bool          `json:"copyable,omitempty"`
+	Language *DynamicString `json:"language,omitempty"`
+	Title    *DynamicString `json:"title,omitempty"`
 }
 
-func (c *C1CodeBlockComponent) GetDynamicString() *DynamicString {
+func (c *C1CodeBlockComponent) GetCode() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString
+	return c.Code
 }
 
 func (c *C1CodeBlockComponent) GetCopyable() *bool {
@@ -46,18 +25,18 @@ func (c *C1CodeBlockComponent) GetCopyable() *bool {
 	return c.Copyable
 }
 
-func (c *C1CodeBlockComponent) GetDynamicString1() *DynamicString {
+func (c *C1CodeBlockComponent) GetLanguage() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString1
+	return c.Language
 }
 
-func (c *C1CodeBlockComponent) GetDynamicString2() *DynamicString {
+func (c *C1CodeBlockComponent) GetTitle() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString2
+	return c.Title
 }
 
 // #region class-body-c1codeblockcomponent

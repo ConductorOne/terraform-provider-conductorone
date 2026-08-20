@@ -4,7 +4,6 @@ package shared
 
 // The UpdateSessionSettingsRequest message.
 type UpdateSessionSettingsRequest struct {
-	// SessionSettings configures session security for the tenant, including timeouts and per-role IP restrictions.
 	SessionSettings *SessionSettings `json:"sessionSettings,omitempty"`
 	UpdateMask      *string          `json:"updateMask,omitempty"`
 }
