@@ -1,134 +1,118 @@
-commit a089aa9e3afaa233d37b437b5bc1d8fc88e12901 (re-cut 2026-08-14)
-Author: Brandon High <759848+highb@users.noreply.github.com>
-Date:   Tue May 5 16:28:29 2026 -0700
+Subject: [PATCH] Restore BoolNull fallbacks for flattened permissions
 
-    Apply BoolNull else-branch patch on ObjectPermissions flatten
-
-    Speakeasy 1.762.0 still emits "if X != nil { ... }" without an else for
-    nullable nested structs that get flattened into top-level Computed
-    attributes, leaving framework Bool fields at Unknown instead of Null.
-    terraform-plugin-framework rejects this with "invalid result object
-    after apply" -- the failure shape on this regen's acceptance tests.
-
-    Patches the 6 files referenced by TestNullableNestedStructsHaveElseBranch
-    plus the CreateManuallyManagedAppResourceResponse variant whose parent
-    type (AppResource, not AppResourceView) lacks the field entirely.
-
-    Re-cut against the current insulator spec: the API renamed the field
-    from actorObjectPermissions to objectPermissions since this patch was
-    last cut, so every hunk's context (resp.ActorObjectPermissions.*) no
-    longer matched a fresh `make gen` output and apply-patches aborted here
-    on every regen. Same fix, new field name (resp.ObjectPermissions.*);
-    no behavior change beyond following the rename.
-
-    IGA-1704 Patch 2.
+Speakeasy 1.762.0 emits nullable ActorObjectPermissions blocks without an
+else branch. The flattened Terraform fields remain Unknown when the API
+omits that block, and terraform-plugin-framework rejects the result after
+apply. Set those fields to Null explicitly. The manually-managed resource
+create response returns AppResource rather than AppResourceView, so it
+requires the same explicit null state.
 
 diff --git a/internal/provider/access_review_data_source_sdk.go b/internal/provider/access_review_data_source_sdk.go
-index 0000000..0000000 100644
+index 05aee617..430ae44f 100644
 --- a/internal/provider/access_review_data_source_sdk.go
 +++ b/internal/provider/access_review_data_source_sdk.go
-@@ -587,6 +587,11 @@
+@@ -547,6 +547,11 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReviewView(ctx cont
  				}
  			}
- 			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
+ 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
 +		} else {
 +			r.Delete = types.BoolNull()
 +			r.Edit = types.BoolNull()
 +			r.Extra = nil
 +			r.Read = types.BoolNull()
  		}
+ 		r.CreatedByUserPath = types.StringPointerValue(resp.CreatedByUserPath)
  		r.PolicyPath = types.StringPointerValue(resp.PolicyPath)
- 	}
 diff --git a/internal/provider/access_review_resource_sdk.go b/internal/provider/access_review_resource_sdk.go
-index 0000000..0000000 100644
+index 4ea9c085..83cf6273 100644
 --- a/internal/provider/access_review_resource_sdk.go
 +++ b/internal/provider/access_review_resource_sdk.go
-@@ -626,6 +626,11 @@
+@@ -586,6 +586,11 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReviewView(ctx contex
  				}
  			}
- 			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
+ 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
 +		} else {
 +			r.Delete = types.BoolNull()
 +			r.Edit = types.BoolNull()
 +			r.Extra = nil
 +			r.Read = types.BoolNull()
  		}
+ 		r.CreatedByUserPath = types.StringPointerValue(resp.CreatedByUserPath)
  		r.PolicyPath = types.StringPointerValue(resp.PolicyPath)
- 	}
 diff --git a/internal/provider/app_entitlement_data_source_sdk.go b/internal/provider/app_entitlement_data_source_sdk.go
-index 0000000..0000000 100644
+index 6fd581ba..bd1ecb50 100644
 --- a/internal/provider/app_entitlement_data_source_sdk.go
 +++ b/internal/provider/app_entitlement_data_source_sdk.go
-@@ -588,6 +588,11 @@
+@@ -567,6 +567,11 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlementView(ctx
  			}
  		}
- 		r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
+ 		r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
 +	} else {
 +		r.Delete = types.BoolNull()
 +		r.Edit = types.BoolNull()
 +		r.Extra = nil
 +		r.Read = types.BoolNull()
  	}
+ 	diags.Append(r.RefreshFromSharedAppEntitlement(ctx, resp.AppEntitlement)...)
  
- 	return diags
 diff --git a/internal/provider/app_resource_data_source_sdk.go b/internal/provider/app_resource_data_source_sdk.go
-index 0000000..0000000 100644
+index dacd1cf4..cf5f7a21 100644
 --- a/internal/provider/app_resource_data_source_sdk.go
 +++ b/internal/provider/app_resource_data_source_sdk.go
-@@ -113,6 +113,11 @@
+@@ -88,6 +88,11 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceView(ctx contex
  				}
  			}
- 			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
+ 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
 +		} else {
 +			r.Delete = types.BoolNull()
 +			r.Edit = types.BoolNull()
 +			r.Extra = nil
 +			r.Read = types.BoolNull()
  		}
- 	}
+ 		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
  
 diff --git a/internal/provider/app_resource_resource_sdk.go b/internal/provider/app_resource_resource_sdk.go
-index 0000000..0000000 100644
+index 91aa765e..9fd3cf67 100644
 --- a/internal/provider/app_resource_resource_sdk.go
 +++ b/internal/provider/app_resource_resource_sdk.go
-@@ -133,6 +133,11 @@
+@@ -108,6 +108,11 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceView(ctx context.
  				}
  			}
- 			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
+ 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
 +		} else {
 +			r.Delete = types.BoolNull()
 +			r.Edit = types.BoolNull()
 +			r.Extra = nil
 +			r.Read = types.BoolNull()
  		}
- 	}
+ 		diags.Append(r.RefreshFromSharedAppResource(ctx, resp.AppResource)...)
  
-@@ -149,6 +154,12 @@
+@@ -130,6 +135,13 @@ func (r *AppResourceResourceModel) RefreshFromSharedCreateManuallyManagedAppReso
  			return diags
  		}
  
 +		// CreateManuallyManagedAppResourceResponse returns AppResource, not AppResourceView,
-+		// so ObjectPermissions fields are not available. Set them to null explicitly.
++		// so ActorObjectPermissions fields are not available. Set them to null explicitly.
 +		r.Delete = types.BoolNull()
 +		r.Edit = types.BoolNull()
 +		r.Extra = nil
 +		r.Read = types.BoolNull()
++
  	}
  
  	return diags
 diff --git a/internal/provider/custom_app_entitlement_resource_sdk.go b/internal/provider/custom_app_entitlement_resource_sdk.go
-index 0000000..0000000 100644
+index 96f6e6f6..581a4059 100644
 --- a/internal/provider/custom_app_entitlement_resource_sdk.go
 +++ b/internal/provider/custom_app_entitlement_resource_sdk.go
-@@ -528,6 +528,11 @@
+@@ -510,5 +510,10 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlementView(
  				}
  			}
- 			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
+ 			r.Read = types.BoolPointerValue(resp.ActorObjectPermissions.Read)
 +		} else {
 +			r.Delete = types.BoolNull()
 +			r.Edit = types.BoolNull()
 +			r.Extra = nil
 +			r.Read = types.BoolNull()
  		}
- 	}
- 
+ 		diags.Append(r.RefreshFromSharedAppEntitlement(ctx, resp.AppEntitlement)...)

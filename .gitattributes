@@ -1,2 +1,3 @@
 # This allows generated code to be indexed correctly
 *.go linguist-generated=false
+patches/*.patch whitespace=-space-before-tab,-trailing-space

@@ -1,15 +1,14 @@
 
-
 ## 2023-07-06 21:11:17
 ### Changes
 Based on:
-- OpenAPI Doc 0.1.0-alpha 
+- OpenAPI Doc 0.1.0-alpha
 - Speakeasy CLI 1.53.0 (2.58.0) https://github.com/speakeasy-api/speakeasy
 
 ## 2026-05-05 23:06:51
 ### Changes
 Based on:
-- OpenAPI Doc  
+- OpenAPI Doc
 - Speakeasy CLI 1.761.10 (2.881.16) https://github.com/speakeasy-api/speakeasy
 ### Generated
 - [terraform v1.1.0] .
@@ -29,7 +28,7 @@ Based on:
 ## 2026-08-20 19:56:19
 ### Changes
 Based on:
-- OpenAPI Doc  
+- OpenAPI Doc
 - Speakeasy CLI 1.762.0 (2.882.0) https://github.com/speakeasy-api/speakeasy
 ### Generated
 - [terraform v1.4.5] .
