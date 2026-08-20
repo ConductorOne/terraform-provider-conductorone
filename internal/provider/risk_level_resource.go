@@ -139,7 +139,7 @@ func (r *RiskLevelResource) Create(ctx context.Context, req resource.CreateReque
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreateRiskLevelAttributeValueResponse(ctx, res.CreateRiskLevelAttributeValueResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.CreateRiskLevelAttributeValueResponse.Value)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -203,7 +203,7 @@ func (r *RiskLevelResource) Read(ctx context.Context, req resource.ReadRequest, 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetRiskLevelAttributeValueResponse(ctx, res.GetRiskLevelAttributeValueResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetRiskLevelAttributeValueResponse.Value)...)
 
 	if resp.Diagnostics.HasError() {
 		return

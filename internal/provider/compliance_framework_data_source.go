@@ -136,7 +136,7 @@ func (r *ComplianceFrameworkDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetComplianceFrameworkAttributeValueResponse(ctx, res.GetComplianceFrameworkAttributeValueResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetComplianceFrameworkAttributeValueResponse.Value)...)
 
 	if resp.Diagnostics.HasError() {
 		return

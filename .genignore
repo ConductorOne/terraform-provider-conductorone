@@ -7,6 +7,7 @@ overlay.yaml
 /internal/sdk/token_source.go
 /internal/sdk/login.go
 /internal/sdk/extra_sdk_options.go
+/internal/provider/types/app_entitlement_provision_policy.go
 /internal/provider/app_entitlement_resource.go
 /internal/provider/app_entitlement_resource_sdk.go
 /internal/provider/*_test.go

@@ -173,14 +173,14 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 	}
 	content := string(data)
 
-	// Write side: Terraform plan -> *shared.ManualProvision. Both policies
-	// must read ProvisionerAssignment from the plan and wire it into the
-	// shared.ManualProvision{} struct literal sent to the API.
+	// Write side: Terraform plan -> *shared.ManualProvision. Both compatibility
+	// policies must read ProvisionerAssignment from the legacy HCL shape and
+	// wire it into the current shared.ManualProvision.Assignee field.
 	writeMarkers := map[string]string{
 		"r.ProvisionPolicy.ManualProvision.ProvisionerAssignment != nil":     "ProvisionPolicy write-side reads ProvisionerAssignment from plan",
 		"r.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment != nil": "DeprovisionerPolicy write-side reads ProvisionerAssignment from plan",
-		"ProvisionerAssignment: provisionerAssignment,":                      "ProvisionPolicy ManualProvision struct literal wires ProvisionerAssignment",
-		"ProvisionerAssignment: provisionerAssignment1,":                     "DeprovisionerPolicy ManualProvision struct literal wires ProvisionerAssignment",
+		"Assignee:     provisionerAssignment,":                               "ProvisionPolicy ManualProvision literal wires Assignee",
+		"Assignee:     provisionerAssignment1,":                              "DeprovisionerPolicy ManualProvision literal wires Assignee",
 	}
 	for marker, what := range writeMarkers {
 		if !strings.Contains(content, marker) {
@@ -188,11 +188,11 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 		}
 	}
 
-	// Read side: API response -> Terraform state. Both policies must
-	// hydrate the tfTypes.ProvisionerAssignment from the response.
+	// Read side: API response -> Terraform state. Both policies must hydrate
+	// the compatibility assignment from the current API Assignee field.
 	readMarkers := map[string]string{
-		"r.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}":     "ProvisionPolicy read-side hydrates state from response",
-		"r.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}": "DeprovisionerPolicy read-side hydrates state from response",
+		"r.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.AppEntitlementProvisionerAssignment{}":     "ProvisionPolicy read-side hydrates compatibility state",
+		"r.DeprovisionerPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.AppEntitlementProvisionerAssignment{}": "DeprovisionerPolicy read-side hydrates compatibility state",
 	}
 	for marker, what := range readMarkers {
 		if !strings.Contains(content, marker) {

@@ -46,7 +46,7 @@ type AppEntitlementResourceModel struct {
 	CreatedAt                      types.String                                      `tfsdk:"created_at"`
 	DefaultValuesApplied           types.Bool                                        `tfsdk:"default_values_applied"`
 	DeletedAt                      types.String                                      `tfsdk:"-"`
-	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy                      `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
+	DeprovisionerPolicy            *tfTypes.AppEntitlementProvisionPolicy            `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
 	Description                    types.String                                      `tfsdk:"description"`
 	DisplayName                    types.String                                      `tfsdk:"display_name"`
 	DurationGrant                  types.String                                      `tfsdk:"duration_grant" tfPlanOnly:"true"`
@@ -61,7 +61,7 @@ type AppEntitlementResourceModel struct {
 	IsManuallyManaged              types.Bool                                        `tfsdk:"is_manually_managed"`
 	MatchBatonID                   types.String                                      `tfsdk:"match_baton_id"`
 	OverrideAccessRequestsDefaults types.Bool                                        `tfsdk:"override_access_requests_defaults"`
-	ProvisionPolicy                *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy" tfPlanOnly:"true"`
+	ProvisionPolicy                *tfTypes.AppEntitlementProvisionPolicy            `tfsdk:"provision_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                                      `tfsdk:"purpose"`
 	RequestSchemaID                types.String                                      `tfsdk:"request_schema_id"`
 	RevokePolicyID                 types.String                                      `tfsdk:"revoke_policy_id"`
@@ -1081,7 +1081,7 @@ func (r *AppEntitlementResource) Create(ctx context.Context, req resource.Create
 	appEntitlement := data.ToUpdateSDKType()
 
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
-		AppEntitlement: appEntitlement,
+		Entitlement: appEntitlement,
 	}
 	appID := data.AppID.ValueString()
 	id := data.ID.ValueString()
@@ -1196,7 +1196,7 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		overrideAccessRequestsDefaults = nil
 	}
 	updateAppEntitlementRequest = &shared.UpdateAppEntitlementRequest{
-		AppEntitlement:                 appEntitlement,
+		Entitlement:                    appEntitlement,
 		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
 	}
 

@@ -136,7 +136,7 @@ func (r *RiskLevelDataSource) Read(ctx context.Context, req datasource.ReadReque
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetRiskLevelAttributeValueResponse(ctx, res.GetRiskLevelAttributeValueResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetRiskLevelAttributeValueResponse.Value)...)
 
 	if resp.Diagnostics.HasError() {
 		return
