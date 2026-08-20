@@ -5,14 +5,14 @@ management:
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.762.0
   generationVersion: 2.882.0
-  releaseVersion: 1.5.1
-  configChecksum: 55f94f6fe27a084271eb30895f4db657
+  releaseVersion: 1.5.0
+  configChecksum: 50f00b11dc1cdb4a63e88590d260c84c
   repoURL: https://github.com/ConductorOne/terraform-provider-conductorone.git
   installationURL: https://github.com/ConductorOne/terraform-provider-conductorone
 persistentEdits:
-  generation_id: 1128eb88-d170-42eb-b6dc-852af0e5630e
-  pristine_commit_hash: 8082a6a642ac3770eed29a8541b66a91444a140c
-  pristine_tree_hash: 10966696363287003ca59a9e0b9b5f45e6a49dd3
+  generation_id: 27816a38-d360-4034-a013-1d4f9c70f119
+  pristine_commit_hash: 8667a66b9d8ae6ad691ca1537047f41419c07213
+  pristine_tree_hash: 037e40e94feff11d4d3fe8dc4d54344e0538bd67
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -271,8 +271,8 @@ trackedFiles:
     pristine_git_object: cbbe422a1a74c6c026e9648210d723901bd6aaf2
   examples/provider/provider.tf:
     id: 954e955c0240
-    last_write_checksum: sha1:62d4829096672d3ba2b389b226cae307544655a2
-    pristine_git_object: af35fb236d856f54270d3e1bbd66ca1dc17779bc
+    last_write_checksum: sha1:bc9e94e08dd79db6173558cf18d88dc41f01b875
+    pristine_git_object: d421b4d34777ff54de5033988dd6ea8889afbf17
   examples/resources/conductorone_access_conflict/import-by-string-id.tf:
     id: 75fb8f5a6d65
     last_write_checksum: sha1:82d79ecc5a7d6ab27f4f9f9234e220e0e9f65914
@@ -3603,8 +3603,8 @@ trackedFiles:
     pristine_git_object: ccda06344d8f1db2a6155a8b5a2fda6be064d9bb
   internal/sdk/conductoroneapi.go:
     id: 84087b0a6f93
-    last_write_checksum: sha1:ed37eec000a1606e0e1d6278797edda134bf0a75
-    pristine_git_object: 841d4d0158c20ba629f4927af02ffc81a25f0030
+    last_write_checksum: sha1:944552b11666b8a5a1bad658cd350448b23a778a
+    pristine_git_object: 091e68c2c89a944fde8b8dacbff90f5ae5faa8b5
   internal/sdk/connector.go:
     id: 41e2af88fe9e
     last_write_checksum: sha1:bc8f8808941bbcc8c589245ff8967c2ec35df524
