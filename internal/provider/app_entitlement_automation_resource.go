@@ -85,9 +85,9 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				Description: `The AppEntitlementAutomationRuleBasic message.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("cel"),
-						path.MatchRelative().AtParent().AtName("entitlements"),
-						path.MatchRelative().AtParent().AtName("none"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_cel"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_entitlement"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_none"),
 					}...),
 				},
 			},
@@ -106,9 +106,9 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				Description: `The AppEntitlementAutomationRuleCEL message.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("basic"),
-						path.MatchRelative().AtParent().AtName("entitlements"),
-						path.MatchRelative().AtParent().AtName("none"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_basic"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_entitlement"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_none"),
 					}...),
 				},
 			},
@@ -157,9 +157,9 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				Description: `The AppEntitlementAutomationRuleEntitlement message.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("basic"),
-						path.MatchRelative().AtParent().AtName("cel"),
-						path.MatchRelative().AtParent().AtName("none"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_basic"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_cel"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_none"),
 					}...),
 				},
 			},
@@ -207,9 +207,9 @@ func (r *AppEntitlementAutomationResource) Schema(ctx context.Context, req resou
 				Description: `The AppEntitlementAutomationRuleNone message.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("basic"),
-						path.MatchRelative().AtParent().AtName("cel"),
-						path.MatchRelative().AtParent().AtName("entitlements"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_basic"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_cel"),
+						path.MatchRelative().AtParent().AtName("app_entitlement_automation_rule_entitlement"),
 					}...),
 				},
 			},
