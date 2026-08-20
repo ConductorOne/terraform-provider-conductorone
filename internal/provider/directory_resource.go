@@ -95,9 +95,6 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
 							"created_at": schema.StringAttribute{
 								Computed: true,
 							},
-							"deleted_at": schema.StringAttribute{
-								Computed: true,
-							},
 							"merge_config": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{

@@ -99,9 +99,6 @@ func (r *AppResourceOwnerUserResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Description: `The id of the user to whom tasks will be automatically reassigned to.`,
 					},
-					"deleted_at": schema.StringAttribute{
-						Computed: true,
-					},
 					"department": schema.StringAttribute{
 						Computed:    true,
 						Description: `The department which the user belongs to in the organization.`,

@@ -45,3 +45,13 @@ Based on:
 - [terraform v1.5.0] .
 ### Releases
 - [Terraform v1.5.0] https://registry.terraform.io/providers/conductorone/conductorone/1.5.0 - .
+
+## 2026-08-20 23:17:32
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.762.0 (2.882.0) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [terraform v1.5.1] .
+### Releases
+- [Terraform v1.5.1] https://registry.terraform.io/providers/conductorone/conductorone/1.5.1 - .

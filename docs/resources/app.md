@@ -61,7 +61,7 @@ resource "conductorone_app" "my_app" {
 
  Well-known keys: `managed_by`, `iac_workspace`,
  `iac_resource_address`, `iac_tool_version`.
-- `app_entitlement_owner_refs` (Attributes List) Sets entitlement owners on the app. Requires replacement if changed. (see [below for nested schema](#nestedatt--app_entitlement_owner_refs))
+- `app_entitlement_owner_refs` (Attributes List) Initial entitlement owners for ordinary API creation. Requests with `match_baton_ref` must leave this empty; Terraform manages owners with `conductorone_app_owner_entitlement`. Requires replacement if changed. (see [below for nested schema](#nestedatt--app_entitlement_owner_refs))
 - `certify_policy_id` (String) Creates the app with this certify policy.
 - `description` (String) Creates the app with this description.
 - `grant_policy_id` (String) Creates the app with this grant policy.

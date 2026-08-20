@@ -126,7 +126,7 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						},
 					},
 				},
-				Description: `Sets entitlement owners on the app. Requires replacement if changed.`,
+				Description: `Initial entitlement owners for ordinary API creation. Requests with ` + "`" + `match_baton_ref` + "`" + ` must leave this empty; Terraform manages owners with ` + "`" + `conductorone_app_owner_entitlement` + "`" + `. Requires replacement if changed.`,
 			},
 			"app_user_mapper": schema.SingleNestedAttribute{
 				Computed: true,
@@ -220,9 +220,6 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			},
 			"match_baton_ref": schema.SingleNestedAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"app_id": schema.StringAttribute{
