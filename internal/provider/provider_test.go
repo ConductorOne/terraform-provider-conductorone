@@ -57,10 +57,10 @@ func TestRegistersAccessReviewSetupDataSources(t *testing.T) {
 	}
 }
 
-func TestRegistersProvider15Surfaces(t *testing.T) {
+func TestDoesNotRegisterDraftProvider15Surfaces(t *testing.T) {
 	t.Parallel()
 
-	wants := []string{
+	draftSurfaces := []string{
 		"conductorone_app_resource_owner_entitlement",
 		"conductorone_app_resource_owner_user",
 		"conductorone_credential_inventory_policy",
@@ -69,9 +69,9 @@ func TestRegistersProvider15Surfaces(t *testing.T) {
 		"conductorone_sign_in_policy",
 	}
 	for _, names := range [][]string{registeredResourceNames(t), registeredDataSourceNames(t)} {
-		for _, want := range wants {
-			if !slices.Contains(names, want) {
-				t.Fatalf("%q is not registered; got %v", want, names)
+		for _, draftSurface := range draftSurfaces {
+			if slices.Contains(names, draftSurface) {
+				t.Fatalf("draft surface %q must not be registered; got %v", draftSurface, names)
 			}
 		}
 	}
