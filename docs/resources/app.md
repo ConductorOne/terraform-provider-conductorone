@@ -36,7 +36,7 @@ resource "conductorone_app" "my_app" {
   match_baton_ref = {
     app_id       = "...my_app_id..."
     connector_id = "...my_connector_id..."
-    external_id  = "app::0oa123"
+    external_id  = "...my_external_id..."
   }
   monthly_cost_usd                       = 1
   revoke_policy_id                       = "...my_revoke_policy_id..."
