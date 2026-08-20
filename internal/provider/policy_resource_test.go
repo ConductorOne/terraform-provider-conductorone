@@ -16,9 +16,9 @@ import (
 //
 // This is the exact repro from the issue, encoded as three steps:
 //
-//	Step 1 — explicit falses + app_owner_approval: every drift-prone scalar bool
+//	Step 1 — explicit falses + app_owners: every drift-prone scalar bool
 //	         is spelled out as false (including escalation_enabled = false) and an
-//	         app_owner_approval approver is selected (its own drift bools
+//	         app_owners approver is selected (its own drift bools
 //	         allow_self_approval / require_distinct_approvers spelled false too).
 //	         After apply the plan must be empty (no false → null churn).
 //
@@ -39,9 +39,9 @@ import (
 //	         read-only `assigned` field (which cannot be set in config and
 //	         still drifted under the old object plan modifier) is stable.
 //
-// NOTE (IGA-1898): the selected approver is app_owner_approval rather
+// NOTE (IGA-1898): the selected approver is app_owners rather
 // than user_approval. A user_approval step requires a non-empty user_ids list
-// (live API: 1–32 items), which has no stable CI-tenant fixture; app_owner_approval
+// (live API: 1–32 items), which has no stable CI-tenant fixture; app_owners
 // carries the same per-member drift bools with no required user list, so the
 // false→null drift signature is still fully exercised under ExpectEmptyPlan.
 // user_ids serialization on CREATE is locked separately by the unit tests in
@@ -70,12 +70,12 @@ func TestAccPolicyResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
-			// Step 1: explicit falses + app_owner_approval.
+			// Step 1: explicit falses + app_owners.
 			{
 				Config: providerConfig + `
 				resource "conductorone_policy" "test" {
 					display_name                = "Terraform Created Certify Policy"
-					description                 = "explicit falses + app_owner_approval"
+					description                 = "explicit falses + app_owners"
 					policy_type                 = "POLICY_TYPE_CERTIFY"
 					reassign_tasks_to_delegates = "false"
 					policy_steps = {
@@ -89,7 +89,7 @@ func TestAccPolicyResource(t *testing.T) {
 										require_denial_reason       = "false"
 										require_reassignment_reason = "false"
 										escalation_enabled          = "false"
-										app_owner_approval = {
+										app_owners = {
 											allow_self_approval        = "false"
 											require_distinct_approvers = "false"
 										}
@@ -109,8 +109,8 @@ func TestAccPolicyResource(t *testing.T) {
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.require_denial_reason", "false"),
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.require_reassignment_reason", "false"),
 					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.escalation_enabled", "false"),
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owner_approval.allow_self_approval", "false"),
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owner_approval.require_distinct_approvers", "false"),
+					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owners.allow_self_approval", "false"),
+					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owners.require_distinct_approvers", "false"),
 					// assigned is read-only; live C1 returns it as null on a fresh
 					// policy-definition read (it is populated per-task at runtime, not
 					// on the template). Drift is covered by ExpectEmptyPlan +
@@ -132,7 +132,7 @@ func TestAccPolicyResource(t *testing.T) {
 							steps = [
 								{
 									approval = {
-										app_owner_approval = {}
+										app_owners = {}
 									}
 								}
 							]
@@ -161,7 +161,7 @@ func TestAccPolicyResource(t *testing.T) {
 				Config: providerConfig + `
 				resource "conductorone_policy" "test" {
 					display_name                = "Terraform Created Certify Policy"
-					description                 = "explicit falses + app_owner_approval"
+					description                 = "explicit falses + app_owners"
 					policy_type                 = "POLICY_TYPE_CERTIFY"
 					reassign_tasks_to_delegates = "false"
 					policy_steps = {
@@ -175,7 +175,7 @@ func TestAccPolicyResource(t *testing.T) {
 										require_denial_reason       = "false"
 										require_reassignment_reason = "false"
 										escalation_enabled          = "false"
-										app_owner_approval = {
+										app_owners = {
 											allow_self_approval        = "false"
 											require_distinct_approvers = "false"
 										}
@@ -190,7 +190,7 @@ func TestAccPolicyResource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					// assigned is read-only and null on a fresh policy-definition read (see Step 1).
 					resource.TestCheckNoResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.assigned"),
-					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owner_approval.allow_self_approval", "false"),
+					resource.TestCheckResourceAttr("conductorone_policy.test", "policy_steps.certify.steps.0.approval.app_owners.allow_self_approval", "false"),
 				),
 			},
 		},
