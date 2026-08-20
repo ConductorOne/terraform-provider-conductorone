@@ -4,13 +4,12 @@ package shared
 
 // The ExecuteAutomationRequest message.
 type ExecuteAutomationRequest struct {
-	// The AutomationContext message.
-	AutomationContext *AutomationContext `json:"context,omitempty"`
+	Context *AutomationContext `json:"context,omitempty"`
 }
 
-func (e *ExecuteAutomationRequest) GetAutomationContext() *AutomationContext {
+func (e *ExecuteAutomationRequest) GetContext() *AutomationContext {
 	if e == nil {
 		return nil
 	}
-	return e.AutomationContext
+	return e.Context
 }

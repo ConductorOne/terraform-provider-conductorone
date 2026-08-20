@@ -2,6 +2,31 @@
 
 package shared
 
+// PrincipalTypeFilter - Filters principals included in the scope. Unspecified is treated as users.
+type PrincipalTypeFilter string
+
+const (
+	PrincipalTypeFilterPrincipalTypeFilterUnspecified       PrincipalTypeFilter = "PRINCIPAL_TYPE_FILTER_UNSPECIFIED"
+	PrincipalTypeFilterPrincipalTypeFilterUsers             PrincipalTypeFilter = "PRINCIPAL_TYPE_FILTER_USERS"
+	PrincipalTypeFilterPrincipalTypeFilterResources         PrincipalTypeFilter = "PRINCIPAL_TYPE_FILTER_RESOURCES"
+	PrincipalTypeFilterPrincipalTypeFilterUsersAndResources PrincipalTypeFilter = "PRINCIPAL_TYPE_FILTER_USERS_AND_RESOURCES"
+)
+
+func (e PrincipalTypeFilter) ToPointer() *PrincipalTypeFilter {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PrincipalTypeFilter) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PRINCIPAL_TYPE_FILTER_UNSPECIFIED", "PRINCIPAL_TYPE_FILTER_USERS", "PRINCIPAL_TYPE_FILTER_RESOURCES", "PRINCIPAL_TYPE_FILTER_USERS_AND_RESOURCES":
+			return true
+		}
+	}
+	return false
+}
+
 // The AccessReviewScopeV2 message.
 //
 // This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
@@ -31,157 +56,172 @@ package shared
 //
 // This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
 //   - resourceSelection
+//
+// This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
+//   - excludedSpecificResources
+//   - excludedResourceTypeSelections
 type AccessReviewScopeV2 struct {
-	// The CelExpressionScope message.
-	CelExpressionScope *CelExpressionScope `json:"accountCelExpression,omitempty"`
-	// The AccountCriteriaScope message.
-	AccountCriteriaScope *AccountCriteriaScope `json:"accountCriteria,omitempty"`
-	// The AllAccessConflictsScope message.
-	AllAccessConflictsScope *AllAccessConflictsScope `json:"allAccessConflicts,omitempty"`
-	// The AllAccountsScope message.
-	AllAccountsScope *AllAccountsScope `json:"allAccounts,omitempty"`
-	// The AllGrantsScope message.
-	AllGrantsScope *AllGrantsScope `json:"allGrants,omitempty"`
-	// The AllUsersScope message.
-	AllUsersScope *AllUsersScope `json:"allUsers,omitempty"`
-	// The ApplicationAccessScope message.
-	ApplicationAccessScope *ApplicationAccessScope `json:"appAccess,omitempty"`
-	// The AppSelectionCriteriaScope message.
-	AppSelectionCriteriaScope *AppSelectionCriteriaScope `json:"appSelectionCriteria,omitempty"`
-	// The CelExpressionScope message.
-	CelExpressionScope1 *CelExpressionScope `json:"celExpression,omitempty"`
-	// The GrantsByCriteriaScope message.
-	//
-	// This message contains a oneof named criteria_filter. Only a single field of the following list may be set at a time:
-	//   - daysSinceAdded
-	//   - daysSinceReviewed
-	//   - grantsAddedBetween
-	//
-	GrantsByCriteriaScope *GrantsByCriteriaScope `json:"grantsByCriteria,omitempty"`
-	// The ResourceSelectionScope message.
-	ResourceSelectionScope *ResourceSelectionScope `json:"resourceSelection,omitempty"`
-	// The ResourceTypeSelectionScope message.
-	ResourceTypeSelectionScope *ResourceTypeSelectionScope `json:"resourceTypeSelections,omitempty"`
-	// The SelectedUsersScope message.
-	SelectedUsersScope *SelectedUsersScope `json:"selectedUsers,omitempty"`
-	// The SpecificAccessConflictsScope message.
-	SpecificAccessConflictsScope *SpecificAccessConflictsScope `json:"specificAccessConflicts,omitempty"`
-	// The SpecificResourcesScope message.
-	SpecificResourcesScope *SpecificResourcesScope `json:"specificResources,omitempty"`
-	// The UserCriteriaScope message.
-	UserCriteriaScope *UserCriteriaScope `json:"userCriteria,omitempty"`
+	AccountCelExpression           *CelExpressionScope         `json:"accountCelExpression,omitempty"`
+	AccountCriteria                *AccountCriteriaScope       `json:"accountCriteria,omitempty"`
+	AllAccessConflicts             *AllAccessConflictsScope    `json:"allAccessConflicts,omitempty"`
+	AllAccounts                    *AllAccountsScope           `json:"allAccounts,omitempty"`
+	AllGrants                      *AllGrantsScope             `json:"allGrants,omitempty"`
+	AllUsers                       *AllUsersScope              `json:"allUsers,omitempty"`
+	AppAccess                      *ApplicationAccessScope     `json:"appAccess,omitempty"`
+	AppSelectionCriteria           *AppSelectionCriteriaScope  `json:"appSelectionCriteria,omitempty"`
+	CelExpression                  *CelExpressionScope         `json:"celExpression,omitempty"`
+	ExcludedResourceTypeSelections *ResourceTypeSelectionScope `json:"excludedResourceTypeSelections,omitempty"`
+	ExcludedSpecificResources      *SpecificResourcesScope     `json:"excludedSpecificResources,omitempty"`
+	GrantsByCriteria               *GrantsByCriteriaScope      `json:"grantsByCriteria,omitempty"`
+	// Filters principals included in the scope. Unspecified is treated as users.
+	PrincipalTypeFilter     *PrincipalTypeFilter          `json:"principalTypeFilter,omitempty"`
+	ResourceSelection       *ResourceSelectionScope       `json:"resourceSelection,omitempty"`
+	ResourceTypeSelections  *ResourceTypeSelectionScope   `json:"resourceTypeSelections,omitempty"`
+	ScopeRoleSelection      *ScopeRoleSelectionScope      `json:"scopeRoleSelection,omitempty"`
+	SelectedUsers           *SelectedUsersScope           `json:"selectedUsers,omitempty"`
+	SpecificAccessConflicts *SpecificAccessConflictsScope `json:"specificAccessConflicts,omitempty"`
+	SpecificResources       *SpecificResourcesScope       `json:"specificResources,omitempty"`
+	UserCriteria            *UserCriteriaScope            `json:"userCriteria,omitempty"`
 }
 
-func (a *AccessReviewScopeV2) GetCelExpressionScope() *CelExpressionScope {
+func (a *AccessReviewScopeV2) GetAccountCelExpression() *CelExpressionScope {
 	if a == nil {
 		return nil
 	}
-	return a.CelExpressionScope
+	return a.AccountCelExpression
 }
 
-func (a *AccessReviewScopeV2) GetAccountCriteriaScope() *AccountCriteriaScope {
+func (a *AccessReviewScopeV2) GetAccountCriteria() *AccountCriteriaScope {
 	if a == nil {
 		return nil
 	}
-	return a.AccountCriteriaScope
+	return a.AccountCriteria
 }
 
-func (a *AccessReviewScopeV2) GetAllAccessConflictsScope() *AllAccessConflictsScope {
+func (a *AccessReviewScopeV2) GetAllAccessConflicts() *AllAccessConflictsScope {
 	if a == nil {
 		return nil
 	}
-	return a.AllAccessConflictsScope
+	return a.AllAccessConflicts
 }
 
-func (a *AccessReviewScopeV2) GetAllAccountsScope() *AllAccountsScope {
+func (a *AccessReviewScopeV2) GetAllAccounts() *AllAccountsScope {
 	if a == nil {
 		return nil
 	}
-	return a.AllAccountsScope
+	return a.AllAccounts
 }
 
-func (a *AccessReviewScopeV2) GetAllGrantsScope() *AllGrantsScope {
+func (a *AccessReviewScopeV2) GetAllGrants() *AllGrantsScope {
 	if a == nil {
 		return nil
 	}
-	return a.AllGrantsScope
+	return a.AllGrants
 }
 
-func (a *AccessReviewScopeV2) GetAllUsersScope() *AllUsersScope {
+func (a *AccessReviewScopeV2) GetAllUsers() *AllUsersScope {
 	if a == nil {
 		return nil
 	}
-	return a.AllUsersScope
+	return a.AllUsers
 }
 
-func (a *AccessReviewScopeV2) GetApplicationAccessScope() *ApplicationAccessScope {
+func (a *AccessReviewScopeV2) GetAppAccess() *ApplicationAccessScope {
 	if a == nil {
 		return nil
 	}
-	return a.ApplicationAccessScope
+	return a.AppAccess
 }
 
-func (a *AccessReviewScopeV2) GetAppSelectionCriteriaScope() *AppSelectionCriteriaScope {
+func (a *AccessReviewScopeV2) GetAppSelectionCriteria() *AppSelectionCriteriaScope {
 	if a == nil {
 		return nil
 	}
-	return a.AppSelectionCriteriaScope
+	return a.AppSelectionCriteria
 }
 
-func (a *AccessReviewScopeV2) GetCelExpressionScope1() *CelExpressionScope {
+func (a *AccessReviewScopeV2) GetCelExpression() *CelExpressionScope {
 	if a == nil {
 		return nil
 	}
-	return a.CelExpressionScope1
+	return a.CelExpression
 }
 
-func (a *AccessReviewScopeV2) GetGrantsByCriteriaScope() *GrantsByCriteriaScope {
+func (a *AccessReviewScopeV2) GetExcludedResourceTypeSelections() *ResourceTypeSelectionScope {
 	if a == nil {
 		return nil
 	}
-	return a.GrantsByCriteriaScope
+	return a.ExcludedResourceTypeSelections
 }
 
-func (a *AccessReviewScopeV2) GetResourceSelectionScope() *ResourceSelectionScope {
+func (a *AccessReviewScopeV2) GetExcludedSpecificResources() *SpecificResourcesScope {
 	if a == nil {
 		return nil
 	}
-	return a.ResourceSelectionScope
+	return a.ExcludedSpecificResources
 }
 
-func (a *AccessReviewScopeV2) GetResourceTypeSelectionScope() *ResourceTypeSelectionScope {
+func (a *AccessReviewScopeV2) GetGrantsByCriteria() *GrantsByCriteriaScope {
 	if a == nil {
 		return nil
 	}
-	return a.ResourceTypeSelectionScope
+	return a.GrantsByCriteria
 }
 
-func (a *AccessReviewScopeV2) GetSelectedUsersScope() *SelectedUsersScope {
+func (a *AccessReviewScopeV2) GetPrincipalTypeFilter() *PrincipalTypeFilter {
 	if a == nil {
 		return nil
 	}
-	return a.SelectedUsersScope
+	return a.PrincipalTypeFilter
 }
 
-func (a *AccessReviewScopeV2) GetSpecificAccessConflictsScope() *SpecificAccessConflictsScope {
+func (a *AccessReviewScopeV2) GetResourceSelection() *ResourceSelectionScope {
 	if a == nil {
 		return nil
 	}
-	return a.SpecificAccessConflictsScope
+	return a.ResourceSelection
 }
 
-func (a *AccessReviewScopeV2) GetSpecificResourcesScope() *SpecificResourcesScope {
+func (a *AccessReviewScopeV2) GetResourceTypeSelections() *ResourceTypeSelectionScope {
 	if a == nil {
 		return nil
 	}
-	return a.SpecificResourcesScope
+	return a.ResourceTypeSelections
 }
 
-func (a *AccessReviewScopeV2) GetUserCriteriaScope() *UserCriteriaScope {
+func (a *AccessReviewScopeV2) GetScopeRoleSelection() *ScopeRoleSelectionScope {
 	if a == nil {
 		return nil
 	}
-	return a.UserCriteriaScope
+	return a.ScopeRoleSelection
+}
+
+func (a *AccessReviewScopeV2) GetSelectedUsers() *SelectedUsersScope {
+	if a == nil {
+		return nil
+	}
+	return a.SelectedUsers
+}
+
+func (a *AccessReviewScopeV2) GetSpecificAccessConflicts() *SpecificAccessConflictsScope {
+	if a == nil {
+		return nil
+	}
+	return a.SpecificAccessConflicts
+}
+
+func (a *AccessReviewScopeV2) GetSpecificResources() *SpecificResourcesScope {
+	if a == nil {
+		return nil
+	}
+	return a.SpecificResources
+}
+
+func (a *AccessReviewScopeV2) GetUserCriteria() *UserCriteriaScope {
+	if a == nil {
+		return nil
+	}
+	return a.UserCriteria
 }
 
 // #region class-body-accessreviewscopev2

@@ -4,7 +4,6 @@ package shared
 
 // The ServicePrincipalServiceUpdateResponse message.
 type ServicePrincipalServiceUpdateResponse struct {
-	// ServicePrincipal represents a tenant-managed non-human identity.
 	ServicePrincipal *ServicePrincipal `json:"servicePrincipal,omitempty"`
 }
 

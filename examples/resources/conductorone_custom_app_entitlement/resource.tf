@@ -22,14 +22,14 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
   match_baton_id                    = "...my_match_baton_id..."
   override_access_requests_defaults = true
   provision_policy = {
-    action_provision = {
+    action = {
       action_name  = "...my_action_name..."
       app_id       = "...my_app_id..."
       connector_id = "...my_connector_id..."
       display_name = "...my_display_name..."
     }
-    connector_provision = {
-      account_provision = {
+    connector = {
+      account = {
         config       = "{ \"see\": \"documentation\" }"
         connector_id = "...my_connector_id..."
         do_not_save = {
@@ -49,33 +49,35 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
         connector_id = "...my_connector_id..."
       }
     }
-    delegated_provision = {
+    delegated = {
       app_id         = "...my_app_id..."
       entitlement_id = "...my_entitlement_id..."
     }
-    external_ticket_provision = {
+    device_placement = {
+      vault_boundary_id = "...my_vault_boundary_id..."
+    }
+    external_ticket = {
       app_id                                = "...my_app_id..."
       connector_id                          = "...my_connector_id..."
       external_ticket_provisioner_config_id = "...my_external_ticket_provisioner_config_id..."
       instructions                          = "...my_instructions..."
     }
-    manual_provision = {
-      instructions = "...my_instructions..."
-      provisioner_assignment = {
-        app_owner_provisioner = {
+    manual = {
+      assignee = {
+        app_owners = {
+          allow_reassignment = false
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        entitlement_owners = {
           allow_reassignment = true
           fallback_user_ids = [
             "..."
           ]
         }
-        entitlement_owner_provisioner = {
-          allow_reassignment = true
-          fallback_user_ids = [
-            "..."
-          ]
-        }
-        expression_provisioner = {
-          allow_reassignment = true
+        expression = {
+          allow_reassignment = false
           expressions = [
             "..."
           ]
@@ -83,36 +85,37 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
             "..."
           ]
         }
-        group_provisioner = {
-          allow_reassignment = true
+        group = {
+          allow_reassignment = false
           app_group_id       = "...my_app_group_id..."
           app_id             = "...my_app_id..."
           fallback_user_ids = [
             "..."
           ]
         }
-        manager_provisioner = {
+        manager = {
           allow_reassignment = false
           fallback_user_ids = [
             "..."
           ]
         }
-        user_provisioner = {
+        users = {
           allow_reassignment = true
           user_ids = [
             "..."
           ]
         }
       }
+      instructions = "...my_instructions..."
       user_ids = [
         "..."
       ]
     }
     multi_step = "{ \"see\": \"documentation\" }"
-    unconfigured_provision = {
+    unconfigured = {
       # ...
     }
-    webhook_provision = {
+    webhook = {
       webhook_id = "...my_webhook_id..."
     }
   }

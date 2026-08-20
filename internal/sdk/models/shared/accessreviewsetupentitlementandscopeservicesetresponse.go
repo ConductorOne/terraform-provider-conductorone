@@ -11,43 +11,8 @@ type AccessReviewSetupEntitlementAndScopeServiceSetResponse struct {
 	// Related objects requested via the expand mask.
 	Expanded []AccessReviewSetupEntitlementAndScopeServiceSetResponseExpanded `json:"expanded,omitempty"`
 	// The current list of setup entitlements for the campaign.
-	List []AccessReviewSetupEntitlementView `json:"list,omitempty"`
-	// The AccessReviewScopeV2 message.
-	//
-	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
-	//   - appAccess
-	//   - specificResources
-	//   - appSelectionCriteria
-	//   - resourceTypeSelections
-	//
-	//
-	// This message contains a oneof named users_scope. Only a single field of the following list may be set at a time:
-	//   - allUsers
-	//   - selectedUsers
-	//   - userCriteria
-	//   - celExpression
-	//
-	//
-	// This message contains a oneof named accounts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccounts
-	//   - accountCriteria
-	//   - accountCelExpression
-	//
-	//
-	// This message contains a oneof named grants_scope. Only a single field of the following list may be set at a time:
-	//   - allGrants
-	//   - grantsByCriteria
-	//
-	//
-	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccessConflicts
-	//   - specificAccessConflicts
-	//
-	//
-	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
-	//   - resourceSelection
-	//
-	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
+	List    []AccessReviewSetupEntitlementView `json:"list,omitempty"`
+	ScopeV2 *AccessReviewScopeV2               `json:"scopeV2,omitempty"`
 }
 
 func (a *AccessReviewSetupEntitlementAndScopeServiceSetResponse) GetExpanded() []AccessReviewSetupEntitlementAndScopeServiceSetResponseExpanded {
@@ -64,9 +29,9 @@ func (a *AccessReviewSetupEntitlementAndScopeServiceSetResponse) GetList() []Acc
 	return a.List
 }
 
-func (a *AccessReviewSetupEntitlementAndScopeServiceSetResponse) GetAccessReviewScopeV2() *AccessReviewScopeV2 {
+func (a *AccessReviewSetupEntitlementAndScopeServiceSetResponse) GetScopeV2() *AccessReviewScopeV2 {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewScopeV2
+	return a.ScopeV2
 }

@@ -2,20 +2,20 @@
 
 package shared
 
-// Operation - Which connector RPC this dispatches to.
-type Operation string
+// ConnectorActionRefOperation - Which connector RPC this dispatches to.
+type ConnectorActionRefOperation string
 
 const (
-	OperationOperationUnspecified Operation = "OPERATION_UNSPECIFIED"
-	OperationOperationGrant       Operation = "OPERATION_GRANT"
+	ConnectorActionRefOperationOperationUnspecified ConnectorActionRefOperation = "OPERATION_UNSPECIFIED"
+	ConnectorActionRefOperationOperationGrant       ConnectorActionRefOperation = "OPERATION_GRANT"
 )
 
-func (e Operation) ToPointer() *Operation {
+func (e ConnectorActionRefOperation) ToPointer() *ConnectorActionRefOperation {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Operation) IsExact() bool {
+func (e *ConnectorActionRefOperation) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "OPERATION_UNSPECIFIED", "OPERATION_GRANT":
@@ -35,7 +35,7 @@ type ConnectorActionRef struct {
 	// The connector that will execute the Grant / Revoke.
 	ConnectorID *string `json:"connectorId,omitempty"`
 	// Which connector RPC this dispatches to.
-	Operation *Operation `json:"operation,omitempty"`
+	Operation *ConnectorActionRefOperation `json:"operation,omitempty"`
 }
 
 func (c *ConnectorActionRef) GetAppID() *string {
@@ -52,7 +52,7 @@ func (c *ConnectorActionRef) GetConnectorID() *string {
 	return c.ConnectorID
 }
 
-func (c *ConnectorActionRef) GetOperation() *Operation {
+func (c *ConnectorActionRef) GetOperation() *ConnectorActionRefOperation {
 	if c == nil {
 		return nil
 	}

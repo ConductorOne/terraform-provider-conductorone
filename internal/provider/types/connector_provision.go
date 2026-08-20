@@ -3,7 +3,7 @@
 package types
 
 type ConnectorProvision struct {
-	AccountProvision *AccountProvision `tfsdk:"account_provision"`
-	DefaultBehavior  *DefaultBehavior  `tfsdk:"default_behavior"`
-	DeleteAccount    *DeleteAccount    `tfsdk:"delete_account"`
+	Account         *AccountProvision `tfsdk:"account"`
+	DefaultBehavior *DefaultBehavior  `tfsdk:"default_behavior"`
+	DeleteAccount   *DeleteAccount    `tfsdk:"delete_account"`
 }

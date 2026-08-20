@@ -33,12 +33,12 @@ type AccessReviewSetupResource struct {
 
 // AccessReviewSetupResourceModel describes the resource data model.
 type AccessReviewSetupResourceModel struct {
-	AccessReviewID                         types.String                                                             `tfsdk:"access_review_id"`
-	AccessReviewScopeV2                    *tfTypes.AccessReviewScopeV2                                             `tfsdk:"access_review_scope_v2"`
-	AccessReviewSetupEntitlementExpandMask *tfTypes.AccessReviewSetupEntitlementExpandMask                          `tfsdk:"access_review_setup_entitlement_expand_mask"`
-	Entitlements                           []tfTypes.AccessReviewSetupEntitlementInput                              `tfsdk:"entitlements"`
-	Expanded                               []tfTypes.AccessReviewSetupEntitlementAndScopeServiceSetResponseExpanded `tfsdk:"expanded"`
-	List                                   []tfTypes.AccessReviewSetupEntitlementView                               `tfsdk:"list"`
+	AccessReviewID types.String                                                             `tfsdk:"access_review_id"`
+	Entitlements   []tfTypes.AccessReviewSetupEntitlementInput                              `tfsdk:"entitlements"`
+	Expanded       []tfTypes.AccessReviewSetupEntitlementAndScopeServiceSetResponseExpanded `tfsdk:"expanded"`
+	ExpandMask     *tfTypes.AccessReviewSetupEntitlementExpandMask                          `tfsdk:"expand_mask"`
+	List           []tfTypes.AccessReviewSetupEntitlementView                               `tfsdk:"list"`
+	ScopeV2        *tfTypes.AccessReviewScopeV2                                             `tfsdk:"scope_v2"`
 }
 
 func (r *AccessReviewSetupResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -52,11 +52,121 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 			"access_review_id": schema.StringAttribute{
 				Required: true,
 			},
-			"access_review_scope_v2": schema.SingleNestedAttribute{
+			"entitlements": schema.ListNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"app_entitlement_id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The ID of the entitlement.`,
+						},
+						"app_id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The ID of the application that owns the entitlement.`,
+						},
+					},
+				},
+				Description: `The entitlements to include in the campaign. Replaces all previously selected entitlements.`,
+			},
+			"expand_mask": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"paths": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `The paths field.`,
+					},
+				},
+				Description: `The AccessReviewSetupEntitlementExpandMask message.`,
+			},
+			"expanded": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{},
+				},
+				Description: `Related objects requested via the expand mask.`,
+			},
+			"list": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"access_review_entitlement": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"access_review_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The ID of the access review campaign this entitlement belongs to.`,
+								},
+								"app_entitlement_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The ID of the entitlement being reviewed.`,
+								},
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The ID of the application that owns the entitlement.`,
+								},
+								"app_resource_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The ID of the specific resource associated with this entitlement, if applicable.`,
+								},
+								"app_resource_type_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The ID of the resource type associated with this entitlement, if applicable.`,
+								},
+								"created_at": schema.StringAttribute{
+									Computed: true,
+								},
+								"custom_policy_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `An override policy ID for this specific entitlement. Populated when use_policy_override is enabled on the campaign.`,
+								},
+								"policy_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The ID of the review policy applied to this entitlement. Defaults to the campaign policy.`,
+								},
+								"tenant_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The tenant that owns this setup entitlement.`,
+								},
+								"updated_at": schema.StringAttribute{
+									Computed: true,
+								},
+							},
+							Description: `An entitlement that has been selected for inclusion in an access review campaign during setup.`,
+						},
+						"app_path": schema.StringAttribute{
+							Computed:    true,
+							Description: `The appPath field.`,
+						},
+						"entitlement_path": schema.StringAttribute{
+							Computed:    true,
+							Description: `The entitlementPath field.`,
+						},
+						"policy_path": schema.StringAttribute{
+							Computed:    true,
+							Description: `The policyPath field.`,
+						},
+					},
+				},
+				Description: `The current list of setup entitlements for the campaign.`,
+			},
+			"scope_v2": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"account_criteria_scope": schema.SingleNestedAttribute{
+					"account_cel_expression": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"expression": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The expression field.`,
+							},
+						},
+						Description: `The CelExpressionScope message.`,
+					},
+					"account_criteria": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
@@ -85,27 +195,32 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 						},
 						Description: `The AccountCriteriaScope message.`,
 					},
-					"all_access_conflicts_scope": schema.SingleNestedAttribute{
+					"all_access_conflicts": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The AllAccessConflictsScope message.`,
 					},
-					"all_accounts_scope": schema.SingleNestedAttribute{
+					"all_accounts": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The AllAccountsScope message.`,
 					},
-					"all_grants_scope": schema.SingleNestedAttribute{
+					"all_grants": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The AllGrantsScope message.`,
 					},
-					"all_users_scope": schema.SingleNestedAttribute{
+					"all_users": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The AllUsersScope message.`,
 					},
-					"app_selection_criteria_scope": schema.SingleNestedAttribute{
+					"app_access": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The ApplicationAccessScope message.`,
+					},
+					"app_selection_criteria": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
@@ -124,52 +239,33 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 						},
 						Description: `The AppSelectionCriteriaScope message.`,
 					},
-					"application_access_scope": schema.SingleNestedAttribute{
+					"cel_expression": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"expression": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The expression field.`,
+							},
+						},
+						Description: `The CelExpressionScope message.`,
+					},
+					"excluded_resource_type_selections": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The ApplicationAccessScope message.`,
+						Description: `The ResourceTypeSelectionScope message.`,
 					},
-					"cel_expression_scope": schema.SingleNestedAttribute{
+					"excluded_specific_resources": schema.SingleNestedAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The SpecificResourcesScope message.`,
+					},
+					"grants_by_criteria": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"expression": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The expression field.`,
-							},
-						},
-						Description: `The CelExpressionScope message.`,
-					},
-					"cel_expression_scope1": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"expression": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `The expression field.`,
-							},
-						},
-						Description: `The CelExpressionScope message.`,
-					},
-					"grants_by_criteria_scope": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"days_since_added": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-							},
-							"days_since_last_used": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-							},
-							"days_since_reviewed": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
-							},
-							"grant_access_profile_filter": schema.SingleNestedAttribute{
+							"access_profile_filter": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
@@ -196,6 +292,18 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 									},
 								},
 								Description: `The GrantAccessProfileFilter message.`,
+							},
+							"days_since_added": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+							},
+							"days_since_last_used": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+							},
+							"days_since_reviewed": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
 							},
 							"grants_added_between": schema.SingleNestedAttribute{
 								Computed: true,
@@ -236,17 +344,29 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 							`  - daysSinceReviewed` + "\n" +
 							`  - grantsAddedBetween`,
 					},
-					"resource_selection_scope": schema.SingleNestedAttribute{
+					"principal_type_filter": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Filters principals included in the scope. Unspecified is treated as users. possible known values include one of ["PRINCIPAL_TYPE_FILTER_UNSPECIFIED", "PRINCIPAL_TYPE_FILTER_USERS", "PRINCIPAL_TYPE_FILTER_RESOURCES", "PRINCIPAL_TYPE_FILTER_USERS_AND_RESOURCES"]`,
+					},
+					"resource_selection": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The ResourceSelectionScope message.`,
 					},
-					"resource_type_selection_scope": schema.SingleNestedAttribute{
+					"resource_type_selections": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The ResourceTypeSelectionScope message.`,
 					},
-					"selected_users_scope": schema.SingleNestedAttribute{
+					"scope_role_selection": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `Empty marker for scope+role pair scoping on IaaS-type apps.` + "\n" +
+							` Actual selections stored in AccessReviewScopeRoleSelection rows.` + "\n" +
+							` May coexist with ResourceSelectionScope on the same campaign; prepare unions both.`,
+					},
+					"selected_users": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
@@ -259,17 +379,17 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 						},
 						Description: `The SelectedUsersScope message.`,
 					},
-					"specific_access_conflicts_scope": schema.SingleNestedAttribute{
+					"specific_access_conflicts": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The SpecificAccessConflictsScope message.`,
 					},
-					"specific_resources_scope": schema.SingleNestedAttribute{
+					"specific_resources": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The SpecificResourcesScope message.`,
 					},
-					"user_criteria_scope": schema.SingleNestedAttribute{
+					"user_criteria": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
@@ -373,105 +493,12 @@ func (r *AccessReviewSetupResource) Schema(ctx context.Context, req resource.Sch
 					`` + "\n" +
 					`` + "\n" +
 					`This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:` + "\n" +
-					`  - resourceSelection`,
-			},
-			"access_review_setup_entitlement_expand_mask": schema.SingleNestedAttribute{
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"paths": schema.ListAttribute{
-						Optional:    true,
-						ElementType: types.StringType,
-						Description: `The paths field.`,
-					},
-				},
-				Description: `The AccessReviewSetupEntitlementExpandMask message.`,
-			},
-			"entitlements": schema.ListNestedAttribute{
-				Optional: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"app_entitlement_id": schema.StringAttribute{
-							Optional:    true,
-							Description: `The ID of the entitlement.`,
-						},
-						"app_id": schema.StringAttribute{
-							Optional:    true,
-							Description: `The ID of the application that owns the entitlement.`,
-						},
-					},
-				},
-				Description: `The entitlements to include in the campaign. Replaces all previously selected entitlements.`,
-			},
-			"expanded": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{},
-				},
-				Description: `Related objects requested via the expand mask.`,
-			},
-			"list": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"access_review_setup_entitlement": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"access_review_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The ID of the access review campaign this entitlement belongs to.`,
-								},
-								"app_entitlement_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The ID of the entitlement being reviewed.`,
-								},
-								"app_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The ID of the application that owns the entitlement.`,
-								},
-								"app_resource_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The ID of the specific resource associated with this entitlement, if applicable.`,
-								},
-								"app_resource_type_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The ID of the resource type associated with this entitlement, if applicable.`,
-								},
-								"created_at": schema.StringAttribute{
-									Computed: true,
-								},
-								"custom_policy_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `An override policy ID for this specific entitlement. Populated when use_policy_override is enabled on the campaign.`,
-								},
-								"policy_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The ID of the review policy applied to this entitlement. Defaults to the campaign policy.`,
-								},
-								"tenant_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The tenant that owns this setup entitlement.`,
-								},
-								"updated_at": schema.StringAttribute{
-									Computed: true,
-								},
-							},
-							Description: `An entitlement that has been selected for inclusion in an access review campaign during setup.`,
-						},
-						"app_path": schema.StringAttribute{
-							Computed:    true,
-							Description: `The appPath field.`,
-						},
-						"entitlement_path": schema.StringAttribute{
-							Computed:    true,
-							Description: `The entitlementPath field.`,
-						},
-						"policy_path": schema.StringAttribute{
-							Computed:    true,
-							Description: `The policyPath field.`,
-						},
-					},
-				},
-				Description: `The current list of setup entitlements for the campaign.`,
+					`  - resourceSelection` + "\n" +
+					`` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - excludedSpecificResources` + "\n" +
+					`  - excludedResourceTypeSelections`,
 			},
 		},
 	}

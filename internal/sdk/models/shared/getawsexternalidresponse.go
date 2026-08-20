@@ -4,13 +4,12 @@ package shared
 
 // The GetAWSExternalIDResponse message.
 type GetAWSExternalIDResponse struct {
-	// AWSExternalID contains the tenant's external ID for AWS IAM role trust policies.
-	AWSExternalID *AWSExternalID `json:"awsExternalId,omitempty"`
+	AwsExternalID *AWSExternalID `json:"awsExternalId,omitempty"`
 }
 
-func (g *GetAWSExternalIDResponse) GetAWSExternalID() *AWSExternalID {
+func (g *GetAWSExternalIDResponse) GetAwsExternalID() *AWSExternalID {
 	if g == nil {
 		return nil
 	}
-	return g.AWSExternalID
+	return g.AwsExternalID
 }

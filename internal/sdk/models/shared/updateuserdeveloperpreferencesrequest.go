@@ -4,14 +4,12 @@ package shared
 
 // The UpdateUserDeveloperPreferencesRequest message.
 type UpdateUserDeveloperPreferencesRequest struct {
-	// TerraformPreferences groups the user's preferences for the "Show
-	//  Terraform code" feature.
-	TerraformPreferences *TerraformPreferences `json:"terraform,omitempty"`
+	Terraform *TerraformPreferences `json:"terraform,omitempty"`
 }
 
-func (u *UpdateUserDeveloperPreferencesRequest) GetTerraformPreferences() *TerraformPreferences {
+func (u *UpdateUserDeveloperPreferencesRequest) GetTerraform() *TerraformPreferences {
 	if u == nil {
 		return nil
 	}
-	return u.TerraformPreferences
+	return u.Terraform
 }

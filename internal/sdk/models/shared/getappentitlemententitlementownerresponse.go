@@ -4,7 +4,6 @@ package shared
 
 // GetAppEntitlementEntitlementOwnerResponse is the response for getting an entitlement ownership source on an entitlement.
 type GetAppEntitlementEntitlementOwnerResponse struct {
-	// AppEntitlementOwnerEntitlement represents an entitlement ownership source for an app entitlement.
 	AppEntitlementOwnerEntitlement *AppEntitlementOwnerEntitlement `json:"appEntitlementOwnerEntitlement,omitempty"`
 }
 

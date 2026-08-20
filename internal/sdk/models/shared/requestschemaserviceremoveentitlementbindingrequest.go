@@ -4,17 +4,16 @@ package shared
 
 // RequestSchemaServiceRemoveEntitlementBindingRequest - The request message for removing a single entitlement binding from a request schema.
 type RequestSchemaServiceRemoveEntitlementBindingRequest struct {
-	// The AppEntitlementRef message.
-	AppEntitlementRef *AppEntitlementRef `json:"entitlementRef,omitempty"`
+	EntitlementRef *AppEntitlementRef `json:"entitlementRef,omitempty"`
 	// The unique identifier of the request schema to remove the binding from.
 	RequestSchemaID *string `json:"requestSchemaId,omitempty"`
 }
 
-func (r *RequestSchemaServiceRemoveEntitlementBindingRequest) GetAppEntitlementRef() *AppEntitlementRef {
+func (r *RequestSchemaServiceRemoveEntitlementBindingRequest) GetEntitlementRef() *AppEntitlementRef {
 	if r == nil {
 		return nil
 	}
-	return r.AppEntitlementRef
+	return r.EntitlementRef
 }
 
 func (r *RequestSchemaServiceRemoveEntitlementBindingRequest) GetRequestSchemaID() *string {

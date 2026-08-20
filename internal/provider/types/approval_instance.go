@@ -7,14 +7,14 @@ import (
 )
 
 type ApprovalInstance struct {
-	Approval                *Approval                `tfsdk:"approval"`
-	ApprovedAction          *ApprovedAction          `tfsdk:"approved_action"`
-	DeniedAction            *DeniedAction            `tfsdk:"denied_action"`
-	EscalationInstance      *EscalationInstance      `tfsdk:"escalation_instance"`
-	ReassignedAction        *ReassignedAction        `tfsdk:"reassigned_action"`
-	ReassignedByErrorAction *ReassignedByErrorAction `tfsdk:"reassigned_by_error_action"`
-	RestartAction           *RestartAction           `tfsdk:"restart_action"`
-	SkippedAction           *SkippedAction           `tfsdk:"skipped_action"`
-	AssignedAt              types.String             `tfsdk:"assigned_at"`
-	State                   types.String             `tfsdk:"state"`
+	Approval           *Approval                `tfsdk:"approval"`
+	Approved           *ApprovedAction          `tfsdk:"approved"`
+	AssignedAt         types.String             `tfsdk:"assigned_at"`
+	Denied             *DeniedAction            `tfsdk:"denied"`
+	EscalationInstance *EscalationInstance      `tfsdk:"escalation_instance"`
+	Reassigned         *ReassignedAction        `tfsdk:"reassigned"`
+	ReassignedByError  *ReassignedByErrorAction `tfsdk:"reassigned_by_error"`
+	Restarted          *RestartAction           `tfsdk:"restarted"`
+	Skipped            *SkippedAction           `tfsdk:"skipped"`
+	State              types.String             `tfsdk:"state"`
 }

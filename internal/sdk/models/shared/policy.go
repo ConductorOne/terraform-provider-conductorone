@@ -51,8 +51,16 @@ type Policy struct {
 	//  Well-known keys: `managed_by`, `iac_workspace`,
 	//  `iac_resource_address`, `iac_tool_version`.
 	Annotations map[string]string `json:"annotations,omitempty"`
-	CreatedAt   *time.Time        `json:"createdAt,omitempty"`
-	DeletedAt   *time.Time        `json:"deletedAt,omitempty"`
+	// When set, the baseline defers to another policy of the same type when no
+	//  rule matches, instead of the baseline entry in policy_steps (keyed by the
+	//  lowercased policy_type). Mutually exclusive with that baseline entry: set
+	//  one or the other, not both. The referenced policy must share this
+	//  policy's policy_type, must not introduce a cycle or self-reference, and
+	//  must not push any reachable chain over depth 5. Gated by the
+	//  POLICY_REFERENCES_POLICY feature flag.
+	BaselinePolicyID *string    `json:"baselinePolicyId,omitempty"`
+	CreatedAt        *time.Time `json:"createdAt,omitempty"`
+	DeletedAt        *time.Time `json:"deletedAt,omitempty"`
 	// The description of the Policy.
 	Description *string `json:"description,omitempty"`
 	// The display name of the Policy.
@@ -77,7 +85,8 @@ type Policy struct {
 	// Ordered conditional routing rules. Evaluated top-to-bottom; the first
 	//  matching rule selects a step sequence from policy_steps. If no rule matches
 	//  (or if this array is empty), the baseline entry in policy_steps is used.
-	Rules []Rule `json:"rules,omitempty"`
+	Rules []Rule       `json:"rules,omitempty"`
+	Scope *PolicyScope `json:"scope,omitempty"`
 	// Whether this policy is a builtin system policy. Builtin system policies cannot be edited.
 	SystemBuiltin *bool      `json:"systemBuiltin,omitempty"`
 	UpdatedAt     *time.Time `json:"updatedAt,omitempty"`
@@ -99,6 +108,13 @@ func (p *Policy) GetAnnotations() map[string]string {
 		return nil
 	}
 	return p.Annotations
+}
+
+func (p *Policy) GetBaselinePolicyID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.BaselinePolicyID
 }
 
 func (p *Policy) GetCreatedAt() *time.Time {
@@ -171,6 +187,13 @@ func (p *Policy) GetRules() []Rule {
 	return p.Rules
 }
 
+func (p *Policy) GetScope() *PolicyScope {
+	if p == nil {
+		return nil
+	}
+	return p.Scope
+}
+
 func (p *Policy) GetSystemBuiltin() *bool {
 	if p == nil {
 		return nil
@@ -200,6 +223,14 @@ type PolicyInput struct {
 	//  Well-known keys: `managed_by`, `iac_workspace`,
 	//  `iac_resource_address`, `iac_tool_version`.
 	Annotations map[string]string `json:"annotations,omitempty"`
+	// When set, the baseline defers to another policy of the same type when no
+	//  rule matches, instead of the baseline entry in policy_steps (keyed by the
+	//  lowercased policy_type). Mutually exclusive with that baseline entry: set
+	//  one or the other, not both. The referenced policy must share this
+	//  policy's policy_type, must not introduce a cycle or self-reference, and
+	//  must not push any reachable chain over depth 5. Gated by the
+	//  POLICY_REFERENCES_POLICY feature flag.
+	BaselinePolicyID *string `json:"baselinePolicyId,omitempty"`
 	// The description of the Policy.
 	Description *string `json:"description,omitempty"`
 	// The display name of the Policy.
@@ -222,7 +253,8 @@ type PolicyInput struct {
 	// Ordered conditional routing rules. Evaluated top-to-bottom; the first
 	//  matching rule selects a step sequence from policy_steps. If no rule matches
 	//  (or if this array is empty), the baseline entry in policy_steps is used.
-	Rules []Rule `json:"rules,omitempty"`
+	Rules []Rule       `json:"rules,omitempty"`
+	Scope *PolicyScope `json:"scope,omitempty"`
 }
 
 func (p *PolicyInput) GetAnnotations() map[string]string {
@@ -230,6 +262,13 @@ func (p *PolicyInput) GetAnnotations() map[string]string {
 		return nil
 	}
 	return p.Annotations
+}
+
+func (p *PolicyInput) GetBaselinePolicyID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.BaselinePolicyID
 }
 
 func (p *PolicyInput) GetDescription() *string {
@@ -279,4 +318,11 @@ func (p *PolicyInput) GetRules() []Rule {
 		return nil
 	}
 	return p.Rules
+}
+
+func (p *PolicyInput) GetScope() *PolicyScope {
+	if p == nil {
+		return nil
+	}
+	return p.Scope
 }

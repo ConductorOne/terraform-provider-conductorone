@@ -11,11 +11,9 @@ type VaultServiceCreateRequest struct {
 	// A free-text description of the vault's purpose or configuration.
 	Description *string `json:"description,omitempty"`
 	// The human-readable name for the new vault.
-	DisplayName string `json:"displayName"`
-	// GroupAuthzVault configures a vault that uses group-based authorization to control access to stored credentials.
+	DisplayName     string           `json:"displayName"`
 	GroupAuthzVault *GroupAuthzVault `json:"groupAuthzVault,omitempty"`
-	// MagicVault configures a vault that grants time-limited credential access via magic links.
-	MagicVault *MagicVault `json:"magicVault,omitempty"`
+	MagicVault      *MagicVault      `json:"magicVault,omitempty"`
 	// The IDs of users to assign as owners of this vault.
 	OwnerIds []string `json:"ownerIds,omitempty"`
 }

@@ -8,13 +8,10 @@ package shared
 //   - accountRef
 //   - accountInContext
 type AccountLifecycleAction struct {
-	// The AccountInContext message.
 	AccountInContext *AccountInContext `json:"accountInContext,omitempty"`
-	// The AccountRef message.
-	AccountRef *AccountRef `json:"accountRef,omitempty"`
+	AccountRef       *AccountRef       `json:"accountRef,omitempty"`
 	// The actionName field.
-	ActionName *string `json:"actionName,omitempty"`
-	// The ConnectorRef message.
+	ActionName   *string       `json:"actionName,omitempty"`
 	ConnectorRef *ConnectorRef `json:"connectorRef,omitempty"`
 }
 

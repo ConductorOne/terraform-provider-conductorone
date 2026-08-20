@@ -4,13 +4,12 @@ package shared
 
 // The UpdateSuggestionStateResponse message.
 type UpdateSuggestionStateResponse struct {
-	// The RoleMiningManagementSuggestion message.
-	RoleMiningManagementSuggestion *RoleMiningManagementSuggestion `json:"suggestion,omitempty"`
+	Suggestion *RoleMiningManagementSuggestion `json:"suggestion,omitempty"`
 }
 
-func (u *UpdateSuggestionStateResponse) GetRoleMiningManagementSuggestion() *RoleMiningManagementSuggestion {
+func (u *UpdateSuggestionStateResponse) GetSuggestion() *RoleMiningManagementSuggestion {
 	if u == nil {
 		return nil
 	}
-	return u.RoleMiningManagementSuggestion
+	return u.Suggestion
 }

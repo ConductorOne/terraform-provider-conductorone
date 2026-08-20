@@ -4,21 +4,12 @@ package shared
 
 // The GetTenantEmailProviderResponse message.
 type GetTenantEmailProviderResponse struct {
-	// TenantEmailProvider is the API representation of the tenant's email provider.
-	//
-	// This message contains a oneof named provider. Only a single field of the following list may be set at a time:
-	//   - c1Builtin
-	//   - awsSes
-	//   - sendgrid
-	//   - microsoftGraph
-	//   - googleWorkspace
-	//
-	TenantEmailProvider *TenantEmailProvider `json:"emailProvider,omitempty"`
+	EmailProvider *TenantEmailProvider `json:"emailProvider,omitempty"`
 }
 
-func (g *GetTenantEmailProviderResponse) GetTenantEmailProvider() *TenantEmailProvider {
+func (g *GetTenantEmailProviderResponse) GetEmailProvider() *TenantEmailProvider {
 	if g == nil {
 		return nil
 	}
-	return g.TenantEmailProvider
+	return g.EmailProvider
 }

@@ -4,7 +4,6 @@ package shared
 
 // CreateAppEntitlementOwnerRequest - CreateEntitlementOwnerRequest is the request for creating an entitlement ownership source.
 type CreateAppEntitlementOwnerRequest struct {
-	// The AppEntitlementRef message.
 	AppEntitlementRef *AppEntitlementRef `json:"appEntitlementRef,omitempty"`
 }
 

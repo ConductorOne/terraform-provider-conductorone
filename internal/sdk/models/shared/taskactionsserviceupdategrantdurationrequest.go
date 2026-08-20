@@ -4,12 +4,20 @@ package shared
 
 // The TaskActionsServiceUpdateGrantDurationRequest object lets you change the grant duration on a grant task.
 type TaskActionsServiceUpdateGrantDurationRequest struct {
-	Duration string `json:"duration"`
+	Duration   *string         `json:"duration"`
+	ExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 }
 
-func (t *TaskActionsServiceUpdateGrantDurationRequest) GetDuration() string {
+func (t *TaskActionsServiceUpdateGrantDurationRequest) GetDuration() *string {
 	if t == nil {
-		return ""
+		return nil
 	}
 	return t.Duration
+}
+
+func (t *TaskActionsServiceUpdateGrantDurationRequest) GetExpandMask() *TaskExpandMask {
+	if t == nil {
+		return nil
+	}
+	return t.ExpandMask
 }

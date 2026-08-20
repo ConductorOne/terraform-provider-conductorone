@@ -48,15 +48,9 @@ type WorkloadFederationServiceCreateProviderRequest struct {
 	//  OIDC discovery. For SPIFFE providers, this is the SPIFFE trust-domain URI
 	//  (e.g., spiffe://prod.example.com). Normalized on write: lowercase
 	//  scheme/host, no trailing slash. Unique within tenant.
-	IssuerURL *string `json:"issuerUrl,omitempty"`
-	// OIDCSettings is the kind-specific configuration block for classic OIDC
-	//  providers (GitHub Actions, GitLab CI, HCP Terraform, AWS IAM Outbound,
-	//  any CUSTOM provider). Empty for now; future fields like custom_jwks_url,
-	//  audience overrides, and required_claims land here.
-	OIDCSettings *OIDCSettings `json:"oidc,omitempty"`
-	// SPIFFESettings is the kind-specific configuration block for SPIFFE
-	//  trust-domain providers (issuer_url = spiffe://<trust-domain>).
-	SPIFFESettings *SPIFFESettings `json:"spiffe,omitempty"`
+	IssuerURL *string         `json:"issuerUrl,omitempty"`
+	Oidc      *OIDCSettings   `json:"oidc,omitempty"`
+	Spiffe    *SPIFFESettings `json:"spiffe,omitempty"`
 	// Well-known provider type. Required -- UNSPECIFIED is rejected.
 	//  When set to a named source, the backend validates issuer_url consistency.
 	//  SPIFFE wkp requires `settings.spiffe`; all other wkp values require
@@ -85,18 +79,18 @@ func (w *WorkloadFederationServiceCreateProviderRequest) GetIssuerURL() *string 
 	return w.IssuerURL
 }
 
-func (w *WorkloadFederationServiceCreateProviderRequest) GetOIDCSettings() *OIDCSettings {
+func (w *WorkloadFederationServiceCreateProviderRequest) GetOidc() *OIDCSettings {
 	if w == nil {
 		return nil
 	}
-	return w.OIDCSettings
+	return w.Oidc
 }
 
-func (w *WorkloadFederationServiceCreateProviderRequest) GetSPIFFESettings() *SPIFFESettings {
+func (w *WorkloadFederationServiceCreateProviderRequest) GetSpiffe() *SPIFFESettings {
 	if w == nil {
 		return nil
 	}
-	return w.SPIFFESettings
+	return w.Spiffe
 }
 
 func (w *WorkloadFederationServiceCreateProviderRequest) GetWellKnownProvider() *WorkloadFederationServiceCreateProviderRequestWellKnownProvider {

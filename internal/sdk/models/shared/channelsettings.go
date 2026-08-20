@@ -4,31 +4,28 @@ package shared
 
 // ChannelSettings groups notification preferences for all supported channels.
 type ChannelSettings struct {
-	// The EmailChannelSettings message.
-	EmailChannelSettings *EmailChannelSettings `json:"email,omitempty"`
-	// The SlackChannelSettings message.
-	SlackChannelSettings *SlackChannelSettings `json:"slack,omitempty"`
-	// The MSTeamsChannelSettings message.
-	MSTeamsChannelSettings *MSTeamsChannelSettings `json:"teams,omitempty"`
+	Email *EmailChannelSettings   `json:"email,omitempty"`
+	Slack *SlackChannelSettings   `json:"slack,omitempty"`
+	Teams *MSTeamsChannelSettings `json:"teams,omitempty"`
 }
 
-func (c *ChannelSettings) GetEmailChannelSettings() *EmailChannelSettings {
+func (c *ChannelSettings) GetEmail() *EmailChannelSettings {
 	if c == nil {
 		return nil
 	}
-	return c.EmailChannelSettings
+	return c.Email
 }
 
-func (c *ChannelSettings) GetSlackChannelSettings() *SlackChannelSettings {
+func (c *ChannelSettings) GetSlack() *SlackChannelSettings {
 	if c == nil {
 		return nil
 	}
-	return c.SlackChannelSettings
+	return c.Slack
 }
 
-func (c *ChannelSettings) GetMSTeamsChannelSettings() *MSTeamsChannelSettings {
+func (c *ChannelSettings) GetTeams() *MSTeamsChannelSettings {
 	if c == nil {
 		return nil
 	}
-	return c.MSTeamsChannelSettings
+	return c.Teams
 }

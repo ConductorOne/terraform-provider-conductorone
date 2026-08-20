@@ -8,14 +8,11 @@ package shared
 //   - checkboxField
 //   - toggleField
 type BoolField struct {
-	// The CheckboxField message.
 	CheckboxField *CheckboxField `json:"checkboxField,omitempty"`
 	// The defaultValue field.
-	DefaultValue *bool `json:"defaultValue,omitempty"`
-	// BoolRules describes the constraints applied to `bool` values
-	BoolRules *BoolRules `json:"rules,omitempty"`
-	// The ToggleField message.
-	ToggleField *ToggleField `json:"toggleField,omitempty"`
+	DefaultValue *bool        `json:"defaultValue,omitempty"`
+	Rules        *BoolRules   `json:"rules,omitempty"`
+	ToggleField  *ToggleField `json:"toggleField,omitempty"`
 }
 
 func (b *BoolField) GetCheckboxField() *CheckboxField {
@@ -32,11 +29,11 @@ func (b *BoolField) GetDefaultValue() *bool {
 	return b.DefaultValue
 }
 
-func (b *BoolField) GetBoolRules() *BoolRules {
+func (b *BoolField) GetRules() *BoolRules {
 	if b == nil {
 		return nil
 	}
-	return b.BoolRules
+	return b.Rules
 }
 
 func (b *BoolField) GetToggleField() *ToggleField {

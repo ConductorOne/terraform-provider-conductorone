@@ -5,15 +5,8 @@ package shared
 // SSFReceiverStreamServiceCreateResponse returns the created stream and the push auth token in plaintext.
 type SSFReceiverStreamServiceCreateResponse struct {
 	// Push auth token returned in plaintext ONLY on create.
-	PushAuthTokenPlaintext *string `json:"pushAuthTokenPlaintext,omitempty"`
-	// SSFReceiverStream is the public API representation.
-	//  Secrets (push_auth_token, outbound credentials) are write-only.
-	//
-	// This message contains a oneof named outbound_auth. Only a single field of the following list may be set at a time:
-	//   - outboundAuthBearer
-	//   - outboundAuthOauth2
-	//
-	SSFReceiverStream *SSFReceiverStream `json:"ssfReceiverStream,omitempty"`
+	PushAuthTokenPlaintext *string            `json:"pushAuthTokenPlaintext,omitempty"`
+	SsfReceiverStream      *SSFReceiverStream `json:"ssfReceiverStream,omitempty"`
 }
 
 func (s *SSFReceiverStreamServiceCreateResponse) GetPushAuthTokenPlaintext() *string {
@@ -23,9 +16,9 @@ func (s *SSFReceiverStreamServiceCreateResponse) GetPushAuthTokenPlaintext() *st
 	return s.PushAuthTokenPlaintext
 }
 
-func (s *SSFReceiverStreamServiceCreateResponse) GetSSFReceiverStream() *SSFReceiverStream {
+func (s *SSFReceiverStreamServiceCreateResponse) GetSsfReceiverStream() *SSFReceiverStream {
 	if s == nil {
 		return nil
 	}
-	return s.SSFReceiverStream
+	return s.SsfReceiverStream
 }

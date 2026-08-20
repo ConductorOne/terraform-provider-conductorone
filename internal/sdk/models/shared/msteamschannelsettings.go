@@ -4,72 +4,64 @@ package shared
 
 // The MSTeamsChannelSettings message.
 type MSTeamsChannelSettings struct {
-	// The AccessProvisionedPreference message.
-	AccessProvisionedPreference *AccessProvisionedPreference `json:"accessProvisioned,omitempty"`
-	// The ApprovalNeededPreference message.
-	ApprovalNeededPreference *ApprovalNeededPreference `json:"approvalNeeded,omitempty"`
-	// The CommentOnRequestPreference message.
-	CommentOnRequestPreference *CommentOnRequestPreference `json:"commentOnRequest,omitempty"`
-	// The CompletionPreference message.
-	CompletionPreference *CompletionPreference `json:"completion,omitempty"`
-	// The ConnectorIssuesPreference message.
-	ConnectorIssuesPreference *ConnectorIssuesPreference `json:"connectorIssues,omitempty"`
-	// DigestPreference controls whether summary digest notifications are sent and how often.
-	DigestPreference *DigestPreference `json:"digest,omitempty"`
+	AccessProvisioned *AccessProvisionedPreference `json:"accessProvisioned,omitempty"`
+	ApprovalNeeded    *ApprovalNeededPreference    `json:"approvalNeeded,omitempty"`
+	CommentOnRequest  *CommentOnRequestPreference  `json:"commentOnRequest,omitempty"`
+	Completion        *CompletionPreference        `json:"completion,omitempty"`
+	ConnectorIssues   *ConnectorIssuesPreference   `json:"connectorIssues,omitempty"`
+	Digest            *DigestPreference            `json:"digest,omitempty"`
 	// The enabled field.
-	Enabled *bool `json:"enabled,omitempty"`
-	// The ExpiringAccessPreference message.
-	ExpiringAccessPreference *ExpiringAccessPreference `json:"expiringAccess,omitempty"`
+	Enabled        *bool                     `json:"enabled,omitempty"`
+	ExpiringAccess *ExpiringAccessPreference `json:"expiringAccess,omitempty"`
 	// The isConfigured field.
-	IsConfigured *bool `json:"isConfigured,omitempty"`
-	// The ProvisioningRequestPreference message.
-	ProvisioningRequestPreference *ProvisioningRequestPreference `json:"provisioningRequest,omitempty"`
-	// The ReviewsPreference message.
-	ReviewsPreference *ReviewsPreference `json:"reviews,omitempty"`
-	// The TaskRemindersPreference message.
-	TaskRemindersPreference *TaskRemindersPreference `json:"taskReminders,omitempty"`
+	IsConfigured        *bool                          `json:"isConfigured,omitempty"`
+	ProvisioningRequest *ProvisioningRequestPreference `json:"provisioningRequest,omitempty"`
+	RequestCreated      *RequestCreatedPreference      `json:"requestCreated,omitempty"`
+	Reviews             *ReviewsPreference             `json:"reviews,omitempty"`
+	System              *SystemPreference              `json:"system,omitempty"`
+	TaskReminders       *TaskRemindersPreference       `json:"taskReminders,omitempty"`
 }
 
-func (m *MSTeamsChannelSettings) GetAccessProvisionedPreference() *AccessProvisionedPreference {
+func (m *MSTeamsChannelSettings) GetAccessProvisioned() *AccessProvisionedPreference {
 	if m == nil {
 		return nil
 	}
-	return m.AccessProvisionedPreference
+	return m.AccessProvisioned
 }
 
-func (m *MSTeamsChannelSettings) GetApprovalNeededPreference() *ApprovalNeededPreference {
+func (m *MSTeamsChannelSettings) GetApprovalNeeded() *ApprovalNeededPreference {
 	if m == nil {
 		return nil
 	}
-	return m.ApprovalNeededPreference
+	return m.ApprovalNeeded
 }
 
-func (m *MSTeamsChannelSettings) GetCommentOnRequestPreference() *CommentOnRequestPreference {
+func (m *MSTeamsChannelSettings) GetCommentOnRequest() *CommentOnRequestPreference {
 	if m == nil {
 		return nil
 	}
-	return m.CommentOnRequestPreference
+	return m.CommentOnRequest
 }
 
-func (m *MSTeamsChannelSettings) GetCompletionPreference() *CompletionPreference {
+func (m *MSTeamsChannelSettings) GetCompletion() *CompletionPreference {
 	if m == nil {
 		return nil
 	}
-	return m.CompletionPreference
+	return m.Completion
 }
 
-func (m *MSTeamsChannelSettings) GetConnectorIssuesPreference() *ConnectorIssuesPreference {
+func (m *MSTeamsChannelSettings) GetConnectorIssues() *ConnectorIssuesPreference {
 	if m == nil {
 		return nil
 	}
-	return m.ConnectorIssuesPreference
+	return m.ConnectorIssues
 }
 
-func (m *MSTeamsChannelSettings) GetDigestPreference() *DigestPreference {
+func (m *MSTeamsChannelSettings) GetDigest() *DigestPreference {
 	if m == nil {
 		return nil
 	}
-	return m.DigestPreference
+	return m.Digest
 }
 
 func (m *MSTeamsChannelSettings) GetEnabled() *bool {
@@ -79,11 +71,11 @@ func (m *MSTeamsChannelSettings) GetEnabled() *bool {
 	return m.Enabled
 }
 
-func (m *MSTeamsChannelSettings) GetExpiringAccessPreference() *ExpiringAccessPreference {
+func (m *MSTeamsChannelSettings) GetExpiringAccess() *ExpiringAccessPreference {
 	if m == nil {
 		return nil
 	}
-	return m.ExpiringAccessPreference
+	return m.ExpiringAccess
 }
 
 func (m *MSTeamsChannelSettings) GetIsConfigured() *bool {
@@ -93,23 +85,37 @@ func (m *MSTeamsChannelSettings) GetIsConfigured() *bool {
 	return m.IsConfigured
 }
 
-func (m *MSTeamsChannelSettings) GetProvisioningRequestPreference() *ProvisioningRequestPreference {
+func (m *MSTeamsChannelSettings) GetProvisioningRequest() *ProvisioningRequestPreference {
 	if m == nil {
 		return nil
 	}
-	return m.ProvisioningRequestPreference
+	return m.ProvisioningRequest
 }
 
-func (m *MSTeamsChannelSettings) GetReviewsPreference() *ReviewsPreference {
+func (m *MSTeamsChannelSettings) GetRequestCreated() *RequestCreatedPreference {
 	if m == nil {
 		return nil
 	}
-	return m.ReviewsPreference
+	return m.RequestCreated
 }
 
-func (m *MSTeamsChannelSettings) GetTaskRemindersPreference() *TaskRemindersPreference {
+func (m *MSTeamsChannelSettings) GetReviews() *ReviewsPreference {
 	if m == nil {
 		return nil
 	}
-	return m.TaskRemindersPreference
+	return m.Reviews
+}
+
+func (m *MSTeamsChannelSettings) GetSystem() *SystemPreference {
+	if m == nil {
+		return nil
+	}
+	return m.System
+}
+
+func (m *MSTeamsChannelSettings) GetTaskReminders() *TaskRemindersPreference {
+	if m == nil {
+		return nil
+	}
+	return m.TaskReminders
 }

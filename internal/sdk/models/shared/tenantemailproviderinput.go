@@ -11,46 +11,34 @@ package shared
 //   - microsoftGraph
 //   - googleWorkspace
 type TenantEmailProviderInput struct {
-	// AWSSESProviderConfig configures sending via a customer's AWS SES account.
-	AWSSESProviderConfig *AWSSESProviderConfig `json:"awsSes,omitempty"`
-	// C1BuiltInProviderConfig selects the ConductorOne built-in email provider.
-	//  Emails are sent from no-reply@conductorone.com via the platform SendGrid account.
-	//  Only supports sending to C1 users — external email addresses are not supported.
-	//  No configuration fields required.
-	C1BuiltInProviderConfig *C1BuiltInProviderConfig `json:"c1Builtin,omitempty"`
+	AwsSes    *AWSSESProviderConfig    `json:"awsSes,omitempty"`
+	C1Builtin *C1BuiltInProviderConfig `json:"c1Builtin,omitempty"`
 	// Sender email address. Must be verified with the provider.
 	//  Ignored when using the C1 built-in provider (uses no-reply@conductorone.com).
 	FromAddress *string `json:"fromAddress,omitempty"`
 	// Sender display name shown in the recipient's inbox (e.g., "Acme Corp IT").
 	//  Used as the RFC 5322 display-name: "Acme Corp IT" <no-reply@acme.com>.
 	//  Ignored when using the C1 built-in provider.
-	FromName *string `json:"fromName,omitempty"`
-	// GoogleWorkspaceProviderConfig configures sending via Google Workspace Gmail API
-	//  using domain-wide delegation with a service account.
-	//  Requires: customer Workspace super admin grants DWD to the service account's
-	//  OAuth client ID for the gmail.send scope.
-	GoogleWorkspaceProviderConfig *GoogleWorkspaceProviderConfig `json:"googleWorkspace,omitempty"`
-	// MicrosoftGraphProviderConfig configures sending via Microsoft Graph sendMail API.
-	//  Requires an Azure AD app registration with Mail.Send application permission (admin-consented).
-	MicrosoftGraphProviderConfig *MicrosoftGraphProviderConfig `json:"microsoftGraph,omitempty"`
+	FromName        *string                        `json:"fromName,omitempty"`
+	GoogleWorkspace *GoogleWorkspaceProviderConfig `json:"googleWorkspace,omitempty"`
+	MicrosoftGraph  *MicrosoftGraphProviderConfig  `json:"microsoftGraph,omitempty"`
 	// Optional reply-to address.
-	ReplyToAddress *string `json:"replyToAddress,omitempty"`
-	// SendGridProviderConfig configures sending via a customer's SendGrid account.
-	SendGridProviderConfig *SendGridProviderConfig `json:"sendgrid,omitempty"`
+	ReplyToAddress *string                 `json:"replyToAddress,omitempty"`
+	Sendgrid       *SendGridProviderConfig `json:"sendgrid,omitempty"`
 }
 
-func (t *TenantEmailProviderInput) GetAWSSESProviderConfig() *AWSSESProviderConfig {
+func (t *TenantEmailProviderInput) GetAwsSes() *AWSSESProviderConfig {
 	if t == nil {
 		return nil
 	}
-	return t.AWSSESProviderConfig
+	return t.AwsSes
 }
 
-func (t *TenantEmailProviderInput) GetC1BuiltInProviderConfig() *C1BuiltInProviderConfig {
+func (t *TenantEmailProviderInput) GetC1Builtin() *C1BuiltInProviderConfig {
 	if t == nil {
 		return nil
 	}
-	return t.C1BuiltInProviderConfig
+	return t.C1Builtin
 }
 
 func (t *TenantEmailProviderInput) GetFromAddress() *string {
@@ -67,18 +55,18 @@ func (t *TenantEmailProviderInput) GetFromName() *string {
 	return t.FromName
 }
 
-func (t *TenantEmailProviderInput) GetGoogleWorkspaceProviderConfig() *GoogleWorkspaceProviderConfig {
+func (t *TenantEmailProviderInput) GetGoogleWorkspace() *GoogleWorkspaceProviderConfig {
 	if t == nil {
 		return nil
 	}
-	return t.GoogleWorkspaceProviderConfig
+	return t.GoogleWorkspace
 }
 
-func (t *TenantEmailProviderInput) GetMicrosoftGraphProviderConfig() *MicrosoftGraphProviderConfig {
+func (t *TenantEmailProviderInput) GetMicrosoftGraph() *MicrosoftGraphProviderConfig {
 	if t == nil {
 		return nil
 	}
-	return t.MicrosoftGraphProviderConfig
+	return t.MicrosoftGraph
 }
 
 func (t *TenantEmailProviderInput) GetReplyToAddress() *string {
@@ -88,9 +76,9 @@ func (t *TenantEmailProviderInput) GetReplyToAddress() *string {
 	return t.ReplyToAddress
 }
 
-func (t *TenantEmailProviderInput) GetSendGridProviderConfig() *SendGridProviderConfig {
+func (t *TenantEmailProviderInput) GetSendgrid() *SendGridProviderConfig {
 	if t == nil {
 		return nil
 	}
-	return t.SendGridProviderConfig
+	return t.Sendgrid
 }

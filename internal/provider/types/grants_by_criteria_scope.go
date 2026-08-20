@@ -7,11 +7,11 @@ import (
 )
 
 type GrantsByCriteriaScope struct {
-	GrantAccessProfileFilter *GrantAccessProfileFilter `tfsdk:"grant_access_profile_filter"`
-	GrantsAddedBetween       *GrantsAddedBetween       `tfsdk:"grants_added_between"`
-	DaysSinceAdded           types.String              `tfsdk:"days_since_added"`
-	DaysSinceLastUsed        types.String              `tfsdk:"days_since_last_used"`
-	DaysSinceReviewed        types.String              `tfsdk:"days_since_reviewed"`
-	SourceFilter             types.String              `tfsdk:"source_filter"`
-	TypeFilter               types.String              `tfsdk:"type_filter"`
+	AccessProfileFilter *GrantAccessProfileFilter `tfsdk:"access_profile_filter"`
+	DaysSinceAdded      types.String              `tfsdk:"days_since_added"`
+	DaysSinceLastUsed   types.String              `tfsdk:"days_since_last_used"`
+	DaysSinceReviewed   types.String              `tfsdk:"days_since_reviewed"`
+	GrantsAddedBetween  *GrantsAddedBetween       `tfsdk:"grants_added_between"`
+	SourceFilter        types.String              `tfsdk:"source_filter"`
+	TypeFilter          types.String              `tfsdk:"type_filter"`
 }

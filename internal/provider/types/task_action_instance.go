@@ -7,6 +7,7 @@ import (
 )
 
 type TaskActionInstance struct {
-	ConnectorActionRef *ConnectorActionRef `tfsdk:"connector_action_ref"`
-	DisplayName        types.String        `tfsdk:"display_name"`
+	BatonResourceActionRef *BatonResourceActionRef `tfsdk:"baton_resource_action_ref"`
+	ConnectorActionRef     *ConnectorActionRef     `tfsdk:"connector_action_ref"`
+	DisplayName            types.String            `tfsdk:"display_name"`
 }

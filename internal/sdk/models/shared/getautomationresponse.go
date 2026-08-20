@@ -4,11 +4,6 @@ package shared
 
 // The GetAutomationResponse message.
 type GetAutomationResponse struct {
-	// The Automation message.
-	//
-	// This message contains a oneof named disabled_reason. Only a single field of the following list may be set at a time:
-	//   - circuitBreaker
-	//
 	Automation *Automation `json:"automation,omitempty"`
 }
 

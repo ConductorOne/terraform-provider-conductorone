@@ -7,8 +7,10 @@ import (
 )
 
 type SecretTrait struct {
-	IdentityAppUserID types.String `tfsdk:"identity_app_user_id"`
-	LastUsedAt        types.String `tfsdk:"last_used_at"`
-	SecretCreatedAt   types.String `tfsdk:"secret_created_at"`
-	SecretExpiresAt   types.String `tfsdk:"secret_expires_at"`
+	CreatedByAppUserID types.String `tfsdk:"created_by_app_user_id"`
+	CredentialDetail   types.String `tfsdk:"credential_detail"`
+	IdentityAppUserID  types.String `tfsdk:"identity_app_user_id"`
+	LastUsedAt         types.String `tfsdk:"last_used_at"`
+	SecretCreatedAt    types.String `tfsdk:"secret_created_at"`
+	SecretExpiresAt    types.String `tfsdk:"secret_expires_at"`
 }

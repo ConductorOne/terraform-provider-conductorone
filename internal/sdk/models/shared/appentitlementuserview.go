@@ -9,10 +9,15 @@ import (
 
 // The AppEntitlementUserView (aka grant view) describes the relationship between an app user and an entitlement. They have more recently been referred to as grants.
 type AppEntitlementUserView struct {
+	// The ID of the app entitlement that the app user has access to.
+	AppEntitlementID                       *string    `json:"appEntitlementId,omitempty"`
 	AppEntitlementUserBindingCreatedAt     *time.Time `json:"appEntitlementUserBindingCreatedAt,omitempty"`
 	AppEntitlementUserBindingDeprovisionAt *time.Time `json:"appEntitlementUserBindingDeprovisionAt,omitempty"`
-	// The AppUserView contains an app user as well as paths for apps, identity users, and last usage in expanded arrays.
-	AppUserView *AppUserView `json:"appUser,omitempty"`
+	// The ID of the app associated with the grant.
+	AppID   *string      `json:"appId,omitempty"`
+	AppUser *AppUserView `json:"appUser,omitempty"`
+	// The ID of the app user that has access to the app entitlement.
+	AppUserID *string `json:"appUserId,omitempty"`
 	// List of sources for the grant, ie. groups, roles, etc.
 	GrantSources []AppEntitlementRef `json:"grantSources,omitempty"`
 	// The originating ticket ID for the grant (e.g. from a request ticket).
@@ -30,6 +35,13 @@ func (a *AppEntitlementUserView) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+func (a *AppEntitlementUserView) GetAppEntitlementID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AppEntitlementID
+}
+
 func (a *AppEntitlementUserView) GetAppEntitlementUserBindingCreatedAt() *time.Time {
 	if a == nil {
 		return nil
@@ -44,11 +56,25 @@ func (a *AppEntitlementUserView) GetAppEntitlementUserBindingDeprovisionAt() *ti
 	return a.AppEntitlementUserBindingDeprovisionAt
 }
 
-func (a *AppEntitlementUserView) GetAppUserView() *AppUserView {
+func (a *AppEntitlementUserView) GetAppID() *string {
 	if a == nil {
 		return nil
 	}
-	return a.AppUserView
+	return a.AppID
+}
+
+func (a *AppEntitlementUserView) GetAppUser() *AppUserView {
+	if a == nil {
+		return nil
+	}
+	return a.AppUser
+}
+
+func (a *AppEntitlementUserView) GetAppUserID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AppUserID
 }
 
 func (a *AppEntitlementUserView) GetGrantSources() []AppEntitlementRef {

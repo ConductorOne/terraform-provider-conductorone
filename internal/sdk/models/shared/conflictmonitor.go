@@ -25,9 +25,11 @@ type ConflictMonitor struct {
 	EntitlementSetBID *string `json:"entitlementSetBId,omitempty"`
 	// The unique identifier of this conflict monitor.
 	ID *string `json:"id,omitempty"`
-	// The NotificationConfig message.
-	AccessConflictNotificationConfig *AccessConflictNotificationConfig `json:"notificationConfig,omitempty"`
-	UpdatedAt                        *time.Time                        `json:"updatedAt,omitempty"`
+	// When true, the rule flags users who are in set A but NOT in set B ("is not
+	//  in"), instead of the default A-and-B intersection.
+	NegateGroupB       *bool                             `json:"negateGroupB,omitempty"`
+	NotificationConfig *AccessConflictNotificationConfig `json:"notificationConfig,omitempty"`
+	UpdatedAt          *time.Time                        `json:"updatedAt,omitempty"`
 }
 
 func (c ConflictMonitor) MarshalJSON() ([]byte, error) {
@@ -97,11 +99,18 @@ func (c *ConflictMonitor) GetID() *string {
 	return c.ID
 }
 
-func (c *ConflictMonitor) GetAccessConflictNotificationConfig() *AccessConflictNotificationConfig {
+func (c *ConflictMonitor) GetNegateGroupB() *bool {
 	if c == nil {
 		return nil
 	}
-	return c.AccessConflictNotificationConfig
+	return c.NegateGroupB
+}
+
+func (c *ConflictMonitor) GetNotificationConfig() *AccessConflictNotificationConfig {
+	if c == nil {
+		return nil
+	}
+	return c.NotificationConfig
 }
 
 func (c *ConflictMonitor) GetUpdatedAt() *time.Time {

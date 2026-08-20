@@ -7,8 +7,8 @@ import (
 )
 
 type AppResource struct {
-	SecretTrait             *SecretTrait            `tfsdk:"secret_trait"`
 	AccessConfigID          types.String            `tfsdk:"access_config_id"`
+	AgentTrait              *AgentTrait             `tfsdk:"agent_trait"`
 	Annotations             map[string]types.String `tfsdk:"annotations"`
 	AppID                   types.String            `tfsdk:"app_id"`
 	AppResourceTypeID       types.String            `tfsdk:"app_resource_type_id"`
@@ -20,8 +20,11 @@ type AppResource struct {
 	GrantCount              types.String            `tfsdk:"grant_count"`
 	ID                      types.String            `tfsdk:"id"`
 	MatchBatonID            types.String            `tfsdk:"match_baton_id"`
+	NhiDetail               types.String            `tfsdk:"nhi_detail"`
+	NhiType                 types.String            `tfsdk:"nhi_type"`
 	ParentAppResourceID     types.String            `tfsdk:"parent_app_resource_id"`
 	ParentAppResourceTypeID types.String            `tfsdk:"parent_app_resource_type_id"`
 	Profile                 *AppResourceProfile     `tfsdk:"profile"`
+	SecretTrait             *SecretTrait            `tfsdk:"secret_trait"`
 	UpdatedAt               types.String            `tfsdk:"updated_at"`
 }

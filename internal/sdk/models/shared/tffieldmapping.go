@@ -109,18 +109,8 @@ type TFFieldMapping struct {
 	OneofVariant *string `json:"oneofVariant,omitempty"`
 	// Whether the user may supply this field. May co-occur with
 	//  `computed` (i.e. either the user or the server can set the value).
-	Optional *bool `json:"optional,omitempty"`
-	// TFReference describes the Terraform type(s) an ID-shaped field may
-	//  reference, plus any sibling fields needed to disambiguate a
-	//  composite-key lookup.
-	//
-	//  `tf_type_names` covers the polymorphic / preferred-default
-	//  dimension. `composite_key_fields` covers the multi-key dimension —
-	//  some referents can't be resolved with a single id (every
-	//  `conductorone_app_entitlement` lookup needs `(app_id, id)`,
-	//  every `conductorone_app_entitlement_user_binding` needs three
-	//  keys, etc.).
-	TFReference *TFReference `json:"references,omitempty"`
+	Optional   *bool        `json:"optional,omitempty"`
+	References *TFReference `json:"references,omitempty"`
 	// Whether the user must supply this field in HCL.
 	Required *bool `json:"required,omitempty"`
 	// Whether the value is a secret. Sensitive values must not be
@@ -192,11 +182,11 @@ func (t *TFFieldMapping) GetOptional() *bool {
 	return t.Optional
 }
 
-func (t *TFFieldMapping) GetTFReference() *TFReference {
+func (t *TFFieldMapping) GetReferences() *TFReference {
 	if t == nil {
 		return nil
 	}
-	return t.TFReference
+	return t.References
 }
 
 func (t *TFFieldMapping) GetRequired() *bool {

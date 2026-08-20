@@ -8,8 +8,10 @@ type ConflictMonitorUpdateRequest struct {
 	Description *string `json:"description,omitempty"`
 	// The updated human-readable name for the conflict monitor.
 	DisplayName *string `json:"displayName,omitempty"`
-	// The NotificationConfig message.
-	AccessConflictNotificationConfig *AccessConflictNotificationConfig `json:"notificationConfig,omitempty"`
+	// When true, the rule flags users who are in set A but NOT in set B ("is not
+	//  in"), instead of the default A-and-B intersection.
+	NegateGroupB       *bool                             `json:"negateGroupB,omitempty"`
+	NotificationConfig *AccessConflictNotificationConfig `json:"notificationConfig,omitempty"`
 }
 
 func (c *ConflictMonitorUpdateRequest) GetDescription() *string {
@@ -26,9 +28,16 @@ func (c *ConflictMonitorUpdateRequest) GetDisplayName() *string {
 	return c.DisplayName
 }
 
-func (c *ConflictMonitorUpdateRequest) GetAccessConflictNotificationConfig() *AccessConflictNotificationConfig {
+func (c *ConflictMonitorUpdateRequest) GetNegateGroupB() *bool {
 	if c == nil {
 		return nil
 	}
-	return c.AccessConflictNotificationConfig
+	return c.NegateGroupB
+}
+
+func (c *ConflictMonitorUpdateRequest) GetNotificationConfig() *AccessConflictNotificationConfig {
+	if c == nil {
+		return nil
+	}
+	return c.NotificationConfig
 }

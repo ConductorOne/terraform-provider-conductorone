@@ -7,6 +7,30 @@ import (
 	"time"
 )
 
+type AccountStatuses string
+
+const (
+	AccountStatusesStatusUnspecified AccountStatuses = "STATUS_UNSPECIFIED"
+	AccountStatusesStatusEnabled     AccountStatuses = "STATUS_ENABLED"
+	AccountStatusesStatusDisabled    AccountStatuses = "STATUS_DISABLED"
+	AccountStatusesStatusDeleted     AccountStatuses = "STATUS_DELETED"
+)
+
+func (e AccountStatuses) ToPointer() *AccountStatuses {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccountStatuses) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "STATUS_UNSPECIFIED", "STATUS_ENABLED", "STATUS_DISABLED", "STATUS_DELETED":
+			return true
+		}
+	}
+	return false
+}
+
 type TaskSearchRequestAccountTypes string
 
 const (
@@ -274,6 +298,8 @@ type TaskSearchRequest struct {
 	AccessReviewIds []string `json:"accessReviewIds,omitempty"`
 	// Search tasks that have any of these account owners.
 	AccountOwnerIds []string `json:"accountOwnerIds,omitempty"`
+	// Search tasks by the account status of the app user subject.
+	AccountStatuses []AccountStatuses `json:"accountStatuses,omitempty"`
 	// The accountTypes field.
 	AccountTypes []TaskSearchRequestAccountTypes `json:"accountTypes,omitempty"`
 	// Search tasks that have this actor ID.
@@ -378,6 +404,13 @@ func (t *TaskSearchRequest) GetAccountOwnerIds() []string {
 		return nil
 	}
 	return t.AccountOwnerIds
+}
+
+func (t *TaskSearchRequest) GetAccountStatuses() []AccountStatuses {
+	if t == nil {
+		return nil
+	}
+	return t.AccountStatuses
 }
 
 func (t *TaskSearchRequest) GetAccountTypes() []TaskSearchRequestAccountTypes {

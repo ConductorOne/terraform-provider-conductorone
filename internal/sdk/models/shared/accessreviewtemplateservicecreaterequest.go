@@ -86,6 +86,7 @@ const (
 	AccessReviewTemplateServiceCreateRequestScopeTypeAccessReviewScopeTypeByAccessConflicts AccessReviewTemplateServiceCreateRequestScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS"
 	AccessReviewTemplateServiceCreateRequestScopeTypeAccessReviewScopeTypeByResource        AccessReviewTemplateServiceCreateRequestScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 	AccessReviewTemplateServiceCreateRequestScopeTypeAccessReviewScopeTypeByInheritance     AccessReviewTemplateServiceCreateRequestScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"
+	AccessReviewTemplateServiceCreateRequestScopeTypeAccessReviewScopeTypeByUsers           AccessReviewTemplateServiceCreateRequestScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"
 )
 
 func (e AccessReviewTemplateServiceCreateRequestScopeType) ToPointer() *AccessReviewTemplateServiceCreateRequestScopeType {
@@ -96,7 +97,7 @@ func (e AccessReviewTemplateServiceCreateRequestScopeType) ToPointer() *AccessRe
 func (e *AccessReviewTemplateServiceCreateRequestScopeType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE":
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS":
 			return true
 		}
 	}
@@ -124,9 +125,8 @@ type AccessReviewTemplateServiceCreateRequest struct {
 	// auto generate report when campaign is closed
 	AutoGenerateReport *bool `json:"autoGenerateReport,omitempty"`
 	// The autoStartCampaign field.
-	AutoStartCampaign *bool `json:"autoStartCampaign,omitempty"`
-	// Configuration for which columns are visible in the reviewer task list.
-	AccessReviewColumnConfig *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
+	AutoStartCampaign *bool                     `json:"autoStartCampaign,omitempty"`
+	ColumnConfig      *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	// The defaultView field.
 	DefaultView *AccessReviewTemplateServiceCreateRequestDefaultView `json:"defaultView,omitempty"`
 	// An optional description providing context about the template.
@@ -136,62 +136,20 @@ type AccessReviewTemplateServiceCreateRequest struct {
 	// The exemptCertifiedAccessConflicts field.
 	ExemptCertifiedAccessConflicts *bool `json:"exemptCertifiedAccessConflicts,omitempty"`
 	// The isCampaignScheduleEnabled field.
-	IsCampaignScheduleEnabled *bool `json:"isCampaignScheduleEnabled,omitempty"`
-	// Controls which email notifications are sent during the access review lifecycle.
-	NotificationConfig *NotificationConfig `json:"notificationConfig,omitempty"`
+	IsCampaignScheduleEnabled *bool               `json:"isCampaignScheduleEnabled,omitempty"`
+	NotificationConfig        *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The IDs of the users who own this template. At least one owner is required.
 	OwnerIds []string `json:"ownerIds,omitempty"`
 	// The ID of the default review policy for campaigns created from this template.
-	PolicyID *string `json:"policyId,omitempty"`
-	// The RecurrenceRule message.
-	//
-	// This message contains a oneof named end_condition. Only a single field of the following list may be set at a time:
-	//   - endDate
-	//   - occurrences
-	//
+	PolicyID       *string         `json:"policyId,omitempty"`
 	RecurrenceRule *RecurrenceRule `json:"recurrenceRule,omitempty"`
 	// The reviewInstructions field.
-	ReviewInstructions *string `json:"reviewInstructions,omitempty"`
-	// The AccessReviewScopeV2 message.
-	//
-	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
-	//   - appAccess
-	//   - specificResources
-	//   - appSelectionCriteria
-	//   - resourceTypeSelections
-	//
-	//
-	// This message contains a oneof named users_scope. Only a single field of the following list may be set at a time:
-	//   - allUsers
-	//   - selectedUsers
-	//   - userCriteria
-	//   - celExpression
-	//
-	//
-	// This message contains a oneof named accounts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccounts
-	//   - accountCriteria
-	//   - accountCelExpression
-	//
-	//
-	// This message contains a oneof named grants_scope. Only a single field of the following list may be set at a time:
-	//   - allGrants
-	//   - grantsByCriteria
-	//
-	//
-	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccessConflicts
-	//   - specificAccessConflicts
-	//
-	//
-	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
-	//   - resourceSelection
-	//
-	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scope,omitempty"`
+	ReviewInstructions      *string                  `json:"reviewInstructions,omitempty"`
+	ReviewerAttributeConfig *ReviewerAttributeConfig `json:"reviewerAttributeConfig,omitempty"`
+	Scope                   *AccessReviewScopeV2     `json:"scope,omitempty"`
 	// The scopeType field.
-	ScopeType *AccessReviewTemplateServiceCreateRequestScopeType `json:"scopeType,omitempty"`
-	// Signature configuration for access review submissions
-	ReviewSignatureConfig *ReviewSignatureConfig `json:"signatureConfig,omitempty"`
+	ScopeType       *AccessReviewTemplateServiceCreateRequestScopeType `json:"scopeType,omitempty"`
+	SignatureConfig *ReviewSignatureConfig                             `json:"signatureConfig,omitempty"`
 	// The usePolicyOverride field.
 	UsePolicyOverride *bool `json:"usePolicyOverride,omitempty"`
 }
@@ -245,11 +203,11 @@ func (a *AccessReviewTemplateServiceCreateRequest) GetAutoStartCampaign() *bool 
 	return a.AutoStartCampaign
 }
 
-func (a *AccessReviewTemplateServiceCreateRequest) GetAccessReviewColumnConfig() *AccessReviewColumnConfig {
+func (a *AccessReviewTemplateServiceCreateRequest) GetColumnConfig() *AccessReviewColumnConfig {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewColumnConfig
+	return a.ColumnConfig
 }
 
 func (a *AccessReviewTemplateServiceCreateRequest) GetDefaultView() *AccessReviewTemplateServiceCreateRequestDefaultView {
@@ -322,11 +280,18 @@ func (a *AccessReviewTemplateServiceCreateRequest) GetReviewInstructions() *stri
 	return a.ReviewInstructions
 }
 
-func (a *AccessReviewTemplateServiceCreateRequest) GetAccessReviewScopeV2() *AccessReviewScopeV2 {
+func (a *AccessReviewTemplateServiceCreateRequest) GetReviewerAttributeConfig() *ReviewerAttributeConfig {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewScopeV2
+	return a.ReviewerAttributeConfig
+}
+
+func (a *AccessReviewTemplateServiceCreateRequest) GetScope() *AccessReviewScopeV2 {
+	if a == nil {
+		return nil
+	}
+	return a.Scope
 }
 
 func (a *AccessReviewTemplateServiceCreateRequest) GetScopeType() *AccessReviewTemplateServiceCreateRequestScopeType {
@@ -336,11 +301,11 @@ func (a *AccessReviewTemplateServiceCreateRequest) GetScopeType() *AccessReviewT
 	return a.ScopeType
 }
 
-func (a *AccessReviewTemplateServiceCreateRequest) GetReviewSignatureConfig() *ReviewSignatureConfig {
+func (a *AccessReviewTemplateServiceCreateRequest) GetSignatureConfig() *ReviewSignatureConfig {
 	if a == nil {
 		return nil
 	}
-	return a.ReviewSignatureConfig
+	return a.SignatureConfig
 }
 
 func (a *AccessReviewTemplateServiceCreateRequest) GetUsePolicyOverride() *bool {

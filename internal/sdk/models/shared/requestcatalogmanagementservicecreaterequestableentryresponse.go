@@ -4,7 +4,6 @@ package shared
 
 // RequestCatalogManagementServiceCreateRequestableEntryResponse - Response containing the created requestable entry
 type RequestCatalogManagementServiceCreateRequestableEntryResponse struct {
-	// A requestable entry in a catalog
 	RequestableEntry *RequestableEntry `json:"requestableEntry,omitempty"`
 }
 

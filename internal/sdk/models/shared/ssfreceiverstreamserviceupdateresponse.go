@@ -4,19 +4,12 @@ package shared
 
 // SSFReceiverStreamServiceUpdateResponse contains the updated SSF receiver stream.
 type SSFReceiverStreamServiceUpdateResponse struct {
-	// SSFReceiverStream is the public API representation.
-	//  Secrets (push_auth_token, outbound credentials) are write-only.
-	//
-	// This message contains a oneof named outbound_auth. Only a single field of the following list may be set at a time:
-	//   - outboundAuthBearer
-	//   - outboundAuthOauth2
-	//
-	SSFReceiverStream *SSFReceiverStream `json:"ssfReceiverStream,omitempty"`
+	SsfReceiverStream *SSFReceiverStream `json:"ssfReceiverStream,omitempty"`
 }
 
-func (s *SSFReceiverStreamServiceUpdateResponse) GetSSFReceiverStream() *SSFReceiverStream {
+func (s *SSFReceiverStreamServiceUpdateResponse) GetSsfReceiverStream() *SSFReceiverStream {
 	if s == nil {
 		return nil
 	}
-	return s.SSFReceiverStream
+	return s.SsfReceiverStream
 }

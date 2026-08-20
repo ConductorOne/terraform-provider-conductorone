@@ -7,16 +7,22 @@ package shared
 //	Action captured on a TaskTypeAction at ticket-creation time.
 //
 // This message contains a oneof named target_ref. Only a single field of the following list may be set at a time:
+//   - batonResourceActionRef
 //   - connectorActionRef
 type TaskActionInstance struct {
-	// ConnectorActionRef describes dispatch through a connector's built-in
-	//  GrantManagerService Grant / Revoke RPC — i.e. the default connector
-	//  operation, used for synthesized tickets like scope-role requests.
-	ConnectorActionRef *ConnectorActionRef `json:"connectorActionRef,omitempty"`
+	BatonResourceActionRef *BatonResourceActionRef `json:"batonResourceActionRef,omitempty"`
+	ConnectorActionRef     *ConnectorActionRef     `json:"connectorActionRef,omitempty"`
 	// Display label at ticket-creation time. Same value as
 	//  TaskTypeAction.display_name; repeated here so clients that walk the
 	//  instance see a self-contained view.
 	DisplayName *string `json:"displayName,omitempty"`
+}
+
+func (t *TaskActionInstance) GetBatonResourceActionRef() *BatonResourceActionRef {
+	if t == nil {
+		return nil
+	}
+	return t.BatonResourceActionRef
 }
 
 func (t *TaskActionInstance) GetConnectorActionRef() *ConnectorActionRef {

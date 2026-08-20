@@ -2,8 +2,9 @@ resource "conductorone_policy" "my_policy" {
   annotations = {
     key = "value"
   }
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
+  baseline_policy_id = "...my_baseline_policy_id..."
+  description        = "...my_description..."
+  display_name       = "...my_display_name..."
   policy_steps = {
     key = {
       steps = [
@@ -12,20 +13,20 @@ resource "conductorone_policy" "my_policy" {
             accept_message = "...my_accept_message..."
           }
           action = {
-            action_target_automation = {
+            automation = {
               automation_template_id = "...my_automation_template_id..."
             }
-            action_target_baton_resource_action = {
+            baton_resource_action = {
               baton_resource_action_id = "...my_baton_resource_action_id..."
             }
-            action_target_client_id_approval = {
+            client_id_approval = {
               # ...
             }
           }
           approval = {
-            agent_approval = {
+            agent = {
               agent_failure_action = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS"
-              agent_mode           = "APPROVAL_AGENT_MODE_FULL_CONTROL"
+              agent_mode           = "APPROVAL_AGENT_MODE_COMMENT_ONLY"
               agent_user_id        = "...my_agent_user_id..."
               instructions         = "...my_instructions..."
               policy_ids = [
@@ -40,11 +41,13 @@ resource "conductorone_policy" "my_policy" {
             allowed_reassignees = [
               "..."
             ]
-            app_group_approval = {
+            app_owners = {
+              allow_self_approval        = false
+              require_distinct_approvers = false
+            }
+            entitlement_owners = {
               allow_self_approval = true
-              app_group_id        = "...my_app_group_id..."
-              app_id              = "...my_app_id..."
-              fallback            = true
+              fallback            = false
               fallback_group_ids = [
                 {
                   app_entitlement_id = "...my_app_entitlement_id..."
@@ -55,25 +58,6 @@ resource "conductorone_policy" "my_policy" {
                 "..."
               ]
               is_group_fallback_enabled  = false
-              require_distinct_approvers = false
-            }
-            app_owner_approval = {
-              allow_self_approval        = true
-              require_distinct_approvers = true
-            }
-            entitlement_owner_approval = {
-              allow_self_approval = false
-              fallback            = true
-              fallback_group_ids = [
-                {
-                  app_entitlement_id = "...my_app_entitlement_id..."
-                  app_id             = "...my_app_id..."
-                }
-              ]
-              fallback_user_ids = [
-                "..."
-              ]
-              is_group_fallback_enabled  = true
               require_distinct_approvers = false
             }
             escalation = {
@@ -95,12 +79,12 @@ resource "conductorone_policy" "my_policy" {
               }
             }
             escalation_enabled = false
-            expression_approval = {
-              allow_self_approval = true
+            expression = {
+              allow_self_approval = false
               expressions = [
                 "..."
               ]
-              fallback = false
+              fallback = true
               fallback_group_ids = [
                 {
                   app_entitlement_id = "...my_app_entitlement_id..."
@@ -110,11 +94,28 @@ resource "conductorone_policy" "my_policy" {
               fallback_user_ids = [
                 "..."
               ]
-              is_group_fallback_enabled  = false
-              require_distinct_approvers = true
+              is_group_fallback_enabled  = true
+              require_distinct_approvers = false
             }
-            manager_approval = {
+            group = {
               allow_self_approval = true
+              app_group_id        = "...my_app_group_id..."
+              app_id              = "...my_app_id..."
+              fallback            = false
+              fallback_group_ids = [
+                {
+                  app_entitlement_id = "...my_app_entitlement_id..."
+                  app_id             = "...my_app_id..."
+                }
+              ]
+              fallback_user_ids = [
+                "..."
+              ]
+              is_group_fallback_enabled  = true
+              require_distinct_approvers = false
+            }
+            manager = {
+              allow_self_approval = false
               fallback            = true
               fallback_group_ids = [
                 {
@@ -125,14 +126,14 @@ resource "conductorone_policy" "my_policy" {
               fallback_user_ids = [
                 "..."
               ]
-              is_group_fallback_enabled  = false
+              is_group_fallback_enabled  = true
               require_distinct_approvers = true
             }
             require_approval_reason      = true
             require_denial_reason        = true
             require_reassignment_reason  = true
             requires_step_up_provider_id = "...my_requires_step_up_provider_id..."
-            resource_owner_approval = {
+            resource_owners = {
               allow_self_approval = true
               fallback            = false
               fallback_group_ids = [
@@ -144,10 +145,10 @@ resource "conductorone_policy" "my_policy" {
               fallback_user_ids = [
                 "..."
               ]
-              is_group_fallback_enabled  = false
+              is_group_fallback_enabled  = true
               require_distinct_approvers = true
             }
-            self_approval = {
+            self = {
               fallback = false
               fallback_group_ids = [
                 {
@@ -158,16 +159,16 @@ resource "conductorone_policy" "my_policy" {
               fallback_user_ids = [
                 "..."
               ]
-              is_group_fallback_enabled = false
+              is_group_fallback_enabled = true
             }
-            user_approval = {
+            users = {
               allow_self_approval        = false
               require_distinct_approvers = false
               user_ids = [
                 "..."
               ]
             }
-            webhook_approval = {
+            webhook = {
               webhook_id = "...my_webhook_id..."
             }
           }
@@ -175,14 +176,14 @@ resource "conductorone_policy" "my_policy" {
           provision = {
             assigned = true
             provision_policy = {
-              action_provision = {
+              action = {
                 action_name  = "...my_action_name..."
                 app_id       = "...my_app_id..."
                 connector_id = "...my_connector_id..."
                 display_name = "...my_display_name..."
               }
-              connector_provision = {
-                account_provision = {
+              connector = {
+                account = {
                   config       = "{ \"see\": \"documentation\" }"
                   connector_id = "...my_connector_id..."
                   do_not_save = {
@@ -202,32 +203,34 @@ resource "conductorone_policy" "my_policy" {
                   connector_id = "...my_connector_id..."
                 }
               }
-              delegated_provision = {
+              delegated = {
                 app_id         = "...my_app_id..."
                 entitlement_id = "...my_entitlement_id..."
               }
-              external_ticket_provision = {
+              device_placement = {
+                vault_boundary_id = "...my_vault_boundary_id..."
+              }
+              external_ticket = {
                 app_id                                = "...my_app_id..."
                 connector_id                          = "...my_connector_id..."
                 external_ticket_provisioner_config_id = "...my_external_ticket_provisioner_config_id..."
                 instructions                          = "...my_instructions..."
               }
-              manual_provision = {
-                instructions = "...my_instructions..."
-                provisioner_assignment = {
-                  app_owner_provisioner = {
-                    allow_reassignment = false
+              manual = {
+                assignee = {
+                  app_owners = {
+                    allow_reassignment = true
                     fallback_user_ids = [
                       "..."
                     ]
                   }
-                  entitlement_owner_provisioner = {
-                    allow_reassignment = false
+                  entitlement_owners = {
+                    allow_reassignment = true
                     fallback_user_ids = [
                       "..."
                     ]
                   }
-                  expression_provisioner = {
+                  expression = {
                     allow_reassignment = false
                     expressions = [
                       "..."
@@ -236,7 +239,7 @@ resource "conductorone_policy" "my_policy" {
                       "..."
                     ]
                   }
-                  group_provisioner = {
+                  group = {
                     allow_reassignment = true
                     app_group_id       = "...my_app_group_id..."
                     app_id             = "...my_app_id..."
@@ -244,28 +247,29 @@ resource "conductorone_policy" "my_policy" {
                       "..."
                     ]
                   }
-                  manager_provisioner = {
+                  manager = {
                     allow_reassignment = true
                     fallback_user_ids = [
                       "..."
                     ]
                   }
-                  user_provisioner = {
-                    allow_reassignment = true
+                  users = {
+                    allow_reassignment = false
                     user_ids = [
                       "..."
                     ]
                   }
                 }
+                instructions = "...my_instructions..."
                 user_ids = [
                   "..."
                 ]
               }
               multi_step = "{ \"see\": \"documentation\" }"
-              unconfigured_provision = {
+              unconfigured = {
                 # ...
               }
-              webhook_provision = {
+              webhook = {
                 webhook_id = "...my_webhook_id..."
               }
             }
@@ -282,17 +286,17 @@ resource "conductorone_policy" "my_policy" {
           wait = {
             comment_on_first_wait = "...my_comment_on_first_wait..."
             comment_on_timeout    = "...my_comment_on_timeout..."
-            name                  = "...my_name..."
-            timeout_duration      = "...my_timeout_duration..."
-            wait_condition = {
+            condition = {
               condition = "...my_condition..."
             }
-            wait_duration = {
+            duration = {
               duration = "...my_duration..."
             }
-            wait_until_time = {
-              hours    = 5
-              minutes  = 8
+            name             = "...my_name..."
+            timeout_duration = "...my_timeout_duration..."
+            until_time = {
+              hours    = 8
+              minutes  = 9
               timezone = "...my_timezone..."
             }
           }
@@ -310,7 +314,14 @@ resource "conductorone_policy" "my_policy" {
   rules = [
     {
       condition  = "...my_condition..."
+      policy_id  = "...my_policy_id..."
       policy_key = "...my_policy_key..."
+      step_key   = "...my_step_key..."
     }
   ]
+  scope = {
+    app_entitlement_id = "...my_app_entitlement_id..."
+    app_id             = "...my_app_id..."
+    slot               = "POLICY_SCOPE_SLOT_EMERGENCY"
+  }
 }

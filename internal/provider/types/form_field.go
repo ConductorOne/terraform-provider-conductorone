@@ -7,18 +7,18 @@ import (
 )
 
 type FormField struct {
-	AdminProviderConfig  *AdminProviderConfig  `tfsdk:"admin_provider_config"`
-	BoolField            *BoolField            `tfsdk:"bool_field"`
-	FileField            *FileField            `tfsdk:"file_field"`
-	FormStringField      *FormStringField      `tfsdk:"form_string_field"`
-	FormStringMapField   *FormStringMapField   `tfsdk:"form_string_map_field"`
-	Int64Field           *Int64Field           `tfsdk:"int64_field"`
-	Oauth2Field          *Oauth2Field          `tfsdk:"oauth2_field"`
-	SharedProviderConfig *SharedProviderConfig `tfsdk:"shared_provider_config"`
-	UserProviderConfig   *UserProviderConfig   `tfsdk:"user_provider_config"`
-	Description          types.String          `tfsdk:"description"`
-	DisplayName          types.String          `tfsdk:"display_name"`
-	Name                 types.String          `tfsdk:"name"`
-	ReadOnly             types.Bool            `tfsdk:"read_only"`
-	Required             types.Bool            `tfsdk:"required"`
+	AdminConfig    *AdminProviderConfig  `tfsdk:"admin_config"`
+	BoolField      *BoolField            `tfsdk:"bool_field"`
+	Description    types.String          `tfsdk:"description"`
+	DisplayName    types.String          `tfsdk:"display_name"`
+	FileField      *FileField            `tfsdk:"file_field"`
+	Int64Field     *Int64Field           `tfsdk:"int64_field"`
+	Name           types.String          `tfsdk:"name"`
+	Oauth2Field    *Oauth2Field          `tfsdk:"oauth2_field"`
+	ReadOnly       types.Bool            `tfsdk:"read_only"`
+	Required       types.Bool            `tfsdk:"required"`
+	SharedConfig   *SharedProviderConfig `tfsdk:"shared_config"`
+	StringField    *FormStringField      `tfsdk:"string_field"`
+	StringMapField *FormStringMapField   `tfsdk:"string_map_field"`
+	UserConfig     *UserProviderConfig   `tfsdk:"user_config"`
 }

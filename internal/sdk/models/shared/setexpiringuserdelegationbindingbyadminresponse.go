@@ -4,13 +4,12 @@ package shared
 
 // SetExpiringUserDelegationBindingByAdminResponse is the response containing the created or updated delegation binding.
 type SetExpiringUserDelegationBindingByAdminResponse struct {
-	// The ExpiringUserDelegationBinding message.
-	ExpiringUserDelegationBinding *ExpiringUserDelegationBinding `json:"item,omitempty"`
+	Item *ExpiringUserDelegationBinding `json:"item,omitempty"`
 }
 
-func (s *SetExpiringUserDelegationBindingByAdminResponse) GetExpiringUserDelegationBinding() *ExpiringUserDelegationBinding {
+func (s *SetExpiringUserDelegationBindingByAdminResponse) GetItem() *ExpiringUserDelegationBinding {
 	if s == nil {
 		return nil
 	}
-	return s.ExpiringUserDelegationBinding
+	return s.Item
 }

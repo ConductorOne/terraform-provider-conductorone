@@ -4,7 +4,6 @@ package shared
 
 // DeleteAppResourceEntitlementOwnerRequest is the request for deleting an entitlement ownership source on a resource.
 type DeleteAppResourceEntitlementOwnerRequest struct {
-	// The AppEntitlementRef message.
 	AppEntitlementRef *AppEntitlementRef `json:"appEntitlementRef,omitempty"`
 }
 

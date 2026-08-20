@@ -4,7 +4,6 @@ package shared
 
 // The UpdateOrgNotificationSettingsResponse message.
 type UpdateOrgNotificationSettingsResponse struct {
-	// OrgNotificationSettings contains organization-wide notification channel configurations and default preferences.
 	OrgNotificationSettings *OrgNotificationSettings `json:"orgNotificationSettings,omitempty"`
 }
 

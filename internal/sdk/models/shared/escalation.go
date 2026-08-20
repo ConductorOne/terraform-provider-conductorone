@@ -10,18 +10,14 @@ package shared
 //   - cancelTicket
 //   - skipStep
 type Escalation struct {
-	// The CancelTicket message.
 	CancelTicket *CancelTicket `json:"cancelTicket,omitempty"`
 	// The escalationComment field.
 	EscalationComment *string `json:"escalationComment,omitempty"`
 	// The expiration field.
-	Expiration *string `json:"expiration,omitempty"`
-	// The ReassignToApprovers message.
+	Expiration          *string              `json:"expiration,omitempty"`
 	ReassignToApprovers *ReassignToApprovers `json:"reassignToApprovers,omitempty"`
-	// The ReplacePolicy message.
-	ReplacePolicy *ReplacePolicy `json:"replacePolicy,omitempty"`
-	// The SkipStep message.
-	SkipStep *SkipStep `json:"skipStep,omitempty"`
+	ReplacePolicy       *ReplacePolicy       `json:"replacePolicy,omitempty"`
+	SkipStep            *SkipStep            `json:"skipStep,omitempty"`
 }
 
 func (e *Escalation) GetCancelTicket() *CancelTicket {

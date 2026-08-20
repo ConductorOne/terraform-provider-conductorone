@@ -3,8 +3,8 @@
 package types
 
 type TaskRevokeSource struct {
-	TaskRevokeSourceExpired  *TaskRevokeSourceExpired  `tfsdk:"task_revoke_source_expired"`
-	TaskRevokeSourceNonUsage *TaskRevokeSourceNonUsage `tfsdk:"task_revoke_source_non_usage"`
-	TaskRevokeSourceRequest  *TaskRevokeSourceRequest  `tfsdk:"task_revoke_source_request"`
-	TaskRevokeSourceReview   *TaskRevokeSourceReview   `tfsdk:"task_revoke_source_review"`
+	Expired  *TaskRevokeSourceExpired  `tfsdk:"expired"`
+	NonUsage *TaskRevokeSourceNonUsage `tfsdk:"non_usage"`
+	Request  *TaskRevokeSourceRequest  `tfsdk:"request"`
+	Review   *TaskRevokeSourceReview   `tfsdk:"review"`
 }

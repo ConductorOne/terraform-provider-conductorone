@@ -21,7 +21,10 @@ type TaskView struct {
 	// JSONPATH expression indicating the location of the User object of the User that this task is targeting in the expanded array. This is the user that is the identity when the target of a task is an app user.
 	IdentityUserPath *string `json:"identityUserPath,omitempty"`
 	// JSONPATH expression indicating the location of the Insights objects in the expanded array
-	InsightsPath *string `json:"insightsPath,omitempty"`
+	InsightsPath      *string                     `json:"insightsPath,omitempty"`
+	ObjectPermissions *UserActorObjectPermissions `json:"objectPermissions,omitempty"`
+	// JSONPATH expression indicating the location of the AppResource under review for a resource-principal certify task in the expanded array.
+	PrincipalResourcePath *string `json:"principalResourcePath,omitempty"`
 	// JSONPATH expression indicating the location of the EntitlementScopeBindingList object in the expanded array.
 	ResourceBindingsPath *string `json:"resourceBindingsPath,omitempty"`
 	// JSONPATH expression indicating the location of the role AppResource for a scope-role action task in the expanded array.
@@ -30,8 +33,7 @@ type TaskView struct {
 	ScopeResourcePath *string `json:"scopeResourcePath,omitempty"`
 	// JSONPATH expression indicating the location of the StepApproverUsers objects in the expanded array
 	StepApproversPath *string `json:"stepApproversPath,omitempty"`
-	// A fully-fleged task object. Includes its policy, references to external apps, its type, its processing history, and more.
-	Task *Task `json:"task,omitempty"`
+	Task              *Task   `json:"task,omitempty"`
 	// JSONPATH expression indicating the location of the User object in the expanded array. This is the user that is a direct target of the ticket without a specific relationship to a potentially non-existent app user.
 	UserPath *string `json:"userPath,omitempty"`
 }
@@ -97,6 +99,20 @@ func (t *TaskView) GetInsightsPath() *string {
 		return nil
 	}
 	return t.InsightsPath
+}
+
+func (t *TaskView) GetObjectPermissions() *UserActorObjectPermissions {
+	if t == nil {
+		return nil
+	}
+	return t.ObjectPermissions
+}
+
+func (t *TaskView) GetPrincipalResourcePath() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PrincipalResourcePath
 }
 
 func (t *TaskView) GetResourceBindingsPath() *string {

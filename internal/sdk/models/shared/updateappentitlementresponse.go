@@ -8,7 +8,6 @@ type UpdateAppEntitlementResponseExpanded struct {
 
 // The UpdateAppEntitlementResponse message.
 type UpdateAppEntitlementResponse struct {
-	// The app entitlement view contains the serialized app entitlement and paths to objects referenced by the app entitlement.
 	AppEntitlementView *AppEntitlementView `json:"appEntitlementView,omitempty"`
 	// List of related objects
 	Expanded []UpdateAppEntitlementResponseExpanded `json:"expanded,omitempty"`

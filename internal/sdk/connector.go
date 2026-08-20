@@ -710,7 +710,10 @@ func (s *Connector) RevokeCredential(ctx context.Context, request operations.C1A
 }
 
 // ForceSync - Force Sync
-// Trigger an immediate sync for a connector. The sync is queued and may not start instantly.
+// Trigger an immediate sync for a connector. The sync is queued and may not start
+//
+//	instantly. Poll the connector's sync_status (or GetConnector) for progress; an empty
+//	success response means the sync was accepted onto the queue, not that it has finished.
 func (s *Connector) ForceSync(ctx context.Context, request operations.C1APIAppV1ConnectorServiceForceSyncRequest, opts ...operations.Option) (*operations.C1APIAppV1ConnectorServiceForceSyncResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

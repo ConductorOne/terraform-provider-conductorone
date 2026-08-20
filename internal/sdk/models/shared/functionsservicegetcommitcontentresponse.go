@@ -4,17 +4,16 @@ package shared
 
 // FunctionsServiceGetCommitContentResponse contains a commit and all its file contents.
 type FunctionsServiceGetCommitContentResponse struct {
-	// FunctionCommit represents a single commit in a function's history
-	FunctionCommit *FunctionCommit `json:"commit,omitempty"`
+	Commit *FunctionCommit `json:"commit,omitempty"`
 	// Map of filename to file content bytes.
 	Files map[string]string `json:"files,omitempty"`
 }
 
-func (f *FunctionsServiceGetCommitContentResponse) GetFunctionCommit() *FunctionCommit {
+func (f *FunctionsServiceGetCommitContentResponse) GetCommit() *FunctionCommit {
 	if f == nil {
 		return nil
 	}
-	return f.FunctionCommit
+	return f.Commit
 }
 
 func (f *FunctionsServiceGetCommitContentResponse) GetFiles() map[string]string {

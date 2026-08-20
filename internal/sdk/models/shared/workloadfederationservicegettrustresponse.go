@@ -4,14 +4,12 @@ package shared
 
 // The WorkloadFederationServiceGetTrustResponse message.
 type WorkloadFederationServiceGetTrustResponse struct {
-	// WorkloadFederationTrust represents a per-SP trust policy that references
-	//  a tenant-level provider and defines a CEL condition for claim matching.
-	WorkloadFederationTrust *WorkloadFederationTrust `json:"trust,omitempty"`
+	Trust *WorkloadFederationTrust `json:"trust,omitempty"`
 }
 
-func (w *WorkloadFederationServiceGetTrustResponse) GetWorkloadFederationTrust() *WorkloadFederationTrust {
+func (w *WorkloadFederationServiceGetTrustResponse) GetTrust() *WorkloadFederationTrust {
 	if w == nil {
 		return nil
 	}
-	return w.WorkloadFederationTrust
+	return w.Trust
 }

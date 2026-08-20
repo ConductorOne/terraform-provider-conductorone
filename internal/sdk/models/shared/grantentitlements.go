@@ -15,75 +15,67 @@ package shared
 //   - exclusionCriteria
 //   - exclusionListCel
 type GrantEntitlements struct {
-	// The GrantEntitlementExclusionCriteria message.
-	GrantEntitlementExclusionCriteria *GrantEntitlementExclusionCriteria `json:"exclusionCriteria,omitempty"`
-	// The GrantEntitlementExclusionList message.
-	GrantEntitlementExclusionList *GrantEntitlementExclusionList `json:"exclusionList,omitempty"`
-	// The GrantEntitlementExclusionListCel message.
-	GrantEntitlementExclusionListCel *GrantEntitlementExclusionListCel `json:"exclusionListCel,omitempty"`
-	// The GrantEntitlementExclusionNone message.
-	GrantEntitlementExclusionNone *GrantEntitlementExclusionNone `json:"exclusionNone,omitempty"`
-	// The GrantEntitlementInclusionCriteria message.
-	GrantEntitlementInclusionCriteria *GrantEntitlementInclusionCriteria `json:"inclusionCriteria,omitempty"`
-	// The GrantEntitlementInclusionList message.
-	GrantEntitlementInclusionList *GrantEntitlementInclusionList `json:"inclusionList,omitempty"`
-	// The GrantEntitlementInclusionListCel message.
-	GrantEntitlementInclusionListCel *GrantEntitlementInclusionListCel `json:"inclusionListCel,omitempty"`
+	ExclusionCriteria *GrantEntitlementExclusionCriteria `json:"exclusionCriteria,omitempty"`
+	ExclusionList     *GrantEntitlementExclusionList     `json:"exclusionList,omitempty"`
+	ExclusionListCel  *GrantEntitlementExclusionListCel  `json:"exclusionListCel,omitempty"`
+	ExclusionNone     *GrantEntitlementExclusionNone     `json:"exclusionNone,omitempty"`
+	InclusionCriteria *GrantEntitlementInclusionCriteria `json:"inclusionCriteria,omitempty"`
+	InclusionList     *GrantEntitlementInclusionList     `json:"inclusionList,omitempty"`
+	InclusionListCel  *GrantEntitlementInclusionListCel  `json:"inclusionListCel,omitempty"`
 	// If true, the step will use the subject user of the automation as the subject.
 	UseSubjectUser *bool `json:"useSubjectUser,omitempty"`
 	// The userIdCel field.
-	UserIDCel *string `json:"userIdCel,omitempty"`
-	// A reference to a user.
-	UserRef *UserRef `json:"userRef,omitempty"`
+	UserIDCel *string  `json:"userIdCel,omitempty"`
+	UserRef   *UserRef `json:"userRef,omitempty"`
 }
 
-func (g *GrantEntitlements) GetGrantEntitlementExclusionCriteria() *GrantEntitlementExclusionCriteria {
+func (g *GrantEntitlements) GetExclusionCriteria() *GrantEntitlementExclusionCriteria {
 	if g == nil {
 		return nil
 	}
-	return g.GrantEntitlementExclusionCriteria
+	return g.ExclusionCriteria
 }
 
-func (g *GrantEntitlements) GetGrantEntitlementExclusionList() *GrantEntitlementExclusionList {
+func (g *GrantEntitlements) GetExclusionList() *GrantEntitlementExclusionList {
 	if g == nil {
 		return nil
 	}
-	return g.GrantEntitlementExclusionList
+	return g.ExclusionList
 }
 
-func (g *GrantEntitlements) GetGrantEntitlementExclusionListCel() *GrantEntitlementExclusionListCel {
+func (g *GrantEntitlements) GetExclusionListCel() *GrantEntitlementExclusionListCel {
 	if g == nil {
 		return nil
 	}
-	return g.GrantEntitlementExclusionListCel
+	return g.ExclusionListCel
 }
 
-func (g *GrantEntitlements) GetGrantEntitlementExclusionNone() *GrantEntitlementExclusionNone {
+func (g *GrantEntitlements) GetExclusionNone() *GrantEntitlementExclusionNone {
 	if g == nil {
 		return nil
 	}
-	return g.GrantEntitlementExclusionNone
+	return g.ExclusionNone
 }
 
-func (g *GrantEntitlements) GetGrantEntitlementInclusionCriteria() *GrantEntitlementInclusionCriteria {
+func (g *GrantEntitlements) GetInclusionCriteria() *GrantEntitlementInclusionCriteria {
 	if g == nil {
 		return nil
 	}
-	return g.GrantEntitlementInclusionCriteria
+	return g.InclusionCriteria
 }
 
-func (g *GrantEntitlements) GetGrantEntitlementInclusionList() *GrantEntitlementInclusionList {
+func (g *GrantEntitlements) GetInclusionList() *GrantEntitlementInclusionList {
 	if g == nil {
 		return nil
 	}
-	return g.GrantEntitlementInclusionList
+	return g.InclusionList
 }
 
-func (g *GrantEntitlements) GetGrantEntitlementInclusionListCel() *GrantEntitlementInclusionListCel {
+func (g *GrantEntitlements) GetInclusionListCel() *GrantEntitlementInclusionListCel {
 	if g == nil {
 		return nil
 	}
-	return g.GrantEntitlementInclusionListCel
+	return g.InclusionListCel
 }
 
 func (g *GrantEntitlements) GetUseSubjectUser() *bool {

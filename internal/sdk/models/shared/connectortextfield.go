@@ -5,22 +5,8 @@ package shared
 // ConnectorTextField - The TextField message.
 type ConnectorTextField struct {
 	// The secret field.
-	Secret *bool `json:"secret,omitempty"`
-	// StringRules describe the constraints applied to `string` values
-	//
-	// This message contains a oneof named well_known. Only a single field of the following list may be set at a time:
-	//   - email
-	//   - hostname
-	//   - ip
-	//   - ipv4
-	//   - ipv6
-	//   - uri
-	//   - uriRef
-	//   - address
-	//   - uuid
-	//   - wellKnownRegex
-	//
-	StringRules *StringRules `json:"valueValidator,omitempty"`
+	Secret         *bool        `json:"secret,omitempty"`
+	ValueValidator *StringRules `json:"valueValidator,omitempty"`
 }
 
 func (c *ConnectorTextField) GetSecret() *bool {
@@ -30,9 +16,9 @@ func (c *ConnectorTextField) GetSecret() *bool {
 	return c.Secret
 }
 
-func (c *ConnectorTextField) GetStringRules() *StringRules {
+func (c *ConnectorTextField) GetValueValidator() *StringRules {
 	if c == nil {
 		return nil
 	}
-	return c.StringRules
+	return c.ValueValidator
 }

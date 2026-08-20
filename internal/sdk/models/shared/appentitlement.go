@@ -46,64 +46,59 @@ func (e *Purpose) IsExact() bool {
 //   - externalTicket
 //   - unconfigured
 //   - action
+//   - devicePlacement
 type DeprovisionerPolicy struct {
-	// This provision step indicates that account lifecycle action should be called to provision this entitlement.
-	ActionProvision *ActionProvision `json:"action,omitempty"`
-	// Indicates that a connector should perform the provisioning. This object has no fields.
-	//
-	// This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
-	//   - defaultBehavior
-	//   - account
-	//   - deleteAccount
-	//
-	ConnectorProvision *ConnectorProvision `json:"connector,omitempty"`
-	// This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.
-	DelegatedProvision *DelegatedProvision `json:"delegated,omitempty"`
-	// This provision step indicates that we should check an external ticket to provision this entitlement
-	ExternalTicketProvision *ExternalTicketProvision `json:"externalTicket,omitempty"`
-	// Manual provisioning indicates that a human must intervene for the provisioning of this step.
-	ManualProvision *ManualProvision `json:"manual,omitempty"`
-	// MultiStep indicates that this provision step has multiple steps to process.
-	MultiStep any `json:"multiStep,omitempty"`
-	// The UnconfiguredProvision message.
-	UnconfiguredProvision *UnconfiguredProvision `json:"unconfigured,omitempty"`
-	// This provision step indicates that a webhook should be called to provision this entitlement.
-	WebhookProvision *WebhookProvision `json:"webhook,omitempty"`
+	Action          *ActionProvision          `json:"action,omitempty"`
+	Connector       *ConnectorProvision       `json:"connector,omitempty"`
+	Delegated       *DelegatedProvision       `json:"delegated,omitempty"`
+	DevicePlacement *DevicePlacementProvision `json:"devicePlacement,omitempty"`
+	ExternalTicket  *ExternalTicketProvision  `json:"externalTicket,omitempty"`
+	Manual          *ManualProvision          `json:"manual,omitempty"`
+	MultiStep       any                       `json:"multiStep,omitempty"`
+	Unconfigured    *UnconfiguredProvision    `json:"unconfigured,omitempty"`
+	Webhook         *WebhookProvision         `json:"webhook,omitempty"`
 }
 
-func (d *DeprovisionerPolicy) GetActionProvision() *ActionProvision {
+func (d *DeprovisionerPolicy) GetAction() *ActionProvision {
 	if d == nil {
 		return nil
 	}
-	return d.ActionProvision
+	return d.Action
 }
 
-func (d *DeprovisionerPolicy) GetConnectorProvision() *ConnectorProvision {
+func (d *DeprovisionerPolicy) GetConnector() *ConnectorProvision {
 	if d == nil {
 		return nil
 	}
-	return d.ConnectorProvision
+	return d.Connector
 }
 
-func (d *DeprovisionerPolicy) GetDelegatedProvision() *DelegatedProvision {
+func (d *DeprovisionerPolicy) GetDelegated() *DelegatedProvision {
 	if d == nil {
 		return nil
 	}
-	return d.DelegatedProvision
+	return d.Delegated
 }
 
-func (d *DeprovisionerPolicy) GetExternalTicketProvision() *ExternalTicketProvision {
+func (d *DeprovisionerPolicy) GetDevicePlacement() *DevicePlacementProvision {
 	if d == nil {
 		return nil
 	}
-	return d.ExternalTicketProvision
+	return d.DevicePlacement
 }
 
-func (d *DeprovisionerPolicy) GetManualProvision() *ManualProvision {
+func (d *DeprovisionerPolicy) GetExternalTicket() *ExternalTicketProvision {
 	if d == nil {
 		return nil
 	}
-	return d.ManualProvision
+	return d.ExternalTicket
+}
+
+func (d *DeprovisionerPolicy) GetManual() *ManualProvision {
+	if d == nil {
+		return nil
+	}
+	return d.Manual
 }
 
 func (d *DeprovisionerPolicy) GetMultiStep() any {
@@ -113,18 +108,18 @@ func (d *DeprovisionerPolicy) GetMultiStep() any {
 	return d.MultiStep
 }
 
-func (d *DeprovisionerPolicy) GetUnconfiguredProvision() *UnconfiguredProvision {
+func (d *DeprovisionerPolicy) GetUnconfigured() *UnconfiguredProvision {
 	if d == nil {
 		return nil
 	}
-	return d.UnconfiguredProvision
+	return d.Unconfigured
 }
 
-func (d *DeprovisionerPolicy) GetWebhookProvision() *WebhookProvision {
+func (d *DeprovisionerPolicy) GetWebhook() *WebhookProvision {
 	if d == nil {
 		return nil
 	}
-	return d.WebhookProvision
+	return d.Webhook
 }
 
 // AppEntitlement - The app entitlement represents one permission in a downstream App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.
@@ -184,20 +179,8 @@ type AppEntitlement struct {
 	// An identifier used to match this entitlement to a connector-synced entitlement during sync.
 	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// Flag to indicate if the app-level access request settings have been overridden for the entitlement
-	OverrideAccessRequestsDefaults *bool `json:"overrideAccessRequestsDefaults,omitempty"`
-	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//   - webhook
-	//   - multiStep
-	//   - externalTicket
-	//   - unconfigured
-	//   - action
-	//
-	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
+	OverrideAccessRequestsDefaults *bool            `json:"overrideAccessRequestsDefaults,omitempty"`
+	ProvisionerPolicy              *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The purpose of this entitlement (e.g., assignment, permission, ownership).
 	Purpose *Purpose `json:"purpose,omitempty"`
 	// The ID of the request schema associated with this app entitlement.
@@ -395,11 +378,11 @@ func (a *AppEntitlement) GetOverrideAccessRequestsDefaults() *bool {
 	return a.OverrideAccessRequestsDefaults
 }
 
-func (a *AppEntitlement) GetProvisionPolicy() *ProvisionPolicy {
+func (a *AppEntitlement) GetProvisionerPolicy() *ProvisionPolicy {
 	if a == nil {
 		return nil
 	}
-	return a.ProvisionPolicy
+	return a.ProvisionerPolicy
 }
 
 func (a *AppEntitlement) GetPurpose() *Purpose {
@@ -511,20 +494,8 @@ type AppEntitlementInput struct {
 	// An identifier used to match this entitlement to a connector-synced entitlement during sync.
 	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// Flag to indicate if the app-level access request settings have been overridden for the entitlement
-	OverrideAccessRequestsDefaults *bool `json:"overrideAccessRequestsDefaults,omitempty"`
-	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//   - webhook
-	//   - multiStep
-	//   - externalTicket
-	//   - unconfigured
-	//   - action
-	//
-	ProvisionPolicy *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
+	OverrideAccessRequestsDefaults *bool            `json:"overrideAccessRequestsDefaults,omitempty"`
+	ProvisionerPolicy              *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The purpose of this entitlement (e.g., assignment, permission, ownership).
 	Purpose *Purpose `json:"purpose,omitempty"`
 	// The ID of the request schema associated with this app entitlement.
@@ -666,11 +637,11 @@ func (a *AppEntitlementInput) GetOverrideAccessRequestsDefaults() *bool {
 	return a.OverrideAccessRequestsDefaults
 }
 
-func (a *AppEntitlementInput) GetProvisionPolicy() *ProvisionPolicy {
+func (a *AppEntitlementInput) GetProvisionerPolicy() *ProvisionPolicy {
 	if a == nil {
 		return nil
 	}
-	return a.ProvisionPolicy
+	return a.ProvisionerPolicy
 }
 
 func (a *AppEntitlementInput) GetPurpose() *Purpose {

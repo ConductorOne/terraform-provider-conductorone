@@ -35,18 +35,21 @@ type FunctionDataSourceModel struct {
 	FunctionType             types.String            `tfsdk:"function_type"`
 	FunctionTypes            []types.String          `tfsdk:"function_types"`
 	Head                     types.String            `tfsdk:"head"`
+	HookRefs                 []types.String          `tfsdk:"hook_refs"`
 	ID                       types.String            `tfsdk:"id"`
 	IsDraft                  types.Bool              `tfsdk:"is_draft"`
 	NextPageToken            types.String            `tfsdk:"next_page_token"`
 	OutboundNetworkAllowlist []types.String          `tfsdk:"outbound_network_allowlist"`
 	PageSize                 types.Int32             `tfsdk:"page_size"`
 	PageToken                types.String            `tfsdk:"page_token"`
+	ProvisionedConcurrency   types.Int32             `tfsdk:"provisioned_concurrency"`
 	PublishedCommitID        types.String            `tfsdk:"published_commit_id"`
 	Query                    types.String            `tfsdk:"query"`
 	ScopedRoleIds            []types.String          `tfsdk:"scoped_role_ids"`
 	Secret                   map[string]types.String `tfsdk:"secret"`
 	UpdatedAt                types.String            `tfsdk:"updated_at"`
 	UseSpn                   types.Bool              `tfsdk:"use_spn"`
+	WorkflowTemplateRefs     []types.String          `tfsdk:"workflow_template_refs"`
 }
 
 // Metadata returns the data source type name.
@@ -87,6 +90,14 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				Computed:    true,
 				Description: `The head field.`,
 			},
+			"hook_refs": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `IDs of every non-deleted hook that still references this function.` + "\n" +
+					` Read-only: maintained by the Hook API, not by CreateFunction/UpdateFunction.` + "\n" +
+					` Non-empty means DeleteFunction will refuse to delete until these are` + "\n" +
+					` removed or retargeted.`,
+			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The id field.`,
@@ -111,6 +122,14 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			"page_token": schema.StringAttribute{
 				Optional:    true,
 				Description: `The pageToken field.`,
+			},
+			"provisioned_concurrency": schema.Int32Attribute{
+				Computed: true,
+				MarkdownDescription: `Number of pre-warmed Lambda instances. 0 (default) leaves the function` + "\n" +
+					` cold-started on first invoke. > 0 reserves and provisions that many` + "\n" +
+					` execution environments via AWS Lambda provisioned concurrency.` + "\n" +
+					` Ignored for FUNCTION_TYPE_CODE_MODE functions — that value is driven` + "\n" +
+					` by AIGovernanceSettings.code_mode_concurrency.`,
 			},
 			"published_commit_id": schema.StringAttribute{
 				Computed:    true,
@@ -146,6 +165,12 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 					` function:<id>. Read-only from clients: set by CreateFunction (when the` + "\n" +
 					` tenant has completed the FunctionsToSPN migration) and by the migration` + "\n" +
 					` itself, never by UpdateFunction. Retired once all functions are on SPN.`,
+			},
+			"workflow_template_refs": schema.ListAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `IDs of every non-deleted workflow template whose CallFunction step still` + "\n" +
+					` references this function. Read-only, same semantics as hook_refs.`,
 			},
 		},
 	}

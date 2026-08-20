@@ -4,13 +4,12 @@ package shared
 
 // The FunctionsServiceCreateFinalCommitResponse message.
 type FunctionsServiceCreateFinalCommitResponse struct {
-	// FunctionCommit represents a single commit in a function's history
-	FunctionCommit *FunctionCommit `json:"commit,omitempty"`
+	Commit *FunctionCommit `json:"commit,omitempty"`
 }
 
-func (f *FunctionsServiceCreateFinalCommitResponse) GetFunctionCommit() *FunctionCommit {
+func (f *FunctionsServiceCreateFinalCommitResponse) GetCommit() *FunctionCommit {
 	if f == nil {
 		return nil
 	}
-	return f.FunctionCommit
+	return f.Commit
 }

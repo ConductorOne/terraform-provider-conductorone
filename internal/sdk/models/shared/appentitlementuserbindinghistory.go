@@ -16,6 +16,8 @@ type AppEntitlementUserBindingHistory struct {
 	// The ID of the app user that has access to the app entitlement
 	AppUserID *string    `json:"appUserId,omitempty"`
 	GrantedAt *time.Time `json:"grantedAt,omitempty"`
+	// The unique ID of this grant history record
+	ID        *string    `json:"id,omitempty"`
 	RevokedAt *time.Time `json:"revokedAt,omitempty"`
 }
 
@@ -56,6 +58,13 @@ func (a *AppEntitlementUserBindingHistory) GetGrantedAt() *time.Time {
 		return nil
 	}
 	return a.GrantedAt
+}
+
+func (a *AppEntitlementUserBindingHistory) GetID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ID
 }
 
 func (a *AppEntitlementUserBindingHistory) GetRevokedAt() *time.Time {

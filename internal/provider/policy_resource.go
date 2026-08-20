@@ -36,6 +36,7 @@ type PolicyResource struct {
 // PolicyResourceModel describes the resource data model.
 type PolicyResourceModel struct {
 	Annotations              map[string]types.String        `tfsdk:"annotations"`
+	BaselinePolicyID         types.String                   `tfsdk:"baseline_policy_id"`
 	CreatedAt                types.String                   `tfsdk:"created_at"`
 	DeletedAt                types.String                   `tfsdk:"-"`
 	Description              types.String                   `tfsdk:"description"`
@@ -46,6 +47,7 @@ type PolicyResourceModel struct {
 	PostActions              []tfTypes.PolicyPostActions    `tfsdk:"post_actions"`
 	ReassignTasksToDelegates types.Bool                     `tfsdk:"reassign_tasks_to_delegates"`
 	Rules                    []tfTypes.Rule                 `tfsdk:"rules"`
+	Scope                    *tfTypes.PolicyScope           `tfsdk:"scope"`
 	SystemBuiltin            types.Bool                     `tfsdk:"system_builtin"`
 	UpdatedAt                types.String                   `tfsdk:"updated_at"`
 }
@@ -70,6 +72,15 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					`` + "\n" +
 					` Well-known keys: ` + "`" + `managed_by` + "`" + `, ` + "`" + `iac_workspace` + "`" + `,` + "\n" +
 					` ` + "`" + `iac_resource_address` + "`" + `, ` + "`" + `iac_tool_version` + "`" + `.`,
+			},
+			"baseline_policy_id": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `When set, the new policy's baseline defers to another policy of the same` + "\n" +
+					` type when no rule matches, instead of an inline baseline step list.` + "\n" +
+					` Mutually exclusive with the baseline entry in policy_steps. Requires the` + "\n" +
+					` POLICY_REFERENCES_POLICY feature; obeys the same depth/cycle/self rules as` + "\n" +
+					` Rule.policy_id.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -127,7 +138,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"action_target_automation": schema.SingleNestedAttribute{
+											"automation": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
@@ -139,7 +150,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 												Description: `ActionTargetAutomation targets automation templates for policy actions.`,
 											},
-											"action_target_baton_resource_action": schema.SingleNestedAttribute{
+											"baton_resource_action": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
@@ -151,7 +162,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 												Description: `ActionTargetResource targets resource actions for policy actions.`,
 											},
-											"action_target_client_id_approval": schema.SingleNestedAttribute{
+											"client_id_approval": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
 												MarkdownDescription: `ActionTargetClientIdApproval targets administrator review of an external` + "\n" +
@@ -169,7 +180,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
-											"agent_approval": schema.SingleNestedAttribute{
+											"agent": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"agent_failure_action": schema.StringAttribute{
@@ -183,9 +194,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														Description: `The mode of the agent, full control, change policy only, or comment only. possible known values include one of ["APPROVAL_AGENT_MODE_UNSPECIFIED", "APPROVAL_AGENT_MODE_FULL_CONTROL", "APPROVAL_AGENT_MODE_CHANGE_POLICY_ONLY", "APPROVAL_AGENT_MODE_COMMENT_ONLY"]`,
 													},
 													"agent_user_id": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The agent user ID to assign the task to.`,
+														Computed:           true,
+														Optional:           true,
+														DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+														MarkdownDescription: `Deprecated: agent steps are evaluated by the system; no agent user is` + "\n" +
+															` selected. Retained so pre-migration policies still validate.`,
 													},
 													"instructions": schema.StringAttribute{
 														Computed:    true,
@@ -223,83 +236,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												ElementType: types.StringType,
 												Description: `List of users for whom this step can be reassigned.`,
 											},
-											"app_group_approval": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"allow_self_approval": schema.BoolAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `Configuration to allow self approval if the target user is a member of the group during this step.`,
-													},
-													"app_group_id": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The app entitlement ID of the group specified for approval (not the group resource ID). Use the conductorone_app_entitlement data source to look up the correct entitlement ID.`,
-													},
-													"app_id": schema.StringAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `The ID of the app that contains the group specified for approval.`,
-													},
-													"fallback": schema.BoolAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `Configuration to allow a fallback if the group is empty.`,
-													},
-													"fallback_group_ids": schema.ListNestedAttribute{
-														Computed: true,
-														Optional: true,
-														NestedObject: schema.NestedAttributeObject{
-															Validators: []validator.Object{
-																speakeasy_objectvalidators.NotNull(),
-															},
-															Attributes: map[string]schema.Attribute{
-																"app_entitlement_id": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `The ID of the Entitlement.`,
-																},
-																"app_id": schema.StringAttribute{
-																	Computed:    true,
-																	Optional:    true,
-																	Description: `The ID of the App this entitlement belongs to.`,
-																},
-															},
-														},
-														Description: `Configuration to specify which groups to fallback to if fallback is enabled and the group is empty.`,
-													},
-													"fallback_user_ids": schema.ListAttribute{
-														Computed:    true,
-														Optional:    true,
-														ElementType: types.StringType,
-														Description: `Configuration to specific which users to fallback to if fallback is enabled and the group is empty.`,
-													},
-													"is_group_fallback_enabled": schema.BoolAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `Configuration to enable fallback for group fallback.`,
-													},
-													"require_distinct_approvers": schema.BoolAttribute{
-														Computed:    true,
-														Optional:    true,
-														Description: `Configuration to require distinct approvers across approval steps of a rule.`,
-													},
-												},
-												Description: `The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("app_owner_approval"),
-														path.MatchRelative().AtParent().AtName("entitlement_owner_approval"),
-														path.MatchRelative().AtParent().AtName("expression_approval"),
-														path.MatchRelative().AtParent().AtName("manager_approval"),
-														path.MatchRelative().AtParent().AtName("resource_owner_approval"),
-														path.MatchRelative().AtParent().AtName("self_approval"),
-														path.MatchRelative().AtParent().AtName("user_approval"),
-														path.MatchRelative().AtParent().AtName("webhook_approval"),
-													}...),
-												},
-											},
-											"app_owner_approval": schema.SingleNestedAttribute{
+											"app_owners": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -331,7 +268,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Computed:    true,
 												Description: `A field indicating whether this step is assigned.`,
 											},
-											"entitlement_owner_approval": schema.SingleNestedAttribute{
+											"entitlement_owners": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -460,7 +397,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Optional:    true,
 												Description: `Whether escalation is enabled for this step.`,
 											},
-											"expression_approval": schema.SingleNestedAttribute{
+											"expression": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -537,7 +474,83 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													}...),
 												},
 											},
-											"manager_approval": schema.SingleNestedAttribute{
+											"group": schema.SingleNestedAttribute{
+												Optional: true,
+												Attributes: map[string]schema.Attribute{
+													"allow_self_approval": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Configuration to allow self approval if the target user is a member of the group during this step.`,
+													},
+													"app_group_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The app entitlement ID of the group specified for approval (not the group resource ID). Use the conductorone_app_entitlement data source to look up the correct entitlement ID.`,
+													},
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The ID of the app that contains the group specified for approval.`,
+													},
+													"fallback": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Configuration to allow a fallback if the group is empty.`,
+													},
+													"fallback_group_ids": schema.ListNestedAttribute{
+														Computed: true,
+														Optional: true,
+														NestedObject: schema.NestedAttributeObject{
+															Validators: []validator.Object{
+																speakeasy_objectvalidators.NotNull(),
+															},
+															Attributes: map[string]schema.Attribute{
+																"app_entitlement_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the Entitlement.`,
+																},
+																"app_id": schema.StringAttribute{
+																	Computed:    true,
+																	Optional:    true,
+																	Description: `The ID of the App this entitlement belongs to.`,
+																},
+															},
+														},
+														Description: `Configuration to specify which groups to fallback to if fallback is enabled and the group is empty.`,
+													},
+													"fallback_user_ids": schema.ListAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: types.StringType,
+														Description: `Configuration to specific which users to fallback to if fallback is enabled and the group is empty.`,
+													},
+													"is_group_fallback_enabled": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Configuration to enable fallback for group fallback.`,
+													},
+													"require_distinct_approvers": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Configuration to require distinct approvers across approval steps of a rule.`,
+													},
+												},
+												Description: `The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step.`,
+												Validators: []validator.Object{
+													objectvalidator.ConflictsWith(path.Expressions{
+														path.MatchRelative().AtParent().AtName("app_owner_approval"),
+														path.MatchRelative().AtParent().AtName("entitlement_owner_approval"),
+														path.MatchRelative().AtParent().AtName("expression_approval"),
+														path.MatchRelative().AtParent().AtName("manager_approval"),
+														path.MatchRelative().AtParent().AtName("resource_owner_approval"),
+														path.MatchRelative().AtParent().AtName("self_approval"),
+														path.MatchRelative().AtParent().AtName("user_approval"),
+														path.MatchRelative().AtParent().AtName("webhook_approval"),
+													}...),
+												},
+											},
+											"manager": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -629,7 +642,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												MarkdownDescription: `The ID of a step-up authentication provider that will be required for approvals on this step.` + "\n" +
 													` If set, approvers must complete the step-up authentication flow before they can approve.`,
 											},
-											"resource_owner_approval": schema.SingleNestedAttribute{
+											"resource_owners": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -695,7 +708,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													}...),
 												},
 											},
-											"self_approval": schema.SingleNestedAttribute{
+											"self": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"assigned_user_ids": schema.ListAttribute{
@@ -756,7 +769,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													}...),
 												},
 											},
-											"user_approval": schema.SingleNestedAttribute{
+											"users": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_self_approval": schema.BoolAttribute{
@@ -790,7 +803,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													}...),
 												},
 											},
-											"webhook_approval": schema.SingleNestedAttribute{
+											"webhook": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"webhook_id": schema.StringAttribute{
@@ -840,7 +853,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 										CustomType:  jsontypes.NormalizedType{},
 										Computed:    true,
 										Optional:    true,
-										Description: `The Form message. Parsed as JSON.`,
+										Description: `Parsed as JSON.`,
 									},
 									"provision": schema.SingleNestedAttribute{
 										Computed: true,
@@ -855,7 +868,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
-													"action_provision": schema.SingleNestedAttribute{
+													"action": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"action_name": schema.StringAttribute{
@@ -881,10 +894,10 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														},
 														Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
 													},
-													"connector_provision": schema.SingleNestedAttribute{
+													"connector": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
-															"account_provision": schema.SingleNestedAttribute{
+															"account": schema.SingleNestedAttribute{
 																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
@@ -971,7 +984,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 															}...),
 														},
 													},
-													"delegated_provision": schema.SingleNestedAttribute{
+													"delegated": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"app_id": schema.StringAttribute{
@@ -996,7 +1009,19 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 															}...),
 														},
 													},
-													"external_ticket_provision": schema.SingleNestedAttribute{
+													"device_placement": schema.SingleNestedAttribute{
+														Computed: true,
+														Optional: true,
+														Attributes: map[string]schema.Attribute{
+															"vault_boundary_id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The vaultBoundaryId field.`,
+															},
+														},
+														Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+													},
+													"external_ticket": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"app_id": schema.StringAttribute{
@@ -1031,19 +1056,14 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 															}...),
 														},
 													},
-													"manual_provision": schema.SingleNestedAttribute{
+													"manual": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
-															"instructions": schema.StringAttribute{
-																Computed:    true,
-																Optional:    true,
-																Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
-															},
-															"provisioner_assignment": schema.SingleNestedAttribute{
+															"assignee": schema.SingleNestedAttribute{
 																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
-																	"app_owner_provisioner": schema.SingleNestedAttribute{
+																	"app_owners": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
@@ -1061,7 +1081,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 																		},
 																		Description: `AppOwnerProvisioner resolves to app owners.`,
 																	},
-																	"entitlement_owner_provisioner": schema.SingleNestedAttribute{
+																	"entitlement_owners": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
@@ -1079,7 +1099,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 																		},
 																		Description: `EntitlementOwnerProvisioner resolves to entitlement owners.`,
 																	},
-																	"expression_provisioner": schema.SingleNestedAttribute{
+																	"expression": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
@@ -1103,7 +1123,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 																		},
 																		Description: `ExpressionProvisioner evaluates CEL expressions to determine provisioners.`,
 																	},
-																	"group_provisioner": schema.SingleNestedAttribute{
+																	"group": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
@@ -1131,7 +1151,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 																		},
 																		Description: `GroupProvisioner resolves to members of a specific group.`,
 																	},
-																	"manager_provisioner": schema.SingleNestedAttribute{
+																	"manager": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
@@ -1149,7 +1169,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 																		},
 																		Description: `ManagerProvisioner resolves to the user's manager.`,
 																	},
-																	"user_provisioner": schema.SingleNestedAttribute{
+																	"users": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
@@ -1178,6 +1198,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 																	`  - expression` + "\n" +
 																	`  - entitlementOwners`,
 															},
+															"instructions": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+															},
 															"user_ids": schema.ListAttribute{
 																Computed:    true,
 																Optional:    true,
@@ -1201,7 +1226,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 														CustomType:  jsontypes.NormalizedType{},
 														Computed:    true,
 														Optional:    true,
-														Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+														Description: `Parsed as JSON.`,
 														Validators: []validator.String{
 															stringvalidator.ConflictsWith(path.Expressions{
 																path.MatchRelative().AtParent().AtName("connector_provision"),
@@ -1212,12 +1237,12 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 															}...),
 														},
 													},
-													"unconfigured_provision": schema.SingleNestedAttribute{
+													"unconfigured": schema.SingleNestedAttribute{
 														Computed:    true,
 														Optional:    true,
 														Description: `The UnconfiguredProvision message.`,
 													},
-													"webhook_provision": schema.SingleNestedAttribute{
+													"webhook": schema.SingleNestedAttribute{
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"webhook_id": schema.StringAttribute{
@@ -1248,7 +1273,8 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 													`  - multiStep` + "\n" +
 													`  - externalTicket` + "\n" +
 													`  - unconfigured` + "\n" +
-													`  - action`,
+													`  - action` + "\n" +
+													`  - devicePlacement`,
 											},
 											"provision_target": schema.SingleNestedAttribute{
 												Computed: true,
@@ -1321,16 +1347,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												Optional:    true,
 												Description: `The comment to post if we timeout.`,
 											},
-											"name": schema.StringAttribute{
-												Computed:    true,
-												Optional:    true,
-												Description: `The name of our condition to show on the task details page`,
-											},
-											"timeout_duration": schema.StringAttribute{
-												Computed: true,
-												Optional: true,
-											},
-											"wait_condition": schema.SingleNestedAttribute{
+											"condition": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
@@ -1342,7 +1359,7 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 												Description: `The WaitCondition message.`,
 											},
-											"wait_duration": schema.SingleNestedAttribute{
+											"duration": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
@@ -1353,7 +1370,16 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 												},
 												Description: `The WaitDuration message.`,
 											},
-											"wait_until_time": schema.SingleNestedAttribute{
+											"name": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The name of our condition to show on the task details page`,
+											},
+											"timeout_duration": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+											},
+											"until_time": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
@@ -1445,17 +1471,63 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 							Computed: true,
 							Optional: true,
 							MarkdownDescription: `A CEL expression that is evaluated against the request context. If it` + "\n" +
-								` returns true, the step sequence identified by policy_key is used.`,
+								` returns true, the step sequence identified by the outcome is used.`,
 						},
-						"policy_key": schema.StringAttribute{
+						"policy_id": schema.StringAttribute{
 							Computed: true,
 							Optional: true,
-							MarkdownDescription: `A key into the policy's policy_steps map identifying which step sequence` + "\n" +
-								` to execute when this rule's condition matches.`,
+							MarkdownDescription: `The ID of another Policy that is evaluated recursively when this` + "\n" +
+								` rule matches. The referenced policy must share this policy's` + "\n" +
+								` policy_type, must not introduce a cycle, and must not push any` + "\n" +
+								` reachable chain over depth 5. Gated by the` + "\n" +
+								` POLICY_REFERENCES_POLICY feature flag.` + "\n" +
+								`This field is part of the ` + "`" + `outcome` + "`" + ` oneof.` + "\n" +
+								`See the documentation for ` + "`" + `c1.api.policy.v1.Rule` + "`" + ` for more details.`,
+						},
+						"policy_key": schema.StringAttribute{
+							Computed:           true,
+							Optional:           true,
+							DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+							MarkdownDescription: `Deprecated: prefer outcome.step_key. Still read by the request path` + "\n" +
+								` for backward compatibility with rules persisted before the outcome` + "\n" +
+								` oneof existed.`,
+						},
+						"step_key": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							MarkdownDescription: `A key into the policy's policy_steps map identifying which step` + "\n" +
+								` sequence to execute when this rule's condition matches.` + "\n" +
+								`This field is part of the ` + "`" + `outcome` + "`" + ` oneof.` + "\n" +
+								`See the documentation for ` + "`" + `c1.api.policy.v1.Rule` + "`" + ` for more details.`,
 						},
 					},
 				},
 				Description: `Conditional routing rules. See the Policy message for details on evaluation order.`,
+			},
+			"scope": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"app_entitlement_id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `Optional. When set, the policy is scoped to this entitlement of app_id` + "\n" +
+							` rather than to the whole app.`,
+					},
+					"app_id": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The ID of the app this policy is scoped to.`,
+					},
+					"slot": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `Which of the object's local-policy slots this policy occupies. Part of the` + "\n" +
+							` scope, and immutable with it.` + "\n" +
+							`possible known values include one of ["POLICY_SCOPE_SLOT_UNSPECIFIED", "POLICY_SCOPE_SLOT_EMERGENCY"]`,
+					},
+				},
+				Description: `Scopes a policy to an app or to a single entitlement within an app.`,
 			},
 			"system_builtin": schema.BoolAttribute{
 				Computed:    true,

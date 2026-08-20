@@ -4,13 +4,12 @@ package shared
 
 // The PersonalClientServiceUpdateResponse message.
 type PersonalClientServiceUpdateResponse struct {
-	// The PersonalClient message contains information about a presonal client credential.
-	PersonalClient *PersonalClient `json:"client,omitempty"`
+	Client *PersonalClient `json:"client,omitempty"`
 }
 
-func (p *PersonalClientServiceUpdateResponse) GetPersonalClient() *PersonalClient {
+func (p *PersonalClientServiceUpdateResponse) GetClient() *PersonalClient {
 	if p == nil {
 		return nil
 	}
-	return p.PersonalClient
+	return p.Client
 }

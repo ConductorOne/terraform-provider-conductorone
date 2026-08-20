@@ -10,34 +10,29 @@ package shared
 //   - cel
 //   - basic
 type AppEntitlementAutomationInput struct {
-	// The AppEntitlementAutomationRuleBasic message.
-	AppEntitlementAutomationRuleBasic *AppEntitlementAutomationRuleBasic `json:"basic,omitempty"`
-	// The AppEntitlementAutomationRuleCEL message.
-	AppEntitlementAutomationRuleCEL *AppEntitlementAutomationRuleCEL `json:"cel,omitempty"`
+	Basic *AppEntitlementAutomationRuleBasic `json:"basic,omitempty"`
+	Cel   *AppEntitlementAutomationRuleCEL   `json:"cel,omitempty"`
 	// The description of the app entitlement.
 	Description *string `json:"description,omitempty"`
 	// The display name of the app entitlement.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The AppEntitlementAutomationRuleEntitlement message.
-	AppEntitlementAutomationRuleEntitlement *AppEntitlementAutomationRuleEntitlement `json:"entitlements,omitempty"`
-	// The AppEntitlementAutomationLastRunStatus message.
-	AppEntitlementAutomationLastRunStatus *AppEntitlementAutomationLastRunStatusInput `json:"lastRunStatus,omitempty"`
-	// The AppEntitlementAutomationRuleNone message.
-	AppEntitlementAutomationRuleNone *AppEntitlementAutomationRuleNone `json:"none,omitempty"`
+	DisplayName   *string                                     `json:"displayName,omitempty"`
+	Entitlements  *AppEntitlementAutomationRuleEntitlement    `json:"entitlements,omitempty"`
+	LastRunStatus *AppEntitlementAutomationLastRunStatusInput `json:"lastRunStatus,omitempty"`
+	None          *AppEntitlementAutomationRuleNone           `json:"none,omitempty"`
 }
 
-func (a *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleBasic() *AppEntitlementAutomationRuleBasic {
+func (a *AppEntitlementAutomationInput) GetBasic() *AppEntitlementAutomationRuleBasic {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementAutomationRuleBasic
+	return a.Basic
 }
 
-func (a *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleCEL() *AppEntitlementAutomationRuleCEL {
+func (a *AppEntitlementAutomationInput) GetCel() *AppEntitlementAutomationRuleCEL {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementAutomationRuleCEL
+	return a.Cel
 }
 
 func (a *AppEntitlementAutomationInput) GetDescription() *string {
@@ -54,23 +49,23 @@ func (a *AppEntitlementAutomationInput) GetDisplayName() *string {
 	return a.DisplayName
 }
 
-func (a *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleEntitlement() *AppEntitlementAutomationRuleEntitlement {
+func (a *AppEntitlementAutomationInput) GetEntitlements() *AppEntitlementAutomationRuleEntitlement {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementAutomationRuleEntitlement
+	return a.Entitlements
 }
 
-func (a *AppEntitlementAutomationInput) GetAppEntitlementAutomationLastRunStatus() *AppEntitlementAutomationLastRunStatusInput {
+func (a *AppEntitlementAutomationInput) GetLastRunStatus() *AppEntitlementAutomationLastRunStatusInput {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementAutomationLastRunStatus
+	return a.LastRunStatus
 }
 
-func (a *AppEntitlementAutomationInput) GetAppEntitlementAutomationRuleNone() *AppEntitlementAutomationRuleNone {
+func (a *AppEntitlementAutomationInput) GetNone() *AppEntitlementAutomationRuleNone {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementAutomationRuleNone
+	return a.None
 }

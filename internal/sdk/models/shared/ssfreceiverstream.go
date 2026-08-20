@@ -166,14 +166,10 @@ type SSFReceiverStream struct {
 	JwksURL     *string    `json:"jwksUrl,omitempty"`
 	LastErrorAt *time.Time `json:"lastErrorAt,omitempty"`
 	// The lastErrorMessage field.
-	LastErrorMessage *string    `json:"lastErrorMessage,omitempty"`
-	LastVerifiedAt   *time.Time `json:"lastVerifiedAt,omitempty"`
-	// SSFOutboundAuthBearer is a static bearer token for outbound auth.
-	//  Token is write-only: accepted on create/update, never returned.
-	SSFOutboundAuthBearer *SSFOutboundAuthBearer `json:"outboundAuthBearer,omitempty"`
-	// SSFOutboundAuthOAuth2 uses OAuth2 client credentials for outbound auth.
-	//  client_secret is write-only: accepted on create/update, never returned.
-	SSFOutboundAuthOAuth2 *SSFOutboundAuthOAuth2 `json:"outboundAuthOauth2,omitempty"`
+	LastErrorMessage   *string                `json:"lastErrorMessage,omitempty"`
+	LastVerifiedAt     *time.Time             `json:"lastVerifiedAt,omitempty"`
+	OutboundAuthBearer *SSFOutboundAuthBearer `json:"outboundAuthBearer,omitempty"`
+	OutboundAuthOauth2 *SSFOutboundAuthOAuth2 `json:"outboundAuthOauth2,omitempty"`
 	// URL of the transmitter's poll endpoint where C1 fetches events from.
 	PollEndpointURL *string `json:"pollEndpointUrl,omitempty"`
 	PollInterval    *string `json:"pollInterval,omitempty"`
@@ -318,18 +314,18 @@ func (s *SSFReceiverStream) GetLastVerifiedAt() *time.Time {
 	return s.LastVerifiedAt
 }
 
-func (s *SSFReceiverStream) GetSSFOutboundAuthBearer() *SSFOutboundAuthBearer {
+func (s *SSFReceiverStream) GetOutboundAuthBearer() *SSFOutboundAuthBearer {
 	if s == nil {
 		return nil
 	}
-	return s.SSFOutboundAuthBearer
+	return s.OutboundAuthBearer
 }
 
-func (s *SSFReceiverStream) GetSSFOutboundAuthOAuth2() *SSFOutboundAuthOAuth2 {
+func (s *SSFReceiverStream) GetOutboundAuthOauth2() *SSFOutboundAuthOAuth2 {
 	if s == nil {
 		return nil
 	}
-	return s.SSFOutboundAuthOAuth2
+	return s.OutboundAuthOauth2
 }
 
 func (s *SSFReceiverStream) GetPollEndpointURL() *string {
@@ -408,14 +404,10 @@ type SSFReceiverStreamInput struct {
 	JwksURL     *string    `json:"jwksUrl,omitempty"`
 	LastErrorAt *time.Time `json:"lastErrorAt,omitempty"`
 	// The lastErrorMessage field.
-	LastErrorMessage *string    `json:"lastErrorMessage,omitempty"`
-	LastVerifiedAt   *time.Time `json:"lastVerifiedAt,omitempty"`
-	// SSFOutboundAuthBearer is a static bearer token for outbound auth.
-	//  Token is write-only: accepted on create/update, never returned.
-	SSFOutboundAuthBearer *SSFOutboundAuthBearer `json:"outboundAuthBearer,omitempty"`
-	// SSFOutboundAuthOAuth2 uses OAuth2 client credentials for outbound auth.
-	//  client_secret is write-only: accepted on create/update, never returned.
-	SSFOutboundAuthOAuth2 *SSFOutboundAuthOAuth2 `json:"outboundAuthOauth2,omitempty"`
+	LastErrorMessage   *string                `json:"lastErrorMessage,omitempty"`
+	LastVerifiedAt     *time.Time             `json:"lastVerifiedAt,omitempty"`
+	OutboundAuthBearer *SSFOutboundAuthBearer `json:"outboundAuthBearer,omitempty"`
+	OutboundAuthOauth2 *SSFOutboundAuthOAuth2 `json:"outboundAuthOauth2,omitempty"`
 	// URL of the transmitter's poll endpoint where C1 fetches events from.
 	PollEndpointURL *string `json:"pollEndpointUrl,omitempty"`
 	PollInterval    *string `json:"pollInterval,omitempty"`
@@ -543,18 +535,18 @@ func (s *SSFReceiverStreamInput) GetLastVerifiedAt() *time.Time {
 	return s.LastVerifiedAt
 }
 
-func (s *SSFReceiverStreamInput) GetSSFOutboundAuthBearer() *SSFOutboundAuthBearer {
+func (s *SSFReceiverStreamInput) GetOutboundAuthBearer() *SSFOutboundAuthBearer {
 	if s == nil {
 		return nil
 	}
-	return s.SSFOutboundAuthBearer
+	return s.OutboundAuthBearer
 }
 
-func (s *SSFReceiverStreamInput) GetSSFOutboundAuthOAuth2() *SSFOutboundAuthOAuth2 {
+func (s *SSFReceiverStreamInput) GetOutboundAuthOauth2() *SSFOutboundAuthOAuth2 {
 	if s == nil {
 		return nil
 	}
-	return s.SSFOutboundAuthOAuth2
+	return s.OutboundAuthOauth2
 }
 
 func (s *SSFReceiverStreamInput) GetPollEndpointURL() *string {

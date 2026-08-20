@@ -8,17 +8,16 @@ type CreateAppEntitlementProxyResponseExpanded struct {
 
 // CreateAppEntitlementProxyResponse - The response message for creating an entitlement proxy binding.
 type CreateAppEntitlementProxyResponse struct {
-	// The AppEntitlementProxyView message.
-	AppEntitlementProxyView *AppEntitlementProxyView `json:"appProxyEntitlementView,omitempty"`
+	AppProxyEntitlementView *AppEntitlementProxyView `json:"appProxyEntitlementView,omitempty"`
 	// List of serialized related objects.
 	Expanded []CreateAppEntitlementProxyResponseExpanded `json:"expanded,omitempty"`
 }
 
-func (c *CreateAppEntitlementProxyResponse) GetAppEntitlementProxyView() *AppEntitlementProxyView {
+func (c *CreateAppEntitlementProxyResponse) GetAppProxyEntitlementView() *AppEntitlementProxyView {
 	if c == nil {
 		return nil
 	}
-	return c.AppEntitlementProxyView
+	return c.AppProxyEntitlementView
 }
 
 func (c *CreateAppEntitlementProxyResponse) GetExpanded() []CreateAppEntitlementProxyResponseExpanded {

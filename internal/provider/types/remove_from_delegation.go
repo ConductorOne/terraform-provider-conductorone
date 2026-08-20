@@ -7,9 +7,9 @@ import (
 )
 
 type RemoveFromDelegation struct {
-	UserRef              *UserRef     `tfsdk:"user_ref"`
-	UserRef1             *UserRef     `tfsdk:"user_ref1"`
 	ReplacementUserIDCel types.String `tfsdk:"replacement_user_id_cel"`
+	ReplacementUserRef   *UserRef     `tfsdk:"replacement_user_ref"`
 	UseSubjectUser       types.Bool   `tfsdk:"use_subject_user"`
 	UserIDCel            types.String `tfsdk:"user_id_cel"`
+	UserRef              *UserRef     `tfsdk:"user_ref"`
 }

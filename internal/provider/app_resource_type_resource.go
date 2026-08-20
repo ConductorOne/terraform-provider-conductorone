@@ -84,7 +84,7 @@ func (r *AppResourceTypeResource) Schema(ctx context.Context, req resource.Schem
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The category of the resource type (e.g., ROLE, GROUP, LICENSE). possible known values include one of ["ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT", "PROFILE_TYPE"]; Requires replacement if changed.`,
+				Description: `The category of the resource type (e.g., ROLE, GROUP, LICENSE). possible known values include one of ["ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT", "PROFILE_TYPE", "SESSION_POLICY", "CLAW_AGENT"]; Requires replacement if changed.`,
 			},
 			"trait_ids": schema.ListAttribute{
 				Computed:    true,

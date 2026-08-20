@@ -4,8 +4,6 @@ package shared
 
 // The GetUserDeveloperPreferencesResponse message.
 type GetUserDeveloperPreferencesResponse struct {
-	// UserDeveloperPreferences holds a user's developer-tooling preferences,
-	//  organized into per-feature clusters.
 	UserDeveloperPreferences *UserDeveloperPreferences `json:"userDeveloperPreferences,omitempty"`
 }
 

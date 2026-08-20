@@ -75,33 +75,25 @@ func (e *TenantAuthConfigStatus) IsExact() bool {
 //   - c1Local
 type TenantAuthConfig struct {
 	// Bootstrap routing: email domains that route unknown users to this config.
-	BootstrapDomains []string `json:"bootstrapDomains,omitempty"`
-	// The AuthConfigC1Local message.
-	AuthConfigC1Local   *AuthConfigC1Local `json:"c1Local,omitempty"`
+	BootstrapDomains    []string           `json:"bootstrapDomains,omitempty"`
+	C1Local             *AuthConfigC1Local `json:"c1Local,omitempty"`
 	CreatedAt           *time.Time         `json:"createdAt,omitempty"`
 	DeprecationDeadline *time.Time         `json:"deprecationDeadline,omitempty"`
 	// User-visible message shown when status=DEPRECATED.
 	DeprecationMessage *string `json:"deprecationMessage,omitempty"`
 	// The displayName field.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The AuthConfigGoogle message.
-	AuthConfigGoogle *AuthConfigGoogle `json:"google,omitempty"`
+	DisplayName *string           `json:"displayName,omitempty"`
+	Google      *AuthConfigGoogle `json:"google,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
 	// The isDefaultBootstrap field.
-	IsDefaultBootstrap *bool `json:"isDefaultBootstrap,omitempty"`
-	// The AuthConfigJumpCloud message.
-	AuthConfigJumpCloud *AuthConfigJumpCloud `json:"jumpcloud,omitempty"`
-	// The AuthConfigMicrosoft message.
-	AuthConfigMicrosoft *AuthConfigMicrosoft `json:"microsoft,omitempty"`
-	// The AuthConfigOIDC message.
-	AuthConfigOIDC *AuthConfigOIDC `json:"oidc,omitempty"`
-	// The AuthConfigOkta message.
-	AuthConfigOkta *AuthConfigOkta `json:"okta,omitempty"`
-	// The AuthConfigOneLogin message.
-	AuthConfigOneLogin *AuthConfigOneLogin `json:"onelogin,omitempty"`
-	// The AuthConfigPingOne message.
-	AuthConfigPingOne *AuthConfigPingOne `json:"pingone,omitempty"`
+	IsDefaultBootstrap *bool                `json:"isDefaultBootstrap,omitempty"`
+	Jumpcloud          *AuthConfigJumpCloud `json:"jumpcloud,omitempty"`
+	Microsoft          *AuthConfigMicrosoft `json:"microsoft,omitempty"`
+	Oidc               *AuthConfigOIDC      `json:"oidc,omitempty"`
+	Okta               *AuthConfigOkta      `json:"okta,omitempty"`
+	Onelogin           *AuthConfigOneLogin  `json:"onelogin,omitempty"`
+	Pingone            *AuthConfigPingOne   `json:"pingone,omitempty"`
 	// Provider type (read-only after creation — provider config determines type).
 	ProviderType *ProviderType `json:"providerType,omitempty"`
 	// The status field.
@@ -127,11 +119,11 @@ func (t *TenantAuthConfig) GetBootstrapDomains() []string {
 	return t.BootstrapDomains
 }
 
-func (t *TenantAuthConfig) GetAuthConfigC1Local() *AuthConfigC1Local {
+func (t *TenantAuthConfig) GetC1Local() *AuthConfigC1Local {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigC1Local
+	return t.C1Local
 }
 
 func (t *TenantAuthConfig) GetCreatedAt() *time.Time {
@@ -162,11 +154,11 @@ func (t *TenantAuthConfig) GetDisplayName() *string {
 	return t.DisplayName
 }
 
-func (t *TenantAuthConfig) GetAuthConfigGoogle() *AuthConfigGoogle {
+func (t *TenantAuthConfig) GetGoogle() *AuthConfigGoogle {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigGoogle
+	return t.Google
 }
 
 func (t *TenantAuthConfig) GetID() *string {
@@ -183,46 +175,46 @@ func (t *TenantAuthConfig) GetIsDefaultBootstrap() *bool {
 	return t.IsDefaultBootstrap
 }
 
-func (t *TenantAuthConfig) GetAuthConfigJumpCloud() *AuthConfigJumpCloud {
+func (t *TenantAuthConfig) GetJumpcloud() *AuthConfigJumpCloud {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigJumpCloud
+	return t.Jumpcloud
 }
 
-func (t *TenantAuthConfig) GetAuthConfigMicrosoft() *AuthConfigMicrosoft {
+func (t *TenantAuthConfig) GetMicrosoft() *AuthConfigMicrosoft {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigMicrosoft
+	return t.Microsoft
 }
 
-func (t *TenantAuthConfig) GetAuthConfigOIDC() *AuthConfigOIDC {
+func (t *TenantAuthConfig) GetOidc() *AuthConfigOIDC {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigOIDC
+	return t.Oidc
 }
 
-func (t *TenantAuthConfig) GetAuthConfigOkta() *AuthConfigOkta {
+func (t *TenantAuthConfig) GetOkta() *AuthConfigOkta {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigOkta
+	return t.Okta
 }
 
-func (t *TenantAuthConfig) GetAuthConfigOneLogin() *AuthConfigOneLogin {
+func (t *TenantAuthConfig) GetOnelogin() *AuthConfigOneLogin {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigOneLogin
+	return t.Onelogin
 }
 
-func (t *TenantAuthConfig) GetAuthConfigPingOne() *AuthConfigPingOne {
+func (t *TenantAuthConfig) GetPingone() *AuthConfigPingOne {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigPingOne
+	return t.Pingone
 }
 
 func (t *TenantAuthConfig) GetProviderType() *ProviderType {
@@ -259,32 +251,24 @@ func (t *TenantAuthConfig) GetUpdatedAt() *time.Time {
 //   - c1Local
 type TenantAuthConfigInput struct {
 	// Bootstrap routing: email domains that route unknown users to this config.
-	BootstrapDomains []string `json:"bootstrapDomains,omitempty"`
-	// The AuthConfigC1Local message.
-	AuthConfigC1Local   *AuthConfigC1Local `json:"c1Local,omitempty"`
+	BootstrapDomains    []string           `json:"bootstrapDomains,omitempty"`
+	C1Local             *AuthConfigC1Local `json:"c1Local,omitempty"`
 	DeprecationDeadline *time.Time         `json:"deprecationDeadline,omitempty"`
 	// User-visible message shown when status=DEPRECATED.
 	DeprecationMessage *string `json:"deprecationMessage,omitempty"`
 	// The displayName field.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The AuthConfigGoogle message.
-	AuthConfigGoogle *AuthConfigGoogle `json:"google,omitempty"`
+	DisplayName *string                `json:"displayName,omitempty"`
+	Google      *AuthConfigGoogleInput `json:"google,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
 	// The isDefaultBootstrap field.
-	IsDefaultBootstrap *bool `json:"isDefaultBootstrap,omitempty"`
-	// The AuthConfigJumpCloud message.
-	AuthConfigJumpCloud *AuthConfigJumpCloud `json:"jumpcloud,omitempty"`
-	// The AuthConfigMicrosoft message.
-	AuthConfigMicrosoft *AuthConfigMicrosoft `json:"microsoft,omitempty"`
-	// The AuthConfigOIDC message.
-	AuthConfigOIDC *AuthConfigOIDC `json:"oidc,omitempty"`
-	// The AuthConfigOkta message.
-	AuthConfigOkta *AuthConfigOkta `json:"okta,omitempty"`
-	// The AuthConfigOneLogin message.
-	AuthConfigOneLogin *AuthConfigOneLogin `json:"onelogin,omitempty"`
-	// The AuthConfigPingOne message.
-	AuthConfigPingOne *AuthConfigPingOne `json:"pingone,omitempty"`
+	IsDefaultBootstrap *bool                `json:"isDefaultBootstrap,omitempty"`
+	Jumpcloud          *AuthConfigJumpCloud `json:"jumpcloud,omitempty"`
+	Microsoft          *AuthConfigMicrosoft `json:"microsoft,omitempty"`
+	Oidc               *AuthConfigOIDC      `json:"oidc,omitempty"`
+	Okta               *AuthConfigOkta      `json:"okta,omitempty"`
+	Onelogin           *AuthConfigOneLogin  `json:"onelogin,omitempty"`
+	Pingone            *AuthConfigPingOne   `json:"pingone,omitempty"`
 	// The status field.
 	Status *TenantAuthConfigStatus `json:"status,omitempty"`
 }
@@ -307,11 +291,11 @@ func (t *TenantAuthConfigInput) GetBootstrapDomains() []string {
 	return t.BootstrapDomains
 }
 
-func (t *TenantAuthConfigInput) GetAuthConfigC1Local() *AuthConfigC1Local {
+func (t *TenantAuthConfigInput) GetC1Local() *AuthConfigC1Local {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigC1Local
+	return t.C1Local
 }
 
 func (t *TenantAuthConfigInput) GetDeprecationDeadline() *time.Time {
@@ -335,11 +319,11 @@ func (t *TenantAuthConfigInput) GetDisplayName() *string {
 	return t.DisplayName
 }
 
-func (t *TenantAuthConfigInput) GetAuthConfigGoogle() *AuthConfigGoogle {
+func (t *TenantAuthConfigInput) GetGoogle() *AuthConfigGoogleInput {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigGoogle
+	return t.Google
 }
 
 func (t *TenantAuthConfigInput) GetID() *string {
@@ -356,46 +340,46 @@ func (t *TenantAuthConfigInput) GetIsDefaultBootstrap() *bool {
 	return t.IsDefaultBootstrap
 }
 
-func (t *TenantAuthConfigInput) GetAuthConfigJumpCloud() *AuthConfigJumpCloud {
+func (t *TenantAuthConfigInput) GetJumpcloud() *AuthConfigJumpCloud {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigJumpCloud
+	return t.Jumpcloud
 }
 
-func (t *TenantAuthConfigInput) GetAuthConfigMicrosoft() *AuthConfigMicrosoft {
+func (t *TenantAuthConfigInput) GetMicrosoft() *AuthConfigMicrosoft {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigMicrosoft
+	return t.Microsoft
 }
 
-func (t *TenantAuthConfigInput) GetAuthConfigOIDC() *AuthConfigOIDC {
+func (t *TenantAuthConfigInput) GetOidc() *AuthConfigOIDC {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigOIDC
+	return t.Oidc
 }
 
-func (t *TenantAuthConfigInput) GetAuthConfigOkta() *AuthConfigOkta {
+func (t *TenantAuthConfigInput) GetOkta() *AuthConfigOkta {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigOkta
+	return t.Okta
 }
 
-func (t *TenantAuthConfigInput) GetAuthConfigOneLogin() *AuthConfigOneLogin {
+func (t *TenantAuthConfigInput) GetOnelogin() *AuthConfigOneLogin {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigOneLogin
+	return t.Onelogin
 }
 
-func (t *TenantAuthConfigInput) GetAuthConfigPingOne() *AuthConfigPingOne {
+func (t *TenantAuthConfigInput) GetPingone() *AuthConfigPingOne {
 	if t == nil {
 		return nil
 	}
-	return t.AuthConfigPingOne
+	return t.Pingone
 }
 
 func (t *TenantAuthConfigInput) GetStatus() *TenantAuthConfigStatus {

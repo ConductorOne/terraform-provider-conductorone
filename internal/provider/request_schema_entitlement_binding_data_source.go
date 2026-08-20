@@ -29,8 +29,8 @@ type RequestSchemaEntitlementBindingDataSource struct {
 
 // RequestSchemaEntitlementBindingDataSourceModel describes the data model.
 type RequestSchemaEntitlementBindingDataSourceModel struct {
-	AppEntitlementRef *tfTypes.AppEntitlementRef `tfsdk:"app_entitlement_ref"`
-	RequestSchemaID   types.String               `tfsdk:"request_schema_id"`
+	EntitlementRef  *tfTypes.AppEntitlementRef `tfsdk:"entitlement_ref"`
+	RequestSchemaID types.String               `tfsdk:"request_schema_id"`
 }
 
 // Metadata returns the data source type name.
@@ -44,7 +44,7 @@ func (r *RequestSchemaEntitlementBindingDataSource) Schema(ctx context.Context, 
 		MarkdownDescription: "RequestSchemaEntitlementBinding DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"app_entitlement_ref": schema.SingleNestedAttribute{
+			"entitlement_ref": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{

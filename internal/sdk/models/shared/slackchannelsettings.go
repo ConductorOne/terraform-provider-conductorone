@@ -4,72 +4,64 @@ package shared
 
 // The SlackChannelSettings message.
 type SlackChannelSettings struct {
-	// The AccessProvisionedPreference message.
-	AccessProvisionedPreference *AccessProvisionedPreference `json:"accessProvisioned,omitempty"`
-	// The ApprovalNeededPreference message.
-	ApprovalNeededPreference *ApprovalNeededPreference `json:"approvalNeeded,omitempty"`
-	// The CommentOnRequestPreference message.
-	CommentOnRequestPreference *CommentOnRequestPreference `json:"commentOnRequest,omitempty"`
-	// The CompletionPreference message.
-	CompletionPreference *CompletionPreference `json:"completion,omitempty"`
-	// The ConnectorIssuesPreference message.
-	ConnectorIssuesPreference *ConnectorIssuesPreference `json:"connectorIssues,omitempty"`
-	// DigestPreference controls whether summary digest notifications are sent and how often.
-	DigestPreference *DigestPreference `json:"digest,omitempty"`
+	AccessProvisioned *AccessProvisionedPreference `json:"accessProvisioned,omitempty"`
+	ApprovalNeeded    *ApprovalNeededPreference    `json:"approvalNeeded,omitempty"`
+	CommentOnRequest  *CommentOnRequestPreference  `json:"commentOnRequest,omitempty"`
+	Completion        *CompletionPreference        `json:"completion,omitempty"`
+	ConnectorIssues   *ConnectorIssuesPreference   `json:"connectorIssues,omitempty"`
+	Digest            *DigestPreference            `json:"digest,omitempty"`
 	// The enabled field.
-	Enabled *bool `json:"enabled,omitempty"`
-	// The ExpiringAccessPreference message.
-	ExpiringAccessPreference *ExpiringAccessPreference `json:"expiringAccess,omitempty"`
+	Enabled        *bool                     `json:"enabled,omitempty"`
+	ExpiringAccess *ExpiringAccessPreference `json:"expiringAccess,omitempty"`
 	// The isConfigured field.
-	IsConfigured *bool `json:"isConfigured,omitempty"`
-	// The ProvisioningRequestPreference message.
-	ProvisioningRequestPreference *ProvisioningRequestPreference `json:"provisioningRequest,omitempty"`
-	// The ReviewsPreference message.
-	ReviewsPreference *ReviewsPreference `json:"reviews,omitempty"`
-	// The TaskRemindersPreference message.
-	TaskRemindersPreference *TaskRemindersPreference `json:"taskReminders,omitempty"`
+	IsConfigured        *bool                          `json:"isConfigured,omitempty"`
+	ProvisioningRequest *ProvisioningRequestPreference `json:"provisioningRequest,omitempty"`
+	RequestCreated      *RequestCreatedPreference      `json:"requestCreated,omitempty"`
+	Reviews             *ReviewsPreference             `json:"reviews,omitempty"`
+	System              *SystemPreference              `json:"system,omitempty"`
+	TaskReminders       *TaskRemindersPreference       `json:"taskReminders,omitempty"`
 }
 
-func (s *SlackChannelSettings) GetAccessProvisionedPreference() *AccessProvisionedPreference {
+func (s *SlackChannelSettings) GetAccessProvisioned() *AccessProvisionedPreference {
 	if s == nil {
 		return nil
 	}
-	return s.AccessProvisionedPreference
+	return s.AccessProvisioned
 }
 
-func (s *SlackChannelSettings) GetApprovalNeededPreference() *ApprovalNeededPreference {
+func (s *SlackChannelSettings) GetApprovalNeeded() *ApprovalNeededPreference {
 	if s == nil {
 		return nil
 	}
-	return s.ApprovalNeededPreference
+	return s.ApprovalNeeded
 }
 
-func (s *SlackChannelSettings) GetCommentOnRequestPreference() *CommentOnRequestPreference {
+func (s *SlackChannelSettings) GetCommentOnRequest() *CommentOnRequestPreference {
 	if s == nil {
 		return nil
 	}
-	return s.CommentOnRequestPreference
+	return s.CommentOnRequest
 }
 
-func (s *SlackChannelSettings) GetCompletionPreference() *CompletionPreference {
+func (s *SlackChannelSettings) GetCompletion() *CompletionPreference {
 	if s == nil {
 		return nil
 	}
-	return s.CompletionPreference
+	return s.Completion
 }
 
-func (s *SlackChannelSettings) GetConnectorIssuesPreference() *ConnectorIssuesPreference {
+func (s *SlackChannelSettings) GetConnectorIssues() *ConnectorIssuesPreference {
 	if s == nil {
 		return nil
 	}
-	return s.ConnectorIssuesPreference
+	return s.ConnectorIssues
 }
 
-func (s *SlackChannelSettings) GetDigestPreference() *DigestPreference {
+func (s *SlackChannelSettings) GetDigest() *DigestPreference {
 	if s == nil {
 		return nil
 	}
-	return s.DigestPreference
+	return s.Digest
 }
 
 func (s *SlackChannelSettings) GetEnabled() *bool {
@@ -79,11 +71,11 @@ func (s *SlackChannelSettings) GetEnabled() *bool {
 	return s.Enabled
 }
 
-func (s *SlackChannelSettings) GetExpiringAccessPreference() *ExpiringAccessPreference {
+func (s *SlackChannelSettings) GetExpiringAccess() *ExpiringAccessPreference {
 	if s == nil {
 		return nil
 	}
-	return s.ExpiringAccessPreference
+	return s.ExpiringAccess
 }
 
 func (s *SlackChannelSettings) GetIsConfigured() *bool {
@@ -93,23 +85,37 @@ func (s *SlackChannelSettings) GetIsConfigured() *bool {
 	return s.IsConfigured
 }
 
-func (s *SlackChannelSettings) GetProvisioningRequestPreference() *ProvisioningRequestPreference {
+func (s *SlackChannelSettings) GetProvisioningRequest() *ProvisioningRequestPreference {
 	if s == nil {
 		return nil
 	}
-	return s.ProvisioningRequestPreference
+	return s.ProvisioningRequest
 }
 
-func (s *SlackChannelSettings) GetReviewsPreference() *ReviewsPreference {
+func (s *SlackChannelSettings) GetRequestCreated() *RequestCreatedPreference {
 	if s == nil {
 		return nil
 	}
-	return s.ReviewsPreference
+	return s.RequestCreated
 }
 
-func (s *SlackChannelSettings) GetTaskRemindersPreference() *TaskRemindersPreference {
+func (s *SlackChannelSettings) GetReviews() *ReviewsPreference {
 	if s == nil {
 		return nil
 	}
-	return s.TaskRemindersPreference
+	return s.Reviews
+}
+
+func (s *SlackChannelSettings) GetSystem() *SystemPreference {
+	if s == nil {
+		return nil
+	}
+	return s.System
+}
+
+func (s *SlackChannelSettings) GetTaskReminders() *TaskRemindersPreference {
+	if s == nil {
+		return nil
+	}
+	return s.TaskReminders
 }

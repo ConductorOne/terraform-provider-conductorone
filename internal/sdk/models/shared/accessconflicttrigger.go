@@ -11,8 +11,7 @@ type AccessConflictTrigger struct {
 	// The allConflictMonitors field.
 	// This field is part of the `conflict_monitor_selector` oneof.
 	// See the documentation for `c1.api.automations.v1.AccessConflictTrigger` for more details.
-	AllConflictMonitors *bool `json:"allConflictMonitors,omitempty"`
-	// The ConflictMonitorRefs message.
+	AllConflictMonitors *bool                `json:"allConflictMonitors,omitempty"`
 	ConflictMonitorRefs *ConflictMonitorRefs `json:"conflictMonitorRefs,omitempty"`
 }
 

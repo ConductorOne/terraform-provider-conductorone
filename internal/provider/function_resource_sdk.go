@@ -25,6 +25,14 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 			r.FunctionType = types.StringNull()
 		}
 		r.Head = types.StringPointerValue(resp.Head)
+		if resp.HookRefs != nil {
+			r.HookRefs = make([]types.String, 0, len(resp.HookRefs))
+			for _, v := range resp.HookRefs {
+				r.HookRefs = append(r.HookRefs, types.StringValue(v))
+			}
+		} else {
+			r.HookRefs = nil
+		}
 		r.ID = types.StringPointerValue(resp.ID)
 		r.IsDraft = types.BoolPointerValue(resp.IsDraft)
 		if resp.OutboundNetworkAllowlist != nil {
@@ -35,6 +43,7 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 		} else {
 			r.OutboundNetworkAllowlist = nil
 		}
+		r.ProvisionedConcurrency = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.ProvisionedConcurrency))
 		r.PublishedCommitID = types.StringPointerValue(resp.PublishedCommitID)
 		if resp.ScopedRoleIds != nil {
 			r.ScopedRoleIds = make([]types.String, 0, len(resp.ScopedRoleIds))
@@ -52,6 +61,14 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 		}
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 		r.UseSpn = types.BoolPointerValue(resp.UseSpn)
+		if resp.WorkflowTemplateRefs != nil {
+			r.WorkflowTemplateRefs = make([]types.String, 0, len(resp.WorkflowTemplateRefs))
+			for _, v := range resp.WorkflowTemplateRefs {
+				r.WorkflowTemplateRefs = append(r.WorkflowTemplateRefs, types.StringValue(v))
+			}
+		} else {
+			r.WorkflowTemplateRefs = nil
+		}
 	}
 
 	return diags
@@ -61,19 +78,19 @@ func (r *FunctionResourceModel) RefreshFromSharedFunctionsServiceCreateFunctionR
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.Commit != nil {
+			r.Author = types.StringPointerValue(resp.Commit.Author)
+			r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Commit.CreatedAt))
+			r.FunctionID = types.StringPointerValue(resp.Commit.FunctionID)
+			r.ID = types.StringPointerValue(resp.Commit.ID)
+			r.Message = types.StringPointerValue(resp.Commit.Message)
+		}
 		diags.Append(r.RefreshFromSharedFunction(ctx, resp.Function)...)
 
 		if diags.HasError() {
 			return diags
 		}
 
-		if resp.FunctionCommit != nil {
-			r.Author = types.StringPointerValue(resp.FunctionCommit.Author)
-			r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.FunctionCommit.CreatedAt))
-			r.FunctionID = types.StringPointerValue(resp.FunctionCommit.FunctionID)
-			r.ID = types.StringPointerValue(resp.FunctionCommit.ID)
-			r.Message = types.StringPointerValue(resp.FunctionCommit.Message)
-		}
 	}
 
 	return diags
@@ -98,6 +115,13 @@ func (r *FunctionResourceModel) RefreshFromSharedFunctionsServiceUpdateFunctionR
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.Commit != nil {
+			r.Author = types.StringPointerValue(resp.Commit.Author)
+			r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Commit.CreatedAt))
+			r.FunctionID = types.StringPointerValue(resp.Commit.FunctionID)
+			r.ID = types.StringPointerValue(resp.Commit.ID)
+			r.Message = types.StringPointerValue(resp.Commit.Message)
+		}
 		diags.Append(r.RefreshFromSharedFunction(ctx, resp.Function)...)
 
 		if diags.HasError() {
@@ -186,6 +210,12 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 			outboundNetworkAllowlist = append(outboundNetworkAllowlist, r.OutboundNetworkAllowlist[outboundNetworkAllowlistIndex].ValueString())
 		}
 	}
+	provisionedConcurrency := new(int)
+	if !r.ProvisionedConcurrency.IsUnknown() && !r.ProvisionedConcurrency.IsNull() {
+		*provisionedConcurrency = int(r.ProvisionedConcurrency.ValueInt32())
+	} else {
+		provisionedConcurrency = nil
+	}
 	publishedCommitID := new(string)
 	if !r.PublishedCommitID.IsUnknown() && !r.PublishedCommitID.IsNull() {
 		*publishedCommitID = r.PublishedCommitID.ValueString()
@@ -214,6 +244,7 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 		ID:                       id,
 		IsDraft:                  isDraft,
 		OutboundNetworkAllowlist: outboundNetworkAllowlist,
+		ProvisionedConcurrency:   provisionedConcurrency,
 		PublishedCommitID:        publishedCommitID,
 		ScopedRoleIds:            scopedRoleIds,
 		Secret:                   secret,
@@ -278,6 +309,12 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceDeleteFunctionRequest(ct
 func (r *FunctionResourceModel) ToSharedFunctionsServiceUpdateFunctionRequest(ctx context.Context) (*shared.FunctionsServiceUpdateFunctionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	commitMessage := new(string)
+	if !r.CommitMessage.IsUnknown() && !r.CommitMessage.IsNull() {
+		*commitMessage = r.CommitMessage.ValueString()
+	} else {
+		commitMessage = nil
+	}
 	function, functionDiags := r.ToSharedFunctionInput(ctx)
 	diags.Append(functionDiags...)
 
@@ -286,7 +323,8 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceUpdateFunctionRequest(ct
 	}
 
 	out := shared.FunctionsServiceUpdateFunctionRequest{
-		Function: function,
+		CommitMessage: commitMessage,
+		Function:      function,
 	}
 
 	return &out, diags

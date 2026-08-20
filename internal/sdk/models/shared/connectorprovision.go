@@ -9,24 +9,16 @@ package shared
 //   - account
 //   - deleteAccount
 type ConnectorProvision struct {
-	// The AccountProvision message.
-	//
-	// This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:
-	//   - saveToVault
-	//   - doNotSave
-	//
-	AccountProvision *AccountProvision `json:"account,omitempty"`
-	// The DefaultBehavior message.
-	DefaultBehavior *DefaultBehavior `json:"defaultBehavior,omitempty"`
-	// The DeleteAccount message.
-	DeleteAccount *DeleteAccount `json:"deleteAccount,omitempty"`
+	Account         *AccountProvision `json:"account,omitempty"`
+	DefaultBehavior *DefaultBehavior  `json:"defaultBehavior,omitempty"`
+	DeleteAccount   *DeleteAccount    `json:"deleteAccount,omitempty"`
 }
 
-func (c *ConnectorProvision) GetAccountProvision() *AccountProvision {
+func (c *ConnectorProvision) GetAccount() *AccountProvision {
 	if c == nil {
 		return nil
 	}
-	return c.AccountProvision
+	return c.Account
 }
 
 func (c *ConnectorProvision) GetDefaultBehavior() *DefaultBehavior {

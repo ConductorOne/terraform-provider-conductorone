@@ -7,8 +7,8 @@ import (
 )
 
 type AccessReviewView struct {
-	AccessReview           *AccessReview           `tfsdk:"access_review"`
-	ActorObjectPermissions *ActorObjectPermissions `tfsdk:"actor_object_permissions"`
-	CreatedByUserPath      types.String            `tfsdk:"created_by_user_path"`
-	PolicyPath             types.String            `tfsdk:"policy_path"`
+	AccessReview      *AccessReview           `tfsdk:"access_review"`
+	CreatedByUserPath types.String            `tfsdk:"created_by_user_path"`
+	ObjectPermissions *ActorObjectPermissions `tfsdk:"object_permissions"`
+	PolicyPath        types.String            `tfsdk:"policy_path"`
 }

@@ -4,7 +4,6 @@ package shared
 
 // CreateConnectorEntitlementOwnerRequest is the request for creating an entitlement ownership source on a connector.
 type CreateConnectorEntitlementOwnerRequest struct {
-	// The AppEntitlementRef message.
 	AppEntitlementRef *AppEntitlementRef `json:"appEntitlementRef,omitempty"`
 }
 

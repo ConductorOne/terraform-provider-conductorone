@@ -2,6 +2,32 @@
 
 package shared
 
+// GrantSourceFilter - Restricts the step to grants of either DIRECT (grants the user holds directly,
+//
+//	including grants that are also inherited) or UNSPECIFIED (all grants).
+//	Composes with every inclusion mode, including inclusion_list_cel.
+type GrantSourceFilter string
+
+const (
+	GrantSourceFilterGrantSourceFilterUnspecified GrantSourceFilter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
+	GrantSourceFilterGrantSourceFilterDirect      GrantSourceFilter = "GRANT_SOURCE_FILTER_DIRECT"
+)
+
+func (e GrantSourceFilter) ToPointer() *GrantSourceFilter {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GrantSourceFilter) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GRANT_SOURCE_FILTER_UNSPECIFIED", "GRANT_SOURCE_FILTER_DIRECT":
+			return true
+		}
+	}
+	return false
+}
+
 // The CreateRevokeTasksV2 message.
 //
 // This message contains a oneof named user. Only a single field of the following list may be set at a time:
@@ -22,27 +48,19 @@ package shared
 //   - exclusionCriteria
 //   - exclusionListCel
 type CreateRevokeTasksV2 struct {
-	// The EntitlementExclusionCriteria message.
-	EntitlementExclusionCriteria *EntitlementExclusionCriteria `json:"exclusionCriteria,omitempty"`
-	// The EntitlementExclusionList message.
-	EntitlementExclusionList *EntitlementExclusionList `json:"exclusionList,omitempty"`
-	// The EntitlementExclusionListCel message.
-	EntitlementExclusionListCel *EntitlementExclusionListCel `json:"exclusionListCel,omitempty"`
-	// The EntitlementExclusionNone message.
-	EntitlementExclusionNone *EntitlementExclusionNone `json:"exclusionNone,omitempty"`
-	// EntitlementInclusionAccessOnly resolves to the system-managed access
-	//  entitlement on every app the subject user has an AppUser on. Use this to
-	//  deprovision app accounts without fanning out to every group, role, or
-	//  permission inside each app — produces at most one revoke ticket per app.
-	EntitlementInclusionAccessOnly *EntitlementInclusionAccessOnly `json:"inclusionAccessOnly,omitempty"`
-	// The EntitlementInclusionAll message.
-	EntitlementInclusionAll *EntitlementInclusionAll `json:"inclusionAll,omitempty"`
-	// The EntitlementInclusionCriteria message.
-	EntitlementInclusionCriteria *EntitlementInclusionCriteria `json:"inclusionCriteria,omitempty"`
-	// The EntitlementInclusionList message.
-	EntitlementInclusionList *EntitlementInclusionList `json:"inclusionList,omitempty"`
-	// The EntitlementInclusionListCel message.
-	EntitlementInclusionListCel *EntitlementInclusionListCel `json:"inclusionListCel,omitempty"`
+	ExclusionCriteria *EntitlementExclusionCriteria `json:"exclusionCriteria,omitempty"`
+	ExclusionList     *EntitlementExclusionList     `json:"exclusionList,omitempty"`
+	ExclusionListCel  *EntitlementExclusionListCel  `json:"exclusionListCel,omitempty"`
+	ExclusionNone     *EntitlementExclusionNone     `json:"exclusionNone,omitempty"`
+	// Restricts the step to grants of either DIRECT (grants the user holds directly,
+	//  including grants that are also inherited) or UNSPECIFIED (all grants).
+	//  Composes with every inclusion mode, including inclusion_list_cel.
+	GrantSourceFilter   *GrantSourceFilter              `json:"grantSourceFilter,omitempty"`
+	InclusionAccessOnly *EntitlementInclusionAccessOnly `json:"inclusionAccessOnly,omitempty"`
+	InclusionAll        *EntitlementInclusionAll        `json:"inclusionAll,omitempty"`
+	InclusionCriteria   *EntitlementInclusionCriteria   `json:"inclusionCriteria,omitempty"`
+	InclusionList       *EntitlementInclusionList       `json:"inclusionList,omitempty"`
+	InclusionListCel    *EntitlementInclusionListCel    `json:"inclusionListCel,omitempty"`
 	// The useSubjectUser field.
 	// This field is part of the `user` oneof.
 	// See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
@@ -50,72 +68,78 @@ type CreateRevokeTasksV2 struct {
 	// The userIdCel field.
 	// This field is part of the `user` oneof.
 	// See the documentation for `c1.api.automations.v1.CreateRevokeTasksV2` for more details.
-	UserIDCel *string `json:"userIdCel,omitempty"`
-	// A reference to a user.
-	UserRef *UserRef `json:"userRef,omitempty"`
+	UserIDCel *string  `json:"userIdCel,omitempty"`
+	UserRef   *UserRef `json:"userRef,omitempty"`
 }
 
-func (c *CreateRevokeTasksV2) GetEntitlementExclusionCriteria() *EntitlementExclusionCriteria {
+func (c *CreateRevokeTasksV2) GetExclusionCriteria() *EntitlementExclusionCriteria {
 	if c == nil {
 		return nil
 	}
-	return c.EntitlementExclusionCriteria
+	return c.ExclusionCriteria
 }
 
-func (c *CreateRevokeTasksV2) GetEntitlementExclusionList() *EntitlementExclusionList {
+func (c *CreateRevokeTasksV2) GetExclusionList() *EntitlementExclusionList {
 	if c == nil {
 		return nil
 	}
-	return c.EntitlementExclusionList
+	return c.ExclusionList
 }
 
-func (c *CreateRevokeTasksV2) GetEntitlementExclusionListCel() *EntitlementExclusionListCel {
+func (c *CreateRevokeTasksV2) GetExclusionListCel() *EntitlementExclusionListCel {
 	if c == nil {
 		return nil
 	}
-	return c.EntitlementExclusionListCel
+	return c.ExclusionListCel
 }
 
-func (c *CreateRevokeTasksV2) GetEntitlementExclusionNone() *EntitlementExclusionNone {
+func (c *CreateRevokeTasksV2) GetExclusionNone() *EntitlementExclusionNone {
 	if c == nil {
 		return nil
 	}
-	return c.EntitlementExclusionNone
+	return c.ExclusionNone
 }
 
-func (c *CreateRevokeTasksV2) GetEntitlementInclusionAccessOnly() *EntitlementInclusionAccessOnly {
+func (c *CreateRevokeTasksV2) GetGrantSourceFilter() *GrantSourceFilter {
 	if c == nil {
 		return nil
 	}
-	return c.EntitlementInclusionAccessOnly
+	return c.GrantSourceFilter
 }
 
-func (c *CreateRevokeTasksV2) GetEntitlementInclusionAll() *EntitlementInclusionAll {
+func (c *CreateRevokeTasksV2) GetInclusionAccessOnly() *EntitlementInclusionAccessOnly {
 	if c == nil {
 		return nil
 	}
-	return c.EntitlementInclusionAll
+	return c.InclusionAccessOnly
 }
 
-func (c *CreateRevokeTasksV2) GetEntitlementInclusionCriteria() *EntitlementInclusionCriteria {
+func (c *CreateRevokeTasksV2) GetInclusionAll() *EntitlementInclusionAll {
 	if c == nil {
 		return nil
 	}
-	return c.EntitlementInclusionCriteria
+	return c.InclusionAll
 }
 
-func (c *CreateRevokeTasksV2) GetEntitlementInclusionList() *EntitlementInclusionList {
+func (c *CreateRevokeTasksV2) GetInclusionCriteria() *EntitlementInclusionCriteria {
 	if c == nil {
 		return nil
 	}
-	return c.EntitlementInclusionList
+	return c.InclusionCriteria
 }
 
-func (c *CreateRevokeTasksV2) GetEntitlementInclusionListCel() *EntitlementInclusionListCel {
+func (c *CreateRevokeTasksV2) GetInclusionList() *EntitlementInclusionList {
 	if c == nil {
 		return nil
 	}
-	return c.EntitlementInclusionListCel
+	return c.InclusionList
+}
+
+func (c *CreateRevokeTasksV2) GetInclusionListCel() *EntitlementInclusionListCel {
+	if c == nil {
+		return nil
+	}
+	return c.InclusionListCel
 }
 
 func (c *CreateRevokeTasksV2) GetUseSubjectUser() *bool {

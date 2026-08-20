@@ -2,6 +2,34 @@
 
 package shared
 
+// McpOnboardingStatus - The current status of the AIAM MCP onboarding briefing, tracked
+//
+//	independently of `status`.
+type McpOnboardingStatus string
+
+const (
+	McpOnboardingStatusMcpOnboardingStatusUnspecified McpOnboardingStatus = "MCP_ONBOARDING_STATUS_UNSPECIFIED"
+	McpOnboardingStatusMcpOnboardingStatusNotStarted  McpOnboardingStatus = "MCP_ONBOARDING_STATUS_NOT_STARTED"
+	McpOnboardingStatusMcpOnboardingStatusInProgress  McpOnboardingStatus = "MCP_ONBOARDING_STATUS_IN_PROGRESS"
+	McpOnboardingStatusMcpOnboardingStatusComplete    McpOnboardingStatus = "MCP_ONBOARDING_STATUS_COMPLETE"
+	McpOnboardingStatusMcpOnboardingStatusDismissed   McpOnboardingStatus = "MCP_ONBOARDING_STATUS_DISMISSED"
+)
+
+func (e McpOnboardingStatus) ToPointer() *McpOnboardingStatus {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *McpOnboardingStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "MCP_ONBOARDING_STATUS_UNSPECIFIED", "MCP_ONBOARDING_STATUS_NOT_STARTED", "MCP_ONBOARDING_STATUS_IN_PROGRESS", "MCP_ONBOARDING_STATUS_COMPLETE", "MCP_ONBOARDING_STATUS_DISMISSED":
+			return true
+		}
+	}
+	return false
+}
+
 // GetOnboardingSettingsResponseStatus - The current status of the tenant onboarding process.
 type GetOnboardingSettingsResponseStatus string
 
@@ -34,8 +62,15 @@ type GetOnboardingSettingsResponse struct {
 	ConversationID *string `json:"conversationId,omitempty"`
 	// The intents field.
 	Intents []string `json:"intents,omitempty"`
-	// The OnboardingOrgContext message.
-	OnboardingOrgContext *OnboardingOrgContext `json:"orgContext,omitempty"`
+	// The admin's free-form AIAM onboarding goal, captured at the Goals step.
+	McpOnboardingGoal *string `json:"mcpOnboardingGoal,omitempty"`
+	// The current status of the AIAM MCP onboarding briefing, tracked
+	//  independently of `status`.
+	McpOnboardingStatus *McpOnboardingStatus `json:"mcpOnboardingStatus,omitempty"`
+	// Per-target progress of the AIAM briefing: the servers/apps the admin chose
+	//  to govern and how far each got.
+	McpOnboardingTargets []McpOnboardingTarget `json:"mcpOnboardingTargets,omitempty"`
+	OrgContext           *OnboardingOrgContext `json:"orgContext,omitempty"`
 	// The current status of the tenant onboarding process.
 	Status *GetOnboardingSettingsResponseStatus `json:"status,omitempty"`
 }
@@ -54,11 +89,32 @@ func (g *GetOnboardingSettingsResponse) GetIntents() []string {
 	return g.Intents
 }
 
-func (g *GetOnboardingSettingsResponse) GetOnboardingOrgContext() *OnboardingOrgContext {
+func (g *GetOnboardingSettingsResponse) GetMcpOnboardingGoal() *string {
 	if g == nil {
 		return nil
 	}
-	return g.OnboardingOrgContext
+	return g.McpOnboardingGoal
+}
+
+func (g *GetOnboardingSettingsResponse) GetMcpOnboardingStatus() *McpOnboardingStatus {
+	if g == nil {
+		return nil
+	}
+	return g.McpOnboardingStatus
+}
+
+func (g *GetOnboardingSettingsResponse) GetMcpOnboardingTargets() []McpOnboardingTarget {
+	if g == nil {
+		return nil
+	}
+	return g.McpOnboardingTargets
+}
+
+func (g *GetOnboardingSettingsResponse) GetOrgContext() *OnboardingOrgContext {
+	if g == nil {
+		return nil
+	}
+	return g.OrgContext
 }
 
 func (g *GetOnboardingSettingsResponse) GetStatus() *GetOnboardingSettingsResponseStatus {

@@ -4,17 +4,16 @@ package shared
 
 // FunctionsServiceTestResponse contains test execution results.
 type FunctionsServiceTestResponse struct {
-	// FunctionTestResult contains the result of a single test case execution.
-	FunctionTestResult *FunctionTestResult `json:"result,omitempty"`
+	Result *FunctionTestResult `json:"result,omitempty"`
 	// All test results.
 	Results []FunctionTestResult `json:"results,omitempty"`
 }
 
-func (f *FunctionsServiceTestResponse) GetFunctionTestResult() *FunctionTestResult {
+func (f *FunctionsServiceTestResponse) GetResult() *FunctionTestResult {
 	if f == nil {
 		return nil
 	}
-	return f.FunctionTestResult
+	return f.Result
 }
 
 func (f *FunctionsServiceTestResponse) GetResults() []FunctionTestResult {

@@ -2,15 +2,14 @@
 
 package shared
 
-// DecoyInput - Decoy is the public projection of a planted honey-credential. Read-only
+// DecoyInput - Decoy is the read projection of a planted honey-credential. All
 //
-//	surface; the variant-specific back-references live in c1models and are
-//	not exposed here.
+//	fields except annotations are server-managed.
 type DecoyInput struct {
 	// Customer-defined grouping/filtering bag. PATCH semantics on Update:
 	//  keys in the request overwrite, keys missing stay, keys set to empty
-	//  string delete. Copied into the resulting Finding's custom_tags so
-	//  routing rules can condition on the same keys.
+	//  string delete. Copied onto the Finding produced when a decoy fires,
+	//  so routing rules can condition on the same keys.
 	Annotations map[string]string `json:"annotations,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`

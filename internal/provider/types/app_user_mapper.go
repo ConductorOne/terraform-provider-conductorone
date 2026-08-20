@@ -2,6 +2,11 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type AppUserMapper struct {
+	AppID        types.String             `tfsdk:"app_id"`
 	MappingCases []AppUserMapperMatchCase `tfsdk:"mapping_cases"`
 }

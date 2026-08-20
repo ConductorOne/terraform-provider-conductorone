@@ -59,6 +59,7 @@ type AppResourceModel struct {
 	MatchBatonRef                       *tfTypes.AppMatchBatonRef   `tfsdk:"match_baton_ref"`
 	MonthlyCostUsd                      types.Int32                 `tfsdk:"monthly_cost_usd"`
 	ParentAppID                         types.String                `tfsdk:"parent_app_id"`
+	RevokeGrantSources                  types.Bool                  `tfsdk:"revoke_grant_sources"`
 	RevokePolicyID                      types.String                `tfsdk:"revoke_policy_id"`
 	StrictAccessEntitlementProvisioning types.Bool                  `tfsdk:"strict_access_entitlement_provisioning"`
 	UpdatedAt                           types.String                `tfsdk:"updated_at"`
@@ -130,13 +131,25 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"app_user_mapper": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"app_id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The app this mapper belongs to.`,
+					},
 					"mapping_cases": schema.ListNestedAttribute{
 						Computed: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The app this match case belongs to.`,
+								},
 								"app_user_key_cel": schema.StringAttribute{
 									Computed:    true,
 									Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+								},
+								"case_index": schema.Int64Attribute{
+									Computed:    true,
+									Description: `The ordered index of this match case within the mapper.`,
 								},
 								"user_key_cel": schema.StringAttribute{
 									Computed:    true,
@@ -207,9 +220,6 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			},
 			"match_baton_ref": schema.SingleNestedAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"app_id": schema.StringAttribute{
@@ -249,6 +259,10 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"parent_app_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the app that created this app, if any.`,
+			},
+			"revoke_grant_sources": schema.BoolAttribute{
+				Computed:    true,
+				Description: `When enabled, revoking a grant also revokes the grants that source it.`,
 			},
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,

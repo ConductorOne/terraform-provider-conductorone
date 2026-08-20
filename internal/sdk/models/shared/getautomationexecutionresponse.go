@@ -8,12 +8,10 @@ type GetAutomationExecutionResponseExpanded struct {
 
 // The GetAutomationExecutionResponse message.
 type GetAutomationExecutionResponse struct {
-	// The AutomationExecution message.
 	AutomationExecution *AutomationExecution `json:"automationExecution,omitempty"`
 	// Related objects requested via the expand mask.
 	Expanded []GetAutomationExecutionResponseExpanded `json:"expanded,omitempty"`
-	// The AutomationExecutionView message.
-	AutomationExecutionView *AutomationExecutionView `json:"view,omitempty"`
+	View     *AutomationExecutionView                 `json:"view,omitempty"`
 }
 
 func (g *GetAutomationExecutionResponse) GetAutomationExecution() *AutomationExecution {
@@ -30,9 +28,9 @@ func (g *GetAutomationExecutionResponse) GetExpanded() []GetAutomationExecutionR
 	return g.Expanded
 }
 
-func (g *GetAutomationExecutionResponse) GetAutomationExecutionView() *AutomationExecutionView {
+func (g *GetAutomationExecutionResponse) GetView() *AutomationExecutionView {
 	if g == nil {
 		return nil
 	}
-	return g.AutomationExecutionView
+	return g.View
 }

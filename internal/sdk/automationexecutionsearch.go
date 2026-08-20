@@ -32,6 +32,8 @@ func newAutomationExecutionSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDK
 
 // SearchAllAutomationExecutions - Search All Automation Executions
 // Search across all automation executions in the tenant, with filters for state, template, app, and subject user.
+//
+//	Each AutomationExecutionView row is large — request a small page_size (≤10) and set expand_mask to only the paths you need; broad expansion inlines whole related objects and bloats the response.
 func (s *AutomationExecutionSearch) SearchAllAutomationExecutions(ctx context.Context, request *shared.SearchAllAutomationExecutionsRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationExecutionSearchServiceSearchAllAutomationExecutionsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -169,6 +171,8 @@ func (s *AutomationExecutionSearch) SearchAllAutomationExecutions(ctx context.Co
 
 // SearchAutomationExecutions - Search Automation Executions
 // Search for automation executions with optional filters for automation_template_id, state, and query.
+//
+//	Each AutomationExecutionView row is large — request a small page_size (≤10) and set expand_mask to only the paths you need; broad expansion inlines whole related objects and bloats the response.
 func (s *AutomationExecutionSearch) SearchAutomationExecutions(ctx context.Context, request *shared.SearchAutomationExecutionsRequest, opts ...operations.Option) (*operations.C1APIAutomationsV1AutomationExecutionSearchServiceSearchAutomationExecutionsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

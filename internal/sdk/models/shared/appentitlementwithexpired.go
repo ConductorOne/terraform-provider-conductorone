@@ -12,8 +12,7 @@ type AppEntitlementWithExpired struct {
 	// The ID of the app entitlement.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
 	// The ID of the app that contains the entitlement.
-	AppID *string `json:"appId,omitempty"`
-	// Application User that represents an account in the application.
+	AppID   *string  `json:"appId,omitempty"`
 	AppUser *AppUser `json:"appUser,omitempty"`
 	// The ID of the app user who holds the grant.
 	AppUserID  *string    `json:"appUserId,omitempty"`
@@ -23,8 +22,7 @@ type AppEntitlementWithExpired struct {
 	GrantReasons []GrantReason `json:"grantReasons,omitempty"`
 	// Entitlements that are the source of this grant (e.g., a group membership that implies a role).
 	GrantSources []AppEntitlementRef `json:"grantSources,omitempty"`
-	// The User object provides all of the details for an user, as well as some configuration.
-	User *User `json:"user,omitempty"`
+	User         *User               `json:"user,omitempty"`
 }
 
 func (a AppEntitlementWithExpired) MarshalJSON() ([]byte, error) {

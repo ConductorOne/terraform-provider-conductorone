@@ -9,9 +9,8 @@ type AppEntitlementUserBindingFeedView struct {
 	// The appUserPath field.
 	AppUserPath *string `json:"appUserPath,omitempty"`
 	// The entitlementPath field.
-	EntitlementPath *string `json:"entitlementPath,omitempty"`
-	// The AppEntitlementUserBindingFeed message.
-	AppEntitlementUserBindingFeed *AppEntitlementUserBindingFeed `json:"feed,omitempty"`
+	EntitlementPath *string                        `json:"entitlementPath,omitempty"`
+	Feed            *AppEntitlementUserBindingFeed `json:"feed,omitempty"`
 	// The ticketPath field.
 	TicketPath *string `json:"ticketPath,omitempty"`
 }
@@ -37,11 +36,11 @@ func (a *AppEntitlementUserBindingFeedView) GetEntitlementPath() *string {
 	return a.EntitlementPath
 }
 
-func (a *AppEntitlementUserBindingFeedView) GetAppEntitlementUserBindingFeed() *AppEntitlementUserBindingFeed {
+func (a *AppEntitlementUserBindingFeedView) GetFeed() *AppEntitlementUserBindingFeed {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementUserBindingFeed
+	return a.Feed
 }
 
 func (a *AppEntitlementUserBindingFeedView) GetTicketPath() *string {

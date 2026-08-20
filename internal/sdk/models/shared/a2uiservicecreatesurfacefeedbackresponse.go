@@ -4,15 +4,14 @@ package shared
 
 // A2UIServiceCreateSurfaceFeedbackResponse returns the created feedback.
 type A2UIServiceCreateSurfaceFeedbackResponse struct {
-	// A2UISurfaceFeedback represents user feedback for a surface.
-	A2UISurfaceFeedback *A2UISurfaceFeedback `json:"feedback,omitempty"`
+	Feedback *A2UISurfaceFeedback `json:"feedback,omitempty"`
 }
 
-func (a *A2UIServiceCreateSurfaceFeedbackResponse) GetA2UISurfaceFeedback() *A2UISurfaceFeedback {
+func (a *A2UIServiceCreateSurfaceFeedbackResponse) GetFeedback() *A2UISurfaceFeedback {
 	if a == nil {
 		return nil
 	}
-	return a.A2UISurfaceFeedback
+	return a.Feedback
 }
 
 // #region class-body-a2uiservicecreatesurfacefeedbackresponse

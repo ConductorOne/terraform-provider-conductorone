@@ -10,27 +10,13 @@ type ChoicePickerComponent struct {
 	//  "(optional)" suffix, no reserved space). Use when the picker sits under
 	//  or beside another control that already names the field — e.g. stacked
 	//  under a check_box in a per-attribute mapping row.
-	HideLabel *bool `json:"hideLabel,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString *DynamicString `json:"label,omitempty"`
+	HideLabel *bool          `json:"hideLabel,omitempty"`
+	Label     *DynamicString `json:"label,omitempty"`
 	// The multiSelect field.
 	MultiSelect *bool `json:"multiSelect,omitempty"`
 	// The required field.
-	Required *bool `json:"required,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString1 *DynamicString `json:"value,omitempty"`
+	Required *bool          `json:"required,omitempty"`
+	Value    *DynamicString `json:"value,omitempty"`
 }
 
 func (c *ChoicePickerComponent) GetChoices() []Choice {
@@ -47,11 +33,11 @@ func (c *ChoicePickerComponent) GetHideLabel() *bool {
 	return c.HideLabel
 }
 
-func (c *ChoicePickerComponent) GetDynamicString() *DynamicString {
+func (c *ChoicePickerComponent) GetLabel() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString
+	return c.Label
 }
 
 func (c *ChoicePickerComponent) GetMultiSelect() *bool {
@@ -68,9 +54,9 @@ func (c *ChoicePickerComponent) GetRequired() *bool {
 	return c.Required
 }
 
-func (c *ChoicePickerComponent) GetDynamicString1() *DynamicString {
+func (c *ChoicePickerComponent) GetValue() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString1
+	return c.Value
 }

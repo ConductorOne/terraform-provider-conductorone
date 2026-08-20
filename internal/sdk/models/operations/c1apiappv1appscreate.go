@@ -14,7 +14,7 @@ type C1APIAppV1AppsCreateResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Returns the new app's values.
+	// CreateAppResponse contains the newly created application.
 	CreateAppResponse *shared.CreateAppResponse
 }
 

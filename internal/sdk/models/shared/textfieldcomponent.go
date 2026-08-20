@@ -31,61 +31,40 @@ func (e *TextFieldComponentVariant) IsExact() bool {
 // TextFieldComponent is a text input field.
 type TextFieldComponent struct {
 	// The checks field.
-	Checks []*FunctionCall `json:"checks,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString *DynamicString `json:"label,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString1 *DynamicString `json:"placeholder,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString2 *DynamicString `json:"value,omitempty"`
+	Checks      []FunctionCall `json:"checks,omitempty"`
+	Label       *DynamicString `json:"label,omitempty"`
+	Placeholder *DynamicString `json:"placeholder,omitempty"`
+	Value       *DynamicString `json:"value,omitempty"`
 	// The variant field.
 	Variant *TextFieldComponentVariant `json:"variant,omitempty"`
 }
 
-func (t *TextFieldComponent) GetChecks() []*FunctionCall {
+func (t *TextFieldComponent) GetChecks() []FunctionCall {
 	if t == nil {
 		return nil
 	}
 	return t.Checks
 }
 
-func (t *TextFieldComponent) GetDynamicString() *DynamicString {
+func (t *TextFieldComponent) GetLabel() *DynamicString {
 	if t == nil {
 		return nil
 	}
-	return t.DynamicString
+	return t.Label
 }
 
-func (t *TextFieldComponent) GetDynamicString1() *DynamicString {
+func (t *TextFieldComponent) GetPlaceholder() *DynamicString {
 	if t == nil {
 		return nil
 	}
-	return t.DynamicString1
+	return t.Placeholder
 }
 
-func (t *TextFieldComponent) GetDynamicString2() *DynamicString {
+func (t *TextFieldComponent) GetValue() *DynamicString {
 	if t == nil {
 		return nil
 	}
-	return t.DynamicString2
+	return t.Value
 }
 
 func (t *TextFieldComponent) GetVariant() *TextFieldComponentVariant {

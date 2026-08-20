@@ -7,9 +7,8 @@ type ConflictMonitorCreateRequest struct {
 	// An optional description explaining the purpose of this Separation of Duty rule.
 	Description *string `json:"description,omitempty"`
 	// The human-readable name for the conflict monitor.
-	DisplayName string `json:"displayName"`
-	// The NotificationConfig message.
-	AccessConflictNotificationConfig *AccessConflictNotificationConfig `json:"notificationConfig,omitempty"`
+	DisplayName        string                            `json:"displayName"`
+	NotificationConfig *AccessConflictNotificationConfig `json:"notificationConfig,omitempty"`
 }
 
 func (c *ConflictMonitorCreateRequest) GetDescription() *string {
@@ -26,9 +25,9 @@ func (c *ConflictMonitorCreateRequest) GetDisplayName() string {
 	return c.DisplayName
 }
 
-func (c *ConflictMonitorCreateRequest) GetAccessConflictNotificationConfig() *AccessConflictNotificationConfig {
+func (c *ConflictMonitorCreateRequest) GetNotificationConfig() *AccessConflictNotificationConfig {
 	if c == nil {
 		return nil
 	}
-	return c.AccessConflictNotificationConfig
+	return c.NotificationConfig
 }

@@ -2,11 +2,22 @@
 
 package shared
 
-// HookFilter determines which tool calls a hook applies to.
+// HookFilter determines which calls (or, for HOOK_EVENT_TYPE_PRE_OUTPUT,
+//
+//	which outgoing response chunks) a hook applies to.
 type HookFilter struct {
-	// CEL expression evaluated against tool call context.
-	//  Available variable: ctx.tool_name (string).
-	//  Must evaluate to bool. Empty matches all tools.
+	// CEL expression evaluated against event context. Must evaluate to bool,
+	//  empty = matches everything for the event type.
+	//  HOOK_EVENT_TYPE_PRE_TOOL_USE / POST_TOOL_USE: ctx.tool_name (string),
+	//  and for a call originating from a chat channel ctx.surface (string,
+	//  "slack", "web", or "teams"), ctx.channel_id (string, the channel the
+	//  message arrived on — only set for "slack"/"teams"; "web" channel refs are
+	//  per-conversation and not admin-predictable), and ctx.workspace_id
+	//  (string, the Slack/Teams workspace, when known). All three are absent
+	//  otherwise, so guard them with has(ctx.surface) / has(ctx.channel_id) /
+	//  has(ctx.workspace_id).
+	//  HOOK_EVENT_TYPE_PRE_OUTPUT: ctx.untrusted_class (string), ctx.surface
+	//  (string, "slack" or "web").
 	CelExpression *string `json:"celExpression,omitempty"`
 }
 

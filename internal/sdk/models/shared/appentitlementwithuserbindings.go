@@ -6,8 +6,7 @@ package shared
 type AppEntitlementWithUserBindings struct {
 	// An array of AppEntitlementUserBinding objects which represent the relationships that give app users access to the specific app entitlement.
 	AppEntitlementUserBindings []AppEntitlementUserBinding `json:"appEntitlementUserBindings,omitempty"`
-	// The app entitlement view contains the serialized app entitlement and paths to objects referenced by the app entitlement.
-	AppEntitlementView *AppEntitlementView `json:"entitlement,omitempty"`
+	Entitlement                *AppEntitlementView         `json:"entitlement,omitempty"`
 }
 
 func (a *AppEntitlementWithUserBindings) GetAppEntitlementUserBindings() []AppEntitlementUserBinding {
@@ -17,9 +16,9 @@ func (a *AppEntitlementWithUserBindings) GetAppEntitlementUserBindings() []AppEn
 	return a.AppEntitlementUserBindings
 }
 
-func (a *AppEntitlementWithUserBindings) GetAppEntitlementView() *AppEntitlementView {
+func (a *AppEntitlementWithUserBindings) GetEntitlement() *AppEntitlementView {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementView
+	return a.Entitlement
 }

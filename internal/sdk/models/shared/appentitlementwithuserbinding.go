@@ -4,22 +4,20 @@ package shared
 
 // The AppEntitlementWithUserBinding message.
 type AppEntitlementWithUserBinding struct {
-	// The AppEntitlementUserView (aka grant view) describes the relationship between an app user and an entitlement. They have more recently been referred to as grants.
-	AppEntitlementUserView *AppEntitlementUserView `json:"appEntitlementUserBinding,omitempty"`
-	// The app entitlement view contains the serialized app entitlement and paths to objects referenced by the app entitlement.
-	AppEntitlementView *AppEntitlementView `json:"entitlement,omitempty"`
+	AppEntitlementUserBinding *AppEntitlementUserView `json:"appEntitlementUserBinding,omitempty"`
+	Entitlement               *AppEntitlementView     `json:"entitlement,omitempty"`
 }
 
-func (a *AppEntitlementWithUserBinding) GetAppEntitlementUserView() *AppEntitlementUserView {
+func (a *AppEntitlementWithUserBinding) GetAppEntitlementUserBinding() *AppEntitlementUserView {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementUserView
+	return a.AppEntitlementUserBinding
 }
 
-func (a *AppEntitlementWithUserBinding) GetAppEntitlementView() *AppEntitlementView {
+func (a *AppEntitlementWithUserBinding) GetEntitlement() *AppEntitlementView {
 	if a == nil {
 		return nil
 	}
-	return a.AppEntitlementView
+	return a.Entitlement
 }

@@ -4,7 +4,6 @@ package shared
 
 // DeleteConnectorUserOwnerRequest is the request for deleting a user ownership source on a connector.
 type DeleteConnectorUserOwnerRequest struct {
-	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
 }
 

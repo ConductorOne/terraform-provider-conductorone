@@ -4,22 +4,15 @@ package shared
 
 // SSFReceiverStreamServiceUpdateRequest carries the stream to update and the mask of fields to modify.
 type SSFReceiverStreamServiceUpdateRequest struct {
-	// SSFReceiverStream is the public API representation.
-	//  Secrets (push_auth_token, outbound credentials) are write-only.
-	//
-	// This message contains a oneof named outbound_auth. Only a single field of the following list may be set at a time:
-	//   - outboundAuthBearer
-	//   - outboundAuthOauth2
-	//
-	SSFReceiverStream *SSFReceiverStreamInput `json:"ssfReceiverStream,omitempty"`
+	SsfReceiverStream *SSFReceiverStreamInput `json:"ssfReceiverStream,omitempty"`
 	UpdateMask        *string                 `json:"updateMask,omitempty"`
 }
 
-func (s *SSFReceiverStreamServiceUpdateRequest) GetSSFReceiverStream() *SSFReceiverStreamInput {
+func (s *SSFReceiverStreamServiceUpdateRequest) GetSsfReceiverStream() *SSFReceiverStreamInput {
 	if s == nil {
 		return nil
 	}
-	return s.SSFReceiverStream
+	return s.SsfReceiverStream
 }
 
 func (s *SSFReceiverStreamServiceUpdateRequest) GetUpdateMask() *string {

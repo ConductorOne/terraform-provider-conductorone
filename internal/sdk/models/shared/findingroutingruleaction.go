@@ -7,33 +7,39 @@ package shared
 // This message contains a oneof named action. Only a single field of the following list may be set at a time:
 //   - createTask
 //   - suppress
-//   - notify
+//   - snooze
+//   - acceptRisk
 type FindingRoutingRuleAction struct {
-	// The CreateTaskAction message.
-	CreateTaskAction *CreateTaskAction `json:"createTask,omitempty"`
-	// The NotifyAction message.
-	NotifyAction *NotifyAction `json:"notify,omitempty"`
-	// The SuppressRoutingAction message.
-	SuppressRoutingAction *SuppressRoutingAction `json:"suppress,omitempty"`
+	AcceptRisk *AcceptRiskRoutingAction `json:"acceptRisk,omitempty"`
+	CreateTask *CreateTaskAction        `json:"createTask,omitempty"`
+	Snooze     *SnoozeRoutingAction     `json:"snooze,omitempty"`
+	Suppress   *SuppressRoutingAction   `json:"suppress,omitempty"`
 }
 
-func (f *FindingRoutingRuleAction) GetCreateTaskAction() *CreateTaskAction {
+func (f *FindingRoutingRuleAction) GetAcceptRisk() *AcceptRiskRoutingAction {
 	if f == nil {
 		return nil
 	}
-	return f.CreateTaskAction
+	return f.AcceptRisk
 }
 
-func (f *FindingRoutingRuleAction) GetNotifyAction() *NotifyAction {
+func (f *FindingRoutingRuleAction) GetCreateTask() *CreateTaskAction {
 	if f == nil {
 		return nil
 	}
-	return f.NotifyAction
+	return f.CreateTask
 }
 
-func (f *FindingRoutingRuleAction) GetSuppressRoutingAction() *SuppressRoutingAction {
+func (f *FindingRoutingRuleAction) GetSnooze() *SnoozeRoutingAction {
 	if f == nil {
 		return nil
 	}
-	return f.SuppressRoutingAction
+	return f.Snooze
+}
+
+func (f *FindingRoutingRuleAction) GetSuppress() *SuppressRoutingAction {
+	if f == nil {
+		return nil
+	}
+	return f.Suppress
 }

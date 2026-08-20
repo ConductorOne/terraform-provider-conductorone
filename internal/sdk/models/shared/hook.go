@@ -14,6 +14,7 @@ const (
 	EventHookEventTypeUnspecified Event = "HOOK_EVENT_TYPE_UNSPECIFIED"
 	EventHookEventTypePreToolUse  Event = "HOOK_EVENT_TYPE_PRE_TOOL_USE"
 	EventHookEventTypePostToolUse Event = "HOOK_EVENT_TYPE_POST_TOOL_USE"
+	EventHookEventTypePreOutput   Event = "HOOK_EVENT_TYPE_PRE_OUTPUT"
 )
 
 func (e Event) ToPointer() *Event {
@@ -24,7 +25,7 @@ func (e Event) ToPointer() *Event {
 func (e *Event) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "HOOK_EVENT_TYPE_UNSPECIFIED", "HOOK_EVENT_TYPE_PRE_TOOL_USE", "HOOK_EVENT_TYPE_POST_TOOL_USE":
+		case "HOOK_EVENT_TYPE_UNSPECIFIED", "HOOK_EVENT_TYPE_PRE_TOOL_USE", "HOOK_EVENT_TYPE_POST_TOOL_USE", "HOOK_EVENT_TYPE_PRE_OUTPUT":
 			return true
 		}
 	}
@@ -36,18 +37,9 @@ func (e *Event) IsExact() bool {
 // This message contains a oneof named hook_type. Only a single field of the following list may be set at a time:
 //   - function
 //   - builtinPattern
+//   - jsonPatch
 type Hook struct {
-	// BuiltInPattern references a ConductorOne-maintained DLP pattern.
-	//  The specific pattern and its configuration are encoded as a oneof.
-	//
-	// This message contains a oneof named config. Only a single field of the following list may be set at a time:
-	//   - piiRedaction
-	//   - creditCardBlocking
-	//   - queryScopeLimit
-	//   - writeAuthorization
-	//   - sensitiveFileGuard
-	//
-	BuiltInPattern *BuiltInPattern `json:"builtinPattern,omitempty"`
+	BuiltinPattern *BuiltInPattern `json:"builtinPattern,omitempty"`
 	CreatedAt      *time.Time      `json:"createdAt,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
@@ -56,13 +48,17 @@ type Hook struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The event field.
-	Event *Event `json:"event,omitempty"`
-	// HookFilter determines which tool calls a hook applies to.
-	HookFilter *HookFilter `json:"filter,omitempty"`
-	// HookFunctionRef identifies a customer-authored function to invoke.
-	HookFunctionRef *HookFunctionRef `json:"function,omitempty"`
+	Event    *Event           `json:"event,omitempty"`
+	Filter   *HookFilter      `json:"filter,omitempty"`
+	Function *HookFunctionRef `json:"function,omitempty"`
 	// The id field.
-	ID *string `json:"id,omitempty"`
+	ID        *string          `json:"id,omitempty"`
+	JSONPatch *JSONPatchConfig `json:"jsonPatch,omitempty"`
+	// managed_by_guardrails marks a hook as selectable in a guardrail rule's
+	//  curated pre_hook_ids/post_hook_ids. A hook left false (the default,
+	//  including every pre-existing hook) always runs regardless of guardrail
+	//  state; a hook set true only runs when a matched rule selects it.
+	ManagedByGuardrails *bool `json:"managedByGuardrails,omitempty"`
 	// The priority field.
 	Priority  *int       `json:"priority,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -79,11 +75,11 @@ func (h *Hook) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (h *Hook) GetBuiltInPattern() *BuiltInPattern {
+func (h *Hook) GetBuiltinPattern() *BuiltInPattern {
 	if h == nil {
 		return nil
 	}
-	return h.BuiltInPattern
+	return h.BuiltinPattern
 }
 
 func (h *Hook) GetCreatedAt() *time.Time {
@@ -121,18 +117,18 @@ func (h *Hook) GetEvent() *Event {
 	return h.Event
 }
 
-func (h *Hook) GetHookFilter() *HookFilter {
+func (h *Hook) GetFilter() *HookFilter {
 	if h == nil {
 		return nil
 	}
-	return h.HookFilter
+	return h.Filter
 }
 
-func (h *Hook) GetHookFunctionRef() *HookFunctionRef {
+func (h *Hook) GetFunction() *HookFunctionRef {
 	if h == nil {
 		return nil
 	}
-	return h.HookFunctionRef
+	return h.Function
 }
 
 func (h *Hook) GetID() *string {
@@ -140,6 +136,20 @@ func (h *Hook) GetID() *string {
 		return nil
 	}
 	return h.ID
+}
+
+func (h *Hook) GetJSONPatch() *JSONPatchConfig {
+	if h == nil {
+		return nil
+	}
+	return h.JSONPatch
+}
+
+func (h *Hook) GetManagedByGuardrails() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.ManagedByGuardrails
 }
 
 func (h *Hook) GetPriority() *int {
@@ -161,18 +171,9 @@ func (h *Hook) GetUpdatedAt() *time.Time {
 // This message contains a oneof named hook_type. Only a single field of the following list may be set at a time:
 //   - function
 //   - builtinPattern
+//   - jsonPatch
 type HookInput struct {
-	// BuiltInPattern references a ConductorOne-maintained DLP pattern.
-	//  The specific pattern and its configuration are encoded as a oneof.
-	//
-	// This message contains a oneof named config. Only a single field of the following list may be set at a time:
-	//   - piiRedaction
-	//   - creditCardBlocking
-	//   - queryScopeLimit
-	//   - writeAuthorization
-	//   - sensitiveFileGuard
-	//
-	BuiltInPattern *BuiltInPattern `json:"builtinPattern,omitempty"`
+	BuiltinPattern *BuiltInPattern `json:"builtinPattern,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
@@ -180,22 +181,26 @@ type HookInput struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The event field.
-	Event *Event `json:"event,omitempty"`
-	// HookFilter determines which tool calls a hook applies to.
-	HookFilter *HookFilter `json:"filter,omitempty"`
-	// HookFunctionRef identifies a customer-authored function to invoke.
-	HookFunctionRef *HookFunctionRef `json:"function,omitempty"`
+	Event    *Event           `json:"event,omitempty"`
+	Filter   *HookFilter      `json:"filter,omitempty"`
+	Function *HookFunctionRef `json:"function,omitempty"`
 	// The id field.
-	ID *string `json:"id,omitempty"`
+	ID        *string          `json:"id,omitempty"`
+	JSONPatch *JSONPatchConfig `json:"jsonPatch,omitempty"`
+	// managed_by_guardrails marks a hook as selectable in a guardrail rule's
+	//  curated pre_hook_ids/post_hook_ids. A hook left false (the default,
+	//  including every pre-existing hook) always runs regardless of guardrail
+	//  state; a hook set true only runs when a matched rule selects it.
+	ManagedByGuardrails *bool `json:"managedByGuardrails,omitempty"`
 	// The priority field.
 	Priority *int `json:"priority,omitempty"`
 }
 
-func (h *HookInput) GetBuiltInPattern() *BuiltInPattern {
+func (h *HookInput) GetBuiltinPattern() *BuiltInPattern {
 	if h == nil {
 		return nil
 	}
-	return h.BuiltInPattern
+	return h.BuiltinPattern
 }
 
 func (h *HookInput) GetDescription() *string {
@@ -226,18 +231,18 @@ func (h *HookInput) GetEvent() *Event {
 	return h.Event
 }
 
-func (h *HookInput) GetHookFilter() *HookFilter {
+func (h *HookInput) GetFilter() *HookFilter {
 	if h == nil {
 		return nil
 	}
-	return h.HookFilter
+	return h.Filter
 }
 
-func (h *HookInput) GetHookFunctionRef() *HookFunctionRef {
+func (h *HookInput) GetFunction() *HookFunctionRef {
 	if h == nil {
 		return nil
 	}
-	return h.HookFunctionRef
+	return h.Function
 }
 
 func (h *HookInput) GetID() *string {
@@ -245,6 +250,20 @@ func (h *HookInput) GetID() *string {
 		return nil
 	}
 	return h.ID
+}
+
+func (h *HookInput) GetJSONPatch() *JSONPatchConfig {
+	if h == nil {
+		return nil
+	}
+	return h.JSONPatch
+}
+
+func (h *HookInput) GetManagedByGuardrails() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.ManagedByGuardrails
 }
 
 func (h *HookInput) GetPriority() *int {

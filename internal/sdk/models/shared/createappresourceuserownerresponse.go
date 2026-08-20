@@ -4,7 +4,6 @@ package shared
 
 // CreateAppResourceUserOwnerResponse is the response for creating a user ownership source on a resource.
 type CreateAppResourceUserOwnerResponse struct {
-	// AppResourceOwnerUser represents a user ownership source for an app resource.
 	AppResourceOwnerUser *AppResourceOwnerUser `json:"appResourceOwnerUser,omitempty"`
 }
 

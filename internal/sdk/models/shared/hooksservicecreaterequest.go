@@ -9,6 +9,7 @@ const (
 	HooksServiceCreateRequestEventHookEventTypeUnspecified HooksServiceCreateRequestEvent = "HOOK_EVENT_TYPE_UNSPECIFIED"
 	HooksServiceCreateRequestEventHookEventTypePreToolUse  HooksServiceCreateRequestEvent = "HOOK_EVENT_TYPE_PRE_TOOL_USE"
 	HooksServiceCreateRequestEventHookEventTypePostToolUse HooksServiceCreateRequestEvent = "HOOK_EVENT_TYPE_POST_TOOL_USE"
+	HooksServiceCreateRequestEventHookEventTypePreOutput   HooksServiceCreateRequestEvent = "HOOK_EVENT_TYPE_PRE_OUTPUT"
 )
 
 func (e HooksServiceCreateRequestEvent) ToPointer() *HooksServiceCreateRequestEvent {
@@ -19,7 +20,7 @@ func (e HooksServiceCreateRequestEvent) ToPointer() *HooksServiceCreateRequestEv
 func (e *HooksServiceCreateRequestEvent) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "HOOK_EVENT_TYPE_UNSPECIFIED", "HOOK_EVENT_TYPE_PRE_TOOL_USE", "HOOK_EVENT_TYPE_POST_TOOL_USE":
+		case "HOOK_EVENT_TYPE_UNSPECIFIED", "HOOK_EVENT_TYPE_PRE_TOOL_USE", "HOOK_EVENT_TYPE_POST_TOOL_USE", "HOOK_EVENT_TYPE_PRE_OUTPUT":
 			return true
 		}
 	}
@@ -31,18 +32,9 @@ func (e *HooksServiceCreateRequestEvent) IsExact() bool {
 // This message contains a oneof named hook_type. Only a single field of the following list may be set at a time:
 //   - function
 //   - builtinPattern
+//   - jsonPatch
 type HooksServiceCreateRequest struct {
-	// BuiltInPattern references a ConductorOne-maintained DLP pattern.
-	//  The specific pattern and its configuration are encoded as a oneof.
-	//
-	// This message contains a oneof named config. Only a single field of the following list may be set at a time:
-	//   - piiRedaction
-	//   - creditCardBlocking
-	//   - queryScopeLimit
-	//   - writeAuthorization
-	//   - sensitiveFileGuard
-	//
-	BuiltInPattern *BuiltInPattern `json:"builtinPattern,omitempty"`
+	BuiltinPattern *BuiltInPattern `json:"builtinPattern,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
@@ -50,20 +42,21 @@ type HooksServiceCreateRequest struct {
 	// The enabled field.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The event field.
-	Event *HooksServiceCreateRequestEvent `json:"event,omitempty"`
-	// HookFilter determines which tool calls a hook applies to.
-	HookFilter *HookFilter `json:"filter,omitempty"`
-	// HookFunctionRef identifies a customer-authored function to invoke.
-	HookFunctionRef *HookFunctionRef `json:"function,omitempty"`
+	Event     *HooksServiceCreateRequestEvent `json:"event,omitempty"`
+	Filter    *HookFilter                     `json:"filter,omitempty"`
+	Function  *HookFunctionRef                `json:"function,omitempty"`
+	JSONPatch *JSONPatchConfig                `json:"jsonPatch,omitempty"`
+	// The managedByGuardrails field.
+	ManagedByGuardrails *bool `json:"managedByGuardrails,omitempty"`
 	// The priority field.
 	Priority *int `json:"priority,omitempty"`
 }
 
-func (h *HooksServiceCreateRequest) GetBuiltInPattern() *BuiltInPattern {
+func (h *HooksServiceCreateRequest) GetBuiltinPattern() *BuiltInPattern {
 	if h == nil {
 		return nil
 	}
-	return h.BuiltInPattern
+	return h.BuiltinPattern
 }
 
 func (h *HooksServiceCreateRequest) GetDescription() *string {
@@ -94,18 +87,32 @@ func (h *HooksServiceCreateRequest) GetEvent() *HooksServiceCreateRequestEvent {
 	return h.Event
 }
 
-func (h *HooksServiceCreateRequest) GetHookFilter() *HookFilter {
+func (h *HooksServiceCreateRequest) GetFilter() *HookFilter {
 	if h == nil {
 		return nil
 	}
-	return h.HookFilter
+	return h.Filter
 }
 
-func (h *HooksServiceCreateRequest) GetHookFunctionRef() *HookFunctionRef {
+func (h *HooksServiceCreateRequest) GetFunction() *HookFunctionRef {
 	if h == nil {
 		return nil
 	}
-	return h.HookFunctionRef
+	return h.Function
+}
+
+func (h *HooksServiceCreateRequest) GetJSONPatch() *JSONPatchConfig {
+	if h == nil {
+		return nil
+	}
+	return h.JSONPatch
+}
+
+func (h *HooksServiceCreateRequest) GetManagedByGuardrails() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.ManagedByGuardrails
 }
 
 func (h *HooksServiceCreateRequest) GetPriority() *int {

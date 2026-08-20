@@ -4,14 +4,6 @@ package shared
 
 // The GrantFoundTrigger message.
 type GrantFoundTrigger struct {
-	// The GrantTriggerFilter message.
-	//
-	// This message contains a oneof named entitlement_inclusion. Only a single field of the following list may be set at a time:
-	//   - inclusionList
-	//   - inclusionAll
-	//   - inclusionCriteria
-	//   - inclusionListCel
-	//
 	GrantTriggerFilter *GrantTriggerFilter `json:"grantTriggerFilter,omitempty"`
 }
 

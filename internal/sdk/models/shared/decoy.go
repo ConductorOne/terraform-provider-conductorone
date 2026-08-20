@@ -7,23 +7,23 @@ import (
 	"time"
 )
 
-// Kind - The kind field.
-type Kind string
+// DecoyKind - The kind field.
+type DecoyKind string
 
 const (
-	KindDecoyKindUnspecified          Kind = "DECOY_KIND_UNSPECIFIED"
-	KindDecoyKindUserClientCredential Kind = "DECOY_KIND_USER_CLIENT_CREDENTIAL"
-	KindDecoyKindConnectorClient      Kind = "DECOY_KIND_CONNECTOR_CLIENT"
-	KindDecoyKindWorkloadFederation   Kind = "DECOY_KIND_WORKLOAD_FEDERATION"
-	KindDecoyKindAccessToken          Kind = "DECOY_KIND_ACCESS_TOKEN"
+	DecoyKindDecoyKindUnspecified          DecoyKind = "DECOY_KIND_UNSPECIFIED"
+	DecoyKindDecoyKindUserClientCredential DecoyKind = "DECOY_KIND_USER_CLIENT_CREDENTIAL"
+	DecoyKindDecoyKindConnectorClient      DecoyKind = "DECOY_KIND_CONNECTOR_CLIENT"
+	DecoyKindDecoyKindWorkloadFederation   DecoyKind = "DECOY_KIND_WORKLOAD_FEDERATION"
+	DecoyKindDecoyKindAccessToken          DecoyKind = "DECOY_KIND_ACCESS_TOKEN"
 )
 
-func (e Kind) ToPointer() *Kind {
+func (e DecoyKind) ToPointer() *DecoyKind {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Kind) IsExact() bool {
+func (e *DecoyKind) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "DECOY_KIND_UNSPECIFIED", "DECOY_KIND_USER_CLIENT_CREDENTIAL", "DECOY_KIND_CONNECTOR_CLIENT", "DECOY_KIND_WORKLOAD_FEDERATION", "DECOY_KIND_ACCESS_TOKEN":
@@ -33,15 +33,14 @@ func (e *Kind) IsExact() bool {
 	return false
 }
 
-// Decoy is the public projection of a planted honey-credential. Read-only
+// Decoy is the read projection of a planted honey-credential. All
 //
-//	surface; the variant-specific back-references live in c1models and are
-//	not exposed here.
+//	fields except annotations are server-managed.
 type Decoy struct {
 	// Customer-defined grouping/filtering bag. PATCH semantics on Update:
 	//  keys in the request overwrite, keys missing stay, keys set to empty
-	//  string delete. Copied into the resulting Finding's custom_tags so
-	//  routing rules can condition on the same keys.
+	//  string delete. Copied onto the Finding produced when a decoy fires,
+	//  so routing rules can condition on the same keys.
 	Annotations map[string]string `json:"annotations,omitempty"`
 	CreatedAt   *time.Time        `json:"createdAt,omitempty"`
 	// The description field.
@@ -53,8 +52,13 @@ type Decoy struct {
 	// The id field.
 	ID *string `json:"id,omitempty"`
 	// The kind field.
-	Kind      *Kind      `json:"kind,omitempty"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	Kind       *DecoyKind `json:"kind,omitempty"`
+	LastUsedAt *time.Time `json:"lastUsedAt,omitempty"`
+	// Hex-encoded SHA256 of the secret string vended at Create / Rotate.
+	//  Stable for the decoy's current material; changes only on Rotate.
+	//  Empty for WorkloadFederation decoys (no server-vended secret).
+	MaterialFingerprintSha256 *string    `json:"materialFingerprintSha256,omitempty"`
+	UpdatedAt                 *time.Time `json:"updatedAt,omitempty"`
 }
 
 func (d Decoy) MarshalJSON() ([]byte, error) {
@@ -110,11 +114,25 @@ func (d *Decoy) GetID() *string {
 	return d.ID
 }
 
-func (d *Decoy) GetKind() *Kind {
+func (d *Decoy) GetKind() *DecoyKind {
 	if d == nil {
 		return nil
 	}
 	return d.Kind
+}
+
+func (d *Decoy) GetLastUsedAt() *time.Time {
+	if d == nil {
+		return nil
+	}
+	return d.LastUsedAt
+}
+
+func (d *Decoy) GetMaterialFingerprintSha256() *string {
+	if d == nil {
+		return nil
+	}
+	return d.MaterialFingerprintSha256
 }
 
 func (d *Decoy) GetUpdatedAt() *time.Time {

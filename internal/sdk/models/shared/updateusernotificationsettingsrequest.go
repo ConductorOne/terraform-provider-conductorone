@@ -4,7 +4,6 @@ package shared
 
 // The UpdateUserNotificationSettingsRequest message.
 type UpdateUserNotificationSettingsRequest struct {
-	// ChannelSettings groups notification preferences for all supported channels.
 	ChannelSettings *ChannelSettings `json:"channelSettings,omitempty"`
 }
 

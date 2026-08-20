@@ -32,7 +32,7 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceCreateResponse(ct
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedWebhookEndpoint(ctx, resp.WebhookEndpoint)...)
+		diags.Append(r.RefreshFromSharedWebhookEndpoint(ctx, resp.Webhook)...)
 
 		if diags.HasError() {
 			return diags
@@ -47,7 +47,7 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceGetResponse(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedWebhookEndpoint(ctx, resp.WebhookEndpoint)...)
+		diags.Append(r.RefreshFromSharedWebhookEndpoint(ctx, resp.Webhook)...)
 
 		if diags.HasError() {
 			return diags
@@ -62,7 +62,7 @@ func (r *WebhookResourceModel) RefreshFromSharedWebhooksServiceUpdateResponse(ct
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedWebhookEndpoint(ctx, resp.WebhookEndpoint)...)
+		diags.Append(r.RefreshFromSharedWebhookEndpoint(ctx, resp.Webhook)...)
 
 		if diags.HasError() {
 			return diags
@@ -214,15 +214,15 @@ func (r *WebhookResourceModel) ToSharedWebhooksServiceDeleteRequest(ctx context.
 func (r *WebhookResourceModel) ToSharedWebhooksServiceUpdateRequest(ctx context.Context) (*shared.WebhooksServiceUpdateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	webhookEndpoint, webhookEndpointDiags := r.ToSharedWebhookEndpointInput(ctx)
-	diags.Append(webhookEndpointDiags...)
+	webhook, webhookDiags := r.ToSharedWebhookEndpointInput(ctx)
+	diags.Append(webhookDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := shared.WebhooksServiceUpdateRequest{
-		WebhookEndpoint: webhookEndpoint,
+		Webhook: webhook,
 	}
 
 	return &out, diags

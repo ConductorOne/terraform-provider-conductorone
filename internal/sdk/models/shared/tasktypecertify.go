@@ -35,6 +35,9 @@ func (e *TaskTypeCertifyOutcome) IsExact() bool {
 }
 
 // The TaskTypeCertify message indicates that a task is a certify task and all related details.
+//
+// This message contains a oneof named principal. Only a single field of the following list may be set at a time:
+//   - resource
 type TaskTypeCertify struct {
 	// The ID of the access review.
 	AccessReviewID *string `json:"accessReviewId,omitempty"`
@@ -51,6 +54,7 @@ type TaskTypeCertify struct {
 	// The outcome of the certification.
 	Outcome     *TaskTypeCertifyOutcome `json:"outcome,omitempty"`
 	OutcomeTime *time.Time              `json:"outcomeTime,omitempty"`
+	Resource    *AppResourceRef         `json:"resource,omitempty"`
 }
 
 func (t TaskTypeCertify) MarshalJSON() ([]byte, error) {
@@ -118,4 +122,11 @@ func (t *TaskTypeCertify) GetOutcomeTime() *time.Time {
 		return nil
 	}
 	return t.OutcomeTime
+}
+
+func (t *TaskTypeCertify) GetResource() *AppResourceRef {
+	if t == nil {
+		return nil
+	}
+	return t.Resource
 }

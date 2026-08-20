@@ -2,26 +2,9 @@
 
 package shared
 
-// DecoyConnectorClientInput requests a ConnectorClientCredential decoy
+// DecoyConnectorClientInput plants a connector-shaped credential decoy.
 //
-//	planted under an existing app+connector.
+//	The server allocates placement under the tenant's ConductorOne app;
+//	the customer makes no app/connector choice.
 type DecoyConnectorClientInput struct {
-	// The appId field.
-	AppID *string `json:"appId,omitempty"`
-	// The connectorId field.
-	ConnectorID *string `json:"connectorId,omitempty"`
-}
-
-func (d *DecoyConnectorClientInput) GetAppID() *string {
-	if d == nil {
-		return nil
-	}
-	return d.AppID
-}
-
-func (d *DecoyConnectorClientInput) GetConnectorID() *string {
-	if d == nil {
-		return nil
-	}
-	return d.ConnectorID
 }

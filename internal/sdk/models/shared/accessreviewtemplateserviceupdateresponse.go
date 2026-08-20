@@ -4,12 +4,6 @@ package shared
 
 // The AccessReviewTemplateServiceUpdateResponse message.
 type AccessReviewTemplateServiceUpdateResponse struct {
-	// A reusable template that defines the configuration for creating access review campaigns.
-	//  Templates can optionally be scheduled to automatically create campaigns on a recurring basis.
-	//
-	// This message contains a oneof named slack_channel_details. Only a single field of the following list may be set at a time:
-	//   - slackChannel
-	//
 	AccessReviewTemplate *AccessReviewTemplate `json:"accessReviewTemplate,omitempty"`
 }
 

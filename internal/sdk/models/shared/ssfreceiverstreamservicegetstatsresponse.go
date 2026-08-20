@@ -4,13 +4,12 @@ package shared
 
 // SSFReceiverStreamServiceGetStatsResponse contains the event processing statistics for the stream.
 type SSFReceiverStreamServiceGetStatsResponse struct {
-	// SSFReceiverStreamStats is a lightweight read-only stats object.
-	SSFReceiverStreamStats *SSFReceiverStreamStats `json:"stats,omitempty"`
+	Stats *SSFReceiverStreamStats `json:"stats,omitempty"`
 }
 
-func (s *SSFReceiverStreamServiceGetStatsResponse) GetSSFReceiverStreamStats() *SSFReceiverStreamStats {
+func (s *SSFReceiverStreamServiceGetStatsResponse) GetStats() *SSFReceiverStreamStats {
 	if s == nil {
 		return nil
 	}
-	return s.SSFReceiverStreamStats
+	return s.Stats
 }

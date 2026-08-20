@@ -14,12 +14,12 @@ func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestS
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.AppEntitlementRef == nil {
-			r.AppEntitlementRef = nil
+		if resp.EntitlementRef == nil {
+			r.EntitlementRef = nil
 		} else {
-			r.AppEntitlementRef = &tfTypes.AppEntitlementRef{}
-			r.AppEntitlementRef.AppID = types.StringPointerValue(resp.AppEntitlementRef.AppID)
-			r.AppEntitlementRef.ID = types.StringPointerValue(resp.AppEntitlementRef.ID)
+			r.EntitlementRef = &tfTypes.AppEntitlementRef{}
+			r.EntitlementRef.AppID = types.StringPointerValue(resp.EntitlementRef.AppID)
+			r.EntitlementRef.ID = types.StringPointerValue(resp.EntitlementRef.ID)
 		}
 		r.RequestSchemaID = types.StringPointerValue(resp.RequestSchemaID)
 	}
@@ -31,12 +31,12 @@ func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestS
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.AppEntitlementRef == nil {
-			r.AppEntitlementRef = nil
+		if resp.EntitlementRef == nil {
+			r.EntitlementRef = nil
 		} else {
-			r.AppEntitlementRef = &tfTypes.AppEntitlementRef{}
-			r.AppEntitlementRef.AppID = types.StringPointerValue(resp.AppEntitlementRef.AppID)
-			r.AppEntitlementRef.ID = types.StringPointerValue(resp.AppEntitlementRef.ID)
+			r.EntitlementRef = &tfTypes.AppEntitlementRef{}
+			r.EntitlementRef.AppID = types.StringPointerValue(resp.EntitlementRef.AppID)
+			r.EntitlementRef.ID = types.StringPointerValue(resp.EntitlementRef.ID)
 		}
 		r.RequestSchemaID = types.StringPointerValue(resp.RequestSchemaID)
 	}
@@ -47,21 +47,21 @@ func (r *RequestSchemaEntitlementBindingResourceModel) RefreshFromSharedRequestS
 func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceCreateEntitlementBindingRequest(ctx context.Context) (*shared.RequestSchemaServiceCreateEntitlementBindingRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appEntitlementRef *shared.AppEntitlementRef
-	if r.AppEntitlementRef != nil {
+	var entitlementRef *shared.AppEntitlementRef
+	if r.EntitlementRef != nil {
 		appID := new(string)
-		if !r.AppEntitlementRef.AppID.IsUnknown() && !r.AppEntitlementRef.AppID.IsNull() {
-			*appID = r.AppEntitlementRef.AppID.ValueString()
+		if !r.EntitlementRef.AppID.IsUnknown() && !r.EntitlementRef.AppID.IsNull() {
+			*appID = r.EntitlementRef.AppID.ValueString()
 		} else {
 			appID = nil
 		}
 		id := new(string)
-		if !r.AppEntitlementRef.ID.IsUnknown() && !r.AppEntitlementRef.ID.IsNull() {
-			*id = r.AppEntitlementRef.ID.ValueString()
+		if !r.EntitlementRef.ID.IsUnknown() && !r.EntitlementRef.ID.IsNull() {
+			*id = r.EntitlementRef.ID.ValueString()
 		} else {
 			id = nil
 		}
-		appEntitlementRef = &shared.AppEntitlementRef{
+		entitlementRef = &shared.AppEntitlementRef{
 			AppID: appID,
 			ID:    id,
 		}
@@ -73,8 +73,8 @@ func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServ
 		requestSchemaID = nil
 	}
 	out := shared.RequestSchemaServiceCreateEntitlementBindingRequest{
-		AppEntitlementRef: appEntitlementRef,
-		RequestSchemaID:   requestSchemaID,
+		EntitlementRef:  entitlementRef,
+		RequestSchemaID: requestSchemaID,
 	}
 
 	return &out, diags
@@ -83,27 +83,27 @@ func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServ
 func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceFindBindingForAppEntitlementRequest(ctx context.Context) (*shared.RequestSchemaServiceFindBindingForAppEntitlementRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appEntitlementRef *shared.AppEntitlementRef
-	if r.AppEntitlementRef != nil {
+	var entitlementRef *shared.AppEntitlementRef
+	if r.EntitlementRef != nil {
 		appID := new(string)
-		if !r.AppEntitlementRef.AppID.IsUnknown() && !r.AppEntitlementRef.AppID.IsNull() {
-			*appID = r.AppEntitlementRef.AppID.ValueString()
+		if !r.EntitlementRef.AppID.IsUnknown() && !r.EntitlementRef.AppID.IsNull() {
+			*appID = r.EntitlementRef.AppID.ValueString()
 		} else {
 			appID = nil
 		}
 		id := new(string)
-		if !r.AppEntitlementRef.ID.IsUnknown() && !r.AppEntitlementRef.ID.IsNull() {
-			*id = r.AppEntitlementRef.ID.ValueString()
+		if !r.EntitlementRef.ID.IsUnknown() && !r.EntitlementRef.ID.IsNull() {
+			*id = r.EntitlementRef.ID.ValueString()
 		} else {
 			id = nil
 		}
-		appEntitlementRef = &shared.AppEntitlementRef{
+		entitlementRef = &shared.AppEntitlementRef{
 			AppID: appID,
 			ID:    id,
 		}
 	}
 	out := shared.RequestSchemaServiceFindBindingForAppEntitlementRequest{
-		AppEntitlementRef: appEntitlementRef,
+		EntitlementRef: entitlementRef,
 	}
 
 	return &out, diags
@@ -112,21 +112,21 @@ func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServ
 func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServiceRemoveEntitlementBindingRequest(ctx context.Context) (*shared.RequestSchemaServiceRemoveEntitlementBindingRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var appEntitlementRef *shared.AppEntitlementRef
-	if r.AppEntitlementRef != nil {
+	var entitlementRef *shared.AppEntitlementRef
+	if r.EntitlementRef != nil {
 		appID := new(string)
-		if !r.AppEntitlementRef.AppID.IsUnknown() && !r.AppEntitlementRef.AppID.IsNull() {
-			*appID = r.AppEntitlementRef.AppID.ValueString()
+		if !r.EntitlementRef.AppID.IsUnknown() && !r.EntitlementRef.AppID.IsNull() {
+			*appID = r.EntitlementRef.AppID.ValueString()
 		} else {
 			appID = nil
 		}
 		id := new(string)
-		if !r.AppEntitlementRef.ID.IsUnknown() && !r.AppEntitlementRef.ID.IsNull() {
-			*id = r.AppEntitlementRef.ID.ValueString()
+		if !r.EntitlementRef.ID.IsUnknown() && !r.EntitlementRef.ID.IsNull() {
+			*id = r.EntitlementRef.ID.ValueString()
 		} else {
 			id = nil
 		}
-		appEntitlementRef = &shared.AppEntitlementRef{
+		entitlementRef = &shared.AppEntitlementRef{
 			AppID: appID,
 			ID:    id,
 		}
@@ -138,8 +138,8 @@ func (r *RequestSchemaEntitlementBindingResourceModel) ToSharedRequestSchemaServ
 		requestSchemaID = nil
 	}
 	out := shared.RequestSchemaServiceRemoveEntitlementBindingRequest{
-		AppEntitlementRef: appEntitlementRef,
-		RequestSchemaID:   requestSchemaID,
+		EntitlementRef:  entitlementRef,
+		RequestSchemaID: requestSchemaID,
 	}
 
 	return &out, diags

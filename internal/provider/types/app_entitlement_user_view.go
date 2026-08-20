@@ -7,9 +7,12 @@ import (
 )
 
 type AppEntitlementUserView struct {
-	AppUserView                            *AppUserView        `tfsdk:"app_user_view"`
+	AppEntitlementID                       types.String        `tfsdk:"app_entitlement_id"`
 	AppEntitlementUserBindingCreatedAt     types.String        `tfsdk:"app_entitlement_user_binding_created_at"`
 	AppEntitlementUserBindingDeprovisionAt types.String        `tfsdk:"app_entitlement_user_binding_deprovision_at"`
+	AppID                                  types.String        `tfsdk:"app_id"`
+	AppUser                                *AppUserView        `tfsdk:"app_user"`
+	AppUserID                              types.String        `tfsdk:"app_user_id"`
 	GrantSources                           []AppEntitlementRef `tfsdk:"grant_sources"`
 	OriginatingTicketID                    types.String        `tfsdk:"originating_ticket_id"`
 }

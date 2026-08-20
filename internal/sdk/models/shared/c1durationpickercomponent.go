@@ -6,51 +6,30 @@ package shared
 //
 //	Value is duration in seconds bound to the given path.
 type C1DurationPickerComponent struct {
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString *DynamicString `json:"label,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber *DynamicNumber `json:"maxDurationSeconds,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber1 *DynamicNumber `json:"value,omitempty"`
+	Label              *DynamicString `json:"label,omitempty"`
+	MaxDurationSeconds *DynamicNumber `json:"maxDurationSeconds,omitempty"`
+	Value              *DynamicNumber `json:"value,omitempty"`
 }
 
-func (c *C1DurationPickerComponent) GetDynamicString() *DynamicString {
+func (c *C1DurationPickerComponent) GetLabel() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString
+	return c.Label
 }
 
-func (c *C1DurationPickerComponent) GetDynamicNumber() *DynamicNumber {
+func (c *C1DurationPickerComponent) GetMaxDurationSeconds() *DynamicNumber {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicNumber
+	return c.MaxDurationSeconds
 }
 
-func (c *C1DurationPickerComponent) GetDynamicNumber1() *DynamicNumber {
+func (c *C1DurationPickerComponent) GetValue() *DynamicNumber {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicNumber1
+	return c.Value
 }
 
 // #region class-body-c1durationpickercomponent

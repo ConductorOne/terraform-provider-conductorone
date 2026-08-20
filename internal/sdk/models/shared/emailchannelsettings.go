@@ -4,70 +4,62 @@ package shared
 
 // The EmailChannelSettings message.
 type EmailChannelSettings struct {
-	// The AccessProvisionedPreference message.
-	AccessProvisionedPreference *AccessProvisionedPreference `json:"accessProvisioned,omitempty"`
-	// The ApprovalNeededPreference message.
-	ApprovalNeededPreference *ApprovalNeededPreference `json:"approvalNeeded,omitempty"`
-	// The CommentOnRequestPreference message.
-	CommentOnRequestPreference *CommentOnRequestPreference `json:"commentOnRequest,omitempty"`
-	// The CompletionPreference message.
-	CompletionPreference *CompletionPreference `json:"completion,omitempty"`
-	// The ConnectorIssuesPreference message.
-	ConnectorIssuesPreference *ConnectorIssuesPreference `json:"connectorIssues,omitempty"`
-	// DigestPreference controls whether summary digest notifications are sent and how often.
-	DigestPreference *DigestPreference `json:"digest,omitempty"`
+	AccessProvisioned *AccessProvisionedPreference `json:"accessProvisioned,omitempty"`
+	ApprovalNeeded    *ApprovalNeededPreference    `json:"approvalNeeded,omitempty"`
+	CommentOnRequest  *CommentOnRequestPreference  `json:"commentOnRequest,omitempty"`
+	Completion        *CompletionPreference        `json:"completion,omitempty"`
+	ConnectorIssues   *ConnectorIssuesPreference   `json:"connectorIssues,omitempty"`
+	Digest            *DigestPreference            `json:"digest,omitempty"`
 	// The enabled field.
-	Enabled *bool `json:"enabled,omitempty"`
-	// The ExpiringAccessPreference message.
-	ExpiringAccessPreference *ExpiringAccessPreference `json:"expiringAccess,omitempty"`
-	// The ProvisioningRequestPreference message.
-	ProvisioningRequestPreference *ProvisioningRequestPreference `json:"provisioningRequest,omitempty"`
-	// The ReviewsPreference message.
-	ReviewsPreference *ReviewsPreference `json:"reviews,omitempty"`
-	// The TaskRemindersPreference message.
-	TaskRemindersPreference *TaskRemindersPreference `json:"taskReminders,omitempty"`
+	Enabled             *bool                          `json:"enabled,omitempty"`
+	ExpiringAccess      *ExpiringAccessPreference      `json:"expiringAccess,omitempty"`
+	ProvisioningRequest *ProvisioningRequestPreference `json:"provisioningRequest,omitempty"`
+	RequestCreated      *RequestCreatedPreference      `json:"requestCreated,omitempty"`
+	Reviews             *ReviewsPreference             `json:"reviews,omitempty"`
+	System              *SystemPreference              `json:"system,omitempty"`
+	TaskReminders       *TaskRemindersPreference       `json:"taskReminders,omitempty"`
 }
 
-func (e *EmailChannelSettings) GetAccessProvisionedPreference() *AccessProvisionedPreference {
+func (e *EmailChannelSettings) GetAccessProvisioned() *AccessProvisionedPreference {
 	if e == nil {
 		return nil
 	}
-	return e.AccessProvisionedPreference
+	return e.AccessProvisioned
 }
 
-func (e *EmailChannelSettings) GetApprovalNeededPreference() *ApprovalNeededPreference {
+func (e *EmailChannelSettings) GetApprovalNeeded() *ApprovalNeededPreference {
 	if e == nil {
 		return nil
 	}
-	return e.ApprovalNeededPreference
+	return e.ApprovalNeeded
 }
 
-func (e *EmailChannelSettings) GetCommentOnRequestPreference() *CommentOnRequestPreference {
+func (e *EmailChannelSettings) GetCommentOnRequest() *CommentOnRequestPreference {
 	if e == nil {
 		return nil
 	}
-	return e.CommentOnRequestPreference
+	return e.CommentOnRequest
 }
 
-func (e *EmailChannelSettings) GetCompletionPreference() *CompletionPreference {
+func (e *EmailChannelSettings) GetCompletion() *CompletionPreference {
 	if e == nil {
 		return nil
 	}
-	return e.CompletionPreference
+	return e.Completion
 }
 
-func (e *EmailChannelSettings) GetConnectorIssuesPreference() *ConnectorIssuesPreference {
+func (e *EmailChannelSettings) GetConnectorIssues() *ConnectorIssuesPreference {
 	if e == nil {
 		return nil
 	}
-	return e.ConnectorIssuesPreference
+	return e.ConnectorIssues
 }
 
-func (e *EmailChannelSettings) GetDigestPreference() *DigestPreference {
+func (e *EmailChannelSettings) GetDigest() *DigestPreference {
 	if e == nil {
 		return nil
 	}
-	return e.DigestPreference
+	return e.Digest
 }
 
 func (e *EmailChannelSettings) GetEnabled() *bool {
@@ -77,30 +69,44 @@ func (e *EmailChannelSettings) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EmailChannelSettings) GetExpiringAccessPreference() *ExpiringAccessPreference {
+func (e *EmailChannelSettings) GetExpiringAccess() *ExpiringAccessPreference {
 	if e == nil {
 		return nil
 	}
-	return e.ExpiringAccessPreference
+	return e.ExpiringAccess
 }
 
-func (e *EmailChannelSettings) GetProvisioningRequestPreference() *ProvisioningRequestPreference {
+func (e *EmailChannelSettings) GetProvisioningRequest() *ProvisioningRequestPreference {
 	if e == nil {
 		return nil
 	}
-	return e.ProvisioningRequestPreference
+	return e.ProvisioningRequest
 }
 
-func (e *EmailChannelSettings) GetReviewsPreference() *ReviewsPreference {
+func (e *EmailChannelSettings) GetRequestCreated() *RequestCreatedPreference {
 	if e == nil {
 		return nil
 	}
-	return e.ReviewsPreference
+	return e.RequestCreated
 }
 
-func (e *EmailChannelSettings) GetTaskRemindersPreference() *TaskRemindersPreference {
+func (e *EmailChannelSettings) GetReviews() *ReviewsPreference {
 	if e == nil {
 		return nil
 	}
-	return e.TaskRemindersPreference
+	return e.Reviews
+}
+
+func (e *EmailChannelSettings) GetSystem() *SystemPreference {
+	if e == nil {
+		return nil
+	}
+	return e.System
+}
+
+func (e *EmailChannelSettings) GetTaskReminders() *TaskRemindersPreference {
+	if e == nil {
+		return nil
+	}
+	return e.TaskReminders
 }

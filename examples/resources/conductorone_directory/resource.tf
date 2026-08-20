@@ -1,12 +1,12 @@
 resource "conductorone_directory" "my_directory" {
-  app_id = "...my_app_id..."
-  directory_account_filter_all = {
+  all = {
     # ...
   }
-  directory_account_filter_cel = {
+  app_id = "...my_app_id..."
+  cel_expression = {
     expression = "...my_expression..."
   }
-  directory_merge_config = {
+  merge_config = {
     match_cases = [
       {
         app_user_key_cel = "...my_app_user_key_cel..."

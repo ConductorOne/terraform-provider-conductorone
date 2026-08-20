@@ -3,11 +3,6 @@ resource "conductorone_automation" "my_automation" {
     key = "value"
   }
   app_id = "...my_app_id..."
-  automation_context = {
-    context = {
-      # ...
-    }
-  }
   automation_steps = [
     {
       account_lifecycle_action = {
@@ -89,7 +84,7 @@ resource "conductorone_automation" "my_automation" {
         }
       }
       create_revoke_tasks_v2 = {
-        entitlement_exclusion_criteria = {
+        exclusion_criteria = {
           excluded_app_ids = [
             "..."
           ]
@@ -103,7 +98,7 @@ resource "conductorone_automation" "my_automation" {
             "..."
           ]
         }
-        entitlement_exclusion_list = {
+        exclusion_list = {
           excluded_app_entitlement_refs = [
             {
               app_id = "...my_app_id..."
@@ -111,19 +106,20 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
-        entitlement_exclusion_list_cel = {
+        exclusion_list_cel = {
           excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
         }
-        entitlement_exclusion_none = {
+        exclusion_none = {
           # ...
         }
-        entitlement_inclusion_access_only = {
+        grant_source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
+        inclusion_access_only = {
           # ...
         }
-        entitlement_inclusion_all = {
+        inclusion_all = {
           # ...
         }
-        entitlement_inclusion_criteria = {
+        inclusion_criteria = {
           app_ids = [
             "..."
           ]
@@ -137,7 +133,7 @@ resource "conductorone_automation" "my_automation" {
             "..."
           ]
         }
-        entitlement_inclusion_list = {
+        inclusion_list = {
           app_entitlement_refs = [
             {
               app_id = "...my_app_id..."
@@ -145,7 +141,7 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
-        entitlement_inclusion_list_cel = {
+        inclusion_list_cel = {
           app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         }
         use_subject_user = false
@@ -164,21 +160,21 @@ resource "conductorone_automation" "my_automation" {
         ]
       }
       generate_password = {
-        generate_password_policy = {
+        password_policy_id = "...my_password_policy_id..."
+        policy = {
           custom_characters          = "...my_custom_characters..."
           excluded_characters        = "...my_excluded_characters..."
-          max_character_count        = 9
-          min_character_count        = 0
-          no_restrictions            = false
+          max_character_count        = 8
+          min_character_count        = 9
+          no_restrictions            = true
           require_lowercase          = false
           require_numbers            = true
-          require_special_characters = false
-          require_uppercase          = false
+          require_special_characters = true
+          require_uppercase          = true
         }
-        password_policy_id = "...my_password_policy_id..."
       }
       grant_entitlements = {
-        grant_entitlement_exclusion_criteria = {
+        exclusion_criteria = {
           excluded_app_ids = [
             "..."
           ]
@@ -189,7 +185,7 @@ resource "conductorone_automation" "my_automation" {
             "..."
           ]
         }
-        grant_entitlement_exclusion_list = {
+        exclusion_list = {
           excluded_app_entitlement_refs = [
             {
               app_id = "...my_app_id..."
@@ -197,13 +193,13 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
-        grant_entitlement_exclusion_list_cel = {
+        exclusion_list_cel = {
           excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
         }
-        grant_entitlement_exclusion_none = {
+        exclusion_none = {
           # ...
         }
-        grant_entitlement_inclusion_criteria = {
+        inclusion_criteria = {
           app_ids = [
             "..."
           ]
@@ -214,7 +210,7 @@ resource "conductorone_automation" "my_automation" {
             "..."
           ]
         }
-        grant_entitlement_inclusion_list = {
+        inclusion_list = {
           app_entitlement_refs = [
             {
               app_id = "...my_app_id..."
@@ -222,7 +218,7 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
-        grant_entitlement_inclusion_list_cel = {
+        inclusion_list_cel = {
           app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         }
         use_subject_user = true
@@ -233,24 +229,24 @@ resource "conductorone_automation" "my_automation" {
       }
       remove_from_delegation = {
         replacement_user_id_cel = "...my_replacement_user_id_cel..."
-        use_subject_user        = true
-        user_id_cel             = "...my_user_id_cel..."
-        user_ref = {
+        replacement_user_ref = {
           id = "...my_id..."
         }
-        user_ref1 = {
+        use_subject_user = true
+        user_id_cel      = "...my_user_id_cel..."
+        user_ref = {
           id = "...my_id..."
         }
       }
       run_automation = {
-        automation_context = {
-          context = {
-            # ...
-          }
-        }
         automation_template_id_cel = "...my_automation_template_id_cel..."
         automation_template_ref = {
           id = "...my_id..."
+        }
+        context = {
+          context = {
+            # ...
+          }
         }
       }
       send_email = {
@@ -269,6 +265,7 @@ resource "conductorone_automation" "my_automation" {
       }
       send_slack_message = {
         body             = "...my_body..."
+        channel_is_id    = true
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
         use_subject_user = false
@@ -303,23 +300,23 @@ resource "conductorone_automation" "my_automation" {
         vault_type          = "STORE_CREDENTIAL_VAULT_TYPE_UNSPECIFIED"
       }
       task_action = {
-        close_action = {
+        close = {
           use_subject_user = false
           user_id_cel      = "...my_user_id_cel..."
           user_ref = {
             id = "...my_id..."
           }
         }
-        reassign_action = {
+        reassign = {
           assignee_user_id_cel = "...my_assignee_user_id_cel..."
-          subject_user_id_cel  = "...my_subject_user_id_cel..."
-          use_subject_user     = false
-          user_ref = {
+          assignee_user_ref = {
             id = "...my_id..."
           }
-          user_ref1 = {
+          subject_user_id_cel = "...my_subject_user_id_cel..."
+          subject_user_ref = {
             id = "...my_id..."
           }
+          use_subject_user = false
         }
         task_types = [
           "TASK_TYPE_REVOKE"
@@ -365,8 +362,13 @@ resource "conductorone_automation" "my_automation" {
   }
   circuit_breaker_max    = 3
   circuit_breaker_period = "CIRCUIT_BREAKER_PERIOD_MONTH"
-  description            = "...my_description..."
-  display_name           = "...my_display_name..."
+  context = {
+    context = {
+      # ...
+    }
+  }
+  description  = "...my_description..."
+  display_name = "...my_display_name..."
   draft_automation_steps = [
     {
       account_lifecycle_action = {
@@ -448,7 +450,7 @@ resource "conductorone_automation" "my_automation" {
         }
       }
       create_revoke_tasks_v2 = {
-        entitlement_exclusion_criteria = {
+        exclusion_criteria = {
           excluded_app_ids = [
             "..."
           ]
@@ -462,7 +464,7 @@ resource "conductorone_automation" "my_automation" {
             "..."
           ]
         }
-        entitlement_exclusion_list = {
+        exclusion_list = {
           excluded_app_entitlement_refs = [
             {
               app_id = "...my_app_id..."
@@ -470,19 +472,20 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
-        entitlement_exclusion_list_cel = {
+        exclusion_list_cel = {
           excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
         }
-        entitlement_exclusion_none = {
+        exclusion_none = {
           # ...
         }
-        entitlement_inclusion_access_only = {
+        grant_source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
+        inclusion_access_only = {
           # ...
         }
-        entitlement_inclusion_all = {
+        inclusion_all = {
           # ...
         }
-        entitlement_inclusion_criteria = {
+        inclusion_criteria = {
           app_ids = [
             "..."
           ]
@@ -496,7 +499,7 @@ resource "conductorone_automation" "my_automation" {
             "..."
           ]
         }
-        entitlement_inclusion_list = {
+        inclusion_list = {
           app_entitlement_refs = [
             {
               app_id = "...my_app_id..."
@@ -504,7 +507,7 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
-        entitlement_inclusion_list_cel = {
+        inclusion_list_cel = {
           app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         }
         use_subject_user = false
@@ -523,21 +526,21 @@ resource "conductorone_automation" "my_automation" {
         ]
       }
       generate_password = {
-        generate_password_policy = {
+        password_policy_id = "...my_password_policy_id..."
+        policy = {
           custom_characters          = "...my_custom_characters..."
           excluded_characters        = "...my_excluded_characters..."
-          max_character_count        = 5
-          min_character_count        = 8
+          max_character_count        = 6
+          min_character_count        = 6
           no_restrictions            = false
           require_lowercase          = true
-          require_numbers            = false
-          require_special_characters = false
+          require_numbers            = true
+          require_special_characters = true
           require_uppercase          = false
         }
-        password_policy_id = "...my_password_policy_id..."
       }
       grant_entitlements = {
-        grant_entitlement_exclusion_criteria = {
+        exclusion_criteria = {
           excluded_app_ids = [
             "..."
           ]
@@ -548,7 +551,7 @@ resource "conductorone_automation" "my_automation" {
             "..."
           ]
         }
-        grant_entitlement_exclusion_list = {
+        exclusion_list = {
           excluded_app_entitlement_refs = [
             {
               app_id = "...my_app_id..."
@@ -556,13 +559,13 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
-        grant_entitlement_exclusion_list_cel = {
+        exclusion_list_cel = {
           excluded_app_entitlement_refs_cel = "...my_excluded_app_entitlement_refs_cel..."
         }
-        grant_entitlement_exclusion_none = {
+        exclusion_none = {
           # ...
         }
-        grant_entitlement_inclusion_criteria = {
+        inclusion_criteria = {
           app_ids = [
             "..."
           ]
@@ -573,7 +576,7 @@ resource "conductorone_automation" "my_automation" {
             "..."
           ]
         }
-        grant_entitlement_inclusion_list = {
+        inclusion_list = {
           app_entitlement_refs = [
             {
               app_id = "...my_app_id..."
@@ -581,7 +584,7 @@ resource "conductorone_automation" "my_automation" {
             }
           ]
         }
-        grant_entitlement_inclusion_list_cel = {
+        inclusion_list_cel = {
           app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
         }
         use_subject_user = true
@@ -592,24 +595,24 @@ resource "conductorone_automation" "my_automation" {
       }
       remove_from_delegation = {
         replacement_user_id_cel = "...my_replacement_user_id_cel..."
-        use_subject_user        = true
-        user_id_cel             = "...my_user_id_cel..."
-        user_ref = {
+        replacement_user_ref = {
           id = "...my_id..."
         }
-        user_ref1 = {
+        use_subject_user = true
+        user_id_cel      = "...my_user_id_cel..."
+        user_ref = {
           id = "...my_id..."
         }
       }
       run_automation = {
-        automation_context = {
-          context = {
-            # ...
-          }
-        }
         automation_template_id_cel = "...my_automation_template_id_cel..."
         automation_template_ref = {
           id = "...my_id..."
+        }
+        context = {
+          context = {
+            # ...
+          }
         }
       }
       send_email = {
@@ -628,6 +631,7 @@ resource "conductorone_automation" "my_automation" {
       }
       send_slack_message = {
         body             = "...my_body..."
+        channel_is_id    = true
         channel_name     = "...my_channel_name..."
         channel_name_cel = "...my_channel_name_cel..."
         use_subject_user = true
@@ -662,23 +666,23 @@ resource "conductorone_automation" "my_automation" {
         vault_type          = "STORE_CREDENTIAL_VAULT_TYPE_PAPER_VAULT"
       }
       task_action = {
-        close_action = {
+        close = {
           use_subject_user = false
           user_id_cel      = "...my_user_id_cel..."
           user_ref = {
             id = "...my_id..."
           }
         }
-        reassign_action = {
+        reassign = {
           assignee_user_id_cel = "...my_assignee_user_id_cel..."
-          subject_user_id_cel  = "...my_subject_user_id_cel..."
-          use_subject_user     = false
-          user_ref = {
+          assignee_user_ref = {
             id = "...my_id..."
           }
-          user_ref1 = {
+          subject_user_id_cel = "...my_subject_user_id_cel..."
+          subject_user_ref = {
             id = "...my_id..."
           }
+          use_subject_user = true
         }
         task_types = [
           "TASK_TYPE_UNSPECIFIED"
@@ -721,7 +725,7 @@ resource "conductorone_automation" "my_automation" {
   ]
   draft_triggers = [
     {
-      access_conflict_trigger = {
+      access_conflict = {
         all_conflict_monitors = true
         conflict_monitor_refs = {
           conflict_monitor_refs = [
@@ -731,120 +735,120 @@ resource "conductorone_automation" "my_automation" {
           ]
         }
       }
-      app_user_created_trigger = {
+      app_user_created = {
         app_id     = "...my_app_id..."
         app_id_cel = "...my_app_id_cel..."
         condition  = "...my_condition..."
       }
-      app_user_updated_trigger = {
+      app_user_updated = {
         app_id     = "...my_app_id..."
         app_id_cel = "...my_app_id_cel..."
         condition  = "...my_condition..."
       }
-      grant_deleted_trigger = {
+      grant_deleted = {
         grant_trigger_filter = {
           account_filter = {
             account_type = "APP_USER_TYPE_UNSPECIFIED"
           }
-          entitlement_inclusion_all = {
-            # ...
-          }
-          entitlement_inclusion_criteria = {
-            app_ids = [
-              "..."
-            ]
-            compliance_framework_ids = [
-              "..."
-            ]
-            resource_type_ids = [
-              "..."
-            ]
-            risk_level_ids = [
-              "..."
-            ]
-          }
-          entitlement_inclusion_list = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-          }
-          entitlement_inclusion_list_cel = {
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-          }
           grant_filter = {
-            grant_filter_type        = "GRANT_FILTER_TYPE_TEMPORARY"
-            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_UNSPECIFIED"
-            grant_source_filter      = "GRANT_SOURCE_FILTER_DIRECT"
-          }
-        }
-      }
-      grant_found_trigger = {
-        grant_trigger_filter = {
-          account_filter = {
-            account_type = "APP_USER_TYPE_UNSPECIFIED"
-          }
-          entitlement_inclusion_all = {
-            # ...
-          }
-          entitlement_inclusion_criteria = {
-            app_ids = [
-              "..."
-            ]
-            compliance_framework_ids = [
-              "..."
-            ]
-            resource_type_ids = [
-              "..."
-            ]
-            risk_level_ids = [
-              "..."
-            ]
-          }
-          entitlement_inclusion_list = {
-            app_entitlement_refs = [
-              {
-                app_id = "...my_app_id..."
-                id     = "...my_id..."
-              }
-            ]
-          }
-          entitlement_inclusion_list_cel = {
-            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-          }
-          grant_filter = {
-            grant_filter_type        = "GRANT_FILTER_TYPE_TEMPORARY"
-            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_DIRECT"
+            grant_filter_type        = "GRANT_FILTER_TYPE_PERMANENT"
+            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE"
             grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
           }
+          inclusion_all = {
+            # ...
+          }
+          inclusion_criteria = {
+            app_ids = [
+              "..."
+            ]
+            compliance_framework_ids = [
+              "..."
+            ]
+            resource_type_ids = [
+              "..."
+            ]
+            risk_level_ids = [
+              "..."
+            ]
+          }
+          inclusion_list = {
+            app_entitlement_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
+          }
+          inclusion_list_cel = {
+            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+          }
         }
       }
-      schedule_trigger = {
-        advanced         = false
+      grant_found = {
+        grant_trigger_filter = {
+          account_filter = {
+            account_type = "APP_USER_TYPE_UNSPECIFIED"
+          }
+          grant_filter = {
+            grant_filter_type        = "GRANT_FILTER_TYPE_TEMPORARY"
+            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE"
+            grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
+          }
+          inclusion_all = {
+            # ...
+          }
+          inclusion_criteria = {
+            app_ids = [
+              "..."
+            ]
+            compliance_framework_ids = [
+              "..."
+            ]
+            resource_type_ids = [
+              "..."
+            ]
+            risk_level_ids = [
+              "..."
+            ]
+          }
+          inclusion_list = {
+            app_entitlement_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
+          }
+          inclusion_list_cel = {
+            app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
+          }
+        }
+      }
+      schedule = {
+        advanced         = true
         condition        = "...my_condition..."
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
-        start            = "2022-11-05T06:51:06.048Z"
+        start            = "2021-04-30T19:00:50.170Z"
         timezone         = "...my_timezone..."
       }
-      schedule_trigger_app_user = {
+      schedule_app_user = {
         app_id    = "...my_app_id..."
         condition = "...my_condition..."
         cron_spec = "...my_cron_spec..."
-        start     = "2022-01-16T12:05:57.834Z"
+        start     = "2022-08-16T18:01:29.335Z"
         timezone  = "...my_timezone..."
       }
-      schedule_trigger_no_user = {
+      schedule_no_user = {
         advanced  = false
         cron_spec = "...my_cron_spec..."
-        start     = "2022-04-12T03:31:44.666Z"
+        start     = "2022-05-09T07:31:59.841Z"
         timezone  = "...my_timezone..."
       }
-      usage_based_revocation_trigger = {
+      usage_based_revocation = {
         app_id     = "...my_app_id..."
-        enabled_at = "2021-08-03T22:56:50.306Z"
+        enabled_at = "2021-05-11T12:49:25.031Z"
         excluded_group_refs = [
           {
             app_id = "...my_app_id..."
@@ -856,9 +860,9 @@ resource "conductorone_automation" "my_automation" {
             id = "...my_id..."
           }
         ]
-        include_users_with_no_activity = false
+        include_users_with_no_activity = true
         run_delayed = {
-          cold_start_delay_days = 8
+          cold_start_delay_days = 9
         }
         run_immediately = {
           # ...
@@ -872,25 +876,25 @@ resource "conductorone_automation" "my_automation" {
             id     = "...my_id..."
           }
         ]
-        unused_for_days = 8
+        unused_for_days = 1
       }
-      user_created_trigger = {
+      user_created = {
         condition = "...my_condition..."
       }
-      user_profile_change_trigger = {
+      user_profile_change = {
         condition = "...my_condition..."
       }
-      webhook_automation_trigger = {
-        listener_id = "...my_listener_id..."
-        webhook_listener_auth_capability_url = {
+      webhook = {
+        capability_url = {
           # ...
         }
-        webhook_listener_auth_hmac = {
+        hmac = {
           # ...
         }
-        webhook_listener_auth_jwt = {
+        jwt = {
           jwks_url = "...my_jwks_url..."
         }
+        listener_id = "...my_listener_id..."
       }
     }
   ]
@@ -898,7 +902,7 @@ resource "conductorone_automation" "my_automation" {
   is_draft = true
   triggers = [
     {
-      access_conflict_trigger = {
+      access_conflict = {
         all_conflict_monitors = false
         conflict_monitor_refs = {
           conflict_monitor_refs = [
@@ -908,25 +912,30 @@ resource "conductorone_automation" "my_automation" {
           ]
         }
       }
-      app_user_created_trigger = {
+      app_user_created = {
         app_id     = "...my_app_id..."
         app_id_cel = "...my_app_id_cel..."
         condition  = "...my_condition..."
       }
-      app_user_updated_trigger = {
+      app_user_updated = {
         app_id     = "...my_app_id..."
         app_id_cel = "...my_app_id_cel..."
         condition  = "...my_condition..."
       }
-      grant_deleted_trigger = {
+      grant_deleted = {
         grant_trigger_filter = {
           account_filter = {
             account_type = "APP_USER_TYPE_SERVICE_ACCOUNT"
           }
-          entitlement_inclusion_all = {
+          grant_filter = {
+            grant_filter_type        = "GRANT_FILTER_TYPE_UNSPECIFIED"
+            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_DIRECT"
+            grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
+          }
+          inclusion_all = {
             # ...
           }
-          entitlement_inclusion_criteria = {
+          inclusion_criteria = {
             app_ids = [
               "..."
             ]
@@ -940,7 +949,7 @@ resource "conductorone_automation" "my_automation" {
               "..."
             ]
           }
-          entitlement_inclusion_list = {
+          inclusion_list = {
             app_entitlement_refs = [
               {
                 app_id = "...my_app_id..."
@@ -948,25 +957,25 @@ resource "conductorone_automation" "my_automation" {
               }
             ]
           }
-          entitlement_inclusion_list_cel = {
+          inclusion_list_cel = {
             app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
           }
+        }
+      }
+      grant_found = {
+        grant_trigger_filter = {
+          account_filter = {
+            account_type = "APP_USER_TYPE_SERVICE_ACCOUNT"
+          }
           grant_filter = {
-            grant_filter_type        = "GRANT_FILTER_TYPE_PERMANENT"
+            grant_filter_type        = "GRANT_FILTER_TYPE_TEMPORARY"
             grant_justification_type = "GRANT_JUSTIFICATION_TYPE_CONDUCTOR_ONE"
             grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
           }
-        }
-      }
-      grant_found_trigger = {
-        grant_trigger_filter = {
-          account_filter = {
-            account_type = "APP_USER_TYPE_UNSPECIFIED"
-          }
-          entitlement_inclusion_all = {
+          inclusion_all = {
             # ...
           }
-          entitlement_inclusion_criteria = {
+          inclusion_criteria = {
             app_ids = [
               "..."
             ]
@@ -980,7 +989,7 @@ resource "conductorone_automation" "my_automation" {
               "..."
             ]
           }
-          entitlement_inclusion_list = {
+          inclusion_list = {
             app_entitlement_refs = [
               {
                 app_id = "...my_app_id..."
@@ -988,40 +997,35 @@ resource "conductorone_automation" "my_automation" {
               }
             ]
           }
-          entitlement_inclusion_list_cel = {
+          inclusion_list_cel = {
             app_entitlement_refs_cel = "...my_app_entitlement_refs_cel..."
-          }
-          grant_filter = {
-            grant_filter_type        = "GRANT_FILTER_TYPE_PERMANENT"
-            grant_justification_type = "GRANT_JUSTIFICATION_TYPE_UNSPECIFIED"
-            grant_source_filter      = "GRANT_SOURCE_FILTER_INHERITED"
           }
         }
       }
-      schedule_trigger = {
-        advanced         = false
+      schedule = {
+        advanced         = true
         condition        = "...my_condition..."
         cron_spec        = "...my_cron_spec..."
         skip_if_true_cel = "...my_skip_if_true_cel..."
-        start            = "2022-01-25T09:55:20.150Z"
+        start            = "2022-09-11T15:40:46.002Z"
         timezone         = "...my_timezone..."
       }
-      schedule_trigger_app_user = {
+      schedule_app_user = {
         app_id    = "...my_app_id..."
         condition = "...my_condition..."
         cron_spec = "...my_cron_spec..."
-        start     = "2021-11-11T16:22:31.994Z"
+        start     = "2021-01-14T19:18:02.966Z"
         timezone  = "...my_timezone..."
       }
-      schedule_trigger_no_user = {
-        advanced  = true
+      schedule_no_user = {
+        advanced  = false
         cron_spec = "...my_cron_spec..."
-        start     = "2022-07-06T23:47:31.344Z"
+        start     = "2022-01-24T14:53:52.603Z"
         timezone  = "...my_timezone..."
       }
-      usage_based_revocation_trigger = {
+      usage_based_revocation = {
         app_id     = "...my_app_id..."
-        enabled_at = "2022-01-14T07:38:09.864Z"
+        enabled_at = "2022-08-29T08:08:12.512Z"
         excluded_group_refs = [
           {
             app_id = "...my_app_id..."
@@ -1033,9 +1037,9 @@ resource "conductorone_automation" "my_automation" {
             id = "...my_id..."
           }
         ]
-        include_users_with_no_activity = false
+        include_users_with_no_activity = true
         run_delayed = {
-          cold_start_delay_days = 1
+          cold_start_delay_days = 0
         }
         run_immediately = {
           # ...
@@ -1051,23 +1055,23 @@ resource "conductorone_automation" "my_automation" {
         ]
         unused_for_days = 0
       }
-      user_created_trigger = {
+      user_created = {
         condition = "...my_condition..."
       }
-      user_profile_change_trigger = {
+      user_profile_change = {
         condition = "...my_condition..."
       }
-      webhook_automation_trigger = {
-        listener_id = "...my_listener_id..."
-        webhook_listener_auth_capability_url = {
+      webhook = {
+        capability_url = {
           # ...
         }
-        webhook_listener_auth_hmac = {
+        hmac = {
           # ...
         }
-        webhook_listener_auth_jwt = {
+        jwt = {
           jwks_url = "...my_jwks_url..."
         }
+        listener_id = "...my_listener_id..."
       }
     }
   ]

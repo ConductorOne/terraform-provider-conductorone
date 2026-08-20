@@ -16,8 +16,7 @@ type AppEntitlementOwnerUser struct {
 	EntitlementID *string `json:"entitlementId,omitempty"`
 	// The roleSlug field.
 	RoleSlug *string `json:"roleSlug,omitempty"`
-	// The User object provides all of the details for an user, as well as some configuration.
-	User *User `json:"user,omitempty"`
+	User     *User   `json:"user,omitempty"`
 }
 
 func (a AppEntitlementOwnerUser) MarshalJSON() ([]byte, error) {

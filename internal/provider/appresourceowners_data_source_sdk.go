@@ -43,6 +43,7 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 						departmentSources.AppID = types.StringPointerValue(departmentSourcesItem.AppID)
 						departmentSources.AppUserID = types.StringPointerValue(departmentSourcesItem.AppUserID)
 						departmentSources.AppUserProfileAttributeKey = types.StringPointerValue(departmentSourcesItem.AppUserProfileAttributeKey)
+						departmentSources.Priority = types.Int64PointerValue(departmentSourcesItem.Priority)
 						departmentSources.UserAttributeMappingID = types.StringPointerValue(departmentSourcesItem.UserAttributeMappingID)
 						departmentSources.Value = types.StringPointerValue(departmentSourcesItem.Value)
 
@@ -73,6 +74,7 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 						directoryStatusSources.AppID = types.StringPointerValue(directoryStatusSourcesItem.AppID)
 						directoryStatusSources.AppUserID = types.StringPointerValue(directoryStatusSourcesItem.AppUserID)
 						directoryStatusSources.AppUserProfileAttributeKey = types.StringPointerValue(directoryStatusSourcesItem.AppUserProfileAttributeKey)
+						directoryStatusSources.Priority = types.Int64PointerValue(directoryStatusSourcesItem.Priority)
 						directoryStatusSources.UserAttributeMappingID = types.StringPointerValue(directoryStatusSourcesItem.UserAttributeMappingID)
 						directoryStatusSources.Value = types.StringPointerValue(directoryStatusSourcesItem.Value)
 
@@ -100,6 +102,7 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 						emailSources.AppID = types.StringPointerValue(emailSourcesItem.AppID)
 						emailSources.AppUserID = types.StringPointerValue(emailSourcesItem.AppUserID)
 						emailSources.AppUserProfileAttributeKey = types.StringPointerValue(emailSourcesItem.AppUserProfileAttributeKey)
+						emailSources.Priority = types.Int64PointerValue(emailSourcesItem.Priority)
 						emailSources.UserAttributeMappingID = types.StringPointerValue(emailSourcesItem.UserAttributeMappingID)
 						emailSources.Value = types.StringPointerValue(emailSourcesItem.Value)
 
@@ -125,6 +128,7 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 						employeeIDSources.AppID = types.StringPointerValue(employeeIDSourcesItem.AppID)
 						employeeIDSources.AppUserID = types.StringPointerValue(employeeIDSourcesItem.AppUserID)
 						employeeIDSources.AppUserProfileAttributeKey = types.StringPointerValue(employeeIDSourcesItem.AppUserProfileAttributeKey)
+						employeeIDSources.Priority = types.Int64PointerValue(employeeIDSourcesItem.Priority)
 						employeeIDSources.UserAttributeMappingID = types.StringPointerValue(employeeIDSourcesItem.UserAttributeMappingID)
 						employeeIDSources.Value = types.StringPointerValue(employeeIDSourcesItem.Value)
 
@@ -143,6 +147,7 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 						employmentStatusSources.AppID = types.StringPointerValue(employmentStatusSourcesItem.AppID)
 						employmentStatusSources.AppUserID = types.StringPointerValue(employmentStatusSourcesItem.AppUserID)
 						employmentStatusSources.AppUserProfileAttributeKey = types.StringPointerValue(employmentStatusSourcesItem.AppUserProfileAttributeKey)
+						employmentStatusSources.Priority = types.Int64PointerValue(employmentStatusSourcesItem.Priority)
 						employmentStatusSources.UserAttributeMappingID = types.StringPointerValue(employmentStatusSourcesItem.UserAttributeMappingID)
 						employmentStatusSources.Value = types.StringPointerValue(employmentStatusSourcesItem.Value)
 
@@ -161,6 +166,7 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 						employmentTypeSources.AppID = types.StringPointerValue(employmentTypeSourcesItem.AppID)
 						employmentTypeSources.AppUserID = types.StringPointerValue(employmentTypeSourcesItem.AppUserID)
 						employmentTypeSources.AppUserProfileAttributeKey = types.StringPointerValue(employmentTypeSourcesItem.AppUserProfileAttributeKey)
+						employmentTypeSources.Priority = types.Int64PointerValue(employmentTypeSourcesItem.Priority)
 						employmentTypeSources.UserAttributeMappingID = types.StringPointerValue(employmentTypeSourcesItem.UserAttributeMappingID)
 						employmentTypeSources.Value = types.StringPointerValue(employmentTypeSourcesItem.Value)
 
@@ -180,6 +186,7 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 						jobTitleSources.AppID = types.StringPointerValue(jobTitleSourcesItem.AppID)
 						jobTitleSources.AppUserID = types.StringPointerValue(jobTitleSourcesItem.AppUserID)
 						jobTitleSources.AppUserProfileAttributeKey = types.StringPointerValue(jobTitleSourcesItem.AppUserProfileAttributeKey)
+						jobTitleSources.Priority = types.Int64PointerValue(jobTitleSourcesItem.Priority)
 						jobTitleSources.UserAttributeMappingID = types.StringPointerValue(jobTitleSourcesItem.UserAttributeMappingID)
 						jobTitleSources.Value = types.StringPointerValue(jobTitleSourcesItem.Value)
 
@@ -205,6 +212,7 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 						managerSources.AppID = types.StringPointerValue(managerSourcesItem.AppID)
 						managerSources.AppUserID = types.StringPointerValue(managerSourcesItem.AppUserID)
 						managerSources.AppUserProfileAttributeKey = types.StringPointerValue(managerSourcesItem.AppUserProfileAttributeKey)
+						managerSources.Priority = types.Int64PointerValue(managerSourcesItem.Priority)
 						managerSources.UserAttributeMappingID = types.StringPointerValue(managerSourcesItem.UserAttributeMappingID)
 						managerSources.Value = types.StringPointerValue(managerSourcesItem.Value)
 
@@ -221,7 +229,7 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 				if listItem.Profile == nil {
 					list.Profile = nil
 				} else {
-					list.Profile = &tfTypes.Profile{}
+					list.Profile = &tfTypes.UserProfile{}
 				}
 				if listItem.RoleIds != nil {
 					list.RoleIds = make([]types.String, 0, len(listItem.RoleIds))
@@ -260,6 +268,7 @@ func (r *AppResourceOwnersDataSourceModel) RefreshFromSharedListAppResourceOwner
 						usernameSources.AppID = types.StringPointerValue(usernameSourcesItem.AppID)
 						usernameSources.AppUserID = types.StringPointerValue(usernameSourcesItem.AppUserID)
 						usernameSources.AppUserProfileAttributeKey = types.StringPointerValue(usernameSourcesItem.AppUserProfileAttributeKey)
+						usernameSources.Priority = types.Int64PointerValue(usernameSourcesItem.Priority)
 						usernameSources.UserAttributeMappingID = types.StringPointerValue(usernameSourcesItem.UserAttributeMappingID)
 						usernameSources.Value = types.StringPointerValue(usernameSourcesItem.Value)
 

@@ -5,9 +5,9 @@ package shared
 // ServicePrincipalInput - ServicePrincipal represents a tenant-managed non-human identity.
 type ServicePrincipalInput struct {
 	// The display name of the service principal.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The User object provides all of the details for an user, as well as some configuration.
-	User *UserInput `json:"user,omitempty"`
+	DisplayName       *string                     `json:"displayName,omitempty"`
+	ObjectPermissions *UserActorObjectPermissions `json:"objectPermissions,omitempty"`
+	User              *UserInput                  `json:"user,omitempty"`
 }
 
 func (s *ServicePrincipalInput) GetDisplayName() *string {
@@ -15,6 +15,13 @@ func (s *ServicePrincipalInput) GetDisplayName() *string {
 		return nil
 	}
 	return s.DisplayName
+}
+
+func (s *ServicePrincipalInput) GetObjectPermissions() *UserActorObjectPermissions {
+	if s == nil {
+		return nil
+	}
+	return s.ObjectPermissions
 }
 
 func (s *ServicePrincipalInput) GetUser() *UserInput {

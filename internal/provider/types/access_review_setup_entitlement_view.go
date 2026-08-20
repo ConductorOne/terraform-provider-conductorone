@@ -7,8 +7,8 @@ import (
 )
 
 type AccessReviewSetupEntitlementView struct {
-	AccessReviewSetupEntitlement *AccessReviewSetupEntitlement `tfsdk:"access_review_setup_entitlement"`
-	AppPath                      types.String                  `tfsdk:"app_path"`
-	EntitlementPath              types.String                  `tfsdk:"entitlement_path"`
-	PolicyPath                   types.String                  `tfsdk:"policy_path"`
+	AccessReviewEntitlement *AccessReviewSetupEntitlement `tfsdk:"access_review_entitlement"`
+	AppPath                 types.String                  `tfsdk:"app_path"`
+	EntitlementPath         types.String                  `tfsdk:"entitlement_path"`
+	PolicyPath              types.String                  `tfsdk:"policy_path"`
 }

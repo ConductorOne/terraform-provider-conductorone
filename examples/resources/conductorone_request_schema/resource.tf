@@ -34,18 +34,18 @@ resource "conductorone_request_schema" "my_request_schema" {
   ]
   fields = [
     {
-      admin_provider_config = {
+      admin_config = {
         default_value_cel = "...my_default_value_cel..."
         show_to_user      = false
       }
       bool_field = {
-        bool_rules = {
-          const = false
-        }
         checkbox_field = {
           # ...
         }
         default_value = true
+        rules = {
+          const = true
+        }
         toggle_field = {
           # ...
         }
@@ -61,47 +61,86 @@ resource "conductorone_request_schema" "my_request_schema" {
         }
         max_file_size = "...my_max_file_size..."
       }
-      form_string_field = {
+      int64_field = {
+        default_value = "...my_default_value..."
+        number_field = {
+          max_value = "...my_max_value..."
+          min_value = "...my_min_value..."
+          step      = "...my_step..."
+        }
+        placeholder = "...my_placeholder..."
+        rules = {
+          const        = "...my_const..."
+          gt           = "...my_gt..."
+          gte          = "...my_gte..."
+          ignore_empty = false
+          in = [
+            "..."
+          ]
+          lt  = "...my_lt..."
+          lte = "...my_lte..."
+          not_in = [
+            "..."
+          ]
+        }
+      }
+      name = "...my_name..."
+      oauth2_field = {
+        oauth2_field_view = {
+          # ...
+        }
+      }
+      read_only = true
+      required  = false
+      shared_config = {
+        default_value_cel        = "...my_default_value_cel..."
+        input_transformation_cel = "...my_input_transformation_cel..."
+        lock_default_values      = true
+      }
+      string_field = {
+        date_field = {
+          default_to_today    = false
+          max_date            = "...my_max_date..."
+          max_days_from_today = 10
+          min_date            = "...my_min_date..."
+          min_days_from_today = 4
+        }
         default_value = "...my_default_value..."
         password_field = {
           # ...
         }
         picker_field = {
-          app_resource_filter = {
+          app_user_picker = {
+            app_id = "...my_app_id..."
+          }
+          c1_user_picker = {
+            exclude_user_ids = [
+              "..."
+            ]
+            include_deactivated = true
+            user_ids = [
+              "..."
+            ]
+          }
+          resource_picker = {
             app_id           = "...my_app_id..."
             resource_type_id = "...my_resource_type_id..."
           }
-          app_user_filter = {
-            app_id = "...my_app_id..."
-          }
-          c1_user_filter = {
-            # ...
-          }
         }
         placeholder = "...my_placeholder..."
-        select_field = {
-          options = [
-            {
-              description  = "...my_description..."
-              display_name = "...my_display_name..."
-              value        = "...my_value..."
-            }
-          ]
-          type = "SELECT_TYPE_RADIO"
-        }
-        string_rules = {
+        rules = {
           address      = true
           const        = "...my_const..."
           contains     = "...my_contains..."
-          email        = true
-          hostname     = false
-          ignore_empty = false
+          email        = false
+          hostname     = true
+          ignore_empty = true
           in = [
             "..."
           ]
-          ip           = false
+          ip           = true
           ipv4         = true
-          ipv6         = false
+          ipv6         = true
           len_bytes    = "...my_len_bytes..."
           length       = "...my_length..."
           max_bytes    = "...my_max_bytes..."
@@ -114,64 +153,38 @@ resource "conductorone_request_schema" "my_request_schema" {
           ]
           pattern          = "...my_pattern..."
           prefix           = "...my_prefix..."
-          strict           = false
+          strict           = true
           suffix           = "...my_suffix..."
           uri              = false
           uri_ref          = true
           uuid             = false
           well_known_regex = "HTTP_HEADER_NAME"
         }
+        select_field = {
+          options = [
+            {
+              description  = "...my_description..."
+              display_name = "...my_display_name..."
+              value        = "...my_value..."
+            }
+          ]
+          type = "SELECT_TYPE_RADIO"
+        }
         text_field = {
           multiline = false
           suffix    = "...my_suffix..."
         }
       }
-      form_string_map_field = {
+      string_map_field = {
         default_value = {
           key = "value"
         }
-        string_map_rules = {
+        rules = {
           is_required    = false
           validate_empty = false
         }
       }
-      int64_field = {
-        default_value = "...my_default_value..."
-        int64_rules = {
-          const        = "...my_const..."
-          gt           = "...my_gt..."
-          gte          = "...my_gte..."
-          ignore_empty = true
-          in = [
-            "..."
-          ]
-          lt  = "...my_lt..."
-          lte = "...my_lte..."
-          not_in = [
-            "..."
-          ]
-        }
-        number_field = {
-          max_value = "...my_max_value..."
-          min_value = "...my_min_value..."
-          step      = "...my_step..."
-        }
-        placeholder = "...my_placeholder..."
-      }
-      name = "...my_name..."
-      oauth2_field = {
-        oauth2_field_view = {
-          # ...
-        }
-      }
-      read_only = true
-      required  = false
-      shared_provider_config = {
-        default_value_cel        = "...my_default_value_cel..."
-        input_transformation_cel = "...my_input_transformation_cel..."
-        lock_default_values      = false
-      }
-      user_provider_config = {
+      user_config = {
         input_transformation_cel = "...my_input_transformation_cel..."
       }
     }

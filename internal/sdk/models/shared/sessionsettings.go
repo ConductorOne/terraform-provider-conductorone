@@ -33,22 +33,16 @@ type SessionSettings struct {
 	ClientIDApprovalRequestPolicyID *string `json:"clientIdApprovalRequestPolicyId,omitempty"`
 	// Policy for metadata document client_id URLs.
 	ClientIDMetadataDocumentPolicy *ClientIDMetadataDocumentPolicy `json:"clientIdMetadataDocumentPolicy,omitempty"`
-	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
-	CIDRRestriction *CIDRRestriction `json:"connectorSource,omitempty"`
-	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
-	CIDRRestriction1 *CIDRRestriction `json:"externalClientSource,omitempty"`
+	ConnectorSource                *CIDRRestriction                `json:"connectorSource,omitempty"`
+	ExternalClientSource           *CIDRRestriction                `json:"externalClientSource,omitempty"`
 	// Enable external client registration (OAuth 2.0 DCR) for MCP clients
 	//  like Claude Desktop, Cursor, and other AI assistants.
-	ExternalClientsEnabled *bool   `json:"externalClientsEnabled,omitempty"`
-	MaxSessionLength       *string `json:"maxSessionLength,omitempty"`
-	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
-	CIDRRestriction2 *CIDRRestriction `json:"pccAdminSource,omitempty"`
-	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
-	CIDRRestriction3 *CIDRRestriction `json:"pccUserSource,omitempty"`
-	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
-	CIDRRestriction4 *CIDRRestriction `json:"ssoAdminSource,omitempty"`
-	// CIDRRestriction defines an IP-based access restriction with an enable toggle and a list of allowed CIDRs.
-	CIDRRestriction5 *CIDRRestriction `json:"ssoUserSource,omitempty"`
+	ExternalClientsEnabled *bool            `json:"externalClientsEnabled,omitempty"`
+	MaxSessionLength       *string          `json:"maxSessionLength,omitempty"`
+	PccAdminSource         *CIDRRestriction `json:"pccAdminSource,omitempty"`
+	PccUserSource          *CIDRRestriction `json:"pccUserSource,omitempty"`
+	SsoAdminSource         *CIDRRestriction `json:"ssoAdminSource,omitempty"`
+	SsoUserSource          *CIDRRestriction `json:"ssoUserSource,omitempty"`
 }
 
 func (s *SessionSettings) GetClientIDApprovalRequestPolicyID() *string {
@@ -65,18 +59,18 @@ func (s *SessionSettings) GetClientIDMetadataDocumentPolicy() *ClientIDMetadataD
 	return s.ClientIDMetadataDocumentPolicy
 }
 
-func (s *SessionSettings) GetCIDRRestriction() *CIDRRestriction {
+func (s *SessionSettings) GetConnectorSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction
+	return s.ConnectorSource
 }
 
-func (s *SessionSettings) GetCIDRRestriction1() *CIDRRestriction {
+func (s *SessionSettings) GetExternalClientSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction1
+	return s.ExternalClientSource
 }
 
 func (s *SessionSettings) GetExternalClientsEnabled() *bool {
@@ -93,30 +87,30 @@ func (s *SessionSettings) GetMaxSessionLength() *string {
 	return s.MaxSessionLength
 }
 
-func (s *SessionSettings) GetCIDRRestriction2() *CIDRRestriction {
+func (s *SessionSettings) GetPccAdminSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction2
+	return s.PccAdminSource
 }
 
-func (s *SessionSettings) GetCIDRRestriction3() *CIDRRestriction {
+func (s *SessionSettings) GetPccUserSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction3
+	return s.PccUserSource
 }
 
-func (s *SessionSettings) GetCIDRRestriction4() *CIDRRestriction {
+func (s *SessionSettings) GetSsoAdminSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction4
+	return s.SsoAdminSource
 }
 
-func (s *SessionSettings) GetCIDRRestriction5() *CIDRRestriction {
+func (s *SessionSettings) GetSsoUserSource() *CIDRRestriction {
 	if s == nil {
 		return nil
 	}
-	return s.CIDRRestriction5
+	return s.SsoUserSource
 }

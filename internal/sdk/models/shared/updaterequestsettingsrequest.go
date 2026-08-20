@@ -4,7 +4,6 @@ package shared
 
 // The UpdateRequestSettingsRequest message.
 type UpdateRequestSettingsRequest struct {
-	// RequestSettings holds tenant-wide configuration for the access-request flow.
 	RequestSettings *RequestSettings `json:"requestSettings,omitempty"`
 	UpdateMask      *string          `json:"updateMask,omitempty"`
 }

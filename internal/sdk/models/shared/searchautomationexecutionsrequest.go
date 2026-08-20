@@ -40,9 +40,8 @@ type SearchAutomationExecutionsRequest struct {
 	// Filter results to a specific execution by its numeric identifier.
 	ExecutionID *string `json:"executionId,omitempty"`
 	// Filter results to executions in any of the specified states.
-	ExecutionStepStates []ExecutionStepStates `json:"executionStepStates,omitempty"`
-	// The AutomationExecutionExpandMask message.
-	AutomationExecutionExpandMask *AutomationExecutionExpandMask `json:"expandMask,omitempty"`
+	ExecutionStepStates []ExecutionStepStates          `json:"executionStepStates,omitempty"`
+	ExpandMask          *AutomationExecutionExpandMask `json:"expandMask,omitempty"`
 	// Maximum number of results to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
 	// Pagination token from a previous SearchAutomationExecutionsResponse.
@@ -74,11 +73,11 @@ func (s *SearchAutomationExecutionsRequest) GetExecutionStepStates() []Execution
 	return s.ExecutionStepStates
 }
 
-func (s *SearchAutomationExecutionsRequest) GetAutomationExecutionExpandMask() *AutomationExecutionExpandMask {
+func (s *SearchAutomationExecutionsRequest) GetExpandMask() *AutomationExecutionExpandMask {
 	if s == nil {
 		return nil
 	}
-	return s.AutomationExecutionExpandMask
+	return s.ExpandMask
 }
 
 func (s *SearchAutomationExecutionsRequest) GetPageSize() *int {

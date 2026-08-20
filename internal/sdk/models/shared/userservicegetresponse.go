@@ -10,8 +10,7 @@ type UserServiceGetResponseExpanded struct {
 type UserServiceGetResponse struct {
 	// List of serialized related objects.
 	Expanded []UserServiceGetResponseExpanded `json:"expanded,omitempty"`
-	// The UserView object provides a user response object, as well as JSONPATHs to related objects provided by expanders.
-	UserView *UserView `json:"userView,omitempty"`
+	UserView *UserView                        `json:"userView,omitempty"`
 }
 
 func (u *UserServiceGetResponse) GetExpanded() []UserServiceGetResponseExpanded {

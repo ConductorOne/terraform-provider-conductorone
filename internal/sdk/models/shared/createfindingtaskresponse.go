@@ -4,23 +4,6 @@ package shared
 
 // The CreateFindingTaskResponse message.
 type CreateFindingTaskResponse struct {
-	// The Finding message.
-	//
-	// This message contains a oneof named finding_type. Only a single field of the following list may be set at a time:
-	//   - similarUsernameMatch
-	//   - serviceAccountMisclassification
-	//   - decoyCredentialUsed
-	//
-	//
-	// This message contains a oneof named target. Only a single field of the following list may be set at a time:
-	//   - identityUserTarget
-	//   - appUserTarget
-	//
-	//
-	// This message contains a oneof named evidence. Only a single field of the following list may be set at a time:
-	//   - similarUsernameMatchEvidence
-	//   - serviceAccountMisclassificationEvidence
-	//
 	Finding *Finding `json:"finding,omitempty"`
 	// The ID of the created task.
 	TaskID *string `json:"taskId,omitempty"`

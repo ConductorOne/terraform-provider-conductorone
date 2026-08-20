@@ -18,65 +18,32 @@ package shared
 //   - adminConfig
 //   - sharedConfig
 type FormField struct {
-	// The AdminProviderConfig message.
-	AdminProviderConfig *AdminProviderConfig `json:"adminConfig,omitempty"`
-	// The BoolField message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - checkboxField
-	//   - toggleField
-	//
-	BoolField *BoolField `json:"boolField,omitempty"`
+	AdminConfig *AdminProviderConfig `json:"adminConfig,omitempty"`
+	BoolField   *BoolField           `json:"boolField,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
-	DisplayName *string `json:"displayName,omitempty"`
-	// The FileField message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - fileInputField
-	//
-	FileField *FileField `json:"fileField,omitempty"`
-	// The Int64Field message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - numberField
-	//
-	Int64Field *Int64Field `json:"int64Field,omitempty"`
+	DisplayName *string     `json:"displayName,omitempty"`
+	FileField   *FileField  `json:"fileField,omitempty"`
+	Int64Field  *Int64Field `json:"int64Field,omitempty"`
 	// The name field.
-	Name *string `json:"name,omitempty"`
-	// The Oauth2Field message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - oauth2FieldView
-	//
+	Name        *string      `json:"name,omitempty"`
 	Oauth2Field *Oauth2Field `json:"oauth2Field,omitempty"`
 	// When true, this field is displayed to the user but cannot be edited.
 	ReadOnly *bool `json:"readOnly,omitempty"`
 	// The required field.
-	Required *bool `json:"required,omitempty"`
-	// The SharedProviderConfig message.
-	SharedProviderConfig *SharedProviderConfig `json:"sharedConfig,omitempty"`
-	// The StringField message.
-	//
-	// This message contains a oneof named view. Only a single field of the following list may be set at a time:
-	//   - textField
-	//   - passwordField
-	//   - selectField
-	//   - pickerField
-	//
-	FormStringField *FormStringField `json:"stringField,omitempty"`
-	// The StringMapField message.
-	FormStringMapField *FormStringMapField `json:"stringMapField,omitempty"`
-	// The UserProviderConfig message.
-	UserProviderConfig *UserProviderConfig `json:"userConfig,omitempty"`
+	Required       *bool                 `json:"required,omitempty"`
+	SharedConfig   *SharedProviderConfig `json:"sharedConfig,omitempty"`
+	StringField    *FormStringField      `json:"stringField,omitempty"`
+	StringMapField *FormStringMapField   `json:"stringMapField,omitempty"`
+	UserConfig     *UserProviderConfig   `json:"userConfig,omitempty"`
 }
 
-func (f *FormField) GetAdminProviderConfig() *AdminProviderConfig {
+func (f *FormField) GetAdminConfig() *AdminProviderConfig {
 	if f == nil {
 		return nil
 	}
-	return f.AdminProviderConfig
+	return f.AdminConfig
 }
 
 func (f *FormField) GetBoolField() *BoolField {
@@ -142,30 +109,30 @@ func (f *FormField) GetRequired() *bool {
 	return f.Required
 }
 
-func (f *FormField) GetSharedProviderConfig() *SharedProviderConfig {
+func (f *FormField) GetSharedConfig() *SharedProviderConfig {
 	if f == nil {
 		return nil
 	}
-	return f.SharedProviderConfig
+	return f.SharedConfig
 }
 
-func (f *FormField) GetFormStringField() *FormStringField {
+func (f *FormField) GetStringField() *FormStringField {
 	if f == nil {
 		return nil
 	}
-	return f.FormStringField
+	return f.StringField
 }
 
-func (f *FormField) GetFormStringMapField() *FormStringMapField {
+func (f *FormField) GetStringMapField() *FormStringMapField {
 	if f == nil {
 		return nil
 	}
-	return f.FormStringMapField
+	return f.StringMapField
 }
 
-func (f *FormField) GetUserProviderConfig() *UserProviderConfig {
+func (f *FormField) GetUserConfig() *UserProviderConfig {
 	if f == nil {
 		return nil
 	}
-	return f.UserProviderConfig
+	return f.UserConfig
 }
