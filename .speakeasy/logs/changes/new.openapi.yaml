@@ -6413,10 +6413,6 @@ components:
           description: Creates the app with this grant policy.
           readOnly: false
           type: string
-        idempotencyKey:
-          description: Stable key that distinguishes a retry from another create for the same connector identity. Required with match_baton_ref.
-          readOnly: false
-          type: string
         identityMatching:
           description: Define the app user identity matching strategy for this app.
           enum:

@@ -98,26 +98,11 @@
 <body><h2 id="terraform-sdk-changes">Terraform SDK Changes:</h2>
 
 <ul>
-<li><code>conductoroneAPI.Apps.List()</code>:  <code>response.list[].matchBatonRef</code> <strong>Added</strong></li>
 <li><code>conductoroneAPI.Apps.Create()</code>:
 
 <ul>
-<li><code>request</code> <strong>Changed</strong>
-
-<ul>
-<li><code>idempotencyKey</code> <strong>Added</strong></li>
-<li><code>matchBatonRef</code> <strong>Added</strong></li>
+<li><code>request.idempotencyKey</code> <strong>Removed</strong> (Breaking ⚠️)</li>
 </ul></li>
-<li><code>response.App.matchBatonRef</code> <strong>Added</strong></li>
-</ul></li>
-<li><code>conductoroneAPI.Apps.Get()</code>:  <code>response.App.matchBatonRef</code> <strong>Added</strong></li>
-<li><code>conductoroneAPI.Apps.Update()</code>:
-
-<ul>
-<li><code>request.UpdateAppRequest.App.matchBatonRef</code> <strong>Added</strong></li>
-<li><code>response.App.matchBatonRef</code> <strong>Added</strong></li>
-</ul></li>
-<li><code>conductoroneAPI.AppSearch.Search()</code>:  <code>response.list[].matchBatonRef</code> <strong>Added</strong></li>
 </ul>
 </body>
 </html>

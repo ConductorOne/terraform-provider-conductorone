@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: c3fa5bddf38c275274bd879d7d31eeed
+  docChecksum: 44baa39dd339f9ad14b5c8631833ac32
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.762.0
   generationVersion: 2.882.0
-  releaseVersion: 1.4.4
-  configChecksum: f28dd5957cedad68e44d340ce3b6e88f
+  releaseVersion: 1.4.5
+  configChecksum: 1361146c710bde9233d2950009f56351
   repoURL: https://github.com/ConductorOne/terraform-provider-conductorone.git
   installationURL: https://github.com/ConductorOne/terraform-provider-conductorone
 persistentEdits:
-  generation_id: 616a525f-9ac9-4679-99d1-13ac040270bc
-  pristine_commit_hash: 9049db60461cbec05664efd1a6082f59e39cc679
-  pristine_tree_hash: f9fd59ca3d787131cfb242366b898b20b671ec3a
+  generation_id: a0840101-f89f-4570-9fa3-e374583e7fb0
+  pristine_commit_hash: c3e7f6fc987e621dae52877f3e6af3453082ddcb
+  pristine_tree_hash: c45009ec19877f15a2d4f1a2ecb69e7be7a62f04
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -246,8 +246,8 @@ trackedFiles:
     pristine_git_object: cbbe422a1a74c6c026e9648210d723901bd6aaf2
   examples/provider/provider.tf:
     id: 954e955c0240
-    last_write_checksum: sha1:98e1e2fb998b780b8ffca1686553a5b1db408eef
-    pristine_git_object: 28e8927541e74649da3e953f6c8d9bc5cf2d8618
+    last_write_checksum: sha1:57aee83a097a66921adaaad5c64fb503a97f0179
+    pristine_git_object: f7d9e1427524f967b521352ebb3285fad3aa3f67
   examples/resources/conductorone_access_conflict/import-by-string-id.tf:
     id: 75fb8f5a6d65
     last_write_checksum: sha1:82d79ecc5a7d6ab27f4f9f9234e220e0e9f65914
@@ -350,8 +350,8 @@ trackedFiles:
     pristine_git_object: be62f9f4bdb8979bf11842fa1e2a7de3bdebd3c7
   examples/resources/conductorone_app/resource.tf:
     id: 4d94c313fa96
-    last_write_checksum: sha1:ecb37830a7c65acaf5e850c15b69d475374eccb1
-    pristine_git_object: f179ea1ca4855f8bdb42411371785a61a579a423
+    last_write_checksum: sha1:1bfbb07d78dd90193ffa616fcb132012be84bf27
+    pristine_git_object: 58ec7b3971eba873cb87417ca0085608dee80f96
   examples/resources/conductorone_app_entitlement_automation/import-by-string-id.tf:
     id: 7fd841e854aa
     last_write_checksum: sha1:5a1d23227311405de10b701a679fbac088d9a04e
@@ -1110,8 +1110,8 @@ trackedFiles:
     pristine_git_object: ae61c39c7a3aa86f013841912dc55b9e4211ddef
   internal/provider/app_resource.go:
     id: fe737c3962ce
-    last_write_checksum: sha1:fc88c09f1b07694317017240f736990a02be79a3
-    pristine_git_object: 3a7e9a20a7b1bf2225869c36e5c8375d91bb73cb
+    last_write_checksum: sha1:9551afc3d8d3dce5b7034f530949816ada768393
+    pristine_git_object: 726b233be05a865b5437518de6d4700da714ce61
   internal/provider/app_resource_data_source.go:
     id: 505e94b920d6
     last_write_checksum: sha1:c862ff2f67cee7a1035194a4d1378c615e1f31dd
@@ -1138,8 +1138,8 @@ trackedFiles:
     pristine_git_object: 91aa765e7755c28b51d28001545e00f9cc8fdde7
   internal/provider/app_resource_sdk.go:
     id: 8ae9bedb585c
-    last_write_checksum: sha1:902a18f4655e748cd0f0b0d2544bee975e902e4e
-    pristine_git_object: 5c51be80c7293ec758a4b7229cd16ecf1f827f7d
+    last_write_checksum: sha1:bbc9d1b45089d63b718f31a80b0b6eee44bf5633
+    pristine_git_object: f005d9705f7def6b037f3e27cbe0034f72f80202
   internal/provider/app_resource_type_data_source.go:
     id: b646733cef24
     last_write_checksum: sha1:a222dd58ee8dc2b920abffe2bfe9fe31a46af203
@@ -3186,8 +3186,8 @@ trackedFiles:
     pristine_git_object: ccda06344d8f1db2a6155a8b5a2fda6be064d9bb
   internal/sdk/conductoroneapi.go:
     id: 84087b0a6f93
-    last_write_checksum: sha1:3361ec1e22aac9809adc38ae99cb5e10def335f3
-    pristine_git_object: 948a1dc88e98cae9b49456e2cc135bd19d6c0ebe
+    last_write_checksum: sha1:8ab4798da053b87fdc390b0a74232271685d0180
+    pristine_git_object: 91d8e504fd2e7f52a305977b353ff190d25515bc
   internal/sdk/connector.go:
     id: 41e2af88fe9e
     last_write_checksum: sha1:5dc15c34dc12560961cce647f66fe1b4e5a2b8fb
@@ -6462,8 +6462,8 @@ trackedFiles:
     pristine_git_object: 931d4c8963703264e2c8f7e0659a10d0e027b77d
   internal/sdk/models/shared/createapprequest.go:
     id: 48eba5b90138
-    last_write_checksum: sha1:5e0afa9a91c3778edb52cbe604479bf1816d747a
-    pristine_git_object: 3c5d2e7948a0ee0b55935df00b8a37ed57943a3c
+    last_write_checksum: sha1:b9de04ae77da7a61ff00919aa8e096493b3e8644
+    pristine_git_object: df9ace5dfc1cbb4d267c5175208ee58942f758d5
   internal/sdk/models/shared/createappresourceentitlementownerrequest.go:
     id: 580429b98b9b
     last_write_checksum: sha1:f6e14675457d5deb97417033565689c51a46fe41
@@ -14209,7 +14209,7 @@ examples:
           application/json: {}
 examplesVersion: 1.0.2
 generatedTests: {}
-releaseNotes: "## Terraform SDK Changes:\n* `conductoroneAPI.Apps.List()`:  `response.list[].matchBatonRef` **Added**\n* `conductoroneAPI.Apps.Create()`: \n  *  `request` **Changed**\n  *  `response.App.matchBatonRef` **Added**\n* `conductoroneAPI.Apps.Get()`:  `response.App.matchBatonRef` **Added**\n* `conductoroneAPI.Apps.Update()`: \n  *  `request.UpdateAppRequest.App.matchBatonRef` **Added**\n  *  `response.App.matchBatonRef` **Added**\n* `conductoroneAPI.AppSearch.Search()`:  `response.list[].matchBatonRef` **Added**\n"
+releaseNotes: "## Terraform SDK Changes:\n* `conductoroneAPI.Apps.Create()`: \n  *  `request.idempotencyKey` **Removed** (Breaking ⚠️)\n"
 generatedFiles:
   - .gitattributes
   - USAGE.md

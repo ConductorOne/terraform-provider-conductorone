@@ -3344,6 +3344,10 @@ components:
           readOnly: true
           type: string
           x-speakeasy-terraform-ignore: true
+        matchBatonRef:
+          oneOf:
+            - $ref: '#/components/schemas/c1.api.app.v1.AppMatchBatonRef'
+            - type: "null"
         monthlyCostUsd:
           description: The cost of an app per-seat, so that total cost can be calculated by the grant count.
           format: int32
@@ -3374,6 +3378,27 @@ components:
       type: object
       x-speakeasy-entity: App
       x-speakeasy-name-override: App
+    c1.api.app.v1.AppMatchBatonRef:
+      description: AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift.
+      properties:
+        appId:
+          description: Application that owns the connector.
+          type: string
+        connectorId:
+          description: Connector that discovers the application.
+          type: string
+        externalId:
+          description: |-
+            Canonical connector-v2 application resource ID in
+             `<resource_type>::<resource_id>` form (for example, `app::0oa123`).
+          type: string
+      required:
+        - appId
+        - connectorId
+        - externalId
+      title: App Match Baton Ref
+      type: object
+      x-speakeasy-name-override: AppMatchBatonRef
     c1.api.app.v1.AppAccessRequestDefaults:
       description: |
         The AppAccessRequestDefaults message.
@@ -6388,6 +6413,10 @@ components:
           description: Creates the app with this grant policy.
           readOnly: false
           type: string
+        idempotencyKey:
+          description: Stable key that distinguishes a retry from another create for the same connector identity. Required with match_baton_ref.
+          readOnly: false
+          type: string
         identityMatching:
           description: Define the app user identity matching strategy for this app.
           enum:
@@ -6402,6 +6431,10 @@ components:
           description: Instructions shown to users in the access request form when requesting access for this app.
           readOnly: false
           type: string
+        matchBatonRef:
+          oneOf:
+            - $ref: '#/components/schemas/c1.api.app.v1.AppMatchBatonRef'
+            - type: "null"
         monthlyCostUsd:
           description: Creates the app with this monthly cost per seat.
           format: int32
