@@ -22,7 +22,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.4.5"
+      version = "1.5.0"
     }
   }
 }
@@ -63,6 +63,50 @@ to inject secrets using something like the [vault provider](https://registry.ter
 
 
 ## Breaking changes
+
+### 1.5.0
+
+The provider was regenerated against the current ConductorOne API. Oneof-backed HCL blocks now use the API's canonical member names. Update affected configurations before upgrading:
+
+| Resource path | v1.4.x attribute | v1.5.0+ attribute |
+|---|---|---|
+| `conductorone_policy.policy_steps.steps.approval` | `agent_approval` | `agent` |
+| `conductorone_policy.policy_steps.steps.approval` | `app_group_approval` | `group` |
+| `conductorone_policy.policy_steps.steps.approval` | `app_owner_approval` | `app_owners` |
+| `conductorone_policy.policy_steps.steps.approval` | `entitlement_owner_approval` | `entitlement_owners` |
+| `conductorone_policy.policy_steps.steps.approval` | `expression_approval` | `expression` |
+| `conductorone_policy.policy_steps.steps.approval` | `manager_approval` | `manager` |
+| `conductorone_policy.policy_steps.steps.approval` | `resource_owner_approval` | `resource_owners` |
+| `conductorone_policy.policy_steps.steps.approval` | `self_approval` | `self` |
+| `conductorone_policy.policy_steps.steps.approval` | `user_approval` | `users` |
+| `conductorone_policy.policy_steps.steps.approval` | `webhook_approval` | `webhook` |
+| `conductorone_policy.policy_steps.steps.provision.provision_policy` | `action_provision` | `action` |
+| `conductorone_policy.policy_steps.steps.provision.provision_policy` | `connector_provision` | `connector` |
+| `conductorone_policy.policy_steps.steps.provision.provision_policy` | `delegated_provision` | `delegated` |
+| `conductorone_policy.policy_steps.steps.provision.provision_policy` | `external_ticket_provision` | `external_ticket` |
+| `conductorone_policy.policy_steps.steps.provision.provision_policy` | `manual_provision` | `manual` |
+| `conductorone_policy.policy_steps.steps.provision.provision_policy` | `unconfigured_provision` | `unconfigured` |
+| `conductorone_policy.policy_steps.steps.provision.provision_policy` | `webhook_provision` | `webhook` |
+| `conductorone_request_schema.form.fields` | `form_string_field` | `string_field` |
+| `conductorone_request_schema.form.fields` | `form_string_map_field` | `string_map_field` |
+| `conductorone_request_schema.form.fields` | `admin_provider_config` | `admin_config` |
+| `conductorone_request_schema.form.fields` | `shared_provider_config` | `shared_config` |
+| `conductorone_request_schema.form.fields` | `user_provider_config` | `user_config` |
+
+The provision-policy member renames in the table also apply to `conductorone_custom_app_entitlement.provision_policy`. Its nested blocks additionally change as follows:
+
+| Resource path | v1.4.x attribute | v1.5.0+ attribute |
+|---|---|---|
+| `conductorone_custom_app_entitlement.provision_policy.connector` | `account_provision` | `account` |
+| `conductorone_custom_app_entitlement.provision_policy.manual` | `provisioner_assignment` | `assignee` |
+| `conductorone_custom_app_entitlement.provision_policy.manual.assignee` | `app_owner_provisioner` | `app_owners` |
+| `conductorone_custom_app_entitlement.provision_policy.manual.assignee` | `entitlement_owner_provisioner` | `entitlement_owners` |
+| `conductorone_custom_app_entitlement.provision_policy.manual.assignee` | `expression_provisioner` | `expression` |
+| `conductorone_custom_app_entitlement.provision_policy.manual.assignee` | `group_provisioner` | `group` |
+| `conductorone_custom_app_entitlement.provision_policy.manual.assignee` | `manager_provisioner` | `manager` |
+| `conductorone_custom_app_entitlement.provision_policy.manual.assignee` | `user_provisioner` | `users` |
+
+`conductorone_app_entitlement` keeps its existing `*_provision` and `provisioner_assignment` block names for backward compatibility.
 
 ### 1.3.0
 

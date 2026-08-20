@@ -55,6 +55,9 @@ data "conductorone_users" "my_users" {
   role_ids = [
     "..."
   ]
+  source_app_ids = [
+    "..."
+  ]
   user_statuses = [
     "DELETED"
   ]
@@ -83,6 +86,9 @@ data "conductorone_users" "my_users" {
 - `query` (String) Query the apps with a fuzzy search on display name and emails.
 - `refs` (Attributes List) An array of user refs to restrict the return values to by ID. (see [below for nested schema](#nestedatt--refs))
 - `role_ids` (List of String) Search for users that have any of the role IDs on this list.
+- `source_app_ids` (List of String) Filter to include only users sourced from any of these apps (directories).
+ Each value is an app ID; a user matches when its source_app_ids map
+ contains any of the listed app IDs. Combined with `origins` using OR.
 - `user_statuses` (List of String) Search for users that have any of the statuses on this list. This can only be ENABLED, DISABLED, and DELETED
 
 ### Read-Only
@@ -111,8 +117,21 @@ Read-Only:
 - `delegated_user_path` (String) JSONPATH expression indicating the location of the user objects of delegates of the current user in the expanded array.
 - `directories_path` (String) JSONPATH expression indicating the location of directory objects in the expanded array.
 - `managers_path` (String) JSONPATH expression indicating the location of the user objects that managed the current user in the expanded array.
+- `object_permissions` (Attributes) ActorObjectPermissions describes which actions the calling user is permitted to perform on an object, as determined by policy. (see [below for nested schema](#nestedatt--list--object_permissions))
 - `roles_path` (String) JSONPATH expression indicating the location of the roles of the current user in the expanded array.
 - `user` (Attributes) The User object provides all of the details for an user, as well as some configuration. (see [below for nested schema](#nestedatt--list--user))
+- `user_id` (String) The id of the user.
+
+<a id="nestedatt--list--object_permissions"></a>
+### Nested Schema for `list.object_permissions`
+
+Read-Only:
+
+- `delete` (Boolean) The delete field.
+- `edit` (Boolean) The edit field.
+- `extra` (Map of Boolean) The extra field.
+- `read` (Boolean) The read field.
+
 
 <a id="nestedatt--list--user"></a>
 ### Nested Schema for `list.user`
@@ -160,6 +179,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -172,6 +192,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -184,6 +205,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -196,6 +218,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -208,6 +231,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -220,6 +244,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -232,6 +257,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -244,6 +270,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -260,5 +287,6 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.

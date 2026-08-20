@@ -53,6 +53,7 @@ resource "conductorone_app_resource" "my_app_resource" {
 
 - `access_config_id` (String) The access config ID for this resource. May be empty.
  Must be one of the builtin access config IDs or empty.
+- `agent_trait` (Attributes) AgentTrait carries metadata for AI-agent resources surfaced in the Inventory. (see [below for nested schema](#nestedatt--agent_trait))
 - `created_at` (String)
 - `delete` (Boolean) The delete field.
 - `edit` (Boolean) The edit field.
@@ -62,12 +63,27 @@ resource "conductorone_app_resource" "my_app_resource" {
 - `extra` (Map of Boolean) The extra field.
 - `grant_count` (String) The number of grants to this resource.
 - `id` (String) The id of the resource.
+- `nhi_detail` (String) Axis-2 detail refining nhi_type (e.g. "aws.role.lambda"). Read-only;
+ translated from the model.
+- `nhi_type` (String) The NHI classification (K3 spine) for this resource. Populated for
+ non-human-identity resources; UNSPECIFIED for everything else. Mirrors
+ agent_trait: read-only and translated from the model enum at the API boundary.
 - `parent_app_resource_id` (String) The parent resource id, if this resource is a child of another resource.
 - `parent_app_resource_type_id` (String) The parent resource type id, if this resource is a child of another resource.
 - `profile` (Attributes) (see [below for nested schema](#nestedatt--profile))
 - `read` (Boolean) The read field.
 - `secret_trait` (Attributes) The SecretTrait message. (see [below for nested schema](#nestedatt--secret_trait))
 - `updated_at` (String)
+
+<a id="nestedatt--agent_trait"></a>
+### Nested Schema for `agent_trait`
+
+Read-Only:
+
+- `identity_app_user_id` (String) The C1 app user ID of the service-account identity this agent authenticates as.
+ Empty if the backing identity has not yet been resolved.
+- `status` (String) The agent's lifecycle status (READY, DISABLED, DELETED).
+
 
 <a id="nestedatt--expanded"></a>
 ### Nested Schema for `expanded`
@@ -82,6 +98,12 @@ resource "conductorone_app_resource" "my_app_resource" {
 
 Read-Only:
 
+- `created_by_app_user_id` (String) The AppUser id that created this credential. Read-only; resolved from
+ the model during uplift. Distinct from identity_app_user_id (the
+ holder) and from the resource's Owner (a separate assignment, not
+ part of this message).
+- `credential_detail` (String) Platform-specific credential subtype detail, finer than credential_type
+ (e.g. "GCP service-account key"). Read-only; translated from the model.
 - `identity_app_user_id` (String) The identityAppUserId field.
 - `last_used_at` (String)
 - `secret_created_at` (String)

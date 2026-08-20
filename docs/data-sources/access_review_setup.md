@@ -27,7 +27,9 @@ data "conductorone_access_review_setup" "my_access_review_setup" {
 
 ### Read-Only
 
-- `access_review_scope_v2` (Attributes) The AccessReviewScopeV2 message.
+- `expanded` (Attributes List) Related objects requested via the expand mask. (see [below for nested schema](#nestedatt--expanded))
+- `list` (Attributes List) The current list of setup entitlements for the campaign. (see [below for nested schema](#nestedatt--list))
+- `scope_v2` (Attributes) The AccessReviewScopeV2 message.
 
 This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
   - appAccess
@@ -60,190 +62,12 @@ This message contains a oneof named access_conflicts_scope. Only a single field 
 
 
 This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
-  - resourceSelection (see [below for nested schema](#nestedatt--access_review_scope_v2))
-- `expanded` (Attributes List) Related objects requested via the expand mask. (see [below for nested schema](#nestedatt--expanded))
-- `list` (Attributes List) The current list of setup entitlements for the campaign. (see [below for nested schema](#nestedatt--list))
+  - resourceSelection
 
-<a id="nestedatt--access_review_scope_v2"></a>
-### Nested Schema for `access_review_scope_v2`
 
-Read-Only:
-
-- `account_criteria_scope` (Attributes) The AccountCriteriaScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--account_criteria_scope))
-- `all_access_conflicts_scope` (Attributes) The AllAccessConflictsScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--all_access_conflicts_scope))
-- `all_accounts_scope` (Attributes) The AllAccountsScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--all_accounts_scope))
-- `all_grants_scope` (Attributes) The AllGrantsScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--all_grants_scope))
-- `all_users_scope` (Attributes) The AllUsersScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--all_users_scope))
-- `app_selection_criteria_scope` (Attributes) The AppSelectionCriteriaScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--app_selection_criteria_scope))
-- `application_access_scope` (Attributes) The ApplicationAccessScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--application_access_scope))
-- `cel_expression_scope` (Attributes) The CelExpressionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--cel_expression_scope))
-- `cel_expression_scope1` (Attributes) The CelExpressionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--cel_expression_scope1))
-- `grants_by_criteria_scope` (Attributes) The GrantsByCriteriaScope message.
-
-This message contains a oneof named criteria_filter. Only a single field of the following list may be set at a time:
-  - daysSinceAdded
-  - daysSinceReviewed
-  - grantsAddedBetween (see [below for nested schema](#nestedatt--access_review_scope_v2--grants_by_criteria_scope))
-- `resource_selection_scope` (Attributes) The ResourceSelectionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--resource_selection_scope))
-- `resource_type_selection_scope` (Attributes) The ResourceTypeSelectionScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--resource_type_selection_scope))
-- `selected_users_scope` (Attributes) The SelectedUsersScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--selected_users_scope))
-- `specific_access_conflicts_scope` (Attributes) The SpecificAccessConflictsScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--specific_access_conflicts_scope))
-- `specific_resources_scope` (Attributes) The SpecificResourcesScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--specific_resources_scope))
-- `user_criteria_scope` (Attributes) The UserCriteriaScope message. (see [below for nested schema](#nestedatt--access_review_scope_v2--user_criteria_scope))
-
-<a id="nestedatt--access_review_scope_v2--account_criteria_scope"></a>
-### Nested Schema for `access_review_scope_v2.account_criteria_scope`
-
-Read-Only:
-
-- `account_domain` (String) The accountDomain field.
-- `account_types` (List of String) The accountTypes field.
-- `app_user_statuses` (List of String) The appUserStatuses field.
-- `no_account_owner` (Boolean) The noAccountOwner field.
-
-
-<a id="nestedatt--access_review_scope_v2--all_access_conflicts_scope"></a>
-### Nested Schema for `access_review_scope_v2.all_access_conflicts_scope`
-
-
-<a id="nestedatt--access_review_scope_v2--all_accounts_scope"></a>
-### Nested Schema for `access_review_scope_v2.all_accounts_scope`
-
-
-<a id="nestedatt--access_review_scope_v2--all_grants_scope"></a>
-### Nested Schema for `access_review_scope_v2.all_grants_scope`
-
-
-<a id="nestedatt--access_review_scope_v2--all_users_scope"></a>
-### Nested Schema for `access_review_scope_v2.all_users_scope`
-
-
-<a id="nestedatt--access_review_scope_v2--app_selection_criteria_scope"></a>
-### Nested Schema for `access_review_scope_v2.app_selection_criteria_scope`
-
-Read-Only:
-
-- `compliance_framework_attribute_value_ids` (List of String) The complianceFrameworkAttributeValueIds field.
-- `risk_level_attribute_value_ids` (List of String) The riskLevelAttributeValueIds field.
-
-
-<a id="nestedatt--access_review_scope_v2--application_access_scope"></a>
-### Nested Schema for `access_review_scope_v2.application_access_scope`
-
-
-<a id="nestedatt--access_review_scope_v2--cel_expression_scope"></a>
-### Nested Schema for `access_review_scope_v2.cel_expression_scope`
-
-Read-Only:
-
-- `expression` (String) The expression field.
-
-
-<a id="nestedatt--access_review_scope_v2--cel_expression_scope1"></a>
-### Nested Schema for `access_review_scope_v2.cel_expression_scope1`
-
-Read-Only:
-
-- `expression` (String) The expression field.
-
-
-<a id="nestedatt--access_review_scope_v2--grants_by_criteria_scope"></a>
-### Nested Schema for `access_review_scope_v2.grants_by_criteria_scope`
-
-Read-Only:
-
-- `days_since_added` (String)
-- `days_since_last_used` (String)
-- `days_since_reviewed` (String)
-- `grant_access_profile_filter` (Attributes) The GrantAccessProfileFilter message. (see [below for nested schema](#nestedatt--access_review_scope_v2--grants_by_criteria_scope--grant_access_profile_filter))
-- `grants_added_between` (Attributes) The GrantsAddedBetween message. (see [below for nested schema](#nestedatt--access_review_scope_v2--grants_by_criteria_scope--grants_added_between))
-- `source_filter` (String) The sourceFilter field.
-- `type_filter` (String) The typeFilter field.
-
-<a id="nestedatt--access_review_scope_v2--grants_by_criteria_scope--grant_access_profile_filter"></a>
-### Nested Schema for `access_review_scope_v2.grants_by_criteria_scope.grant_access_profile_filter`
-
-Read-Only:
-
-- `excluded_access_profile_ids` (List of String) Access profile IDs to EXCLUDE from the campaign
- Used when filter_type = EXCLUDE_SPECIFIC
- Max 32 profile IDs
-- `filter_type` (String) The filterType field.
-- `included_access_profile_ids` (List of String) Access profile IDs to INCLUDE in the campaign
- Used when filter_type = INCLUDE_SPECIFIC
- Max 32 profile IDs
-
-
-<a id="nestedatt--access_review_scope_v2--grants_by_criteria_scope--grants_added_between"></a>
-### Nested Schema for `access_review_scope_v2.grants_by_criteria_scope.grants_added_between`
-
-Read-Only:
-
-- `end_date` (String)
-- `start_date` (String)
-
-
-
-<a id="nestedatt--access_review_scope_v2--resource_selection_scope"></a>
-### Nested Schema for `access_review_scope_v2.resource_selection_scope`
-
-
-<a id="nestedatt--access_review_scope_v2--resource_type_selection_scope"></a>
-### Nested Schema for `access_review_scope_v2.resource_type_selection_scope`
-
-
-<a id="nestedatt--access_review_scope_v2--selected_users_scope"></a>
-### Nested Schema for `access_review_scope_v2.selected_users_scope`
-
-Read-Only:
-
-- `user_ids` (List of String) The userIds field.
-
-
-<a id="nestedatt--access_review_scope_v2--specific_access_conflicts_scope"></a>
-### Nested Schema for `access_review_scope_v2.specific_access_conflicts_scope`
-
-
-<a id="nestedatt--access_review_scope_v2--specific_resources_scope"></a>
-### Nested Schema for `access_review_scope_v2.specific_resources_scope`
-
-
-<a id="nestedatt--access_review_scope_v2--user_criteria_scope"></a>
-### Nested Schema for `access_review_scope_v2.user_criteria_scope`
-
-Read-Only:
-
-- `group_app_entitlements_ref` (Attributes List) The groupAppEntitlementsRef field. (see [below for nested schema](#nestedatt--access_review_scope_v2--user_criteria_scope--group_app_entitlements_ref))
-- `manager_user_ids` (List of String) The managerUserIds field.
-- `multi_user_profile_attributes` (Attributes Map) The multiUserProfileAttributes field. (see [below for nested schema](#nestedatt--access_review_scope_v2--user_criteria_scope--multi_user_profile_attributes))
-- `user_status` (List of String) The userStatus field.
-
-<a id="nestedatt--access_review_scope_v2--user_criteria_scope--group_app_entitlements_ref"></a>
-### Nested Schema for `access_review_scope_v2.user_criteria_scope.group_app_entitlements_ref`
-
-Read-Only:
-
-- `app_id` (String) The appId field.
-- `id` (String) The id field.
-
-
-<a id="nestedatt--access_review_scope_v2--user_criteria_scope--multi_user_profile_attributes"></a>
-### Nested Schema for `access_review_scope_v2.user_criteria_scope.multi_user_profile_attributes`
-
-Read-Only:
-
-- `values` (Attributes List) The values field. (see [below for nested schema](#nestedatt--access_review_scope_v2--user_criteria_scope--multi_user_profile_attributes--values))
-
-<a id="nestedatt--access_review_scope_v2--user_criteria_scope--multi_user_profile_attributes--values"></a>
-### Nested Schema for `access_review_scope_v2.user_criteria_scope.multi_user_profile_attributes.values`
-
-Read-Only:
-
-- `value` (String) The value field.
-
-
-
-
+This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
+  - excludedSpecificResources
+  - excludedResourceTypeSelections (see [below for nested schema](#nestedatt--scope_v2))
 
 <a id="nestedatt--expanded"></a>
 ### Nested Schema for `expanded`
@@ -254,13 +78,13 @@ Read-Only:
 
 Read-Only:
 
-- `access_review_setup_entitlement` (Attributes) An entitlement that has been selected for inclusion in an access review campaign during setup. (see [below for nested schema](#nestedatt--list--access_review_setup_entitlement))
+- `access_review_entitlement` (Attributes) An entitlement that has been selected for inclusion in an access review campaign during setup. (see [below for nested schema](#nestedatt--list--access_review_entitlement))
 - `app_path` (String) The appPath field.
 - `entitlement_path` (String) The entitlementPath field.
 - `policy_path` (String) The policyPath field.
 
-<a id="nestedatt--list--access_review_setup_entitlement"></a>
-### Nested Schema for `list.access_review_setup_entitlement`
+<a id="nestedatt--list--access_review_entitlement"></a>
+### Nested Schema for `list.access_review_entitlement`
 
 Read-Only:
 
@@ -274,3 +98,200 @@ Read-Only:
 - `policy_id` (String) The ID of the review policy applied to this entitlement. Defaults to the campaign policy.
 - `tenant_id` (String) The tenant that owns this setup entitlement.
 - `updated_at` (String)
+
+
+
+<a id="nestedatt--scope_v2"></a>
+### Nested Schema for `scope_v2`
+
+Read-Only:
+
+- `account_cel_expression` (Attributes) The CelExpressionScope message. (see [below for nested schema](#nestedatt--scope_v2--account_cel_expression))
+- `account_criteria` (Attributes) The AccountCriteriaScope message. (see [below for nested schema](#nestedatt--scope_v2--account_criteria))
+- `all_access_conflicts` (Attributes) The AllAccessConflictsScope message. (see [below for nested schema](#nestedatt--scope_v2--all_access_conflicts))
+- `all_accounts` (Attributes) The AllAccountsScope message. (see [below for nested schema](#nestedatt--scope_v2--all_accounts))
+- `all_grants` (Attributes) The AllGrantsScope message. (see [below for nested schema](#nestedatt--scope_v2--all_grants))
+- `all_users` (Attributes) The AllUsersScope message. (see [below for nested schema](#nestedatt--scope_v2--all_users))
+- `app_access` (Attributes) The ApplicationAccessScope message. (see [below for nested schema](#nestedatt--scope_v2--app_access))
+- `app_selection_criteria` (Attributes) The AppSelectionCriteriaScope message. (see [below for nested schema](#nestedatt--scope_v2--app_selection_criteria))
+- `cel_expression` (Attributes) The CelExpressionScope message. (see [below for nested schema](#nestedatt--scope_v2--cel_expression))
+- `excluded_resource_type_selections` (Attributes) The ResourceTypeSelectionScope message. (see [below for nested schema](#nestedatt--scope_v2--excluded_resource_type_selections))
+- `excluded_specific_resources` (Attributes) The SpecificResourcesScope message. (see [below for nested schema](#nestedatt--scope_v2--excluded_specific_resources))
+- `grants_by_criteria` (Attributes) The GrantsByCriteriaScope message.
+
+This message contains a oneof named criteria_filter. Only a single field of the following list may be set at a time:
+  - daysSinceAdded
+  - daysSinceReviewed
+  - grantsAddedBetween (see [below for nested schema](#nestedatt--scope_v2--grants_by_criteria))
+- `principal_type_filter` (String) Filters principals included in the scope. Unspecified is treated as users.
+- `resource_selection` (Attributes) The ResourceSelectionScope message. (see [below for nested schema](#nestedatt--scope_v2--resource_selection))
+- `resource_type_selections` (Attributes) The ResourceTypeSelectionScope message. (see [below for nested schema](#nestedatt--scope_v2--resource_type_selections))
+- `scope_role_selection` (Attributes) Empty marker for scope+role pair scoping on IaaS-type apps.
+ Actual selections stored in AccessReviewScopeRoleSelection rows.
+ May coexist with ResourceSelectionScope on the same campaign; prepare unions both. (see [below for nested schema](#nestedatt--scope_v2--scope_role_selection))
+- `selected_users` (Attributes) The SelectedUsersScope message. (see [below for nested schema](#nestedatt--scope_v2--selected_users))
+- `specific_access_conflicts` (Attributes) The SpecificAccessConflictsScope message. (see [below for nested schema](#nestedatt--scope_v2--specific_access_conflicts))
+- `specific_resources` (Attributes) The SpecificResourcesScope message. (see [below for nested schema](#nestedatt--scope_v2--specific_resources))
+- `user_criteria` (Attributes) The UserCriteriaScope message. (see [below for nested schema](#nestedatt--scope_v2--user_criteria))
+
+<a id="nestedatt--scope_v2--account_cel_expression"></a>
+### Nested Schema for `scope_v2.account_cel_expression`
+
+Read-Only:
+
+- `expression` (String) The expression field.
+
+
+<a id="nestedatt--scope_v2--account_criteria"></a>
+### Nested Schema for `scope_v2.account_criteria`
+
+Read-Only:
+
+- `account_domain` (String) The accountDomain field.
+- `account_types` (List of String) The accountTypes field.
+- `app_user_statuses` (List of String) The appUserStatuses field.
+- `no_account_owner` (Boolean) The noAccountOwner field.
+
+
+<a id="nestedatt--scope_v2--all_access_conflicts"></a>
+### Nested Schema for `scope_v2.all_access_conflicts`
+
+
+<a id="nestedatt--scope_v2--all_accounts"></a>
+### Nested Schema for `scope_v2.all_accounts`
+
+
+<a id="nestedatt--scope_v2--all_grants"></a>
+### Nested Schema for `scope_v2.all_grants`
+
+
+<a id="nestedatt--scope_v2--all_users"></a>
+### Nested Schema for `scope_v2.all_users`
+
+
+<a id="nestedatt--scope_v2--app_access"></a>
+### Nested Schema for `scope_v2.app_access`
+
+
+<a id="nestedatt--scope_v2--app_selection_criteria"></a>
+### Nested Schema for `scope_v2.app_selection_criteria`
+
+Read-Only:
+
+- `compliance_framework_attribute_value_ids` (List of String) The complianceFrameworkAttributeValueIds field.
+- `risk_level_attribute_value_ids` (List of String) The riskLevelAttributeValueIds field.
+
+
+<a id="nestedatt--scope_v2--cel_expression"></a>
+### Nested Schema for `scope_v2.cel_expression`
+
+Read-Only:
+
+- `expression` (String) The expression field.
+
+
+<a id="nestedatt--scope_v2--excluded_resource_type_selections"></a>
+### Nested Schema for `scope_v2.excluded_resource_type_selections`
+
+
+<a id="nestedatt--scope_v2--excluded_specific_resources"></a>
+### Nested Schema for `scope_v2.excluded_specific_resources`
+
+
+<a id="nestedatt--scope_v2--grants_by_criteria"></a>
+### Nested Schema for `scope_v2.grants_by_criteria`
+
+Read-Only:
+
+- `access_profile_filter` (Attributes) The GrantAccessProfileFilter message. (see [below for nested schema](#nestedatt--scope_v2--grants_by_criteria--access_profile_filter))
+- `days_since_added` (String)
+- `days_since_last_used` (String)
+- `days_since_reviewed` (String)
+- `grants_added_between` (Attributes) The GrantsAddedBetween message. (see [below for nested schema](#nestedatt--scope_v2--grants_by_criteria--grants_added_between))
+- `source_filter` (String) The sourceFilter field.
+- `type_filter` (String) The typeFilter field.
+
+<a id="nestedatt--scope_v2--grants_by_criteria--access_profile_filter"></a>
+### Nested Schema for `scope_v2.grants_by_criteria.access_profile_filter`
+
+Read-Only:
+
+- `excluded_access_profile_ids` (List of String) Access profile IDs to EXCLUDE from the campaign
+ Used when filter_type = EXCLUDE_SPECIFIC
+ Max 32 profile IDs
+- `filter_type` (String) The filterType field.
+- `included_access_profile_ids` (List of String) Access profile IDs to INCLUDE in the campaign
+ Used when filter_type = INCLUDE_SPECIFIC
+ Max 32 profile IDs
+
+
+<a id="nestedatt--scope_v2--grants_by_criteria--grants_added_between"></a>
+### Nested Schema for `scope_v2.grants_by_criteria.grants_added_between`
+
+Read-Only:
+
+- `end_date` (String)
+- `start_date` (String)
+
+
+
+<a id="nestedatt--scope_v2--resource_selection"></a>
+### Nested Schema for `scope_v2.resource_selection`
+
+
+<a id="nestedatt--scope_v2--resource_type_selections"></a>
+### Nested Schema for `scope_v2.resource_type_selections`
+
+
+<a id="nestedatt--scope_v2--scope_role_selection"></a>
+### Nested Schema for `scope_v2.scope_role_selection`
+
+
+<a id="nestedatt--scope_v2--selected_users"></a>
+### Nested Schema for `scope_v2.selected_users`
+
+Read-Only:
+
+- `user_ids` (List of String) The userIds field.
+
+
+<a id="nestedatt--scope_v2--specific_access_conflicts"></a>
+### Nested Schema for `scope_v2.specific_access_conflicts`
+
+
+<a id="nestedatt--scope_v2--specific_resources"></a>
+### Nested Schema for `scope_v2.specific_resources`
+
+
+<a id="nestedatt--scope_v2--user_criteria"></a>
+### Nested Schema for `scope_v2.user_criteria`
+
+Read-Only:
+
+- `group_app_entitlements_ref` (Attributes List) The groupAppEntitlementsRef field. (see [below for nested schema](#nestedatt--scope_v2--user_criteria--group_app_entitlements_ref))
+- `manager_user_ids` (List of String) The managerUserIds field.
+- `multi_user_profile_attributes` (Attributes Map) The multiUserProfileAttributes field. (see [below for nested schema](#nestedatt--scope_v2--user_criteria--multi_user_profile_attributes))
+- `user_status` (List of String) The userStatus field.
+
+<a id="nestedatt--scope_v2--user_criteria--group_app_entitlements_ref"></a>
+### Nested Schema for `scope_v2.user_criteria.group_app_entitlements_ref`
+
+Read-Only:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+<a id="nestedatt--scope_v2--user_criteria--multi_user_profile_attributes"></a>
+### Nested Schema for `scope_v2.user_criteria.multi_user_profile_attributes`
+
+Read-Only:
+
+- `values` (Attributes List) The values field. (see [below for nested schema](#nestedatt--scope_v2--user_criteria--multi_user_profile_attributes--values))
+
+<a id="nestedatt--scope_v2--user_criteria--multi_user_profile_attributes--values"></a>
+### Nested Schema for `scope_v2.user_criteria.multi_user_profile_attributes.values`
+
+Read-Only:
+
+- `value` (String) The value field.

@@ -16,7 +16,9 @@ When creating a `access_conflict` resource you must provide a `display_name`.
 
 ```terraform
 resource "conductorone_access_conflict" "my_access_conflict" {
-  access_conflict_notification_config = {
+  description  = "...my_description..."
+  display_name = "...my_display_name..."
+  notification_config = {
     email_notifications = {
       enabled = false
       identity_user_ids = [
@@ -26,11 +28,9 @@ resource "conductorone_access_conflict" "my_access_conflict" {
     slack_notifications = {
       channel_id   = "...my_channel_id..."
       channel_name = "...my_channel_name..."
-      enabled      = false
+      enabled      = true
     }
   }
-  description  = "...my_description..."
-  display_name = "...my_display_name..."
 }
 ```
 
@@ -43,8 +43,8 @@ resource "conductorone_access_conflict" "my_access_conflict" {
 
 ### Optional
 
-- `access_conflict_notification_config` (Attributes) The NotificationConfig message. (see [below for nested schema](#nestedatt--access_conflict_notification_config))
 - `description` (String) An optional description explaining the purpose of this Separation of Duty rule.
+- `notification_config` (Attributes) The NotificationConfig message. (see [below for nested schema](#nestedatt--notification_config))
 
 ### Read-Only
 
@@ -53,18 +53,20 @@ resource "conductorone_access_conflict" "my_access_conflict" {
 - `entitlement_set_a_id` (String) The identifier of entitlement set A in the conflict rule.
 - `entitlement_set_b_id` (String) The identifier of entitlement set B in the conflict rule.
 - `id` (String) The unique identifier of this conflict monitor.
+- `negate_group_b` (Boolean) When true, the rule flags users who are in set A but NOT in set B ("is not
+ in"), instead of the default A-and-B intersection.
 - `updated_at` (String)
 
-<a id="nestedatt--access_conflict_notification_config"></a>
-### Nested Schema for `access_conflict_notification_config`
+<a id="nestedatt--notification_config"></a>
+### Nested Schema for `notification_config`
 
 Optional:
 
-- `email_notifications` (Attributes) The EmailNotifications message. (see [below for nested schema](#nestedatt--access_conflict_notification_config--email_notifications))
-- `slack_notifications` (Attributes) The SlackNotifications message. (see [below for nested schema](#nestedatt--access_conflict_notification_config--slack_notifications))
+- `email_notifications` (Attributes) The EmailNotifications message. (see [below for nested schema](#nestedatt--notification_config--email_notifications))
+- `slack_notifications` (Attributes) The SlackNotifications message. (see [below for nested schema](#nestedatt--notification_config--slack_notifications))
 
-<a id="nestedatt--access_conflict_notification_config--email_notifications"></a>
-### Nested Schema for `access_conflict_notification_config.email_notifications`
+<a id="nestedatt--notification_config--email_notifications"></a>
+### Nested Schema for `notification_config.email_notifications`
 
 Optional:
 
@@ -72,8 +74,8 @@ Optional:
 - `identity_user_ids` (List of String) The identityUserIds field.
 
 
-<a id="nestedatt--access_conflict_notification_config--slack_notifications"></a>
-### Nested Schema for `access_conflict_notification_config.slack_notifications`
+<a id="nestedatt--notification_config--slack_notifications"></a>
+### Nested Schema for `notification_config.slack_notifications`
 
 Optional:
 

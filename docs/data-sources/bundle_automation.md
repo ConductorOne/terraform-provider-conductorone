@@ -30,10 +30,8 @@ data "conductorone_bundle_automation" "my_bundleautomation" {
 
 ### Read-Only
 
-- `bundle_automation_circuit_breaker` (Attributes) The BundleAutomationCircuitBreaker message. (see [below for nested schema](#nestedatt--bundle_automation_circuit_breaker))
-- `bundle_automation_last_run_state` (Attributes) The BundleAutomationLastRunState message. (see [below for nested schema](#nestedatt--bundle_automation_last_run_state))
-- `bundle_automation_rule_cel` (Attributes) The BundleAutomationRuleCEL message. (see [below for nested schema](#nestedatt--bundle_automation_rule_cel))
-- `bundle_automation_rule_entitlement` (Attributes) The BundleAutomationRuleEntitlement message. (see [below for nested schema](#nestedatt--bundle_automation_rule_entitlement))
+- `cel` (Attributes) The BundleAutomationRuleCEL message. (see [below for nested schema](#nestedatt--cel))
+- `circuit_breaker` (Attributes) The BundleAutomationCircuitBreaker message. (see [below for nested schema](#nestedatt--circuit_breaker))
 - `create_tasks` (Boolean) The createTasks field.
 - `created_at` (String)
 - `deleted_at` (String)
@@ -41,23 +39,33 @@ data "conductorone_bundle_automation" "my_bundleautomation" {
 - `enabled` (Boolean) The enabled field.
 - `enforce_on_small_profiles` (Boolean) When true, the circuit breaker is evaluated even on profiles below the
  tenant min-members floor.
+- `entitlements` (Attributes) The BundleAutomationRuleEntitlement message. (see [below for nested schema](#nestedatt--entitlements))
 - `removed_members_threshold_percent` (String) Per-automation override for the removed-members percent that trips the
  circuit breaker (1-100). 0 / unset means the tenant default applies.
+- `state` (Attributes) The BundleAutomationLastRunState message. (see [below for nested schema](#nestedatt--state))
 - `tenant_id` (String) The tenantId field.
 - `updated_at` (String)
 
-<a id="nestedatt--bundle_automation_circuit_breaker"></a>
-### Nested Schema for `bundle_automation_circuit_breaker`
+<a id="nestedatt--cel"></a>
+### Nested Schema for `cel`
+
+Read-Only:
+
+- `expression` (String) The expression field.
+
+
+<a id="nestedatt--circuit_breaker"></a>
+### Nested Schema for `circuit_breaker`
 
 Read-Only:
 
 - `removed_members_threshold_percentage` (String) The removedMembersThresholdPercentage field.
 - `state` (String) The state field.
 - `updated_at` (String)
-- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--bundle_automation_circuit_breaker--user_ref))
+- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--circuit_breaker--user_ref))
 
-<a id="nestedatt--bundle_automation_circuit_breaker--user_ref"></a>
-### Nested Schema for `bundle_automation_circuit_breaker.user_ref`
+<a id="nestedatt--circuit_breaker--user_ref"></a>
+### Nested Schema for `circuit_breaker.user_ref`
 
 Read-Only:
 
@@ -65,18 +73,35 @@ Read-Only:
 
 
 
-<a id="nestedatt--bundle_automation_last_run_state"></a>
-### Nested Schema for `bundle_automation_last_run_state`
+<a id="nestedatt--entitlements"></a>
+### Nested Schema for `entitlements`
 
 Read-Only:
 
-- `bundle_automation_cel_evaluation_state` (Attributes) The BundleAutomationCelEvaluationState message. (see [below for nested schema](#nestedatt--bundle_automation_last_run_state--bundle_automation_cel_evaluation_state))
+- `entitlement_refs` (Attributes List) The entitlementRefs field. (see [below for nested schema](#nestedatt--entitlements--entitlement_refs))
+
+<a id="nestedatt--entitlements--entitlement_refs"></a>
+### Nested Schema for `entitlements.entitlement_refs`
+
+Read-Only:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
+
+
+<a id="nestedatt--state"></a>
+### Nested Schema for `state`
+
+Read-Only:
+
+- `cel_evaluation` (Attributes) The BundleAutomationCelEvaluationState message. (see [below for nested schema](#nestedatt--state--cel_evaluation))
 - `error_message` (String) The errorMessage field.
 - `last_run_at` (String)
 - `status` (String) The status field.
 
-<a id="nestedatt--bundle_automation_last_run_state--bundle_automation_cel_evaluation_state"></a>
-### Nested Schema for `bundle_automation_last_run_state.bundle_automation_cel_evaluation_state`
+<a id="nestedatt--state--cel_evaluation"></a>
+### Nested Schema for `state.cel_evaluation`
 
 Read-Only:
 
@@ -84,28 +109,3 @@ Read-Only:
 - `last_evaluated_at` (String)
 - `matched_users` (String) The matchedUsers field.
 - `status` (String) The status field.
-
-
-
-<a id="nestedatt--bundle_automation_rule_cel"></a>
-### Nested Schema for `bundle_automation_rule_cel`
-
-Read-Only:
-
-- `expression` (String) The expression field.
-
-
-<a id="nestedatt--bundle_automation_rule_entitlement"></a>
-### Nested Schema for `bundle_automation_rule_entitlement`
-
-Read-Only:
-
-- `entitlement_refs` (Attributes List) The entitlementRefs field. (see [below for nested schema](#nestedatt--bundle_automation_rule_entitlement--entitlement_refs))
-
-<a id="nestedatt--bundle_automation_rule_entitlement--entitlement_refs"></a>
-### Nested Schema for `bundle_automation_rule_entitlement.entitlement_refs`
-
-Read-Only:
-
-- `app_id` (String) The appId field.
-- `id` (String) The id field.

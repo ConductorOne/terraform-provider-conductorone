@@ -18,7 +18,7 @@ When creating an app resource type you must provide an app_id, display_name and 
 resource "conductorone_app_resource_type" "my_app_resource_type" {
   app_id        = "...my_app_id..."
   display_name  = "...my_display_name..."
-  resource_type = "ROLE"
+  resource_type = "GROUP"
 }
 ```
 
@@ -29,7 +29,7 @@ resource "conductorone_app_resource_type" "my_app_resource_type" {
 
 - `app_id` (String) The ID of the app that is associated with the app resource type
 - `display_name` (String) The display name for the new resource type.
-- `resource_type` (String) The category of the resource type (e.g., ROLE, GROUP, LICENSE). possible known values include one of ["ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT", "PROFILE_TYPE"]; Requires replacement if changed.
+- `resource_type` (String) The category of the resource type (e.g., ROLE, GROUP, LICENSE). possible known values include one of ["ROLE", "GROUP", "LICENSE", "PROJECT", "CATALOG", "CUSTOM", "VAULT", "PROFILE_TYPE", "SESSION_POLICY", "CLAW_AGENT"]; Requires replacement if changed.
 
 ### Read-Only
 
