@@ -10739,7 +10739,7 @@ components:
                             - github.com/conductorone/terraform-provider-conductorone/internal/annotations
                         schemaDefinition: annotations.PlanModifier()
                 appEntitlementOwnerRefs:
-                    description: Sets entitlement owners on the app.
+                    description: Initial entitlement owners for ordinary API creation. Requests with `match_baton_ref` must leave this empty; Terraform manages owners with `conductorone_app_owner_entitlement`.
                     items:
                         $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
                     type:
@@ -10778,7 +10778,7 @@ components:
                     format: int32
                     type: integer
                 owners:
-                    description: Creates the app with this array of user owners.
+                    description: Initial user owners for ordinary API creation. Requests with `match_baton_ref` must leave this empty; Terraform manages owners with `conductorone_app_owner_user`.
                     items:
                         type: string
                     type:
