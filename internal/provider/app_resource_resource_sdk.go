@@ -133,6 +133,11 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceView(ctx context.
 				}
 			}
 			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
+		} else {
+			r.Delete = types.BoolNull()
+			r.Edit = types.BoolNull()
+			r.Extra = nil
+			r.Read = types.BoolNull()
 		}
 	}
 
@@ -148,6 +153,13 @@ func (r *AppResourceResourceModel) RefreshFromSharedCreateManuallyManagedAppReso
 		if diags.HasError() {
 			return diags
 		}
+
+		// CreateManuallyManagedAppResourceResponse returns AppResource, not AppResourceView,
+		// so ObjectPermissions fields are not available. Set them to null explicitly.
+		r.Delete = types.BoolNull()
+		r.Edit = types.BoolNull()
+		r.Extra = nil
+		r.Read = types.BoolNull()
 
 	}
 

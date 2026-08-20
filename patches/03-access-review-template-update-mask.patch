@@ -1,22 +1,26 @@
+Subject: [PATCH] Preserve access review template update-mask semantics
+
+Build the complete update mask while including signatureConfig only when configured.
+
 diff --git a/internal/provider/access_review_template_resource_sdk.go b/internal/provider/access_review_template_resource_sdk.go
-index 670a9cea..1a2b3c45 100644
+index 90e86826..79867cc7 100644
 --- a/internal/provider/access_review_template_resource_sdk.go
 +++ b/internal/provider/access_review_template_resource_sdk.go
-@@ -1746,8 +1746,17 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceU
+@@ -1967,8 +1967,17 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateServiceU
  		return nil, diags
  	}
-
+ 
 +	updateMask := "accessReviewDuration,accuracyIssueAction,annotations,autoCloseCampaign,autoCloseDecision," +
 +		"autoGenerateReport,autoStartCampaign,columnConfig,defaultView,description,displayName," +
 +		"exemptCertifiedAccessConflicts,inclusionScope,isCampaignScheduleEnabled,nextScheduledCampaignAt," +
 +		"notificationConfig,policyId,recurrenceRule,reviewInstructions,scope,scopeType," +
 +		"slackChannel,usePolicyOverride"
-+	if r.ReviewSignatureConfig != nil {
++	if r.SignatureConfig != nil {
 +		updateMask += ",signatureConfig"
 +	}
  	out := shared.AccessReviewTemplateServiceUpdateRequest{
  		AccessReviewTemplate: accessReviewTemplate,
 +		UpdateMask:           &updateMask,
  	}
-
+ 
  	return &out, diags

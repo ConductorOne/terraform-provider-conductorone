@@ -1,12 +1,9 @@
 Subject: [PATCH] Re-add deleted_at to nested resource schemas
 
-Speakeasy's soft-delete handling strips deleted_at from schemas that nest an
-entity-root struct while retaining the field in the generated Go model. The
-framework then rejects plans and applies because the struct and object shape
-differ. Restore deleted_at in all seven protected nested schemas.
+Speakeasy strips deleted_at from schemas that nest entity-root structs while retaining the field in the generated Go model. Restore it in every protected nested schema so Terraform struct and object shapes remain identical.
 
 diff --git a/internal/provider/app_entitlement_owner_entitlement_resource.go b/internal/provider/app_entitlement_owner_entitlement_resource.go
-index 6ae2bc1a..ee15287e 100644
+index 50efdb7c..4fab830b 100644
 --- a/internal/provider/app_entitlement_owner_entitlement_resource.go
 +++ b/internal/provider/app_entitlement_owner_entitlement_resource.go
 @@ -108,6 +108,9 @@ func (r *AppEntitlementOwnerEntitlementResource) Schema(ctx context.Context, req
@@ -20,7 +17,7 @@ index 6ae2bc1a..ee15287e 100644
  						Computed: true,
  						Attributes: map[string]schema.Attribute{
 diff --git a/internal/provider/app_entitlement_owner_user_resource.go b/internal/provider/app_entitlement_owner_user_resource.go
-index 939eedb2..2a1a7972 100644
+index 99debc81..8cb7bef5 100644
 --- a/internal/provider/app_entitlement_owner_user_resource.go
 +++ b/internal/provider/app_entitlement_owner_user_resource.go
 @@ -90,6 +90,9 @@ func (r *AppEntitlementOwnerUserResource) Schema(ctx context.Context, req resour
@@ -34,7 +31,7 @@ index 939eedb2..2a1a7972 100644
  						Computed:    true,
  						Description: `The department which the user belongs to in the organization.`,
 diff --git a/internal/provider/app_owner_entitlement_resource.go b/internal/provider/app_owner_entitlement_resource.go
-index e221766e..e934035e 100644
+index b84a7e18..1bf6cf8f 100644
 --- a/internal/provider/app_owner_entitlement_resource.go
 +++ b/internal/provider/app_owner_entitlement_resource.go
 @@ -107,6 +107,9 @@ func (r *AppOwnerEntitlementResource) Schema(ctx context.Context, req resource.S
@@ -48,7 +45,7 @@ index e221766e..e934035e 100644
  						Computed: true,
  						Attributes: map[string]schema.Attribute{
 diff --git a/internal/provider/app_owner_user_resource.go b/internal/provider/app_owner_user_resource.go
-index 1ba915ef..78cddb00 100644
+index 382b045d..9d681870 100644
 --- a/internal/provider/app_owner_user_resource.go
 +++ b/internal/provider/app_owner_user_resource.go
 @@ -81,6 +81,9 @@ func (r *AppOwnerUserResource) Schema(ctx context.Context, req resource.SchemaRe
@@ -62,7 +59,7 @@ index 1ba915ef..78cddb00 100644
  						Computed:    true,
  						Description: `The department which the user belongs to in the organization.`,
 diff --git a/internal/provider/connector_owner_entitlement_resource.go b/internal/provider/connector_owner_entitlement_resource.go
-index f0d85aa7..775d9f0d 100644
+index 3f071aa7..0fa17a78 100644
 --- a/internal/provider/connector_owner_entitlement_resource.go
 +++ b/internal/provider/connector_owner_entitlement_resource.go
 @@ -108,6 +108,9 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
@@ -76,7 +73,7 @@ index f0d85aa7..775d9f0d 100644
  						Computed: true,
  						Attributes: map[string]schema.Attribute{
 diff --git a/internal/provider/connector_owner_user_resource.go b/internal/provider/connector_owner_user_resource.go
-index 1af3af88..ff7b0646 100644
+index 113b4139..4b0dc85a 100644
 --- a/internal/provider/connector_owner_user_resource.go
 +++ b/internal/provider/connector_owner_user_resource.go
 @@ -90,6 +90,9 @@ func (r *ConnectorOwnerUserResource) Schema(ctx context.Context, req resource.Sc
@@ -90,16 +87,16 @@ index 1af3af88..ff7b0646 100644
  						Computed:    true,
  						Description: `The department which the user belongs to in the organization.`,
 diff --git a/internal/provider/directory_resource.go b/internal/provider/directory_resource.go
-index da606749..5ba19b1f 100644
+index e72dd052..5ee72f3e 100644
 --- a/internal/provider/directory_resource.go
 +++ b/internal/provider/directory_resource.go
-@@ -103,6 +103,9 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
+@@ -95,6 +95,9 @@ func (r *DirectoryResource) Schema(ctx context.Context, req resource.SchemaReque
  							"created_at": schema.StringAttribute{
  								Computed: true,
  							},
 +							"deleted_at": schema.StringAttribute{
 +								Computed: true,
 +							},
- 							"directory_account_filter_all": schema.SingleNestedAttribute{
- 								Computed:    true,
- 								Description: `The DirectoryAccountFilterAll message.`,
+ 							"merge_config": schema.SingleNestedAttribute{
+ 								Computed: true,
+ 								Attributes: map[string]schema.Attribute{
