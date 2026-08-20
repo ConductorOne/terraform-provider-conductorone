@@ -1,6 +1,6 @@
 Subject: [PATCH] Re-add deleted_at to nested resource schemas
 
-Speakeasy strips deleted_at from schemas that nest entity-root structs while retaining the field in the generated Go model. Restore it in every protected nested schema so Terraform struct and object shapes remain identical.
+Speakeasy strips deleted_at from schemas that nest entity-root structs while retaining the field in the generated Go model. Restore it in all nine nested schemas so Terraform struct and object shapes remain identical.
 
 diff --git a/internal/provider/app_entitlement_owner_entitlement_resource.go b/internal/provider/app_entitlement_owner_entitlement_resource.go
 index 50efdb7c..4fab830b 100644
@@ -49,6 +49,34 @@ index 382b045d..9d681870 100644
 --- a/internal/provider/app_owner_user_resource.go
 +++ b/internal/provider/app_owner_user_resource.go
 @@ -81,6 +81,9 @@ func (r *AppOwnerUserResource) Schema(ctx context.Context, req resource.SchemaRe
+ 						Computed:    true,
+ 						Description: `The id of the user to whom tasks will be automatically reassigned to.`,
+ 					},
++					"deleted_at": schema.StringAttribute{
++						Computed: true,
++					},
+ 					"department": schema.StringAttribute{
+ 						Computed:    true,
+ 						Description: `The department which the user belongs to in the organization.`,
+diff --git a/internal/provider/app_resource_owner_entitlement_resource.go b/internal/provider/app_resource_owner_entitlement_resource.go
+index e0d2a5c5..04d54f23 100644
+--- a/internal/provider/app_resource_owner_entitlement_resource.go
++++ b/internal/provider/app_resource_owner_entitlement_resource.go
+@@ -109,6 +109,9 @@ func (r *AppResourceOwnerEntitlementResource) Schema(ctx context.Context, req re
+ 						Computed:    true,
+ 						Description: `Flag to indicate if app-level access request defaults have been applied to the entitlement`,
+ 					},
++					"deleted_at": schema.StringAttribute{
++						Computed: true,
++					},
+ 					"deprovisioner_policy": schema.SingleNestedAttribute{
+ 						Computed: true,
+ 						Attributes: map[string]schema.Attribute{
+diff --git a/internal/provider/app_resource_owner_user_resource.go b/internal/provider/app_resource_owner_user_resource.go
+index 83bfbd38..f0bd30c1 100644
+--- a/internal/provider/app_resource_owner_user_resource.go
++++ b/internal/provider/app_resource_owner_user_resource.go
+@@ -99,6 +99,9 @@ func (r *AppResourceOwnerUserResource) Schema(ctx context.Context, req resource.
  						Computed:    true,
  						Description: `The id of the user to whom tasks will be automatically reassigned to.`,
  					},
