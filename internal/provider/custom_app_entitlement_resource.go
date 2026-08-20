@@ -559,6 +559,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				Description: `Whether to override the app-level access request defaults for this entitlement.`,
 			},
 			"provision_policy": schema.SingleNestedAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),

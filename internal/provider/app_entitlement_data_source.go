@@ -41,7 +41,7 @@ type AppEntitlementDataSourceModel struct {
 	CertifyPolicyID                types.String                         `tfsdk:"certify_policy_id"`
 	ComplianceFrameworkIds         []types.String                       `tfsdk:"compliance_framework_ids"`
 	ComplianceFrameworkValueIds    []types.String                       `tfsdk:"compliance_framework_value_ids"`
-	Count                          types.String                         `tfsdk:"count"`
+	Count                          types.String                         `tfsdk:"result_count"`
 	CreatedAt                      types.String                         `tfsdk:"created_at"`
 	DefaultValuesApplied           types.Bool                           `tfsdk:"default_values_applied"`
 	Delete                         types.Bool                           `tfsdk:"delete"`
@@ -169,7 +169,7 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				ElementType: types.StringType,
 				Description: `The IDs of different compliance frameworks associated with this app entitlement ex (SOX, HIPAA, PCI, etc.)`,
 			},
-			"count": schema.StringAttribute{
+			"result_count": schema.StringAttribute{
 				Computed:    true,
 				Description: `The count of items in this facet.`,
 			},

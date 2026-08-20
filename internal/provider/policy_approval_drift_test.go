@@ -82,16 +82,16 @@ func TestApprovalMembersAreNotComputed(t *testing.T) {
 	approval := approvalAttr(t)
 
 	members := []string{
-		"agent_approval",
-		"app_group_approval",
-		"app_owner_approval",
-		"entitlement_owner_approval",
-		"expression_approval",
-		"manager_approval",
-		"resource_owner_approval",
-		"self_approval",
-		"user_approval",
-		"webhook_approval",
+		"agent",
+		"app_owners",
+		"entitlement_owners",
+		"expression",
+		"group",
+		"manager",
+		"resource_owners",
+		"self",
+		"users",
+		"webhook",
 	}
 
 	for _, name := range members {
@@ -142,18 +142,18 @@ func TestApprovalScalarLeavesAreComputedOptional(t *testing.T) {
 	}
 
 	// Per-member scalar bools called out in the issue.
-	userApproval, ok := approval.Attributes["user_approval"].(schema.SingleNestedAttribute)
+	userApproval, ok := approval.Attributes["users"].(schema.SingleNestedAttribute)
 	if !ok {
-		t.Fatalf("approval.user_approval is not a SingleNestedAttribute, got %T", approval.Attributes["user_approval"])
+		t.Fatalf("approval.users is not a SingleNestedAttribute, got %T", approval.Attributes["users"])
 	}
 	for _, name := range []string{"allow_self_approval", "require_distinct_approvers"} {
 		attr, ok := userApproval.Attributes[name].(schema.BoolAttribute)
 		if !ok {
-			t.Errorf("approval.user_approval.%s is not a BoolAttribute, got %T", name, userApproval.Attributes[name])
+			t.Errorf("approval.users.%s is not a BoolAttribute, got %T", name, userApproval.Attributes[name])
 			continue
 		}
 		if !attr.IsComputed() || !attr.IsOptional() {
-			t.Errorf("approval.user_approval.%s must be Computed+Optional (computed=%v optional=%v)", name, attr.IsComputed(), attr.IsOptional())
+			t.Errorf("approval.users.%s must be Computed+Optional (computed=%v optional=%v)", name, attr.IsComputed(), attr.IsOptional())
 		}
 	}
 }
