@@ -38,7 +38,7 @@ type CreateAppRequest struct {
 	//  Well-known keys: `managed_by`, `iac_workspace`,
 	//  `iac_resource_address`, `iac_tool_version`.
 	Annotations map[string]string `json:"annotations,omitempty"`
-	// Sets entitlement owners on the app.
+	// Initial entitlement owners for ordinary API creation. Requests with `match_baton_ref` must leave this empty; Terraform manages owners with `conductorone_app_owner_entitlement`.
 	AppEntitlementOwnerRefs []AppEntitlementRef `json:"appEntitlementOwnerRefs,omitempty"`
 	// Creates the app with this certify policy.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
@@ -55,7 +55,7 @@ type CreateAppRequest struct {
 	MatchBatonRef *AppMatchBatonRef `json:"matchBatonRef,omitempty"`
 	// Creates the app with this monthly cost per seat.
 	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
-	// Creates the app with this array of user owners.
+	// Initial user owners for ordinary API creation. Requests with `match_baton_ref` must leave this empty; Terraform manages owners with `conductorone_app_owner_user`.
 	Owners []string `json:"owners,omitempty"`
 	// Creates the app with this revoke policy.
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
