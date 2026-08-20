@@ -10,6 +10,7 @@ overlay.yaml
 /internal/provider/types/app_entitlement_provision_policy.go
 /internal/provider/app_entitlement_resource.go
 /internal/provider/app_entitlement_resource_sdk.go
+/internal/provider/app_entitlement_data_source.go
 /internal/provider/compliance_framework_data_source.go
 /internal/provider/compliance_framework_resource.go
 /internal/provider/risk_level_data_source.go
