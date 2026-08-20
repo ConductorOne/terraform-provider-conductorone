@@ -559,6 +559,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 				Description: `Whether to override the app-level access request defaults for this entitlement.`,
 			},
 			"provision_policy": schema.SingleNestedAttribute{
+				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
@@ -711,11 +712,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							`Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("delegated_provision"),
-								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("delegated"),
+								path.MatchRelative().AtParent().AtName("external_ticket"),
+								path.MatchRelative().AtParent().AtName("manual"),
 								path.MatchRelative().AtParent().AtName("multi_step"),
-								path.MatchRelative().AtParent().AtName("webhook_provision"),
+								path.MatchRelative().AtParent().AtName("webhook"),
 							}...),
 						},
 					},
@@ -743,11 +744,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("connector_provision"),
-								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("connector"),
+								path.MatchRelative().AtParent().AtName("external_ticket"),
+								path.MatchRelative().AtParent().AtName("manual"),
 								path.MatchRelative().AtParent().AtName("multi_step"),
-								path.MatchRelative().AtParent().AtName("webhook_provision"),
+								path.MatchRelative().AtParent().AtName("webhook"),
 							}...),
 						},
 					},
@@ -805,11 +806,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						Description: `This provision step indicates that we should check an external ticket to provision this entitlement. Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("connector_provision"),
-								path.MatchRelative().AtParent().AtName("delegated_provision"),
-								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("connector"),
+								path.MatchRelative().AtParent().AtName("delegated"),
+								path.MatchRelative().AtParent().AtName("manual"),
 								path.MatchRelative().AtParent().AtName("multi_step"),
-								path.MatchRelative().AtParent().AtName("webhook_provision"),
+								path.MatchRelative().AtParent().AtName("webhook"),
 							}...),
 						},
 					},
@@ -1024,11 +1025,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step. Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("connector_provision"),
-								path.MatchRelative().AtParent().AtName("delegated_provision"),
-								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
+								path.MatchRelative().AtParent().AtName("connector"),
+								path.MatchRelative().AtParent().AtName("delegated"),
+								path.MatchRelative().AtParent().AtName("external_ticket"),
 								path.MatchRelative().AtParent().AtName("multi_step"),
-								path.MatchRelative().AtParent().AtName("webhook_provision"),
+								path.MatchRelative().AtParent().AtName("webhook"),
 							}...),
 						},
 					},
@@ -1041,11 +1042,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						Description: `Requires replacement if changed.; Parsed as JSON.`,
 						Validators: []validator.String{
 							stringvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("connector_provision"),
-								path.MatchRelative().AtParent().AtName("delegated_provision"),
-								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-								path.MatchRelative().AtParent().AtName("manual_provision"),
-								path.MatchRelative().AtParent().AtName("webhook_provision"),
+								path.MatchRelative().AtParent().AtName("connector"),
+								path.MatchRelative().AtParent().AtName("delegated"),
+								path.MatchRelative().AtParent().AtName("external_ticket"),
+								path.MatchRelative().AtParent().AtName("manual"),
+								path.MatchRelative().AtParent().AtName("webhook"),
 							}...),
 						},
 					},
@@ -1073,10 +1074,10 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						Description: `This provision step indicates that a webhook should be called to provision this entitlement. Requires replacement if changed.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
-								path.MatchRelative().AtParent().AtName("connector_provision"),
-								path.MatchRelative().AtParent().AtName("delegated_provision"),
-								path.MatchRelative().AtParent().AtName("external_ticket_provision"),
-								path.MatchRelative().AtParent().AtName("manual_provision"),
+								path.MatchRelative().AtParent().AtName("connector"),
+								path.MatchRelative().AtParent().AtName("delegated"),
+								path.MatchRelative().AtParent().AtName("external_ticket"),
+								path.MatchRelative().AtParent().AtName("manual"),
 								path.MatchRelative().AtParent().AtName("multi_step"),
 							}...),
 						},
