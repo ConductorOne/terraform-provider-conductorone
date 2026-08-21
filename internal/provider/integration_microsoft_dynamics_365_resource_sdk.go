@@ -172,15 +172,20 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) RefreshFromGetResponse(re
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "environment-url"); ok {
-					r.EnvironmentUrl = types.StringValue(val)
+				if _, ok := configValues["environment-url"]; ok {
+					if val, ok := getStringValue(values, "environment-url"); ok {
+						r.EnvironmentUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "dynamics-client-id"); ok {
-					r.DynamicsClientId = types.StringValue(val)
+				if _, ok := configValues["dynamics-client-id"]; ok {
+					if val, ok := getStringValue(values, "dynamics-client-id"); ok {
+						r.DynamicsClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -223,15 +228,20 @@ func (r *IntegrationMicrosoftDynamics365ResourceModel) RefreshFromCreateResponse
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "environment-url"); ok {
-					r.EnvironmentUrl = types.StringValue(val)
+				if _, ok := configValues["environment-url"]; ok {
+					if val, ok := getStringValue(values, "environment-url"); ok {
+						r.EnvironmentUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "dynamics-client-id"); ok {
-					r.DynamicsClientId = types.StringValue(val)
+				if _, ok := configValues["dynamics-client-id"]; ok {
+					if val, ok := getStringValue(values, "dynamics-client-id"); ok {
+						r.DynamicsClientId = types.StringValue(val)
+					}
 				}
 
 			}

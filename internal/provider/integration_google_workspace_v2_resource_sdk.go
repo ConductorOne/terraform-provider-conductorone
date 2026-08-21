@@ -178,19 +178,26 @@ func (r *IntegrationGoogleWorkspaceV2ResourceModel) RefreshFromGetResponse(resp 
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "customer_id"); ok {
-					r.CustomerId = types.StringValue(val)
+				if _, ok := configValues["customer_id"]; ok {
+					if val, ok := getStringValue(values, "customer_id"); ok {
+						r.CustomerId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "domain"); ok {
-					r.Domain = types.StringValue(val)
+				if _, ok := configValues["domain"]; ok {
+					if val, ok := getStringValue(values, "domain"); ok {
+						r.Domain = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "administrator_email"); ok {
-					r.AdministratorEmail = types.StringValue(val)
+				if _, ok := configValues["administrator_email"]; ok {
+					if val, ok := getStringValue(values, "administrator_email"); ok {
+						r.AdministratorEmail = types.StringValue(val)
+					}
 				}
 
 			}
@@ -233,19 +240,26 @@ func (r *IntegrationGoogleWorkspaceV2ResourceModel) RefreshFromCreateResponse(re
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "customer_id"); ok {
-					r.CustomerId = types.StringValue(val)
+				if _, ok := configValues["customer_id"]; ok {
+					if val, ok := getStringValue(values, "customer_id"); ok {
+						r.CustomerId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "domain"); ok {
-					r.Domain = types.StringValue(val)
+				if _, ok := configValues["domain"]; ok {
+					if val, ok := getStringValue(values, "domain"); ok {
+						r.Domain = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "administrator_email"); ok {
-					r.AdministratorEmail = types.StringValue(val)
+				if _, ok := configValues["administrator_email"]; ok {
+					if val, ok := getStringValue(values, "administrator_email"); ok {
+						r.AdministratorEmail = types.StringValue(val)
+					}
 				}
 
 			}

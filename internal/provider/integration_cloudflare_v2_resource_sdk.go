@@ -68,7 +68,12 @@ func (r *IntegrationCloudflareV2ResourceModel) ToUpdateSDKType() (*shared.Connec
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -151,7 +156,12 @@ func (r *IntegrationCloudflareV2ResourceModel) getConfig() (map[string]interface
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -215,9 +225,11 @@ func (r *IntegrationCloudflareV2ResourceModel) RefreshFromGetResponse(resp *shar
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "account_id_v2"); ok {
-							attributeTypes["account_id_v2"] = types.StringType
-							attributeValues["account_id_v2"] = types.StringValue(val)
+						if _, ok := configValues["account_id_v2"]; ok {
+							if val, ok := getStringValue(values, "account_id_v2"); ok {
+								attributeTypes["account_id_v2"] = types.StringType
+								attributeValues["account_id_v2"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["api_token"] = types.StringType
@@ -235,14 +247,18 @@ func (r *IntegrationCloudflareV2ResourceModel) RefreshFromGetResponse(resp *shar
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "account_id_v2"); ok {
-							attributeTypes["account_id_v2"] = types.StringType
-							attributeValues["account_id_v2"] = types.StringValue(val)
+						if _, ok := configValues["account_id_v2"]; ok {
+							if val, ok := getStringValue(values, "account_id_v2"); ok {
+								attributeTypes["account_id_v2"] = types.StringType
+								attributeValues["account_id_v2"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "email"); ok {
-							attributeTypes["email"] = types.StringType
-							attributeValues["email"] = types.StringValue(val)
+						if _, ok := configValues["email"]; ok {
+							if val, ok := getStringValue(values, "email"); ok {
+								attributeTypes["email"] = types.StringType
+								attributeValues["email"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["api_key_v2"] = types.StringType
@@ -304,9 +320,11 @@ func (r *IntegrationCloudflareV2ResourceModel) RefreshFromCreateResponse(resp *s
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "account_id_v2"); ok {
-							attributeTypes["account_id_v2"] = types.StringType
-							attributeValues["account_id_v2"] = types.StringValue(val)
+						if _, ok := configValues["account_id_v2"]; ok {
+							if val, ok := getStringValue(values, "account_id_v2"); ok {
+								attributeTypes["account_id_v2"] = types.StringType
+								attributeValues["account_id_v2"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["api_token"] = types.StringType
@@ -324,14 +342,18 @@ func (r *IntegrationCloudflareV2ResourceModel) RefreshFromCreateResponse(resp *s
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "account_id_v2"); ok {
-							attributeTypes["account_id_v2"] = types.StringType
-							attributeValues["account_id_v2"] = types.StringValue(val)
+						if _, ok := configValues["account_id_v2"]; ok {
+							if val, ok := getStringValue(values, "account_id_v2"); ok {
+								attributeTypes["account_id_v2"] = types.StringType
+								attributeValues["account_id_v2"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "email"); ok {
-							attributeTypes["email"] = types.StringType
-							attributeValues["email"] = types.StringValue(val)
+						if _, ok := configValues["email"]; ok {
+							if val, ok := getStringValue(values, "email"); ok {
+								attributeTypes["email"] = types.StringType
+								attributeValues["email"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["api_key_v2"] = types.StringType

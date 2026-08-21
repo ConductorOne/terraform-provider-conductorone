@@ -181,28 +181,35 @@ func (r *IntegrationSnykResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "snyk_group_id"); ok {
-					r.SnykGroupId = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "snyk_org_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
+				if _, ok := configValues["snyk_group_id"]; ok {
+					if val, ok := getStringValue(values, "snyk_group_id"); ok {
+						r.SnykGroupId = types.StringValue(val)
 					}
-					r.SnykOrgIds = valLists
 				}
 
-				if val, ok := getStringValue(values, "snyk_hostname"); ok {
-					r.SnykHostname = types.StringValue(val)
+				if _, ok := configValues["snyk_org_ids"]; ok {
+					if val, ok := getStringValue(values, "snyk_org_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.SnykOrgIds = valLists
+					}
+				}
+
+				if _, ok := configValues["snyk_hostname"]; ok {
+					if val, ok := getStringValue(values, "snyk_hostname"); ok {
+						r.SnykHostname = types.StringValue(val)
+					}
 				}
 
 			}
@@ -245,28 +252,35 @@ func (r *IntegrationSnykResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 
-				if val, ok := getStringValue(values, "snyk_group_id"); ok {
-					r.SnykGroupId = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "snyk_org_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
+				if _, ok := configValues["snyk_group_id"]; ok {
+					if val, ok := getStringValue(values, "snyk_group_id"); ok {
+						r.SnykGroupId = types.StringValue(val)
 					}
-					r.SnykOrgIds = valLists
 				}
 
-				if val, ok := getStringValue(values, "snyk_hostname"); ok {
-					r.SnykHostname = types.StringValue(val)
+				if _, ok := configValues["snyk_org_ids"]; ok {
+					if val, ok := getStringValue(values, "snyk_org_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.SnykOrgIds = valLists
+					}
+				}
+
+				if _, ok := configValues["snyk_hostname"]; ok {
+					if val, ok := getStringValue(values, "snyk_hostname"); ok {
+						r.SnykHostname = types.StringValue(val)
+					}
 				}
 
 			}

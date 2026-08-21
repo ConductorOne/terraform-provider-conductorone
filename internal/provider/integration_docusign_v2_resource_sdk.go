@@ -179,8 +179,10 @@ func (r *IntegrationDocusignV2ResourceModel) RefreshFromGetResponse(resp *shared
 					}
 				}
 
-				if val, ok := getStringValue(values, "docusign_account_id"); ok {
-					r.DocusignAccountId = types.StringValue(val)
+				if _, ok := configValues["docusign_account_id"]; ok {
+					if val, ok := getStringValue(values, "docusign_account_id"); ok {
+						r.DocusignAccountId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -236,8 +238,10 @@ func (r *IntegrationDocusignV2ResourceModel) RefreshFromCreateResponse(resp *sha
 					}
 				}
 
-				if val, ok := getStringValue(values, "docusign_account_id"); ok {
-					r.DocusignAccountId = types.StringValue(val)
+				if _, ok := configValues["docusign_account_id"]; ok {
+					if val, ok := getStringValue(values, "docusign_account_id"); ok {
+						r.DocusignAccountId = types.StringValue(val)
+					}
 				}
 
 			}

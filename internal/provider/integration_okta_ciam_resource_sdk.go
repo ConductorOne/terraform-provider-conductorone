@@ -172,15 +172,20 @@ func (r *IntegrationOktaCiamResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "okta_ciam_domain"); ok {
-					r.OktaCiamDomain = types.StringValue(val)
+				if _, ok := configValues["okta_ciam_domain"]; ok {
+					if val, ok := getStringValue(values, "okta_ciam_domain"); ok {
+						r.OktaCiamDomain = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "okta_ciam_email_domains"); ok {
-					r.OktaCiamEmailDomains = types.StringValue(val)
+				if _, ok := configValues["okta_ciam_email_domains"]; ok {
+					if val, ok := getStringValue(values, "okta_ciam_email_domains"); ok {
+						r.OktaCiamEmailDomains = types.StringValue(val)
+					}
 				}
 
 			}
@@ -223,15 +228,20 @@ func (r *IntegrationOktaCiamResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "okta_ciam_domain"); ok {
-					r.OktaCiamDomain = types.StringValue(val)
+				if _, ok := configValues["okta_ciam_domain"]; ok {
+					if val, ok := getStringValue(values, "okta_ciam_domain"); ok {
+						r.OktaCiamDomain = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "okta_ciam_email_domains"); ok {
-					r.OktaCiamEmailDomains = types.StringValue(val)
+				if _, ok := configValues["okta_ciam_email_domains"]; ok {
+					if val, ok := getStringValue(values, "okta_ciam_email_domains"); ok {
+						r.OktaCiamEmailDomains = types.StringValue(val)
+					}
 				}
 
 			}

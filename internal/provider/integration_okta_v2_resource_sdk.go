@@ -188,8 +188,10 @@ func (r *IntegrationOktaV2ResourceModel) RefreshFromGetResponse(resp *shared.Con
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "okta_v2_domain"); ok {
-					r.OktaV2Domain = types.StringValue(val)
+				if _, ok := configValues["okta_v2_domain"]; ok {
+					if val, ok := getStringValue(values, "okta_v2_domain"); ok {
+						r.OktaV2Domain = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["okta_sync_custom_roles"]; ok {
@@ -263,8 +265,10 @@ func (r *IntegrationOktaV2ResourceModel) RefreshFromCreateResponse(resp *shared.
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "okta_v2_domain"); ok {
-					r.OktaV2Domain = types.StringValue(val)
+				if _, ok := configValues["okta_v2_domain"]; ok {
+					if val, ok := getStringValue(values, "okta_v2_domain"); ok {
+						r.OktaV2Domain = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["okta_sync_custom_roles"]; ok {

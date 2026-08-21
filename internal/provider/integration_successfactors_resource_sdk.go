@@ -202,27 +202,38 @@ func (r *IntegrationSuccessfactorsResourceModel) RefreshFromGetResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "company-id"); ok {
-					r.CompanyId = types.StringValue(val)
+				if _, ok := configValues["company-id"]; ok {
+					if val, ok := getStringValue(values, "company-id"); ok {
+						r.CompanyId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "cid"); ok {
-					r.Cid = types.StringValue(val)
+				if _, ok := configValues["cid"]; ok {
+					if val, ok := getStringValue(values, "cid"); ok {
+						r.Cid = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "instance-url"); ok {
-					r.InstanceUrl = types.StringValue(val)
+				if _, ok := configValues["instance-url"]; ok {
+					if val, ok := getStringValue(values, "instance-url"); ok {
+						r.InstanceUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "issuer-url"); ok {
-					r.IssuerUrl = types.StringValue(val)
+				if _, ok := configValues["issuer-url"]; ok {
+					if val, ok := getStringValue(values, "issuer-url"); ok {
+						r.IssuerUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "subject-name-id"); ok {
-					r.SubjectNameId = types.StringValue(val)
+				if _, ok := configValues["subject-name-id"]; ok {
+					if val, ok := getStringValue(values, "subject-name-id"); ok {
+						r.SubjectNameId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -265,27 +276,38 @@ func (r *IntegrationSuccessfactorsResourceModel) RefreshFromCreateResponse(resp 
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "company-id"); ok {
-					r.CompanyId = types.StringValue(val)
+				if _, ok := configValues["company-id"]; ok {
+					if val, ok := getStringValue(values, "company-id"); ok {
+						r.CompanyId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "cid"); ok {
-					r.Cid = types.StringValue(val)
+				if _, ok := configValues["cid"]; ok {
+					if val, ok := getStringValue(values, "cid"); ok {
+						r.Cid = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "instance-url"); ok {
-					r.InstanceUrl = types.StringValue(val)
+				if _, ok := configValues["instance-url"]; ok {
+					if val, ok := getStringValue(values, "instance-url"); ok {
+						r.InstanceUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "issuer-url"); ok {
-					r.IssuerUrl = types.StringValue(val)
+				if _, ok := configValues["issuer-url"]; ok {
+					if val, ok := getStringValue(values, "issuer-url"); ok {
+						r.IssuerUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "subject-name-id"); ok {
-					r.SubjectNameId = types.StringValue(val)
+				if _, ok := configValues["subject-name-id"]; ok {
+					if val, ok := getStringValue(values, "subject-name-id"); ok {
+						r.SubjectNameId = types.StringValue(val)
+					}
 				}
 
 			}

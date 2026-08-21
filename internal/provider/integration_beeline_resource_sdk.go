@@ -184,23 +184,32 @@ func (r *IntegrationBeelineResourceModel) RefreshFromGetResponse(resp *shared.Co
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "beeline-client-site-id"); ok {
-					r.BeelineClientSiteId = types.StringValue(val)
+				if _, ok := configValues["beeline-client-site-id"]; ok {
+					if val, ok := getStringValue(values, "beeline-client-site-id"); ok {
+						r.BeelineClientSiteId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "beeline-client-id"); ok {
-					r.BeelineClientId = types.StringValue(val)
+				if _, ok := configValues["beeline-client-id"]; ok {
+					if val, ok := getStringValue(values, "beeline-client-id"); ok {
+						r.BeelineClientId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "base-url"); ok {
-					r.BaseUrl = types.StringValue(val)
+				if _, ok := configValues["base-url"]; ok {
+					if val, ok := getStringValue(values, "base-url"); ok {
+						r.BaseUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "auth-server-url"); ok {
-					r.AuthServerUrl = types.StringValue(val)
+				if _, ok := configValues["auth-server-url"]; ok {
+					if val, ok := getStringValue(values, "auth-server-url"); ok {
+						r.AuthServerUrl = types.StringValue(val)
+					}
 				}
 
 			}
@@ -243,23 +252,32 @@ func (r *IntegrationBeelineResourceModel) RefreshFromCreateResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "beeline-client-site-id"); ok {
-					r.BeelineClientSiteId = types.StringValue(val)
+				if _, ok := configValues["beeline-client-site-id"]; ok {
+					if val, ok := getStringValue(values, "beeline-client-site-id"); ok {
+						r.BeelineClientSiteId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "beeline-client-id"); ok {
-					r.BeelineClientId = types.StringValue(val)
+				if _, ok := configValues["beeline-client-id"]; ok {
+					if val, ok := getStringValue(values, "beeline-client-id"); ok {
+						r.BeelineClientId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "base-url"); ok {
-					r.BaseUrl = types.StringValue(val)
+				if _, ok := configValues["base-url"]; ok {
+					if val, ok := getStringValue(values, "base-url"); ok {
+						r.BaseUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "auth-server-url"); ok {
-					r.AuthServerUrl = types.StringValue(val)
+				if _, ok := configValues["auth-server-url"]; ok {
+					if val, ok := getStringValue(values, "auth-server-url"); ok {
+						r.AuthServerUrl = types.StringValue(val)
+					}
 				}
 
 			}

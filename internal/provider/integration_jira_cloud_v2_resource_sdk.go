@@ -197,12 +197,16 @@ func (r *IntegrationJiraCloudV2ResourceModel) RefreshFromGetResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "jiracloud_domain"); ok {
-					r.JiracloudDomain = types.StringValue(val)
+				if _, ok := configValues["jiracloud_domain"]; ok {
+					if val, ok := getStringValue(values, "jiracloud_domain"); ok {
+						r.JiracloudDomain = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "jiracloud_username"); ok {
-					r.JiracloudUsername = types.StringValue(val)
+				if _, ok := configValues["jiracloud_username"]; ok {
+					if val, ok := getStringValue(values, "jiracloud_username"); ok {
+						r.JiracloudUsername = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
@@ -214,16 +218,18 @@ func (r *IntegrationJiraCloudV2ResourceModel) RefreshFromGetResponse(resp *share
 					}
 				}
 
-				if val, ok := getStringValue(values, "jiracloud_project_keys"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["jiracloud_project_keys"]; ok {
+					if val, ok := getStringValue(values, "jiracloud_project_keys"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.JiracloudProjectKeys = valLists
 					}
-					r.JiracloudProjectKeys = valLists
 				}
 
 				if _, ok := configValues["jiracloud_skip_project_participants"]; ok {
@@ -279,12 +285,16 @@ func (r *IntegrationJiraCloudV2ResourceModel) RefreshFromCreateResponse(resp *sh
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "jiracloud_domain"); ok {
-					r.JiracloudDomain = types.StringValue(val)
+				if _, ok := configValues["jiracloud_domain"]; ok {
+					if val, ok := getStringValue(values, "jiracloud_domain"); ok {
+						r.JiracloudDomain = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "jiracloud_username"); ok {
-					r.JiracloudUsername = types.StringValue(val)
+				if _, ok := configValues["jiracloud_username"]; ok {
+					if val, ok := getStringValue(values, "jiracloud_username"); ok {
+						r.JiracloudUsername = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["enable_external_ticket_provisioning"]; ok {
@@ -296,16 +306,18 @@ func (r *IntegrationJiraCloudV2ResourceModel) RefreshFromCreateResponse(resp *sh
 					}
 				}
 
-				if val, ok := getStringValue(values, "jiracloud_project_keys"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["jiracloud_project_keys"]; ok {
+					if val, ok := getStringValue(values, "jiracloud_project_keys"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.JiracloudProjectKeys = valLists
 					}
-					r.JiracloudProjectKeys = valLists
 				}
 
 				if _, ok := configValues["jiracloud_skip_project_participants"]; ok {

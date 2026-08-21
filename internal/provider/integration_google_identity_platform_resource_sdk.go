@@ -172,15 +172,20 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) RefreshFromGetResponse(
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "project_id"); ok {
-					r.ProjectId = types.StringValue(val)
+				if _, ok := configValues["project_id"]; ok {
+					if val, ok := getStringValue(values, "project_id"); ok {
+						r.ProjectId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "tenant_id"); ok {
-					r.TenantId = types.StringValue(val)
+				if _, ok := configValues["tenant_id"]; ok {
+					if val, ok := getStringValue(values, "tenant_id"); ok {
+						r.TenantId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -223,15 +228,20 @@ func (r *IntegrationGoogleIdentityPlatformResourceModel) RefreshFromCreateRespon
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "project_id"); ok {
-					r.ProjectId = types.StringValue(val)
+				if _, ok := configValues["project_id"]; ok {
+					if val, ok := getStringValue(values, "project_id"); ok {
+						r.ProjectId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "tenant_id"); ok {
-					r.TenantId = types.StringValue(val)
+				if _, ok := configValues["tenant_id"]; ok {
+					if val, ok := getStringValue(values, "tenant_id"); ok {
+						r.TenantId = types.StringValue(val)
+					}
 				}
 
 			}

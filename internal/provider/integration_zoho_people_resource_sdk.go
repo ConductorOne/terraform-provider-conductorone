@@ -178,15 +178,20 @@ func (r *IntegrationZohoPeopleResourceModel) RefreshFromGetResponse(resp *shared
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "zoho-client-id"); ok {
-					r.ZohoClientId = types.StringValue(val)
+				if _, ok := configValues["zoho-client-id"]; ok {
+					if val, ok := getStringValue(values, "zoho-client-id"); ok {
+						r.ZohoClientId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "domain-account"); ok {
-					r.DomainAccount = types.StringValue(val)
+				if _, ok := configValues["domain-account"]; ok {
+					if val, ok := getStringValue(values, "domain-account"); ok {
+						r.DomainAccount = types.StringValue(val)
+					}
 				}
 
 			}
@@ -229,15 +234,20 @@ func (r *IntegrationZohoPeopleResourceModel) RefreshFromCreateResponse(resp *sha
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "zoho-client-id"); ok {
-					r.ZohoClientId = types.StringValue(val)
+				if _, ok := configValues["zoho-client-id"]; ok {
+					if val, ok := getStringValue(values, "zoho-client-id"); ok {
+						r.ZohoClientId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "domain-account"); ok {
-					r.DomainAccount = types.StringValue(val)
+				if _, ok := configValues["domain-account"]; ok {
+					if val, ok := getStringValue(values, "domain-account"); ok {
+						r.DomainAccount = types.StringValue(val)
+					}
 				}
 
 			}
