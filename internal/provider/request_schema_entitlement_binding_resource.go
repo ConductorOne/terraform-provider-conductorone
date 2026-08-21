@@ -34,8 +34,8 @@ type RequestSchemaEntitlementBindingResource struct {
 
 // RequestSchemaEntitlementBindingResourceModel describes the resource data model.
 type RequestSchemaEntitlementBindingResourceModel struct {
-	AppEntitlementRef *tfTypes.AppEntitlementRef `tfsdk:"app_entitlement_ref"`
-	RequestSchemaID   types.String               `tfsdk:"request_schema_id"`
+	EntitlementRef  *tfTypes.AppEntitlementRef `tfsdk:"entitlement_ref"`
+	RequestSchemaID types.String               `tfsdk:"request_schema_id"`
 }
 
 func (r *RequestSchemaEntitlementBindingResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -46,7 +46,7 @@ func (r *RequestSchemaEntitlementBindingResource) Schema(ctx context.Context, re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "RequestSchemaEntitlementBinding Resource",
 		Attributes: map[string]schema.Attribute{
-			"app_entitlement_ref": schema.SingleNestedAttribute{
+			"entitlement_ref": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{

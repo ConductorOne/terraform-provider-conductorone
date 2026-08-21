@@ -7,6 +7,7 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	speakeasy_stringvalidators "github.com/conductorone/terraform-provider-conductorone/internal/validators/stringvalidators"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -14,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -54,8 +56,10 @@ type AppResourceModel struct {
 	Instructions                        types.String                `tfsdk:"instructions"`
 	IsDirectory                         types.Bool                  `tfsdk:"is_directory"`
 	IsManuallyManaged                   types.Bool                  `tfsdk:"is_manually_managed"`
+	MatchBatonRef                       *tfTypes.AppMatchBatonRef   `tfsdk:"match_baton_ref"`
 	MonthlyCostUsd                      types.Int32                 `tfsdk:"monthly_cost_usd"`
 	ParentAppID                         types.String                `tfsdk:"parent_app_id"`
+	RevokeGrantSources                  types.Bool                  `tfsdk:"revoke_grant_sources"`
 	RevokePolicyID                      types.String                `tfsdk:"revoke_policy_id"`
 	StrictAccessEntitlementProvisioning types.Bool                  `tfsdk:"strict_access_entitlement_provisioning"`
 	UpdatedAt                           types.String                `tfsdk:"updated_at"`
@@ -122,18 +126,30 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						},
 					},
 				},
-				Description: `Sets entitlement owners on the app. Requires replacement if changed.`,
+				Description: `Initial entitlement owners for ordinary API creation. Requests with ` + "`" + `match_baton_ref` + "`" + ` must leave this empty; Terraform manages owners with ` + "`" + `conductorone_app_owner_entitlement` + "`" + `. Requires replacement if changed.`,
 			},
 			"app_user_mapper": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"app_id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The app this mapper belongs to.`,
+					},
 					"mapping_cases": schema.ListNestedAttribute{
 						Computed: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The app this match case belongs to.`,
+								},
 								"app_user_key_cel": schema.StringAttribute{
 									Computed:    true,
 									Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+								},
+								"case_index": schema.Int64Attribute{
+									Computed:    true,
+									Description: `The ordered index of this match case within the mapper.`,
 								},
 								"user_key_cel": schema.StringAttribute{
 									Computed:    true,
@@ -202,6 +218,42 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Computed:    true,
 				Description: `The isManuallyManaged field.`,
 			},
+			"match_baton_ref": schema.SingleNestedAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"app_id": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Application that owns the connector. Not Null`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+						},
+					},
+					"connector_id": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `Connector that discovers the application. Not Null`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+						},
+					},
+					"external_id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `Canonical connector-v2 application resource ID in` + "\n" +
+							` ` + "`" + `<resource_type>::<resource_id>` + "`" + ` form (for example, ` + "`" + `app::0oa123` + "`" + `).` + "\n" +
+							`Not Null`,
+						Validators: []validator.String{
+							speakeasy_stringvalidators.NotNull(),
+						},
+					},
+				},
+				Description: `AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift.`,
+			},
 			"monthly_cost_usd": schema.Int32Attribute{
 				Computed:    true,
 				Optional:    true,
@@ -210,6 +262,10 @@ func (r *AppResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"parent_app_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the app that created this app, if any.`,
+			},
+			"revoke_grant_sources": schema.BoolAttribute{
+				Computed:    true,
+				Description: `When enabled, revoking a grant also revokes the grants that source it.`,
 			},
 			"revoke_policy_id": schema.StringAttribute{
 				Computed:    true,

@@ -16,18 +16,14 @@ import (
 //   - skipStep
 type EscalationInstance struct {
 	// The alreadyEscalated field.
-	AlreadyEscalated *bool `json:"alreadyEscalated,omitempty"`
-	// The CancelTicket message.
-	EscalationInstanceCancelTicket *EscalationInstanceCancelTicket `json:"cancelTicket,omitempty"`
+	AlreadyEscalated *bool                           `json:"alreadyEscalated,omitempty"`
+	CancelTicket     *EscalationInstanceCancelTicket `json:"cancelTicket,omitempty"`
 	// The escalationComment field.
-	EscalationComment *string    `json:"escalationComment,omitempty"`
-	ExpiresAt         *time.Time `json:"expiresAt,omitempty"`
-	// The ReassignToApprovers message.
-	EscalationInstanceReassignToApprovers *EscalationInstanceReassignToApprovers `json:"reassignToApprovers,omitempty"`
-	// The ReplacePolicy message.
-	EscalationInstanceReplacePolicy *EscalationInstanceReplacePolicy `json:"replacePolicy,omitempty"`
-	// The SkipStep message.
-	EscalationInstanceSkipStep *EscalationInstanceSkipStep `json:"skipStep,omitempty"`
+	EscalationComment   *string                                `json:"escalationComment,omitempty"`
+	ExpiresAt           *time.Time                             `json:"expiresAt,omitempty"`
+	ReassignToApprovers *EscalationInstanceReassignToApprovers `json:"reassignToApprovers,omitempty"`
+	ReplacePolicy       *EscalationInstanceReplacePolicy       `json:"replacePolicy,omitempty"`
+	SkipStep            *EscalationInstanceSkipStep            `json:"skipStep,omitempty"`
 }
 
 func (e EscalationInstance) MarshalJSON() ([]byte, error) {
@@ -48,11 +44,11 @@ func (e *EscalationInstance) GetAlreadyEscalated() *bool {
 	return e.AlreadyEscalated
 }
 
-func (e *EscalationInstance) GetEscalationInstanceCancelTicket() *EscalationInstanceCancelTicket {
+func (e *EscalationInstance) GetCancelTicket() *EscalationInstanceCancelTicket {
 	if e == nil {
 		return nil
 	}
-	return e.EscalationInstanceCancelTicket
+	return e.CancelTicket
 }
 
 func (e *EscalationInstance) GetEscalationComment() *string {
@@ -69,23 +65,23 @@ func (e *EscalationInstance) GetExpiresAt() *time.Time {
 	return e.ExpiresAt
 }
 
-func (e *EscalationInstance) GetEscalationInstanceReassignToApprovers() *EscalationInstanceReassignToApprovers {
+func (e *EscalationInstance) GetReassignToApprovers() *EscalationInstanceReassignToApprovers {
 	if e == nil {
 		return nil
 	}
-	return e.EscalationInstanceReassignToApprovers
+	return e.ReassignToApprovers
 }
 
-func (e *EscalationInstance) GetEscalationInstanceReplacePolicy() *EscalationInstanceReplacePolicy {
+func (e *EscalationInstance) GetReplacePolicy() *EscalationInstanceReplacePolicy {
 	if e == nil {
 		return nil
 	}
-	return e.EscalationInstanceReplacePolicy
+	return e.ReplacePolicy
 }
 
-func (e *EscalationInstance) GetEscalationInstanceSkipStep() *EscalationInstanceSkipStep {
+func (e *EscalationInstance) GetSkipStep() *EscalationInstanceSkipStep {
 	if e == nil {
 		return nil
 	}
-	return e.EscalationInstanceSkipStep
+	return e.SkipStep
 }

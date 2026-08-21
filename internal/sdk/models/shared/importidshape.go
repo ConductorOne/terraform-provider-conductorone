@@ -12,10 +12,7 @@ package shared
 //   - singleString
 //   - composite
 type ImportIDShape struct {
-	// Composite import IDs combine values from multiple component fields
-	//  per the declared `format`.
-	Composite *Composite `json:"composite,omitempty"`
-	// Single-string import IDs use the resource's id value verbatim.
+	Composite    *Composite    `json:"composite,omitempty"`
 	SingleString *SingleString `json:"singleString,omitempty"`
 }
 

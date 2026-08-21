@@ -3,5 +3,5 @@
 package types
 
 type TaskRevocationTarget struct {
-	AppEntitlementRef *AppEntitlementRef `tfsdk:"app_entitlement_ref"`
+	EntitlementRef *AppEntitlementRef `tfsdk:"entitlement_ref"`
 }

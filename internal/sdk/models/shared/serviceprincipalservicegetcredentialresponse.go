@@ -4,13 +4,12 @@ package shared
 
 // The ServicePrincipalServiceGetCredentialResponse message.
 type ServicePrincipalServiceGetCredentialResponse struct {
-	// ServicePrincipalCredential represents a client credential for a service principal.
-	ServicePrincipalCredential *ServicePrincipalCredential `json:"credential,omitempty"`
+	Credential *ServicePrincipalCredential `json:"credential,omitempty"`
 }
 
-func (s *ServicePrincipalServiceGetCredentialResponse) GetServicePrincipalCredential() *ServicePrincipalCredential {
+func (s *ServicePrincipalServiceGetCredentialResponse) GetCredential() *ServicePrincipalCredential {
 	if s == nil {
 		return nil
 	}
-	return s.ServicePrincipalCredential
+	return s.Credential
 }

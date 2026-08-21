@@ -13,9 +13,8 @@ type CloseAction struct {
 	// The userIdCel field.
 	// This field is part of the `user_identifier` oneof.
 	// See the documentation for `c1.api.automations.v1.CloseAction` for more details.
-	UserIDCel *string `json:"userIdCel,omitempty"`
-	// A reference to a user.
-	UserRef *UserRef `json:"userRef,omitempty"`
+	UserIDCel *string  `json:"userIdCel,omitempty"`
+	UserRef   *UserRef `json:"userRef,omitempty"`
 }
 
 func (c *CloseAction) GetUseSubjectUser() *bool {

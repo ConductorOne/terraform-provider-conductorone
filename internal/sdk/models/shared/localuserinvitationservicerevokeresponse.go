@@ -4,13 +4,12 @@ package shared
 
 // The LocalUserInvitationServiceRevokeResponse message.
 type LocalUserInvitationServiceRevokeResponse struct {
-	// LocalUserInvitation is the public representation of a per-directory user invitation.
-	LocalUserInvitation *LocalUserInvitation `json:"invitation,omitempty"`
+	Invitation *LocalUserInvitation `json:"invitation,omitempty"`
 }
 
-func (l *LocalUserInvitationServiceRevokeResponse) GetLocalUserInvitation() *LocalUserInvitation {
+func (l *LocalUserInvitationServiceRevokeResponse) GetInvitation() *LocalUserInvitation {
 	if l == nil {
 		return nil
 	}
-	return l.LocalUserInvitation
+	return l.Invitation
 }

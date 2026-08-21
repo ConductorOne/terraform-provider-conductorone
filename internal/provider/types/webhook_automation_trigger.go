@@ -7,8 +7,8 @@ import (
 )
 
 type WebhookAutomationTrigger struct {
-	WebhookListenerAuthCapabilityURL *WebhookListenerAuthCapabilityURL `tfsdk:"webhook_listener_auth_capability_url"`
-	WebhookListenerAuthHMAC          *WebhookListenerAuthHMAC          `tfsdk:"webhook_listener_auth_hmac"`
-	WebhookListenerAuthJWT           *WebhookListenerAuthJWT           `tfsdk:"webhook_listener_auth_jwt"`
-	ListenerID                       types.String                      `tfsdk:"listener_id"`
+	CapabilityURL *WebhookListenerAuthCapabilityURL `tfsdk:"capability_url"`
+	Hmac          *WebhookListenerAuthHMAC          `tfsdk:"hmac"`
+	Jwt           *WebhookListenerAuthJWT           `tfsdk:"jwt"`
+	ListenerID    types.String                      `tfsdk:"listener_id"`
 }

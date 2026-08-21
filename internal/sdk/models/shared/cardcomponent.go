@@ -4,13 +4,12 @@ package shared
 
 // CardComponent is a container with styling.
 type CardComponent struct {
-	// ChildList contains references to child component IDs.
-	ChildList *ChildList `json:"children,omitempty"`
+	Children *ChildList `json:"children,omitempty"`
 }
 
-func (c *CardComponent) GetChildList() *ChildList {
+func (c *CardComponent) GetChildren() *ChildList {
 	if c == nil {
 		return nil
 	}
-	return c.ChildList
+	return c.Children
 }

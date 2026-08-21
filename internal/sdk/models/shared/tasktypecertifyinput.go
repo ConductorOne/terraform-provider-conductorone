@@ -3,5 +3,16 @@
 package shared
 
 // TaskTypeCertifyInput - The TaskTypeCertify message indicates that a task is a certify task and all related details.
+//
+// This message contains a oneof named principal. Only a single field of the following list may be set at a time:
+//   - resource
 type TaskTypeCertifyInput struct {
+	Resource *AppResourceRef `json:"resource,omitempty"`
+}
+
+func (t *TaskTypeCertifyInput) GetResource() *AppResourceRef {
+	if t == nil {
+		return nil
+	}
+	return t.Resource
 }

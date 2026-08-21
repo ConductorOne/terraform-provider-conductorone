@@ -10,10 +10,8 @@ package shared
 type AccountProvision struct {
 	Config any `json:"config,omitempty"`
 	// The connectorId field.
-	ConnectorID *string `json:"connectorId,omitempty"`
-	// The DoNotSave message.
-	DoNotSave *DoNotSave `json:"doNotSave,omitempty"`
-	// The SaveToVault message.
+	ConnectorID *string      `json:"connectorId,omitempty"`
+	DoNotSave   *DoNotSave   `json:"doNotSave,omitempty"`
 	SaveToVault *SaveToVault `json:"saveToVault,omitempty"`
 	// The schemaId field.
 	SchemaID *string `json:"schemaId,omitempty"`

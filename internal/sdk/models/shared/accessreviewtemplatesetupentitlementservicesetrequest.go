@@ -5,45 +5,9 @@ package shared
 // The AccessReviewTemplateSetupEntitlementServiceSetRequest message.
 type AccessReviewTemplateSetupEntitlementServiceSetRequest struct {
 	// The entitlements to include in the template. Replaces all previously selected entitlements.
-	Entitlements []AccessReviewTemplateSetupEntitlementInput `json:"entitlements,omitempty"`
-	// The AccessReviewTemplateSetupEntitlementExpandMask message.
-	AccessReviewTemplateSetupEntitlementExpandMask *AccessReviewTemplateSetupEntitlementExpandMask `json:"expandMask,omitempty"`
-	// The AccessReviewScopeV2 message.
-	//
-	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
-	//   - appAccess
-	//   - specificResources
-	//   - appSelectionCriteria
-	//   - resourceTypeSelections
-	//
-	//
-	// This message contains a oneof named users_scope. Only a single field of the following list may be set at a time:
-	//   - allUsers
-	//   - selectedUsers
-	//   - userCriteria
-	//   - celExpression
-	//
-	//
-	// This message contains a oneof named accounts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccounts
-	//   - accountCriteria
-	//   - accountCelExpression
-	//
-	//
-	// This message contains a oneof named grants_scope. Only a single field of the following list may be set at a time:
-	//   - allGrants
-	//   - grantsByCriteria
-	//
-	//
-	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccessConflicts
-	//   - specificAccessConflicts
-	//
-	//
-	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
-	//   - resourceSelection
-	//
-	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scope,omitempty"`
+	Entitlements []AccessReviewTemplateSetupEntitlementInput     `json:"entitlements,omitempty"`
+	ExpandMask   *AccessReviewTemplateSetupEntitlementExpandMask `json:"expandMask,omitempty"`
+	Scope        *AccessReviewScopeV2                            `json:"scope,omitempty"`
 }
 
 func (a *AccessReviewTemplateSetupEntitlementServiceSetRequest) GetEntitlements() []AccessReviewTemplateSetupEntitlementInput {
@@ -53,16 +17,16 @@ func (a *AccessReviewTemplateSetupEntitlementServiceSetRequest) GetEntitlements(
 	return a.Entitlements
 }
 
-func (a *AccessReviewTemplateSetupEntitlementServiceSetRequest) GetAccessReviewTemplateSetupEntitlementExpandMask() *AccessReviewTemplateSetupEntitlementExpandMask {
+func (a *AccessReviewTemplateSetupEntitlementServiceSetRequest) GetExpandMask() *AccessReviewTemplateSetupEntitlementExpandMask {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewTemplateSetupEntitlementExpandMask
+	return a.ExpandMask
 }
 
-func (a *AccessReviewTemplateSetupEntitlementServiceSetRequest) GetAccessReviewScopeV2() *AccessReviewScopeV2 {
+func (a *AccessReviewTemplateSetupEntitlementServiceSetRequest) GetScope() *AccessReviewScopeV2 {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewScopeV2
+	return a.Scope
 }

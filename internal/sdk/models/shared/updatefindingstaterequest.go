@@ -12,60 +12,52 @@ package shared
 //   - resolve
 //   - reopen
 type UpdateFindingStateRequest struct {
-	// AcceptRiskAction parameters for UpdateFindingState.
-	AcceptRiskAction *AcceptRiskAction `json:"acceptRisk,omitempty"`
-	// ReopenAction parameters for UpdateFindingState.
-	ReopenAction *ReopenAction `json:"reopen,omitempty"`
-	// ResolveAction parameters for UpdateFindingState (manual resolve).
-	ResolveAction *ResolveAction `json:"resolve,omitempty"`
-	// SnoozeAction parameters for UpdateFindingState.
-	SnoozeAction *SnoozeAction `json:"snooze,omitempty"`
-	// SuppressStateAction parameters for UpdateFindingState.
-	SuppressStateAction *SuppressStateAction `json:"suppress,omitempty"`
-	// UnsuppressAction parameters for UpdateFindingState.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	UnsuppressAction *UnsuppressAction `json:"unsuppress,omitempty"`
+	AcceptRisk *AcceptRiskAction    `json:"acceptRisk,omitempty"`
+	Reopen     *ReopenAction        `json:"reopen,omitempty"`
+	Resolve    *ResolveAction       `json:"resolve,omitempty"`
+	Snooze     *SnoozeAction        `json:"snooze,omitempty"`
+	Suppress   *SuppressStateAction `json:"suppress,omitempty"`
+	Unsuppress *UnsuppressAction    `json:"unsuppress,omitempty"`
 }
 
-func (u *UpdateFindingStateRequest) GetAcceptRiskAction() *AcceptRiskAction {
+func (u *UpdateFindingStateRequest) GetAcceptRisk() *AcceptRiskAction {
 	if u == nil {
 		return nil
 	}
-	return u.AcceptRiskAction
+	return u.AcceptRisk
 }
 
-func (u *UpdateFindingStateRequest) GetReopenAction() *ReopenAction {
+func (u *UpdateFindingStateRequest) GetReopen() *ReopenAction {
 	if u == nil {
 		return nil
 	}
-	return u.ReopenAction
+	return u.Reopen
 }
 
-func (u *UpdateFindingStateRequest) GetResolveAction() *ResolveAction {
+func (u *UpdateFindingStateRequest) GetResolve() *ResolveAction {
 	if u == nil {
 		return nil
 	}
-	return u.ResolveAction
+	return u.Resolve
 }
 
-func (u *UpdateFindingStateRequest) GetSnoozeAction() *SnoozeAction {
+func (u *UpdateFindingStateRequest) GetSnooze() *SnoozeAction {
 	if u == nil {
 		return nil
 	}
-	return u.SnoozeAction
+	return u.Snooze
 }
 
-func (u *UpdateFindingStateRequest) GetSuppressStateAction() *SuppressStateAction {
+func (u *UpdateFindingStateRequest) GetSuppress() *SuppressStateAction {
 	if u == nil {
 		return nil
 	}
-	return u.SuppressStateAction
+	return u.Suppress
 }
 
-func (u *UpdateFindingStateRequest) GetUnsuppressAction() *UnsuppressAction {
+func (u *UpdateFindingStateRequest) GetUnsuppress() *UnsuppressAction {
 	if u == nil {
 		return nil
 	}
-	return u.UnsuppressAction
+	return u.Unsuppress
 }

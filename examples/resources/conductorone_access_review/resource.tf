@@ -1,28 +1,48 @@
 resource "conductorone_access_review" "my_access_review" {
-  access_review_scope_v2 = {
-    account_criteria_scope = {
-      account_domain = "APP_USER_DOMAIN_EXTERNAL"
+  completion_date = "2020-03-30T12:47:51.525Z"
+  description     = "...my_description..."
+  display_name    = "...my_display_name..."
+  duplicate_from  = "...my_duplicate_from..."
+  notification_config = {
+    send_close     = true
+    send_kickoff   = true
+    send_reminders = true
+  }
+  owner_ids = [
+    "..."
+  ]
+  policy_id  = "...my_policy_id..."
+  scope_type = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
+  scope_v2 = {
+    account_cel_expression = {
+      expression = "...my_expression..."
+    }
+    account_criteria = {
+      account_domain = "APP_USER_DOMAIN_UNSPECIFIED"
       account_types = [
-        "APP_USER_TYPE_SERVICE_ACCOUNT"
+        "APP_USER_TYPE_USER"
       ]
       app_user_statuses = [
-        "APP_USER_STATUS_ENABLED"
+        "APP_USER_STATUS_DISABLED"
       ]
-      no_account_owner = true
+      no_account_owner = false
     }
-    all_access_conflicts_scope = {
+    all_access_conflicts = {
       # ...
     }
-    all_accounts_scope = {
+    all_accounts = {
       # ...
     }
-    all_grants_scope = {
+    all_grants = {
       # ...
     }
-    all_users_scope = {
+    all_users = {
       # ...
     }
-    app_selection_criteria_scope = {
+    app_access = {
+      # ...
+    }
+    app_selection_criteria = {
       compliance_framework_attribute_value_ids = [
         "..."
       ]
@@ -30,20 +50,17 @@ resource "conductorone_access_review" "my_access_review" {
         "..."
       ]
     }
-    application_access_scope = {
+    cel_expression = {
+      expression = "...my_expression..."
+    }
+    excluded_resource_type_selections = {
       # ...
     }
-    cel_expression_scope = {
-      expression = "...my_expression..."
+    excluded_specific_resources = {
+      # ...
     }
-    cel_expression_scope1 = {
-      expression = "...my_expression..."
-    }
-    grants_by_criteria_scope = {
-      days_since_added     = "...my_days_since_added..."
-      days_since_last_used = "...my_days_since_last_used..."
-      days_since_reviewed  = "...my_days_since_reviewed..."
-      grant_access_profile_filter = {
+    grants_by_criteria = {
+      access_profile_filter = {
         excluded_access_profile_ids = [
           "..."
         ]
@@ -52,31 +69,38 @@ resource "conductorone_access_review" "my_access_review" {
           "..."
         ]
       }
+      days_since_added     = "...my_days_since_added..."
+      days_since_last_used = "...my_days_since_last_used..."
+      days_since_reviewed  = "...my_days_since_reviewed..."
       grants_added_between = {
-        end_date   = "2022-07-05T14:23:47.903Z"
-        start_date = "2021-11-22T05:25:02.885Z"
+        end_date   = "2022-12-25T07:11:28.277Z"
+        start_date = "2021-01-02T17:22:33.937Z"
       }
       source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
       type_filter   = "GRANT_FILTER_TYPE_PERMANENT"
     }
-    resource_selection_scope = {
+    principal_type_filter = "PRINCIPAL_TYPE_FILTER_UNSPECIFIED"
+    resource_selection = {
       # ...
     }
-    resource_type_selection_scope = {
+    resource_type_selections = {
       # ...
     }
-    selected_users_scope = {
+    scope_role_selection = {
+      # ...
+    }
+    selected_users = {
       user_ids = [
         "..."
       ]
     }
-    specific_access_conflicts_scope = {
+    specific_access_conflicts = {
       # ...
     }
-    specific_resources_scope = {
+    specific_resources = {
       # ...
     }
-    user_criteria_scope = {
+    user_criteria = {
       group_app_entitlements_ref = [
         {
           app_id = "...my_app_id..."
@@ -100,18 +124,4 @@ resource "conductorone_access_review" "my_access_review" {
       ]
     }
   }
-  completion_date = "2020-03-30T12:47:51.525Z"
-  description     = "...my_description..."
-  display_name    = "...my_display_name..."
-  duplicate_from  = "...my_duplicate_from..."
-  notification_config = {
-    send_close     = true
-    send_kickoff   = true
-    send_reminders = true
-  }
-  owner_ids = [
-    "..."
-  ]
-  policy_id  = "...my_policy_id..."
-  scope_type = "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED"
 }

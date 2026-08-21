@@ -12,55 +12,117 @@ package shared
 //   - queryScopeLimit
 //   - writeAuthorization
 //   - sensitiveFileGuard
+//   - toolOutputSizeGuard
+//   - secretsMasking
+//   - linkFilter
+//   - encodedContentGuard
+//   - promptInjectionScan
+//   - blockOutput
+//   - blockToolCall
+//   - preToolBlock
 type BuiltInPattern struct {
-	// CreditCardBlockingConfig denies any tool call whose output contains a
-	//  Luhn-valid credit card number. No configuration fields today; the
-	//  presence of the oneof arm is the whole configuration.
-	CreditCardBlockingConfig *CreditCardBlockingConfig `json:"creditCardBlocking,omitempty"`
-	// PIIRedactionConfig configures post-tool-use redaction of sensitive fields.
-	PIIRedactionConfig *PIIRedactionConfig `json:"piiRedaction,omitempty"`
-	// QueryScopeLimitConfig caps numeric fields (e.g. limit, page_size) in tool
-	//  input so callers cannot request unbounded data.
-	QueryScopeLimitConfig *QueryScopeLimitConfig `json:"queryScopeLimit,omitempty"`
-	// SensitiveFileGuardConfig blocks tool calls that reference sensitive file
-	//  paths or directories.
-	SensitiveFileGuardConfig *SensitiveFileGuardConfig `json:"sensitiveFileGuard,omitempty"`
-	// WriteAuthorizationConfig blocks tool calls whose ToolClassification is in
-	//  blocked_classifications, optionally permitting them within business hours.
-	WriteAuthorizationConfig *WriteAuthorizationConfig `json:"writeAuthorization,omitempty"`
+	BlockOutput         *BlockOutputConfig         `json:"blockOutput,omitempty"`
+	BlockToolCall       *BlockToolCallConfig       `json:"blockToolCall,omitempty"`
+	CreditCardBlocking  *CreditCardBlockingConfig  `json:"creditCardBlocking,omitempty"`
+	EncodedContentGuard *EncodedContentGuardConfig `json:"encodedContentGuard,omitempty"`
+	LinkFilter          *LinkFilterConfig          `json:"linkFilter,omitempty"`
+	PiiRedaction        *PIIRedactionConfig        `json:"piiRedaction,omitempty"`
+	PreToolBlock        *PreToolBlockConfig        `json:"preToolBlock,omitempty"`
+	PromptInjectionScan *PromptInjectionScanConfig `json:"promptInjectionScan,omitempty"`
+	QueryScopeLimit     *QueryScopeLimitConfig     `json:"queryScopeLimit,omitempty"`
+	SecretsMasking      *SecretsMaskingConfig      `json:"secretsMasking,omitempty"`
+	SensitiveFileGuard  *SensitiveFileGuardConfig  `json:"sensitiveFileGuard,omitempty"`
+	ToolOutputSizeGuard *ToolOutputSizeGuardConfig `json:"toolOutputSizeGuard,omitempty"`
+	WriteAuthorization  *WriteAuthorizationConfig  `json:"writeAuthorization,omitempty"`
 }
 
-func (b *BuiltInPattern) GetCreditCardBlockingConfig() *CreditCardBlockingConfig {
+func (b *BuiltInPattern) GetBlockOutput() *BlockOutputConfig {
 	if b == nil {
 		return nil
 	}
-	return b.CreditCardBlockingConfig
+	return b.BlockOutput
 }
 
-func (b *BuiltInPattern) GetPIIRedactionConfig() *PIIRedactionConfig {
+func (b *BuiltInPattern) GetBlockToolCall() *BlockToolCallConfig {
 	if b == nil {
 		return nil
 	}
-	return b.PIIRedactionConfig
+	return b.BlockToolCall
 }
 
-func (b *BuiltInPattern) GetQueryScopeLimitConfig() *QueryScopeLimitConfig {
+func (b *BuiltInPattern) GetCreditCardBlocking() *CreditCardBlockingConfig {
 	if b == nil {
 		return nil
 	}
-	return b.QueryScopeLimitConfig
+	return b.CreditCardBlocking
 }
 
-func (b *BuiltInPattern) GetSensitiveFileGuardConfig() *SensitiveFileGuardConfig {
+func (b *BuiltInPattern) GetEncodedContentGuard() *EncodedContentGuardConfig {
 	if b == nil {
 		return nil
 	}
-	return b.SensitiveFileGuardConfig
+	return b.EncodedContentGuard
 }
 
-func (b *BuiltInPattern) GetWriteAuthorizationConfig() *WriteAuthorizationConfig {
+func (b *BuiltInPattern) GetLinkFilter() *LinkFilterConfig {
 	if b == nil {
 		return nil
 	}
-	return b.WriteAuthorizationConfig
+	return b.LinkFilter
+}
+
+func (b *BuiltInPattern) GetPiiRedaction() *PIIRedactionConfig {
+	if b == nil {
+		return nil
+	}
+	return b.PiiRedaction
+}
+
+func (b *BuiltInPattern) GetPreToolBlock() *PreToolBlockConfig {
+	if b == nil {
+		return nil
+	}
+	return b.PreToolBlock
+}
+
+func (b *BuiltInPattern) GetPromptInjectionScan() *PromptInjectionScanConfig {
+	if b == nil {
+		return nil
+	}
+	return b.PromptInjectionScan
+}
+
+func (b *BuiltInPattern) GetQueryScopeLimit() *QueryScopeLimitConfig {
+	if b == nil {
+		return nil
+	}
+	return b.QueryScopeLimit
+}
+
+func (b *BuiltInPattern) GetSecretsMasking() *SecretsMaskingConfig {
+	if b == nil {
+		return nil
+	}
+	return b.SecretsMasking
+}
+
+func (b *BuiltInPattern) GetSensitiveFileGuard() *SensitiveFileGuardConfig {
+	if b == nil {
+		return nil
+	}
+	return b.SensitiveFileGuard
+}
+
+func (b *BuiltInPattern) GetToolOutputSizeGuard() *ToolOutputSizeGuardConfig {
+	if b == nil {
+		return nil
+	}
+	return b.ToolOutputSizeGuard
+}
+
+func (b *BuiltInPattern) GetWriteAuthorization() *WriteAuthorizationConfig {
+	if b == nil {
+		return nil
+	}
+	return b.WriteAuthorization
 }

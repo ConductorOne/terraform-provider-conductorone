@@ -4,7 +4,6 @@ package shared
 
 // CreateAppResourceUserOwnerRequest is the request for creating a user ownership source on a resource.
 type CreateAppResourceUserOwnerRequest struct {
-	// A reference to a user.
 	UserRef *UserRef `json:"userRef,omitempty"`
 }
 

@@ -4,6 +4,12 @@ package shared
 
 // The TaskAuditListRequest message.
 type TaskAuditListRequest struct {
+	// When true, only comment events are returned, so a page of page_size holds
+	//  page_size comments rather than a mix of comments and state-change events.
+	CommentsOnly *bool `json:"commentsOnly,omitempty"`
+	// When true, events are returned newest-first (descending created_at) instead
+	//  of the default chronological (ascending) order.
+	NewestFirst *bool `json:"newestFirst,omitempty"`
 	// The maximum number of audit events to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
 	// A pagination token from a previous response to retrieve the next page.
@@ -12,6 +18,20 @@ type TaskAuditListRequest struct {
 	Refs []TaskAuditViewRef `json:"refs,omitempty"`
 	// The ID of the task to list audit events for.
 	TaskID *string `json:"taskId,omitempty"`
+}
+
+func (t *TaskAuditListRequest) GetCommentsOnly() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.CommentsOnly
+}
+
+func (t *TaskAuditListRequest) GetNewestFirst() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.NewestFirst
 }
 
 func (t *TaskAuditListRequest) GetPageSize() *int {

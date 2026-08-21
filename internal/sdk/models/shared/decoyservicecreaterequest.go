@@ -10,40 +10,23 @@ package shared
 //   - workloadFed
 //   - accessToken
 type DecoyServiceCreateRequest struct {
-	// DecoyAccessTokenInput requests a freestanding session access-token
-	//  decoy minted under an existing User.
-	DecoyAccessTokenInput *DecoyAccessTokenInput `json:"accessToken,omitempty"`
+	AccessToken *DecoyAccessTokenInput `json:"accessToken,omitempty"`
 	// The annotations field.
-	Annotations map[string]string `json:"annotations,omitempty"`
-	// DecoyConnectorClientInput requests a ConnectorClientCredential decoy
-	//  planted under an existing app+connector.
-	DecoyConnectorClientInput *DecoyConnectorClientInput `json:"connectorClient,omitempty"`
+	Annotations     map[string]string          `json:"annotations,omitempty"`
+	ConnectorClient *DecoyConnectorClientInput `json:"connectorClient,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
-	DisplayName *string `json:"displayName,omitempty"`
-	// DecoyUserClientCredentialInput requests a UserClientCredential decoy
-	//  planted under an existing User. The User's typ selects the credential
-	//  usage: HUMAN -> pcc, SERVICE -> spc. Any other typ (SYSTEM, AGENT)
-	//  is rejected at the handler.
-	DecoyUserClientCredentialInput *DecoyUserClientCredentialInput `json:"userClientCredential,omitempty"`
-	// DecoyWorkloadFederationInput requests a WorkloadFederationTrust decoy
-	//  bound to an existing Provider. Decoys reuse an already-registered
-	//  Provider because Trust matching requires a real JWKS for JWT signature
-	//  verification before the decoy_id check fires.
-	//
-	//  `condition_expression` is the same CEL shape the regular WF Trust API
-	//  takes -- operators express whatever matching they want against the
-	//  JWT claims map (`claims.aud`, `claims.sub`, custom claims). Compiled
-	//  + validated by the WF controller's CreateTrust at create time.
-	DecoyWorkloadFederationInput *DecoyWorkloadFederationInput `json:"workloadFed,omitempty"`
+	DisplayName          *string                         `json:"displayName,omitempty"`
+	UserClientCredential *DecoyUserClientCredentialInput `json:"userClientCredential,omitempty"`
+	WorkloadFed          *DecoyWorkloadFederationInput   `json:"workloadFed,omitempty"`
 }
 
-func (d *DecoyServiceCreateRequest) GetDecoyAccessTokenInput() *DecoyAccessTokenInput {
+func (d *DecoyServiceCreateRequest) GetAccessToken() *DecoyAccessTokenInput {
 	if d == nil {
 		return nil
 	}
-	return d.DecoyAccessTokenInput
+	return d.AccessToken
 }
 
 func (d *DecoyServiceCreateRequest) GetAnnotations() map[string]string {
@@ -53,11 +36,11 @@ func (d *DecoyServiceCreateRequest) GetAnnotations() map[string]string {
 	return d.Annotations
 }
 
-func (d *DecoyServiceCreateRequest) GetDecoyConnectorClientInput() *DecoyConnectorClientInput {
+func (d *DecoyServiceCreateRequest) GetConnectorClient() *DecoyConnectorClientInput {
 	if d == nil {
 		return nil
 	}
-	return d.DecoyConnectorClientInput
+	return d.ConnectorClient
 }
 
 func (d *DecoyServiceCreateRequest) GetDescription() *string {
@@ -74,16 +57,16 @@ func (d *DecoyServiceCreateRequest) GetDisplayName() *string {
 	return d.DisplayName
 }
 
-func (d *DecoyServiceCreateRequest) GetDecoyUserClientCredentialInput() *DecoyUserClientCredentialInput {
+func (d *DecoyServiceCreateRequest) GetUserClientCredential() *DecoyUserClientCredentialInput {
 	if d == nil {
 		return nil
 	}
-	return d.DecoyUserClientCredentialInput
+	return d.UserClientCredential
 }
 
-func (d *DecoyServiceCreateRequest) GetDecoyWorkloadFederationInput() *DecoyWorkloadFederationInput {
+func (d *DecoyServiceCreateRequest) GetWorkloadFed() *DecoyWorkloadFederationInput {
 	if d == nil {
 		return nil
 	}
-	return d.DecoyWorkloadFederationInput
+	return d.WorkloadFed
 }

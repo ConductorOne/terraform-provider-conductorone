@@ -7,8 +7,8 @@ import (
 )
 
 type BundleAutomationLastRunState struct {
-	BundleAutomationCelEvaluationState *BundleAutomationCelEvaluationState `tfsdk:"bundle_automation_cel_evaluation_state"`
-	ErrorMessage                       types.String                        `tfsdk:"error_message"`
-	LastRunAt                          types.String                        `tfsdk:"last_run_at"`
-	Status                             types.String                        `tfsdk:"status"`
+	CelEvaluation *BundleAutomationCelEvaluationState `tfsdk:"cel_evaluation"`
+	ErrorMessage  types.String                        `tfsdk:"error_message"`
+	LastRunAt     types.String                        `tfsdk:"last_run_at"`
+	Status        types.String                        `tfsdk:"status"`
 }

@@ -7,18 +7,6 @@ import (
 )
 
 type AccessReview struct {
-	AccessReviewColumnConfig       *AccessReviewColumnConfig   `tfsdk:"access_review_column_config"`
-	AccessReviewExclusionScope     *AccessReviewExclusionScope `tfsdk:"access_review_exclusion_scope"`
-	AccessReviewInclusionScope     *AccessReviewInclusionScope `tfsdk:"access_review_inclusion_scope"`
-	AccessReviewScope              *AccessReviewScope          `tfsdk:"access_review_scope"`
-	AccessReviewScopeV2            *AccessReviewScopeV2        `tfsdk:"access_review_scope_v2"`
-	BindingObjectSetup             *BindingObjectSetup         `tfsdk:"binding_object_setup"`
-	CampaignHealthSnapshot         *CampaignHealthSnapshot     `tfsdk:"campaign_health_snapshot"`
-	CampaignInsights               *CampaignInsights           `tfsdk:"campaign_insights"`
-	MultiAppSetup                  *MultiAppSetup              `tfsdk:"multi_app_setup"`
-	NotificationConfig             *NotificationConfig         `tfsdk:"notification_config"`
-	ReviewSignatureConfig          *ReviewSignatureConfig      `tfsdk:"review_signature_config"`
-	SingleAppSetup                 *SingleAppSetup             `tfsdk:"single_app_setup"`
 	AccessReviewTemplateID         types.String                `tfsdk:"access_review_template_id"`
 	AccuracyIssueAction            types.String                `tfsdk:"accuracy_issue_action"`
 	AutoCloseCampaign              types.Bool                  `tfsdk:"auto_close_campaign"`
@@ -26,7 +14,11 @@ type AccessReview struct {
 	AutoGenerateReport             types.Bool                  `tfsdk:"auto_generate_report"`
 	AutoResolve                    types.Bool                  `tfsdk:"auto_resolve"`
 	AutoStartCampaign              types.Bool                  `tfsdk:"auto_start_campaign"`
+	Bindings                       *BindingObjectSetup         `tfsdk:"bindings"`
+	CampaignHealth                 *CampaignHealthSnapshot     `tfsdk:"campaign_health"`
+	CampaignInsights               *CampaignInsights           `tfsdk:"campaign_insights"`
 	ClosedAt                       types.String                `tfsdk:"closed_at"`
+	ColumnConfig                   *AccessReviewColumnConfig   `tfsdk:"column_config"`
 	CompletionDate                 types.String                `tfsdk:"completion_date"`
 	ConnectorSourcesFrozenAt       types.String                `tfsdk:"connector_sources_frozen_at"`
 	CreatedAt                      types.String                `tfsdk:"created_at"`
@@ -35,15 +27,24 @@ type AccessReview struct {
 	Description                    types.String                `tfsdk:"description"`
 	DisplayName                    types.String                `tfsdk:"display_name"`
 	ErrorState                     types.String                `tfsdk:"error_state"`
+	ExclusionScope                 *AccessReviewExclusionScope `tfsdk:"exclusion_scope"`
 	ExemptCertifiedAccessConflicts types.Bool                  `tfsdk:"exempt_certified_access_conflicts"`
 	ExpectedTicketCount            types.Int32                 `tfsdk:"expected_ticket_count"`
 	HasAccuracySupport             types.Bool                  `tfsdk:"has_accuracy_support"`
 	ID                             types.String                `tfsdk:"id"`
+	InclusionScope                 *AccessReviewInclusionScope `tfsdk:"inclusion_scope"`
+	MultiApp                       *MultiAppSetup              `tfsdk:"multi_app"`
+	NotificationConfig             *NotificationConfig         `tfsdk:"notification_config"`
 	PolicyID                       types.String                `tfsdk:"policy_id"`
 	ReviewInstructions             types.String                `tfsdk:"review_instructions"`
+	ReviewerAttributeConfig        *ReviewerAttributeConfig    `tfsdk:"reviewer_attribute_config"`
 	ScheduledStartDate             types.String                `tfsdk:"scheduled_start_date"`
+	Scope                          *AccessReviewScope          `tfsdk:"scope"`
 	ScopeType                      types.String                `tfsdk:"scope_type"`
+	ScopeV2                        *AccessReviewScopeV2        `tfsdk:"scope_v2"`
 	ScopingVersion                 types.String                `tfsdk:"scoping_version"`
+	SignatureConfig                *ReviewSignatureConfig      `tfsdk:"signature_config"`
+	SingleApp                      *SingleAppSetup             `tfsdk:"single_app"`
 	StartedAt                      types.String                `tfsdk:"started_at"`
 	State                          types.String                `tfsdk:"state"`
 	UpdatedAt                      types.String                `tfsdk:"updated_at"`

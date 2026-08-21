@@ -8,6 +8,7 @@ import (
 
 type SendSlackMessage struct {
 	Body           types.String `tfsdk:"body"`
+	ChannelIsID    types.Bool   `tfsdk:"channel_is_id"`
 	ChannelName    types.String `tfsdk:"channel_name"`
 	ChannelNameCel types.String `tfsdk:"channel_name_cel"`
 	UseSubjectUser types.Bool   `tfsdk:"use_subject_user"`

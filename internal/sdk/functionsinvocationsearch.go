@@ -31,6 +31,8 @@ func newFunctionsInvocationSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDK
 
 // Search
 // Search searches for function invocations with filtering and ordering support
+//
+//	Each invocation carries its input/output payloads, which can be large — request a small page_size (≤10) to keep responses small.
 func (s *FunctionsInvocationSearch) Search(ctx context.Context, request operations.C1APIFunctionsV1FunctionsInvocationSearchServiceSearchRequest, opts ...operations.Option) (*operations.C1APIFunctionsV1FunctionsInvocationSearchServiceSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

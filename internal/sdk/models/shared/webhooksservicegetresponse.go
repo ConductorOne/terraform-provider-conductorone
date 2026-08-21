@@ -4,13 +4,12 @@ package shared
 
 // The WebhooksServiceGetResponse message.
 type WebhooksServiceGetResponse struct {
-	// The Webhook message.
-	WebhookEndpoint *WebhookEndpoint `json:"webhook,omitempty"`
+	Webhook *WebhookEndpoint `json:"webhook,omitempty"`
 }
 
-func (w *WebhooksServiceGetResponse) GetWebhookEndpoint() *WebhookEndpoint {
+func (w *WebhooksServiceGetResponse) GetWebhook() *WebhookEndpoint {
 	if w == nil {
 		return nil
 	}
-	return w.WebhookEndpoint
+	return w.Webhook
 }

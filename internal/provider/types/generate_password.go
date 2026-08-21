@@ -7,6 +7,6 @@ import (
 )
 
 type GeneratePassword struct {
-	GeneratePasswordPolicy *GeneratePasswordPolicy `tfsdk:"generate_password_policy"`
-	PasswordPolicyID       types.String            `tfsdk:"password_policy_id"`
+	PasswordPolicyID types.String            `tfsdk:"password_policy_id"`
+	Policy           *GeneratePasswordPolicy `tfsdk:"policy"`
 }

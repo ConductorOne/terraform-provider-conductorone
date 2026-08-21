@@ -4,7 +4,6 @@ package shared
 
 // RequestSchemaServiceUpdateRequest - The request message for updating an existing request schema.
 type RequestSchemaServiceUpdateRequest struct {
-	// A request schema defines a form template that users fill out when requesting access.
 	RequestSchema *RequestSchema `json:"requestSchema,omitempty"`
 	UpdateMask    *string        `json:"updateMask,omitempty"`
 }

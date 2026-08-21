@@ -7,9 +7,8 @@ type BulkCreateFindingTasksRequest struct {
 	// Optional policy ID to use for the created tasks. Defaults to the app's grant policy.
 	PolicyID *string `json:"policyId,omitempty"`
 	// Individual finding references to create tasks for (by-ID mode).
-	Refs []FindingRef `json:"refs,omitempty"`
-	// The FindingSearchRequest message.
-	FindingSearchRequest *FindingSearchRequest `json:"searchRequest,omitempty"`
+	Refs          []FindingRef          `json:"refs,omitempty"`
+	SearchRequest *FindingSearchRequest `json:"searchRequest,omitempty"`
 }
 
 func (b *BulkCreateFindingTasksRequest) GetPolicyID() *string {
@@ -26,9 +25,9 @@ func (b *BulkCreateFindingTasksRequest) GetRefs() []FindingRef {
 	return b.Refs
 }
 
-func (b *BulkCreateFindingTasksRequest) GetFindingSearchRequest() *FindingSearchRequest {
+func (b *BulkCreateFindingTasksRequest) GetSearchRequest() *FindingSearchRequest {
 	if b == nil {
 		return nil
 	}
-	return b.FindingSearchRequest
+	return b.SearchRequest
 }

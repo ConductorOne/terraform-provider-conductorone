@@ -7,16 +7,17 @@ import (
 )
 
 type CreateRevokeTasksV2 struct {
-	EntitlementExclusionCriteria   *EntitlementExclusionCriteria   `tfsdk:"entitlement_exclusion_criteria"`
-	EntitlementExclusionList       *EntitlementExclusionList       `tfsdk:"entitlement_exclusion_list"`
-	EntitlementExclusionListCel    *EntitlementExclusionListCel    `tfsdk:"entitlement_exclusion_list_cel"`
-	EntitlementExclusionNone       *EntitlementExclusionNone       `tfsdk:"entitlement_exclusion_none"`
-	EntitlementInclusionAccessOnly *EntitlementInclusionAccessOnly `tfsdk:"entitlement_inclusion_access_only"`
-	EntitlementInclusionAll        *EntitlementInclusionAll        `tfsdk:"entitlement_inclusion_all"`
-	EntitlementInclusionCriteria   *EntitlementInclusionCriteria   `tfsdk:"entitlement_inclusion_criteria"`
-	EntitlementInclusionList       *EntitlementInclusionList       `tfsdk:"entitlement_inclusion_list"`
-	EntitlementInclusionListCel    *EntitlementInclusionListCel    `tfsdk:"entitlement_inclusion_list_cel"`
-	UserRef                        *UserRef                        `tfsdk:"user_ref"`
-	UseSubjectUser                 types.Bool                      `tfsdk:"use_subject_user"`
-	UserIDCel                      types.String                    `tfsdk:"user_id_cel"`
+	ExclusionCriteria   *EntitlementExclusionCriteria   `tfsdk:"exclusion_criteria"`
+	ExclusionList       *EntitlementExclusionList       `tfsdk:"exclusion_list"`
+	ExclusionListCel    *EntitlementExclusionListCel    `tfsdk:"exclusion_list_cel"`
+	ExclusionNone       *EntitlementExclusionNone       `tfsdk:"exclusion_none"`
+	GrantSourceFilter   types.String                    `tfsdk:"grant_source_filter"`
+	InclusionAccessOnly *EntitlementInclusionAccessOnly `tfsdk:"inclusion_access_only"`
+	InclusionAll        *EntitlementInclusionAll        `tfsdk:"inclusion_all"`
+	InclusionCriteria   *EntitlementInclusionCriteria   `tfsdk:"inclusion_criteria"`
+	InclusionList       *EntitlementInclusionList       `tfsdk:"inclusion_list"`
+	InclusionListCel    *EntitlementInclusionListCel    `tfsdk:"inclusion_list_cel"`
+	UseSubjectUser      types.Bool                      `tfsdk:"use_subject_user"`
+	UserIDCel           types.String                    `tfsdk:"user_id_cel"`
+	UserRef             *UserRef                        `tfsdk:"user_ref"`
 }

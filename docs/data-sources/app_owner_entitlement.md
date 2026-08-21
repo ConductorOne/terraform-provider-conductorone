@@ -76,7 +76,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - multiStep
   - externalTicket
   - unconfigured
-  - action (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy))
+  - action
+  - devicePlacement (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy))
 - `description` (String) The description of the app entitlement.
 - `display_name` (String) The display name of the app entitlement.
 - `duration_grant` (String)
@@ -92,7 +93,7 @@ This message contains a oneof named typ. Only a single field of the following li
 - `is_manually_managed` (Boolean) Flag to indicate if the app entitlement is manually managed.
 - `match_baton_id` (String) An identifier used to match this entitlement to a connector-synced entitlement during sync.
 - `override_access_requests_defaults` (Boolean) Flag to indicate if the app-level access request settings have been overridden for the entitlement
-- `provision_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
+- `provisioner_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
   - connector
@@ -102,7 +103,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - multiStep
   - externalTicket
   - unconfigured
-  - action (see [below for nested schema](#nestedatt--app_entitlement--provision_policy))
+  - action
+  - devicePlacement (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy))
 - `purpose` (String) The purpose of this entitlement (e.g., assignment, permission, ownership).
 - `request_schema_id` (String) The ID of the request schema associated with this app entitlement.
 - `revoke_policy_id` (String) The ID of the policy that will be used for revoke tickets related to the app entitlement
@@ -117,22 +119,23 @@ This message contains a oneof named typ. Only a single field of the following li
 
 Read-Only:
 
-- `action_provision` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--action_provision))
-- `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
+- `action` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--action))
+- `connector` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
 
 This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
   - defaultBehavior
   - account
-  - deleteAccount (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector_provision))
-- `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--delegated_provision))
-- `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--external_ticket_provision))
-- `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual_provision))
-- `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
-- `unconfigured_provision` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--unconfigured_provision))
-- `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--webhook_provision))
+  - deleteAccount (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector))
+- `delegated` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--delegated))
+- `device_placement` (Attributes) This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--device_placement))
+- `external_ticket` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--external_ticket))
+- `manual` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual))
+- `multi_step` (String) Parsed as JSON.
+- `unconfigured` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--unconfigured))
+- `webhook` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--webhook))
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--action_provision"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.action_provision`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--action"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.action`
 
 Read-Only:
 
@@ -142,36 +145,36 @@ Read-Only:
 - `display_name` (String) The displayName field.
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--connector_provision"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.connector_provision`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--connector"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.connector`
 
 Read-Only:
 
-- `account_provision` (Attributes) The AccountProvision message.
+- `account` (Attributes) The AccountProvision message.
 
 This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:
   - saveToVault
-  - doNotSave (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector_provision--account_provision))
-- `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector_provision--default_behavior))
-- `delete_account` (Attributes) The DeleteAccount message. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector_provision--delete_account))
+  - doNotSave (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector--account))
+- `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector--default_behavior))
+- `delete_account` (Attributes) The DeleteAccount message. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector--delete_account))
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--connector_provision--account_provision"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.connector_provision.account_provision`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--connector--account"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.connector.account`
 
 Read-Only:
 
 - `config` (String) Parsed as JSON.
 - `connector_id` (String) The connectorId field.
-- `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector_provision--account_provision--do_not_save))
-- `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector_provision--account_provision--save_to_vault))
+- `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector--account--do_not_save))
+- `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--connector--account--save_to_vault))
 - `schema_id` (String) The schemaId field.
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--connector_provision--account_provision--do_not_save"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.connector_provision.account_provision.do_not_save`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--connector--account--do_not_save"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.connector.account.do_not_save`
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--connector_provision--account_provision--save_to_vault"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.connector_provision.account_provision.save_to_vault`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--connector--account--save_to_vault"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.connector.account.save_to_vault`
 
 Read-Only:
 
@@ -179,8 +182,8 @@ Read-Only:
 
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--connector_provision--default_behavior"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.connector_provision.default_behavior`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--connector--default_behavior"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.connector.default_behavior`
 
 Read-Only:
 
@@ -188,8 +191,8 @@ Read-Only:
  this can happen automatically and doesn't need any extra info
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--connector_provision--delete_account"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.connector_provision.delete_account`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--connector--delete_account"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.connector.delete_account`
 
 Read-Only:
 
@@ -197,8 +200,8 @@ Read-Only:
 
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--delegated_provision"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.delegated_provision`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--delegated"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.delegated`
 
 Read-Only:
 
@@ -206,8 +209,16 @@ Read-Only:
 - `entitlement_id` (String) The ID of the entitlement we are delegating provisioning to.
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--external_ticket_provision"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.external_ticket_provision`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--device_placement"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.device_placement`
+
+Read-Only:
+
+- `vault_boundary_id` (String) The vaultBoundaryId field.
+
+
+<a id="nestedatt--app_entitlement--deprovisioner_policy--external_ticket"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.external_ticket`
 
 Read-Only:
 
@@ -217,13 +228,12 @@ Read-Only:
 - `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--manual_provision"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.manual_provision`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--manual"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.manual`
 
 Read-Only:
 
-- `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
-- `provisioner_assignment` (Attributes) ProvisionerAssignment defines how a provisioner is dynamically assigned.
+- `assignee` (Attributes) ProvisionerAssignment defines how a provisioner is dynamically assigned.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
   - users
@@ -231,24 +241,25 @@ This message contains a oneof named typ. Only a single field of the following li
   - group
   - manager
   - expression
-  - entitlementOwners (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment))
+  - entitlementOwners (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual--assignee))
+- `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
 - `user_ids` (List of String) An array of users that are required to provision during this step.
  Deprecated: Use assignee field instead for dynamic provisioner assignment.
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--manual--assignee"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.manual.assignee`
 
 Read-Only:
 
-- `app_owner_provisioner` (Attributes) AppOwnerProvisioner resolves to app owners. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--app_owner_provisioner))
-- `entitlement_owner_provisioner` (Attributes) EntitlementOwnerProvisioner resolves to entitlement owners. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--entitlement_owner_provisioner))
-- `expression_provisioner` (Attributes) ExpressionProvisioner evaluates CEL expressions to determine provisioners. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--expression_provisioner))
-- `group_provisioner` (Attributes) GroupProvisioner resolves to members of a specific group. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--group_provisioner))
-- `manager_provisioner` (Attributes) ManagerProvisioner resolves to the user's manager. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--manager_provisioner))
-- `user_provisioner` (Attributes) UserProvisioner assigns specific users as provisioners. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--user_provisioner))
+- `app_owners` (Attributes) AppOwnerProvisioner resolves to app owners. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--app_owners))
+- `entitlement_owners` (Attributes) EntitlementOwnerProvisioner resolves to entitlement owners. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--entitlement_owners))
+- `expression` (Attributes) ExpressionProvisioner evaluates CEL expressions to determine provisioners. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--expression))
+- `group` (Attributes) GroupProvisioner resolves to members of a specific group. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--group))
+- `manager` (Attributes) ManagerProvisioner resolves to the user's manager. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--manager))
+- `users` (Attributes) UserProvisioner assigns specific users as provisioners. (see [below for nested schema](#nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--users))
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--app_owner_provisioner"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.app_owner_provisioner`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--app_owners"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.manual.assignee.app_owners`
 
 Read-Only:
 
@@ -256,8 +267,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no app owners are found.
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--entitlement_owner_provisioner"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.entitlement_owner_provisioner`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--entitlement_owners"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.manual.assignee.entitlement_owners`
 
 Read-Only:
 
@@ -265,8 +276,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no entitlement owners are found.
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--expression_provisioner"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.expression_provisioner`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--expression"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.manual.assignee.expression`
 
 Read-Only:
 
@@ -275,8 +286,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if expression evaluation yields no users.
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--group_provisioner"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.group_provisioner`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--group"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.manual.assignee.group`
 
 Read-Only:
 
@@ -286,8 +297,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no group members are found.
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--manager_provisioner"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.manager_provisioner`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--manager"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.manual.assignee.manager`
 
 Read-Only:
 
@@ -295,8 +306,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no manager is found.
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--manual_provision--provisioner_assignment--user_provisioner"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.manual_provision.provisioner_assignment.user_provisioner`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--manual--assignee--users"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.manual.assignee.users`
 
 Read-Only:
 
@@ -306,12 +317,12 @@ Read-Only:
 
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--unconfigured_provision"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.unconfigured_provision`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--unconfigured"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.unconfigured`
 
 
-<a id="nestedatt--app_entitlement--deprovisioner_policy--webhook_provision"></a>
-### Nested Schema for `app_entitlement.deprovisioner_policy.webhook_provision`
+<a id="nestedatt--app_entitlement--deprovisioner_policy--webhook"></a>
+### Nested Schema for `app_entitlement.deprovisioner_policy.webhook`
 
 Read-Only:
 
@@ -323,27 +334,28 @@ Read-Only:
 ### Nested Schema for `app_entitlement.duration_unset`
 
 
-<a id="nestedatt--app_entitlement--provision_policy"></a>
-### Nested Schema for `app_entitlement.provision_policy`
+<a id="nestedatt--app_entitlement--provisioner_policy"></a>
+### Nested Schema for `app_entitlement.provisioner_policy`
 
 Read-Only:
 
-- `action_provision` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--action_provision))
-- `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
+- `action` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--action))
+- `connector` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
 
 This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
   - defaultBehavior
   - account
-  - deleteAccount (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--connector_provision))
-- `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--delegated_provision))
-- `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--external_ticket_provision))
-- `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--manual_provision))
-- `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
-- `unconfigured_provision` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--unconfigured_provision))
-- `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--webhook_provision))
+  - deleteAccount (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--connector))
+- `delegated` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--delegated))
+- `device_placement` (Attributes) This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--device_placement))
+- `external_ticket` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--external_ticket))
+- `manual` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--manual))
+- `multi_step` (String) Parsed as JSON.
+- `unconfigured` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--unconfigured))
+- `webhook` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--webhook))
 
-<a id="nestedatt--app_entitlement--provision_policy--action_provision"></a>
-### Nested Schema for `app_entitlement.provision_policy.action_provision`
+<a id="nestedatt--app_entitlement--provisioner_policy--action"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.action`
 
 Read-Only:
 
@@ -353,36 +365,36 @@ Read-Only:
 - `display_name` (String) The displayName field.
 
 
-<a id="nestedatt--app_entitlement--provision_policy--connector_provision"></a>
-### Nested Schema for `app_entitlement.provision_policy.connector_provision`
+<a id="nestedatt--app_entitlement--provisioner_policy--connector"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.connector`
 
 Read-Only:
 
-- `account_provision` (Attributes) The AccountProvision message.
+- `account` (Attributes) The AccountProvision message.
 
 This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:
   - saveToVault
-  - doNotSave (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--connector_provision--account_provision))
-- `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--connector_provision--default_behavior))
-- `delete_account` (Attributes) The DeleteAccount message. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--connector_provision--delete_account))
+  - doNotSave (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--connector--account))
+- `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--connector--default_behavior))
+- `delete_account` (Attributes) The DeleteAccount message. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--connector--delete_account))
 
-<a id="nestedatt--app_entitlement--provision_policy--connector_provision--account_provision"></a>
-### Nested Schema for `app_entitlement.provision_policy.connector_provision.account_provision`
+<a id="nestedatt--app_entitlement--provisioner_policy--connector--account"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.connector.account`
 
 Read-Only:
 
 - `config` (String) Parsed as JSON.
 - `connector_id` (String) The connectorId field.
-- `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--connector_provision--account_provision--do_not_save))
-- `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--connector_provision--account_provision--save_to_vault))
+- `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--connector--account--do_not_save))
+- `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--connector--account--save_to_vault))
 - `schema_id` (String) The schemaId field.
 
-<a id="nestedatt--app_entitlement--provision_policy--connector_provision--account_provision--do_not_save"></a>
-### Nested Schema for `app_entitlement.provision_policy.connector_provision.account_provision.do_not_save`
+<a id="nestedatt--app_entitlement--provisioner_policy--connector--account--do_not_save"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.connector.account.do_not_save`
 
 
-<a id="nestedatt--app_entitlement--provision_policy--connector_provision--account_provision--save_to_vault"></a>
-### Nested Schema for `app_entitlement.provision_policy.connector_provision.account_provision.save_to_vault`
+<a id="nestedatt--app_entitlement--provisioner_policy--connector--account--save_to_vault"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.connector.account.save_to_vault`
 
 Read-Only:
 
@@ -390,8 +402,8 @@ Read-Only:
 
 
 
-<a id="nestedatt--app_entitlement--provision_policy--connector_provision--default_behavior"></a>
-### Nested Schema for `app_entitlement.provision_policy.connector_provision.default_behavior`
+<a id="nestedatt--app_entitlement--provisioner_policy--connector--default_behavior"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.connector.default_behavior`
 
 Read-Only:
 
@@ -399,8 +411,8 @@ Read-Only:
  this can happen automatically and doesn't need any extra info
 
 
-<a id="nestedatt--app_entitlement--provision_policy--connector_provision--delete_account"></a>
-### Nested Schema for `app_entitlement.provision_policy.connector_provision.delete_account`
+<a id="nestedatt--app_entitlement--provisioner_policy--connector--delete_account"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.connector.delete_account`
 
 Read-Only:
 
@@ -408,8 +420,8 @@ Read-Only:
 
 
 
-<a id="nestedatt--app_entitlement--provision_policy--delegated_provision"></a>
-### Nested Schema for `app_entitlement.provision_policy.delegated_provision`
+<a id="nestedatt--app_entitlement--provisioner_policy--delegated"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.delegated`
 
 Read-Only:
 
@@ -417,8 +429,16 @@ Read-Only:
 - `entitlement_id` (String) The ID of the entitlement we are delegating provisioning to.
 
 
-<a id="nestedatt--app_entitlement--provision_policy--external_ticket_provision"></a>
-### Nested Schema for `app_entitlement.provision_policy.external_ticket_provision`
+<a id="nestedatt--app_entitlement--provisioner_policy--device_placement"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.device_placement`
+
+Read-Only:
+
+- `vault_boundary_id` (String) The vaultBoundaryId field.
+
+
+<a id="nestedatt--app_entitlement--provisioner_policy--external_ticket"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.external_ticket`
 
 Read-Only:
 
@@ -428,13 +448,12 @@ Read-Only:
 - `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
 
 
-<a id="nestedatt--app_entitlement--provision_policy--manual_provision"></a>
-### Nested Schema for `app_entitlement.provision_policy.manual_provision`
+<a id="nestedatt--app_entitlement--provisioner_policy--manual"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.manual`
 
 Read-Only:
 
-- `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
-- `provisioner_assignment` (Attributes) ProvisionerAssignment defines how a provisioner is dynamically assigned.
+- `assignee` (Attributes) ProvisionerAssignment defines how a provisioner is dynamically assigned.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
   - users
@@ -442,24 +461,25 @@ This message contains a oneof named typ. Only a single field of the following li
   - group
   - manager
   - expression
-  - entitlementOwners (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment))
+  - entitlementOwners (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--manual--assignee))
+- `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
 - `user_ids` (List of String) An array of users that are required to provision during this step.
  Deprecated: Use assignee field instead for dynamic provisioner assignment.
 
-<a id="nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment"></a>
-### Nested Schema for `app_entitlement.provision_policy.manual_provision.provisioner_assignment`
+<a id="nestedatt--app_entitlement--provisioner_policy--manual--assignee"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.manual.assignee`
 
 Read-Only:
 
-- `app_owner_provisioner` (Attributes) AppOwnerProvisioner resolves to app owners. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--app_owner_provisioner))
-- `entitlement_owner_provisioner` (Attributes) EntitlementOwnerProvisioner resolves to entitlement owners. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--entitlement_owner_provisioner))
-- `expression_provisioner` (Attributes) ExpressionProvisioner evaluates CEL expressions to determine provisioners. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--expression_provisioner))
-- `group_provisioner` (Attributes) GroupProvisioner resolves to members of a specific group. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--group_provisioner))
-- `manager_provisioner` (Attributes) ManagerProvisioner resolves to the user's manager. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--manager_provisioner))
-- `user_provisioner` (Attributes) UserProvisioner assigns specific users as provisioners. (see [below for nested schema](#nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--user_provisioner))
+- `app_owners` (Attributes) AppOwnerProvisioner resolves to app owners. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--manual--assignee--app_owners))
+- `entitlement_owners` (Attributes) EntitlementOwnerProvisioner resolves to entitlement owners. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--manual--assignee--entitlement_owners))
+- `expression` (Attributes) ExpressionProvisioner evaluates CEL expressions to determine provisioners. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--manual--assignee--expression))
+- `group` (Attributes) GroupProvisioner resolves to members of a specific group. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--manual--assignee--group))
+- `manager` (Attributes) ManagerProvisioner resolves to the user's manager. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--manual--assignee--manager))
+- `users` (Attributes) UserProvisioner assigns specific users as provisioners. (see [below for nested schema](#nestedatt--app_entitlement--provisioner_policy--manual--assignee--users))
 
-<a id="nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--app_owner_provisioner"></a>
-### Nested Schema for `app_entitlement.provision_policy.manual_provision.provisioner_assignment.app_owner_provisioner`
+<a id="nestedatt--app_entitlement--provisioner_policy--manual--assignee--app_owners"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.manual.assignee.app_owners`
 
 Read-Only:
 
@@ -467,8 +487,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no app owners are found.
 
 
-<a id="nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--entitlement_owner_provisioner"></a>
-### Nested Schema for `app_entitlement.provision_policy.manual_provision.provisioner_assignment.entitlement_owner_provisioner`
+<a id="nestedatt--app_entitlement--provisioner_policy--manual--assignee--entitlement_owners"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.manual.assignee.entitlement_owners`
 
 Read-Only:
 
@@ -476,8 +496,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no entitlement owners are found.
 
 
-<a id="nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--expression_provisioner"></a>
-### Nested Schema for `app_entitlement.provision_policy.manual_provision.provisioner_assignment.expression_provisioner`
+<a id="nestedatt--app_entitlement--provisioner_policy--manual--assignee--expression"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.manual.assignee.expression`
 
 Read-Only:
 
@@ -486,8 +506,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if expression evaluation yields no users.
 
 
-<a id="nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--group_provisioner"></a>
-### Nested Schema for `app_entitlement.provision_policy.manual_provision.provisioner_assignment.group_provisioner`
+<a id="nestedatt--app_entitlement--provisioner_policy--manual--assignee--group"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.manual.assignee.group`
 
 Read-Only:
 
@@ -497,8 +517,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no group members are found.
 
 
-<a id="nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--manager_provisioner"></a>
-### Nested Schema for `app_entitlement.provision_policy.manual_provision.provisioner_assignment.manager_provisioner`
+<a id="nestedatt--app_entitlement--provisioner_policy--manual--assignee--manager"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.manual.assignee.manager`
 
 Read-Only:
 
@@ -506,8 +526,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no manager is found.
 
 
-<a id="nestedatt--app_entitlement--provision_policy--manual_provision--provisioner_assignment--user_provisioner"></a>
-### Nested Schema for `app_entitlement.provision_policy.manual_provision.provisioner_assignment.user_provisioner`
+<a id="nestedatt--app_entitlement--provisioner_policy--manual--assignee--users"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.manual.assignee.users`
 
 Read-Only:
 
@@ -517,12 +537,12 @@ Read-Only:
 
 
 
-<a id="nestedatt--app_entitlement--provision_policy--unconfigured_provision"></a>
-### Nested Schema for `app_entitlement.provision_policy.unconfigured_provision`
+<a id="nestedatt--app_entitlement--provisioner_policy--unconfigured"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.unconfigured`
 
 
-<a id="nestedatt--app_entitlement--provision_policy--webhook_provision"></a>
-### Nested Schema for `app_entitlement.provision_policy.webhook_provision`
+<a id="nestedatt--app_entitlement--provisioner_policy--webhook"></a>
+### Nested Schema for `app_entitlement.provisioner_policy.webhook`
 
 Read-Only:
 

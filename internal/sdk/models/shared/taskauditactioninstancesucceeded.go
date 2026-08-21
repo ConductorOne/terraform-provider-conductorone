@@ -4,26 +4,12 @@ package shared
 
 // The TaskAuditActionInstanceSucceeded message.
 type TaskAuditActionInstanceSucceeded struct {
-	// The ActionInstance message.
-	//
-	// This message contains a oneof named target_instance. Only a single field of the following list may be set at a time:
-	//   - automation
-	//   - batonResourceActionInstance
-	//   - clientIdApprovalInstance
-	//
-	//
-	// This message contains a oneof named outcome. Only a single field of the following list may be set at a time:
-	//   - success
-	//   - denied
-	//   - error
-	//   - cancelled
-	//
-	ActionInstance *ActionInstance `json:"instance,omitempty"`
+	Instance *ActionInstance `json:"instance,omitempty"`
 }
 
-func (t *TaskAuditActionInstanceSucceeded) GetActionInstance() *ActionInstance {
+func (t *TaskAuditActionInstanceSucceeded) GetInstance() *ActionInstance {
 	if t == nil {
 		return nil
 	}
-	return t.ActionInstance
+	return t.Instance
 }

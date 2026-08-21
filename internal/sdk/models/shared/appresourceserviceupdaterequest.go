@@ -4,11 +4,6 @@ package shared
 
 // AppResourceServiceUpdateRequest - The request message for updating an app resource.
 type AppResourceServiceUpdateRequest struct {
-	// The app resource message is a single resource that can have entitlements.
-	//
-	// This message contains a oneof named metadata. Only a single field of the following list may be set at a time:
-	//   - secretTrait
-	//
 	AppResource *AppResourceInput `json:"appResource,omitempty"`
 	UpdateMask  *string           `json:"updateMask,omitempty"`
 }

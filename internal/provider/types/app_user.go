@@ -7,20 +7,23 @@ import (
 )
 
 type AppUser struct {
-	AppUserStatus  *AppUserStatus  `tfsdk:"app_user_status"`
-	AppID          types.String    `tfsdk:"app_id"`
-	AppUserType    types.String    `tfsdk:"app_user_type"`
-	CreatedAt      types.String    `tfsdk:"created_at"`
-	DeletedAt      types.String    `tfsdk:"deleted_at"`
-	DisplayName    types.String    `tfsdk:"display_name"`
-	Email          types.String    `tfsdk:"email"`
-	Emails         []types.String  `tfsdk:"emails"`
-	EmployeeIds    []types.String  `tfsdk:"employee_ids"`
-	ID             types.String    `tfsdk:"id"`
-	IdentityUserID types.String    `tfsdk:"identity_user_id"`
-	IsExternal     types.Bool      `tfsdk:"is_external"`
-	Profile        *AppUserProfile `tfsdk:"profile"`
-	UpdatedAt      types.String    `tfsdk:"updated_at"`
-	Username       types.String    `tfsdk:"username"`
-	Usernames      []types.String  `tfsdk:"usernames"`
+	AgentStatus    types.String   `tfsdk:"agent_status"`
+	AppID          types.String   `tfsdk:"app_id"`
+	AppUserType    types.String   `tfsdk:"app_user_type"`
+	CreatedAt      types.String   `tfsdk:"created_at"`
+	DeletedAt      types.String   `tfsdk:"deleted_at"`
+	DisplayName    types.String   `tfsdk:"display_name"`
+	Email          types.String   `tfsdk:"email"`
+	Emails         []types.String `tfsdk:"emails"`
+	EmployeeIds    []types.String `tfsdk:"employee_ids"`
+	ID             types.String   `tfsdk:"id"`
+	IdentityUserID types.String   `tfsdk:"identity_user_id"`
+	IsExternal     types.Bool     `tfsdk:"is_external"`
+	NhiDetail      types.String   `tfsdk:"nhi_detail"`
+	NhiType        types.String   `tfsdk:"nhi_type"`
+	Profile        *Profile       `tfsdk:"profile"`
+	Status         *AppUserStatus `tfsdk:"status"`
+	UpdatedAt      types.String   `tfsdk:"updated_at"`
+	Username       types.String   `tfsdk:"username"`
+	Usernames      []types.String `tfsdk:"usernames"`
 }

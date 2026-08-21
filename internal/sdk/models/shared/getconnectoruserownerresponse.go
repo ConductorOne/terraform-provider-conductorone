@@ -4,7 +4,6 @@ package shared
 
 // GetConnectorUserOwnerResponse is the response for getting a user ownership source on a connector.
 type GetConnectorUserOwnerResponse struct {
-	// ConnectorOwnerUser represents a user ownership source for a connector.
 	ConnectorOwnerUser *ConnectorOwnerUser `json:"connectorOwnerUser,omitempty"`
 }
 

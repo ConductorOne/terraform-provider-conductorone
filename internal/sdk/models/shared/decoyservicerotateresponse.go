@@ -4,19 +4,8 @@ package shared
 
 // The DecoyServiceRotateResponse message.
 type DecoyServiceRotateResponse struct {
-	// Decoy is the public projection of a planted honey-credential. Read-only
-	//  surface; the variant-specific back-references live in c1models and are
-	//  not exposed here.
-	Decoy *Decoy `json:"decoy,omitempty"`
-	// DecoyVendingMaterial carries the freshly-vended secret material returned
-	//  exactly once at Create or Rotate.
-	//
-	// This message contains a oneof named material. Only a single field of the following list may be set at a time:
-	//   - clientCredential
-	//   - accessToken
-	//   - workloadFederation
-	//
-	DecoyVendingMaterial *DecoyVendingMaterial `json:"material,omitempty"`
+	Decoy    *Decoy                `json:"decoy,omitempty"`
+	Material *DecoyVendingMaterial `json:"material,omitempty"`
 }
 
 func (d *DecoyServiceRotateResponse) GetDecoy() *Decoy {
@@ -26,9 +15,9 @@ func (d *DecoyServiceRotateResponse) GetDecoy() *Decoy {
 	return d.Decoy
 }
 
-func (d *DecoyServiceRotateResponse) GetDecoyVendingMaterial() *DecoyVendingMaterial {
+func (d *DecoyServiceRotateResponse) GetMaterial() *DecoyVendingMaterial {
 	if d == nil {
 		return nil
 	}
-	return d.DecoyVendingMaterial
+	return d.Material
 }

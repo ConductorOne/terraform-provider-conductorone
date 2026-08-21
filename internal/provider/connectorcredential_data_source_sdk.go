@@ -35,7 +35,7 @@ func (r *ConnectorCredentialDataSourceModel) RefreshFromSharedConnectorServiceGe
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedConnectorCredential(ctx, resp.ConnectorCredential)...)
+		diags.Append(r.RefreshFromSharedConnectorCredential(ctx, resp.Credential)...)
 
 		if diags.HasError() {
 			return diags

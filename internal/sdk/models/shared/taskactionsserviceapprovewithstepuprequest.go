@@ -5,7 +5,8 @@ package shared
 // TaskActionsServiceApproveWithStepUpRequest is used to approve a task with step-up authentication
 type TaskActionsServiceApproveWithStepUpRequest struct {
 	// The comment attached to the request.
-	Comment *string `json:"comment,omitempty"`
+	Comment    *string         `json:"comment,omitempty"`
+	ExpandMask *TaskExpandMask `json:"expandMask,omitempty"`
 	// The ID of the policy step on the given task to approve.
 	PolicyStepID string `json:"policyStepId"`
 	// The step-up transaction ID that was verified.
@@ -19,6 +20,13 @@ func (t *TaskActionsServiceApproveWithStepUpRequest) GetComment() *string {
 		return nil
 	}
 	return t.Comment
+}
+
+func (t *TaskActionsServiceApproveWithStepUpRequest) GetExpandMask() *TaskExpandMask {
+	if t == nil {
+		return nil
+	}
+	return t.ExpandMask
 }
 
 func (t *TaskActionsServiceApproveWithStepUpRequest) GetPolicyStepID() string {

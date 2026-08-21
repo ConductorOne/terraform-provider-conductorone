@@ -7,24 +7,24 @@ import (
 )
 
 type Approval struct {
-	AgentApproval             *AgentApproval            `tfsdk:"agent_approval"`
-	AppGroupApproval          *AppGroupApproval         `tfsdk:"app_group_approval"`
-	AppOwnerApproval          *AppOwnerApproval         `tfsdk:"app_owner_approval"`
-	EntitlementOwnerApproval  *EntitlementOwnerApproval `tfsdk:"entitlement_owner_approval"`
-	Escalation                *Escalation               `tfsdk:"escalation"`
-	ExpressionApproval        *ExpressionApproval       `tfsdk:"expression_approval"`
-	ManagerApproval           *ManagerApproval          `tfsdk:"manager_approval"`
-	ResourceOwnerApproval     *ResourceOwnerApproval    `tfsdk:"resource_owner_approval"`
-	SelfApproval              *SelfApproval             `tfsdk:"self_approval"`
-	UserApproval              *UserApproval             `tfsdk:"user_approval"`
-	WebhookApproval           *WebhookApproval          `tfsdk:"webhook_approval"`
+	Agent                     *AgentApproval            `tfsdk:"agent"`
 	AllowDelegation           types.Bool                `tfsdk:"allow_delegation"`
 	AllowReassignment         types.Bool                `tfsdk:"allow_reassignment"`
 	AllowedReassignees        []types.String            `tfsdk:"allowed_reassignees"`
+	AppOwners                 *AppOwnerApproval         `tfsdk:"app_owners"`
 	Assigned                  types.Bool                `tfsdk:"assigned"`
+	EntitlementOwners         *EntitlementOwnerApproval `tfsdk:"entitlement_owners"`
+	Escalation                *Escalation               `tfsdk:"escalation"`
 	EscalationEnabled         types.Bool                `tfsdk:"escalation_enabled"`
+	Expression                *ExpressionApproval       `tfsdk:"expression"`
+	Group                     *AppGroupApproval         `tfsdk:"group"`
+	Manager                   *ManagerApproval          `tfsdk:"manager"`
 	RequireApprovalReason     types.Bool                `tfsdk:"require_approval_reason"`
 	RequireDenialReason       types.Bool                `tfsdk:"require_denial_reason"`
 	RequireReassignmentReason types.Bool                `tfsdk:"require_reassignment_reason"`
 	RequiresStepUpProviderID  types.String              `tfsdk:"requires_step_up_provider_id"`
+	ResourceOwners            *ResourceOwnerApproval    `tfsdk:"resource_owners"`
+	Self                      *SelfApproval             `tfsdk:"self"`
+	Users                     *UserApproval             `tfsdk:"users"`
+	Webhook                   *WebhookApproval          `tfsdk:"webhook"`
 }

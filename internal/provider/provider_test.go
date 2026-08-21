@@ -57,6 +57,26 @@ func TestRegistersAccessReviewSetupDataSources(t *testing.T) {
 	}
 }
 
+func TestDoesNotRegisterDraftProvider15Surfaces(t *testing.T) {
+	t.Parallel()
+
+	draftSurfaces := []string{
+		"conductorone_app_resource_owner_entitlement",
+		"conductorone_app_resource_owner_user",
+		"conductorone_credential_inventory_policy",
+		"conductorone_recovery_policy",
+		"conductorone_session_policy",
+		"conductorone_sign_in_policy",
+	}
+	for _, names := range [][]string{registeredResourceNames(t), registeredDataSourceNames(t)} {
+		for _, draftSurface := range draftSurfaces {
+			if slices.Contains(names, draftSurface) {
+				t.Fatalf("draft surface %q must not be registered; got %v", draftSurface, names)
+			}
+		}
+	}
+}
+
 func registeredResourceNames(t *testing.T) []string {
 	ctx := context.Background()
 	p := mustTestProvider(t)

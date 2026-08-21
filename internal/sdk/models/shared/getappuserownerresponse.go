@@ -4,7 +4,6 @@ package shared
 
 // GetAppUserOwnerResponse - GetUserOwnerResponse is the response for getting a user ownership source.
 type GetAppUserOwnerResponse struct {
-	// AppOwnerUser represents a user ownership source for an app.
 	AppOwnerUser *AppOwnerUser `json:"appOwnerUser,omitempty"`
 }
 

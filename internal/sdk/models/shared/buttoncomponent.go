@@ -29,40 +29,20 @@ func (e *Variant) IsExact() bool {
 
 // ButtonComponent triggers actions.
 type ButtonComponent struct {
-	// Action represents what happens when a component is activated (e.g., button click).
-	//
-	// This message contains a oneof named action_type. Only a single field of the following list may be set at a time:
-	//   - event
-	//   - functionCall
-	//
-	A2UIAction *A2UIAction `json:"action,omitempty"`
+	Action *A2UIAction `json:"action,omitempty"`
 	// The checks field.
-	Checks []ValidationCheck `json:"checks,omitempty"`
-	// DynamicBool can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicBool *DynamicBool `json:"disabled,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString *DynamicString `json:"label,omitempty"`
+	Checks   []ValidationCheck `json:"checks,omitempty"`
+	Disabled *DynamicBool      `json:"disabled,omitempty"`
+	Label    *DynamicString    `json:"label,omitempty"`
 	// The variant field.
 	Variant *Variant `json:"variant,omitempty"`
 }
 
-func (b *ButtonComponent) GetA2UIAction() *A2UIAction {
+func (b *ButtonComponent) GetAction() *A2UIAction {
 	if b == nil {
 		return nil
 	}
-	return b.A2UIAction
+	return b.Action
 }
 
 func (b *ButtonComponent) GetChecks() []ValidationCheck {
@@ -72,18 +52,18 @@ func (b *ButtonComponent) GetChecks() []ValidationCheck {
 	return b.Checks
 }
 
-func (b *ButtonComponent) GetDynamicBool() *DynamicBool {
+func (b *ButtonComponent) GetDisabled() *DynamicBool {
 	if b == nil {
 		return nil
 	}
-	return b.DynamicBool
+	return b.Disabled
 }
 
-func (b *ButtonComponent) GetDynamicString() *DynamicString {
+func (b *ButtonComponent) GetLabel() *DynamicString {
 	if b == nil {
 		return nil
 	}
-	return b.DynamicString
+	return b.Label
 }
 
 func (b *ButtonComponent) GetVariant() *Variant {

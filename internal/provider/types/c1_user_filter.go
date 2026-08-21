@@ -2,5 +2,12 @@
 
 package types
 
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
 type C1UserFilter struct {
+	ExcludeUserIds     []types.String `tfsdk:"exclude_user_ids"`
+	IncludeDeactivated types.Bool     `tfsdk:"include_deactivated"`
+	UserIds            []types.String `tfsdk:"user_ids"`
 }

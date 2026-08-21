@@ -33,7 +33,7 @@ func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedAppEntitlemen
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedAppEntitlementProxy(ctx, resp.AppEntitlementProxy)...)
+		diags.Append(r.RefreshFromSharedAppEntitlementProxy(ctx, resp.AppProxyEntitlement)...)
 
 		if diags.HasError() {
 			return diags
@@ -48,7 +48,7 @@ func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedCreateAppEnti
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedAppEntitlementProxyView(ctx, resp.AppEntitlementProxyView)...)
+		diags.Append(r.RefreshFromSharedAppEntitlementProxyView(ctx, resp.AppProxyEntitlementView)...)
 
 		if diags.HasError() {
 			return diags
@@ -67,7 +67,7 @@ func (r *AppEntitlementProxyBindingResourceModel) RefreshFromSharedGetAppEntitle
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		diags.Append(r.RefreshFromSharedAppEntitlementProxyView(ctx, resp.AppEntitlementProxyView)...)
+		diags.Append(r.RefreshFromSharedAppEntitlementProxyView(ctx, resp.AppProxyEntitlementView)...)
 
 		if diags.HasError() {
 			return diags

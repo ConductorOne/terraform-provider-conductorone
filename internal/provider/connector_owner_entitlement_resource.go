@@ -114,7 +114,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 					"deprovisioner_policy": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"action_provision": schema.SingleNestedAttribute{
+							"action": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"action_name": schema.StringAttribute{
@@ -136,10 +136,10 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 								},
 								Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
 							},
-							"connector_provision": schema.SingleNestedAttribute{
+							"connector": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
-									"account_provision": schema.SingleNestedAttribute{
+									"account": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
 											"config": schema.StringAttribute{
@@ -206,7 +206,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 									`  - account` + "\n" +
 									`  - deleteAccount`,
 							},
-							"delegated_provision": schema.SingleNestedAttribute{
+							"delegated": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"app_id": schema.StringAttribute{
@@ -220,7 +220,17 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 								},
 								Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 							},
-							"external_ticket_provision": schema.SingleNestedAttribute{
+							"device_placement": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"vault_boundary_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The vaultBoundaryId field.`,
+									},
+								},
+								Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+							},
+							"external_ticket": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"app_id": schema.StringAttribute{
@@ -242,17 +252,13 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 								},
 								Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
 							},
-							"manual_provision": schema.SingleNestedAttribute{
+							"manual": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
-									"instructions": schema.StringAttribute{
-										Computed:    true,
-										Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
-									},
-									"provisioner_assignment": schema.SingleNestedAttribute{
+									"assignee": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
-											"app_owner_provisioner": schema.SingleNestedAttribute{
+											"app_owners": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -267,7 +273,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 												},
 												Description: `AppOwnerProvisioner resolves to app owners.`,
 											},
-											"entitlement_owner_provisioner": schema.SingleNestedAttribute{
+											"entitlement_owners": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -282,7 +288,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 												},
 												Description: `EntitlementOwnerProvisioner resolves to entitlement owners.`,
 											},
-											"expression_provisioner": schema.SingleNestedAttribute{
+											"expression": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -302,7 +308,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 												},
 												Description: `ExpressionProvisioner evaluates CEL expressions to determine provisioners.`,
 											},
-											"group_provisioner": schema.SingleNestedAttribute{
+											"group": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -325,7 +331,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 												},
 												Description: `GroupProvisioner resolves to members of a specific group.`,
 											},
-											"manager_provisioner": schema.SingleNestedAttribute{
+											"manager": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -340,7 +346,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 												},
 												Description: `ManagerProvisioner resolves to the user's manager.`,
 											},
-											"user_provisioner": schema.SingleNestedAttribute{
+											"users": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -366,6 +372,10 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 											`  - expression` + "\n" +
 											`  - entitlementOwners`,
 									},
+									"instructions": schema.StringAttribute{
+										Computed:    true,
+										Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+									},
 									"user_ids": schema.ListAttribute{
 										Computed:    true,
 										ElementType: types.StringType,
@@ -378,13 +388,13 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 							"multi_step": schema.StringAttribute{
 								CustomType:  jsontypes.NormalizedType{},
 								Computed:    true,
-								Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+								Description: `Parsed as JSON.`,
 							},
-							"unconfigured_provision": schema.SingleNestedAttribute{
+							"unconfigured": schema.SingleNestedAttribute{
 								Computed:    true,
 								Description: `The UnconfiguredProvision message.`,
 							},
-							"webhook_provision": schema.SingleNestedAttribute{
+							"webhook": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"webhook_id": schema.StringAttribute{
@@ -405,7 +415,8 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 							`  - multiStep` + "\n" +
 							`  - externalTicket` + "\n" +
 							`  - unconfigured` + "\n" +
-							`  - action`,
+							`  - action` + "\n" +
+							`  - devicePlacement`,
 					},
 					"description": schema.StringAttribute{
 						Computed:    true,
@@ -465,10 +476,10 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 						Computed:    true,
 						Description: `Flag to indicate if the app-level access request settings have been overridden for the entitlement`,
 					},
-					"provision_policy": schema.SingleNestedAttribute{
+					"provisioner_policy": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"action_provision": schema.SingleNestedAttribute{
+							"action": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"action_name": schema.StringAttribute{
@@ -490,10 +501,10 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 								},
 								Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
 							},
-							"connector_provision": schema.SingleNestedAttribute{
+							"connector": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
-									"account_provision": schema.SingleNestedAttribute{
+									"account": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
 											"config": schema.StringAttribute{
@@ -560,7 +571,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 									`  - account` + "\n" +
 									`  - deleteAccount`,
 							},
-							"delegated_provision": schema.SingleNestedAttribute{
+							"delegated": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"app_id": schema.StringAttribute{
@@ -574,7 +585,17 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 								},
 								Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
 							},
-							"external_ticket_provision": schema.SingleNestedAttribute{
+							"device_placement": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"vault_boundary_id": schema.StringAttribute{
+										Computed:    true,
+										Description: `The vaultBoundaryId field.`,
+									},
+								},
+								Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
+							},
+							"external_ticket": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"app_id": schema.StringAttribute{
@@ -596,17 +617,13 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 								},
 								Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
 							},
-							"manual_provision": schema.SingleNestedAttribute{
+							"manual": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
-									"instructions": schema.StringAttribute{
-										Computed:    true,
-										Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
-									},
-									"provisioner_assignment": schema.SingleNestedAttribute{
+									"assignee": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
-											"app_owner_provisioner": schema.SingleNestedAttribute{
+											"app_owners": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -621,7 +638,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 												},
 												Description: `AppOwnerProvisioner resolves to app owners.`,
 											},
-											"entitlement_owner_provisioner": schema.SingleNestedAttribute{
+											"entitlement_owners": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -636,7 +653,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 												},
 												Description: `EntitlementOwnerProvisioner resolves to entitlement owners.`,
 											},
-											"expression_provisioner": schema.SingleNestedAttribute{
+											"expression": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -656,7 +673,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 												},
 												Description: `ExpressionProvisioner evaluates CEL expressions to determine provisioners.`,
 											},
-											"group_provisioner": schema.SingleNestedAttribute{
+											"group": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -679,7 +696,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 												},
 												Description: `GroupProvisioner resolves to members of a specific group.`,
 											},
-											"manager_provisioner": schema.SingleNestedAttribute{
+											"manager": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -694,7 +711,7 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 												},
 												Description: `ManagerProvisioner resolves to the user's manager.`,
 											},
-											"user_provisioner": schema.SingleNestedAttribute{
+											"users": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
 													"allow_reassignment": schema.BoolAttribute{
@@ -720,6 +737,10 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 											`  - expression` + "\n" +
 											`  - entitlementOwners`,
 									},
+									"instructions": schema.StringAttribute{
+										Computed:    true,
+										Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
+									},
 									"user_ids": schema.ListAttribute{
 										Computed:    true,
 										ElementType: types.StringType,
@@ -732,13 +753,13 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 							"multi_step": schema.StringAttribute{
 								CustomType:  jsontypes.NormalizedType{},
 								Computed:    true,
-								Description: `MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.`,
+								Description: `Parsed as JSON.`,
 							},
-							"unconfigured_provision": schema.SingleNestedAttribute{
+							"unconfigured": schema.SingleNestedAttribute{
 								Computed:    true,
 								Description: `The UnconfiguredProvision message.`,
 							},
-							"webhook_provision": schema.SingleNestedAttribute{
+							"webhook": schema.SingleNestedAttribute{
 								Computed: true,
 								Attributes: map[string]schema.Attribute{
 									"webhook_id": schema.StringAttribute{
@@ -759,7 +780,8 @@ func (r *ConnectorOwnerEntitlementResource) Schema(ctx context.Context, req reso
 							`  - multiStep` + "\n" +
 							`  - externalTicket` + "\n" +
 							`  - unconfigured` + "\n" +
-							`  - action`,
+							`  - action` + "\n" +
+							`  - devicePlacement`,
 					},
 					"purpose": schema.StringAttribute{
 						Computed:    true,

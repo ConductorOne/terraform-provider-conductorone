@@ -66,13 +66,21 @@ func (r *AppEntitlementUsersDataSource) Schema(ctx context.Context, req datasour
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
+						"app_entitlement_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The ID of the app entitlement that the app user has access to.`,
+						},
 						"app_entitlement_user_binding_created_at": schema.StringAttribute{
 							Computed: true,
 						},
 						"app_entitlement_user_binding_deprovision_at": schema.StringAttribute{
 							Computed: true,
 						},
-						"app_user_view": schema.SingleNestedAttribute{
+						"app_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The ID of the app associated with the grant.`,
+						},
+						"app_user": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
 								"app_path": schema.StringAttribute{
@@ -82,23 +90,15 @@ func (r *AppEntitlementUsersDataSource) Schema(ctx context.Context, req datasour
 								"app_user": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
+										"agent_status": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `AI-agent lifecycle status when this app user carries the agent trait.` + "\n" +
+												` UNSPECIFIED marks a non-agent account. Read-only; translated from the` + "\n" +
+												` model's agent_trait at the API boundary.`,
+										},
 										"app_id": schema.StringAttribute{
 											Computed:    true,
 											Description: `The ID of the application.`,
-										},
-										"app_user_status": schema.SingleNestedAttribute{
-											Computed: true,
-											Attributes: map[string]schema.Attribute{
-												"details": schema.StringAttribute{
-													Computed:    true,
-													Description: `The details of applicaiton user status.`,
-												},
-												"status": schema.StringAttribute{
-													Computed:    true,
-													Description: `The application user status field.`,
-												},
-											},
-											Description: `The satus of the applicaiton user.`,
 										},
 										"app_user_type": schema.StringAttribute{
 											Computed:    true,
@@ -140,8 +140,31 @@ func (r *AppEntitlementUsersDataSource) Schema(ctx context.Context, req datasour
 											Computed:    true,
 											Description: `The isExternal field.`,
 										},
+										"nhi_detail": schema.StringAttribute{
+											Computed:    true,
+											Description: `Axis-2 detail refining nhi_type (e.g. "aws.role.lambda"). Read-only.`,
+										},
+										"nhi_type": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `NHI classification when this app user carries the non-human-identity trait.` + "\n" +
+												` Read-only; translated from the model's nhi_trait at the API boundary.`,
+										},
 										"profile": schema.SingleNestedAttribute{
 											Computed: true,
+										},
+										"status": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"details": schema.StringAttribute{
+													Computed:    true,
+													Description: `The details of applicaiton user status.`,
+												},
+												"status": schema.StringAttribute{
+													Computed:    true,
+													Description: `The application user status field.`,
+												},
+											},
+											Description: `The satus of the applicaiton user.`,
 										},
 										"updated_at": schema.StringAttribute{
 											Computed: true,
@@ -168,6 +191,10 @@ func (r *AppEntitlementUsersDataSource) Schema(ctx context.Context, req datasour
 								},
 							},
 							Description: `The AppUserView contains an app user as well as paths for apps, identity users, and last usage in expanded arrays.`,
+						},
+						"app_user_id": schema.StringAttribute{
+							Computed:    true,
+							Description: `The ID of the app user that has access to the app entitlement.`,
 						},
 						"grant_sources": schema.ListNestedAttribute{
 							Computed: true,

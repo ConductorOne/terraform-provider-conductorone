@@ -4,8 +4,7 @@ package shared
 
 // The AccessReviewSetupEntitlementView message.
 type AccessReviewSetupEntitlementView struct {
-	// An entitlement that has been selected for inclusion in an access review campaign during setup.
-	AccessReviewSetupEntitlement *AccessReviewSetupEntitlement `json:"accessReviewEntitlement,omitempty"`
+	AccessReviewEntitlement *AccessReviewSetupEntitlement `json:"accessReviewEntitlement,omitempty"`
 	// The appPath field.
 	AppPath *string `json:"appPath,omitempty"`
 	// The entitlementPath field.
@@ -14,11 +13,11 @@ type AccessReviewSetupEntitlementView struct {
 	PolicyPath *string `json:"policyPath,omitempty"`
 }
 
-func (a *AccessReviewSetupEntitlementView) GetAccessReviewSetupEntitlement() *AccessReviewSetupEntitlement {
+func (a *AccessReviewSetupEntitlementView) GetAccessReviewEntitlement() *AccessReviewSetupEntitlement {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewSetupEntitlement
+	return a.AccessReviewEntitlement
 }
 
 func (a *AccessReviewSetupEntitlementView) GetAppPath() *string {

@@ -4,17 +4,16 @@ package shared
 
 // RequestSchemaServiceFindBindingForAppEntitlementResponse - The response message containing the binding for the specified app entitlement.
 type RequestSchemaServiceFindBindingForAppEntitlementResponse struct {
-	// The AppEntitlementRef message.
-	AppEntitlementRef *AppEntitlementRef `json:"entitlementRef,omitempty"`
+	EntitlementRef *AppEntitlementRef `json:"entitlementRef,omitempty"`
 	// The unique identifier of the request schema bound to this entitlement, if any.
 	RequestSchemaID *string `json:"requestSchemaId,omitempty"`
 }
 
-func (r *RequestSchemaServiceFindBindingForAppEntitlementResponse) GetAppEntitlementRef() *AppEntitlementRef {
+func (r *RequestSchemaServiceFindBindingForAppEntitlementResponse) GetEntitlementRef() *AppEntitlementRef {
 	if r == nil {
 		return nil
 	}
-	return r.AppEntitlementRef
+	return r.EntitlementRef
 }
 
 func (r *RequestSchemaServiceFindBindingForAppEntitlementResponse) GetRequestSchemaID() *string {

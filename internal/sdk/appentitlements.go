@@ -1387,7 +1387,12 @@ func (s *AppEntitlements) UpdateAutomation(ctx context.Context, request operatio
 }
 
 // RemoveEntitlementMembership - Remove Entitlement Membership
-// Remove a user from a ConductorOne-managed entitlement (catalog, group, or profile type). For access profiles, this creates a revoke task to deprovision access.
+// Remove a user from a manually managed entitlement. For ConductorOne
+//
+//	catalogs, groups, and profile types, the existing resource-specific
+//	removal behavior applies. When the SSO provider feature is enabled, an SSO
+//	application's sign-in entitlement removes only direct manual access and
+//	preserves independent requested, connector, and group-derived access.
 func (s *AppEntitlements) RemoveEntitlementMembership(ctx context.Context, request operations.C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

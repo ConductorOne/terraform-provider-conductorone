@@ -1,28 +1,46 @@
 resource "conductorone_access_review_template_setup" "my_access_review_template_setup" {
-  access_review_scope_v2 = {
-    account_criteria_scope = {
-      account_domain = "APP_USER_DOMAIN_UNSPECIFIED"
+  access_review_template_id = "...my_access_review_template_id..."
+  entitlements = [
+    {
+      app_entitlement_id = "...my_app_entitlement_id..."
+      app_id             = "...my_app_id..."
+    }
+  ]
+  expand_mask = {
+    paths = [
+      "..."
+    ]
+  }
+  scope = {
+    account_cel_expression = {
+      expression = "...my_expression..."
+    }
+    account_criteria = {
+      account_domain = "APP_USER_DOMAIN_TRUSTED"
       account_types = [
         "APP_USER_TYPE_SYSTEM_ACCOUNT"
       ]
       app_user_statuses = [
         "APP_USER_STATUS_DISABLED"
       ]
-      no_account_owner = false
+      no_account_owner = true
     }
-    all_access_conflicts_scope = {
+    all_access_conflicts = {
       # ...
     }
-    all_accounts_scope = {
+    all_accounts = {
       # ...
     }
-    all_grants_scope = {
+    all_grants = {
       # ...
     }
-    all_users_scope = {
+    all_users = {
       # ...
     }
-    app_selection_criteria_scope = {
+    app_access = {
+      # ...
+    }
+    app_selection_criteria = {
       compliance_framework_attribute_value_ids = [
         "..."
       ]
@@ -30,20 +48,17 @@ resource "conductorone_access_review_template_setup" "my_access_review_template_
         "..."
       ]
     }
-    application_access_scope = {
+    cel_expression = {
+      expression = "...my_expression..."
+    }
+    excluded_resource_type_selections = {
       # ...
     }
-    cel_expression_scope = {
-      expression = "...my_expression..."
+    excluded_specific_resources = {
+      # ...
     }
-    cel_expression_scope1 = {
-      expression = "...my_expression..."
-    }
-    grants_by_criteria_scope = {
-      days_since_added     = "...my_days_since_added..."
-      days_since_last_used = "...my_days_since_last_used..."
-      days_since_reviewed  = "...my_days_since_reviewed..."
-      grant_access_profile_filter = {
+    grants_by_criteria = {
+      access_profile_filter = {
         excluded_access_profile_ids = [
           "..."
         ]
@@ -52,31 +67,38 @@ resource "conductorone_access_review_template_setup" "my_access_review_template_
           "..."
         ]
       }
+      days_since_added     = "...my_days_since_added..."
+      days_since_last_used = "...my_days_since_last_used..."
+      days_since_reviewed  = "...my_days_since_reviewed..."
       grants_added_between = {
-        end_date   = "2022-01-25T08:02:55.357Z"
-        start_date = "2022-09-13T06:49:21.124Z"
+        end_date   = "2022-06-23T01:33:37.560Z"
+        start_date = "2022-03-29T16:24:34.562Z"
       }
-      source_filter = "GRANT_SOURCE_FILTER_UNSPECIFIED"
+      source_filter = "GRANT_SOURCE_FILTER_DIRECT"
       type_filter   = "GRANT_FILTER_TYPE_PERMANENT"
     }
-    resource_selection_scope = {
+    principal_type_filter = "PRINCIPAL_TYPE_FILTER_UNSPECIFIED"
+    resource_selection = {
       # ...
     }
-    resource_type_selection_scope = {
+    resource_type_selections = {
       # ...
     }
-    selected_users_scope = {
+    scope_role_selection = {
+      # ...
+    }
+    selected_users = {
       user_ids = [
         "..."
       ]
     }
-    specific_access_conflicts_scope = {
+    specific_access_conflicts = {
       # ...
     }
-    specific_resources_scope = {
+    specific_resources = {
       # ...
     }
-    user_criteria_scope = {
+    user_criteria = {
       group_app_entitlements_ref = [
         {
           app_id = "...my_app_id..."
@@ -100,16 +122,4 @@ resource "conductorone_access_review_template_setup" "my_access_review_template_
       ]
     }
   }
-  access_review_template_id = "...my_access_review_template_id..."
-  access_review_template_setup_entitlement_expand_mask = {
-    paths = [
-      "..."
-    ]
-  }
-  entitlements = [
-    {
-      app_entitlement_id = "...my_app_entitlement_id..."
-      app_id             = "...my_app_id..."
-    }
-  ]
 }

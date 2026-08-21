@@ -2,9 +2,9 @@
 
 package shared
 
-// DecoyAccessTokenInput requests a freestanding session access-token
+// DecoyAccessTokenInput mints a session access-token decoy under an
 //
-//	decoy minted under an existing User.
+//	existing User.
 type DecoyAccessTokenInput struct {
 	ExpiresIn *string `json:"expiresIn,omitempty"`
 	// Existing User the access token's subject claim references.

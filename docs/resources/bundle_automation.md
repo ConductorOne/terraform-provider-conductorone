@@ -14,10 +14,17 @@ BundleAutomation Resource
 
 ```terraform
 resource "conductorone_bundle_automation" "my_bundleautomation" {
-  bundle_automation_rule_cel = {
+  cel = {
     expression = "...my_expression..."
   }
-  bundle_automation_rule_entitlement = {
+  create_tasks = false
+  delete_bundle_automation_request = {
+    # ...
+  }
+  disable_circuit_breaker   = false
+  enabled                   = true
+  enforce_on_small_profiles = false
+  entitlements = {
     entitlement_refs = [
       {
         app_id = "...my_app_id..."
@@ -25,13 +32,6 @@ resource "conductorone_bundle_automation" "my_bundleautomation" {
       }
     ]
   }
-  create_tasks = false
-  delete_bundle_automation_request = {
-    # ...
-  }
-  disable_circuit_breaker           = false
-  enabled                           = true
-  enforce_on_small_profiles         = false
   removed_members_threshold_percent = "...my_removed_members_threshold_percent..."
   request_catalog_id                = "...my_request_catalog_id..."
 }
@@ -46,42 +46,46 @@ resource "conductorone_bundle_automation" "my_bundleautomation" {
 
 ### Optional
 
-- `bundle_automation_rule_cel` (Attributes) The BundleAutomationRuleCEL message. (see [below for nested schema](#nestedatt--bundle_automation_rule_cel))
-- `bundle_automation_rule_entitlement` (Attributes) The BundleAutomationRuleEntitlement message. (see [below for nested schema](#nestedatt--bundle_automation_rule_entitlement))
+- `cel` (Attributes) The BundleAutomationRuleCEL message. (see [below for nested schema](#nestedatt--cel))
 - `create_tasks` (Boolean) Whether to create access request tasks for matched users instead of granting directly.
 - `delete_bundle_automation_request` (Attributes) The request message for deleting a bundle automation from a catalog. (see [below for nested schema](#nestedatt--delete_bundle_automation_request))
 - `disable_circuit_breaker` (Boolean) Whether to disable the circuit breaker that pauses the automation when excessive membership changes are detected.
 - `enabled` (Boolean) Whether the automation should actively run on its schedule.
 - `enforce_on_small_profiles` (Boolean) When true, the circuit breaker is evaluated even on profiles below the
  tenant min-members floor. Defaults to false.
+- `entitlements` (Attributes) The BundleAutomationRuleEntitlement message. (see [below for nested schema](#nestedatt--entitlements))
 - `removed_members_threshold_percent` (String) Per-automation override for the removed-members percent that trips the
  circuit breaker (1-100). 0 / unset means inherit the tenant default.
 
 ### Read-Only
 
-- `bundle_automation_circuit_breaker` (Attributes) The BundleAutomationCircuitBreaker message. (see [below for nested schema](#nestedatt--bundle_automation_circuit_breaker))
-- `bundle_automation_last_run_state` (Attributes) The BundleAutomationLastRunState message. (see [below for nested schema](#nestedatt--bundle_automation_last_run_state))
+- `circuit_breaker` (Attributes) The BundleAutomationCircuitBreaker message. (see [below for nested schema](#nestedatt--circuit_breaker))
 - `created_at` (String)
+- `state` (Attributes) The BundleAutomationLastRunState message. (see [below for nested schema](#nestedatt--state))
 - `tenant_id` (String) The tenantId field.
 - `updated_at` (String)
 
-<a id="nestedatt--bundle_automation_rule_cel"></a>
-### Nested Schema for `bundle_automation_rule_cel`
+<a id="nestedatt--cel"></a>
+### Nested Schema for `cel`
 
 Optional:
 
 - `expression` (String) The expression field.
 
 
-<a id="nestedatt--bundle_automation_rule_entitlement"></a>
-### Nested Schema for `bundle_automation_rule_entitlement`
+<a id="nestedatt--delete_bundle_automation_request"></a>
+### Nested Schema for `delete_bundle_automation_request`
+
+
+<a id="nestedatt--entitlements"></a>
+### Nested Schema for `entitlements`
 
 Optional:
 
-- `entitlement_refs` (Attributes List) The entitlementRefs field. (see [below for nested schema](#nestedatt--bundle_automation_rule_entitlement--entitlement_refs))
+- `entitlement_refs` (Attributes List) The entitlementRefs field. (see [below for nested schema](#nestedatt--entitlements--entitlement_refs))
 
-<a id="nestedatt--bundle_automation_rule_entitlement--entitlement_refs"></a>
-### Nested Schema for `bundle_automation_rule_entitlement.entitlement_refs`
+<a id="nestedatt--entitlements--entitlement_refs"></a>
+### Nested Schema for `entitlements.entitlement_refs`
 
 Optional:
 
@@ -90,22 +94,18 @@ Optional:
 
 
 
-<a id="nestedatt--delete_bundle_automation_request"></a>
-### Nested Schema for `delete_bundle_automation_request`
-
-
-<a id="nestedatt--bundle_automation_circuit_breaker"></a>
-### Nested Schema for `bundle_automation_circuit_breaker`
+<a id="nestedatt--circuit_breaker"></a>
+### Nested Schema for `circuit_breaker`
 
 Read-Only:
 
 - `removed_members_threshold_percentage` (String) The removedMembersThresholdPercentage field.
 - `state` (String) The state field.
 - `updated_at` (String)
-- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--bundle_automation_circuit_breaker--user_ref))
+- `user_ref` (Attributes) A reference to a user. (see [below for nested schema](#nestedatt--circuit_breaker--user_ref))
 
-<a id="nestedatt--bundle_automation_circuit_breaker--user_ref"></a>
-### Nested Schema for `bundle_automation_circuit_breaker.user_ref`
+<a id="nestedatt--circuit_breaker--user_ref"></a>
+### Nested Schema for `circuit_breaker.user_ref`
 
 Read-Only:
 
@@ -113,18 +113,18 @@ Read-Only:
 
 
 
-<a id="nestedatt--bundle_automation_last_run_state"></a>
-### Nested Schema for `bundle_automation_last_run_state`
+<a id="nestedatt--state"></a>
+### Nested Schema for `state`
 
 Read-Only:
 
-- `bundle_automation_cel_evaluation_state` (Attributes) The BundleAutomationCelEvaluationState message. (see [below for nested schema](#nestedatt--bundle_automation_last_run_state--bundle_automation_cel_evaluation_state))
+- `cel_evaluation` (Attributes) The BundleAutomationCelEvaluationState message. (see [below for nested schema](#nestedatt--state--cel_evaluation))
 - `error_message` (String) The errorMessage field.
 - `last_run_at` (String)
 - `status` (String) The status field.
 
-<a id="nestedatt--bundle_automation_last_run_state--bundle_automation_cel_evaluation_state"></a>
-### Nested Schema for `bundle_automation_last_run_state.bundle_automation_cel_evaluation_state`
+<a id="nestedatt--state--cel_evaluation"></a>
+### Nested Schema for `state.cel_evaluation`
 
 Read-Only:
 

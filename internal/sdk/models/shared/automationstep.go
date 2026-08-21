@@ -27,146 +27,33 @@ package shared
 //   - setCredential
 //   - storeCredential
 type AutomationStep struct {
-	// The AccountLifecycleAction message.
-	//
-	// This message contains a oneof named account_identifier. Only a single field of the following list may be set at a time:
-	//   - accountRef
-	//   - accountInContext
-	//
 	AccountLifecycleAction *AccountLifecycleAction `json:"accountLifecycleAction,omitempty"`
-	// The CallFunction message.
-	CallFunction *CallFunction `json:"callFunction,omitempty"`
-	// The ConnectorAction message.
-	//
-	// This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
-	//   - connectorRef
-	//
-	ConnectorAction *ConnectorAction `json:"connectorAction,omitempty"`
-	// The ConnectorCreateAccount message.
-	//
-	// This message contains a oneof named create_account_arguments. Only a single field of the following list may be set at a time:
-	//   - userIdCel
-	//   - userProperties
-	//
+	CallFunction           *CallFunction           `json:"callFunction,omitempty"`
+	ConnectorAction        *ConnectorAction        `json:"connectorAction,omitempty"`
 	ConnectorCreateAccount *ConnectorCreateAccount `json:"connectorCreateAccount,omitempty"`
-	// The CreateAccessReview message.
-	CreateAccessReview *CreateAccessReview `json:"createAccessReview,omitempty"`
-	// The CreateRevokeTasks message.
-	CreateRevokeTasks *CreateRevokeTasks `json:"createRevokeTasks,omitempty"`
-	// The CreateRevokeTasksV2 message.
-	//
-	// This message contains a oneof named user. Only a single field of the following list may be set at a time:
-	//   - userIdCel
-	//   - userRef
-	//   - useSubjectUser
-	//
-	//
-	// This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:
-	//   - inclusionList
-	//   - inclusionAll
-	//   - inclusionCriteria
-	//   - inclusionListCel
-	//   - inclusionAccessOnly
-	//
-	//
-	// This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
-	//   - exclusionNone
-	//   - exclusionList
-	//   - exclusionCriteria
-	//   - exclusionListCel
-	//
-	CreateRevokeTasksV2 *CreateRevokeTasksV2 `json:"createRevokeTasksV2,omitempty"`
-	// The EvaluateExpressions message.
-	EvaluateExpressions *EvaluateExpressions `json:"evaluateExpressions,omitempty"`
-	// The GeneratePassword message.
-	GeneratePassword *GeneratePassword `json:"generatePassword,omitempty"`
-	// The GrantEntitlements message.
-	//
-	// This message contains a oneof named inclusion. Only a single field of the following list may be set at a time:
-	//   - inclusionList
-	//   - inclusionCriteria
-	//   - inclusionListCel
-	//
-	//
-	// This message contains a oneof named exclusion. Only a single field of the following list may be set at a time:
-	//   - exclusionNone
-	//   - exclusionList
-	//   - exclusionCriteria
-	//   - exclusionListCel
-	//
-	GrantEntitlements *GrantEntitlements `json:"grantEntitlements,omitempty"`
-	// RemoveFromDelegation: find all users that have the target user as their delegated user, and modify the delegation.
-	//
-	// This message contains a oneof named replacement_user. Only a single field of the following list may be set at a time:
-	//   - replacementUserIdCel
-	//   - replacementUserRef
-	//
-	RemoveFromDelegation *RemoveFromDelegation `json:"removeFromDelegation,omitempty"`
-	// RunAutomation: kick off the execution of an automation template.
-	//
-	// This message contains a oneof named automation_template. Only a single field of the following list may be set at a time:
-	//   - automationTemplateRef
-	//   - automationTemplateIdCel
-	//
-	RunAutomation *RunAutomation `json:"runAutomation,omitempty"`
-	// The SendEmail message.
-	SendEmail *SendEmail `json:"sendEmail,omitempty"`
-	// SendSlackMessage posts to a channel or DMs one or more users. Delivery mode is
-	//  inferred from which fields are populated: DM if any user field is set
-	//  (use_subject_user, user_ids_cel, user_refs), otherwise channel. Priority for DM
-	//  recipient resolution: use_subject_user > user_ids_cel > user_refs.
-	//
-	// This message contains a oneof named channel. Only a single field of the following list may be set at a time:
-	//   - channelName
-	//   - channelNameCel
-	//
-	SendSlackMessage *SendSlackMessage `json:"sendSlackMessage,omitempty"`
-	// SetCredential submits a RotateCredentials baton task to the target connector,
-	//  re-encrypting the given password CEL expression with the connector's public JWK.
-	//
-	// This message contains a oneof named connector_identifier. Only a single field of the following list may be set at a time:
-	//   - connectorRef
-	//
-	SetCredential *SetCredential `json:"setCredential,omitempty"`
+	CreateAccessReview     *CreateAccessReview     `json:"createAccessReview,omitempty"`
+	CreateRevokeTasks      *CreateRevokeTasks      `json:"createRevokeTasks,omitempty"`
+	CreateRevokeTasksV2    *CreateRevokeTasksV2    `json:"createRevokeTasksV2,omitempty"`
+	EvaluateExpressions    *EvaluateExpressions    `json:"evaluateExpressions,omitempty"`
+	GeneratePassword       *GeneratePassword       `json:"generatePassword,omitempty"`
+	GrantEntitlements      *GrantEntitlements      `json:"grantEntitlements,omitempty"`
+	RemoveFromDelegation   *RemoveFromDelegation   `json:"removeFromDelegation,omitempty"`
+	RunAutomation          *RunAutomation          `json:"runAutomation,omitempty"`
+	SendEmail              *SendEmail              `json:"sendEmail,omitempty"`
+	SendSlackMessage       *SendSlackMessage       `json:"sendSlackMessage,omitempty"`
+	SetCredential          *SetCredential          `json:"setCredential,omitempty"`
 	// The skipIfTrueCel field.
 	SkipIfTrueCel *string `json:"skipIfTrueCel,omitempty"`
 	// The stepDisplayName field.
 	StepDisplayName *string `json:"stepDisplayName,omitempty"`
 	// The stepName field.
-	StepName *string `json:"stepName,omitempty"`
-	// StoreCredential stores a credential from GeneratePassword in a vault.
-	//  Supports Paper Vault (SSO/email) and App Vault (entitlement-bound).
-	StoreCredential *StoreCredential `json:"storeCredential,omitempty"`
-	// The TaskAction message.
-	//
-	// This message contains a oneof named action. Only a single field of the following list may be set at a time:
-	//   - close
-	//   - reassign
-	//
-	TaskAction *TaskAction `json:"taskAction,omitempty"`
-	// The UnenrollFromAllAccessProfiles message.
+	StepName                      *string                        `json:"stepName,omitempty"`
+	StoreCredential               *StoreCredential               `json:"storeCredential,omitempty"`
+	TaskAction                    *TaskAction                    `json:"taskAction,omitempty"`
 	UnenrollFromAllAccessProfiles *UnenrollFromAllAccessProfiles `json:"unenrollFromAllAccessProfiles,omitempty"`
-	// The UpdateUser message.
-	//
-	// This message contains a oneof named user. Only a single field of the following list may be set at a time:
-	//   - userIdCel
-	//   - userRef
-	//
-	//
-	// This message contains a oneof named user_status. Only a single field of the following list may be set at a time:
-	//   - userStatusEnum
-	//   - userStatusCel
-	//
-	UpdateUser *UpdateUser `json:"updateUser,omitempty"`
-	// The WaitForDuration message.
-	WaitForDuration *WaitForDuration `json:"waitForDuration,omitempty"`
-	// The Webhook message.
-	//
-	// This message contains a oneof named webhook_identifier. Only a single field of the following list may be set at a time:
-	//   - webhookId
-	//   - webhookIdCel
-	//
-	Webhook *Webhook `json:"webhook,omitempty"`
+	UpdateUser                    *UpdateUser                    `json:"updateUser,omitempty"`
+	WaitForDuration               *WaitForDuration               `json:"waitForDuration,omitempty"`
+	Webhook                       *Webhook                       `json:"webhook,omitempty"`
 }
 
 func (a *AutomationStep) GetAccountLifecycleAction() *AccountLifecycleAction {

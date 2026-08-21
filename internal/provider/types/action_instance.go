@@ -7,13 +7,13 @@ import (
 )
 
 type ActionInstance struct {
-	Action                                  *Action                                  `tfsdk:"action"`
-	ActionOutcomeCancelled                  *ActionOutcomeCancelled                  `tfsdk:"action_outcome_cancelled"`
-	ActionOutcomeDenied                     *ActionOutcomeDenied                     `tfsdk:"action_outcome_denied"`
-	ActionOutcomeError                      *ActionOutcomeError                      `tfsdk:"action_outcome_error"`
-	ActionOutcomeSuccess                    *ActionOutcomeSuccess                    `tfsdk:"action_outcome_success"`
-	ActionTargetAutomationInstance          *ActionTargetAutomationInstance          `tfsdk:"action_target_automation_instance"`
-	ActionTargetBatonResourceActionInstance *ActionTargetBatonResourceActionInstance `tfsdk:"action_target_baton_resource_action_instance"`
-	ActionTargetClientIDApprovalInstance    *ActionTargetClientIDApprovalInstance    `tfsdk:"action_target_client_id_approval_instance"`
-	State                                   types.String                             `tfsdk:"state"`
+	Action                      *Action                                  `tfsdk:"action"`
+	Automation                  *ActionTargetAutomationInstance          `tfsdk:"automation"`
+	BatonResourceActionInstance *ActionTargetBatonResourceActionInstance `tfsdk:"baton_resource_action_instance"`
+	Cancelled                   *ActionOutcomeCancelled                  `tfsdk:"cancelled"`
+	ClientIDApprovalInstance    *ActionTargetClientIDApprovalInstance    `tfsdk:"client_id_approval_instance"`
+	Denied                      *ActionOutcomeDenied                     `tfsdk:"denied"`
+	Error                       *ActionOutcomeError                      `tfsdk:"error"`
+	State                       types.String                             `tfsdk:"state"`
+	Success                     *ActionOutcomeSuccess                    `tfsdk:"success"`
 }

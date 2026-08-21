@@ -4,13 +4,12 @@ package shared
 
 // The GetLatestRunResponse message.
 type GetLatestRunResponse struct {
-	// The RoleMiningManagementRun message.
-	RoleMiningManagementRun *RoleMiningManagementRun `json:"run,omitempty"`
+	Run *RoleMiningManagementRun `json:"run,omitempty"`
 }
 
-func (g *GetLatestRunResponse) GetRoleMiningManagementRun() *RoleMiningManagementRun {
+func (g *GetLatestRunResponse) GetRun() *RoleMiningManagementRun {
 	if g == nil {
 		return nil
 	}
-	return g.RoleMiningManagementRun
+	return g.Run
 }

@@ -9,31 +9,28 @@ package shared
 //   - and
 //   - or
 type ValidationCheck struct {
-	// AndCheck requires all checks to pass.
-	AndCheck *AndCheck `json:"and,omitempty"`
-	// FunctionCall represents a client-side function invocation.
-	FunctionCall *FunctionCall `json:"call,omitempty"`
-	// OrCheck requires at least one check to pass.
-	OrCheck *OrCheck `json:"or,omitempty"`
+	And  *AndCheck     `json:"and,omitempty"`
+	Call *FunctionCall `json:"call,omitempty"`
+	Or   *OrCheck      `json:"or,omitempty"`
 }
 
-func (v *ValidationCheck) GetAndCheck() *AndCheck {
+func (v *ValidationCheck) GetAnd() *AndCheck {
 	if v == nil {
 		return nil
 	}
-	return v.AndCheck
+	return v.And
 }
 
-func (v *ValidationCheck) GetFunctionCall() *FunctionCall {
+func (v *ValidationCheck) GetCall() *FunctionCall {
 	if v == nil {
 		return nil
 	}
-	return v.FunctionCall
+	return v.Call
 }
 
-func (v *ValidationCheck) GetOrCheck() *OrCheck {
+func (v *ValidationCheck) GetOr() *OrCheck {
 	if v == nil {
 		return nil
 	}
-	return v.OrCheck
+	return v.Or
 }

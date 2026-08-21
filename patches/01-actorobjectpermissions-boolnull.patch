@@ -1,33 +1,12 @@
-commit a089aa9e3afaa233d37b437b5bc1d8fc88e12901 (re-cut 2026-08-14)
-Author: Brandon High <759848+highb@users.noreply.github.com>
-Date:   Tue May 5 16:28:29 2026 -0700
+Subject: [PATCH] Restore BoolNull fallbacks for flattened permissions
 
-    Apply BoolNull else-branch patch on ObjectPermissions flatten
-
-    Speakeasy 1.762.0 still emits "if X != nil { ... }" without an else for
-    nullable nested structs that get flattened into top-level Computed
-    attributes, leaving framework Bool fields at Unknown instead of Null.
-    terraform-plugin-framework rejects this with "invalid result object
-    after apply" -- the failure shape on this regen's acceptance tests.
-
-    Patches the 6 files referenced by TestNullableNestedStructsHaveElseBranch
-    plus the CreateManuallyManagedAppResourceResponse variant whose parent
-    type (AppResource, not AppResourceView) lacks the field entirely.
-
-    Re-cut against the current insulator spec: the API renamed the field
-    from actorObjectPermissions to objectPermissions since this patch was
-    last cut, so every hunk's context (resp.ActorObjectPermissions.*) no
-    longer matched a fresh `make gen` output and apply-patches aborted here
-    on every regen. Same fix, new field name (resp.ObjectPermissions.*);
-    no behavior change beyond following the rename.
-
-    IGA-1704 Patch 2.
+Speakeasy omits the else branch for nullable ObjectPermissions blocks, leaving flattened Terraform booleans Unknown when the API omits the object. Set the fields to Null explicitly; the manually-managed AppResource response needs the same treatment.
 
 diff --git a/internal/provider/access_review_data_source_sdk.go b/internal/provider/access_review_data_source_sdk.go
-index 0000000..0000000 100644
+index d287a64b..ba23cfcc 100644
 --- a/internal/provider/access_review_data_source_sdk.go
 +++ b/internal/provider/access_review_data_source_sdk.go
-@@ -587,6 +587,11 @@
+@@ -605,6 +605,11 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReviewView(ctx cont
  				}
  			}
  			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
@@ -40,10 +19,10 @@ index 0000000..0000000 100644
  		r.PolicyPath = types.StringPointerValue(resp.PolicyPath)
  	}
 diff --git a/internal/provider/access_review_resource_sdk.go b/internal/provider/access_review_resource_sdk.go
-index 0000000..0000000 100644
+index 33b4a4ed..3135b3c5 100644
 --- a/internal/provider/access_review_resource_sdk.go
 +++ b/internal/provider/access_review_resource_sdk.go
-@@ -626,6 +626,11 @@
+@@ -644,6 +644,11 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReviewView(ctx contex
  				}
  			}
  			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
@@ -56,10 +35,10 @@ index 0000000..0000000 100644
  		r.PolicyPath = types.StringPointerValue(resp.PolicyPath)
  	}
 diff --git a/internal/provider/app_entitlement_data_source_sdk.go b/internal/provider/app_entitlement_data_source_sdk.go
-index 0000000..0000000 100644
+index 1fae8ca9..a904cd95 100644
 --- a/internal/provider/app_entitlement_data_source_sdk.go
 +++ b/internal/provider/app_entitlement_data_source_sdk.go
-@@ -588,6 +588,11 @@
+@@ -588,6 +588,11 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlementView(ctx
  			}
  		}
  		r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
@@ -72,10 +51,10 @@ index 0000000..0000000 100644
  
  	return diags
 diff --git a/internal/provider/app_resource_data_source_sdk.go b/internal/provider/app_resource_data_source_sdk.go
-index 0000000..0000000 100644
+index bdc7307e..60470684 100644
 --- a/internal/provider/app_resource_data_source_sdk.go
 +++ b/internal/provider/app_resource_data_source_sdk.go
-@@ -113,6 +113,11 @@
+@@ -113,6 +113,11 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResourceView(ctx contex
  				}
  			}
  			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
@@ -88,10 +67,10 @@ index 0000000..0000000 100644
  	}
  
 diff --git a/internal/provider/app_resource_resource_sdk.go b/internal/provider/app_resource_resource_sdk.go
-index 0000000..0000000 100644
+index b70f4b7e..61ea49d6 100644
 --- a/internal/provider/app_resource_resource_sdk.go
 +++ b/internal/provider/app_resource_resource_sdk.go
-@@ -133,6 +133,11 @@
+@@ -133,6 +133,11 @@ func (r *AppResourceResourceModel) RefreshFromSharedAppResourceView(ctx context.
  				}
  			}
  			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)
@@ -103,7 +82,7 @@ index 0000000..0000000 100644
  		}
  	}
  
-@@ -149,6 +154,12 @@
+@@ -149,6 +154,13 @@ func (r *AppResourceResourceModel) RefreshFromSharedCreateManuallyManagedAppReso
  			return diags
  		}
  
@@ -113,14 +92,15 @@ index 0000000..0000000 100644
 +		r.Edit = types.BoolNull()
 +		r.Extra = nil
 +		r.Read = types.BoolNull()
++
  	}
  
  	return diags
 diff --git a/internal/provider/custom_app_entitlement_resource_sdk.go b/internal/provider/custom_app_entitlement_resource_sdk.go
-index 0000000..0000000 100644
+index 1998dc30..38d8af6c 100644
 --- a/internal/provider/custom_app_entitlement_resource_sdk.go
 +++ b/internal/provider/custom_app_entitlement_resource_sdk.go
-@@ -528,6 +528,11 @@
+@@ -528,6 +528,11 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlementView(
  				}
  			}
  			r.Read = types.BoolPointerValue(resp.ObjectPermissions.Read)

@@ -4,8 +4,17 @@ package shared
 
 // The AuthConfigGoogle message.
 type AuthConfigGoogle struct {
+	// Additional hosted domains accepted at login beyond hosted_domains.
+	AdditionalHostedDomains []string `json:"additionalHostedDomains,omitempty"`
 	// The hostedDomains field.
 	HostedDomains []string `json:"hostedDomains,omitempty"`
+}
+
+func (a *AuthConfigGoogle) GetAdditionalHostedDomains() []string {
+	if a == nil {
+		return nil
+	}
+	return a.AdditionalHostedDomains
 }
 
 func (a *AuthConfigGoogle) GetHostedDomains() []string {

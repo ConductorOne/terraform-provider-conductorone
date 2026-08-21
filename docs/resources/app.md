@@ -27,12 +27,17 @@ resource "conductorone_app" "my_app" {
       id     = "...my_id..."
     }
   ]
-  certify_policy_id                      = "...my_certify_policy_id..."
-  description                            = "...my_description..."
-  display_name                           = "...my_display_name..."
-  grant_policy_id                        = "...my_grant_policy_id..."
-  identity_matching                      = "APP_USER_IDENTITY_MATCHING_CUSTOM"
-  instructions                           = "...my_instructions..."
+  certify_policy_id = "...my_certify_policy_id..."
+  description       = "...my_description..."
+  display_name      = "...my_display_name..."
+  grant_policy_id   = "...my_grant_policy_id..."
+  identity_matching = "APP_USER_IDENTITY_MATCHING_CUSTOM"
+  instructions      = "...my_instructions..."
+  match_baton_ref = {
+    app_id       = "...my_app_id..."
+    connector_id = "...my_connector_id..."
+    external_id  = "...my_external_id..."
+  }
   monthly_cost_usd                       = 1
   revoke_policy_id                       = "...my_revoke_policy_id..."
   strict_access_entitlement_provisioning = true
@@ -56,12 +61,13 @@ resource "conductorone_app" "my_app" {
 
  Well-known keys: `managed_by`, `iac_workspace`,
  `iac_resource_address`, `iac_tool_version`.
-- `app_entitlement_owner_refs` (Attributes List) Sets entitlement owners on the app. Requires replacement if changed. (see [below for nested schema](#nestedatt--app_entitlement_owner_refs))
+- `app_entitlement_owner_refs` (Attributes List) Initial entitlement owners for ordinary API creation. Requests with `match_baton_ref` must leave this empty; Terraform manages owners with `conductorone_app_owner_entitlement`. Requires replacement if changed. (see [below for nested schema](#nestedatt--app_entitlement_owner_refs))
 - `certify_policy_id` (String) Creates the app with this certify policy.
 - `description` (String) Creates the app with this description.
 - `grant_policy_id` (String) Creates the app with this grant policy.
 - `identity_matching` (String) Define the app user identity matching strategy for this app. possible known values include one of ["APP_USER_IDENTITY_MATCHING_UNSPECIFIED", "APP_USER_IDENTITY_MATCHING_STRICT", "APP_USER_IDENTITY_MATCHING_DISPLAY_NAME", "APP_USER_IDENTITY_MATCHING_CUSTOM"]
 - `instructions` (String) Instructions shown to users in the access request form when requesting access for this app.
+- `match_baton_ref` (Attributes) AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift. (see [below for nested schema](#nestedatt--match_baton_ref))
 - `monthly_cost_usd` (Number) Creates the app with this monthly cost per seat.
 - `revoke_policy_id` (String) Creates the app with this revoke policy.
 - `strict_access_entitlement_provisioning` (Boolean) This flag enforces a provisioning mode where the access entitlement is always included in the provisioning flow, if the app user doesn't exist
@@ -81,6 +87,7 @@ resource "conductorone_app" "my_app" {
 - `is_directory` (Boolean) Specifies if the app is a directory.
 - `is_manually_managed` (Boolean) The isManuallyManaged field.
 - `parent_app_id` (String) The ID of the app that created this app, if any.
+- `revoke_grant_sources` (Boolean) When enabled, revoking a grant also revokes the grants that source it.
 - `updated_at` (String)
 - `user_count` (String) The number of users with grants to this app.
 
@@ -93,11 +100,24 @@ Optional:
 - `id` (String) The id field. Requires replacement if changed.
 
 
+<a id="nestedatt--match_baton_ref"></a>
+### Nested Schema for `match_baton_ref`
+
+Optional:
+
+- `app_id` (String) Application that owns the connector. Not Null
+- `connector_id` (String) Connector that discovers the application. Not Null
+- `external_id` (String) Canonical connector-v2 application resource ID in
+ `<resource_type>::<resource_id>` form (for example, `app::0oa123`).
+Not Null
+
+
 <a id="nestedatt--app_user_mapper"></a>
 ### Nested Schema for `app_user_mapper`
 
 Read-Only:
 
+- `app_id` (String) The app this mapper belongs to.
 - `mapping_cases` (Attributes List) Ordered list of match cases. Each case defines a pair of CEL key extractors. (see [below for nested schema](#nestedatt--app_user_mapper--mapping_cases))
 
 <a id="nestedatt--app_user_mapper--mapping_cases"></a>
@@ -105,5 +125,7 @@ Read-Only:
 
 Read-Only:
 
+- `app_id` (String) The app this match case belongs to.
 - `app_user_key_cel` (String) CEL expression evaluated against an AppUser to produce match key(s).
+- `case_index` (Number) The ordered index of this match case within the mapper.
 - `user_key_cel` (String) CEL expression evaluated against a User to produce match key(s).

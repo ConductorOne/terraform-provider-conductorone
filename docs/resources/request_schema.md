@@ -51,18 +51,18 @@ resource "conductorone_request_schema" "my_request_schema" {
   ]
   fields = [
     {
-      admin_provider_config = {
+      admin_config = {
         default_value_cel = "...my_default_value_cel..."
         show_to_user      = false
       }
       bool_field = {
-        bool_rules = {
-          const = false
-        }
         checkbox_field = {
           # ...
         }
         default_value = true
+        rules = {
+          const = true
+        }
         toggle_field = {
           # ...
         }
@@ -78,47 +78,86 @@ resource "conductorone_request_schema" "my_request_schema" {
         }
         max_file_size = "...my_max_file_size..."
       }
-      form_string_field = {
+      int64_field = {
+        default_value = "...my_default_value..."
+        number_field = {
+          max_value = "...my_max_value..."
+          min_value = "...my_min_value..."
+          step      = "...my_step..."
+        }
+        placeholder = "...my_placeholder..."
+        rules = {
+          const        = "...my_const..."
+          gt           = "...my_gt..."
+          gte          = "...my_gte..."
+          ignore_empty = false
+          in = [
+            "..."
+          ]
+          lt  = "...my_lt..."
+          lte = "...my_lte..."
+          not_in = [
+            "..."
+          ]
+        }
+      }
+      name = "...my_name..."
+      oauth2_field = {
+        oauth2_field_view = {
+          # ...
+        }
+      }
+      read_only = true
+      required  = false
+      shared_config = {
+        default_value_cel        = "...my_default_value_cel..."
+        input_transformation_cel = "...my_input_transformation_cel..."
+        lock_default_values      = true
+      }
+      string_field = {
+        date_field = {
+          default_to_today    = false
+          max_date            = "...my_max_date..."
+          max_days_from_today = 10
+          min_date            = "...my_min_date..."
+          min_days_from_today = 4
+        }
         default_value = "...my_default_value..."
         password_field = {
           # ...
         }
         picker_field = {
-          app_resource_filter = {
+          app_user_picker = {
+            app_id = "...my_app_id..."
+          }
+          c1_user_picker = {
+            exclude_user_ids = [
+              "..."
+            ]
+            include_deactivated = true
+            user_ids = [
+              "..."
+            ]
+          }
+          resource_picker = {
             app_id           = "...my_app_id..."
             resource_type_id = "...my_resource_type_id..."
           }
-          app_user_filter = {
-            app_id = "...my_app_id..."
-          }
-          c1_user_filter = {
-            # ...
-          }
         }
         placeholder = "...my_placeholder..."
-        select_field = {
-          options = [
-            {
-              description  = "...my_description..."
-              display_name = "...my_display_name..."
-              value        = "...my_value..."
-            }
-          ]
-          type = "SELECT_TYPE_RADIO"
-        }
-        string_rules = {
+        rules = {
           address      = true
           const        = "...my_const..."
           contains     = "...my_contains..."
-          email        = true
-          hostname     = false
-          ignore_empty = false
+          email        = false
+          hostname     = true
+          ignore_empty = true
           in = [
             "..."
           ]
-          ip           = false
+          ip           = true
           ipv4         = true
-          ipv6         = false
+          ipv6         = true
           len_bytes    = "...my_len_bytes..."
           length       = "...my_length..."
           max_bytes    = "...my_max_bytes..."
@@ -131,64 +170,38 @@ resource "conductorone_request_schema" "my_request_schema" {
           ]
           pattern          = "...my_pattern..."
           prefix           = "...my_prefix..."
-          strict           = false
+          strict           = true
           suffix           = "...my_suffix..."
           uri              = false
           uri_ref          = true
           uuid             = false
           well_known_regex = "HTTP_HEADER_NAME"
         }
+        select_field = {
+          options = [
+            {
+              description  = "...my_description..."
+              display_name = "...my_display_name..."
+              value        = "...my_value..."
+            }
+          ]
+          type = "SELECT_TYPE_RADIO"
+        }
         text_field = {
           multiline = false
           suffix    = "...my_suffix..."
         }
       }
-      form_string_map_field = {
+      string_map_field = {
         default_value = {
           key = "value"
         }
-        string_map_rules = {
+        rules = {
           is_required    = false
           validate_empty = false
         }
       }
-      int64_field = {
-        default_value = "...my_default_value..."
-        int64_rules = {
-          const        = "...my_const..."
-          gt           = "...my_gt..."
-          gte          = "...my_gte..."
-          ignore_empty = true
-          in = [
-            "..."
-          ]
-          lt  = "...my_lt..."
-          lte = "...my_lte..."
-          not_in = [
-            "..."
-          ]
-        }
-        number_field = {
-          max_value = "...my_max_value..."
-          min_value = "...my_min_value..."
-          step      = "...my_step..."
-        }
-        placeholder = "...my_placeholder..."
-      }
-      name = "...my_name..."
-      oauth2_field = {
-        oauth2_field_view = {
-          # ...
-        }
-      }
-      read_only = true
-      required  = false
-      shared_provider_config = {
-        default_value_cel        = "...my_default_value_cel..."
-        input_transformation_cel = "...my_input_transformation_cel..."
-        lock_default_values      = false
-      }
-      user_provider_config = {
+      user_config = {
         input_transformation_cel = "...my_input_transformation_cel..."
       }
     }
@@ -265,7 +278,7 @@ Optional:
 
 Optional:
 
-- `admin_provider_config` (Attributes) The AdminProviderConfig message. (see [below for nested schema](#nestedatt--fields--admin_provider_config))
+- `admin_config` (Attributes) The AdminProviderConfig message. (see [below for nested schema](#nestedatt--fields--admin_config))
 - `bool_field` (Attributes) The BoolField message.
 
 This message contains a oneof named view. Only a single field of the following list may be set at a time:
@@ -277,14 +290,6 @@ This message contains a oneof named view. Only a single field of the following l
 
 This message contains a oneof named view. Only a single field of the following list may be set at a time:
   - fileInputField (see [below for nested schema](#nestedatt--fields--file_field))
-- `form_string_field` (Attributes) The StringField message.
-
-This message contains a oneof named view. Only a single field of the following list may be set at a time:
-  - textField
-  - passwordField
-  - selectField
-  - pickerField (see [below for nested schema](#nestedatt--fields--form_string_field))
-- `form_string_map_field` (Attributes) The StringMapField message. (see [below for nested schema](#nestedatt--fields--form_string_map_field))
 - `int64_field` (Attributes) The Int64Field message.
 
 This message contains a oneof named view. Only a single field of the following list may be set at a time:
@@ -296,11 +301,20 @@ This message contains a oneof named view. Only a single field of the following l
   - oauth2FieldView (see [below for nested schema](#nestedatt--fields--oauth2_field))
 - `read_only` (Boolean) When true, this field is displayed to the user but cannot be edited.
 - `required` (Boolean) The required field.
-- `shared_provider_config` (Attributes) The SharedProviderConfig message. (see [below for nested schema](#nestedatt--fields--shared_provider_config))
-- `user_provider_config` (Attributes) The UserProviderConfig message. (see [below for nested schema](#nestedatt--fields--user_provider_config))
+- `shared_config` (Attributes) The SharedProviderConfig message. (see [below for nested schema](#nestedatt--fields--shared_config))
+- `string_field` (Attributes) The StringField message.
 
-<a id="nestedatt--fields--admin_provider_config"></a>
-### Nested Schema for `fields.admin_provider_config`
+This message contains a oneof named view. Only a single field of the following list may be set at a time:
+  - textField
+  - passwordField
+  - selectField
+  - pickerField
+  - dateField (see [below for nested schema](#nestedatt--fields--string_field))
+- `string_map_field` (Attributes) The StringMapField message. (see [below for nested schema](#nestedatt--fields--string_map_field))
+- `user_config` (Attributes) The UserProviderConfig message. (see [below for nested schema](#nestedatt--fields--user_config))
+
+<a id="nestedatt--fields--admin_config"></a>
+### Nested Schema for `fields.admin_config`
 
 Optional:
 
@@ -313,21 +327,21 @@ Optional:
 
 Optional:
 
-- `bool_rules` (Attributes) BoolRules describes the constraints applied to `bool` values (see [below for nested schema](#nestedatt--fields--bool_field--bool_rules))
 - `checkbox_field` (Attributes) The CheckboxField message. (see [below for nested schema](#nestedatt--fields--bool_field--checkbox_field))
 - `default_value` (Boolean) The defaultValue field.
+- `rules` (Attributes) BoolRules describes the constraints applied to `bool` values (see [below for nested schema](#nestedatt--fields--bool_field--rules))
 - `toggle_field` (Attributes) The ToggleField message. (see [below for nested schema](#nestedatt--fields--bool_field--toggle_field))
 
-<a id="nestedatt--fields--bool_field--bool_rules"></a>
-### Nested Schema for `fields.bool_field.bool_rules`
+<a id="nestedatt--fields--bool_field--checkbox_field"></a>
+### Nested Schema for `fields.bool_field.checkbox_field`
+
+
+<a id="nestedatt--fields--bool_field--rules"></a>
+### Nested Schema for `fields.bool_field.rules`
 
 Optional:
 
 - `const` (Boolean) Const specifies that this field must be exactly the specified value
-
-
-<a id="nestedatt--fields--bool_field--checkbox_field"></a>
-### Nested Schema for `fields.bool_field.checkbox_field`
 
 
 <a id="nestedatt--fields--bool_field--toggle_field"></a>
@@ -349,22 +363,90 @@ Optional:
 
 
 
-<a id="nestedatt--fields--form_string_field"></a>
-### Nested Schema for `fields.form_string_field`
+<a id="nestedatt--fields--int64_field"></a>
+### Nested Schema for `fields.int64_field`
 
 Optional:
 
 - `default_value` (String) The defaultValue field.
-- `password_field` (Attributes) The PasswordField message. (see [below for nested schema](#nestedatt--fields--form_string_field--password_field))
+- `number_field` (Attributes) The NumberField message. (see [below for nested schema](#nestedatt--fields--int64_field--number_field))
+- `placeholder` (String) The placeholder field.
+- `rules` (Attributes) Int64Rules describes the constraints applied to `int64` values (see [below for nested schema](#nestedatt--fields--int64_field--rules))
+
+<a id="nestedatt--fields--int64_field--number_field"></a>
+### Nested Schema for `fields.int64_field.number_field`
+
+Optional:
+
+- `max_value` (String) The maxValue field.
+- `min_value` (String) The minValue field.
+- `step` (String) The step field.
+
+
+<a id="nestedatt--fields--int64_field--rules"></a>
+### Nested Schema for `fields.int64_field.rules`
+
+Optional:
+
+- `const` (String) Const specifies that this field must be exactly the specified value
+- `gt` (String) Gt specifies that this field must be greater than the specified value,
+ exclusive. If the value of Gt is larger than a specified Lt or Lte, the
+ range is reversed.
+- `gte` (String) Gte specifies that this field must be greater than or equal to the
+ specified value, inclusive. If the value of Gte is larger than a
+ specified Lt or Lte, the range is reversed.
+- `ignore_empty` (Boolean) IgnoreEmpty specifies that the validation rules of this field should be
+ evaluated only if the field is not empty
+- `in` (List of String) In specifies that this field must be equal to one of the specified
+ values
+- `lt` (String) Lt specifies that this field must be less than the specified value,
+ exclusive
+- `lte` (String) Lte specifies that this field must be less than or equal to the
+ specified value, inclusive
+- `not_in` (List of String) NotIn specifies that this field cannot be equal to one of the specified
+ values
+
+
+
+<a id="nestedatt--fields--oauth2_field"></a>
+### Nested Schema for `fields.oauth2_field`
+
+Optional:
+
+- `oauth2_field_view` (Attributes) The Oauth2FieldView message. (see [below for nested schema](#nestedatt--fields--oauth2_field--oauth2_field_view))
+
+<a id="nestedatt--fields--oauth2_field--oauth2_field_view"></a>
+### Nested Schema for `fields.oauth2_field.oauth2_field_view`
+
+
+
+<a id="nestedatt--fields--shared_config"></a>
+### Nested Schema for `fields.shared_config`
+
+Optional:
+
+- `default_value_cel` (String) The defaultValueCel field.
+- `input_transformation_cel` (String) The inputTransformationCel field.
+- `lock_default_values` (Boolean) The lockDefaultValues field.
+
+
+<a id="nestedatt--fields--string_field"></a>
+### Nested Schema for `fields.string_field`
+
+Optional:
+
+- `date_field` (Attributes) DateField renders a date picker. The value is an ISO-8601 calendar date
+ ("YYYY-MM-DD") stored in the enclosing StringField's string value. (see [below for nested schema](#nestedatt--fields--string_field--date_field))
+- `default_value` (String) The defaultValue field.
+- `password_field` (Attributes) The PasswordField message. (see [below for nested schema](#nestedatt--fields--string_field--password_field))
 - `picker_field` (Attributes) The PickerField message.
 
 This message contains a oneof named type. Only a single field of the following list may be set at a time:
   - appUserPicker
   - resourcePicker
-  - c1UserPicker (see [below for nested schema](#nestedatt--fields--form_string_field--picker_field))
+  - c1UserPicker (see [below for nested schema](#nestedatt--fields--string_field--picker_field))
 - `placeholder` (String) The placeholder field.
-- `select_field` (Attributes) The SelectField message. (see [below for nested schema](#nestedatt--fields--form_string_field--select_field))
-- `string_rules` (Attributes) StringRules describe the constraints applied to `string` values
+- `rules` (Attributes) StringRules describe the constraints applied to `string` values
 
 This message contains a oneof named well_known. Only a single field of the following list may be set at a time:
   - email
@@ -376,25 +458,65 @@ This message contains a oneof named well_known. Only a single field of the follo
   - uriRef
   - address
   - uuid
-  - wellKnownRegex (see [below for nested schema](#nestedatt--fields--form_string_field--string_rules))
-- `text_field` (Attributes) The TextField message. (see [below for nested schema](#nestedatt--fields--form_string_field--text_field))
+  - wellKnownRegex (see [below for nested schema](#nestedatt--fields--string_field--rules))
+- `select_field` (Attributes) The SelectField message. (see [below for nested schema](#nestedatt--fields--string_field--select_field))
+- `text_field` (Attributes) The TextField message. (see [below for nested schema](#nestedatt--fields--string_field--text_field))
 
-<a id="nestedatt--fields--form_string_field--password_field"></a>
-### Nested Schema for `fields.form_string_field.password_field`
-
-
-<a id="nestedatt--fields--form_string_field--picker_field"></a>
-### Nested Schema for `fields.form_string_field.picker_field`
+<a id="nestedatt--fields--string_field--date_field"></a>
+### Nested Schema for `fields.string_field.date_field`
 
 Optional:
 
-- `app_resource_filter` (Attributes) The AppResourceFilter message. (see [below for nested schema](#nestedatt--fields--form_string_field--picker_field--app_resource_filter))
-- `app_user_filter` (Attributes) The AppUserFilter message. (see [below for nested schema](#nestedatt--fields--form_string_field--picker_field--app_user_filter))
-- `c1_user_filter` (Attributes) C1UserFilter is used to configure a picker for selecting ConductorOne users.
- This is distinct from AppUserFilter which selects accounts within a connected app. (see [below for nested schema](#nestedatt--fields--form_string_field--picker_field--c1_user_filter))
+- `default_to_today` (Boolean) Default the field to the render date when the StringField has no default_value.
+- `max_date` (String) Latest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.
+- `max_days_from_today` (Number) Latest selectable date expressed as an offset in days from the date the
+ form is rendered; negative is in the past. Set this to 365 to cap a date at
+ one year out. When both are set, the earlier of this and max_date applies.
+ Enforcement is one day slack in each direction: the picker anchors today at
+ the submitter's local midnight and the server anchors in UTC, so 365 admits
+ 366 days rather than reject a date the picker itself offered.
+- `min_date` (String) Earliest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.
+- `min_days_from_today` (Number) Earliest selectable date expressed as an offset in days from the date the
+ form is rendered; negative is in the past. Prefer this over min_date for a
+ rolling window, which would otherwise go stale. When both are set, the
+ later of the two applies.
 
-<a id="nestedatt--fields--form_string_field--picker_field--app_resource_filter"></a>
-### Nested Schema for `fields.form_string_field.picker_field.app_resource_filter`
+
+<a id="nestedatt--fields--string_field--password_field"></a>
+### Nested Schema for `fields.string_field.password_field`
+
+
+<a id="nestedatt--fields--string_field--picker_field"></a>
+### Nested Schema for `fields.string_field.picker_field`
+
+Optional:
+
+- `app_user_picker` (Attributes) The AppUserFilter message. (see [below for nested schema](#nestedatt--fields--string_field--picker_field--app_user_picker))
+- `c1_user_picker` (Attributes) C1UserFilter is used to configure a picker for selecting ConductorOne users.
+ This is distinct from AppUserFilter which selects accounts within a connected app. (see [below for nested schema](#nestedatt--fields--string_field--picker_field--c1_user_picker))
+- `resource_picker` (Attributes) The AppResourceFilter message. (see [below for nested schema](#nestedatt--fields--string_field--picker_field--resource_picker))
+
+<a id="nestedatt--fields--string_field--picker_field--app_user_picker"></a>
+### Nested Schema for `fields.string_field.picker_field.app_user_picker`
+
+Optional:
+
+- `app_id` (String) The appId field.
+
+
+<a id="nestedatt--fields--string_field--picker_field--c1_user_picker"></a>
+### Nested Schema for `fields.string_field.picker_field.c1_user_picker`
+
+Optional:
+
+- `exclude_user_ids` (List of String) Remove these users from the selectable set, after user_ids is applied.
+- `include_deactivated` (Boolean) Make deactivated and deleted users selectable. Defaults to enabled-only.
+- `user_ids` (List of String) Restrict the selectable set to these users. Empty means every user is selectable.
+ Capped at the number of refs SearchUsers accepts in one request.
+
+
+<a id="nestedatt--fields--string_field--picker_field--resource_picker"></a>
+### Nested Schema for `fields.string_field.picker_field.resource_picker`
 
 Optional:
 
@@ -402,40 +524,9 @@ Optional:
 - `resource_type_id` (String) The resourceTypeId field.
 
 
-<a id="nestedatt--fields--form_string_field--picker_field--app_user_filter"></a>
-### Nested Schema for `fields.form_string_field.picker_field.app_user_filter`
 
-Optional:
-
-- `app_id` (String) The appId field.
-
-
-<a id="nestedatt--fields--form_string_field--picker_field--c1_user_filter"></a>
-### Nested Schema for `fields.form_string_field.picker_field.c1_user_filter`
-
-
-
-<a id="nestedatt--fields--form_string_field--select_field"></a>
-### Nested Schema for `fields.form_string_field.select_field`
-
-Optional:
-
-- `options` (Attributes List) The options field. (see [below for nested schema](#nestedatt--fields--form_string_field--select_field--options))
-- `type` (String) The type field. possible known values include one of ["SELECT_TYPE_UNSPECIFIED", "SELECT_TYPE_DROPDOWN", "SELECT_TYPE_RADIO", "SELECT_TYPE_BUTTONS"]
-
-<a id="nestedatt--fields--form_string_field--select_field--options"></a>
-### Nested Schema for `fields.form_string_field.select_field.options`
-
-Optional:
-
-- `description` (String) Used for type BUTTONS
-- `display_name` (String) The displayName field.
-- `value` (String) The value field.
-
-
-
-<a id="nestedatt--fields--form_string_field--string_rules"></a>
-### Nested Schema for `fields.form_string_field.string_rules`
+<a id="nestedatt--fields--string_field--rules"></a>
+### Nested Schema for `fields.string_field.rules`
 
 Optional:
 
@@ -520,8 +611,27 @@ See the documentation for `validate.StringRules` for more details.
 possible known values include one of ["UNKNOWN", "HTTP_HEADER_NAME", "HTTP_HEADER_VALUE"]
 
 
-<a id="nestedatt--fields--form_string_field--text_field"></a>
-### Nested Schema for `fields.form_string_field.text_field`
+<a id="nestedatt--fields--string_field--select_field"></a>
+### Nested Schema for `fields.string_field.select_field`
+
+Optional:
+
+- `options` (Attributes List) The options field. (see [below for nested schema](#nestedatt--fields--string_field--select_field--options))
+- `type` (String) The type field. possible known values include one of ["SELECT_TYPE_UNSPECIFIED", "SELECT_TYPE_DROPDOWN", "SELECT_TYPE_RADIO", "SELECT_TYPE_BUTTONS"]
+
+<a id="nestedatt--fields--string_field--select_field--options"></a>
+### Nested Schema for `fields.string_field.select_field.options`
+
+Optional:
+
+- `description` (String) Used for type BUTTONS
+- `display_name` (String) The displayName field.
+- `value` (String) The value field.
+
+
+
+<a id="nestedatt--fields--string_field--text_field"></a>
+### Nested Schema for `fields.string_field.text_field`
 
 Optional:
 
@@ -530,16 +640,16 @@ Optional:
 
 
 
-<a id="nestedatt--fields--form_string_map_field"></a>
-### Nested Schema for `fields.form_string_map_field`
+<a id="nestedatt--fields--string_map_field"></a>
+### Nested Schema for `fields.string_map_field`
 
 Optional:
 
 - `default_value` (Map of String) The defaultValue field.
-- `string_map_rules` (Attributes) The StringMapRules message. (see [below for nested schema](#nestedatt--fields--form_string_map_field--string_map_rules))
+- `rules` (Attributes) The StringMapRules message. (see [below for nested schema](#nestedatt--fields--string_map_field--rules))
 
-<a id="nestedatt--fields--form_string_map_field--string_map_rules"></a>
-### Nested Schema for `fields.form_string_map_field.string_map_rules`
+<a id="nestedatt--fields--string_map_field--rules"></a>
+### Nested Schema for `fields.string_map_field.rules`
 
 Optional:
 
@@ -548,75 +658,8 @@ Optional:
 
 
 
-<a id="nestedatt--fields--int64_field"></a>
-### Nested Schema for `fields.int64_field`
-
-Optional:
-
-- `default_value` (String) The defaultValue field.
-- `int64_rules` (Attributes) Int64Rules describes the constraints applied to `int64` values (see [below for nested schema](#nestedatt--fields--int64_field--int64_rules))
-- `number_field` (Attributes) The NumberField message. (see [below for nested schema](#nestedatt--fields--int64_field--number_field))
-- `placeholder` (String) The placeholder field.
-
-<a id="nestedatt--fields--int64_field--int64_rules"></a>
-### Nested Schema for `fields.int64_field.int64_rules`
-
-Optional:
-
-- `const` (String) Const specifies that this field must be exactly the specified value
-- `gt` (String) Gt specifies that this field must be greater than the specified value,
- exclusive. If the value of Gt is larger than a specified Lt or Lte, the
- range is reversed.
-- `gte` (String) Gte specifies that this field must be greater than or equal to the
- specified value, inclusive. If the value of Gte is larger than a
- specified Lt or Lte, the range is reversed.
-- `ignore_empty` (Boolean) IgnoreEmpty specifies that the validation rules of this field should be
- evaluated only if the field is not empty
-- `in` (List of String) In specifies that this field must be equal to one of the specified
- values
-- `lt` (String) Lt specifies that this field must be less than the specified value,
- exclusive
-- `lte` (String) Lte specifies that this field must be less than or equal to the
- specified value, inclusive
-- `not_in` (List of String) NotIn specifies that this field cannot be equal to one of the specified
- values
-
-
-<a id="nestedatt--fields--int64_field--number_field"></a>
-### Nested Schema for `fields.int64_field.number_field`
-
-Optional:
-
-- `max_value` (String) The maxValue field.
-- `min_value` (String) The minValue field.
-- `step` (String) The step field.
-
-
-
-<a id="nestedatt--fields--oauth2_field"></a>
-### Nested Schema for `fields.oauth2_field`
-
-Optional:
-
-- `oauth2_field_view` (Attributes) The Oauth2FieldView message. (see [below for nested schema](#nestedatt--fields--oauth2_field--oauth2_field_view))
-
-<a id="nestedatt--fields--oauth2_field--oauth2_field_view"></a>
-### Nested Schema for `fields.oauth2_field.oauth2_field_view`
-
-
-
-<a id="nestedatt--fields--shared_provider_config"></a>
-### Nested Schema for `fields.shared_provider_config`
-
-Optional:
-
-- `default_value_cel` (String) The defaultValueCel field.
-- `input_transformation_cel` (String) The inputTransformationCel field.
-- `lock_default_values` (Boolean) The lockDefaultValues field.
-
-
-<a id="nestedatt--fields--user_provider_config"></a>
-### Nested Schema for `fields.user_provider_config`
+<a id="nestedatt--fields--user_config"></a>
+### Nested Schema for `fields.user_config`
 
 Optional:
 

@@ -4,16 +4,15 @@ package shared
 
 // The ServicePrincipalServiceUpdateCredentialRequest message.
 type ServicePrincipalServiceUpdateCredentialRequest struct {
-	// ServicePrincipalCredential represents a client credential for a service principal.
-	ServicePrincipalCredential *ServicePrincipalCredentialInput `json:"credential,omitempty"`
-	UpdateMask                 *string                          `json:"updateMask,omitempty"`
+	Credential *ServicePrincipalCredentialInput `json:"credential,omitempty"`
+	UpdateMask *string                          `json:"updateMask,omitempty"`
 }
 
-func (s *ServicePrincipalServiceUpdateCredentialRequest) GetServicePrincipalCredential() *ServicePrincipalCredentialInput {
+func (s *ServicePrincipalServiceUpdateCredentialRequest) GetCredential() *ServicePrincipalCredentialInput {
 	if s == nil {
 		return nil
 	}
-	return s.ServicePrincipalCredential
+	return s.Credential
 }
 
 func (s *ServicePrincipalServiceUpdateCredentialRequest) GetUpdateMask() *string {

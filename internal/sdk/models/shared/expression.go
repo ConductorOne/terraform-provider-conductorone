@@ -3,6 +3,8 @@
 package shared
 
 // The Expression message.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type Expression struct {
 	// The expressionCel field.
 	ExpressionCel *string `json:"expressionCel,omitempty"`

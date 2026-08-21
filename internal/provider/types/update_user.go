@@ -7,9 +7,9 @@ import (
 )
 
 type UpdateUser struct {
-	UserRef        *UserRef     `tfsdk:"user_ref"`
 	UseSubjectUser types.Bool   `tfsdk:"use_subject_user"`
 	UserIDCel      types.String `tfsdk:"user_id_cel"`
+	UserRef        *UserRef     `tfsdk:"user_ref"`
 	UserStatusCel  types.String `tfsdk:"user_status_cel"`
 	UserStatusEnum types.String `tfsdk:"user_status_enum"`
 }

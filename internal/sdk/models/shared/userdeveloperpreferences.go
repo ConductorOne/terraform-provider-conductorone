@@ -6,14 +6,12 @@ package shared
 //
 //	organized into per-feature clusters.
 type UserDeveloperPreferences struct {
-	// TerraformPreferences groups the user's preferences for the "Show
-	//  Terraform code" feature.
-	TerraformPreferences *TerraformPreferences `json:"terraform,omitempty"`
+	Terraform *TerraformPreferences `json:"terraform,omitempty"`
 }
 
-func (u *UserDeveloperPreferences) GetTerraformPreferences() *TerraformPreferences {
+func (u *UserDeveloperPreferences) GetTerraform() *TerraformPreferences {
 	if u == nil {
 		return nil
 	}
-	return u.TerraformPreferences
+	return u.Terraform
 }

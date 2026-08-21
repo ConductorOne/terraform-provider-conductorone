@@ -70,20 +70,8 @@ type CreateAppEntitlementRequest struct {
 	// If supplied, it's implied that the entitlement is created before sync and needs to be merged with connector entitlement.
 	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// Whether to override the app-level access request defaults for this entitlement.
-	OverrideAccessRequestsDefaults *bool `json:"overrideAccessRequestsDefaults,omitempty"`
-	// ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-	//
-	// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-	//   - connector
-	//   - manual
-	//   - delegated
-	//   - webhook
-	//   - multiStep
-	//   - externalTicket
-	//   - unconfigured
-	//   - action
-	//
-	ProvisionPolicy *ProvisionPolicy `json:"provisionPolicy,omitempty"`
+	OverrideAccessRequestsDefaults *bool            `json:"overrideAccessRequestsDefaults,omitempty"`
+	ProvisionPolicy                *ProvisionPolicy `json:"provisionPolicy,omitempty"`
 	// The purpose of the entitlement (e.g., assignment, permission, ownership).
 	Purpose *CreateAppEntitlementRequestPurpose `json:"purpose,omitempty"`
 	// The ID of the policy to use for revoke request tasks.

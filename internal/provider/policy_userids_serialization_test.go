@@ -46,7 +46,7 @@ func buildUserApprovalCreateModel(userIds []string) PolicyResourceModel {
 				Steps: []tfTypes.PolicyStep{
 					{
 						Approval: &tfTypes.Approval{
-							UserApproval: &tfTypes.UserApproval{
+							Users: &tfTypes.UserApproval{
 								AllowSelfApproval:        types.BoolValue(false),
 								RequireDistinctApprovers: types.BoolValue(false),
 								UserIds:                  tfUserIds,
@@ -79,10 +79,10 @@ func userApprovalFromCreate(t *testing.T, model PolicyResourceModel) (userIds []
 	if approval == nil {
 		t.Fatal("create request step has nil approval")
 	}
-	if approval.UserApproval == nil {
-		t.Fatal("create request approval has nil user_approval; the selected member was dropped")
+	if approval.Users == nil {
+		t.Fatal("create request approval has nil users member; the selected member was dropped")
 	}
-	return approval.UserApproval.UserIds
+	return approval.Users.UserIds
 }
 
 func keysOf[V any](m map[string]V) []string {

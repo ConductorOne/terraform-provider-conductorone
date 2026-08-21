@@ -41,31 +41,16 @@ func (e *ActionInstanceState) IsExact() bool {
 //   - error
 //   - cancelled
 type ActionInstance struct {
-	// The Action message.
-	//
-	// This message contains a oneof named target. Only a single field of the following list may be set at a time:
-	//   - automation
-	//   - batonResourceAction
-	//   - clientIdApproval
-	//
-	Action *Action `json:"action,omitempty"`
-	// The ActionTargetAutomationInstance message.
-	ActionTargetAutomationInstance *ActionTargetAutomationInstance `json:"automation,omitempty"`
-	// The ActionTargetBatonResourceActionInstance message.
-	ActionTargetBatonResourceActionInstance *ActionTargetBatonResourceActionInstance `json:"batonResourceActionInstance,omitempty"`
-	// The ActionOutcomeCancelled message.
-	ActionOutcomeCancelled *ActionOutcomeCancelled `json:"cancelled,omitempty"`
-	// ActionTargetClientIdApprovalInstance carries the registration key of the
-	//  external OAuth client that is being reviewed.
-	ActionTargetClientIDApprovalInstance *ActionTargetClientIDApprovalInstance `json:"clientIdApprovalInstance,omitempty"`
-	// The ActionOutcomeDenied message.
-	ActionOutcomeDenied *ActionOutcomeDenied `json:"denied,omitempty"`
-	// The ActionOutcomeError message.
-	ActionOutcomeError *ActionOutcomeError `json:"error,omitempty"`
+	Action                      *Action                                  `json:"action,omitempty"`
+	Automation                  *ActionTargetAutomationInstance          `json:"automation,omitempty"`
+	BatonResourceActionInstance *ActionTargetBatonResourceActionInstance `json:"batonResourceActionInstance,omitempty"`
+	Cancelled                   *ActionOutcomeCancelled                  `json:"cancelled,omitempty"`
+	ClientIDApprovalInstance    *ActionTargetClientIDApprovalInstance    `json:"clientIdApprovalInstance,omitempty"`
+	Denied                      *ActionOutcomeDenied                     `json:"denied,omitempty"`
+	Error                       *ActionOutcomeError                      `json:"error,omitempty"`
 	// The current state of the action execution.
-	State *ActionInstanceState `json:"state,omitempty"`
-	// The ActionOutcomeSuccess message.
-	ActionOutcomeSuccess *ActionOutcomeSuccess `json:"success,omitempty"`
+	State   *ActionInstanceState  `json:"state,omitempty"`
+	Success *ActionOutcomeSuccess `json:"success,omitempty"`
 }
 
 func (a *ActionInstance) GetAction() *Action {
@@ -75,46 +60,46 @@ func (a *ActionInstance) GetAction() *Action {
 	return a.Action
 }
 
-func (a *ActionInstance) GetActionTargetAutomationInstance() *ActionTargetAutomationInstance {
+func (a *ActionInstance) GetAutomation() *ActionTargetAutomationInstance {
 	if a == nil {
 		return nil
 	}
-	return a.ActionTargetAutomationInstance
+	return a.Automation
 }
 
-func (a *ActionInstance) GetActionTargetBatonResourceActionInstance() *ActionTargetBatonResourceActionInstance {
+func (a *ActionInstance) GetBatonResourceActionInstance() *ActionTargetBatonResourceActionInstance {
 	if a == nil {
 		return nil
 	}
-	return a.ActionTargetBatonResourceActionInstance
+	return a.BatonResourceActionInstance
 }
 
-func (a *ActionInstance) GetActionOutcomeCancelled() *ActionOutcomeCancelled {
+func (a *ActionInstance) GetCancelled() *ActionOutcomeCancelled {
 	if a == nil {
 		return nil
 	}
-	return a.ActionOutcomeCancelled
+	return a.Cancelled
 }
 
-func (a *ActionInstance) GetActionTargetClientIDApprovalInstance() *ActionTargetClientIDApprovalInstance {
+func (a *ActionInstance) GetClientIDApprovalInstance() *ActionTargetClientIDApprovalInstance {
 	if a == nil {
 		return nil
 	}
-	return a.ActionTargetClientIDApprovalInstance
+	return a.ClientIDApprovalInstance
 }
 
-func (a *ActionInstance) GetActionOutcomeDenied() *ActionOutcomeDenied {
+func (a *ActionInstance) GetDenied() *ActionOutcomeDenied {
 	if a == nil {
 		return nil
 	}
-	return a.ActionOutcomeDenied
+	return a.Denied
 }
 
-func (a *ActionInstance) GetActionOutcomeError() *ActionOutcomeError {
+func (a *ActionInstance) GetError() *ActionOutcomeError {
 	if a == nil {
 		return nil
 	}
-	return a.ActionOutcomeError
+	return a.Error
 }
 
 func (a *ActionInstance) GetState() *ActionInstanceState {
@@ -124,9 +109,9 @@ func (a *ActionInstance) GetState() *ActionInstanceState {
 	return a.State
 }
 
-func (a *ActionInstance) GetActionOutcomeSuccess() *ActionOutcomeSuccess {
+func (a *ActionInstance) GetSuccess() *ActionOutcomeSuccess {
 	if a == nil {
 		return nil
 	}
-	return a.ActionOutcomeSuccess
+	return a.Success
 }

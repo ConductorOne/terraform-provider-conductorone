@@ -39,21 +39,21 @@ func TestRequestSchemaFormFieldRoundTrips(t *testing.T) {
 		},
 		"form_string_field": {
 			Name: types.StringValue("reason"),
-			FormStringField: &tfTypes.FormStringField{
+			StringField: &tfTypes.FormStringField{
 				DefaultValue: types.StringValue("n/a"),
 				Placeholder:  types.StringValue("enter a reason"),
 			},
 		},
 		"form_string_field_picker": {
 			Name: types.StringValue("owner"),
-			FormStringField: &tfTypes.FormStringField{
+			StringField: &tfTypes.FormStringField{
 				PickerField: &tfTypes.PickerField{
-					AppResourceFilter: &tfTypes.AppResourceFilter{
+					ResourcePicker: &tfTypes.AppResourceFilter{
 						AppID:          types.StringValue("app-123"),
 						ResourceTypeID: types.StringValue("rt-456"),
 					},
-					AppUserFilter: &tfTypes.AppUserFilter{AppID: types.StringValue("app-789")},
-					C1UserFilter:  &tfTypes.C1UserFilter{},
+					AppUserPicker: &tfTypes.AppUserFilter{AppID: types.StringValue("app-789")},
+					C1UserPicker:  &tfTypes.C1UserFilter{},
 				},
 			},
 		},
@@ -67,9 +67,9 @@ func TestRequestSchemaFormFieldRoundTrips(t *testing.T) {
 		},
 		"form_string_map_field": {
 			Name: types.StringValue("labels"),
-			FormStringMapField: &tfTypes.FormStringMapField{
-				DefaultValue:   map[string]types.String{"team": types.StringValue("platform")},
-				StringMapRules: &tfTypes.StringMapRules{IsRequired: types.BoolValue(true), ValidateEmpty: types.BoolValue(false)},
+			StringMapField: &tfTypes.FormStringMapField{
+				DefaultValue: map[string]types.String{"team": types.StringValue("platform")},
+				Rules:        &tfTypes.StringMapRules{IsRequired: types.BoolValue(true), ValidateEmpty: types.BoolValue(false)},
 			},
 		},
 		"oauth2_field": {
@@ -77,20 +77,20 @@ func TestRequestSchemaFormFieldRoundTrips(t *testing.T) {
 			Oauth2Field: &tfTypes.Oauth2Field{Oauth2FieldView: &tfTypes.Oauth2FieldView{}},
 		},
 		"admin_provider_config": {
-			Name:                types.StringValue("admin_cfg"),
-			AdminProviderConfig: &tfTypes.AdminProviderConfig{DefaultValueCel: types.StringValue("true"), ShowToUser: types.BoolValue(true)},
+			Name:        types.StringValue("admin_cfg"),
+			AdminConfig: &tfTypes.AdminProviderConfig{DefaultValueCel: types.StringValue("true"), ShowToUser: types.BoolValue(true)},
 		},
 		"shared_provider_config": {
 			Name: types.StringValue("shared_cfg"),
-			SharedProviderConfig: &tfTypes.SharedProviderConfig{
+			SharedConfig: &tfTypes.SharedProviderConfig{
 				DefaultValueCel:        types.StringValue("a"),
 				InputTransformationCel: types.StringValue("b"),
 				LockDefaultValues:      types.BoolValue(true),
 			},
 		},
 		"user_provider_config": {
-			Name:               types.StringValue("user_cfg"),
-			UserProviderConfig: &tfTypes.UserProviderConfig{InputTransformationCel: types.StringValue("c")},
+			Name:       types.StringValue("user_cfg"),
+			UserConfig: &tfTypes.UserProviderConfig{InputTransformationCel: types.StringValue("c")},
 		},
 		"read_only_and_required": {
 			Name:     types.StringValue("ro_req"),

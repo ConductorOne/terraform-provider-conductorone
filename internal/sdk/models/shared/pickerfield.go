@@ -9,32 +9,28 @@ package shared
 //   - resourcePicker
 //   - c1UserPicker
 type PickerField struct {
-	// The AppUserFilter message.
-	AppUserFilter *AppUserFilter `json:"appUserPicker,omitempty"`
-	// C1UserFilter is used to configure a picker for selecting ConductorOne users.
-	//  This is distinct from AppUserFilter which selects accounts within a connected app.
-	C1UserFilter *C1UserFilter `json:"c1UserPicker,omitempty"`
-	// The AppResourceFilter message.
-	AppResourceFilter *AppResourceFilter `json:"resourcePicker,omitempty"`
+	AppUserPicker  *AppUserFilter     `json:"appUserPicker,omitempty"`
+	C1UserPicker   *C1UserFilter      `json:"c1UserPicker,omitempty"`
+	ResourcePicker *AppResourceFilter `json:"resourcePicker,omitempty"`
 }
 
-func (p *PickerField) GetAppUserFilter() *AppUserFilter {
+func (p *PickerField) GetAppUserPicker() *AppUserFilter {
 	if p == nil {
 		return nil
 	}
-	return p.AppUserFilter
+	return p.AppUserPicker
 }
 
-func (p *PickerField) GetC1UserFilter() *C1UserFilter {
+func (p *PickerField) GetC1UserPicker() *C1UserFilter {
 	if p == nil {
 		return nil
 	}
-	return p.C1UserFilter
+	return p.C1UserPicker
 }
 
-func (p *PickerField) GetAppResourceFilter() *AppResourceFilter {
+func (p *PickerField) GetResourcePicker() *AppResourceFilter {
 	if p == nil {
 		return nil
 	}
-	return p.AppResourceFilter
+	return p.ResourcePicker
 }

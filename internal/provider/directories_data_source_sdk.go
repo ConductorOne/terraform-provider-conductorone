@@ -31,37 +31,37 @@ func (r *DirectoriesDataSourceModel) RefreshFromSharedDirectoryServiceListRespon
 					list.Directory = nil
 				} else {
 					list.Directory = &tfTypes.Directory{}
+					if listItem.Directory.All == nil {
+						list.Directory.All = nil
+					} else {
+						list.Directory.All = &tfTypes.DirectoryAccountFilterAll{}
+					}
 					list.Directory.AppID = types.StringPointerValue(listItem.Directory.AppID)
+					if listItem.Directory.CelExpression == nil {
+						list.Directory.CelExpression = nil
+					} else {
+						list.Directory.CelExpression = &tfTypes.DirectoryAccountFilterCel{}
+						list.Directory.CelExpression.Expression = types.StringPointerValue(listItem.Directory.CelExpression.Expression)
+					}
 					list.Directory.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.Directory.CreatedAt))
 					list.Directory.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.Directory.DeletedAt))
-					if listItem.Directory.DirectoryAccountFilterAll == nil {
-						list.Directory.DirectoryAccountFilterAll = nil
+					if listItem.Directory.MergeConfig == nil {
+						list.Directory.MergeConfig = nil
 					} else {
-						list.Directory.DirectoryAccountFilterAll = &tfTypes.DirectoryAccountFilterAll{}
-					}
-					if listItem.Directory.DirectoryAccountFilterCel == nil {
-						list.Directory.DirectoryAccountFilterCel = nil
-					} else {
-						list.Directory.DirectoryAccountFilterCel = &tfTypes.DirectoryAccountFilterCel{}
-						list.Directory.DirectoryAccountFilterCel.Expression = types.StringPointerValue(listItem.Directory.DirectoryAccountFilterCel.Expression)
-					}
-					if listItem.Directory.DirectoryMergeConfig == nil {
-						list.Directory.DirectoryMergeConfig = nil
-					} else {
-						list.Directory.DirectoryMergeConfig = &tfTypes.DirectoryMergeConfig{}
-						if listItem.Directory.DirectoryMergeConfig.MatchCases != nil {
-							list.Directory.DirectoryMergeConfig.MatchCases = []tfTypes.DirectoryMergeMatchCase{}
+						list.Directory.MergeConfig = &tfTypes.DirectoryMergeConfig{}
+						if listItem.Directory.MergeConfig.MatchCases != nil {
+							list.Directory.MergeConfig.MatchCases = []tfTypes.DirectoryMergeMatchCase{}
 
-							for _, matchCasesItem := range listItem.Directory.DirectoryMergeConfig.MatchCases {
+							for _, matchCasesItem := range listItem.Directory.MergeConfig.MatchCases {
 								var matchCases tfTypes.DirectoryMergeMatchCase
 
 								matchCases.AppUserKeyCel = types.StringPointerValue(matchCasesItem.AppUserKeyCel)
 								matchCases.UserKeyCel = types.StringPointerValue(matchCasesItem.UserKeyCel)
 
-								list.Directory.DirectoryMergeConfig.MatchCases = append(list.Directory.DirectoryMergeConfig.MatchCases, matchCases)
+								list.Directory.MergeConfig.MatchCases = append(list.Directory.MergeConfig.MatchCases, matchCases)
 							}
 						} else {
-							list.Directory.DirectoryMergeConfig.MatchCases = nil
+							list.Directory.MergeConfig.MatchCases = nil
 						}
 					}
 					list.Directory.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.Directory.UpdatedAt))

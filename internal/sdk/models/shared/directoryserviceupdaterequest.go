@@ -8,31 +8,36 @@ package shared
 //   - all
 //   - celExpression
 type DirectoryServiceUpdateRequest struct {
-	// The DirectoryAccountFilterAll message.
-	DirectoryAccountFilterAll *DirectoryAccountFilterAll `json:"all,omitempty"`
-	// The DirectoryAccountFilterCel message.
-	DirectoryAccountFilterCel *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
-	// DirectoryMergeConfig configures how AppUsers from this directory are matched to C1 Users.
-	DirectoryMergeConfig *DirectoryMergeConfig `json:"mergeConfig,omitempty"`
+	All           *DirectoryAccountFilterAll `json:"all,omitempty"`
+	CelExpression *DirectoryAccountFilterCel `json:"celExpression,omitempty"`
+	ExpandMask    *DirectoryExpandMask       `json:"expandMask,omitempty"`
+	MergeConfig   *DirectoryMergeConfig      `json:"mergeConfig,omitempty"`
 }
 
-func (d *DirectoryServiceUpdateRequest) GetDirectoryAccountFilterAll() *DirectoryAccountFilterAll {
+func (d *DirectoryServiceUpdateRequest) GetAll() *DirectoryAccountFilterAll {
 	if d == nil {
 		return nil
 	}
-	return d.DirectoryAccountFilterAll
+	return d.All
 }
 
-func (d *DirectoryServiceUpdateRequest) GetDirectoryAccountFilterCel() *DirectoryAccountFilterCel {
+func (d *DirectoryServiceUpdateRequest) GetCelExpression() *DirectoryAccountFilterCel {
 	if d == nil {
 		return nil
 	}
-	return d.DirectoryAccountFilterCel
+	return d.CelExpression
 }
 
-func (d *DirectoryServiceUpdateRequest) GetDirectoryMergeConfig() *DirectoryMergeConfig {
+func (d *DirectoryServiceUpdateRequest) GetExpandMask() *DirectoryExpandMask {
 	if d == nil {
 		return nil
 	}
-	return d.DirectoryMergeConfig
+	return d.ExpandMask
+}
+
+func (d *DirectoryServiceUpdateRequest) GetMergeConfig() *DirectoryMergeConfig {
+	if d == nil {
+		return nil
+	}
+	return d.MergeConfig
 }

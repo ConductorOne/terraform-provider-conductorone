@@ -4,10 +4,24 @@ package shared
 
 // The SlackChannel message.
 type SlackChannel struct {
+	// Existing Slack channel ID (e.g. "C0123ABCD"). Set with is_channel_id=true to
+	//  target an existing channel instead of creating one by name.
+	ChannelID *string `json:"channelId,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
-	// The name field.
+	// When true, channel_id identifies an existing channel to use as-is: the
+	//  backend resolves it by ID (conversations.info) and fails if it is missing or
+	//  the bot cannot access it. It never creates or searches by name.
+	IsChannelID *bool `json:"isChannelId,omitempty"`
+	// Channel name to create/resolve. Required unless is_channel_id is true.
 	Name *string `json:"name,omitempty"`
+}
+
+func (s *SlackChannel) GetChannelID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ChannelID
 }
 
 func (s *SlackChannel) GetDescription() *string {
@@ -15,6 +29,13 @@ func (s *SlackChannel) GetDescription() *string {
 		return nil
 	}
 	return s.Description
+}
+
+func (s *SlackChannel) GetIsChannelID() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.IsChannelID
 }
 
 func (s *SlackChannel) GetName() *string {

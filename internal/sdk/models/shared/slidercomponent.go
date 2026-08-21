@@ -4,79 +4,44 @@ package shared
 
 // SliderComponent is an interactive numeric range input (e.g. for forms).
 type SliderComponent struct {
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString *DynamicString `json:"label,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber *DynamicNumber `json:"max,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber1 *DynamicNumber `json:"min,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber2 *DynamicNumber `json:"step,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber3 *DynamicNumber `json:"value,omitempty"`
+	Label *DynamicString `json:"label,omitempty"`
+	Max   *DynamicNumber `json:"max,omitempty"`
+	Min   *DynamicNumber `json:"min,omitempty"`
+	Step  *DynamicNumber `json:"step,omitempty"`
+	Value *DynamicNumber `json:"value,omitempty"`
 }
 
-func (s *SliderComponent) GetDynamicString() *DynamicString {
+func (s *SliderComponent) GetLabel() *DynamicString {
 	if s == nil {
 		return nil
 	}
-	return s.DynamicString
+	return s.Label
 }
 
-func (s *SliderComponent) GetDynamicNumber() *DynamicNumber {
+func (s *SliderComponent) GetMax() *DynamicNumber {
 	if s == nil {
 		return nil
 	}
-	return s.DynamicNumber
+	return s.Max
 }
 
-func (s *SliderComponent) GetDynamicNumber1() *DynamicNumber {
+func (s *SliderComponent) GetMin() *DynamicNumber {
 	if s == nil {
 		return nil
 	}
-	return s.DynamicNumber1
+	return s.Min
 }
 
-func (s *SliderComponent) GetDynamicNumber2() *DynamicNumber {
+func (s *SliderComponent) GetStep() *DynamicNumber {
 	if s == nil {
 		return nil
 	}
-	return s.DynamicNumber2
+	return s.Step
 }
 
-func (s *SliderComponent) GetDynamicNumber3() *DynamicNumber {
+func (s *SliderComponent) GetValue() *DynamicNumber {
 	if s == nil {
 		return nil
 	}
-	return s.DynamicNumber3
+	return s.Value
 }

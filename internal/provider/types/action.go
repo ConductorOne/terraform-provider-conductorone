@@ -3,7 +3,7 @@
 package types
 
 type Action struct {
-	ActionTargetAutomation          *ActionTargetAutomation          `tfsdk:"action_target_automation"`
-	ActionTargetBatonResourceAction *ActionTargetBatonResourceAction `tfsdk:"action_target_baton_resource_action"`
-	ActionTargetClientIDApproval    *ActionTargetClientIDApproval    `tfsdk:"action_target_client_id_approval"`
+	Automation          *ActionTargetAutomation          `tfsdk:"automation"`
+	BatonResourceAction *ActionTargetBatonResourceAction `tfsdk:"baton_resource_action"`
+	ClientIDApproval    *ActionTargetClientIDApproval    `tfsdk:"client_id_approval"`
 }

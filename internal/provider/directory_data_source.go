@@ -67,21 +67,15 @@ func (r *DirectoryDataSource) Schema(ctx context.Context, req datasource.SchemaR
 						"directory": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
+								"all": schema.SingleNestedAttribute{
+									Computed:    true,
+									Description: `The DirectoryAccountFilterAll message.`,
+								},
 								"app_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The ID of the app associated with the directory.`,
 								},
-								"created_at": schema.StringAttribute{
-									Computed: true,
-								},
-								"deleted_at": schema.StringAttribute{
-									Computed: true,
-								},
-								"directory_account_filter_all": schema.SingleNestedAttribute{
-									Computed:    true,
-									Description: `The DirectoryAccountFilterAll message.`,
-								},
-								"directory_account_filter_cel": schema.SingleNestedAttribute{
+								"cel_expression": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"expression": schema.StringAttribute{
@@ -91,7 +85,13 @@ func (r *DirectoryDataSource) Schema(ctx context.Context, req datasource.SchemaR
 									},
 									Description: `The DirectoryAccountFilterCel message.`,
 								},
-								"directory_merge_config": schema.SingleNestedAttribute{
+								"created_at": schema.StringAttribute{
+									Computed: true,
+								},
+								"deleted_at": schema.StringAttribute{
+									Computed: true,
+								},
+								"merge_config": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"match_cases": schema.ListNestedAttribute{

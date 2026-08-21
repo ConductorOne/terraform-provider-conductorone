@@ -9,8 +9,7 @@ package shared
 //   - path
 //   - call
 type DynamicNumber struct {
-	// FunctionCall represents a client-side function invocation.
-	FunctionCall *FunctionCall `json:"call,omitempty"`
+	Call *FunctionCall `json:"call,omitempty"`
 	// The literal field.
 	// This field is part of the `value` oneof.
 	// See the documentation for `c1.api.a2ui.v1.DynamicNumber` for more details.
@@ -21,11 +20,11 @@ type DynamicNumber struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (d *DynamicNumber) GetFunctionCall() *FunctionCall {
+func (d *DynamicNumber) GetCall() *FunctionCall {
 	if d == nil {
 		return nil
 	}
-	return d.FunctionCall
+	return d.Call
 }
 
 func (d *DynamicNumber) GetLiteral() *float64 {

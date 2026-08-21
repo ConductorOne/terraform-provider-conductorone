@@ -44,7 +44,8 @@ type C1APIAppV1ConnectorServiceForceSyncResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Empty response body. Status code indicates success.
+	// Empty response body. Status code indicates success. Poll the connector sync status
+	//  for progress after ForceSync accepts the request.
 	ForceSyncResponse *shared.ForceSyncResponse
 }
 

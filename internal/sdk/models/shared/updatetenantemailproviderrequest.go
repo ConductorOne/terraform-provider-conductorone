@@ -4,24 +4,15 @@ package shared
 
 // The UpdateTenantEmailProviderRequest message.
 type UpdateTenantEmailProviderRequest struct {
-	// TenantEmailProvider is the API representation of the tenant's email provider.
-	//
-	// This message contains a oneof named provider. Only a single field of the following list may be set at a time:
-	//   - c1Builtin
-	//   - awsSes
-	//   - sendgrid
-	//   - microsoftGraph
-	//   - googleWorkspace
-	//
-	TenantEmailProvider *TenantEmailProviderInput `json:"emailProvider,omitempty"`
-	UpdateMask          *string                   `json:"updateMask,omitempty"`
+	EmailProvider *TenantEmailProviderInput `json:"emailProvider,omitempty"`
+	UpdateMask    *string                   `json:"updateMask,omitempty"`
 }
 
-func (u *UpdateTenantEmailProviderRequest) GetTenantEmailProvider() *TenantEmailProviderInput {
+func (u *UpdateTenantEmailProviderRequest) GetEmailProvider() *TenantEmailProviderInput {
 	if u == nil {
 		return nil
 	}
-	return u.TenantEmailProvider
+	return u.EmailProvider
 }
 
 func (u *UpdateTenantEmailProviderRequest) GetUpdateMask() *string {

@@ -7,11 +7,11 @@ import (
 )
 
 type Directory struct {
-	DirectoryAccountFilterAll *DirectoryAccountFilterAll `tfsdk:"directory_account_filter_all"`
-	DirectoryAccountFilterCel *DirectoryAccountFilterCel `tfsdk:"directory_account_filter_cel"`
-	DirectoryMergeConfig      *DirectoryMergeConfig      `tfsdk:"directory_merge_config"`
-	AppID                     types.String               `tfsdk:"app_id"`
-	CreatedAt                 types.String               `tfsdk:"created_at"`
-	DeletedAt                 types.String               `tfsdk:"deleted_at"`
-	UpdatedAt                 types.String               `tfsdk:"updated_at"`
+	All           *DirectoryAccountFilterAll `tfsdk:"all"`
+	AppID         types.String               `tfsdk:"app_id"`
+	CelExpression *DirectoryAccountFilterCel `tfsdk:"cel_expression"`
+	CreatedAt     types.String               `tfsdk:"created_at"`
+	DeletedAt     types.String               `tfsdk:"deleted_at"`
+	MergeConfig   *DirectoryMergeConfig      `tfsdk:"merge_config"`
+	UpdatedAt     types.String               `tfsdk:"updated_at"`
 }

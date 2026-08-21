@@ -4,21 +4,12 @@ package shared
 
 // Resource - Resource-specific schema metadata.
 type Resource struct {
-	// ImportIDShape describes the structure of the `id` value in a
-	//  Terraform `import { to = ..., id = "..." }` block. Most resources use
-	//  a single string; binding-style resources (App_Owner,
-	//  App_Entitlement_Owner, …) use a composite of multiple field values.
-	//
-	// This message contains a oneof named shape. Only a single field of the following list may be set at a time:
-	//   - singleString
-	//   - composite
-	//
-	ImportIDShape *ImportIDShape `json:"importId,omitempty"`
+	ImportID *ImportIDShape `json:"importId,omitempty"`
 }
 
-func (r *Resource) GetImportIDShape() *ImportIDShape {
+func (r *Resource) GetImportID() *ImportIDShape {
 	if r == nil {
 		return nil
 	}
-	return r.ImportIDShape
+	return r.ImportID
 }

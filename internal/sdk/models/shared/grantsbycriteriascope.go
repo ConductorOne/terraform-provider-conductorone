@@ -57,24 +57,22 @@ func (e *TypeFilter) IsExact() bool {
 //   - daysSinceReviewed
 //   - grantsAddedBetween
 type GrantsByCriteriaScope struct {
-	// The GrantAccessProfileFilter message.
-	GrantAccessProfileFilter *GrantAccessProfileFilter `json:"accessProfileFilter,omitempty"`
-	DaysSinceAdded           *string                   `json:"daysSinceAdded,omitempty"`
-	DaysSinceLastUsed        *string                   `json:"daysSinceLastUsed,omitempty"`
-	DaysSinceReviewed        *string                   `json:"daysSinceReviewed,omitempty"`
-	// The GrantsAddedBetween message.
-	GrantsAddedBetween *GrantsAddedBetween `json:"grantsAddedBetween,omitempty"`
+	AccessProfileFilter *GrantAccessProfileFilter `json:"accessProfileFilter,omitempty"`
+	DaysSinceAdded      *string                   `json:"daysSinceAdded,omitempty"`
+	DaysSinceLastUsed   *string                   `json:"daysSinceLastUsed,omitempty"`
+	DaysSinceReviewed   *string                   `json:"daysSinceReviewed,omitempty"`
+	GrantsAddedBetween  *GrantsAddedBetween       `json:"grantsAddedBetween,omitempty"`
 	// The sourceFilter field.
 	SourceFilter *SourceFilter `json:"sourceFilter,omitempty"`
 	// The typeFilter field.
 	TypeFilter *TypeFilter `json:"typeFilter,omitempty"`
 }
 
-func (g *GrantsByCriteriaScope) GetGrantAccessProfileFilter() *GrantAccessProfileFilter {
+func (g *GrantsByCriteriaScope) GetAccessProfileFilter() *GrantAccessProfileFilter {
 	if g == nil {
 		return nil
 	}
-	return g.GrantAccessProfileFilter
+	return g.AccessProfileFilter
 }
 
 func (g *GrantsByCriteriaScope) GetDaysSinceAdded() *string {

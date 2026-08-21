@@ -8,9 +8,8 @@ package shared
 //   - fileInputField
 type FileField struct {
 	// The acceptedFileTypes field.
-	AcceptedFileTypes []string `json:"acceptedFileTypes,omitempty"`
-	// The FileInputField message.
-	FileInputField *FileInputField `json:"fileInputField,omitempty"`
+	AcceptedFileTypes []string        `json:"acceptedFileTypes,omitempty"`
+	FileInputField    *FileInputField `json:"fileInputField,omitempty"`
 	// The maxFileSize field.
 	MaxFileSize *string `json:"maxFileSize,omitempty"`
 }

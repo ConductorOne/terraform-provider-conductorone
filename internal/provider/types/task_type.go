@@ -3,10 +3,10 @@
 package types
 
 type TaskType struct {
-	TaskTypeAction      *TaskTypeAction      `tfsdk:"task_type_action"`
-	TaskTypeCertify     *TaskTypeCertify     `tfsdk:"task_type_certify"`
-	TaskTypeFinding     *TaskTypeFinding     `tfsdk:"task_type_finding"`
-	TaskTypeGrant       *TaskTypeGrant       `tfsdk:"task_type_grant"`
-	TaskTypeOffboarding *TaskTypeOffboarding `tfsdk:"task_type_offboarding"`
-	TaskTypeRevoke      *TaskTypeRevoke      `tfsdk:"task_type_revoke"`
+	Action      *TaskTypeAction      `tfsdk:"action"`
+	Certify     *TaskTypeCertify     `tfsdk:"certify"`
+	Finding     *TaskTypeFinding     `tfsdk:"finding"`
+	Grant       *TaskTypeGrant       `tfsdk:"grant"`
+	Offboarding *TaskTypeOffboarding `tfsdk:"offboarding"`
+	Revoke      *TaskTypeRevoke      `tfsdk:"revoke"`
 }

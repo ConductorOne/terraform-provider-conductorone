@@ -19,12 +19,10 @@ type Vault struct {
 	// A free-text description of the vault's purpose or configuration.
 	Description *string `json:"description,omitempty"`
 	// The human-readable name of the vault.
-	DisplayName *string `json:"displayName,omitempty"`
-	// GroupAuthzVault configures a vault that uses group-based authorization to control access to stored credentials.
+	DisplayName     *string          `json:"displayName,omitempty"`
 	GroupAuthzVault *GroupAuthzVault `json:"groupAuthzVault,omitempty"`
 	// The unique identifier of the vault.
-	ID *string `json:"id,omitempty"`
-	// MagicVault configures a vault that grants time-limited credential access via magic links.
+	ID         *string     `json:"id,omitempty"`
 	MagicVault *MagicVault `json:"magicVault,omitempty"`
 	UpdatedAt  *time.Time  `json:"updatedAt,omitempty"`
 }

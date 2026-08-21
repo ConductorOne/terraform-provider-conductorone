@@ -6,8 +6,7 @@ package shared
 type FormStringMapField struct {
 	// The defaultValue field.
 	DefaultValue map[string]string `json:"defaultValue,omitempty"`
-	// The StringMapRules message.
-	StringMapRules *StringMapRules `json:"rules,omitempty"`
+	Rules        *StringMapRules   `json:"rules,omitempty"`
 }
 
 func (f *FormStringMapField) GetDefaultValue() map[string]string {
@@ -17,9 +16,9 @@ func (f *FormStringMapField) GetDefaultValue() map[string]string {
 	return f.DefaultValue
 }
 
-func (f *FormStringMapField) GetStringMapRules() *StringMapRules {
+func (f *FormStringMapField) GetRules() *StringMapRules {
 	if f == nil {
 		return nil
 	}
-	return f.StringMapRules
+	return f.Rules
 }

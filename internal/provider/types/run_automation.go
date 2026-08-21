@@ -7,7 +7,7 @@ import (
 )
 
 type RunAutomation struct {
-	AutomationContext       *AutomationContext     `tfsdk:"automation_context"`
-	AutomationTemplateRef   *AutomationTemplateRef `tfsdk:"automation_template_ref"`
 	AutomationTemplateIDCel types.String           `tfsdk:"automation_template_id_cel"`
+	AutomationTemplateRef   *AutomationTemplateRef `tfsdk:"automation_template_ref"`
+	Context                 *AutomationContext     `tfsdk:"context"`
 }

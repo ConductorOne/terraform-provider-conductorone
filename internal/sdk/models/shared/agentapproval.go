@@ -58,7 +58,10 @@ type AgentApproval struct {
 	AgentFailureAction *AgentFailureAction `json:"agentFailureAction,omitempty"`
 	// The mode of the agent, full control, change policy only, or comment only.
 	AgentMode *AgentMode `json:"agentMode,omitempty"`
-	// The agent user ID to assign the task to.
+	// Deprecated: agent steps are evaluated by the system; no agent user is
+	//  selected. Retained so pre-migration policies still validate.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	AgentUserID *string `json:"agentUserId,omitempty"`
 	// Instructions for the agent.
 	Instructions *string `json:"instructions,omitempty"`

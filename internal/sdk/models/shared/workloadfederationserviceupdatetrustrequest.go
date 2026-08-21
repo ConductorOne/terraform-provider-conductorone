@@ -4,17 +4,15 @@ package shared
 
 // The WorkloadFederationServiceUpdateTrustRequest message.
 type WorkloadFederationServiceUpdateTrustRequest struct {
-	// WorkloadFederationTrust represents a per-SP trust policy that references
-	//  a tenant-level provider and defines a CEL condition for claim matching.
-	WorkloadFederationTrust *WorkloadFederationTrustInput `json:"trust,omitempty"`
-	UpdateMask              *string                       `json:"updateMask,omitempty"`
+	Trust      *WorkloadFederationTrustInput `json:"trust,omitempty"`
+	UpdateMask *string                       `json:"updateMask,omitempty"`
 }
 
-func (w *WorkloadFederationServiceUpdateTrustRequest) GetWorkloadFederationTrust() *WorkloadFederationTrustInput {
+func (w *WorkloadFederationServiceUpdateTrustRequest) GetTrust() *WorkloadFederationTrustInput {
 	if w == nil {
 		return nil
 	}
-	return w.WorkloadFederationTrust
+	return w.Trust
 }
 
 func (w *WorkloadFederationServiceUpdateTrustRequest) GetUpdateMask() *string {

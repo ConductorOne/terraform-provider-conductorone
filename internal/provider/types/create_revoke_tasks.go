@@ -7,7 +7,6 @@ import (
 )
 
 type CreateRevokeTasks struct {
-	UserRef                       *UserRef            `tfsdk:"user_ref"`
 	AppEntitlementRefs            []AppEntitlementRef `tfsdk:"app_entitlement_refs"`
 	AppEntitlementRefsCel         types.String        `tfsdk:"app_entitlement_refs_cel"`
 	ExcludedAppEntitlementRefs    []AppEntitlementRef `tfsdk:"excluded_app_entitlement_refs"`
@@ -15,4 +14,5 @@ type CreateRevokeTasks struct {
 	RevokeAll                     types.Bool          `tfsdk:"revoke_all"`
 	UseSubjectUser                types.Bool          `tfsdk:"use_subject_user"`
 	UserIDCel                     types.String        `tfsdk:"user_id_cel"`
+	UserRef                       *UserRef            `tfsdk:"user_ref"`
 }

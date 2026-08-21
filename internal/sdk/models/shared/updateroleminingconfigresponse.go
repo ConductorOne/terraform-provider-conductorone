@@ -4,13 +4,12 @@ package shared
 
 // The UpdateRoleMiningConfigResponse message.
 type UpdateRoleMiningConfigResponse struct {
-	// The RoleMiningManagementConfig message.
-	RoleMiningManagementConfig *RoleMiningManagementConfig `json:"config,omitempty"`
+	Config *RoleMiningManagementConfig `json:"config,omitempty"`
 }
 
-func (u *UpdateRoleMiningConfigResponse) GetRoleMiningManagementConfig() *RoleMiningManagementConfig {
+func (u *UpdateRoleMiningConfigResponse) GetConfig() *RoleMiningManagementConfig {
 	if u == nil {
 		return nil
 	}
-	return u.RoleMiningManagementConfig
+	return u.Config
 }

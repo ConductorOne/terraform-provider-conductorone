@@ -4,7 +4,6 @@ package shared
 
 // The TaskAuditMetaData message.
 type TaskAuditMetaData struct {
-	// The User object provides all of the details for an user, as well as some configuration.
 	User *User `json:"user,omitempty"`
 }
 

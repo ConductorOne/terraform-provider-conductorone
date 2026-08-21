@@ -30,6 +30,30 @@ func (e *PaperSecretServiceCreateInternalRequestInputFormat) IsExact() bool {
 	return false
 }
 
+// PaperSecretServiceCreateInternalRequestRequiredAgeSuite - Exact Age suite required for this submission. UNSPECIFIED preserves legacy X25519 behavior.
+type PaperSecretServiceCreateInternalRequestRequiredAgeSuite string
+
+const (
+	PaperSecretServiceCreateInternalRequestRequiredAgeSuiteAgeSuiteUnspecified    PaperSecretServiceCreateInternalRequestRequiredAgeSuite = "AGE_SUITE_UNSPECIFIED"
+	PaperSecretServiceCreateInternalRequestRequiredAgeSuiteAgeSuiteX25519         PaperSecretServiceCreateInternalRequestRequiredAgeSuite = "AGE_SUITE_X25519"
+	PaperSecretServiceCreateInternalRequestRequiredAgeSuiteAgeSuiteMlkem768X25519 PaperSecretServiceCreateInternalRequestRequiredAgeSuite = "AGE_SUITE_MLKEM768X25519"
+)
+
+func (e PaperSecretServiceCreateInternalRequestRequiredAgeSuite) ToPointer() *PaperSecretServiceCreateInternalRequestRequiredAgeSuite {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PaperSecretServiceCreateInternalRequestRequiredAgeSuite) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AGE_SUITE_UNSPECIFIED", "AGE_SUITE_X25519", "AGE_SUITE_MLKEM768X25519":
+			return true
+		}
+	}
+	return false
+}
+
 // PaperSecretServiceCreateInternalRequestSecretType - Secret type: TEXT or FILE.
 //
 //	TEXT secrets use SetTextContent to upload encrypted content (max 64KB).
@@ -76,6 +100,8 @@ type PaperSecretServiceCreateInternalRequest struct {
 	InputFormat *PaperSecretServiceCreateInternalRequestInputFormat `json:"inputFormat,omitempty"`
 	// Maximum number of views before the secret is burned (0 = unlimited).
 	MaxViews *int64 `json:"maxViews,omitempty"`
+	// Exact Age suite required for this submission. UNSPECIFIED preserves legacy X25519 behavior.
+	RequiredAgeSuite *PaperSecretServiceCreateInternalRequestRequiredAgeSuite `json:"requiredAgeSuite,omitempty"`
 	// Secret type: TEXT or FILE.
 	//  TEXT secrets use SetTextContent to upload encrypted content (max 64KB).
 	//  FILE secrets use the upload_url from CreateResponse to upload encrypted content (max 1GB).
@@ -136,6 +162,13 @@ func (p *PaperSecretServiceCreateInternalRequest) GetMaxViews() *int64 {
 		return nil
 	}
 	return p.MaxViews
+}
+
+func (p *PaperSecretServiceCreateInternalRequest) GetRequiredAgeSuite() *PaperSecretServiceCreateInternalRequestRequiredAgeSuite {
+	if p == nil {
+		return nil
+	}
+	return p.RequiredAgeSuite
 }
 
 func (p *PaperSecretServiceCreateInternalRequest) GetSecretType() *PaperSecretServiceCreateInternalRequestSecretType {

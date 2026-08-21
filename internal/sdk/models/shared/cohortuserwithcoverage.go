@@ -5,9 +5,8 @@ package shared
 // CohortUserWithCoverage pairs a user with the count of selected entitlements they hold.
 type CohortUserWithCoverage struct {
 	// Number of selected_entitlements that this user currently holds.
-	CoveredCount *int `json:"coveredCount,omitempty"`
-	// The User object provides all of the details for an user, as well as some configuration.
-	User *User `json:"user,omitempty"`
+	CoveredCount *int  `json:"coveredCount,omitempty"`
+	User         *User `json:"user,omitempty"`
 }
 
 func (c *CohortUserWithCoverage) GetCoveredCount() *int {

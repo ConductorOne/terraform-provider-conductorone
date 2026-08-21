@@ -4,15 +4,9 @@ package shared
 
 // The AccessReviewServiceUpdateRequest message.
 type AccessReviewServiceUpdateRequest struct {
-	// An access review campaign (also called a certification campaign) that verifies whether users still need their access entitlements.
-	//
-	// This message contains a oneof named setup_metadata. Only a single field of the following list may be set at a time:
-	//   - singleApp
-	//   - multiApp
-	//   - bindings
-	//
-	AccessReview *AccessReviewInput `json:"accessReview,omitempty"`
-	UpdateMask   *string            `json:"updateMask,omitempty"`
+	AccessReview *AccessReviewInput      `json:"accessReview,omitempty"`
+	ExpandMask   *AccessReviewExpandMask `json:"expandMask,omitempty"`
+	UpdateMask   *string                 `json:"updateMask,omitempty"`
 }
 
 func (a *AccessReviewServiceUpdateRequest) GetAccessReview() *AccessReviewInput {
@@ -20,6 +14,13 @@ func (a *AccessReviewServiceUpdateRequest) GetAccessReview() *AccessReviewInput 
 		return nil
 	}
 	return a.AccessReview
+}
+
+func (a *AccessReviewServiceUpdateRequest) GetExpandMask() *AccessReviewExpandMask {
+	if a == nil {
+		return nil
+	}
+	return a.ExpandMask
 }
 
 func (a *AccessReviewServiceUpdateRequest) GetUpdateMask() *string {

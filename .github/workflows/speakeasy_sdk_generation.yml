@@ -11,6 +11,10 @@ permissions:
         description: Force generation of SDKs
         type: boolean
         default: false
+      set_version:
+        description: Exact SDK version to generate
+        type: string
+        required: false
   schedule:
     - cron: 0 0 * * *
 jobs:
@@ -20,6 +24,7 @@ jobs:
       force: ${{ github.event.inputs.force }}
       mode: pr
       speakeasy_version: latest
+      set_version: ${{ github.event.inputs.set_version }}
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
       speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}

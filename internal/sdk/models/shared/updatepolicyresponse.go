@@ -4,10 +4,6 @@ package shared
 
 // The UpdatePolicyResponse message contains the updated policy object.
 type UpdatePolicyResponse struct {
-	// A policy defines a workflow (sequence of steps) that runs when processing
-	//  access requests, reviews, or revocations. Policies support conditional
-	//  routing: different conditions can trigger different step sequences, with a
-	//  baseline fallback.
 	Policy *Policy `json:"policy,omitempty"`
 }
 

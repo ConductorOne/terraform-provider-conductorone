@@ -50,7 +50,7 @@ func TestAccAppEntitlementAutomationResource(t *testing.T) {
 					app_entitlement_id = conductorone_custom_app_entitlement.test.id
 					display_name       = "test-automation"
 					description        = "test automation with basic rule"
-					app_entitlement_automation_rule_basic = {
+					basic = {
 						expression = "true"
 					}
 				}
@@ -58,7 +58,7 @@ func TestAccAppEntitlementAutomationResource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("conductorone_app_entitlement_automation.test", "display_name", "test-automation"),
 					resource.TestCheckResourceAttr("conductorone_app_entitlement_automation.test", "description", "test automation with basic rule"),
-					resource.TestCheckResourceAttr("conductorone_app_entitlement_automation.test", "app_entitlement_automation_rule_basic.expression", "true"),
+					resource.TestCheckResourceAttr("conductorone_app_entitlement_automation.test", "basic.expression", "true"),
 					resource.TestCheckResourceAttrPair("conductorone_app_entitlement_automation.test", "app_id", "data.conductorone_app.test", "id"),
 					resource.TestCheckResourceAttrPair("conductorone_app_entitlement_automation.test", "app_entitlement_id", "conductorone_custom_app_entitlement.test", "id"),
 				),
@@ -71,7 +71,7 @@ func TestAccAppEntitlementAutomationResource(t *testing.T) {
 					app_entitlement_id = conductorone_custom_app_entitlement.test.id
 					display_name       = "test-automation-updated"
 					description        = "test automation with CEL rule"
-					app_entitlement_automation_rule_cel = {
+					cel = {
 						expression = "true"
 					}
 				}
@@ -79,7 +79,7 @@ func TestAccAppEntitlementAutomationResource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("conductorone_app_entitlement_automation.test", "display_name", "test-automation-updated"),
 					resource.TestCheckResourceAttr("conductorone_app_entitlement_automation.test", "description", "test automation with CEL rule"),
-					resource.TestCheckResourceAttr("conductorone_app_entitlement_automation.test", "app_entitlement_automation_rule_cel.expression", "true"),
+					resource.TestCheckResourceAttr("conductorone_app_entitlement_automation.test", "cel.expression", "true"),
 					resource.TestCheckResourceAttrPair("conductorone_app_entitlement_automation.test", "app_id", "data.conductorone_app.test", "id"),
 					resource.TestCheckResourceAttrPair("conductorone_app_entitlement_automation.test", "app_entitlement_id", "conductorone_custom_app_entitlement.test", "id"),
 				),
@@ -92,7 +92,7 @@ func TestAccAppEntitlementAutomationResource(t *testing.T) {
 					app_entitlement_id = conductorone_custom_app_entitlement.test.id
 					display_name       = "test-automation-entitlement"
 					description        = "test automation with entitlement rule"
-					app_entitlement_automation_rule_entitlement = {
+					entitlements = {
 						entitlement_refs = [
 							{
 								app_id = data.conductorone_app.test.id
@@ -105,8 +105,8 @@ func TestAccAppEntitlementAutomationResource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("conductorone_app_entitlement_automation.test", "display_name", "test-automation-entitlement"),
 					resource.TestCheckResourceAttr("conductorone_app_entitlement_automation.test", "description", "test automation with entitlement rule"),
-					resource.TestCheckResourceAttrPair("conductorone_app_entitlement_automation.test", "app_entitlement_automation_rule_entitlement.entitlement_refs.0.app_id", "data.conductorone_app.test", "id"),
-					resource.TestCheckResourceAttrPair("conductorone_app_entitlement_automation.test", "app_entitlement_automation_rule_entitlement.entitlement_refs.0.id", "conductorone_custom_app_entitlement.test", "id"),
+					resource.TestCheckResourceAttrPair("conductorone_app_entitlement_automation.test", "entitlements.entitlement_refs.0.app_id", "data.conductorone_app.test", "id"),
+					resource.TestCheckResourceAttrPair("conductorone_app_entitlement_automation.test", "entitlements.entitlement_refs.0.id", "conductorone_custom_app_entitlement.test", "id"),
 					resource.TestCheckResourceAttrPair("conductorone_app_entitlement_automation.test", "app_id", "data.conductorone_app.test", "id"),
 					resource.TestCheckResourceAttrPair("conductorone_app_entitlement_automation.test", "app_entitlement_id", "conductorone_custom_app_entitlement.test", "id"),
 				),

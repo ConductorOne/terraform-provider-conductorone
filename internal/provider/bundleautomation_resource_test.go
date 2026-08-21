@@ -51,7 +51,7 @@ func TestAccBundleAutomationResource(t *testing.T) {
 					visible_to_everyone = true
 				}
 				resource "conductorone_bundle_automation" "test" {
-				   bundle_automation_rule_entitlement = {
+				   entitlements = {
 				   		entitlement_refs = [
 							{
 								app_id = conductorone_app.test_new_app.id
@@ -76,8 +76,8 @@ func TestAccBundleAutomationResource(t *testing.T) {
 					resource.TestCheckResourceAttr("conductorone_bundle_automation.test", "enabled", "true"),
 					resource.TestCheckResourceAttr("conductorone_bundle_automation.test", "create_tasks", "false"),
 					resource.TestCheckResourceAttrPair("conductorone_bundle_automation.test", "request_catalog_id", "conductorone_access_profile.test", "id"),
-					resource.TestCheckResourceAttrPair("conductorone_bundle_automation.test", "bundle_automation_rule_entitlement.entitlement_refs.0.app_id", "conductorone_app.test_new_app", "id"),
-					resource.TestCheckResourceAttrPair("conductorone_bundle_automation.test", "bundle_automation_rule_entitlement.entitlement_refs.0.id", "conductorone_custom_app_entitlement.test", "id"),
+					resource.TestCheckResourceAttrPair("conductorone_bundle_automation.test", "entitlements.entitlement_refs.0.app_id", "conductorone_app.test_new_app", "id"),
+					resource.TestCheckResourceAttrPair("conductorone_bundle_automation.test", "entitlements.entitlement_refs.0.id", "conductorone_custom_app_entitlement.test", "id"),
 				),
 			},
 		},

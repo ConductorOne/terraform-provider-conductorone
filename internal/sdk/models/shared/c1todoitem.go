@@ -4,45 +4,23 @@ package shared
 
 // The C1TodoItem message.
 type C1TodoItem struct {
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString *DynamicString `json:"description,omitempty"`
+	Description *DynamicString `json:"description,omitempty"`
 	// The id field.
-	ID *string `json:"id,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString1 *DynamicString `json:"label,omitempty"`
+	ID    *string        `json:"id,omitempty"`
+	Label *DynamicString `json:"label,omitempty"`
 	// The section field.
 	Section *string `json:"section,omitempty"`
 	// The status field.
-	Status *string `json:"status,omitempty"`
-	// ServerEvent triggers a server-side action.
-	ServerEvent *ServerEvent `json:"trailingAction,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString2 *DynamicString `json:"trailingActionLabel,omitempty"`
+	Status              *string        `json:"status,omitempty"`
+	TrailingAction      *ServerEvent   `json:"trailingAction,omitempty"`
+	TrailingActionLabel *DynamicString `json:"trailingActionLabel,omitempty"`
 }
 
-func (c *C1TodoItem) GetDynamicString() *DynamicString {
+func (c *C1TodoItem) GetDescription() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString
+	return c.Description
 }
 
 func (c *C1TodoItem) GetID() *string {
@@ -52,11 +30,11 @@ func (c *C1TodoItem) GetID() *string {
 	return c.ID
 }
 
-func (c *C1TodoItem) GetDynamicString1() *DynamicString {
+func (c *C1TodoItem) GetLabel() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString1
+	return c.Label
 }
 
 func (c *C1TodoItem) GetSection() *string {
@@ -73,18 +51,18 @@ func (c *C1TodoItem) GetStatus() *string {
 	return c.Status
 }
 
-func (c *C1TodoItem) GetServerEvent() *ServerEvent {
+func (c *C1TodoItem) GetTrailingAction() *ServerEvent {
 	if c == nil {
 		return nil
 	}
-	return c.ServerEvent
+	return c.TrailingAction
 }
 
-func (c *C1TodoItem) GetDynamicString2() *DynamicString {
+func (c *C1TodoItem) GetTrailingActionLabel() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString2
+	return c.TrailingActionLabel
 }
 
 // #region class-body-c1todoitem

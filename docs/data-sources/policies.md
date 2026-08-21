@@ -30,6 +30,11 @@ data "conductorone_policies" "my_policies" {
       id = "...my_id..."
     }
   ]
+  scope_app_entitlement_id = "...my_scope_app_entitlement_id..."
+  scope_app_id             = "...my_scope_app_id..."
+  scope_object_type        = "POLICY_SCOPE_OBJECT_TYPE_UNSPECIFIED"
+  scope_slot               = "POLICY_SCOPE_SLOT_UNSPECIFIED"
+  scope_view               = "POLICY_SCOPE_VIEW_GLOBAL"
 }
 ```
 
@@ -46,6 +51,21 @@ data "conductorone_policies" "my_policies" {
 - `policy_types` (List of String) The policy type to search on. This can be POLICY_TYPE_GRANT, POLICY_TYPE_REVOKE, POLICY_TYPE_CERTIFY, POLICY_TYPE_ACCESS_REQUEST, or POLICY_TYPE_PROVISION.
 - `query` (String) Query the policies with a fuzzy search on display name and description.
 - `refs` (Attributes List) The refs field. (see [below for nested schema](#nestedatt--refs))
+- `scope_app_entitlement_id` (String) When scope_view is POLICY_SCOPE_VIEW_SCOPED, only return policies scoped
+ to this entitlement.
+- `scope_app_id` (String) When scope_view is POLICY_SCOPE_VIEW_SCOPED, only return policies scoped
+ to this app.
+- `scope_object_type` (String) When scope_view is POLICY_SCOPE_VIEW_SCOPED, narrow local policies to a
+ coarse object type (app-local vs entitlement-local).
+possible known values include one of ["POLICY_SCOPE_OBJECT_TYPE_UNSPECIFIED", "POLICY_SCOPE_OBJECT_TYPE_APP", "POLICY_SCOPE_OBJECT_TYPE_ENTITLEMENT"]
+- `scope_slot` (String) When scope_view narrows to one object, only return that object's local
+ policies in this slot. Ignored when no object is identified by
+ scope_app_id, which lists every local policy regardless of slot.
+possible known values include one of ["POLICY_SCOPE_SLOT_UNSPECIFIED", "POLICY_SCOPE_SLOT_EMERGENCY"]
+- `scope_view` (String) Which policies to return based on scope. Defaults to global-only, so
+ app/entitlement-scoped policies never appear unless explicitly requested.
+ Ignored when refs are provided (explicit ID lookups always resolve).
+possible known values include one of ["POLICY_SCOPE_VIEW_UNSPECIFIED", "POLICY_SCOPE_VIEW_GLOBAL", "POLICY_SCOPE_VIEW_SCOPED", "POLICY_SCOPE_VIEW_ALL", "POLICY_SCOPE_VIEW_GLOBAL_AND_OBJECT"]
 
 ### Read-Only
 
@@ -73,6 +93,13 @@ Read-Only:
 
  Well-known keys: `managed_by`, `iac_workspace`,
  `iac_resource_address`, `iac_tool_version`.
+- `baseline_policy_id` (String) When set, the baseline defers to another policy of the same type when no
+ rule matches, instead of the baseline entry in policy_steps (keyed by the
+ lowercased policy_type). Mutually exclusive with that baseline entry: set
+ one or the other, not both. The referenced policy must share this
+ policy's policy_type, must not introduce a cycle or self-reference, and
+ must not push any reachable chain over depth 5. Gated by the
+ POLICY_REFERENCES_POLICY feature flag.
 - `created_at` (String)
 - `deleted_at` (String)
 - `description` (String) The description of the Policy.
@@ -90,6 +117,7 @@ Read-Only:
 - `rules` (Attributes List) Ordered conditional routing rules. Evaluated top-to-bottom; the first
  matching rule selects a step sequence from policy_steps. If no rule matches
  (or if this array is empty), the baseline entry in policy_steps is used. (see [below for nested schema](#nestedatt--list--rules))
+- `scope` (Attributes) Scopes a policy to an app or to a single entitlement within an app. (see [below for nested schema](#nestedatt--list--scope))
 - `system_builtin` (Boolean) Whether this policy is a builtin system policy. Builtin system policies cannot be edited.
 - `updated_at` (String)
 
@@ -126,7 +154,7 @@ This message contains a oneof named typ. Only a single field of the following li
   - webhook
   - resourceOwners
   - agent (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval))
-- `form` (String) The Form message. Parsed as JSON.
+- `form` (String) Parsed as JSON.
 - `provision` (Attributes) The provision step references a provision policy for this step. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision))
 - `reject` (Attributes) This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--list--policy_steps--steps--reject))
 - `wait` (Attributes) Define a Wait step for a policy to wait on a condition to be met.
@@ -149,29 +177,29 @@ Read-Only:
 
 Read-Only:
 
-- `action_target_automation` (Attributes) ActionTargetAutomation targets automation templates for policy actions. (see [below for nested schema](#nestedatt--list--policy_steps--steps--action--action_target_automation))
-- `action_target_baton_resource_action` (Attributes) ActionTargetResource targets resource actions for policy actions. (see [below for nested schema](#nestedatt--list--policy_steps--steps--action--action_target_baton_resource_action))
-- `action_target_client_id_approval` (Attributes) ActionTargetClientIdApproval targets administrator review of an external
- OAuth client registration (CIMD or DCR) for policy actions. (see [below for nested schema](#nestedatt--list--policy_steps--steps--action--action_target_client_id_approval))
+- `automation` (Attributes) ActionTargetAutomation targets automation templates for policy actions. (see [below for nested schema](#nestedatt--list--policy_steps--steps--action--automation))
+- `baton_resource_action` (Attributes) ActionTargetResource targets resource actions for policy actions. (see [below for nested schema](#nestedatt--list--policy_steps--steps--action--baton_resource_action))
+- `client_id_approval` (Attributes) ActionTargetClientIdApproval targets administrator review of an external
+ OAuth client registration (CIMD or DCR) for policy actions. (see [below for nested schema](#nestedatt--list--policy_steps--steps--action--client_id_approval))
 
-<a id="nestedatt--list--policy_steps--steps--action--action_target_automation"></a>
-### Nested Schema for `list.policy_steps.steps.action.action_target_automation`
+<a id="nestedatt--list--policy_steps--steps--action--automation"></a>
+### Nested Schema for `list.policy_steps.steps.action.automation`
 
 Read-Only:
 
 - `automation_template_id` (String) The automationTemplateId field.
 
 
-<a id="nestedatt--list--policy_steps--steps--action--action_target_baton_resource_action"></a>
-### Nested Schema for `list.policy_steps.steps.action.action_target_baton_resource_action`
+<a id="nestedatt--list--policy_steps--steps--action--baton_resource_action"></a>
+### Nested Schema for `list.policy_steps.steps.action.baton_resource_action`
 
 Read-Only:
 
 - `baton_resource_action_id` (String) The batonResourceActionId field.
 
 
-<a id="nestedatt--list--policy_steps--steps--action--action_target_client_id_approval"></a>
-### Nested Schema for `list.policy_steps.steps.action.action_target_client_id_approval`
+<a id="nestedatt--list--policy_steps--steps--action--client_id_approval"></a>
+### Nested Schema for `list.policy_steps.steps.action.client_id_approval`
 
 
 
@@ -180,14 +208,13 @@ Read-Only:
 
 Read-Only:
 
-- `agent_approval` (Attributes) The agent to assign the task to. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--agent_approval))
+- `agent` (Attributes) The agent to assign the task to. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--agent))
 - `allow_delegation` (Boolean) Whether ticket delegation is allowed for this step.
 - `allow_reassignment` (Boolean) Configuration to allow reassignment by reviewers during this step.
 - `allowed_reassignees` (List of String) List of users for whom this step can be reassigned.
-- `app_group_approval` (Attributes) The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--app_group_approval))
-- `app_owner_approval` (Attributes) App owner approval provides the configuration for an approval step when the app owner is the target. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--app_owner_approval))
+- `app_owners` (Attributes) App owner approval provides the configuration for an approval step when the app owner is the target. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--app_owners))
 - `assigned` (Boolean) A field indicating whether this step is assigned.
-- `entitlement_owner_approval` (Attributes) The entitlement owner approval allows configuration of the approval step when the target approvers are the entitlement owners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--entitlement_owner_approval))
+- `entitlement_owners` (Attributes) The entitlement owner approval allows configuration of the approval step when the target approvers are the entitlement owners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--entitlement_owners))
 - `escalation` (Attributes) The Escalation message.
 
 This message contains a oneof named escalation_policy. Only a single field of the following list may be set at a time:
@@ -196,57 +223,35 @@ This message contains a oneof named escalation_policy. Only a single field of th
   - cancelTicket
   - skipStep (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--escalation))
 - `escalation_enabled` (Boolean) Whether escalation is enabled for this step.
-- `expression_approval` (Attributes) The ExpressionApproval message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--expression_approval))
-- `manager_approval` (Attributes) The manager approval object provides configuration options for approval when the target of the approval is the manager of the user in the task. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--manager_approval))
+- `expression` (Attributes) The ExpressionApproval message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--expression))
+- `group` (Attributes) The AppGroupApproval object provides the configuration for setting a group as the approvers of an approval policy step. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--group))
+- `manager` (Attributes) The manager approval object provides configuration options for approval when the target of the approval is the manager of the user in the task. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--manager))
 - `require_approval_reason` (Boolean) Configuration to require a reason when approving this step.
 - `require_denial_reason` (Boolean) Configuration to require a reason when denying this step.
 - `require_reassignment_reason` (Boolean) Configuration to require a reason when reassigning this step.
 - `requires_step_up_provider_id` (String) The ID of a step-up authentication provider that will be required for approvals on this step.
  If set, approvers must complete the step-up authentication flow before they can approve.
-- `resource_owner_approval` (Attributes) The resource owner approval allows configuration of the approval step when the target approvers are the resource owners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--resource_owner_approval))
-- `self_approval` (Attributes) The self approval object describes the configuration of a policy step that needs to be approved by the target of the request. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--self_approval))
-- `user_approval` (Attributes) The user approval object describes the approval configuration of a policy step that needs to be approved by a specific list of users. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--user_approval))
-- `webhook_approval` (Attributes) The WebhookApproval message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--webhook_approval))
+- `resource_owners` (Attributes) The resource owner approval allows configuration of the approval step when the target approvers are the resource owners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--resource_owners))
+- `self` (Attributes) The self approval object describes the configuration of a policy step that needs to be approved by the target of the request. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--self))
+- `users` (Attributes) The user approval object describes the approval configuration of a policy step that needs to be approved by a specific list of users. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--users))
+- `webhook` (Attributes) The WebhookApproval message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--webhook))
 
-<a id="nestedatt--list--policy_steps--steps--approval--agent_approval"></a>
-### Nested Schema for `list.policy_steps.steps.approval.agent_approval`
+<a id="nestedatt--list--policy_steps--steps--approval--agent"></a>
+### Nested Schema for `list.policy_steps.steps.approval.agent`
 
 Read-Only:
 
 - `agent_failure_action` (String) The action to take if the agent fails to approve, deny, or reassign the task.
 - `agent_mode` (String) The mode of the agent, full control, change policy only, or comment only.
-- `agent_user_id` (String) The agent user ID to assign the task to.
+- `agent_user_id` (String, Deprecated) Deprecated: agent steps are evaluated by the system; no agent user is
+ selected. Retained so pre-migration policies still validate.
 - `instructions` (String) Instructions for the agent.
 - `policy_ids` (List of String) The allow list of policy IDs to re-route the task to.
 - `reassign_to_user_ids` (List of String) The users to reassign the task to if the agent failure action is reassign to users.
 
 
-<a id="nestedatt--list--policy_steps--steps--approval--app_group_approval"></a>
-### Nested Schema for `list.policy_steps.steps.approval.app_group_approval`
-
-Read-Only:
-
-- `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is a member of the group during this step.
-- `app_group_id` (String) The app entitlement ID of the group specified for approval (not the group resource ID). Use the conductorone_app_entitlement data source to look up the correct entitlement ID.
-- `app_id` (String) The ID of the app that contains the group specified for approval.
-- `fallback` (Boolean) Configuration to allow a fallback if the group is empty.
-- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the group is empty. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--app_group_approval--fallback_group_ids))
-- `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the group is empty.
-- `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
-- `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
-
-<a id="nestedatt--list--policy_steps--steps--approval--app_group_approval--fallback_group_ids"></a>
-### Nested Schema for `list.policy_steps.steps.approval.app_group_approval.fallback_group_ids`
-
-Read-Only:
-
-- `app_entitlement_id` (String) The ID of the Entitlement.
-- `app_id` (String) The ID of the App this entitlement belongs to.
-
-
-
-<a id="nestedatt--list--policy_steps--steps--approval--app_owner_approval"></a>
-### Nested Schema for `list.policy_steps.steps.approval.app_owner_approval`
+<a id="nestedatt--list--policy_steps--steps--approval--app_owners"></a>
+### Nested Schema for `list.policy_steps.steps.approval.app_owners`
 
 Read-Only:
 
@@ -254,20 +259,20 @@ Read-Only:
 - `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
 
-<a id="nestedatt--list--policy_steps--steps--approval--entitlement_owner_approval"></a>
-### Nested Schema for `list.policy_steps.steps.approval.entitlement_owner_approval`
+<a id="nestedatt--list--policy_steps--steps--approval--entitlement_owners"></a>
+### Nested Schema for `list.policy_steps.steps.approval.entitlement_owners`
 
 Read-Only:
 
 - `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is an entitlement owner during this step.
 - `fallback` (Boolean) Configuration to allow a fallback if the entitlement owner cannot be identified.
-- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the entitlement owner cannot be identified. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--entitlement_owner_approval--fallback_group_ids))
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the entitlement owner cannot be identified. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--entitlement_owners--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the entitlement owner cannot be identified.
 - `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
 - `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
-<a id="nestedatt--list--policy_steps--steps--approval--entitlement_owner_approval--fallback_group_ids"></a>
-### Nested Schema for `list.policy_steps.steps.approval.entitlement_owner_approval.fallback_group_ids`
+<a id="nestedatt--list--policy_steps--steps--approval--entitlement_owners--fallback_group_ids"></a>
+### Nested Schema for `list.policy_steps.steps.approval.entitlement_owners.fallback_group_ids`
 
 Read-Only:
 
@@ -313,8 +318,8 @@ Read-Only:
 
 
 
-<a id="nestedatt--list--policy_steps--steps--approval--expression_approval"></a>
-### Nested Schema for `list.policy_steps.steps.approval.expression_approval`
+<a id="nestedatt--list--policy_steps--steps--approval--expression"></a>
+### Nested Schema for `list.policy_steps.steps.approval.expression`
 
 Read-Only:
 
@@ -322,13 +327,13 @@ Read-Only:
 - `assigned_user_ids` (List of String) The assignedUserIds field.
 - `expressions` (List of String) Array of dynamic expressions to determine the approvers.  The first expression to return a non-empty list of users will be used.
 - `fallback` (Boolean) Configuration to allow a fallback if the expression does not return a valid list of users.
-- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the expression does not return a valid list of users. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--expression_approval--fallback_group_ids))
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the expression does not return a valid list of users. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--expression--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if and the expression does not return a valid list of users.
 - `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
 - `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
-<a id="nestedatt--list--policy_steps--steps--approval--expression_approval--fallback_group_ids"></a>
-### Nested Schema for `list.policy_steps.steps.approval.expression_approval.fallback_group_ids`
+<a id="nestedatt--list--policy_steps--steps--approval--expression--fallback_group_ids"></a>
+### Nested Schema for `list.policy_steps.steps.approval.expression.fallback_group_ids`
 
 Read-Only:
 
@@ -337,21 +342,45 @@ Read-Only:
 
 
 
-<a id="nestedatt--list--policy_steps--steps--approval--manager_approval"></a>
-### Nested Schema for `list.policy_steps.steps.approval.manager_approval`
+<a id="nestedatt--list--policy_steps--steps--approval--group"></a>
+### Nested Schema for `list.policy_steps.steps.approval.group`
+
+Read-Only:
+
+- `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is a member of the group during this step.
+- `app_group_id` (String) The app entitlement ID of the group specified for approval (not the group resource ID). Use the conductorone_app_entitlement data source to look up the correct entitlement ID.
+- `app_id` (String) The ID of the app that contains the group specified for approval.
+- `fallback` (Boolean) Configuration to allow a fallback if the group is empty.
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the group is empty. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--group--fallback_group_ids))
+- `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the group is empty.
+- `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
+- `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
+
+<a id="nestedatt--list--policy_steps--steps--approval--group--fallback_group_ids"></a>
+### Nested Schema for `list.policy_steps.steps.approval.group.fallback_group_ids`
+
+Read-Only:
+
+- `app_entitlement_id` (String) The ID of the Entitlement.
+- `app_id` (String) The ID of the App this entitlement belongs to.
+
+
+
+<a id="nestedatt--list--policy_steps--steps--approval--manager"></a>
+### Nested Schema for `list.policy_steps.steps.approval.manager`
 
 Read-Only:
 
 - `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is their own manager. This may occur if a service account has an identity user and manager specified as the same person.
 - `assigned_user_ids` (List of String) The array of users determined to be the manager during processing time.
 - `fallback` (Boolean) Configuration to allow a fallback if no manager is found.
-- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and no manager is found. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--manager_approval--fallback_group_ids))
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and no manager is found. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--manager--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and no manager is found.
 - `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
 - `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
-<a id="nestedatt--list--policy_steps--steps--approval--manager_approval--fallback_group_ids"></a>
-### Nested Schema for `list.policy_steps.steps.approval.manager_approval.fallback_group_ids`
+<a id="nestedatt--list--policy_steps--steps--approval--manager--fallback_group_ids"></a>
+### Nested Schema for `list.policy_steps.steps.approval.manager.fallback_group_ids`
 
 Read-Only:
 
@@ -360,20 +389,20 @@ Read-Only:
 
 
 
-<a id="nestedatt--list--policy_steps--steps--approval--resource_owner_approval"></a>
-### Nested Schema for `list.policy_steps.steps.approval.resource_owner_approval`
+<a id="nestedatt--list--policy_steps--steps--approval--resource_owners"></a>
+### Nested Schema for `list.policy_steps.steps.approval.resource_owners`
 
 Read-Only:
 
 - `allow_self_approval` (Boolean) Configuration to allow self approval if the target user is an resource owner during this step.
 - `fallback` (Boolean) Configuration to allow a fallback if the resource owner cannot be identified.
-- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the resource owner cannot be identified. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--resource_owner_approval--fallback_group_ids))
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the resource owner cannot be identified. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--resource_owners--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the resource owner cannot be identified.
 - `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
 - `require_distinct_approvers` (Boolean) Configuration to require distinct approvers across approval steps of a rule.
 
-<a id="nestedatt--list--policy_steps--steps--approval--resource_owner_approval--fallback_group_ids"></a>
-### Nested Schema for `list.policy_steps.steps.approval.resource_owner_approval.fallback_group_ids`
+<a id="nestedatt--list--policy_steps--steps--approval--resource_owners--fallback_group_ids"></a>
+### Nested Schema for `list.policy_steps.steps.approval.resource_owners.fallback_group_ids`
 
 Read-Only:
 
@@ -382,19 +411,19 @@ Read-Only:
 
 
 
-<a id="nestedatt--list--policy_steps--steps--approval--self_approval"></a>
-### Nested Schema for `list.policy_steps.steps.approval.self_approval`
+<a id="nestedatt--list--policy_steps--steps--approval--self"></a>
+### Nested Schema for `list.policy_steps.steps.approval.self`
 
 Read-Only:
 
 - `assigned_user_ids` (List of String) The array of users determined to be themselves during approval. This should only ever be one person, but is saved because it may change if the owner of an app user changes while the ticket is open.
 - `fallback` (Boolean) Configuration to allow a fallback if the identity user of the target app user cannot be determined.
-- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the identity user of the target app user cannot be determined. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--self_approval--fallback_group_ids))
+- `fallback_group_ids` (Attributes List) Configuration to specify which groups to fallback to if fallback is enabled and the identity user of the target app user cannot be determined. (see [below for nested schema](#nestedatt--list--policy_steps--steps--approval--self--fallback_group_ids))
 - `fallback_user_ids` (List of String) Configuration to specific which users to fallback to if fallback is enabled and the identity user of the target app user cannot be determined.
 - `is_group_fallback_enabled` (Boolean) Configuration to enable fallback for group fallback.
 
-<a id="nestedatt--list--policy_steps--steps--approval--self_approval--fallback_group_ids"></a>
-### Nested Schema for `list.policy_steps.steps.approval.self_approval.fallback_group_ids`
+<a id="nestedatt--list--policy_steps--steps--approval--self--fallback_group_ids"></a>
+### Nested Schema for `list.policy_steps.steps.approval.self.fallback_group_ids`
 
 Read-Only:
 
@@ -403,8 +432,8 @@ Read-Only:
 
 
 
-<a id="nestedatt--list--policy_steps--steps--approval--user_approval"></a>
-### Nested Schema for `list.policy_steps.steps.approval.user_approval`
+<a id="nestedatt--list--policy_steps--steps--approval--users"></a>
+### Nested Schema for `list.policy_steps.steps.approval.users`
 
 Read-Only:
 
@@ -413,8 +442,8 @@ Read-Only:
 - `user_ids` (List of String) Array of users configured for approval.
 
 
-<a id="nestedatt--list--policy_steps--steps--approval--webhook_approval"></a>
-### Nested Schema for `list.policy_steps.steps.approval.webhook_approval`
+<a id="nestedatt--list--policy_steps--steps--approval--webhook"></a>
+### Nested Schema for `list.policy_steps.steps.approval.webhook`
 
 Read-Only:
 
@@ -438,7 +467,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - multiStep
   - externalTicket
   - unconfigured
-  - action (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy))
+  - action
+  - devicePlacement (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy))
 - `provision_target` (Attributes) ProvisionTarget indicates the specific app, app entitlement, and if known, the app user and grant duration of this provision step (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_target))
 
 <a id="nestedatt--list--policy_steps--steps--provision--provision_policy"></a>
@@ -446,22 +476,23 @@ This message contains a oneof named typ. Only a single field of the following li
 
 Read-Only:
 
-- `action_provision` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--action_provision))
-- `connector_provision` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
+- `action` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--action))
+- `connector` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
 
 This message contains a oneof named provision_type. Only a single field of the following list may be set at a time:
   - defaultBehavior
   - account
-  - deleteAccount (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision))
-- `delegated_provision` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--delegated_provision))
-- `external_ticket_provision` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--external_ticket_provision))
-- `manual_provision` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision))
-- `multi_step` (String) MultiStep indicates that this provision step has multiple steps to process. Parsed as JSON.
-- `unconfigured_provision` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--unconfigured_provision))
-- `webhook_provision` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--webhook_provision))
+  - deleteAccount (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector))
+- `delegated` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--delegated))
+- `device_placement` (Attributes) This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--device_placement))
+- `external_ticket` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--external_ticket))
+- `manual` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual))
+- `multi_step` (String) Parsed as JSON.
+- `unconfigured` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--unconfigured))
+- `webhook` (Attributes) This provision step indicates that a webhook should be called to provision this entitlement. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--webhook))
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--action_provision"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.action_provision`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--action"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.action`
 
 Read-Only:
 
@@ -471,36 +502,36 @@ Read-Only:
 - `display_name` (String) The displayName field.
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector_provision`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector`
 
 Read-Only:
 
-- `account_provision` (Attributes) The AccountProvision message.
+- `account` (Attributes) The AccountProvision message.
 
 This message contains a oneof named storage_type. Only a single field of the following list may be set at a time:
   - saveToVault
-  - doNotSave (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision--account_provision))
-- `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision--default_behavior))
-- `delete_account` (Attributes) The DeleteAccount message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision--delete_account))
+  - doNotSave (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector--account))
+- `default_behavior` (Attributes) The DefaultBehavior message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector--default_behavior))
+- `delete_account` (Attributes) The DeleteAccount message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector--delete_account))
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision--account_provision"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector_provision.account_provision`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector--account"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector.account`
 
 Read-Only:
 
 - `config` (String) Parsed as JSON.
 - `connector_id` (String) The connectorId field.
-- `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision--account_provision--do_not_save))
-- `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision--account_provision--save_to_vault))
+- `do_not_save` (Attributes) The DoNotSave message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector--account--do_not_save))
+- `save_to_vault` (Attributes) The SaveToVault message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--connector--account--save_to_vault))
 - `schema_id` (String) The schemaId field.
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision--account_provision--do_not_save"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector_provision.account_provision.do_not_save`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector--account--do_not_save"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector.account.do_not_save`
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision--account_provision--save_to_vault"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector_provision.account_provision.save_to_vault`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector--account--save_to_vault"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector.account.save_to_vault`
 
 Read-Only:
 
@@ -508,8 +539,8 @@ Read-Only:
 
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision--default_behavior"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector_provision.default_behavior`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector--default_behavior"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector.default_behavior`
 
 Read-Only:
 
@@ -517,8 +548,8 @@ Read-Only:
  this can happen automatically and doesn't need any extra info
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector_provision--delete_account"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector_provision.delete_account`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--connector--delete_account"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.connector.delete_account`
 
 Read-Only:
 
@@ -526,8 +557,8 @@ Read-Only:
 
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--delegated_provision"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.delegated_provision`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--delegated"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.delegated`
 
 Read-Only:
 
@@ -535,8 +566,16 @@ Read-Only:
 - `entitlement_id` (String) The ID of the entitlement we are delegating provisioning to.
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--external_ticket_provision"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.external_ticket_provision`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--device_placement"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.device_placement`
+
+Read-Only:
+
+- `vault_boundary_id` (String) The vaultBoundaryId field.
+
+
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--external_ticket"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.external_ticket`
 
 Read-Only:
 
@@ -546,13 +585,12 @@ Read-Only:
 - `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual_provision`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual`
 
 Read-Only:
 
-- `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
-- `provisioner_assignment` (Attributes) ProvisionerAssignment defines how a provisioner is dynamically assigned.
+- `assignee` (Attributes) ProvisionerAssignment defines how a provisioner is dynamically assigned.
 
 This message contains a oneof named typ. Only a single field of the following list may be set at a time:
   - users
@@ -560,24 +598,25 @@ This message contains a oneof named typ. Only a single field of the following li
   - group
   - manager
   - expression
-  - entitlementOwners (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment))
+  - entitlementOwners (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee))
+- `instructions` (String) This field indicates a text body of instructions for the provisioner to indicate.
 - `user_ids` (List of String) An array of users that are required to provision during this step.
  Deprecated: Use assignee field instead for dynamic provisioner assignment.
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual_provision.provisioner_assignment`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual.assignee`
 
 Read-Only:
 
-- `app_owner_provisioner` (Attributes) AppOwnerProvisioner resolves to app owners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--app_owner_provisioner))
-- `entitlement_owner_provisioner` (Attributes) EntitlementOwnerProvisioner resolves to entitlement owners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--entitlement_owner_provisioner))
-- `expression_provisioner` (Attributes) ExpressionProvisioner evaluates CEL expressions to determine provisioners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--expression_provisioner))
-- `group_provisioner` (Attributes) GroupProvisioner resolves to members of a specific group. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--group_provisioner))
-- `manager_provisioner` (Attributes) ManagerProvisioner resolves to the user's manager. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--manager_provisioner))
-- `user_provisioner` (Attributes) UserProvisioner assigns specific users as provisioners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--user_provisioner))
+- `app_owners` (Attributes) AppOwnerProvisioner resolves to app owners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--app_owners))
+- `entitlement_owners` (Attributes) EntitlementOwnerProvisioner resolves to entitlement owners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--entitlement_owners))
+- `expression` (Attributes) ExpressionProvisioner evaluates CEL expressions to determine provisioners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--expression))
+- `group` (Attributes) GroupProvisioner resolves to members of a specific group. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--group))
+- `manager` (Attributes) ManagerProvisioner resolves to the user's manager. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--manager))
+- `users` (Attributes) UserProvisioner assigns specific users as provisioners. (see [below for nested schema](#nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--users))
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--app_owner_provisioner"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual_provision.provisioner_assignment.app_owner_provisioner`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--app_owners"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual.assignee.app_owners`
 
 Read-Only:
 
@@ -585,8 +624,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no app owners are found.
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--entitlement_owner_provisioner"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual_provision.provisioner_assignment.entitlement_owner_provisioner`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--entitlement_owners"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual.assignee.entitlement_owners`
 
 Read-Only:
 
@@ -594,8 +633,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no entitlement owners are found.
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--expression_provisioner"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual_provision.provisioner_assignment.expression_provisioner`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--expression"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual.assignee.expression`
 
 Read-Only:
 
@@ -604,8 +643,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if expression evaluation yields no users.
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--group_provisioner"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual_provision.provisioner_assignment.group_provisioner`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--group"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual.assignee.group`
 
 Read-Only:
 
@@ -615,8 +654,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no group members are found.
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--manager_provisioner"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual_provision.provisioner_assignment.manager_provisioner`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--manager"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual.assignee.manager`
 
 Read-Only:
 
@@ -624,8 +663,8 @@ Read-Only:
 - `fallback_user_ids` (List of String) Fallback user IDs if no manager is found.
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual_provision--provisioner_assignment--user_provisioner"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual_provision.provisioner_assignment.user_provisioner`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--manual--assignee--users"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.manual.assignee.users`
 
 Read-Only:
 
@@ -635,12 +674,12 @@ Read-Only:
 
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--unconfigured_provision"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.unconfigured_provision`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--unconfigured"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.unconfigured`
 
 
-<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--webhook_provision"></a>
-### Nested Schema for `list.policy_steps.steps.provision.provision_policy.webhook_provision`
+<a id="nestedatt--list--policy_steps--steps--provision--provision_policy--webhook"></a>
+### Nested Schema for `list.policy_steps.steps.provision.provision_policy.webhook`
 
 Read-Only:
 
@@ -675,30 +714,30 @@ Read-Only:
 
 - `comment_on_first_wait` (String) The comment to post on first failed check.
 - `comment_on_timeout` (String) The comment to post if we timeout.
+- `condition` (Attributes) The WaitCondition message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--condition))
+- `duration` (Attributes) The WaitDuration message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--duration))
 - `name` (String) The name of our condition to show on the task details page
 - `timeout_duration` (String)
-- `wait_condition` (Attributes) The WaitCondition message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--wait_condition))
-- `wait_duration` (Attributes) The WaitDuration message. (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--wait_duration))
-- `wait_until_time` (Attributes) Waits until a specific time of the day (UTC) (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--wait_until_time))
+- `until_time` (Attributes) Waits until a specific time of the day (UTC) (see [below for nested schema](#nestedatt--list--policy_steps--steps--wait--until_time))
 
-<a id="nestedatt--list--policy_steps--steps--wait--wait_condition"></a>
-### Nested Schema for `list.policy_steps.steps.wait.wait_condition`
+<a id="nestedatt--list--policy_steps--steps--wait--condition"></a>
+### Nested Schema for `list.policy_steps.steps.wait.condition`
 
 Read-Only:
 
 - `condition` (String) The condition that has to be true for this wait condition to continue.
 
 
-<a id="nestedatt--list--policy_steps--steps--wait--wait_duration"></a>
-### Nested Schema for `list.policy_steps.steps.wait.wait_duration`
+<a id="nestedatt--list--policy_steps--steps--wait--duration"></a>
+### Nested Schema for `list.policy_steps.steps.wait.duration`
 
 Read-Only:
 
 - `duration` (String)
 
 
-<a id="nestedatt--list--policy_steps--steps--wait--wait_until_time"></a>
-### Nested Schema for `list.policy_steps.steps.wait.wait_until_time`
+<a id="nestedatt--list--policy_steps--steps--wait--until_time"></a>
+### Nested Schema for `list.policy_steps.steps.wait.until_time`
 
 Read-Only:
 
@@ -727,6 +766,30 @@ See the documentation for `c1.api.policy.v1.PolicyPostActions` for more details.
 Read-Only:
 
 - `condition` (String) A CEL expression that is evaluated against the request context. If it
- returns true, the step sequence identified by policy_key is used.
-- `policy_key` (String) A key into the policy's policy_steps map identifying which step sequence
- to execute when this rule's condition matches.
+ returns true, the step sequence identified by the outcome is used.
+- `policy_id` (String) The ID of another Policy that is evaluated recursively when this
+ rule matches. The referenced policy must share this policy's
+ policy_type, must not introduce a cycle, and must not push any
+ reachable chain over depth 5. Gated by the
+ POLICY_REFERENCES_POLICY feature flag.
+This field is part of the `outcome` oneof.
+See the documentation for `c1.api.policy.v1.Rule` for more details.
+- `policy_key` (String, Deprecated) Deprecated: prefer outcome.step_key. Still read by the request path
+ for backward compatibility with rules persisted before the outcome
+ oneof existed.
+- `step_key` (String) A key into the policy's policy_steps map identifying which step
+ sequence to execute when this rule's condition matches.
+This field is part of the `outcome` oneof.
+See the documentation for `c1.api.policy.v1.Rule` for more details.
+
+
+<a id="nestedatt--list--scope"></a>
+### Nested Schema for `list.scope`
+
+Read-Only:
+
+- `app_entitlement_id` (String) Optional. When set, the policy is scoped to this entitlement of app_id
+ rather than to the whole app.
+- `app_id` (String) The ID of the app this policy is scoped to.
+- `slot` (String) Which of the object's local-policy slots this policy occupies. Part of the
+ scope, and immutable with it.

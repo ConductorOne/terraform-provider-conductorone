@@ -8,6 +8,7 @@ import (
 
 type Policy struct {
 	Annotations              map[string]types.String `tfsdk:"annotations"`
+	BaselinePolicyID         types.String            `tfsdk:"baseline_policy_id"`
 	CreatedAt                types.String            `tfsdk:"created_at"`
 	DeletedAt                types.String            `tfsdk:"deleted_at"`
 	Description              types.String            `tfsdk:"description"`
@@ -18,6 +19,7 @@ type Policy struct {
 	PostActions              []PolicyPostActions     `tfsdk:"post_actions"`
 	ReassignTasksToDelegates types.Bool              `tfsdk:"reassign_tasks_to_delegates"`
 	Rules                    []Rule                  `tfsdk:"rules"`
+	Scope                    *PolicyScope            `tfsdk:"scope"`
 	SystemBuiltin            types.Bool              `tfsdk:"system_builtin"`
 	UpdatedAt                types.String            `tfsdk:"updated_at"`
 }

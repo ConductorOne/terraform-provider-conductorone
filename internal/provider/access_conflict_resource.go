@@ -30,16 +30,17 @@ type AccessConflictResource struct {
 
 // AccessConflictResourceModel describes the resource data model.
 type AccessConflictResourceModel struct {
-	AccessConflictNotificationConfig *tfTypes.AccessConflictNotificationConfig `tfsdk:"access_conflict_notification_config"`
-	CreatedAt                        types.String                              `tfsdk:"created_at"`
-	DeletedAt                        types.String                              `tfsdk:"-"`
-	Description                      types.String                              `tfsdk:"description"`
-	DisplayName                      types.String                              `tfsdk:"display_name"`
-	Enabled                          types.Bool                                `tfsdk:"enabled"`
-	EntitlementSetAID                types.String                              `tfsdk:"entitlement_set_a_id"`
-	EntitlementSetBID                types.String                              `tfsdk:"entitlement_set_b_id"`
-	ID                               types.String                              `tfsdk:"id"`
-	UpdatedAt                        types.String                              `tfsdk:"updated_at"`
+	CreatedAt          types.String                              `tfsdk:"created_at"`
+	DeletedAt          types.String                              `tfsdk:"-"`
+	Description        types.String                              `tfsdk:"description"`
+	DisplayName        types.String                              `tfsdk:"display_name"`
+	Enabled            types.Bool                                `tfsdk:"enabled"`
+	EntitlementSetAID  types.String                              `tfsdk:"entitlement_set_a_id"`
+	EntitlementSetBID  types.String                              `tfsdk:"entitlement_set_b_id"`
+	ID                 types.String                              `tfsdk:"id"`
+	NegateGroupB       types.Bool                                `tfsdk:"negate_group_b"`
+	NotificationConfig *tfTypes.AccessConflictNotificationConfig `tfsdk:"notification_config"`
+	UpdatedAt          types.String                              `tfsdk:"updated_at"`
 }
 
 func (r *AccessConflictResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -50,7 +51,40 @@ func (r *AccessConflictResource) Schema(ctx context.Context, req resource.Schema
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "AccessConflict Resource",
 		Attributes: map[string]schema.Attribute{
-			"access_conflict_notification_config": schema.SingleNestedAttribute{
+			"created_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `An optional description explaining the purpose of this Separation of Duty rule.`,
+			},
+			"display_name": schema.StringAttribute{
+				Required:    true,
+				Description: `The human-readable name for the conflict monitor.`,
+			},
+			"enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `Whether the conflict monitor is actively scanning for violations.`,
+			},
+			"entitlement_set_a_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The identifier of entitlement set A in the conflict rule.`,
+			},
+			"entitlement_set_b_id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The identifier of entitlement set B in the conflict rule.`,
+			},
+			"id": schema.StringAttribute{
+				Computed:    true,
+				Description: `The unique identifier of this conflict monitor.`,
+			},
+			"negate_group_b": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `When true, the rule flags users who are in set A but NOT in set B ("is not` + "\n" +
+					` in"), instead of the default A-and-B intersection.`,
+			},
+			"notification_config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
@@ -96,34 +130,6 @@ func (r *AccessConflictResource) Schema(ctx context.Context, req resource.Schema
 					},
 				},
 				Description: `The NotificationConfig message.`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"description": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `An optional description explaining the purpose of this Separation of Duty rule.`,
-			},
-			"display_name": schema.StringAttribute{
-				Required:    true,
-				Description: `The human-readable name for the conflict monitor.`,
-			},
-			"enabled": schema.BoolAttribute{
-				Computed:    true,
-				Description: `Whether the conflict monitor is actively scanning for violations.`,
-			},
-			"entitlement_set_a_id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The identifier of entitlement set A in the conflict rule.`,
-			},
-			"entitlement_set_b_id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The identifier of entitlement set B in the conflict rule.`,
-			},
-			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `The unique identifier of this conflict monitor.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

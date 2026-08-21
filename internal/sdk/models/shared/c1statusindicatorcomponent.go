@@ -4,66 +4,38 @@ package shared
 
 // C1StatusIndicatorComponent shows agent progress status.
 type C1StatusIndicatorComponent struct {
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString *DynamicString `json:"message,omitempty"`
-	// DynamicBool can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicBool *DynamicBool `json:"showSpinner,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString1 *DynamicString `json:"status,omitempty"`
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString2 *DynamicString `json:"toolName,omitempty"`
+	Message     *DynamicString `json:"message,omitempty"`
+	ShowSpinner *DynamicBool   `json:"showSpinner,omitempty"`
+	Status      *DynamicString `json:"status,omitempty"`
+	ToolName    *DynamicString `json:"toolName,omitempty"`
 }
 
-func (c *C1StatusIndicatorComponent) GetDynamicString() *DynamicString {
+func (c *C1StatusIndicatorComponent) GetMessage() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString
+	return c.Message
 }
 
-func (c *C1StatusIndicatorComponent) GetDynamicBool() *DynamicBool {
+func (c *C1StatusIndicatorComponent) GetShowSpinner() *DynamicBool {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicBool
+	return c.ShowSpinner
 }
 
-func (c *C1StatusIndicatorComponent) GetDynamicString1() *DynamicString {
+func (c *C1StatusIndicatorComponent) GetStatus() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString1
+	return c.Status
 }
 
-func (c *C1StatusIndicatorComponent) GetDynamicString2() *DynamicString {
+func (c *C1StatusIndicatorComponent) GetToolName() *DynamicString {
 	if c == nil {
 		return nil
 	}
-	return c.DynamicString2
+	return c.ToolName
 }
 
 // #region class-body-c1statusindicatorcomponent

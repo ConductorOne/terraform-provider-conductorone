@@ -5,43 +5,8 @@ package shared
 // The AccessReviewSetScopeByResourceTypeRequest message.
 type AccessReviewSetScopeByResourceTypeRequest struct {
 	// The resource types to include in the campaign scope. Replaces all previously selected resource types.
-	ResourceTypeSelections []ResourceTypeIDRef `json:"resourceTypeSelections,omitempty"`
-	// The AccessReviewScopeV2 message.
-	//
-	// This message contains a oneof named apps_and_resources_scope. Only a single field of the following list may be set at a time:
-	//   - appAccess
-	//   - specificResources
-	//   - appSelectionCriteria
-	//   - resourceTypeSelections
-	//
-	//
-	// This message contains a oneof named users_scope. Only a single field of the following list may be set at a time:
-	//   - allUsers
-	//   - selectedUsers
-	//   - userCriteria
-	//   - celExpression
-	//
-	//
-	// This message contains a oneof named accounts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccounts
-	//   - accountCriteria
-	//   - accountCelExpression
-	//
-	//
-	// This message contains a oneof named grants_scope. Only a single field of the following list may be set at a time:
-	//   - allGrants
-	//   - grantsByCriteria
-	//
-	//
-	// This message contains a oneof named access_conflicts_scope. Only a single field of the following list may be set at a time:
-	//   - allAccessConflicts
-	//   - specificAccessConflicts
-	//
-	//
-	// This message contains a oneof named resource_scope. Only a single field of the following list may be set at a time:
-	//   - resourceSelection
-	//
-	AccessReviewScopeV2 *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
+	ResourceTypeSelections []ResourceTypeIDRef  `json:"resourceTypeSelections,omitempty"`
+	ScopeV2                *AccessReviewScopeV2 `json:"scopeV2,omitempty"`
 }
 
 func (a *AccessReviewSetScopeByResourceTypeRequest) GetResourceTypeSelections() []ResourceTypeIDRef {
@@ -51,9 +16,9 @@ func (a *AccessReviewSetScopeByResourceTypeRequest) GetResourceTypeSelections() 
 	return a.ResourceTypeSelections
 }
 
-func (a *AccessReviewSetScopeByResourceTypeRequest) GetAccessReviewScopeV2() *AccessReviewScopeV2 {
+func (a *AccessReviewSetScopeByResourceTypeRequest) GetScopeV2() *AccessReviewScopeV2 {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewScopeV2
+	return a.ScopeV2
 }

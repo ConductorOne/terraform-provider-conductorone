@@ -16,7 +16,7 @@ When creating a policy you must provide request_schema_id, app_entitlement_ref.
 
 ```terraform
 resource "conductorone_request_schema_entitlement_binding" "my_request_schema_entitlement_binding" {
-  app_entitlement_ref = {
+  entitlement_ref = {
     app_id = "...my_app_id..."
     id     = "...my_id..."
   }
@@ -29,11 +29,11 @@ resource "conductorone_request_schema_entitlement_binding" "my_request_schema_en
 
 ### Optional
 
-- `app_entitlement_ref` (Attributes) The AppEntitlementRef message. Requires replacement if changed. (see [below for nested schema](#nestedatt--app_entitlement_ref))
+- `entitlement_ref` (Attributes) The AppEntitlementRef message. Requires replacement if changed. (see [below for nested schema](#nestedatt--entitlement_ref))
 - `request_schema_id` (String) The unique identifier of the request schema to bind the entitlement to. Requires replacement if changed.
 
-<a id="nestedatt--app_entitlement_ref"></a>
-### Nested Schema for `app_entitlement_ref`
+<a id="nestedatt--entitlement_ref"></a>
+### Nested Schema for `entitlement_ref`
 
 Optional:
 

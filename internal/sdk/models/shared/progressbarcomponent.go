@@ -4,79 +4,44 @@ package shared
 
 // ProgressBarComponent shows a read-only progress bar (label, value %, min/max).
 type ProgressBarComponent struct {
-	// DynamicString can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicString *DynamicString `json:"label,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber *DynamicNumber `json:"max,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber1 *DynamicNumber `json:"min,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber2 *DynamicNumber `json:"step,omitempty"`
-	// DynamicNumber can be a literal value, a JSON pointer path, or a function call.
-	//
-	// This message contains a oneof named value. Only a single field of the following list may be set at a time:
-	//   - literal
-	//   - path
-	//   - call
-	//
-	DynamicNumber3 *DynamicNumber `json:"value,omitempty"`
+	Label *DynamicString `json:"label,omitempty"`
+	Max   *DynamicNumber `json:"max,omitempty"`
+	Min   *DynamicNumber `json:"min,omitempty"`
+	Step  *DynamicNumber `json:"step,omitempty"`
+	Value *DynamicNumber `json:"value,omitempty"`
 }
 
-func (p *ProgressBarComponent) GetDynamicString() *DynamicString {
+func (p *ProgressBarComponent) GetLabel() *DynamicString {
 	if p == nil {
 		return nil
 	}
-	return p.DynamicString
+	return p.Label
 }
 
-func (p *ProgressBarComponent) GetDynamicNumber() *DynamicNumber {
+func (p *ProgressBarComponent) GetMax() *DynamicNumber {
 	if p == nil {
 		return nil
 	}
-	return p.DynamicNumber
+	return p.Max
 }
 
-func (p *ProgressBarComponent) GetDynamicNumber1() *DynamicNumber {
+func (p *ProgressBarComponent) GetMin() *DynamicNumber {
 	if p == nil {
 		return nil
 	}
-	return p.DynamicNumber1
+	return p.Min
 }
 
-func (p *ProgressBarComponent) GetDynamicNumber2() *DynamicNumber {
+func (p *ProgressBarComponent) GetStep() *DynamicNumber {
 	if p == nil {
 		return nil
 	}
-	return p.DynamicNumber2
+	return p.Step
 }
 
-func (p *ProgressBarComponent) GetDynamicNumber3() *DynamicNumber {
+func (p *ProgressBarComponent) GetValue() *DynamicNumber {
 	if p == nil {
 		return nil
 	}
-	return p.DynamicNumber3
+	return p.Value
 }

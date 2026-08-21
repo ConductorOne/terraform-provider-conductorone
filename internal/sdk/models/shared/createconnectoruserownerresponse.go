@@ -4,7 +4,6 @@ package shared
 
 // CreateConnectorUserOwnerResponse is the response for creating a user ownership source on a connector.
 type CreateConnectorUserOwnerResponse struct {
-	// ConnectorOwnerUser represents a user ownership source for a connector.
 	ConnectorOwnerUser *ConnectorOwnerUser `json:"connectorOwnerUser,omitempty"`
 }
 

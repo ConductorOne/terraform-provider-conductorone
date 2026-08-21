@@ -4,8 +4,15 @@ package shared
 
 // The FunctionsServiceUpdateFunctionResponse message.
 type FunctionsServiceUpdateFunctionResponse struct {
-	// Function represents a customer-provided code extension in the API
-	Function *Function `json:"function,omitempty"`
+	Commit   *FunctionCommit `json:"commit,omitempty"`
+	Function *Function       `json:"function,omitempty"`
+}
+
+func (f *FunctionsServiceUpdateFunctionResponse) GetCommit() *FunctionCommit {
+	if f == nil {
+		return nil
+	}
+	return f.Commit
 }
 
 func (f *FunctionsServiceUpdateFunctionResponse) GetFunction() *Function {

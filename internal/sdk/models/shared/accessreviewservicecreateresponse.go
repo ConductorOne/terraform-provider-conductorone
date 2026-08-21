@@ -8,17 +8,16 @@ type Expanded struct {
 
 // The AccessReviewServiceCreateResponse message.
 type AccessReviewServiceCreateResponse struct {
-	// The AccessReviewView message.
-	AccessReviewView *AccessReviewView `json:"accessReview,omitempty"`
+	AccessReview *AccessReviewView `json:"accessReview,omitempty"`
 	// Related objects requested via the expand mask.
 	Expanded []Expanded `json:"expanded,omitempty"`
 }
 
-func (a *AccessReviewServiceCreateResponse) GetAccessReviewView() *AccessReviewView {
+func (a *AccessReviewServiceCreateResponse) GetAccessReview() *AccessReviewView {
 	if a == nil {
 		return nil
 	}
-	return a.AccessReviewView
+	return a.AccessReview
 }
 
 func (a *AccessReviewServiceCreateResponse) GetExpanded() []Expanded {

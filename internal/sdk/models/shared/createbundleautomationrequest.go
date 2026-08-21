@@ -8,8 +8,7 @@ package shared
 //   - entitlements
 //   - cel
 type CreateBundleAutomationRequest struct {
-	// The BundleAutomationRuleCEL message.
-	BundleAutomationRuleCEL *BundleAutomationRuleCEL `json:"cel,omitempty"`
+	Cel *BundleAutomationRuleCEL `json:"cel,omitempty"`
 	// Whether to create access request tasks for matched users instead of granting directly.
 	CreateTasks *bool `json:"createTasks,omitempty"`
 	// Whether to disable the circuit breaker that pauses the automation when excessive membership changes are detected.
@@ -18,19 +17,18 @@ type CreateBundleAutomationRequest struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// When true, the circuit breaker is evaluated even on profiles below the
 	//  tenant min-members floor. Defaults to false.
-	EnforceOnSmallProfiles *bool `json:"enforceOnSmallProfiles,omitempty"`
-	// The BundleAutomationRuleEntitlement message.
-	BundleAutomationRuleEntitlement *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
+	EnforceOnSmallProfiles *bool                            `json:"enforceOnSmallProfiles,omitempty"`
+	Entitlements           *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
 	// Per-automation override for the removed-members percent that trips the
 	//  circuit breaker (1-100). 0 / unset means inherit the tenant default.
 	RemovedMembersThresholdPercent *string `json:"removedMembersThresholdPercent,omitempty"`
 }
 
-func (c *CreateBundleAutomationRequest) GetBundleAutomationRuleCEL() *BundleAutomationRuleCEL {
+func (c *CreateBundleAutomationRequest) GetCel() *BundleAutomationRuleCEL {
 	if c == nil {
 		return nil
 	}
-	return c.BundleAutomationRuleCEL
+	return c.Cel
 }
 
 func (c *CreateBundleAutomationRequest) GetCreateTasks() *bool {
@@ -61,11 +59,11 @@ func (c *CreateBundleAutomationRequest) GetEnforceOnSmallProfiles() *bool {
 	return c.EnforceOnSmallProfiles
 }
 
-func (c *CreateBundleAutomationRequest) GetBundleAutomationRuleEntitlement() *BundleAutomationRuleEntitlement {
+func (c *CreateBundleAutomationRequest) GetEntitlements() *BundleAutomationRuleEntitlement {
 	if c == nil {
 		return nil
 	}
-	return c.BundleAutomationRuleEntitlement
+	return c.Entitlements
 }
 
 func (c *CreateBundleAutomationRequest) GetRemovedMembersThresholdPercent() *string {

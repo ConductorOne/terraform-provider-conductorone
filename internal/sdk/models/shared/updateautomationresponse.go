@@ -4,11 +4,6 @@ package shared
 
 // The UpdateAutomationResponse message.
 type UpdateAutomationResponse struct {
-	// The Automation message.
-	//
-	// This message contains a oneof named disabled_reason. Only a single field of the following list may be set at a time:
-	//   - circuitBreaker
-	//
 	Automation *Automation `json:"automation,omitempty"`
 	// One-time absolute webhook URL for capability URL authentication, shown once when the trigger is saved.
 	//  Contains the full URL including the embedded token (e.g. https://tenant.conductorone.com/api/v1/webhooks/incoming/{id}/t/{token}).

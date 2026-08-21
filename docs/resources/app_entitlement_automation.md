@@ -21,16 +21,17 @@ NOTE: This resource can only be created for an entitlement on the ConductorOne a
 
 ```terraform
 resource "conductorone_app_entitlement_automation" "my_app_entitlement_automation" {
-  app_entitlement_automation_last_run_status = {
-    # ...
-  }
-  app_entitlement_automation_rule_basic = {
+  app_entitlement_id = "...my_app_entitlement_id..."
+  app_id             = "...my_app_id..."
+  basic = {
     expression = "...my_expression..."
   }
-  app_entitlement_automation_rule_cel = {
+  cel = {
     expression = "...my_expression..."
   }
-  app_entitlement_automation_rule_entitlement = {
+  description  = "...my_description..."
+  display_name = "...my_display_name..."
+  entitlements = {
     entitlement_refs = [
       {
         app_id = "...my_app_id..."
@@ -38,13 +39,12 @@ resource "conductorone_app_entitlement_automation" "my_app_entitlement_automatio
       }
     ]
   }
-  app_entitlement_automation_rule_none = {
+  last_run_status = {
     # ...
   }
-  app_entitlement_id = "...my_app_entitlement_id..."
-  app_id             = "...my_app_id..."
-  description        = "...my_description..."
-  display_name       = "...my_display_name..."
+  none = {
+    # ...
+  }
 }
 ```
 
@@ -58,13 +58,13 @@ resource "conductorone_app_entitlement_automation" "my_app_entitlement_automatio
 
 ### Optional
 
-- `app_entitlement_automation_last_run_status` (Attributes) The AppEntitlementAutomationLastRunStatus message. Requires replacement if changed. (see [below for nested schema](#nestedatt--app_entitlement_automation_last_run_status))
-- `app_entitlement_automation_rule_basic` (Attributes) The AppEntitlementAutomationRuleBasic message. (see [below for nested schema](#nestedatt--app_entitlement_automation_rule_basic))
-- `app_entitlement_automation_rule_cel` (Attributes) The AppEntitlementAutomationRuleCEL message. (see [below for nested schema](#nestedatt--app_entitlement_automation_rule_cel))
-- `app_entitlement_automation_rule_entitlement` (Attributes) The AppEntitlementAutomationRuleEntitlement message. (see [below for nested schema](#nestedatt--app_entitlement_automation_rule_entitlement))
-- `app_entitlement_automation_rule_none` (Attributes) The AppEntitlementAutomationRuleNone message. (see [below for nested schema](#nestedatt--app_entitlement_automation_rule_none))
+- `basic` (Attributes) The AppEntitlementAutomationRuleBasic message. (see [below for nested schema](#nestedatt--basic))
+- `cel` (Attributes) The AppEntitlementAutomationRuleCEL message. (see [below for nested schema](#nestedatt--cel))
 - `description` (String) The description of the app entitlement.
 - `display_name` (String) The display name of the app entitlement.
+- `entitlements` (Attributes) The AppEntitlementAutomationRuleEntitlement message. (see [below for nested schema](#nestedatt--entitlements))
+- `last_run_status` (Attributes) The AppEntitlementAutomationLastRunStatus message. Requires replacement if changed. (see [below for nested schema](#nestedatt--last_run_status))
+- `none` (Attributes) The AppEntitlementAutomationRuleNone message. (see [below for nested schema](#nestedatt--none))
 
 ### Read-Only
 
@@ -73,41 +73,31 @@ resource "conductorone_app_entitlement_automation" "my_app_entitlement_automatio
  Read-only. Not settable via this API.
 - `updated_at` (String)
 
-<a id="nestedatt--app_entitlement_automation_last_run_status"></a>
-### Nested Schema for `app_entitlement_automation_last_run_status`
-
-Read-Only:
-
-- `error_message` (String) The errorMessage field.
-- `last_completed_at` (String)
-- `status` (String) The status field.
-
-
-<a id="nestedatt--app_entitlement_automation_rule_basic"></a>
-### Nested Schema for `app_entitlement_automation_rule_basic`
+<a id="nestedatt--basic"></a>
+### Nested Schema for `basic`
 
 Optional:
 
 - `expression` (String) The expression field.
 
 
-<a id="nestedatt--app_entitlement_automation_rule_cel"></a>
-### Nested Schema for `app_entitlement_automation_rule_cel`
+<a id="nestedatt--cel"></a>
+### Nested Schema for `cel`
 
 Optional:
 
 - `expression` (String) The expression field.
 
 
-<a id="nestedatt--app_entitlement_automation_rule_entitlement"></a>
-### Nested Schema for `app_entitlement_automation_rule_entitlement`
+<a id="nestedatt--entitlements"></a>
+### Nested Schema for `entitlements`
 
 Optional:
 
-- `entitlement_refs` (Attributes List) The entitlementRefs field. (see [below for nested schema](#nestedatt--app_entitlement_automation_rule_entitlement--entitlement_refs))
+- `entitlement_refs` (Attributes List) The entitlementRefs field. (see [below for nested schema](#nestedatt--entitlements--entitlement_refs))
 
-<a id="nestedatt--app_entitlement_automation_rule_entitlement--entitlement_refs"></a>
-### Nested Schema for `app_entitlement_automation_rule_entitlement.entitlement_refs`
+<a id="nestedatt--entitlements--entitlement_refs"></a>
+### Nested Schema for `entitlements.entitlement_refs`
 
 Optional:
 
@@ -116,5 +106,15 @@ Optional:
 
 
 
-<a id="nestedatt--app_entitlement_automation_rule_none"></a>
-### Nested Schema for `app_entitlement_automation_rule_none`
+<a id="nestedatt--last_run_status"></a>
+### Nested Schema for `last_run_status`
+
+Read-Only:
+
+- `error_message` (String) The errorMessage field.
+- `last_completed_at` (String)
+- `status` (String) The status field.
+
+
+<a id="nestedatt--none"></a>
+### Nested Schema for `none`

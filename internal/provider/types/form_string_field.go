@@ -7,11 +7,12 @@ import (
 )
 
 type FormStringField struct {
+	DateField     *DateField     `tfsdk:"date_field"`
+	DefaultValue  types.String   `tfsdk:"default_value"`
 	PasswordField *PasswordField `tfsdk:"password_field"`
 	PickerField   *PickerField   `tfsdk:"picker_field"`
-	SelectField   *SelectField   `tfsdk:"select_field"`
-	StringRules   *StringRules   `tfsdk:"string_rules"`
-	TextField     *TextField     `tfsdk:"text_field"`
-	DefaultValue  types.String   `tfsdk:"default_value"`
 	Placeholder   types.String   `tfsdk:"placeholder"`
+	Rules         *StringRules   `tfsdk:"rules"`
+	SelectField   *SelectField   `tfsdk:"select_field"`
+	TextField     *TextField     `tfsdk:"text_field"`
 }

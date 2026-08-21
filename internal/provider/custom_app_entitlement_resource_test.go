@@ -52,7 +52,7 @@ func TestAccCustomAppEntitlementResource(t *testing.T) {
 					display_name         = "Admin"
 					alias                = "tf_test_admin_role"
 					provision_policy = {
-						webhook_provision = {
+						webhook = {
      						webhook_id = conductorone_webhook.new_webhook.id
     					}
 					}
@@ -73,7 +73,7 @@ func TestAccCustomAppEntitlementResource(t *testing.T) {
 						"conductorone_app_resource_type.custom_role_resource_type", "id"),
 					resource.TestCheckResourceAttr("conductorone_custom_app_entitlement.test", "display_name", "Admin"),
 					resource.TestCheckResourceAttr("conductorone_custom_app_entitlement.test", "alias", "tf_test_admin_role"),
-					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test", "provision_policy.webhook_provision.webhook_id",
+					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test", "provision_policy.webhook.webhook_id",
 						"conductorone_webhook.new_webhook", "id"),
 					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test", "risk_level_value_id",
 						"conductorone_risk_level.high", "id"),
@@ -122,7 +122,7 @@ func TestAccCustomAppEntitlementResource(t *testing.T) {
 					display_name         = "Admin changed"
 					alias                = "tf_test_admin_role"
 					provision_policy = {
-						connector_provision = {}
+						connector = {}
 					}
 					risk_level_value_id            = resource.conductorone_risk_level.high.id
 					slug                           = "member"
@@ -141,7 +141,7 @@ func TestAccCustomAppEntitlementResource(t *testing.T) {
 						"conductorone_app_resource_type.custom_role_resource_type", "id"),
 					resource.TestCheckResourceAttr("conductorone_custom_app_entitlement.test", "display_name", "Admin changed"),
 					resource.TestCheckResourceAttr("conductorone_custom_app_entitlement.test", "alias", "tf_test_admin_role"),
-					resource.TestCheckResourceAttrSet("conductorone_custom_app_entitlement.test", "provision_policy.connector_provision.%"),
+					resource.TestCheckResourceAttrSet("conductorone_custom_app_entitlement.test", "provision_policy.connector.%"),
 
 					resource.TestCheckResourceAttrPair("conductorone_custom_app_entitlement.test", "risk_level_value_id",
 						"conductorone_risk_level.high", "id"),

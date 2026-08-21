@@ -24,16 +24,6 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 			}
 		}
 		r.AppID = types.StringPointerValue(resp.AppID)
-		if resp.AutomationContext == nil {
-			r.AutomationContext = nil
-		} else {
-			r.AutomationContext = &tfTypes.AutomationContext{}
-			if resp.AutomationContext.Context == nil {
-				r.AutomationContext.Context = nil
-			} else {
-				r.AutomationContext.Context = &tfTypes.Context{}
-			}
-		}
 		if resp.AutomationSteps != nil {
 			r.AutomationSteps = []tfTypes.AutomationStep{}
 
@@ -189,144 +179,149 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					automationSteps.CreateRevokeTasksV2 = nil
 				} else {
 					automationSteps.CreateRevokeTasksV2 = &tfTypes.CreateRevokeTasksV2{}
-					if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria == nil {
-						automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria = nil
+					if automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria == nil {
+						automationSteps.CreateRevokeTasksV2.ExclusionCriteria = nil
 					} else {
-						automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria = &tfTypes.EntitlementExclusionCriteria{}
-						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds != nil {
-							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds))
-							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds {
-								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
+						automationSteps.CreateRevokeTasksV2.ExclusionCriteria = &tfTypes.EntitlementExclusionCriteria{}
+						if automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds != nil {
+							automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds))
+							for _, v := range automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds {
+								automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds = append(automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = nil
+							automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds = nil
 						}
-						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
+						if automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+							automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+							for _, v := range automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+								automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds = append(automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
+							automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
-						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds != nil {
-							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds))
-							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds {
-								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds, types.StringValue(v))
+						if automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds != nil {
+							automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds))
+							for _, v := range automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds {
+								automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds = append(automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = nil
+							automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds = nil
 						}
-						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds))
-							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds {
-								automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
+						if automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+							automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds))
+							for _, v := range automationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds {
+								automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds = append(automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
+							automationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
-					if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionList == nil {
-						automationSteps.CreateRevokeTasksV2.EntitlementExclusionList = nil
+					if automationStepsItem.CreateRevokeTasksV2.ExclusionList == nil {
+						automationSteps.CreateRevokeTasksV2.ExclusionList = nil
 					} else {
-						automationSteps.CreateRevokeTasksV2.EntitlementExclusionList = &tfTypes.EntitlementExclusionList{}
-						if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-							automationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+						automationSteps.CreateRevokeTasksV2.ExclusionList = &tfTypes.EntitlementExclusionList{}
+						if automationStepsItem.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs != nil {
+							automationSteps.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-							for _, excludedAppEntitlementRefsItem1 := range automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs {
+							for _, excludedAppEntitlementRefsItem1 := range automationStepsItem.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs {
 								var excludedAppEntitlementRefs1 tfTypes.AppEntitlementRef
 
 								excludedAppEntitlementRefs1.AppID = types.StringPointerValue(excludedAppEntitlementRefsItem1.AppID)
 								excludedAppEntitlementRefs1.ID = types.StringPointerValue(excludedAppEntitlementRefsItem1.ID)
 
-								automationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = append(automationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs1)
+								automationSteps.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs = append(automationSteps.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs1)
 							}
 						} else {
-							automationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = nil
+							automationSteps.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
-					if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionListCel == nil {
-						automationSteps.CreateRevokeTasksV2.EntitlementExclusionListCel = nil
+					if automationStepsItem.CreateRevokeTasksV2.ExclusionListCel == nil {
+						automationSteps.CreateRevokeTasksV2.ExclusionListCel = nil
 					} else {
-						automationSteps.CreateRevokeTasksV2.EntitlementExclusionListCel = &tfTypes.EntitlementExclusionListCel{}
-						automationSteps.CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel)
+						automationSteps.CreateRevokeTasksV2.ExclusionListCel = &tfTypes.EntitlementExclusionListCel{}
+						automationSteps.CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel)
 					}
-					if automationStepsItem.CreateRevokeTasksV2.EntitlementExclusionNone == nil {
-						automationSteps.CreateRevokeTasksV2.EntitlementExclusionNone = nil
+					if automationStepsItem.CreateRevokeTasksV2.ExclusionNone == nil {
+						automationSteps.CreateRevokeTasksV2.ExclusionNone = nil
 					} else {
-						automationSteps.CreateRevokeTasksV2.EntitlementExclusionNone = &tfTypes.EntitlementExclusionNone{}
+						automationSteps.CreateRevokeTasksV2.ExclusionNone = &tfTypes.EntitlementExclusionNone{}
 					}
-					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionAccessOnly == nil {
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionAccessOnly = nil
+					if automationStepsItem.CreateRevokeTasksV2.GrantSourceFilter != nil {
+						automationSteps.CreateRevokeTasksV2.GrantSourceFilter = types.StringValue(string(*automationStepsItem.CreateRevokeTasksV2.GrantSourceFilter))
 					} else {
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionAccessOnly = &tfTypes.EntitlementInclusionAccessOnly{}
+						automationSteps.CreateRevokeTasksV2.GrantSourceFilter = types.StringNull()
 					}
-					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionAll == nil {
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionAll = nil
+					if automationStepsItem.CreateRevokeTasksV2.InclusionAccessOnly == nil {
+						automationSteps.CreateRevokeTasksV2.InclusionAccessOnly = nil
 					} else {
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionAll = &tfTypes.EntitlementInclusionAll{}
+						automationSteps.CreateRevokeTasksV2.InclusionAccessOnly = &tfTypes.EntitlementInclusionAccessOnly{}
 					}
-					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria == nil {
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria = nil
+					if automationStepsItem.CreateRevokeTasksV2.InclusionAll == nil {
+						automationSteps.CreateRevokeTasksV2.InclusionAll = nil
 					} else {
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
-						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds != nil {
-							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds))
-							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds {
-								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
+						automationSteps.CreateRevokeTasksV2.InclusionAll = &tfTypes.EntitlementInclusionAll{}
+					}
+					if automationStepsItem.CreateRevokeTasksV2.InclusionCriteria == nil {
+						automationSteps.CreateRevokeTasksV2.InclusionCriteria = nil
+					} else {
+						automationSteps.CreateRevokeTasksV2.InclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
+						if automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.AppIds != nil {
+							automationSteps.CreateRevokeTasksV2.InclusionCriteria.AppIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.AppIds))
+							for _, v := range automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.AppIds {
+								automationSteps.CreateRevokeTasksV2.InclusionCriteria.AppIds = append(automationSteps.CreateRevokeTasksV2.InclusionCriteria.AppIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = nil
+							automationSteps.CreateRevokeTasksV2.InclusionCriteria.AppIds = nil
 						}
-						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
+						if automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds != nil {
+							automationSteps.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds))
+							for _, v := range automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds {
+								automationSteps.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds = append(automationSteps.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
+							automationSteps.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds = nil
 						}
-						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds))
-							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds {
-								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
+						if automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds != nil {
+							automationSteps.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds))
+							for _, v := range automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds {
+								automationSteps.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds = append(automationSteps.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = nil
+							automationSteps.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds = nil
 						}
-						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds != nil {
-							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds))
-							for _, v := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds {
-								automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
+						if automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds != nil {
+							automationSteps.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds = make([]types.String, 0, len(automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds))
+							for _, v := range automationStepsItem.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds {
+								automationSteps.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds = append(automationSteps.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = nil
+							automationSteps.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds = nil
 						}
 					}
-					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionList == nil {
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionList = nil
+					if automationStepsItem.CreateRevokeTasksV2.InclusionList == nil {
+						automationSteps.CreateRevokeTasksV2.InclusionList = nil
 					} else {
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionList = &tfTypes.EntitlementInclusionList{}
-						if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs != nil {
-							automationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+						automationSteps.CreateRevokeTasksV2.InclusionList = &tfTypes.EntitlementInclusionList{}
+						if automationStepsItem.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs != nil {
+							automationSteps.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-							for _, appEntitlementRefsItem1 := range automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs {
+							for _, appEntitlementRefsItem1 := range automationStepsItem.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs {
 								var appEntitlementRefs1 tfTypes.AppEntitlementRef
 
 								appEntitlementRefs1.AppID = types.StringPointerValue(appEntitlementRefsItem1.AppID)
 								appEntitlementRefs1.ID = types.StringPointerValue(appEntitlementRefsItem1.ID)
 
-								automationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = append(automationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs1)
+								automationSteps.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs = append(automationSteps.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs, appEntitlementRefs1)
 							}
 						} else {
-							automationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = nil
+							automationSteps.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs = nil
 						}
 					}
-					if automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionListCel == nil {
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionListCel = nil
+					if automationStepsItem.CreateRevokeTasksV2.InclusionListCel == nil {
+						automationSteps.CreateRevokeTasksV2.InclusionListCel = nil
 					} else {
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionListCel = &tfTypes.EntitlementInclusionListCel{}
-						automationSteps.CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel)
+						automationSteps.CreateRevokeTasksV2.InclusionListCel = &tfTypes.EntitlementInclusionListCel{}
+						automationSteps.CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel)
 					}
 					automationSteps.CreateRevokeTasksV2.UserIDCel = types.StringPointerValue(automationStepsItem.CreateRevokeTasksV2.UserIDCel)
 					if automationStepsItem.CreateRevokeTasksV2.UserRef == nil {
@@ -361,138 +356,138 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					automationSteps.GeneratePassword = nil
 				} else {
 					automationSteps.GeneratePassword = &tfTypes.GeneratePassword{}
-					if automationStepsItem.GeneratePassword.GeneratePasswordPolicy == nil {
-						automationSteps.GeneratePassword.GeneratePasswordPolicy = nil
-					} else {
-						automationSteps.GeneratePassword.GeneratePasswordPolicy = &tfTypes.GeneratePasswordPolicy{}
-						automationSteps.GeneratePassword.GeneratePasswordPolicy.CustomCharacters = types.StringPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.CustomCharacters)
-						automationSteps.GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters = types.StringPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters)
-						automationSteps.GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount))
-						automationSteps.GeneratePassword.GeneratePasswordPolicy.MinCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.MinCharacterCount))
-						automationSteps.GeneratePassword.GeneratePasswordPolicy.NoRestrictions = types.BoolPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.NoRestrictions)
-						automationSteps.GeneratePassword.GeneratePasswordPolicy.RequireLowercase = types.BoolPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireLowercase)
-						automationSteps.GeneratePassword.GeneratePasswordPolicy.RequireNumbers = types.BoolPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireNumbers)
-						automationSteps.GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters = types.BoolPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters)
-						automationSteps.GeneratePassword.GeneratePasswordPolicy.RequireUppercase = types.BoolPointerValue(automationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireUppercase)
-					}
 					automationSteps.GeneratePassword.PasswordPolicyID = types.StringPointerValue(automationStepsItem.GeneratePassword.PasswordPolicyID)
+					if automationStepsItem.GeneratePassword.Policy == nil {
+						automationSteps.GeneratePassword.Policy = nil
+					} else {
+						automationSteps.GeneratePassword.Policy = &tfTypes.GeneratePasswordPolicy{}
+						automationSteps.GeneratePassword.Policy.CustomCharacters = types.StringPointerValue(automationStepsItem.GeneratePassword.Policy.CustomCharacters)
+						automationSteps.GeneratePassword.Policy.ExcludedCharacters = types.StringPointerValue(automationStepsItem.GeneratePassword.Policy.ExcludedCharacters)
+						automationSteps.GeneratePassword.Policy.MaxCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(automationStepsItem.GeneratePassword.Policy.MaxCharacterCount))
+						automationSteps.GeneratePassword.Policy.MinCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(automationStepsItem.GeneratePassword.Policy.MinCharacterCount))
+						automationSteps.GeneratePassword.Policy.NoRestrictions = types.BoolPointerValue(automationStepsItem.GeneratePassword.Policy.NoRestrictions)
+						automationSteps.GeneratePassword.Policy.RequireLowercase = types.BoolPointerValue(automationStepsItem.GeneratePassword.Policy.RequireLowercase)
+						automationSteps.GeneratePassword.Policy.RequireNumbers = types.BoolPointerValue(automationStepsItem.GeneratePassword.Policy.RequireNumbers)
+						automationSteps.GeneratePassword.Policy.RequireSpecialCharacters = types.BoolPointerValue(automationStepsItem.GeneratePassword.Policy.RequireSpecialCharacters)
+						automationSteps.GeneratePassword.Policy.RequireUppercase = types.BoolPointerValue(automationStepsItem.GeneratePassword.Policy.RequireUppercase)
+					}
 				}
 				if automationStepsItem.GrantEntitlements == nil {
 					automationSteps.GrantEntitlements = nil
 				} else {
 					automationSteps.GrantEntitlements = &tfTypes.GrantEntitlements{}
-					if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria == nil {
-						automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria = nil
+					if automationStepsItem.GrantEntitlements.ExclusionCriteria == nil {
+						automationSteps.GrantEntitlements.ExclusionCriteria = nil
 					} else {
-						automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria = &tfTypes.GrantEntitlementExclusionCriteria{}
-						if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds != nil {
-							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds))
-							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds {
-								automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
+						automationSteps.GrantEntitlements.ExclusionCriteria = &tfTypes.GrantEntitlementExclusionCriteria{}
+						if automationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedAppIds != nil {
+							automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedAppIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedAppIds))
+							for _, v := range automationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedAppIds {
+								automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedAppIds = append(automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = nil
+							automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedAppIds = nil
 						}
-						if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-								automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
+						if automationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+							automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+							for _, v := range automationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+								automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds = append(automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
+							automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
-						if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds))
-							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds {
-								automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
+						if automationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+							automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds))
+							for _, v := range automationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds {
+								automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds = append(automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
+							automationSteps.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
-					if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionList == nil {
-						automationSteps.GrantEntitlements.GrantEntitlementExclusionList = nil
+					if automationStepsItem.GrantEntitlements.ExclusionList == nil {
+						automationSteps.GrantEntitlements.ExclusionList = nil
 					} else {
-						automationSteps.GrantEntitlements.GrantEntitlementExclusionList = &tfTypes.GrantEntitlementExclusionList{}
-						if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-							automationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+						automationSteps.GrantEntitlements.ExclusionList = &tfTypes.GrantEntitlementExclusionList{}
+						if automationStepsItem.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs != nil {
+							automationSteps.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-							for _, excludedAppEntitlementRefsItem2 := range automationStepsItem.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs {
+							for _, excludedAppEntitlementRefsItem2 := range automationStepsItem.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs {
 								var excludedAppEntitlementRefs2 tfTypes.AppEntitlementRef
 
 								excludedAppEntitlementRefs2.AppID = types.StringPointerValue(excludedAppEntitlementRefsItem2.AppID)
 								excludedAppEntitlementRefs2.ID = types.StringPointerValue(excludedAppEntitlementRefsItem2.ID)
 
-								automationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = append(automationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs2)
+								automationSteps.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs = append(automationSteps.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs2)
 							}
 						} else {
-							automationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = nil
+							automationSteps.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
-					if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionListCel == nil {
-						automationSteps.GrantEntitlements.GrantEntitlementExclusionListCel = nil
+					if automationStepsItem.GrantEntitlements.ExclusionListCel == nil {
+						automationSteps.GrantEntitlements.ExclusionListCel = nil
 					} else {
-						automationSteps.GrantEntitlements.GrantEntitlementExclusionListCel = &tfTypes.GrantEntitlementExclusionListCel{}
-						automationSteps.GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel)
+						automationSteps.GrantEntitlements.ExclusionListCel = &tfTypes.GrantEntitlementExclusionListCel{}
+						automationSteps.GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel)
 					}
-					if automationStepsItem.GrantEntitlements.GrantEntitlementExclusionNone == nil {
-						automationSteps.GrantEntitlements.GrantEntitlementExclusionNone = nil
+					if automationStepsItem.GrantEntitlements.ExclusionNone == nil {
+						automationSteps.GrantEntitlements.ExclusionNone = nil
 					} else {
-						automationSteps.GrantEntitlements.GrantEntitlementExclusionNone = &tfTypes.GrantEntitlementExclusionNone{}
+						automationSteps.GrantEntitlements.ExclusionNone = &tfTypes.GrantEntitlementExclusionNone{}
 					}
-					if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria == nil {
-						automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria = nil
+					if automationStepsItem.GrantEntitlements.InclusionCriteria == nil {
+						automationSteps.GrantEntitlements.InclusionCriteria = nil
 					} else {
-						automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria = &tfTypes.GrantEntitlementInclusionCriteria{}
-						if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds != nil {
-							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds))
-							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds {
-								automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds, types.StringValue(v))
+						automationSteps.GrantEntitlements.InclusionCriteria = &tfTypes.GrantEntitlementInclusionCriteria{}
+						if automationStepsItem.GrantEntitlements.InclusionCriteria.AppIds != nil {
+							automationSteps.GrantEntitlements.InclusionCriteria.AppIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.InclusionCriteria.AppIds))
+							for _, v := range automationStepsItem.GrantEntitlements.InclusionCriteria.AppIds {
+								automationSteps.GrantEntitlements.InclusionCriteria.AppIds = append(automationSteps.GrantEntitlements.InclusionCriteria.AppIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = nil
+							automationSteps.GrantEntitlements.InclusionCriteria.AppIds = nil
 						}
-						if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds {
-								automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
+						if automationStepsItem.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds != nil {
+							automationSteps.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds))
+							for _, v := range automationStepsItem.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds {
+								automationSteps.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds = append(automationSteps.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = nil
+							automationSteps.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds = nil
 						}
-						if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds != nil {
-							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds))
-							for _, v := range automationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds {
-								automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
+						if automationStepsItem.GrantEntitlements.InclusionCriteria.RiskLevelIds != nil {
+							automationSteps.GrantEntitlements.InclusionCriteria.RiskLevelIds = make([]types.String, 0, len(automationStepsItem.GrantEntitlements.InclusionCriteria.RiskLevelIds))
+							for _, v := range automationStepsItem.GrantEntitlements.InclusionCriteria.RiskLevelIds {
+								automationSteps.GrantEntitlements.InclusionCriteria.RiskLevelIds = append(automationSteps.GrantEntitlements.InclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
 						} else {
-							automationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = nil
+							automationSteps.GrantEntitlements.InclusionCriteria.RiskLevelIds = nil
 						}
 					}
-					if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionList == nil {
-						automationSteps.GrantEntitlements.GrantEntitlementInclusionList = nil
+					if automationStepsItem.GrantEntitlements.InclusionList == nil {
+						automationSteps.GrantEntitlements.InclusionList = nil
 					} else {
-						automationSteps.GrantEntitlements.GrantEntitlementInclusionList = &tfTypes.GrantEntitlementInclusionList{}
-						if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs != nil {
-							automationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+						automationSteps.GrantEntitlements.InclusionList = &tfTypes.GrantEntitlementInclusionList{}
+						if automationStepsItem.GrantEntitlements.InclusionList.AppEntitlementRefs != nil {
+							automationSteps.GrantEntitlements.InclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-							for _, appEntitlementRefsItem2 := range automationStepsItem.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs {
+							for _, appEntitlementRefsItem2 := range automationStepsItem.GrantEntitlements.InclusionList.AppEntitlementRefs {
 								var appEntitlementRefs2 tfTypes.AppEntitlementRef
 
 								appEntitlementRefs2.AppID = types.StringPointerValue(appEntitlementRefsItem2.AppID)
 								appEntitlementRefs2.ID = types.StringPointerValue(appEntitlementRefsItem2.ID)
 
-								automationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = append(automationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs2)
+								automationSteps.GrantEntitlements.InclusionList.AppEntitlementRefs = append(automationSteps.GrantEntitlements.InclusionList.AppEntitlementRefs, appEntitlementRefs2)
 							}
 						} else {
-							automationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = nil
+							automationSteps.GrantEntitlements.InclusionList.AppEntitlementRefs = nil
 						}
 					}
-					if automationStepsItem.GrantEntitlements.GrantEntitlementInclusionListCel == nil {
-						automationSteps.GrantEntitlements.GrantEntitlementInclusionListCel = nil
+					if automationStepsItem.GrantEntitlements.InclusionListCel == nil {
+						automationSteps.GrantEntitlements.InclusionListCel = nil
 					} else {
-						automationSteps.GrantEntitlements.GrantEntitlementInclusionListCel = &tfTypes.GrantEntitlementInclusionListCel{}
-						automationSteps.GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel)
+						automationSteps.GrantEntitlements.InclusionListCel = &tfTypes.GrantEntitlementInclusionListCel{}
+						automationSteps.GrantEntitlements.InclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(automationStepsItem.GrantEntitlements.InclusionListCel.AppEntitlementRefsCel)
 					}
 					automationSteps.GrantEntitlements.UserIDCel = types.StringPointerValue(automationStepsItem.GrantEntitlements.UserIDCel)
 					if automationStepsItem.GrantEntitlements.UserRef == nil {
@@ -508,6 +503,12 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					automationSteps.RemoveFromDelegation = &tfTypes.RemoveFromDelegation{}
 					automationSteps.RemoveFromDelegation.ReplacementUserIDCel = types.StringPointerValue(automationStepsItem.RemoveFromDelegation.ReplacementUserIDCel)
+					if automationStepsItem.RemoveFromDelegation.ReplacementUserRef == nil {
+						automationSteps.RemoveFromDelegation.ReplacementUserRef = nil
+					} else {
+						automationSteps.RemoveFromDelegation.ReplacementUserRef = &tfTypes.UserRef{}
+						automationSteps.RemoveFromDelegation.ReplacementUserRef.ID = types.StringPointerValue(automationStepsItem.RemoveFromDelegation.ReplacementUserRef.ID)
+					}
 					automationSteps.RemoveFromDelegation.UserIDCel = types.StringPointerValue(automationStepsItem.RemoveFromDelegation.UserIDCel)
 					if automationStepsItem.RemoveFromDelegation.UserRef == nil {
 						automationSteps.RemoveFromDelegation.UserRef = nil
@@ -515,34 +516,28 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						automationSteps.RemoveFromDelegation.UserRef = &tfTypes.UserRef{}
 						automationSteps.RemoveFromDelegation.UserRef.ID = types.StringPointerValue(automationStepsItem.RemoveFromDelegation.UserRef.ID)
 					}
-					if automationStepsItem.RemoveFromDelegation.UserRef1 == nil {
-						automationSteps.RemoveFromDelegation.UserRef1 = nil
-					} else {
-						automationSteps.RemoveFromDelegation.UserRef1 = &tfTypes.UserRef{}
-						automationSteps.RemoveFromDelegation.UserRef1.ID = types.StringPointerValue(automationStepsItem.RemoveFromDelegation.UserRef1.ID)
-					}
 					automationSteps.RemoveFromDelegation.UseSubjectUser = types.BoolPointerValue(automationStepsItem.RemoveFromDelegation.UseSubjectUser)
 				}
 				if automationStepsItem.RunAutomation == nil {
 					automationSteps.RunAutomation = nil
 				} else {
 					automationSteps.RunAutomation = &tfTypes.RunAutomation{}
-					if automationStepsItem.RunAutomation.AutomationContext == nil {
-						automationSteps.RunAutomation.AutomationContext = nil
-					} else {
-						automationSteps.RunAutomation.AutomationContext = &tfTypes.AutomationContext{}
-						if automationStepsItem.RunAutomation.AutomationContext.Context == nil {
-							automationSteps.RunAutomation.AutomationContext.Context = nil
-						} else {
-							automationSteps.RunAutomation.AutomationContext.Context = &tfTypes.Context{}
-						}
-					}
 					automationSteps.RunAutomation.AutomationTemplateIDCel = types.StringPointerValue(automationStepsItem.RunAutomation.AutomationTemplateIDCel)
 					if automationStepsItem.RunAutomation.AutomationTemplateRef == nil {
 						automationSteps.RunAutomation.AutomationTemplateRef = nil
 					} else {
 						automationSteps.RunAutomation.AutomationTemplateRef = &tfTypes.AutomationTemplateRef{}
 						automationSteps.RunAutomation.AutomationTemplateRef.ID = types.StringPointerValue(automationStepsItem.RunAutomation.AutomationTemplateRef.ID)
+					}
+					if automationStepsItem.RunAutomation.Context == nil {
+						automationSteps.RunAutomation.Context = nil
+					} else {
+						automationSteps.RunAutomation.Context = &tfTypes.AutomationContext{}
+						if automationStepsItem.RunAutomation.Context.Context == nil {
+							automationSteps.RunAutomation.Context.Context = nil
+						} else {
+							automationSteps.RunAutomation.Context.Context = &tfTypes.Context{}
+						}
 					}
 				}
 				if automationStepsItem.SendEmail == nil {
@@ -575,6 +570,7 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					automationSteps.SendSlackMessage = &tfTypes.SendSlackMessage{}
 					automationSteps.SendSlackMessage.Body = types.StringPointerValue(automationStepsItem.SendSlackMessage.Body)
+					automationSteps.SendSlackMessage.ChannelIsID = types.BoolPointerValue(automationStepsItem.SendSlackMessage.ChannelIsID)
 					automationSteps.SendSlackMessage.ChannelName = types.StringPointerValue(automationStepsItem.SendSlackMessage.ChannelName)
 					automationSteps.SendSlackMessage.ChannelNameCel = types.StringPointerValue(automationStepsItem.SendSlackMessage.ChannelNameCel)
 					automationSteps.SendSlackMessage.UserIdsCel = types.StringPointerValue(automationStepsItem.SendSlackMessage.UserIdsCel)
@@ -637,38 +633,38 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					automationSteps.TaskAction = nil
 				} else {
 					automationSteps.TaskAction = &tfTypes.TaskAction{}
-					if automationStepsItem.TaskAction.CloseAction == nil {
-						automationSteps.TaskAction.CloseAction = nil
+					if automationStepsItem.TaskAction.Close == nil {
+						automationSteps.TaskAction.Close = nil
 					} else {
-						automationSteps.TaskAction.CloseAction = &tfTypes.CloseAction{}
-						automationSteps.TaskAction.CloseAction.UserIDCel = types.StringPointerValue(automationStepsItem.TaskAction.CloseAction.UserIDCel)
-						if automationStepsItem.TaskAction.CloseAction.UserRef == nil {
-							automationSteps.TaskAction.CloseAction.UserRef = nil
+						automationSteps.TaskAction.Close = &tfTypes.CloseAction{}
+						automationSteps.TaskAction.Close.UserIDCel = types.StringPointerValue(automationStepsItem.TaskAction.Close.UserIDCel)
+						if automationStepsItem.TaskAction.Close.UserRef == nil {
+							automationSteps.TaskAction.Close.UserRef = nil
 						} else {
-							automationSteps.TaskAction.CloseAction.UserRef = &tfTypes.UserRef{}
-							automationSteps.TaskAction.CloseAction.UserRef.ID = types.StringPointerValue(automationStepsItem.TaskAction.CloseAction.UserRef.ID)
+							automationSteps.TaskAction.Close.UserRef = &tfTypes.UserRef{}
+							automationSteps.TaskAction.Close.UserRef.ID = types.StringPointerValue(automationStepsItem.TaskAction.Close.UserRef.ID)
 						}
-						automationSteps.TaskAction.CloseAction.UseSubjectUser = types.BoolPointerValue(automationStepsItem.TaskAction.CloseAction.UseSubjectUser)
+						automationSteps.TaskAction.Close.UseSubjectUser = types.BoolPointerValue(automationStepsItem.TaskAction.Close.UseSubjectUser)
 					}
-					if automationStepsItem.TaskAction.ReassignAction == nil {
-						automationSteps.TaskAction.ReassignAction = nil
+					if automationStepsItem.TaskAction.Reassign == nil {
+						automationSteps.TaskAction.Reassign = nil
 					} else {
-						automationSteps.TaskAction.ReassignAction = &tfTypes.ReassignAction{}
-						automationSteps.TaskAction.ReassignAction.AssigneeUserIDCel = types.StringPointerValue(automationStepsItem.TaskAction.ReassignAction.AssigneeUserIDCel)
-						automationSteps.TaskAction.ReassignAction.SubjectUserIDCel = types.StringPointerValue(automationStepsItem.TaskAction.ReassignAction.SubjectUserIDCel)
-						if automationStepsItem.TaskAction.ReassignAction.UserRef == nil {
-							automationSteps.TaskAction.ReassignAction.UserRef = nil
+						automationSteps.TaskAction.Reassign = &tfTypes.ReassignAction{}
+						automationSteps.TaskAction.Reassign.AssigneeUserIDCel = types.StringPointerValue(automationStepsItem.TaskAction.Reassign.AssigneeUserIDCel)
+						if automationStepsItem.TaskAction.Reassign.AssigneeUserRef == nil {
+							automationSteps.TaskAction.Reassign.AssigneeUserRef = nil
 						} else {
-							automationSteps.TaskAction.ReassignAction.UserRef = &tfTypes.UserRef{}
-							automationSteps.TaskAction.ReassignAction.UserRef.ID = types.StringPointerValue(automationStepsItem.TaskAction.ReassignAction.UserRef.ID)
+							automationSteps.TaskAction.Reassign.AssigneeUserRef = &tfTypes.UserRef{}
+							automationSteps.TaskAction.Reassign.AssigneeUserRef.ID = types.StringPointerValue(automationStepsItem.TaskAction.Reassign.AssigneeUserRef.ID)
 						}
-						if automationStepsItem.TaskAction.ReassignAction.UserRef1 == nil {
-							automationSteps.TaskAction.ReassignAction.UserRef1 = nil
+						automationSteps.TaskAction.Reassign.SubjectUserIDCel = types.StringPointerValue(automationStepsItem.TaskAction.Reassign.SubjectUserIDCel)
+						if automationStepsItem.TaskAction.Reassign.SubjectUserRef == nil {
+							automationSteps.TaskAction.Reassign.SubjectUserRef = nil
 						} else {
-							automationSteps.TaskAction.ReassignAction.UserRef1 = &tfTypes.UserRef{}
-							automationSteps.TaskAction.ReassignAction.UserRef1.ID = types.StringPointerValue(automationStepsItem.TaskAction.ReassignAction.UserRef1.ID)
+							automationSteps.TaskAction.Reassign.SubjectUserRef = &tfTypes.UserRef{}
+							automationSteps.TaskAction.Reassign.SubjectUserRef.ID = types.StringPointerValue(automationStepsItem.TaskAction.Reassign.SubjectUserRef.ID)
 						}
-						automationSteps.TaskAction.ReassignAction.UseSubjectUser = types.BoolPointerValue(automationStepsItem.TaskAction.ReassignAction.UseSubjectUser)
+						automationSteps.TaskAction.Reassign.UseSubjectUser = types.BoolPointerValue(automationStepsItem.TaskAction.Reassign.UseSubjectUser)
 					}
 					if automationStepsItem.TaskAction.TaskTypes != nil {
 						automationSteps.TaskAction.TaskTypes = make([]types.String, 0, len(automationStepsItem.TaskAction.TaskTypes))
@@ -756,28 +752,38 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 		} else {
 			r.AutomationSteps = nil
 		}
+		if resp.CircuitBreaker == nil {
+			r.CircuitBreaker = nil
+		} else {
+			r.CircuitBreaker = &tfTypes.DisabledReasonCircuitBreaker{}
+			r.CircuitBreaker.ObservedCount = types.Int64PointerValue(resp.CircuitBreaker.ObservedCount)
+			if resp.CircuitBreaker.Period != nil {
+				r.CircuitBreaker.Period = types.StringValue(string(*resp.CircuitBreaker.Period))
+			} else {
+				r.CircuitBreaker.Period = types.StringNull()
+			}
+			r.CircuitBreaker.Threshold = types.Int64PointerValue(resp.CircuitBreaker.Threshold)
+			r.CircuitBreaker.TrippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CircuitBreaker.TrippedAt))
+		}
 		r.CircuitBreakerMax = types.Int64PointerValue(resp.CircuitBreakerMax)
 		if resp.CircuitBreakerPeriod != nil {
 			r.CircuitBreakerPeriod = types.StringValue(string(*resp.CircuitBreakerPeriod))
 		} else {
 			r.CircuitBreakerPeriod = types.StringNull()
 		}
+		if resp.Context == nil {
+			r.Context = nil
+		} else {
+			r.Context = &tfTypes.AutomationContext{}
+			if resp.Context.Context == nil {
+				r.Context.Context = nil
+			} else {
+				r.Context.Context = &tfTypes.Context{}
+			}
+		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.CurrentVersion = types.StringPointerValue(resp.CurrentVersion)
 		r.Description = types.StringPointerValue(resp.Description)
-		if resp.DisabledReasonCircuitBreaker == nil {
-			r.DisabledReasonCircuitBreaker = nil
-		} else {
-			r.DisabledReasonCircuitBreaker = &tfTypes.DisabledReasonCircuitBreaker{}
-			r.DisabledReasonCircuitBreaker.ObservedCount = types.Int64PointerValue(resp.DisabledReasonCircuitBreaker.ObservedCount)
-			if resp.DisabledReasonCircuitBreaker.Period != nil {
-				r.DisabledReasonCircuitBreaker.Period = types.StringValue(string(*resp.DisabledReasonCircuitBreaker.Period))
-			} else {
-				r.DisabledReasonCircuitBreaker.Period = types.StringNull()
-			}
-			r.DisabledReasonCircuitBreaker.Threshold = types.Int64PointerValue(resp.DisabledReasonCircuitBreaker.Threshold)
-			r.DisabledReasonCircuitBreaker.TrippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DisabledReasonCircuitBreaker.TrippedAt))
-		}
 		r.DisplayName = types.StringPointerValue(resp.DisplayName)
 		if resp.DraftAutomationSteps != nil {
 			r.DraftAutomationSteps = []tfTypes.AutomationStep{}
@@ -934,144 +940,149 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					draftAutomationSteps.CreateRevokeTasksV2 = nil
 				} else {
 					draftAutomationSteps.CreateRevokeTasksV2 = &tfTypes.CreateRevokeTasksV2{}
-					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria == nil {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria = nil
+					if draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria == nil {
+						draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria = nil
 					} else {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria = &tfTypes.EntitlementExclusionCriteria{}
-						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds != nil {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds))
-							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds {
-								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
+						draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria = &tfTypes.EntitlementExclusionCriteria{}
+						if draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds != nil {
+							draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds))
+							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds {
+								draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds = append(draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds = nil
+							draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds = nil
 						}
-						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
+						if draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+							draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+								draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds = append(draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
+							draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
-						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds != nil {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds))
-							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds {
-								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds, types.StringValue(v))
+						if draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds != nil {
+							draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds))
+							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds {
+								draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds = append(draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds = nil
+							draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds = nil
 						}
-						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds))
-							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds {
-								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
+						if draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+							draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds))
+							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds {
+								draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds = append(draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
+							draftAutomationSteps.CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
-					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionList == nil {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList = nil
+					if draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionList == nil {
+						draftAutomationSteps.CreateRevokeTasksV2.ExclusionList = nil
 					} else {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList = &tfTypes.EntitlementExclusionList{}
-						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+						draftAutomationSteps.CreateRevokeTasksV2.ExclusionList = &tfTypes.EntitlementExclusionList{}
+						if draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs != nil {
+							draftAutomationSteps.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-							for _, excludedAppEntitlementRefsItem4 := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs {
+							for _, excludedAppEntitlementRefsItem4 := range draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs {
 								var excludedAppEntitlementRefs4 tfTypes.AppEntitlementRef
 
 								excludedAppEntitlementRefs4.AppID = types.StringPointerValue(excludedAppEntitlementRefsItem4.AppID)
 								excludedAppEntitlementRefs4.ID = types.StringPointerValue(excludedAppEntitlementRefsItem4.ID)
 
-								draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs4)
+								draftAutomationSteps.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs4)
 							}
 						} else {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs = nil
+							draftAutomationSteps.CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
-					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionListCel == nil {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionListCel = nil
+					if draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionListCel == nil {
+						draftAutomationSteps.CreateRevokeTasksV2.ExclusionListCel = nil
 					} else {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionListCel = &tfTypes.EntitlementExclusionListCel{}
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel)
+						draftAutomationSteps.CreateRevokeTasksV2.ExclusionListCel = &tfTypes.EntitlementExclusionListCel{}
+						draftAutomationSteps.CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel)
 					}
-					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementExclusionNone == nil {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionNone = nil
+					if draftAutomationStepsItem.CreateRevokeTasksV2.ExclusionNone == nil {
+						draftAutomationSteps.CreateRevokeTasksV2.ExclusionNone = nil
 					} else {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementExclusionNone = &tfTypes.EntitlementExclusionNone{}
+						draftAutomationSteps.CreateRevokeTasksV2.ExclusionNone = &tfTypes.EntitlementExclusionNone{}
 					}
-					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionAccessOnly == nil {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionAccessOnly = nil
+					if draftAutomationStepsItem.CreateRevokeTasksV2.GrantSourceFilter != nil {
+						draftAutomationSteps.CreateRevokeTasksV2.GrantSourceFilter = types.StringValue(string(*draftAutomationStepsItem.CreateRevokeTasksV2.GrantSourceFilter))
 					} else {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionAccessOnly = &tfTypes.EntitlementInclusionAccessOnly{}
+						draftAutomationSteps.CreateRevokeTasksV2.GrantSourceFilter = types.StringNull()
 					}
-					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionAll == nil {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionAll = nil
+					if draftAutomationStepsItem.CreateRevokeTasksV2.InclusionAccessOnly == nil {
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionAccessOnly = nil
 					} else {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionAll = &tfTypes.EntitlementInclusionAll{}
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionAccessOnly = &tfTypes.EntitlementInclusionAccessOnly{}
 					}
-					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria == nil {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria = nil
+					if draftAutomationStepsItem.CreateRevokeTasksV2.InclusionAll == nil {
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionAll = nil
 					} else {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
-						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds != nil {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds))
-							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds {
-								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionAll = &tfTypes.EntitlementInclusionAll{}
+					}
+					if draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria == nil {
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria = nil
+					} else {
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
+						if draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.AppIds != nil {
+							draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.AppIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.AppIds))
+							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.AppIds {
+								draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.AppIds = append(draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.AppIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds = nil
+							draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.AppIds = nil
 						}
-						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
+						if draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds != nil {
+							draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds))
+							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds {
+								draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds = append(draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
+							draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds = nil
 						}
-						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds))
-							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds {
-								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
+						if draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds != nil {
+							draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds))
+							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds {
+								draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds = append(draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds = nil
+							draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds = nil
 						}
-						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds != nil {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds))
-							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds {
-								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
+						if draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds != nil {
+							draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds))
+							for _, v := range draftAutomationStepsItem.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds {
+								draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds = append(draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds = nil
+							draftAutomationSteps.CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds = nil
 						}
 					}
-					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionList == nil {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList = nil
+					if draftAutomationStepsItem.CreateRevokeTasksV2.InclusionList == nil {
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionList = nil
 					} else {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList = &tfTypes.EntitlementInclusionList{}
-						if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs != nil {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionList = &tfTypes.EntitlementInclusionList{}
+						if draftAutomationStepsItem.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs != nil {
+							draftAutomationSteps.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-							for _, appEntitlementRefsItem4 := range draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs {
+							for _, appEntitlementRefsItem4 := range draftAutomationStepsItem.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs {
 								var appEntitlementRefs4 tfTypes.AppEntitlementRef
 
 								appEntitlementRefs4.AppID = types.StringPointerValue(appEntitlementRefsItem4.AppID)
 								appEntitlementRefs4.ID = types.StringPointerValue(appEntitlementRefsItem4.ID)
 
-								draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs4)
+								draftAutomationSteps.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs = append(draftAutomationSteps.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs, appEntitlementRefs4)
 							}
 						} else {
-							draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs = nil
+							draftAutomationSteps.CreateRevokeTasksV2.InclusionList.AppEntitlementRefs = nil
 						}
 					}
-					if draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionListCel == nil {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionListCel = nil
+					if draftAutomationStepsItem.CreateRevokeTasksV2.InclusionListCel == nil {
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionListCel = nil
 					} else {
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionListCel = &tfTypes.EntitlementInclusionListCel{}
-						draftAutomationSteps.CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel)
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionListCel = &tfTypes.EntitlementInclusionListCel{}
+						draftAutomationSteps.CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel)
 					}
 					draftAutomationSteps.CreateRevokeTasksV2.UserIDCel = types.StringPointerValue(draftAutomationStepsItem.CreateRevokeTasksV2.UserIDCel)
 					if draftAutomationStepsItem.CreateRevokeTasksV2.UserRef == nil {
@@ -1106,138 +1117,138 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					draftAutomationSteps.GeneratePassword = nil
 				} else {
 					draftAutomationSteps.GeneratePassword = &tfTypes.GeneratePassword{}
-					if draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy == nil {
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy = nil
-					} else {
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy = &tfTypes.GeneratePasswordPolicy{}
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.CustomCharacters = types.StringPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.CustomCharacters)
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters = types.StringPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters)
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount))
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.MinCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.MinCharacterCount))
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.NoRestrictions = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.NoRestrictions)
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.RequireLowercase = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireLowercase)
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.RequireNumbers = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireNumbers)
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters)
-						draftAutomationSteps.GeneratePassword.GeneratePasswordPolicy.RequireUppercase = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.GeneratePasswordPolicy.RequireUppercase)
-					}
 					draftAutomationSteps.GeneratePassword.PasswordPolicyID = types.StringPointerValue(draftAutomationStepsItem.GeneratePassword.PasswordPolicyID)
+					if draftAutomationStepsItem.GeneratePassword.Policy == nil {
+						draftAutomationSteps.GeneratePassword.Policy = nil
+					} else {
+						draftAutomationSteps.GeneratePassword.Policy = &tfTypes.GeneratePasswordPolicy{}
+						draftAutomationSteps.GeneratePassword.Policy.CustomCharacters = types.StringPointerValue(draftAutomationStepsItem.GeneratePassword.Policy.CustomCharacters)
+						draftAutomationSteps.GeneratePassword.Policy.ExcludedCharacters = types.StringPointerValue(draftAutomationStepsItem.GeneratePassword.Policy.ExcludedCharacters)
+						draftAutomationSteps.GeneratePassword.Policy.MaxCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(draftAutomationStepsItem.GeneratePassword.Policy.MaxCharacterCount))
+						draftAutomationSteps.GeneratePassword.Policy.MinCharacterCount = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(draftAutomationStepsItem.GeneratePassword.Policy.MinCharacterCount))
+						draftAutomationSteps.GeneratePassword.Policy.NoRestrictions = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.Policy.NoRestrictions)
+						draftAutomationSteps.GeneratePassword.Policy.RequireLowercase = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.Policy.RequireLowercase)
+						draftAutomationSteps.GeneratePassword.Policy.RequireNumbers = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.Policy.RequireNumbers)
+						draftAutomationSteps.GeneratePassword.Policy.RequireSpecialCharacters = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.Policy.RequireSpecialCharacters)
+						draftAutomationSteps.GeneratePassword.Policy.RequireUppercase = types.BoolPointerValue(draftAutomationStepsItem.GeneratePassword.Policy.RequireUppercase)
+					}
 				}
 				if draftAutomationStepsItem.GrantEntitlements == nil {
 					draftAutomationSteps.GrantEntitlements = nil
 				} else {
 					draftAutomationSteps.GrantEntitlements = &tfTypes.GrantEntitlements{}
-					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria == nil {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria = nil
+					if draftAutomationStepsItem.GrantEntitlements.ExclusionCriteria == nil {
+						draftAutomationSteps.GrantEntitlements.ExclusionCriteria = nil
 					} else {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria = &tfTypes.GrantEntitlementExclusionCriteria{}
-						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds != nil {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds))
-							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds {
-								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds, types.StringValue(v))
+						draftAutomationSteps.GrantEntitlements.ExclusionCriteria = &tfTypes.GrantEntitlementExclusionCriteria{}
+						if draftAutomationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedAppIds != nil {
+							draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedAppIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedAppIds))
+							for _, v := range draftAutomationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedAppIds {
+								draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedAppIds = append(draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedAppIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds = nil
+							draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedAppIds = nil
 						}
-						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
+						if draftAutomationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+							draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+							for _, v := range draftAutomationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+								draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds = append(draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds = nil
+							draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds = nil
 						}
-						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds))
-							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds {
-								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
+						if draftAutomationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+							draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds))
+							for _, v := range draftAutomationStepsItem.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds {
+								draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds = append(draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds = nil
+							draftAutomationSteps.GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds = nil
 						}
 					}
-					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionList == nil {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList = nil
+					if draftAutomationStepsItem.GrantEntitlements.ExclusionList == nil {
+						draftAutomationSteps.GrantEntitlements.ExclusionList = nil
 					} else {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList = &tfTypes.GrantEntitlementExclusionList{}
-						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+						draftAutomationSteps.GrantEntitlements.ExclusionList = &tfTypes.GrantEntitlementExclusionList{}
+						if draftAutomationStepsItem.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs != nil {
+							draftAutomationSteps.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-							for _, excludedAppEntitlementRefsItem5 := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs {
+							for _, excludedAppEntitlementRefsItem5 := range draftAutomationStepsItem.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs {
 								var excludedAppEntitlementRefs5 tfTypes.AppEntitlementRef
 
 								excludedAppEntitlementRefs5.AppID = types.StringPointerValue(excludedAppEntitlementRefsItem5.AppID)
 								excludedAppEntitlementRefs5.ID = types.StringPointerValue(excludedAppEntitlementRefsItem5.ID)
 
-								draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs5)
+								draftAutomationSteps.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs = append(draftAutomationSteps.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs, excludedAppEntitlementRefs5)
 							}
 						} else {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs = nil
+							draftAutomationSteps.GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs = nil
 						}
 					}
-					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionListCel == nil {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionListCel = nil
+					if draftAutomationStepsItem.GrantEntitlements.ExclusionListCel == nil {
+						draftAutomationSteps.GrantEntitlements.ExclusionListCel = nil
 					} else {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionListCel = &tfTypes.GrantEntitlementExclusionListCel{}
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel)
+						draftAutomationSteps.GrantEntitlements.ExclusionListCel = &tfTypes.GrantEntitlementExclusionListCel{}
+						draftAutomationSteps.GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel)
 					}
-					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementExclusionNone == nil {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionNone = nil
+					if draftAutomationStepsItem.GrantEntitlements.ExclusionNone == nil {
+						draftAutomationSteps.GrantEntitlements.ExclusionNone = nil
 					} else {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementExclusionNone = &tfTypes.GrantEntitlementExclusionNone{}
+						draftAutomationSteps.GrantEntitlements.ExclusionNone = &tfTypes.GrantEntitlementExclusionNone{}
 					}
-					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria == nil {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria = nil
+					if draftAutomationStepsItem.GrantEntitlements.InclusionCriteria == nil {
+						draftAutomationSteps.GrantEntitlements.InclusionCriteria = nil
 					} else {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria = &tfTypes.GrantEntitlementInclusionCriteria{}
-						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds != nil {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds))
-							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds {
-								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds, types.StringValue(v))
+						draftAutomationSteps.GrantEntitlements.InclusionCriteria = &tfTypes.GrantEntitlementInclusionCriteria{}
+						if draftAutomationStepsItem.GrantEntitlements.InclusionCriteria.AppIds != nil {
+							draftAutomationSteps.GrantEntitlements.InclusionCriteria.AppIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.InclusionCriteria.AppIds))
+							for _, v := range draftAutomationStepsItem.GrantEntitlements.InclusionCriteria.AppIds {
+								draftAutomationSteps.GrantEntitlements.InclusionCriteria.AppIds = append(draftAutomationSteps.GrantEntitlements.InclusionCriteria.AppIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds = nil
+							draftAutomationSteps.GrantEntitlements.InclusionCriteria.AppIds = nil
 						}
-						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds {
-								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
+						if draftAutomationStepsItem.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds != nil {
+							draftAutomationSteps.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds))
+							for _, v := range draftAutomationStepsItem.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds {
+								draftAutomationSteps.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds = append(draftAutomationSteps.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds = nil
+							draftAutomationSteps.GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds = nil
 						}
-						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds != nil {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds))
-							for _, v := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds {
-								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
+						if draftAutomationStepsItem.GrantEntitlements.InclusionCriteria.RiskLevelIds != nil {
+							draftAutomationSteps.GrantEntitlements.InclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftAutomationStepsItem.GrantEntitlements.InclusionCriteria.RiskLevelIds))
+							for _, v := range draftAutomationStepsItem.GrantEntitlements.InclusionCriteria.RiskLevelIds {
+								draftAutomationSteps.GrantEntitlements.InclusionCriteria.RiskLevelIds = append(draftAutomationSteps.GrantEntitlements.InclusionCriteria.RiskLevelIds, types.StringValue(v))
 							}
 						} else {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds = nil
+							draftAutomationSteps.GrantEntitlements.InclusionCriteria.RiskLevelIds = nil
 						}
 					}
-					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionList == nil {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList = nil
+					if draftAutomationStepsItem.GrantEntitlements.InclusionList == nil {
+						draftAutomationSteps.GrantEntitlements.InclusionList = nil
 					} else {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList = &tfTypes.GrantEntitlementInclusionList{}
-						if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs != nil {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+						draftAutomationSteps.GrantEntitlements.InclusionList = &tfTypes.GrantEntitlementInclusionList{}
+						if draftAutomationStepsItem.GrantEntitlements.InclusionList.AppEntitlementRefs != nil {
+							draftAutomationSteps.GrantEntitlements.InclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-							for _, appEntitlementRefsItem5 := range draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs {
+							for _, appEntitlementRefsItem5 := range draftAutomationStepsItem.GrantEntitlements.InclusionList.AppEntitlementRefs {
 								var appEntitlementRefs5 tfTypes.AppEntitlementRef
 
 								appEntitlementRefs5.AppID = types.StringPointerValue(appEntitlementRefsItem5.AppID)
 								appEntitlementRefs5.ID = types.StringPointerValue(appEntitlementRefsItem5.ID)
 
-								draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = append(draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs5)
+								draftAutomationSteps.GrantEntitlements.InclusionList.AppEntitlementRefs = append(draftAutomationSteps.GrantEntitlements.InclusionList.AppEntitlementRefs, appEntitlementRefs5)
 							}
 						} else {
-							draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs = nil
+							draftAutomationSteps.GrantEntitlements.InclusionList.AppEntitlementRefs = nil
 						}
 					}
-					if draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionListCel == nil {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionListCel = nil
+					if draftAutomationStepsItem.GrantEntitlements.InclusionListCel == nil {
+						draftAutomationSteps.GrantEntitlements.InclusionListCel = nil
 					} else {
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionListCel = &tfTypes.GrantEntitlementInclusionListCel{}
-						draftAutomationSteps.GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel)
+						draftAutomationSteps.GrantEntitlements.InclusionListCel = &tfTypes.GrantEntitlementInclusionListCel{}
+						draftAutomationSteps.GrantEntitlements.InclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(draftAutomationStepsItem.GrantEntitlements.InclusionListCel.AppEntitlementRefsCel)
 					}
 					draftAutomationSteps.GrantEntitlements.UserIDCel = types.StringPointerValue(draftAutomationStepsItem.GrantEntitlements.UserIDCel)
 					if draftAutomationStepsItem.GrantEntitlements.UserRef == nil {
@@ -1253,6 +1264,12 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					draftAutomationSteps.RemoveFromDelegation = &tfTypes.RemoveFromDelegation{}
 					draftAutomationSteps.RemoveFromDelegation.ReplacementUserIDCel = types.StringPointerValue(draftAutomationStepsItem.RemoveFromDelegation.ReplacementUserIDCel)
+					if draftAutomationStepsItem.RemoveFromDelegation.ReplacementUserRef == nil {
+						draftAutomationSteps.RemoveFromDelegation.ReplacementUserRef = nil
+					} else {
+						draftAutomationSteps.RemoveFromDelegation.ReplacementUserRef = &tfTypes.UserRef{}
+						draftAutomationSteps.RemoveFromDelegation.ReplacementUserRef.ID = types.StringPointerValue(draftAutomationStepsItem.RemoveFromDelegation.ReplacementUserRef.ID)
+					}
 					draftAutomationSteps.RemoveFromDelegation.UserIDCel = types.StringPointerValue(draftAutomationStepsItem.RemoveFromDelegation.UserIDCel)
 					if draftAutomationStepsItem.RemoveFromDelegation.UserRef == nil {
 						draftAutomationSteps.RemoveFromDelegation.UserRef = nil
@@ -1260,34 +1277,28 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 						draftAutomationSteps.RemoveFromDelegation.UserRef = &tfTypes.UserRef{}
 						draftAutomationSteps.RemoveFromDelegation.UserRef.ID = types.StringPointerValue(draftAutomationStepsItem.RemoveFromDelegation.UserRef.ID)
 					}
-					if draftAutomationStepsItem.RemoveFromDelegation.UserRef1 == nil {
-						draftAutomationSteps.RemoveFromDelegation.UserRef1 = nil
-					} else {
-						draftAutomationSteps.RemoveFromDelegation.UserRef1 = &tfTypes.UserRef{}
-						draftAutomationSteps.RemoveFromDelegation.UserRef1.ID = types.StringPointerValue(draftAutomationStepsItem.RemoveFromDelegation.UserRef1.ID)
-					}
 					draftAutomationSteps.RemoveFromDelegation.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.RemoveFromDelegation.UseSubjectUser)
 				}
 				if draftAutomationStepsItem.RunAutomation == nil {
 					draftAutomationSteps.RunAutomation = nil
 				} else {
 					draftAutomationSteps.RunAutomation = &tfTypes.RunAutomation{}
-					if draftAutomationStepsItem.RunAutomation.AutomationContext == nil {
-						draftAutomationSteps.RunAutomation.AutomationContext = nil
-					} else {
-						draftAutomationSteps.RunAutomation.AutomationContext = &tfTypes.AutomationContext{}
-						if draftAutomationStepsItem.RunAutomation.AutomationContext.Context == nil {
-							draftAutomationSteps.RunAutomation.AutomationContext.Context = nil
-						} else {
-							draftAutomationSteps.RunAutomation.AutomationContext.Context = &tfTypes.Context{}
-						}
-					}
 					draftAutomationSteps.RunAutomation.AutomationTemplateIDCel = types.StringPointerValue(draftAutomationStepsItem.RunAutomation.AutomationTemplateIDCel)
 					if draftAutomationStepsItem.RunAutomation.AutomationTemplateRef == nil {
 						draftAutomationSteps.RunAutomation.AutomationTemplateRef = nil
 					} else {
 						draftAutomationSteps.RunAutomation.AutomationTemplateRef = &tfTypes.AutomationTemplateRef{}
 						draftAutomationSteps.RunAutomation.AutomationTemplateRef.ID = types.StringPointerValue(draftAutomationStepsItem.RunAutomation.AutomationTemplateRef.ID)
+					}
+					if draftAutomationStepsItem.RunAutomation.Context == nil {
+						draftAutomationSteps.RunAutomation.Context = nil
+					} else {
+						draftAutomationSteps.RunAutomation.Context = &tfTypes.AutomationContext{}
+						if draftAutomationStepsItem.RunAutomation.Context.Context == nil {
+							draftAutomationSteps.RunAutomation.Context.Context = nil
+						} else {
+							draftAutomationSteps.RunAutomation.Context.Context = &tfTypes.Context{}
+						}
 					}
 				}
 				if draftAutomationStepsItem.SendEmail == nil {
@@ -1320,6 +1331,7 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 				} else {
 					draftAutomationSteps.SendSlackMessage = &tfTypes.SendSlackMessage{}
 					draftAutomationSteps.SendSlackMessage.Body = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.Body)
+					draftAutomationSteps.SendSlackMessage.ChannelIsID = types.BoolPointerValue(draftAutomationStepsItem.SendSlackMessage.ChannelIsID)
 					draftAutomationSteps.SendSlackMessage.ChannelName = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.ChannelName)
 					draftAutomationSteps.SendSlackMessage.ChannelNameCel = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.ChannelNameCel)
 					draftAutomationSteps.SendSlackMessage.UserIdsCel = types.StringPointerValue(draftAutomationStepsItem.SendSlackMessage.UserIdsCel)
@@ -1382,38 +1394,38 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 					draftAutomationSteps.TaskAction = nil
 				} else {
 					draftAutomationSteps.TaskAction = &tfTypes.TaskAction{}
-					if draftAutomationStepsItem.TaskAction.CloseAction == nil {
-						draftAutomationSteps.TaskAction.CloseAction = nil
+					if draftAutomationStepsItem.TaskAction.Close == nil {
+						draftAutomationSteps.TaskAction.Close = nil
 					} else {
-						draftAutomationSteps.TaskAction.CloseAction = &tfTypes.CloseAction{}
-						draftAutomationSteps.TaskAction.CloseAction.UserIDCel = types.StringPointerValue(draftAutomationStepsItem.TaskAction.CloseAction.UserIDCel)
-						if draftAutomationStepsItem.TaskAction.CloseAction.UserRef == nil {
-							draftAutomationSteps.TaskAction.CloseAction.UserRef = nil
+						draftAutomationSteps.TaskAction.Close = &tfTypes.CloseAction{}
+						draftAutomationSteps.TaskAction.Close.UserIDCel = types.StringPointerValue(draftAutomationStepsItem.TaskAction.Close.UserIDCel)
+						if draftAutomationStepsItem.TaskAction.Close.UserRef == nil {
+							draftAutomationSteps.TaskAction.Close.UserRef = nil
 						} else {
-							draftAutomationSteps.TaskAction.CloseAction.UserRef = &tfTypes.UserRef{}
-							draftAutomationSteps.TaskAction.CloseAction.UserRef.ID = types.StringPointerValue(draftAutomationStepsItem.TaskAction.CloseAction.UserRef.ID)
+							draftAutomationSteps.TaskAction.Close.UserRef = &tfTypes.UserRef{}
+							draftAutomationSteps.TaskAction.Close.UserRef.ID = types.StringPointerValue(draftAutomationStepsItem.TaskAction.Close.UserRef.ID)
 						}
-						draftAutomationSteps.TaskAction.CloseAction.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.TaskAction.CloseAction.UseSubjectUser)
+						draftAutomationSteps.TaskAction.Close.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.TaskAction.Close.UseSubjectUser)
 					}
-					if draftAutomationStepsItem.TaskAction.ReassignAction == nil {
-						draftAutomationSteps.TaskAction.ReassignAction = nil
+					if draftAutomationStepsItem.TaskAction.Reassign == nil {
+						draftAutomationSteps.TaskAction.Reassign = nil
 					} else {
-						draftAutomationSteps.TaskAction.ReassignAction = &tfTypes.ReassignAction{}
-						draftAutomationSteps.TaskAction.ReassignAction.AssigneeUserIDCel = types.StringPointerValue(draftAutomationStepsItem.TaskAction.ReassignAction.AssigneeUserIDCel)
-						draftAutomationSteps.TaskAction.ReassignAction.SubjectUserIDCel = types.StringPointerValue(draftAutomationStepsItem.TaskAction.ReassignAction.SubjectUserIDCel)
-						if draftAutomationStepsItem.TaskAction.ReassignAction.UserRef == nil {
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef = nil
+						draftAutomationSteps.TaskAction.Reassign = &tfTypes.ReassignAction{}
+						draftAutomationSteps.TaskAction.Reassign.AssigneeUserIDCel = types.StringPointerValue(draftAutomationStepsItem.TaskAction.Reassign.AssigneeUserIDCel)
+						if draftAutomationStepsItem.TaskAction.Reassign.AssigneeUserRef == nil {
+							draftAutomationSteps.TaskAction.Reassign.AssigneeUserRef = nil
 						} else {
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef = &tfTypes.UserRef{}
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef.ID = types.StringPointerValue(draftAutomationStepsItem.TaskAction.ReassignAction.UserRef.ID)
+							draftAutomationSteps.TaskAction.Reassign.AssigneeUserRef = &tfTypes.UserRef{}
+							draftAutomationSteps.TaskAction.Reassign.AssigneeUserRef.ID = types.StringPointerValue(draftAutomationStepsItem.TaskAction.Reassign.AssigneeUserRef.ID)
 						}
-						if draftAutomationStepsItem.TaskAction.ReassignAction.UserRef1 == nil {
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef1 = nil
+						draftAutomationSteps.TaskAction.Reassign.SubjectUserIDCel = types.StringPointerValue(draftAutomationStepsItem.TaskAction.Reassign.SubjectUserIDCel)
+						if draftAutomationStepsItem.TaskAction.Reassign.SubjectUserRef == nil {
+							draftAutomationSteps.TaskAction.Reassign.SubjectUserRef = nil
 						} else {
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef1 = &tfTypes.UserRef{}
-							draftAutomationSteps.TaskAction.ReassignAction.UserRef1.ID = types.StringPointerValue(draftAutomationStepsItem.TaskAction.ReassignAction.UserRef1.ID)
+							draftAutomationSteps.TaskAction.Reassign.SubjectUserRef = &tfTypes.UserRef{}
+							draftAutomationSteps.TaskAction.Reassign.SubjectUserRef.ID = types.StringPointerValue(draftAutomationStepsItem.TaskAction.Reassign.SubjectUserRef.ID)
 						}
-						draftAutomationSteps.TaskAction.ReassignAction.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.TaskAction.ReassignAction.UseSubjectUser)
+						draftAutomationSteps.TaskAction.Reassign.UseSubjectUser = types.BoolPointerValue(draftAutomationStepsItem.TaskAction.Reassign.UseSubjectUser)
 					}
 					if draftAutomationStepsItem.TaskAction.TaskTypes != nil {
 						draftAutomationSteps.TaskAction.TaskTypes = make([]types.String, 0, len(draftAutomationStepsItem.TaskAction.TaskTypes))
@@ -1507,392 +1519,392 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 			for _, draftTriggersItem := range resp.DraftTriggers {
 				var draftTriggers tfTypes.AutomationTrigger
 
-				if draftTriggersItem.AccessConflictTrigger == nil {
-					draftTriggers.AccessConflictTrigger = nil
+				if draftTriggersItem.AccessConflict == nil {
+					draftTriggers.AccessConflict = nil
 				} else {
-					draftTriggers.AccessConflictTrigger = &tfTypes.AccessConflictTrigger{}
-					draftTriggers.AccessConflictTrigger.AllConflictMonitors = types.BoolPointerValue(draftTriggersItem.AccessConflictTrigger.AllConflictMonitors)
-					if draftTriggersItem.AccessConflictTrigger.ConflictMonitorRefs == nil {
-						draftTriggers.AccessConflictTrigger.ConflictMonitorRefs = nil
+					draftTriggers.AccessConflict = &tfTypes.AccessConflictTrigger{}
+					draftTriggers.AccessConflict.AllConflictMonitors = types.BoolPointerValue(draftTriggersItem.AccessConflict.AllConflictMonitors)
+					if draftTriggersItem.AccessConflict.ConflictMonitorRefs == nil {
+						draftTriggers.AccessConflict.ConflictMonitorRefs = nil
 					} else {
-						draftTriggers.AccessConflictTrigger.ConflictMonitorRefs = &tfTypes.ConflictMonitorRefs{}
-						if draftTriggersItem.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs != nil {
-							draftTriggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = []tfTypes.ConflictMonitorRef{}
+						draftTriggers.AccessConflict.ConflictMonitorRefs = &tfTypes.ConflictMonitorRefs{}
+						if draftTriggersItem.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs != nil {
+							draftTriggers.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs = []tfTypes.ConflictMonitorRef{}
 
-							for _, conflictMonitorRefsItem := range draftTriggersItem.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs {
+							for _, conflictMonitorRefsItem := range draftTriggersItem.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs {
 								var conflictMonitorRefs tfTypes.ConflictMonitorRef
 
 								conflictMonitorRefs.ID = types.StringPointerValue(conflictMonitorRefsItem.ID)
 
-								draftTriggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = append(draftTriggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs, conflictMonitorRefs)
+								draftTriggers.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs = append(draftTriggers.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs, conflictMonitorRefs)
 							}
 						} else {
-							draftTriggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = nil
+							draftTriggers.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs = nil
 						}
 					}
 				}
-				if draftTriggersItem.AppUserCreatedTrigger == nil {
-					draftTriggers.AppUserCreatedTrigger = nil
+				if draftTriggersItem.AppUserCreated == nil {
+					draftTriggers.AppUserCreated = nil
 				} else {
-					draftTriggers.AppUserCreatedTrigger = &tfTypes.AppUserCreatedTrigger{}
-					draftTriggers.AppUserCreatedTrigger.AppID = types.StringPointerValue(draftTriggersItem.AppUserCreatedTrigger.AppID)
-					draftTriggers.AppUserCreatedTrigger.AppIDCel = types.StringPointerValue(draftTriggersItem.AppUserCreatedTrigger.AppIDCel)
-					draftTriggers.AppUserCreatedTrigger.Condition = types.StringPointerValue(draftTriggersItem.AppUserCreatedTrigger.Condition)
+					draftTriggers.AppUserCreated = &tfTypes.AppUserCreatedTrigger{}
+					draftTriggers.AppUserCreated.AppID = types.StringPointerValue(draftTriggersItem.AppUserCreated.AppID)
+					draftTriggers.AppUserCreated.AppIDCel = types.StringPointerValue(draftTriggersItem.AppUserCreated.AppIDCel)
+					draftTriggers.AppUserCreated.Condition = types.StringPointerValue(draftTriggersItem.AppUserCreated.Condition)
 				}
-				if draftTriggersItem.AppUserUpdatedTrigger == nil {
-					draftTriggers.AppUserUpdatedTrigger = nil
+				if draftTriggersItem.AppUserUpdated == nil {
+					draftTriggers.AppUserUpdated = nil
 				} else {
-					draftTriggers.AppUserUpdatedTrigger = &tfTypes.AppUserUpdatedTrigger{}
-					draftTriggers.AppUserUpdatedTrigger.AppID = types.StringPointerValue(draftTriggersItem.AppUserUpdatedTrigger.AppID)
-					draftTriggers.AppUserUpdatedTrigger.AppIDCel = types.StringPointerValue(draftTriggersItem.AppUserUpdatedTrigger.AppIDCel)
-					draftTriggers.AppUserUpdatedTrigger.Condition = types.StringPointerValue(draftTriggersItem.AppUserUpdatedTrigger.Condition)
+					draftTriggers.AppUserUpdated = &tfTypes.AppUserUpdatedTrigger{}
+					draftTriggers.AppUserUpdated.AppID = types.StringPointerValue(draftTriggersItem.AppUserUpdated.AppID)
+					draftTriggers.AppUserUpdated.AppIDCel = types.StringPointerValue(draftTriggersItem.AppUserUpdated.AppIDCel)
+					draftTriggers.AppUserUpdated.Condition = types.StringPointerValue(draftTriggersItem.AppUserUpdated.Condition)
 				}
-				if draftTriggersItem.GrantDeletedTrigger == nil {
-					draftTriggers.GrantDeletedTrigger = nil
+				if draftTriggersItem.GrantDeleted == nil {
+					draftTriggers.GrantDeleted = nil
 				} else {
-					draftTriggers.GrantDeletedTrigger = &tfTypes.GrantDeletedTrigger{}
-					if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter == nil {
-						draftTriggers.GrantDeletedTrigger.GrantTriggerFilter = nil
+					draftTriggers.GrantDeleted = &tfTypes.GrantDeletedTrigger{}
+					if draftTriggersItem.GrantDeleted.GrantTriggerFilter == nil {
+						draftTriggers.GrantDeleted.GrantTriggerFilter = nil
 					} else {
-						draftTriggers.GrantDeletedTrigger.GrantTriggerFilter = &tfTypes.GrantTriggerFilter{}
-						if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter == nil {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter = nil
+						draftTriggers.GrantDeleted.GrantTriggerFilter = &tfTypes.GrantTriggerFilter{}
+						if draftTriggersItem.GrantDeleted.GrantTriggerFilter.AccountFilter == nil {
+							draftTriggers.GrantDeleted.GrantTriggerFilter.AccountFilter = nil
 						} else {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter = &tfTypes.AccountFilter{}
-							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType != nil {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType = types.StringValue(string(*draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType))
+							draftTriggers.GrantDeleted.GrantTriggerFilter.AccountFilter = &tfTypes.AccountFilter{}
+							if draftTriggersItem.GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType != nil {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType = types.StringValue(string(*draftTriggersItem.GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType))
 							} else {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType = types.StringNull()
+								draftTriggers.GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType = types.StringNull()
 							}
 						}
-						if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionAll == nil {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionAll = nil
+						if draftTriggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter == nil {
+							draftTriggers.GrantDeleted.GrantTriggerFilter.GrantFilter = nil
 						} else {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionAll = &tfTypes.EntitlementInclusionAll{}
-						}
-						if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria == nil {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria = nil
-						} else {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
-							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = make([]types.String, 0, len(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
-								}
+							draftTriggers.GrantDeleted.GrantTriggerFilter.GrantFilter = &tfTypes.GrantFilter{}
+							if draftTriggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType != nil {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringValue(string(*draftTriggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType))
 							} else {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
+								draftTriggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringNull()
 							}
-							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
-								}
+							if draftTriggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType != nil {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringValue(string(*draftTriggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType))
 							} else {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
+								draftTriggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringNull()
 							}
-							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
-								}
+							if draftTriggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter != nil {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringValue(string(*draftTriggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter))
 							} else {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
-							}
-							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-								for _, v := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
-								}
-							} else {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
+								draftTriggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringNull()
 							}
 						}
-						if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList = nil
+						if draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionAll == nil {
+							draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionAll = nil
 						} else {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList = &tfTypes.EntitlementInclusionList{}
-							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+							draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionAll = &tfTypes.EntitlementInclusionAll{}
+						}
+						if draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria == nil {
+							draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria = nil
+						} else {
+							draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
+							if draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds = make([]types.String, 0, len(draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds))
+								for _, v := range draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds {
+									draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds = append(draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds, types.StringValue(v))
+								}
+							} else {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds = nil
+							}
+							if draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+								for _, v := range draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+									draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = append(draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
+								}
+							} else {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = nil
+							}
+							if draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+								for _, v := range draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+									draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = append(draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds, types.StringValue(v))
+								}
+							} else {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = nil
+							}
+							if draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+								for _, v := range draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+									draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = append(draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds, types.StringValue(v))
+								}
+							} else {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = nil
+							}
+						}
+						if draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionList == nil {
+							draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionList = nil
+						} else {
+							draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionList = &tfTypes.EntitlementInclusionList{}
+							if draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+								draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-								for _, appEntitlementRefsItem6 := range draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+								for _, appEntitlementRefsItem6 := range draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 									var appEntitlementRefs6 tfTypes.AppEntitlementRef
 
 									appEntitlementRefs6.AppID = types.StringPointerValue(appEntitlementRefsItem6.AppID)
 									appEntitlementRefs6.ID = types.StringPointerValue(appEntitlementRefsItem6.ID)
 
-									draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs6)
+									draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs = append(draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs, appEntitlementRefs6)
 								}
 							} else {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
+								draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs = nil
 							}
 						}
-						if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel = nil
+						if draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionListCel == nil {
+							draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionListCel = nil
 						} else {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel = &tfTypes.EntitlementInclusionListCel{}
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel)
-						}
-						if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter == nil {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter = nil
-						} else {
-							draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter = &tfTypes.GrantFilter{}
-							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType != nil {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringValue(string(*draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType))
-							} else {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringNull()
-							}
-							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType != nil {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringValue(string(*draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType))
-							} else {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringNull()
-							}
-							if draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter != nil {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringValue(string(*draftTriggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter))
-							} else {
-								draftTriggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringNull()
-							}
+							draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionListCel = &tfTypes.EntitlementInclusionListCel{}
+							draftTriggers.GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(draftTriggersItem.GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel)
 						}
 					}
 				}
-				if draftTriggersItem.GrantFoundTrigger == nil {
-					draftTriggers.GrantFoundTrigger = nil
+				if draftTriggersItem.GrantFound == nil {
+					draftTriggers.GrantFound = nil
 				} else {
-					draftTriggers.GrantFoundTrigger = &tfTypes.GrantFoundTrigger{}
-					if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter == nil {
-						draftTriggers.GrantFoundTrigger.GrantTriggerFilter = nil
+					draftTriggers.GrantFound = &tfTypes.GrantFoundTrigger{}
+					if draftTriggersItem.GrantFound.GrantTriggerFilter == nil {
+						draftTriggers.GrantFound.GrantTriggerFilter = nil
 					} else {
-						draftTriggers.GrantFoundTrigger.GrantTriggerFilter = &tfTypes.GrantTriggerFilter{}
-						if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.AccountFilter == nil {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.AccountFilter = nil
+						draftTriggers.GrantFound.GrantTriggerFilter = &tfTypes.GrantTriggerFilter{}
+						if draftTriggersItem.GrantFound.GrantTriggerFilter.AccountFilter == nil {
+							draftTriggers.GrantFound.GrantTriggerFilter.AccountFilter = nil
 						} else {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.AccountFilter = &tfTypes.AccountFilter{}
-							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType != nil {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType = types.StringValue(string(*draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType))
+							draftTriggers.GrantFound.GrantTriggerFilter.AccountFilter = &tfTypes.AccountFilter{}
+							if draftTriggersItem.GrantFound.GrantTriggerFilter.AccountFilter.AccountType != nil {
+								draftTriggers.GrantFound.GrantTriggerFilter.AccountFilter.AccountType = types.StringValue(string(*draftTriggersItem.GrantFound.GrantTriggerFilter.AccountFilter.AccountType))
 							} else {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType = types.StringNull()
+								draftTriggers.GrantFound.GrantTriggerFilter.AccountFilter.AccountType = types.StringNull()
 							}
 						}
-						if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionAll == nil {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionAll = nil
+						if draftTriggersItem.GrantFound.GrantTriggerFilter.GrantFilter == nil {
+							draftTriggers.GrantFound.GrantTriggerFilter.GrantFilter = nil
 						} else {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionAll = &tfTypes.EntitlementInclusionAll{}
-						}
-						if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria == nil {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria = nil
-						} else {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
-							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = make([]types.String, 0, len(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
-								}
+							draftTriggers.GrantFound.GrantTriggerFilter.GrantFilter = &tfTypes.GrantFilter{}
+							if draftTriggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType != nil {
+								draftTriggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringValue(string(*draftTriggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType))
 							} else {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
+								draftTriggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringNull()
 							}
-							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
-								}
+							if draftTriggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType != nil {
+								draftTriggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringValue(string(*draftTriggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType))
 							} else {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
+								draftTriggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringNull()
 							}
-							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
-								}
+							if draftTriggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter != nil {
+								draftTriggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringValue(string(*draftTriggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter))
 							} else {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
-							}
-							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-								for _, v := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
-								}
-							} else {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
+								draftTriggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringNull()
 							}
 						}
-						if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList = nil
+						if draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionAll == nil {
+							draftTriggers.GrantFound.GrantTriggerFilter.InclusionAll = nil
 						} else {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList = &tfTypes.EntitlementInclusionList{}
-							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+							draftTriggers.GrantFound.GrantTriggerFilter.InclusionAll = &tfTypes.EntitlementInclusionAll{}
+						}
+						if draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria == nil {
+							draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria = nil
+						} else {
+							draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
+							if draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+								draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds = make([]types.String, 0, len(draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds))
+								for _, v := range draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds {
+									draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds = append(draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds, types.StringValue(v))
+								}
+							} else {
+								draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds = nil
+							}
+							if draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+								draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+								for _, v := range draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+									draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = append(draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
+								}
+							} else {
+								draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = nil
+							}
+							if draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+								draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+								for _, v := range draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+									draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = append(draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds, types.StringValue(v))
+								}
+							} else {
+								draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = nil
+							}
+							if draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+								draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = make([]types.String, 0, len(draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+								for _, v := range draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+									draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = append(draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds, types.StringValue(v))
+								}
+							} else {
+								draftTriggers.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = nil
+							}
+						}
+						if draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionList == nil {
+							draftTriggers.GrantFound.GrantTriggerFilter.InclusionList = nil
+						} else {
+							draftTriggers.GrantFound.GrantTriggerFilter.InclusionList = &tfTypes.EntitlementInclusionList{}
+							if draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+								draftTriggers.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-								for _, appEntitlementRefsItem7 := range draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+								for _, appEntitlementRefsItem7 := range draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 									var appEntitlementRefs7 tfTypes.AppEntitlementRef
 
 									appEntitlementRefs7.AppID = types.StringPointerValue(appEntitlementRefsItem7.AppID)
 									appEntitlementRefs7.ID = types.StringPointerValue(appEntitlementRefsItem7.ID)
 
-									draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs7)
+									draftTriggers.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs = append(draftTriggers.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs, appEntitlementRefs7)
 								}
 							} else {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
+								draftTriggers.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs = nil
 							}
 						}
-						if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel = nil
+						if draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionListCel == nil {
+							draftTriggers.GrantFound.GrantTriggerFilter.InclusionListCel = nil
 						} else {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel = &tfTypes.EntitlementInclusionListCel{}
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel)
-						}
-						if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter == nil {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter = nil
-						} else {
-							draftTriggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter = &tfTypes.GrantFilter{}
-							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType != nil {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringValue(string(*draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType))
-							} else {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringNull()
-							}
-							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType != nil {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringValue(string(*draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType))
-							} else {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringNull()
-							}
-							if draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter != nil {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringValue(string(*draftTriggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter))
-							} else {
-								draftTriggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringNull()
-							}
+							draftTriggers.GrantFound.GrantTriggerFilter.InclusionListCel = &tfTypes.EntitlementInclusionListCel{}
+							draftTriggers.GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(draftTriggersItem.GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel)
 						}
 					}
 				}
-				if draftTriggersItem.ScheduleTrigger == nil {
-					draftTriggers.ScheduleTrigger = nil
+				if draftTriggersItem.Schedule == nil {
+					draftTriggers.Schedule = nil
 				} else {
-					draftTriggers.ScheduleTrigger = &tfTypes.ScheduleTrigger{}
-					draftTriggers.ScheduleTrigger.Advanced = types.BoolPointerValue(draftTriggersItem.ScheduleTrigger.Advanced)
-					draftTriggers.ScheduleTrigger.Condition = types.StringPointerValue(draftTriggersItem.ScheduleTrigger.Condition)
-					draftTriggers.ScheduleTrigger.CronSpec = types.StringPointerValue(draftTriggersItem.ScheduleTrigger.CronSpec)
-					draftTriggers.ScheduleTrigger.SkipIfTrueCel = types.StringPointerValue(draftTriggersItem.ScheduleTrigger.SkipIfTrueCel)
-					draftTriggers.ScheduleTrigger.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.ScheduleTrigger.Start))
-					draftTriggers.ScheduleTrigger.Timezone = types.StringPointerValue(draftTriggersItem.ScheduleTrigger.Timezone)
+					draftTriggers.Schedule = &tfTypes.ScheduleTrigger{}
+					draftTriggers.Schedule.Advanced = types.BoolPointerValue(draftTriggersItem.Schedule.Advanced)
+					draftTriggers.Schedule.Condition = types.StringPointerValue(draftTriggersItem.Schedule.Condition)
+					draftTriggers.Schedule.CronSpec = types.StringPointerValue(draftTriggersItem.Schedule.CronSpec)
+					draftTriggers.Schedule.SkipIfTrueCel = types.StringPointerValue(draftTriggersItem.Schedule.SkipIfTrueCel)
+					draftTriggers.Schedule.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.Schedule.Start))
+					draftTriggers.Schedule.Timezone = types.StringPointerValue(draftTriggersItem.Schedule.Timezone)
 				}
-				if draftTriggersItem.ScheduleTriggerAppUser == nil {
-					draftTriggers.ScheduleTriggerAppUser = nil
+				if draftTriggersItem.ScheduleAppUser == nil {
+					draftTriggers.ScheduleAppUser = nil
 				} else {
-					draftTriggers.ScheduleTriggerAppUser = &tfTypes.ScheduleTriggerAppUser{}
-					draftTriggers.ScheduleTriggerAppUser.AppID = types.StringPointerValue(draftTriggersItem.ScheduleTriggerAppUser.AppID)
-					draftTriggers.ScheduleTriggerAppUser.Condition = types.StringPointerValue(draftTriggersItem.ScheduleTriggerAppUser.Condition)
-					draftTriggers.ScheduleTriggerAppUser.CronSpec = types.StringPointerValue(draftTriggersItem.ScheduleTriggerAppUser.CronSpec)
-					draftTriggers.ScheduleTriggerAppUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.ScheduleTriggerAppUser.Start))
-					draftTriggers.ScheduleTriggerAppUser.Timezone = types.StringPointerValue(draftTriggersItem.ScheduleTriggerAppUser.Timezone)
+					draftTriggers.ScheduleAppUser = &tfTypes.ScheduleTriggerAppUser{}
+					draftTriggers.ScheduleAppUser.AppID = types.StringPointerValue(draftTriggersItem.ScheduleAppUser.AppID)
+					draftTriggers.ScheduleAppUser.Condition = types.StringPointerValue(draftTriggersItem.ScheduleAppUser.Condition)
+					draftTriggers.ScheduleAppUser.CronSpec = types.StringPointerValue(draftTriggersItem.ScheduleAppUser.CronSpec)
+					draftTriggers.ScheduleAppUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.ScheduleAppUser.Start))
+					draftTriggers.ScheduleAppUser.Timezone = types.StringPointerValue(draftTriggersItem.ScheduleAppUser.Timezone)
 				}
-				if draftTriggersItem.ScheduleTriggerNoUser == nil {
-					draftTriggers.ScheduleTriggerNoUser = nil
+				if draftTriggersItem.ScheduleNoUser == nil {
+					draftTriggers.ScheduleNoUser = nil
 				} else {
-					draftTriggers.ScheduleTriggerNoUser = &tfTypes.ScheduleTriggerNoUser{}
-					draftTriggers.ScheduleTriggerNoUser.Advanced = types.BoolPointerValue(draftTriggersItem.ScheduleTriggerNoUser.Advanced)
-					draftTriggers.ScheduleTriggerNoUser.CronSpec = types.StringPointerValue(draftTriggersItem.ScheduleTriggerNoUser.CronSpec)
-					draftTriggers.ScheduleTriggerNoUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.ScheduleTriggerNoUser.Start))
-					draftTriggers.ScheduleTriggerNoUser.Timezone = types.StringPointerValue(draftTriggersItem.ScheduleTriggerNoUser.Timezone)
+					draftTriggers.ScheduleNoUser = &tfTypes.ScheduleTriggerNoUser{}
+					draftTriggers.ScheduleNoUser.Advanced = types.BoolPointerValue(draftTriggersItem.ScheduleNoUser.Advanced)
+					draftTriggers.ScheduleNoUser.CronSpec = types.StringPointerValue(draftTriggersItem.ScheduleNoUser.CronSpec)
+					draftTriggers.ScheduleNoUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.ScheduleNoUser.Start))
+					draftTriggers.ScheduleNoUser.Timezone = types.StringPointerValue(draftTriggersItem.ScheduleNoUser.Timezone)
 				}
-				if draftTriggersItem.UsageBasedRevocationTrigger == nil {
-					draftTriggers.UsageBasedRevocationTrigger = nil
+				if draftTriggersItem.UsageBasedRevocation == nil {
+					draftTriggers.UsageBasedRevocation = nil
 				} else {
-					draftTriggers.UsageBasedRevocationTrigger = &tfTypes.UsageBasedRevocationTrigger{}
-					draftTriggers.UsageBasedRevocationTrigger.AppID = types.StringPointerValue(draftTriggersItem.UsageBasedRevocationTrigger.AppID)
-					draftTriggers.UsageBasedRevocationTrigger.EnabledAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.UsageBasedRevocationTrigger.EnabledAt))
-					if draftTriggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs != nil {
-						draftTriggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = []tfTypes.AppEntitlementRef{}
+					draftTriggers.UsageBasedRevocation = &tfTypes.UsageBasedRevocationTrigger{}
+					draftTriggers.UsageBasedRevocation.AppID = types.StringPointerValue(draftTriggersItem.UsageBasedRevocation.AppID)
+					draftTriggers.UsageBasedRevocation.EnabledAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(draftTriggersItem.UsageBasedRevocation.EnabledAt))
+					if draftTriggersItem.UsageBasedRevocation.ExcludedGroupRefs != nil {
+						draftTriggers.UsageBasedRevocation.ExcludedGroupRefs = []tfTypes.AppEntitlementRef{}
 
-						for _, excludedGroupRefsItem := range draftTriggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs {
+						for _, excludedGroupRefsItem := range draftTriggersItem.UsageBasedRevocation.ExcludedGroupRefs {
 							var excludedGroupRefs tfTypes.AppEntitlementRef
 
 							excludedGroupRefs.AppID = types.StringPointerValue(excludedGroupRefsItem.AppID)
 							excludedGroupRefs.ID = types.StringPointerValue(excludedGroupRefsItem.ID)
 
-							draftTriggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = append(draftTriggers.UsageBasedRevocationTrigger.ExcludedGroupRefs, excludedGroupRefs)
+							draftTriggers.UsageBasedRevocation.ExcludedGroupRefs = append(draftTriggers.UsageBasedRevocation.ExcludedGroupRefs, excludedGroupRefs)
 						}
 					} else {
-						draftTriggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = nil
+						draftTriggers.UsageBasedRevocation.ExcludedGroupRefs = nil
 					}
-					if draftTriggersItem.UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
-						draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs = []tfTypes.UserRef{}
+					if draftTriggersItem.UsageBasedRevocation.ExcludedUserRefs != nil {
+						draftTriggers.UsageBasedRevocation.ExcludedUserRefs = []tfTypes.UserRef{}
 
-						for _, excludedUserRefsItem := range draftTriggersItem.UsageBasedRevocationTrigger.ExcludedUserRefs {
+						for _, excludedUserRefsItem := range draftTriggersItem.UsageBasedRevocation.ExcludedUserRefs {
 							var excludedUserRefs tfTypes.UserRef
 
 							excludedUserRefs.ID = types.StringPointerValue(excludedUserRefsItem.ID)
 
-							draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs = append(draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs, excludedUserRefs)
+							draftTriggers.UsageBasedRevocation.ExcludedUserRefs = append(draftTriggers.UsageBasedRevocation.ExcludedUserRefs, excludedUserRefs)
 						}
 					} else {
-						draftTriggers.UsageBasedRevocationTrigger.ExcludedUserRefs = nil
+						draftTriggers.UsageBasedRevocation.ExcludedUserRefs = nil
 					}
-					draftTriggers.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity = types.BoolPointerValue(draftTriggersItem.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity)
-					if draftTriggersItem.UsageBasedRevocationTrigger.RunDelayed == nil {
-						draftTriggers.UsageBasedRevocationTrigger.RunDelayed = nil
+					draftTriggers.UsageBasedRevocation.IncludeUsersWithNoActivity = types.BoolPointerValue(draftTriggersItem.UsageBasedRevocation.IncludeUsersWithNoActivity)
+					if draftTriggersItem.UsageBasedRevocation.RunDelayed == nil {
+						draftTriggers.UsageBasedRevocation.RunDelayed = nil
 					} else {
-						draftTriggers.UsageBasedRevocationTrigger.RunDelayed = &tfTypes.RunDelayed{}
-						draftTriggers.UsageBasedRevocationTrigger.RunDelayed.ColdStartDelayDays = types.Int64Value(draftTriggersItem.UsageBasedRevocationTrigger.RunDelayed.ColdStartDelayDays)
+						draftTriggers.UsageBasedRevocation.RunDelayed = &tfTypes.RunDelayed{}
+						draftTriggers.UsageBasedRevocation.RunDelayed.ColdStartDelayDays = types.Int64Value(draftTriggersItem.UsageBasedRevocation.RunDelayed.ColdStartDelayDays)
 					}
-					if draftTriggersItem.UsageBasedRevocationTrigger.RunImmediately == nil {
-						draftTriggers.UsageBasedRevocationTrigger.RunImmediately = nil
+					if draftTriggersItem.UsageBasedRevocation.RunImmediately == nil {
+						draftTriggers.UsageBasedRevocation.RunImmediately = nil
 					} else {
-						draftTriggers.UsageBasedRevocationTrigger.RunImmediately = &tfTypes.RunImmediately{}
+						draftTriggers.UsageBasedRevocation.RunImmediately = &tfTypes.RunImmediately{}
 					}
-					if draftTriggersItem.UsageBasedRevocationTrigger.TargetedAppUserTypes != nil {
-						draftTriggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = make([]types.String, 0, len(draftTriggersItem.UsageBasedRevocationTrigger.TargetedAppUserTypes))
-						for _, v := range draftTriggersItem.UsageBasedRevocationTrigger.TargetedAppUserTypes {
-							draftTriggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = append(draftTriggers.UsageBasedRevocationTrigger.TargetedAppUserTypes, types.StringValue(string(v)))
+					if draftTriggersItem.UsageBasedRevocation.TargetedAppUserTypes != nil {
+						draftTriggers.UsageBasedRevocation.TargetedAppUserTypes = make([]types.String, 0, len(draftTriggersItem.UsageBasedRevocation.TargetedAppUserTypes))
+						for _, v := range draftTriggersItem.UsageBasedRevocation.TargetedAppUserTypes {
+							draftTriggers.UsageBasedRevocation.TargetedAppUserTypes = append(draftTriggers.UsageBasedRevocation.TargetedAppUserTypes, types.StringValue(string(v)))
 						}
 					} else {
-						draftTriggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = nil
+						draftTriggers.UsageBasedRevocation.TargetedAppUserTypes = nil
 					}
-					if draftTriggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
-						draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = []tfTypes.AppEntitlementRef{}
+					if draftTriggersItem.UsageBasedRevocation.TargetedEntitlementRefs != nil {
+						draftTriggers.UsageBasedRevocation.TargetedEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-						for _, targetedEntitlementRefsItem := range draftTriggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs {
+						for _, targetedEntitlementRefsItem := range draftTriggersItem.UsageBasedRevocation.TargetedEntitlementRefs {
 							var targetedEntitlementRefs tfTypes.AppEntitlementRef
 
 							targetedEntitlementRefs.AppID = types.StringPointerValue(targetedEntitlementRefsItem.AppID)
 							targetedEntitlementRefs.ID = types.StringPointerValue(targetedEntitlementRefsItem.ID)
 
-							draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = append(draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs, targetedEntitlementRefs)
+							draftTriggers.UsageBasedRevocation.TargetedEntitlementRefs = append(draftTriggers.UsageBasedRevocation.TargetedEntitlementRefs, targetedEntitlementRefs)
 						}
 					} else {
-						draftTriggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = nil
+						draftTriggers.UsageBasedRevocation.TargetedEntitlementRefs = nil
 					}
-					draftTriggers.UsageBasedRevocationTrigger.UnusedForDays = types.Int64PointerValue(draftTriggersItem.UsageBasedRevocationTrigger.UnusedForDays)
+					draftTriggers.UsageBasedRevocation.UnusedForDays = types.Int64PointerValue(draftTriggersItem.UsageBasedRevocation.UnusedForDays)
 				}
-				if draftTriggersItem.UserCreatedTrigger == nil {
-					draftTriggers.UserCreatedTrigger = nil
+				if draftTriggersItem.UserCreated == nil {
+					draftTriggers.UserCreated = nil
 				} else {
-					draftTriggers.UserCreatedTrigger = &tfTypes.UserCreatedTrigger{}
-					draftTriggers.UserCreatedTrigger.Condition = types.StringPointerValue(draftTriggersItem.UserCreatedTrigger.Condition)
+					draftTriggers.UserCreated = &tfTypes.UserCreatedTrigger{}
+					draftTriggers.UserCreated.Condition = types.StringPointerValue(draftTriggersItem.UserCreated.Condition)
 				}
-				if draftTriggersItem.UserProfileChangeTrigger == nil {
-					draftTriggers.UserProfileChangeTrigger = nil
+				if draftTriggersItem.UserProfileChange == nil {
+					draftTriggers.UserProfileChange = nil
 				} else {
-					draftTriggers.UserProfileChangeTrigger = &tfTypes.UserProfileChangeTrigger{}
-					draftTriggers.UserProfileChangeTrigger.Condition = types.StringPointerValue(draftTriggersItem.UserProfileChangeTrigger.Condition)
+					draftTriggers.UserProfileChange = &tfTypes.UserProfileChangeTrigger{}
+					draftTriggers.UserProfileChange.Condition = types.StringPointerValue(draftTriggersItem.UserProfileChange.Condition)
 				}
-				if draftTriggersItem.WebhookAutomationTrigger == nil {
-					draftTriggers.WebhookAutomationTrigger = nil
+				if draftTriggersItem.Webhook == nil {
+					draftTriggers.Webhook = nil
 				} else {
-					draftTriggers.WebhookAutomationTrigger = &tfTypes.WebhookAutomationTrigger{}
-					draftTriggers.WebhookAutomationTrigger.ListenerID = types.StringPointerValue(draftTriggersItem.WebhookAutomationTrigger.ListenerID)
-					if draftTriggersItem.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL == nil {
-						draftTriggers.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL = nil
+					draftTriggers.Webhook = &tfTypes.WebhookAutomationTrigger{}
+					if draftTriggersItem.Webhook.CapabilityURL == nil {
+						draftTriggers.Webhook.CapabilityURL = nil
 					} else {
-						draftTriggers.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL = &tfTypes.WebhookListenerAuthCapabilityURL{}
+						draftTriggers.Webhook.CapabilityURL = &tfTypes.WebhookListenerAuthCapabilityURL{}
 					}
-					if draftTriggersItem.WebhookAutomationTrigger.WebhookListenerAuthHMAC == nil {
-						draftTriggers.WebhookAutomationTrigger.WebhookListenerAuthHMAC = nil
+					if draftTriggersItem.Webhook.Hmac == nil {
+						draftTriggers.Webhook.Hmac = nil
 					} else {
-						draftTriggers.WebhookAutomationTrigger.WebhookListenerAuthHMAC = &tfTypes.WebhookListenerAuthHMAC{}
+						draftTriggers.Webhook.Hmac = &tfTypes.WebhookListenerAuthHMAC{}
 					}
-					if draftTriggersItem.WebhookAutomationTrigger.WebhookListenerAuthJWT == nil {
-						draftTriggers.WebhookAutomationTrigger.WebhookListenerAuthJWT = nil
+					if draftTriggersItem.Webhook.Jwt == nil {
+						draftTriggers.Webhook.Jwt = nil
 					} else {
-						draftTriggers.WebhookAutomationTrigger.WebhookListenerAuthJWT = &tfTypes.WebhookListenerAuthJWT{}
-						draftTriggers.WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL = types.StringPointerValue(draftTriggersItem.WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL)
+						draftTriggers.Webhook.Jwt = &tfTypes.WebhookListenerAuthJWT{}
+						draftTriggers.Webhook.Jwt.JwksURL = types.StringPointerValue(draftTriggersItem.Webhook.Jwt.JwksURL)
 					}
+					draftTriggers.Webhook.ListenerID = types.StringPointerValue(draftTriggersItem.Webhook.ListenerID)
 				}
 
 				r.DraftTriggers = append(r.DraftTriggers, draftTriggers)
@@ -1915,392 +1927,392 @@ func (r *AutomationResourceModel) RefreshFromSharedAutomation(ctx context.Contex
 			for _, triggersItem := range resp.Triggers {
 				var triggers tfTypes.AutomationTrigger
 
-				if triggersItem.AccessConflictTrigger == nil {
-					triggers.AccessConflictTrigger = nil
+				if triggersItem.AccessConflict == nil {
+					triggers.AccessConflict = nil
 				} else {
-					triggers.AccessConflictTrigger = &tfTypes.AccessConflictTrigger{}
-					triggers.AccessConflictTrigger.AllConflictMonitors = types.BoolPointerValue(triggersItem.AccessConflictTrigger.AllConflictMonitors)
-					if triggersItem.AccessConflictTrigger.ConflictMonitorRefs == nil {
-						triggers.AccessConflictTrigger.ConflictMonitorRefs = nil
+					triggers.AccessConflict = &tfTypes.AccessConflictTrigger{}
+					triggers.AccessConflict.AllConflictMonitors = types.BoolPointerValue(triggersItem.AccessConflict.AllConflictMonitors)
+					if triggersItem.AccessConflict.ConflictMonitorRefs == nil {
+						triggers.AccessConflict.ConflictMonitorRefs = nil
 					} else {
-						triggers.AccessConflictTrigger.ConflictMonitorRefs = &tfTypes.ConflictMonitorRefs{}
-						if triggersItem.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs != nil {
-							triggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = []tfTypes.ConflictMonitorRef{}
+						triggers.AccessConflict.ConflictMonitorRefs = &tfTypes.ConflictMonitorRefs{}
+						if triggersItem.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs != nil {
+							triggers.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs = []tfTypes.ConflictMonitorRef{}
 
-							for _, conflictMonitorRefsItem1 := range triggersItem.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs {
+							for _, conflictMonitorRefsItem1 := range triggersItem.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs {
 								var conflictMonitorRefs1 tfTypes.ConflictMonitorRef
 
 								conflictMonitorRefs1.ID = types.StringPointerValue(conflictMonitorRefsItem1.ID)
 
-								triggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = append(triggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs, conflictMonitorRefs1)
+								triggers.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs = append(triggers.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs, conflictMonitorRefs1)
 							}
 						} else {
-							triggers.AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs = nil
+							triggers.AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs = nil
 						}
 					}
 				}
-				if triggersItem.AppUserCreatedTrigger == nil {
-					triggers.AppUserCreatedTrigger = nil
+				if triggersItem.AppUserCreated == nil {
+					triggers.AppUserCreated = nil
 				} else {
-					triggers.AppUserCreatedTrigger = &tfTypes.AppUserCreatedTrigger{}
-					triggers.AppUserCreatedTrigger.AppID = types.StringPointerValue(triggersItem.AppUserCreatedTrigger.AppID)
-					triggers.AppUserCreatedTrigger.AppIDCel = types.StringPointerValue(triggersItem.AppUserCreatedTrigger.AppIDCel)
-					triggers.AppUserCreatedTrigger.Condition = types.StringPointerValue(triggersItem.AppUserCreatedTrigger.Condition)
+					triggers.AppUserCreated = &tfTypes.AppUserCreatedTrigger{}
+					triggers.AppUserCreated.AppID = types.StringPointerValue(triggersItem.AppUserCreated.AppID)
+					triggers.AppUserCreated.AppIDCel = types.StringPointerValue(triggersItem.AppUserCreated.AppIDCel)
+					triggers.AppUserCreated.Condition = types.StringPointerValue(triggersItem.AppUserCreated.Condition)
 				}
-				if triggersItem.AppUserUpdatedTrigger == nil {
-					triggers.AppUserUpdatedTrigger = nil
+				if triggersItem.AppUserUpdated == nil {
+					triggers.AppUserUpdated = nil
 				} else {
-					triggers.AppUserUpdatedTrigger = &tfTypes.AppUserUpdatedTrigger{}
-					triggers.AppUserUpdatedTrigger.AppID = types.StringPointerValue(triggersItem.AppUserUpdatedTrigger.AppID)
-					triggers.AppUserUpdatedTrigger.AppIDCel = types.StringPointerValue(triggersItem.AppUserUpdatedTrigger.AppIDCel)
-					triggers.AppUserUpdatedTrigger.Condition = types.StringPointerValue(triggersItem.AppUserUpdatedTrigger.Condition)
+					triggers.AppUserUpdated = &tfTypes.AppUserUpdatedTrigger{}
+					triggers.AppUserUpdated.AppID = types.StringPointerValue(triggersItem.AppUserUpdated.AppID)
+					triggers.AppUserUpdated.AppIDCel = types.StringPointerValue(triggersItem.AppUserUpdated.AppIDCel)
+					triggers.AppUserUpdated.Condition = types.StringPointerValue(triggersItem.AppUserUpdated.Condition)
 				}
-				if triggersItem.GrantDeletedTrigger == nil {
-					triggers.GrantDeletedTrigger = nil
+				if triggersItem.GrantDeleted == nil {
+					triggers.GrantDeleted = nil
 				} else {
-					triggers.GrantDeletedTrigger = &tfTypes.GrantDeletedTrigger{}
-					if triggersItem.GrantDeletedTrigger.GrantTriggerFilter == nil {
-						triggers.GrantDeletedTrigger.GrantTriggerFilter = nil
+					triggers.GrantDeleted = &tfTypes.GrantDeletedTrigger{}
+					if triggersItem.GrantDeleted.GrantTriggerFilter == nil {
+						triggers.GrantDeleted.GrantTriggerFilter = nil
 					} else {
-						triggers.GrantDeletedTrigger.GrantTriggerFilter = &tfTypes.GrantTriggerFilter{}
-						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter == nil {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter = nil
+						triggers.GrantDeleted.GrantTriggerFilter = &tfTypes.GrantTriggerFilter{}
+						if triggersItem.GrantDeleted.GrantTriggerFilter.AccountFilter == nil {
+							triggers.GrantDeleted.GrantTriggerFilter.AccountFilter = nil
 						} else {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter = &tfTypes.AccountFilter{}
-							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType != nil {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType = types.StringValue(string(*triggersItem.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType))
+							triggers.GrantDeleted.GrantTriggerFilter.AccountFilter = &tfTypes.AccountFilter{}
+							if triggersItem.GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType != nil {
+								triggers.GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType = types.StringValue(string(*triggersItem.GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType))
 							} else {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType = types.StringNull()
+								triggers.GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType = types.StringNull()
 							}
 						}
-						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionAll == nil {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionAll = nil
+						if triggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter == nil {
+							triggers.GrantDeleted.GrantTriggerFilter.GrantFilter = nil
 						} else {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionAll = &tfTypes.EntitlementInclusionAll{}
-						}
-						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria == nil {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria = nil
-						} else {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
-							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = make([]types.String, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
-								}
+							triggers.GrantDeleted.GrantTriggerFilter.GrantFilter = &tfTypes.GrantFilter{}
+							if triggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType != nil {
+								triggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringValue(string(*triggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType))
 							} else {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
+								triggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringNull()
 							}
-							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
-								}
+							if triggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType != nil {
+								triggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringValue(string(*triggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType))
 							} else {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
+								triggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringNull()
 							}
-							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
-								}
+							if triggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter != nil {
+								triggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringValue(string(*triggersItem.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter))
 							} else {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
-							}
-							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-								for _, v := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
-								}
-							} else {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
+								triggers.GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringNull()
 							}
 						}
-						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList = nil
+						if triggersItem.GrantDeleted.GrantTriggerFilter.InclusionAll == nil {
+							triggers.GrantDeleted.GrantTriggerFilter.InclusionAll = nil
 						} else {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList = &tfTypes.EntitlementInclusionList{}
-							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+							triggers.GrantDeleted.GrantTriggerFilter.InclusionAll = &tfTypes.EntitlementInclusionAll{}
+						}
+						if triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria == nil {
+							triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria = nil
+						} else {
+							triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
+							if triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+								triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds = make([]types.String, 0, len(triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds))
+								for _, v := range triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds {
+									triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds = append(triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds, types.StringValue(v))
+								}
+							} else {
+								triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds = nil
+							}
+							if triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+								triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+								for _, v := range triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+									triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = append(triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
+								}
+							} else {
+								triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = nil
+							}
+							if triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+								triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+								for _, v := range triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+									triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = append(triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds, types.StringValue(v))
+								}
+							} else {
+								triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = nil
+							}
+							if triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+								triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = make([]types.String, 0, len(triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+								for _, v := range triggersItem.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+									triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = append(triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds, types.StringValue(v))
+								}
+							} else {
+								triggers.GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = nil
+							}
+						}
+						if triggersItem.GrantDeleted.GrantTriggerFilter.InclusionList == nil {
+							triggers.GrantDeleted.GrantTriggerFilter.InclusionList = nil
+						} else {
+							triggers.GrantDeleted.GrantTriggerFilter.InclusionList = &tfTypes.EntitlementInclusionList{}
+							if triggersItem.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+								triggers.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-								for _, appEntitlementRefsItem8 := range triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+								for _, appEntitlementRefsItem8 := range triggersItem.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 									var appEntitlementRefs8 tfTypes.AppEntitlementRef
 
 									appEntitlementRefs8.AppID = types.StringPointerValue(appEntitlementRefsItem8.AppID)
 									appEntitlementRefs8.ID = types.StringPointerValue(appEntitlementRefsItem8.ID)
 
-									triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs8)
+									triggers.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs = append(triggers.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs, appEntitlementRefs8)
 								}
 							} else {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
+								triggers.GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs = nil
 							}
 						}
-						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel = nil
+						if triggersItem.GrantDeleted.GrantTriggerFilter.InclusionListCel == nil {
+							triggers.GrantDeleted.GrantTriggerFilter.InclusionListCel = nil
 						} else {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel = &tfTypes.EntitlementInclusionListCel{}
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(triggersItem.GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel)
-						}
-						if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter == nil {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter = nil
-						} else {
-							triggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter = &tfTypes.GrantFilter{}
-							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType != nil {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringValue(string(*triggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType))
-							} else {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringNull()
-							}
-							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType != nil {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringValue(string(*triggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType))
-							} else {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringNull()
-							}
-							if triggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter != nil {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringValue(string(*triggersItem.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter))
-							} else {
-								triggers.GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringNull()
-							}
+							triggers.GrantDeleted.GrantTriggerFilter.InclusionListCel = &tfTypes.EntitlementInclusionListCel{}
+							triggers.GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(triggersItem.GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel)
 						}
 					}
 				}
-				if triggersItem.GrantFoundTrigger == nil {
-					triggers.GrantFoundTrigger = nil
+				if triggersItem.GrantFound == nil {
+					triggers.GrantFound = nil
 				} else {
-					triggers.GrantFoundTrigger = &tfTypes.GrantFoundTrigger{}
-					if triggersItem.GrantFoundTrigger.GrantTriggerFilter == nil {
-						triggers.GrantFoundTrigger.GrantTriggerFilter = nil
+					triggers.GrantFound = &tfTypes.GrantFoundTrigger{}
+					if triggersItem.GrantFound.GrantTriggerFilter == nil {
+						triggers.GrantFound.GrantTriggerFilter = nil
 					} else {
-						triggers.GrantFoundTrigger.GrantTriggerFilter = &tfTypes.GrantTriggerFilter{}
-						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.AccountFilter == nil {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.AccountFilter = nil
+						triggers.GrantFound.GrantTriggerFilter = &tfTypes.GrantTriggerFilter{}
+						if triggersItem.GrantFound.GrantTriggerFilter.AccountFilter == nil {
+							triggers.GrantFound.GrantTriggerFilter.AccountFilter = nil
 						} else {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.AccountFilter = &tfTypes.AccountFilter{}
-							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType != nil {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType = types.StringValue(string(*triggersItem.GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType))
+							triggers.GrantFound.GrantTriggerFilter.AccountFilter = &tfTypes.AccountFilter{}
+							if triggersItem.GrantFound.GrantTriggerFilter.AccountFilter.AccountType != nil {
+								triggers.GrantFound.GrantTriggerFilter.AccountFilter.AccountType = types.StringValue(string(*triggersItem.GrantFound.GrantTriggerFilter.AccountFilter.AccountType))
 							} else {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType = types.StringNull()
+								triggers.GrantFound.GrantTriggerFilter.AccountFilter.AccountType = types.StringNull()
 							}
 						}
-						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionAll == nil {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionAll = nil
+						if triggersItem.GrantFound.GrantTriggerFilter.GrantFilter == nil {
+							triggers.GrantFound.GrantTriggerFilter.GrantFilter = nil
 						} else {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionAll = &tfTypes.EntitlementInclusionAll{}
-						}
-						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria == nil {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria = nil
-						} else {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
-							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = make([]types.String, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds, types.StringValue(v))
-								}
+							triggers.GrantFound.GrantTriggerFilter.GrantFilter = &tfTypes.GrantFilter{}
+							if triggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType != nil {
+								triggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringValue(string(*triggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType))
 							} else {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds = nil
+								triggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringNull()
 							}
-							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
-								}
+							if triggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType != nil {
+								triggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringValue(string(*triggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType))
 							} else {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds = nil
+								triggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringNull()
 							}
-							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds, types.StringValue(v))
-								}
+							if triggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter != nil {
+								triggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringValue(string(*triggersItem.GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter))
 							} else {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds = nil
-							}
-							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = make([]types.String, 0, len(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-								for _, v := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds, types.StringValue(v))
-								}
-							} else {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds = nil
+								triggers.GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringNull()
 							}
 						}
-						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList == nil {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList = nil
+						if triggersItem.GrantFound.GrantTriggerFilter.InclusionAll == nil {
+							triggers.GrantFound.GrantTriggerFilter.InclusionAll = nil
 						} else {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList = &tfTypes.EntitlementInclusionList{}
-							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
+							triggers.GrantFound.GrantTriggerFilter.InclusionAll = &tfTypes.EntitlementInclusionAll{}
+						}
+						if triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria == nil {
+							triggers.GrantFound.GrantTriggerFilter.InclusionCriteria = nil
+						} else {
+							triggers.GrantFound.GrantTriggerFilter.InclusionCriteria = &tfTypes.EntitlementInclusionCriteria{}
+							if triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+								triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds = make([]types.String, 0, len(triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds))
+								for _, v := range triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds {
+									triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds = append(triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds, types.StringValue(v))
+								}
+							} else {
+								triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds = nil
+							}
+							if triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+								triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = make([]types.String, 0, len(triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+								for _, v := range triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+									triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = append(triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds, types.StringValue(v))
+								}
+							} else {
+								triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds = nil
+							}
+							if triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+								triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = make([]types.String, 0, len(triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+								for _, v := range triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+									triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = append(triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds, types.StringValue(v))
+								}
+							} else {
+								triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds = nil
+							}
+							if triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+								triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = make([]types.String, 0, len(triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+								for _, v := range triggersItem.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+									triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = append(triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds, types.StringValue(v))
+								}
+							} else {
+								triggers.GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds = nil
+							}
+						}
+						if triggersItem.GrantFound.GrantTriggerFilter.InclusionList == nil {
+							triggers.GrantFound.GrantTriggerFilter.InclusionList = nil
+						} else {
+							triggers.GrantFound.GrantTriggerFilter.InclusionList = &tfTypes.EntitlementInclusionList{}
+							if triggersItem.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+								triggers.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-								for _, appEntitlementRefsItem9 := range triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+								for _, appEntitlementRefsItem9 := range triggersItem.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 									var appEntitlementRefs9 tfTypes.AppEntitlementRef
 
 									appEntitlementRefs9.AppID = types.StringPointerValue(appEntitlementRefsItem9.AppID)
 									appEntitlementRefs9.ID = types.StringPointerValue(appEntitlementRefsItem9.ID)
 
-									triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = append(triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs, appEntitlementRefs9)
+									triggers.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs = append(triggers.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs, appEntitlementRefs9)
 								}
 							} else {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs = nil
+								triggers.GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs = nil
 							}
 						}
-						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel == nil {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel = nil
+						if triggersItem.GrantFound.GrantTriggerFilter.InclusionListCel == nil {
+							triggers.GrantFound.GrantTriggerFilter.InclusionListCel = nil
 						} else {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel = &tfTypes.EntitlementInclusionListCel{}
-							triggers.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(triggersItem.GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel)
-						}
-						if triggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter == nil {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter = nil
-						} else {
-							triggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter = &tfTypes.GrantFilter{}
-							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType != nil {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringValue(string(*triggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType))
-							} else {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType = types.StringNull()
-							}
-							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType != nil {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringValue(string(*triggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType))
-							} else {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType = types.StringNull()
-							}
-							if triggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter != nil {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringValue(string(*triggersItem.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter))
-							} else {
-								triggers.GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter = types.StringNull()
-							}
+							triggers.GrantFound.GrantTriggerFilter.InclusionListCel = &tfTypes.EntitlementInclusionListCel{}
+							triggers.GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel = types.StringPointerValue(triggersItem.GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel)
 						}
 					}
 				}
-				if triggersItem.ScheduleTrigger == nil {
-					triggers.ScheduleTrigger = nil
+				if triggersItem.Schedule == nil {
+					triggers.Schedule = nil
 				} else {
-					triggers.ScheduleTrigger = &tfTypes.ScheduleTrigger{}
-					triggers.ScheduleTrigger.Advanced = types.BoolPointerValue(triggersItem.ScheduleTrigger.Advanced)
-					triggers.ScheduleTrigger.Condition = types.StringPointerValue(triggersItem.ScheduleTrigger.Condition)
-					triggers.ScheduleTrigger.CronSpec = types.StringPointerValue(triggersItem.ScheduleTrigger.CronSpec)
-					triggers.ScheduleTrigger.SkipIfTrueCel = types.StringPointerValue(triggersItem.ScheduleTrigger.SkipIfTrueCel)
-					triggers.ScheduleTrigger.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.ScheduleTrigger.Start))
-					triggers.ScheduleTrigger.Timezone = types.StringPointerValue(triggersItem.ScheduleTrigger.Timezone)
+					triggers.Schedule = &tfTypes.ScheduleTrigger{}
+					triggers.Schedule.Advanced = types.BoolPointerValue(triggersItem.Schedule.Advanced)
+					triggers.Schedule.Condition = types.StringPointerValue(triggersItem.Schedule.Condition)
+					triggers.Schedule.CronSpec = types.StringPointerValue(triggersItem.Schedule.CronSpec)
+					triggers.Schedule.SkipIfTrueCel = types.StringPointerValue(triggersItem.Schedule.SkipIfTrueCel)
+					triggers.Schedule.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.Schedule.Start))
+					triggers.Schedule.Timezone = types.StringPointerValue(triggersItem.Schedule.Timezone)
 				}
-				if triggersItem.ScheduleTriggerAppUser == nil {
-					triggers.ScheduleTriggerAppUser = nil
+				if triggersItem.ScheduleAppUser == nil {
+					triggers.ScheduleAppUser = nil
 				} else {
-					triggers.ScheduleTriggerAppUser = &tfTypes.ScheduleTriggerAppUser{}
-					triggers.ScheduleTriggerAppUser.AppID = types.StringPointerValue(triggersItem.ScheduleTriggerAppUser.AppID)
-					triggers.ScheduleTriggerAppUser.Condition = types.StringPointerValue(triggersItem.ScheduleTriggerAppUser.Condition)
-					triggers.ScheduleTriggerAppUser.CronSpec = types.StringPointerValue(triggersItem.ScheduleTriggerAppUser.CronSpec)
-					triggers.ScheduleTriggerAppUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.ScheduleTriggerAppUser.Start))
-					triggers.ScheduleTriggerAppUser.Timezone = types.StringPointerValue(triggersItem.ScheduleTriggerAppUser.Timezone)
+					triggers.ScheduleAppUser = &tfTypes.ScheduleTriggerAppUser{}
+					triggers.ScheduleAppUser.AppID = types.StringPointerValue(triggersItem.ScheduleAppUser.AppID)
+					triggers.ScheduleAppUser.Condition = types.StringPointerValue(triggersItem.ScheduleAppUser.Condition)
+					triggers.ScheduleAppUser.CronSpec = types.StringPointerValue(triggersItem.ScheduleAppUser.CronSpec)
+					triggers.ScheduleAppUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.ScheduleAppUser.Start))
+					triggers.ScheduleAppUser.Timezone = types.StringPointerValue(triggersItem.ScheduleAppUser.Timezone)
 				}
-				if triggersItem.ScheduleTriggerNoUser == nil {
-					triggers.ScheduleTriggerNoUser = nil
+				if triggersItem.ScheduleNoUser == nil {
+					triggers.ScheduleNoUser = nil
 				} else {
-					triggers.ScheduleTriggerNoUser = &tfTypes.ScheduleTriggerNoUser{}
-					triggers.ScheduleTriggerNoUser.Advanced = types.BoolPointerValue(triggersItem.ScheduleTriggerNoUser.Advanced)
-					triggers.ScheduleTriggerNoUser.CronSpec = types.StringPointerValue(triggersItem.ScheduleTriggerNoUser.CronSpec)
-					triggers.ScheduleTriggerNoUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.ScheduleTriggerNoUser.Start))
-					triggers.ScheduleTriggerNoUser.Timezone = types.StringPointerValue(triggersItem.ScheduleTriggerNoUser.Timezone)
+					triggers.ScheduleNoUser = &tfTypes.ScheduleTriggerNoUser{}
+					triggers.ScheduleNoUser.Advanced = types.BoolPointerValue(triggersItem.ScheduleNoUser.Advanced)
+					triggers.ScheduleNoUser.CronSpec = types.StringPointerValue(triggersItem.ScheduleNoUser.CronSpec)
+					triggers.ScheduleNoUser.Start = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.ScheduleNoUser.Start))
+					triggers.ScheduleNoUser.Timezone = types.StringPointerValue(triggersItem.ScheduleNoUser.Timezone)
 				}
-				if triggersItem.UsageBasedRevocationTrigger == nil {
-					triggers.UsageBasedRevocationTrigger = nil
+				if triggersItem.UsageBasedRevocation == nil {
+					triggers.UsageBasedRevocation = nil
 				} else {
-					triggers.UsageBasedRevocationTrigger = &tfTypes.UsageBasedRevocationTrigger{}
-					triggers.UsageBasedRevocationTrigger.AppID = types.StringPointerValue(triggersItem.UsageBasedRevocationTrigger.AppID)
-					triggers.UsageBasedRevocationTrigger.EnabledAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.UsageBasedRevocationTrigger.EnabledAt))
-					if triggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs != nil {
-						triggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = []tfTypes.AppEntitlementRef{}
+					triggers.UsageBasedRevocation = &tfTypes.UsageBasedRevocationTrigger{}
+					triggers.UsageBasedRevocation.AppID = types.StringPointerValue(triggersItem.UsageBasedRevocation.AppID)
+					triggers.UsageBasedRevocation.EnabledAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(triggersItem.UsageBasedRevocation.EnabledAt))
+					if triggersItem.UsageBasedRevocation.ExcludedGroupRefs != nil {
+						triggers.UsageBasedRevocation.ExcludedGroupRefs = []tfTypes.AppEntitlementRef{}
 
-						for _, excludedGroupRefsItem1 := range triggersItem.UsageBasedRevocationTrigger.ExcludedGroupRefs {
+						for _, excludedGroupRefsItem1 := range triggersItem.UsageBasedRevocation.ExcludedGroupRefs {
 							var excludedGroupRefs1 tfTypes.AppEntitlementRef
 
 							excludedGroupRefs1.AppID = types.StringPointerValue(excludedGroupRefsItem1.AppID)
 							excludedGroupRefs1.ID = types.StringPointerValue(excludedGroupRefsItem1.ID)
 
-							triggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = append(triggers.UsageBasedRevocationTrigger.ExcludedGroupRefs, excludedGroupRefs1)
+							triggers.UsageBasedRevocation.ExcludedGroupRefs = append(triggers.UsageBasedRevocation.ExcludedGroupRefs, excludedGroupRefs1)
 						}
 					} else {
-						triggers.UsageBasedRevocationTrigger.ExcludedGroupRefs = nil
+						triggers.UsageBasedRevocation.ExcludedGroupRefs = nil
 					}
-					if triggersItem.UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
-						triggers.UsageBasedRevocationTrigger.ExcludedUserRefs = []tfTypes.UserRef{}
+					if triggersItem.UsageBasedRevocation.ExcludedUserRefs != nil {
+						triggers.UsageBasedRevocation.ExcludedUserRefs = []tfTypes.UserRef{}
 
-						for _, excludedUserRefsItem1 := range triggersItem.UsageBasedRevocationTrigger.ExcludedUserRefs {
+						for _, excludedUserRefsItem1 := range triggersItem.UsageBasedRevocation.ExcludedUserRefs {
 							var excludedUserRefs1 tfTypes.UserRef
 
 							excludedUserRefs1.ID = types.StringPointerValue(excludedUserRefsItem1.ID)
 
-							triggers.UsageBasedRevocationTrigger.ExcludedUserRefs = append(triggers.UsageBasedRevocationTrigger.ExcludedUserRefs, excludedUserRefs1)
+							triggers.UsageBasedRevocation.ExcludedUserRefs = append(triggers.UsageBasedRevocation.ExcludedUserRefs, excludedUserRefs1)
 						}
 					} else {
-						triggers.UsageBasedRevocationTrigger.ExcludedUserRefs = nil
+						triggers.UsageBasedRevocation.ExcludedUserRefs = nil
 					}
-					triggers.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity = types.BoolPointerValue(triggersItem.UsageBasedRevocationTrigger.IncludeUsersWithNoActivity)
-					if triggersItem.UsageBasedRevocationTrigger.RunDelayed == nil {
-						triggers.UsageBasedRevocationTrigger.RunDelayed = nil
+					triggers.UsageBasedRevocation.IncludeUsersWithNoActivity = types.BoolPointerValue(triggersItem.UsageBasedRevocation.IncludeUsersWithNoActivity)
+					if triggersItem.UsageBasedRevocation.RunDelayed == nil {
+						triggers.UsageBasedRevocation.RunDelayed = nil
 					} else {
-						triggers.UsageBasedRevocationTrigger.RunDelayed = &tfTypes.RunDelayed{}
-						triggers.UsageBasedRevocationTrigger.RunDelayed.ColdStartDelayDays = types.Int64Value(triggersItem.UsageBasedRevocationTrigger.RunDelayed.ColdStartDelayDays)
+						triggers.UsageBasedRevocation.RunDelayed = &tfTypes.RunDelayed{}
+						triggers.UsageBasedRevocation.RunDelayed.ColdStartDelayDays = types.Int64Value(triggersItem.UsageBasedRevocation.RunDelayed.ColdStartDelayDays)
 					}
-					if triggersItem.UsageBasedRevocationTrigger.RunImmediately == nil {
-						triggers.UsageBasedRevocationTrigger.RunImmediately = nil
+					if triggersItem.UsageBasedRevocation.RunImmediately == nil {
+						triggers.UsageBasedRevocation.RunImmediately = nil
 					} else {
-						triggers.UsageBasedRevocationTrigger.RunImmediately = &tfTypes.RunImmediately{}
+						triggers.UsageBasedRevocation.RunImmediately = &tfTypes.RunImmediately{}
 					}
-					if triggersItem.UsageBasedRevocationTrigger.TargetedAppUserTypes != nil {
-						triggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = make([]types.String, 0, len(triggersItem.UsageBasedRevocationTrigger.TargetedAppUserTypes))
-						for _, v := range triggersItem.UsageBasedRevocationTrigger.TargetedAppUserTypes {
-							triggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = append(triggers.UsageBasedRevocationTrigger.TargetedAppUserTypes, types.StringValue(string(v)))
+					if triggersItem.UsageBasedRevocation.TargetedAppUserTypes != nil {
+						triggers.UsageBasedRevocation.TargetedAppUserTypes = make([]types.String, 0, len(triggersItem.UsageBasedRevocation.TargetedAppUserTypes))
+						for _, v := range triggersItem.UsageBasedRevocation.TargetedAppUserTypes {
+							triggers.UsageBasedRevocation.TargetedAppUserTypes = append(triggers.UsageBasedRevocation.TargetedAppUserTypes, types.StringValue(string(v)))
 						}
 					} else {
-						triggers.UsageBasedRevocationTrigger.TargetedAppUserTypes = nil
+						triggers.UsageBasedRevocation.TargetedAppUserTypes = nil
 					}
-					if triggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
-						triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = []tfTypes.AppEntitlementRef{}
+					if triggersItem.UsageBasedRevocation.TargetedEntitlementRefs != nil {
+						triggers.UsageBasedRevocation.TargetedEntitlementRefs = []tfTypes.AppEntitlementRef{}
 
-						for _, targetedEntitlementRefsItem1 := range triggersItem.UsageBasedRevocationTrigger.TargetedEntitlementRefs {
+						for _, targetedEntitlementRefsItem1 := range triggersItem.UsageBasedRevocation.TargetedEntitlementRefs {
 							var targetedEntitlementRefs1 tfTypes.AppEntitlementRef
 
 							targetedEntitlementRefs1.AppID = types.StringPointerValue(targetedEntitlementRefsItem1.AppID)
 							targetedEntitlementRefs1.ID = types.StringPointerValue(targetedEntitlementRefsItem1.ID)
 
-							triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = append(triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs, targetedEntitlementRefs1)
+							triggers.UsageBasedRevocation.TargetedEntitlementRefs = append(triggers.UsageBasedRevocation.TargetedEntitlementRefs, targetedEntitlementRefs1)
 						}
 					} else {
-						triggers.UsageBasedRevocationTrigger.TargetedEntitlementRefs = nil
+						triggers.UsageBasedRevocation.TargetedEntitlementRefs = nil
 					}
-					triggers.UsageBasedRevocationTrigger.UnusedForDays = types.Int64PointerValue(triggersItem.UsageBasedRevocationTrigger.UnusedForDays)
+					triggers.UsageBasedRevocation.UnusedForDays = types.Int64PointerValue(triggersItem.UsageBasedRevocation.UnusedForDays)
 				}
-				if triggersItem.UserCreatedTrigger == nil {
-					triggers.UserCreatedTrigger = nil
+				if triggersItem.UserCreated == nil {
+					triggers.UserCreated = nil
 				} else {
-					triggers.UserCreatedTrigger = &tfTypes.UserCreatedTrigger{}
-					triggers.UserCreatedTrigger.Condition = types.StringPointerValue(triggersItem.UserCreatedTrigger.Condition)
+					triggers.UserCreated = &tfTypes.UserCreatedTrigger{}
+					triggers.UserCreated.Condition = types.StringPointerValue(triggersItem.UserCreated.Condition)
 				}
-				if triggersItem.UserProfileChangeTrigger == nil {
-					triggers.UserProfileChangeTrigger = nil
+				if triggersItem.UserProfileChange == nil {
+					triggers.UserProfileChange = nil
 				} else {
-					triggers.UserProfileChangeTrigger = &tfTypes.UserProfileChangeTrigger{}
-					triggers.UserProfileChangeTrigger.Condition = types.StringPointerValue(triggersItem.UserProfileChangeTrigger.Condition)
+					triggers.UserProfileChange = &tfTypes.UserProfileChangeTrigger{}
+					triggers.UserProfileChange.Condition = types.StringPointerValue(triggersItem.UserProfileChange.Condition)
 				}
-				if triggersItem.WebhookAutomationTrigger == nil {
-					triggers.WebhookAutomationTrigger = nil
+				if triggersItem.Webhook == nil {
+					triggers.Webhook = nil
 				} else {
-					triggers.WebhookAutomationTrigger = &tfTypes.WebhookAutomationTrigger{}
-					triggers.WebhookAutomationTrigger.ListenerID = types.StringPointerValue(triggersItem.WebhookAutomationTrigger.ListenerID)
-					if triggersItem.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL == nil {
-						triggers.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL = nil
+					triggers.Webhook = &tfTypes.WebhookAutomationTrigger{}
+					if triggersItem.Webhook.CapabilityURL == nil {
+						triggers.Webhook.CapabilityURL = nil
 					} else {
-						triggers.WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL = &tfTypes.WebhookListenerAuthCapabilityURL{}
+						triggers.Webhook.CapabilityURL = &tfTypes.WebhookListenerAuthCapabilityURL{}
 					}
-					if triggersItem.WebhookAutomationTrigger.WebhookListenerAuthHMAC == nil {
-						triggers.WebhookAutomationTrigger.WebhookListenerAuthHMAC = nil
+					if triggersItem.Webhook.Hmac == nil {
+						triggers.Webhook.Hmac = nil
 					} else {
-						triggers.WebhookAutomationTrigger.WebhookListenerAuthHMAC = &tfTypes.WebhookListenerAuthHMAC{}
+						triggers.Webhook.Hmac = &tfTypes.WebhookListenerAuthHMAC{}
 					}
-					if triggersItem.WebhookAutomationTrigger.WebhookListenerAuthJWT == nil {
-						triggers.WebhookAutomationTrigger.WebhookListenerAuthJWT = nil
+					if triggersItem.Webhook.Jwt == nil {
+						triggers.Webhook.Jwt = nil
 					} else {
-						triggers.WebhookAutomationTrigger.WebhookListenerAuthJWT = &tfTypes.WebhookListenerAuthJWT{}
-						triggers.WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL = types.StringPointerValue(triggersItem.WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL)
+						triggers.Webhook.Jwt = &tfTypes.WebhookListenerAuthJWT{}
+						triggers.Webhook.Jwt.JwksURL = types.StringPointerValue(triggersItem.Webhook.Jwt.JwksURL)
 					}
+					triggers.Webhook.ListenerID = types.StringPointerValue(triggersItem.Webhook.ListenerID)
 				}
 
 				r.Triggers = append(r.Triggers, triggers)
@@ -2777,58 +2789,58 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			}
 			var createRevokeTasksV2 *shared.CreateRevokeTasksV2
 			if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2 != nil {
-				var entitlementExclusionCriteria *shared.EntitlementExclusionCriteria
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria != nil {
+				var exclusionCriteria *shared.EntitlementExclusionCriteria
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria != nil {
 					var excludedAppIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds != nil {
-						excludedAppIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds))
-						for excludedAppIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds {
-							excludedAppIds = append(excludedAppIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds != nil {
+						excludedAppIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds))
+						for excludedAppIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds {
+							excludedAppIds = append(excludedAppIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex].ValueString())
 						}
 					}
 					var excludedComplianceFrameworkIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-						excludedComplianceFrameworkIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-						for excludedComplianceFrameworkIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-							excludedComplianceFrameworkIds = append(excludedComplianceFrameworkIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+						excludedComplianceFrameworkIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+						for excludedComplianceFrameworkIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+							excludedComplianceFrameworkIds = append(excludedComplianceFrameworkIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex].ValueString())
 						}
 					}
 					var excludedResourceTypeIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds != nil {
-						excludedResourceTypeIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds))
-						for excludedResourceTypeIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds {
-							excludedResourceTypeIds = append(excludedResourceTypeIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds[excludedResourceTypeIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds != nil {
+						excludedResourceTypeIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds))
+						for excludedResourceTypeIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds {
+							excludedResourceTypeIds = append(excludedResourceTypeIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds[excludedResourceTypeIdsIndex].ValueString())
 						}
 					}
 					var excludedRiskLevelIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-						excludedRiskLevelIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds))
-						for excludedRiskLevelIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds {
-							excludedRiskLevelIds = append(excludedRiskLevelIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+						excludedRiskLevelIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds))
+						for excludedRiskLevelIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds {
+							excludedRiskLevelIds = append(excludedRiskLevelIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex].ValueString())
 						}
 					}
-					entitlementExclusionCriteria = &shared.EntitlementExclusionCriteria{
+					exclusionCriteria = &shared.EntitlementExclusionCriteria{
 						ExcludedAppIds:                 excludedAppIds,
 						ExcludedComplianceFrameworkIds: excludedComplianceFrameworkIds,
 						ExcludedResourceTypeIds:        excludedResourceTypeIds,
 						ExcludedRiskLevelIds:           excludedRiskLevelIds,
 					}
 				}
-				var entitlementExclusionList *shared.EntitlementExclusionList
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList != nil {
+				var exclusionList *shared.EntitlementExclusionList
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList != nil {
 					var excludedAppEntitlementRefs1 []shared.AppEntitlementRef
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-						excludedAppEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs))
-						for excludedAppEntitlementRefsIndex1 := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs {
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs != nil {
+						excludedAppEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs))
+						for excludedAppEntitlementRefsIndex1 := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs {
 							appId6 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.IsNull() {
-								*appId6 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.IsNull() {
+								*appId6 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.ValueString()
 							} else {
 								appId6 = nil
 							}
 							id7 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.IsNull() {
-								*id7 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.IsNull() {
+								*id7 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.ValueString()
 							} else {
 								id7 = nil
 							}
@@ -2838,86 +2850,92 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							})
 						}
 					}
-					entitlementExclusionList = &shared.EntitlementExclusionList{
+					exclusionList = &shared.EntitlementExclusionList{
 						ExcludedAppEntitlementRefs: excludedAppEntitlementRefs1,
 					}
 				}
-				var entitlementExclusionListCel *shared.EntitlementExclusionListCel
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel != nil {
+				var exclusionListCel *shared.EntitlementExclusionListCel
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionListCel != nil {
 					excludedAppEntitlementRefsCel1 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
-						*excludedAppEntitlementRefsCel1 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
+						*excludedAppEntitlementRefsCel1 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
 					} else {
 						excludedAppEntitlementRefsCel1 = nil
 					}
-					entitlementExclusionListCel = &shared.EntitlementExclusionListCel{
+					exclusionListCel = &shared.EntitlementExclusionListCel{
 						ExcludedAppEntitlementRefsCel: excludedAppEntitlementRefsCel1,
 					}
 				}
-				var entitlementExclusionNone *shared.EntitlementExclusionNone
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
-					entitlementExclusionNone = &shared.EntitlementExclusionNone{}
+				var exclusionNone *shared.EntitlementExclusionNone
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionNone != nil {
+					exclusionNone = &shared.EntitlementExclusionNone{}
 				}
-				var entitlementInclusionAccessOnly *shared.EntitlementInclusionAccessOnly
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
-					entitlementInclusionAccessOnly = &shared.EntitlementInclusionAccessOnly{}
+				grantSourceFilter := new(shared.GrantSourceFilter)
+				if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsNull() {
+					*grantSourceFilter = shared.GrantSourceFilter(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.ValueString())
+				} else {
+					grantSourceFilter = nil
 				}
-				var entitlementInclusionAll *shared.EntitlementInclusionAll
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAll != nil {
-					entitlementInclusionAll = &shared.EntitlementInclusionAll{}
+				var inclusionAccessOnly *shared.EntitlementInclusionAccessOnly
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionAccessOnly != nil {
+					inclusionAccessOnly = &shared.EntitlementInclusionAccessOnly{}
 				}
-				var entitlementInclusionCriteria *shared.EntitlementInclusionCriteria
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria != nil {
+				var inclusionAll *shared.EntitlementInclusionAll
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionAll != nil {
+					inclusionAll = &shared.EntitlementInclusionAll{}
+				}
+				var inclusionCriteria *shared.EntitlementInclusionCriteria
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria != nil {
 					var appIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds != nil {
-						appIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds))
-						for appIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds {
-							appIds = append(appIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds[appIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds != nil {
+						appIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds))
+						for appIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds {
+							appIds = append(appIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds[appIdsIndex].ValueString())
 						}
 					}
 					var complianceFrameworkIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-						complianceFrameworkIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-						for complianceFrameworkIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-							complianceFrameworkIds = append(complianceFrameworkIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds != nil {
+						complianceFrameworkIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds))
+						for complianceFrameworkIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds {
+							complianceFrameworkIds = append(complianceFrameworkIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex].ValueString())
 						}
 					}
 					var resourceTypeIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-						resourceTypeIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds))
-						for resourceTypeIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds {
-							resourceTypeIds = append(resourceTypeIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds != nil {
+						resourceTypeIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds))
+						for resourceTypeIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds {
+							resourceTypeIds = append(resourceTypeIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex].ValueString())
 						}
 					}
 					var riskLevelIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds != nil {
-						riskLevelIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds))
-						for riskLevelIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds {
-							riskLevelIds = append(riskLevelIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds != nil {
+						riskLevelIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds))
+						for riskLevelIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds {
+							riskLevelIds = append(riskLevelIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex].ValueString())
 						}
 					}
-					entitlementInclusionCriteria = &shared.EntitlementInclusionCriteria{
+					inclusionCriteria = &shared.EntitlementInclusionCriteria{
 						AppIds:                 appIds,
 						ComplianceFrameworkIds: complianceFrameworkIds,
 						ResourceTypeIds:        resourceTypeIds,
 						RiskLevelIds:           riskLevelIds,
 					}
 				}
-				var entitlementInclusionList *shared.EntitlementInclusionList
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList != nil {
+				var inclusionList *shared.EntitlementInclusionList
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList != nil {
 					var appEntitlementRefs1 []shared.AppEntitlementRef
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs != nil {
-						appEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs))
-						for appEntitlementRefsIndex1 := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs {
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs != nil {
+						appEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs))
+						for appEntitlementRefsIndex1 := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs {
 							appId7 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.IsNull() {
-								*appId7 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.IsNull() {
+								*appId7 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.ValueString()
 							} else {
 								appId7 = nil
 							}
 							id8 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.IsNull() {
-								*id8 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.IsNull() {
+								*id8 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.ValueString()
 							} else {
 								id8 = nil
 							}
@@ -2927,19 +2945,19 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							})
 						}
 					}
-					entitlementInclusionList = &shared.EntitlementInclusionList{
+					inclusionList = &shared.EntitlementInclusionList{
 						AppEntitlementRefs: appEntitlementRefs1,
 					}
 				}
-				var entitlementInclusionListCel *shared.EntitlementInclusionListCel
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel != nil {
+				var inclusionListCel *shared.EntitlementInclusionListCel
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionListCel != nil {
 					appEntitlementRefsCel1 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-						*appEntitlementRefsCel1 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+						*appEntitlementRefsCel1 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.ValueString()
 					} else {
 						appEntitlementRefsCel1 = nil
 					}
-					entitlementInclusionListCel = &shared.EntitlementInclusionListCel{
+					inclusionListCel = &shared.EntitlementInclusionListCel{
 						AppEntitlementRefsCel: appEntitlementRefsCel1,
 					}
 				}
@@ -2968,18 +2986,19 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				createRevokeTasksV2 = &shared.CreateRevokeTasksV2{
-					EntitlementExclusionCriteria:   entitlementExclusionCriteria,
-					EntitlementExclusionList:       entitlementExclusionList,
-					EntitlementExclusionListCel:    entitlementExclusionListCel,
-					EntitlementExclusionNone:       entitlementExclusionNone,
-					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly,
-					EntitlementInclusionAll:        entitlementInclusionAll,
-					EntitlementInclusionCriteria:   entitlementInclusionCriteria,
-					EntitlementInclusionList:       entitlementInclusionList,
-					EntitlementInclusionListCel:    entitlementInclusionListCel,
-					UseSubjectUser:                 useSubjectUser2,
-					UserIDCel:                      userIDCel2,
-					UserRef:                        userRef1,
+					ExclusionCriteria:   exclusionCriteria,
+					ExclusionList:       exclusionList,
+					ExclusionListCel:    exclusionListCel,
+					ExclusionNone:       exclusionNone,
+					GrantSourceFilter:   grantSourceFilter,
+					InclusionAccessOnly: inclusionAccessOnly,
+					InclusionAll:        inclusionAll,
+					InclusionCriteria:   inclusionCriteria,
+					InclusionList:       inclusionList,
+					InclusionListCel:    inclusionListCel,
+					UseSubjectUser:      useSubjectUser2,
+					UserIDCel:           userIDCel2,
+					UserRef:             userRef1,
 				}
 			}
 			var evaluateExpressions *shared.EvaluateExpressions
@@ -3025,63 +3044,63 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					passwordPolicyID = nil
 				}
-				var generatePasswordPolicy *shared.GeneratePasswordPolicy
-				if r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy != nil {
+				var policy *shared.GeneratePasswordPolicy
+				if r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy != nil {
 					customCharacters := new(string)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsNull() {
-						*customCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.CustomCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.CustomCharacters.IsNull() {
+						*customCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.CustomCharacters.ValueString()
 					} else {
 						customCharacters = nil
 					}
 					excludedCharacters := new(string)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsNull() {
-						*excludedCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.IsNull() {
+						*excludedCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.ValueString()
 					} else {
 						excludedCharacters = nil
 					}
 					maxCharacterCount := new(int)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsNull() {
-						*maxCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.ValueInt32())
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.IsNull() {
+						*maxCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.ValueInt32())
 					} else {
 						maxCharacterCount = nil
 					}
 					minCharacterCount := new(int)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsNull() {
-						*minCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.ValueInt32())
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MinCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MinCharacterCount.IsNull() {
+						*minCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MinCharacterCount.ValueInt32())
 					} else {
 						minCharacterCount = nil
 					}
 					noRestrictions := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsNull() {
-						*noRestrictions = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.NoRestrictions.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.NoRestrictions.IsNull() {
+						*noRestrictions = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.NoRestrictions.ValueBool()
 					} else {
 						noRestrictions = nil
 					}
 					requireLowercase := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsNull() {
-						*requireLowercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireLowercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireLowercase.IsNull() {
+						*requireLowercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireLowercase.ValueBool()
 					} else {
 						requireLowercase = nil
 					}
 					requireNumbers := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsNull() {
-						*requireNumbers = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireNumbers.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireNumbers.IsNull() {
+						*requireNumbers = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireNumbers.ValueBool()
 					} else {
 						requireNumbers = nil
 					}
 					requireSpecialCharacters := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsNull() {
-						*requireSpecialCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.IsNull() {
+						*requireSpecialCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.ValueBool()
 					} else {
 						requireSpecialCharacters = nil
 					}
 					requireUppercase := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsNull() {
-						*requireUppercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireUppercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireUppercase.IsNull() {
+						*requireUppercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireUppercase.ValueBool()
 					} else {
 						requireUppercase = nil
 					}
-					generatePasswordPolicy = &shared.GeneratePasswordPolicy{
+					policy = &shared.GeneratePasswordPolicy{
 						CustomCharacters:         customCharacters,
 						ExcludedCharacters:       excludedCharacters,
 						MaxCharacterCount:        maxCharacterCount,
@@ -3094,56 +3113,56 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				generatePassword = &shared.GeneratePassword{
-					PasswordPolicyID:       passwordPolicyID,
-					GeneratePasswordPolicy: generatePasswordPolicy,
+					PasswordPolicyID: passwordPolicyID,
+					Policy:           policy,
 				}
 			}
 			var grantEntitlements *shared.GrantEntitlements
 			if r.AutomationSteps[automationStepsIndex].GrantEntitlements != nil {
-				var grantEntitlementExclusionCriteria *shared.GrantEntitlementExclusionCriteria
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria != nil {
+				var exclusionCriteria1 *shared.GrantEntitlementExclusionCriteria
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria != nil {
 					var excludedAppIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds != nil {
-						excludedAppIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds))
-						for excludedAppIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds {
-							excludedAppIds1 = append(excludedAppIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds != nil {
+						excludedAppIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds))
+						for excludedAppIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds {
+							excludedAppIds1 = append(excludedAppIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex1].ValueString())
 						}
 					}
 					var excludedComplianceFrameworkIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-						excludedComplianceFrameworkIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-						for excludedComplianceFrameworkIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-							excludedComplianceFrameworkIds1 = append(excludedComplianceFrameworkIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+						excludedComplianceFrameworkIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+						for excludedComplianceFrameworkIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+							excludedComplianceFrameworkIds1 = append(excludedComplianceFrameworkIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex1].ValueString())
 						}
 					}
 					var excludedRiskLevelIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-						excludedRiskLevelIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds))
-						for excludedRiskLevelIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds {
-							excludedRiskLevelIds1 = append(excludedRiskLevelIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+						excludedRiskLevelIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds))
+						for excludedRiskLevelIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds {
+							excludedRiskLevelIds1 = append(excludedRiskLevelIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex1].ValueString())
 						}
 					}
-					grantEntitlementExclusionCriteria = &shared.GrantEntitlementExclusionCriteria{
+					exclusionCriteria1 = &shared.GrantEntitlementExclusionCriteria{
 						ExcludedAppIds:                 excludedAppIds1,
 						ExcludedComplianceFrameworkIds: excludedComplianceFrameworkIds1,
 						ExcludedRiskLevelIds:           excludedRiskLevelIds1,
 					}
 				}
-				var grantEntitlementExclusionList *shared.GrantEntitlementExclusionList
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList != nil {
+				var exclusionList1 *shared.GrantEntitlementExclusionList
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList != nil {
 					var excludedAppEntitlementRefs2 []shared.AppEntitlementRef
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-						excludedAppEntitlementRefs2 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs))
-						for excludedAppEntitlementRefsIndex2 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs {
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs != nil {
+						excludedAppEntitlementRefs2 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs))
+						for excludedAppEntitlementRefsIndex2 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs {
 							appId8 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.IsNull() {
-								*appId8 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.IsNull() {
+								*appId8 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.ValueString()
 							} else {
 								appId8 = nil
 							}
 							id10 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.IsNull() {
-								*id10 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.IsNull() {
+								*id10 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.ValueString()
 							} else {
 								id10 = nil
 							}
@@ -3153,70 +3172,70 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							})
 						}
 					}
-					grantEntitlementExclusionList = &shared.GrantEntitlementExclusionList{
+					exclusionList1 = &shared.GrantEntitlementExclusionList{
 						ExcludedAppEntitlementRefs: excludedAppEntitlementRefs2,
 					}
 				}
-				var grantEntitlementExclusionListCel *shared.GrantEntitlementExclusionListCel
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel != nil {
+				var exclusionListCel1 *shared.GrantEntitlementExclusionListCel
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionListCel != nil {
 					excludedAppEntitlementRefsCel2 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
-						*excludedAppEntitlementRefsCel2 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
+						*excludedAppEntitlementRefsCel2 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
 					} else {
 						excludedAppEntitlementRefsCel2 = nil
 					}
-					grantEntitlementExclusionListCel = &shared.GrantEntitlementExclusionListCel{
+					exclusionListCel1 = &shared.GrantEntitlementExclusionListCel{
 						ExcludedAppEntitlementRefsCel: excludedAppEntitlementRefsCel2,
 					}
 				}
-				var grantEntitlementExclusionNone *shared.GrantEntitlementExclusionNone
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionNone != nil {
-					grantEntitlementExclusionNone = &shared.GrantEntitlementExclusionNone{}
+				var exclusionNone1 *shared.GrantEntitlementExclusionNone
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionNone != nil {
+					exclusionNone1 = &shared.GrantEntitlementExclusionNone{}
 				}
-				var grantEntitlementInclusionCriteria *shared.GrantEntitlementInclusionCriteria
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria != nil {
+				var inclusionCriteria1 *shared.GrantEntitlementInclusionCriteria
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria != nil {
 					var appIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds != nil {
-						appIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds))
-						for appIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds {
-							appIds1 = append(appIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds[appIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds != nil {
+						appIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds))
+						for appIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds {
+							appIds1 = append(appIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds[appIdsIndex1].ValueString())
 						}
 					}
 					var complianceFrameworkIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-						complianceFrameworkIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds))
-						for complianceFrameworkIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds {
-							complianceFrameworkIds1 = append(complianceFrameworkIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds != nil {
+						complianceFrameworkIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds))
+						for complianceFrameworkIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds {
+							complianceFrameworkIds1 = append(complianceFrameworkIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex1].ValueString())
 						}
 					}
 					var riskLevelIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds != nil {
-						riskLevelIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds))
-						for riskLevelIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds {
-							riskLevelIds1 = append(riskLevelIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds != nil {
+						riskLevelIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds))
+						for riskLevelIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds {
+							riskLevelIds1 = append(riskLevelIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex1].ValueString())
 						}
 					}
-					grantEntitlementInclusionCriteria = &shared.GrantEntitlementInclusionCriteria{
+					inclusionCriteria1 = &shared.GrantEntitlementInclusionCriteria{
 						AppIds:                 appIds1,
 						ComplianceFrameworkIds: complianceFrameworkIds1,
 						RiskLevelIds:           riskLevelIds1,
 					}
 				}
-				var grantEntitlementInclusionList *shared.GrantEntitlementInclusionList
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList != nil {
+				var inclusionList1 *shared.GrantEntitlementInclusionList
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList != nil {
 					var appEntitlementRefs2 []shared.AppEntitlementRef
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs != nil {
-						appEntitlementRefs2 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs))
-						for appEntitlementRefsIndex2 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs {
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs != nil {
+						appEntitlementRefs2 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs))
+						for appEntitlementRefsIndex2 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs {
 							appId9 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.IsNull() {
-								*appId9 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.IsNull() {
+								*appId9 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.ValueString()
 							} else {
 								appId9 = nil
 							}
 							id11 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.IsNull() {
-								*id11 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.IsNull() {
+								*id11 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.ValueString()
 							} else {
 								id11 = nil
 							}
@@ -3226,19 +3245,19 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							})
 						}
 					}
-					grantEntitlementInclusionList = &shared.GrantEntitlementInclusionList{
+					inclusionList1 = &shared.GrantEntitlementInclusionList{
 						AppEntitlementRefs: appEntitlementRefs2,
 					}
 				}
-				var grantEntitlementInclusionListCel *shared.GrantEntitlementInclusionListCel
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel != nil {
+				var inclusionListCel1 *shared.GrantEntitlementInclusionListCel
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionListCel != nil {
 					appEntitlementRefsCel2 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-						*appEntitlementRefsCel2 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+						*appEntitlementRefsCel2 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.ValueString()
 					} else {
 						appEntitlementRefsCel2 = nil
 					}
-					grantEntitlementInclusionListCel = &shared.GrantEntitlementInclusionListCel{
+					inclusionListCel1 = &shared.GrantEntitlementInclusionListCel{
 						AppEntitlementRefsCel: appEntitlementRefsCel2,
 					}
 				}
@@ -3267,16 +3286,16 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				grantEntitlements = &shared.GrantEntitlements{
-					GrantEntitlementExclusionCriteria: grantEntitlementExclusionCriteria,
-					GrantEntitlementExclusionList:     grantEntitlementExclusionList,
-					GrantEntitlementExclusionListCel:  grantEntitlementExclusionListCel,
-					GrantEntitlementExclusionNone:     grantEntitlementExclusionNone,
-					GrantEntitlementInclusionCriteria: grantEntitlementInclusionCriteria,
-					GrantEntitlementInclusionList:     grantEntitlementInclusionList,
-					GrantEntitlementInclusionListCel:  grantEntitlementInclusionListCel,
-					UseSubjectUser:                    useSubjectUser3,
-					UserIDCel:                         userIDCel3,
-					UserRef:                           userRef2,
+					ExclusionCriteria: exclusionCriteria1,
+					ExclusionList:     exclusionList1,
+					ExclusionListCel:  exclusionListCel1,
+					ExclusionNone:     exclusionNone1,
+					InclusionCriteria: inclusionCriteria1,
+					InclusionList:     inclusionList1,
+					InclusionListCel:  inclusionListCel1,
+					UseSubjectUser:    useSubjectUser3,
+					UserIDCel:         userIDCel3,
+					UserRef:           userRef2,
 				}
 			}
 			var removeFromDelegation *shared.RemoveFromDelegation
@@ -3287,15 +3306,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					replacementUserIDCel = nil
 				}
-				var userRef3 *shared.UserRef
-				if r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef != nil {
+				var replacementUserRef *shared.UserRef
+				if r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.ReplacementUserRef != nil {
 					id13 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.IsNull() {
-						*id13 = r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.IsNull() {
+						*id13 = r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.ValueString()
 					} else {
 						id13 = nil
 					}
-					userRef3 = &shared.UserRef{
+					replacementUserRef = &shared.UserRef{
 						ID: id13,
 					}
 				}
@@ -3311,24 +3330,24 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					userIDCel4 = nil
 				}
-				var userRef11 *shared.UserRef
-				if r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef1 != nil {
+				var userRef3 *shared.UserRef
+				if r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef != nil {
 					id14 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsNull() {
-						*id14 = r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef1.ID.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.IsNull() {
+						*id14 = r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
 					} else {
 						id14 = nil
 					}
-					userRef11 = &shared.UserRef{
+					userRef3 = &shared.UserRef{
 						ID: id14,
 					}
 				}
 				removeFromDelegation = &shared.RemoveFromDelegation{
 					ReplacementUserIDCel: replacementUserIDCel,
-					UserRef:              userRef3,
+					ReplacementUserRef:   replacementUserRef,
 					UseSubjectUser:       useSubjectUser4,
 					UserIDCel:            userIDCel4,
-					UserRef1:             userRef11,
+					UserRef:              userRef3,
 				}
 			}
 			var runAutomation *shared.RunAutomation
@@ -3351,20 +3370,20 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						ID: id15,
 					}
 				}
-				var automationContext *shared.AutomationContext
-				if r.AutomationSteps[automationStepsIndex].RunAutomation.AutomationContext != nil {
-					var contextVar *shared.Context
-					if r.AutomationSteps[automationStepsIndex].RunAutomation.AutomationContext.Context != nil {
-						contextVar = &shared.Context{}
+				var contextVar *shared.AutomationContext
+				if r.AutomationSteps[automationStepsIndex].RunAutomation.Context != nil {
+					var contextVar1 *shared.Context
+					if r.AutomationSteps[automationStepsIndex].RunAutomation.Context.Context != nil {
+						contextVar1 = &shared.Context{}
 					}
-					automationContext = &shared.AutomationContext{
-						Context: contextVar,
+					contextVar = &shared.AutomationContext{
+						Context: contextVar1,
 					}
 				}
 				runAutomation = &shared.RunAutomation{
 					AutomationTemplateIDCel: automationTemplateIDCel,
 					AutomationTemplateRef:   automationTemplateRef,
-					AutomationContext:       automationContext,
+					Context:                 contextVar,
 				}
 			}
 			var sendEmail *shared.SendEmail
@@ -3445,6 +3464,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					body1 = nil
 				}
+				channelIsID := new(bool)
+				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.IsNull() {
+					*channelIsID = r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.ValueBool()
+				} else {
+					channelIsID = nil
+				}
 				channelName := new(string)
 				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.IsNull() {
 					*channelName = r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.ValueString()
@@ -3486,6 +3511,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				sendSlackMessage = &shared.SendSlackMessage{
 					Body:           body1,
+					ChannelIsID:    channelIsID,
 					ChannelName:    channelName,
 					ChannelNameCel: channelNameCel,
 					UseSubjectUser: useSubjectUser6,
@@ -3627,25 +3653,25 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			}
 			var taskAction *shared.TaskAction
 			if r.AutomationSteps[automationStepsIndex].TaskAction != nil {
-				var closeAction *shared.CloseAction
-				if r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction != nil {
+				var close *shared.CloseAction
+				if r.AutomationSteps[automationStepsIndex].TaskAction.Close != nil {
 					useSubjectUser7 := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsNull() {
-						*useSubjectUser7 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UseSubjectUser.IsNull() {
+						*useSubjectUser7 = r.AutomationSteps[automationStepsIndex].TaskAction.Close.UseSubjectUser.ValueBool()
 					} else {
 						useSubjectUser7 = nil
 					}
 					userIDCel5 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.IsNull() {
-						*userIDCel5 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserIDCel.IsNull() {
+						*userIDCel5 = r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserIDCel.ValueString()
 					} else {
 						userIDCel5 = nil
 					}
 					var userRef4 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef != nil {
+					if r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserRef != nil {
 						id19 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsNull() {
-							*id19 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.ValueString()
+						if !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserRef.ID.IsNull() {
+							*id19 = r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserRef.ID.ValueString()
 						} else {
 							id19 = nil
 						}
@@ -3653,61 +3679,61 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							ID: id19,
 						}
 					}
-					closeAction = &shared.CloseAction{
+					close = &shared.CloseAction{
 						UseSubjectUser: useSubjectUser7,
 						UserIDCel:      userIDCel5,
 						UserRef:        userRef4,
 					}
 				}
-				var reassignAction *shared.ReassignAction
-				if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction != nil {
+				var reassign *shared.ReassignAction
+				if r.AutomationSteps[automationStepsIndex].TaskAction.Reassign != nil {
 					assigneeUserIDCel := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
-						*assigneeUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.IsNull() {
+						*assigneeUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.ValueString()
 					} else {
 						assigneeUserIDCel = nil
 					}
-					var userRef5 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef != nil {
+					var assigneeUserRef *shared.UserRef
+					if r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserRef != nil {
 						id20 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsNull() {
-							*id20 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.ValueString()
+						if !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.IsNull() {
+							*id20 = r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.ValueString()
 						} else {
 							id20 = nil
 						}
-						userRef5 = &shared.UserRef{
+						assigneeUserRef = &shared.UserRef{
 							ID: id20,
 						}
 					}
 					subjectUserIDCel := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
-						*subjectUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.IsNull() {
+						*subjectUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.ValueString()
 					} else {
 						subjectUserIDCel = nil
 					}
-					var userRef12 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1 != nil {
+					var subjectUserRef *shared.UserRef
+					if r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserRef != nil {
 						id21 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsNull() {
-							*id21 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.ValueString()
+						if !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.IsNull() {
+							*id21 = r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.ValueString()
 						} else {
 							id21 = nil
 						}
-						userRef12 = &shared.UserRef{
+						subjectUserRef = &shared.UserRef{
 							ID: id21,
 						}
 					}
 					useSubjectUser8 := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsNull() {
-						*useSubjectUser8 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.UseSubjectUser.IsNull() {
+						*useSubjectUser8 = r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.UseSubjectUser.ValueBool()
 					} else {
 						useSubjectUser8 = nil
 					}
-					reassignAction = &shared.ReassignAction{
+					reassign = &shared.ReassignAction{
 						AssigneeUserIDCel: assigneeUserIDCel,
-						UserRef:           userRef5,
+						AssigneeUserRef:   assigneeUserRef,
 						SubjectUserIDCel:  subjectUserIDCel,
-						UserRef1:          userRef12,
+						SubjectUserRef:    subjectUserRef,
 						UseSubjectUser:    useSubjectUser8,
 					}
 				}
@@ -3725,8 +3751,8 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					taskUserRelation = nil
 				}
 				taskAction = &shared.TaskAction{
-					CloseAction:      closeAction,
-					ReassignAction:   reassignAction,
+					Close:            close,
+					Reassign:         reassign,
 					TaskTypes:        taskTypes,
 					TaskUserRelation: taskUserRelation,
 				}
@@ -3795,7 +3821,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					userIDCel6 = nil
 				}
-				var userRef6 *shared.UserRef
+				var userRef5 *shared.UserRef
 				if r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef != nil {
 					id23 := new(string)
 					if !r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.IsNull() {
@@ -3803,7 +3829,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						id23 = nil
 					}
-					userRef6 = &shared.UserRef{
+					userRef5 = &shared.UserRef{
 						ID: id23,
 					}
 				}
@@ -3822,7 +3848,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				updateUser = &shared.UpdateUser{
 					UseSubjectUser: useSubjectUser10,
 					UserIDCel:      userIDCel6,
-					UserRef:        userRef6,
+					UserRef:        userRef5,
 					UserStatusCel:  userStatusCel,
 					UserStatusEnum: userStatusEnum,
 				}
@@ -3891,33 +3917,33 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			})
 		}
 	}
-	var disabledReasonCircuitBreaker *shared.DisabledReasonCircuitBreaker
-	if r.DisabledReasonCircuitBreaker != nil {
+	var circuitBreaker *shared.DisabledReasonCircuitBreaker
+	if r.CircuitBreaker != nil {
 		observedCount := new(int64)
-		if !r.DisabledReasonCircuitBreaker.ObservedCount.IsUnknown() && !r.DisabledReasonCircuitBreaker.ObservedCount.IsNull() {
-			*observedCount = r.DisabledReasonCircuitBreaker.ObservedCount.ValueInt64()
+		if !r.CircuitBreaker.ObservedCount.IsUnknown() && !r.CircuitBreaker.ObservedCount.IsNull() {
+			*observedCount = r.CircuitBreaker.ObservedCount.ValueInt64()
 		} else {
 			observedCount = nil
 		}
 		period := new(shared.Period)
-		if !r.DisabledReasonCircuitBreaker.Period.IsUnknown() && !r.DisabledReasonCircuitBreaker.Period.IsNull() {
-			*period = shared.Period(r.DisabledReasonCircuitBreaker.Period.ValueString())
+		if !r.CircuitBreaker.Period.IsUnknown() && !r.CircuitBreaker.Period.IsNull() {
+			*period = shared.Period(r.CircuitBreaker.Period.ValueString())
 		} else {
 			period = nil
 		}
 		threshold := new(int64)
-		if !r.DisabledReasonCircuitBreaker.Threshold.IsUnknown() && !r.DisabledReasonCircuitBreaker.Threshold.IsNull() {
-			*threshold = r.DisabledReasonCircuitBreaker.Threshold.ValueInt64()
+		if !r.CircuitBreaker.Threshold.IsUnknown() && !r.CircuitBreaker.Threshold.IsNull() {
+			*threshold = r.CircuitBreaker.Threshold.ValueInt64()
 		} else {
 			threshold = nil
 		}
 		trippedAt := new(time.Time)
-		if !r.DisabledReasonCircuitBreaker.TrippedAt.IsUnknown() && !r.DisabledReasonCircuitBreaker.TrippedAt.IsNull() {
-			*trippedAt, _ = time.Parse(time.RFC3339Nano, r.DisabledReasonCircuitBreaker.TrippedAt.ValueString())
+		if !r.CircuitBreaker.TrippedAt.IsUnknown() && !r.CircuitBreaker.TrippedAt.IsNull() {
+			*trippedAt, _ = time.Parse(time.RFC3339Nano, r.CircuitBreaker.TrippedAt.ValueString())
 		} else {
 			trippedAt = nil
 		}
-		disabledReasonCircuitBreaker = &shared.DisabledReasonCircuitBreaker{
+		circuitBreaker = &shared.DisabledReasonCircuitBreaker{
 			ObservedCount: observedCount,
 			Period:        period,
 			Threshold:     threshold,
@@ -3936,14 +3962,14 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 	} else {
 		circuitBreakerPeriod = nil
 	}
-	var automationContext1 *shared.AutomationContext
-	if r.AutomationContext != nil {
-		var contextVar1 *shared.Context
-		if r.AutomationContext.Context != nil {
-			contextVar1 = &shared.Context{}
+	var contextVar2 *shared.AutomationContext
+	if r.Context != nil {
+		var contextVar3 *shared.Context
+		if r.Context.Context != nil {
+			contextVar3 = &shared.Context{}
 		}
-		automationContext1 = &shared.AutomationContext{
-			Context: contextVar1,
+		contextVar2 = &shared.AutomationContext{
+			Context: contextVar3,
 		}
 	}
 	createdAt := new(time.Time)
@@ -4293,7 +4319,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					userIDCel8 = nil
 				}
-				var userRef7 *shared.UserRef
+				var userRef6 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef != nil {
 					id30 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.IsNull() {
@@ -4301,7 +4327,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						id30 = nil
 					}
-					userRef7 = &shared.UserRef{
+					userRef6 = &shared.UserRef{
 						ID: id30,
 					}
 				}
@@ -4313,63 +4339,63 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					RevokeAll:                     revokeAll1,
 					UseSubjectUser:                useSubjectUser12,
 					UserIDCel:                     userIDCel8,
-					UserRef:                       userRef7,
+					UserRef:                       userRef6,
 				}
 			}
 			var createRevokeTasksV21 *shared.CreateRevokeTasksV2
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2 != nil {
-				var entitlementExclusionCriteria1 *shared.EntitlementExclusionCriteria
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria != nil {
+				var exclusionCriteria2 *shared.EntitlementExclusionCriteria
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria != nil {
 					var excludedAppIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds != nil {
-						excludedAppIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds))
-						for excludedAppIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds {
-							excludedAppIds2 = append(excludedAppIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds != nil {
+						excludedAppIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds))
+						for excludedAppIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds {
+							excludedAppIds2 = append(excludedAppIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex2].ValueString())
 						}
 					}
 					var excludedComplianceFrameworkIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-						excludedComplianceFrameworkIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-						for excludedComplianceFrameworkIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-							excludedComplianceFrameworkIds2 = append(excludedComplianceFrameworkIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+						excludedComplianceFrameworkIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+						for excludedComplianceFrameworkIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+							excludedComplianceFrameworkIds2 = append(excludedComplianceFrameworkIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex2].ValueString())
 						}
 					}
 					var excludedResourceTypeIds1 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds != nil {
-						excludedResourceTypeIds1 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds))
-						for excludedResourceTypeIdsIndex1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds {
-							excludedResourceTypeIds1 = append(excludedResourceTypeIds1, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds[excludedResourceTypeIdsIndex1].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds != nil {
+						excludedResourceTypeIds1 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds))
+						for excludedResourceTypeIdsIndex1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds {
+							excludedResourceTypeIds1 = append(excludedResourceTypeIds1, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds[excludedResourceTypeIdsIndex1].ValueString())
 						}
 					}
 					var excludedRiskLevelIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-						excludedRiskLevelIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds))
-						for excludedRiskLevelIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds {
-							excludedRiskLevelIds2 = append(excludedRiskLevelIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+						excludedRiskLevelIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds))
+						for excludedRiskLevelIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds {
+							excludedRiskLevelIds2 = append(excludedRiskLevelIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex2].ValueString())
 						}
 					}
-					entitlementExclusionCriteria1 = &shared.EntitlementExclusionCriteria{
+					exclusionCriteria2 = &shared.EntitlementExclusionCriteria{
 						ExcludedAppIds:                 excludedAppIds2,
 						ExcludedComplianceFrameworkIds: excludedComplianceFrameworkIds2,
 						ExcludedResourceTypeIds:        excludedResourceTypeIds1,
 						ExcludedRiskLevelIds:           excludedRiskLevelIds2,
 					}
 				}
-				var entitlementExclusionList1 *shared.EntitlementExclusionList
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList != nil {
+				var exclusionList2 *shared.EntitlementExclusionList
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList != nil {
 					var excludedAppEntitlementRefs4 []shared.AppEntitlementRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-						excludedAppEntitlementRefs4 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs))
-						for excludedAppEntitlementRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs {
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs != nil {
+						excludedAppEntitlementRefs4 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs))
+						for excludedAppEntitlementRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs {
 							appId16 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.IsNull() {
-								*appId16 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.IsNull() {
+								*appId16 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.ValueString()
 							} else {
 								appId16 = nil
 							}
 							id31 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsNull() {
-								*id31 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsNull() {
+								*id31 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.ValueString()
 							} else {
 								id31 = nil
 							}
@@ -4379,86 +4405,92 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							})
 						}
 					}
-					entitlementExclusionList1 = &shared.EntitlementExclusionList{
+					exclusionList2 = &shared.EntitlementExclusionList{
 						ExcludedAppEntitlementRefs: excludedAppEntitlementRefs4,
 					}
 				}
-				var entitlementExclusionListCel1 *shared.EntitlementExclusionListCel
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel != nil {
+				var exclusionListCel2 *shared.EntitlementExclusionListCel
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionListCel != nil {
 					excludedAppEntitlementRefsCel4 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
-						*excludedAppEntitlementRefsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
+						*excludedAppEntitlementRefsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
 					} else {
 						excludedAppEntitlementRefsCel4 = nil
 					}
-					entitlementExclusionListCel1 = &shared.EntitlementExclusionListCel{
+					exclusionListCel2 = &shared.EntitlementExclusionListCel{
 						ExcludedAppEntitlementRefsCel: excludedAppEntitlementRefsCel4,
 					}
 				}
-				var entitlementExclusionNone1 *shared.EntitlementExclusionNone
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
-					entitlementExclusionNone1 = &shared.EntitlementExclusionNone{}
+				var exclusionNone2 *shared.EntitlementExclusionNone
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionNone != nil {
+					exclusionNone2 = &shared.EntitlementExclusionNone{}
 				}
-				var entitlementInclusionAccessOnly1 *shared.EntitlementInclusionAccessOnly
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
-					entitlementInclusionAccessOnly1 = &shared.EntitlementInclusionAccessOnly{}
+				grantSourceFilter1 := new(shared.GrantSourceFilter)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsNull() {
+					*grantSourceFilter1 = shared.GrantSourceFilter(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.ValueString())
+				} else {
+					grantSourceFilter1 = nil
 				}
-				var entitlementInclusionAll1 *shared.EntitlementInclusionAll
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAll != nil {
-					entitlementInclusionAll1 = &shared.EntitlementInclusionAll{}
+				var inclusionAccessOnly1 *shared.EntitlementInclusionAccessOnly
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionAccessOnly != nil {
+					inclusionAccessOnly1 = &shared.EntitlementInclusionAccessOnly{}
 				}
-				var entitlementInclusionCriteria1 *shared.EntitlementInclusionCriteria
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria != nil {
+				var inclusionAll1 *shared.EntitlementInclusionAll
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionAll != nil {
+					inclusionAll1 = &shared.EntitlementInclusionAll{}
+				}
+				var inclusionCriteria2 *shared.EntitlementInclusionCriteria
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria != nil {
 					var appIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds != nil {
-						appIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds))
-						for appIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds {
-							appIds2 = append(appIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds[appIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds != nil {
+						appIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds))
+						for appIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds {
+							appIds2 = append(appIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds[appIdsIndex2].ValueString())
 						}
 					}
 					var complianceFrameworkIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-						complianceFrameworkIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-						for complianceFrameworkIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-							complianceFrameworkIds2 = append(complianceFrameworkIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds != nil {
+						complianceFrameworkIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds))
+						for complianceFrameworkIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds {
+							complianceFrameworkIds2 = append(complianceFrameworkIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex2].ValueString())
 						}
 					}
 					var resourceTypeIds1 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-						resourceTypeIds1 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds))
-						for resourceTypeIdsIndex1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds {
-							resourceTypeIds1 = append(resourceTypeIds1, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex1].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds != nil {
+						resourceTypeIds1 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds))
+						for resourceTypeIdsIndex1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds {
+							resourceTypeIds1 = append(resourceTypeIds1, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex1].ValueString())
 						}
 					}
 					var riskLevelIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds != nil {
-						riskLevelIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds))
-						for riskLevelIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds {
-							riskLevelIds2 = append(riskLevelIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds != nil {
+						riskLevelIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds))
+						for riskLevelIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds {
+							riskLevelIds2 = append(riskLevelIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex2].ValueString())
 						}
 					}
-					entitlementInclusionCriteria1 = &shared.EntitlementInclusionCriteria{
+					inclusionCriteria2 = &shared.EntitlementInclusionCriteria{
 						AppIds:                 appIds2,
 						ComplianceFrameworkIds: complianceFrameworkIds2,
 						ResourceTypeIds:        resourceTypeIds1,
 						RiskLevelIds:           riskLevelIds2,
 					}
 				}
-				var entitlementInclusionList1 *shared.EntitlementInclusionList
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList != nil {
+				var inclusionList2 *shared.EntitlementInclusionList
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList != nil {
 					var appEntitlementRefs4 []shared.AppEntitlementRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs != nil {
-						appEntitlementRefs4 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs))
-						for appEntitlementRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs {
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs != nil {
+						appEntitlementRefs4 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs))
+						for appEntitlementRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs {
 							appId17 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.IsNull() {
-								*appId17 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.IsNull() {
+								*appId17 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.ValueString()
 							} else {
 								appId17 = nil
 							}
 							id32 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsNull() {
-								*id32 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsNull() {
+								*id32 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.ValueString()
 							} else {
 								id32 = nil
 							}
@@ -4468,19 +4500,19 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							})
 						}
 					}
-					entitlementInclusionList1 = &shared.EntitlementInclusionList{
+					inclusionList2 = &shared.EntitlementInclusionList{
 						AppEntitlementRefs: appEntitlementRefs4,
 					}
 				}
-				var entitlementInclusionListCel1 *shared.EntitlementInclusionListCel
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel != nil {
+				var inclusionListCel2 *shared.EntitlementInclusionListCel
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionListCel != nil {
 					appEntitlementRefsCel4 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-						*appEntitlementRefsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+						*appEntitlementRefsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.ValueString()
 					} else {
 						appEntitlementRefsCel4 = nil
 					}
-					entitlementInclusionListCel1 = &shared.EntitlementInclusionListCel{
+					inclusionListCel2 = &shared.EntitlementInclusionListCel{
 						AppEntitlementRefsCel: appEntitlementRefsCel4,
 					}
 				}
@@ -4496,7 +4528,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					userIDCel9 = nil
 				}
-				var userRef8 *shared.UserRef
+				var userRef7 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef != nil {
 					id33 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.IsNull() {
@@ -4504,23 +4536,24 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						id33 = nil
 					}
-					userRef8 = &shared.UserRef{
+					userRef7 = &shared.UserRef{
 						ID: id33,
 					}
 				}
 				createRevokeTasksV21 = &shared.CreateRevokeTasksV2{
-					EntitlementExclusionCriteria:   entitlementExclusionCriteria1,
-					EntitlementExclusionList:       entitlementExclusionList1,
-					EntitlementExclusionListCel:    entitlementExclusionListCel1,
-					EntitlementExclusionNone:       entitlementExclusionNone1,
-					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly1,
-					EntitlementInclusionAll:        entitlementInclusionAll1,
-					EntitlementInclusionCriteria:   entitlementInclusionCriteria1,
-					EntitlementInclusionList:       entitlementInclusionList1,
-					EntitlementInclusionListCel:    entitlementInclusionListCel1,
-					UseSubjectUser:                 useSubjectUser13,
-					UserIDCel:                      userIDCel9,
-					UserRef:                        userRef8,
+					ExclusionCriteria:   exclusionCriteria2,
+					ExclusionList:       exclusionList2,
+					ExclusionListCel:    exclusionListCel2,
+					ExclusionNone:       exclusionNone2,
+					GrantSourceFilter:   grantSourceFilter1,
+					InclusionAccessOnly: inclusionAccessOnly1,
+					InclusionAll:        inclusionAll1,
+					InclusionCriteria:   inclusionCriteria2,
+					InclusionList:       inclusionList2,
+					InclusionListCel:    inclusionListCel2,
+					UseSubjectUser:      useSubjectUser13,
+					UserIDCel:           userIDCel9,
+					UserRef:             userRef7,
 				}
 			}
 			var evaluateExpressions1 *shared.EvaluateExpressions
@@ -4566,63 +4599,63 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					passwordPolicyId1 = nil
 				}
-				var generatePasswordPolicy1 *shared.GeneratePasswordPolicy
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy != nil {
+				var policy1 *shared.GeneratePasswordPolicy
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy != nil {
 					customCharacters1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsNull() {
-						*customCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.CustomCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.CustomCharacters.IsNull() {
+						*customCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.CustomCharacters.ValueString()
 					} else {
 						customCharacters1 = nil
 					}
 					excludedCharacters1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsNull() {
-						*excludedCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.IsNull() {
+						*excludedCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.ValueString()
 					} else {
 						excludedCharacters1 = nil
 					}
 					maxCharacterCount1 := new(int)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsNull() {
-						*maxCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.ValueInt32())
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.IsNull() {
+						*maxCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.ValueInt32())
 					} else {
 						maxCharacterCount1 = nil
 					}
 					minCharacterCount1 := new(int)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsNull() {
-						*minCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.ValueInt32())
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MinCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MinCharacterCount.IsNull() {
+						*minCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MinCharacterCount.ValueInt32())
 					} else {
 						minCharacterCount1 = nil
 					}
 					noRestrictions1 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsNull() {
-						*noRestrictions1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.NoRestrictions.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.NoRestrictions.IsNull() {
+						*noRestrictions1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.NoRestrictions.ValueBool()
 					} else {
 						noRestrictions1 = nil
 					}
 					requireLowercase1 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsNull() {
-						*requireLowercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireLowercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireLowercase.IsNull() {
+						*requireLowercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireLowercase.ValueBool()
 					} else {
 						requireLowercase1 = nil
 					}
 					requireNumbers1 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsNull() {
-						*requireNumbers1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireNumbers.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireNumbers.IsNull() {
+						*requireNumbers1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireNumbers.ValueBool()
 					} else {
 						requireNumbers1 = nil
 					}
 					requireSpecialCharacters1 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsNull() {
-						*requireSpecialCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.IsNull() {
+						*requireSpecialCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.ValueBool()
 					} else {
 						requireSpecialCharacters1 = nil
 					}
 					requireUppercase1 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsNull() {
-						*requireUppercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireUppercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireUppercase.IsNull() {
+						*requireUppercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireUppercase.ValueBool()
 					} else {
 						requireUppercase1 = nil
 					}
-					generatePasswordPolicy1 = &shared.GeneratePasswordPolicy{
+					policy1 = &shared.GeneratePasswordPolicy{
 						CustomCharacters:         customCharacters1,
 						ExcludedCharacters:       excludedCharacters1,
 						MaxCharacterCount:        maxCharacterCount1,
@@ -4635,56 +4668,56 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				generatePassword1 = &shared.GeneratePassword{
-					PasswordPolicyID:       passwordPolicyId1,
-					GeneratePasswordPolicy: generatePasswordPolicy1,
+					PasswordPolicyID: passwordPolicyId1,
+					Policy:           policy1,
 				}
 			}
 			var grantEntitlements1 *shared.GrantEntitlements
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements != nil {
-				var grantEntitlementExclusionCriteria1 *shared.GrantEntitlementExclusionCriteria
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria != nil {
+				var exclusionCriteria3 *shared.GrantEntitlementExclusionCriteria
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria != nil {
 					var excludedAppIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds != nil {
-						excludedAppIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds))
-						for excludedAppIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds {
-							excludedAppIds3 = append(excludedAppIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds != nil {
+						excludedAppIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds))
+						for excludedAppIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds {
+							excludedAppIds3 = append(excludedAppIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex3].ValueString())
 						}
 					}
 					var excludedComplianceFrameworkIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-						excludedComplianceFrameworkIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-						for excludedComplianceFrameworkIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-							excludedComplianceFrameworkIds3 = append(excludedComplianceFrameworkIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+						excludedComplianceFrameworkIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+						for excludedComplianceFrameworkIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+							excludedComplianceFrameworkIds3 = append(excludedComplianceFrameworkIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex3].ValueString())
 						}
 					}
 					var excludedRiskLevelIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-						excludedRiskLevelIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds))
-						for excludedRiskLevelIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds {
-							excludedRiskLevelIds3 = append(excludedRiskLevelIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+						excludedRiskLevelIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds))
+						for excludedRiskLevelIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds {
+							excludedRiskLevelIds3 = append(excludedRiskLevelIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex3].ValueString())
 						}
 					}
-					grantEntitlementExclusionCriteria1 = &shared.GrantEntitlementExclusionCriteria{
+					exclusionCriteria3 = &shared.GrantEntitlementExclusionCriteria{
 						ExcludedAppIds:                 excludedAppIds3,
 						ExcludedComplianceFrameworkIds: excludedComplianceFrameworkIds3,
 						ExcludedRiskLevelIds:           excludedRiskLevelIds3,
 					}
 				}
-				var grantEntitlementExclusionList1 *shared.GrantEntitlementExclusionList
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList != nil {
+				var exclusionList3 *shared.GrantEntitlementExclusionList
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList != nil {
 					var excludedAppEntitlementRefs5 []shared.AppEntitlementRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-						excludedAppEntitlementRefs5 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs))
-						for excludedAppEntitlementRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs {
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs != nil {
+						excludedAppEntitlementRefs5 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs))
+						for excludedAppEntitlementRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs {
 							appId18 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.IsNull() {
-								*appId18 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.IsNull() {
+								*appId18 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.ValueString()
 							} else {
 								appId18 = nil
 							}
 							id34 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsNull() {
-								*id34 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsNull() {
+								*id34 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.ValueString()
 							} else {
 								id34 = nil
 							}
@@ -4694,70 +4727,70 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							})
 						}
 					}
-					grantEntitlementExclusionList1 = &shared.GrantEntitlementExclusionList{
+					exclusionList3 = &shared.GrantEntitlementExclusionList{
 						ExcludedAppEntitlementRefs: excludedAppEntitlementRefs5,
 					}
 				}
-				var grantEntitlementExclusionListCel1 *shared.GrantEntitlementExclusionListCel
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel != nil {
+				var exclusionListCel3 *shared.GrantEntitlementExclusionListCel
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionListCel != nil {
 					excludedAppEntitlementRefsCel5 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
-						*excludedAppEntitlementRefsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
+						*excludedAppEntitlementRefsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
 					} else {
 						excludedAppEntitlementRefsCel5 = nil
 					}
-					grantEntitlementExclusionListCel1 = &shared.GrantEntitlementExclusionListCel{
+					exclusionListCel3 = &shared.GrantEntitlementExclusionListCel{
 						ExcludedAppEntitlementRefsCel: excludedAppEntitlementRefsCel5,
 					}
 				}
-				var grantEntitlementExclusionNone1 *shared.GrantEntitlementExclusionNone
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionNone != nil {
-					grantEntitlementExclusionNone1 = &shared.GrantEntitlementExclusionNone{}
+				var exclusionNone3 *shared.GrantEntitlementExclusionNone
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionNone != nil {
+					exclusionNone3 = &shared.GrantEntitlementExclusionNone{}
 				}
-				var grantEntitlementInclusionCriteria1 *shared.GrantEntitlementInclusionCriteria
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria != nil {
+				var inclusionCriteria3 *shared.GrantEntitlementInclusionCriteria
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria != nil {
 					var appIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds != nil {
-						appIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds))
-						for appIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds {
-							appIds3 = append(appIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds[appIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds != nil {
+						appIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds))
+						for appIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds {
+							appIds3 = append(appIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds[appIdsIndex3].ValueString())
 						}
 					}
 					var complianceFrameworkIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-						complianceFrameworkIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds))
-						for complianceFrameworkIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds {
-							complianceFrameworkIds3 = append(complianceFrameworkIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds != nil {
+						complianceFrameworkIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds))
+						for complianceFrameworkIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds {
+							complianceFrameworkIds3 = append(complianceFrameworkIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex3].ValueString())
 						}
 					}
 					var riskLevelIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds != nil {
-						riskLevelIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds))
-						for riskLevelIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds {
-							riskLevelIds3 = append(riskLevelIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds != nil {
+						riskLevelIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds))
+						for riskLevelIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds {
+							riskLevelIds3 = append(riskLevelIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex3].ValueString())
 						}
 					}
-					grantEntitlementInclusionCriteria1 = &shared.GrantEntitlementInclusionCriteria{
+					inclusionCriteria3 = &shared.GrantEntitlementInclusionCriteria{
 						AppIds:                 appIds3,
 						ComplianceFrameworkIds: complianceFrameworkIds3,
 						RiskLevelIds:           riskLevelIds3,
 					}
 				}
-				var grantEntitlementInclusionList1 *shared.GrantEntitlementInclusionList
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList != nil {
+				var inclusionList3 *shared.GrantEntitlementInclusionList
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList != nil {
 					var appEntitlementRefs5 []shared.AppEntitlementRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs != nil {
-						appEntitlementRefs5 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs))
-						for appEntitlementRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs {
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs != nil {
+						appEntitlementRefs5 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs))
+						for appEntitlementRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs {
 							appId19 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.IsNull() {
-								*appId19 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.IsNull() {
+								*appId19 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.ValueString()
 							} else {
 								appId19 = nil
 							}
 							id35 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsNull() {
-								*id35 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsNull() {
+								*id35 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.ValueString()
 							} else {
 								id35 = nil
 							}
@@ -4767,19 +4800,19 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 							})
 						}
 					}
-					grantEntitlementInclusionList1 = &shared.GrantEntitlementInclusionList{
+					inclusionList3 = &shared.GrantEntitlementInclusionList{
 						AppEntitlementRefs: appEntitlementRefs5,
 					}
 				}
-				var grantEntitlementInclusionListCel1 *shared.GrantEntitlementInclusionListCel
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel != nil {
+				var inclusionListCel3 *shared.GrantEntitlementInclusionListCel
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionListCel != nil {
 					appEntitlementRefsCel5 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-						*appEntitlementRefsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+						*appEntitlementRefsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.ValueString()
 					} else {
 						appEntitlementRefsCel5 = nil
 					}
-					grantEntitlementInclusionListCel1 = &shared.GrantEntitlementInclusionListCel{
+					inclusionListCel3 = &shared.GrantEntitlementInclusionListCel{
 						AppEntitlementRefsCel: appEntitlementRefsCel5,
 					}
 				}
@@ -4795,7 +4828,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					userIDCel10 = nil
 				}
-				var userRef9 *shared.UserRef
+				var userRef8 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef != nil {
 					id36 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.IsNull() {
@@ -4803,21 +4836,21 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						id36 = nil
 					}
-					userRef9 = &shared.UserRef{
+					userRef8 = &shared.UserRef{
 						ID: id36,
 					}
 				}
 				grantEntitlements1 = &shared.GrantEntitlements{
-					GrantEntitlementExclusionCriteria: grantEntitlementExclusionCriteria1,
-					GrantEntitlementExclusionList:     grantEntitlementExclusionList1,
-					GrantEntitlementExclusionListCel:  grantEntitlementExclusionListCel1,
-					GrantEntitlementExclusionNone:     grantEntitlementExclusionNone1,
-					GrantEntitlementInclusionCriteria: grantEntitlementInclusionCriteria1,
-					GrantEntitlementInclusionList:     grantEntitlementInclusionList1,
-					GrantEntitlementInclusionListCel:  grantEntitlementInclusionListCel1,
-					UseSubjectUser:                    useSubjectUser14,
-					UserIDCel:                         userIDCel10,
-					UserRef:                           userRef9,
+					ExclusionCriteria: exclusionCriteria3,
+					ExclusionList:     exclusionList3,
+					ExclusionListCel:  exclusionListCel3,
+					ExclusionNone:     exclusionNone3,
+					InclusionCriteria: inclusionCriteria3,
+					InclusionList:     inclusionList3,
+					InclusionListCel:  inclusionListCel3,
+					UseSubjectUser:    useSubjectUser14,
+					UserIDCel:         userIDCel10,
+					UserRef:           userRef8,
 				}
 			}
 			var removeFromDelegation1 *shared.RemoveFromDelegation
@@ -4828,15 +4861,15 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					replacementUserIDCel1 = nil
 				}
-				var userRef10 *shared.UserRef
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef != nil {
+				var replacementUserRef1 *shared.UserRef
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.ReplacementUserRef != nil {
 					id37 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsNull() {
-						*id37 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.IsNull() {
+						*id37 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.ValueString()
 					} else {
 						id37 = nil
 					}
-					userRef10 = &shared.UserRef{
+					replacementUserRef1 = &shared.UserRef{
 						ID: id37,
 					}
 				}
@@ -4852,24 +4885,24 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					userIDCel11 = nil
 				}
-				var userRef13 *shared.UserRef
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1 != nil {
+				var userRef9 *shared.UserRef
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef != nil {
 					id38 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsNull() {
-						*id38 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsNull() {
+						*id38 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
 					} else {
 						id38 = nil
 					}
-					userRef13 = &shared.UserRef{
+					userRef9 = &shared.UserRef{
 						ID: id38,
 					}
 				}
 				removeFromDelegation1 = &shared.RemoveFromDelegation{
 					ReplacementUserIDCel: replacementUserIDCel1,
-					UserRef:              userRef10,
+					ReplacementUserRef:   replacementUserRef1,
 					UseSubjectUser:       useSubjectUser15,
 					UserIDCel:            userIDCel11,
-					UserRef1:             userRef13,
+					UserRef:              userRef9,
 				}
 			}
 			var runAutomation1 *shared.RunAutomation
@@ -4892,20 +4925,20 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						ID: id39,
 					}
 				}
-				var automationContext2 *shared.AutomationContext
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationContext != nil {
-					var contextVar2 *shared.Context
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationContext.Context != nil {
-						contextVar2 = &shared.Context{}
+				var contextVar4 *shared.AutomationContext
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.Context != nil {
+					var contextVar5 *shared.Context
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.Context.Context != nil {
+						contextVar5 = &shared.Context{}
 					}
-					automationContext2 = &shared.AutomationContext{
-						Context: contextVar2,
+					contextVar4 = &shared.AutomationContext{
+						Context: contextVar5,
 					}
 				}
 				runAutomation1 = &shared.RunAutomation{
 					AutomationTemplateIDCel: automationTemplateIDCel1,
 					AutomationTemplateRef:   automationTemplateRef1,
-					AutomationContext:       automationContext2,
+					Context:                 contextVar4,
 				}
 			}
 			var sendEmail1 *shared.SendEmail
@@ -4986,6 +5019,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					body3 = nil
 				}
+				channelIsId1 := new(bool)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.IsNull() {
+					*channelIsId1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.ValueBool()
+				} else {
+					channelIsId1 = nil
+				}
 				channelName1 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.IsNull() {
 					*channelName1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.ValueString()
@@ -5027,6 +5066,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				}
 				sendSlackMessage1 = &shared.SendSlackMessage{
 					Body:           body3,
+					ChannelIsID:    channelIsId1,
 					ChannelName:    channelName1,
 					ChannelNameCel: channelNameCel1,
 					UseSubjectUser: useSubjectUser17,
@@ -5168,87 +5208,87 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 			}
 			var taskAction1 *shared.TaskAction
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction != nil {
-				var closeAction1 *shared.CloseAction
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction != nil {
+				var close1 *shared.CloseAction
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close != nil {
 					useSubjectUser18 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsNull() {
-						*useSubjectUser18 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UseSubjectUser.IsNull() {
+						*useSubjectUser18 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UseSubjectUser.ValueBool()
 					} else {
 						useSubjectUser18 = nil
 					}
 					userIDCel12 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.IsNull() {
-						*userIDCel12 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserIDCel.IsNull() {
+						*userIDCel12 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserIDCel.ValueString()
 					} else {
 						userIDCel12 = nil
 					}
-					var userRef14 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef != nil {
+					var userRef10 *shared.UserRef
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserRef != nil {
 						id43 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsNull() {
-							*id43 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.ValueString()
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserRef.ID.IsNull() {
+							*id43 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserRef.ID.ValueString()
 						} else {
 							id43 = nil
 						}
-						userRef14 = &shared.UserRef{
+						userRef10 = &shared.UserRef{
 							ID: id43,
 						}
 					}
-					closeAction1 = &shared.CloseAction{
+					close1 = &shared.CloseAction{
 						UseSubjectUser: useSubjectUser18,
 						UserIDCel:      userIDCel12,
-						UserRef:        userRef14,
+						UserRef:        userRef10,
 					}
 				}
-				var reassignAction1 *shared.ReassignAction
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction != nil {
+				var reassign1 *shared.ReassignAction
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign != nil {
 					assigneeUserIDCel1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
-						*assigneeUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.IsNull() {
+						*assigneeUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.ValueString()
 					} else {
 						assigneeUserIDCel1 = nil
 					}
-					var userRef15 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef != nil {
+					var assigneeUserRef1 *shared.UserRef
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserRef != nil {
 						id44 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsNull() {
-							*id44 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.ValueString()
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.IsNull() {
+							*id44 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.ValueString()
 						} else {
 							id44 = nil
 						}
-						userRef15 = &shared.UserRef{
+						assigneeUserRef1 = &shared.UserRef{
 							ID: id44,
 						}
 					}
 					subjectUserIDCel1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
-						*subjectUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.IsNull() {
+						*subjectUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.ValueString()
 					} else {
 						subjectUserIDCel1 = nil
 					}
-					var userRef16 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1 != nil {
+					var subjectUserRef1 *shared.UserRef
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserRef != nil {
 						id45 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsNull() {
-							*id45 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.ValueString()
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.IsNull() {
+							*id45 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.ValueString()
 						} else {
 							id45 = nil
 						}
-						userRef16 = &shared.UserRef{
+						subjectUserRef1 = &shared.UserRef{
 							ID: id45,
 						}
 					}
 					useSubjectUser19 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsNull() {
-						*useSubjectUser19 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.UseSubjectUser.IsNull() {
+						*useSubjectUser19 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.UseSubjectUser.ValueBool()
 					} else {
 						useSubjectUser19 = nil
 					}
-					reassignAction1 = &shared.ReassignAction{
+					reassign1 = &shared.ReassignAction{
 						AssigneeUserIDCel: assigneeUserIDCel1,
-						UserRef:           userRef15,
+						AssigneeUserRef:   assigneeUserRef1,
 						SubjectUserIDCel:  subjectUserIDCel1,
-						UserRef1:          userRef16,
+						SubjectUserRef:    subjectUserRef1,
 						UseSubjectUser:    useSubjectUser19,
 					}
 				}
@@ -5266,8 +5306,8 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					taskUserRelation1 = nil
 				}
 				taskAction1 = &shared.TaskAction{
-					CloseAction:      closeAction1,
-					ReassignAction:   reassignAction1,
+					Close:            close1,
+					Reassign:         reassign1,
 					TaskTypes:        taskTypes1,
 					TaskUserRelation: taskUserRelation1,
 				}
@@ -5336,7 +5376,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				} else {
 					userIDCel13 = nil
 				}
-				var userRef17 *shared.UserRef
+				var userRef11 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef != nil {
 					id47 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.IsNull() {
@@ -5344,7 +5384,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					} else {
 						id47 = nil
 					}
-					userRef17 = &shared.UserRef{
+					userRef11 = &shared.UserRef{
 						ID: id47,
 					}
 				}
@@ -5363,7 +5403,7 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 				updateUser1 = &shared.UpdateUser{
 					UseSubjectUser: useSubjectUser21,
 					UserIDCel:      userIDCel13,
-					UserRef:        userRef17,
+					UserRef:        userRef11,
 					UserStatusCel:  userStatusCel1,
 					UserStatusEnum: userStatusEnum1,
 				}
@@ -5436,23 +5476,23 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 	if r.DraftTriggers != nil {
 		draftTriggers = make([]shared.AutomationTrigger, 0, len(r.DraftTriggers))
 		for draftTriggersIndex := range r.DraftTriggers {
-			var accessConflictTrigger *shared.AccessConflictTrigger
-			if r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger != nil {
+			var accessConflict *shared.AccessConflictTrigger
+			if r.DraftTriggers[draftTriggersIndex].AccessConflict != nil {
 				allConflictMonitors := new(bool)
-				if !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.AllConflictMonitors.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.AllConflictMonitors.IsNull() {
-					*allConflictMonitors = r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.AllConflictMonitors.ValueBool()
+				if !r.DraftTriggers[draftTriggersIndex].AccessConflict.AllConflictMonitors.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AccessConflict.AllConflictMonitors.IsNull() {
+					*allConflictMonitors = r.DraftTriggers[draftTriggersIndex].AccessConflict.AllConflictMonitors.ValueBool()
 				} else {
 					allConflictMonitors = nil
 				}
 				var conflictMonitorRefs *shared.ConflictMonitorRefs
-				if r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs != nil {
+				if r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs != nil {
 					var conflictMonitorRefs1 []shared.ConflictMonitorRef
-					if r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs != nil {
-						conflictMonitorRefs1 = make([]shared.ConflictMonitorRef, 0, len(r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs))
-						for conflictMonitorRefsIndex := range r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs {
+					if r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs != nil {
+						conflictMonitorRefs1 = make([]shared.ConflictMonitorRef, 0, len(r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs))
+						for conflictMonitorRefsIndex := range r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs {
 							id48 := new(string)
-							if !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsNull() {
-								*id48 = r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.ValueString()
+							if !r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsNull() {
+								*id48 = r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.ValueString()
 							} else {
 								id48 = nil
 							}
@@ -5465,72 +5505,72 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						ConflictMonitorRefs: conflictMonitorRefs1,
 					}
 				}
-				accessConflictTrigger = &shared.AccessConflictTrigger{
+				accessConflict = &shared.AccessConflictTrigger{
 					AllConflictMonitors: allConflictMonitors,
 					ConflictMonitorRefs: conflictMonitorRefs,
 				}
 			}
-			var appUserCreatedTrigger *shared.AppUserCreatedTrigger
-			if r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger != nil {
+			var appUserCreated *shared.AppUserCreatedTrigger
+			if r.DraftTriggers[draftTriggersIndex].AppUserCreated != nil {
 				appId21 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppID.IsNull() {
-					*appId21 = r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppID.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppID.IsNull() {
+					*appId21 = r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppID.ValueString()
 				} else {
 					appId21 = nil
 				}
 				appIDCel2 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.IsNull() {
-					*appIDCel2 = r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppIDCel.IsNull() {
+					*appIDCel2 = r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppIDCel.ValueString()
 				} else {
 					appIDCel2 = nil
 				}
 				condition := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.Condition.IsNull() {
-					*condition = r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserCreated.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreated.Condition.IsNull() {
+					*condition = r.DraftTriggers[draftTriggersIndex].AppUserCreated.Condition.ValueString()
 				} else {
 					condition = nil
 				}
-				appUserCreatedTrigger = &shared.AppUserCreatedTrigger{
+				appUserCreated = &shared.AppUserCreatedTrigger{
 					AppID:     appId21,
 					AppIDCel:  appIDCel2,
 					Condition: condition,
 				}
 			}
-			var appUserUpdatedTrigger *shared.AppUserUpdatedTrigger
-			if r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger != nil {
+			var appUserUpdated *shared.AppUserUpdatedTrigger
+			if r.DraftTriggers[draftTriggersIndex].AppUserUpdated != nil {
 				appId22 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppID.IsNull() {
-					*appId22 = r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppID.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppID.IsNull() {
+					*appId22 = r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppID.ValueString()
 				} else {
 					appId22 = nil
 				}
 				appIDCel3 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.IsNull() {
-					*appIDCel3 = r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppIDCel.IsNull() {
+					*appIDCel3 = r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppIDCel.ValueString()
 				} else {
 					appIDCel3 = nil
 				}
 				condition1 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.Condition.IsNull() {
-					*condition1 = r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.Condition.IsNull() {
+					*condition1 = r.DraftTriggers[draftTriggersIndex].AppUserUpdated.Condition.ValueString()
 				} else {
 					condition1 = nil
 				}
-				appUserUpdatedTrigger = &shared.AppUserUpdatedTrigger{
+				appUserUpdated = &shared.AppUserUpdatedTrigger{
 					AppID:     appId22,
 					AppIDCel:  appIDCel3,
 					Condition: condition1,
 				}
 			}
-			var grantDeletedTrigger *shared.GrantDeletedTrigger
-			if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger != nil {
+			var grantDeleted *shared.GrantDeletedTrigger
+			if r.DraftTriggers[draftTriggersIndex].GrantDeleted != nil {
 				var grantTriggerFilter *shared.GrantTriggerFilter
-				if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter != nil {
+				if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter != nil {
 					var accountFilter *shared.AccountFilter
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter != nil {
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter != nil {
 						accountType := new(shared.AccountType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
-							*accountType = shared.AccountType(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
+							*accountType = shared.AccountType(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
 						} else {
 							accountType = nil
 						}
@@ -5539,87 +5579,87 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						}
 					}
 					var grantFilter *shared.GrantFilter
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter != nil {
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter != nil {
 						grantFilterType := new(shared.GrantFilterType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
-							*grantFilterType = shared.GrantFilterType(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
+							*grantFilterType = shared.GrantFilterType(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
 						} else {
 							grantFilterType = nil
 						}
 						grantJustificationType := new(shared.GrantJustificationType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
-							*grantJustificationType = shared.GrantJustificationType(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
+							*grantJustificationType = shared.GrantJustificationType(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
 						} else {
 							grantJustificationType = nil
 						}
-						grantSourceFilter := new(shared.GrantSourceFilter)
-						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter = shared.GrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+						grantSourceFilter2 := new(shared.GrantFilterGrantSourceFilter)
+						if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
+							*grantSourceFilter2 = shared.GrantFilterGrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter = nil
+							grantSourceFilter2 = nil
 						}
 						grantFilter = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType,
 							GrantJustificationType: grantJustificationType,
-							GrantSourceFilter:      grantSourceFilter,
+							GrantSourceFilter:      grantSourceFilter2,
 						}
 					}
-					var entitlementInclusionAll2 *shared.EntitlementInclusionAll
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionAll != nil {
-						entitlementInclusionAll2 = &shared.EntitlementInclusionAll{}
+					var inclusionAll2 *shared.EntitlementInclusionAll
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionAll != nil {
+						inclusionAll2 = &shared.EntitlementInclusionAll{}
 					}
-					var entitlementInclusionCriteria2 *shared.EntitlementInclusionCriteria
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria != nil {
+					var inclusionCriteria4 *shared.EntitlementInclusionCriteria
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria != nil {
 						var appIds4 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-							appIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-							for appIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-								appIds4 = append(appIds4, r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds[appIdsIndex4].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+							appIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds))
+							for appIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds {
+								appIds4 = append(appIds4, r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds[appIdsIndex4].ValueString())
 							}
 						}
 						var complianceFrameworkIds4 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							complianceFrameworkIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for complianceFrameworkIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-								complianceFrameworkIds4 = append(complianceFrameworkIds4, r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex4].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+							complianceFrameworkIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+							for complianceFrameworkIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+								complianceFrameworkIds4 = append(complianceFrameworkIds4, r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex4].ValueString())
 							}
 						}
 						var resourceTypeIds2 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-							resourceTypeIds2 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-							for resourceTypeIdsIndex2 := range r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-								resourceTypeIds2 = append(resourceTypeIds2, r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex2].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+							resourceTypeIds2 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+							for resourceTypeIdsIndex2 := range r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+								resourceTypeIds2 = append(resourceTypeIds2, r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex2].ValueString())
 							}
 						}
 						var riskLevelIds4 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-							riskLevelIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-							for riskLevelIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-								riskLevelIds4 = append(riskLevelIds4, r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex4].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+							riskLevelIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+							for riskLevelIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+								riskLevelIds4 = append(riskLevelIds4, r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex4].ValueString())
 							}
 						}
-						entitlementInclusionCriteria2 = &shared.EntitlementInclusionCriteria{
+						inclusionCriteria4 = &shared.EntitlementInclusionCriteria{
 							AppIds:                 appIds4,
 							ComplianceFrameworkIds: complianceFrameworkIds4,
 							ResourceTypeIds:        resourceTypeIds2,
 							RiskLevelIds:           riskLevelIds4,
 						}
 					}
-					var entitlementInclusionList2 *shared.EntitlementInclusionList
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList != nil {
+					var inclusionList4 *shared.EntitlementInclusionList
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList != nil {
 						var appEntitlementRefs6 []shared.AppEntitlementRef
-						if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-							appEntitlementRefs6 = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs))
-							for appEntitlementRefsIndex6 := range r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+						if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+							appEntitlementRefs6 = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs))
+							for appEntitlementRefsIndex6 := range r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 								appId23 := new(string)
-								if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.IsNull() {
-									*appId23 = r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.ValueString()
+								if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.IsNull() {
+									*appId23 = r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.ValueString()
 								} else {
 									appId23 = nil
 								}
 								id49 := new(string)
-								if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsNull() {
-									*id49 = r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.ValueString()
+								if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsNull() {
+									*id49 = r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.ValueString()
 								} else {
 									id49 = nil
 								}
@@ -5629,44 +5669,44 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 								})
 							}
 						}
-						entitlementInclusionList2 = &shared.EntitlementInclusionList{
+						inclusionList4 = &shared.EntitlementInclusionList{
 							AppEntitlementRefs: appEntitlementRefs6,
 						}
 					}
-					var entitlementInclusionListCel2 *shared.EntitlementInclusionListCel
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel != nil {
+					var inclusionListCel4 *shared.EntitlementInclusionListCel
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel != nil {
 						appEntitlementRefsCel6 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-							*appEntitlementRefsCel6 = r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+							*appEntitlementRefsCel6 = r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.ValueString()
 						} else {
 							appEntitlementRefsCel6 = nil
 						}
-						entitlementInclusionListCel2 = &shared.EntitlementInclusionListCel{
+						inclusionListCel4 = &shared.EntitlementInclusionListCel{
 							AppEntitlementRefsCel: appEntitlementRefsCel6,
 						}
 					}
 					grantTriggerFilter = &shared.GrantTriggerFilter{
-						AccountFilter:                accountFilter,
-						GrantFilter:                  grantFilter,
-						EntitlementInclusionAll:      entitlementInclusionAll2,
-						EntitlementInclusionCriteria: entitlementInclusionCriteria2,
-						EntitlementInclusionList:     entitlementInclusionList2,
-						EntitlementInclusionListCel:  entitlementInclusionListCel2,
+						AccountFilter:     accountFilter,
+						GrantFilter:       grantFilter,
+						InclusionAll:      inclusionAll2,
+						InclusionCriteria: inclusionCriteria4,
+						InclusionList:     inclusionList4,
+						InclusionListCel:  inclusionListCel4,
 					}
 				}
-				grantDeletedTrigger = &shared.GrantDeletedTrigger{
+				grantDeleted = &shared.GrantDeletedTrigger{
 					GrantTriggerFilter: grantTriggerFilter,
 				}
 			}
-			var grantFoundTrigger *shared.GrantFoundTrigger
-			if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger != nil {
+			var grantFound *shared.GrantFoundTrigger
+			if r.DraftTriggers[draftTriggersIndex].GrantFound != nil {
 				var grantTriggerFilter1 *shared.GrantTriggerFilter
-				if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter != nil {
+				if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter != nil {
 					var accountFilter1 *shared.AccountFilter
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter != nil {
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.AccountFilter != nil {
 						accountType1 := new(shared.AccountType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
-							*accountType1 = shared.AccountType(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
+							*accountType1 = shared.AccountType(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
 						} else {
 							accountType1 = nil
 						}
@@ -5675,87 +5715,87 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						}
 					}
 					var grantFilter1 *shared.GrantFilter
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter != nil {
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter != nil {
 						grantFilterType1 := new(shared.GrantFilterType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
-							*grantFilterType1 = shared.GrantFilterType(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
+							*grantFilterType1 = shared.GrantFilterType(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
 						} else {
 							grantFilterType1 = nil
 						}
 						grantJustificationType1 := new(shared.GrantJustificationType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
-							*grantJustificationType1 = shared.GrantJustificationType(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
+							*grantJustificationType1 = shared.GrantJustificationType(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
 						} else {
 							grantJustificationType1 = nil
 						}
-						grantSourceFilter1 := new(shared.GrantSourceFilter)
-						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter1 = shared.GrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+						grantSourceFilter3 := new(shared.GrantFilterGrantSourceFilter)
+						if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
+							*grantSourceFilter3 = shared.GrantFilterGrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter1 = nil
+							grantSourceFilter3 = nil
 						}
 						grantFilter1 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType1,
 							GrantJustificationType: grantJustificationType1,
-							GrantSourceFilter:      grantSourceFilter1,
+							GrantSourceFilter:      grantSourceFilter3,
 						}
 					}
-					var entitlementInclusionAll3 *shared.EntitlementInclusionAll
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionAll != nil {
-						entitlementInclusionAll3 = &shared.EntitlementInclusionAll{}
+					var inclusionAll3 *shared.EntitlementInclusionAll
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionAll != nil {
+						inclusionAll3 = &shared.EntitlementInclusionAll{}
 					}
-					var entitlementInclusionCriteria3 *shared.EntitlementInclusionCriteria
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria != nil {
+					var inclusionCriteria5 *shared.EntitlementInclusionCriteria
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria != nil {
 						var appIds5 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-							appIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-							for appIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-								appIds5 = append(appIds5, r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds[appIdsIndex5].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+							appIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds))
+							for appIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds {
+								appIds5 = append(appIds5, r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds[appIdsIndex5].ValueString())
 							}
 						}
 						var complianceFrameworkIds5 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							complianceFrameworkIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for complianceFrameworkIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-								complianceFrameworkIds5 = append(complianceFrameworkIds5, r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex5].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+							complianceFrameworkIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+							for complianceFrameworkIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+								complianceFrameworkIds5 = append(complianceFrameworkIds5, r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex5].ValueString())
 							}
 						}
 						var resourceTypeIds3 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-							resourceTypeIds3 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-							for resourceTypeIdsIndex3 := range r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-								resourceTypeIds3 = append(resourceTypeIds3, r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex3].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+							resourceTypeIds3 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+							for resourceTypeIdsIndex3 := range r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+								resourceTypeIds3 = append(resourceTypeIds3, r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex3].ValueString())
 							}
 						}
 						var riskLevelIds5 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-							riskLevelIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-							for riskLevelIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-								riskLevelIds5 = append(riskLevelIds5, r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex5].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+							riskLevelIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+							for riskLevelIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+								riskLevelIds5 = append(riskLevelIds5, r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex5].ValueString())
 							}
 						}
-						entitlementInclusionCriteria3 = &shared.EntitlementInclusionCriteria{
+						inclusionCriteria5 = &shared.EntitlementInclusionCriteria{
 							AppIds:                 appIds5,
 							ComplianceFrameworkIds: complianceFrameworkIds5,
 							ResourceTypeIds:        resourceTypeIds3,
 							RiskLevelIds:           riskLevelIds5,
 						}
 					}
-					var entitlementInclusionList3 *shared.EntitlementInclusionList
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList != nil {
+					var inclusionList5 *shared.EntitlementInclusionList
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList != nil {
 						var appEntitlementRefs7 []shared.AppEntitlementRef
-						if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-							appEntitlementRefs7 = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs))
-							for appEntitlementRefsIndex7 := range r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+						if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+							appEntitlementRefs7 = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs))
+							for appEntitlementRefsIndex7 := range r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 								appId24 := new(string)
-								if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.IsNull() {
-									*appId24 = r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.ValueString()
+								if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.IsNull() {
+									*appId24 = r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.ValueString()
 								} else {
 									appId24 = nil
 								}
 								id50 := new(string)
-								if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsNull() {
-									*id50 = r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.ValueString()
+								if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsNull() {
+									*id50 = r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.ValueString()
 								} else {
 									id50 = nil
 								}
@@ -5765,74 +5805,74 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 								})
 							}
 						}
-						entitlementInclusionList3 = &shared.EntitlementInclusionList{
+						inclusionList5 = &shared.EntitlementInclusionList{
 							AppEntitlementRefs: appEntitlementRefs7,
 						}
 					}
-					var entitlementInclusionListCel3 *shared.EntitlementInclusionListCel
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel != nil {
+					var inclusionListCel5 *shared.EntitlementInclusionListCel
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel != nil {
 						appEntitlementRefsCel7 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-							*appEntitlementRefsCel7 = r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+							*appEntitlementRefsCel7 = r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.ValueString()
 						} else {
 							appEntitlementRefsCel7 = nil
 						}
-						entitlementInclusionListCel3 = &shared.EntitlementInclusionListCel{
+						inclusionListCel5 = &shared.EntitlementInclusionListCel{
 							AppEntitlementRefsCel: appEntitlementRefsCel7,
 						}
 					}
 					grantTriggerFilter1 = &shared.GrantTriggerFilter{
-						AccountFilter:                accountFilter1,
-						GrantFilter:                  grantFilter1,
-						EntitlementInclusionAll:      entitlementInclusionAll3,
-						EntitlementInclusionCriteria: entitlementInclusionCriteria3,
-						EntitlementInclusionList:     entitlementInclusionList3,
-						EntitlementInclusionListCel:  entitlementInclusionListCel3,
+						AccountFilter:     accountFilter1,
+						GrantFilter:       grantFilter1,
+						InclusionAll:      inclusionAll3,
+						InclusionCriteria: inclusionCriteria5,
+						InclusionList:     inclusionList5,
+						InclusionListCel:  inclusionListCel5,
 					}
 				}
-				grantFoundTrigger = &shared.GrantFoundTrigger{
+				grantFound = &shared.GrantFoundTrigger{
 					GrantTriggerFilter: grantTriggerFilter1,
 				}
 			}
-			var scheduleTrigger *shared.ScheduleTrigger
-			if r.DraftTriggers[draftTriggersIndex].ScheduleTrigger != nil {
+			var schedule *shared.ScheduleTrigger
+			if r.DraftTriggers[draftTriggersIndex].Schedule != nil {
 				advanced := new(bool)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Advanced.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Advanced.IsNull() {
-					*advanced = r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Advanced.ValueBool()
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.Advanced.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.Advanced.IsNull() {
+					*advanced = r.DraftTriggers[draftTriggersIndex].Schedule.Advanced.ValueBool()
 				} else {
 					advanced = nil
 				}
 				condition2 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Condition.IsNull() {
-					*condition2 = r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.Condition.IsNull() {
+					*condition2 = r.DraftTriggers[draftTriggersIndex].Schedule.Condition.ValueString()
 				} else {
 					condition2 = nil
 				}
 				cronSpec := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.CronSpec.IsNull() {
-					*cronSpec = r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.CronSpec.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.CronSpec.IsNull() {
+					*cronSpec = r.DraftTriggers[draftTriggersIndex].Schedule.CronSpec.ValueString()
 				} else {
 					cronSpec = nil
 				}
 				skipIfTrueCel2 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.SkipIfTrueCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.SkipIfTrueCel.IsNull() {
-					*skipIfTrueCel2 = r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.SkipIfTrueCel.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.SkipIfTrueCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.SkipIfTrueCel.IsNull() {
+					*skipIfTrueCel2 = r.DraftTriggers[draftTriggersIndex].Schedule.SkipIfTrueCel.ValueString()
 				} else {
 					skipIfTrueCel2 = nil
 				}
 				start := new(time.Time)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Start.IsNull() {
-					*start, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Start.ValueString())
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.Start.IsNull() {
+					*start, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].Schedule.Start.ValueString())
 				} else {
 					start = nil
 				}
 				timezone := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Timezone.IsNull() {
-					*timezone = r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Timezone.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.Timezone.IsNull() {
+					*timezone = r.DraftTriggers[draftTriggersIndex].Schedule.Timezone.ValueString()
 				} else {
 					timezone = nil
 				}
-				scheduleTrigger = &shared.ScheduleTrigger{
+				schedule = &shared.ScheduleTrigger{
 					Advanced:      advanced,
 					Condition:     condition2,
 					CronSpec:      cronSpec,
@@ -5841,39 +5881,39 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					Timezone:      timezone,
 				}
 			}
-			var scheduleTriggerAppUser *shared.ScheduleTriggerAppUser
-			if r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser != nil {
+			var scheduleAppUser *shared.ScheduleTriggerAppUser
+			if r.DraftTriggers[draftTriggersIndex].ScheduleAppUser != nil {
 				appId25 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.AppID.IsNull() {
-					*appId25 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.AppID.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.AppID.IsNull() {
+					*appId25 = r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.AppID.ValueString()
 				} else {
 					appId25 = nil
 				}
 				condition3 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Condition.IsNull() {
-					*condition3 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Condition.IsNull() {
+					*condition3 = r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Condition.ValueString()
 				} else {
 					condition3 = nil
 				}
 				cronSpec1 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.CronSpec.IsNull() {
-					*cronSpec1 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.CronSpec.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.CronSpec.IsNull() {
+					*cronSpec1 = r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.CronSpec.ValueString()
 				} else {
 					cronSpec1 = nil
 				}
 				start1 := new(time.Time)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Start.IsNull() {
-					*start1, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Start.ValueString())
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Start.IsNull() {
+					*start1, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Start.ValueString())
 				} else {
 					start1 = nil
 				}
 				timezone1 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Timezone.IsNull() {
-					*timezone1 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Timezone.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Timezone.IsNull() {
+					*timezone1 = r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Timezone.ValueString()
 				} else {
 					timezone1 = nil
 				}
-				scheduleTriggerAppUser = &shared.ScheduleTriggerAppUser{
+				scheduleAppUser = &shared.ScheduleTriggerAppUser{
 					AppID:     appId25,
 					Condition: condition3,
 					CronSpec:  cronSpec1,
@@ -5881,66 +5921,66 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					Timezone:  timezone1,
 				}
 			}
-			var scheduleTriggerNoUser *shared.ScheduleTriggerNoUser
-			if r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser != nil {
+			var scheduleNoUser *shared.ScheduleTriggerNoUser
+			if r.DraftTriggers[draftTriggersIndex].ScheduleNoUser != nil {
 				advanced1 := new(bool)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.IsNull() {
-					*advanced1 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.ValueBool()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Advanced.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Advanced.IsNull() {
+					*advanced1 = r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Advanced.ValueBool()
 				} else {
 					advanced1 = nil
 				}
 				cronSpec2 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.IsNull() {
-					*cronSpec2 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.CronSpec.IsNull() {
+					*cronSpec2 = r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.CronSpec.ValueString()
 				} else {
 					cronSpec2 = nil
 				}
 				start2 := new(time.Time)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.IsNull() {
-					*start2, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.ValueString())
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Start.IsNull() {
+					*start2, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Start.ValueString())
 				} else {
 					start2 = nil
 				}
 				timezone2 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.IsNull() {
-					*timezone2 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Timezone.IsNull() {
+					*timezone2 = r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Timezone.ValueString()
 				} else {
 					timezone2 = nil
 				}
-				scheduleTriggerNoUser = &shared.ScheduleTriggerNoUser{
+				scheduleNoUser = &shared.ScheduleTriggerNoUser{
 					Advanced: advanced1,
 					CronSpec: cronSpec2,
 					Start:    start2,
 					Timezone: timezone2,
 				}
 			}
-			var usageBasedRevocationTrigger *shared.UsageBasedRevocationTrigger
-			if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger != nil {
+			var usageBasedRevocation *shared.UsageBasedRevocationTrigger
+			if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation != nil {
 				appId26 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.AppID.IsNull() {
-					*appId26 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.AppID.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.AppID.IsNull() {
+					*appId26 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.AppID.ValueString()
 				} else {
 					appId26 = nil
 				}
 				enabledAt := new(time.Time)
-				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.EnabledAt.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.EnabledAt.IsNull() {
-					*enabledAt, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.EnabledAt.ValueString())
+				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.EnabledAt.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.EnabledAt.IsNull() {
+					*enabledAt, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.EnabledAt.ValueString())
 				} else {
 					enabledAt = nil
 				}
 				var excludedGroupRefs []shared.AppEntitlementRef
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs != nil {
-					excludedGroupRefs = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs))
-					for excludedGroupRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs != nil {
+					excludedGroupRefs = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs))
+					for excludedGroupRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs {
 						appId27 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.IsNull() {
-							*appId27 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.IsNull() {
+							*appId27 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.ValueString()
 						} else {
 							appId27 = nil
 						}
 						id51 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsNull() {
-							*id51 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsNull() {
+							*id51 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].ID.ValueString()
 						} else {
 							id51 = nil
 						}
@@ -5951,12 +5991,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				var excludedUserRefs []shared.UserRef
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
-					excludedUserRefs = make([]shared.UserRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs))
-					for excludedUserRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs != nil {
+					excludedUserRefs = make([]shared.UserRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs))
+					for excludedUserRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs {
 						id52 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.IsNull() {
-							*id52 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex].ID.IsNull() {
+							*id52 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex].ID.ValueString()
 						} else {
 							id52 = nil
 						}
@@ -5966,44 +6006,44 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				includeUsersWithNoActivity := new(bool)
-				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.IsNull() {
-					*includeUsersWithNoActivity = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.ValueBool()
+				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.IsNull() {
+					*includeUsersWithNoActivity = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.ValueBool()
 				} else {
 					includeUsersWithNoActivity = nil
 				}
 				var runDelayed *shared.RunDelayed
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.RunDelayed != nil {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.RunDelayed != nil {
 					var coldStartDelayDays int64
-					coldStartDelayDays = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.RunDelayed.ColdStartDelayDays.ValueInt64()
+					coldStartDelayDays = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.RunDelayed.ColdStartDelayDays.ValueInt64()
 
 					runDelayed = &shared.RunDelayed{
 						ColdStartDelayDays: coldStartDelayDays,
 					}
 				}
 				var runImmediately *shared.RunImmediately
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.RunImmediately != nil {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.RunImmediately != nil {
 					runImmediately = &shared.RunImmediately{}
 				}
 				var targetedAppUserTypes []shared.TargetedAppUserTypes
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes != nil {
-					targetedAppUserTypes = make([]shared.TargetedAppUserTypes, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes))
-					for _, targetedAppUserTypesItem := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedAppUserTypes != nil {
+					targetedAppUserTypes = make([]shared.TargetedAppUserTypes, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedAppUserTypes))
+					for _, targetedAppUserTypesItem := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedAppUserTypes {
 						targetedAppUserTypes = append(targetedAppUserTypes, shared.TargetedAppUserTypes(targetedAppUserTypesItem.ValueString()))
 					}
 				}
 				var targetedEntitlementRefs []shared.AppEntitlementRef
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
-					targetedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs))
-					for targetedEntitlementRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs != nil {
+					targetedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs))
+					for targetedEntitlementRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs {
 						appId28 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.IsNull() {
-							*appId28 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.IsNull() {
+							*appId28 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.ValueString()
 						} else {
 							appId28 = nil
 						}
 						id53 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsNull() {
-							*id53 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsNull() {
+							*id53 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.ValueString()
 						} else {
 							id53 = nil
 						}
@@ -6014,12 +6054,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				unusedForDays := new(int64)
-				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.UnusedForDays.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.UnusedForDays.IsNull() {
-					*unusedForDays = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.UnusedForDays.ValueInt64()
+				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.UnusedForDays.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.UnusedForDays.IsNull() {
+					*unusedForDays = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.UnusedForDays.ValueInt64()
 				} else {
 					unusedForDays = nil
 				}
-				usageBasedRevocationTrigger = &shared.UsageBasedRevocationTrigger{
+				usageBasedRevocation = &shared.UsageBasedRevocationTrigger{
 					AppID:                      appId26,
 					EnabledAt:                  enabledAt,
 					ExcludedGroupRefs:          excludedGroupRefs,
@@ -6032,78 +6072,78 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					UnusedForDays:              unusedForDays,
 				}
 			}
-			var userCreatedTrigger *shared.UserCreatedTrigger
-			if r.DraftTriggers[draftTriggersIndex].UserCreatedTrigger != nil {
+			var userCreated *shared.UserCreatedTrigger
+			if r.DraftTriggers[draftTriggersIndex].UserCreated != nil {
 				condition4 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].UserCreatedTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UserCreatedTrigger.Condition.IsNull() {
-					*condition4 = r.DraftTriggers[draftTriggersIndex].UserCreatedTrigger.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].UserCreated.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UserCreated.Condition.IsNull() {
+					*condition4 = r.DraftTriggers[draftTriggersIndex].UserCreated.Condition.ValueString()
 				} else {
 					condition4 = nil
 				}
-				userCreatedTrigger = &shared.UserCreatedTrigger{
+				userCreated = &shared.UserCreatedTrigger{
 					Condition: condition4,
 				}
 			}
-			var userProfileChangeTrigger *shared.UserProfileChangeTrigger
-			if r.DraftTriggers[draftTriggersIndex].UserProfileChangeTrigger != nil {
+			var userProfileChange *shared.UserProfileChangeTrigger
+			if r.DraftTriggers[draftTriggersIndex].UserProfileChange != nil {
 				condition5 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].UserProfileChangeTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UserProfileChangeTrigger.Condition.IsNull() {
-					*condition5 = r.DraftTriggers[draftTriggersIndex].UserProfileChangeTrigger.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].UserProfileChange.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UserProfileChange.Condition.IsNull() {
+					*condition5 = r.DraftTriggers[draftTriggersIndex].UserProfileChange.Condition.ValueString()
 				} else {
 					condition5 = nil
 				}
-				userProfileChangeTrigger = &shared.UserProfileChangeTrigger{
+				userProfileChange = &shared.UserProfileChangeTrigger{
 					Condition: condition5,
 				}
 			}
-			var webhookAutomationTrigger *shared.WebhookAutomationTrigger
-			if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger != nil {
-				var webhookListenerAuthCapabilityURL *shared.WebhookListenerAuthCapabilityURL
-				if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL != nil {
-					webhookListenerAuthCapabilityURL = &shared.WebhookListenerAuthCapabilityURL{}
+			var webhook2 *shared.WebhookAutomationTrigger
+			if r.DraftTriggers[draftTriggersIndex].Webhook != nil {
+				var capabilityURL *shared.WebhookListenerAuthCapabilityURL
+				if r.DraftTriggers[draftTriggersIndex].Webhook.CapabilityURL != nil {
+					capabilityURL = &shared.WebhookListenerAuthCapabilityURL{}
 				}
-				var webhookListenerAuthHMAC *shared.WebhookListenerAuthHMAC
-				if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthHMAC != nil {
-					webhookListenerAuthHMAC = &shared.WebhookListenerAuthHMAC{}
+				var hmac *shared.WebhookListenerAuthHMAC
+				if r.DraftTriggers[draftTriggersIndex].Webhook.Hmac != nil {
+					hmac = &shared.WebhookListenerAuthHMAC{}
 				}
-				var webhookListenerAuthJWT *shared.WebhookListenerAuthJWT
-				if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT != nil {
+				var jwt *shared.WebhookListenerAuthJWT
+				if r.DraftTriggers[draftTriggersIndex].Webhook.Jwt != nil {
 					jwksURL := new(string)
-					if !r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.IsNull() {
-						*jwksURL = r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.ValueString()
+					if !r.DraftTriggers[draftTriggersIndex].Webhook.Jwt.JwksURL.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Webhook.Jwt.JwksURL.IsNull() {
+						*jwksURL = r.DraftTriggers[draftTriggersIndex].Webhook.Jwt.JwksURL.ValueString()
 					} else {
 						jwksURL = nil
 					}
-					webhookListenerAuthJWT = &shared.WebhookListenerAuthJWT{
+					jwt = &shared.WebhookListenerAuthJWT{
 						JwksURL: jwksURL,
 					}
 				}
 				listenerID := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.ListenerID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.ListenerID.IsNull() {
-					*listenerID = r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.ListenerID.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].Webhook.ListenerID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Webhook.ListenerID.IsNull() {
+					*listenerID = r.DraftTriggers[draftTriggersIndex].Webhook.ListenerID.ValueString()
 				} else {
 					listenerID = nil
 				}
-				webhookAutomationTrigger = &shared.WebhookAutomationTrigger{
-					WebhookListenerAuthCapabilityURL: webhookListenerAuthCapabilityURL,
-					WebhookListenerAuthHMAC:          webhookListenerAuthHMAC,
-					WebhookListenerAuthJWT:           webhookListenerAuthJWT,
-					ListenerID:                       listenerID,
+				webhook2 = &shared.WebhookAutomationTrigger{
+					CapabilityURL: capabilityURL,
+					Hmac:          hmac,
+					Jwt:           jwt,
+					ListenerID:    listenerID,
 				}
 			}
 			draftTriggers = append(draftTriggers, shared.AutomationTrigger{
-				AccessConflictTrigger:       accessConflictTrigger,
-				AppUserCreatedTrigger:       appUserCreatedTrigger,
-				AppUserUpdatedTrigger:       appUserUpdatedTrigger,
-				GrantDeletedTrigger:         grantDeletedTrigger,
-				GrantFoundTrigger:           grantFoundTrigger,
-				ScheduleTrigger:             scheduleTrigger,
-				ScheduleTriggerAppUser:      scheduleTriggerAppUser,
-				ScheduleTriggerNoUser:       scheduleTriggerNoUser,
-				UsageBasedRevocationTrigger: usageBasedRevocationTrigger,
-				UserCreatedTrigger:          userCreatedTrigger,
-				UserProfileChangeTrigger:    userProfileChangeTrigger,
-				WebhookAutomationTrigger:    webhookAutomationTrigger,
+				AccessConflict:       accessConflict,
+				AppUserCreated:       appUserCreated,
+				AppUserUpdated:       appUserUpdated,
+				GrantDeleted:         grantDeleted,
+				GrantFound:           grantFound,
+				Schedule:             schedule,
+				ScheduleAppUser:      scheduleAppUser,
+				ScheduleNoUser:       scheduleNoUser,
+				UsageBasedRevocation: usageBasedRevocation,
+				UserCreated:          userCreated,
+				UserProfileChange:    userProfileChange,
+				Webhook:              webhook2,
 			})
 		}
 	}
@@ -6135,23 +6175,23 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 	if r.Triggers != nil {
 		triggers = make([]shared.AutomationTrigger, 0, len(r.Triggers))
 		for triggersIndex := range r.Triggers {
-			var accessConflictTrigger1 *shared.AccessConflictTrigger
-			if r.Triggers[triggersIndex].AccessConflictTrigger != nil {
+			var accessConflict1 *shared.AccessConflictTrigger
+			if r.Triggers[triggersIndex].AccessConflict != nil {
 				allConflictMonitors1 := new(bool)
-				if !r.Triggers[triggersIndex].AccessConflictTrigger.AllConflictMonitors.IsUnknown() && !r.Triggers[triggersIndex].AccessConflictTrigger.AllConflictMonitors.IsNull() {
-					*allConflictMonitors1 = r.Triggers[triggersIndex].AccessConflictTrigger.AllConflictMonitors.ValueBool()
+				if !r.Triggers[triggersIndex].AccessConflict.AllConflictMonitors.IsUnknown() && !r.Triggers[triggersIndex].AccessConflict.AllConflictMonitors.IsNull() {
+					*allConflictMonitors1 = r.Triggers[triggersIndex].AccessConflict.AllConflictMonitors.ValueBool()
 				} else {
 					allConflictMonitors1 = nil
 				}
 				var conflictMonitorRefs2 *shared.ConflictMonitorRefs
-				if r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs != nil {
+				if r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs != nil {
 					var conflictMonitorRefs3 []shared.ConflictMonitorRef
-					if r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs != nil {
-						conflictMonitorRefs3 = make([]shared.ConflictMonitorRef, 0, len(r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs))
-						for conflictMonitorRefsIndex1 := range r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs {
+					if r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs != nil {
+						conflictMonitorRefs3 = make([]shared.ConflictMonitorRef, 0, len(r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs))
+						for conflictMonitorRefsIndex1 := range r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs {
 							id54 := new(string)
-							if !r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsNull() {
-								*id54 = r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.ValueString()
+							if !r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsNull() {
+								*id54 = r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.ValueString()
 							} else {
 								id54 = nil
 							}
@@ -6164,72 +6204,72 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						ConflictMonitorRefs: conflictMonitorRefs3,
 					}
 				}
-				accessConflictTrigger1 = &shared.AccessConflictTrigger{
+				accessConflict1 = &shared.AccessConflictTrigger{
 					AllConflictMonitors: allConflictMonitors1,
 					ConflictMonitorRefs: conflictMonitorRefs2,
 				}
 			}
-			var appUserCreatedTrigger1 *shared.AppUserCreatedTrigger
-			if r.Triggers[triggersIndex].AppUserCreatedTrigger != nil {
+			var appUserCreated1 *shared.AppUserCreatedTrigger
+			if r.Triggers[triggersIndex].AppUserCreated != nil {
 				appId29 := new(string)
-				if !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppID.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppID.IsNull() {
-					*appId29 = r.Triggers[triggersIndex].AppUserCreatedTrigger.AppID.ValueString()
+				if !r.Triggers[triggersIndex].AppUserCreated.AppID.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreated.AppID.IsNull() {
+					*appId29 = r.Triggers[triggersIndex].AppUserCreated.AppID.ValueString()
 				} else {
 					appId29 = nil
 				}
 				appIDCel4 := new(string)
-				if !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.IsNull() {
-					*appIDCel4 = r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
+				if !r.Triggers[triggersIndex].AppUserCreated.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreated.AppIDCel.IsNull() {
+					*appIDCel4 = r.Triggers[triggersIndex].AppUserCreated.AppIDCel.ValueString()
 				} else {
 					appIDCel4 = nil
 				}
 				condition6 := new(string)
-				if !r.Triggers[triggersIndex].AppUserCreatedTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreatedTrigger.Condition.IsNull() {
-					*condition6 = r.Triggers[triggersIndex].AppUserCreatedTrigger.Condition.ValueString()
+				if !r.Triggers[triggersIndex].AppUserCreated.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreated.Condition.IsNull() {
+					*condition6 = r.Triggers[triggersIndex].AppUserCreated.Condition.ValueString()
 				} else {
 					condition6 = nil
 				}
-				appUserCreatedTrigger1 = &shared.AppUserCreatedTrigger{
+				appUserCreated1 = &shared.AppUserCreatedTrigger{
 					AppID:     appId29,
 					AppIDCel:  appIDCel4,
 					Condition: condition6,
 				}
 			}
-			var appUserUpdatedTrigger1 *shared.AppUserUpdatedTrigger
-			if r.Triggers[triggersIndex].AppUserUpdatedTrigger != nil {
+			var appUserUpdated1 *shared.AppUserUpdatedTrigger
+			if r.Triggers[triggersIndex].AppUserUpdated != nil {
 				appId30 := new(string)
-				if !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppID.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppID.IsNull() {
-					*appId30 = r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppID.ValueString()
+				if !r.Triggers[triggersIndex].AppUserUpdated.AppID.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdated.AppID.IsNull() {
+					*appId30 = r.Triggers[triggersIndex].AppUserUpdated.AppID.ValueString()
 				} else {
 					appId30 = nil
 				}
 				appIDCel5 := new(string)
-				if !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.IsNull() {
-					*appIDCel5 = r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
+				if !r.Triggers[triggersIndex].AppUserUpdated.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdated.AppIDCel.IsNull() {
+					*appIDCel5 = r.Triggers[triggersIndex].AppUserUpdated.AppIDCel.ValueString()
 				} else {
 					appIDCel5 = nil
 				}
 				condition7 := new(string)
-				if !r.Triggers[triggersIndex].AppUserUpdatedTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdatedTrigger.Condition.IsNull() {
-					*condition7 = r.Triggers[triggersIndex].AppUserUpdatedTrigger.Condition.ValueString()
+				if !r.Triggers[triggersIndex].AppUserUpdated.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdated.Condition.IsNull() {
+					*condition7 = r.Triggers[triggersIndex].AppUserUpdated.Condition.ValueString()
 				} else {
 					condition7 = nil
 				}
-				appUserUpdatedTrigger1 = &shared.AppUserUpdatedTrigger{
+				appUserUpdated1 = &shared.AppUserUpdatedTrigger{
 					AppID:     appId30,
 					AppIDCel:  appIDCel5,
 					Condition: condition7,
 				}
 			}
-			var grantDeletedTrigger1 *shared.GrantDeletedTrigger
-			if r.Triggers[triggersIndex].GrantDeletedTrigger != nil {
+			var grantDeleted1 *shared.GrantDeletedTrigger
+			if r.Triggers[triggersIndex].GrantDeleted != nil {
 				var grantTriggerFilter2 *shared.GrantTriggerFilter
-				if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter != nil {
+				if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter != nil {
 					var accountFilter2 *shared.AccountFilter
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter != nil {
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter != nil {
 						accountType2 := new(shared.AccountType)
-						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
-							*accountType2 = shared.AccountType(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
+						if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
+							*accountType2 = shared.AccountType(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
 						} else {
 							accountType2 = nil
 						}
@@ -6238,87 +6278,87 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						}
 					}
 					var grantFilter2 *shared.GrantFilter
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter != nil {
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter != nil {
 						grantFilterType2 := new(shared.GrantFilterType)
-						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
-							*grantFilterType2 = shared.GrantFilterType(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
+						if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
+							*grantFilterType2 = shared.GrantFilterType(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
 						} else {
 							grantFilterType2 = nil
 						}
 						grantJustificationType2 := new(shared.GrantJustificationType)
-						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
-							*grantJustificationType2 = shared.GrantJustificationType(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
+						if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
+							*grantJustificationType2 = shared.GrantJustificationType(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
 						} else {
 							grantJustificationType2 = nil
 						}
-						grantSourceFilter2 := new(shared.GrantSourceFilter)
-						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter2 = shared.GrantSourceFilter(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+						grantSourceFilter4 := new(shared.GrantFilterGrantSourceFilter)
+						if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
+							*grantSourceFilter4 = shared.GrantFilterGrantSourceFilter(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter2 = nil
+							grantSourceFilter4 = nil
 						}
 						grantFilter2 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType2,
 							GrantJustificationType: grantJustificationType2,
-							GrantSourceFilter:      grantSourceFilter2,
+							GrantSourceFilter:      grantSourceFilter4,
 						}
 					}
-					var entitlementInclusionAll4 *shared.EntitlementInclusionAll
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionAll != nil {
-						entitlementInclusionAll4 = &shared.EntitlementInclusionAll{}
+					var inclusionAll4 *shared.EntitlementInclusionAll
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionAll != nil {
+						inclusionAll4 = &shared.EntitlementInclusionAll{}
 					}
-					var entitlementInclusionCriteria4 *shared.EntitlementInclusionCriteria
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria != nil {
+					var inclusionCriteria6 *shared.EntitlementInclusionCriteria
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria != nil {
 						var appIds6 []string
-						if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-							appIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-							for appIdsIndex6 := range r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-								appIds6 = append(appIds6, r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds[appIdsIndex6].ValueString())
+						if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+							appIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds))
+							for appIdsIndex6 := range r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds {
+								appIds6 = append(appIds6, r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds[appIdsIndex6].ValueString())
 							}
 						}
 						var complianceFrameworkIds6 []string
-						if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							complianceFrameworkIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for complianceFrameworkIdsIndex6 := range r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-								complianceFrameworkIds6 = append(complianceFrameworkIds6, r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex6].ValueString())
+						if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+							complianceFrameworkIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+							for complianceFrameworkIdsIndex6 := range r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+								complianceFrameworkIds6 = append(complianceFrameworkIds6, r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex6].ValueString())
 							}
 						}
 						var resourceTypeIds4 []string
-						if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-							resourceTypeIds4 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-							for resourceTypeIdsIndex4 := range r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-								resourceTypeIds4 = append(resourceTypeIds4, r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex4].ValueString())
+						if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+							resourceTypeIds4 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+							for resourceTypeIdsIndex4 := range r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+								resourceTypeIds4 = append(resourceTypeIds4, r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex4].ValueString())
 							}
 						}
 						var riskLevelIds6 []string
-						if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-							riskLevelIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-							for riskLevelIdsIndex6 := range r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-								riskLevelIds6 = append(riskLevelIds6, r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex6].ValueString())
+						if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+							riskLevelIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+							for riskLevelIdsIndex6 := range r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+								riskLevelIds6 = append(riskLevelIds6, r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex6].ValueString())
 							}
 						}
-						entitlementInclusionCriteria4 = &shared.EntitlementInclusionCriteria{
+						inclusionCriteria6 = &shared.EntitlementInclusionCriteria{
 							AppIds:                 appIds6,
 							ComplianceFrameworkIds: complianceFrameworkIds6,
 							ResourceTypeIds:        resourceTypeIds4,
 							RiskLevelIds:           riskLevelIds6,
 						}
 					}
-					var entitlementInclusionList4 *shared.EntitlementInclusionList
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList != nil {
+					var inclusionList6 *shared.EntitlementInclusionList
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList != nil {
 						var appEntitlementRefs8 []shared.AppEntitlementRef
-						if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-							appEntitlementRefs8 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs))
-							for appEntitlementRefsIndex8 := range r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+						if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+							appEntitlementRefs8 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs))
+							for appEntitlementRefsIndex8 := range r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 								appId31 := new(string)
-								if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.IsNull() {
-									*appId31 = r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.ValueString()
+								if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.IsNull() {
+									*appId31 = r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.ValueString()
 								} else {
 									appId31 = nil
 								}
 								id55 := new(string)
-								if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsNull() {
-									*id55 = r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.ValueString()
+								if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsNull() {
+									*id55 = r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.ValueString()
 								} else {
 									id55 = nil
 								}
@@ -6328,44 +6368,44 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 								})
 							}
 						}
-						entitlementInclusionList4 = &shared.EntitlementInclusionList{
+						inclusionList6 = &shared.EntitlementInclusionList{
 							AppEntitlementRefs: appEntitlementRefs8,
 						}
 					}
-					var entitlementInclusionListCel4 *shared.EntitlementInclusionListCel
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel != nil {
+					var inclusionListCel6 *shared.EntitlementInclusionListCel
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel != nil {
 						appEntitlementRefsCel8 := new(string)
-						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-							*appEntitlementRefsCel8 = r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+						if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+							*appEntitlementRefsCel8 = r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.ValueString()
 						} else {
 							appEntitlementRefsCel8 = nil
 						}
-						entitlementInclusionListCel4 = &shared.EntitlementInclusionListCel{
+						inclusionListCel6 = &shared.EntitlementInclusionListCel{
 							AppEntitlementRefsCel: appEntitlementRefsCel8,
 						}
 					}
 					grantTriggerFilter2 = &shared.GrantTriggerFilter{
-						AccountFilter:                accountFilter2,
-						GrantFilter:                  grantFilter2,
-						EntitlementInclusionAll:      entitlementInclusionAll4,
-						EntitlementInclusionCriteria: entitlementInclusionCriteria4,
-						EntitlementInclusionList:     entitlementInclusionList4,
-						EntitlementInclusionListCel:  entitlementInclusionListCel4,
+						AccountFilter:     accountFilter2,
+						GrantFilter:       grantFilter2,
+						InclusionAll:      inclusionAll4,
+						InclusionCriteria: inclusionCriteria6,
+						InclusionList:     inclusionList6,
+						InclusionListCel:  inclusionListCel6,
 					}
 				}
-				grantDeletedTrigger1 = &shared.GrantDeletedTrigger{
+				grantDeleted1 = &shared.GrantDeletedTrigger{
 					GrantTriggerFilter: grantTriggerFilter2,
 				}
 			}
-			var grantFoundTrigger1 *shared.GrantFoundTrigger
-			if r.Triggers[triggersIndex].GrantFoundTrigger != nil {
+			var grantFound1 *shared.GrantFoundTrigger
+			if r.Triggers[triggersIndex].GrantFound != nil {
 				var grantTriggerFilter3 *shared.GrantTriggerFilter
-				if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter != nil {
+				if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter != nil {
 					var accountFilter3 *shared.AccountFilter
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter != nil {
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.AccountFilter != nil {
 						accountType3 := new(shared.AccountType)
-						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
-							*accountType3 = shared.AccountType(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
+						if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
+							*accountType3 = shared.AccountType(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
 						} else {
 							accountType3 = nil
 						}
@@ -6374,87 +6414,87 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 						}
 					}
 					var grantFilter3 *shared.GrantFilter
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter != nil {
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter != nil {
 						grantFilterType3 := new(shared.GrantFilterType)
-						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
-							*grantFilterType3 = shared.GrantFilterType(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
+						if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
+							*grantFilterType3 = shared.GrantFilterType(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
 						} else {
 							grantFilterType3 = nil
 						}
 						grantJustificationType3 := new(shared.GrantJustificationType)
-						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
-							*grantJustificationType3 = shared.GrantJustificationType(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
+						if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
+							*grantJustificationType3 = shared.GrantJustificationType(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
 						} else {
 							grantJustificationType3 = nil
 						}
-						grantSourceFilter3 := new(shared.GrantSourceFilter)
-						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter3 = shared.GrantSourceFilter(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+						grantSourceFilter5 := new(shared.GrantFilterGrantSourceFilter)
+						if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
+							*grantSourceFilter5 = shared.GrantFilterGrantSourceFilter(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter3 = nil
+							grantSourceFilter5 = nil
 						}
 						grantFilter3 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType3,
 							GrantJustificationType: grantJustificationType3,
-							GrantSourceFilter:      grantSourceFilter3,
+							GrantSourceFilter:      grantSourceFilter5,
 						}
 					}
-					var entitlementInclusionAll5 *shared.EntitlementInclusionAll
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionAll != nil {
-						entitlementInclusionAll5 = &shared.EntitlementInclusionAll{}
+					var inclusionAll5 *shared.EntitlementInclusionAll
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionAll != nil {
+						inclusionAll5 = &shared.EntitlementInclusionAll{}
 					}
-					var entitlementInclusionCriteria5 *shared.EntitlementInclusionCriteria
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria != nil {
+					var inclusionCriteria7 *shared.EntitlementInclusionCriteria
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria != nil {
 						var appIds7 []string
-						if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-							appIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-							for appIdsIndex7 := range r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-								appIds7 = append(appIds7, r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds[appIdsIndex7].ValueString())
+						if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+							appIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds))
+							for appIdsIndex7 := range r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds {
+								appIds7 = append(appIds7, r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds[appIdsIndex7].ValueString())
 							}
 						}
 						var complianceFrameworkIds7 []string
-						if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							complianceFrameworkIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for complianceFrameworkIdsIndex7 := range r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-								complianceFrameworkIds7 = append(complianceFrameworkIds7, r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex7].ValueString())
+						if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+							complianceFrameworkIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+							for complianceFrameworkIdsIndex7 := range r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+								complianceFrameworkIds7 = append(complianceFrameworkIds7, r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex7].ValueString())
 							}
 						}
 						var resourceTypeIds5 []string
-						if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-							resourceTypeIds5 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-							for resourceTypeIdsIndex5 := range r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-								resourceTypeIds5 = append(resourceTypeIds5, r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex5].ValueString())
+						if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+							resourceTypeIds5 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+							for resourceTypeIdsIndex5 := range r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+								resourceTypeIds5 = append(resourceTypeIds5, r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex5].ValueString())
 							}
 						}
 						var riskLevelIds7 []string
-						if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-							riskLevelIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-							for riskLevelIdsIndex7 := range r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-								riskLevelIds7 = append(riskLevelIds7, r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex7].ValueString())
+						if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+							riskLevelIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+							for riskLevelIdsIndex7 := range r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+								riskLevelIds7 = append(riskLevelIds7, r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex7].ValueString())
 							}
 						}
-						entitlementInclusionCriteria5 = &shared.EntitlementInclusionCriteria{
+						inclusionCriteria7 = &shared.EntitlementInclusionCriteria{
 							AppIds:                 appIds7,
 							ComplianceFrameworkIds: complianceFrameworkIds7,
 							ResourceTypeIds:        resourceTypeIds5,
 							RiskLevelIds:           riskLevelIds7,
 						}
 					}
-					var entitlementInclusionList5 *shared.EntitlementInclusionList
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList != nil {
+					var inclusionList7 *shared.EntitlementInclusionList
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList != nil {
 						var appEntitlementRefs9 []shared.AppEntitlementRef
-						if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-							appEntitlementRefs9 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs))
-							for appEntitlementRefsIndex9 := range r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+						if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+							appEntitlementRefs9 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs))
+							for appEntitlementRefsIndex9 := range r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 								appId32 := new(string)
-								if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.IsNull() {
-									*appId32 = r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.ValueString()
+								if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.IsNull() {
+									*appId32 = r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.ValueString()
 								} else {
 									appId32 = nil
 								}
 								id56 := new(string)
-								if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsNull() {
-									*id56 = r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.ValueString()
+								if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsNull() {
+									*id56 = r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.ValueString()
 								} else {
 									id56 = nil
 								}
@@ -6464,74 +6504,74 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 								})
 							}
 						}
-						entitlementInclusionList5 = &shared.EntitlementInclusionList{
+						inclusionList7 = &shared.EntitlementInclusionList{
 							AppEntitlementRefs: appEntitlementRefs9,
 						}
 					}
-					var entitlementInclusionListCel5 *shared.EntitlementInclusionListCel
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel != nil {
+					var inclusionListCel7 *shared.EntitlementInclusionListCel
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel != nil {
 						appEntitlementRefsCel9 := new(string)
-						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-							*appEntitlementRefsCel9 = r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+						if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+							*appEntitlementRefsCel9 = r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.ValueString()
 						} else {
 							appEntitlementRefsCel9 = nil
 						}
-						entitlementInclusionListCel5 = &shared.EntitlementInclusionListCel{
+						inclusionListCel7 = &shared.EntitlementInclusionListCel{
 							AppEntitlementRefsCel: appEntitlementRefsCel9,
 						}
 					}
 					grantTriggerFilter3 = &shared.GrantTriggerFilter{
-						AccountFilter:                accountFilter3,
-						GrantFilter:                  grantFilter3,
-						EntitlementInclusionAll:      entitlementInclusionAll5,
-						EntitlementInclusionCriteria: entitlementInclusionCriteria5,
-						EntitlementInclusionList:     entitlementInclusionList5,
-						EntitlementInclusionListCel:  entitlementInclusionListCel5,
+						AccountFilter:     accountFilter3,
+						GrantFilter:       grantFilter3,
+						InclusionAll:      inclusionAll5,
+						InclusionCriteria: inclusionCriteria7,
+						InclusionList:     inclusionList7,
+						InclusionListCel:  inclusionListCel7,
 					}
 				}
-				grantFoundTrigger1 = &shared.GrantFoundTrigger{
+				grantFound1 = &shared.GrantFoundTrigger{
 					GrantTriggerFilter: grantTriggerFilter3,
 				}
 			}
-			var scheduleTrigger1 *shared.ScheduleTrigger
-			if r.Triggers[triggersIndex].ScheduleTrigger != nil {
+			var schedule1 *shared.ScheduleTrigger
+			if r.Triggers[triggersIndex].Schedule != nil {
 				advanced2 := new(bool)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.Advanced.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Advanced.IsNull() {
-					*advanced2 = r.Triggers[triggersIndex].ScheduleTrigger.Advanced.ValueBool()
+				if !r.Triggers[triggersIndex].Schedule.Advanced.IsUnknown() && !r.Triggers[triggersIndex].Schedule.Advanced.IsNull() {
+					*advanced2 = r.Triggers[triggersIndex].Schedule.Advanced.ValueBool()
 				} else {
 					advanced2 = nil
 				}
 				condition8 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Condition.IsNull() {
-					*condition8 = r.Triggers[triggersIndex].ScheduleTrigger.Condition.ValueString()
+				if !r.Triggers[triggersIndex].Schedule.Condition.IsUnknown() && !r.Triggers[triggersIndex].Schedule.Condition.IsNull() {
+					*condition8 = r.Triggers[triggersIndex].Schedule.Condition.ValueString()
 				} else {
 					condition8 = nil
 				}
 				cronSpec3 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.IsNull() {
-					*cronSpec3 = r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.ValueString()
+				if !r.Triggers[triggersIndex].Schedule.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].Schedule.CronSpec.IsNull() {
+					*cronSpec3 = r.Triggers[triggersIndex].Schedule.CronSpec.ValueString()
 				} else {
 					cronSpec3 = nil
 				}
 				skipIfTrueCel3 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.SkipIfTrueCel.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.SkipIfTrueCel.IsNull() {
-					*skipIfTrueCel3 = r.Triggers[triggersIndex].ScheduleTrigger.SkipIfTrueCel.ValueString()
+				if !r.Triggers[triggersIndex].Schedule.SkipIfTrueCel.IsUnknown() && !r.Triggers[triggersIndex].Schedule.SkipIfTrueCel.IsNull() {
+					*skipIfTrueCel3 = r.Triggers[triggersIndex].Schedule.SkipIfTrueCel.ValueString()
 				} else {
 					skipIfTrueCel3 = nil
 				}
 				start3 := new(time.Time)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Start.IsNull() {
-					*start3, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTrigger.Start.ValueString())
+				if !r.Triggers[triggersIndex].Schedule.Start.IsUnknown() && !r.Triggers[triggersIndex].Schedule.Start.IsNull() {
+					*start3, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].Schedule.Start.ValueString())
 				} else {
 					start3 = nil
 				}
 				timezone3 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Timezone.IsNull() {
-					*timezone3 = r.Triggers[triggersIndex].ScheduleTrigger.Timezone.ValueString()
+				if !r.Triggers[triggersIndex].Schedule.Timezone.IsUnknown() && !r.Triggers[triggersIndex].Schedule.Timezone.IsNull() {
+					*timezone3 = r.Triggers[triggersIndex].Schedule.Timezone.ValueString()
 				} else {
 					timezone3 = nil
 				}
-				scheduleTrigger1 = &shared.ScheduleTrigger{
+				schedule1 = &shared.ScheduleTrigger{
 					Advanced:      advanced2,
 					Condition:     condition8,
 					CronSpec:      cronSpec3,
@@ -6540,39 +6580,39 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					Timezone:      timezone3,
 				}
 			}
-			var scheduleTriggerAppUser1 *shared.ScheduleTriggerAppUser
-			if r.Triggers[triggersIndex].ScheduleTriggerAppUser != nil {
+			var scheduleAppUser1 *shared.ScheduleTriggerAppUser
+			if r.Triggers[triggersIndex].ScheduleAppUser != nil {
 				appId33 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.AppID.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.AppID.IsNull() {
-					*appId33 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.AppID.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleAppUser.AppID.IsUnknown() && !r.Triggers[triggersIndex].ScheduleAppUser.AppID.IsNull() {
+					*appId33 = r.Triggers[triggersIndex].ScheduleAppUser.AppID.ValueString()
 				} else {
 					appId33 = nil
 				}
 				condition9 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Condition.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Condition.IsNull() {
-					*condition9 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.Condition.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleAppUser.Condition.IsUnknown() && !r.Triggers[triggersIndex].ScheduleAppUser.Condition.IsNull() {
+					*condition9 = r.Triggers[triggersIndex].ScheduleAppUser.Condition.ValueString()
 				} else {
 					condition9 = nil
 				}
 				cronSpec4 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.IsNull() {
-					*cronSpec4 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleAppUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleAppUser.CronSpec.IsNull() {
+					*cronSpec4 = r.Triggers[triggersIndex].ScheduleAppUser.CronSpec.ValueString()
 				} else {
 					cronSpec4 = nil
 				}
 				start4 := new(time.Time)
-				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.IsNull() {
-					*start4, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.ValueString())
+				if !r.Triggers[triggersIndex].ScheduleAppUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleAppUser.Start.IsNull() {
+					*start4, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleAppUser.Start.ValueString())
 				} else {
 					start4 = nil
 				}
 				timezone4 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.IsNull() {
-					*timezone4 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleAppUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleAppUser.Timezone.IsNull() {
+					*timezone4 = r.Triggers[triggersIndex].ScheduleAppUser.Timezone.ValueString()
 				} else {
 					timezone4 = nil
 				}
-				scheduleTriggerAppUser1 = &shared.ScheduleTriggerAppUser{
+				scheduleAppUser1 = &shared.ScheduleTriggerAppUser{
 					AppID:     appId33,
 					Condition: condition9,
 					CronSpec:  cronSpec4,
@@ -6580,66 +6620,66 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					Timezone:  timezone4,
 				}
 			}
-			var scheduleTriggerNoUser1 *shared.ScheduleTriggerNoUser
-			if r.Triggers[triggersIndex].ScheduleTriggerNoUser != nil {
+			var scheduleNoUser1 *shared.ScheduleTriggerNoUser
+			if r.Triggers[triggersIndex].ScheduleNoUser != nil {
 				advanced3 := new(bool)
-				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.IsNull() {
-					*advanced3 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.ValueBool()
+				if !r.Triggers[triggersIndex].ScheduleNoUser.Advanced.IsUnknown() && !r.Triggers[triggersIndex].ScheduleNoUser.Advanced.IsNull() {
+					*advanced3 = r.Triggers[triggersIndex].ScheduleNoUser.Advanced.ValueBool()
 				} else {
 					advanced3 = nil
 				}
 				cronSpec5 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.IsNull() {
-					*cronSpec5 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleNoUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleNoUser.CronSpec.IsNull() {
+					*cronSpec5 = r.Triggers[triggersIndex].ScheduleNoUser.CronSpec.ValueString()
 				} else {
 					cronSpec5 = nil
 				}
 				start5 := new(time.Time)
-				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.IsNull() {
-					*start5, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.ValueString())
+				if !r.Triggers[triggersIndex].ScheduleNoUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleNoUser.Start.IsNull() {
+					*start5, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleNoUser.Start.ValueString())
 				} else {
 					start5 = nil
 				}
 				timezone5 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.IsNull() {
-					*timezone5 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleNoUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleNoUser.Timezone.IsNull() {
+					*timezone5 = r.Triggers[triggersIndex].ScheduleNoUser.Timezone.ValueString()
 				} else {
 					timezone5 = nil
 				}
-				scheduleTriggerNoUser1 = &shared.ScheduleTriggerNoUser{
+				scheduleNoUser1 = &shared.ScheduleTriggerNoUser{
 					Advanced: advanced3,
 					CronSpec: cronSpec5,
 					Start:    start5,
 					Timezone: timezone5,
 				}
 			}
-			var usageBasedRevocationTrigger1 *shared.UsageBasedRevocationTrigger
-			if r.Triggers[triggersIndex].UsageBasedRevocationTrigger != nil {
+			var usageBasedRevocation1 *shared.UsageBasedRevocationTrigger
+			if r.Triggers[triggersIndex].UsageBasedRevocation != nil {
 				appId34 := new(string)
-				if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.AppID.IsNull() {
-					*appId34 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.AppID.ValueString()
+				if !r.Triggers[triggersIndex].UsageBasedRevocation.AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.AppID.IsNull() {
+					*appId34 = r.Triggers[triggersIndex].UsageBasedRevocation.AppID.ValueString()
 				} else {
 					appId34 = nil
 				}
 				enabledAt1 := new(time.Time)
-				if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.EnabledAt.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.EnabledAt.IsNull() {
-					*enabledAt1, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].UsageBasedRevocationTrigger.EnabledAt.ValueString())
+				if !r.Triggers[triggersIndex].UsageBasedRevocation.EnabledAt.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.EnabledAt.IsNull() {
+					*enabledAt1, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].UsageBasedRevocation.EnabledAt.ValueString())
 				} else {
 					enabledAt1 = nil
 				}
 				var excludedGroupRefs1 []shared.AppEntitlementRef
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs != nil {
-					excludedGroupRefs1 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs))
-					for excludedGroupRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs != nil {
+					excludedGroupRefs1 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs))
+					for excludedGroupRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs {
 						appId35 := new(string)
-						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.IsNull() {
-							*appId35 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.ValueString()
+						if !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.IsNull() {
+							*appId35 = r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.ValueString()
 						} else {
 							appId35 = nil
 						}
 						id57 := new(string)
-						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsNull() {
-							*id57 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.ValueString()
+						if !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsNull() {
+							*id57 = r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.ValueString()
 						} else {
 							id57 = nil
 						}
@@ -6650,12 +6690,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				var excludedUserRefs1 []shared.UserRef
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
-					excludedUserRefs1 = make([]shared.UserRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs))
-					for excludedUserRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs != nil {
+					excludedUserRefs1 = make([]shared.UserRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs))
+					for excludedUserRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs {
 						id58 := new(string)
-						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsNull() {
-							*id58 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.ValueString()
+						if !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsNull() {
+							*id58 = r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex1].ID.ValueString()
 						} else {
 							id58 = nil
 						}
@@ -6665,44 +6705,44 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				includeUsersWithNoActivity1 := new(bool)
-				if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.IsNull() {
-					*includeUsersWithNoActivity1 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.ValueBool()
+				if !r.Triggers[triggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.IsNull() {
+					*includeUsersWithNoActivity1 = r.Triggers[triggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.ValueBool()
 				} else {
 					includeUsersWithNoActivity1 = nil
 				}
 				var runDelayed1 *shared.RunDelayed
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.RunDelayed != nil {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.RunDelayed != nil {
 					var coldStartDelayDays1 int64
-					coldStartDelayDays1 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.RunDelayed.ColdStartDelayDays.ValueInt64()
+					coldStartDelayDays1 = r.Triggers[triggersIndex].UsageBasedRevocation.RunDelayed.ColdStartDelayDays.ValueInt64()
 
 					runDelayed1 = &shared.RunDelayed{
 						ColdStartDelayDays: coldStartDelayDays1,
 					}
 				}
 				var runImmediately1 *shared.RunImmediately
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.RunImmediately != nil {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.RunImmediately != nil {
 					runImmediately1 = &shared.RunImmediately{}
 				}
 				var targetedAppUserTypes1 []shared.TargetedAppUserTypes
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes != nil {
-					targetedAppUserTypes1 = make([]shared.TargetedAppUserTypes, 0, len(r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes))
-					for _, targetedAppUserTypesItem1 := range r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.TargetedAppUserTypes != nil {
+					targetedAppUserTypes1 = make([]shared.TargetedAppUserTypes, 0, len(r.Triggers[triggersIndex].UsageBasedRevocation.TargetedAppUserTypes))
+					for _, targetedAppUserTypesItem1 := range r.Triggers[triggersIndex].UsageBasedRevocation.TargetedAppUserTypes {
 						targetedAppUserTypes1 = append(targetedAppUserTypes1, shared.TargetedAppUserTypes(targetedAppUserTypesItem1.ValueString()))
 					}
 				}
 				var targetedEntitlementRefs1 []shared.AppEntitlementRef
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
-					targetedEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs))
-					for targetedEntitlementRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs != nil {
+					targetedEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs))
+					for targetedEntitlementRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs {
 						appId36 := new(string)
-						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.IsNull() {
-							*appId36 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.ValueString()
+						if !r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.IsNull() {
+							*appId36 = r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.ValueString()
 						} else {
 							appId36 = nil
 						}
 						id59 := new(string)
-						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsNull() {
-							*id59 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.ValueString()
+						if !r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsNull() {
+							*id59 = r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.ValueString()
 						} else {
 							id59 = nil
 						}
@@ -6713,12 +6753,12 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					}
 				}
 				unusedForDays1 := new(int64)
-				if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.UnusedForDays.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.UnusedForDays.IsNull() {
-					*unusedForDays1 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.UnusedForDays.ValueInt64()
+				if !r.Triggers[triggersIndex].UsageBasedRevocation.UnusedForDays.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.UnusedForDays.IsNull() {
+					*unusedForDays1 = r.Triggers[triggersIndex].UsageBasedRevocation.UnusedForDays.ValueInt64()
 				} else {
 					unusedForDays1 = nil
 				}
-				usageBasedRevocationTrigger1 = &shared.UsageBasedRevocationTrigger{
+				usageBasedRevocation1 = &shared.UsageBasedRevocationTrigger{
 					AppID:                      appId34,
 					EnabledAt:                  enabledAt1,
 					ExcludedGroupRefs:          excludedGroupRefs1,
@@ -6731,78 +6771,78 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 					UnusedForDays:              unusedForDays1,
 				}
 			}
-			var userCreatedTrigger1 *shared.UserCreatedTrigger
-			if r.Triggers[triggersIndex].UserCreatedTrigger != nil {
+			var userCreated1 *shared.UserCreatedTrigger
+			if r.Triggers[triggersIndex].UserCreated != nil {
 				condition10 := new(string)
-				if !r.Triggers[triggersIndex].UserCreatedTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].UserCreatedTrigger.Condition.IsNull() {
-					*condition10 = r.Triggers[triggersIndex].UserCreatedTrigger.Condition.ValueString()
+				if !r.Triggers[triggersIndex].UserCreated.Condition.IsUnknown() && !r.Triggers[triggersIndex].UserCreated.Condition.IsNull() {
+					*condition10 = r.Triggers[triggersIndex].UserCreated.Condition.ValueString()
 				} else {
 					condition10 = nil
 				}
-				userCreatedTrigger1 = &shared.UserCreatedTrigger{
+				userCreated1 = &shared.UserCreatedTrigger{
 					Condition: condition10,
 				}
 			}
-			var userProfileChangeTrigger1 *shared.UserProfileChangeTrigger
-			if r.Triggers[triggersIndex].UserProfileChangeTrigger != nil {
+			var userProfileChange1 *shared.UserProfileChangeTrigger
+			if r.Triggers[triggersIndex].UserProfileChange != nil {
 				condition11 := new(string)
-				if !r.Triggers[triggersIndex].UserProfileChangeTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].UserProfileChangeTrigger.Condition.IsNull() {
-					*condition11 = r.Triggers[triggersIndex].UserProfileChangeTrigger.Condition.ValueString()
+				if !r.Triggers[triggersIndex].UserProfileChange.Condition.IsUnknown() && !r.Triggers[triggersIndex].UserProfileChange.Condition.IsNull() {
+					*condition11 = r.Triggers[triggersIndex].UserProfileChange.Condition.ValueString()
 				} else {
 					condition11 = nil
 				}
-				userProfileChangeTrigger1 = &shared.UserProfileChangeTrigger{
+				userProfileChange1 = &shared.UserProfileChangeTrigger{
 					Condition: condition11,
 				}
 			}
-			var webhookAutomationTrigger1 *shared.WebhookAutomationTrigger
-			if r.Triggers[triggersIndex].WebhookAutomationTrigger != nil {
-				var webhookListenerAuthCapabilityUrl1 *shared.WebhookListenerAuthCapabilityURL
-				if r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL != nil {
-					webhookListenerAuthCapabilityUrl1 = &shared.WebhookListenerAuthCapabilityURL{}
+			var webhook3 *shared.WebhookAutomationTrigger
+			if r.Triggers[triggersIndex].Webhook != nil {
+				var capabilityUrl1 *shared.WebhookListenerAuthCapabilityURL
+				if r.Triggers[triggersIndex].Webhook.CapabilityURL != nil {
+					capabilityUrl1 = &shared.WebhookListenerAuthCapabilityURL{}
 				}
-				var webhookListenerAuthHmac1 *shared.WebhookListenerAuthHMAC
-				if r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthHMAC != nil {
-					webhookListenerAuthHmac1 = &shared.WebhookListenerAuthHMAC{}
+				var hmac1 *shared.WebhookListenerAuthHMAC
+				if r.Triggers[triggersIndex].Webhook.Hmac != nil {
+					hmac1 = &shared.WebhookListenerAuthHMAC{}
 				}
-				var webhookListenerAuthJwt1 *shared.WebhookListenerAuthJWT
-				if r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT != nil {
+				var jwt1 *shared.WebhookListenerAuthJWT
+				if r.Triggers[triggersIndex].Webhook.Jwt != nil {
 					jwksUrl1 := new(string)
-					if !r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.IsUnknown() && !r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.IsNull() {
-						*jwksUrl1 = r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.ValueString()
+					if !r.Triggers[triggersIndex].Webhook.Jwt.JwksURL.IsUnknown() && !r.Triggers[triggersIndex].Webhook.Jwt.JwksURL.IsNull() {
+						*jwksUrl1 = r.Triggers[triggersIndex].Webhook.Jwt.JwksURL.ValueString()
 					} else {
 						jwksUrl1 = nil
 					}
-					webhookListenerAuthJwt1 = &shared.WebhookListenerAuthJWT{
+					jwt1 = &shared.WebhookListenerAuthJWT{
 						JwksURL: jwksUrl1,
 					}
 				}
 				listenerId1 := new(string)
-				if !r.Triggers[triggersIndex].WebhookAutomationTrigger.ListenerID.IsUnknown() && !r.Triggers[triggersIndex].WebhookAutomationTrigger.ListenerID.IsNull() {
-					*listenerId1 = r.Triggers[triggersIndex].WebhookAutomationTrigger.ListenerID.ValueString()
+				if !r.Triggers[triggersIndex].Webhook.ListenerID.IsUnknown() && !r.Triggers[triggersIndex].Webhook.ListenerID.IsNull() {
+					*listenerId1 = r.Triggers[triggersIndex].Webhook.ListenerID.ValueString()
 				} else {
 					listenerId1 = nil
 				}
-				webhookAutomationTrigger1 = &shared.WebhookAutomationTrigger{
-					WebhookListenerAuthCapabilityURL: webhookListenerAuthCapabilityUrl1,
-					WebhookListenerAuthHMAC:          webhookListenerAuthHmac1,
-					WebhookListenerAuthJWT:           webhookListenerAuthJwt1,
-					ListenerID:                       listenerId1,
+				webhook3 = &shared.WebhookAutomationTrigger{
+					CapabilityURL: capabilityUrl1,
+					Hmac:          hmac1,
+					Jwt:           jwt1,
+					ListenerID:    listenerId1,
 				}
 			}
 			triggers = append(triggers, shared.AutomationTrigger{
-				AccessConflictTrigger:       accessConflictTrigger1,
-				AppUserCreatedTrigger:       appUserCreatedTrigger1,
-				AppUserUpdatedTrigger:       appUserUpdatedTrigger1,
-				GrantDeletedTrigger:         grantDeletedTrigger1,
-				GrantFoundTrigger:           grantFoundTrigger1,
-				ScheduleTrigger:             scheduleTrigger1,
-				ScheduleTriggerAppUser:      scheduleTriggerAppUser1,
-				ScheduleTriggerNoUser:       scheduleTriggerNoUser1,
-				UsageBasedRevocationTrigger: usageBasedRevocationTrigger1,
-				UserCreatedTrigger:          userCreatedTrigger1,
-				UserProfileChangeTrigger:    userProfileChangeTrigger1,
-				WebhookAutomationTrigger:    webhookAutomationTrigger1,
+				AccessConflict:       accessConflict1,
+				AppUserCreated:       appUserCreated1,
+				AppUserUpdated:       appUserUpdated1,
+				GrantDeleted:         grantDeleted1,
+				GrantFound:           grantFound1,
+				Schedule:             schedule1,
+				ScheduleAppUser:      scheduleAppUser1,
+				ScheduleNoUser:       scheduleNoUser1,
+				UsageBasedRevocation: usageBasedRevocation1,
+				UserCreated:          userCreated1,
+				UserProfileChange:    userProfileChange1,
+				Webhook:              webhook3,
 			})
 		}
 	}
@@ -6813,25 +6853,25 @@ func (r *AutomationResourceModel) ToSharedAutomationInput(ctx context.Context) (
 		webhookHmacSecret = nil
 	}
 	out := shared.AutomationInput{
-		Annotations:                  annotations,
-		AppID:                        appID,
-		AutomationSteps:              automationSteps,
-		DisabledReasonCircuitBreaker: disabledReasonCircuitBreaker,
-		CircuitBreakerMax:            circuitBreakerMax,
-		CircuitBreakerPeriod:         circuitBreakerPeriod,
-		AutomationContext:            automationContext1,
-		CreatedAt:                    createdAt,
-		CurrentVersion:               currentVersion,
-		Description:                  description,
-		DisplayName:                  displayName,
-		DraftAutomationSteps:         draftAutomationSteps,
-		DraftTriggers:                draftTriggers,
-		Enabled:                      enabled,
-		IsDraft:                      isDraft,
-		LastExecutedAt:               lastExecutedAt,
-		PrimaryTriggerType:           primaryTriggerType,
-		Triggers:                     triggers,
-		WebhookHmacSecret:            webhookHmacSecret,
+		Annotations:          annotations,
+		AppID:                appID,
+		AutomationSteps:      automationSteps,
+		CircuitBreaker:       circuitBreaker,
+		CircuitBreakerMax:    circuitBreakerMax,
+		CircuitBreakerPeriod: circuitBreakerPeriod,
+		Context:              contextVar2,
+		CreatedAt:            createdAt,
+		CurrentVersion:       currentVersion,
+		Description:          description,
+		DisplayName:          displayName,
+		DraftAutomationSteps: draftAutomationSteps,
+		DraftTriggers:        draftTriggers,
+		Enabled:              enabled,
+		IsDraft:              isDraft,
+		LastExecutedAt:       lastExecutedAt,
+		PrimaryTriggerType:   primaryTriggerType,
+		Triggers:             triggers,
+		WebhookHmacSecret:    webhookHmacSecret,
 	}
 
 	return &out, diags
@@ -7201,58 +7241,58 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 			}
 			var createRevokeTasksV2 *shared.CreateRevokeTasksV2
 			if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2 != nil {
-				var entitlementExclusionCriteria *shared.EntitlementExclusionCriteria
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria != nil {
+				var exclusionCriteria *shared.EntitlementExclusionCriteria
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria != nil {
 					var excludedAppIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds != nil {
-						excludedAppIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds))
-						for excludedAppIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds {
-							excludedAppIds = append(excludedAppIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds != nil {
+						excludedAppIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds))
+						for excludedAppIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds {
+							excludedAppIds = append(excludedAppIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex].ValueString())
 						}
 					}
 					var excludedComplianceFrameworkIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-						excludedComplianceFrameworkIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-						for excludedComplianceFrameworkIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-							excludedComplianceFrameworkIds = append(excludedComplianceFrameworkIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+						excludedComplianceFrameworkIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+						for excludedComplianceFrameworkIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+							excludedComplianceFrameworkIds = append(excludedComplianceFrameworkIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex].ValueString())
 						}
 					}
 					var excludedResourceTypeIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds != nil {
-						excludedResourceTypeIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds))
-						for excludedResourceTypeIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds {
-							excludedResourceTypeIds = append(excludedResourceTypeIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds[excludedResourceTypeIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds != nil {
+						excludedResourceTypeIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds))
+						for excludedResourceTypeIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds {
+							excludedResourceTypeIds = append(excludedResourceTypeIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds[excludedResourceTypeIdsIndex].ValueString())
 						}
 					}
 					var excludedRiskLevelIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-						excludedRiskLevelIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds))
-						for excludedRiskLevelIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds {
-							excludedRiskLevelIds = append(excludedRiskLevelIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+						excludedRiskLevelIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds))
+						for excludedRiskLevelIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds {
+							excludedRiskLevelIds = append(excludedRiskLevelIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex].ValueString())
 						}
 					}
-					entitlementExclusionCriteria = &shared.EntitlementExclusionCriteria{
+					exclusionCriteria = &shared.EntitlementExclusionCriteria{
 						ExcludedAppIds:                 excludedAppIds,
 						ExcludedComplianceFrameworkIds: excludedComplianceFrameworkIds,
 						ExcludedResourceTypeIds:        excludedResourceTypeIds,
 						ExcludedRiskLevelIds:           excludedRiskLevelIds,
 					}
 				}
-				var entitlementExclusionList *shared.EntitlementExclusionList
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList != nil {
+				var exclusionList *shared.EntitlementExclusionList
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList != nil {
 					var excludedAppEntitlementRefs1 []shared.AppEntitlementRef
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-						excludedAppEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs))
-						for excludedAppEntitlementRefsIndex1 := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs {
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs != nil {
+						excludedAppEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs))
+						for excludedAppEntitlementRefsIndex1 := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs {
 							appId6 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.IsNull() {
-								*appId6 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.IsNull() {
+								*appId6 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].AppID.ValueString()
 							} else {
 								appId6 = nil
 							}
 							id7 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.IsNull() {
-								*id7 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.IsNull() {
+								*id7 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex1].ID.ValueString()
 							} else {
 								id7 = nil
 							}
@@ -7262,86 +7302,92 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 							})
 						}
 					}
-					entitlementExclusionList = &shared.EntitlementExclusionList{
+					exclusionList = &shared.EntitlementExclusionList{
 						ExcludedAppEntitlementRefs: excludedAppEntitlementRefs1,
 					}
 				}
-				var entitlementExclusionListCel *shared.EntitlementExclusionListCel
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel != nil {
+				var exclusionListCel *shared.EntitlementExclusionListCel
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionListCel != nil {
 					excludedAppEntitlementRefsCel1 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
-						*excludedAppEntitlementRefsCel1 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
+						*excludedAppEntitlementRefsCel1 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
 					} else {
 						excludedAppEntitlementRefsCel1 = nil
 					}
-					entitlementExclusionListCel = &shared.EntitlementExclusionListCel{
+					exclusionListCel = &shared.EntitlementExclusionListCel{
 						ExcludedAppEntitlementRefsCel: excludedAppEntitlementRefsCel1,
 					}
 				}
-				var entitlementExclusionNone *shared.EntitlementExclusionNone
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
-					entitlementExclusionNone = &shared.EntitlementExclusionNone{}
+				var exclusionNone *shared.EntitlementExclusionNone
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.ExclusionNone != nil {
+					exclusionNone = &shared.EntitlementExclusionNone{}
 				}
-				var entitlementInclusionAccessOnly *shared.EntitlementInclusionAccessOnly
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
-					entitlementInclusionAccessOnly = &shared.EntitlementInclusionAccessOnly{}
+				grantSourceFilter := new(shared.GrantSourceFilter)
+				if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsNull() {
+					*grantSourceFilter = shared.GrantSourceFilter(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.ValueString())
+				} else {
+					grantSourceFilter = nil
 				}
-				var entitlementInclusionAll *shared.EntitlementInclusionAll
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAll != nil {
-					entitlementInclusionAll = &shared.EntitlementInclusionAll{}
+				var inclusionAccessOnly *shared.EntitlementInclusionAccessOnly
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionAccessOnly != nil {
+					inclusionAccessOnly = &shared.EntitlementInclusionAccessOnly{}
 				}
-				var entitlementInclusionCriteria *shared.EntitlementInclusionCriteria
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria != nil {
+				var inclusionAll *shared.EntitlementInclusionAll
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionAll != nil {
+					inclusionAll = &shared.EntitlementInclusionAll{}
+				}
+				var inclusionCriteria *shared.EntitlementInclusionCriteria
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria != nil {
 					var appIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds != nil {
-						appIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds))
-						for appIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds {
-							appIds = append(appIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds[appIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds != nil {
+						appIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds))
+						for appIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds {
+							appIds = append(appIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds[appIdsIndex].ValueString())
 						}
 					}
 					var complianceFrameworkIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-						complianceFrameworkIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-						for complianceFrameworkIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-							complianceFrameworkIds = append(complianceFrameworkIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds != nil {
+						complianceFrameworkIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds))
+						for complianceFrameworkIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds {
+							complianceFrameworkIds = append(complianceFrameworkIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex].ValueString())
 						}
 					}
 					var resourceTypeIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-						resourceTypeIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds))
-						for resourceTypeIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds {
-							resourceTypeIds = append(resourceTypeIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds != nil {
+						resourceTypeIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds))
+						for resourceTypeIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds {
+							resourceTypeIds = append(resourceTypeIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex].ValueString())
 						}
 					}
 					var riskLevelIds []string
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds != nil {
-						riskLevelIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds))
-						for riskLevelIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds {
-							riskLevelIds = append(riskLevelIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex].ValueString())
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds != nil {
+						riskLevelIds = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds))
+						for riskLevelIdsIndex := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds {
+							riskLevelIds = append(riskLevelIds, r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex].ValueString())
 						}
 					}
-					entitlementInclusionCriteria = &shared.EntitlementInclusionCriteria{
+					inclusionCriteria = &shared.EntitlementInclusionCriteria{
 						AppIds:                 appIds,
 						ComplianceFrameworkIds: complianceFrameworkIds,
 						ResourceTypeIds:        resourceTypeIds,
 						RiskLevelIds:           riskLevelIds,
 					}
 				}
-				var entitlementInclusionList *shared.EntitlementInclusionList
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList != nil {
+				var inclusionList *shared.EntitlementInclusionList
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList != nil {
 					var appEntitlementRefs1 []shared.AppEntitlementRef
-					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs != nil {
-						appEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs))
-						for appEntitlementRefsIndex1 := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs {
+					if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs != nil {
+						appEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs))
+						for appEntitlementRefsIndex1 := range r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs {
 							appId7 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.IsNull() {
-								*appId7 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.IsNull() {
+								*appId7 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].AppID.ValueString()
 							} else {
 								appId7 = nil
 							}
 							id8 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.IsNull() {
-								*id8 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.IsNull() {
+								*id8 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex1].ID.ValueString()
 							} else {
 								id8 = nil
 							}
@@ -7351,19 +7397,19 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 							})
 						}
 					}
-					entitlementInclusionList = &shared.EntitlementInclusionList{
+					inclusionList = &shared.EntitlementInclusionList{
 						AppEntitlementRefs: appEntitlementRefs1,
 					}
 				}
-				var entitlementInclusionListCel *shared.EntitlementInclusionListCel
-				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel != nil {
+				var inclusionListCel *shared.EntitlementInclusionListCel
+				if r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionListCel != nil {
 					appEntitlementRefsCel1 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-						*appEntitlementRefsCel1 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+						*appEntitlementRefsCel1 = r.AutomationSteps[automationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.ValueString()
 					} else {
 						appEntitlementRefsCel1 = nil
 					}
-					entitlementInclusionListCel = &shared.EntitlementInclusionListCel{
+					inclusionListCel = &shared.EntitlementInclusionListCel{
 						AppEntitlementRefsCel: appEntitlementRefsCel1,
 					}
 				}
@@ -7392,18 +7438,19 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				createRevokeTasksV2 = &shared.CreateRevokeTasksV2{
-					EntitlementExclusionCriteria:   entitlementExclusionCriteria,
-					EntitlementExclusionList:       entitlementExclusionList,
-					EntitlementExclusionListCel:    entitlementExclusionListCel,
-					EntitlementExclusionNone:       entitlementExclusionNone,
-					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly,
-					EntitlementInclusionAll:        entitlementInclusionAll,
-					EntitlementInclusionCriteria:   entitlementInclusionCriteria,
-					EntitlementInclusionList:       entitlementInclusionList,
-					EntitlementInclusionListCel:    entitlementInclusionListCel,
-					UseSubjectUser:                 useSubjectUser2,
-					UserIDCel:                      userIDCel2,
-					UserRef:                        userRef1,
+					ExclusionCriteria:   exclusionCriteria,
+					ExclusionList:       exclusionList,
+					ExclusionListCel:    exclusionListCel,
+					ExclusionNone:       exclusionNone,
+					GrantSourceFilter:   grantSourceFilter,
+					InclusionAccessOnly: inclusionAccessOnly,
+					InclusionAll:        inclusionAll,
+					InclusionCriteria:   inclusionCriteria,
+					InclusionList:       inclusionList,
+					InclusionListCel:    inclusionListCel,
+					UseSubjectUser:      useSubjectUser2,
+					UserIDCel:           userIDCel2,
+					UserRef:             userRef1,
 				}
 			}
 			var evaluateExpressions *shared.EvaluateExpressions
@@ -7449,63 +7496,63 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					passwordPolicyID = nil
 				}
-				var generatePasswordPolicy *shared.GeneratePasswordPolicy
-				if r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy != nil {
+				var policy *shared.GeneratePasswordPolicy
+				if r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy != nil {
 					customCharacters := new(string)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsNull() {
-						*customCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.CustomCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.CustomCharacters.IsNull() {
+						*customCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.CustomCharacters.ValueString()
 					} else {
 						customCharacters = nil
 					}
 					excludedCharacters := new(string)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsNull() {
-						*excludedCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.IsNull() {
+						*excludedCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.ValueString()
 					} else {
 						excludedCharacters = nil
 					}
 					maxCharacterCount := new(int)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsNull() {
-						*maxCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.ValueInt32())
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.IsNull() {
+						*maxCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.ValueInt32())
 					} else {
 						maxCharacterCount = nil
 					}
 					minCharacterCount := new(int)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsNull() {
-						*minCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.ValueInt32())
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MinCharacterCount.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MinCharacterCount.IsNull() {
+						*minCharacterCount = int(r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.MinCharacterCount.ValueInt32())
 					} else {
 						minCharacterCount = nil
 					}
 					noRestrictions := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsNull() {
-						*noRestrictions = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.NoRestrictions.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.NoRestrictions.IsNull() {
+						*noRestrictions = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.NoRestrictions.ValueBool()
 					} else {
 						noRestrictions = nil
 					}
 					requireLowercase := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsNull() {
-						*requireLowercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireLowercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireLowercase.IsNull() {
+						*requireLowercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireLowercase.ValueBool()
 					} else {
 						requireLowercase = nil
 					}
 					requireNumbers := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsNull() {
-						*requireNumbers = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireNumbers.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireNumbers.IsNull() {
+						*requireNumbers = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireNumbers.ValueBool()
 					} else {
 						requireNumbers = nil
 					}
 					requireSpecialCharacters := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsNull() {
-						*requireSpecialCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.IsNull() {
+						*requireSpecialCharacters = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.ValueBool()
 					} else {
 						requireSpecialCharacters = nil
 					}
 					requireUppercase := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsNull() {
-						*requireUppercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireUppercase.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireUppercase.IsNull() {
+						*requireUppercase = r.AutomationSteps[automationStepsIndex].GeneratePassword.Policy.RequireUppercase.ValueBool()
 					} else {
 						requireUppercase = nil
 					}
-					generatePasswordPolicy = &shared.GeneratePasswordPolicy{
+					policy = &shared.GeneratePasswordPolicy{
 						CustomCharacters:         customCharacters,
 						ExcludedCharacters:       excludedCharacters,
 						MaxCharacterCount:        maxCharacterCount,
@@ -7518,56 +7565,56 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				generatePassword = &shared.GeneratePassword{
-					PasswordPolicyID:       passwordPolicyID,
-					GeneratePasswordPolicy: generatePasswordPolicy,
+					PasswordPolicyID: passwordPolicyID,
+					Policy:           policy,
 				}
 			}
 			var grantEntitlements *shared.GrantEntitlements
 			if r.AutomationSteps[automationStepsIndex].GrantEntitlements != nil {
-				var grantEntitlementExclusionCriteria *shared.GrantEntitlementExclusionCriteria
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria != nil {
+				var exclusionCriteria1 *shared.GrantEntitlementExclusionCriteria
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria != nil {
 					var excludedAppIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds != nil {
-						excludedAppIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds))
-						for excludedAppIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds {
-							excludedAppIds1 = append(excludedAppIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds != nil {
+						excludedAppIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds))
+						for excludedAppIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds {
+							excludedAppIds1 = append(excludedAppIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex1].ValueString())
 						}
 					}
 					var excludedComplianceFrameworkIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-						excludedComplianceFrameworkIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-						for excludedComplianceFrameworkIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-							excludedComplianceFrameworkIds1 = append(excludedComplianceFrameworkIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+						excludedComplianceFrameworkIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+						for excludedComplianceFrameworkIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+							excludedComplianceFrameworkIds1 = append(excludedComplianceFrameworkIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex1].ValueString())
 						}
 					}
 					var excludedRiskLevelIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-						excludedRiskLevelIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds))
-						for excludedRiskLevelIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds {
-							excludedRiskLevelIds1 = append(excludedRiskLevelIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+						excludedRiskLevelIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds))
+						for excludedRiskLevelIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds {
+							excludedRiskLevelIds1 = append(excludedRiskLevelIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex1].ValueString())
 						}
 					}
-					grantEntitlementExclusionCriteria = &shared.GrantEntitlementExclusionCriteria{
+					exclusionCriteria1 = &shared.GrantEntitlementExclusionCriteria{
 						ExcludedAppIds:                 excludedAppIds1,
 						ExcludedComplianceFrameworkIds: excludedComplianceFrameworkIds1,
 						ExcludedRiskLevelIds:           excludedRiskLevelIds1,
 					}
 				}
-				var grantEntitlementExclusionList *shared.GrantEntitlementExclusionList
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList != nil {
+				var exclusionList1 *shared.GrantEntitlementExclusionList
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList != nil {
 					var excludedAppEntitlementRefs2 []shared.AppEntitlementRef
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-						excludedAppEntitlementRefs2 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs))
-						for excludedAppEntitlementRefsIndex2 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs {
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs != nil {
+						excludedAppEntitlementRefs2 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs))
+						for excludedAppEntitlementRefsIndex2 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs {
 							appId8 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.IsNull() {
-								*appId8 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.IsNull() {
+								*appId8 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].AppID.ValueString()
 							} else {
 								appId8 = nil
 							}
 							id10 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.IsNull() {
-								*id10 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.IsNull() {
+								*id10 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex2].ID.ValueString()
 							} else {
 								id10 = nil
 							}
@@ -7577,70 +7624,70 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 							})
 						}
 					}
-					grantEntitlementExclusionList = &shared.GrantEntitlementExclusionList{
+					exclusionList1 = &shared.GrantEntitlementExclusionList{
 						ExcludedAppEntitlementRefs: excludedAppEntitlementRefs2,
 					}
 				}
-				var grantEntitlementExclusionListCel *shared.GrantEntitlementExclusionListCel
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel != nil {
+				var exclusionListCel1 *shared.GrantEntitlementExclusionListCel
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionListCel != nil {
 					excludedAppEntitlementRefsCel2 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
-						*excludedAppEntitlementRefsCel2 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
+						*excludedAppEntitlementRefsCel2 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
 					} else {
 						excludedAppEntitlementRefsCel2 = nil
 					}
-					grantEntitlementExclusionListCel = &shared.GrantEntitlementExclusionListCel{
+					exclusionListCel1 = &shared.GrantEntitlementExclusionListCel{
 						ExcludedAppEntitlementRefsCel: excludedAppEntitlementRefsCel2,
 					}
 				}
-				var grantEntitlementExclusionNone *shared.GrantEntitlementExclusionNone
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementExclusionNone != nil {
-					grantEntitlementExclusionNone = &shared.GrantEntitlementExclusionNone{}
+				var exclusionNone1 *shared.GrantEntitlementExclusionNone
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.ExclusionNone != nil {
+					exclusionNone1 = &shared.GrantEntitlementExclusionNone{}
 				}
-				var grantEntitlementInclusionCriteria *shared.GrantEntitlementInclusionCriteria
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria != nil {
+				var inclusionCriteria1 *shared.GrantEntitlementInclusionCriteria
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria != nil {
 					var appIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds != nil {
-						appIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds))
-						for appIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds {
-							appIds1 = append(appIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds[appIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds != nil {
+						appIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds))
+						for appIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds {
+							appIds1 = append(appIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds[appIdsIndex1].ValueString())
 						}
 					}
 					var complianceFrameworkIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-						complianceFrameworkIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds))
-						for complianceFrameworkIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds {
-							complianceFrameworkIds1 = append(complianceFrameworkIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds != nil {
+						complianceFrameworkIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds))
+						for complianceFrameworkIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds {
+							complianceFrameworkIds1 = append(complianceFrameworkIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex1].ValueString())
 						}
 					}
 					var riskLevelIds1 []string
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds != nil {
-						riskLevelIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds))
-						for riskLevelIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds {
-							riskLevelIds1 = append(riskLevelIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex1].ValueString())
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds != nil {
+						riskLevelIds1 = make([]string, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds))
+						for riskLevelIdsIndex1 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds {
+							riskLevelIds1 = append(riskLevelIds1, r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex1].ValueString())
 						}
 					}
-					grantEntitlementInclusionCriteria = &shared.GrantEntitlementInclusionCriteria{
+					inclusionCriteria1 = &shared.GrantEntitlementInclusionCriteria{
 						AppIds:                 appIds1,
 						ComplianceFrameworkIds: complianceFrameworkIds1,
 						RiskLevelIds:           riskLevelIds1,
 					}
 				}
-				var grantEntitlementInclusionList *shared.GrantEntitlementInclusionList
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList != nil {
+				var inclusionList1 *shared.GrantEntitlementInclusionList
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList != nil {
 					var appEntitlementRefs2 []shared.AppEntitlementRef
-					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs != nil {
-						appEntitlementRefs2 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs))
-						for appEntitlementRefsIndex2 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs {
+					if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs != nil {
+						appEntitlementRefs2 = make([]shared.AppEntitlementRef, 0, len(r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs))
+						for appEntitlementRefsIndex2 := range r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs {
 							appId9 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.IsNull() {
-								*appId9 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.IsNull() {
+								*appId9 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].AppID.ValueString()
 							} else {
 								appId9 = nil
 							}
 							id11 := new(string)
-							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.IsNull() {
-								*id11 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.ValueString()
+							if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.IsNull() {
+								*id11 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex2].ID.ValueString()
 							} else {
 								id11 = nil
 							}
@@ -7650,19 +7697,19 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 							})
 						}
 					}
-					grantEntitlementInclusionList = &shared.GrantEntitlementInclusionList{
+					inclusionList1 = &shared.GrantEntitlementInclusionList{
 						AppEntitlementRefs: appEntitlementRefs2,
 					}
 				}
-				var grantEntitlementInclusionListCel *shared.GrantEntitlementInclusionListCel
-				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel != nil {
+				var inclusionListCel1 *shared.GrantEntitlementInclusionListCel
+				if r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionListCel != nil {
 					appEntitlementRefsCel2 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-						*appEntitlementRefsCel2 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+						*appEntitlementRefsCel2 = r.AutomationSteps[automationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.ValueString()
 					} else {
 						appEntitlementRefsCel2 = nil
 					}
-					grantEntitlementInclusionListCel = &shared.GrantEntitlementInclusionListCel{
+					inclusionListCel1 = &shared.GrantEntitlementInclusionListCel{
 						AppEntitlementRefsCel: appEntitlementRefsCel2,
 					}
 				}
@@ -7691,16 +7738,16 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				grantEntitlements = &shared.GrantEntitlements{
-					GrantEntitlementExclusionCriteria: grantEntitlementExclusionCriteria,
-					GrantEntitlementExclusionList:     grantEntitlementExclusionList,
-					GrantEntitlementExclusionListCel:  grantEntitlementExclusionListCel,
-					GrantEntitlementExclusionNone:     grantEntitlementExclusionNone,
-					GrantEntitlementInclusionCriteria: grantEntitlementInclusionCriteria,
-					GrantEntitlementInclusionList:     grantEntitlementInclusionList,
-					GrantEntitlementInclusionListCel:  grantEntitlementInclusionListCel,
-					UseSubjectUser:                    useSubjectUser3,
-					UserIDCel:                         userIDCel3,
-					UserRef:                           userRef2,
+					ExclusionCriteria: exclusionCriteria1,
+					ExclusionList:     exclusionList1,
+					ExclusionListCel:  exclusionListCel1,
+					ExclusionNone:     exclusionNone1,
+					InclusionCriteria: inclusionCriteria1,
+					InclusionList:     inclusionList1,
+					InclusionListCel:  inclusionListCel1,
+					UseSubjectUser:    useSubjectUser3,
+					UserIDCel:         userIDCel3,
+					UserRef:           userRef2,
 				}
 			}
 			var removeFromDelegation *shared.RemoveFromDelegation
@@ -7711,15 +7758,15 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					replacementUserIDCel = nil
 				}
-				var userRef3 *shared.UserRef
-				if r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef != nil {
+				var replacementUserRef *shared.UserRef
+				if r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.ReplacementUserRef != nil {
 					id13 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.IsNull() {
-						*id13 = r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.IsNull() {
+						*id13 = r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.ValueString()
 					} else {
 						id13 = nil
 					}
-					userRef3 = &shared.UserRef{
+					replacementUserRef = &shared.UserRef{
 						ID: id13,
 					}
 				}
@@ -7735,24 +7782,24 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					userIDCel4 = nil
 				}
-				var userRef11 *shared.UserRef
-				if r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef1 != nil {
+				var userRef3 *shared.UserRef
+				if r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef != nil {
 					id14 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsNull() {
-						*id14 = r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef1.ID.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.IsNull() {
+						*id14 = r.AutomationSteps[automationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
 					} else {
 						id14 = nil
 					}
-					userRef11 = &shared.UserRef{
+					userRef3 = &shared.UserRef{
 						ID: id14,
 					}
 				}
 				removeFromDelegation = &shared.RemoveFromDelegation{
 					ReplacementUserIDCel: replacementUserIDCel,
-					UserRef:              userRef3,
+					ReplacementUserRef:   replacementUserRef,
 					UseSubjectUser:       useSubjectUser4,
 					UserIDCel:            userIDCel4,
-					UserRef1:             userRef11,
+					UserRef:              userRef3,
 				}
 			}
 			var runAutomation *shared.RunAutomation
@@ -7775,20 +7822,20 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						ID: id15,
 					}
 				}
-				var automationContext *shared.AutomationContext
-				if r.AutomationSteps[automationStepsIndex].RunAutomation.AutomationContext != nil {
-					var contextVar *shared.Context
-					if r.AutomationSteps[automationStepsIndex].RunAutomation.AutomationContext.Context != nil {
-						contextVar = &shared.Context{}
+				var contextVar *shared.AutomationContext
+				if r.AutomationSteps[automationStepsIndex].RunAutomation.Context != nil {
+					var contextVar1 *shared.Context
+					if r.AutomationSteps[automationStepsIndex].RunAutomation.Context.Context != nil {
+						contextVar1 = &shared.Context{}
 					}
-					automationContext = &shared.AutomationContext{
-						Context: contextVar,
+					contextVar = &shared.AutomationContext{
+						Context: contextVar1,
 					}
 				}
 				runAutomation = &shared.RunAutomation{
 					AutomationTemplateIDCel: automationTemplateIDCel,
 					AutomationTemplateRef:   automationTemplateRef,
-					AutomationContext:       automationContext,
+					Context:                 contextVar,
 				}
 			}
 			var sendEmail *shared.SendEmail
@@ -7869,6 +7916,12 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					body1 = nil
 				}
+				channelIsID := new(bool)
+				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.IsNull() {
+					*channelIsID = r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelIsID.ValueBool()
+				} else {
+					channelIsID = nil
+				}
 				channelName := new(string)
 				if !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.IsUnknown() && !r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.IsNull() {
 					*channelName = r.AutomationSteps[automationStepsIndex].SendSlackMessage.ChannelName.ValueString()
@@ -7910,6 +7963,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				}
 				sendSlackMessage = &shared.SendSlackMessage{
 					Body:           body1,
+					ChannelIsID:    channelIsID,
 					ChannelName:    channelName,
 					ChannelNameCel: channelNameCel,
 					UseSubjectUser: useSubjectUser6,
@@ -8051,25 +8105,25 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 			}
 			var taskAction *shared.TaskAction
 			if r.AutomationSteps[automationStepsIndex].TaskAction != nil {
-				var closeAction *shared.CloseAction
-				if r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction != nil {
+				var close *shared.CloseAction
+				if r.AutomationSteps[automationStepsIndex].TaskAction.Close != nil {
 					useSubjectUser7 := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsNull() {
-						*useSubjectUser7 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UseSubjectUser.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UseSubjectUser.IsNull() {
+						*useSubjectUser7 = r.AutomationSteps[automationStepsIndex].TaskAction.Close.UseSubjectUser.ValueBool()
 					} else {
 						useSubjectUser7 = nil
 					}
 					userIDCel5 := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.IsNull() {
-						*userIDCel5 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserIDCel.IsNull() {
+						*userIDCel5 = r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserIDCel.ValueString()
 					} else {
 						userIDCel5 = nil
 					}
 					var userRef4 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef != nil {
+					if r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserRef != nil {
 						id19 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsNull() {
-							*id19 = r.AutomationSteps[automationStepsIndex].TaskAction.CloseAction.UserRef.ID.ValueString()
+						if !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserRef.ID.IsNull() {
+							*id19 = r.AutomationSteps[automationStepsIndex].TaskAction.Close.UserRef.ID.ValueString()
 						} else {
 							id19 = nil
 						}
@@ -8077,61 +8131,61 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 							ID: id19,
 						}
 					}
-					closeAction = &shared.CloseAction{
+					close = &shared.CloseAction{
 						UseSubjectUser: useSubjectUser7,
 						UserIDCel:      userIDCel5,
 						UserRef:        userRef4,
 					}
 				}
-				var reassignAction *shared.ReassignAction
-				if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction != nil {
+				var reassign *shared.ReassignAction
+				if r.AutomationSteps[automationStepsIndex].TaskAction.Reassign != nil {
 					assigneeUserIDCel := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
-						*assigneeUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.IsNull() {
+						*assigneeUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.ValueString()
 					} else {
 						assigneeUserIDCel = nil
 					}
-					var userRef5 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef != nil {
+					var assigneeUserRef *shared.UserRef
+					if r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserRef != nil {
 						id20 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsNull() {
-							*id20 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef.ID.ValueString()
+						if !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.IsNull() {
+							*id20 = r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.ValueString()
 						} else {
 							id20 = nil
 						}
-						userRef5 = &shared.UserRef{
+						assigneeUserRef = &shared.UserRef{
 							ID: id20,
 						}
 					}
 					subjectUserIDCel := new(string)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
-						*subjectUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.ValueString()
+					if !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.IsNull() {
+						*subjectUserIDCel = r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.ValueString()
 					} else {
 						subjectUserIDCel = nil
 					}
-					var userRef12 *shared.UserRef
-					if r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1 != nil {
+					var subjectUserRef *shared.UserRef
+					if r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserRef != nil {
 						id21 := new(string)
-						if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsNull() {
-							*id21 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.ValueString()
+						if !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.IsNull() {
+							*id21 = r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.ValueString()
 						} else {
 							id21 = nil
 						}
-						userRef12 = &shared.UserRef{
+						subjectUserRef = &shared.UserRef{
 							ID: id21,
 						}
 					}
 					useSubjectUser8 := new(bool)
-					if !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsNull() {
-						*useSubjectUser8 = r.AutomationSteps[automationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.ValueBool()
+					if !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.UseSubjectUser.IsUnknown() && !r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.UseSubjectUser.IsNull() {
+						*useSubjectUser8 = r.AutomationSteps[automationStepsIndex].TaskAction.Reassign.UseSubjectUser.ValueBool()
 					} else {
 						useSubjectUser8 = nil
 					}
-					reassignAction = &shared.ReassignAction{
+					reassign = &shared.ReassignAction{
 						AssigneeUserIDCel: assigneeUserIDCel,
-						UserRef:           userRef5,
+						AssigneeUserRef:   assigneeUserRef,
 						SubjectUserIDCel:  subjectUserIDCel,
-						UserRef1:          userRef12,
+						SubjectUserRef:    subjectUserRef,
 						UseSubjectUser:    useSubjectUser8,
 					}
 				}
@@ -8149,8 +8203,8 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					taskUserRelation = nil
 				}
 				taskAction = &shared.TaskAction{
-					CloseAction:      closeAction,
-					ReassignAction:   reassignAction,
+					Close:            close,
+					Reassign:         reassign,
 					TaskTypes:        taskTypes,
 					TaskUserRelation: taskUserRelation,
 				}
@@ -8219,7 +8273,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					userIDCel6 = nil
 				}
-				var userRef6 *shared.UserRef
+				var userRef5 *shared.UserRef
 				if r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef != nil {
 					id23 := new(string)
 					if !r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.IsUnknown() && !r.AutomationSteps[automationStepsIndex].UpdateUser.UserRef.ID.IsNull() {
@@ -8227,7 +8281,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					} else {
 						id23 = nil
 					}
-					userRef6 = &shared.UserRef{
+					userRef5 = &shared.UserRef{
 						ID: id23,
 					}
 				}
@@ -8246,7 +8300,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				updateUser = &shared.UpdateUser{
 					UseSubjectUser: useSubjectUser10,
 					UserIDCel:      userIDCel6,
-					UserRef:        userRef6,
+					UserRef:        userRef5,
 					UserStatusCel:  userStatusCel,
 					UserStatusEnum: userStatusEnum,
 				}
@@ -8327,14 +8381,14 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 	} else {
 		circuitBreakerPeriod = nil
 	}
-	var automationContext1 *shared.AutomationContext
-	if r.AutomationContext != nil {
-		var contextVar1 *shared.Context
-		if r.AutomationContext.Context != nil {
-			contextVar1 = &shared.Context{}
+	var contextVar2 *shared.AutomationContext
+	if r.Context != nil {
+		var contextVar3 *shared.Context
+		if r.Context.Context != nil {
+			contextVar3 = &shared.Context{}
 		}
-		automationContext1 = &shared.AutomationContext{
-			Context: contextVar1,
+		contextVar2 = &shared.AutomationContext{
+			Context: contextVar3,
 		}
 	}
 	description := new(string)
@@ -8672,7 +8726,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					userIDCel8 = nil
 				}
-				var userRef7 *shared.UserRef
+				var userRef6 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef != nil {
 					id30 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasks.UserRef.ID.IsNull() {
@@ -8680,7 +8734,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					} else {
 						id30 = nil
 					}
-					userRef7 = &shared.UserRef{
+					userRef6 = &shared.UserRef{
 						ID: id30,
 					}
 				}
@@ -8692,63 +8746,63 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					RevokeAll:                     revokeAll1,
 					UseSubjectUser:                useSubjectUser12,
 					UserIDCel:                     userIDCel8,
-					UserRef:                       userRef7,
+					UserRef:                       userRef6,
 				}
 			}
 			var createRevokeTasksV21 *shared.CreateRevokeTasksV2
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2 != nil {
-				var entitlementExclusionCriteria1 *shared.EntitlementExclusionCriteria
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria != nil {
+				var exclusionCriteria2 *shared.EntitlementExclusionCriteria
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria != nil {
 					var excludedAppIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds != nil {
-						excludedAppIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds))
-						for excludedAppIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds {
-							excludedAppIds2 = append(excludedAppIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds != nil {
+						excludedAppIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds))
+						for excludedAppIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds {
+							excludedAppIds2 = append(excludedAppIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex2].ValueString())
 						}
 					}
 					var excludedComplianceFrameworkIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-						excludedComplianceFrameworkIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-						for excludedComplianceFrameworkIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-							excludedComplianceFrameworkIds2 = append(excludedComplianceFrameworkIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+						excludedComplianceFrameworkIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+						for excludedComplianceFrameworkIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+							excludedComplianceFrameworkIds2 = append(excludedComplianceFrameworkIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex2].ValueString())
 						}
 					}
 					var excludedResourceTypeIds1 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds != nil {
-						excludedResourceTypeIds1 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds))
-						for excludedResourceTypeIdsIndex1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds {
-							excludedResourceTypeIds1 = append(excludedResourceTypeIds1, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedResourceTypeIds[excludedResourceTypeIdsIndex1].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds != nil {
+						excludedResourceTypeIds1 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds))
+						for excludedResourceTypeIdsIndex1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds {
+							excludedResourceTypeIds1 = append(excludedResourceTypeIds1, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedResourceTypeIds[excludedResourceTypeIdsIndex1].ValueString())
 						}
 					}
 					var excludedRiskLevelIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-						excludedRiskLevelIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds))
-						for excludedRiskLevelIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds {
-							excludedRiskLevelIds2 = append(excludedRiskLevelIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+						excludedRiskLevelIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds))
+						for excludedRiskLevelIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds {
+							excludedRiskLevelIds2 = append(excludedRiskLevelIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex2].ValueString())
 						}
 					}
-					entitlementExclusionCriteria1 = &shared.EntitlementExclusionCriteria{
+					exclusionCriteria2 = &shared.EntitlementExclusionCriteria{
 						ExcludedAppIds:                 excludedAppIds2,
 						ExcludedComplianceFrameworkIds: excludedComplianceFrameworkIds2,
 						ExcludedResourceTypeIds:        excludedResourceTypeIds1,
 						ExcludedRiskLevelIds:           excludedRiskLevelIds2,
 					}
 				}
-				var entitlementExclusionList1 *shared.EntitlementExclusionList
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList != nil {
+				var exclusionList2 *shared.EntitlementExclusionList
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList != nil {
 					var excludedAppEntitlementRefs4 []shared.AppEntitlementRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-						excludedAppEntitlementRefs4 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs))
-						for excludedAppEntitlementRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs {
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs != nil {
+						excludedAppEntitlementRefs4 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs))
+						for excludedAppEntitlementRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs {
 							appId16 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.IsNull() {
-								*appId16 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.IsNull() {
+								*appId16 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].AppID.ValueString()
 							} else {
 								appId16 = nil
 							}
 							id31 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsNull() {
-								*id31 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.IsNull() {
+								*id31 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex4].ID.ValueString()
 							} else {
 								id31 = nil
 							}
@@ -8758,86 +8812,92 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 							})
 						}
 					}
-					entitlementExclusionList1 = &shared.EntitlementExclusionList{
+					exclusionList2 = &shared.EntitlementExclusionList{
 						ExcludedAppEntitlementRefs: excludedAppEntitlementRefs4,
 					}
 				}
-				var entitlementExclusionListCel1 *shared.EntitlementExclusionListCel
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel != nil {
+				var exclusionListCel2 *shared.EntitlementExclusionListCel
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionListCel != nil {
 					excludedAppEntitlementRefsCel4 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
-						*excludedAppEntitlementRefsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
+						*excludedAppEntitlementRefsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
 					} else {
 						excludedAppEntitlementRefsCel4 = nil
 					}
-					entitlementExclusionListCel1 = &shared.EntitlementExclusionListCel{
+					exclusionListCel2 = &shared.EntitlementExclusionListCel{
 						ExcludedAppEntitlementRefsCel: excludedAppEntitlementRefsCel4,
 					}
 				}
-				var entitlementExclusionNone1 *shared.EntitlementExclusionNone
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementExclusionNone != nil {
-					entitlementExclusionNone1 = &shared.EntitlementExclusionNone{}
+				var exclusionNone2 *shared.EntitlementExclusionNone
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.ExclusionNone != nil {
+					exclusionNone2 = &shared.EntitlementExclusionNone{}
 				}
-				var entitlementInclusionAccessOnly1 *shared.EntitlementInclusionAccessOnly
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAccessOnly != nil {
-					entitlementInclusionAccessOnly1 = &shared.EntitlementInclusionAccessOnly{}
+				grantSourceFilter1 := new(shared.GrantSourceFilter)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.IsNull() {
+					*grantSourceFilter1 = shared.GrantSourceFilter(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.GrantSourceFilter.ValueString())
+				} else {
+					grantSourceFilter1 = nil
 				}
-				var entitlementInclusionAll1 *shared.EntitlementInclusionAll
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionAll != nil {
-					entitlementInclusionAll1 = &shared.EntitlementInclusionAll{}
+				var inclusionAccessOnly1 *shared.EntitlementInclusionAccessOnly
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionAccessOnly != nil {
+					inclusionAccessOnly1 = &shared.EntitlementInclusionAccessOnly{}
 				}
-				var entitlementInclusionCriteria1 *shared.EntitlementInclusionCriteria
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria != nil {
+				var inclusionAll1 *shared.EntitlementInclusionAll
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionAll != nil {
+					inclusionAll1 = &shared.EntitlementInclusionAll{}
+				}
+				var inclusionCriteria2 *shared.EntitlementInclusionCriteria
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria != nil {
 					var appIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds != nil {
-						appIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds))
-						for appIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds {
-							appIds2 = append(appIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.AppIds[appIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds != nil {
+						appIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds))
+						for appIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds {
+							appIds2 = append(appIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.AppIds[appIdsIndex2].ValueString())
 						}
 					}
 					var complianceFrameworkIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-						complianceFrameworkIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-						for complianceFrameworkIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-							complianceFrameworkIds2 = append(complianceFrameworkIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds != nil {
+						complianceFrameworkIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds))
+						for complianceFrameworkIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds {
+							complianceFrameworkIds2 = append(complianceFrameworkIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex2].ValueString())
 						}
 					}
 					var resourceTypeIds1 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-						resourceTypeIds1 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds))
-						for resourceTypeIdsIndex1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds {
-							resourceTypeIds1 = append(resourceTypeIds1, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex1].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds != nil {
+						resourceTypeIds1 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds))
+						for resourceTypeIdsIndex1 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds {
+							resourceTypeIds1 = append(resourceTypeIds1, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex1].ValueString())
 						}
 					}
 					var riskLevelIds2 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds != nil {
-						riskLevelIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds))
-						for riskLevelIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds {
-							riskLevelIds2 = append(riskLevelIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex2].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds != nil {
+						riskLevelIds2 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds))
+						for riskLevelIdsIndex2 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds {
+							riskLevelIds2 = append(riskLevelIds2, r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex2].ValueString())
 						}
 					}
-					entitlementInclusionCriteria1 = &shared.EntitlementInclusionCriteria{
+					inclusionCriteria2 = &shared.EntitlementInclusionCriteria{
 						AppIds:                 appIds2,
 						ComplianceFrameworkIds: complianceFrameworkIds2,
 						ResourceTypeIds:        resourceTypeIds1,
 						RiskLevelIds:           riskLevelIds2,
 					}
 				}
-				var entitlementInclusionList1 *shared.EntitlementInclusionList
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList != nil {
+				var inclusionList2 *shared.EntitlementInclusionList
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList != nil {
 					var appEntitlementRefs4 []shared.AppEntitlementRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs != nil {
-						appEntitlementRefs4 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs))
-						for appEntitlementRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs {
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs != nil {
+						appEntitlementRefs4 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs))
+						for appEntitlementRefsIndex4 := range r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs {
 							appId17 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.IsNull() {
-								*appId17 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.IsNull() {
+								*appId17 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].AppID.ValueString()
 							} else {
 								appId17 = nil
 							}
 							id32 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsNull() {
-								*id32 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.IsNull() {
+								*id32 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex4].ID.ValueString()
 							} else {
 								id32 = nil
 							}
@@ -8847,19 +8907,19 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 							})
 						}
 					}
-					entitlementInclusionList1 = &shared.EntitlementInclusionList{
+					inclusionList2 = &shared.EntitlementInclusionList{
 						AppEntitlementRefs: appEntitlementRefs4,
 					}
 				}
-				var entitlementInclusionListCel1 *shared.EntitlementInclusionListCel
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel != nil {
+				var inclusionListCel2 *shared.EntitlementInclusionListCel
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionListCel != nil {
 					appEntitlementRefsCel4 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-						*appEntitlementRefsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+						*appEntitlementRefsCel4 = r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.InclusionListCel.AppEntitlementRefsCel.ValueString()
 					} else {
 						appEntitlementRefsCel4 = nil
 					}
-					entitlementInclusionListCel1 = &shared.EntitlementInclusionListCel{
+					inclusionListCel2 = &shared.EntitlementInclusionListCel{
 						AppEntitlementRefsCel: appEntitlementRefsCel4,
 					}
 				}
@@ -8875,7 +8935,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					userIDCel9 = nil
 				}
-				var userRef8 *shared.UserRef
+				var userRef7 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef != nil {
 					id33 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].CreateRevokeTasksV2.UserRef.ID.IsNull() {
@@ -8883,23 +8943,24 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					} else {
 						id33 = nil
 					}
-					userRef8 = &shared.UserRef{
+					userRef7 = &shared.UserRef{
 						ID: id33,
 					}
 				}
 				createRevokeTasksV21 = &shared.CreateRevokeTasksV2{
-					EntitlementExclusionCriteria:   entitlementExclusionCriteria1,
-					EntitlementExclusionList:       entitlementExclusionList1,
-					EntitlementExclusionListCel:    entitlementExclusionListCel1,
-					EntitlementExclusionNone:       entitlementExclusionNone1,
-					EntitlementInclusionAccessOnly: entitlementInclusionAccessOnly1,
-					EntitlementInclusionAll:        entitlementInclusionAll1,
-					EntitlementInclusionCriteria:   entitlementInclusionCriteria1,
-					EntitlementInclusionList:       entitlementInclusionList1,
-					EntitlementInclusionListCel:    entitlementInclusionListCel1,
-					UseSubjectUser:                 useSubjectUser13,
-					UserIDCel:                      userIDCel9,
-					UserRef:                        userRef8,
+					ExclusionCriteria:   exclusionCriteria2,
+					ExclusionList:       exclusionList2,
+					ExclusionListCel:    exclusionListCel2,
+					ExclusionNone:       exclusionNone2,
+					GrantSourceFilter:   grantSourceFilter1,
+					InclusionAccessOnly: inclusionAccessOnly1,
+					InclusionAll:        inclusionAll1,
+					InclusionCriteria:   inclusionCriteria2,
+					InclusionList:       inclusionList2,
+					InclusionListCel:    inclusionListCel2,
+					UseSubjectUser:      useSubjectUser13,
+					UserIDCel:           userIDCel9,
+					UserRef:             userRef7,
 				}
 			}
 			var evaluateExpressions1 *shared.EvaluateExpressions
@@ -8945,63 +9006,63 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					passwordPolicyId1 = nil
 				}
-				var generatePasswordPolicy1 *shared.GeneratePasswordPolicy
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy != nil {
+				var policy1 *shared.GeneratePasswordPolicy
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy != nil {
 					customCharacters1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.IsNull() {
-						*customCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.CustomCharacters.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.CustomCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.CustomCharacters.IsNull() {
+						*customCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.CustomCharacters.ValueString()
 					} else {
 						customCharacters1 = nil
 					}
 					excludedCharacters1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.IsNull() {
-						*excludedCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.ExcludedCharacters.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.IsNull() {
+						*excludedCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.ExcludedCharacters.ValueString()
 					} else {
 						excludedCharacters1 = nil
 					}
 					maxCharacterCount1 := new(int)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.IsNull() {
-						*maxCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MaxCharacterCount.ValueInt32())
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.IsNull() {
+						*maxCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MaxCharacterCount.ValueInt32())
 					} else {
 						maxCharacterCount1 = nil
 					}
 					minCharacterCount1 := new(int)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.IsNull() {
-						*minCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.MinCharacterCount.ValueInt32())
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MinCharacterCount.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MinCharacterCount.IsNull() {
+						*minCharacterCount1 = int(r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.MinCharacterCount.ValueInt32())
 					} else {
 						minCharacterCount1 = nil
 					}
 					noRestrictions1 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.IsNull() {
-						*noRestrictions1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.NoRestrictions.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.NoRestrictions.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.NoRestrictions.IsNull() {
+						*noRestrictions1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.NoRestrictions.ValueBool()
 					} else {
 						noRestrictions1 = nil
 					}
 					requireLowercase1 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.IsNull() {
-						*requireLowercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireLowercase.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireLowercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireLowercase.IsNull() {
+						*requireLowercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireLowercase.ValueBool()
 					} else {
 						requireLowercase1 = nil
 					}
 					requireNumbers1 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.IsNull() {
-						*requireNumbers1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireNumbers.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireNumbers.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireNumbers.IsNull() {
+						*requireNumbers1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireNumbers.ValueBool()
 					} else {
 						requireNumbers1 = nil
 					}
 					requireSpecialCharacters1 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.IsNull() {
-						*requireSpecialCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireSpecialCharacters.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.IsNull() {
+						*requireSpecialCharacters1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireSpecialCharacters.ValueBool()
 					} else {
 						requireSpecialCharacters1 = nil
 					}
 					requireUppercase1 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.IsNull() {
-						*requireUppercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.GeneratePasswordPolicy.RequireUppercase.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireUppercase.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireUppercase.IsNull() {
+						*requireUppercase1 = r.DraftAutomationSteps[draftAutomationStepsIndex].GeneratePassword.Policy.RequireUppercase.ValueBool()
 					} else {
 						requireUppercase1 = nil
 					}
-					generatePasswordPolicy1 = &shared.GeneratePasswordPolicy{
+					policy1 = &shared.GeneratePasswordPolicy{
 						CustomCharacters:         customCharacters1,
 						ExcludedCharacters:       excludedCharacters1,
 						MaxCharacterCount:        maxCharacterCount1,
@@ -9014,56 +9075,56 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				generatePassword1 = &shared.GeneratePassword{
-					PasswordPolicyID:       passwordPolicyId1,
-					GeneratePasswordPolicy: generatePasswordPolicy1,
+					PasswordPolicyID: passwordPolicyId1,
+					Policy:           policy1,
 				}
 			}
 			var grantEntitlements1 *shared.GrantEntitlements
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements != nil {
-				var grantEntitlementExclusionCriteria1 *shared.GrantEntitlementExclusionCriteria
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria != nil {
+				var exclusionCriteria3 *shared.GrantEntitlementExclusionCriteria
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria != nil {
 					var excludedAppIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds != nil {
-						excludedAppIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds))
-						for excludedAppIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds {
-							excludedAppIds3 = append(excludedAppIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds != nil {
+						excludedAppIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds))
+						for excludedAppIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds {
+							excludedAppIds3 = append(excludedAppIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedAppIds[excludedAppIdsIndex3].ValueString())
 						}
 					}
 					var excludedComplianceFrameworkIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
-						excludedComplianceFrameworkIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds))
-						for excludedComplianceFrameworkIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds {
-							excludedComplianceFrameworkIds3 = append(excludedComplianceFrameworkIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds != nil {
+						excludedComplianceFrameworkIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds))
+						for excludedComplianceFrameworkIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds {
+							excludedComplianceFrameworkIds3 = append(excludedComplianceFrameworkIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedComplianceFrameworkIds[excludedComplianceFrameworkIdsIndex3].ValueString())
 						}
 					}
 					var excludedRiskLevelIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds != nil {
-						excludedRiskLevelIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds))
-						for excludedRiskLevelIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds {
-							excludedRiskLevelIds3 = append(excludedRiskLevelIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds != nil {
+						excludedRiskLevelIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds))
+						for excludedRiskLevelIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds {
+							excludedRiskLevelIds3 = append(excludedRiskLevelIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionCriteria.ExcludedRiskLevelIds[excludedRiskLevelIdsIndex3].ValueString())
 						}
 					}
-					grantEntitlementExclusionCriteria1 = &shared.GrantEntitlementExclusionCriteria{
+					exclusionCriteria3 = &shared.GrantEntitlementExclusionCriteria{
 						ExcludedAppIds:                 excludedAppIds3,
 						ExcludedComplianceFrameworkIds: excludedComplianceFrameworkIds3,
 						ExcludedRiskLevelIds:           excludedRiskLevelIds3,
 					}
 				}
-				var grantEntitlementExclusionList1 *shared.GrantEntitlementExclusionList
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList != nil {
+				var exclusionList3 *shared.GrantEntitlementExclusionList
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList != nil {
 					var excludedAppEntitlementRefs5 []shared.AppEntitlementRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs != nil {
-						excludedAppEntitlementRefs5 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs))
-						for excludedAppEntitlementRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs {
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs != nil {
+						excludedAppEntitlementRefs5 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs))
+						for excludedAppEntitlementRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs {
 							appId18 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.IsNull() {
-								*appId18 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.IsNull() {
+								*appId18 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].AppID.ValueString()
 							} else {
 								appId18 = nil
 							}
 							id34 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsNull() {
-								*id34 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.IsNull() {
+								*id34 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionList.ExcludedAppEntitlementRefs[excludedAppEntitlementRefsIndex5].ID.ValueString()
 							} else {
 								id34 = nil
 							}
@@ -9073,70 +9134,70 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 							})
 						}
 					}
-					grantEntitlementExclusionList1 = &shared.GrantEntitlementExclusionList{
+					exclusionList3 = &shared.GrantEntitlementExclusionList{
 						ExcludedAppEntitlementRefs: excludedAppEntitlementRefs5,
 					}
 				}
-				var grantEntitlementExclusionListCel1 *shared.GrantEntitlementExclusionListCel
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel != nil {
+				var exclusionListCel3 *shared.GrantEntitlementExclusionListCel
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionListCel != nil {
 					excludedAppEntitlementRefsCel5 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
-						*excludedAppEntitlementRefsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.IsNull() {
+						*excludedAppEntitlementRefsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionListCel.ExcludedAppEntitlementRefsCel.ValueString()
 					} else {
 						excludedAppEntitlementRefsCel5 = nil
 					}
-					grantEntitlementExclusionListCel1 = &shared.GrantEntitlementExclusionListCel{
+					exclusionListCel3 = &shared.GrantEntitlementExclusionListCel{
 						ExcludedAppEntitlementRefsCel: excludedAppEntitlementRefsCel5,
 					}
 				}
-				var grantEntitlementExclusionNone1 *shared.GrantEntitlementExclusionNone
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementExclusionNone != nil {
-					grantEntitlementExclusionNone1 = &shared.GrantEntitlementExclusionNone{}
+				var exclusionNone3 *shared.GrantEntitlementExclusionNone
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.ExclusionNone != nil {
+					exclusionNone3 = &shared.GrantEntitlementExclusionNone{}
 				}
-				var grantEntitlementInclusionCriteria1 *shared.GrantEntitlementInclusionCriteria
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria != nil {
+				var inclusionCriteria3 *shared.GrantEntitlementInclusionCriteria
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria != nil {
 					var appIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds != nil {
-						appIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds))
-						for appIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds {
-							appIds3 = append(appIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.AppIds[appIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds != nil {
+						appIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds))
+						for appIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds {
+							appIds3 = append(appIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.AppIds[appIdsIndex3].ValueString())
 						}
 					}
 					var complianceFrameworkIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-						complianceFrameworkIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds))
-						for complianceFrameworkIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds {
-							complianceFrameworkIds3 = append(complianceFrameworkIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds != nil {
+						complianceFrameworkIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds))
+						for complianceFrameworkIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds {
+							complianceFrameworkIds3 = append(complianceFrameworkIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex3].ValueString())
 						}
 					}
 					var riskLevelIds3 []string
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds != nil {
-						riskLevelIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds))
-						for riskLevelIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds {
-							riskLevelIds3 = append(riskLevelIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex3].ValueString())
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds != nil {
+						riskLevelIds3 = make([]string, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds))
+						for riskLevelIdsIndex3 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds {
+							riskLevelIds3 = append(riskLevelIds3, r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex3].ValueString())
 						}
 					}
-					grantEntitlementInclusionCriteria1 = &shared.GrantEntitlementInclusionCriteria{
+					inclusionCriteria3 = &shared.GrantEntitlementInclusionCriteria{
 						AppIds:                 appIds3,
 						ComplianceFrameworkIds: complianceFrameworkIds3,
 						RiskLevelIds:           riskLevelIds3,
 					}
 				}
-				var grantEntitlementInclusionList1 *shared.GrantEntitlementInclusionList
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList != nil {
+				var inclusionList3 *shared.GrantEntitlementInclusionList
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList != nil {
 					var appEntitlementRefs5 []shared.AppEntitlementRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs != nil {
-						appEntitlementRefs5 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs))
-						for appEntitlementRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs {
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs != nil {
+						appEntitlementRefs5 = make([]shared.AppEntitlementRef, 0, len(r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs))
+						for appEntitlementRefsIndex5 := range r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs {
 							appId19 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.IsNull() {
-								*appId19 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.IsNull() {
+								*appId19 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].AppID.ValueString()
 							} else {
 								appId19 = nil
 							}
 							id35 := new(string)
-							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsNull() {
-								*id35 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.ValueString()
+							if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.IsNull() {
+								*id35 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex5].ID.ValueString()
 							} else {
 								id35 = nil
 							}
@@ -9146,19 +9207,19 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 							})
 						}
 					}
-					grantEntitlementInclusionList1 = &shared.GrantEntitlementInclusionList{
+					inclusionList3 = &shared.GrantEntitlementInclusionList{
 						AppEntitlementRefs: appEntitlementRefs5,
 					}
 				}
-				var grantEntitlementInclusionListCel1 *shared.GrantEntitlementInclusionListCel
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel != nil {
+				var inclusionListCel3 *shared.GrantEntitlementInclusionListCel
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionListCel != nil {
 					appEntitlementRefsCel5 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-						*appEntitlementRefsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.GrantEntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+						*appEntitlementRefsCel5 = r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.InclusionListCel.AppEntitlementRefsCel.ValueString()
 					} else {
 						appEntitlementRefsCel5 = nil
 					}
-					grantEntitlementInclusionListCel1 = &shared.GrantEntitlementInclusionListCel{
+					inclusionListCel3 = &shared.GrantEntitlementInclusionListCel{
 						AppEntitlementRefsCel: appEntitlementRefsCel5,
 					}
 				}
@@ -9174,7 +9235,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					userIDCel10 = nil
 				}
-				var userRef9 *shared.UserRef
+				var userRef8 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef != nil {
 					id36 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].GrantEntitlements.UserRef.ID.IsNull() {
@@ -9182,21 +9243,21 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					} else {
 						id36 = nil
 					}
-					userRef9 = &shared.UserRef{
+					userRef8 = &shared.UserRef{
 						ID: id36,
 					}
 				}
 				grantEntitlements1 = &shared.GrantEntitlements{
-					GrantEntitlementExclusionCriteria: grantEntitlementExclusionCriteria1,
-					GrantEntitlementExclusionList:     grantEntitlementExclusionList1,
-					GrantEntitlementExclusionListCel:  grantEntitlementExclusionListCel1,
-					GrantEntitlementExclusionNone:     grantEntitlementExclusionNone1,
-					GrantEntitlementInclusionCriteria: grantEntitlementInclusionCriteria1,
-					GrantEntitlementInclusionList:     grantEntitlementInclusionList1,
-					GrantEntitlementInclusionListCel:  grantEntitlementInclusionListCel1,
-					UseSubjectUser:                    useSubjectUser14,
-					UserIDCel:                         userIDCel10,
-					UserRef:                           userRef9,
+					ExclusionCriteria: exclusionCriteria3,
+					ExclusionList:     exclusionList3,
+					ExclusionListCel:  exclusionListCel3,
+					ExclusionNone:     exclusionNone3,
+					InclusionCriteria: inclusionCriteria3,
+					InclusionList:     inclusionList3,
+					InclusionListCel:  inclusionListCel3,
+					UseSubjectUser:    useSubjectUser14,
+					UserIDCel:         userIDCel10,
+					UserRef:           userRef8,
 				}
 			}
 			var removeFromDelegation1 *shared.RemoveFromDelegation
@@ -9207,15 +9268,15 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					replacementUserIDCel1 = nil
 				}
-				var userRef10 *shared.UserRef
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef != nil {
+				var replacementUserRef1 *shared.UserRef
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.ReplacementUserRef != nil {
 					id37 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsNull() {
-						*id37 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.IsNull() {
+						*id37 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.ReplacementUserRef.ID.ValueString()
 					} else {
 						id37 = nil
 					}
-					userRef10 = &shared.UserRef{
+					replacementUserRef1 = &shared.UserRef{
 						ID: id37,
 					}
 				}
@@ -9231,24 +9292,24 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					userIDCel11 = nil
 				}
-				var userRef13 *shared.UserRef
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1 != nil {
+				var userRef9 *shared.UserRef
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef != nil {
 					id38 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.IsNull() {
-						*id38 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef1.ID.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.IsNull() {
+						*id38 = r.DraftAutomationSteps[draftAutomationStepsIndex].RemoveFromDelegation.UserRef.ID.ValueString()
 					} else {
 						id38 = nil
 					}
-					userRef13 = &shared.UserRef{
+					userRef9 = &shared.UserRef{
 						ID: id38,
 					}
 				}
 				removeFromDelegation1 = &shared.RemoveFromDelegation{
 					ReplacementUserIDCel: replacementUserIDCel1,
-					UserRef:              userRef10,
+					ReplacementUserRef:   replacementUserRef1,
 					UseSubjectUser:       useSubjectUser15,
 					UserIDCel:            userIDCel11,
-					UserRef1:             userRef13,
+					UserRef:              userRef9,
 				}
 			}
 			var runAutomation1 *shared.RunAutomation
@@ -9271,20 +9332,20 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						ID: id39,
 					}
 				}
-				var automationContext2 *shared.AutomationContext
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationContext != nil {
-					var contextVar2 *shared.Context
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.AutomationContext.Context != nil {
-						contextVar2 = &shared.Context{}
+				var contextVar4 *shared.AutomationContext
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.Context != nil {
+					var contextVar5 *shared.Context
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].RunAutomation.Context.Context != nil {
+						contextVar5 = &shared.Context{}
 					}
-					automationContext2 = &shared.AutomationContext{
-						Context: contextVar2,
+					contextVar4 = &shared.AutomationContext{
+						Context: contextVar5,
 					}
 				}
 				runAutomation1 = &shared.RunAutomation{
 					AutomationTemplateIDCel: automationTemplateIDCel1,
 					AutomationTemplateRef:   automationTemplateRef1,
-					AutomationContext:       automationContext2,
+					Context:                 contextVar4,
 				}
 			}
 			var sendEmail1 *shared.SendEmail
@@ -9365,6 +9426,12 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					body3 = nil
 				}
+				channelIsId1 := new(bool)
+				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.IsNull() {
+					*channelIsId1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelIsID.ValueBool()
+				} else {
+					channelIsId1 = nil
+				}
 				channelName1 := new(string)
 				if !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.IsNull() {
 					*channelName1 = r.DraftAutomationSteps[draftAutomationStepsIndex].SendSlackMessage.ChannelName.ValueString()
@@ -9406,6 +9473,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				}
 				sendSlackMessage1 = &shared.SendSlackMessage{
 					Body:           body3,
+					ChannelIsID:    channelIsId1,
 					ChannelName:    channelName1,
 					ChannelNameCel: channelNameCel1,
 					UseSubjectUser: useSubjectUser17,
@@ -9547,87 +9615,87 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 			}
 			var taskAction1 *shared.TaskAction
 			if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction != nil {
-				var closeAction1 *shared.CloseAction
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction != nil {
+				var close1 *shared.CloseAction
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close != nil {
 					useSubjectUser18 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.IsNull() {
-						*useSubjectUser18 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UseSubjectUser.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UseSubjectUser.IsNull() {
+						*useSubjectUser18 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UseSubjectUser.ValueBool()
 					} else {
 						useSubjectUser18 = nil
 					}
 					userIDCel12 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.IsNull() {
-						*userIDCel12 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserIDCel.IsNull() {
+						*userIDCel12 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserIDCel.ValueString()
 					} else {
 						userIDCel12 = nil
 					}
-					var userRef14 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef != nil {
+					var userRef10 *shared.UserRef
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserRef != nil {
 						id43 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.IsNull() {
-							*id43 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.CloseAction.UserRef.ID.ValueString()
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserRef.ID.IsNull() {
+							*id43 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Close.UserRef.ID.ValueString()
 						} else {
 							id43 = nil
 						}
-						userRef14 = &shared.UserRef{
+						userRef10 = &shared.UserRef{
 							ID: id43,
 						}
 					}
-					closeAction1 = &shared.CloseAction{
+					close1 = &shared.CloseAction{
 						UseSubjectUser: useSubjectUser18,
 						UserIDCel:      userIDCel12,
-						UserRef:        userRef14,
+						UserRef:        userRef10,
 					}
 				}
-				var reassignAction1 *shared.ReassignAction
-				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction != nil {
+				var reassign1 *shared.ReassignAction
+				if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign != nil {
 					assigneeUserIDCel1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.IsNull() {
-						*assigneeUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.AssigneeUserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.IsNull() {
+						*assigneeUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserIDCel.ValueString()
 					} else {
 						assigneeUserIDCel1 = nil
 					}
-					var userRef15 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef != nil {
+					var assigneeUserRef1 *shared.UserRef
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserRef != nil {
 						id44 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.IsNull() {
-							*id44 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef.ID.ValueString()
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.IsNull() {
+							*id44 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.AssigneeUserRef.ID.ValueString()
 						} else {
 							id44 = nil
 						}
-						userRef15 = &shared.UserRef{
+						assigneeUserRef1 = &shared.UserRef{
 							ID: id44,
 						}
 					}
 					subjectUserIDCel1 := new(string)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.IsNull() {
-						*subjectUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.SubjectUserIDCel.ValueString()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.IsNull() {
+						*subjectUserIDCel1 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserIDCel.ValueString()
 					} else {
 						subjectUserIDCel1 = nil
 					}
-					var userRef16 *shared.UserRef
-					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1 != nil {
+					var subjectUserRef1 *shared.UserRef
+					if r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserRef != nil {
 						id45 := new(string)
-						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.IsNull() {
-							*id45 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UserRef1.ID.ValueString()
+						if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.IsNull() {
+							*id45 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.SubjectUserRef.ID.ValueString()
 						} else {
 							id45 = nil
 						}
-						userRef16 = &shared.UserRef{
+						subjectUserRef1 = &shared.UserRef{
 							ID: id45,
 						}
 					}
 					useSubjectUser19 := new(bool)
-					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.IsNull() {
-						*useSubjectUser19 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.ReassignAction.UseSubjectUser.ValueBool()
+					if !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.UseSubjectUser.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.UseSubjectUser.IsNull() {
+						*useSubjectUser19 = r.DraftAutomationSteps[draftAutomationStepsIndex].TaskAction.Reassign.UseSubjectUser.ValueBool()
 					} else {
 						useSubjectUser19 = nil
 					}
-					reassignAction1 = &shared.ReassignAction{
+					reassign1 = &shared.ReassignAction{
 						AssigneeUserIDCel: assigneeUserIDCel1,
-						UserRef:           userRef15,
+						AssigneeUserRef:   assigneeUserRef1,
 						SubjectUserIDCel:  subjectUserIDCel1,
-						UserRef1:          userRef16,
+						SubjectUserRef:    subjectUserRef1,
 						UseSubjectUser:    useSubjectUser19,
 					}
 				}
@@ -9645,8 +9713,8 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					taskUserRelation1 = nil
 				}
 				taskAction1 = &shared.TaskAction{
-					CloseAction:      closeAction1,
-					ReassignAction:   reassignAction1,
+					Close:            close1,
+					Reassign:         reassign1,
 					TaskTypes:        taskTypes1,
 					TaskUserRelation: taskUserRelation1,
 				}
@@ -9715,7 +9783,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				} else {
 					userIDCel13 = nil
 				}
-				var userRef17 *shared.UserRef
+				var userRef11 *shared.UserRef
 				if r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef != nil {
 					id47 := new(string)
 					if !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.IsUnknown() && !r.DraftAutomationSteps[draftAutomationStepsIndex].UpdateUser.UserRef.ID.IsNull() {
@@ -9723,7 +9791,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					} else {
 						id47 = nil
 					}
-					userRef17 = &shared.UserRef{
+					userRef11 = &shared.UserRef{
 						ID: id47,
 					}
 				}
@@ -9742,7 +9810,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 				updateUser1 = &shared.UpdateUser{
 					UseSubjectUser: useSubjectUser21,
 					UserIDCel:      userIDCel13,
-					UserRef:        userRef17,
+					UserRef:        userRef11,
 					UserStatusCel:  userStatusCel1,
 					UserStatusEnum: userStatusEnum1,
 				}
@@ -9815,23 +9883,23 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 	if r.DraftTriggers != nil {
 		draftTriggers = make([]shared.AutomationTrigger, 0, len(r.DraftTriggers))
 		for draftTriggersIndex := range r.DraftTriggers {
-			var accessConflictTrigger *shared.AccessConflictTrigger
-			if r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger != nil {
+			var accessConflict *shared.AccessConflictTrigger
+			if r.DraftTriggers[draftTriggersIndex].AccessConflict != nil {
 				allConflictMonitors := new(bool)
-				if !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.AllConflictMonitors.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.AllConflictMonitors.IsNull() {
-					*allConflictMonitors = r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.AllConflictMonitors.ValueBool()
+				if !r.DraftTriggers[draftTriggersIndex].AccessConflict.AllConflictMonitors.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AccessConflict.AllConflictMonitors.IsNull() {
+					*allConflictMonitors = r.DraftTriggers[draftTriggersIndex].AccessConflict.AllConflictMonitors.ValueBool()
 				} else {
 					allConflictMonitors = nil
 				}
 				var conflictMonitorRefs *shared.ConflictMonitorRefs
-				if r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs != nil {
+				if r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs != nil {
 					var conflictMonitorRefs1 []shared.ConflictMonitorRef
-					if r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs != nil {
-						conflictMonitorRefs1 = make([]shared.ConflictMonitorRef, 0, len(r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs))
-						for conflictMonitorRefsIndex := range r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs {
+					if r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs != nil {
+						conflictMonitorRefs1 = make([]shared.ConflictMonitorRef, 0, len(r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs))
+						for conflictMonitorRefsIndex := range r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs {
 							id48 := new(string)
-							if !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsNull() {
-								*id48 = r.DraftTriggers[draftTriggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.ValueString()
+							if !r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.IsNull() {
+								*id48 = r.DraftTriggers[draftTriggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex].ID.ValueString()
 							} else {
 								id48 = nil
 							}
@@ -9844,72 +9912,72 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						ConflictMonitorRefs: conflictMonitorRefs1,
 					}
 				}
-				accessConflictTrigger = &shared.AccessConflictTrigger{
+				accessConflict = &shared.AccessConflictTrigger{
 					AllConflictMonitors: allConflictMonitors,
 					ConflictMonitorRefs: conflictMonitorRefs,
 				}
 			}
-			var appUserCreatedTrigger *shared.AppUserCreatedTrigger
-			if r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger != nil {
+			var appUserCreated *shared.AppUserCreatedTrigger
+			if r.DraftTriggers[draftTriggersIndex].AppUserCreated != nil {
 				appId21 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppID.IsNull() {
-					*appId21 = r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppID.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppID.IsNull() {
+					*appId21 = r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppID.ValueString()
 				} else {
 					appId21 = nil
 				}
 				appIDCel2 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.IsNull() {
-					*appIDCel2 = r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppIDCel.IsNull() {
+					*appIDCel2 = r.DraftTriggers[draftTriggersIndex].AppUserCreated.AppIDCel.ValueString()
 				} else {
 					appIDCel2 = nil
 				}
 				condition := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.Condition.IsNull() {
-					*condition = r.DraftTriggers[draftTriggersIndex].AppUserCreatedTrigger.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserCreated.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserCreated.Condition.IsNull() {
+					*condition = r.DraftTriggers[draftTriggersIndex].AppUserCreated.Condition.ValueString()
 				} else {
 					condition = nil
 				}
-				appUserCreatedTrigger = &shared.AppUserCreatedTrigger{
+				appUserCreated = &shared.AppUserCreatedTrigger{
 					AppID:     appId21,
 					AppIDCel:  appIDCel2,
 					Condition: condition,
 				}
 			}
-			var appUserUpdatedTrigger *shared.AppUserUpdatedTrigger
-			if r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger != nil {
+			var appUserUpdated *shared.AppUserUpdatedTrigger
+			if r.DraftTriggers[draftTriggersIndex].AppUserUpdated != nil {
 				appId22 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppID.IsNull() {
-					*appId22 = r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppID.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppID.IsNull() {
+					*appId22 = r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppID.ValueString()
 				} else {
 					appId22 = nil
 				}
 				appIDCel3 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.IsNull() {
-					*appIDCel3 = r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppIDCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppIDCel.IsNull() {
+					*appIDCel3 = r.DraftTriggers[draftTriggersIndex].AppUserUpdated.AppIDCel.ValueString()
 				} else {
 					appIDCel3 = nil
 				}
 				condition1 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.Condition.IsNull() {
-					*condition1 = r.DraftTriggers[draftTriggersIndex].AppUserUpdatedTrigger.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].AppUserUpdated.Condition.IsNull() {
+					*condition1 = r.DraftTriggers[draftTriggersIndex].AppUserUpdated.Condition.ValueString()
 				} else {
 					condition1 = nil
 				}
-				appUserUpdatedTrigger = &shared.AppUserUpdatedTrigger{
+				appUserUpdated = &shared.AppUserUpdatedTrigger{
 					AppID:     appId22,
 					AppIDCel:  appIDCel3,
 					Condition: condition1,
 				}
 			}
-			var grantDeletedTrigger *shared.GrantDeletedTrigger
-			if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger != nil {
+			var grantDeleted *shared.GrantDeletedTrigger
+			if r.DraftTriggers[draftTriggersIndex].GrantDeleted != nil {
 				var grantTriggerFilter *shared.GrantTriggerFilter
-				if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter != nil {
+				if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter != nil {
 					var accountFilter *shared.AccountFilter
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter != nil {
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter != nil {
 						accountType := new(shared.AccountType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
-							*accountType = shared.AccountType(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
+							*accountType = shared.AccountType(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
 						} else {
 							accountType = nil
 						}
@@ -9918,87 +9986,87 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						}
 					}
 					var grantFilter *shared.GrantFilter
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter != nil {
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter != nil {
 						grantFilterType := new(shared.GrantFilterType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
-							*grantFilterType = shared.GrantFilterType(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
+							*grantFilterType = shared.GrantFilterType(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
 						} else {
 							grantFilterType = nil
 						}
 						grantJustificationType := new(shared.GrantJustificationType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
-							*grantJustificationType = shared.GrantJustificationType(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
+							*grantJustificationType = shared.GrantJustificationType(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
 						} else {
 							grantJustificationType = nil
 						}
-						grantSourceFilter := new(shared.GrantSourceFilter)
-						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter = shared.GrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+						grantSourceFilter2 := new(shared.GrantFilterGrantSourceFilter)
+						if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
+							*grantSourceFilter2 = shared.GrantFilterGrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter = nil
+							grantSourceFilter2 = nil
 						}
 						grantFilter = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType,
 							GrantJustificationType: grantJustificationType,
-							GrantSourceFilter:      grantSourceFilter,
+							GrantSourceFilter:      grantSourceFilter2,
 						}
 					}
-					var entitlementInclusionAll2 *shared.EntitlementInclusionAll
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionAll != nil {
-						entitlementInclusionAll2 = &shared.EntitlementInclusionAll{}
+					var inclusionAll2 *shared.EntitlementInclusionAll
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionAll != nil {
+						inclusionAll2 = &shared.EntitlementInclusionAll{}
 					}
-					var entitlementInclusionCriteria2 *shared.EntitlementInclusionCriteria
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria != nil {
+					var inclusionCriteria4 *shared.EntitlementInclusionCriteria
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria != nil {
 						var appIds4 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-							appIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-							for appIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-								appIds4 = append(appIds4, r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds[appIdsIndex4].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+							appIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds))
+							for appIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds {
+								appIds4 = append(appIds4, r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds[appIdsIndex4].ValueString())
 							}
 						}
 						var complianceFrameworkIds4 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							complianceFrameworkIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for complianceFrameworkIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-								complianceFrameworkIds4 = append(complianceFrameworkIds4, r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex4].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+							complianceFrameworkIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+							for complianceFrameworkIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+								complianceFrameworkIds4 = append(complianceFrameworkIds4, r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex4].ValueString())
 							}
 						}
 						var resourceTypeIds2 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-							resourceTypeIds2 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-							for resourceTypeIdsIndex2 := range r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-								resourceTypeIds2 = append(resourceTypeIds2, r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex2].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+							resourceTypeIds2 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+							for resourceTypeIdsIndex2 := range r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+								resourceTypeIds2 = append(resourceTypeIds2, r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex2].ValueString())
 							}
 						}
 						var riskLevelIds4 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-							riskLevelIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-							for riskLevelIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-								riskLevelIds4 = append(riskLevelIds4, r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex4].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+							riskLevelIds4 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+							for riskLevelIdsIndex4 := range r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+								riskLevelIds4 = append(riskLevelIds4, r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex4].ValueString())
 							}
 						}
-						entitlementInclusionCriteria2 = &shared.EntitlementInclusionCriteria{
+						inclusionCriteria4 = &shared.EntitlementInclusionCriteria{
 							AppIds:                 appIds4,
 							ComplianceFrameworkIds: complianceFrameworkIds4,
 							ResourceTypeIds:        resourceTypeIds2,
 							RiskLevelIds:           riskLevelIds4,
 						}
 					}
-					var entitlementInclusionList2 *shared.EntitlementInclusionList
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList != nil {
+					var inclusionList4 *shared.EntitlementInclusionList
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList != nil {
 						var appEntitlementRefs6 []shared.AppEntitlementRef
-						if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-							appEntitlementRefs6 = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs))
-							for appEntitlementRefsIndex6 := range r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+						if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+							appEntitlementRefs6 = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs))
+							for appEntitlementRefsIndex6 := range r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 								appId23 := new(string)
-								if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.IsNull() {
-									*appId23 = r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.ValueString()
+								if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.IsNull() {
+									*appId23 = r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].AppID.ValueString()
 								} else {
 									appId23 = nil
 								}
 								id49 := new(string)
-								if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsNull() {
-									*id49 = r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.ValueString()
+								if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.IsNull() {
+									*id49 = r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex6].ID.ValueString()
 								} else {
 									id49 = nil
 								}
@@ -10008,44 +10076,44 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 								})
 							}
 						}
-						entitlementInclusionList2 = &shared.EntitlementInclusionList{
+						inclusionList4 = &shared.EntitlementInclusionList{
 							AppEntitlementRefs: appEntitlementRefs6,
 						}
 					}
-					var entitlementInclusionListCel2 *shared.EntitlementInclusionListCel
-					if r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel != nil {
+					var inclusionListCel4 *shared.EntitlementInclusionListCel
+					if r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel != nil {
 						appEntitlementRefsCel6 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-							*appEntitlementRefsCel6 = r.DraftTriggers[draftTriggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+							*appEntitlementRefsCel6 = r.DraftTriggers[draftTriggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.ValueString()
 						} else {
 							appEntitlementRefsCel6 = nil
 						}
-						entitlementInclusionListCel2 = &shared.EntitlementInclusionListCel{
+						inclusionListCel4 = &shared.EntitlementInclusionListCel{
 							AppEntitlementRefsCel: appEntitlementRefsCel6,
 						}
 					}
 					grantTriggerFilter = &shared.GrantTriggerFilter{
-						AccountFilter:                accountFilter,
-						GrantFilter:                  grantFilter,
-						EntitlementInclusionAll:      entitlementInclusionAll2,
-						EntitlementInclusionCriteria: entitlementInclusionCriteria2,
-						EntitlementInclusionList:     entitlementInclusionList2,
-						EntitlementInclusionListCel:  entitlementInclusionListCel2,
+						AccountFilter:     accountFilter,
+						GrantFilter:       grantFilter,
+						InclusionAll:      inclusionAll2,
+						InclusionCriteria: inclusionCriteria4,
+						InclusionList:     inclusionList4,
+						InclusionListCel:  inclusionListCel4,
 					}
 				}
-				grantDeletedTrigger = &shared.GrantDeletedTrigger{
+				grantDeleted = &shared.GrantDeletedTrigger{
 					GrantTriggerFilter: grantTriggerFilter,
 				}
 			}
-			var grantFoundTrigger *shared.GrantFoundTrigger
-			if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger != nil {
+			var grantFound *shared.GrantFoundTrigger
+			if r.DraftTriggers[draftTriggersIndex].GrantFound != nil {
 				var grantTriggerFilter1 *shared.GrantTriggerFilter
-				if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter != nil {
+				if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter != nil {
 					var accountFilter1 *shared.AccountFilter
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter != nil {
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.AccountFilter != nil {
 						accountType1 := new(shared.AccountType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
-							*accountType1 = shared.AccountType(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
+							*accountType1 = shared.AccountType(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
 						} else {
 							accountType1 = nil
 						}
@@ -10054,87 +10122,87 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						}
 					}
 					var grantFilter1 *shared.GrantFilter
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter != nil {
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter != nil {
 						grantFilterType1 := new(shared.GrantFilterType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
-							*grantFilterType1 = shared.GrantFilterType(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
+							*grantFilterType1 = shared.GrantFilterType(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
 						} else {
 							grantFilterType1 = nil
 						}
 						grantJustificationType1 := new(shared.GrantJustificationType)
-						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
-							*grantJustificationType1 = shared.GrantJustificationType(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
+						if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
+							*grantJustificationType1 = shared.GrantJustificationType(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
 						} else {
 							grantJustificationType1 = nil
 						}
-						grantSourceFilter1 := new(shared.GrantSourceFilter)
-						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter1 = shared.GrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+						grantSourceFilter3 := new(shared.GrantFilterGrantSourceFilter)
+						if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
+							*grantSourceFilter3 = shared.GrantFilterGrantSourceFilter(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter1 = nil
+							grantSourceFilter3 = nil
 						}
 						grantFilter1 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType1,
 							GrantJustificationType: grantJustificationType1,
-							GrantSourceFilter:      grantSourceFilter1,
+							GrantSourceFilter:      grantSourceFilter3,
 						}
 					}
-					var entitlementInclusionAll3 *shared.EntitlementInclusionAll
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionAll != nil {
-						entitlementInclusionAll3 = &shared.EntitlementInclusionAll{}
+					var inclusionAll3 *shared.EntitlementInclusionAll
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionAll != nil {
+						inclusionAll3 = &shared.EntitlementInclusionAll{}
 					}
-					var entitlementInclusionCriteria3 *shared.EntitlementInclusionCriteria
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria != nil {
+					var inclusionCriteria5 *shared.EntitlementInclusionCriteria
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria != nil {
 						var appIds5 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-							appIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-							for appIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-								appIds5 = append(appIds5, r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds[appIdsIndex5].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+							appIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds))
+							for appIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds {
+								appIds5 = append(appIds5, r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds[appIdsIndex5].ValueString())
 							}
 						}
 						var complianceFrameworkIds5 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							complianceFrameworkIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for complianceFrameworkIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-								complianceFrameworkIds5 = append(complianceFrameworkIds5, r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex5].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+							complianceFrameworkIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+							for complianceFrameworkIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+								complianceFrameworkIds5 = append(complianceFrameworkIds5, r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex5].ValueString())
 							}
 						}
 						var resourceTypeIds3 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-							resourceTypeIds3 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-							for resourceTypeIdsIndex3 := range r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-								resourceTypeIds3 = append(resourceTypeIds3, r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex3].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+							resourceTypeIds3 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+							for resourceTypeIdsIndex3 := range r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+								resourceTypeIds3 = append(resourceTypeIds3, r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex3].ValueString())
 							}
 						}
 						var riskLevelIds5 []string
-						if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-							riskLevelIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-							for riskLevelIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-								riskLevelIds5 = append(riskLevelIds5, r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex5].ValueString())
+						if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+							riskLevelIds5 = make([]string, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+							for riskLevelIdsIndex5 := range r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+								riskLevelIds5 = append(riskLevelIds5, r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex5].ValueString())
 							}
 						}
-						entitlementInclusionCriteria3 = &shared.EntitlementInclusionCriteria{
+						inclusionCriteria5 = &shared.EntitlementInclusionCriteria{
 							AppIds:                 appIds5,
 							ComplianceFrameworkIds: complianceFrameworkIds5,
 							ResourceTypeIds:        resourceTypeIds3,
 							RiskLevelIds:           riskLevelIds5,
 						}
 					}
-					var entitlementInclusionList3 *shared.EntitlementInclusionList
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList != nil {
+					var inclusionList5 *shared.EntitlementInclusionList
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList != nil {
 						var appEntitlementRefs7 []shared.AppEntitlementRef
-						if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-							appEntitlementRefs7 = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs))
-							for appEntitlementRefsIndex7 := range r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+						if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+							appEntitlementRefs7 = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs))
+							for appEntitlementRefsIndex7 := range r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 								appId24 := new(string)
-								if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.IsNull() {
-									*appId24 = r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.ValueString()
+								if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.IsNull() {
+									*appId24 = r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].AppID.ValueString()
 								} else {
 									appId24 = nil
 								}
 								id50 := new(string)
-								if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsNull() {
-									*id50 = r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.ValueString()
+								if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.IsNull() {
+									*id50 = r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex7].ID.ValueString()
 								} else {
 									id50 = nil
 								}
@@ -10144,74 +10212,74 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 								})
 							}
 						}
-						entitlementInclusionList3 = &shared.EntitlementInclusionList{
+						inclusionList5 = &shared.EntitlementInclusionList{
 							AppEntitlementRefs: appEntitlementRefs7,
 						}
 					}
-					var entitlementInclusionListCel3 *shared.EntitlementInclusionListCel
-					if r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel != nil {
+					var inclusionListCel5 *shared.EntitlementInclusionListCel
+					if r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel != nil {
 						appEntitlementRefsCel7 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-							*appEntitlementRefsCel7 = r.DraftTriggers[draftTriggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+							*appEntitlementRefsCel7 = r.DraftTriggers[draftTriggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.ValueString()
 						} else {
 							appEntitlementRefsCel7 = nil
 						}
-						entitlementInclusionListCel3 = &shared.EntitlementInclusionListCel{
+						inclusionListCel5 = &shared.EntitlementInclusionListCel{
 							AppEntitlementRefsCel: appEntitlementRefsCel7,
 						}
 					}
 					grantTriggerFilter1 = &shared.GrantTriggerFilter{
-						AccountFilter:                accountFilter1,
-						GrantFilter:                  grantFilter1,
-						EntitlementInclusionAll:      entitlementInclusionAll3,
-						EntitlementInclusionCriteria: entitlementInclusionCriteria3,
-						EntitlementInclusionList:     entitlementInclusionList3,
-						EntitlementInclusionListCel:  entitlementInclusionListCel3,
+						AccountFilter:     accountFilter1,
+						GrantFilter:       grantFilter1,
+						InclusionAll:      inclusionAll3,
+						InclusionCriteria: inclusionCriteria5,
+						InclusionList:     inclusionList5,
+						InclusionListCel:  inclusionListCel5,
 					}
 				}
-				grantFoundTrigger = &shared.GrantFoundTrigger{
+				grantFound = &shared.GrantFoundTrigger{
 					GrantTriggerFilter: grantTriggerFilter1,
 				}
 			}
-			var scheduleTrigger *shared.ScheduleTrigger
-			if r.DraftTriggers[draftTriggersIndex].ScheduleTrigger != nil {
+			var schedule *shared.ScheduleTrigger
+			if r.DraftTriggers[draftTriggersIndex].Schedule != nil {
 				advanced := new(bool)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Advanced.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Advanced.IsNull() {
-					*advanced = r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Advanced.ValueBool()
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.Advanced.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.Advanced.IsNull() {
+					*advanced = r.DraftTriggers[draftTriggersIndex].Schedule.Advanced.ValueBool()
 				} else {
 					advanced = nil
 				}
 				condition2 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Condition.IsNull() {
-					*condition2 = r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.Condition.IsNull() {
+					*condition2 = r.DraftTriggers[draftTriggersIndex].Schedule.Condition.ValueString()
 				} else {
 					condition2 = nil
 				}
 				cronSpec := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.CronSpec.IsNull() {
-					*cronSpec = r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.CronSpec.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.CronSpec.IsNull() {
+					*cronSpec = r.DraftTriggers[draftTriggersIndex].Schedule.CronSpec.ValueString()
 				} else {
 					cronSpec = nil
 				}
 				skipIfTrueCel2 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.SkipIfTrueCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.SkipIfTrueCel.IsNull() {
-					*skipIfTrueCel2 = r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.SkipIfTrueCel.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.SkipIfTrueCel.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.SkipIfTrueCel.IsNull() {
+					*skipIfTrueCel2 = r.DraftTriggers[draftTriggersIndex].Schedule.SkipIfTrueCel.ValueString()
 				} else {
 					skipIfTrueCel2 = nil
 				}
 				start := new(time.Time)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Start.IsNull() {
-					*start, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Start.ValueString())
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.Start.IsNull() {
+					*start, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].Schedule.Start.ValueString())
 				} else {
 					start = nil
 				}
 				timezone := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Timezone.IsNull() {
-					*timezone = r.DraftTriggers[draftTriggersIndex].ScheduleTrigger.Timezone.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].Schedule.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Schedule.Timezone.IsNull() {
+					*timezone = r.DraftTriggers[draftTriggersIndex].Schedule.Timezone.ValueString()
 				} else {
 					timezone = nil
 				}
-				scheduleTrigger = &shared.ScheduleTrigger{
+				schedule = &shared.ScheduleTrigger{
 					Advanced:      advanced,
 					Condition:     condition2,
 					CronSpec:      cronSpec,
@@ -10220,39 +10288,39 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					Timezone:      timezone,
 				}
 			}
-			var scheduleTriggerAppUser *shared.ScheduleTriggerAppUser
-			if r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser != nil {
+			var scheduleAppUser *shared.ScheduleTriggerAppUser
+			if r.DraftTriggers[draftTriggersIndex].ScheduleAppUser != nil {
 				appId25 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.AppID.IsNull() {
-					*appId25 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.AppID.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.AppID.IsNull() {
+					*appId25 = r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.AppID.ValueString()
 				} else {
 					appId25 = nil
 				}
 				condition3 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Condition.IsNull() {
-					*condition3 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Condition.IsNull() {
+					*condition3 = r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Condition.ValueString()
 				} else {
 					condition3 = nil
 				}
 				cronSpec1 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.CronSpec.IsNull() {
-					*cronSpec1 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.CronSpec.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.CronSpec.IsNull() {
+					*cronSpec1 = r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.CronSpec.ValueString()
 				} else {
 					cronSpec1 = nil
 				}
 				start1 := new(time.Time)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Start.IsNull() {
-					*start1, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Start.ValueString())
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Start.IsNull() {
+					*start1, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Start.ValueString())
 				} else {
 					start1 = nil
 				}
 				timezone1 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Timezone.IsNull() {
-					*timezone1 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerAppUser.Timezone.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Timezone.IsNull() {
+					*timezone1 = r.DraftTriggers[draftTriggersIndex].ScheduleAppUser.Timezone.ValueString()
 				} else {
 					timezone1 = nil
 				}
-				scheduleTriggerAppUser = &shared.ScheduleTriggerAppUser{
+				scheduleAppUser = &shared.ScheduleTriggerAppUser{
 					AppID:     appId25,
 					Condition: condition3,
 					CronSpec:  cronSpec1,
@@ -10260,66 +10328,66 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					Timezone:  timezone1,
 				}
 			}
-			var scheduleTriggerNoUser *shared.ScheduleTriggerNoUser
-			if r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser != nil {
+			var scheduleNoUser *shared.ScheduleTriggerNoUser
+			if r.DraftTriggers[draftTriggersIndex].ScheduleNoUser != nil {
 				advanced1 := new(bool)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.IsNull() {
-					*advanced1 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Advanced.ValueBool()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Advanced.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Advanced.IsNull() {
+					*advanced1 = r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Advanced.ValueBool()
 				} else {
 					advanced1 = nil
 				}
 				cronSpec2 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.IsNull() {
-					*cronSpec2 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.CronSpec.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.CronSpec.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.CronSpec.IsNull() {
+					*cronSpec2 = r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.CronSpec.ValueString()
 				} else {
 					cronSpec2 = nil
 				}
 				start2 := new(time.Time)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.IsNull() {
-					*start2, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Start.ValueString())
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Start.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Start.IsNull() {
+					*start2, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Start.ValueString())
 				} else {
 					start2 = nil
 				}
 				timezone2 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.IsNull() {
-					*timezone2 = r.DraftTriggers[draftTriggersIndex].ScheduleTriggerNoUser.Timezone.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Timezone.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Timezone.IsNull() {
+					*timezone2 = r.DraftTriggers[draftTriggersIndex].ScheduleNoUser.Timezone.ValueString()
 				} else {
 					timezone2 = nil
 				}
-				scheduleTriggerNoUser = &shared.ScheduleTriggerNoUser{
+				scheduleNoUser = &shared.ScheduleTriggerNoUser{
 					Advanced: advanced1,
 					CronSpec: cronSpec2,
 					Start:    start2,
 					Timezone: timezone2,
 				}
 			}
-			var usageBasedRevocationTrigger *shared.UsageBasedRevocationTrigger
-			if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger != nil {
+			var usageBasedRevocation *shared.UsageBasedRevocationTrigger
+			if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation != nil {
 				appId26 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.AppID.IsNull() {
-					*appId26 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.AppID.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.AppID.IsNull() {
+					*appId26 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.AppID.ValueString()
 				} else {
 					appId26 = nil
 				}
 				enabledAt := new(time.Time)
-				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.EnabledAt.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.EnabledAt.IsNull() {
-					*enabledAt, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.EnabledAt.ValueString())
+				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.EnabledAt.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.EnabledAt.IsNull() {
+					*enabledAt, _ = time.Parse(time.RFC3339Nano, r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.EnabledAt.ValueString())
 				} else {
 					enabledAt = nil
 				}
 				var excludedGroupRefs []shared.AppEntitlementRef
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs != nil {
-					excludedGroupRefs = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs))
-					for excludedGroupRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs != nil {
+					excludedGroupRefs = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs))
+					for excludedGroupRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs {
 						appId27 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.IsNull() {
-							*appId27 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.IsNull() {
+							*appId27 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].AppID.ValueString()
 						} else {
 							appId27 = nil
 						}
 						id51 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsNull() {
-							*id51 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex].ID.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].ID.IsNull() {
+							*id51 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex].ID.ValueString()
 						} else {
 							id51 = nil
 						}
@@ -10330,12 +10398,12 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				var excludedUserRefs []shared.UserRef
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
-					excludedUserRefs = make([]shared.UserRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs))
-					for excludedUserRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs != nil {
+					excludedUserRefs = make([]shared.UserRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs))
+					for excludedUserRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs {
 						id52 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.IsNull() {
-							*id52 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex].ID.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex].ID.IsNull() {
+							*id52 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex].ID.ValueString()
 						} else {
 							id52 = nil
 						}
@@ -10345,44 +10413,44 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				includeUsersWithNoActivity := new(bool)
-				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.IsNull() {
-					*includeUsersWithNoActivity = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.ValueBool()
+				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.IsNull() {
+					*includeUsersWithNoActivity = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.ValueBool()
 				} else {
 					includeUsersWithNoActivity = nil
 				}
 				var runDelayed *shared.RunDelayed
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.RunDelayed != nil {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.RunDelayed != nil {
 					var coldStartDelayDays int64
-					coldStartDelayDays = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.RunDelayed.ColdStartDelayDays.ValueInt64()
+					coldStartDelayDays = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.RunDelayed.ColdStartDelayDays.ValueInt64()
 
 					runDelayed = &shared.RunDelayed{
 						ColdStartDelayDays: coldStartDelayDays,
 					}
 				}
 				var runImmediately *shared.RunImmediately
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.RunImmediately != nil {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.RunImmediately != nil {
 					runImmediately = &shared.RunImmediately{}
 				}
 				var targetedAppUserTypes []shared.TargetedAppUserTypes
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes != nil {
-					targetedAppUserTypes = make([]shared.TargetedAppUserTypes, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes))
-					for _, targetedAppUserTypesItem := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedAppUserTypes != nil {
+					targetedAppUserTypes = make([]shared.TargetedAppUserTypes, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedAppUserTypes))
+					for _, targetedAppUserTypesItem := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedAppUserTypes {
 						targetedAppUserTypes = append(targetedAppUserTypes, shared.TargetedAppUserTypes(targetedAppUserTypesItem.ValueString()))
 					}
 				}
 				var targetedEntitlementRefs []shared.AppEntitlementRef
-				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
-					targetedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs))
-					for targetedEntitlementRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs {
+				if r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs != nil {
+					targetedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs))
+					for targetedEntitlementRefsIndex := range r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs {
 						appId28 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.IsNull() {
-							*appId28 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.IsNull() {
+							*appId28 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].AppID.ValueString()
 						} else {
 							appId28 = nil
 						}
 						id53 := new(string)
-						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsNull() {
-							*id53 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.ValueString()
+						if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.IsNull() {
+							*id53 = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex].ID.ValueString()
 						} else {
 							id53 = nil
 						}
@@ -10393,12 +10461,12 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				unusedForDays := new(int64)
-				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.UnusedForDays.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.UnusedForDays.IsNull() {
-					*unusedForDays = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocationTrigger.UnusedForDays.ValueInt64()
+				if !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.UnusedForDays.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.UnusedForDays.IsNull() {
+					*unusedForDays = r.DraftTriggers[draftTriggersIndex].UsageBasedRevocation.UnusedForDays.ValueInt64()
 				} else {
 					unusedForDays = nil
 				}
-				usageBasedRevocationTrigger = &shared.UsageBasedRevocationTrigger{
+				usageBasedRevocation = &shared.UsageBasedRevocationTrigger{
 					AppID:                      appId26,
 					EnabledAt:                  enabledAt,
 					ExcludedGroupRefs:          excludedGroupRefs,
@@ -10411,78 +10479,78 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					UnusedForDays:              unusedForDays,
 				}
 			}
-			var userCreatedTrigger *shared.UserCreatedTrigger
-			if r.DraftTriggers[draftTriggersIndex].UserCreatedTrigger != nil {
+			var userCreated *shared.UserCreatedTrigger
+			if r.DraftTriggers[draftTriggersIndex].UserCreated != nil {
 				condition4 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].UserCreatedTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UserCreatedTrigger.Condition.IsNull() {
-					*condition4 = r.DraftTriggers[draftTriggersIndex].UserCreatedTrigger.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].UserCreated.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UserCreated.Condition.IsNull() {
+					*condition4 = r.DraftTriggers[draftTriggersIndex].UserCreated.Condition.ValueString()
 				} else {
 					condition4 = nil
 				}
-				userCreatedTrigger = &shared.UserCreatedTrigger{
+				userCreated = &shared.UserCreatedTrigger{
 					Condition: condition4,
 				}
 			}
-			var userProfileChangeTrigger *shared.UserProfileChangeTrigger
-			if r.DraftTriggers[draftTriggersIndex].UserProfileChangeTrigger != nil {
+			var userProfileChange *shared.UserProfileChangeTrigger
+			if r.DraftTriggers[draftTriggersIndex].UserProfileChange != nil {
 				condition5 := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].UserProfileChangeTrigger.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UserProfileChangeTrigger.Condition.IsNull() {
-					*condition5 = r.DraftTriggers[draftTriggersIndex].UserProfileChangeTrigger.Condition.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].UserProfileChange.Condition.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].UserProfileChange.Condition.IsNull() {
+					*condition5 = r.DraftTriggers[draftTriggersIndex].UserProfileChange.Condition.ValueString()
 				} else {
 					condition5 = nil
 				}
-				userProfileChangeTrigger = &shared.UserProfileChangeTrigger{
+				userProfileChange = &shared.UserProfileChangeTrigger{
 					Condition: condition5,
 				}
 			}
-			var webhookAutomationTrigger *shared.WebhookAutomationTrigger
-			if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger != nil {
-				var webhookListenerAuthCapabilityURL *shared.WebhookListenerAuthCapabilityURL
-				if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL != nil {
-					webhookListenerAuthCapabilityURL = &shared.WebhookListenerAuthCapabilityURL{}
+			var webhook2 *shared.WebhookAutomationTrigger
+			if r.DraftTriggers[draftTriggersIndex].Webhook != nil {
+				var capabilityURL *shared.WebhookListenerAuthCapabilityURL
+				if r.DraftTriggers[draftTriggersIndex].Webhook.CapabilityURL != nil {
+					capabilityURL = &shared.WebhookListenerAuthCapabilityURL{}
 				}
-				var webhookListenerAuthHMAC *shared.WebhookListenerAuthHMAC
-				if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthHMAC != nil {
-					webhookListenerAuthHMAC = &shared.WebhookListenerAuthHMAC{}
+				var hmac *shared.WebhookListenerAuthHMAC
+				if r.DraftTriggers[draftTriggersIndex].Webhook.Hmac != nil {
+					hmac = &shared.WebhookListenerAuthHMAC{}
 				}
-				var webhookListenerAuthJWT *shared.WebhookListenerAuthJWT
-				if r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT != nil {
+				var jwt *shared.WebhookListenerAuthJWT
+				if r.DraftTriggers[draftTriggersIndex].Webhook.Jwt != nil {
 					jwksURL := new(string)
-					if !r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.IsNull() {
-						*jwksURL = r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.ValueString()
+					if !r.DraftTriggers[draftTriggersIndex].Webhook.Jwt.JwksURL.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Webhook.Jwt.JwksURL.IsNull() {
+						*jwksURL = r.DraftTriggers[draftTriggersIndex].Webhook.Jwt.JwksURL.ValueString()
 					} else {
 						jwksURL = nil
 					}
-					webhookListenerAuthJWT = &shared.WebhookListenerAuthJWT{
+					jwt = &shared.WebhookListenerAuthJWT{
 						JwksURL: jwksURL,
 					}
 				}
 				listenerID := new(string)
-				if !r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.ListenerID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.ListenerID.IsNull() {
-					*listenerID = r.DraftTriggers[draftTriggersIndex].WebhookAutomationTrigger.ListenerID.ValueString()
+				if !r.DraftTriggers[draftTriggersIndex].Webhook.ListenerID.IsUnknown() && !r.DraftTriggers[draftTriggersIndex].Webhook.ListenerID.IsNull() {
+					*listenerID = r.DraftTriggers[draftTriggersIndex].Webhook.ListenerID.ValueString()
 				} else {
 					listenerID = nil
 				}
-				webhookAutomationTrigger = &shared.WebhookAutomationTrigger{
-					WebhookListenerAuthCapabilityURL: webhookListenerAuthCapabilityURL,
-					WebhookListenerAuthHMAC:          webhookListenerAuthHMAC,
-					WebhookListenerAuthJWT:           webhookListenerAuthJWT,
-					ListenerID:                       listenerID,
+				webhook2 = &shared.WebhookAutomationTrigger{
+					CapabilityURL: capabilityURL,
+					Hmac:          hmac,
+					Jwt:           jwt,
+					ListenerID:    listenerID,
 				}
 			}
 			draftTriggers = append(draftTriggers, shared.AutomationTrigger{
-				AccessConflictTrigger:       accessConflictTrigger,
-				AppUserCreatedTrigger:       appUserCreatedTrigger,
-				AppUserUpdatedTrigger:       appUserUpdatedTrigger,
-				GrantDeletedTrigger:         grantDeletedTrigger,
-				GrantFoundTrigger:           grantFoundTrigger,
-				ScheduleTrigger:             scheduleTrigger,
-				ScheduleTriggerAppUser:      scheduleTriggerAppUser,
-				ScheduleTriggerNoUser:       scheduleTriggerNoUser,
-				UsageBasedRevocationTrigger: usageBasedRevocationTrigger,
-				UserCreatedTrigger:          userCreatedTrigger,
-				UserProfileChangeTrigger:    userProfileChangeTrigger,
-				WebhookAutomationTrigger:    webhookAutomationTrigger,
+				AccessConflict:       accessConflict,
+				AppUserCreated:       appUserCreated,
+				AppUserUpdated:       appUserUpdated,
+				GrantDeleted:         grantDeleted,
+				GrantFound:           grantFound,
+				Schedule:             schedule,
+				ScheduleAppUser:      scheduleAppUser,
+				ScheduleNoUser:       scheduleNoUser,
+				UsageBasedRevocation: usageBasedRevocation,
+				UserCreated:          userCreated,
+				UserProfileChange:    userProfileChange,
+				Webhook:              webhook2,
 			})
 		}
 	}
@@ -10502,23 +10570,23 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 	if r.Triggers != nil {
 		triggers = make([]shared.AutomationTrigger, 0, len(r.Triggers))
 		for triggersIndex := range r.Triggers {
-			var accessConflictTrigger1 *shared.AccessConflictTrigger
-			if r.Triggers[triggersIndex].AccessConflictTrigger != nil {
+			var accessConflict1 *shared.AccessConflictTrigger
+			if r.Triggers[triggersIndex].AccessConflict != nil {
 				allConflictMonitors1 := new(bool)
-				if !r.Triggers[triggersIndex].AccessConflictTrigger.AllConflictMonitors.IsUnknown() && !r.Triggers[triggersIndex].AccessConflictTrigger.AllConflictMonitors.IsNull() {
-					*allConflictMonitors1 = r.Triggers[triggersIndex].AccessConflictTrigger.AllConflictMonitors.ValueBool()
+				if !r.Triggers[triggersIndex].AccessConflict.AllConflictMonitors.IsUnknown() && !r.Triggers[triggersIndex].AccessConflict.AllConflictMonitors.IsNull() {
+					*allConflictMonitors1 = r.Triggers[triggersIndex].AccessConflict.AllConflictMonitors.ValueBool()
 				} else {
 					allConflictMonitors1 = nil
 				}
 				var conflictMonitorRefs2 *shared.ConflictMonitorRefs
-				if r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs != nil {
+				if r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs != nil {
 					var conflictMonitorRefs3 []shared.ConflictMonitorRef
-					if r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs != nil {
-						conflictMonitorRefs3 = make([]shared.ConflictMonitorRef, 0, len(r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs))
-						for conflictMonitorRefsIndex1 := range r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs {
+					if r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs != nil {
+						conflictMonitorRefs3 = make([]shared.ConflictMonitorRef, 0, len(r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs))
+						for conflictMonitorRefsIndex1 := range r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs {
 							id54 := new(string)
-							if !r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsNull() {
-								*id54 = r.Triggers[triggersIndex].AccessConflictTrigger.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.ValueString()
+							if !r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.IsNull() {
+								*id54 = r.Triggers[triggersIndex].AccessConflict.ConflictMonitorRefs.ConflictMonitorRefs[conflictMonitorRefsIndex1].ID.ValueString()
 							} else {
 								id54 = nil
 							}
@@ -10531,72 +10599,72 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						ConflictMonitorRefs: conflictMonitorRefs3,
 					}
 				}
-				accessConflictTrigger1 = &shared.AccessConflictTrigger{
+				accessConflict1 = &shared.AccessConflictTrigger{
 					AllConflictMonitors: allConflictMonitors1,
 					ConflictMonitorRefs: conflictMonitorRefs2,
 				}
 			}
-			var appUserCreatedTrigger1 *shared.AppUserCreatedTrigger
-			if r.Triggers[triggersIndex].AppUserCreatedTrigger != nil {
+			var appUserCreated1 *shared.AppUserCreatedTrigger
+			if r.Triggers[triggersIndex].AppUserCreated != nil {
 				appId29 := new(string)
-				if !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppID.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppID.IsNull() {
-					*appId29 = r.Triggers[triggersIndex].AppUserCreatedTrigger.AppID.ValueString()
+				if !r.Triggers[triggersIndex].AppUserCreated.AppID.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreated.AppID.IsNull() {
+					*appId29 = r.Triggers[triggersIndex].AppUserCreated.AppID.ValueString()
 				} else {
 					appId29 = nil
 				}
 				appIDCel4 := new(string)
-				if !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.IsNull() {
-					*appIDCel4 = r.Triggers[triggersIndex].AppUserCreatedTrigger.AppIDCel.ValueString()
+				if !r.Triggers[triggersIndex].AppUserCreated.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreated.AppIDCel.IsNull() {
+					*appIDCel4 = r.Triggers[triggersIndex].AppUserCreated.AppIDCel.ValueString()
 				} else {
 					appIDCel4 = nil
 				}
 				condition6 := new(string)
-				if !r.Triggers[triggersIndex].AppUserCreatedTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreatedTrigger.Condition.IsNull() {
-					*condition6 = r.Triggers[triggersIndex].AppUserCreatedTrigger.Condition.ValueString()
+				if !r.Triggers[triggersIndex].AppUserCreated.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserCreated.Condition.IsNull() {
+					*condition6 = r.Triggers[triggersIndex].AppUserCreated.Condition.ValueString()
 				} else {
 					condition6 = nil
 				}
-				appUserCreatedTrigger1 = &shared.AppUserCreatedTrigger{
+				appUserCreated1 = &shared.AppUserCreatedTrigger{
 					AppID:     appId29,
 					AppIDCel:  appIDCel4,
 					Condition: condition6,
 				}
 			}
-			var appUserUpdatedTrigger1 *shared.AppUserUpdatedTrigger
-			if r.Triggers[triggersIndex].AppUserUpdatedTrigger != nil {
+			var appUserUpdated1 *shared.AppUserUpdatedTrigger
+			if r.Triggers[triggersIndex].AppUserUpdated != nil {
 				appId30 := new(string)
-				if !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppID.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppID.IsNull() {
-					*appId30 = r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppID.ValueString()
+				if !r.Triggers[triggersIndex].AppUserUpdated.AppID.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdated.AppID.IsNull() {
+					*appId30 = r.Triggers[triggersIndex].AppUserUpdated.AppID.ValueString()
 				} else {
 					appId30 = nil
 				}
 				appIDCel5 := new(string)
-				if !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.IsNull() {
-					*appIDCel5 = r.Triggers[triggersIndex].AppUserUpdatedTrigger.AppIDCel.ValueString()
+				if !r.Triggers[triggersIndex].AppUserUpdated.AppIDCel.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdated.AppIDCel.IsNull() {
+					*appIDCel5 = r.Triggers[triggersIndex].AppUserUpdated.AppIDCel.ValueString()
 				} else {
 					appIDCel5 = nil
 				}
 				condition7 := new(string)
-				if !r.Triggers[triggersIndex].AppUserUpdatedTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdatedTrigger.Condition.IsNull() {
-					*condition7 = r.Triggers[triggersIndex].AppUserUpdatedTrigger.Condition.ValueString()
+				if !r.Triggers[triggersIndex].AppUserUpdated.Condition.IsUnknown() && !r.Triggers[triggersIndex].AppUserUpdated.Condition.IsNull() {
+					*condition7 = r.Triggers[triggersIndex].AppUserUpdated.Condition.ValueString()
 				} else {
 					condition7 = nil
 				}
-				appUserUpdatedTrigger1 = &shared.AppUserUpdatedTrigger{
+				appUserUpdated1 = &shared.AppUserUpdatedTrigger{
 					AppID:     appId30,
 					AppIDCel:  appIDCel5,
 					Condition: condition7,
 				}
 			}
-			var grantDeletedTrigger1 *shared.GrantDeletedTrigger
-			if r.Triggers[triggersIndex].GrantDeletedTrigger != nil {
+			var grantDeleted1 *shared.GrantDeletedTrigger
+			if r.Triggers[triggersIndex].GrantDeleted != nil {
 				var grantTriggerFilter2 *shared.GrantTriggerFilter
-				if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter != nil {
+				if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter != nil {
 					var accountFilter2 *shared.AccountFilter
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter != nil {
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter != nil {
 						accountType2 := new(shared.AccountType)
-						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
-							*accountType2 = shared.AccountType(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
+						if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
+							*accountType2 = shared.AccountType(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
 						} else {
 							accountType2 = nil
 						}
@@ -10605,87 +10673,87 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						}
 					}
 					var grantFilter2 *shared.GrantFilter
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter != nil {
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter != nil {
 						grantFilterType2 := new(shared.GrantFilterType)
-						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
-							*grantFilterType2 = shared.GrantFilterType(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
+						if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
+							*grantFilterType2 = shared.GrantFilterType(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
 						} else {
 							grantFilterType2 = nil
 						}
 						grantJustificationType2 := new(shared.GrantJustificationType)
-						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
-							*grantJustificationType2 = shared.GrantJustificationType(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
+						if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
+							*grantJustificationType2 = shared.GrantJustificationType(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
 						} else {
 							grantJustificationType2 = nil
 						}
-						grantSourceFilter2 := new(shared.GrantSourceFilter)
-						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter2 = shared.GrantSourceFilter(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+						grantSourceFilter4 := new(shared.GrantFilterGrantSourceFilter)
+						if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
+							*grantSourceFilter4 = shared.GrantFilterGrantSourceFilter(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter2 = nil
+							grantSourceFilter4 = nil
 						}
 						grantFilter2 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType2,
 							GrantJustificationType: grantJustificationType2,
-							GrantSourceFilter:      grantSourceFilter2,
+							GrantSourceFilter:      grantSourceFilter4,
 						}
 					}
-					var entitlementInclusionAll4 *shared.EntitlementInclusionAll
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionAll != nil {
-						entitlementInclusionAll4 = &shared.EntitlementInclusionAll{}
+					var inclusionAll4 *shared.EntitlementInclusionAll
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionAll != nil {
+						inclusionAll4 = &shared.EntitlementInclusionAll{}
 					}
-					var entitlementInclusionCriteria4 *shared.EntitlementInclusionCriteria
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria != nil {
+					var inclusionCriteria6 *shared.EntitlementInclusionCriteria
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria != nil {
 						var appIds6 []string
-						if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-							appIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-							for appIdsIndex6 := range r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-								appIds6 = append(appIds6, r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds[appIdsIndex6].ValueString())
+						if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+							appIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds))
+							for appIdsIndex6 := range r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds {
+								appIds6 = append(appIds6, r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.AppIds[appIdsIndex6].ValueString())
 							}
 						}
 						var complianceFrameworkIds6 []string
-						if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							complianceFrameworkIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for complianceFrameworkIdsIndex6 := range r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-								complianceFrameworkIds6 = append(complianceFrameworkIds6, r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex6].ValueString())
+						if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+							complianceFrameworkIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+							for complianceFrameworkIdsIndex6 := range r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+								complianceFrameworkIds6 = append(complianceFrameworkIds6, r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex6].ValueString())
 							}
 						}
 						var resourceTypeIds4 []string
-						if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-							resourceTypeIds4 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-							for resourceTypeIdsIndex4 := range r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-								resourceTypeIds4 = append(resourceTypeIds4, r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex4].ValueString())
+						if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+							resourceTypeIds4 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+							for resourceTypeIdsIndex4 := range r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+								resourceTypeIds4 = append(resourceTypeIds4, r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex4].ValueString())
 							}
 						}
 						var riskLevelIds6 []string
-						if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-							riskLevelIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-							for riskLevelIdsIndex6 := range r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-								riskLevelIds6 = append(riskLevelIds6, r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex6].ValueString())
+						if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+							riskLevelIds6 = make([]string, 0, len(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+							for riskLevelIdsIndex6 := range r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+								riskLevelIds6 = append(riskLevelIds6, r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex6].ValueString())
 							}
 						}
-						entitlementInclusionCriteria4 = &shared.EntitlementInclusionCriteria{
+						inclusionCriteria6 = &shared.EntitlementInclusionCriteria{
 							AppIds:                 appIds6,
 							ComplianceFrameworkIds: complianceFrameworkIds6,
 							ResourceTypeIds:        resourceTypeIds4,
 							RiskLevelIds:           riskLevelIds6,
 						}
 					}
-					var entitlementInclusionList4 *shared.EntitlementInclusionList
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList != nil {
+					var inclusionList6 *shared.EntitlementInclusionList
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList != nil {
 						var appEntitlementRefs8 []shared.AppEntitlementRef
-						if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-							appEntitlementRefs8 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs))
-							for appEntitlementRefsIndex8 := range r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+						if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+							appEntitlementRefs8 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs))
+							for appEntitlementRefsIndex8 := range r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 								appId31 := new(string)
-								if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.IsNull() {
-									*appId31 = r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.ValueString()
+								if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.IsNull() {
+									*appId31 = r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].AppID.ValueString()
 								} else {
 									appId31 = nil
 								}
 								id55 := new(string)
-								if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsNull() {
-									*id55 = r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.ValueString()
+								if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.IsNull() {
+									*id55 = r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex8].ID.ValueString()
 								} else {
 									id55 = nil
 								}
@@ -10695,44 +10763,44 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 								})
 							}
 						}
-						entitlementInclusionList4 = &shared.EntitlementInclusionList{
+						inclusionList6 = &shared.EntitlementInclusionList{
 							AppEntitlementRefs: appEntitlementRefs8,
 						}
 					}
-					var entitlementInclusionListCel4 *shared.EntitlementInclusionListCel
-					if r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel != nil {
+					var inclusionListCel6 *shared.EntitlementInclusionListCel
+					if r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel != nil {
 						appEntitlementRefsCel8 := new(string)
-						if !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-							*appEntitlementRefsCel8 = r.Triggers[triggersIndex].GrantDeletedTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+						if !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+							*appEntitlementRefsCel8 = r.Triggers[triggersIndex].GrantDeleted.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.ValueString()
 						} else {
 							appEntitlementRefsCel8 = nil
 						}
-						entitlementInclusionListCel4 = &shared.EntitlementInclusionListCel{
+						inclusionListCel6 = &shared.EntitlementInclusionListCel{
 							AppEntitlementRefsCel: appEntitlementRefsCel8,
 						}
 					}
 					grantTriggerFilter2 = &shared.GrantTriggerFilter{
-						AccountFilter:                accountFilter2,
-						GrantFilter:                  grantFilter2,
-						EntitlementInclusionAll:      entitlementInclusionAll4,
-						EntitlementInclusionCriteria: entitlementInclusionCriteria4,
-						EntitlementInclusionList:     entitlementInclusionList4,
-						EntitlementInclusionListCel:  entitlementInclusionListCel4,
+						AccountFilter:     accountFilter2,
+						GrantFilter:       grantFilter2,
+						InclusionAll:      inclusionAll4,
+						InclusionCriteria: inclusionCriteria6,
+						InclusionList:     inclusionList6,
+						InclusionListCel:  inclusionListCel6,
 					}
 				}
-				grantDeletedTrigger1 = &shared.GrantDeletedTrigger{
+				grantDeleted1 = &shared.GrantDeletedTrigger{
 					GrantTriggerFilter: grantTriggerFilter2,
 				}
 			}
-			var grantFoundTrigger1 *shared.GrantFoundTrigger
-			if r.Triggers[triggersIndex].GrantFoundTrigger != nil {
+			var grantFound1 *shared.GrantFoundTrigger
+			if r.Triggers[triggersIndex].GrantFound != nil {
 				var grantTriggerFilter3 *shared.GrantTriggerFilter
-				if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter != nil {
+				if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter != nil {
 					var accountFilter3 *shared.AccountFilter
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter != nil {
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.AccountFilter != nil {
 						accountType3 := new(shared.AccountType)
-						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
-							*accountType3 = shared.AccountType(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
+						if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.IsNull() {
+							*accountType3 = shared.AccountType(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.AccountFilter.AccountType.ValueString())
 						} else {
 							accountType3 = nil
 						}
@@ -10741,87 +10809,87 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 						}
 					}
 					var grantFilter3 *shared.GrantFilter
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter != nil {
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter != nil {
 						grantFilterType3 := new(shared.GrantFilterType)
-						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
-							*grantFilterType3 = shared.GrantFilterType(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
+						if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.IsNull() {
+							*grantFilterType3 = shared.GrantFilterType(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantFilterType.ValueString())
 						} else {
 							grantFilterType3 = nil
 						}
 						grantJustificationType3 := new(shared.GrantJustificationType)
-						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
-							*grantJustificationType3 = shared.GrantJustificationType(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
+						if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.IsNull() {
+							*grantJustificationType3 = shared.GrantJustificationType(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantJustificationType.ValueString())
 						} else {
 							grantJustificationType3 = nil
 						}
-						grantSourceFilter3 := new(shared.GrantSourceFilter)
-						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
-							*grantSourceFilter3 = shared.GrantSourceFilter(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
+						grantSourceFilter5 := new(shared.GrantFilterGrantSourceFilter)
+						if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.IsNull() {
+							*grantSourceFilter5 = shared.GrantFilterGrantSourceFilter(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.GrantFilter.GrantSourceFilter.ValueString())
 						} else {
-							grantSourceFilter3 = nil
+							grantSourceFilter5 = nil
 						}
 						grantFilter3 = &shared.GrantFilter{
 							GrantFilterType:        grantFilterType3,
 							GrantJustificationType: grantJustificationType3,
-							GrantSourceFilter:      grantSourceFilter3,
+							GrantSourceFilter:      grantSourceFilter5,
 						}
 					}
-					var entitlementInclusionAll5 *shared.EntitlementInclusionAll
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionAll != nil {
-						entitlementInclusionAll5 = &shared.EntitlementInclusionAll{}
+					var inclusionAll5 *shared.EntitlementInclusionAll
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionAll != nil {
+						inclusionAll5 = &shared.EntitlementInclusionAll{}
 					}
-					var entitlementInclusionCriteria5 *shared.EntitlementInclusionCriteria
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria != nil {
+					var inclusionCriteria7 *shared.EntitlementInclusionCriteria
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria != nil {
 						var appIds7 []string
-						if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds != nil {
-							appIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds))
-							for appIdsIndex7 := range r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds {
-								appIds7 = append(appIds7, r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.AppIds[appIdsIndex7].ValueString())
+						if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds != nil {
+							appIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds))
+							for appIdsIndex7 := range r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds {
+								appIds7 = append(appIds7, r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.AppIds[appIdsIndex7].ValueString())
 							}
 						}
 						var complianceFrameworkIds7 []string
-						if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds != nil {
-							complianceFrameworkIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds))
-							for complianceFrameworkIdsIndex7 := range r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds {
-								complianceFrameworkIds7 = append(complianceFrameworkIds7, r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex7].ValueString())
+						if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds != nil {
+							complianceFrameworkIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds))
+							for complianceFrameworkIdsIndex7 := range r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds {
+								complianceFrameworkIds7 = append(complianceFrameworkIds7, r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ComplianceFrameworkIds[complianceFrameworkIdsIndex7].ValueString())
 							}
 						}
 						var resourceTypeIds5 []string
-						if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds != nil {
-							resourceTypeIds5 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds))
-							for resourceTypeIdsIndex5 := range r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds {
-								resourceTypeIds5 = append(resourceTypeIds5, r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex5].ValueString())
+						if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds != nil {
+							resourceTypeIds5 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds))
+							for resourceTypeIdsIndex5 := range r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds {
+								resourceTypeIds5 = append(resourceTypeIds5, r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.ResourceTypeIds[resourceTypeIdsIndex5].ValueString())
 							}
 						}
 						var riskLevelIds7 []string
-						if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds != nil {
-							riskLevelIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds))
-							for riskLevelIdsIndex7 := range r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds {
-								riskLevelIds7 = append(riskLevelIds7, r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionCriteria.RiskLevelIds[riskLevelIdsIndex7].ValueString())
+						if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds != nil {
+							riskLevelIds7 = make([]string, 0, len(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds))
+							for riskLevelIdsIndex7 := range r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds {
+								riskLevelIds7 = append(riskLevelIds7, r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionCriteria.RiskLevelIds[riskLevelIdsIndex7].ValueString())
 							}
 						}
-						entitlementInclusionCriteria5 = &shared.EntitlementInclusionCriteria{
+						inclusionCriteria7 = &shared.EntitlementInclusionCriteria{
 							AppIds:                 appIds7,
 							ComplianceFrameworkIds: complianceFrameworkIds7,
 							ResourceTypeIds:        resourceTypeIds5,
 							RiskLevelIds:           riskLevelIds7,
 						}
 					}
-					var entitlementInclusionList5 *shared.EntitlementInclusionList
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList != nil {
+					var inclusionList7 *shared.EntitlementInclusionList
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList != nil {
 						var appEntitlementRefs9 []shared.AppEntitlementRef
-						if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs != nil {
-							appEntitlementRefs9 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs))
-							for appEntitlementRefsIndex9 := range r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs {
+						if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs != nil {
+							appEntitlementRefs9 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs))
+							for appEntitlementRefsIndex9 := range r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs {
 								appId32 := new(string)
-								if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.IsNull() {
-									*appId32 = r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.ValueString()
+								if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.IsNull() {
+									*appId32 = r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].AppID.ValueString()
 								} else {
 									appId32 = nil
 								}
 								id56 := new(string)
-								if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsNull() {
-									*id56 = r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.ValueString()
+								if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.IsNull() {
+									*id56 = r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionList.AppEntitlementRefs[appEntitlementRefsIndex9].ID.ValueString()
 								} else {
 									id56 = nil
 								}
@@ -10831,74 +10899,74 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 								})
 							}
 						}
-						entitlementInclusionList5 = &shared.EntitlementInclusionList{
+						inclusionList7 = &shared.EntitlementInclusionList{
 							AppEntitlementRefs: appEntitlementRefs9,
 						}
 					}
-					var entitlementInclusionListCel5 *shared.EntitlementInclusionListCel
-					if r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel != nil {
+					var inclusionListCel7 *shared.EntitlementInclusionListCel
+					if r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel != nil {
 						appEntitlementRefsCel9 := new(string)
-						if !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.IsNull() {
-							*appEntitlementRefsCel9 = r.Triggers[triggersIndex].GrantFoundTrigger.GrantTriggerFilter.EntitlementInclusionListCel.AppEntitlementRefsCel.ValueString()
+						if !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsUnknown() && !r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.IsNull() {
+							*appEntitlementRefsCel9 = r.Triggers[triggersIndex].GrantFound.GrantTriggerFilter.InclusionListCel.AppEntitlementRefsCel.ValueString()
 						} else {
 							appEntitlementRefsCel9 = nil
 						}
-						entitlementInclusionListCel5 = &shared.EntitlementInclusionListCel{
+						inclusionListCel7 = &shared.EntitlementInclusionListCel{
 							AppEntitlementRefsCel: appEntitlementRefsCel9,
 						}
 					}
 					grantTriggerFilter3 = &shared.GrantTriggerFilter{
-						AccountFilter:                accountFilter3,
-						GrantFilter:                  grantFilter3,
-						EntitlementInclusionAll:      entitlementInclusionAll5,
-						EntitlementInclusionCriteria: entitlementInclusionCriteria5,
-						EntitlementInclusionList:     entitlementInclusionList5,
-						EntitlementInclusionListCel:  entitlementInclusionListCel5,
+						AccountFilter:     accountFilter3,
+						GrantFilter:       grantFilter3,
+						InclusionAll:      inclusionAll5,
+						InclusionCriteria: inclusionCriteria7,
+						InclusionList:     inclusionList7,
+						InclusionListCel:  inclusionListCel7,
 					}
 				}
-				grantFoundTrigger1 = &shared.GrantFoundTrigger{
+				grantFound1 = &shared.GrantFoundTrigger{
 					GrantTriggerFilter: grantTriggerFilter3,
 				}
 			}
-			var scheduleTrigger1 *shared.ScheduleTrigger
-			if r.Triggers[triggersIndex].ScheduleTrigger != nil {
+			var schedule1 *shared.ScheduleTrigger
+			if r.Triggers[triggersIndex].Schedule != nil {
 				advanced2 := new(bool)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.Advanced.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Advanced.IsNull() {
-					*advanced2 = r.Triggers[triggersIndex].ScheduleTrigger.Advanced.ValueBool()
+				if !r.Triggers[triggersIndex].Schedule.Advanced.IsUnknown() && !r.Triggers[triggersIndex].Schedule.Advanced.IsNull() {
+					*advanced2 = r.Triggers[triggersIndex].Schedule.Advanced.ValueBool()
 				} else {
 					advanced2 = nil
 				}
 				condition8 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Condition.IsNull() {
-					*condition8 = r.Triggers[triggersIndex].ScheduleTrigger.Condition.ValueString()
+				if !r.Triggers[triggersIndex].Schedule.Condition.IsUnknown() && !r.Triggers[triggersIndex].Schedule.Condition.IsNull() {
+					*condition8 = r.Triggers[triggersIndex].Schedule.Condition.ValueString()
 				} else {
 					condition8 = nil
 				}
 				cronSpec3 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.IsNull() {
-					*cronSpec3 = r.Triggers[triggersIndex].ScheduleTrigger.CronSpec.ValueString()
+				if !r.Triggers[triggersIndex].Schedule.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].Schedule.CronSpec.IsNull() {
+					*cronSpec3 = r.Triggers[triggersIndex].Schedule.CronSpec.ValueString()
 				} else {
 					cronSpec3 = nil
 				}
 				skipIfTrueCel3 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.SkipIfTrueCel.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.SkipIfTrueCel.IsNull() {
-					*skipIfTrueCel3 = r.Triggers[triggersIndex].ScheduleTrigger.SkipIfTrueCel.ValueString()
+				if !r.Triggers[triggersIndex].Schedule.SkipIfTrueCel.IsUnknown() && !r.Triggers[triggersIndex].Schedule.SkipIfTrueCel.IsNull() {
+					*skipIfTrueCel3 = r.Triggers[triggersIndex].Schedule.SkipIfTrueCel.ValueString()
 				} else {
 					skipIfTrueCel3 = nil
 				}
 				start3 := new(time.Time)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Start.IsNull() {
-					*start3, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTrigger.Start.ValueString())
+				if !r.Triggers[triggersIndex].Schedule.Start.IsUnknown() && !r.Triggers[triggersIndex].Schedule.Start.IsNull() {
+					*start3, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].Schedule.Start.ValueString())
 				} else {
 					start3 = nil
 				}
 				timezone3 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTrigger.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTrigger.Timezone.IsNull() {
-					*timezone3 = r.Triggers[triggersIndex].ScheduleTrigger.Timezone.ValueString()
+				if !r.Triggers[triggersIndex].Schedule.Timezone.IsUnknown() && !r.Triggers[triggersIndex].Schedule.Timezone.IsNull() {
+					*timezone3 = r.Triggers[triggersIndex].Schedule.Timezone.ValueString()
 				} else {
 					timezone3 = nil
 				}
-				scheduleTrigger1 = &shared.ScheduleTrigger{
+				schedule1 = &shared.ScheduleTrigger{
 					Advanced:      advanced2,
 					Condition:     condition8,
 					CronSpec:      cronSpec3,
@@ -10907,39 +10975,39 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					Timezone:      timezone3,
 				}
 			}
-			var scheduleTriggerAppUser1 *shared.ScheduleTriggerAppUser
-			if r.Triggers[triggersIndex].ScheduleTriggerAppUser != nil {
+			var scheduleAppUser1 *shared.ScheduleTriggerAppUser
+			if r.Triggers[triggersIndex].ScheduleAppUser != nil {
 				appId33 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.AppID.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.AppID.IsNull() {
-					*appId33 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.AppID.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleAppUser.AppID.IsUnknown() && !r.Triggers[triggersIndex].ScheduleAppUser.AppID.IsNull() {
+					*appId33 = r.Triggers[triggersIndex].ScheduleAppUser.AppID.ValueString()
 				} else {
 					appId33 = nil
 				}
 				condition9 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Condition.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Condition.IsNull() {
-					*condition9 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.Condition.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleAppUser.Condition.IsUnknown() && !r.Triggers[triggersIndex].ScheduleAppUser.Condition.IsNull() {
+					*condition9 = r.Triggers[triggersIndex].ScheduleAppUser.Condition.ValueString()
 				} else {
 					condition9 = nil
 				}
 				cronSpec4 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.IsNull() {
-					*cronSpec4 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.CronSpec.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleAppUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleAppUser.CronSpec.IsNull() {
+					*cronSpec4 = r.Triggers[triggersIndex].ScheduleAppUser.CronSpec.ValueString()
 				} else {
 					cronSpec4 = nil
 				}
 				start4 := new(time.Time)
-				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.IsNull() {
-					*start4, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTriggerAppUser.Start.ValueString())
+				if !r.Triggers[triggersIndex].ScheduleAppUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleAppUser.Start.IsNull() {
+					*start4, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleAppUser.Start.ValueString())
 				} else {
 					start4 = nil
 				}
 				timezone4 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.IsNull() {
-					*timezone4 = r.Triggers[triggersIndex].ScheduleTriggerAppUser.Timezone.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleAppUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleAppUser.Timezone.IsNull() {
+					*timezone4 = r.Triggers[triggersIndex].ScheduleAppUser.Timezone.ValueString()
 				} else {
 					timezone4 = nil
 				}
-				scheduleTriggerAppUser1 = &shared.ScheduleTriggerAppUser{
+				scheduleAppUser1 = &shared.ScheduleTriggerAppUser{
 					AppID:     appId33,
 					Condition: condition9,
 					CronSpec:  cronSpec4,
@@ -10947,66 +11015,66 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					Timezone:  timezone4,
 				}
 			}
-			var scheduleTriggerNoUser1 *shared.ScheduleTriggerNoUser
-			if r.Triggers[triggersIndex].ScheduleTriggerNoUser != nil {
+			var scheduleNoUser1 *shared.ScheduleTriggerNoUser
+			if r.Triggers[triggersIndex].ScheduleNoUser != nil {
 				advanced3 := new(bool)
-				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.IsNull() {
-					*advanced3 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.Advanced.ValueBool()
+				if !r.Triggers[triggersIndex].ScheduleNoUser.Advanced.IsUnknown() && !r.Triggers[triggersIndex].ScheduleNoUser.Advanced.IsNull() {
+					*advanced3 = r.Triggers[triggersIndex].ScheduleNoUser.Advanced.ValueBool()
 				} else {
 					advanced3 = nil
 				}
 				cronSpec5 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.IsNull() {
-					*cronSpec5 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.CronSpec.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleNoUser.CronSpec.IsUnknown() && !r.Triggers[triggersIndex].ScheduleNoUser.CronSpec.IsNull() {
+					*cronSpec5 = r.Triggers[triggersIndex].ScheduleNoUser.CronSpec.ValueString()
 				} else {
 					cronSpec5 = nil
 				}
 				start5 := new(time.Time)
-				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.IsNull() {
-					*start5, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleTriggerNoUser.Start.ValueString())
+				if !r.Triggers[triggersIndex].ScheduleNoUser.Start.IsUnknown() && !r.Triggers[triggersIndex].ScheduleNoUser.Start.IsNull() {
+					*start5, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].ScheduleNoUser.Start.ValueString())
 				} else {
 					start5 = nil
 				}
 				timezone5 := new(string)
-				if !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.IsNull() {
-					*timezone5 = r.Triggers[triggersIndex].ScheduleTriggerNoUser.Timezone.ValueString()
+				if !r.Triggers[triggersIndex].ScheduleNoUser.Timezone.IsUnknown() && !r.Triggers[triggersIndex].ScheduleNoUser.Timezone.IsNull() {
+					*timezone5 = r.Triggers[triggersIndex].ScheduleNoUser.Timezone.ValueString()
 				} else {
 					timezone5 = nil
 				}
-				scheduleTriggerNoUser1 = &shared.ScheduleTriggerNoUser{
+				scheduleNoUser1 = &shared.ScheduleTriggerNoUser{
 					Advanced: advanced3,
 					CronSpec: cronSpec5,
 					Start:    start5,
 					Timezone: timezone5,
 				}
 			}
-			var usageBasedRevocationTrigger1 *shared.UsageBasedRevocationTrigger
-			if r.Triggers[triggersIndex].UsageBasedRevocationTrigger != nil {
+			var usageBasedRevocation1 *shared.UsageBasedRevocationTrigger
+			if r.Triggers[triggersIndex].UsageBasedRevocation != nil {
 				appId34 := new(string)
-				if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.AppID.IsNull() {
-					*appId34 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.AppID.ValueString()
+				if !r.Triggers[triggersIndex].UsageBasedRevocation.AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.AppID.IsNull() {
+					*appId34 = r.Triggers[triggersIndex].UsageBasedRevocation.AppID.ValueString()
 				} else {
 					appId34 = nil
 				}
 				enabledAt1 := new(time.Time)
-				if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.EnabledAt.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.EnabledAt.IsNull() {
-					*enabledAt1, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].UsageBasedRevocationTrigger.EnabledAt.ValueString())
+				if !r.Triggers[triggersIndex].UsageBasedRevocation.EnabledAt.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.EnabledAt.IsNull() {
+					*enabledAt1, _ = time.Parse(time.RFC3339Nano, r.Triggers[triggersIndex].UsageBasedRevocation.EnabledAt.ValueString())
 				} else {
 					enabledAt1 = nil
 				}
 				var excludedGroupRefs1 []shared.AppEntitlementRef
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs != nil {
-					excludedGroupRefs1 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs))
-					for excludedGroupRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs != nil {
+					excludedGroupRefs1 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs))
+					for excludedGroupRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs {
 						appId35 := new(string)
-						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.IsNull() {
-							*appId35 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.ValueString()
+						if !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.IsNull() {
+							*appId35 = r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].AppID.ValueString()
 						} else {
 							appId35 = nil
 						}
 						id57 := new(string)
-						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsNull() {
-							*id57 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.ValueString()
+						if !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.IsNull() {
+							*id57 = r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedGroupRefs[excludedGroupRefsIndex1].ID.ValueString()
 						} else {
 							id57 = nil
 						}
@@ -11017,12 +11085,12 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				var excludedUserRefs1 []shared.UserRef
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs != nil {
-					excludedUserRefs1 = make([]shared.UserRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs))
-					for excludedUserRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs != nil {
+					excludedUserRefs1 = make([]shared.UserRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs))
+					for excludedUserRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs {
 						id58 := new(string)
-						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsNull() {
-							*id58 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.ExcludedUserRefs[excludedUserRefsIndex1].ID.ValueString()
+						if !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex1].ID.IsNull() {
+							*id58 = r.Triggers[triggersIndex].UsageBasedRevocation.ExcludedUserRefs[excludedUserRefsIndex1].ID.ValueString()
 						} else {
 							id58 = nil
 						}
@@ -11032,44 +11100,44 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				includeUsersWithNoActivity1 := new(bool)
-				if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.IsNull() {
-					*includeUsersWithNoActivity1 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.IncludeUsersWithNoActivity.ValueBool()
+				if !r.Triggers[triggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.IsNull() {
+					*includeUsersWithNoActivity1 = r.Triggers[triggersIndex].UsageBasedRevocation.IncludeUsersWithNoActivity.ValueBool()
 				} else {
 					includeUsersWithNoActivity1 = nil
 				}
 				var runDelayed1 *shared.RunDelayed
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.RunDelayed != nil {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.RunDelayed != nil {
 					var coldStartDelayDays1 int64
-					coldStartDelayDays1 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.RunDelayed.ColdStartDelayDays.ValueInt64()
+					coldStartDelayDays1 = r.Triggers[triggersIndex].UsageBasedRevocation.RunDelayed.ColdStartDelayDays.ValueInt64()
 
 					runDelayed1 = &shared.RunDelayed{
 						ColdStartDelayDays: coldStartDelayDays1,
 					}
 				}
 				var runImmediately1 *shared.RunImmediately
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.RunImmediately != nil {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.RunImmediately != nil {
 					runImmediately1 = &shared.RunImmediately{}
 				}
 				var targetedAppUserTypes1 []shared.TargetedAppUserTypes
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes != nil {
-					targetedAppUserTypes1 = make([]shared.TargetedAppUserTypes, 0, len(r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes))
-					for _, targetedAppUserTypesItem1 := range r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedAppUserTypes {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.TargetedAppUserTypes != nil {
+					targetedAppUserTypes1 = make([]shared.TargetedAppUserTypes, 0, len(r.Triggers[triggersIndex].UsageBasedRevocation.TargetedAppUserTypes))
+					for _, targetedAppUserTypesItem1 := range r.Triggers[triggersIndex].UsageBasedRevocation.TargetedAppUserTypes {
 						targetedAppUserTypes1 = append(targetedAppUserTypes1, shared.TargetedAppUserTypes(targetedAppUserTypesItem1.ValueString()))
 					}
 				}
 				var targetedEntitlementRefs1 []shared.AppEntitlementRef
-				if r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs != nil {
-					targetedEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs))
-					for targetedEntitlementRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs {
+				if r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs != nil {
+					targetedEntitlementRefs1 = make([]shared.AppEntitlementRef, 0, len(r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs))
+					for targetedEntitlementRefsIndex1 := range r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs {
 						appId36 := new(string)
-						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.IsNull() {
-							*appId36 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.ValueString()
+						if !r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.IsNull() {
+							*appId36 = r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].AppID.ValueString()
 						} else {
 							appId36 = nil
 						}
 						id59 := new(string)
-						if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsNull() {
-							*id59 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.ValueString()
+						if !r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.IsNull() {
+							*id59 = r.Triggers[triggersIndex].UsageBasedRevocation.TargetedEntitlementRefs[targetedEntitlementRefsIndex1].ID.ValueString()
 						} else {
 							id59 = nil
 						}
@@ -11080,12 +11148,12 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					}
 				}
 				unusedForDays1 := new(int64)
-				if !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.UnusedForDays.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocationTrigger.UnusedForDays.IsNull() {
-					*unusedForDays1 = r.Triggers[triggersIndex].UsageBasedRevocationTrigger.UnusedForDays.ValueInt64()
+				if !r.Triggers[triggersIndex].UsageBasedRevocation.UnusedForDays.IsUnknown() && !r.Triggers[triggersIndex].UsageBasedRevocation.UnusedForDays.IsNull() {
+					*unusedForDays1 = r.Triggers[triggersIndex].UsageBasedRevocation.UnusedForDays.ValueInt64()
 				} else {
 					unusedForDays1 = nil
 				}
-				usageBasedRevocationTrigger1 = &shared.UsageBasedRevocationTrigger{
+				usageBasedRevocation1 = &shared.UsageBasedRevocationTrigger{
 					AppID:                      appId34,
 					EnabledAt:                  enabledAt1,
 					ExcludedGroupRefs:          excludedGroupRefs1,
@@ -11098,78 +11166,78 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 					UnusedForDays:              unusedForDays1,
 				}
 			}
-			var userCreatedTrigger1 *shared.UserCreatedTrigger
-			if r.Triggers[triggersIndex].UserCreatedTrigger != nil {
+			var userCreated1 *shared.UserCreatedTrigger
+			if r.Triggers[triggersIndex].UserCreated != nil {
 				condition10 := new(string)
-				if !r.Triggers[triggersIndex].UserCreatedTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].UserCreatedTrigger.Condition.IsNull() {
-					*condition10 = r.Triggers[triggersIndex].UserCreatedTrigger.Condition.ValueString()
+				if !r.Triggers[triggersIndex].UserCreated.Condition.IsUnknown() && !r.Triggers[triggersIndex].UserCreated.Condition.IsNull() {
+					*condition10 = r.Triggers[triggersIndex].UserCreated.Condition.ValueString()
 				} else {
 					condition10 = nil
 				}
-				userCreatedTrigger1 = &shared.UserCreatedTrigger{
+				userCreated1 = &shared.UserCreatedTrigger{
 					Condition: condition10,
 				}
 			}
-			var userProfileChangeTrigger1 *shared.UserProfileChangeTrigger
-			if r.Triggers[triggersIndex].UserProfileChangeTrigger != nil {
+			var userProfileChange1 *shared.UserProfileChangeTrigger
+			if r.Triggers[triggersIndex].UserProfileChange != nil {
 				condition11 := new(string)
-				if !r.Triggers[triggersIndex].UserProfileChangeTrigger.Condition.IsUnknown() && !r.Triggers[triggersIndex].UserProfileChangeTrigger.Condition.IsNull() {
-					*condition11 = r.Triggers[triggersIndex].UserProfileChangeTrigger.Condition.ValueString()
+				if !r.Triggers[triggersIndex].UserProfileChange.Condition.IsUnknown() && !r.Triggers[triggersIndex].UserProfileChange.Condition.IsNull() {
+					*condition11 = r.Triggers[triggersIndex].UserProfileChange.Condition.ValueString()
 				} else {
 					condition11 = nil
 				}
-				userProfileChangeTrigger1 = &shared.UserProfileChangeTrigger{
+				userProfileChange1 = &shared.UserProfileChangeTrigger{
 					Condition: condition11,
 				}
 			}
-			var webhookAutomationTrigger1 *shared.WebhookAutomationTrigger
-			if r.Triggers[triggersIndex].WebhookAutomationTrigger != nil {
-				var webhookListenerAuthCapabilityUrl1 *shared.WebhookListenerAuthCapabilityURL
-				if r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthCapabilityURL != nil {
-					webhookListenerAuthCapabilityUrl1 = &shared.WebhookListenerAuthCapabilityURL{}
+			var webhook3 *shared.WebhookAutomationTrigger
+			if r.Triggers[triggersIndex].Webhook != nil {
+				var capabilityUrl1 *shared.WebhookListenerAuthCapabilityURL
+				if r.Triggers[triggersIndex].Webhook.CapabilityURL != nil {
+					capabilityUrl1 = &shared.WebhookListenerAuthCapabilityURL{}
 				}
-				var webhookListenerAuthHmac1 *shared.WebhookListenerAuthHMAC
-				if r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthHMAC != nil {
-					webhookListenerAuthHmac1 = &shared.WebhookListenerAuthHMAC{}
+				var hmac1 *shared.WebhookListenerAuthHMAC
+				if r.Triggers[triggersIndex].Webhook.Hmac != nil {
+					hmac1 = &shared.WebhookListenerAuthHMAC{}
 				}
-				var webhookListenerAuthJwt1 *shared.WebhookListenerAuthJWT
-				if r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT != nil {
+				var jwt1 *shared.WebhookListenerAuthJWT
+				if r.Triggers[triggersIndex].Webhook.Jwt != nil {
 					jwksUrl1 := new(string)
-					if !r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.IsUnknown() && !r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.IsNull() {
-						*jwksUrl1 = r.Triggers[triggersIndex].WebhookAutomationTrigger.WebhookListenerAuthJWT.JwksURL.ValueString()
+					if !r.Triggers[triggersIndex].Webhook.Jwt.JwksURL.IsUnknown() && !r.Triggers[triggersIndex].Webhook.Jwt.JwksURL.IsNull() {
+						*jwksUrl1 = r.Triggers[triggersIndex].Webhook.Jwt.JwksURL.ValueString()
 					} else {
 						jwksUrl1 = nil
 					}
-					webhookListenerAuthJwt1 = &shared.WebhookListenerAuthJWT{
+					jwt1 = &shared.WebhookListenerAuthJWT{
 						JwksURL: jwksUrl1,
 					}
 				}
 				listenerId1 := new(string)
-				if !r.Triggers[triggersIndex].WebhookAutomationTrigger.ListenerID.IsUnknown() && !r.Triggers[triggersIndex].WebhookAutomationTrigger.ListenerID.IsNull() {
-					*listenerId1 = r.Triggers[triggersIndex].WebhookAutomationTrigger.ListenerID.ValueString()
+				if !r.Triggers[triggersIndex].Webhook.ListenerID.IsUnknown() && !r.Triggers[triggersIndex].Webhook.ListenerID.IsNull() {
+					*listenerId1 = r.Triggers[triggersIndex].Webhook.ListenerID.ValueString()
 				} else {
 					listenerId1 = nil
 				}
-				webhookAutomationTrigger1 = &shared.WebhookAutomationTrigger{
-					WebhookListenerAuthCapabilityURL: webhookListenerAuthCapabilityUrl1,
-					WebhookListenerAuthHMAC:          webhookListenerAuthHmac1,
-					WebhookListenerAuthJWT:           webhookListenerAuthJwt1,
-					ListenerID:                       listenerId1,
+				webhook3 = &shared.WebhookAutomationTrigger{
+					CapabilityURL: capabilityUrl1,
+					Hmac:          hmac1,
+					Jwt:           jwt1,
+					ListenerID:    listenerId1,
 				}
 			}
 			triggers = append(triggers, shared.AutomationTrigger{
-				AccessConflictTrigger:       accessConflictTrigger1,
-				AppUserCreatedTrigger:       appUserCreatedTrigger1,
-				AppUserUpdatedTrigger:       appUserUpdatedTrigger1,
-				GrantDeletedTrigger:         grantDeletedTrigger1,
-				GrantFoundTrigger:           grantFoundTrigger1,
-				ScheduleTrigger:             scheduleTrigger1,
-				ScheduleTriggerAppUser:      scheduleTriggerAppUser1,
-				ScheduleTriggerNoUser:       scheduleTriggerNoUser1,
-				UsageBasedRevocationTrigger: usageBasedRevocationTrigger1,
-				UserCreatedTrigger:          userCreatedTrigger1,
-				UserProfileChangeTrigger:    userProfileChangeTrigger1,
-				WebhookAutomationTrigger:    webhookAutomationTrigger1,
+				AccessConflict:       accessConflict1,
+				AppUserCreated:       appUserCreated1,
+				AppUserUpdated:       appUserUpdated1,
+				GrantDeleted:         grantDeleted1,
+				GrantFound:           grantFound1,
+				Schedule:             schedule1,
+				ScheduleAppUser:      scheduleAppUser1,
+				ScheduleNoUser:       scheduleNoUser1,
+				UsageBasedRevocation: usageBasedRevocation1,
+				UserCreated:          userCreated1,
+				UserProfileChange:    userProfileChange1,
+				Webhook:              webhook3,
 			})
 		}
 	}
@@ -11179,7 +11247,7 @@ func (r *AutomationResourceModel) ToSharedAutomationsCreateAutomationRequest(ctx
 		AutomationSteps:      automationSteps,
 		CircuitBreakerMax:    circuitBreakerMax,
 		CircuitBreakerPeriod: circuitBreakerPeriod,
-		AutomationContext:    automationContext1,
+		Context:              contextVar2,
 		Description:          description,
 		DisplayName:          displayName,
 		DraftAutomationSteps: draftAutomationSteps,

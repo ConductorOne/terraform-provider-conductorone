@@ -7,17 +7,16 @@ package shared
 // This message contains a oneof named export_to. Only a single field of the following list may be set at a time:
 //   - datasource
 type ExporterInput struct {
-	// The ExportToDatasource message.
-	ExportToDatasource *ExportToDatasource `json:"datasource,omitempty"`
+	Datasource *ExportToDatasource `json:"datasource,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-func (e *ExporterInput) GetExportToDatasource() *ExportToDatasource {
+func (e *ExporterInput) GetDatasource() *ExportToDatasource {
 	if e == nil {
 		return nil
 	}
-	return e.ExportToDatasource
+	return e.Datasource
 }
 
 func (e *ExporterInput) GetDisplayName() *string {

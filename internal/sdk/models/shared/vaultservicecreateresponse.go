@@ -4,12 +4,6 @@ package shared
 
 // VaultServiceCreateResponse is the response message for creating a new vault.
 type VaultServiceCreateResponse struct {
-	// Vault represents an external secret storage integration used to store connector credentials securely.
-	//
-	// This message contains a oneof named vault. Only a single field of the following list may be set at a time:
-	//   - groupAuthzVault
-	//   - magicVault
-	//
 	Vault *Vault `json:"vault,omitempty"`
 }
 

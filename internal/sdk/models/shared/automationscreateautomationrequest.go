@@ -47,8 +47,7 @@ type AutomationsCreateAutomationRequest struct {
 	CircuitBreakerMax *int64 `json:"circuitBreakerMax,omitempty"`
 	// The circuitBreakerPeriod field.
 	CircuitBreakerPeriod *AutomationsCreateAutomationRequestCircuitBreakerPeriod `json:"circuitBreakerPeriod,omitempty"`
-	// The AutomationContext message.
-	AutomationContext *AutomationContext `json:"context,omitempty"`
+	Context              *AutomationContext                                      `json:"context,omitempty"`
 	// Optional description explaining the automation's purpose.
 	Description *string `json:"description,omitempty"`
 	// Human-readable name for the automation.
@@ -100,11 +99,11 @@ func (a *AutomationsCreateAutomationRequest) GetCircuitBreakerPeriod() *Automati
 	return a.CircuitBreakerPeriod
 }
 
-func (a *AutomationsCreateAutomationRequest) GetAutomationContext() *AutomationContext {
+func (a *AutomationsCreateAutomationRequest) GetContext() *AutomationContext {
 	if a == nil {
 		return nil
 	}
-	return a.AutomationContext
+	return a.Context
 }
 
 func (a *AutomationsCreateAutomationRequest) GetDescription() *string {

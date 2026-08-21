@@ -10,8 +10,7 @@ type UserWithAppEntitlementUserBindingView struct {
 	AppID *string `json:"appId,omitempty"`
 	// The ID of the app user associated with this binding.
 	AppUserID *string `json:"appUserId,omitempty"`
-	// The User object provides all of the details for an user, as well as some configuration.
-	User *User `json:"user,omitempty"`
+	User      *User   `json:"user,omitempty"`
 }
 
 func (u *UserWithAppEntitlementUserBindingView) GetAppEntitlementID() *string {

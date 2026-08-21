@@ -55,23 +55,23 @@ func (e *TaskAuditViewEventType) IsExact() bool {
 	return false
 }
 
-// Source - The source field.
-type Source string
+// TaskAuditViewSource - The source field.
+type TaskAuditViewSource string
 
 const (
-	SourceSourceUnspecified   Source = "SOURCE_UNSPECIFIED"
-	SourceSourceC1            Source = "SOURCE_C1"
-	SourceSourceJira          Source = "SOURCE_JIRA"
-	SourceSourceSlack         Source = "SOURCE_SLACK"
-	SourceSourceCopilotAgents Source = "SOURCE_COPILOT_AGENTS"
+	TaskAuditViewSourceSourceUnspecified   TaskAuditViewSource = "SOURCE_UNSPECIFIED"
+	TaskAuditViewSourceSourceC1            TaskAuditViewSource = "SOURCE_C1"
+	TaskAuditViewSourceSourceJira          TaskAuditViewSource = "SOURCE_JIRA"
+	TaskAuditViewSourceSourceSlack         TaskAuditViewSource = "SOURCE_SLACK"
+	TaskAuditViewSourceSourceCopilotAgents TaskAuditViewSource = "SOURCE_COPILOT_AGENTS"
 )
 
-func (e Source) ToPointer() *Source {
+func (e TaskAuditViewSource) ToPointer() *TaskAuditViewSource {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Source) IsExact() bool {
+func (e *TaskAuditViewSource) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "SOURCE_UNSPECIFIED", "SOURCE_C1", "SOURCE_JIRA", "SOURCE_SLACK", "SOURCE_COPILOT_AGENTS":
@@ -145,156 +145,94 @@ func (e *Source) IsExact() bool {
 //   - createdReplacementExtensionGrantTask
 //   - taskCreatedFrom
 //   - reassignmentFallbackToAdmin
+//   - requestDefaultsApplied
+//   - provisionWaitingForEntitlementMerge
+//   - provisionEntitlementMergeCompleted
+//   - provisionEntitlementMergeTimedOut
+//   - accountDeleted
+//   - automationTriggered
 type TaskAuditView struct {
-	// The TaskAuditAccessRequestOutcome message.
-	TaskAuditAccessRequestOutcome *TaskAuditAccessRequestOutcome `json:"accessRequestOutcome,omitempty"`
-	// The TaskAuditAccountLifecycleActionCreated message.
-	TaskAuditAccountLifecycleActionCreated *TaskAuditAccountLifecycleActionCreated `json:"accountLifecycleActionCreated,omitempty"`
-	// The TaskAuditAccountLifecycleActionFailed message.
-	TaskAuditAccountLifecycleActionFailed *TaskAuditAccountLifecycleActionFailed `json:"accountLifecycleActionFailed,omitempty"`
-	// The TaskAuditActionInstanceCreated message.
-	TaskAuditActionInstanceCreated *TaskAuditActionInstanceCreated `json:"actionInstanceCreated,omitempty"`
-	// The TaskAuditActionInstanceFailed message.
-	TaskAuditActionInstanceFailed *TaskAuditActionInstanceFailed `json:"actionInstanceFailed,omitempty"`
-	// The TaskAuditActionInstanceSucceeded message.
-	TaskAuditActionInstanceSucceeded *TaskAuditActionInstanceSucceeded `json:"actionInstanceSucceeded,omitempty"`
-	// The TaskAuditConnectorActionResult message.
-	//
-	// This message contains a oneof named result. Only a single field of the following list may be set at a time:
-	//   - success
-	//   - error
-	//   - cancelled
-	//   - pending
-	//
-	TaskAuditConnectorActionResult *TaskAuditConnectorActionResult `json:"actionResult,omitempty"`
-	// The TaskAuditActionSubmitted message.
-	TaskAuditActionSubmitted *TaskAuditActionSubmitted `json:"actionSubmitted,omitempty"`
-	// The TaskAuditApprovalAutoAcceptedByPolicy message.
-	TaskAuditApprovalAutoAcceptedByPolicy *TaskAuditApprovalAutoAcceptedByPolicy `json:"approvalAutoAcceptedByPolicy,omitempty"`
-	// The TaskAuditApprovalAutoRejectedByPolicy message.
-	TaskAuditApprovalAutoRejectedByPolicy *TaskAuditApprovalAutoRejectedByPolicy `json:"approvalAutoRejectedByPolicy,omitempty"`
-	// The TaskAuditApprovalInstanceChange message.
-	TaskAuditApprovalInstanceChange *TaskAuditApprovalInstanceChange `json:"approvalInstanceChange,omitempty"`
-	// The TaskAuditPolicyApprovalReassigned message.
-	TaskAuditPolicyApprovalReassigned *TaskAuditPolicyApprovalReassigned `json:"approvalReassigned,omitempty"`
-	// The TaskAuditApprovalHappenedAutomatically message.
-	TaskAuditApprovalHappenedAutomatically *TaskAuditApprovalHappenedAutomatically `json:"approvedAutomatically,omitempty"`
-	// The TaskAuditBulkActionError message.
-	TaskAuditBulkActionError *TaskAuditBulkActionError `json:"bulkActionError,omitempty"`
-	// The TaskAuditCertifyOutcome message.
-	TaskAuditCertifyOutcome *TaskAuditCertifyOutcome `json:"certifyOutcome,omitempty"`
-	// The TaskAuditComment message.
-	TaskAuditComment *TaskAuditComment `json:"comment,omitempty"`
-	// The TaskAuditConditionalPolicyExecutionResult message.
-	TaskAuditConditionalPolicyExecutionResult *TaskAuditConditionalPolicyExecutionResult `json:"conditionalPolicyExecutionResult,omitempty"`
-	// The TaskAuditFinishedConnectorActions message.
-	TaskAuditFinishedConnectorActions *TaskAuditFinishedConnectorActions `json:"connectorActionsEnd,omitempty"`
-	// The TaskAuditStartedConnectorActions message.
-	TaskAuditStartedConnectorActions *TaskAuditStartedConnectorActions `json:"connectorActionsStart,omitempty"`
-	Created                          *time.Time                        `json:"created,omitempty"`
-	// TaskAuditCreatedReplacementExtensionGrantTask is used when a replacement extension grant task is created
-	//  (e.g. when an extension grant task is cancelled due to app user deletion).
-	TaskAuditCreatedReplacementExtensionGrantTask *TaskAuditCreatedReplacementExtensionGrantTask `json:"createdReplacementExtensionGrantTask,omitempty"`
+	AccessRequestOutcome                 *TaskAuditAccessRequestOutcome                 `json:"accessRequestOutcome,omitempty"`
+	AccountDeleted                       *TaskAuditAccountDeleted                       `json:"accountDeleted,omitempty"`
+	AccountLifecycleActionCreated        *TaskAuditAccountLifecycleActionCreated        `json:"accountLifecycleActionCreated,omitempty"`
+	AccountLifecycleActionFailed         *TaskAuditAccountLifecycleActionFailed         `json:"accountLifecycleActionFailed,omitempty"`
+	ActionInstanceCreated                *TaskAuditActionInstanceCreated                `json:"actionInstanceCreated,omitempty"`
+	ActionInstanceFailed                 *TaskAuditActionInstanceFailed                 `json:"actionInstanceFailed,omitempty"`
+	ActionInstanceSucceeded              *TaskAuditActionInstanceSucceeded              `json:"actionInstanceSucceeded,omitempty"`
+	ActionResult                         *TaskAuditConnectorActionResult                `json:"actionResult,omitempty"`
+	ActionSubmitted                      *TaskAuditActionSubmitted                      `json:"actionSubmitted,omitempty"`
+	ApprovalAutoAcceptedByPolicy         *TaskAuditApprovalAutoAcceptedByPolicy         `json:"approvalAutoAcceptedByPolicy,omitempty"`
+	ApprovalAutoRejectedByPolicy         *TaskAuditApprovalAutoRejectedByPolicy         `json:"approvalAutoRejectedByPolicy,omitempty"`
+	ApprovalInstanceChange               *TaskAuditApprovalInstanceChange               `json:"approvalInstanceChange,omitempty"`
+	ApprovalReassigned                   *TaskAuditPolicyApprovalReassigned             `json:"approvalReassigned,omitempty"`
+	ApprovedAutomatically                *TaskAuditApprovalHappenedAutomatically        `json:"approvedAutomatically,omitempty"`
+	AutomationTriggered                  *TaskAuditAutomationTriggered                  `json:"automationTriggered,omitempty"`
+	BulkActionError                      *TaskAuditBulkActionError                      `json:"bulkActionError,omitempty"`
+	CertifyOutcome                       *TaskAuditCertifyOutcome                       `json:"certifyOutcome,omitempty"`
+	Comment                              *TaskAuditComment                              `json:"comment,omitempty"`
+	ConditionalPolicyExecutionResult     *TaskAuditConditionalPolicyExecutionResult     `json:"conditionalPolicyExecutionResult,omitempty"`
+	ConnectorActionsEnd                  *TaskAuditFinishedConnectorActions             `json:"connectorActionsEnd,omitempty"`
+	ConnectorActionsStart                *TaskAuditStartedConnectorActions              `json:"connectorActionsStart,omitempty"`
+	Created                              *time.Time                                     `json:"created,omitempty"`
+	CreatedReplacementExtensionGrantTask *TaskAuditCreatedReplacementExtensionGrantTask `json:"createdReplacementExtensionGrantTask,omitempty"`
 	// The currentState field.
 	CurrentState *CurrentState `json:"currentState,omitempty"`
 	// The eventType field.
-	EventType *TaskAuditViewEventType `json:"eventType,omitempty"`
-	// The TaskAuditExpressionPolicyStepError message.
-	TaskAuditExpressionPolicyStepError *TaskAuditExpressionPolicyStepError `json:"expressionPolicyStepError,omitempty"`
-	// The TaskAuditExternalTicketCreated message.
-	TaskAuditExternalTicketCreated *TaskAuditExternalTicketCreated `json:"externalTicketCreated,omitempty"`
-	// The TaskAuditExternalTicketError message.
-	TaskAuditExternalTicketError *TaskAuditExternalTicketError `json:"externalTicketError,omitempty"`
-	// The TaskAuditExternalTicketProvisionStepResolved message.
-	TaskAuditExternalTicketProvisionStepResolved *TaskAuditExternalTicketProvisionStepResolved `json:"externalTicketProvisionStepResolved,omitempty"`
-	// The TaskAuditExternalTicketTriggered message.
-	TaskAuditExternalTicketTriggered *TaskAuditExternalTicketTriggered `json:"externalTicketTriggered,omitempty"`
-	// The TaskAuditFormInstanceChange message.
-	TaskAuditFormInstanceChange *TaskAuditFormInstanceChange `json:"formInstanceChange,omitempty"`
-	// The TaskAuditGrantDurationUpdated message.
-	TaskAuditGrantDurationUpdated *TaskAuditGrantDurationUpdated `json:"grantDurationUpdated,omitempty"`
-	// The TaskAuditGrantOutcome message.
-	TaskAuditGrantOutcome *TaskAuditGrantOutcome `json:"grantOutcome,omitempty"`
-	// The TaskAuditHardReset message.
-	TaskAuditHardReset *TaskAuditHardReset `json:"hardReset,omitempty"`
+	EventType                           *TaskAuditViewEventType                       `json:"eventType,omitempty"`
+	ExpressionPolicyStepError           *TaskAuditExpressionPolicyStepError           `json:"expressionPolicyStepError,omitempty"`
+	ExternalTicketCreated               *TaskAuditExternalTicketCreated               `json:"externalTicketCreated,omitempty"`
+	ExternalTicketError                 *TaskAuditExternalTicketError                 `json:"externalTicketError,omitempty"`
+	ExternalTicketProvisionStepResolved *TaskAuditExternalTicketProvisionStepResolved `json:"externalTicketProvisionStepResolved,omitempty"`
+	ExternalTicketTriggered             *TaskAuditExternalTicketTriggered             `json:"externalTicketTriggered,omitempty"`
+	FormInstanceChange                  *TaskAuditFormInstanceChange                  `json:"formInstanceChange,omitempty"`
+	GrantDurationUpdated                *TaskAuditGrantDurationUpdated                `json:"grantDurationUpdated,omitempty"`
+	GrantOutcome                        *TaskAuditGrantOutcome                        `json:"grantOutcome,omitempty"`
+	HardReset                           *TaskAuditHardReset                           `json:"hardReset,omitempty"`
 	// The id field.
-	ID *string `json:"id,omitempty"`
-	// The TaskAuditMetaData message.
-	TaskAuditMetaData *TaskAuditMetaData `json:"metadata,omitempty"`
-	// The TaskAuditPolicyChanged message.
-	TaskAuditPolicyChanged *TaskAuditPolicyChanged `json:"policyChanged,omitempty"`
-	// The TaskAuditPolicyEvaluationStep message.
-	TaskAuditPolicyEvaluationStep *TaskAuditPolicyEvaluationStep `json:"policyEvaluationStep,omitempty"`
-	// The TaskAuditPolicyProvisionCancelled message.
-	TaskAuditPolicyProvisionCancelled *TaskAuditPolicyProvisionCancelled `json:"provisionCancelled,omitempty"`
-	// The TaskAuditPolicyProvisionError message.
-	TaskAuditPolicyProvisionError *TaskAuditPolicyProvisionError `json:"provisionError,omitempty"`
-	// The TaskAuditPolicyProvisionReassigned message.
-	TaskAuditPolicyProvisionReassigned *TaskAuditPolicyProvisionReassigned `json:"provisionReassigned,omitempty"`
-	// The TaskAuditReassignedToDelegate message.
-	TaskAuditReassignedToDelegate *TaskAuditReassignedToDelegate `json:"reassignedToDelegate,omitempty"`
-	// TaskAuditReassignmentFallbackToAdmin is used when no eligible reviewers are found
-	//  from the policy configuration and the task falls back to system administrators
-	//  without creating a new policy step. This prevents reassignment loops.
-	TaskAuditReassignmentFallbackToAdmin *TaskAuditReassignmentFallbackToAdmin `json:"reassignmentFallbackToAdmin,omitempty"`
-	// The TaskAuditReassignmentListError message.
-	TaskAuditReassignmentListError *TaskAuditReassignmentListError `json:"reassignmentListError,omitempty"`
-	// The TaskAuditRevokeOutcome message.
-	TaskAuditRevokeOutcome *TaskAuditRevokeOutcome `json:"revokeOutcome,omitempty"`
-	// The TaskAuditSLAEscalation message.
-	TaskAuditSLAEscalation *TaskAuditSLAEscalation `json:"slaEscalation,omitempty"`
+	ID                                  *string                                       `json:"id,omitempty"`
+	Metadata                            *TaskAuditMetaData                            `json:"metadata,omitempty"`
+	PolicyChanged                       *TaskAuditPolicyChanged                       `json:"policyChanged,omitempty"`
+	PolicyEvaluationStep                *TaskAuditPolicyEvaluationStep                `json:"policyEvaluationStep,omitempty"`
+	ProvisionCancelled                  *TaskAuditPolicyProvisionCancelled            `json:"provisionCancelled,omitempty"`
+	ProvisionEntitlementMergeCompleted  *TaskAuditProvisionEntitlementMergeCompleted  `json:"provisionEntitlementMergeCompleted,omitempty"`
+	ProvisionEntitlementMergeTimedOut   *TaskAuditProvisionEntitlementMergeTimedOut   `json:"provisionEntitlementMergeTimedOut,omitempty"`
+	ProvisionError                      *TaskAuditPolicyProvisionError                `json:"provisionError,omitempty"`
+	ProvisionReassigned                 *TaskAuditPolicyProvisionReassigned           `json:"provisionReassigned,omitempty"`
+	ProvisionWaitingForEntitlementMerge *TaskAuditProvisionWaitingForEntitlementMerge `json:"provisionWaitingForEntitlementMerge,omitempty"`
+	ReassignedToDelegate                *TaskAuditReassignedToDelegate                `json:"reassignedToDelegate,omitempty"`
+	ReassignmentFallbackToAdmin         *TaskAuditReassignmentFallbackToAdmin         `json:"reassignmentFallbackToAdmin,omitempty"`
+	ReassignmentListError               *TaskAuditReassignmentListError               `json:"reassignmentListError,omitempty"`
+	RequestDefaultsApplied              *TaskAuditRequestDefaultsApplied              `json:"requestDefaultsApplied,omitempty"`
+	RevokeOutcome                       *TaskAuditRevokeOutcome                       `json:"revokeOutcome,omitempty"`
+	SLAEscalation                       *TaskAuditSLAEscalation                       `json:"slaEscalation,omitempty"`
 	// The source field.
-	Source *Source `json:"source,omitempty"`
-	// The TaskAuditStateChange message.
-	TaskAuditStateChange *TaskAuditStateChange `json:"stateChange,omitempty"`
-	// The TaskAuditStepSkipped message.
-	TaskAuditStepSkipped *TaskAuditStepSkipped `json:"stepSkipped,omitempty"`
-	// The TaskAuditStepUpApproval message.
-	TaskAuditStepUpApproval *TaskAuditStepUpApproval `json:"stepUpApproval,omitempty"`
-	// The TaskAuditNewTask message.
-	TaskAuditNewTask *TaskAuditNewTask `json:"taskCreated,omitempty"`
-	// TaskAuditNewTaskCreatedFrom is used when a task is created from another task
-	//  (e.g. when a replacement extension grant task is created after the original is cancelled).
-	//  This is set on the NEW task to indicate its origin.
-	TaskAuditNewTaskCreatedFrom *TaskAuditNewTaskCreatedFrom `json:"taskCreatedFrom,omitempty"`
-	// The TaskAuditEscalateToEmergencyAccess message.
-	TaskAuditEscalateToEmergencyAccess *TaskAuditEscalateToEmergencyAccess `json:"taskEscalated,omitempty"`
-	// The TaskAuditRestart message.
-	TaskAuditRestart *TaskAuditRestart `json:"taskRestarted,omitempty"`
+	Source          *TaskAuditViewSource                `json:"source,omitempty"`
+	StateChange     *TaskAuditStateChange               `json:"stateChange,omitempty"`
+	StepSkipped     *TaskAuditStepSkipped               `json:"stepSkipped,omitempty"`
+	StepUpApproval  *TaskAuditStepUpApproval            `json:"stepUpApproval,omitempty"`
+	TaskCreated     *TaskAuditNewTask                   `json:"taskCreated,omitempty"`
+	TaskCreatedFrom *TaskAuditNewTaskCreatedFrom        `json:"taskCreatedFrom,omitempty"`
+	TaskEscalated   *TaskAuditEscalateToEmergencyAccess `json:"taskEscalated,omitempty"`
+	TaskRestarted   *TaskAuditRestart                   `json:"taskRestarted,omitempty"`
 	// The ticketId field.
 	TicketID *string `json:"ticketId,omitempty"`
 	// The userId field.
-	UserID *string `json:"userId,omitempty"`
-	// The TaskAuditWaitForAnalysisStepSuccess message.
-	TaskAuditWaitForAnalysisStepSuccess *TaskAuditWaitForAnalysisStepSuccess `json:"waitStepAnalysisSuccess,omitempty"`
-	// The TaskAuditWaitForAnalysisStepTimedOut message.
-	TaskAuditWaitForAnalysisStepTimedOut *TaskAuditWaitForAnalysisStepTimedOut `json:"waitStepAnalysisTimedOut,omitempty"`
-	// The TaskAuditWaitForAnalysisStepWaiting message.
-	TaskAuditWaitForAnalysisStepWaiting *TaskAuditWaitForAnalysisStepWaiting `json:"waitStepAnalysisWaiting,omitempty"`
-	// The TaskAuditWaitStepSuccess message.
-	TaskAuditWaitStepSuccess *TaskAuditWaitStepSuccess `json:"waitStepSuccess,omitempty"`
-	// The TaskAuditWaitStepTimedOut message.
-	TaskAuditWaitStepTimedOut *TaskAuditWaitStepTimedOut `json:"waitStepTimedOut,omitempty"`
-	// The TaskAuditWaitStepUntilTime message.
-	TaskAuditWaitStepUntilTime *TaskAuditWaitStepUntilTime `json:"waitStepUntilTime,omitempty"`
-	// The TaskAuditWaitStepWaiting message.
-	TaskAuditWaitStepWaiting *TaskAuditWaitStepWaiting `json:"waitStepWaiting,omitempty"`
-	// The TaskAuditWebhookApprovalAttempt message.
-	TaskAuditWebhookApprovalAttempt *TaskAuditWebhookApprovalAttempt `json:"webhookApprovalAttempt,omitempty"`
-	// The TaskAuditWebhookApprovalBadResponse message.
-	TaskAuditWebhookApprovalBadResponse *TaskAuditWebhookApprovalBadResponse `json:"webhookApprovalBadResponse,omitempty"`
-	// The TaskAuditWebhookApprovalFatalError message.
-	TaskAuditWebhookApprovalFatalError *TaskAuditWebhookApprovalFatalError `json:"webhookApprovalFatalError,omitempty"`
-	// The TaskAuditWebhookApprovalSuccess message.
-	TaskAuditWebhookApprovalSuccess *TaskAuditWebhookApprovalSuccess `json:"webhookApprovalSuccess,omitempty"`
-	// The TaskAuditWebhookApprovalTriggered message.
-	TaskAuditWebhookApprovalTriggered *TaskAuditWebhookApprovalTriggered `json:"webhookApprovalTriggered,omitempty"`
-	// The TaskAuditWebhookAttempt message.
-	TaskAuditWebhookAttempt *TaskAuditWebhookAttempt `json:"webhookAttempt,omitempty"`
-	// The TaskAuditWebhookSuccess message.
-	TaskAuditWebhookSuccess *TaskAuditWebhookSuccess `json:"webhookSuccess,omitempty"`
-	// The TaskAuditWebhookTriggered message.
-	TaskAuditWebhookTriggered *TaskAuditWebhookTriggered `json:"webhookTriggered,omitempty"`
+	UserID                     *string                               `json:"userId,omitempty"`
+	WaitStepAnalysisSuccess    *TaskAuditWaitForAnalysisStepSuccess  `json:"waitStepAnalysisSuccess,omitempty"`
+	WaitStepAnalysisTimedOut   *TaskAuditWaitForAnalysisStepTimedOut `json:"waitStepAnalysisTimedOut,omitempty"`
+	WaitStepAnalysisWaiting    *TaskAuditWaitForAnalysisStepWaiting  `json:"waitStepAnalysisWaiting,omitempty"`
+	WaitStepSuccess            *TaskAuditWaitStepSuccess             `json:"waitStepSuccess,omitempty"`
+	WaitStepTimedOut           *TaskAuditWaitStepTimedOut            `json:"waitStepTimedOut,omitempty"`
+	WaitStepUntilTime          *TaskAuditWaitStepUntilTime           `json:"waitStepUntilTime,omitempty"`
+	WaitStepWaiting            *TaskAuditWaitStepWaiting             `json:"waitStepWaiting,omitempty"`
+	WebhookApprovalAttempt     *TaskAuditWebhookApprovalAttempt      `json:"webhookApprovalAttempt,omitempty"`
+	WebhookApprovalBadResponse *TaskAuditWebhookApprovalBadResponse  `json:"webhookApprovalBadResponse,omitempty"`
+	WebhookApprovalFatalError  *TaskAuditWebhookApprovalFatalError   `json:"webhookApprovalFatalError,omitempty"`
+	WebhookApprovalSuccess     *TaskAuditWebhookApprovalSuccess      `json:"webhookApprovalSuccess,omitempty"`
+	WebhookApprovalTriggered   *TaskAuditWebhookApprovalTriggered    `json:"webhookApprovalTriggered,omitempty"`
+	WebhookAttempt             *TaskAuditWebhookAttempt              `json:"webhookAttempt,omitempty"`
+	WebhookSuccess             *TaskAuditWebhookSuccess              `json:"webhookSuccess,omitempty"`
+	WebhookTriggered           *TaskAuditWebhookTriggered            `json:"webhookTriggered,omitempty"`
 	// The workflowStep field.
 	WorkflowStep *int `json:"workflowStep,omitempty"`
 }
@@ -310,137 +248,151 @@ func (t *TaskAuditView) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (t *TaskAuditView) GetTaskAuditAccessRequestOutcome() *TaskAuditAccessRequestOutcome {
+func (t *TaskAuditView) GetAccessRequestOutcome() *TaskAuditAccessRequestOutcome {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditAccessRequestOutcome
+	return t.AccessRequestOutcome
 }
 
-func (t *TaskAuditView) GetTaskAuditAccountLifecycleActionCreated() *TaskAuditAccountLifecycleActionCreated {
+func (t *TaskAuditView) GetAccountDeleted() *TaskAuditAccountDeleted {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditAccountLifecycleActionCreated
+	return t.AccountDeleted
 }
 
-func (t *TaskAuditView) GetTaskAuditAccountLifecycleActionFailed() *TaskAuditAccountLifecycleActionFailed {
+func (t *TaskAuditView) GetAccountLifecycleActionCreated() *TaskAuditAccountLifecycleActionCreated {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditAccountLifecycleActionFailed
+	return t.AccountLifecycleActionCreated
 }
 
-func (t *TaskAuditView) GetTaskAuditActionInstanceCreated() *TaskAuditActionInstanceCreated {
+func (t *TaskAuditView) GetAccountLifecycleActionFailed() *TaskAuditAccountLifecycleActionFailed {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditActionInstanceCreated
+	return t.AccountLifecycleActionFailed
 }
 
-func (t *TaskAuditView) GetTaskAuditActionInstanceFailed() *TaskAuditActionInstanceFailed {
+func (t *TaskAuditView) GetActionInstanceCreated() *TaskAuditActionInstanceCreated {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditActionInstanceFailed
+	return t.ActionInstanceCreated
 }
 
-func (t *TaskAuditView) GetTaskAuditActionInstanceSucceeded() *TaskAuditActionInstanceSucceeded {
+func (t *TaskAuditView) GetActionInstanceFailed() *TaskAuditActionInstanceFailed {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditActionInstanceSucceeded
+	return t.ActionInstanceFailed
 }
 
-func (t *TaskAuditView) GetTaskAuditConnectorActionResult() *TaskAuditConnectorActionResult {
+func (t *TaskAuditView) GetActionInstanceSucceeded() *TaskAuditActionInstanceSucceeded {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditConnectorActionResult
+	return t.ActionInstanceSucceeded
 }
 
-func (t *TaskAuditView) GetTaskAuditActionSubmitted() *TaskAuditActionSubmitted {
+func (t *TaskAuditView) GetActionResult() *TaskAuditConnectorActionResult {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditActionSubmitted
+	return t.ActionResult
 }
 
-func (t *TaskAuditView) GetTaskAuditApprovalAutoAcceptedByPolicy() *TaskAuditApprovalAutoAcceptedByPolicy {
+func (t *TaskAuditView) GetActionSubmitted() *TaskAuditActionSubmitted {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditApprovalAutoAcceptedByPolicy
+	return t.ActionSubmitted
 }
 
-func (t *TaskAuditView) GetTaskAuditApprovalAutoRejectedByPolicy() *TaskAuditApprovalAutoRejectedByPolicy {
+func (t *TaskAuditView) GetApprovalAutoAcceptedByPolicy() *TaskAuditApprovalAutoAcceptedByPolicy {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditApprovalAutoRejectedByPolicy
+	return t.ApprovalAutoAcceptedByPolicy
 }
 
-func (t *TaskAuditView) GetTaskAuditApprovalInstanceChange() *TaskAuditApprovalInstanceChange {
+func (t *TaskAuditView) GetApprovalAutoRejectedByPolicy() *TaskAuditApprovalAutoRejectedByPolicy {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditApprovalInstanceChange
+	return t.ApprovalAutoRejectedByPolicy
 }
 
-func (t *TaskAuditView) GetTaskAuditPolicyApprovalReassigned() *TaskAuditPolicyApprovalReassigned {
+func (t *TaskAuditView) GetApprovalInstanceChange() *TaskAuditApprovalInstanceChange {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditPolicyApprovalReassigned
+	return t.ApprovalInstanceChange
 }
 
-func (t *TaskAuditView) GetTaskAuditApprovalHappenedAutomatically() *TaskAuditApprovalHappenedAutomatically {
+func (t *TaskAuditView) GetApprovalReassigned() *TaskAuditPolicyApprovalReassigned {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditApprovalHappenedAutomatically
+	return t.ApprovalReassigned
 }
 
-func (t *TaskAuditView) GetTaskAuditBulkActionError() *TaskAuditBulkActionError {
+func (t *TaskAuditView) GetApprovedAutomatically() *TaskAuditApprovalHappenedAutomatically {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditBulkActionError
+	return t.ApprovedAutomatically
 }
 
-func (t *TaskAuditView) GetTaskAuditCertifyOutcome() *TaskAuditCertifyOutcome {
+func (t *TaskAuditView) GetAutomationTriggered() *TaskAuditAutomationTriggered {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditCertifyOutcome
+	return t.AutomationTriggered
 }
 
-func (t *TaskAuditView) GetTaskAuditComment() *TaskAuditComment {
+func (t *TaskAuditView) GetBulkActionError() *TaskAuditBulkActionError {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditComment
+	return t.BulkActionError
 }
 
-func (t *TaskAuditView) GetTaskAuditConditionalPolicyExecutionResult() *TaskAuditConditionalPolicyExecutionResult {
+func (t *TaskAuditView) GetCertifyOutcome() *TaskAuditCertifyOutcome {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditConditionalPolicyExecutionResult
+	return t.CertifyOutcome
 }
 
-func (t *TaskAuditView) GetTaskAuditFinishedConnectorActions() *TaskAuditFinishedConnectorActions {
+func (t *TaskAuditView) GetComment() *TaskAuditComment {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditFinishedConnectorActions
+	return t.Comment
 }
 
-func (t *TaskAuditView) GetTaskAuditStartedConnectorActions() *TaskAuditStartedConnectorActions {
+func (t *TaskAuditView) GetConditionalPolicyExecutionResult() *TaskAuditConditionalPolicyExecutionResult {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditStartedConnectorActions
+	return t.ConditionalPolicyExecutionResult
+}
+
+func (t *TaskAuditView) GetConnectorActionsEnd() *TaskAuditFinishedConnectorActions {
+	if t == nil {
+		return nil
+	}
+	return t.ConnectorActionsEnd
+}
+
+func (t *TaskAuditView) GetConnectorActionsStart() *TaskAuditStartedConnectorActions {
+	if t == nil {
+		return nil
+	}
+	return t.ConnectorActionsStart
 }
 
 func (t *TaskAuditView) GetCreated() *time.Time {
@@ -450,11 +402,11 @@ func (t *TaskAuditView) GetCreated() *time.Time {
 	return t.Created
 }
 
-func (t *TaskAuditView) GetTaskAuditCreatedReplacementExtensionGrantTask() *TaskAuditCreatedReplacementExtensionGrantTask {
+func (t *TaskAuditView) GetCreatedReplacementExtensionGrantTask() *TaskAuditCreatedReplacementExtensionGrantTask {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditCreatedReplacementExtensionGrantTask
+	return t.CreatedReplacementExtensionGrantTask
 }
 
 func (t *TaskAuditView) GetCurrentState() *CurrentState {
@@ -471,67 +423,67 @@ func (t *TaskAuditView) GetEventType() *TaskAuditViewEventType {
 	return t.EventType
 }
 
-func (t *TaskAuditView) GetTaskAuditExpressionPolicyStepError() *TaskAuditExpressionPolicyStepError {
+func (t *TaskAuditView) GetExpressionPolicyStepError() *TaskAuditExpressionPolicyStepError {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditExpressionPolicyStepError
+	return t.ExpressionPolicyStepError
 }
 
-func (t *TaskAuditView) GetTaskAuditExternalTicketCreated() *TaskAuditExternalTicketCreated {
+func (t *TaskAuditView) GetExternalTicketCreated() *TaskAuditExternalTicketCreated {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditExternalTicketCreated
+	return t.ExternalTicketCreated
 }
 
-func (t *TaskAuditView) GetTaskAuditExternalTicketError() *TaskAuditExternalTicketError {
+func (t *TaskAuditView) GetExternalTicketError() *TaskAuditExternalTicketError {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditExternalTicketError
+	return t.ExternalTicketError
 }
 
-func (t *TaskAuditView) GetTaskAuditExternalTicketProvisionStepResolved() *TaskAuditExternalTicketProvisionStepResolved {
+func (t *TaskAuditView) GetExternalTicketProvisionStepResolved() *TaskAuditExternalTicketProvisionStepResolved {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditExternalTicketProvisionStepResolved
+	return t.ExternalTicketProvisionStepResolved
 }
 
-func (t *TaskAuditView) GetTaskAuditExternalTicketTriggered() *TaskAuditExternalTicketTriggered {
+func (t *TaskAuditView) GetExternalTicketTriggered() *TaskAuditExternalTicketTriggered {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditExternalTicketTriggered
+	return t.ExternalTicketTriggered
 }
 
-func (t *TaskAuditView) GetTaskAuditFormInstanceChange() *TaskAuditFormInstanceChange {
+func (t *TaskAuditView) GetFormInstanceChange() *TaskAuditFormInstanceChange {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditFormInstanceChange
+	return t.FormInstanceChange
 }
 
-func (t *TaskAuditView) GetTaskAuditGrantDurationUpdated() *TaskAuditGrantDurationUpdated {
+func (t *TaskAuditView) GetGrantDurationUpdated() *TaskAuditGrantDurationUpdated {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditGrantDurationUpdated
+	return t.GrantDurationUpdated
 }
 
-func (t *TaskAuditView) GetTaskAuditGrantOutcome() *TaskAuditGrantOutcome {
+func (t *TaskAuditView) GetGrantOutcome() *TaskAuditGrantOutcome {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditGrantOutcome
+	return t.GrantOutcome
 }
 
-func (t *TaskAuditView) GetTaskAuditHardReset() *TaskAuditHardReset {
+func (t *TaskAuditView) GetHardReset() *TaskAuditHardReset {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditHardReset
+	return t.HardReset
 }
 
 func (t *TaskAuditView) GetID() *string {
@@ -541,137 +493,165 @@ func (t *TaskAuditView) GetID() *string {
 	return t.ID
 }
 
-func (t *TaskAuditView) GetTaskAuditMetaData() *TaskAuditMetaData {
+func (t *TaskAuditView) GetMetadata() *TaskAuditMetaData {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditMetaData
+	return t.Metadata
 }
 
-func (t *TaskAuditView) GetTaskAuditPolicyChanged() *TaskAuditPolicyChanged {
+func (t *TaskAuditView) GetPolicyChanged() *TaskAuditPolicyChanged {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditPolicyChanged
+	return t.PolicyChanged
 }
 
-func (t *TaskAuditView) GetTaskAuditPolicyEvaluationStep() *TaskAuditPolicyEvaluationStep {
+func (t *TaskAuditView) GetPolicyEvaluationStep() *TaskAuditPolicyEvaluationStep {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditPolicyEvaluationStep
+	return t.PolicyEvaluationStep
 }
 
-func (t *TaskAuditView) GetTaskAuditPolicyProvisionCancelled() *TaskAuditPolicyProvisionCancelled {
+func (t *TaskAuditView) GetProvisionCancelled() *TaskAuditPolicyProvisionCancelled {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditPolicyProvisionCancelled
+	return t.ProvisionCancelled
 }
 
-func (t *TaskAuditView) GetTaskAuditPolicyProvisionError() *TaskAuditPolicyProvisionError {
+func (t *TaskAuditView) GetProvisionEntitlementMergeCompleted() *TaskAuditProvisionEntitlementMergeCompleted {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditPolicyProvisionError
+	return t.ProvisionEntitlementMergeCompleted
 }
 
-func (t *TaskAuditView) GetTaskAuditPolicyProvisionReassigned() *TaskAuditPolicyProvisionReassigned {
+func (t *TaskAuditView) GetProvisionEntitlementMergeTimedOut() *TaskAuditProvisionEntitlementMergeTimedOut {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditPolicyProvisionReassigned
+	return t.ProvisionEntitlementMergeTimedOut
 }
 
-func (t *TaskAuditView) GetTaskAuditReassignedToDelegate() *TaskAuditReassignedToDelegate {
+func (t *TaskAuditView) GetProvisionError() *TaskAuditPolicyProvisionError {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditReassignedToDelegate
+	return t.ProvisionError
 }
 
-func (t *TaskAuditView) GetTaskAuditReassignmentFallbackToAdmin() *TaskAuditReassignmentFallbackToAdmin {
+func (t *TaskAuditView) GetProvisionReassigned() *TaskAuditPolicyProvisionReassigned {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditReassignmentFallbackToAdmin
+	return t.ProvisionReassigned
 }
 
-func (t *TaskAuditView) GetTaskAuditReassignmentListError() *TaskAuditReassignmentListError {
+func (t *TaskAuditView) GetProvisionWaitingForEntitlementMerge() *TaskAuditProvisionWaitingForEntitlementMerge {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditReassignmentListError
+	return t.ProvisionWaitingForEntitlementMerge
 }
 
-func (t *TaskAuditView) GetTaskAuditRevokeOutcome() *TaskAuditRevokeOutcome {
+func (t *TaskAuditView) GetReassignedToDelegate() *TaskAuditReassignedToDelegate {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditRevokeOutcome
+	return t.ReassignedToDelegate
 }
 
-func (t *TaskAuditView) GetTaskAuditSLAEscalation() *TaskAuditSLAEscalation {
+func (t *TaskAuditView) GetReassignmentFallbackToAdmin() *TaskAuditReassignmentFallbackToAdmin {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditSLAEscalation
+	return t.ReassignmentFallbackToAdmin
 }
 
-func (t *TaskAuditView) GetSource() *Source {
+func (t *TaskAuditView) GetReassignmentListError() *TaskAuditReassignmentListError {
+	if t == nil {
+		return nil
+	}
+	return t.ReassignmentListError
+}
+
+func (t *TaskAuditView) GetRequestDefaultsApplied() *TaskAuditRequestDefaultsApplied {
+	if t == nil {
+		return nil
+	}
+	return t.RequestDefaultsApplied
+}
+
+func (t *TaskAuditView) GetRevokeOutcome() *TaskAuditRevokeOutcome {
+	if t == nil {
+		return nil
+	}
+	return t.RevokeOutcome
+}
+
+func (t *TaskAuditView) GetSLAEscalation() *TaskAuditSLAEscalation {
+	if t == nil {
+		return nil
+	}
+	return t.SLAEscalation
+}
+
+func (t *TaskAuditView) GetSource() *TaskAuditViewSource {
 	if t == nil {
 		return nil
 	}
 	return t.Source
 }
 
-func (t *TaskAuditView) GetTaskAuditStateChange() *TaskAuditStateChange {
+func (t *TaskAuditView) GetStateChange() *TaskAuditStateChange {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditStateChange
+	return t.StateChange
 }
 
-func (t *TaskAuditView) GetTaskAuditStepSkipped() *TaskAuditStepSkipped {
+func (t *TaskAuditView) GetStepSkipped() *TaskAuditStepSkipped {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditStepSkipped
+	return t.StepSkipped
 }
 
-func (t *TaskAuditView) GetTaskAuditStepUpApproval() *TaskAuditStepUpApproval {
+func (t *TaskAuditView) GetStepUpApproval() *TaskAuditStepUpApproval {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditStepUpApproval
+	return t.StepUpApproval
 }
 
-func (t *TaskAuditView) GetTaskAuditNewTask() *TaskAuditNewTask {
+func (t *TaskAuditView) GetTaskCreated() *TaskAuditNewTask {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditNewTask
+	return t.TaskCreated
 }
 
-func (t *TaskAuditView) GetTaskAuditNewTaskCreatedFrom() *TaskAuditNewTaskCreatedFrom {
+func (t *TaskAuditView) GetTaskCreatedFrom() *TaskAuditNewTaskCreatedFrom {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditNewTaskCreatedFrom
+	return t.TaskCreatedFrom
 }
 
-func (t *TaskAuditView) GetTaskAuditEscalateToEmergencyAccess() *TaskAuditEscalateToEmergencyAccess {
+func (t *TaskAuditView) GetTaskEscalated() *TaskAuditEscalateToEmergencyAccess {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditEscalateToEmergencyAccess
+	return t.TaskEscalated
 }
 
-func (t *TaskAuditView) GetTaskAuditRestart() *TaskAuditRestart {
+func (t *TaskAuditView) GetTaskRestarted() *TaskAuditRestart {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditRestart
+	return t.TaskRestarted
 }
 
 func (t *TaskAuditView) GetTicketID() *string {
@@ -688,109 +668,109 @@ func (t *TaskAuditView) GetUserID() *string {
 	return t.UserID
 }
 
-func (t *TaskAuditView) GetTaskAuditWaitForAnalysisStepSuccess() *TaskAuditWaitForAnalysisStepSuccess {
+func (t *TaskAuditView) GetWaitStepAnalysisSuccess() *TaskAuditWaitForAnalysisStepSuccess {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWaitForAnalysisStepSuccess
+	return t.WaitStepAnalysisSuccess
 }
 
-func (t *TaskAuditView) GetTaskAuditWaitForAnalysisStepTimedOut() *TaskAuditWaitForAnalysisStepTimedOut {
+func (t *TaskAuditView) GetWaitStepAnalysisTimedOut() *TaskAuditWaitForAnalysisStepTimedOut {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWaitForAnalysisStepTimedOut
+	return t.WaitStepAnalysisTimedOut
 }
 
-func (t *TaskAuditView) GetTaskAuditWaitForAnalysisStepWaiting() *TaskAuditWaitForAnalysisStepWaiting {
+func (t *TaskAuditView) GetWaitStepAnalysisWaiting() *TaskAuditWaitForAnalysisStepWaiting {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWaitForAnalysisStepWaiting
+	return t.WaitStepAnalysisWaiting
 }
 
-func (t *TaskAuditView) GetTaskAuditWaitStepSuccess() *TaskAuditWaitStepSuccess {
+func (t *TaskAuditView) GetWaitStepSuccess() *TaskAuditWaitStepSuccess {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWaitStepSuccess
+	return t.WaitStepSuccess
 }
 
-func (t *TaskAuditView) GetTaskAuditWaitStepTimedOut() *TaskAuditWaitStepTimedOut {
+func (t *TaskAuditView) GetWaitStepTimedOut() *TaskAuditWaitStepTimedOut {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWaitStepTimedOut
+	return t.WaitStepTimedOut
 }
 
-func (t *TaskAuditView) GetTaskAuditWaitStepUntilTime() *TaskAuditWaitStepUntilTime {
+func (t *TaskAuditView) GetWaitStepUntilTime() *TaskAuditWaitStepUntilTime {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWaitStepUntilTime
+	return t.WaitStepUntilTime
 }
 
-func (t *TaskAuditView) GetTaskAuditWaitStepWaiting() *TaskAuditWaitStepWaiting {
+func (t *TaskAuditView) GetWaitStepWaiting() *TaskAuditWaitStepWaiting {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWaitStepWaiting
+	return t.WaitStepWaiting
 }
 
-func (t *TaskAuditView) GetTaskAuditWebhookApprovalAttempt() *TaskAuditWebhookApprovalAttempt {
+func (t *TaskAuditView) GetWebhookApprovalAttempt() *TaskAuditWebhookApprovalAttempt {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWebhookApprovalAttempt
+	return t.WebhookApprovalAttempt
 }
 
-func (t *TaskAuditView) GetTaskAuditWebhookApprovalBadResponse() *TaskAuditWebhookApprovalBadResponse {
+func (t *TaskAuditView) GetWebhookApprovalBadResponse() *TaskAuditWebhookApprovalBadResponse {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWebhookApprovalBadResponse
+	return t.WebhookApprovalBadResponse
 }
 
-func (t *TaskAuditView) GetTaskAuditWebhookApprovalFatalError() *TaskAuditWebhookApprovalFatalError {
+func (t *TaskAuditView) GetWebhookApprovalFatalError() *TaskAuditWebhookApprovalFatalError {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWebhookApprovalFatalError
+	return t.WebhookApprovalFatalError
 }
 
-func (t *TaskAuditView) GetTaskAuditWebhookApprovalSuccess() *TaskAuditWebhookApprovalSuccess {
+func (t *TaskAuditView) GetWebhookApprovalSuccess() *TaskAuditWebhookApprovalSuccess {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWebhookApprovalSuccess
+	return t.WebhookApprovalSuccess
 }
 
-func (t *TaskAuditView) GetTaskAuditWebhookApprovalTriggered() *TaskAuditWebhookApprovalTriggered {
+func (t *TaskAuditView) GetWebhookApprovalTriggered() *TaskAuditWebhookApprovalTriggered {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWebhookApprovalTriggered
+	return t.WebhookApprovalTriggered
 }
 
-func (t *TaskAuditView) GetTaskAuditWebhookAttempt() *TaskAuditWebhookAttempt {
+func (t *TaskAuditView) GetWebhookAttempt() *TaskAuditWebhookAttempt {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWebhookAttempt
+	return t.WebhookAttempt
 }
 
-func (t *TaskAuditView) GetTaskAuditWebhookSuccess() *TaskAuditWebhookSuccess {
+func (t *TaskAuditView) GetWebhookSuccess() *TaskAuditWebhookSuccess {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWebhookSuccess
+	return t.WebhookSuccess
 }
 
-func (t *TaskAuditView) GetTaskAuditWebhookTriggered() *TaskAuditWebhookTriggered {
+func (t *TaskAuditView) GetWebhookTriggered() *TaskAuditWebhookTriggered {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditWebhookTriggered
+	return t.WebhookTriggered
 }
 
 func (t *TaskAuditView) GetWorkflowStep() *int {

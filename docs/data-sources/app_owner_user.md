@@ -86,6 +86,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -98,6 +99,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -110,6 +112,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -122,6 +125,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -134,6 +138,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -146,6 +151,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -158,6 +164,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -170,6 +177,7 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.
 
@@ -186,5 +194,6 @@ Read-Only:
 - `app_id` (String) The appId field.
 - `app_user_id` (String) The appUserId field.
 - `app_user_profile_attribute_key` (String) The appUserProfileAttributeKey field.
+- `priority` (Number) Lower number = higher precedence; sources[0] is the winning source.
 - `user_attribute_mapping_id` (String) The userAttributeMappingId field.
 - `value` (String) The value field.

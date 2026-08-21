@@ -34,6 +34,21 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 			r.TaskView.EntitlementsPath = types.StringPointerValue(resp.TaskView.EntitlementsPath)
 			r.TaskView.IdentityUserPath = types.StringPointerValue(resp.TaskView.IdentityUserPath)
 			r.TaskView.InsightsPath = types.StringPointerValue(resp.TaskView.InsightsPath)
+			if resp.TaskView.ObjectPermissions == nil {
+				r.TaskView.ObjectPermissions = nil
+			} else {
+				r.TaskView.ObjectPermissions = &tfTypes.UserActorObjectPermissions{}
+				r.TaskView.ObjectPermissions.Delete = types.BoolPointerValue(resp.TaskView.ObjectPermissions.Delete)
+				r.TaskView.ObjectPermissions.Edit = types.BoolPointerValue(resp.TaskView.ObjectPermissions.Edit)
+				if len(resp.TaskView.ObjectPermissions.Extra) > 0 {
+					r.TaskView.ObjectPermissions.Extra = make(map[string]types.Bool, len(resp.TaskView.ObjectPermissions.Extra))
+					for key, value := range resp.TaskView.ObjectPermissions.Extra {
+						r.TaskView.ObjectPermissions.Extra[key] = types.BoolValue(value)
+					}
+				}
+				r.TaskView.ObjectPermissions.Read = types.BoolPointerValue(resp.TaskView.ObjectPermissions.Read)
+			}
+			r.TaskView.PrincipalResourcePath = types.StringPointerValue(resp.TaskView.PrincipalResourcePath)
 			r.TaskView.ResourceBindingsPath = types.StringPointerValue(resp.TaskView.ResourceBindingsPath)
 			r.TaskView.RoleResourcePath = types.StringPointerValue(resp.TaskView.RoleResourcePath)
 			r.TaskView.ScopeResourcePath = types.StringPointerValue(resp.TaskView.ScopeResourcePath)
@@ -94,6 +109,377 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 				} else {
 					r.TaskView.Task.ExternalRefs = nil
 				}
+				if resp.TaskView.Task.Form == nil {
+					r.TaskView.Task.Form = nil
+				} else {
+					r.TaskView.Task.Form = &tfTypes.RequestSchemaForm{}
+					r.TaskView.Task.Form.Description = types.StringPointerValue(resp.TaskView.Task.Form.Description)
+					if resp.TaskView.Task.Form.FieldGroups != nil {
+						r.TaskView.Task.Form.FieldGroups = []tfTypes.FormFieldGroup{}
+
+						for _, fieldGroupsItem := range resp.TaskView.Task.Form.FieldGroups {
+							var fieldGroups tfTypes.FormFieldGroup
+
+							fieldGroups.Default = types.BoolPointerValue(fieldGroupsItem.Default)
+							fieldGroups.DisplayName = types.StringPointerValue(fieldGroupsItem.DisplayName)
+							if fieldGroupsItem.Fields != nil {
+								fieldGroups.Fields = make([]types.String, 0, len(fieldGroupsItem.Fields))
+								for _, v := range fieldGroupsItem.Fields {
+									fieldGroups.Fields = append(fieldGroups.Fields, types.StringValue(v))
+								}
+							} else {
+								fieldGroups.Fields = nil
+							}
+							fieldGroups.HelpText = types.StringPointerValue(fieldGroupsItem.HelpText)
+							fieldGroups.Name = types.StringPointerValue(fieldGroupsItem.Name)
+
+							r.TaskView.Task.Form.FieldGroups = append(r.TaskView.Task.Form.FieldGroups, fieldGroups)
+						}
+					} else {
+						r.TaskView.Task.Form.FieldGroups = nil
+					}
+					if resp.TaskView.Task.Form.FieldRelationships != nil {
+						r.TaskView.Task.Form.FieldRelationships = []tfTypes.FieldRelationship{}
+
+						for _, fieldRelationshipsItem := range resp.TaskView.Task.Form.FieldRelationships {
+							var fieldRelationships tfTypes.FieldRelationship
+
+							if fieldRelationshipsItem.AtLeastOne == nil {
+								fieldRelationships.AtLeastOne = nil
+							} else {
+								fieldRelationships.AtLeastOne = &tfTypes.AtLeastOne{}
+							}
+							if fieldRelationshipsItem.DependentOn == nil {
+								fieldRelationships.DependentOn = nil
+							} else {
+								fieldRelationships.DependentOn = &tfTypes.DependentOn{}
+								if fieldRelationshipsItem.DependentOn.DependencyFieldNames != nil {
+									fieldRelationships.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem.DependentOn.DependencyFieldNames))
+									for _, v := range fieldRelationshipsItem.DependentOn.DependencyFieldNames {
+										fieldRelationships.DependentOn.DependencyFieldNames = append(fieldRelationships.DependentOn.DependencyFieldNames, types.StringValue(v))
+									}
+								} else {
+									fieldRelationships.DependentOn.DependencyFieldNames = nil
+								}
+							}
+							if fieldRelationshipsItem.FieldNames != nil {
+								fieldRelationships.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem.FieldNames))
+								for _, v := range fieldRelationshipsItem.FieldNames {
+									fieldRelationships.FieldNames = append(fieldRelationships.FieldNames, types.StringValue(v))
+								}
+							} else {
+								fieldRelationships.FieldNames = nil
+							}
+							if fieldRelationshipsItem.MutuallyExclusive == nil {
+								fieldRelationships.MutuallyExclusive = nil
+							} else {
+								fieldRelationships.MutuallyExclusive = &tfTypes.MutuallyExclusive{}
+							}
+							if fieldRelationshipsItem.RequiredTogether == nil {
+								fieldRelationships.RequiredTogether = nil
+							} else {
+								fieldRelationships.RequiredTogether = &tfTypes.RequiredTogether{}
+							}
+
+							r.TaskView.Task.Form.FieldRelationships = append(r.TaskView.Task.Form.FieldRelationships, fieldRelationships)
+						}
+					} else {
+						r.TaskView.Task.Form.FieldRelationships = nil
+					}
+					if resp.TaskView.Task.Form.Fields != nil {
+						r.TaskView.Task.Form.Fields = []tfTypes.FormField{}
+
+						for _, fieldsItem := range resp.TaskView.Task.Form.Fields {
+							var fields tfTypes.FormField
+
+							if fieldsItem.AdminConfig == nil {
+								fields.AdminConfig = nil
+							} else {
+								fields.AdminConfig = &tfTypes.AdminProviderConfig{}
+								fields.AdminConfig.DefaultValueCel = types.StringPointerValue(fieldsItem.AdminConfig.DefaultValueCel)
+								fields.AdminConfig.ShowToUser = types.BoolPointerValue(fieldsItem.AdminConfig.ShowToUser)
+							}
+							if fieldsItem.BoolField == nil {
+								fields.BoolField = nil
+							} else {
+								fields.BoolField = &tfTypes.BoolField{}
+								if fieldsItem.BoolField.CheckboxField == nil {
+									fields.BoolField.CheckboxField = nil
+								} else {
+									fields.BoolField.CheckboxField = &tfTypes.CheckboxField{}
+								}
+								fields.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem.BoolField.DefaultValue)
+								if fieldsItem.BoolField.Rules == nil {
+									fields.BoolField.Rules = nil
+								} else {
+									fields.BoolField.Rules = &tfTypes.BoolRules{}
+									fields.BoolField.Rules.Const = types.BoolPointerValue(fieldsItem.BoolField.Rules.Const)
+								}
+								if fieldsItem.BoolField.ToggleField == nil {
+									fields.BoolField.ToggleField = nil
+								} else {
+									fields.BoolField.ToggleField = &tfTypes.ToggleField{}
+								}
+							}
+							fields.Description = types.StringPointerValue(fieldsItem.Description)
+							fields.DisplayName = types.StringPointerValue(fieldsItem.DisplayName)
+							if fieldsItem.FileField == nil {
+								fields.FileField = nil
+							} else {
+								fields.FileField = &tfTypes.FileField{}
+								if fieldsItem.FileField.AcceptedFileTypes != nil {
+									fields.FileField.AcceptedFileTypes = make([]types.String, 0, len(fieldsItem.FileField.AcceptedFileTypes))
+									for _, v := range fieldsItem.FileField.AcceptedFileTypes {
+										fields.FileField.AcceptedFileTypes = append(fields.FileField.AcceptedFileTypes, types.StringValue(v))
+									}
+								} else {
+									fields.FileField.AcceptedFileTypes = nil
+								}
+								if fieldsItem.FileField.FileInputField == nil {
+									fields.FileField.FileInputField = nil
+								} else {
+									fields.FileField.FileInputField = &tfTypes.FileInputField{}
+								}
+								fields.FileField.MaxFileSize = types.StringPointerValue(fieldsItem.FileField.MaxFileSize)
+							}
+							if fieldsItem.Int64Field == nil {
+								fields.Int64Field = nil
+							} else {
+								fields.Int64Field = &tfTypes.Int64Field{}
+								fields.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem.Int64Field.DefaultValue)
+								if fieldsItem.Int64Field.NumberField == nil {
+									fields.Int64Field.NumberField = nil
+								} else {
+									fields.Int64Field.NumberField = &tfTypes.NumberField{}
+									fields.Int64Field.NumberField.MaxValue = types.StringPointerValue(fieldsItem.Int64Field.NumberField.MaxValue)
+									fields.Int64Field.NumberField.MinValue = types.StringPointerValue(fieldsItem.Int64Field.NumberField.MinValue)
+									fields.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem.Int64Field.NumberField.Step)
+								}
+								fields.Int64Field.Placeholder = types.StringPointerValue(fieldsItem.Int64Field.Placeholder)
+								if fieldsItem.Int64Field.Rules == nil {
+									fields.Int64Field.Rules = nil
+								} else {
+									fields.Int64Field.Rules = &tfTypes.Int64Rules{}
+									fields.Int64Field.Rules.Const = types.StringPointerValue(fieldsItem.Int64Field.Rules.Const)
+									fields.Int64Field.Rules.Gt = types.StringPointerValue(fieldsItem.Int64Field.Rules.Gt)
+									fields.Int64Field.Rules.Gte = types.StringPointerValue(fieldsItem.Int64Field.Rules.Gte)
+									fields.Int64Field.Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.Int64Field.Rules.IgnoreEmpty)
+									if fieldsItem.Int64Field.Rules.In != nil {
+										fields.Int64Field.Rules.In = make([]types.String, 0, len(fieldsItem.Int64Field.Rules.In))
+										for _, v := range fieldsItem.Int64Field.Rules.In {
+											fields.Int64Field.Rules.In = append(fields.Int64Field.Rules.In, types.StringValue(v))
+										}
+									} else {
+										fields.Int64Field.Rules.In = nil
+									}
+									fields.Int64Field.Rules.Lt = types.StringPointerValue(fieldsItem.Int64Field.Rules.Lt)
+									fields.Int64Field.Rules.Lte = types.StringPointerValue(fieldsItem.Int64Field.Rules.Lte)
+									if fieldsItem.Int64Field.Rules.NotIn != nil {
+										fields.Int64Field.Rules.NotIn = make([]types.String, 0, len(fieldsItem.Int64Field.Rules.NotIn))
+										for _, v := range fieldsItem.Int64Field.Rules.NotIn {
+											fields.Int64Field.Rules.NotIn = append(fields.Int64Field.Rules.NotIn, types.StringValue(v))
+										}
+									} else {
+										fields.Int64Field.Rules.NotIn = nil
+									}
+								}
+							}
+							fields.Name = types.StringPointerValue(fieldsItem.Name)
+							if fieldsItem.Oauth2Field == nil {
+								fields.Oauth2Field = nil
+							} else {
+								fields.Oauth2Field = &tfTypes.Oauth2Field{}
+								if fieldsItem.Oauth2Field.Oauth2FieldView == nil {
+									fields.Oauth2Field.Oauth2FieldView = nil
+								} else {
+									fields.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
+								}
+							}
+							fields.ReadOnly = types.BoolPointerValue(fieldsItem.ReadOnly)
+							fields.Required = types.BoolPointerValue(fieldsItem.Required)
+							if fieldsItem.SharedConfig == nil {
+								fields.SharedConfig = nil
+							} else {
+								fields.SharedConfig = &tfTypes.SharedProviderConfig{}
+								fields.SharedConfig.DefaultValueCel = types.StringPointerValue(fieldsItem.SharedConfig.DefaultValueCel)
+								fields.SharedConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.SharedConfig.InputTransformationCel)
+								fields.SharedConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem.SharedConfig.LockDefaultValues)
+							}
+							if fieldsItem.StringField == nil {
+								fields.StringField = nil
+							} else {
+								fields.StringField = &tfTypes.FormStringField{}
+								if fieldsItem.StringField.DateField == nil {
+									fields.StringField.DateField = nil
+								} else {
+									fields.StringField.DateField = &tfTypes.DateField{}
+									fields.StringField.DateField.DefaultToToday = types.BoolPointerValue(fieldsItem.StringField.DateField.DefaultToToday)
+									fields.StringField.DateField.MaxDate = types.StringPointerValue(fieldsItem.StringField.DateField.MaxDate)
+									fields.StringField.DateField.MaxDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem.StringField.DateField.MaxDaysFromToday))
+									fields.StringField.DateField.MinDate = types.StringPointerValue(fieldsItem.StringField.DateField.MinDate)
+									fields.StringField.DateField.MinDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem.StringField.DateField.MinDaysFromToday))
+								}
+								fields.StringField.DefaultValue = types.StringPointerValue(fieldsItem.StringField.DefaultValue)
+								if fieldsItem.StringField.PasswordField == nil {
+									fields.StringField.PasswordField = nil
+								} else {
+									fields.StringField.PasswordField = &tfTypes.PasswordField{}
+								}
+								if fieldsItem.StringField.PickerField == nil {
+									fields.StringField.PickerField = nil
+								} else {
+									fields.StringField.PickerField = &tfTypes.PickerField{}
+									if fieldsItem.StringField.PickerField.AppUserPicker == nil {
+										fields.StringField.PickerField.AppUserPicker = nil
+									} else {
+										fields.StringField.PickerField.AppUserPicker = &tfTypes.AppUserFilter{}
+										fields.StringField.PickerField.AppUserPicker.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.AppUserPicker.AppID)
+									}
+									if fieldsItem.StringField.PickerField.C1UserPicker == nil {
+										fields.StringField.PickerField.C1UserPicker = nil
+									} else {
+										fields.StringField.PickerField.C1UserPicker = &tfTypes.C1UserFilter{}
+										if fieldsItem.StringField.PickerField.C1UserPicker.ExcludeUserIds != nil {
+											fields.StringField.PickerField.C1UserPicker.ExcludeUserIds = make([]types.String, 0, len(fieldsItem.StringField.PickerField.C1UserPicker.ExcludeUserIds))
+											for _, v := range fieldsItem.StringField.PickerField.C1UserPicker.ExcludeUserIds {
+												fields.StringField.PickerField.C1UserPicker.ExcludeUserIds = append(fields.StringField.PickerField.C1UserPicker.ExcludeUserIds, types.StringValue(v))
+											}
+										} else {
+											fields.StringField.PickerField.C1UserPicker.ExcludeUserIds = nil
+										}
+										fields.StringField.PickerField.C1UserPicker.IncludeDeactivated = types.BoolPointerValue(fieldsItem.StringField.PickerField.C1UserPicker.IncludeDeactivated)
+										if fieldsItem.StringField.PickerField.C1UserPicker.UserIds != nil {
+											fields.StringField.PickerField.C1UserPicker.UserIds = make([]types.String, 0, len(fieldsItem.StringField.PickerField.C1UserPicker.UserIds))
+											for _, v := range fieldsItem.StringField.PickerField.C1UserPicker.UserIds {
+												fields.StringField.PickerField.C1UserPicker.UserIds = append(fields.StringField.PickerField.C1UserPicker.UserIds, types.StringValue(v))
+											}
+										} else {
+											fields.StringField.PickerField.C1UserPicker.UserIds = nil
+										}
+									}
+									if fieldsItem.StringField.PickerField.ResourcePicker == nil {
+										fields.StringField.PickerField.ResourcePicker = nil
+									} else {
+										fields.StringField.PickerField.ResourcePicker = &tfTypes.AppResourceFilter{}
+										fields.StringField.PickerField.ResourcePicker.AppID = types.StringPointerValue(fieldsItem.StringField.PickerField.ResourcePicker.AppID)
+										fields.StringField.PickerField.ResourcePicker.ResourceTypeID = types.StringPointerValue(fieldsItem.StringField.PickerField.ResourcePicker.ResourceTypeID)
+									}
+								}
+								fields.StringField.Placeholder = types.StringPointerValue(fieldsItem.StringField.Placeholder)
+								if fieldsItem.StringField.Rules == nil {
+									fields.StringField.Rules = nil
+								} else {
+									fields.StringField.Rules = &tfTypes.StringRules{}
+									fields.StringField.Rules.Address = types.BoolPointerValue(fieldsItem.StringField.Rules.Address)
+									fields.StringField.Rules.Const = types.StringPointerValue(fieldsItem.StringField.Rules.Const)
+									fields.StringField.Rules.Contains = types.StringPointerValue(fieldsItem.StringField.Rules.Contains)
+									fields.StringField.Rules.Email = types.BoolPointerValue(fieldsItem.StringField.Rules.Email)
+									fields.StringField.Rules.Hostname = types.BoolPointerValue(fieldsItem.StringField.Rules.Hostname)
+									fields.StringField.Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.StringField.Rules.IgnoreEmpty)
+									if fieldsItem.StringField.Rules.In != nil {
+										fields.StringField.Rules.In = make([]types.String, 0, len(fieldsItem.StringField.Rules.In))
+										for _, v := range fieldsItem.StringField.Rules.In {
+											fields.StringField.Rules.In = append(fields.StringField.Rules.In, types.StringValue(v))
+										}
+									} else {
+										fields.StringField.Rules.In = nil
+									}
+									fields.StringField.Rules.IP = types.BoolPointerValue(fieldsItem.StringField.Rules.IP)
+									fields.StringField.Rules.Ipv4 = types.BoolPointerValue(fieldsItem.StringField.Rules.Ipv4)
+									fields.StringField.Rules.Ipv6 = types.BoolPointerValue(fieldsItem.StringField.Rules.Ipv6)
+									fields.StringField.Rules.LenBytes = types.StringPointerValue(fieldsItem.StringField.Rules.LenBytes)
+									fields.StringField.Rules.Length = types.StringPointerValue(fieldsItem.StringField.Rules.Length)
+									fields.StringField.Rules.MaxBytes = types.StringPointerValue(fieldsItem.StringField.Rules.MaxBytes)
+									fields.StringField.Rules.MaxLen = types.StringPointerValue(fieldsItem.StringField.Rules.MaxLen)
+									fields.StringField.Rules.MinBytes = types.StringPointerValue(fieldsItem.StringField.Rules.MinBytes)
+									fields.StringField.Rules.MinLen = types.StringPointerValue(fieldsItem.StringField.Rules.MinLen)
+									fields.StringField.Rules.NotContains = types.StringPointerValue(fieldsItem.StringField.Rules.NotContains)
+									if fieldsItem.StringField.Rules.NotIn != nil {
+										fields.StringField.Rules.NotIn = make([]types.String, 0, len(fieldsItem.StringField.Rules.NotIn))
+										for _, v := range fieldsItem.StringField.Rules.NotIn {
+											fields.StringField.Rules.NotIn = append(fields.StringField.Rules.NotIn, types.StringValue(v))
+										}
+									} else {
+										fields.StringField.Rules.NotIn = nil
+									}
+									fields.StringField.Rules.Pattern = types.StringPointerValue(fieldsItem.StringField.Rules.Pattern)
+									fields.StringField.Rules.Prefix = types.StringPointerValue(fieldsItem.StringField.Rules.Prefix)
+									fields.StringField.Rules.Strict = types.BoolPointerValue(fieldsItem.StringField.Rules.Strict)
+									fields.StringField.Rules.Suffix = types.StringPointerValue(fieldsItem.StringField.Rules.Suffix)
+									fields.StringField.Rules.URI = types.BoolPointerValue(fieldsItem.StringField.Rules.URI)
+									fields.StringField.Rules.URIRef = types.BoolPointerValue(fieldsItem.StringField.Rules.URIRef)
+									fields.StringField.Rules.UUID = types.BoolPointerValue(fieldsItem.StringField.Rules.UUID)
+									if fieldsItem.StringField.Rules.WellKnownRegex != nil {
+										fields.StringField.Rules.WellKnownRegex = types.StringValue(string(*fieldsItem.StringField.Rules.WellKnownRegex))
+									} else {
+										fields.StringField.Rules.WellKnownRegex = types.StringNull()
+									}
+								}
+								if fieldsItem.StringField.SelectField == nil {
+									fields.StringField.SelectField = nil
+								} else {
+									fields.StringField.SelectField = &tfTypes.SelectField{}
+									if fieldsItem.StringField.SelectField.Options != nil {
+										fields.StringField.SelectField.Options = []tfTypes.SelectOption{}
+
+										for _, optionsVarItem := range fieldsItem.StringField.SelectField.Options {
+											var optionsVar tfTypes.SelectOption
+
+											optionsVar.Description = types.StringPointerValue(optionsVarItem.Description)
+											optionsVar.DisplayName = types.StringPointerValue(optionsVarItem.DisplayName)
+											optionsVar.Value = types.StringPointerValue(optionsVarItem.Value)
+
+											fields.StringField.SelectField.Options = append(fields.StringField.SelectField.Options, optionsVar)
+										}
+									} else {
+										fields.StringField.SelectField.Options = nil
+									}
+									if fieldsItem.StringField.SelectField.Type != nil {
+										fields.StringField.SelectField.Type = types.StringValue(string(*fieldsItem.StringField.SelectField.Type))
+									} else {
+										fields.StringField.SelectField.Type = types.StringNull()
+									}
+								}
+								if fieldsItem.StringField.TextField == nil {
+									fields.StringField.TextField = nil
+								} else {
+									fields.StringField.TextField = &tfTypes.TextField{}
+									fields.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem.StringField.TextField.Multiline)
+									fields.StringField.TextField.Suffix = types.StringPointerValue(fieldsItem.StringField.TextField.Suffix)
+								}
+							}
+							if fieldsItem.StringMapField == nil {
+								fields.StringMapField = nil
+							} else {
+								fields.StringMapField = &tfTypes.FormStringMapField{}
+								if len(fieldsItem.StringMapField.DefaultValue) > 0 {
+									fields.StringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem.StringMapField.DefaultValue))
+									for key1, value1 := range fieldsItem.StringMapField.DefaultValue {
+										fields.StringMapField.DefaultValue[key1] = types.StringValue(value1)
+									}
+								}
+								if fieldsItem.StringMapField.Rules == nil {
+									fields.StringMapField.Rules = nil
+								} else {
+									fields.StringMapField.Rules = &tfTypes.StringMapRules{}
+									fields.StringMapField.Rules.IsRequired = types.BoolPointerValue(fieldsItem.StringMapField.Rules.IsRequired)
+									fields.StringMapField.Rules.ValidateEmpty = types.BoolPointerValue(fieldsItem.StringMapField.Rules.ValidateEmpty)
+								}
+							}
+							if fieldsItem.UserConfig == nil {
+								fields.UserConfig = nil
+							} else {
+								fields.UserConfig = &tfTypes.UserProviderConfig{}
+								fields.UserConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.UserConfig.InputTransformationCel)
+							}
+
+							r.TaskView.Task.Form.Fields = append(r.TaskView.Task.Form.Fields, fields)
+						}
+					} else {
+						r.TaskView.Task.Form.Fields = nil
+					}
+					r.TaskView.Task.Form.Name = types.StringPointerValue(resp.TaskView.Task.Form.Name)
+				}
 				r.TaskView.Task.ID = types.StringPointerValue(resp.TaskView.Task.ID)
 				if resp.TaskView.Task.InsightIds != nil {
 					r.TaskView.Task.InsightIds = make([]types.String, 0, len(resp.TaskView.Task.InsightIds))
@@ -109,3205 +495,569 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 				} else {
 					r.TaskView.Task.Origin = types.StringNull()
 				}
-				r.TaskView.Task.PolicyGenerationID = types.StringPointerValue(resp.TaskView.Task.PolicyGenerationID)
-				if resp.TaskView.Task.PolicyInstance == nil {
-					r.TaskView.Task.PolicyInstance = nil
+				if resp.TaskView.Task.Policy == nil {
+					r.TaskView.Task.Policy = nil
 				} else {
-					r.TaskView.Task.PolicyInstance = &tfTypes.PolicyInstance{}
-					if resp.TaskView.Task.PolicyInstance.History != nil {
-						r.TaskView.Task.PolicyInstance.History = []tfTypes.PolicyStepInstance{}
-
-						for _, historyItem := range resp.TaskView.Task.PolicyInstance.History {
-							var history tfTypes.PolicyStepInstance
-
-							if historyItem.AcceptInstance == nil {
-								history.AcceptInstance = nil
-							} else {
-								history.AcceptInstance = &tfTypes.AcceptInstance{}
-								history.AcceptInstance.AcceptMessage = types.StringPointerValue(historyItem.AcceptInstance.AcceptMessage)
-							}
-							if historyItem.ActionInstance == nil {
-								history.ActionInstance = nil
-							} else {
-								history.ActionInstance = &tfTypes.ActionInstance{}
-								if historyItem.ActionInstance.Action == nil {
-									history.ActionInstance.Action = nil
-								} else {
-									history.ActionInstance.Action = &tfTypes.Action{}
-									if historyItem.ActionInstance.Action.ActionTargetAutomation == nil {
-										history.ActionInstance.Action.ActionTargetAutomation = nil
-									} else {
-										history.ActionInstance.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
-										history.ActionInstance.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(historyItem.ActionInstance.Action.ActionTargetAutomation.AutomationTemplateID)
-									}
-									if historyItem.ActionInstance.Action.ActionTargetBatonResourceAction == nil {
-										history.ActionInstance.Action.ActionTargetBatonResourceAction = nil
-									} else {
-										history.ActionInstance.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
-										history.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(historyItem.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
-									}
-									if historyItem.ActionInstance.Action.ActionTargetClientIDApproval == nil {
-										history.ActionInstance.Action.ActionTargetClientIDApproval = nil
-									} else {
-										history.ActionInstance.Action.ActionTargetClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
-									}
-								}
-								if historyItem.ActionInstance.ActionOutcomeCancelled == nil {
-									history.ActionInstance.ActionOutcomeCancelled = nil
-								} else {
-									history.ActionInstance.ActionOutcomeCancelled = &tfTypes.ActionOutcomeCancelled{}
-									history.ActionInstance.ActionOutcomeCancelled.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ActionInstance.ActionOutcomeCancelled.OutcomeTime))
-								}
-								if historyItem.ActionInstance.ActionOutcomeDenied == nil {
-									history.ActionInstance.ActionOutcomeDenied = nil
-								} else {
-									history.ActionInstance.ActionOutcomeDenied = &tfTypes.ActionOutcomeDenied{}
-									history.ActionInstance.ActionOutcomeDenied.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ActionInstance.ActionOutcomeDenied.OutcomeTime))
-								}
-								if historyItem.ActionInstance.ActionOutcomeError == nil {
-									history.ActionInstance.ActionOutcomeError = nil
-								} else {
-									history.ActionInstance.ActionOutcomeError = &tfTypes.ActionOutcomeError{}
-									history.ActionInstance.ActionOutcomeError.ErrorCode = types.StringPointerValue(historyItem.ActionInstance.ActionOutcomeError.ErrorCode)
-									history.ActionInstance.ActionOutcomeError.ErrorMessage = types.StringPointerValue(historyItem.ActionInstance.ActionOutcomeError.ErrorMessage)
-									history.ActionInstance.ActionOutcomeError.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ActionInstance.ActionOutcomeError.OutcomeTime))
-								}
-								if historyItem.ActionInstance.ActionOutcomeSuccess == nil {
-									history.ActionInstance.ActionOutcomeSuccess = nil
-								} else {
-									history.ActionInstance.ActionOutcomeSuccess = &tfTypes.ActionOutcomeSuccess{}
-									history.ActionInstance.ActionOutcomeSuccess.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ActionInstance.ActionOutcomeSuccess.OutcomeTime))
-								}
-								if historyItem.ActionInstance.ActionTargetAutomationInstance == nil {
-									history.ActionInstance.ActionTargetAutomationInstance = nil
-								} else {
-									history.ActionInstance.ActionTargetAutomationInstance = &tfTypes.ActionTargetAutomationInstance{}
-									history.ActionInstance.ActionTargetAutomationInstance.AutomationExecutionID = types.StringPointerValue(historyItem.ActionInstance.ActionTargetAutomationInstance.AutomationExecutionID)
-								}
-								if historyItem.ActionInstance.ActionTargetBatonResourceActionInstance == nil {
-									history.ActionInstance.ActionTargetBatonResourceActionInstance = nil
-								} else {
-									history.ActionInstance.ActionTargetBatonResourceActionInstance = &tfTypes.ActionTargetBatonResourceActionInstance{}
-									history.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID = types.StringPointerValue(historyItem.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID)
-								}
-								if historyItem.ActionInstance.ActionTargetClientIDApprovalInstance == nil {
-									history.ActionInstance.ActionTargetClientIDApprovalInstance = nil
-								} else {
-									history.ActionInstance.ActionTargetClientIDApprovalInstance = &tfTypes.ActionTargetClientIDApprovalInstance{}
-									history.ActionInstance.ActionTargetClientIDApprovalInstance.ClientIDURL = types.StringPointerValue(historyItem.ActionInstance.ActionTargetClientIDApprovalInstance.ClientIDURL)
-								}
-								if historyItem.ActionInstance.State != nil {
-									history.ActionInstance.State = types.StringValue(string(*historyItem.ActionInstance.State))
-								} else {
-									history.ActionInstance.State = types.StringNull()
-								}
-							}
-							if historyItem.ApprovalInstance == nil {
-								history.ApprovalInstance = nil
-							} else {
-								history.ApprovalInstance = &tfTypes.ApprovalInstance{}
-								if historyItem.ApprovalInstance.Approval == nil {
-									history.ApprovalInstance.Approval = nil
-								} else {
-									history.ApprovalInstance.Approval = &tfTypes.Approval{}
-									if historyItem.ApprovalInstance.Approval.AgentApproval == nil {
-										history.ApprovalInstance.Approval.AgentApproval = nil
-									} else {
-										history.ApprovalInstance.Approval.AgentApproval = &tfTypes.AgentApproval{}
-										if historyItem.ApprovalInstance.Approval.AgentApproval.AgentFailureAction != nil {
-											history.ApprovalInstance.Approval.AgentApproval.AgentFailureAction = types.StringValue(string(*historyItem.ApprovalInstance.Approval.AgentApproval.AgentFailureAction))
-										} else {
-											history.ApprovalInstance.Approval.AgentApproval.AgentFailureAction = types.StringNull()
-										}
-										if historyItem.ApprovalInstance.Approval.AgentApproval.AgentMode != nil {
-											history.ApprovalInstance.Approval.AgentApproval.AgentMode = types.StringValue(string(*historyItem.ApprovalInstance.Approval.AgentApproval.AgentMode))
-										} else {
-											history.ApprovalInstance.Approval.AgentApproval.AgentMode = types.StringNull()
-										}
-										history.ApprovalInstance.Approval.AgentApproval.AgentUserID = types.StringPointerValue(historyItem.ApprovalInstance.Approval.AgentApproval.AgentUserID)
-										history.ApprovalInstance.Approval.AgentApproval.Instructions = types.StringPointerValue(historyItem.ApprovalInstance.Approval.AgentApproval.Instructions)
-										if historyItem.ApprovalInstance.Approval.AgentApproval.PolicyIds != nil {
-											history.ApprovalInstance.Approval.AgentApproval.PolicyIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.AgentApproval.PolicyIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.AgentApproval.PolicyIds {
-												history.ApprovalInstance.Approval.AgentApproval.PolicyIds = append(history.ApprovalInstance.Approval.AgentApproval.PolicyIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.AgentApproval.PolicyIds = nil
-										}
-										if historyItem.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds != nil {
-											history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds {
-												history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = append(history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = nil
-										}
-									}
-									history.ApprovalInstance.Approval.AllowDelegation = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AllowDelegation)
-									if historyItem.ApprovalInstance.Approval.AllowedReassignees != nil {
-										history.ApprovalInstance.Approval.AllowedReassignees = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.AllowedReassignees))
-										for _, v := range historyItem.ApprovalInstance.Approval.AllowedReassignees {
-											history.ApprovalInstance.Approval.AllowedReassignees = append(history.ApprovalInstance.Approval.AllowedReassignees, types.StringValue(v))
-										}
-									} else {
-										history.ApprovalInstance.Approval.AllowedReassignees = nil
-									}
-									history.ApprovalInstance.Approval.AllowReassignment = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AllowReassignment)
-									if historyItem.ApprovalInstance.Approval.AppGroupApproval == nil {
-										history.ApprovalInstance.Approval.AppGroupApproval = nil
-									} else {
-										history.ApprovalInstance.Approval.AppGroupApproval = &tfTypes.AppGroupApproval{}
-										history.ApprovalInstance.Approval.AppGroupApproval.AllowSelfApproval = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AppGroupApproval.AllowSelfApproval)
-										history.ApprovalInstance.Approval.AppGroupApproval.AppGroupID = types.StringPointerValue(historyItem.ApprovalInstance.Approval.AppGroupApproval.AppGroupID)
-										history.ApprovalInstance.Approval.AppGroupApproval.AppID = types.StringPointerValue(historyItem.ApprovalInstance.Approval.AppGroupApproval.AppID)
-										history.ApprovalInstance.Approval.AppGroupApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AppGroupApproval.Fallback)
-										if historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds != nil {
-											history.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-											for _, fallbackGroupIdsItem := range historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds {
-												var fallbackGroupIds tfTypes.AppEntitlementReference
-
-												fallbackGroupIds.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem.AppEntitlementID)
-												fallbackGroupIds.AppID = types.StringPointerValue(fallbackGroupIdsItem.AppID)
-
-												history.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds)
-											}
-										} else {
-											history.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = nil
-										}
-										if historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds != nil {
-											history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds {
-												history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = nil
-										}
-										history.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled)
-										history.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers)
-									}
-									if historyItem.ApprovalInstance.Approval.AppOwnerApproval == nil {
-										history.ApprovalInstance.Approval.AppOwnerApproval = nil
-									} else {
-										history.ApprovalInstance.Approval.AppOwnerApproval = &tfTypes.AppOwnerApproval{}
-										history.ApprovalInstance.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AppOwnerApproval.AllowSelfApproval)
-										history.ApprovalInstance.Approval.AppOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.AppOwnerApproval.RequireDistinctApprovers)
-									}
-									history.ApprovalInstance.Approval.Assigned = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.Assigned)
-									if historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval == nil {
-										history.ApprovalInstance.Approval.EntitlementOwnerApproval = nil
-									} else {
-										history.ApprovalInstance.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
-										history.ApprovalInstance.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.AllowSelfApproval)
-										history.ApprovalInstance.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.Fallback)
-										if historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
-											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-											for _, fallbackGroupIdsItem1 := range historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds {
-												var fallbackGroupIds1 tfTypes.AppEntitlementReference
-
-												fallbackGroupIds1.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem1.AppEntitlementID)
-												fallbackGroupIds1.AppID = types.StringPointerValue(fallbackGroupIdsItem1.AppID)
-
-												history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds1)
-											}
-										} else {
-											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
-										}
-										if historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
-											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds {
-												history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
-										}
-										history.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
-										history.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
-									}
-									if historyItem.ApprovalInstance.Approval.Escalation == nil {
-										history.ApprovalInstance.Approval.Escalation = nil
-									} else {
-										history.ApprovalInstance.Approval.Escalation = &tfTypes.Escalation{}
-										if historyItem.ApprovalInstance.Approval.Escalation.CancelTicket == nil {
-											history.ApprovalInstance.Approval.Escalation.CancelTicket = nil
-										} else {
-											history.ApprovalInstance.Approval.Escalation.CancelTicket = &tfTypes.CancelTicket{}
-										}
-										history.ApprovalInstance.Approval.Escalation.EscalationComment = types.StringPointerValue(historyItem.ApprovalInstance.Approval.Escalation.EscalationComment)
-										history.ApprovalInstance.Approval.Escalation.Expiration = types.StringPointerValue(historyItem.ApprovalInstance.Approval.Escalation.Expiration)
-										if historyItem.ApprovalInstance.Approval.Escalation.ReassignToApprovers == nil {
-											history.ApprovalInstance.Approval.Escalation.ReassignToApprovers = nil
-										} else {
-											history.ApprovalInstance.Approval.Escalation.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
-											if historyItem.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
-												history.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds))
-												for _, v := range historyItem.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds {
-													history.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = append(history.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
-												}
-											} else {
-												history.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
-											}
-										}
-										if historyItem.ApprovalInstance.Approval.Escalation.ReplacePolicy == nil {
-											history.ApprovalInstance.Approval.Escalation.ReplacePolicy = nil
-										} else {
-											history.ApprovalInstance.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
-											history.ApprovalInstance.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(historyItem.ApprovalInstance.Approval.Escalation.ReplacePolicy.PolicyID)
-										}
-										if historyItem.ApprovalInstance.Approval.Escalation.SkipStep == nil {
-											history.ApprovalInstance.Approval.Escalation.SkipStep = nil
-										} else {
-											history.ApprovalInstance.Approval.Escalation.SkipStep = &tfTypes.SkipStep{}
-										}
-									}
-									history.ApprovalInstance.Approval.EscalationEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.EscalationEnabled)
-									if historyItem.ApprovalInstance.Approval.ExpressionApproval == nil {
-										history.ApprovalInstance.Approval.ExpressionApproval = nil
-									} else {
-										history.ApprovalInstance.Approval.ExpressionApproval = &tfTypes.ExpressionApproval{}
-										history.ApprovalInstance.Approval.ExpressionApproval.AllowSelfApproval = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.AllowSelfApproval)
-										if historyItem.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds != nil {
-											history.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds {
-												history.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = append(history.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = nil
-										}
-										if historyItem.ApprovalInstance.Approval.ExpressionApproval.Expressions != nil {
-											history.ApprovalInstance.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ExpressionApproval.Expressions))
-											for _, v := range historyItem.ApprovalInstance.Approval.ExpressionApproval.Expressions {
-												history.ApprovalInstance.Approval.ExpressionApproval.Expressions = append(history.ApprovalInstance.Approval.ExpressionApproval.Expressions, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.ExpressionApproval.Expressions = nil
-										}
-										history.ApprovalInstance.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.Fallback)
-										if historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds != nil {
-											history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-											for _, fallbackGroupIdsItem2 := range historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds {
-												var fallbackGroupIds2 tfTypes.AppEntitlementReference
-
-												fallbackGroupIds2.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem2.AppEntitlementID)
-												fallbackGroupIds2.AppID = types.StringPointerValue(fallbackGroupIdsItem2.AppID)
-
-												history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds2)
-											}
-										} else {
-											history.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = nil
-										}
-										if historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds != nil {
-											history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds {
-												history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = nil
-										}
-										history.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled)
-										history.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers)
-									}
-									if historyItem.ApprovalInstance.Approval.ManagerApproval == nil {
-										history.ApprovalInstance.Approval.ManagerApproval = nil
-									} else {
-										history.ApprovalInstance.Approval.ManagerApproval = &tfTypes.ManagerApproval{}
-										history.ApprovalInstance.Approval.ManagerApproval.AllowSelfApproval = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.AllowSelfApproval)
-										if historyItem.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds != nil {
-											history.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds {
-												history.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = append(history.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = nil
-										}
-										history.ApprovalInstance.Approval.ManagerApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.Fallback)
-										if historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds != nil {
-											history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-											for _, fallbackGroupIdsItem3 := range historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds {
-												var fallbackGroupIds3 tfTypes.AppEntitlementReference
-
-												fallbackGroupIds3.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem3.AppEntitlementID)
-												fallbackGroupIds3.AppID = types.StringPointerValue(fallbackGroupIdsItem3.AppID)
-
-												history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds3)
-											}
-										} else {
-											history.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = nil
-										}
-										if historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds != nil {
-											history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds {
-												history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = nil
-										}
-										history.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled)
-										history.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers)
-									}
-									history.ApprovalInstance.Approval.RequireApprovalReason = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.RequireApprovalReason)
-									history.ApprovalInstance.Approval.RequireDenialReason = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.RequireDenialReason)
-									history.ApprovalInstance.Approval.RequireReassignmentReason = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.RequireReassignmentReason)
-									history.ApprovalInstance.Approval.RequiresStepUpProviderID = types.StringPointerValue(historyItem.ApprovalInstance.Approval.RequiresStepUpProviderID)
-									if historyItem.ApprovalInstance.Approval.ResourceOwnerApproval == nil {
-										history.ApprovalInstance.Approval.ResourceOwnerApproval = nil
-									} else {
-										history.ApprovalInstance.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
-										history.ApprovalInstance.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.AllowSelfApproval)
-										history.ApprovalInstance.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.Fallback)
-										if historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
-											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-											for _, fallbackGroupIdsItem4 := range historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds {
-												var fallbackGroupIds4 tfTypes.AppEntitlementReference
-
-												fallbackGroupIds4.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem4.AppEntitlementID)
-												fallbackGroupIds4.AppID = types.StringPointerValue(fallbackGroupIdsItem4.AppID)
-
-												history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds4)
-											}
-										} else {
-											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
-										}
-										if historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
-											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds {
-												history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = nil
-										}
-										history.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
-										history.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
-									}
-									if historyItem.ApprovalInstance.Approval.SelfApproval == nil {
-										history.ApprovalInstance.Approval.SelfApproval = nil
-									} else {
-										history.ApprovalInstance.Approval.SelfApproval = &tfTypes.SelfApproval{}
-										if historyItem.ApprovalInstance.Approval.SelfApproval.AssignedUserIds != nil {
-											history.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.SelfApproval.AssignedUserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.SelfApproval.AssignedUserIds {
-												history.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = append(history.ApprovalInstance.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = nil
-										}
-										history.ApprovalInstance.Approval.SelfApproval.Fallback = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.SelfApproval.Fallback)
-										if historyItem.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds != nil {
-											history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-											for _, fallbackGroupIdsItem5 := range historyItem.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds {
-												var fallbackGroupIds5 tfTypes.AppEntitlementReference
-
-												fallbackGroupIds5.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem5.AppEntitlementID)
-												fallbackGroupIds5.AppID = types.StringPointerValue(fallbackGroupIdsItem5.AppID)
-
-												history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = append(history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds5)
-											}
-										} else {
-											history.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = nil
-										}
-										if historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds != nil {
-											history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.SelfApproval.FallbackUserIds {
-												history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = append(history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = nil
-										}
-										history.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled)
-									}
-									if historyItem.ApprovalInstance.Approval.UserApproval == nil {
-										history.ApprovalInstance.Approval.UserApproval = nil
-									} else {
-										history.ApprovalInstance.Approval.UserApproval = &tfTypes.UserApproval{}
-										history.ApprovalInstance.Approval.UserApproval.AllowSelfApproval = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.UserApproval.AllowSelfApproval)
-										history.ApprovalInstance.Approval.UserApproval.RequireDistinctApprovers = types.BoolPointerValue(historyItem.ApprovalInstance.Approval.UserApproval.RequireDistinctApprovers)
-										if historyItem.ApprovalInstance.Approval.UserApproval.UserIds != nil {
-											history.ApprovalInstance.Approval.UserApproval.UserIds = make([]types.String, 0, len(historyItem.ApprovalInstance.Approval.UserApproval.UserIds))
-											for _, v := range historyItem.ApprovalInstance.Approval.UserApproval.UserIds {
-												history.ApprovalInstance.Approval.UserApproval.UserIds = append(history.ApprovalInstance.Approval.UserApproval.UserIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.Approval.UserApproval.UserIds = nil
-										}
-									}
-									if historyItem.ApprovalInstance.Approval.WebhookApproval == nil {
-										history.ApprovalInstance.Approval.WebhookApproval = nil
-									} else {
-										history.ApprovalInstance.Approval.WebhookApproval = &tfTypes.WebhookApproval{}
-										history.ApprovalInstance.Approval.WebhookApproval.WebhookID = types.StringPointerValue(historyItem.ApprovalInstance.Approval.WebhookApproval.WebhookID)
-									}
-								}
-								if historyItem.ApprovalInstance.ApprovedAction == nil {
-									history.ApprovalInstance.ApprovedAction = nil
-								} else {
-									history.ApprovalInstance.ApprovedAction = &tfTypes.ApprovedAction{}
-									history.ApprovalInstance.ApprovedAction.ApprovedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.ApprovedAction.ApprovedAt))
-									if historyItem.ApprovalInstance.ApprovedAction.Entitlements != nil {
-										history.ApprovalInstance.ApprovedAction.Entitlements = []tfTypes.AppEntitlementReference{}
-
-										for _, entitlementsItem := range historyItem.ApprovalInstance.ApprovedAction.Entitlements {
-											var entitlements tfTypes.AppEntitlementReference
-
-											entitlements.AppEntitlementID = types.StringPointerValue(entitlementsItem.AppEntitlementID)
-											entitlements.AppID = types.StringPointerValue(entitlementsItem.AppID)
-
-											history.ApprovalInstance.ApprovedAction.Entitlements = append(history.ApprovalInstance.ApprovedAction.Entitlements, entitlements)
-										}
-									} else {
-										history.ApprovalInstance.ApprovedAction.Entitlements = nil
-									}
-									history.ApprovalInstance.ApprovedAction.StepUpTransactionID = types.StringPointerValue(historyItem.ApprovalInstance.ApprovedAction.StepUpTransactionID)
-									history.ApprovalInstance.ApprovedAction.UserID = types.StringPointerValue(historyItem.ApprovalInstance.ApprovedAction.UserID)
-								}
-								history.ApprovalInstance.AssignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.AssignedAt))
-								if historyItem.ApprovalInstance.DeniedAction == nil {
-									history.ApprovalInstance.DeniedAction = nil
-								} else {
-									history.ApprovalInstance.DeniedAction = &tfTypes.DeniedAction{}
-									history.ApprovalInstance.DeniedAction.DeniedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.DeniedAction.DeniedAt))
-									history.ApprovalInstance.DeniedAction.UserID = types.StringPointerValue(historyItem.ApprovalInstance.DeniedAction.UserID)
-								}
-								if historyItem.ApprovalInstance.EscalationInstance == nil {
-									history.ApprovalInstance.EscalationInstance = nil
-								} else {
-									history.ApprovalInstance.EscalationInstance = &tfTypes.EscalationInstance{}
-									history.ApprovalInstance.EscalationInstance.AlreadyEscalated = types.BoolPointerValue(historyItem.ApprovalInstance.EscalationInstance.AlreadyEscalated)
-									history.ApprovalInstance.EscalationInstance.EscalationComment = types.StringPointerValue(historyItem.ApprovalInstance.EscalationInstance.EscalationComment)
-									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket == nil {
-										history.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = nil
-									} else {
-										history.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = &tfTypes.EscalationInstanceCancelTicket{}
-									}
-									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers == nil {
-										history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = nil
-									} else {
-										history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = &tfTypes.EscalationInstanceReassignToApprovers{}
-										if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds != nil {
-											history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = make([]types.String, 0, len(historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds))
-											for _, v := range historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds {
-												history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = append(history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds, types.StringValue(v))
-											}
-										} else {
-											history.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = nil
-										}
-									}
-									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy == nil {
-										history.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = nil
-									} else {
-										history.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = &tfTypes.EscalationInstanceReplacePolicy{}
-										history.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID = types.StringPointerValue(historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID)
-									}
-									if historyItem.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep == nil {
-										history.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = nil
-									} else {
-										history.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = &tfTypes.EscalationInstanceSkipStep{}
-									}
-									history.ApprovalInstance.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.EscalationInstance.ExpiresAt))
-								}
-								if historyItem.ApprovalInstance.ReassignedAction == nil {
-									history.ApprovalInstance.ReassignedAction = nil
-								} else {
-									history.ApprovalInstance.ReassignedAction = &tfTypes.ReassignedAction{}
-									history.ApprovalInstance.ReassignedAction.NewPolicyStepID = types.StringPointerValue(historyItem.ApprovalInstance.ReassignedAction.NewPolicyStepID)
-									history.ApprovalInstance.ReassignedAction.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.ReassignedAction.ReassignedAt))
-									history.ApprovalInstance.ReassignedAction.UserID = types.StringPointerValue(historyItem.ApprovalInstance.ReassignedAction.UserID)
-								}
-								if historyItem.ApprovalInstance.ReassignedByErrorAction == nil {
-									history.ApprovalInstance.ReassignedByErrorAction = nil
-								} else {
-									history.ApprovalInstance.ReassignedByErrorAction = &tfTypes.ReassignedByErrorAction{}
-									history.ApprovalInstance.ReassignedByErrorAction.Description = types.StringPointerValue(historyItem.ApprovalInstance.ReassignedByErrorAction.Description)
-									history.ApprovalInstance.ReassignedByErrorAction.ErrorCode = types.StringPointerValue(historyItem.ApprovalInstance.ReassignedByErrorAction.ErrorCode)
-									history.ApprovalInstance.ReassignedByErrorAction.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.ReassignedByErrorAction.ErroredAt))
-									history.ApprovalInstance.ReassignedByErrorAction.ErrorUserID = types.StringPointerValue(historyItem.ApprovalInstance.ReassignedByErrorAction.ErrorUserID)
-									history.ApprovalInstance.ReassignedByErrorAction.NewPolicyStepID = types.StringPointerValue(historyItem.ApprovalInstance.ReassignedByErrorAction.NewPolicyStepID)
-									history.ApprovalInstance.ReassignedByErrorAction.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.ReassignedByErrorAction.ReassignedAt))
-								}
-								if historyItem.ApprovalInstance.RestartAction == nil {
-									history.ApprovalInstance.RestartAction = nil
-								} else {
-									history.ApprovalInstance.RestartAction = &tfTypes.RestartAction{}
-									history.ApprovalInstance.RestartAction.OldPolicyStepID = types.StringPointerValue(historyItem.ApprovalInstance.RestartAction.OldPolicyStepID)
-									history.ApprovalInstance.RestartAction.RestartedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.RestartAction.RestartedAt))
-									history.ApprovalInstance.RestartAction.UserID = types.StringPointerValue(historyItem.ApprovalInstance.RestartAction.UserID)
-								}
-								if historyItem.ApprovalInstance.SkippedAction == nil {
-									history.ApprovalInstance.SkippedAction = nil
-								} else {
-									history.ApprovalInstance.SkippedAction = &tfTypes.SkippedAction{}
-									history.ApprovalInstance.SkippedAction.NewPolicyStepID = types.StringPointerValue(historyItem.ApprovalInstance.SkippedAction.NewPolicyStepID)
-									history.ApprovalInstance.SkippedAction.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ApprovalInstance.SkippedAction.SkippedAt))
-									history.ApprovalInstance.SkippedAction.UserID = types.StringPointerValue(historyItem.ApprovalInstance.SkippedAction.UserID)
-								}
-								if historyItem.ApprovalInstance.State != nil {
-									history.ApprovalInstance.State = types.StringValue(string(*historyItem.ApprovalInstance.State))
-								} else {
-									history.ApprovalInstance.State = types.StringNull()
-								}
-							}
-							if historyItem.FormInstance == nil {
-								history.FormInstance = nil
-							} else {
-								history.FormInstance = &tfTypes.FormInstance{}
-								if historyItem.FormInstance.Data == nil {
-									history.FormInstance.Data = nil
-								} else {
-									history.FormInstance.Data = &tfTypes.FormInstanceData{}
-								}
-								if historyItem.FormInstance.FormCompletedAction == nil {
-									history.FormInstance.FormCompletedAction = nil
-								} else {
-									history.FormInstance.FormCompletedAction = &tfTypes.FormCompletedAction{}
-									history.FormInstance.FormCompletedAction.CompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.FormInstance.FormCompletedAction.CompletedAt))
-									history.FormInstance.FormCompletedAction.UserID = types.StringPointerValue(historyItem.FormInstance.FormCompletedAction.UserID)
-								}
-								if historyItem.FormInstance.ReassignedAction == nil {
-									history.FormInstance.ReassignedAction = nil
-								} else {
-									history.FormInstance.ReassignedAction = &tfTypes.ReassignedAction{}
-									history.FormInstance.ReassignedAction.NewPolicyStepID = types.StringPointerValue(historyItem.FormInstance.ReassignedAction.NewPolicyStepID)
-									history.FormInstance.ReassignedAction.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.FormInstance.ReassignedAction.ReassignedAt))
-									history.FormInstance.ReassignedAction.UserID = types.StringPointerValue(historyItem.FormInstance.ReassignedAction.UserID)
-								}
-								if historyItem.FormInstance.RequestSchemaForm == nil {
-									history.FormInstance.RequestSchemaForm = nil
-								} else {
-									history.FormInstance.RequestSchemaForm = &tfTypes.RequestSchemaForm{}
-									history.FormInstance.RequestSchemaForm.Description = types.StringPointerValue(historyItem.FormInstance.RequestSchemaForm.Description)
-									if historyItem.FormInstance.RequestSchemaForm.FieldGroups != nil {
-										history.FormInstance.RequestSchemaForm.FieldGroups = []tfTypes.FormFieldGroup{}
-
-										for _, fieldGroupsItem := range historyItem.FormInstance.RequestSchemaForm.FieldGroups {
-											var fieldGroups tfTypes.FormFieldGroup
-
-											fieldGroups.Default = types.BoolPointerValue(fieldGroupsItem.Default)
-											fieldGroups.DisplayName = types.StringPointerValue(fieldGroupsItem.DisplayName)
-											if fieldGroupsItem.Fields != nil {
-												fieldGroups.Fields = make([]types.String, 0, len(fieldGroupsItem.Fields))
-												for _, v := range fieldGroupsItem.Fields {
-													fieldGroups.Fields = append(fieldGroups.Fields, types.StringValue(v))
-												}
-											} else {
-												fieldGroups.Fields = nil
-											}
-											fieldGroups.HelpText = types.StringPointerValue(fieldGroupsItem.HelpText)
-											fieldGroups.Name = types.StringPointerValue(fieldGroupsItem.Name)
-
-											history.FormInstance.RequestSchemaForm.FieldGroups = append(history.FormInstance.RequestSchemaForm.FieldGroups, fieldGroups)
-										}
-									} else {
-										history.FormInstance.RequestSchemaForm.FieldGroups = nil
-									}
-									if historyItem.FormInstance.RequestSchemaForm.FieldRelationships != nil {
-										history.FormInstance.RequestSchemaForm.FieldRelationships = []tfTypes.FieldRelationship{}
-
-										for _, fieldRelationshipsItem := range historyItem.FormInstance.RequestSchemaForm.FieldRelationships {
-											var fieldRelationships tfTypes.FieldRelationship
-
-											if fieldRelationshipsItem.AtLeastOne == nil {
-												fieldRelationships.AtLeastOne = nil
-											} else {
-												fieldRelationships.AtLeastOne = &tfTypes.AtLeastOne{}
-											}
-											if fieldRelationshipsItem.DependentOn == nil {
-												fieldRelationships.DependentOn = nil
-											} else {
-												fieldRelationships.DependentOn = &tfTypes.DependentOn{}
-												if fieldRelationshipsItem.DependentOn.DependencyFieldNames != nil {
-													fieldRelationships.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem.DependentOn.DependencyFieldNames))
-													for _, v := range fieldRelationshipsItem.DependentOn.DependencyFieldNames {
-														fieldRelationships.DependentOn.DependencyFieldNames = append(fieldRelationships.DependentOn.DependencyFieldNames, types.StringValue(v))
-													}
-												} else {
-													fieldRelationships.DependentOn.DependencyFieldNames = nil
-												}
-											}
-											if fieldRelationshipsItem.FieldNames != nil {
-												fieldRelationships.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem.FieldNames))
-												for _, v := range fieldRelationshipsItem.FieldNames {
-													fieldRelationships.FieldNames = append(fieldRelationships.FieldNames, types.StringValue(v))
-												}
-											} else {
-												fieldRelationships.FieldNames = nil
-											}
-											if fieldRelationshipsItem.MutuallyExclusive == nil {
-												fieldRelationships.MutuallyExclusive = nil
-											} else {
-												fieldRelationships.MutuallyExclusive = &tfTypes.MutuallyExclusive{}
-											}
-											if fieldRelationshipsItem.RequiredTogether == nil {
-												fieldRelationships.RequiredTogether = nil
-											} else {
-												fieldRelationships.RequiredTogether = &tfTypes.RequiredTogether{}
-											}
-
-											history.FormInstance.RequestSchemaForm.FieldRelationships = append(history.FormInstance.RequestSchemaForm.FieldRelationships, fieldRelationships)
-										}
-									} else {
-										history.FormInstance.RequestSchemaForm.FieldRelationships = nil
-									}
-									if historyItem.FormInstance.RequestSchemaForm.Fields != nil {
-										history.FormInstance.RequestSchemaForm.Fields = []tfTypes.FormField{}
-
-										for _, fieldsItem := range historyItem.FormInstance.RequestSchemaForm.Fields {
-											var fields tfTypes.FormField
-
-											if fieldsItem.AdminProviderConfig == nil {
-												fields.AdminProviderConfig = nil
-											} else {
-												fields.AdminProviderConfig = &tfTypes.AdminProviderConfig{}
-												fields.AdminProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem.AdminProviderConfig.DefaultValueCel)
-												fields.AdminProviderConfig.ShowToUser = types.BoolPointerValue(fieldsItem.AdminProviderConfig.ShowToUser)
-											}
-											if fieldsItem.BoolField == nil {
-												fields.BoolField = nil
-											} else {
-												fields.BoolField = &tfTypes.BoolField{}
-												if fieldsItem.BoolField.BoolRules == nil {
-													fields.BoolField.BoolRules = nil
-												} else {
-													fields.BoolField.BoolRules = &tfTypes.BoolRules{}
-													fields.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem.BoolField.BoolRules.Const)
-												}
-												if fieldsItem.BoolField.CheckboxField == nil {
-													fields.BoolField.CheckboxField = nil
-												} else {
-													fields.BoolField.CheckboxField = &tfTypes.CheckboxField{}
-												}
-												fields.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem.BoolField.DefaultValue)
-												if fieldsItem.BoolField.ToggleField == nil {
-													fields.BoolField.ToggleField = nil
-												} else {
-													fields.BoolField.ToggleField = &tfTypes.ToggleField{}
-												}
-											}
-											fields.Description = types.StringPointerValue(fieldsItem.Description)
-											fields.DisplayName = types.StringPointerValue(fieldsItem.DisplayName)
-											if fieldsItem.FileField == nil {
-												fields.FileField = nil
-											} else {
-												fields.FileField = &tfTypes.FileField{}
-												if fieldsItem.FileField.AcceptedFileTypes != nil {
-													fields.FileField.AcceptedFileTypes = make([]types.String, 0, len(fieldsItem.FileField.AcceptedFileTypes))
-													for _, v := range fieldsItem.FileField.AcceptedFileTypes {
-														fields.FileField.AcceptedFileTypes = append(fields.FileField.AcceptedFileTypes, types.StringValue(v))
-													}
-												} else {
-													fields.FileField.AcceptedFileTypes = nil
-												}
-												if fieldsItem.FileField.FileInputField == nil {
-													fields.FileField.FileInputField = nil
-												} else {
-													fields.FileField.FileInputField = &tfTypes.FileInputField{}
-												}
-												fields.FileField.MaxFileSize = types.StringPointerValue(fieldsItem.FileField.MaxFileSize)
-											}
-											if fieldsItem.FormStringField == nil {
-												fields.FormStringField = nil
-											} else {
-												fields.FormStringField = &tfTypes.FormStringField{}
-												fields.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem.FormStringField.DefaultValue)
-												if fieldsItem.FormStringField.PasswordField == nil {
-													fields.FormStringField.PasswordField = nil
-												} else {
-													fields.FormStringField.PasswordField = &tfTypes.PasswordField{}
-												}
-												if fieldsItem.FormStringField.PickerField == nil {
-													fields.FormStringField.PickerField = nil
-												} else {
-													fields.FormStringField.PickerField = &tfTypes.PickerField{}
-													if fieldsItem.FormStringField.PickerField.AppResourceFilter == nil {
-														fields.FormStringField.PickerField.AppResourceFilter = nil
-													} else {
-														fields.FormStringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
-														fields.FormStringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem.FormStringField.PickerField.AppResourceFilter.AppID)
-														fields.FormStringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem.FormStringField.PickerField.AppResourceFilter.ResourceTypeID)
-													}
-													if fieldsItem.FormStringField.PickerField.AppUserFilter == nil {
-														fields.FormStringField.PickerField.AppUserFilter = nil
-													} else {
-														fields.FormStringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
-														fields.FormStringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem.FormStringField.PickerField.AppUserFilter.AppID)
-													}
-													if fieldsItem.FormStringField.PickerField.C1UserFilter == nil {
-														fields.FormStringField.PickerField.C1UserFilter = nil
-													} else {
-														fields.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
-													}
-												}
-												fields.FormStringField.Placeholder = types.StringPointerValue(fieldsItem.FormStringField.Placeholder)
-												if fieldsItem.FormStringField.SelectField == nil {
-													fields.FormStringField.SelectField = nil
-												} else {
-													fields.FormStringField.SelectField = &tfTypes.SelectField{}
-													if fieldsItem.FormStringField.SelectField.Options != nil {
-														fields.FormStringField.SelectField.Options = []tfTypes.SelectOption{}
-
-														for _, optionsVarItem := range fieldsItem.FormStringField.SelectField.Options {
-															var optionsVar tfTypes.SelectOption
-
-															optionsVar.Description = types.StringPointerValue(optionsVarItem.Description)
-															optionsVar.DisplayName = types.StringPointerValue(optionsVarItem.DisplayName)
-															optionsVar.Value = types.StringPointerValue(optionsVarItem.Value)
-
-															fields.FormStringField.SelectField.Options = append(fields.FormStringField.SelectField.Options, optionsVar)
-														}
-													} else {
-														fields.FormStringField.SelectField.Options = nil
-													}
-													if fieldsItem.FormStringField.SelectField.Type != nil {
-														fields.FormStringField.SelectField.Type = types.StringValue(string(*fieldsItem.FormStringField.SelectField.Type))
-													} else {
-														fields.FormStringField.SelectField.Type = types.StringNull()
-													}
-												}
-												if fieldsItem.FormStringField.StringRules == nil {
-													fields.FormStringField.StringRules = nil
-												} else {
-													fields.FormStringField.StringRules = &tfTypes.StringRules{}
-													fields.FormStringField.StringRules.Address = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Address)
-													fields.FormStringField.StringRules.Const = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Const)
-													fields.FormStringField.StringRules.Contains = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Contains)
-													fields.FormStringField.StringRules.Email = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Email)
-													fields.FormStringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Hostname)
-													fields.FormStringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.IgnoreEmpty)
-													if fieldsItem.FormStringField.StringRules.In != nil {
-														fields.FormStringField.StringRules.In = make([]types.String, 0, len(fieldsItem.FormStringField.StringRules.In))
-														for _, v := range fieldsItem.FormStringField.StringRules.In {
-															fields.FormStringField.StringRules.In = append(fields.FormStringField.StringRules.In, types.StringValue(v))
-														}
-													} else {
-														fields.FormStringField.StringRules.In = nil
-													}
-													fields.FormStringField.StringRules.IP = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.IP)
-													fields.FormStringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Ipv4)
-													fields.FormStringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Ipv6)
-													fields.FormStringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem.FormStringField.StringRules.LenBytes)
-													fields.FormStringField.StringRules.Length = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Length)
-													fields.FormStringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MaxBytes)
-													fields.FormStringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MaxLen)
-													fields.FormStringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MinBytes)
-													fields.FormStringField.StringRules.MinLen = types.StringPointerValue(fieldsItem.FormStringField.StringRules.MinLen)
-													fields.FormStringField.StringRules.NotContains = types.StringPointerValue(fieldsItem.FormStringField.StringRules.NotContains)
-													if fieldsItem.FormStringField.StringRules.NotIn != nil {
-														fields.FormStringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem.FormStringField.StringRules.NotIn))
-														for _, v := range fieldsItem.FormStringField.StringRules.NotIn {
-															fields.FormStringField.StringRules.NotIn = append(fields.FormStringField.StringRules.NotIn, types.StringValue(v))
-														}
-													} else {
-														fields.FormStringField.StringRules.NotIn = nil
-													}
-													fields.FormStringField.StringRules.Pattern = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Pattern)
-													fields.FormStringField.StringRules.Prefix = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Prefix)
-													fields.FormStringField.StringRules.Strict = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.Strict)
-													fields.FormStringField.StringRules.Suffix = types.StringPointerValue(fieldsItem.FormStringField.StringRules.Suffix)
-													fields.FormStringField.StringRules.URI = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.URI)
-													fields.FormStringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.URIRef)
-													fields.FormStringField.StringRules.UUID = types.BoolPointerValue(fieldsItem.FormStringField.StringRules.UUID)
-													if fieldsItem.FormStringField.StringRules.WellKnownRegex != nil {
-														fields.FormStringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem.FormStringField.StringRules.WellKnownRegex))
-													} else {
-														fields.FormStringField.StringRules.WellKnownRegex = types.StringNull()
-													}
-												}
-												if fieldsItem.FormStringField.TextField == nil {
-													fields.FormStringField.TextField = nil
-												} else {
-													fields.FormStringField.TextField = &tfTypes.TextField{}
-													fields.FormStringField.TextField.Multiline = types.BoolPointerValue(fieldsItem.FormStringField.TextField.Multiline)
-													fields.FormStringField.TextField.Suffix = types.StringPointerValue(fieldsItem.FormStringField.TextField.Suffix)
-												}
-											}
-											if fieldsItem.FormStringMapField == nil {
-												fields.FormStringMapField = nil
-											} else {
-												fields.FormStringMapField = &tfTypes.FormStringMapField{}
-												if len(fieldsItem.FormStringMapField.DefaultValue) > 0 {
-													fields.FormStringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem.FormStringMapField.DefaultValue))
-													for key, value := range fieldsItem.FormStringMapField.DefaultValue {
-														fields.FormStringMapField.DefaultValue[key] = types.StringValue(value)
-													}
-												}
-												if fieldsItem.FormStringMapField.StringMapRules == nil {
-													fields.FormStringMapField.StringMapRules = nil
-												} else {
-													fields.FormStringMapField.StringMapRules = &tfTypes.StringMapRules{}
-													fields.FormStringMapField.StringMapRules.IsRequired = types.BoolPointerValue(fieldsItem.FormStringMapField.StringMapRules.IsRequired)
-													fields.FormStringMapField.StringMapRules.ValidateEmpty = types.BoolPointerValue(fieldsItem.FormStringMapField.StringMapRules.ValidateEmpty)
-												}
-											}
-											if fieldsItem.Int64Field == nil {
-												fields.Int64Field = nil
-											} else {
-												fields.Int64Field = &tfTypes.Int64Field{}
-												fields.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem.Int64Field.DefaultValue)
-												if fieldsItem.Int64Field.Int64Rules == nil {
-													fields.Int64Field.Int64Rules = nil
-												} else {
-													fields.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
-													fields.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Const)
-													fields.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Gt)
-													fields.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Gte)
-													fields.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem.Int64Field.Int64Rules.IgnoreEmpty)
-													if fieldsItem.Int64Field.Int64Rules.In != nil {
-														fields.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem.Int64Field.Int64Rules.In))
-														for _, v := range fieldsItem.Int64Field.Int64Rules.In {
-															fields.Int64Field.Int64Rules.In = append(fields.Int64Field.Int64Rules.In, types.StringValue(v))
-														}
-													} else {
-														fields.Int64Field.Int64Rules.In = nil
-													}
-													fields.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lt)
-													fields.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem.Int64Field.Int64Rules.Lte)
-													if fieldsItem.Int64Field.Int64Rules.NotIn != nil {
-														fields.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem.Int64Field.Int64Rules.NotIn))
-														for _, v := range fieldsItem.Int64Field.Int64Rules.NotIn {
-															fields.Int64Field.Int64Rules.NotIn = append(fields.Int64Field.Int64Rules.NotIn, types.StringValue(v))
-														}
-													} else {
-														fields.Int64Field.Int64Rules.NotIn = nil
-													}
-												}
-												if fieldsItem.Int64Field.NumberField == nil {
-													fields.Int64Field.NumberField = nil
-												} else {
-													fields.Int64Field.NumberField = &tfTypes.NumberField{}
-													fields.Int64Field.NumberField.MaxValue = types.StringPointerValue(fieldsItem.Int64Field.NumberField.MaxValue)
-													fields.Int64Field.NumberField.MinValue = types.StringPointerValue(fieldsItem.Int64Field.NumberField.MinValue)
-													fields.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem.Int64Field.NumberField.Step)
-												}
-												fields.Int64Field.Placeholder = types.StringPointerValue(fieldsItem.Int64Field.Placeholder)
-											}
-											fields.Name = types.StringPointerValue(fieldsItem.Name)
-											if fieldsItem.Oauth2Field == nil {
-												fields.Oauth2Field = nil
-											} else {
-												fields.Oauth2Field = &tfTypes.Oauth2Field{}
-												if fieldsItem.Oauth2Field.Oauth2FieldView == nil {
-													fields.Oauth2Field.Oauth2FieldView = nil
-												} else {
-													fields.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
-												}
-											}
-											fields.ReadOnly = types.BoolPointerValue(fieldsItem.ReadOnly)
-											fields.Required = types.BoolPointerValue(fieldsItem.Required)
-											if fieldsItem.SharedProviderConfig == nil {
-												fields.SharedProviderConfig = nil
-											} else {
-												fields.SharedProviderConfig = &tfTypes.SharedProviderConfig{}
-												fields.SharedProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem.SharedProviderConfig.DefaultValueCel)
-												fields.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.SharedProviderConfig.InputTransformationCel)
-												fields.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem.SharedProviderConfig.LockDefaultValues)
-											}
-											if fieldsItem.UserProviderConfig == nil {
-												fields.UserProviderConfig = nil
-											} else {
-												fields.UserProviderConfig = &tfTypes.UserProviderConfig{}
-												fields.UserProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem.UserProviderConfig.InputTransformationCel)
-											}
-
-											history.FormInstance.RequestSchemaForm.Fields = append(history.FormInstance.RequestSchemaForm.Fields, fields)
-										}
-									} else {
-										history.FormInstance.RequestSchemaForm.Fields = nil
-									}
-									history.FormInstance.RequestSchemaForm.Name = types.StringPointerValue(historyItem.FormInstance.RequestSchemaForm.Name)
-								}
-								if historyItem.FormInstance.RestartAction == nil {
-									history.FormInstance.RestartAction = nil
-								} else {
-									history.FormInstance.RestartAction = &tfTypes.RestartAction{}
-									history.FormInstance.RestartAction.OldPolicyStepID = types.StringPointerValue(historyItem.FormInstance.RestartAction.OldPolicyStepID)
-									history.FormInstance.RestartAction.RestartedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.FormInstance.RestartAction.RestartedAt))
-									history.FormInstance.RestartAction.UserID = types.StringPointerValue(historyItem.FormInstance.RestartAction.UserID)
-								}
-								if historyItem.FormInstance.SkippedAction == nil {
-									history.FormInstance.SkippedAction = nil
-								} else {
-									history.FormInstance.SkippedAction = &tfTypes.SkippedAction{}
-									history.FormInstance.SkippedAction.NewPolicyStepID = types.StringPointerValue(historyItem.FormInstance.SkippedAction.NewPolicyStepID)
-									history.FormInstance.SkippedAction.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.FormInstance.SkippedAction.SkippedAt))
-									history.FormInstance.SkippedAction.UserID = types.StringPointerValue(historyItem.FormInstance.SkippedAction.UserID)
-								}
-								if historyItem.FormInstance.State != nil {
-									history.FormInstance.State = types.StringValue(string(*historyItem.FormInstance.State))
-								} else {
-									history.FormInstance.State = types.StringNull()
-								}
-							}
-							history.ID = types.StringPointerValue(historyItem.ID)
-							history.PolicyGenerationID = types.StringPointerValue(historyItem.PolicyGenerationID)
-							if historyItem.ProvisionInstance == nil {
-								history.ProvisionInstance = nil
-							} else {
-								history.ProvisionInstance = &tfTypes.ProvisionInstance{}
-								history.ProvisionInstance.BatonActionInvocationID = types.StringPointerValue(historyItem.ProvisionInstance.BatonActionInvocationID)
-								if historyItem.ProvisionInstance.CancelledAction == nil {
-									history.ProvisionInstance.CancelledAction = nil
-								} else {
-									history.ProvisionInstance.CancelledAction = &tfTypes.CancelledAction{}
-									history.ProvisionInstance.CancelledAction.CancelledAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ProvisionInstance.CancelledAction.CancelledAt))
-									history.ProvisionInstance.CancelledAction.CancelledByUserID = types.StringPointerValue(historyItem.ProvisionInstance.CancelledAction.CancelledByUserID)
-								}
-								if historyItem.ProvisionInstance.CompletedAction == nil {
-									history.ProvisionInstance.CompletedAction = nil
-								} else {
-									history.ProvisionInstance.CompletedAction = &tfTypes.CompletedAction{}
-									history.ProvisionInstance.CompletedAction.CompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ProvisionInstance.CompletedAction.CompletedAt))
-									if historyItem.ProvisionInstance.CompletedAction.Entitlements != nil {
-										history.ProvisionInstance.CompletedAction.Entitlements = []tfTypes.AppEntitlementReference{}
-
-										for _, entitlementsItem1 := range historyItem.ProvisionInstance.CompletedAction.Entitlements {
-											var entitlements1 tfTypes.AppEntitlementReference
-
-											entitlements1.AppEntitlementID = types.StringPointerValue(entitlementsItem1.AppEntitlementID)
-											entitlements1.AppID = types.StringPointerValue(entitlementsItem1.AppID)
-
-											history.ProvisionInstance.CompletedAction.Entitlements = append(history.ProvisionInstance.CompletedAction.Entitlements, entitlements1)
-										}
-									} else {
-										history.ProvisionInstance.CompletedAction.Entitlements = nil
-									}
-									history.ProvisionInstance.CompletedAction.UserID = types.StringPointerValue(historyItem.ProvisionInstance.CompletedAction.UserID)
-								}
-								if historyItem.ProvisionInstance.ErroredAction == nil {
-									history.ProvisionInstance.ErroredAction = nil
-								} else {
-									history.ProvisionInstance.ErroredAction = &tfTypes.ErroredAction{}
-									history.ProvisionInstance.ErroredAction.Description = types.StringPointerValue(historyItem.ProvisionInstance.ErroredAction.Description)
-									history.ProvisionInstance.ErroredAction.ErrorCode = types.StringPointerValue(historyItem.ProvisionInstance.ErroredAction.ErrorCode)
-									history.ProvisionInstance.ErroredAction.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ProvisionInstance.ErroredAction.ErroredAt))
-								}
-								history.ProvisionInstance.ExternalTicketID = types.StringPointerValue(historyItem.ProvisionInstance.ExternalTicketID)
-								history.ProvisionInstance.ExternalTicketProvisionerConfigID = types.StringPointerValue(historyItem.ProvisionInstance.ExternalTicketProvisionerConfigID)
-								history.ProvisionInstance.NotificationID = types.StringPointerValue(historyItem.ProvisionInstance.NotificationID)
-								if historyItem.ProvisionInstance.Provision == nil {
-									history.ProvisionInstance.Provision = nil
-								} else {
-									history.ProvisionInstance.Provision = &tfTypes.Provision{}
-									history.ProvisionInstance.Provision.Assigned = types.BoolPointerValue(historyItem.ProvisionInstance.Provision.Assigned)
-									if historyItem.ProvisionInstance.Provision.ProvisionPolicy == nil {
-										history.ProvisionInstance.Provision.ProvisionPolicy = nil
-									} else {
-										history.ProvisionInstance.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
-										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision == nil {
-											history.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision = nil
-										} else {
-											history.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision = &tfTypes.ActionProvision{}
-											history.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.ActionName)
-											history.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.AppID)
-											history.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.ConnectorID)
-											history.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.DisplayName = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.DisplayName)
-										}
-										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision == nil {
-											history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision = nil
-										} else {
-											history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
-											if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision == nil {
-												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = nil
-											} else {
-												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
-												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
-												} else {
-													configResult, _ := json.Marshal(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config)
-													history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult))
-												}
-												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
-												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
-												} else {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
-												}
-												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
-												} else {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
-													if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-															history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
-														}
-													} else {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
-													}
-												}
-												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
-											}
-											if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
-												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = nil
-											} else {
-												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
-												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
-											}
-											if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
-												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
-											} else {
-												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
-												history.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
-											}
-										}
-										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision == nil {
-											history.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision = nil
-										} else {
-											history.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
-											history.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.AppID)
-											history.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
-										}
-										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
-											history.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision = nil
-										} else {
-											history.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
-											history.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.AppID)
-											history.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
-											history.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
-											history.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions)
-										}
-										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision == nil {
-											history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision = nil
-										} else {
-											history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
-											history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.Instructions)
-											if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment == nil {
-												history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = nil
-											} else {
-												history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}
-												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner == nil {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = nil
-												} else {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = &tfTypes.AppOwnerProvisioner{}
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment)
-													if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
-														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
-															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
-														}
-													} else {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
-													}
-												}
-												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = nil
-												} else {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = &tfTypes.EntitlementOwnerProvisioner{}
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment)
-													if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
-														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
-															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
-														}
-													} else {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
-													}
-												}
-												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = nil
-												} else {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = &tfTypes.ExpressionProvisioner{}
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment)
-													if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
-														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
-															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
-														}
-													} else {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
-													}
-													if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
-														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
-															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
-														}
-													} else {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
-													}
-												}
-												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = nil
-												} else {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = &tfTypes.GroupProvisioner{}
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment)
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID)
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID)
-													if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds))
-														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
-															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
-														}
-													} else {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
-													}
-												}
-												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = nil
-												} else {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = &tfTypes.ManagerProvisioner{}
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment)
-													if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
-														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
-															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
-														}
-													} else {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
-													}
-												}
-												if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = nil
-												} else {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = &tfTypes.UserProvisioner{}
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment)
-													if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
-														for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
-															history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
-														}
-													} else {
-														history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
-													}
-												}
-											}
-											if historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
-												history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds))
-												for _, v := range historyItem.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds {
-													history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = append(history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
-												}
-											} else {
-												history.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
-											}
-										}
-										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.MultiStep == nil {
-											history.ProvisionInstance.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
-										} else {
-											multiStepResult, _ := json.Marshal(historyItem.ProvisionInstance.Provision.ProvisionPolicy.MultiStep)
-											history.ProvisionInstance.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
-										}
-										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
-											history.ProvisionInstance.Provision.ProvisionPolicy.UnconfiguredProvision = nil
-										} else {
-											history.ProvisionInstance.Provision.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
-										}
-										if historyItem.ProvisionInstance.Provision.ProvisionPolicy.WebhookProvision == nil {
-											history.ProvisionInstance.Provision.ProvisionPolicy.WebhookProvision = nil
-										} else {
-											history.ProvisionInstance.Provision.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
-											history.ProvisionInstance.Provision.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionPolicy.WebhookProvision.WebhookID)
-										}
-									}
-									if historyItem.ProvisionInstance.Provision.ProvisionTarget == nil {
-										history.ProvisionInstance.Provision.ProvisionTarget = nil
-									} else {
-										history.ProvisionInstance.Provision.ProvisionTarget = &tfTypes.ProvisionTarget{}
-										history.ProvisionInstance.Provision.ProvisionTarget.AppEntitlementID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionTarget.AppEntitlementID)
-										history.ProvisionInstance.Provision.ProvisionTarget.AppID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionTarget.AppID)
-										history.ProvisionInstance.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionTarget.AppUserID)
-										history.ProvisionInstance.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(historyItem.ProvisionInstance.Provision.ProvisionTarget.GrantDuration)
-									}
-								}
-								if historyItem.ProvisionInstance.ReassignedByErrorAction == nil {
-									history.ProvisionInstance.ReassignedByErrorAction = nil
-								} else {
-									history.ProvisionInstance.ReassignedByErrorAction = &tfTypes.ReassignedByErrorAction{}
-									history.ProvisionInstance.ReassignedByErrorAction.Description = types.StringPointerValue(historyItem.ProvisionInstance.ReassignedByErrorAction.Description)
-									history.ProvisionInstance.ReassignedByErrorAction.ErrorCode = types.StringPointerValue(historyItem.ProvisionInstance.ReassignedByErrorAction.ErrorCode)
-									history.ProvisionInstance.ReassignedByErrorAction.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ProvisionInstance.ReassignedByErrorAction.ErroredAt))
-									history.ProvisionInstance.ReassignedByErrorAction.ErrorUserID = types.StringPointerValue(historyItem.ProvisionInstance.ReassignedByErrorAction.ErrorUserID)
-									history.ProvisionInstance.ReassignedByErrorAction.NewPolicyStepID = types.StringPointerValue(historyItem.ProvisionInstance.ReassignedByErrorAction.NewPolicyStepID)
-									history.ProvisionInstance.ReassignedByErrorAction.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ProvisionInstance.ReassignedByErrorAction.ReassignedAt))
-								}
-								if historyItem.ProvisionInstance.SkippedAction == nil {
-									history.ProvisionInstance.SkippedAction = nil
-								} else {
-									history.ProvisionInstance.SkippedAction = &tfTypes.SkippedAction{}
-									history.ProvisionInstance.SkippedAction.NewPolicyStepID = types.StringPointerValue(historyItem.ProvisionInstance.SkippedAction.NewPolicyStepID)
-									history.ProvisionInstance.SkippedAction.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.ProvisionInstance.SkippedAction.SkippedAt))
-									history.ProvisionInstance.SkippedAction.UserID = types.StringPointerValue(historyItem.ProvisionInstance.SkippedAction.UserID)
-								}
-								if historyItem.ProvisionInstance.State != nil {
-									history.ProvisionInstance.State = types.StringValue(string(*historyItem.ProvisionInstance.State))
-								} else {
-									history.ProvisionInstance.State = types.StringNull()
-								}
-								history.ProvisionInstance.WebhookID = types.StringPointerValue(historyItem.ProvisionInstance.WebhookID)
-								history.ProvisionInstance.WebhookInstanceID = types.StringPointerValue(historyItem.ProvisionInstance.WebhookInstanceID)
-							}
-							if historyItem.RejectInstance == nil {
-								history.RejectInstance = nil
-							} else {
-								history.RejectInstance = &tfTypes.RejectInstance{}
-								history.RejectInstance.RejectMessage = types.StringPointerValue(historyItem.RejectInstance.RejectMessage)
-							}
-							if historyItem.State != nil {
-								history.State = types.StringValue(string(*historyItem.State))
-							} else {
-								history.State = types.StringNull()
-							}
-							if historyItem.WaitInstance == nil {
-								history.WaitInstance = nil
-							} else {
-								history.WaitInstance = &tfTypes.WaitInstance{}
-								history.WaitInstance.CommentOnFirstWait = types.StringPointerValue(historyItem.WaitInstance.CommentOnFirstWait)
-								history.WaitInstance.CommentOnTimeout = types.StringPointerValue(historyItem.WaitInstance.CommentOnTimeout)
-								if historyItem.WaitInstance.ConditionSucceeded == nil {
-									history.WaitInstance.ConditionSucceeded = nil
-								} else {
-									history.WaitInstance.ConditionSucceeded = &tfTypes.ConditionSucceeded{}
-									history.WaitInstance.ConditionSucceeded.SucceededAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.WaitInstance.ConditionSucceeded.SucceededAt))
-								}
-								if historyItem.WaitInstance.ConditionTimedOut == nil {
-									history.WaitInstance.ConditionTimedOut = nil
-								} else {
-									history.WaitInstance.ConditionTimedOut = &tfTypes.ConditionTimedOut{}
-									history.WaitInstance.ConditionTimedOut.TimedOutAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.WaitInstance.ConditionTimedOut.TimedOutAt))
-								}
-								history.WaitInstance.Name = types.StringPointerValue(historyItem.WaitInstance.Name)
-								if historyItem.WaitInstance.SkippedAction == nil {
-									history.WaitInstance.SkippedAction = nil
-								} else {
-									history.WaitInstance.SkippedAction = &tfTypes.SkippedAction{}
-									history.WaitInstance.SkippedAction.NewPolicyStepID = types.StringPointerValue(historyItem.WaitInstance.SkippedAction.NewPolicyStepID)
-									history.WaitInstance.SkippedAction.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.WaitInstance.SkippedAction.SkippedAt))
-									history.WaitInstance.SkippedAction.UserID = types.StringPointerValue(historyItem.WaitInstance.SkippedAction.UserID)
-								}
-								history.WaitInstance.StartedWaitingAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.WaitInstance.StartedWaitingAt))
-								if historyItem.WaitInstance.State != nil {
-									history.WaitInstance.State = types.StringValue(string(*historyItem.WaitInstance.State))
-								} else {
-									history.WaitInstance.State = types.StringNull()
-								}
-								history.WaitInstance.Timeout = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.WaitInstance.Timeout))
-								history.WaitInstance.TimeoutDuration = types.StringPointerValue(historyItem.WaitInstance.TimeoutDuration)
-								if historyItem.WaitInstance.WaitConditionInstance == nil {
-									history.WaitInstance.WaitConditionInstance = nil
-								} else {
-									history.WaitInstance.WaitConditionInstance = &tfTypes.WaitConditionInstance{}
-									history.WaitInstance.WaitConditionInstance.Condition = types.StringPointerValue(historyItem.WaitInstance.WaitConditionInstance.Condition)
-								}
-								if historyItem.WaitInstance.WaitUntilTimeInstance == nil {
-									history.WaitInstance.WaitUntilTimeInstance = nil
-								} else {
-									history.WaitInstance.WaitUntilTimeInstance = &tfTypes.WaitUntilTimeInstance{}
-									history.WaitInstance.WaitUntilTimeInstance.DurationIfExists = types.StringPointerValue(historyItem.WaitInstance.WaitUntilTimeInstance.DurationIfExists)
-									history.WaitInstance.WaitUntilTimeInstance.UntilTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.WaitInstance.WaitUntilTimeInstance.UntilTime))
-								}
-							}
-
-							r.TaskView.Task.PolicyInstance.History = append(r.TaskView.Task.PolicyInstance.History, history)
-						}
+					r.TaskView.Task.Policy = &tfTypes.PolicyInstance{}
+					if resp.TaskView.Task.Policy.Current == nil {
+						r.TaskView.Task.Policy.Current = nil
 					} else {
-						r.TaskView.Task.PolicyInstance.History = nil
-					}
-					if resp.TaskView.Task.PolicyInstance.Next != nil {
-						r.TaskView.Task.PolicyInstance.Next = []tfTypes.PolicyStep{}
-
-						for _, nextItem := range resp.TaskView.Task.PolicyInstance.Next {
-							var next tfTypes.PolicyStep
-
-							if nextItem.Accept == nil {
-								next.Accept = nil
-							} else {
-								next.Accept = &tfTypes.Accept{}
-								next.Accept.AcceptMessage = types.StringPointerValue(nextItem.Accept.AcceptMessage)
-							}
-							if nextItem.Action == nil {
-								next.Action = nil
-							} else {
-								next.Action = &tfTypes.Action{}
-								if nextItem.Action.ActionTargetAutomation == nil {
-									next.Action.ActionTargetAutomation = nil
-								} else {
-									next.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
-									next.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(nextItem.Action.ActionTargetAutomation.AutomationTemplateID)
-								}
-								if nextItem.Action.ActionTargetBatonResourceAction == nil {
-									next.Action.ActionTargetBatonResourceAction = nil
-								} else {
-									next.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
-									next.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(nextItem.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
-								}
-								if nextItem.Action.ActionTargetClientIDApproval == nil {
-									next.Action.ActionTargetClientIDApproval = nil
-								} else {
-									next.Action.ActionTargetClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
-								}
-							}
-							if nextItem.Approval == nil {
-								next.Approval = nil
-							} else {
-								next.Approval = &tfTypes.Approval{}
-								if nextItem.Approval.AgentApproval == nil {
-									next.Approval.AgentApproval = nil
-								} else {
-									next.Approval.AgentApproval = &tfTypes.AgentApproval{}
-									if nextItem.Approval.AgentApproval.AgentFailureAction != nil {
-										next.Approval.AgentApproval.AgentFailureAction = types.StringValue(string(*nextItem.Approval.AgentApproval.AgentFailureAction))
-									} else {
-										next.Approval.AgentApproval.AgentFailureAction = types.StringNull()
-									}
-									if nextItem.Approval.AgentApproval.AgentMode != nil {
-										next.Approval.AgentApproval.AgentMode = types.StringValue(string(*nextItem.Approval.AgentApproval.AgentMode))
-									} else {
-										next.Approval.AgentApproval.AgentMode = types.StringNull()
-									}
-									next.Approval.AgentApproval.AgentUserID = types.StringPointerValue(nextItem.Approval.AgentApproval.AgentUserID)
-									next.Approval.AgentApproval.Instructions = types.StringPointerValue(nextItem.Approval.AgentApproval.Instructions)
-									if nextItem.Approval.AgentApproval.PolicyIds != nil {
-										next.Approval.AgentApproval.PolicyIds = make([]types.String, 0, len(nextItem.Approval.AgentApproval.PolicyIds))
-										for _, v := range nextItem.Approval.AgentApproval.PolicyIds {
-											next.Approval.AgentApproval.PolicyIds = append(next.Approval.AgentApproval.PolicyIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.AgentApproval.PolicyIds = nil
-									}
-									if nextItem.Approval.AgentApproval.ReassignToUserIds != nil {
-										next.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(nextItem.Approval.AgentApproval.ReassignToUserIds))
-										for _, v := range nextItem.Approval.AgentApproval.ReassignToUserIds {
-											next.Approval.AgentApproval.ReassignToUserIds = append(next.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.AgentApproval.ReassignToUserIds = nil
-									}
-								}
-								next.Approval.AllowDelegation = types.BoolPointerValue(nextItem.Approval.AllowDelegation)
-								if nextItem.Approval.AllowedReassignees != nil {
-									next.Approval.AllowedReassignees = make([]types.String, 0, len(nextItem.Approval.AllowedReassignees))
-									for _, v := range nextItem.Approval.AllowedReassignees {
-										next.Approval.AllowedReassignees = append(next.Approval.AllowedReassignees, types.StringValue(v))
-									}
-								} else {
-									next.Approval.AllowedReassignees = nil
-								}
-								next.Approval.AllowReassignment = types.BoolPointerValue(nextItem.Approval.AllowReassignment)
-								if nextItem.Approval.AppGroupApproval == nil {
-									next.Approval.AppGroupApproval = nil
-								} else {
-									next.Approval.AppGroupApproval = &tfTypes.AppGroupApproval{}
-									next.Approval.AppGroupApproval.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.AppGroupApproval.AllowSelfApproval)
-									next.Approval.AppGroupApproval.AppGroupID = types.StringPointerValue(nextItem.Approval.AppGroupApproval.AppGroupID)
-									next.Approval.AppGroupApproval.AppID = types.StringPointerValue(nextItem.Approval.AppGroupApproval.AppID)
-									next.Approval.AppGroupApproval.Fallback = types.BoolPointerValue(nextItem.Approval.AppGroupApproval.Fallback)
-									if nextItem.Approval.AppGroupApproval.FallbackGroupIds != nil {
-										next.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-										for _, fallbackGroupIdsItem6 := range nextItem.Approval.AppGroupApproval.FallbackGroupIds {
-											var fallbackGroupIds6 tfTypes.AppEntitlementReference
-
-											fallbackGroupIds6.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem6.AppEntitlementID)
-											fallbackGroupIds6.AppID = types.StringPointerValue(fallbackGroupIdsItem6.AppID)
-
-											next.Approval.AppGroupApproval.FallbackGroupIds = append(next.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds6)
-										}
-									} else {
-										next.Approval.AppGroupApproval.FallbackGroupIds = nil
-									}
-									if nextItem.Approval.AppGroupApproval.FallbackUserIds != nil {
-										next.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.AppGroupApproval.FallbackUserIds))
-										for _, v := range nextItem.Approval.AppGroupApproval.FallbackUserIds {
-											next.Approval.AppGroupApproval.FallbackUserIds = append(next.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.AppGroupApproval.FallbackUserIds = nil
-									}
-									next.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
-									next.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.AppGroupApproval.RequireDistinctApprovers)
-								}
-								if nextItem.Approval.AppOwnerApproval == nil {
-									next.Approval.AppOwnerApproval = nil
-								} else {
-									next.Approval.AppOwnerApproval = &tfTypes.AppOwnerApproval{}
-									next.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.AppOwnerApproval.AllowSelfApproval)
-									next.Approval.AppOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.AppOwnerApproval.RequireDistinctApprovers)
-								}
-								next.Approval.Assigned = types.BoolPointerValue(nextItem.Approval.Assigned)
-								if nextItem.Approval.EntitlementOwnerApproval == nil {
-									next.Approval.EntitlementOwnerApproval = nil
-								} else {
-									next.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
-									next.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
-									next.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.Fallback)
-									if nextItem.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
-										next.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-										for _, fallbackGroupIdsItem7 := range nextItem.Approval.EntitlementOwnerApproval.FallbackGroupIds {
-											var fallbackGroupIds7 tfTypes.AppEntitlementReference
-
-											fallbackGroupIds7.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem7.AppEntitlementID)
-											fallbackGroupIds7.AppID = types.StringPointerValue(fallbackGroupIdsItem7.AppID)
-
-											next.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(next.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds7)
-										}
-									} else {
-										next.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
-									}
-									if nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
-										next.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
-										for _, v := range nextItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
-											next.Approval.EntitlementOwnerApproval.FallbackUserIds = append(next.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
-									}
-									next.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
-									next.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
-								}
-								if nextItem.Approval.Escalation == nil {
-									next.Approval.Escalation = nil
-								} else {
-									next.Approval.Escalation = &tfTypes.Escalation{}
-									if nextItem.Approval.Escalation.CancelTicket == nil {
-										next.Approval.Escalation.CancelTicket = nil
-									} else {
-										next.Approval.Escalation.CancelTicket = &tfTypes.CancelTicket{}
-									}
-									next.Approval.Escalation.EscalationComment = types.StringPointerValue(nextItem.Approval.Escalation.EscalationComment)
-									next.Approval.Escalation.Expiration = types.StringPointerValue(nextItem.Approval.Escalation.Expiration)
-									if nextItem.Approval.Escalation.ReassignToApprovers == nil {
-										next.Approval.Escalation.ReassignToApprovers = nil
-									} else {
-										next.Approval.Escalation.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
-										if nextItem.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
-											next.Approval.Escalation.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(nextItem.Approval.Escalation.ReassignToApprovers.ApproverIds))
-											for _, v := range nextItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
-												next.Approval.Escalation.ReassignToApprovers.ApproverIds = append(next.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
-											}
-										} else {
-											next.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
-										}
-									}
-									if nextItem.Approval.Escalation.ReplacePolicy == nil {
-										next.Approval.Escalation.ReplacePolicy = nil
-									} else {
-										next.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
-										next.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(nextItem.Approval.Escalation.ReplacePolicy.PolicyID)
-									}
-									if nextItem.Approval.Escalation.SkipStep == nil {
-										next.Approval.Escalation.SkipStep = nil
-									} else {
-										next.Approval.Escalation.SkipStep = &tfTypes.SkipStep{}
-									}
-								}
-								next.Approval.EscalationEnabled = types.BoolPointerValue(nextItem.Approval.EscalationEnabled)
-								if nextItem.Approval.ExpressionApproval == nil {
-									next.Approval.ExpressionApproval = nil
-								} else {
-									next.Approval.ExpressionApproval = &tfTypes.ExpressionApproval{}
-									next.Approval.ExpressionApproval.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.AllowSelfApproval)
-									if nextItem.Approval.ExpressionApproval.AssignedUserIds != nil {
-										next.Approval.ExpressionApproval.AssignedUserIds = make([]types.String, 0, len(nextItem.Approval.ExpressionApproval.AssignedUserIds))
-										for _, v := range nextItem.Approval.ExpressionApproval.AssignedUserIds {
-											next.Approval.ExpressionApproval.AssignedUserIds = append(next.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.ExpressionApproval.AssignedUserIds = nil
-									}
-									if nextItem.Approval.ExpressionApproval.Expressions != nil {
-										next.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(nextItem.Approval.ExpressionApproval.Expressions))
-										for _, v := range nextItem.Approval.ExpressionApproval.Expressions {
-											next.Approval.ExpressionApproval.Expressions = append(next.Approval.ExpressionApproval.Expressions, types.StringValue(v))
-										}
-									} else {
-										next.Approval.ExpressionApproval.Expressions = nil
-									}
-									next.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.Fallback)
-									if nextItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
-										next.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-										for _, fallbackGroupIdsItem8 := range nextItem.Approval.ExpressionApproval.FallbackGroupIds {
-											var fallbackGroupIds8 tfTypes.AppEntitlementReference
-
-											fallbackGroupIds8.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem8.AppEntitlementID)
-											fallbackGroupIds8.AppID = types.StringPointerValue(fallbackGroupIdsItem8.AppID)
-
-											next.Approval.ExpressionApproval.FallbackGroupIds = append(next.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds8)
-										}
-									} else {
-										next.Approval.ExpressionApproval.FallbackGroupIds = nil
-									}
-									if nextItem.Approval.ExpressionApproval.FallbackUserIds != nil {
-										next.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ExpressionApproval.FallbackUserIds))
-										for _, v := range nextItem.Approval.ExpressionApproval.FallbackUserIds {
-											next.Approval.ExpressionApproval.FallbackUserIds = append(next.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.ExpressionApproval.FallbackUserIds = nil
-									}
-									next.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
-									next.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ExpressionApproval.RequireDistinctApprovers)
-								}
-								if nextItem.Approval.ManagerApproval == nil {
-									next.Approval.ManagerApproval = nil
-								} else {
-									next.Approval.ManagerApproval = &tfTypes.ManagerApproval{}
-									next.Approval.ManagerApproval.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.ManagerApproval.AllowSelfApproval)
-									if nextItem.Approval.ManagerApproval.AssignedUserIds != nil {
-										next.Approval.ManagerApproval.AssignedUserIds = make([]types.String, 0, len(nextItem.Approval.ManagerApproval.AssignedUserIds))
-										for _, v := range nextItem.Approval.ManagerApproval.AssignedUserIds {
-											next.Approval.ManagerApproval.AssignedUserIds = append(next.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.ManagerApproval.AssignedUserIds = nil
-									}
-									next.Approval.ManagerApproval.Fallback = types.BoolPointerValue(nextItem.Approval.ManagerApproval.Fallback)
-									if nextItem.Approval.ManagerApproval.FallbackGroupIds != nil {
-										next.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-										for _, fallbackGroupIdsItem9 := range nextItem.Approval.ManagerApproval.FallbackGroupIds {
-											var fallbackGroupIds9 tfTypes.AppEntitlementReference
-
-											fallbackGroupIds9.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem9.AppEntitlementID)
-											fallbackGroupIds9.AppID = types.StringPointerValue(fallbackGroupIdsItem9.AppID)
-
-											next.Approval.ManagerApproval.FallbackGroupIds = append(next.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds9)
-										}
-									} else {
-										next.Approval.ManagerApproval.FallbackGroupIds = nil
-									}
-									if nextItem.Approval.ManagerApproval.FallbackUserIds != nil {
-										next.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ManagerApproval.FallbackUserIds))
-										for _, v := range nextItem.Approval.ManagerApproval.FallbackUserIds {
-											next.Approval.ManagerApproval.FallbackUserIds = append(next.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.ManagerApproval.FallbackUserIds = nil
-									}
-									next.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
-									next.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ManagerApproval.RequireDistinctApprovers)
-								}
-								next.Approval.RequireApprovalReason = types.BoolPointerValue(nextItem.Approval.RequireApprovalReason)
-								next.Approval.RequireDenialReason = types.BoolPointerValue(nextItem.Approval.RequireDenialReason)
-								next.Approval.RequireReassignmentReason = types.BoolPointerValue(nextItem.Approval.RequireReassignmentReason)
-								next.Approval.RequiresStepUpProviderID = types.StringPointerValue(nextItem.Approval.RequiresStepUpProviderID)
-								if nextItem.Approval.ResourceOwnerApproval == nil {
-									next.Approval.ResourceOwnerApproval = nil
-								} else {
-									next.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
-									next.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.AllowSelfApproval)
-									next.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.Fallback)
-									if nextItem.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
-										next.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-										for _, fallbackGroupIdsItem10 := range nextItem.Approval.ResourceOwnerApproval.FallbackGroupIds {
-											var fallbackGroupIds10 tfTypes.AppEntitlementReference
-
-											fallbackGroupIds10.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem10.AppEntitlementID)
-											fallbackGroupIds10.AppID = types.StringPointerValue(fallbackGroupIdsItem10.AppID)
-
-											next.Approval.ResourceOwnerApproval.FallbackGroupIds = append(next.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds10)
-										}
-									} else {
-										next.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
-									}
-									if nextItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
-										next.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ResourceOwnerApproval.FallbackUserIds))
-										for _, v := range nextItem.Approval.ResourceOwnerApproval.FallbackUserIds {
-											next.Approval.ResourceOwnerApproval.FallbackUserIds = append(next.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.ResourceOwnerApproval.FallbackUserIds = nil
-									}
-									next.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
-									next.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
-								}
-								if nextItem.Approval.SelfApproval == nil {
-									next.Approval.SelfApproval = nil
-								} else {
-									next.Approval.SelfApproval = &tfTypes.SelfApproval{}
-									if nextItem.Approval.SelfApproval.AssignedUserIds != nil {
-										next.Approval.SelfApproval.AssignedUserIds = make([]types.String, 0, len(nextItem.Approval.SelfApproval.AssignedUserIds))
-										for _, v := range nextItem.Approval.SelfApproval.AssignedUserIds {
-											next.Approval.SelfApproval.AssignedUserIds = append(next.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.SelfApproval.AssignedUserIds = nil
-									}
-									next.Approval.SelfApproval.Fallback = types.BoolPointerValue(nextItem.Approval.SelfApproval.Fallback)
-									if nextItem.Approval.SelfApproval.FallbackGroupIds != nil {
-										next.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-										for _, fallbackGroupIdsItem11 := range nextItem.Approval.SelfApproval.FallbackGroupIds {
-											var fallbackGroupIds11 tfTypes.AppEntitlementReference
-
-											fallbackGroupIds11.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem11.AppEntitlementID)
-											fallbackGroupIds11.AppID = types.StringPointerValue(fallbackGroupIdsItem11.AppID)
-
-											next.Approval.SelfApproval.FallbackGroupIds = append(next.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds11)
-										}
-									} else {
-										next.Approval.SelfApproval.FallbackGroupIds = nil
-									}
-									if nextItem.Approval.SelfApproval.FallbackUserIds != nil {
-										next.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.SelfApproval.FallbackUserIds))
-										for _, v := range nextItem.Approval.SelfApproval.FallbackUserIds {
-											next.Approval.SelfApproval.FallbackUserIds = append(next.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.SelfApproval.FallbackUserIds = nil
-									}
-									next.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.SelfApproval.IsGroupFallbackEnabled)
-								}
-								if nextItem.Approval.UserApproval == nil {
-									next.Approval.UserApproval = nil
-								} else {
-									next.Approval.UserApproval = &tfTypes.UserApproval{}
-									next.Approval.UserApproval.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.UserApproval.AllowSelfApproval)
-									next.Approval.UserApproval.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.UserApproval.RequireDistinctApprovers)
-									if nextItem.Approval.UserApproval.UserIds != nil {
-										next.Approval.UserApproval.UserIds = make([]types.String, 0, len(nextItem.Approval.UserApproval.UserIds))
-										for _, v := range nextItem.Approval.UserApproval.UserIds {
-											next.Approval.UserApproval.UserIds = append(next.Approval.UserApproval.UserIds, types.StringValue(v))
-										}
-									} else {
-										next.Approval.UserApproval.UserIds = nil
-									}
-								}
-								if nextItem.Approval.WebhookApproval == nil {
-									next.Approval.WebhookApproval = nil
-								} else {
-									next.Approval.WebhookApproval = &tfTypes.WebhookApproval{}
-									next.Approval.WebhookApproval.WebhookID = types.StringPointerValue(nextItem.Approval.WebhookApproval.WebhookID)
-								}
-							}
-							if nextItem.Form == nil {
-								next.Form = jsontypes.NewNormalizedNull()
-							} else {
-								formResult, _ := json.Marshal(nextItem.Form)
-								next.Form = jsontypes.NewNormalizedValue(string(formResult))
-							}
-							if nextItem.Provision == nil {
-								next.Provision = nil
-							} else {
-								next.Provision = &tfTypes.Provision{}
-								next.Provision.Assigned = types.BoolPointerValue(nextItem.Provision.Assigned)
-								if nextItem.Provision.ProvisionPolicy == nil {
-									next.Provision.ProvisionPolicy = nil
-								} else {
-									next.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
-									if nextItem.Provision.ProvisionPolicy.ActionProvision == nil {
-										next.Provision.ProvisionPolicy.ActionProvision = nil
-									} else {
-										next.Provision.ProvisionPolicy.ActionProvision = &tfTypes.ActionProvision{}
-										next.Provision.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ActionProvision.ActionName)
-										next.Provision.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ActionProvision.AppID)
-										next.Provision.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID)
-										next.Provision.ProvisionPolicy.ActionProvision.DisplayName = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ActionProvision.DisplayName)
-									}
-									if nextItem.Provision.ProvisionPolicy.ConnectorProvision == nil {
-										next.Provision.ProvisionPolicy.ConnectorProvision = nil
-									} else {
-										next.Provision.ProvisionPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
-										if nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision == nil {
-											next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = nil
-										} else {
-											next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
-											if nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-												next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
-											} else {
-												configResult1, _ := json.Marshal(nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config)
-												next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult1))
-											}
-											next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
-											if nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
-												next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
-											} else {
-												next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
-											}
-											if nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
-												next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
-											} else {
-												next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
-												if nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-													next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-													for _, v := range nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-														next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
-													}
-												} else {
-													next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
-												}
-											}
-											next.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
-										}
-										if nextItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
-											next.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = nil
-										} else {
-											next.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
-											next.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
-										}
-										if nextItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
-											next.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
-										} else {
-											next.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
-											next.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
-										}
-									}
-									if nextItem.Provision.ProvisionPolicy.DelegatedProvision == nil {
-										next.Provision.ProvisionPolicy.DelegatedProvision = nil
-									} else {
-										next.Provision.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
-										next.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
-										next.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
-									}
-									if nextItem.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
-										next.Provision.ProvisionPolicy.ExternalTicketProvision = nil
-									} else {
-										next.Provision.ProvisionPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
-										next.Provision.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID)
-										next.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
-										next.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
-										next.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions)
-									}
-									if nextItem.Provision.ProvisionPolicy.ManualProvision == nil {
-										next.Provision.ProvisionPolicy.ManualProvision = nil
-									} else {
-										next.Provision.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
-										next.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ManualProvision.Instructions)
-										if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment == nil {
-											next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = nil
-										} else {
-											next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}
-											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner == nil {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = nil
-											} else {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = &tfTypes.AppOwnerProvisioner{}
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment)
-												if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
-													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
-														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
-												}
-											}
-											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = nil
-											} else {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = &tfTypes.EntitlementOwnerProvisioner{}
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment)
-												if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
-													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
-														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
-												}
-											}
-											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = nil
-											} else {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = &tfTypes.ExpressionProvisioner{}
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment)
-												if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
-													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
-														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
-													}
-												} else {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
-												}
-												if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
-													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
-														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
-												}
-											}
-											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = nil
-											} else {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = &tfTypes.GroupProvisioner{}
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment)
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID)
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID)
-												if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds))
-													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
-														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
-												}
-											}
-											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = nil
-											} else {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = &tfTypes.ManagerProvisioner{}
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment)
-												if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
-													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
-														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
-												}
-											}
-											if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = nil
-											} else {
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = &tfTypes.UserProvisioner{}
-												next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment)
-												if nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
-													for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
-														next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
-													}
-												} else {
-													next.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
-												}
-											}
-										}
-										if nextItem.Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
-											next.Provision.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.ManualProvision.UserIds))
-											for _, v := range nextItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
-												next.Provision.ProvisionPolicy.ManualProvision.UserIds = append(next.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
-											}
-										} else {
-											next.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
-										}
-									}
-									if nextItem.Provision.ProvisionPolicy.MultiStep == nil {
-										next.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
-									} else {
-										multiStepResult1, _ := json.Marshal(nextItem.Provision.ProvisionPolicy.MultiStep)
-										next.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
-									}
-									if nextItem.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
-										next.Provision.ProvisionPolicy.UnconfiguredProvision = nil
-									} else {
-										next.Provision.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
-									}
-									if nextItem.Provision.ProvisionPolicy.WebhookProvision == nil {
-										next.Provision.ProvisionPolicy.WebhookProvision = nil
-									} else {
-										next.Provision.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
-										next.Provision.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID)
-									}
-								}
-								if nextItem.Provision.ProvisionTarget == nil {
-									next.Provision.ProvisionTarget = nil
-								} else {
-									next.Provision.ProvisionTarget = &tfTypes.ProvisionTarget{}
-									next.Provision.ProvisionTarget.AppEntitlementID = types.StringPointerValue(nextItem.Provision.ProvisionTarget.AppEntitlementID)
-									next.Provision.ProvisionTarget.AppID = types.StringPointerValue(nextItem.Provision.ProvisionTarget.AppID)
-									next.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(nextItem.Provision.ProvisionTarget.AppUserID)
-									next.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(nextItem.Provision.ProvisionTarget.GrantDuration)
-								}
-							}
-							if nextItem.Reject == nil {
-								next.Reject = nil
-							} else {
-								next.Reject = &tfTypes.Reject{}
-								next.Reject.RejectMessage = types.StringPointerValue(nextItem.Reject.RejectMessage)
-							}
-							if nextItem.Wait == nil {
-								next.Wait = nil
-							} else {
-								next.Wait = &tfTypes.Wait{}
-								next.Wait.CommentOnFirstWait = types.StringPointerValue(nextItem.Wait.CommentOnFirstWait)
-								next.Wait.CommentOnTimeout = types.StringPointerValue(nextItem.Wait.CommentOnTimeout)
-								next.Wait.Name = types.StringPointerValue(nextItem.Wait.Name)
-								next.Wait.TimeoutDuration = types.StringPointerValue(nextItem.Wait.TimeoutDuration)
-								if nextItem.Wait.WaitCondition == nil {
-									next.Wait.WaitCondition = nil
-								} else {
-									next.Wait.WaitCondition = &tfTypes.WaitCondition{}
-									next.Wait.WaitCondition.Condition = types.StringPointerValue(nextItem.Wait.WaitCondition.Condition)
-								}
-								if nextItem.Wait.WaitDuration == nil {
-									next.Wait.WaitDuration = nil
-								} else {
-									next.Wait.WaitDuration = &tfTypes.WaitDuration{}
-									next.Wait.WaitDuration.Duration = types.StringPointerValue(nextItem.Wait.WaitDuration.Duration)
-								}
-								if nextItem.Wait.WaitUntilTime == nil {
-									next.Wait.WaitUntilTime = nil
-								} else {
-									next.Wait.WaitUntilTime = &tfTypes.WaitUntilTime{}
-									next.Wait.WaitUntilTime.Hours = types.Int64PointerValue(nextItem.Wait.WaitUntilTime.Hours)
-									next.Wait.WaitUntilTime.Minutes = types.Int64PointerValue(nextItem.Wait.WaitUntilTime.Minutes)
-									next.Wait.WaitUntilTime.Timezone = types.StringPointerValue(nextItem.Wait.WaitUntilTime.Timezone)
-								}
-							}
-
-							r.TaskView.Task.PolicyInstance.Next = append(r.TaskView.Task.PolicyInstance.Next, next)
-						}
-					} else {
-						r.TaskView.Task.PolicyInstance.Next = nil
-					}
-					if resp.TaskView.Task.PolicyInstance.Policy == nil {
-						r.TaskView.Task.PolicyInstance.Policy = nil
-					} else {
-						r.TaskView.Task.PolicyInstance.Policy = &tfTypes.Policy{}
-						if len(resp.TaskView.Task.PolicyInstance.Policy.Annotations) > 0 {
-							r.TaskView.Task.PolicyInstance.Policy.Annotations = make(map[string]types.String, len(resp.TaskView.Task.PolicyInstance.Policy.Annotations))
-							for key1, value1 := range resp.TaskView.Task.PolicyInstance.Policy.Annotations {
-								r.TaskView.Task.PolicyInstance.Policy.Annotations[key1] = types.StringValue(value1)
-							}
-						}
-						r.TaskView.Task.PolicyInstance.Policy.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.CreatedAt))
-						r.TaskView.Task.PolicyInstance.Policy.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.DeletedAt))
-						r.TaskView.Task.PolicyInstance.Policy.Description = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.Policy.Description)
-						r.TaskView.Task.PolicyInstance.Policy.DisplayName = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.Policy.DisplayName)
-						r.TaskView.Task.PolicyInstance.Policy.ID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.Policy.ID)
-						if len(resp.TaskView.Task.PolicyInstance.Policy.PolicySteps) > 0 {
-							r.TaskView.Task.PolicyInstance.Policy.PolicySteps = make(map[string]tfTypes.PolicySteps, len(resp.TaskView.Task.PolicyInstance.Policy.PolicySteps))
-							for policyStepsKey, policyStepsValue := range resp.TaskView.Task.PolicyInstance.Policy.PolicySteps {
-								var policyStepsResult tfTypes.PolicySteps
-								if policyStepsValue.Steps != nil {
-									policyStepsResult.Steps = []tfTypes.PolicyStep{}
-
-									for _, stepsItem := range policyStepsValue.Steps {
-										var steps tfTypes.PolicyStep
-
-										if stepsItem.Accept == nil {
-											steps.Accept = nil
-										} else {
-											steps.Accept = &tfTypes.Accept{}
-											steps.Accept.AcceptMessage = types.StringPointerValue(stepsItem.Accept.AcceptMessage)
-										}
-										if stepsItem.Action == nil {
-											steps.Action = nil
-										} else {
-											steps.Action = &tfTypes.Action{}
-											if stepsItem.Action.ActionTargetAutomation == nil {
-												steps.Action.ActionTargetAutomation = nil
-											} else {
-												steps.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
-												steps.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(stepsItem.Action.ActionTargetAutomation.AutomationTemplateID)
-											}
-											if stepsItem.Action.ActionTargetBatonResourceAction == nil {
-												steps.Action.ActionTargetBatonResourceAction = nil
-											} else {
-												steps.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
-												steps.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(stepsItem.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
-											}
-											if stepsItem.Action.ActionTargetClientIDApproval == nil {
-												steps.Action.ActionTargetClientIDApproval = nil
-											} else {
-												steps.Action.ActionTargetClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
-											}
-										}
-										if stepsItem.Approval == nil {
-											steps.Approval = nil
-										} else {
-											steps.Approval = &tfTypes.Approval{}
-											if stepsItem.Approval.AgentApproval == nil {
-												steps.Approval.AgentApproval = nil
-											} else {
-												steps.Approval.AgentApproval = &tfTypes.AgentApproval{}
-												if stepsItem.Approval.AgentApproval.AgentFailureAction != nil {
-													steps.Approval.AgentApproval.AgentFailureAction = types.StringValue(string(*stepsItem.Approval.AgentApproval.AgentFailureAction))
-												} else {
-													steps.Approval.AgentApproval.AgentFailureAction = types.StringNull()
-												}
-												if stepsItem.Approval.AgentApproval.AgentMode != nil {
-													steps.Approval.AgentApproval.AgentMode = types.StringValue(string(*stepsItem.Approval.AgentApproval.AgentMode))
-												} else {
-													steps.Approval.AgentApproval.AgentMode = types.StringNull()
-												}
-												steps.Approval.AgentApproval.AgentUserID = types.StringPointerValue(stepsItem.Approval.AgentApproval.AgentUserID)
-												steps.Approval.AgentApproval.Instructions = types.StringPointerValue(stepsItem.Approval.AgentApproval.Instructions)
-												if stepsItem.Approval.AgentApproval.PolicyIds != nil {
-													steps.Approval.AgentApproval.PolicyIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.PolicyIds))
-													for _, v := range stepsItem.Approval.AgentApproval.PolicyIds {
-														steps.Approval.AgentApproval.PolicyIds = append(steps.Approval.AgentApproval.PolicyIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.AgentApproval.PolicyIds = nil
-												}
-												if stepsItem.Approval.AgentApproval.ReassignToUserIds != nil {
-													steps.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(stepsItem.Approval.AgentApproval.ReassignToUserIds))
-													for _, v := range stepsItem.Approval.AgentApproval.ReassignToUserIds {
-														steps.Approval.AgentApproval.ReassignToUserIds = append(steps.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.AgentApproval.ReassignToUserIds = nil
-												}
-											}
-											steps.Approval.AllowDelegation = types.BoolPointerValue(stepsItem.Approval.AllowDelegation)
-											if stepsItem.Approval.AllowedReassignees != nil {
-												steps.Approval.AllowedReassignees = make([]types.String, 0, len(stepsItem.Approval.AllowedReassignees))
-												for _, v := range stepsItem.Approval.AllowedReassignees {
-													steps.Approval.AllowedReassignees = append(steps.Approval.AllowedReassignees, types.StringValue(v))
-												}
-											} else {
-												steps.Approval.AllowedReassignees = nil
-											}
-											steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
-											if stepsItem.Approval.AppGroupApproval == nil {
-												steps.Approval.AppGroupApproval = nil
-											} else {
-												steps.Approval.AppGroupApproval = &tfTypes.AppGroupApproval{}
-												steps.Approval.AppGroupApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.AllowSelfApproval)
-												steps.Approval.AppGroupApproval.AppGroupID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppGroupID)
-												steps.Approval.AppGroupApproval.AppID = types.StringPointerValue(stepsItem.Approval.AppGroupApproval.AppID)
-												steps.Approval.AppGroupApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.Fallback)
-												if stepsItem.Approval.AppGroupApproval.FallbackGroupIds != nil {
-													steps.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-													for _, fallbackGroupIdsItem12 := range stepsItem.Approval.AppGroupApproval.FallbackGroupIds {
-														var fallbackGroupIds12 tfTypes.AppEntitlementReference
-
-														fallbackGroupIds12.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem12.AppEntitlementID)
-														fallbackGroupIds12.AppID = types.StringPointerValue(fallbackGroupIdsItem12.AppID)
-
-														steps.Approval.AppGroupApproval.FallbackGroupIds = append(steps.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds12)
-													}
-												} else {
-													steps.Approval.AppGroupApproval.FallbackGroupIds = nil
-												}
-												if stepsItem.Approval.AppGroupApproval.FallbackUserIds != nil {
-													steps.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.AppGroupApproval.FallbackUserIds))
-													for _, v := range stepsItem.Approval.AppGroupApproval.FallbackUserIds {
-														steps.Approval.AppGroupApproval.FallbackUserIds = append(steps.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.AppGroupApproval.FallbackUserIds = nil
-												}
-												steps.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.IsGroupFallbackEnabled)
-												steps.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppGroupApproval.RequireDistinctApprovers)
-											}
-											if stepsItem.Approval.AppOwnerApproval == nil {
-												steps.Approval.AppOwnerApproval = nil
-											} else {
-												steps.Approval.AppOwnerApproval = &tfTypes.AppOwnerApproval{}
-												steps.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.AllowSelfApproval)
-												steps.Approval.AppOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppOwnerApproval.RequireDistinctApprovers)
-											}
-											steps.Approval.Assigned = types.BoolPointerValue(stepsItem.Approval.Assigned)
-											if stepsItem.Approval.EntitlementOwnerApproval == nil {
-												steps.Approval.EntitlementOwnerApproval = nil
-											} else {
-												steps.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
-												steps.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.AllowSelfApproval)
-												steps.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.Fallback)
-												if stepsItem.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
-													steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-													for _, fallbackGroupIdsItem13 := range stepsItem.Approval.EntitlementOwnerApproval.FallbackGroupIds {
-														var fallbackGroupIds13 tfTypes.AppEntitlementReference
-
-														fallbackGroupIds13.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem13.AppEntitlementID)
-														fallbackGroupIds13.AppID = types.StringPointerValue(fallbackGroupIdsItem13.AppID)
-
-														steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(steps.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds13)
-													}
-												} else {
-													steps.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
-												}
-												if stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
-													steps.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds))
-													for _, v := range stepsItem.Approval.EntitlementOwnerApproval.FallbackUserIds {
-														steps.Approval.EntitlementOwnerApproval.FallbackUserIds = append(steps.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
-												}
-												steps.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
-												steps.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
-											}
-											if stepsItem.Approval.Escalation == nil {
-												steps.Approval.Escalation = nil
-											} else {
-												steps.Approval.Escalation = &tfTypes.Escalation{}
-												if stepsItem.Approval.Escalation.CancelTicket == nil {
-													steps.Approval.Escalation.CancelTicket = nil
-												} else {
-													steps.Approval.Escalation.CancelTicket = &tfTypes.CancelTicket{}
-												}
-												steps.Approval.Escalation.EscalationComment = types.StringPointerValue(stepsItem.Approval.Escalation.EscalationComment)
-												steps.Approval.Escalation.Expiration = types.StringPointerValue(stepsItem.Approval.Escalation.Expiration)
-												if stepsItem.Approval.Escalation.ReassignToApprovers == nil {
-													steps.Approval.Escalation.ReassignToApprovers = nil
-												} else {
-													steps.Approval.Escalation.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
-													if stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
-														steps.Approval.Escalation.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds))
-														for _, v := range stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
-															steps.Approval.Escalation.ReassignToApprovers.ApproverIds = append(steps.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
-														}
-													} else {
-														steps.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
-													}
-												}
-												if stepsItem.Approval.Escalation.ReplacePolicy == nil {
-													steps.Approval.Escalation.ReplacePolicy = nil
-												} else {
-													steps.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
-													steps.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(stepsItem.Approval.Escalation.ReplacePolicy.PolicyID)
-												}
-												if stepsItem.Approval.Escalation.SkipStep == nil {
-													steps.Approval.Escalation.SkipStep = nil
-												} else {
-													steps.Approval.Escalation.SkipStep = &tfTypes.SkipStep{}
-												}
-											}
-											steps.Approval.EscalationEnabled = types.BoolPointerValue(stepsItem.Approval.EscalationEnabled)
-											if stepsItem.Approval.ExpressionApproval == nil {
-												steps.Approval.ExpressionApproval = nil
-											} else {
-												steps.Approval.ExpressionApproval = &tfTypes.ExpressionApproval{}
-												steps.Approval.ExpressionApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.AllowSelfApproval)
-												if stepsItem.Approval.ExpressionApproval.AssignedUserIds != nil {
-													steps.Approval.ExpressionApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.AssignedUserIds))
-													for _, v := range stepsItem.Approval.ExpressionApproval.AssignedUserIds {
-														steps.Approval.ExpressionApproval.AssignedUserIds = append(steps.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.ExpressionApproval.AssignedUserIds = nil
-												}
-												if stepsItem.Approval.ExpressionApproval.Expressions != nil {
-													steps.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.Expressions))
-													for _, v := range stepsItem.Approval.ExpressionApproval.Expressions {
-														steps.Approval.ExpressionApproval.Expressions = append(steps.Approval.ExpressionApproval.Expressions, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.ExpressionApproval.Expressions = nil
-												}
-												steps.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.Fallback)
-												if stepsItem.Approval.ExpressionApproval.FallbackGroupIds != nil {
-													steps.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-													for _, fallbackGroupIdsItem14 := range stepsItem.Approval.ExpressionApproval.FallbackGroupIds {
-														var fallbackGroupIds14 tfTypes.AppEntitlementReference
-
-														fallbackGroupIds14.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem14.AppEntitlementID)
-														fallbackGroupIds14.AppID = types.StringPointerValue(fallbackGroupIdsItem14.AppID)
-
-														steps.Approval.ExpressionApproval.FallbackGroupIds = append(steps.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds14)
-													}
-												} else {
-													steps.Approval.ExpressionApproval.FallbackGroupIds = nil
-												}
-												if stepsItem.Approval.ExpressionApproval.FallbackUserIds != nil {
-													steps.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ExpressionApproval.FallbackUserIds))
-													for _, v := range stepsItem.Approval.ExpressionApproval.FallbackUserIds {
-														steps.Approval.ExpressionApproval.FallbackUserIds = append(steps.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.ExpressionApproval.FallbackUserIds = nil
-												}
-												steps.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.IsGroupFallbackEnabled)
-												steps.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ExpressionApproval.RequireDistinctApprovers)
-											}
-											if stepsItem.Approval.ManagerApproval == nil {
-												steps.Approval.ManagerApproval = nil
-											} else {
-												steps.Approval.ManagerApproval = &tfTypes.ManagerApproval{}
-												steps.Approval.ManagerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.AllowSelfApproval)
-												if stepsItem.Approval.ManagerApproval.AssignedUserIds != nil {
-													steps.Approval.ManagerApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.AssignedUserIds))
-													for _, v := range stepsItem.Approval.ManagerApproval.AssignedUserIds {
-														steps.Approval.ManagerApproval.AssignedUserIds = append(steps.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.ManagerApproval.AssignedUserIds = nil
-												}
-												steps.Approval.ManagerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.Fallback)
-												if stepsItem.Approval.ManagerApproval.FallbackGroupIds != nil {
-													steps.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-													for _, fallbackGroupIdsItem15 := range stepsItem.Approval.ManagerApproval.FallbackGroupIds {
-														var fallbackGroupIds15 tfTypes.AppEntitlementReference
-
-														fallbackGroupIds15.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem15.AppEntitlementID)
-														fallbackGroupIds15.AppID = types.StringPointerValue(fallbackGroupIdsItem15.AppID)
-
-														steps.Approval.ManagerApproval.FallbackGroupIds = append(steps.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds15)
-													}
-												} else {
-													steps.Approval.ManagerApproval.FallbackGroupIds = nil
-												}
-												if stepsItem.Approval.ManagerApproval.FallbackUserIds != nil {
-													steps.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ManagerApproval.FallbackUserIds))
-													for _, v := range stepsItem.Approval.ManagerApproval.FallbackUserIds {
-														steps.Approval.ManagerApproval.FallbackUserIds = append(steps.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.ManagerApproval.FallbackUserIds = nil
-												}
-												steps.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.IsGroupFallbackEnabled)
-												steps.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ManagerApproval.RequireDistinctApprovers)
-											}
-											steps.Approval.RequireApprovalReason = types.BoolPointerValue(stepsItem.Approval.RequireApprovalReason)
-											steps.Approval.RequireDenialReason = types.BoolPointerValue(stepsItem.Approval.RequireDenialReason)
-											steps.Approval.RequireReassignmentReason = types.BoolPointerValue(stepsItem.Approval.RequireReassignmentReason)
-											steps.Approval.RequiresStepUpProviderID = types.StringPointerValue(stepsItem.Approval.RequiresStepUpProviderID)
-											if stepsItem.Approval.ResourceOwnerApproval == nil {
-												steps.Approval.ResourceOwnerApproval = nil
-											} else {
-												steps.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
-												steps.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.AllowSelfApproval)
-												steps.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.Fallback)
-												if stepsItem.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
-													steps.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-													for _, fallbackGroupIdsItem16 := range stepsItem.Approval.ResourceOwnerApproval.FallbackGroupIds {
-														var fallbackGroupIds16 tfTypes.AppEntitlementReference
-
-														fallbackGroupIds16.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem16.AppEntitlementID)
-														fallbackGroupIds16.AppID = types.StringPointerValue(fallbackGroupIdsItem16.AppID)
-
-														steps.Approval.ResourceOwnerApproval.FallbackGroupIds = append(steps.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds16)
-													}
-												} else {
-													steps.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
-												}
-												if stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
-													steps.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds))
-													for _, v := range stepsItem.Approval.ResourceOwnerApproval.FallbackUserIds {
-														steps.Approval.ResourceOwnerApproval.FallbackUserIds = append(steps.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.ResourceOwnerApproval.FallbackUserIds = nil
-												}
-												steps.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
-												steps.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
-											}
-											if stepsItem.Approval.SelfApproval == nil {
-												steps.Approval.SelfApproval = nil
-											} else {
-												steps.Approval.SelfApproval = &tfTypes.SelfApproval{}
-												if stepsItem.Approval.SelfApproval.AssignedUserIds != nil {
-													steps.Approval.SelfApproval.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.AssignedUserIds))
-													for _, v := range stepsItem.Approval.SelfApproval.AssignedUserIds {
-														steps.Approval.SelfApproval.AssignedUserIds = append(steps.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.SelfApproval.AssignedUserIds = nil
-												}
-												steps.Approval.SelfApproval.Fallback = types.BoolPointerValue(stepsItem.Approval.SelfApproval.Fallback)
-												if stepsItem.Approval.SelfApproval.FallbackGroupIds != nil {
-													steps.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-													for _, fallbackGroupIdsItem17 := range stepsItem.Approval.SelfApproval.FallbackGroupIds {
-														var fallbackGroupIds17 tfTypes.AppEntitlementReference
-
-														fallbackGroupIds17.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem17.AppEntitlementID)
-														fallbackGroupIds17.AppID = types.StringPointerValue(fallbackGroupIdsItem17.AppID)
-
-														steps.Approval.SelfApproval.FallbackGroupIds = append(steps.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds17)
-													}
-												} else {
-													steps.Approval.SelfApproval.FallbackGroupIds = nil
-												}
-												if stepsItem.Approval.SelfApproval.FallbackUserIds != nil {
-													steps.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.SelfApproval.FallbackUserIds))
-													for _, v := range stepsItem.Approval.SelfApproval.FallbackUserIds {
-														steps.Approval.SelfApproval.FallbackUserIds = append(steps.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.SelfApproval.FallbackUserIds = nil
-												}
-												steps.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.SelfApproval.IsGroupFallbackEnabled)
-											}
-											if stepsItem.Approval.UserApproval == nil {
-												steps.Approval.UserApproval = nil
-											} else {
-												steps.Approval.UserApproval = &tfTypes.UserApproval{}
-												steps.Approval.UserApproval.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.UserApproval.AllowSelfApproval)
-												steps.Approval.UserApproval.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.UserApproval.RequireDistinctApprovers)
-												if stepsItem.Approval.UserApproval.UserIds != nil {
-													steps.Approval.UserApproval.UserIds = make([]types.String, 0, len(stepsItem.Approval.UserApproval.UserIds))
-													for _, v := range stepsItem.Approval.UserApproval.UserIds {
-														steps.Approval.UserApproval.UserIds = append(steps.Approval.UserApproval.UserIds, types.StringValue(v))
-													}
-												} else {
-													steps.Approval.UserApproval.UserIds = nil
-												}
-											}
-											if stepsItem.Approval.WebhookApproval == nil {
-												steps.Approval.WebhookApproval = nil
-											} else {
-												steps.Approval.WebhookApproval = &tfTypes.WebhookApproval{}
-												steps.Approval.WebhookApproval.WebhookID = types.StringPointerValue(stepsItem.Approval.WebhookApproval.WebhookID)
-											}
-										}
-										if stepsItem.Form == nil {
-											steps.Form = jsontypes.NewNormalizedNull()
-										} else {
-											formResult1, _ := json.Marshal(stepsItem.Form)
-											steps.Form = jsontypes.NewNormalizedValue(string(formResult1))
-										}
-										if stepsItem.Provision == nil {
-											steps.Provision = nil
-										} else {
-											steps.Provision = &tfTypes.Provision{}
-											steps.Provision.Assigned = types.BoolPointerValue(stepsItem.Provision.Assigned)
-											if stepsItem.Provision.ProvisionPolicy == nil {
-												steps.Provision.ProvisionPolicy = nil
-											} else {
-												steps.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
-												if stepsItem.Provision.ProvisionPolicy.ActionProvision == nil {
-													steps.Provision.ProvisionPolicy.ActionProvision = nil
-												} else {
-													steps.Provision.ProvisionPolicy.ActionProvision = &tfTypes.ActionProvision{}
-													steps.Provision.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ActionName)
-													steps.Provision.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.AppID)
-													steps.Provision.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.ConnectorID)
-													steps.Provision.ProvisionPolicy.ActionProvision.DisplayName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ActionProvision.DisplayName)
-												}
-												if stepsItem.Provision.ProvisionPolicy.ConnectorProvision == nil {
-													steps.Provision.ProvisionPolicy.ConnectorProvision = nil
-												} else {
-													steps.Provision.ProvisionPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
-													if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision == nil {
-														steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = nil
-													} else {
-														steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
-														if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-															steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
-														} else {
-															configResult2, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config)
-															steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult2))
-														}
-														steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
-														if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
-															steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
-														} else {
-															steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
-														}
-														if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
-															steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
-														} else {
-															steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
-															if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-																steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-																for _, v := range stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-																	steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
-																}
-															} else {
-																steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
-															}
-														}
-														steps.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
-													}
-													if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
-														steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = nil
-													} else {
-														steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
-														steps.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
-													}
-													if stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
-														steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
-													} else {
-														steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
-														steps.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
-													}
-												}
-												if stepsItem.Provision.ProvisionPolicy.DelegatedProvision == nil {
-													steps.Provision.ProvisionPolicy.DelegatedProvision = nil
-												} else {
-													steps.Provision.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
-													steps.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.AppID)
-													steps.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
-												}
-												if stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
-													steps.Provision.ProvisionPolicy.ExternalTicketProvision = nil
-												} else {
-													steps.Provision.ProvisionPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
-													steps.Provision.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.AppID)
-													steps.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
-													steps.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
-													steps.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions)
-												}
-												if stepsItem.Provision.ProvisionPolicy.ManualProvision == nil {
-													steps.Provision.ProvisionPolicy.ManualProvision = nil
-												} else {
-													steps.Provision.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
-													steps.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.Instructions)
-													if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment == nil {
-														steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = nil
-													} else {
-														steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}
-														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner == nil {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = nil
-														} else {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = &tfTypes.AppOwnerProvisioner{}
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment)
-															if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
-																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
-																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
-																}
-															} else {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
-															}
-														}
-														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = nil
-														} else {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = &tfTypes.EntitlementOwnerProvisioner{}
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment)
-															if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
-																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
-																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
-																}
-															} else {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
-															}
-														}
-														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = nil
-														} else {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = &tfTypes.ExpressionProvisioner{}
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment)
-															if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
-																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
-																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
-																}
-															} else {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
-															}
-															if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
-																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
-																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
-																}
-															} else {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
-															}
-														}
-														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = nil
-														} else {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = &tfTypes.GroupProvisioner{}
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment)
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID)
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID)
-															if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds))
-																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
-																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
-																}
-															} else {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
-															}
-														}
-														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = nil
-														} else {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = &tfTypes.ManagerProvisioner{}
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment)
-															if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
-																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
-																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
-																}
-															} else {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
-															}
-														}
-														if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = nil
-														} else {
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = &tfTypes.UserProvisioner{}
-															steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment)
-															if stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
-																for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
-																	steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
-																}
-															} else {
-																steps.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
-															}
-														}
-													}
-													if stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
-														steps.Provision.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds))
-														for _, v := range stepsItem.Provision.ProvisionPolicy.ManualProvision.UserIds {
-															steps.Provision.ProvisionPolicy.ManualProvision.UserIds = append(steps.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
-														}
-													} else {
-														steps.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
-													}
-												}
-												if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
-													steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
-												} else {
-													multiStepResult2, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.MultiStep)
-													steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult2))
-												}
-												if stepsItem.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
-													steps.Provision.ProvisionPolicy.UnconfiguredProvision = nil
-												} else {
-													steps.Provision.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
-												}
-												if stepsItem.Provision.ProvisionPolicy.WebhookProvision == nil {
-													steps.Provision.ProvisionPolicy.WebhookProvision = nil
-												} else {
-													steps.Provision.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
-													steps.Provision.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.WebhookProvision.WebhookID)
-												}
-											}
-											if stepsItem.Provision.ProvisionTarget == nil {
-												steps.Provision.ProvisionTarget = nil
-											} else {
-												steps.Provision.ProvisionTarget = &tfTypes.ProvisionTarget{}
-												steps.Provision.ProvisionTarget.AppEntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppEntitlementID)
-												steps.Provision.ProvisionTarget.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppID)
-												steps.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppUserID)
-												steps.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.GrantDuration)
-											}
-										}
-										if stepsItem.Reject == nil {
-											steps.Reject = nil
-										} else {
-											steps.Reject = &tfTypes.Reject{}
-											steps.Reject.RejectMessage = types.StringPointerValue(stepsItem.Reject.RejectMessage)
-										}
-										if stepsItem.Wait == nil {
-											steps.Wait = nil
-										} else {
-											steps.Wait = &tfTypes.Wait{}
-											steps.Wait.CommentOnFirstWait = types.StringPointerValue(stepsItem.Wait.CommentOnFirstWait)
-											steps.Wait.CommentOnTimeout = types.StringPointerValue(stepsItem.Wait.CommentOnTimeout)
-											steps.Wait.Name = types.StringPointerValue(stepsItem.Wait.Name)
-											steps.Wait.TimeoutDuration = types.StringPointerValue(stepsItem.Wait.TimeoutDuration)
-											if stepsItem.Wait.WaitCondition == nil {
-												steps.Wait.WaitCondition = nil
-											} else {
-												steps.Wait.WaitCondition = &tfTypes.WaitCondition{}
-												steps.Wait.WaitCondition.Condition = types.StringPointerValue(stepsItem.Wait.WaitCondition.Condition)
-											}
-											if stepsItem.Wait.WaitDuration == nil {
-												steps.Wait.WaitDuration = nil
-											} else {
-												steps.Wait.WaitDuration = &tfTypes.WaitDuration{}
-												steps.Wait.WaitDuration.Duration = types.StringPointerValue(stepsItem.Wait.WaitDuration.Duration)
-											}
-											if stepsItem.Wait.WaitUntilTime == nil {
-												steps.Wait.WaitUntilTime = nil
-											} else {
-												steps.Wait.WaitUntilTime = &tfTypes.WaitUntilTime{}
-												steps.Wait.WaitUntilTime.Hours = types.Int64PointerValue(stepsItem.Wait.WaitUntilTime.Hours)
-												steps.Wait.WaitUntilTime.Minutes = types.Int64PointerValue(stepsItem.Wait.WaitUntilTime.Minutes)
-												steps.Wait.WaitUntilTime.Timezone = types.StringPointerValue(stepsItem.Wait.WaitUntilTime.Timezone)
-											}
-										}
-
-										policyStepsResult.Steps = append(policyStepsResult.Steps, steps)
-									}
-								} else {
-									policyStepsResult.Steps = nil
-								}
-
-								r.TaskView.Task.PolicyInstance.Policy.PolicySteps[policyStepsKey] = policyStepsResult
-							}
-						}
-						if resp.TaskView.Task.PolicyInstance.Policy.PolicyType != nil {
-							r.TaskView.Task.PolicyInstance.Policy.PolicyType = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.Policy.PolicyType))
+						r.TaskView.Task.Policy.Current = &tfTypes.PolicyStepInstance{}
+						if resp.TaskView.Task.Policy.Current.Accept == nil {
+							r.TaskView.Task.Policy.Current.Accept = nil
 						} else {
-							r.TaskView.Task.PolicyInstance.Policy.PolicyType = types.StringNull()
+							r.TaskView.Task.Policy.Current.Accept = &tfTypes.AcceptInstance{}
+							r.TaskView.Task.Policy.Current.Accept.AcceptMessage = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Accept.AcceptMessage)
 						}
-						if resp.TaskView.Task.PolicyInstance.Policy.PostActions != nil {
-							r.TaskView.Task.PolicyInstance.Policy.PostActions = []tfTypes.PolicyPostActions{}
-
-							for _, postActionsItem := range resp.TaskView.Task.PolicyInstance.Policy.PostActions {
-								var postActions tfTypes.PolicyPostActions
-
-								postActions.CertifyRemediateImmediately = types.BoolPointerValue(postActionsItem.CertifyRemediateImmediately)
-
-								r.TaskView.Task.PolicyInstance.Policy.PostActions = append(r.TaskView.Task.PolicyInstance.Policy.PostActions, postActions)
-							}
+						if resp.TaskView.Task.Policy.Current.Action == nil {
+							r.TaskView.Task.Policy.Current.Action = nil
 						} else {
-							r.TaskView.Task.PolicyInstance.Policy.PostActions = nil
-						}
-						r.TaskView.Task.PolicyInstance.Policy.ReassignTasksToDelegates = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.Policy.ReassignTasksToDelegates)
-						if resp.TaskView.Task.PolicyInstance.Policy.Rules != nil {
-							r.TaskView.Task.PolicyInstance.Policy.Rules = []tfTypes.Rule{}
-
-							for _, rulesItem := range resp.TaskView.Task.PolicyInstance.Policy.Rules {
-								var rules tfTypes.Rule
-
-								rules.Condition = types.StringPointerValue(rulesItem.Condition)
-								rules.PolicyKey = types.StringPointerValue(rulesItem.PolicyKey)
-
-								r.TaskView.Task.PolicyInstance.Policy.Rules = append(r.TaskView.Task.PolicyInstance.Policy.Rules, rules)
-							}
-						} else {
-							r.TaskView.Task.PolicyInstance.Policy.Rules = nil
-						}
-						r.TaskView.Task.PolicyInstance.Policy.SystemBuiltin = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.Policy.SystemBuiltin)
-						r.TaskView.Task.PolicyInstance.Policy.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.Policy.UpdatedAt))
-					}
-					if resp.TaskView.Task.PolicyInstance.PolicyStepInstance == nil {
-						r.TaskView.Task.PolicyInstance.PolicyStepInstance = nil
-					} else {
-						r.TaskView.Task.PolicyInstance.PolicyStepInstance = &tfTypes.PolicyStepInstance{}
-						if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.AcceptInstance == nil {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.AcceptInstance = nil
-						} else {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.AcceptInstance = &tfTypes.AcceptInstance{}
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.AcceptInstance.AcceptMessage = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.AcceptInstance.AcceptMessage)
-						}
-						if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance == nil {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance = nil
-						} else {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance = &tfTypes.ActionInstance{}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action = nil
+							r.TaskView.Task.Policy.Current.Action = &tfTypes.ActionInstance{}
+							if resp.TaskView.Task.Policy.Current.Action.Action == nil {
+								r.TaskView.Task.Policy.Current.Action.Action = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action = &tfTypes.Action{}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation = nil
+								r.TaskView.Task.Policy.Current.Action.Action = &tfTypes.Action{}
+								if resp.TaskView.Task.Policy.Current.Action.Action.Automation == nil {
+									r.TaskView.Task.Policy.Current.Action.Action.Automation = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation = &tfTypes.ActionTargetAutomation{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation.AutomationTemplateID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetAutomation.AutomationTemplateID)
+									r.TaskView.Task.Policy.Current.Action.Action.Automation = &tfTypes.ActionTargetAutomation{}
+									r.TaskView.Task.Policy.Current.Action.Action.Automation.AutomationTemplateID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Action.Action.Automation.AutomationTemplateID)
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction = nil
+								if resp.TaskView.Task.Policy.Current.Action.Action.BatonResourceAction == nil {
+									r.TaskView.Task.Policy.Current.Action.Action.BatonResourceAction = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetBatonResourceAction.BatonResourceActionID)
+									r.TaskView.Task.Policy.Current.Action.Action.BatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
+									r.TaskView.Task.Policy.Current.Action.Action.BatonResourceAction.BatonResourceActionID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Action.Action.BatonResourceAction.BatonResourceActionID)
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetClientIDApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetClientIDApproval = nil
+								if resp.TaskView.Task.Policy.Current.Action.Action.ClientIDApproval == nil {
+									r.TaskView.Task.Policy.Current.Action.Action.ClientIDApproval = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.Action.ActionTargetClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
+									r.TaskView.Task.Policy.Current.Action.Action.ClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
 								}
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeCancelled == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeCancelled = nil
+							if resp.TaskView.Task.Policy.Current.Action.Automation == nil {
+								r.TaskView.Task.Policy.Current.Action.Automation = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeCancelled = &tfTypes.ActionOutcomeCancelled{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeCancelled.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeCancelled.OutcomeTime))
+								r.TaskView.Task.Policy.Current.Action.Automation = &tfTypes.ActionTargetAutomationInstance{}
+								r.TaskView.Task.Policy.Current.Action.Automation.AutomationExecutionID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Action.Automation.AutomationExecutionID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeDenied == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeDenied = nil
+							if resp.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance == nil {
+								r.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeDenied = &tfTypes.ActionOutcomeDenied{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeDenied.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeDenied.OutcomeTime))
+								r.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance = &tfTypes.ActionTargetBatonResourceActionInstance{}
+								r.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance.BatonActionInvocationID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance.BatonActionInvocationID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeError == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeError = nil
+							if resp.TaskView.Task.Policy.Current.Action.Cancelled == nil {
+								r.TaskView.Task.Policy.Current.Action.Cancelled = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeError = &tfTypes.ActionOutcomeError{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeError.ErrorCode = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeError.ErrorCode)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeError.ErrorMessage = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeError.ErrorMessage)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeError.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeError.OutcomeTime))
+								r.TaskView.Task.Policy.Current.Action.Cancelled = &tfTypes.ActionOutcomeCancelled{}
+								r.TaskView.Task.Policy.Current.Action.Cancelled.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Action.Cancelled.OutcomeTime))
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeSuccess == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeSuccess = nil
+							if resp.TaskView.Task.Policy.Current.Action.ClientIDApprovalInstance == nil {
+								r.TaskView.Task.Policy.Current.Action.ClientIDApprovalInstance = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeSuccess = &tfTypes.ActionOutcomeSuccess{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeSuccess.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionOutcomeSuccess.OutcomeTime))
+								r.TaskView.Task.Policy.Current.Action.ClientIDApprovalInstance = &tfTypes.ActionTargetClientIDApprovalInstance{}
+								r.TaskView.Task.Policy.Current.Action.ClientIDApprovalInstance.ClientIDURL = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Action.ClientIDApprovalInstance.ClientIDURL)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetAutomationInstance == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetAutomationInstance = nil
+							if resp.TaskView.Task.Policy.Current.Action.Denied == nil {
+								r.TaskView.Task.Policy.Current.Action.Denied = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetAutomationInstance = &tfTypes.ActionTargetAutomationInstance{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetAutomationInstance.AutomationExecutionID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetAutomationInstance.AutomationExecutionID)
+								r.TaskView.Task.Policy.Current.Action.Denied = &tfTypes.ActionOutcomeDenied{}
+								r.TaskView.Task.Policy.Current.Action.Denied.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Action.Denied.OutcomeTime))
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance = nil
+							if resp.TaskView.Task.Policy.Current.Action.Error == nil {
+								r.TaskView.Task.Policy.Current.Action.Error = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance = &tfTypes.ActionTargetBatonResourceActionInstance{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetBatonResourceActionInstance.BatonActionInvocationID)
+								r.TaskView.Task.Policy.Current.Action.Error = &tfTypes.ActionOutcomeError{}
+								r.TaskView.Task.Policy.Current.Action.Error.ErrorCode = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Action.Error.ErrorCode)
+								r.TaskView.Task.Policy.Current.Action.Error.ErrorMessage = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Action.Error.ErrorMessage)
+								r.TaskView.Task.Policy.Current.Action.Error.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Action.Error.OutcomeTime))
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetClientIDApprovalInstance == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetClientIDApprovalInstance = nil
+							if resp.TaskView.Task.Policy.Current.Action.State != nil {
+								r.TaskView.Task.Policy.Current.Action.State = types.StringValue(string(*resp.TaskView.Task.Policy.Current.Action.State))
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetClientIDApprovalInstance = &tfTypes.ActionTargetClientIDApprovalInstance{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetClientIDApprovalInstance.ClientIDURL = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.ActionTargetClientIDApprovalInstance.ClientIDURL)
+								r.TaskView.Task.Policy.Current.Action.State = types.StringNull()
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.State != nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.State = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.State))
+							if resp.TaskView.Task.Policy.Current.Action.Success == nil {
+								r.TaskView.Task.Policy.Current.Action.Success = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ActionInstance.State = types.StringNull()
+								r.TaskView.Task.Policy.Current.Action.Success = &tfTypes.ActionOutcomeSuccess{}
+								r.TaskView.Task.Policy.Current.Action.Success.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Action.Success.OutcomeTime))
 							}
 						}
-						if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance == nil {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance = nil
+						if resp.TaskView.Task.Policy.Current.Approval == nil {
+							r.TaskView.Task.Policy.Current.Approval = nil
 						} else {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance = &tfTypes.ApprovalInstance{}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval = nil
+							r.TaskView.Task.Policy.Current.Approval = &tfTypes.ApprovalInstance{}
+							if resp.TaskView.Task.Policy.Current.Approval.Approval == nil {
+								r.TaskView.Task.Policy.Current.Approval.Approval = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval = &tfTypes.Approval{}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval = nil
+								r.TaskView.Task.Policy.Current.Approval.Approval = &tfTypes.Approval{}
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.Agent == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.Agent = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval = &tfTypes.AgentApproval{}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.AgentFailureAction != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.AgentFailureAction = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.AgentFailureAction))
+									r.TaskView.Task.Policy.Current.Approval.Approval.Agent = &tfTypes.AgentApproval{}
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.AgentFailureAction != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Agent.AgentFailureAction = types.StringValue(string(*resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.AgentFailureAction))
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.AgentFailureAction = types.StringNull()
+										r.TaskView.Task.Policy.Current.Approval.Approval.Agent.AgentFailureAction = types.StringNull()
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.AgentMode != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.AgentMode = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.AgentMode))
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.AgentMode != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Agent.AgentMode = types.StringValue(string(*resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.AgentMode))
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.AgentMode = types.StringNull()
+										r.TaskView.Task.Policy.Current.Approval.Approval.Agent.AgentMode = types.StringNull()
 									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.AgentUserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.AgentUserID)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.Instructions = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.Instructions)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds, types.StringValue(v))
+									r.TaskView.Task.Policy.Current.Approval.Approval.Agent.AgentUserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.AgentUserID)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Agent.Instructions = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.Instructions)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.PolicyIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Agent.PolicyIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.PolicyIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.PolicyIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Agent.PolicyIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Agent.PolicyIds, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.PolicyIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Agent.PolicyIds = nil
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds, types.StringValue(v))
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.ReassignToUserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Agent.ReassignToUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.ReassignToUserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Agent.ReassignToUserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Agent.ReassignToUserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Agent.ReassignToUserIds, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AgentApproval.ReassignToUserIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Agent.ReassignToUserIds = nil
 									}
 								}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowDelegation = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowDelegation)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees != nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees))
-									for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees, types.StringValue(v))
+								r.TaskView.Task.Policy.Current.Approval.Approval.AllowDelegation = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.AllowDelegation)
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.AllowedReassignees != nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.AllowedReassignees = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.AllowedReassignees))
+									for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.AllowedReassignees {
+										r.TaskView.Task.Policy.Current.Approval.Approval.AllowedReassignees = append(r.TaskView.Task.Policy.Current.Approval.Approval.AllowedReassignees, types.StringValue(v))
 									}
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowedReassignees = nil
+									r.TaskView.Task.Policy.Current.Approval.Approval.AllowedReassignees = nil
 								}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AllowReassignment)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval = nil
+								r.TaskView.Task.Policy.Current.Approval.Approval.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.AllowReassignment)
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.AppOwners == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.AppOwners = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval = &tfTypes.AppGroupApproval{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.AllowSelfApproval)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.AppGroupID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.AppGroupID)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.AppID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.AppID)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.Fallback)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+									r.TaskView.Task.Policy.Current.Approval.Approval.AppOwners = &tfTypes.AppOwnerApproval{}
+									r.TaskView.Task.Policy.Current.Approval.Approval.AppOwners.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.AppOwners.AllowSelfApproval)
+									r.TaskView.Task.Policy.Current.Approval.Approval.AppOwners.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.AppOwners.RequireDistinctApprovers)
+								}
+								r.TaskView.Task.Policy.Current.Approval.Approval.Assigned = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Assigned)
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners = nil
+								} else {
+									r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners = &tfTypes.EntitlementOwnerApproval{}
+									r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.AllowSelfApproval)
+									r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.Fallback = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.Fallback)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackGroupIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
 
-										for _, fallbackGroupIdsItem18 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds {
-											var fallbackGroupIds18 tfTypes.AppEntitlementReference
+										for _, fallbackGroupIdsItem := range resp.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackGroupIds {
+											var fallbackGroupIds tfTypes.AppEntitlementReference
 
-											fallbackGroupIds18.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem18.AppEntitlementID)
-											fallbackGroupIds18.AppID = types.StringPointerValue(fallbackGroupIdsItem18.AppID)
+											fallbackGroupIds.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem.AppEntitlementID)
+											fallbackGroupIds.AppID = types.StringPointerValue(fallbackGroupIdsItem.AppID)
 
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds, fallbackGroupIds18)
+											r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackGroupIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackGroupIds, fallbackGroupIds)
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackGroupIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackGroupIds = nil
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds, types.StringValue(v))
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackUserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackUserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackUserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackUserIds, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.FallbackUserIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.FallbackUserIds = nil
 									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.IsGroupFallbackEnabled)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppGroupApproval.RequireDistinctApprovers)
+									r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.IsGroupFallbackEnabled)
+									r.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.EntitlementOwners.RequireDistinctApprovers)
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppOwnerApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppOwnerApproval = nil
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.Escalation = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppOwnerApproval = &tfTypes.AppOwnerApproval{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppOwnerApproval.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppOwnerApproval.AllowSelfApproval)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.AppOwnerApproval.RequireDistinctApprovers)
-								}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Assigned = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Assigned)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval = nil
-								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval = &tfTypes.EntitlementOwnerApproval{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.AllowSelfApproval)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.Fallback)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-										for _, fallbackGroupIdsItem19 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds {
-											var fallbackGroupIds19 tfTypes.AppEntitlementReference
-
-											fallbackGroupIds19.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem19.AppEntitlementID)
-											fallbackGroupIds19.AppID = types.StringPointerValue(fallbackGroupIdsItem19.AppID)
-
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds, fallbackGroupIds19)
-										}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Escalation = &tfTypes.Escalation{}
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation.CancelTicket == nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.CancelTicket = nil
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackGroupIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.CancelTicket = &tfTypes.CancelTicket{}
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds, types.StringValue(v))
-										}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.EscalationComment = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation.EscalationComment)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.Expiration = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation.Expiration)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReassignToApprovers == nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReassignToApprovers = nil
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.FallbackUserIds = nil
-									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.IsGroupFallbackEnabled)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EntitlementOwnerApproval.RequireDistinctApprovers)
-								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation = nil
-								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation = &tfTypes.Escalation{}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.CancelTicket == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.CancelTicket = nil
-									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.CancelTicket = &tfTypes.CancelTicket{}
-									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.EscalationComment = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.EscalationComment)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.Expiration = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.Expiration)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers = nil
-									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
-										if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds))
-											for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
+										r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
+										if resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds))
+											for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds {
+												r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
 											}
 										} else {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
+											r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
 										}
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReplacePolicy == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReplacePolicy = nil
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReplacePolicy == nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReplacePolicy = nil
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.ReplacePolicy.PolicyID)
+										r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
+										r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation.ReplacePolicy.PolicyID)
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.SkipStep == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.SkipStep = nil
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Escalation.SkipStep == nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.SkipStep = nil
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.Escalation.SkipStep = &tfTypes.SkipStep{}
+										r.TaskView.Task.Policy.Current.Approval.Approval.Escalation.SkipStep = &tfTypes.SkipStep{}
 									}
 								}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EscalationEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.EscalationEnabled)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval = nil
+								r.TaskView.Task.Policy.Current.Approval.Approval.EscalationEnabled = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.EscalationEnabled)
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.Expression == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.Expression = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval = &tfTypes.ExpressionApproval{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AllowSelfApproval)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds, types.StringValue(v))
+									r.TaskView.Task.Policy.Current.Approval.Approval.Expression = &tfTypes.ExpressionApproval{}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Expression.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.AllowSelfApproval)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.AssignedUserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Expression.AssignedUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.AssignedUserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.AssignedUserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Expression.AssignedUserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Expression.AssignedUserIds, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.AssignedUserIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Expression.AssignedUserIds = nil
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions, types.StringValue(v))
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.Expressions != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Expression.Expressions = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.Expressions))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.Expressions {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Expression.Expressions = append(r.TaskView.Task.Policy.Current.Approval.Approval.Expression.Expressions, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Expressions = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Expression.Expressions = nil
 									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.Fallback)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Expression.Fallback = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.Fallback)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackGroupIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
 
-										for _, fallbackGroupIdsItem20 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds {
-											var fallbackGroupIds20 tfTypes.AppEntitlementReference
+										for _, fallbackGroupIdsItem1 := range resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackGroupIds {
+											var fallbackGroupIds1 tfTypes.AppEntitlementReference
 
-											fallbackGroupIds20.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem20.AppEntitlementID)
-											fallbackGroupIds20.AppID = types.StringPointerValue(fallbackGroupIdsItem20.AppID)
+											fallbackGroupIds1.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem1.AppEntitlementID)
+											fallbackGroupIds1.AppID = types.StringPointerValue(fallbackGroupIdsItem1.AppID)
 
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds, fallbackGroupIds20)
+											r.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackGroupIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackGroupIds, fallbackGroupIds1)
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackGroupIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackGroupIds = nil
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds, types.StringValue(v))
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackUserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackUserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackUserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackUserIds, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.FallbackUserIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Expression.FallbackUserIds = nil
 									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.IsGroupFallbackEnabled)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ExpressionApproval.RequireDistinctApprovers)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Expression.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.IsGroupFallbackEnabled)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Expression.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Expression.RequireDistinctApprovers)
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval = nil
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.Group == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.Group = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval = &tfTypes.ManagerApproval{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AllowSelfApproval)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds, types.StringValue(v))
+									r.TaskView.Task.Policy.Current.Approval.Approval.Group = &tfTypes.AppGroupApproval{}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Group.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Group.AllowSelfApproval)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Group.AppGroupID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Group.AppGroupID)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Group.AppID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Group.AppID)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Group.Fallback = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Group.Fallback)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackGroupIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem2 := range resp.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackGroupIds {
+											var fallbackGroupIds2 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds2.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem2.AppEntitlementID)
+											fallbackGroupIds2.AppID = types.StringPointerValue(fallbackGroupIdsItem2.AppID)
+
+											r.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackGroupIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackGroupIds, fallbackGroupIds2)
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.AssignedUserIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackGroupIds = nil
 									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.Fallback)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-										for _, fallbackGroupIdsItem21 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds {
-											var fallbackGroupIds21 tfTypes.AppEntitlementReference
-
-											fallbackGroupIds21.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem21.AppEntitlementID)
-											fallbackGroupIds21.AppID = types.StringPointerValue(fallbackGroupIdsItem21.AppID)
-
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds, fallbackGroupIds21)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackUserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackUserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackUserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackUserIds, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackGroupIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Group.FallbackUserIds = nil
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds, types.StringValue(v))
-										}
-									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.FallbackUserIds = nil
-									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.IsGroupFallbackEnabled)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ManagerApproval.RequireDistinctApprovers)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Group.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Group.IsGroupFallbackEnabled)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Group.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Group.RequireDistinctApprovers)
 								}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.RequireApprovalReason = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.RequireApprovalReason)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.RequireDenialReason = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.RequireDenialReason)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.RequireReassignmentReason = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.RequireReassignmentReason)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.RequiresStepUpProviderID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.RequiresStepUpProviderID)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval = nil
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.Manager == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.Manager = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval = &tfTypes.ResourceOwnerApproval{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.AllowSelfApproval)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.Fallback)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-										for _, fallbackGroupIdsItem22 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds {
-											var fallbackGroupIds22 tfTypes.AppEntitlementReference
-
-											fallbackGroupIds22.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem22.AppEntitlementID)
-											fallbackGroupIds22.AppID = types.StringPointerValue(fallbackGroupIdsItem22.AppID)
-
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds, fallbackGroupIds22)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Manager = &tfTypes.ManagerApproval{}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Manager.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.AllowSelfApproval)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.AssignedUserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Manager.AssignedUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.AssignedUserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.AssignedUserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Manager.AssignedUserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Manager.AssignedUserIds, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackGroupIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Manager.AssignedUserIds = nil
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds, types.StringValue(v))
+									r.TaskView.Task.Policy.Current.Approval.Approval.Manager.Fallback = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.Fallback)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackGroupIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem3 := range resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackGroupIds {
+											var fallbackGroupIds3 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds3.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem3.AppEntitlementID)
+											fallbackGroupIds3.AppID = types.StringPointerValue(fallbackGroupIdsItem3.AppID)
+
+											r.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackGroupIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackGroupIds, fallbackGroupIds3)
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.FallbackUserIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackGroupIds = nil
 									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.IsGroupFallbackEnabled)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.ResourceOwnerApproval.RequireDistinctApprovers)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackUserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackUserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackUserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackUserIds, types.StringValue(v))
+										}
+									} else {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Manager.FallbackUserIds = nil
+									}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Manager.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.IsGroupFallbackEnabled)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Manager.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Manager.RequireDistinctApprovers)
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval = nil
+								r.TaskView.Task.Policy.Current.Approval.Approval.RequireApprovalReason = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.RequireApprovalReason)
+								r.TaskView.Task.Policy.Current.Approval.Approval.RequireDenialReason = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.RequireDenialReason)
+								r.TaskView.Task.Policy.Current.Approval.Approval.RequireReassignmentReason = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.RequireReassignmentReason)
+								r.TaskView.Task.Policy.Current.Approval.Approval.RequiresStepUpProviderID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.RequiresStepUpProviderID)
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval = &tfTypes.SelfApproval{}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds, types.StringValue(v))
+									r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners = &tfTypes.ResourceOwnerApproval{}
+									r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.AllowSelfApproval)
+									r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.Fallback = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.Fallback)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackGroupIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem4 := range resp.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackGroupIds {
+											var fallbackGroupIds4 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds4.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem4.AppEntitlementID)
+											fallbackGroupIds4.AppID = types.StringPointerValue(fallbackGroupIdsItem4.AppID)
+
+											r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackGroupIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackGroupIds, fallbackGroupIds4)
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.AssignedUserIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackGroupIds = nil
 									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.Fallback = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.Fallback)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
-
-										for _, fallbackGroupIdsItem23 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds {
-											var fallbackGroupIds23 tfTypes.AppEntitlementReference
-
-											fallbackGroupIds23.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem23.AppEntitlementID)
-											fallbackGroupIds23.AppID = types.StringPointerValue(fallbackGroupIdsItem23.AppID)
-
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds, fallbackGroupIds23)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackUserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackUserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackUserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackUserIds, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackGroupIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.FallbackUserIds = nil
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds, types.StringValue(v))
-										}
-									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.FallbackUserIds = nil
-									}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.SelfApproval.IsGroupFallbackEnabled)
+									r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.IsGroupFallbackEnabled)
+									r.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.ResourceOwners.RequireDistinctApprovers)
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval = nil
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.Self == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.Self = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval = &tfTypes.UserApproval{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.AllowSelfApproval)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.RequireDistinctApprovers)
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds, types.StringValue(v))
+									r.TaskView.Task.Policy.Current.Approval.Approval.Self = &tfTypes.SelfApproval{}
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Self.AssignedUserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Self.AssignedUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Self.AssignedUserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Self.AssignedUserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Self.AssignedUserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Self.AssignedUserIds, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.UserApproval.UserIds = nil
+										r.TaskView.Task.Policy.Current.Approval.Approval.Self.AssignedUserIds = nil
+									}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Self.Fallback = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Self.Fallback)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackGroupIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem5 := range resp.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackGroupIds {
+											var fallbackGroupIds5 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds5.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem5.AppEntitlementID)
+											fallbackGroupIds5.AppID = types.StringPointerValue(fallbackGroupIdsItem5.AppID)
+
+											r.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackGroupIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackGroupIds, fallbackGroupIds5)
+										}
+									} else {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackGroupIds = nil
+									}
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackUserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackUserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackUserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackUserIds, types.StringValue(v))
+										}
+									} else {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Self.FallbackUserIds = nil
+									}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Self.IsGroupFallbackEnabled = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Self.IsGroupFallbackEnabled)
+								}
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.Users == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.Users = nil
+								} else {
+									r.TaskView.Task.Policy.Current.Approval.Approval.Users = &tfTypes.UserApproval{}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Users.AllowSelfApproval = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Users.AllowSelfApproval)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Users.RequireDistinctApprovers = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Users.RequireDistinctApprovers)
+									if resp.TaskView.Task.Policy.Current.Approval.Approval.Users.UserIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Users.UserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.Approval.Users.UserIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.Approval.Users.UserIds {
+											r.TaskView.Task.Policy.Current.Approval.Approval.Users.UserIds = append(r.TaskView.Task.Policy.Current.Approval.Approval.Users.UserIds, types.StringValue(v))
+										}
+									} else {
+										r.TaskView.Task.Policy.Current.Approval.Approval.Users.UserIds = nil
 									}
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.WebhookApproval == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.WebhookApproval = nil
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.Webhook == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.Webhook = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.WebhookApproval = &tfTypes.WebhookApproval{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.WebhookApproval.WebhookID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.Approval.WebhookApproval.WebhookID)
+									r.TaskView.Task.Policy.Current.Approval.Approval.Webhook = &tfTypes.WebhookApproval{}
+									r.TaskView.Task.Policy.Current.Approval.Approval.Webhook.WebhookID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approval.Webhook.WebhookID)
 								}
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction = nil
+							if resp.TaskView.Task.Policy.Current.Approval.Approved == nil {
+								r.TaskView.Task.Policy.Current.Approval.Approved = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction = &tfTypes.ApprovedAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.ApprovedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.ApprovedAt))
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements != nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements = []tfTypes.AppEntitlementReference{}
+								r.TaskView.Task.Policy.Current.Approval.Approved = &tfTypes.ApprovedAction{}
+								r.TaskView.Task.Policy.Current.Approval.Approved.ApprovedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Approval.Approved.ApprovedAt))
+								if resp.TaskView.Task.Policy.Current.Approval.Approved.Entitlements != nil {
+									r.TaskView.Task.Policy.Current.Approval.Approved.Entitlements = []tfTypes.AppEntitlementReference{}
 
-									for _, entitlementsItem2 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements {
-										var entitlements2 tfTypes.AppEntitlementReference
+									for _, entitlementsItem := range resp.TaskView.Task.Policy.Current.Approval.Approved.Entitlements {
+										var entitlements tfTypes.AppEntitlementReference
 
-										entitlements2.AppEntitlementID = types.StringPointerValue(entitlementsItem2.AppEntitlementID)
-										entitlements2.AppID = types.StringPointerValue(entitlementsItem2.AppID)
+										entitlements.AppEntitlementID = types.StringPointerValue(entitlementsItem.AppEntitlementID)
+										entitlements.AppID = types.StringPointerValue(entitlementsItem.AppID)
 
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements, entitlements2)
+										r.TaskView.Task.Policy.Current.Approval.Approved.Entitlements = append(r.TaskView.Task.Policy.Current.Approval.Approved.Entitlements, entitlements)
 									}
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.Entitlements = nil
+									r.TaskView.Task.Policy.Current.Approval.Approved.Entitlements = nil
 								}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.StepUpTransactionID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.StepUpTransactionID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ApprovedAction.UserID)
+								r.TaskView.Task.Policy.Current.Approval.Approved.StepUpTransactionID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approved.StepUpTransactionID)
+								r.TaskView.Task.Policy.Current.Approval.Approved.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Approved.UserID)
 							}
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.AssignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.AssignedAt))
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.DeniedAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.DeniedAction = nil
+							r.TaskView.Task.Policy.Current.Approval.AssignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Approval.AssignedAt))
+							if resp.TaskView.Task.Policy.Current.Approval.Denied == nil {
+								r.TaskView.Task.Policy.Current.Approval.Denied = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.DeniedAction = &tfTypes.DeniedAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.DeniedAction.DeniedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.DeniedAction.DeniedAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.DeniedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.DeniedAction.UserID)
+								r.TaskView.Task.Policy.Current.Approval.Denied = &tfTypes.DeniedAction{}
+								r.TaskView.Task.Policy.Current.Approval.Denied.DeniedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Approval.Denied.DeniedAt))
+								r.TaskView.Task.Policy.Current.Approval.Denied.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Denied.UserID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance = nil
+							if resp.TaskView.Task.Policy.Current.Approval.EscalationInstance == nil {
+								r.TaskView.Task.Policy.Current.Approval.EscalationInstance = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance = &tfTypes.EscalationInstance{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.AlreadyEscalated = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.AlreadyEscalated)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationComment = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationComment)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = nil
+								r.TaskView.Task.Policy.Current.Approval.EscalationInstance = &tfTypes.EscalationInstance{}
+								r.TaskView.Task.Policy.Current.Approval.EscalationInstance.AlreadyEscalated = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.AlreadyEscalated)
+								if resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.CancelTicket == nil {
+									r.TaskView.Task.Policy.Current.Approval.EscalationInstance.CancelTicket = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceCancelTicket = &tfTypes.EscalationInstanceCancelTicket{}
+									r.TaskView.Task.Policy.Current.Approval.EscalationInstance.CancelTicket = &tfTypes.EscalationInstanceCancelTicket{}
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = nil
+								r.TaskView.Task.Policy.Current.Approval.EscalationInstance.EscalationComment = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.EscalationComment)
+								r.TaskView.Task.Policy.Current.Approval.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.ExpiresAt))
+								if resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReassignToApprovers == nil {
+									r.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReassignToApprovers = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers = &tfTypes.EscalationInstanceReassignToApprovers{}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds != nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds))
-										for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds, types.StringValue(v))
+									r.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReassignToApprovers = &tfTypes.EscalationInstanceReassignToApprovers{}
+									if resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReassignToApprovers.ApproverIds != nil {
+										r.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReassignToApprovers.ApproverIds))
+										for _, v := range resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReassignToApprovers.ApproverIds {
+											r.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReassignToApprovers.ApproverIds = append(r.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReassignToApprovers.ApproverIds, types.StringValue(v))
 										}
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReassignToApprovers.ApproverIds = nil
+										r.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReassignToApprovers.ApproverIds = nil
 									}
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = nil
+								if resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReplacePolicy == nil {
+									r.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReplacePolicy = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy = &tfTypes.EscalationInstanceReplacePolicy{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceReplacePolicy.PolicyID)
+									r.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReplacePolicy = &tfTypes.EscalationInstanceReplacePolicy{}
+									r.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReplacePolicy.PolicyID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.ReplacePolicy.PolicyID)
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = nil
+								if resp.TaskView.Task.Policy.Current.Approval.EscalationInstance.SkipStep == nil {
+									r.TaskView.Task.Policy.Current.Approval.EscalationInstance.SkipStep = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.EscalationInstanceSkipStep = &tfTypes.EscalationInstanceSkipStep{}
+									r.TaskView.Task.Policy.Current.Approval.EscalationInstance.SkipStep = &tfTypes.EscalationInstanceSkipStep{}
 								}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.EscalationInstance.ExpiresAt))
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction = nil
+							if resp.TaskView.Task.Policy.Current.Approval.Reassigned == nil {
+								r.TaskView.Task.Policy.Current.Approval.Reassigned = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction = &tfTypes.ReassignedAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction.NewPolicyStepID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction.ReassignedAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedAction.UserID)
+								r.TaskView.Task.Policy.Current.Approval.Reassigned = &tfTypes.ReassignedAction{}
+								r.TaskView.Task.Policy.Current.Approval.Reassigned.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Reassigned.NewPolicyStepID)
+								r.TaskView.Task.Policy.Current.Approval.Reassigned.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Approval.Reassigned.ReassignedAt))
+								r.TaskView.Task.Policy.Current.Approval.Reassigned.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Reassigned.UserID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction = nil
+							if resp.TaskView.Task.Policy.Current.Approval.ReassignedByError == nil {
+								r.TaskView.Task.Policy.Current.Approval.ReassignedByError = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction = &tfTypes.ReassignedByErrorAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.Description = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.Description)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.ErrorCode = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.ErrorCode)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.ErroredAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.ErrorUserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.ErrorUserID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.NewPolicyStepID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.ReassignedByErrorAction.ReassignedAt))
+								r.TaskView.Task.Policy.Current.Approval.ReassignedByError = &tfTypes.ReassignedByErrorAction{}
+								r.TaskView.Task.Policy.Current.Approval.ReassignedByError.Description = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.ReassignedByError.Description)
+								r.TaskView.Task.Policy.Current.Approval.ReassignedByError.ErrorCode = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.ReassignedByError.ErrorCode)
+								r.TaskView.Task.Policy.Current.Approval.ReassignedByError.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Approval.ReassignedByError.ErroredAt))
+								r.TaskView.Task.Policy.Current.Approval.ReassignedByError.ErrorUserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.ReassignedByError.ErrorUserID)
+								r.TaskView.Task.Policy.Current.Approval.ReassignedByError.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.ReassignedByError.NewPolicyStepID)
+								r.TaskView.Task.Policy.Current.Approval.ReassignedByError.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Approval.ReassignedByError.ReassignedAt))
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.RestartAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.RestartAction = nil
+							if resp.TaskView.Task.Policy.Current.Approval.Restarted == nil {
+								r.TaskView.Task.Policy.Current.Approval.Restarted = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.RestartAction = &tfTypes.RestartAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.RestartAction.OldPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.RestartAction.OldPolicyStepID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.RestartAction.RestartedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.RestartAction.RestartedAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.RestartAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.RestartAction.UserID)
+								r.TaskView.Task.Policy.Current.Approval.Restarted = &tfTypes.RestartAction{}
+								r.TaskView.Task.Policy.Current.Approval.Restarted.OldPolicyStepID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Restarted.OldPolicyStepID)
+								r.TaskView.Task.Policy.Current.Approval.Restarted.RestartedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Approval.Restarted.RestartedAt))
+								r.TaskView.Task.Policy.Current.Approval.Restarted.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Restarted.UserID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.SkippedAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.SkippedAction = nil
+							if resp.TaskView.Task.Policy.Current.Approval.Skipped == nil {
+								r.TaskView.Task.Policy.Current.Approval.Skipped = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.SkippedAction = &tfTypes.SkippedAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.SkippedAction.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.SkippedAction.NewPolicyStepID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.SkippedAction.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.SkippedAction.SkippedAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.SkippedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.SkippedAction.UserID)
+								r.TaskView.Task.Policy.Current.Approval.Skipped = &tfTypes.SkippedAction{}
+								r.TaskView.Task.Policy.Current.Approval.Skipped.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Skipped.NewPolicyStepID)
+								r.TaskView.Task.Policy.Current.Approval.Skipped.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Approval.Skipped.SkippedAt))
+								r.TaskView.Task.Policy.Current.Approval.Skipped.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Approval.Skipped.UserID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.State != nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.State = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.State))
+							if resp.TaskView.Task.Policy.Current.Approval.State != nil {
+								r.TaskView.Task.Policy.Current.Approval.State = types.StringValue(string(*resp.TaskView.Task.Policy.Current.Approval.State))
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ApprovalInstance.State = types.StringNull()
+								r.TaskView.Task.Policy.Current.Approval.State = types.StringNull()
 							}
 						}
-						if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance == nil {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance = nil
+						if resp.TaskView.Task.Policy.Current.Form == nil {
+							r.TaskView.Task.Policy.Current.Form = nil
 						} else {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance = &tfTypes.FormInstance{}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Data == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Data = nil
+							r.TaskView.Task.Policy.Current.Form = &tfTypes.FormInstance{}
+							if resp.TaskView.Task.Policy.Current.Form.Completed == nil {
+								r.TaskView.Task.Policy.Current.Form.Completed = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.Data = &tfTypes.FormInstanceData{}
+								r.TaskView.Task.Policy.Current.Form.Completed = &tfTypes.FormCompletedAction{}
+								r.TaskView.Task.Policy.Current.Form.Completed.CompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Form.Completed.CompletedAt))
+								r.TaskView.Task.Policy.Current.Form.Completed.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Form.Completed.UserID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.FormCompletedAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.FormCompletedAction = nil
+							if resp.TaskView.Task.Policy.Current.Form.Data == nil {
+								r.TaskView.Task.Policy.Current.Form.Data = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.FormCompletedAction = &tfTypes.FormCompletedAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.FormCompletedAction.CompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.FormCompletedAction.CompletedAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.FormCompletedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.FormCompletedAction.UserID)
+								r.TaskView.Task.Policy.Current.Form.Data = &tfTypes.FormInstanceData{}
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction = nil
+							if resp.TaskView.Task.Policy.Current.Form.Form == nil {
+								r.TaskView.Task.Policy.Current.Form.Form = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction = &tfTypes.ReassignedAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.NewPolicyStepID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.ReassignedAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.ReassignedAction.UserID)
-							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm = nil
-							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm = &tfTypes.RequestSchemaForm{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Description = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Description)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups != nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups = []tfTypes.FormFieldGroup{}
+								r.TaskView.Task.Policy.Current.Form.Form = &tfTypes.RequestSchemaForm{}
+								r.TaskView.Task.Policy.Current.Form.Form.Description = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Form.Form.Description)
+								if resp.TaskView.Task.Policy.Current.Form.Form.FieldGroups != nil {
+									r.TaskView.Task.Policy.Current.Form.Form.FieldGroups = []tfTypes.FormFieldGroup{}
 
-									for _, fieldGroupsItem1 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups {
+									for _, fieldGroupsItem1 := range resp.TaskView.Task.Policy.Current.Form.Form.FieldGroups {
 										var fieldGroups1 tfTypes.FormFieldGroup
 
 										fieldGroups1.Default = types.BoolPointerValue(fieldGroupsItem1.Default)
@@ -3323,15 +1073,15 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										fieldGroups1.HelpText = types.StringPointerValue(fieldGroupsItem1.HelpText)
 										fieldGroups1.Name = types.StringPointerValue(fieldGroupsItem1.Name)
 
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups, fieldGroups1)
+										r.TaskView.Task.Policy.Current.Form.Form.FieldGroups = append(r.TaskView.Task.Policy.Current.Form.Form.FieldGroups, fieldGroups1)
 									}
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldGroups = nil
+									r.TaskView.Task.Policy.Current.Form.Form.FieldGroups = nil
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships != nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships = []tfTypes.FieldRelationship{}
+								if resp.TaskView.Task.Policy.Current.Form.Form.FieldRelationships != nil {
+									r.TaskView.Task.Policy.Current.Form.Form.FieldRelationships = []tfTypes.FieldRelationship{}
 
-									for _, fieldRelationshipsItem1 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships {
+									for _, fieldRelationshipsItem1 := range resp.TaskView.Task.Policy.Current.Form.Form.FieldRelationships {
 										var fieldRelationships1 tfTypes.FieldRelationship
 
 										if fieldRelationshipsItem1.AtLeastOne == nil {
@@ -3371,40 +1121,40 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											fieldRelationships1.RequiredTogether = &tfTypes.RequiredTogether{}
 										}
 
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships, fieldRelationships1)
+										r.TaskView.Task.Policy.Current.Form.Form.FieldRelationships = append(r.TaskView.Task.Policy.Current.Form.Form.FieldRelationships, fieldRelationships1)
 									}
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.FieldRelationships = nil
+									r.TaskView.Task.Policy.Current.Form.Form.FieldRelationships = nil
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields != nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields = []tfTypes.FormField{}
+								if resp.TaskView.Task.Policy.Current.Form.Form.Fields != nil {
+									r.TaskView.Task.Policy.Current.Form.Form.Fields = []tfTypes.FormField{}
 
-									for _, fieldsItem1 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields {
+									for _, fieldsItem1 := range resp.TaskView.Task.Policy.Current.Form.Form.Fields {
 										var fields1 tfTypes.FormField
 
-										if fieldsItem1.AdminProviderConfig == nil {
-											fields1.AdminProviderConfig = nil
+										if fieldsItem1.AdminConfig == nil {
+											fields1.AdminConfig = nil
 										} else {
-											fields1.AdminProviderConfig = &tfTypes.AdminProviderConfig{}
-											fields1.AdminProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem1.AdminProviderConfig.DefaultValueCel)
-											fields1.AdminProviderConfig.ShowToUser = types.BoolPointerValue(fieldsItem1.AdminProviderConfig.ShowToUser)
+											fields1.AdminConfig = &tfTypes.AdminProviderConfig{}
+											fields1.AdminConfig.DefaultValueCel = types.StringPointerValue(fieldsItem1.AdminConfig.DefaultValueCel)
+											fields1.AdminConfig.ShowToUser = types.BoolPointerValue(fieldsItem1.AdminConfig.ShowToUser)
 										}
 										if fieldsItem1.BoolField == nil {
 											fields1.BoolField = nil
 										} else {
 											fields1.BoolField = &tfTypes.BoolField{}
-											if fieldsItem1.BoolField.BoolRules == nil {
-												fields1.BoolField.BoolRules = nil
-											} else {
-												fields1.BoolField.BoolRules = &tfTypes.BoolRules{}
-												fields1.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem1.BoolField.BoolRules.Const)
-											}
 											if fieldsItem1.BoolField.CheckboxField == nil {
 												fields1.BoolField.CheckboxField = nil
 											} else {
 												fields1.BoolField.CheckboxField = &tfTypes.CheckboxField{}
 											}
 											fields1.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem1.BoolField.DefaultValue)
+											if fieldsItem1.BoolField.Rules == nil {
+												fields1.BoolField.Rules = nil
+											} else {
+												fields1.BoolField.Rules = &tfTypes.BoolRules{}
+												fields1.BoolField.Rules.Const = types.BoolPointerValue(fieldsItem1.BoolField.Rules.Const)
+											}
 											if fieldsItem1.BoolField.ToggleField == nil {
 												fields1.BoolField.ToggleField = nil
 											} else {
@@ -3432,172 +1182,11 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											}
 											fields1.FileField.MaxFileSize = types.StringPointerValue(fieldsItem1.FileField.MaxFileSize)
 										}
-										if fieldsItem1.FormStringField == nil {
-											fields1.FormStringField = nil
-										} else {
-											fields1.FormStringField = &tfTypes.FormStringField{}
-											fields1.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem1.FormStringField.DefaultValue)
-											if fieldsItem1.FormStringField.PasswordField == nil {
-												fields1.FormStringField.PasswordField = nil
-											} else {
-												fields1.FormStringField.PasswordField = &tfTypes.PasswordField{}
-											}
-											if fieldsItem1.FormStringField.PickerField == nil {
-												fields1.FormStringField.PickerField = nil
-											} else {
-												fields1.FormStringField.PickerField = &tfTypes.PickerField{}
-												if fieldsItem1.FormStringField.PickerField.AppResourceFilter == nil {
-													fields1.FormStringField.PickerField.AppResourceFilter = nil
-												} else {
-													fields1.FormStringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
-													fields1.FormStringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem1.FormStringField.PickerField.AppResourceFilter.AppID)
-													fields1.FormStringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem1.FormStringField.PickerField.AppResourceFilter.ResourceTypeID)
-												}
-												if fieldsItem1.FormStringField.PickerField.AppUserFilter == nil {
-													fields1.FormStringField.PickerField.AppUserFilter = nil
-												} else {
-													fields1.FormStringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
-													fields1.FormStringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem1.FormStringField.PickerField.AppUserFilter.AppID)
-												}
-												if fieldsItem1.FormStringField.PickerField.C1UserFilter == nil {
-													fields1.FormStringField.PickerField.C1UserFilter = nil
-												} else {
-													fields1.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
-												}
-											}
-											fields1.FormStringField.Placeholder = types.StringPointerValue(fieldsItem1.FormStringField.Placeholder)
-											if fieldsItem1.FormStringField.SelectField == nil {
-												fields1.FormStringField.SelectField = nil
-											} else {
-												fields1.FormStringField.SelectField = &tfTypes.SelectField{}
-												if fieldsItem1.FormStringField.SelectField.Options != nil {
-													fields1.FormStringField.SelectField.Options = []tfTypes.SelectOption{}
-
-													for _, optionsVarItem1 := range fieldsItem1.FormStringField.SelectField.Options {
-														var optionsVar1 tfTypes.SelectOption
-
-														optionsVar1.Description = types.StringPointerValue(optionsVarItem1.Description)
-														optionsVar1.DisplayName = types.StringPointerValue(optionsVarItem1.DisplayName)
-														optionsVar1.Value = types.StringPointerValue(optionsVarItem1.Value)
-
-														fields1.FormStringField.SelectField.Options = append(fields1.FormStringField.SelectField.Options, optionsVar1)
-													}
-												} else {
-													fields1.FormStringField.SelectField.Options = nil
-												}
-												if fieldsItem1.FormStringField.SelectField.Type != nil {
-													fields1.FormStringField.SelectField.Type = types.StringValue(string(*fieldsItem1.FormStringField.SelectField.Type))
-												} else {
-													fields1.FormStringField.SelectField.Type = types.StringNull()
-												}
-											}
-											if fieldsItem1.FormStringField.StringRules == nil {
-												fields1.FormStringField.StringRules = nil
-											} else {
-												fields1.FormStringField.StringRules = &tfTypes.StringRules{}
-												fields1.FormStringField.StringRules.Address = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Address)
-												fields1.FormStringField.StringRules.Const = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Const)
-												fields1.FormStringField.StringRules.Contains = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Contains)
-												fields1.FormStringField.StringRules.Email = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Email)
-												fields1.FormStringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Hostname)
-												fields1.FormStringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.IgnoreEmpty)
-												if fieldsItem1.FormStringField.StringRules.In != nil {
-													fields1.FormStringField.StringRules.In = make([]types.String, 0, len(fieldsItem1.FormStringField.StringRules.In))
-													for _, v := range fieldsItem1.FormStringField.StringRules.In {
-														fields1.FormStringField.StringRules.In = append(fields1.FormStringField.StringRules.In, types.StringValue(v))
-													}
-												} else {
-													fields1.FormStringField.StringRules.In = nil
-												}
-												fields1.FormStringField.StringRules.IP = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.IP)
-												fields1.FormStringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Ipv4)
-												fields1.FormStringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Ipv6)
-												fields1.FormStringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.LenBytes)
-												fields1.FormStringField.StringRules.Length = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Length)
-												fields1.FormStringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.MaxBytes)
-												fields1.FormStringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.MaxLen)
-												fields1.FormStringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.MinBytes)
-												fields1.FormStringField.StringRules.MinLen = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.MinLen)
-												fields1.FormStringField.StringRules.NotContains = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.NotContains)
-												if fieldsItem1.FormStringField.StringRules.NotIn != nil {
-													fields1.FormStringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem1.FormStringField.StringRules.NotIn))
-													for _, v := range fieldsItem1.FormStringField.StringRules.NotIn {
-														fields1.FormStringField.StringRules.NotIn = append(fields1.FormStringField.StringRules.NotIn, types.StringValue(v))
-													}
-												} else {
-													fields1.FormStringField.StringRules.NotIn = nil
-												}
-												fields1.FormStringField.StringRules.Pattern = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Pattern)
-												fields1.FormStringField.StringRules.Prefix = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Prefix)
-												fields1.FormStringField.StringRules.Strict = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.Strict)
-												fields1.FormStringField.StringRules.Suffix = types.StringPointerValue(fieldsItem1.FormStringField.StringRules.Suffix)
-												fields1.FormStringField.StringRules.URI = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.URI)
-												fields1.FormStringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.URIRef)
-												fields1.FormStringField.StringRules.UUID = types.BoolPointerValue(fieldsItem1.FormStringField.StringRules.UUID)
-												if fieldsItem1.FormStringField.StringRules.WellKnownRegex != nil {
-													fields1.FormStringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem1.FormStringField.StringRules.WellKnownRegex))
-												} else {
-													fields1.FormStringField.StringRules.WellKnownRegex = types.StringNull()
-												}
-											}
-											if fieldsItem1.FormStringField.TextField == nil {
-												fields1.FormStringField.TextField = nil
-											} else {
-												fields1.FormStringField.TextField = &tfTypes.TextField{}
-												fields1.FormStringField.TextField.Multiline = types.BoolPointerValue(fieldsItem1.FormStringField.TextField.Multiline)
-												fields1.FormStringField.TextField.Suffix = types.StringPointerValue(fieldsItem1.FormStringField.TextField.Suffix)
-											}
-										}
-										if fieldsItem1.FormStringMapField == nil {
-											fields1.FormStringMapField = nil
-										} else {
-											fields1.FormStringMapField = &tfTypes.FormStringMapField{}
-											if len(fieldsItem1.FormStringMapField.DefaultValue) > 0 {
-												fields1.FormStringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem1.FormStringMapField.DefaultValue))
-												for key2, value2 := range fieldsItem1.FormStringMapField.DefaultValue {
-													fields1.FormStringMapField.DefaultValue[key2] = types.StringValue(value2)
-												}
-											}
-											if fieldsItem1.FormStringMapField.StringMapRules == nil {
-												fields1.FormStringMapField.StringMapRules = nil
-											} else {
-												fields1.FormStringMapField.StringMapRules = &tfTypes.StringMapRules{}
-												fields1.FormStringMapField.StringMapRules.IsRequired = types.BoolPointerValue(fieldsItem1.FormStringMapField.StringMapRules.IsRequired)
-												fields1.FormStringMapField.StringMapRules.ValidateEmpty = types.BoolPointerValue(fieldsItem1.FormStringMapField.StringMapRules.ValidateEmpty)
-											}
-										}
 										if fieldsItem1.Int64Field == nil {
 											fields1.Int64Field = nil
 										} else {
 											fields1.Int64Field = &tfTypes.Int64Field{}
 											fields1.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem1.Int64Field.DefaultValue)
-											if fieldsItem1.Int64Field.Int64Rules == nil {
-												fields1.Int64Field.Int64Rules = nil
-											} else {
-												fields1.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
-												fields1.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Const)
-												fields1.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Gt)
-												fields1.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Gte)
-												fields1.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem1.Int64Field.Int64Rules.IgnoreEmpty)
-												if fieldsItem1.Int64Field.Int64Rules.In != nil {
-													fields1.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem1.Int64Field.Int64Rules.In))
-													for _, v := range fieldsItem1.Int64Field.Int64Rules.In {
-														fields1.Int64Field.Int64Rules.In = append(fields1.Int64Field.Int64Rules.In, types.StringValue(v))
-													}
-												} else {
-													fields1.Int64Field.Int64Rules.In = nil
-												}
-												fields1.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Lt)
-												fields1.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem1.Int64Field.Int64Rules.Lte)
-												if fieldsItem1.Int64Field.Int64Rules.NotIn != nil {
-													fields1.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem1.Int64Field.Int64Rules.NotIn))
-													for _, v := range fieldsItem1.Int64Field.Int64Rules.NotIn {
-														fields1.Int64Field.Int64Rules.NotIn = append(fields1.Int64Field.Int64Rules.NotIn, types.StringValue(v))
-													}
-												} else {
-													fields1.Int64Field.Int64Rules.NotIn = nil
-												}
-											}
 											if fieldsItem1.Int64Field.NumberField == nil {
 												fields1.Int64Field.NumberField = nil
 											} else {
@@ -3607,6 +1196,33 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 												fields1.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem1.Int64Field.NumberField.Step)
 											}
 											fields1.Int64Field.Placeholder = types.StringPointerValue(fieldsItem1.Int64Field.Placeholder)
+											if fieldsItem1.Int64Field.Rules == nil {
+												fields1.Int64Field.Rules = nil
+											} else {
+												fields1.Int64Field.Rules = &tfTypes.Int64Rules{}
+												fields1.Int64Field.Rules.Const = types.StringPointerValue(fieldsItem1.Int64Field.Rules.Const)
+												fields1.Int64Field.Rules.Gt = types.StringPointerValue(fieldsItem1.Int64Field.Rules.Gt)
+												fields1.Int64Field.Rules.Gte = types.StringPointerValue(fieldsItem1.Int64Field.Rules.Gte)
+												fields1.Int64Field.Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem1.Int64Field.Rules.IgnoreEmpty)
+												if fieldsItem1.Int64Field.Rules.In != nil {
+													fields1.Int64Field.Rules.In = make([]types.String, 0, len(fieldsItem1.Int64Field.Rules.In))
+													for _, v := range fieldsItem1.Int64Field.Rules.In {
+														fields1.Int64Field.Rules.In = append(fields1.Int64Field.Rules.In, types.StringValue(v))
+													}
+												} else {
+													fields1.Int64Field.Rules.In = nil
+												}
+												fields1.Int64Field.Rules.Lt = types.StringPointerValue(fieldsItem1.Int64Field.Rules.Lt)
+												fields1.Int64Field.Rules.Lte = types.StringPointerValue(fieldsItem1.Int64Field.Rules.Lte)
+												if fieldsItem1.Int64Field.Rules.NotIn != nil {
+													fields1.Int64Field.Rules.NotIn = make([]types.String, 0, len(fieldsItem1.Int64Field.Rules.NotIn))
+													for _, v := range fieldsItem1.Int64Field.Rules.NotIn {
+														fields1.Int64Field.Rules.NotIn = append(fields1.Int64Field.Rules.NotIn, types.StringValue(v))
+													}
+												} else {
+													fields1.Int64Field.Rules.NotIn = nil
+												}
+											}
 										}
 										fields1.Name = types.StringPointerValue(fieldsItem1.Name)
 										if fieldsItem1.Oauth2Field == nil {
@@ -3621,408 +1237,3313 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 										}
 										fields1.ReadOnly = types.BoolPointerValue(fieldsItem1.ReadOnly)
 										fields1.Required = types.BoolPointerValue(fieldsItem1.Required)
-										if fieldsItem1.SharedProviderConfig == nil {
-											fields1.SharedProviderConfig = nil
+										if fieldsItem1.SharedConfig == nil {
+											fields1.SharedConfig = nil
 										} else {
-											fields1.SharedProviderConfig = &tfTypes.SharedProviderConfig{}
-											fields1.SharedProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem1.SharedProviderConfig.DefaultValueCel)
-											fields1.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem1.SharedProviderConfig.InputTransformationCel)
-											fields1.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem1.SharedProviderConfig.LockDefaultValues)
+											fields1.SharedConfig = &tfTypes.SharedProviderConfig{}
+											fields1.SharedConfig.DefaultValueCel = types.StringPointerValue(fieldsItem1.SharedConfig.DefaultValueCel)
+											fields1.SharedConfig.InputTransformationCel = types.StringPointerValue(fieldsItem1.SharedConfig.InputTransformationCel)
+											fields1.SharedConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem1.SharedConfig.LockDefaultValues)
 										}
-										if fieldsItem1.UserProviderConfig == nil {
-											fields1.UserProviderConfig = nil
+										if fieldsItem1.StringField == nil {
+											fields1.StringField = nil
 										} else {
-											fields1.UserProviderConfig = &tfTypes.UserProviderConfig{}
-											fields1.UserProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem1.UserProviderConfig.InputTransformationCel)
+											fields1.StringField = &tfTypes.FormStringField{}
+											if fieldsItem1.StringField.DateField == nil {
+												fields1.StringField.DateField = nil
+											} else {
+												fields1.StringField.DateField = &tfTypes.DateField{}
+												fields1.StringField.DateField.DefaultToToday = types.BoolPointerValue(fieldsItem1.StringField.DateField.DefaultToToday)
+												fields1.StringField.DateField.MaxDate = types.StringPointerValue(fieldsItem1.StringField.DateField.MaxDate)
+												fields1.StringField.DateField.MaxDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem1.StringField.DateField.MaxDaysFromToday))
+												fields1.StringField.DateField.MinDate = types.StringPointerValue(fieldsItem1.StringField.DateField.MinDate)
+												fields1.StringField.DateField.MinDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem1.StringField.DateField.MinDaysFromToday))
+											}
+											fields1.StringField.DefaultValue = types.StringPointerValue(fieldsItem1.StringField.DefaultValue)
+											if fieldsItem1.StringField.PasswordField == nil {
+												fields1.StringField.PasswordField = nil
+											} else {
+												fields1.StringField.PasswordField = &tfTypes.PasswordField{}
+											}
+											if fieldsItem1.StringField.PickerField == nil {
+												fields1.StringField.PickerField = nil
+											} else {
+												fields1.StringField.PickerField = &tfTypes.PickerField{}
+												if fieldsItem1.StringField.PickerField.AppUserPicker == nil {
+													fields1.StringField.PickerField.AppUserPicker = nil
+												} else {
+													fields1.StringField.PickerField.AppUserPicker = &tfTypes.AppUserFilter{}
+													fields1.StringField.PickerField.AppUserPicker.AppID = types.StringPointerValue(fieldsItem1.StringField.PickerField.AppUserPicker.AppID)
+												}
+												if fieldsItem1.StringField.PickerField.C1UserPicker == nil {
+													fields1.StringField.PickerField.C1UserPicker = nil
+												} else {
+													fields1.StringField.PickerField.C1UserPicker = &tfTypes.C1UserFilter{}
+													if fieldsItem1.StringField.PickerField.C1UserPicker.ExcludeUserIds != nil {
+														fields1.StringField.PickerField.C1UserPicker.ExcludeUserIds = make([]types.String, 0, len(fieldsItem1.StringField.PickerField.C1UserPicker.ExcludeUserIds))
+														for _, v := range fieldsItem1.StringField.PickerField.C1UserPicker.ExcludeUserIds {
+															fields1.StringField.PickerField.C1UserPicker.ExcludeUserIds = append(fields1.StringField.PickerField.C1UserPicker.ExcludeUserIds, types.StringValue(v))
+														}
+													} else {
+														fields1.StringField.PickerField.C1UserPicker.ExcludeUserIds = nil
+													}
+													fields1.StringField.PickerField.C1UserPicker.IncludeDeactivated = types.BoolPointerValue(fieldsItem1.StringField.PickerField.C1UserPicker.IncludeDeactivated)
+													if fieldsItem1.StringField.PickerField.C1UserPicker.UserIds != nil {
+														fields1.StringField.PickerField.C1UserPicker.UserIds = make([]types.String, 0, len(fieldsItem1.StringField.PickerField.C1UserPicker.UserIds))
+														for _, v := range fieldsItem1.StringField.PickerField.C1UserPicker.UserIds {
+															fields1.StringField.PickerField.C1UserPicker.UserIds = append(fields1.StringField.PickerField.C1UserPicker.UserIds, types.StringValue(v))
+														}
+													} else {
+														fields1.StringField.PickerField.C1UserPicker.UserIds = nil
+													}
+												}
+												if fieldsItem1.StringField.PickerField.ResourcePicker == nil {
+													fields1.StringField.PickerField.ResourcePicker = nil
+												} else {
+													fields1.StringField.PickerField.ResourcePicker = &tfTypes.AppResourceFilter{}
+													fields1.StringField.PickerField.ResourcePicker.AppID = types.StringPointerValue(fieldsItem1.StringField.PickerField.ResourcePicker.AppID)
+													fields1.StringField.PickerField.ResourcePicker.ResourceTypeID = types.StringPointerValue(fieldsItem1.StringField.PickerField.ResourcePicker.ResourceTypeID)
+												}
+											}
+											fields1.StringField.Placeholder = types.StringPointerValue(fieldsItem1.StringField.Placeholder)
+											if fieldsItem1.StringField.Rules == nil {
+												fields1.StringField.Rules = nil
+											} else {
+												fields1.StringField.Rules = &tfTypes.StringRules{}
+												fields1.StringField.Rules.Address = types.BoolPointerValue(fieldsItem1.StringField.Rules.Address)
+												fields1.StringField.Rules.Const = types.StringPointerValue(fieldsItem1.StringField.Rules.Const)
+												fields1.StringField.Rules.Contains = types.StringPointerValue(fieldsItem1.StringField.Rules.Contains)
+												fields1.StringField.Rules.Email = types.BoolPointerValue(fieldsItem1.StringField.Rules.Email)
+												fields1.StringField.Rules.Hostname = types.BoolPointerValue(fieldsItem1.StringField.Rules.Hostname)
+												fields1.StringField.Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem1.StringField.Rules.IgnoreEmpty)
+												if fieldsItem1.StringField.Rules.In != nil {
+													fields1.StringField.Rules.In = make([]types.String, 0, len(fieldsItem1.StringField.Rules.In))
+													for _, v := range fieldsItem1.StringField.Rules.In {
+														fields1.StringField.Rules.In = append(fields1.StringField.Rules.In, types.StringValue(v))
+													}
+												} else {
+													fields1.StringField.Rules.In = nil
+												}
+												fields1.StringField.Rules.IP = types.BoolPointerValue(fieldsItem1.StringField.Rules.IP)
+												fields1.StringField.Rules.Ipv4 = types.BoolPointerValue(fieldsItem1.StringField.Rules.Ipv4)
+												fields1.StringField.Rules.Ipv6 = types.BoolPointerValue(fieldsItem1.StringField.Rules.Ipv6)
+												fields1.StringField.Rules.LenBytes = types.StringPointerValue(fieldsItem1.StringField.Rules.LenBytes)
+												fields1.StringField.Rules.Length = types.StringPointerValue(fieldsItem1.StringField.Rules.Length)
+												fields1.StringField.Rules.MaxBytes = types.StringPointerValue(fieldsItem1.StringField.Rules.MaxBytes)
+												fields1.StringField.Rules.MaxLen = types.StringPointerValue(fieldsItem1.StringField.Rules.MaxLen)
+												fields1.StringField.Rules.MinBytes = types.StringPointerValue(fieldsItem1.StringField.Rules.MinBytes)
+												fields1.StringField.Rules.MinLen = types.StringPointerValue(fieldsItem1.StringField.Rules.MinLen)
+												fields1.StringField.Rules.NotContains = types.StringPointerValue(fieldsItem1.StringField.Rules.NotContains)
+												if fieldsItem1.StringField.Rules.NotIn != nil {
+													fields1.StringField.Rules.NotIn = make([]types.String, 0, len(fieldsItem1.StringField.Rules.NotIn))
+													for _, v := range fieldsItem1.StringField.Rules.NotIn {
+														fields1.StringField.Rules.NotIn = append(fields1.StringField.Rules.NotIn, types.StringValue(v))
+													}
+												} else {
+													fields1.StringField.Rules.NotIn = nil
+												}
+												fields1.StringField.Rules.Pattern = types.StringPointerValue(fieldsItem1.StringField.Rules.Pattern)
+												fields1.StringField.Rules.Prefix = types.StringPointerValue(fieldsItem1.StringField.Rules.Prefix)
+												fields1.StringField.Rules.Strict = types.BoolPointerValue(fieldsItem1.StringField.Rules.Strict)
+												fields1.StringField.Rules.Suffix = types.StringPointerValue(fieldsItem1.StringField.Rules.Suffix)
+												fields1.StringField.Rules.URI = types.BoolPointerValue(fieldsItem1.StringField.Rules.URI)
+												fields1.StringField.Rules.URIRef = types.BoolPointerValue(fieldsItem1.StringField.Rules.URIRef)
+												fields1.StringField.Rules.UUID = types.BoolPointerValue(fieldsItem1.StringField.Rules.UUID)
+												if fieldsItem1.StringField.Rules.WellKnownRegex != nil {
+													fields1.StringField.Rules.WellKnownRegex = types.StringValue(string(*fieldsItem1.StringField.Rules.WellKnownRegex))
+												} else {
+													fields1.StringField.Rules.WellKnownRegex = types.StringNull()
+												}
+											}
+											if fieldsItem1.StringField.SelectField == nil {
+												fields1.StringField.SelectField = nil
+											} else {
+												fields1.StringField.SelectField = &tfTypes.SelectField{}
+												if fieldsItem1.StringField.SelectField.Options != nil {
+													fields1.StringField.SelectField.Options = []tfTypes.SelectOption{}
+
+													for _, optionsVarItem1 := range fieldsItem1.StringField.SelectField.Options {
+														var optionsVar1 tfTypes.SelectOption
+
+														optionsVar1.Description = types.StringPointerValue(optionsVarItem1.Description)
+														optionsVar1.DisplayName = types.StringPointerValue(optionsVarItem1.DisplayName)
+														optionsVar1.Value = types.StringPointerValue(optionsVarItem1.Value)
+
+														fields1.StringField.SelectField.Options = append(fields1.StringField.SelectField.Options, optionsVar1)
+													}
+												} else {
+													fields1.StringField.SelectField.Options = nil
+												}
+												if fieldsItem1.StringField.SelectField.Type != nil {
+													fields1.StringField.SelectField.Type = types.StringValue(string(*fieldsItem1.StringField.SelectField.Type))
+												} else {
+													fields1.StringField.SelectField.Type = types.StringNull()
+												}
+											}
+											if fieldsItem1.StringField.TextField == nil {
+												fields1.StringField.TextField = nil
+											} else {
+												fields1.StringField.TextField = &tfTypes.TextField{}
+												fields1.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem1.StringField.TextField.Multiline)
+												fields1.StringField.TextField.Suffix = types.StringPointerValue(fieldsItem1.StringField.TextField.Suffix)
+											}
+										}
+										if fieldsItem1.StringMapField == nil {
+											fields1.StringMapField = nil
+										} else {
+											fields1.StringMapField = &tfTypes.FormStringMapField{}
+											if len(fieldsItem1.StringMapField.DefaultValue) > 0 {
+												fields1.StringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem1.StringMapField.DefaultValue))
+												for key2, value2 := range fieldsItem1.StringMapField.DefaultValue {
+													fields1.StringMapField.DefaultValue[key2] = types.StringValue(value2)
+												}
+											}
+											if fieldsItem1.StringMapField.Rules == nil {
+												fields1.StringMapField.Rules = nil
+											} else {
+												fields1.StringMapField.Rules = &tfTypes.StringMapRules{}
+												fields1.StringMapField.Rules.IsRequired = types.BoolPointerValue(fieldsItem1.StringMapField.Rules.IsRequired)
+												fields1.StringMapField.Rules.ValidateEmpty = types.BoolPointerValue(fieldsItem1.StringMapField.Rules.ValidateEmpty)
+											}
+										}
+										if fieldsItem1.UserConfig == nil {
+											fields1.UserConfig = nil
+										} else {
+											fields1.UserConfig = &tfTypes.UserProviderConfig{}
+											fields1.UserConfig.InputTransformationCel = types.StringPointerValue(fieldsItem1.UserConfig.InputTransformationCel)
 										}
 
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields, fields1)
+										r.TaskView.Task.Policy.Current.Form.Form.Fields = append(r.TaskView.Task.Policy.Current.Form.Form.Fields, fields1)
 									}
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Fields = nil
+									r.TaskView.Task.Policy.Current.Form.Form.Fields = nil
 								}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Name = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RequestSchemaForm.Name)
+								r.TaskView.Task.Policy.Current.Form.Form.Name = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Form.Form.Name)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction = nil
+							if resp.TaskView.Task.Policy.Current.Form.Reassigned == nil {
+								r.TaskView.Task.Policy.Current.Form.Reassigned = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction = &tfTypes.RestartAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction.OldPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction.OldPolicyStepID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction.RestartedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction.RestartedAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.RestartAction.UserID)
+								r.TaskView.Task.Policy.Current.Form.Reassigned = &tfTypes.ReassignedAction{}
+								r.TaskView.Task.Policy.Current.Form.Reassigned.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Form.Reassigned.NewPolicyStepID)
+								r.TaskView.Task.Policy.Current.Form.Reassigned.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Form.Reassigned.ReassignedAt))
+								r.TaskView.Task.Policy.Current.Form.Reassigned.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Form.Reassigned.UserID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.SkippedAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.SkippedAction = nil
+							if resp.TaskView.Task.Policy.Current.Form.Restarted == nil {
+								r.TaskView.Task.Policy.Current.Form.Restarted = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.SkippedAction = &tfTypes.SkippedAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.SkippedAction.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.SkippedAction.NewPolicyStepID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.SkippedAction.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.SkippedAction.SkippedAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.SkippedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.SkippedAction.UserID)
+								r.TaskView.Task.Policy.Current.Form.Restarted = &tfTypes.RestartAction{}
+								r.TaskView.Task.Policy.Current.Form.Restarted.OldPolicyStepID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Form.Restarted.OldPolicyStepID)
+								r.TaskView.Task.Policy.Current.Form.Restarted.RestartedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Form.Restarted.RestartedAt))
+								r.TaskView.Task.Policy.Current.Form.Restarted.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Form.Restarted.UserID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.State != nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.State = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.State))
+							if resp.TaskView.Task.Policy.Current.Form.Skipped == nil {
+								r.TaskView.Task.Policy.Current.Form.Skipped = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.FormInstance.State = types.StringNull()
+								r.TaskView.Task.Policy.Current.Form.Skipped = &tfTypes.SkippedAction{}
+								r.TaskView.Task.Policy.Current.Form.Skipped.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Form.Skipped.NewPolicyStepID)
+								r.TaskView.Task.Policy.Current.Form.Skipped.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Form.Skipped.SkippedAt))
+								r.TaskView.Task.Policy.Current.Form.Skipped.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Form.Skipped.UserID)
+							}
+							if resp.TaskView.Task.Policy.Current.Form.State != nil {
+								r.TaskView.Task.Policy.Current.Form.State = types.StringValue(string(*resp.TaskView.Task.Policy.Current.Form.State))
+							} else {
+								r.TaskView.Task.Policy.Current.Form.State = types.StringNull()
 							}
 						}
-						r.TaskView.Task.PolicyInstance.PolicyStepInstance.ID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ID)
-						r.TaskView.Task.PolicyInstance.PolicyStepInstance.PolicyGenerationID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.PolicyGenerationID)
-						if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance == nil {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance = nil
+						r.TaskView.Task.Policy.Current.ID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.ID)
+						r.TaskView.Task.Policy.Current.PolicyGenerationID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.PolicyGenerationID)
+						if resp.TaskView.Task.Policy.Current.Provision == nil {
+							r.TaskView.Task.Policy.Current.Provision = nil
 						} else {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance = &tfTypes.ProvisionInstance{}
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.BatonActionInvocationID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.BatonActionInvocationID)
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CancelledAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CancelledAction = nil
+							r.TaskView.Task.Policy.Current.Provision = &tfTypes.ProvisionInstance{}
+							r.TaskView.Task.Policy.Current.Provision.BatonActionInvocationID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.BatonActionInvocationID)
+							if resp.TaskView.Task.Policy.Current.Provision.Cancelled == nil {
+								r.TaskView.Task.Policy.Current.Provision.Cancelled = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CancelledAction = &tfTypes.CancelledAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CancelledAction.CancelledAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CancelledAction.CancelledAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CancelledAction.CancelledByUserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CancelledAction.CancelledByUserID)
+								r.TaskView.Task.Policy.Current.Provision.Cancelled = &tfTypes.CancelledAction{}
+								r.TaskView.Task.Policy.Current.Provision.Cancelled.CancelledAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Provision.Cancelled.CancelledAt))
+								r.TaskView.Task.Policy.Current.Provision.Cancelled.CancelledByUserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Cancelled.CancelledByUserID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction = nil
+							if resp.TaskView.Task.Policy.Current.Provision.Completed == nil {
+								r.TaskView.Task.Policy.Current.Provision.Completed = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction = &tfTypes.CompletedAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.CompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.CompletedAt))
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements != nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements = []tfTypes.AppEntitlementReference{}
+								r.TaskView.Task.Policy.Current.Provision.Completed = &tfTypes.CompletedAction{}
+								r.TaskView.Task.Policy.Current.Provision.Completed.CompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Provision.Completed.CompletedAt))
+								if resp.TaskView.Task.Policy.Current.Provision.Completed.Entitlements != nil {
+									r.TaskView.Task.Policy.Current.Provision.Completed.Entitlements = []tfTypes.AppEntitlementReference{}
 
-									for _, entitlementsItem3 := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements {
-										var entitlements3 tfTypes.AppEntitlementReference
+									for _, entitlementsItem1 := range resp.TaskView.Task.Policy.Current.Provision.Completed.Entitlements {
+										var entitlements1 tfTypes.AppEntitlementReference
 
-										entitlements3.AppEntitlementID = types.StringPointerValue(entitlementsItem3.AppEntitlementID)
-										entitlements3.AppID = types.StringPointerValue(entitlementsItem3.AppID)
+										entitlements1.AppEntitlementID = types.StringPointerValue(entitlementsItem1.AppEntitlementID)
+										entitlements1.AppID = types.StringPointerValue(entitlementsItem1.AppID)
 
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements, entitlements3)
+										r.TaskView.Task.Policy.Current.Provision.Completed.Entitlements = append(r.TaskView.Task.Policy.Current.Provision.Completed.Entitlements, entitlements1)
 									}
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.Entitlements = nil
+									r.TaskView.Task.Policy.Current.Provision.Completed.Entitlements = nil
 								}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.CompletedAction.UserID)
+								r.TaskView.Task.Policy.Current.Provision.Completed.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Completed.UserID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ErroredAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ErroredAction = nil
+							if resp.TaskView.Task.Policy.Current.Provision.Errored == nil {
+								r.TaskView.Task.Policy.Current.Provision.Errored = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ErroredAction = &tfTypes.ErroredAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ErroredAction.Description = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ErroredAction.Description)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ErroredAction.ErrorCode = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ErroredAction.ErrorCode)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ErroredAction.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ErroredAction.ErroredAt))
+								r.TaskView.Task.Policy.Current.Provision.Errored = &tfTypes.ErroredAction{}
+								r.TaskView.Task.Policy.Current.Provision.Errored.Description = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Errored.Description)
+								r.TaskView.Task.Policy.Current.Provision.Errored.ErrorCode = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Errored.ErrorCode)
+								r.TaskView.Task.Policy.Current.Provision.Errored.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Provision.Errored.ErroredAt))
 							}
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ExternalTicketID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ExternalTicketID)
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ExternalTicketProvisionerConfigID)
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.NotificationID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.NotificationID)
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision = nil
+							r.TaskView.Task.Policy.Current.Provision.ExternalTicketID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.ExternalTicketID)
+							r.TaskView.Task.Policy.Current.Provision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.ExternalTicketProvisionerConfigID)
+							r.TaskView.Task.Policy.Current.Provision.NotificationID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.NotificationID)
+							if resp.TaskView.Task.Policy.Current.Provision.Provision == nil {
+								r.TaskView.Task.Policy.Current.Provision.Provision = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision = &tfTypes.Provision{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.Assigned = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.Assigned)
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy = nil
+								r.TaskView.Task.Policy.Current.Provision.Provision = &tfTypes.Provision{}
+								r.TaskView.Task.Policy.Current.Provision.Provision.Assigned = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.Assigned)
+								if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy == nil {
+									r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision = nil
+									r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+									if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action == nil {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action = nil
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision = &tfTypes.ActionProvision{}
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.ActionName)
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.AppID)
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.ConnectorID)
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.DisplayName = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ActionProvision.DisplayName)
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action = &tfTypes.ActionProvision{}
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action.ActionName = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action.ActionName)
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action.AppID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action.AppID)
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action.ConnectorID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action.ConnectorID)
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action.DisplayName = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Action.DisplayName)
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision = nil
+									if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector == nil {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector = nil
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision = &tfTypes.ConnectorProvision{}
-										if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision == nil {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = nil
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector = &tfTypes.ConnectorProvision{}
+										if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account == nil {
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account = nil
 										} else {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
-											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config == nil {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account = &tfTypes.AccountProvision{}
+											if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.Config == nil {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedNull()
 											} else {
-												configResult3, _ := json.Marshal(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config)
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult3))
+												configResult, _ := json.Marshal(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.Config)
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedValue(string(configResult))
 											}
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID)
-											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave == nil {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.ConnectorID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.ConnectorID)
+											if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.DoNotSave == nil {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.DoNotSave = nil
 											} else {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.DoNotSave = &tfTypes.DoNotSave{}
 											}
-											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault == nil {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
+											if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault == nil {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault = nil
 											} else {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
-												if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds != nil {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds))
-													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds {
-														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault = &tfTypes.SaveToVault{}
+												if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds))
+													for _, v := range resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds {
+														r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = append(r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds, types.StringValue(v))
 													}
 												} else {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = nil
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = nil
 												}
 											}
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID)
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SchemaID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.Account.SchemaID)
 										}
-										if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior == nil {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = nil
+										if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.DefaultBehavior == nil {
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.DefaultBehavior = nil
 										} else {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID)
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.DefaultBehavior = &tfTypes.DefaultBehavior{}
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID)
 										}
-										if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount == nil {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
+										if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.DeleteAccount == nil {
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.DeleteAccount = nil
 										} else {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID)
-										}
-									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision = nil
-									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.AppID)
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.DelegatedProvision.EntitlementID)
-									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision = nil
-									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.AppID)
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.ConnectorID)
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID)
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ExternalTicketProvision.Instructions)
-									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision = nil
-									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision = &tfTypes.ManualProvision{}
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.Instructions)
-										if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment == nil {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = nil
-										} else {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.ProvisionerAssignment{}
-											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner == nil {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = nil
-											} else {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = &tfTypes.AppOwnerProvisioner{}
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment)
-												if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds != nil {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds))
-													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds {
-														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
-												}
-											}
-											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner == nil {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = nil
-											} else {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = &tfTypes.EntitlementOwnerProvisioner{}
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment)
-												if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds != nil {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds))
-													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds {
-														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
-												}
-											}
-											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner == nil {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = nil
-											} else {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = &tfTypes.ExpressionProvisioner{}
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment)
-												if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions != nil {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions))
-													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions {
-														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
-													}
-												} else {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
-												}
-												if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds != nil {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds))
-													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds {
-														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
-												}
-											}
-											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner == nil {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = nil
-											} else {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = &tfTypes.GroupProvisioner{}
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment)
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID)
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID)
-												if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds != nil {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds))
-													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds {
-														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
-												}
-											}
-											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner == nil {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = nil
-											} else {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = &tfTypes.ManagerProvisioner{}
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment)
-												if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds != nil {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds))
-													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds {
-														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
-													}
-												} else {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
-												}
-											}
-											if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner == nil {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = nil
-											} else {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = &tfTypes.UserProvisioner{}
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment)
-												if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds != nil {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds))
-													for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds {
-														r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
-													}
-												} else {
-													r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = nil
-												}
-											}
-										}
-										if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds != nil {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds))
-											for _, v := range resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds {
-												r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = append(r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
-											}
-										} else {
-											r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.ManualProvision.UserIds = nil
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.DeleteAccount = &tfTypes.DeleteAccount{}
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID)
 										}
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
+									if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Delegated == nil {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Delegated = nil
 									} else {
-										multiStepResult3, _ := json.Marshal(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep)
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult3))
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Delegated = &tfTypes.DelegatedProvision{}
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Delegated.AppID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Delegated.AppID)
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Delegated.EntitlementID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Delegated.EntitlementID)
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.UnconfiguredProvision == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.UnconfiguredProvision = nil
+									if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.DevicePlacement == nil {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.DevicePlacement = nil
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.DevicePlacement = &tfTypes.DevicePlacementProvision{}
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID)
 									}
-									if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.WebhookProvision == nil {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.WebhookProvision = nil
+									if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket == nil {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket = nil
 									} else {
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
-										r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionPolicy.WebhookProvision.WebhookID)
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket = &tfTypes.ExternalTicketProvision{}
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket.AppID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket.AppID)
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket.ConnectorID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket.ConnectorID)
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket.Instructions = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.ExternalTicket.Instructions)
+									}
+									if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual == nil {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual = nil
+									} else {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual = &tfTypes.ManualProvision{}
+										if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee == nil {
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee = nil
+										} else {
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee = &tfTypes.ProvisionerAssignment{}
+											if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners == nil {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners = nil
+											} else {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners = &tfTypes.AppOwnerProvisioner{}
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment)
+												if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
+													for _, v := range resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
+														r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = nil
+												}
+											}
+											if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners == nil {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners = nil
+											} else {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners = &tfTypes.EntitlementOwnerProvisioner{}
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment)
+												if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
+													for _, v := range resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
+														r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = nil
+												}
+											}
+											if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression == nil {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression = nil
+											} else {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression = &tfTypes.ExpressionProvisioner{}
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment)
+												if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions != nil {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions))
+													for _, v := range resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions {
+														r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = append(r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions, types.StringValue(v))
+													}
+												} else {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = nil
+												}
+												if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds))
+													for _, v := range resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds {
+														r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = nil
+												}
+											}
+											if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group == nil {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group = nil
+											} else {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group = &tfTypes.GroupProvisioner{}
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment)
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID)
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AppID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AppID)
+												if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds))
+													for _, v := range resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds {
+														r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = nil
+												}
+											}
+											if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager == nil {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager = nil
+											} else {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager = &tfTypes.ManagerProvisioner{}
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment)
+												if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds))
+													for _, v := range resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds {
+														r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = append(r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = nil
+												}
+											}
+											if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users == nil {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users = nil
+											} else {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users = &tfTypes.UserProvisioner{}
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment)
+												if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds != nil {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds))
+													for _, v := range resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds {
+														r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = append(r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds, types.StringValue(v))
+													}
+												} else {
+													r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = nil
+												}
+											}
+										}
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Instructions = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.Instructions)
+										if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.UserIds != nil {
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.UserIds = make([]types.String, 0, len(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.UserIds))
+											for _, v := range resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.UserIds {
+												r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.UserIds = append(r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.UserIds, types.StringValue(v))
+											}
+										} else {
+											r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Manual.UserIds = nil
+										}
+									}
+									if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.MultiStep == nil {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
+									} else {
+										multiStepResult, _ := json.Marshal(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.MultiStep)
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult))
+									}
+									if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Unconfigured == nil {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Unconfigured = nil
+									} else {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Unconfigured = &tfTypes.UnconfiguredProvision{}
+									}
+									if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Webhook == nil {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Webhook = nil
+									} else {
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Webhook = &tfTypes.WebhookProvision{}
+										r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Webhook.WebhookID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionPolicy.Webhook.WebhookID)
 									}
 								}
-								if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget == nil {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget = nil
+								if resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget == nil {
+									r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget = nil
 								} else {
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget = &tfTypes.ProvisionTarget{}
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.AppEntitlementID)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.AppID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.AppID)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.AppUserID)
-									r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.Provision.ProvisionTarget.GrantDuration)
+									r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget = &tfTypes.ProvisionTarget{}
+									r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget.AppEntitlementID)
+									r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget.AppID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget.AppID)
+									r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget.AppUserID)
+									r.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Provision.ProvisionTarget.GrantDuration)
 								}
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction = nil
+							if resp.TaskView.Task.Policy.Current.Provision.ReassignedByError == nil {
+								r.TaskView.Task.Policy.Current.Provision.ReassignedByError = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction = &tfTypes.ReassignedByErrorAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.Description = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.Description)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.ErrorCode = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.ErrorCode)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.ErroredAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.ErrorUserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.ErrorUserID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.NewPolicyStepID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.ReassignedByErrorAction.ReassignedAt))
+								r.TaskView.Task.Policy.Current.Provision.ReassignedByError = &tfTypes.ReassignedByErrorAction{}
+								r.TaskView.Task.Policy.Current.Provision.ReassignedByError.Description = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.ReassignedByError.Description)
+								r.TaskView.Task.Policy.Current.Provision.ReassignedByError.ErrorCode = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.ReassignedByError.ErrorCode)
+								r.TaskView.Task.Policy.Current.Provision.ReassignedByError.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Provision.ReassignedByError.ErroredAt))
+								r.TaskView.Task.Policy.Current.Provision.ReassignedByError.ErrorUserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.ReassignedByError.ErrorUserID)
+								r.TaskView.Task.Policy.Current.Provision.ReassignedByError.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.ReassignedByError.NewPolicyStepID)
+								r.TaskView.Task.Policy.Current.Provision.ReassignedByError.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Provision.ReassignedByError.ReassignedAt))
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.SkippedAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.SkippedAction = nil
+							if resp.TaskView.Task.Policy.Current.Provision.Skipped == nil {
+								r.TaskView.Task.Policy.Current.Provision.Skipped = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.SkippedAction = &tfTypes.SkippedAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.SkippedAction.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.SkippedAction.NewPolicyStepID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.SkippedAction.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.SkippedAction.SkippedAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.SkippedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.SkippedAction.UserID)
+								r.TaskView.Task.Policy.Current.Provision.Skipped = &tfTypes.SkippedAction{}
+								r.TaskView.Task.Policy.Current.Provision.Skipped.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Skipped.NewPolicyStepID)
+								r.TaskView.Task.Policy.Current.Provision.Skipped.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Provision.Skipped.SkippedAt))
+								r.TaskView.Task.Policy.Current.Provision.Skipped.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.Skipped.UserID)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.State != nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.State = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.State))
+							if resp.TaskView.Task.Policy.Current.Provision.State != nil {
+								r.TaskView.Task.Policy.Current.Provision.State = types.StringValue(string(*resp.TaskView.Task.Policy.Current.Provision.State))
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.State = types.StringNull()
+								r.TaskView.Task.Policy.Current.Provision.State = types.StringNull()
 							}
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.WebhookID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.WebhookID)
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.WebhookInstanceID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.ProvisionInstance.WebhookInstanceID)
+							if resp.TaskView.Task.Policy.Current.Provision.WaitingOn == nil {
+								r.TaskView.Task.Policy.Current.Provision.WaitingOn = nil
+							} else {
+								r.TaskView.Task.Policy.Current.Provision.WaitingOn = &tfTypes.ProvisionWaitingOn{}
+								if resp.TaskView.Task.Policy.Current.Provision.WaitingOn.DevicePlacement == nil {
+									r.TaskView.Task.Policy.Current.Provision.WaitingOn.DevicePlacement = nil
+								} else {
+									r.TaskView.Task.Policy.Current.Provision.WaitingOn.DevicePlacement = &tfTypes.WaitingForDevicePlacement{}
+									r.TaskView.Task.Policy.Current.Provision.WaitingOn.DevicePlacement.RecipientUserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.WaitingOn.DevicePlacement.RecipientUserID)
+									r.TaskView.Task.Policy.Current.Provision.WaitingOn.DevicePlacement.VaultBoundaryID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.WaitingOn.DevicePlacement.VaultBoundaryID)
+								}
+								if resp.TaskView.Task.Policy.Current.Provision.WaitingOn.EntitlementMerge == nil {
+									r.TaskView.Task.Policy.Current.Provision.WaitingOn.EntitlementMerge = nil
+								} else {
+									r.TaskView.Task.Policy.Current.Provision.WaitingOn.EntitlementMerge = &tfTypes.WaitingForEntitlementMerge{}
+									r.TaskView.Task.Policy.Current.Provision.WaitingOn.EntitlementMerge.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.WaitingOn.EntitlementMerge.AppEntitlementID)
+									r.TaskView.Task.Policy.Current.Provision.WaitingOn.EntitlementMerge.AppID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.WaitingOn.EntitlementMerge.AppID)
+								}
+								r.TaskView.Task.Policy.Current.Provision.WaitingOn.FallbackAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Provision.WaitingOn.FallbackAt))
+								r.TaskView.Task.Policy.Current.Provision.WaitingOn.StartedWaitingAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Provision.WaitingOn.StartedWaitingAt))
+							}
+							r.TaskView.Task.Policy.Current.Provision.WebhookID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.WebhookID)
+							r.TaskView.Task.Policy.Current.Provision.WebhookInstanceID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Provision.WebhookInstanceID)
 						}
-						if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.RejectInstance == nil {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.RejectInstance = nil
+						if resp.TaskView.Task.Policy.Current.Reject == nil {
+							r.TaskView.Task.Policy.Current.Reject = nil
 						} else {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.RejectInstance = &tfTypes.RejectInstance{}
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.RejectInstance.RejectMessage = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.RejectInstance.RejectMessage)
+							r.TaskView.Task.Policy.Current.Reject = &tfTypes.RejectInstance{}
+							r.TaskView.Task.Policy.Current.Reject.RejectMessage = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Reject.RejectMessage)
 						}
-						if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.State != nil {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.State = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.PolicyStepInstance.State))
+						if resp.TaskView.Task.Policy.Current.State != nil {
+							r.TaskView.Task.Policy.Current.State = types.StringValue(string(*resp.TaskView.Task.Policy.Current.State))
 						} else {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.State = types.StringNull()
+							r.TaskView.Task.Policy.Current.State = types.StringNull()
 						}
-						if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance == nil {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance = nil
+						if resp.TaskView.Task.Policy.Current.Wait == nil {
+							r.TaskView.Task.Policy.Current.Wait = nil
 						} else {
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance = &tfTypes.WaitInstance{}
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.CommentOnFirstWait = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.CommentOnFirstWait)
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.CommentOnTimeout = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.CommentOnTimeout)
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.ConditionSucceeded == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.ConditionSucceeded = nil
+							r.TaskView.Task.Policy.Current.Wait = &tfTypes.WaitInstance{}
+							r.TaskView.Task.Policy.Current.Wait.CommentOnFirstWait = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Wait.CommentOnFirstWait)
+							r.TaskView.Task.Policy.Current.Wait.CommentOnTimeout = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Wait.CommentOnTimeout)
+							if resp.TaskView.Task.Policy.Current.Wait.Condition == nil {
+								r.TaskView.Task.Policy.Current.Wait.Condition = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.ConditionSucceeded = &tfTypes.ConditionSucceeded{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.ConditionSucceeded.SucceededAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.ConditionSucceeded.SucceededAt))
+								r.TaskView.Task.Policy.Current.Wait.Condition = &tfTypes.WaitConditionInstance{}
+								r.TaskView.Task.Policy.Current.Wait.Condition.Condition = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Wait.Condition.Condition)
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.ConditionTimedOut == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.ConditionTimedOut = nil
+							r.TaskView.Task.Policy.Current.Wait.Name = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Wait.Name)
+							if resp.TaskView.Task.Policy.Current.Wait.Skipped == nil {
+								r.TaskView.Task.Policy.Current.Wait.Skipped = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.ConditionTimedOut = &tfTypes.ConditionTimedOut{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.ConditionTimedOut.TimedOutAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.ConditionTimedOut.TimedOutAt))
+								r.TaskView.Task.Policy.Current.Wait.Skipped = &tfTypes.SkippedAction{}
+								r.TaskView.Task.Policy.Current.Wait.Skipped.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Wait.Skipped.NewPolicyStepID)
+								r.TaskView.Task.Policy.Current.Wait.Skipped.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Wait.Skipped.SkippedAt))
+								r.TaskView.Task.Policy.Current.Wait.Skipped.UserID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Wait.Skipped.UserID)
 							}
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.Name = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.Name)
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.SkippedAction == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.SkippedAction = nil
+							r.TaskView.Task.Policy.Current.Wait.StartedWaitingAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Wait.StartedWaitingAt))
+							if resp.TaskView.Task.Policy.Current.Wait.State != nil {
+								r.TaskView.Task.Policy.Current.Wait.State = types.StringValue(string(*resp.TaskView.Task.Policy.Current.Wait.State))
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.SkippedAction = &tfTypes.SkippedAction{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.SkippedAction.NewPolicyStepID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.SkippedAction.NewPolicyStepID)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.SkippedAction.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.SkippedAction.SkippedAt))
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.SkippedAction.UserID = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.SkippedAction.UserID)
+								r.TaskView.Task.Policy.Current.Wait.State = types.StringNull()
 							}
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.StartedWaitingAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.StartedWaitingAt))
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.State != nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.State = types.StringValue(string(*resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.State))
+							if resp.TaskView.Task.Policy.Current.Wait.Succeeded == nil {
+								r.TaskView.Task.Policy.Current.Wait.Succeeded = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.State = types.StringNull()
+								r.TaskView.Task.Policy.Current.Wait.Succeeded = &tfTypes.ConditionSucceeded{}
+								r.TaskView.Task.Policy.Current.Wait.Succeeded.SucceededAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Wait.Succeeded.SucceededAt))
 							}
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.Timeout = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.Timeout))
-							r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.TimeoutDuration = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.TimeoutDuration)
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitConditionInstance == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitConditionInstance = nil
+							if resp.TaskView.Task.Policy.Current.Wait.TimedOut == nil {
+								r.TaskView.Task.Policy.Current.Wait.TimedOut = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitConditionInstance = &tfTypes.WaitConditionInstance{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitConditionInstance.Condition = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitConditionInstance.Condition)
+								r.TaskView.Task.Policy.Current.Wait.TimedOut = &tfTypes.ConditionTimedOut{}
+								r.TaskView.Task.Policy.Current.Wait.TimedOut.TimedOutAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Wait.TimedOut.TimedOutAt))
 							}
-							if resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitUntilTimeInstance == nil {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitUntilTimeInstance = nil
+							r.TaskView.Task.Policy.Current.Wait.Timeout = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Wait.Timeout))
+							r.TaskView.Task.Policy.Current.Wait.TimeoutDuration = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Wait.TimeoutDuration)
+							if resp.TaskView.Task.Policy.Current.Wait.UntilTime == nil {
+								r.TaskView.Task.Policy.Current.Wait.UntilTime = nil
 							} else {
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitUntilTimeInstance = &tfTypes.WaitUntilTimeInstance{}
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitUntilTimeInstance.DurationIfExists = types.StringPointerValue(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitUntilTimeInstance.DurationIfExists)
-								r.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitUntilTimeInstance.UntilTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.PolicyInstance.PolicyStepInstance.WaitInstance.WaitUntilTimeInstance.UntilTime))
+								r.TaskView.Task.Policy.Current.Wait.UntilTime = &tfTypes.WaitUntilTimeInstance{}
+								r.TaskView.Task.Policy.Current.Wait.UntilTime.DurationIfExists = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Wait.UntilTime.DurationIfExists)
+								r.TaskView.Task.Policy.Current.Wait.UntilTime.UntilTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Current.Wait.UntilTime.UntilTime))
 							}
 						}
 					}
+					if resp.TaskView.Task.Policy.History != nil {
+						r.TaskView.Task.Policy.History = []tfTypes.PolicyStepInstance{}
+
+						for _, historyItem := range resp.TaskView.Task.Policy.History {
+							var history tfTypes.PolicyStepInstance
+
+							if historyItem.Accept == nil {
+								history.Accept = nil
+							} else {
+								history.Accept = &tfTypes.AcceptInstance{}
+								history.Accept.AcceptMessage = types.StringPointerValue(historyItem.Accept.AcceptMessage)
+							}
+							if historyItem.Action == nil {
+								history.Action = nil
+							} else {
+								history.Action = &tfTypes.ActionInstance{}
+								if historyItem.Action.Action == nil {
+									history.Action.Action = nil
+								} else {
+									history.Action.Action = &tfTypes.Action{}
+									if historyItem.Action.Action.Automation == nil {
+										history.Action.Action.Automation = nil
+									} else {
+										history.Action.Action.Automation = &tfTypes.ActionTargetAutomation{}
+										history.Action.Action.Automation.AutomationTemplateID = types.StringPointerValue(historyItem.Action.Action.Automation.AutomationTemplateID)
+									}
+									if historyItem.Action.Action.BatonResourceAction == nil {
+										history.Action.Action.BatonResourceAction = nil
+									} else {
+										history.Action.Action.BatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
+										history.Action.Action.BatonResourceAction.BatonResourceActionID = types.StringPointerValue(historyItem.Action.Action.BatonResourceAction.BatonResourceActionID)
+									}
+									if historyItem.Action.Action.ClientIDApproval == nil {
+										history.Action.Action.ClientIDApproval = nil
+									} else {
+										history.Action.Action.ClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
+									}
+								}
+								if historyItem.Action.Automation == nil {
+									history.Action.Automation = nil
+								} else {
+									history.Action.Automation = &tfTypes.ActionTargetAutomationInstance{}
+									history.Action.Automation.AutomationExecutionID = types.StringPointerValue(historyItem.Action.Automation.AutomationExecutionID)
+								}
+								if historyItem.Action.BatonResourceActionInstance == nil {
+									history.Action.BatonResourceActionInstance = nil
+								} else {
+									history.Action.BatonResourceActionInstance = &tfTypes.ActionTargetBatonResourceActionInstance{}
+									history.Action.BatonResourceActionInstance.BatonActionInvocationID = types.StringPointerValue(historyItem.Action.BatonResourceActionInstance.BatonActionInvocationID)
+								}
+								if historyItem.Action.Cancelled == nil {
+									history.Action.Cancelled = nil
+								} else {
+									history.Action.Cancelled = &tfTypes.ActionOutcomeCancelled{}
+									history.Action.Cancelled.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Action.Cancelled.OutcomeTime))
+								}
+								if historyItem.Action.ClientIDApprovalInstance == nil {
+									history.Action.ClientIDApprovalInstance = nil
+								} else {
+									history.Action.ClientIDApprovalInstance = &tfTypes.ActionTargetClientIDApprovalInstance{}
+									history.Action.ClientIDApprovalInstance.ClientIDURL = types.StringPointerValue(historyItem.Action.ClientIDApprovalInstance.ClientIDURL)
+								}
+								if historyItem.Action.Denied == nil {
+									history.Action.Denied = nil
+								} else {
+									history.Action.Denied = &tfTypes.ActionOutcomeDenied{}
+									history.Action.Denied.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Action.Denied.OutcomeTime))
+								}
+								if historyItem.Action.Error == nil {
+									history.Action.Error = nil
+								} else {
+									history.Action.Error = &tfTypes.ActionOutcomeError{}
+									history.Action.Error.ErrorCode = types.StringPointerValue(historyItem.Action.Error.ErrorCode)
+									history.Action.Error.ErrorMessage = types.StringPointerValue(historyItem.Action.Error.ErrorMessage)
+									history.Action.Error.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Action.Error.OutcomeTime))
+								}
+								if historyItem.Action.State != nil {
+									history.Action.State = types.StringValue(string(*historyItem.Action.State))
+								} else {
+									history.Action.State = types.StringNull()
+								}
+								if historyItem.Action.Success == nil {
+									history.Action.Success = nil
+								} else {
+									history.Action.Success = &tfTypes.ActionOutcomeSuccess{}
+									history.Action.Success.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Action.Success.OutcomeTime))
+								}
+							}
+							if historyItem.Approval == nil {
+								history.Approval = nil
+							} else {
+								history.Approval = &tfTypes.ApprovalInstance{}
+								if historyItem.Approval.Approval == nil {
+									history.Approval.Approval = nil
+								} else {
+									history.Approval.Approval = &tfTypes.Approval{}
+									if historyItem.Approval.Approval.Agent == nil {
+										history.Approval.Approval.Agent = nil
+									} else {
+										history.Approval.Approval.Agent = &tfTypes.AgentApproval{}
+										if historyItem.Approval.Approval.Agent.AgentFailureAction != nil {
+											history.Approval.Approval.Agent.AgentFailureAction = types.StringValue(string(*historyItem.Approval.Approval.Agent.AgentFailureAction))
+										} else {
+											history.Approval.Approval.Agent.AgentFailureAction = types.StringNull()
+										}
+										if historyItem.Approval.Approval.Agent.AgentMode != nil {
+											history.Approval.Approval.Agent.AgentMode = types.StringValue(string(*historyItem.Approval.Approval.Agent.AgentMode))
+										} else {
+											history.Approval.Approval.Agent.AgentMode = types.StringNull()
+										}
+										history.Approval.Approval.Agent.AgentUserID = types.StringPointerValue(historyItem.Approval.Approval.Agent.AgentUserID)
+										history.Approval.Approval.Agent.Instructions = types.StringPointerValue(historyItem.Approval.Approval.Agent.Instructions)
+										if historyItem.Approval.Approval.Agent.PolicyIds != nil {
+											history.Approval.Approval.Agent.PolicyIds = make([]types.String, 0, len(historyItem.Approval.Approval.Agent.PolicyIds))
+											for _, v := range historyItem.Approval.Approval.Agent.PolicyIds {
+												history.Approval.Approval.Agent.PolicyIds = append(history.Approval.Approval.Agent.PolicyIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Agent.PolicyIds = nil
+										}
+										if historyItem.Approval.Approval.Agent.ReassignToUserIds != nil {
+											history.Approval.Approval.Agent.ReassignToUserIds = make([]types.String, 0, len(historyItem.Approval.Approval.Agent.ReassignToUserIds))
+											for _, v := range historyItem.Approval.Approval.Agent.ReassignToUserIds {
+												history.Approval.Approval.Agent.ReassignToUserIds = append(history.Approval.Approval.Agent.ReassignToUserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Agent.ReassignToUserIds = nil
+										}
+									}
+									history.Approval.Approval.AllowDelegation = types.BoolPointerValue(historyItem.Approval.Approval.AllowDelegation)
+									if historyItem.Approval.Approval.AllowedReassignees != nil {
+										history.Approval.Approval.AllowedReassignees = make([]types.String, 0, len(historyItem.Approval.Approval.AllowedReassignees))
+										for _, v := range historyItem.Approval.Approval.AllowedReassignees {
+											history.Approval.Approval.AllowedReassignees = append(history.Approval.Approval.AllowedReassignees, types.StringValue(v))
+										}
+									} else {
+										history.Approval.Approval.AllowedReassignees = nil
+									}
+									history.Approval.Approval.AllowReassignment = types.BoolPointerValue(historyItem.Approval.Approval.AllowReassignment)
+									if historyItem.Approval.Approval.AppOwners == nil {
+										history.Approval.Approval.AppOwners = nil
+									} else {
+										history.Approval.Approval.AppOwners = &tfTypes.AppOwnerApproval{}
+										history.Approval.Approval.AppOwners.AllowSelfApproval = types.BoolPointerValue(historyItem.Approval.Approval.AppOwners.AllowSelfApproval)
+										history.Approval.Approval.AppOwners.RequireDistinctApprovers = types.BoolPointerValue(historyItem.Approval.Approval.AppOwners.RequireDistinctApprovers)
+									}
+									history.Approval.Approval.Assigned = types.BoolPointerValue(historyItem.Approval.Approval.Assigned)
+									if historyItem.Approval.Approval.EntitlementOwners == nil {
+										history.Approval.Approval.EntitlementOwners = nil
+									} else {
+										history.Approval.Approval.EntitlementOwners = &tfTypes.EntitlementOwnerApproval{}
+										history.Approval.Approval.EntitlementOwners.AllowSelfApproval = types.BoolPointerValue(historyItem.Approval.Approval.EntitlementOwners.AllowSelfApproval)
+										history.Approval.Approval.EntitlementOwners.Fallback = types.BoolPointerValue(historyItem.Approval.Approval.EntitlementOwners.Fallback)
+										if historyItem.Approval.Approval.EntitlementOwners.FallbackGroupIds != nil {
+											history.Approval.Approval.EntitlementOwners.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem6 := range historyItem.Approval.Approval.EntitlementOwners.FallbackGroupIds {
+												var fallbackGroupIds6 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds6.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem6.AppEntitlementID)
+												fallbackGroupIds6.AppID = types.StringPointerValue(fallbackGroupIdsItem6.AppID)
+
+												history.Approval.Approval.EntitlementOwners.FallbackGroupIds = append(history.Approval.Approval.EntitlementOwners.FallbackGroupIds, fallbackGroupIds6)
+											}
+										} else {
+											history.Approval.Approval.EntitlementOwners.FallbackGroupIds = nil
+										}
+										if historyItem.Approval.Approval.EntitlementOwners.FallbackUserIds != nil {
+											history.Approval.Approval.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(historyItem.Approval.Approval.EntitlementOwners.FallbackUserIds))
+											for _, v := range historyItem.Approval.Approval.EntitlementOwners.FallbackUserIds {
+												history.Approval.Approval.EntitlementOwners.FallbackUserIds = append(history.Approval.Approval.EntitlementOwners.FallbackUserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.EntitlementOwners.FallbackUserIds = nil
+										}
+										history.Approval.Approval.EntitlementOwners.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.Approval.Approval.EntitlementOwners.IsGroupFallbackEnabled)
+										history.Approval.Approval.EntitlementOwners.RequireDistinctApprovers = types.BoolPointerValue(historyItem.Approval.Approval.EntitlementOwners.RequireDistinctApprovers)
+									}
+									if historyItem.Approval.Approval.Escalation == nil {
+										history.Approval.Approval.Escalation = nil
+									} else {
+										history.Approval.Approval.Escalation = &tfTypes.Escalation{}
+										if historyItem.Approval.Approval.Escalation.CancelTicket == nil {
+											history.Approval.Approval.Escalation.CancelTicket = nil
+										} else {
+											history.Approval.Approval.Escalation.CancelTicket = &tfTypes.CancelTicket{}
+										}
+										history.Approval.Approval.Escalation.EscalationComment = types.StringPointerValue(historyItem.Approval.Approval.Escalation.EscalationComment)
+										history.Approval.Approval.Escalation.Expiration = types.StringPointerValue(historyItem.Approval.Approval.Escalation.Expiration)
+										if historyItem.Approval.Approval.Escalation.ReassignToApprovers == nil {
+											history.Approval.Approval.Escalation.ReassignToApprovers = nil
+										} else {
+											history.Approval.Approval.Escalation.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
+											if historyItem.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
+												history.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(historyItem.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds))
+												for _, v := range historyItem.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds {
+													history.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds = append(history.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
+												}
+											} else {
+												history.Approval.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
+											}
+										}
+										if historyItem.Approval.Approval.Escalation.ReplacePolicy == nil {
+											history.Approval.Approval.Escalation.ReplacePolicy = nil
+										} else {
+											history.Approval.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
+											history.Approval.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(historyItem.Approval.Approval.Escalation.ReplacePolicy.PolicyID)
+										}
+										if historyItem.Approval.Approval.Escalation.SkipStep == nil {
+											history.Approval.Approval.Escalation.SkipStep = nil
+										} else {
+											history.Approval.Approval.Escalation.SkipStep = &tfTypes.SkipStep{}
+										}
+									}
+									history.Approval.Approval.EscalationEnabled = types.BoolPointerValue(historyItem.Approval.Approval.EscalationEnabled)
+									if historyItem.Approval.Approval.Expression == nil {
+										history.Approval.Approval.Expression = nil
+									} else {
+										history.Approval.Approval.Expression = &tfTypes.ExpressionApproval{}
+										history.Approval.Approval.Expression.AllowSelfApproval = types.BoolPointerValue(historyItem.Approval.Approval.Expression.AllowSelfApproval)
+										if historyItem.Approval.Approval.Expression.AssignedUserIds != nil {
+											history.Approval.Approval.Expression.AssignedUserIds = make([]types.String, 0, len(historyItem.Approval.Approval.Expression.AssignedUserIds))
+											for _, v := range historyItem.Approval.Approval.Expression.AssignedUserIds {
+												history.Approval.Approval.Expression.AssignedUserIds = append(history.Approval.Approval.Expression.AssignedUserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Expression.AssignedUserIds = nil
+										}
+										if historyItem.Approval.Approval.Expression.Expressions != nil {
+											history.Approval.Approval.Expression.Expressions = make([]types.String, 0, len(historyItem.Approval.Approval.Expression.Expressions))
+											for _, v := range historyItem.Approval.Approval.Expression.Expressions {
+												history.Approval.Approval.Expression.Expressions = append(history.Approval.Approval.Expression.Expressions, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Expression.Expressions = nil
+										}
+										history.Approval.Approval.Expression.Fallback = types.BoolPointerValue(historyItem.Approval.Approval.Expression.Fallback)
+										if historyItem.Approval.Approval.Expression.FallbackGroupIds != nil {
+											history.Approval.Approval.Expression.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem7 := range historyItem.Approval.Approval.Expression.FallbackGroupIds {
+												var fallbackGroupIds7 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds7.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem7.AppEntitlementID)
+												fallbackGroupIds7.AppID = types.StringPointerValue(fallbackGroupIdsItem7.AppID)
+
+												history.Approval.Approval.Expression.FallbackGroupIds = append(history.Approval.Approval.Expression.FallbackGroupIds, fallbackGroupIds7)
+											}
+										} else {
+											history.Approval.Approval.Expression.FallbackGroupIds = nil
+										}
+										if historyItem.Approval.Approval.Expression.FallbackUserIds != nil {
+											history.Approval.Approval.Expression.FallbackUserIds = make([]types.String, 0, len(historyItem.Approval.Approval.Expression.FallbackUserIds))
+											for _, v := range historyItem.Approval.Approval.Expression.FallbackUserIds {
+												history.Approval.Approval.Expression.FallbackUserIds = append(history.Approval.Approval.Expression.FallbackUserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Expression.FallbackUserIds = nil
+										}
+										history.Approval.Approval.Expression.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.Approval.Approval.Expression.IsGroupFallbackEnabled)
+										history.Approval.Approval.Expression.RequireDistinctApprovers = types.BoolPointerValue(historyItem.Approval.Approval.Expression.RequireDistinctApprovers)
+									}
+									if historyItem.Approval.Approval.Group == nil {
+										history.Approval.Approval.Group = nil
+									} else {
+										history.Approval.Approval.Group = &tfTypes.AppGroupApproval{}
+										history.Approval.Approval.Group.AllowSelfApproval = types.BoolPointerValue(historyItem.Approval.Approval.Group.AllowSelfApproval)
+										history.Approval.Approval.Group.AppGroupID = types.StringPointerValue(historyItem.Approval.Approval.Group.AppGroupID)
+										history.Approval.Approval.Group.AppID = types.StringPointerValue(historyItem.Approval.Approval.Group.AppID)
+										history.Approval.Approval.Group.Fallback = types.BoolPointerValue(historyItem.Approval.Approval.Group.Fallback)
+										if historyItem.Approval.Approval.Group.FallbackGroupIds != nil {
+											history.Approval.Approval.Group.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem8 := range historyItem.Approval.Approval.Group.FallbackGroupIds {
+												var fallbackGroupIds8 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds8.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem8.AppEntitlementID)
+												fallbackGroupIds8.AppID = types.StringPointerValue(fallbackGroupIdsItem8.AppID)
+
+												history.Approval.Approval.Group.FallbackGroupIds = append(history.Approval.Approval.Group.FallbackGroupIds, fallbackGroupIds8)
+											}
+										} else {
+											history.Approval.Approval.Group.FallbackGroupIds = nil
+										}
+										if historyItem.Approval.Approval.Group.FallbackUserIds != nil {
+											history.Approval.Approval.Group.FallbackUserIds = make([]types.String, 0, len(historyItem.Approval.Approval.Group.FallbackUserIds))
+											for _, v := range historyItem.Approval.Approval.Group.FallbackUserIds {
+												history.Approval.Approval.Group.FallbackUserIds = append(history.Approval.Approval.Group.FallbackUserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Group.FallbackUserIds = nil
+										}
+										history.Approval.Approval.Group.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.Approval.Approval.Group.IsGroupFallbackEnabled)
+										history.Approval.Approval.Group.RequireDistinctApprovers = types.BoolPointerValue(historyItem.Approval.Approval.Group.RequireDistinctApprovers)
+									}
+									if historyItem.Approval.Approval.Manager == nil {
+										history.Approval.Approval.Manager = nil
+									} else {
+										history.Approval.Approval.Manager = &tfTypes.ManagerApproval{}
+										history.Approval.Approval.Manager.AllowSelfApproval = types.BoolPointerValue(historyItem.Approval.Approval.Manager.AllowSelfApproval)
+										if historyItem.Approval.Approval.Manager.AssignedUserIds != nil {
+											history.Approval.Approval.Manager.AssignedUserIds = make([]types.String, 0, len(historyItem.Approval.Approval.Manager.AssignedUserIds))
+											for _, v := range historyItem.Approval.Approval.Manager.AssignedUserIds {
+												history.Approval.Approval.Manager.AssignedUserIds = append(history.Approval.Approval.Manager.AssignedUserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Manager.AssignedUserIds = nil
+										}
+										history.Approval.Approval.Manager.Fallback = types.BoolPointerValue(historyItem.Approval.Approval.Manager.Fallback)
+										if historyItem.Approval.Approval.Manager.FallbackGroupIds != nil {
+											history.Approval.Approval.Manager.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem9 := range historyItem.Approval.Approval.Manager.FallbackGroupIds {
+												var fallbackGroupIds9 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds9.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem9.AppEntitlementID)
+												fallbackGroupIds9.AppID = types.StringPointerValue(fallbackGroupIdsItem9.AppID)
+
+												history.Approval.Approval.Manager.FallbackGroupIds = append(history.Approval.Approval.Manager.FallbackGroupIds, fallbackGroupIds9)
+											}
+										} else {
+											history.Approval.Approval.Manager.FallbackGroupIds = nil
+										}
+										if historyItem.Approval.Approval.Manager.FallbackUserIds != nil {
+											history.Approval.Approval.Manager.FallbackUserIds = make([]types.String, 0, len(historyItem.Approval.Approval.Manager.FallbackUserIds))
+											for _, v := range historyItem.Approval.Approval.Manager.FallbackUserIds {
+												history.Approval.Approval.Manager.FallbackUserIds = append(history.Approval.Approval.Manager.FallbackUserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Manager.FallbackUserIds = nil
+										}
+										history.Approval.Approval.Manager.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.Approval.Approval.Manager.IsGroupFallbackEnabled)
+										history.Approval.Approval.Manager.RequireDistinctApprovers = types.BoolPointerValue(historyItem.Approval.Approval.Manager.RequireDistinctApprovers)
+									}
+									history.Approval.Approval.RequireApprovalReason = types.BoolPointerValue(historyItem.Approval.Approval.RequireApprovalReason)
+									history.Approval.Approval.RequireDenialReason = types.BoolPointerValue(historyItem.Approval.Approval.RequireDenialReason)
+									history.Approval.Approval.RequireReassignmentReason = types.BoolPointerValue(historyItem.Approval.Approval.RequireReassignmentReason)
+									history.Approval.Approval.RequiresStepUpProviderID = types.StringPointerValue(historyItem.Approval.Approval.RequiresStepUpProviderID)
+									if historyItem.Approval.Approval.ResourceOwners == nil {
+										history.Approval.Approval.ResourceOwners = nil
+									} else {
+										history.Approval.Approval.ResourceOwners = &tfTypes.ResourceOwnerApproval{}
+										history.Approval.Approval.ResourceOwners.AllowSelfApproval = types.BoolPointerValue(historyItem.Approval.Approval.ResourceOwners.AllowSelfApproval)
+										history.Approval.Approval.ResourceOwners.Fallback = types.BoolPointerValue(historyItem.Approval.Approval.ResourceOwners.Fallback)
+										if historyItem.Approval.Approval.ResourceOwners.FallbackGroupIds != nil {
+											history.Approval.Approval.ResourceOwners.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem10 := range historyItem.Approval.Approval.ResourceOwners.FallbackGroupIds {
+												var fallbackGroupIds10 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds10.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem10.AppEntitlementID)
+												fallbackGroupIds10.AppID = types.StringPointerValue(fallbackGroupIdsItem10.AppID)
+
+												history.Approval.Approval.ResourceOwners.FallbackGroupIds = append(history.Approval.Approval.ResourceOwners.FallbackGroupIds, fallbackGroupIds10)
+											}
+										} else {
+											history.Approval.Approval.ResourceOwners.FallbackGroupIds = nil
+										}
+										if historyItem.Approval.Approval.ResourceOwners.FallbackUserIds != nil {
+											history.Approval.Approval.ResourceOwners.FallbackUserIds = make([]types.String, 0, len(historyItem.Approval.Approval.ResourceOwners.FallbackUserIds))
+											for _, v := range historyItem.Approval.Approval.ResourceOwners.FallbackUserIds {
+												history.Approval.Approval.ResourceOwners.FallbackUserIds = append(history.Approval.Approval.ResourceOwners.FallbackUserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.ResourceOwners.FallbackUserIds = nil
+										}
+										history.Approval.Approval.ResourceOwners.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.Approval.Approval.ResourceOwners.IsGroupFallbackEnabled)
+										history.Approval.Approval.ResourceOwners.RequireDistinctApprovers = types.BoolPointerValue(historyItem.Approval.Approval.ResourceOwners.RequireDistinctApprovers)
+									}
+									if historyItem.Approval.Approval.Self == nil {
+										history.Approval.Approval.Self = nil
+									} else {
+										history.Approval.Approval.Self = &tfTypes.SelfApproval{}
+										if historyItem.Approval.Approval.Self.AssignedUserIds != nil {
+											history.Approval.Approval.Self.AssignedUserIds = make([]types.String, 0, len(historyItem.Approval.Approval.Self.AssignedUserIds))
+											for _, v := range historyItem.Approval.Approval.Self.AssignedUserIds {
+												history.Approval.Approval.Self.AssignedUserIds = append(history.Approval.Approval.Self.AssignedUserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Self.AssignedUserIds = nil
+										}
+										history.Approval.Approval.Self.Fallback = types.BoolPointerValue(historyItem.Approval.Approval.Self.Fallback)
+										if historyItem.Approval.Approval.Self.FallbackGroupIds != nil {
+											history.Approval.Approval.Self.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+											for _, fallbackGroupIdsItem11 := range historyItem.Approval.Approval.Self.FallbackGroupIds {
+												var fallbackGroupIds11 tfTypes.AppEntitlementReference
+
+												fallbackGroupIds11.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem11.AppEntitlementID)
+												fallbackGroupIds11.AppID = types.StringPointerValue(fallbackGroupIdsItem11.AppID)
+
+												history.Approval.Approval.Self.FallbackGroupIds = append(history.Approval.Approval.Self.FallbackGroupIds, fallbackGroupIds11)
+											}
+										} else {
+											history.Approval.Approval.Self.FallbackGroupIds = nil
+										}
+										if historyItem.Approval.Approval.Self.FallbackUserIds != nil {
+											history.Approval.Approval.Self.FallbackUserIds = make([]types.String, 0, len(historyItem.Approval.Approval.Self.FallbackUserIds))
+											for _, v := range historyItem.Approval.Approval.Self.FallbackUserIds {
+												history.Approval.Approval.Self.FallbackUserIds = append(history.Approval.Approval.Self.FallbackUserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Self.FallbackUserIds = nil
+										}
+										history.Approval.Approval.Self.IsGroupFallbackEnabled = types.BoolPointerValue(historyItem.Approval.Approval.Self.IsGroupFallbackEnabled)
+									}
+									if historyItem.Approval.Approval.Users == nil {
+										history.Approval.Approval.Users = nil
+									} else {
+										history.Approval.Approval.Users = &tfTypes.UserApproval{}
+										history.Approval.Approval.Users.AllowSelfApproval = types.BoolPointerValue(historyItem.Approval.Approval.Users.AllowSelfApproval)
+										history.Approval.Approval.Users.RequireDistinctApprovers = types.BoolPointerValue(historyItem.Approval.Approval.Users.RequireDistinctApprovers)
+										if historyItem.Approval.Approval.Users.UserIds != nil {
+											history.Approval.Approval.Users.UserIds = make([]types.String, 0, len(historyItem.Approval.Approval.Users.UserIds))
+											for _, v := range historyItem.Approval.Approval.Users.UserIds {
+												history.Approval.Approval.Users.UserIds = append(history.Approval.Approval.Users.UserIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.Approval.Users.UserIds = nil
+										}
+									}
+									if historyItem.Approval.Approval.Webhook == nil {
+										history.Approval.Approval.Webhook = nil
+									} else {
+										history.Approval.Approval.Webhook = &tfTypes.WebhookApproval{}
+										history.Approval.Approval.Webhook.WebhookID = types.StringPointerValue(historyItem.Approval.Approval.Webhook.WebhookID)
+									}
+								}
+								if historyItem.Approval.Approved == nil {
+									history.Approval.Approved = nil
+								} else {
+									history.Approval.Approved = &tfTypes.ApprovedAction{}
+									history.Approval.Approved.ApprovedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Approval.Approved.ApprovedAt))
+									if historyItem.Approval.Approved.Entitlements != nil {
+										history.Approval.Approved.Entitlements = []tfTypes.AppEntitlementReference{}
+
+										for _, entitlementsItem2 := range historyItem.Approval.Approved.Entitlements {
+											var entitlements2 tfTypes.AppEntitlementReference
+
+											entitlements2.AppEntitlementID = types.StringPointerValue(entitlementsItem2.AppEntitlementID)
+											entitlements2.AppID = types.StringPointerValue(entitlementsItem2.AppID)
+
+											history.Approval.Approved.Entitlements = append(history.Approval.Approved.Entitlements, entitlements2)
+										}
+									} else {
+										history.Approval.Approved.Entitlements = nil
+									}
+									history.Approval.Approved.StepUpTransactionID = types.StringPointerValue(historyItem.Approval.Approved.StepUpTransactionID)
+									history.Approval.Approved.UserID = types.StringPointerValue(historyItem.Approval.Approved.UserID)
+								}
+								history.Approval.AssignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Approval.AssignedAt))
+								if historyItem.Approval.Denied == nil {
+									history.Approval.Denied = nil
+								} else {
+									history.Approval.Denied = &tfTypes.DeniedAction{}
+									history.Approval.Denied.DeniedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Approval.Denied.DeniedAt))
+									history.Approval.Denied.UserID = types.StringPointerValue(historyItem.Approval.Denied.UserID)
+								}
+								if historyItem.Approval.EscalationInstance == nil {
+									history.Approval.EscalationInstance = nil
+								} else {
+									history.Approval.EscalationInstance = &tfTypes.EscalationInstance{}
+									history.Approval.EscalationInstance.AlreadyEscalated = types.BoolPointerValue(historyItem.Approval.EscalationInstance.AlreadyEscalated)
+									if historyItem.Approval.EscalationInstance.CancelTicket == nil {
+										history.Approval.EscalationInstance.CancelTicket = nil
+									} else {
+										history.Approval.EscalationInstance.CancelTicket = &tfTypes.EscalationInstanceCancelTicket{}
+									}
+									history.Approval.EscalationInstance.EscalationComment = types.StringPointerValue(historyItem.Approval.EscalationInstance.EscalationComment)
+									history.Approval.EscalationInstance.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Approval.EscalationInstance.ExpiresAt))
+									if historyItem.Approval.EscalationInstance.ReassignToApprovers == nil {
+										history.Approval.EscalationInstance.ReassignToApprovers = nil
+									} else {
+										history.Approval.EscalationInstance.ReassignToApprovers = &tfTypes.EscalationInstanceReassignToApprovers{}
+										if historyItem.Approval.EscalationInstance.ReassignToApprovers.ApproverIds != nil {
+											history.Approval.EscalationInstance.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(historyItem.Approval.EscalationInstance.ReassignToApprovers.ApproverIds))
+											for _, v := range historyItem.Approval.EscalationInstance.ReassignToApprovers.ApproverIds {
+												history.Approval.EscalationInstance.ReassignToApprovers.ApproverIds = append(history.Approval.EscalationInstance.ReassignToApprovers.ApproverIds, types.StringValue(v))
+											}
+										} else {
+											history.Approval.EscalationInstance.ReassignToApprovers.ApproverIds = nil
+										}
+									}
+									if historyItem.Approval.EscalationInstance.ReplacePolicy == nil {
+										history.Approval.EscalationInstance.ReplacePolicy = nil
+									} else {
+										history.Approval.EscalationInstance.ReplacePolicy = &tfTypes.EscalationInstanceReplacePolicy{}
+										history.Approval.EscalationInstance.ReplacePolicy.PolicyID = types.StringPointerValue(historyItem.Approval.EscalationInstance.ReplacePolicy.PolicyID)
+									}
+									if historyItem.Approval.EscalationInstance.SkipStep == nil {
+										history.Approval.EscalationInstance.SkipStep = nil
+									} else {
+										history.Approval.EscalationInstance.SkipStep = &tfTypes.EscalationInstanceSkipStep{}
+									}
+								}
+								if historyItem.Approval.Reassigned == nil {
+									history.Approval.Reassigned = nil
+								} else {
+									history.Approval.Reassigned = &tfTypes.ReassignedAction{}
+									history.Approval.Reassigned.NewPolicyStepID = types.StringPointerValue(historyItem.Approval.Reassigned.NewPolicyStepID)
+									history.Approval.Reassigned.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Approval.Reassigned.ReassignedAt))
+									history.Approval.Reassigned.UserID = types.StringPointerValue(historyItem.Approval.Reassigned.UserID)
+								}
+								if historyItem.Approval.ReassignedByError == nil {
+									history.Approval.ReassignedByError = nil
+								} else {
+									history.Approval.ReassignedByError = &tfTypes.ReassignedByErrorAction{}
+									history.Approval.ReassignedByError.Description = types.StringPointerValue(historyItem.Approval.ReassignedByError.Description)
+									history.Approval.ReassignedByError.ErrorCode = types.StringPointerValue(historyItem.Approval.ReassignedByError.ErrorCode)
+									history.Approval.ReassignedByError.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Approval.ReassignedByError.ErroredAt))
+									history.Approval.ReassignedByError.ErrorUserID = types.StringPointerValue(historyItem.Approval.ReassignedByError.ErrorUserID)
+									history.Approval.ReassignedByError.NewPolicyStepID = types.StringPointerValue(historyItem.Approval.ReassignedByError.NewPolicyStepID)
+									history.Approval.ReassignedByError.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Approval.ReassignedByError.ReassignedAt))
+								}
+								if historyItem.Approval.Restarted == nil {
+									history.Approval.Restarted = nil
+								} else {
+									history.Approval.Restarted = &tfTypes.RestartAction{}
+									history.Approval.Restarted.OldPolicyStepID = types.StringPointerValue(historyItem.Approval.Restarted.OldPolicyStepID)
+									history.Approval.Restarted.RestartedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Approval.Restarted.RestartedAt))
+									history.Approval.Restarted.UserID = types.StringPointerValue(historyItem.Approval.Restarted.UserID)
+								}
+								if historyItem.Approval.Skipped == nil {
+									history.Approval.Skipped = nil
+								} else {
+									history.Approval.Skipped = &tfTypes.SkippedAction{}
+									history.Approval.Skipped.NewPolicyStepID = types.StringPointerValue(historyItem.Approval.Skipped.NewPolicyStepID)
+									history.Approval.Skipped.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Approval.Skipped.SkippedAt))
+									history.Approval.Skipped.UserID = types.StringPointerValue(historyItem.Approval.Skipped.UserID)
+								}
+								if historyItem.Approval.State != nil {
+									history.Approval.State = types.StringValue(string(*historyItem.Approval.State))
+								} else {
+									history.Approval.State = types.StringNull()
+								}
+							}
+							if historyItem.Form == nil {
+								history.Form = nil
+							} else {
+								history.Form = &tfTypes.FormInstance{}
+								if historyItem.Form.Completed == nil {
+									history.Form.Completed = nil
+								} else {
+									history.Form.Completed = &tfTypes.FormCompletedAction{}
+									history.Form.Completed.CompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Form.Completed.CompletedAt))
+									history.Form.Completed.UserID = types.StringPointerValue(historyItem.Form.Completed.UserID)
+								}
+								if historyItem.Form.Data == nil {
+									history.Form.Data = nil
+								} else {
+									history.Form.Data = &tfTypes.FormInstanceData{}
+								}
+								if historyItem.Form.Form == nil {
+									history.Form.Form = nil
+								} else {
+									history.Form.Form = &tfTypes.RequestSchemaForm{}
+									history.Form.Form.Description = types.StringPointerValue(historyItem.Form.Form.Description)
+									if historyItem.Form.Form.FieldGroups != nil {
+										history.Form.Form.FieldGroups = []tfTypes.FormFieldGroup{}
+
+										for _, fieldGroupsItem2 := range historyItem.Form.Form.FieldGroups {
+											var fieldGroups2 tfTypes.FormFieldGroup
+
+											fieldGroups2.Default = types.BoolPointerValue(fieldGroupsItem2.Default)
+											fieldGroups2.DisplayName = types.StringPointerValue(fieldGroupsItem2.DisplayName)
+											if fieldGroupsItem2.Fields != nil {
+												fieldGroups2.Fields = make([]types.String, 0, len(fieldGroupsItem2.Fields))
+												for _, v := range fieldGroupsItem2.Fields {
+													fieldGroups2.Fields = append(fieldGroups2.Fields, types.StringValue(v))
+												}
+											} else {
+												fieldGroups2.Fields = nil
+											}
+											fieldGroups2.HelpText = types.StringPointerValue(fieldGroupsItem2.HelpText)
+											fieldGroups2.Name = types.StringPointerValue(fieldGroupsItem2.Name)
+
+											history.Form.Form.FieldGroups = append(history.Form.Form.FieldGroups, fieldGroups2)
+										}
+									} else {
+										history.Form.Form.FieldGroups = nil
+									}
+									if historyItem.Form.Form.FieldRelationships != nil {
+										history.Form.Form.FieldRelationships = []tfTypes.FieldRelationship{}
+
+										for _, fieldRelationshipsItem2 := range historyItem.Form.Form.FieldRelationships {
+											var fieldRelationships2 tfTypes.FieldRelationship
+
+											if fieldRelationshipsItem2.AtLeastOne == nil {
+												fieldRelationships2.AtLeastOne = nil
+											} else {
+												fieldRelationships2.AtLeastOne = &tfTypes.AtLeastOne{}
+											}
+											if fieldRelationshipsItem2.DependentOn == nil {
+												fieldRelationships2.DependentOn = nil
+											} else {
+												fieldRelationships2.DependentOn = &tfTypes.DependentOn{}
+												if fieldRelationshipsItem2.DependentOn.DependencyFieldNames != nil {
+													fieldRelationships2.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem2.DependentOn.DependencyFieldNames))
+													for _, v := range fieldRelationshipsItem2.DependentOn.DependencyFieldNames {
+														fieldRelationships2.DependentOn.DependencyFieldNames = append(fieldRelationships2.DependentOn.DependencyFieldNames, types.StringValue(v))
+													}
+												} else {
+													fieldRelationships2.DependentOn.DependencyFieldNames = nil
+												}
+											}
+											if fieldRelationshipsItem2.FieldNames != nil {
+												fieldRelationships2.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem2.FieldNames))
+												for _, v := range fieldRelationshipsItem2.FieldNames {
+													fieldRelationships2.FieldNames = append(fieldRelationships2.FieldNames, types.StringValue(v))
+												}
+											} else {
+												fieldRelationships2.FieldNames = nil
+											}
+											if fieldRelationshipsItem2.MutuallyExclusive == nil {
+												fieldRelationships2.MutuallyExclusive = nil
+											} else {
+												fieldRelationships2.MutuallyExclusive = &tfTypes.MutuallyExclusive{}
+											}
+											if fieldRelationshipsItem2.RequiredTogether == nil {
+												fieldRelationships2.RequiredTogether = nil
+											} else {
+												fieldRelationships2.RequiredTogether = &tfTypes.RequiredTogether{}
+											}
+
+											history.Form.Form.FieldRelationships = append(history.Form.Form.FieldRelationships, fieldRelationships2)
+										}
+									} else {
+										history.Form.Form.FieldRelationships = nil
+									}
+									if historyItem.Form.Form.Fields != nil {
+										history.Form.Form.Fields = []tfTypes.FormField{}
+
+										for _, fieldsItem2 := range historyItem.Form.Form.Fields {
+											var fields2 tfTypes.FormField
+
+											if fieldsItem2.AdminConfig == nil {
+												fields2.AdminConfig = nil
+											} else {
+												fields2.AdminConfig = &tfTypes.AdminProviderConfig{}
+												fields2.AdminConfig.DefaultValueCel = types.StringPointerValue(fieldsItem2.AdminConfig.DefaultValueCel)
+												fields2.AdminConfig.ShowToUser = types.BoolPointerValue(fieldsItem2.AdminConfig.ShowToUser)
+											}
+											if fieldsItem2.BoolField == nil {
+												fields2.BoolField = nil
+											} else {
+												fields2.BoolField = &tfTypes.BoolField{}
+												if fieldsItem2.BoolField.CheckboxField == nil {
+													fields2.BoolField.CheckboxField = nil
+												} else {
+													fields2.BoolField.CheckboxField = &tfTypes.CheckboxField{}
+												}
+												fields2.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem2.BoolField.DefaultValue)
+												if fieldsItem2.BoolField.Rules == nil {
+													fields2.BoolField.Rules = nil
+												} else {
+													fields2.BoolField.Rules = &tfTypes.BoolRules{}
+													fields2.BoolField.Rules.Const = types.BoolPointerValue(fieldsItem2.BoolField.Rules.Const)
+												}
+												if fieldsItem2.BoolField.ToggleField == nil {
+													fields2.BoolField.ToggleField = nil
+												} else {
+													fields2.BoolField.ToggleField = &tfTypes.ToggleField{}
+												}
+											}
+											fields2.Description = types.StringPointerValue(fieldsItem2.Description)
+											fields2.DisplayName = types.StringPointerValue(fieldsItem2.DisplayName)
+											if fieldsItem2.FileField == nil {
+												fields2.FileField = nil
+											} else {
+												fields2.FileField = &tfTypes.FileField{}
+												if fieldsItem2.FileField.AcceptedFileTypes != nil {
+													fields2.FileField.AcceptedFileTypes = make([]types.String, 0, len(fieldsItem2.FileField.AcceptedFileTypes))
+													for _, v := range fieldsItem2.FileField.AcceptedFileTypes {
+														fields2.FileField.AcceptedFileTypes = append(fields2.FileField.AcceptedFileTypes, types.StringValue(v))
+													}
+												} else {
+													fields2.FileField.AcceptedFileTypes = nil
+												}
+												if fieldsItem2.FileField.FileInputField == nil {
+													fields2.FileField.FileInputField = nil
+												} else {
+													fields2.FileField.FileInputField = &tfTypes.FileInputField{}
+												}
+												fields2.FileField.MaxFileSize = types.StringPointerValue(fieldsItem2.FileField.MaxFileSize)
+											}
+											if fieldsItem2.Int64Field == nil {
+												fields2.Int64Field = nil
+											} else {
+												fields2.Int64Field = &tfTypes.Int64Field{}
+												fields2.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem2.Int64Field.DefaultValue)
+												if fieldsItem2.Int64Field.NumberField == nil {
+													fields2.Int64Field.NumberField = nil
+												} else {
+													fields2.Int64Field.NumberField = &tfTypes.NumberField{}
+													fields2.Int64Field.NumberField.MaxValue = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.MaxValue)
+													fields2.Int64Field.NumberField.MinValue = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.MinValue)
+													fields2.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.Step)
+												}
+												fields2.Int64Field.Placeholder = types.StringPointerValue(fieldsItem2.Int64Field.Placeholder)
+												if fieldsItem2.Int64Field.Rules == nil {
+													fields2.Int64Field.Rules = nil
+												} else {
+													fields2.Int64Field.Rules = &tfTypes.Int64Rules{}
+													fields2.Int64Field.Rules.Const = types.StringPointerValue(fieldsItem2.Int64Field.Rules.Const)
+													fields2.Int64Field.Rules.Gt = types.StringPointerValue(fieldsItem2.Int64Field.Rules.Gt)
+													fields2.Int64Field.Rules.Gte = types.StringPointerValue(fieldsItem2.Int64Field.Rules.Gte)
+													fields2.Int64Field.Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem2.Int64Field.Rules.IgnoreEmpty)
+													if fieldsItem2.Int64Field.Rules.In != nil {
+														fields2.Int64Field.Rules.In = make([]types.String, 0, len(fieldsItem2.Int64Field.Rules.In))
+														for _, v := range fieldsItem2.Int64Field.Rules.In {
+															fields2.Int64Field.Rules.In = append(fields2.Int64Field.Rules.In, types.StringValue(v))
+														}
+													} else {
+														fields2.Int64Field.Rules.In = nil
+													}
+													fields2.Int64Field.Rules.Lt = types.StringPointerValue(fieldsItem2.Int64Field.Rules.Lt)
+													fields2.Int64Field.Rules.Lte = types.StringPointerValue(fieldsItem2.Int64Field.Rules.Lte)
+													if fieldsItem2.Int64Field.Rules.NotIn != nil {
+														fields2.Int64Field.Rules.NotIn = make([]types.String, 0, len(fieldsItem2.Int64Field.Rules.NotIn))
+														for _, v := range fieldsItem2.Int64Field.Rules.NotIn {
+															fields2.Int64Field.Rules.NotIn = append(fields2.Int64Field.Rules.NotIn, types.StringValue(v))
+														}
+													} else {
+														fields2.Int64Field.Rules.NotIn = nil
+													}
+												}
+											}
+											fields2.Name = types.StringPointerValue(fieldsItem2.Name)
+											if fieldsItem2.Oauth2Field == nil {
+												fields2.Oauth2Field = nil
+											} else {
+												fields2.Oauth2Field = &tfTypes.Oauth2Field{}
+												if fieldsItem2.Oauth2Field.Oauth2FieldView == nil {
+													fields2.Oauth2Field.Oauth2FieldView = nil
+												} else {
+													fields2.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
+												}
+											}
+											fields2.ReadOnly = types.BoolPointerValue(fieldsItem2.ReadOnly)
+											fields2.Required = types.BoolPointerValue(fieldsItem2.Required)
+											if fieldsItem2.SharedConfig == nil {
+												fields2.SharedConfig = nil
+											} else {
+												fields2.SharedConfig = &tfTypes.SharedProviderConfig{}
+												fields2.SharedConfig.DefaultValueCel = types.StringPointerValue(fieldsItem2.SharedConfig.DefaultValueCel)
+												fields2.SharedConfig.InputTransformationCel = types.StringPointerValue(fieldsItem2.SharedConfig.InputTransformationCel)
+												fields2.SharedConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem2.SharedConfig.LockDefaultValues)
+											}
+											if fieldsItem2.StringField == nil {
+												fields2.StringField = nil
+											} else {
+												fields2.StringField = &tfTypes.FormStringField{}
+												if fieldsItem2.StringField.DateField == nil {
+													fields2.StringField.DateField = nil
+												} else {
+													fields2.StringField.DateField = &tfTypes.DateField{}
+													fields2.StringField.DateField.DefaultToToday = types.BoolPointerValue(fieldsItem2.StringField.DateField.DefaultToToday)
+													fields2.StringField.DateField.MaxDate = types.StringPointerValue(fieldsItem2.StringField.DateField.MaxDate)
+													fields2.StringField.DateField.MaxDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem2.StringField.DateField.MaxDaysFromToday))
+													fields2.StringField.DateField.MinDate = types.StringPointerValue(fieldsItem2.StringField.DateField.MinDate)
+													fields2.StringField.DateField.MinDaysFromToday = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(fieldsItem2.StringField.DateField.MinDaysFromToday))
+												}
+												fields2.StringField.DefaultValue = types.StringPointerValue(fieldsItem2.StringField.DefaultValue)
+												if fieldsItem2.StringField.PasswordField == nil {
+													fields2.StringField.PasswordField = nil
+												} else {
+													fields2.StringField.PasswordField = &tfTypes.PasswordField{}
+												}
+												if fieldsItem2.StringField.PickerField == nil {
+													fields2.StringField.PickerField = nil
+												} else {
+													fields2.StringField.PickerField = &tfTypes.PickerField{}
+													if fieldsItem2.StringField.PickerField.AppUserPicker == nil {
+														fields2.StringField.PickerField.AppUserPicker = nil
+													} else {
+														fields2.StringField.PickerField.AppUserPicker = &tfTypes.AppUserFilter{}
+														fields2.StringField.PickerField.AppUserPicker.AppID = types.StringPointerValue(fieldsItem2.StringField.PickerField.AppUserPicker.AppID)
+													}
+													if fieldsItem2.StringField.PickerField.C1UserPicker == nil {
+														fields2.StringField.PickerField.C1UserPicker = nil
+													} else {
+														fields2.StringField.PickerField.C1UserPicker = &tfTypes.C1UserFilter{}
+														if fieldsItem2.StringField.PickerField.C1UserPicker.ExcludeUserIds != nil {
+															fields2.StringField.PickerField.C1UserPicker.ExcludeUserIds = make([]types.String, 0, len(fieldsItem2.StringField.PickerField.C1UserPicker.ExcludeUserIds))
+															for _, v := range fieldsItem2.StringField.PickerField.C1UserPicker.ExcludeUserIds {
+																fields2.StringField.PickerField.C1UserPicker.ExcludeUserIds = append(fields2.StringField.PickerField.C1UserPicker.ExcludeUserIds, types.StringValue(v))
+															}
+														} else {
+															fields2.StringField.PickerField.C1UserPicker.ExcludeUserIds = nil
+														}
+														fields2.StringField.PickerField.C1UserPicker.IncludeDeactivated = types.BoolPointerValue(fieldsItem2.StringField.PickerField.C1UserPicker.IncludeDeactivated)
+														if fieldsItem2.StringField.PickerField.C1UserPicker.UserIds != nil {
+															fields2.StringField.PickerField.C1UserPicker.UserIds = make([]types.String, 0, len(fieldsItem2.StringField.PickerField.C1UserPicker.UserIds))
+															for _, v := range fieldsItem2.StringField.PickerField.C1UserPicker.UserIds {
+																fields2.StringField.PickerField.C1UserPicker.UserIds = append(fields2.StringField.PickerField.C1UserPicker.UserIds, types.StringValue(v))
+															}
+														} else {
+															fields2.StringField.PickerField.C1UserPicker.UserIds = nil
+														}
+													}
+													if fieldsItem2.StringField.PickerField.ResourcePicker == nil {
+														fields2.StringField.PickerField.ResourcePicker = nil
+													} else {
+														fields2.StringField.PickerField.ResourcePicker = &tfTypes.AppResourceFilter{}
+														fields2.StringField.PickerField.ResourcePicker.AppID = types.StringPointerValue(fieldsItem2.StringField.PickerField.ResourcePicker.AppID)
+														fields2.StringField.PickerField.ResourcePicker.ResourceTypeID = types.StringPointerValue(fieldsItem2.StringField.PickerField.ResourcePicker.ResourceTypeID)
+													}
+												}
+												fields2.StringField.Placeholder = types.StringPointerValue(fieldsItem2.StringField.Placeholder)
+												if fieldsItem2.StringField.Rules == nil {
+													fields2.StringField.Rules = nil
+												} else {
+													fields2.StringField.Rules = &tfTypes.StringRules{}
+													fields2.StringField.Rules.Address = types.BoolPointerValue(fieldsItem2.StringField.Rules.Address)
+													fields2.StringField.Rules.Const = types.StringPointerValue(fieldsItem2.StringField.Rules.Const)
+													fields2.StringField.Rules.Contains = types.StringPointerValue(fieldsItem2.StringField.Rules.Contains)
+													fields2.StringField.Rules.Email = types.BoolPointerValue(fieldsItem2.StringField.Rules.Email)
+													fields2.StringField.Rules.Hostname = types.BoolPointerValue(fieldsItem2.StringField.Rules.Hostname)
+													fields2.StringField.Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem2.StringField.Rules.IgnoreEmpty)
+													if fieldsItem2.StringField.Rules.In != nil {
+														fields2.StringField.Rules.In = make([]types.String, 0, len(fieldsItem2.StringField.Rules.In))
+														for _, v := range fieldsItem2.StringField.Rules.In {
+															fields2.StringField.Rules.In = append(fields2.StringField.Rules.In, types.StringValue(v))
+														}
+													} else {
+														fields2.StringField.Rules.In = nil
+													}
+													fields2.StringField.Rules.IP = types.BoolPointerValue(fieldsItem2.StringField.Rules.IP)
+													fields2.StringField.Rules.Ipv4 = types.BoolPointerValue(fieldsItem2.StringField.Rules.Ipv4)
+													fields2.StringField.Rules.Ipv6 = types.BoolPointerValue(fieldsItem2.StringField.Rules.Ipv6)
+													fields2.StringField.Rules.LenBytes = types.StringPointerValue(fieldsItem2.StringField.Rules.LenBytes)
+													fields2.StringField.Rules.Length = types.StringPointerValue(fieldsItem2.StringField.Rules.Length)
+													fields2.StringField.Rules.MaxBytes = types.StringPointerValue(fieldsItem2.StringField.Rules.MaxBytes)
+													fields2.StringField.Rules.MaxLen = types.StringPointerValue(fieldsItem2.StringField.Rules.MaxLen)
+													fields2.StringField.Rules.MinBytes = types.StringPointerValue(fieldsItem2.StringField.Rules.MinBytes)
+													fields2.StringField.Rules.MinLen = types.StringPointerValue(fieldsItem2.StringField.Rules.MinLen)
+													fields2.StringField.Rules.NotContains = types.StringPointerValue(fieldsItem2.StringField.Rules.NotContains)
+													if fieldsItem2.StringField.Rules.NotIn != nil {
+														fields2.StringField.Rules.NotIn = make([]types.String, 0, len(fieldsItem2.StringField.Rules.NotIn))
+														for _, v := range fieldsItem2.StringField.Rules.NotIn {
+															fields2.StringField.Rules.NotIn = append(fields2.StringField.Rules.NotIn, types.StringValue(v))
+														}
+													} else {
+														fields2.StringField.Rules.NotIn = nil
+													}
+													fields2.StringField.Rules.Pattern = types.StringPointerValue(fieldsItem2.StringField.Rules.Pattern)
+													fields2.StringField.Rules.Prefix = types.StringPointerValue(fieldsItem2.StringField.Rules.Prefix)
+													fields2.StringField.Rules.Strict = types.BoolPointerValue(fieldsItem2.StringField.Rules.Strict)
+													fields2.StringField.Rules.Suffix = types.StringPointerValue(fieldsItem2.StringField.Rules.Suffix)
+													fields2.StringField.Rules.URI = types.BoolPointerValue(fieldsItem2.StringField.Rules.URI)
+													fields2.StringField.Rules.URIRef = types.BoolPointerValue(fieldsItem2.StringField.Rules.URIRef)
+													fields2.StringField.Rules.UUID = types.BoolPointerValue(fieldsItem2.StringField.Rules.UUID)
+													if fieldsItem2.StringField.Rules.WellKnownRegex != nil {
+														fields2.StringField.Rules.WellKnownRegex = types.StringValue(string(*fieldsItem2.StringField.Rules.WellKnownRegex))
+													} else {
+														fields2.StringField.Rules.WellKnownRegex = types.StringNull()
+													}
+												}
+												if fieldsItem2.StringField.SelectField == nil {
+													fields2.StringField.SelectField = nil
+												} else {
+													fields2.StringField.SelectField = &tfTypes.SelectField{}
+													if fieldsItem2.StringField.SelectField.Options != nil {
+														fields2.StringField.SelectField.Options = []tfTypes.SelectOption{}
+
+														for _, optionsVarItem2 := range fieldsItem2.StringField.SelectField.Options {
+															var optionsVar2 tfTypes.SelectOption
+
+															optionsVar2.Description = types.StringPointerValue(optionsVarItem2.Description)
+															optionsVar2.DisplayName = types.StringPointerValue(optionsVarItem2.DisplayName)
+															optionsVar2.Value = types.StringPointerValue(optionsVarItem2.Value)
+
+															fields2.StringField.SelectField.Options = append(fields2.StringField.SelectField.Options, optionsVar2)
+														}
+													} else {
+														fields2.StringField.SelectField.Options = nil
+													}
+													if fieldsItem2.StringField.SelectField.Type != nil {
+														fields2.StringField.SelectField.Type = types.StringValue(string(*fieldsItem2.StringField.SelectField.Type))
+													} else {
+														fields2.StringField.SelectField.Type = types.StringNull()
+													}
+												}
+												if fieldsItem2.StringField.TextField == nil {
+													fields2.StringField.TextField = nil
+												} else {
+													fields2.StringField.TextField = &tfTypes.TextField{}
+													fields2.StringField.TextField.Multiline = types.BoolPointerValue(fieldsItem2.StringField.TextField.Multiline)
+													fields2.StringField.TextField.Suffix = types.StringPointerValue(fieldsItem2.StringField.TextField.Suffix)
+												}
+											}
+											if fieldsItem2.StringMapField == nil {
+												fields2.StringMapField = nil
+											} else {
+												fields2.StringMapField = &tfTypes.FormStringMapField{}
+												if len(fieldsItem2.StringMapField.DefaultValue) > 0 {
+													fields2.StringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem2.StringMapField.DefaultValue))
+													for key3, value3 := range fieldsItem2.StringMapField.DefaultValue {
+														fields2.StringMapField.DefaultValue[key3] = types.StringValue(value3)
+													}
+												}
+												if fieldsItem2.StringMapField.Rules == nil {
+													fields2.StringMapField.Rules = nil
+												} else {
+													fields2.StringMapField.Rules = &tfTypes.StringMapRules{}
+													fields2.StringMapField.Rules.IsRequired = types.BoolPointerValue(fieldsItem2.StringMapField.Rules.IsRequired)
+													fields2.StringMapField.Rules.ValidateEmpty = types.BoolPointerValue(fieldsItem2.StringMapField.Rules.ValidateEmpty)
+												}
+											}
+											if fieldsItem2.UserConfig == nil {
+												fields2.UserConfig = nil
+											} else {
+												fields2.UserConfig = &tfTypes.UserProviderConfig{}
+												fields2.UserConfig.InputTransformationCel = types.StringPointerValue(fieldsItem2.UserConfig.InputTransformationCel)
+											}
+
+											history.Form.Form.Fields = append(history.Form.Form.Fields, fields2)
+										}
+									} else {
+										history.Form.Form.Fields = nil
+									}
+									history.Form.Form.Name = types.StringPointerValue(historyItem.Form.Form.Name)
+								}
+								if historyItem.Form.Reassigned == nil {
+									history.Form.Reassigned = nil
+								} else {
+									history.Form.Reassigned = &tfTypes.ReassignedAction{}
+									history.Form.Reassigned.NewPolicyStepID = types.StringPointerValue(historyItem.Form.Reassigned.NewPolicyStepID)
+									history.Form.Reassigned.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Form.Reassigned.ReassignedAt))
+									history.Form.Reassigned.UserID = types.StringPointerValue(historyItem.Form.Reassigned.UserID)
+								}
+								if historyItem.Form.Restarted == nil {
+									history.Form.Restarted = nil
+								} else {
+									history.Form.Restarted = &tfTypes.RestartAction{}
+									history.Form.Restarted.OldPolicyStepID = types.StringPointerValue(historyItem.Form.Restarted.OldPolicyStepID)
+									history.Form.Restarted.RestartedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Form.Restarted.RestartedAt))
+									history.Form.Restarted.UserID = types.StringPointerValue(historyItem.Form.Restarted.UserID)
+								}
+								if historyItem.Form.Skipped == nil {
+									history.Form.Skipped = nil
+								} else {
+									history.Form.Skipped = &tfTypes.SkippedAction{}
+									history.Form.Skipped.NewPolicyStepID = types.StringPointerValue(historyItem.Form.Skipped.NewPolicyStepID)
+									history.Form.Skipped.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Form.Skipped.SkippedAt))
+									history.Form.Skipped.UserID = types.StringPointerValue(historyItem.Form.Skipped.UserID)
+								}
+								if historyItem.Form.State != nil {
+									history.Form.State = types.StringValue(string(*historyItem.Form.State))
+								} else {
+									history.Form.State = types.StringNull()
+								}
+							}
+							history.ID = types.StringPointerValue(historyItem.ID)
+							history.PolicyGenerationID = types.StringPointerValue(historyItem.PolicyGenerationID)
+							if historyItem.Provision == nil {
+								history.Provision = nil
+							} else {
+								history.Provision = &tfTypes.ProvisionInstance{}
+								history.Provision.BatonActionInvocationID = types.StringPointerValue(historyItem.Provision.BatonActionInvocationID)
+								if historyItem.Provision.Cancelled == nil {
+									history.Provision.Cancelled = nil
+								} else {
+									history.Provision.Cancelled = &tfTypes.CancelledAction{}
+									history.Provision.Cancelled.CancelledAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Provision.Cancelled.CancelledAt))
+									history.Provision.Cancelled.CancelledByUserID = types.StringPointerValue(historyItem.Provision.Cancelled.CancelledByUserID)
+								}
+								if historyItem.Provision.Completed == nil {
+									history.Provision.Completed = nil
+								} else {
+									history.Provision.Completed = &tfTypes.CompletedAction{}
+									history.Provision.Completed.CompletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Provision.Completed.CompletedAt))
+									if historyItem.Provision.Completed.Entitlements != nil {
+										history.Provision.Completed.Entitlements = []tfTypes.AppEntitlementReference{}
+
+										for _, entitlementsItem3 := range historyItem.Provision.Completed.Entitlements {
+											var entitlements3 tfTypes.AppEntitlementReference
+
+											entitlements3.AppEntitlementID = types.StringPointerValue(entitlementsItem3.AppEntitlementID)
+											entitlements3.AppID = types.StringPointerValue(entitlementsItem3.AppID)
+
+											history.Provision.Completed.Entitlements = append(history.Provision.Completed.Entitlements, entitlements3)
+										}
+									} else {
+										history.Provision.Completed.Entitlements = nil
+									}
+									history.Provision.Completed.UserID = types.StringPointerValue(historyItem.Provision.Completed.UserID)
+								}
+								if historyItem.Provision.Errored == nil {
+									history.Provision.Errored = nil
+								} else {
+									history.Provision.Errored = &tfTypes.ErroredAction{}
+									history.Provision.Errored.Description = types.StringPointerValue(historyItem.Provision.Errored.Description)
+									history.Provision.Errored.ErrorCode = types.StringPointerValue(historyItem.Provision.Errored.ErrorCode)
+									history.Provision.Errored.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Provision.Errored.ErroredAt))
+								}
+								history.Provision.ExternalTicketID = types.StringPointerValue(historyItem.Provision.ExternalTicketID)
+								history.Provision.ExternalTicketProvisionerConfigID = types.StringPointerValue(historyItem.Provision.ExternalTicketProvisionerConfigID)
+								history.Provision.NotificationID = types.StringPointerValue(historyItem.Provision.NotificationID)
+								if historyItem.Provision.Provision == nil {
+									history.Provision.Provision = nil
+								} else {
+									history.Provision.Provision = &tfTypes.Provision{}
+									history.Provision.Provision.Assigned = types.BoolPointerValue(historyItem.Provision.Provision.Assigned)
+									if historyItem.Provision.Provision.ProvisionPolicy == nil {
+										history.Provision.Provision.ProvisionPolicy = nil
+									} else {
+										history.Provision.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+										if historyItem.Provision.Provision.ProvisionPolicy.Action == nil {
+											history.Provision.Provision.ProvisionPolicy.Action = nil
+										} else {
+											history.Provision.Provision.ProvisionPolicy.Action = &tfTypes.ActionProvision{}
+											history.Provision.Provision.ProvisionPolicy.Action.ActionName = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Action.ActionName)
+											history.Provision.Provision.ProvisionPolicy.Action.AppID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Action.AppID)
+											history.Provision.Provision.ProvisionPolicy.Action.ConnectorID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Action.ConnectorID)
+											history.Provision.Provision.ProvisionPolicy.Action.DisplayName = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Action.DisplayName)
+										}
+										if historyItem.Provision.Provision.ProvisionPolicy.Connector == nil {
+											history.Provision.Provision.ProvisionPolicy.Connector = nil
+										} else {
+											history.Provision.Provision.ProvisionPolicy.Connector = &tfTypes.ConnectorProvision{}
+											if historyItem.Provision.Provision.ProvisionPolicy.Connector.Account == nil {
+												history.Provision.Provision.ProvisionPolicy.Connector.Account = nil
+											} else {
+												history.Provision.Provision.ProvisionPolicy.Connector.Account = &tfTypes.AccountProvision{}
+												if historyItem.Provision.Provision.ProvisionPolicy.Connector.Account.Config == nil {
+													history.Provision.Provision.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedNull()
+												} else {
+													configResult1, _ := json.Marshal(historyItem.Provision.Provision.ProvisionPolicy.Connector.Account.Config)
+													history.Provision.Provision.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedValue(string(configResult1))
+												}
+												history.Provision.Provision.ProvisionPolicy.Connector.Account.ConnectorID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Connector.Account.ConnectorID)
+												if historyItem.Provision.Provision.ProvisionPolicy.Connector.Account.DoNotSave == nil {
+													history.Provision.Provision.ProvisionPolicy.Connector.Account.DoNotSave = nil
+												} else {
+													history.Provision.Provision.ProvisionPolicy.Connector.Account.DoNotSave = &tfTypes.DoNotSave{}
+												}
+												if historyItem.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault == nil {
+													history.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault = nil
+												} else {
+													history.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault = &tfTypes.SaveToVault{}
+													if historyItem.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+														history.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = make([]types.String, 0, len(historyItem.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds))
+														for _, v := range historyItem.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds {
+															history.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = append(history.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds, types.StringValue(v))
+														}
+													} else {
+														history.Provision.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = nil
+													}
+												}
+												history.Provision.Provision.ProvisionPolicy.Connector.Account.SchemaID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Connector.Account.SchemaID)
+											}
+											if historyItem.Provision.Provision.ProvisionPolicy.Connector.DefaultBehavior == nil {
+												history.Provision.Provision.ProvisionPolicy.Connector.DefaultBehavior = nil
+											} else {
+												history.Provision.Provision.ProvisionPolicy.Connector.DefaultBehavior = &tfTypes.DefaultBehavior{}
+												history.Provision.Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID)
+											}
+											if historyItem.Provision.Provision.ProvisionPolicy.Connector.DeleteAccount == nil {
+												history.Provision.Provision.ProvisionPolicy.Connector.DeleteAccount = nil
+											} else {
+												history.Provision.Provision.ProvisionPolicy.Connector.DeleteAccount = &tfTypes.DeleteAccount{}
+												history.Provision.Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID)
+											}
+										}
+										if historyItem.Provision.Provision.ProvisionPolicy.Delegated == nil {
+											history.Provision.Provision.ProvisionPolicy.Delegated = nil
+										} else {
+											history.Provision.Provision.ProvisionPolicy.Delegated = &tfTypes.DelegatedProvision{}
+											history.Provision.Provision.ProvisionPolicy.Delegated.AppID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Delegated.AppID)
+											history.Provision.Provision.ProvisionPolicy.Delegated.EntitlementID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Delegated.EntitlementID)
+										}
+										if historyItem.Provision.Provision.ProvisionPolicy.DevicePlacement == nil {
+											history.Provision.Provision.ProvisionPolicy.DevicePlacement = nil
+										} else {
+											history.Provision.Provision.ProvisionPolicy.DevicePlacement = &tfTypes.DevicePlacementProvision{}
+											history.Provision.Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID)
+										}
+										if historyItem.Provision.Provision.ProvisionPolicy.ExternalTicket == nil {
+											history.Provision.Provision.ProvisionPolicy.ExternalTicket = nil
+										} else {
+											history.Provision.Provision.ProvisionPolicy.ExternalTicket = &tfTypes.ExternalTicketProvision{}
+											history.Provision.Provision.ProvisionPolicy.ExternalTicket.AppID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.ExternalTicket.AppID)
+											history.Provision.Provision.ProvisionPolicy.ExternalTicket.ConnectorID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.ExternalTicket.ConnectorID)
+											history.Provision.Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
+											history.Provision.Provision.ProvisionPolicy.ExternalTicket.Instructions = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.ExternalTicket.Instructions)
+										}
+										if historyItem.Provision.Provision.ProvisionPolicy.Manual == nil {
+											history.Provision.Provision.ProvisionPolicy.Manual = nil
+										} else {
+											history.Provision.Provision.ProvisionPolicy.Manual = &tfTypes.ManualProvision{}
+											if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee == nil {
+												history.Provision.Provision.ProvisionPolicy.Manual.Assignee = nil
+											} else {
+												history.Provision.Provision.ProvisionPolicy.Manual.Assignee = &tfTypes.ProvisionerAssignment{}
+												if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners == nil {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners = nil
+												} else {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners = &tfTypes.AppOwnerProvisioner{}
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment = types.BoolPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment)
+													if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = make([]types.String, 0, len(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
+														for _, v := range historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
+															history.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = append(history.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds, types.StringValue(v))
+														}
+													} else {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = nil
+													}
+												}
+												if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners == nil {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners = nil
+												} else {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners = &tfTypes.EntitlementOwnerProvisioner{}
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment = types.BoolPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment)
+													if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
+														for _, v := range historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
+															history.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = append(history.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds, types.StringValue(v))
+														}
+													} else {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = nil
+													}
+												}
+												if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression == nil {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression = nil
+												} else {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression = &tfTypes.ExpressionProvisioner{}
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment = types.BoolPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment)
+													if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions != nil {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = make([]types.String, 0, len(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions))
+														for _, v := range historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions {
+															history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = append(history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions, types.StringValue(v))
+														}
+													} else {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = nil
+													}
+													if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = make([]types.String, 0, len(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds))
+														for _, v := range historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds {
+															history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = append(history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds, types.StringValue(v))
+														}
+													} else {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = nil
+													}
+												}
+												if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group == nil {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group = nil
+												} else {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group = &tfTypes.GroupProvisioner{}
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment = types.BoolPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment)
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID)
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AppID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.AppID)
+													if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = make([]types.String, 0, len(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds))
+														for _, v := range historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds {
+															history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = append(history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds, types.StringValue(v))
+														}
+													} else {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = nil
+													}
+												}
+												if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager == nil {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager = nil
+												} else {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager = &tfTypes.ManagerProvisioner{}
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment = types.BoolPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment)
+													if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = make([]types.String, 0, len(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds))
+														for _, v := range historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds {
+															history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = append(history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds, types.StringValue(v))
+														}
+													} else {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = nil
+													}
+												}
+												if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users == nil {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users = nil
+												} else {
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users = &tfTypes.UserProvisioner{}
+													history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment = types.BoolPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment)
+													if historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds != nil {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = make([]types.String, 0, len(historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds))
+														for _, v := range historyItem.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds {
+															history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = append(history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds, types.StringValue(v))
+														}
+													} else {
+														history.Provision.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = nil
+													}
+												}
+											}
+											history.Provision.Provision.ProvisionPolicy.Manual.Instructions = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Manual.Instructions)
+											if historyItem.Provision.Provision.ProvisionPolicy.Manual.UserIds != nil {
+												history.Provision.Provision.ProvisionPolicy.Manual.UserIds = make([]types.String, 0, len(historyItem.Provision.Provision.ProvisionPolicy.Manual.UserIds))
+												for _, v := range historyItem.Provision.Provision.ProvisionPolicy.Manual.UserIds {
+													history.Provision.Provision.ProvisionPolicy.Manual.UserIds = append(history.Provision.Provision.ProvisionPolicy.Manual.UserIds, types.StringValue(v))
+												}
+											} else {
+												history.Provision.Provision.ProvisionPolicy.Manual.UserIds = nil
+											}
+										}
+										if historyItem.Provision.Provision.ProvisionPolicy.MultiStep == nil {
+											history.Provision.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
+										} else {
+											multiStepResult1, _ := json.Marshal(historyItem.Provision.Provision.ProvisionPolicy.MultiStep)
+											history.Provision.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
+										}
+										if historyItem.Provision.Provision.ProvisionPolicy.Unconfigured == nil {
+											history.Provision.Provision.ProvisionPolicy.Unconfigured = nil
+										} else {
+											history.Provision.Provision.ProvisionPolicy.Unconfigured = &tfTypes.UnconfiguredProvision{}
+										}
+										if historyItem.Provision.Provision.ProvisionPolicy.Webhook == nil {
+											history.Provision.Provision.ProvisionPolicy.Webhook = nil
+										} else {
+											history.Provision.Provision.ProvisionPolicy.Webhook = &tfTypes.WebhookProvision{}
+											history.Provision.Provision.ProvisionPolicy.Webhook.WebhookID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionPolicy.Webhook.WebhookID)
+										}
+									}
+									if historyItem.Provision.Provision.ProvisionTarget == nil {
+										history.Provision.Provision.ProvisionTarget = nil
+									} else {
+										history.Provision.Provision.ProvisionTarget = &tfTypes.ProvisionTarget{}
+										history.Provision.Provision.ProvisionTarget.AppEntitlementID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionTarget.AppEntitlementID)
+										history.Provision.Provision.ProvisionTarget.AppID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionTarget.AppID)
+										history.Provision.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(historyItem.Provision.Provision.ProvisionTarget.AppUserID)
+										history.Provision.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(historyItem.Provision.Provision.ProvisionTarget.GrantDuration)
+									}
+								}
+								if historyItem.Provision.ReassignedByError == nil {
+									history.Provision.ReassignedByError = nil
+								} else {
+									history.Provision.ReassignedByError = &tfTypes.ReassignedByErrorAction{}
+									history.Provision.ReassignedByError.Description = types.StringPointerValue(historyItem.Provision.ReassignedByError.Description)
+									history.Provision.ReassignedByError.ErrorCode = types.StringPointerValue(historyItem.Provision.ReassignedByError.ErrorCode)
+									history.Provision.ReassignedByError.ErroredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Provision.ReassignedByError.ErroredAt))
+									history.Provision.ReassignedByError.ErrorUserID = types.StringPointerValue(historyItem.Provision.ReassignedByError.ErrorUserID)
+									history.Provision.ReassignedByError.NewPolicyStepID = types.StringPointerValue(historyItem.Provision.ReassignedByError.NewPolicyStepID)
+									history.Provision.ReassignedByError.ReassignedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Provision.ReassignedByError.ReassignedAt))
+								}
+								if historyItem.Provision.Skipped == nil {
+									history.Provision.Skipped = nil
+								} else {
+									history.Provision.Skipped = &tfTypes.SkippedAction{}
+									history.Provision.Skipped.NewPolicyStepID = types.StringPointerValue(historyItem.Provision.Skipped.NewPolicyStepID)
+									history.Provision.Skipped.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Provision.Skipped.SkippedAt))
+									history.Provision.Skipped.UserID = types.StringPointerValue(historyItem.Provision.Skipped.UserID)
+								}
+								if historyItem.Provision.State != nil {
+									history.Provision.State = types.StringValue(string(*historyItem.Provision.State))
+								} else {
+									history.Provision.State = types.StringNull()
+								}
+								if historyItem.Provision.WaitingOn == nil {
+									history.Provision.WaitingOn = nil
+								} else {
+									history.Provision.WaitingOn = &tfTypes.ProvisionWaitingOn{}
+									if historyItem.Provision.WaitingOn.DevicePlacement == nil {
+										history.Provision.WaitingOn.DevicePlacement = nil
+									} else {
+										history.Provision.WaitingOn.DevicePlacement = &tfTypes.WaitingForDevicePlacement{}
+										history.Provision.WaitingOn.DevicePlacement.RecipientUserID = types.StringPointerValue(historyItem.Provision.WaitingOn.DevicePlacement.RecipientUserID)
+										history.Provision.WaitingOn.DevicePlacement.VaultBoundaryID = types.StringPointerValue(historyItem.Provision.WaitingOn.DevicePlacement.VaultBoundaryID)
+									}
+									if historyItem.Provision.WaitingOn.EntitlementMerge == nil {
+										history.Provision.WaitingOn.EntitlementMerge = nil
+									} else {
+										history.Provision.WaitingOn.EntitlementMerge = &tfTypes.WaitingForEntitlementMerge{}
+										history.Provision.WaitingOn.EntitlementMerge.AppEntitlementID = types.StringPointerValue(historyItem.Provision.WaitingOn.EntitlementMerge.AppEntitlementID)
+										history.Provision.WaitingOn.EntitlementMerge.AppID = types.StringPointerValue(historyItem.Provision.WaitingOn.EntitlementMerge.AppID)
+									}
+									history.Provision.WaitingOn.FallbackAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Provision.WaitingOn.FallbackAt))
+									history.Provision.WaitingOn.StartedWaitingAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Provision.WaitingOn.StartedWaitingAt))
+								}
+								history.Provision.WebhookID = types.StringPointerValue(historyItem.Provision.WebhookID)
+								history.Provision.WebhookInstanceID = types.StringPointerValue(historyItem.Provision.WebhookInstanceID)
+							}
+							if historyItem.Reject == nil {
+								history.Reject = nil
+							} else {
+								history.Reject = &tfTypes.RejectInstance{}
+								history.Reject.RejectMessage = types.StringPointerValue(historyItem.Reject.RejectMessage)
+							}
+							if historyItem.State != nil {
+								history.State = types.StringValue(string(*historyItem.State))
+							} else {
+								history.State = types.StringNull()
+							}
+							if historyItem.Wait == nil {
+								history.Wait = nil
+							} else {
+								history.Wait = &tfTypes.WaitInstance{}
+								history.Wait.CommentOnFirstWait = types.StringPointerValue(historyItem.Wait.CommentOnFirstWait)
+								history.Wait.CommentOnTimeout = types.StringPointerValue(historyItem.Wait.CommentOnTimeout)
+								if historyItem.Wait.Condition == nil {
+									history.Wait.Condition = nil
+								} else {
+									history.Wait.Condition = &tfTypes.WaitConditionInstance{}
+									history.Wait.Condition.Condition = types.StringPointerValue(historyItem.Wait.Condition.Condition)
+								}
+								history.Wait.Name = types.StringPointerValue(historyItem.Wait.Name)
+								if historyItem.Wait.Skipped == nil {
+									history.Wait.Skipped = nil
+								} else {
+									history.Wait.Skipped = &tfTypes.SkippedAction{}
+									history.Wait.Skipped.NewPolicyStepID = types.StringPointerValue(historyItem.Wait.Skipped.NewPolicyStepID)
+									history.Wait.Skipped.SkippedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Wait.Skipped.SkippedAt))
+									history.Wait.Skipped.UserID = types.StringPointerValue(historyItem.Wait.Skipped.UserID)
+								}
+								history.Wait.StartedWaitingAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Wait.StartedWaitingAt))
+								if historyItem.Wait.State != nil {
+									history.Wait.State = types.StringValue(string(*historyItem.Wait.State))
+								} else {
+									history.Wait.State = types.StringNull()
+								}
+								if historyItem.Wait.Succeeded == nil {
+									history.Wait.Succeeded = nil
+								} else {
+									history.Wait.Succeeded = &tfTypes.ConditionSucceeded{}
+									history.Wait.Succeeded.SucceededAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Wait.Succeeded.SucceededAt))
+								}
+								if historyItem.Wait.TimedOut == nil {
+									history.Wait.TimedOut = nil
+								} else {
+									history.Wait.TimedOut = &tfTypes.ConditionTimedOut{}
+									history.Wait.TimedOut.TimedOutAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Wait.TimedOut.TimedOutAt))
+								}
+								history.Wait.Timeout = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Wait.Timeout))
+								history.Wait.TimeoutDuration = types.StringPointerValue(historyItem.Wait.TimeoutDuration)
+								if historyItem.Wait.UntilTime == nil {
+									history.Wait.UntilTime = nil
+								} else {
+									history.Wait.UntilTime = &tfTypes.WaitUntilTimeInstance{}
+									history.Wait.UntilTime.DurationIfExists = types.StringPointerValue(historyItem.Wait.UntilTime.DurationIfExists)
+									history.Wait.UntilTime.UntilTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(historyItem.Wait.UntilTime.UntilTime))
+								}
+							}
+
+							r.TaskView.Task.Policy.History = append(r.TaskView.Task.Policy.History, history)
+						}
+					} else {
+						r.TaskView.Task.Policy.History = nil
+					}
+					if resp.TaskView.Task.Policy.Next != nil {
+						r.TaskView.Task.Policy.Next = []tfTypes.PolicyStep{}
+
+						for _, nextItem := range resp.TaskView.Task.Policy.Next {
+							var next tfTypes.PolicyStep
+
+							if nextItem.Accept == nil {
+								next.Accept = nil
+							} else {
+								next.Accept = &tfTypes.Accept{}
+								next.Accept.AcceptMessage = types.StringPointerValue(nextItem.Accept.AcceptMessage)
+							}
+							if nextItem.Action == nil {
+								next.Action = nil
+							} else {
+								next.Action = &tfTypes.Action{}
+								if nextItem.Action.Automation == nil {
+									next.Action.Automation = nil
+								} else {
+									next.Action.Automation = &tfTypes.ActionTargetAutomation{}
+									next.Action.Automation.AutomationTemplateID = types.StringPointerValue(nextItem.Action.Automation.AutomationTemplateID)
+								}
+								if nextItem.Action.BatonResourceAction == nil {
+									next.Action.BatonResourceAction = nil
+								} else {
+									next.Action.BatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
+									next.Action.BatonResourceAction.BatonResourceActionID = types.StringPointerValue(nextItem.Action.BatonResourceAction.BatonResourceActionID)
+								}
+								if nextItem.Action.ClientIDApproval == nil {
+									next.Action.ClientIDApproval = nil
+								} else {
+									next.Action.ClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
+								}
+							}
+							if nextItem.Approval == nil {
+								next.Approval = nil
+							} else {
+								next.Approval = &tfTypes.Approval{}
+								if nextItem.Approval.Agent == nil {
+									next.Approval.Agent = nil
+								} else {
+									next.Approval.Agent = &tfTypes.AgentApproval{}
+									if nextItem.Approval.Agent.AgentFailureAction != nil {
+										next.Approval.Agent.AgentFailureAction = types.StringValue(string(*nextItem.Approval.Agent.AgentFailureAction))
+									} else {
+										next.Approval.Agent.AgentFailureAction = types.StringNull()
+									}
+									if nextItem.Approval.Agent.AgentMode != nil {
+										next.Approval.Agent.AgentMode = types.StringValue(string(*nextItem.Approval.Agent.AgentMode))
+									} else {
+										next.Approval.Agent.AgentMode = types.StringNull()
+									}
+									next.Approval.Agent.AgentUserID = types.StringPointerValue(nextItem.Approval.Agent.AgentUserID)
+									next.Approval.Agent.Instructions = types.StringPointerValue(nextItem.Approval.Agent.Instructions)
+									if nextItem.Approval.Agent.PolicyIds != nil {
+										next.Approval.Agent.PolicyIds = make([]types.String, 0, len(nextItem.Approval.Agent.PolicyIds))
+										for _, v := range nextItem.Approval.Agent.PolicyIds {
+											next.Approval.Agent.PolicyIds = append(next.Approval.Agent.PolicyIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Agent.PolicyIds = nil
+									}
+									if nextItem.Approval.Agent.ReassignToUserIds != nil {
+										next.Approval.Agent.ReassignToUserIds = make([]types.String, 0, len(nextItem.Approval.Agent.ReassignToUserIds))
+										for _, v := range nextItem.Approval.Agent.ReassignToUserIds {
+											next.Approval.Agent.ReassignToUserIds = append(next.Approval.Agent.ReassignToUserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Agent.ReassignToUserIds = nil
+									}
+								}
+								next.Approval.AllowDelegation = types.BoolPointerValue(nextItem.Approval.AllowDelegation)
+								if nextItem.Approval.AllowedReassignees != nil {
+									next.Approval.AllowedReassignees = make([]types.String, 0, len(nextItem.Approval.AllowedReassignees))
+									for _, v := range nextItem.Approval.AllowedReassignees {
+										next.Approval.AllowedReassignees = append(next.Approval.AllowedReassignees, types.StringValue(v))
+									}
+								} else {
+									next.Approval.AllowedReassignees = nil
+								}
+								next.Approval.AllowReassignment = types.BoolPointerValue(nextItem.Approval.AllowReassignment)
+								if nextItem.Approval.AppOwners == nil {
+									next.Approval.AppOwners = nil
+								} else {
+									next.Approval.AppOwners = &tfTypes.AppOwnerApproval{}
+									next.Approval.AppOwners.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.AppOwners.AllowSelfApproval)
+									next.Approval.AppOwners.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.AppOwners.RequireDistinctApprovers)
+								}
+								next.Approval.Assigned = types.BoolPointerValue(nextItem.Approval.Assigned)
+								if nextItem.Approval.EntitlementOwners == nil {
+									next.Approval.EntitlementOwners = nil
+								} else {
+									next.Approval.EntitlementOwners = &tfTypes.EntitlementOwnerApproval{}
+									next.Approval.EntitlementOwners.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.EntitlementOwners.AllowSelfApproval)
+									next.Approval.EntitlementOwners.Fallback = types.BoolPointerValue(nextItem.Approval.EntitlementOwners.Fallback)
+									if nextItem.Approval.EntitlementOwners.FallbackGroupIds != nil {
+										next.Approval.EntitlementOwners.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem12 := range nextItem.Approval.EntitlementOwners.FallbackGroupIds {
+											var fallbackGroupIds12 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds12.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem12.AppEntitlementID)
+											fallbackGroupIds12.AppID = types.StringPointerValue(fallbackGroupIdsItem12.AppID)
+
+											next.Approval.EntitlementOwners.FallbackGroupIds = append(next.Approval.EntitlementOwners.FallbackGroupIds, fallbackGroupIds12)
+										}
+									} else {
+										next.Approval.EntitlementOwners.FallbackGroupIds = nil
+									}
+									if nextItem.Approval.EntitlementOwners.FallbackUserIds != nil {
+										next.Approval.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.EntitlementOwners.FallbackUserIds))
+										for _, v := range nextItem.Approval.EntitlementOwners.FallbackUserIds {
+											next.Approval.EntitlementOwners.FallbackUserIds = append(next.Approval.EntitlementOwners.FallbackUserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.EntitlementOwners.FallbackUserIds = nil
+									}
+									next.Approval.EntitlementOwners.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.EntitlementOwners.IsGroupFallbackEnabled)
+									next.Approval.EntitlementOwners.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.EntitlementOwners.RequireDistinctApprovers)
+								}
+								if nextItem.Approval.Escalation == nil {
+									next.Approval.Escalation = nil
+								} else {
+									next.Approval.Escalation = &tfTypes.Escalation{}
+									if nextItem.Approval.Escalation.CancelTicket == nil {
+										next.Approval.Escalation.CancelTicket = nil
+									} else {
+										next.Approval.Escalation.CancelTicket = &tfTypes.CancelTicket{}
+									}
+									next.Approval.Escalation.EscalationComment = types.StringPointerValue(nextItem.Approval.Escalation.EscalationComment)
+									next.Approval.Escalation.Expiration = types.StringPointerValue(nextItem.Approval.Escalation.Expiration)
+									if nextItem.Approval.Escalation.ReassignToApprovers == nil {
+										next.Approval.Escalation.ReassignToApprovers = nil
+									} else {
+										next.Approval.Escalation.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
+										if nextItem.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
+											next.Approval.Escalation.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(nextItem.Approval.Escalation.ReassignToApprovers.ApproverIds))
+											for _, v := range nextItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
+												next.Approval.Escalation.ReassignToApprovers.ApproverIds = append(next.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
+											}
+										} else {
+											next.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
+										}
+									}
+									if nextItem.Approval.Escalation.ReplacePolicy == nil {
+										next.Approval.Escalation.ReplacePolicy = nil
+									} else {
+										next.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
+										next.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(nextItem.Approval.Escalation.ReplacePolicy.PolicyID)
+									}
+									if nextItem.Approval.Escalation.SkipStep == nil {
+										next.Approval.Escalation.SkipStep = nil
+									} else {
+										next.Approval.Escalation.SkipStep = &tfTypes.SkipStep{}
+									}
+								}
+								next.Approval.EscalationEnabled = types.BoolPointerValue(nextItem.Approval.EscalationEnabled)
+								if nextItem.Approval.Expression == nil {
+									next.Approval.Expression = nil
+								} else {
+									next.Approval.Expression = &tfTypes.ExpressionApproval{}
+									next.Approval.Expression.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.Expression.AllowSelfApproval)
+									if nextItem.Approval.Expression.AssignedUserIds != nil {
+										next.Approval.Expression.AssignedUserIds = make([]types.String, 0, len(nextItem.Approval.Expression.AssignedUserIds))
+										for _, v := range nextItem.Approval.Expression.AssignedUserIds {
+											next.Approval.Expression.AssignedUserIds = append(next.Approval.Expression.AssignedUserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Expression.AssignedUserIds = nil
+									}
+									if nextItem.Approval.Expression.Expressions != nil {
+										next.Approval.Expression.Expressions = make([]types.String, 0, len(nextItem.Approval.Expression.Expressions))
+										for _, v := range nextItem.Approval.Expression.Expressions {
+											next.Approval.Expression.Expressions = append(next.Approval.Expression.Expressions, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Expression.Expressions = nil
+									}
+									next.Approval.Expression.Fallback = types.BoolPointerValue(nextItem.Approval.Expression.Fallback)
+									if nextItem.Approval.Expression.FallbackGroupIds != nil {
+										next.Approval.Expression.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem13 := range nextItem.Approval.Expression.FallbackGroupIds {
+											var fallbackGroupIds13 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds13.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem13.AppEntitlementID)
+											fallbackGroupIds13.AppID = types.StringPointerValue(fallbackGroupIdsItem13.AppID)
+
+											next.Approval.Expression.FallbackGroupIds = append(next.Approval.Expression.FallbackGroupIds, fallbackGroupIds13)
+										}
+									} else {
+										next.Approval.Expression.FallbackGroupIds = nil
+									}
+									if nextItem.Approval.Expression.FallbackUserIds != nil {
+										next.Approval.Expression.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.Expression.FallbackUserIds))
+										for _, v := range nextItem.Approval.Expression.FallbackUserIds {
+											next.Approval.Expression.FallbackUserIds = append(next.Approval.Expression.FallbackUserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Expression.FallbackUserIds = nil
+									}
+									next.Approval.Expression.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.Expression.IsGroupFallbackEnabled)
+									next.Approval.Expression.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.Expression.RequireDistinctApprovers)
+								}
+								if nextItem.Approval.Group == nil {
+									next.Approval.Group = nil
+								} else {
+									next.Approval.Group = &tfTypes.AppGroupApproval{}
+									next.Approval.Group.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.Group.AllowSelfApproval)
+									next.Approval.Group.AppGroupID = types.StringPointerValue(nextItem.Approval.Group.AppGroupID)
+									next.Approval.Group.AppID = types.StringPointerValue(nextItem.Approval.Group.AppID)
+									next.Approval.Group.Fallback = types.BoolPointerValue(nextItem.Approval.Group.Fallback)
+									if nextItem.Approval.Group.FallbackGroupIds != nil {
+										next.Approval.Group.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem14 := range nextItem.Approval.Group.FallbackGroupIds {
+											var fallbackGroupIds14 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds14.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem14.AppEntitlementID)
+											fallbackGroupIds14.AppID = types.StringPointerValue(fallbackGroupIdsItem14.AppID)
+
+											next.Approval.Group.FallbackGroupIds = append(next.Approval.Group.FallbackGroupIds, fallbackGroupIds14)
+										}
+									} else {
+										next.Approval.Group.FallbackGroupIds = nil
+									}
+									if nextItem.Approval.Group.FallbackUserIds != nil {
+										next.Approval.Group.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.Group.FallbackUserIds))
+										for _, v := range nextItem.Approval.Group.FallbackUserIds {
+											next.Approval.Group.FallbackUserIds = append(next.Approval.Group.FallbackUserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Group.FallbackUserIds = nil
+									}
+									next.Approval.Group.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.Group.IsGroupFallbackEnabled)
+									next.Approval.Group.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.Group.RequireDistinctApprovers)
+								}
+								if nextItem.Approval.Manager == nil {
+									next.Approval.Manager = nil
+								} else {
+									next.Approval.Manager = &tfTypes.ManagerApproval{}
+									next.Approval.Manager.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.Manager.AllowSelfApproval)
+									if nextItem.Approval.Manager.AssignedUserIds != nil {
+										next.Approval.Manager.AssignedUserIds = make([]types.String, 0, len(nextItem.Approval.Manager.AssignedUserIds))
+										for _, v := range nextItem.Approval.Manager.AssignedUserIds {
+											next.Approval.Manager.AssignedUserIds = append(next.Approval.Manager.AssignedUserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Manager.AssignedUserIds = nil
+									}
+									next.Approval.Manager.Fallback = types.BoolPointerValue(nextItem.Approval.Manager.Fallback)
+									if nextItem.Approval.Manager.FallbackGroupIds != nil {
+										next.Approval.Manager.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem15 := range nextItem.Approval.Manager.FallbackGroupIds {
+											var fallbackGroupIds15 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds15.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem15.AppEntitlementID)
+											fallbackGroupIds15.AppID = types.StringPointerValue(fallbackGroupIdsItem15.AppID)
+
+											next.Approval.Manager.FallbackGroupIds = append(next.Approval.Manager.FallbackGroupIds, fallbackGroupIds15)
+										}
+									} else {
+										next.Approval.Manager.FallbackGroupIds = nil
+									}
+									if nextItem.Approval.Manager.FallbackUserIds != nil {
+										next.Approval.Manager.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.Manager.FallbackUserIds))
+										for _, v := range nextItem.Approval.Manager.FallbackUserIds {
+											next.Approval.Manager.FallbackUserIds = append(next.Approval.Manager.FallbackUserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Manager.FallbackUserIds = nil
+									}
+									next.Approval.Manager.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.Manager.IsGroupFallbackEnabled)
+									next.Approval.Manager.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.Manager.RequireDistinctApprovers)
+								}
+								next.Approval.RequireApprovalReason = types.BoolPointerValue(nextItem.Approval.RequireApprovalReason)
+								next.Approval.RequireDenialReason = types.BoolPointerValue(nextItem.Approval.RequireDenialReason)
+								next.Approval.RequireReassignmentReason = types.BoolPointerValue(nextItem.Approval.RequireReassignmentReason)
+								next.Approval.RequiresStepUpProviderID = types.StringPointerValue(nextItem.Approval.RequiresStepUpProviderID)
+								if nextItem.Approval.ResourceOwners == nil {
+									next.Approval.ResourceOwners = nil
+								} else {
+									next.Approval.ResourceOwners = &tfTypes.ResourceOwnerApproval{}
+									next.Approval.ResourceOwners.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.ResourceOwners.AllowSelfApproval)
+									next.Approval.ResourceOwners.Fallback = types.BoolPointerValue(nextItem.Approval.ResourceOwners.Fallback)
+									if nextItem.Approval.ResourceOwners.FallbackGroupIds != nil {
+										next.Approval.ResourceOwners.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem16 := range nextItem.Approval.ResourceOwners.FallbackGroupIds {
+											var fallbackGroupIds16 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds16.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem16.AppEntitlementID)
+											fallbackGroupIds16.AppID = types.StringPointerValue(fallbackGroupIdsItem16.AppID)
+
+											next.Approval.ResourceOwners.FallbackGroupIds = append(next.Approval.ResourceOwners.FallbackGroupIds, fallbackGroupIds16)
+										}
+									} else {
+										next.Approval.ResourceOwners.FallbackGroupIds = nil
+									}
+									if nextItem.Approval.ResourceOwners.FallbackUserIds != nil {
+										next.Approval.ResourceOwners.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.ResourceOwners.FallbackUserIds))
+										for _, v := range nextItem.Approval.ResourceOwners.FallbackUserIds {
+											next.Approval.ResourceOwners.FallbackUserIds = append(next.Approval.ResourceOwners.FallbackUserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.ResourceOwners.FallbackUserIds = nil
+									}
+									next.Approval.ResourceOwners.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.ResourceOwners.IsGroupFallbackEnabled)
+									next.Approval.ResourceOwners.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.ResourceOwners.RequireDistinctApprovers)
+								}
+								if nextItem.Approval.Self == nil {
+									next.Approval.Self = nil
+								} else {
+									next.Approval.Self = &tfTypes.SelfApproval{}
+									if nextItem.Approval.Self.AssignedUserIds != nil {
+										next.Approval.Self.AssignedUserIds = make([]types.String, 0, len(nextItem.Approval.Self.AssignedUserIds))
+										for _, v := range nextItem.Approval.Self.AssignedUserIds {
+											next.Approval.Self.AssignedUserIds = append(next.Approval.Self.AssignedUserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Self.AssignedUserIds = nil
+									}
+									next.Approval.Self.Fallback = types.BoolPointerValue(nextItem.Approval.Self.Fallback)
+									if nextItem.Approval.Self.FallbackGroupIds != nil {
+										next.Approval.Self.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+										for _, fallbackGroupIdsItem17 := range nextItem.Approval.Self.FallbackGroupIds {
+											var fallbackGroupIds17 tfTypes.AppEntitlementReference
+
+											fallbackGroupIds17.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem17.AppEntitlementID)
+											fallbackGroupIds17.AppID = types.StringPointerValue(fallbackGroupIdsItem17.AppID)
+
+											next.Approval.Self.FallbackGroupIds = append(next.Approval.Self.FallbackGroupIds, fallbackGroupIds17)
+										}
+									} else {
+										next.Approval.Self.FallbackGroupIds = nil
+									}
+									if nextItem.Approval.Self.FallbackUserIds != nil {
+										next.Approval.Self.FallbackUserIds = make([]types.String, 0, len(nextItem.Approval.Self.FallbackUserIds))
+										for _, v := range nextItem.Approval.Self.FallbackUserIds {
+											next.Approval.Self.FallbackUserIds = append(next.Approval.Self.FallbackUserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Self.FallbackUserIds = nil
+									}
+									next.Approval.Self.IsGroupFallbackEnabled = types.BoolPointerValue(nextItem.Approval.Self.IsGroupFallbackEnabled)
+								}
+								if nextItem.Approval.Users == nil {
+									next.Approval.Users = nil
+								} else {
+									next.Approval.Users = &tfTypes.UserApproval{}
+									next.Approval.Users.AllowSelfApproval = types.BoolPointerValue(nextItem.Approval.Users.AllowSelfApproval)
+									next.Approval.Users.RequireDistinctApprovers = types.BoolPointerValue(nextItem.Approval.Users.RequireDistinctApprovers)
+									if nextItem.Approval.Users.UserIds != nil {
+										next.Approval.Users.UserIds = make([]types.String, 0, len(nextItem.Approval.Users.UserIds))
+										for _, v := range nextItem.Approval.Users.UserIds {
+											next.Approval.Users.UserIds = append(next.Approval.Users.UserIds, types.StringValue(v))
+										}
+									} else {
+										next.Approval.Users.UserIds = nil
+									}
+								}
+								if nextItem.Approval.Webhook == nil {
+									next.Approval.Webhook = nil
+								} else {
+									next.Approval.Webhook = &tfTypes.WebhookApproval{}
+									next.Approval.Webhook.WebhookID = types.StringPointerValue(nextItem.Approval.Webhook.WebhookID)
+								}
+							}
+							if nextItem.Form == nil {
+								next.Form = jsontypes.NewNormalizedNull()
+							} else {
+								formResult, _ := json.Marshal(nextItem.Form)
+								next.Form = jsontypes.NewNormalizedValue(string(formResult))
+							}
+							if nextItem.Provision == nil {
+								next.Provision = nil
+							} else {
+								next.Provision = &tfTypes.Provision{}
+								next.Provision.Assigned = types.BoolPointerValue(nextItem.Provision.Assigned)
+								if nextItem.Provision.ProvisionPolicy == nil {
+									next.Provision.ProvisionPolicy = nil
+								} else {
+									next.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+									if nextItem.Provision.ProvisionPolicy.Action == nil {
+										next.Provision.ProvisionPolicy.Action = nil
+									} else {
+										next.Provision.ProvisionPolicy.Action = &tfTypes.ActionProvision{}
+										next.Provision.ProvisionPolicy.Action.ActionName = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Action.ActionName)
+										next.Provision.ProvisionPolicy.Action.AppID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Action.AppID)
+										next.Provision.ProvisionPolicy.Action.ConnectorID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Action.ConnectorID)
+										next.Provision.ProvisionPolicy.Action.DisplayName = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Action.DisplayName)
+									}
+									if nextItem.Provision.ProvisionPolicy.Connector == nil {
+										next.Provision.ProvisionPolicy.Connector = nil
+									} else {
+										next.Provision.ProvisionPolicy.Connector = &tfTypes.ConnectorProvision{}
+										if nextItem.Provision.ProvisionPolicy.Connector.Account == nil {
+											next.Provision.ProvisionPolicy.Connector.Account = nil
+										} else {
+											next.Provision.ProvisionPolicy.Connector.Account = &tfTypes.AccountProvision{}
+											if nextItem.Provision.ProvisionPolicy.Connector.Account.Config == nil {
+												next.Provision.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedNull()
+											} else {
+												configResult2, _ := json.Marshal(nextItem.Provision.ProvisionPolicy.Connector.Account.Config)
+												next.Provision.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedValue(string(configResult2))
+											}
+											next.Provision.ProvisionPolicy.Connector.Account.ConnectorID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Connector.Account.ConnectorID)
+											if nextItem.Provision.ProvisionPolicy.Connector.Account.DoNotSave == nil {
+												next.Provision.ProvisionPolicy.Connector.Account.DoNotSave = nil
+											} else {
+												next.Provision.ProvisionPolicy.Connector.Account.DoNotSave = &tfTypes.DoNotSave{}
+											}
+											if nextItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault == nil {
+												next.Provision.ProvisionPolicy.Connector.Account.SaveToVault = nil
+											} else {
+												next.Provision.ProvisionPolicy.Connector.Account.SaveToVault = &tfTypes.SaveToVault{}
+												if nextItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+													next.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds))
+													for _, v := range nextItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds {
+														next.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = append(next.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds, types.StringValue(v))
+													}
+												} else {
+													next.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = nil
+												}
+											}
+											next.Provision.ProvisionPolicy.Connector.Account.SchemaID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Connector.Account.SchemaID)
+										}
+										if nextItem.Provision.ProvisionPolicy.Connector.DefaultBehavior == nil {
+											next.Provision.ProvisionPolicy.Connector.DefaultBehavior = nil
+										} else {
+											next.Provision.ProvisionPolicy.Connector.DefaultBehavior = &tfTypes.DefaultBehavior{}
+											next.Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID)
+										}
+										if nextItem.Provision.ProvisionPolicy.Connector.DeleteAccount == nil {
+											next.Provision.ProvisionPolicy.Connector.DeleteAccount = nil
+										} else {
+											next.Provision.ProvisionPolicy.Connector.DeleteAccount = &tfTypes.DeleteAccount{}
+											next.Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID)
+										}
+									}
+									if nextItem.Provision.ProvisionPolicy.Delegated == nil {
+										next.Provision.ProvisionPolicy.Delegated = nil
+									} else {
+										next.Provision.ProvisionPolicy.Delegated = &tfTypes.DelegatedProvision{}
+										next.Provision.ProvisionPolicy.Delegated.AppID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Delegated.AppID)
+										next.Provision.ProvisionPolicy.Delegated.EntitlementID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Delegated.EntitlementID)
+									}
+									if nextItem.Provision.ProvisionPolicy.DevicePlacement == nil {
+										next.Provision.ProvisionPolicy.DevicePlacement = nil
+									} else {
+										next.Provision.ProvisionPolicy.DevicePlacement = &tfTypes.DevicePlacementProvision{}
+										next.Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID)
+									}
+									if nextItem.Provision.ProvisionPolicy.ExternalTicket == nil {
+										next.Provision.ProvisionPolicy.ExternalTicket = nil
+									} else {
+										next.Provision.ProvisionPolicy.ExternalTicket = &tfTypes.ExternalTicketProvision{}
+										next.Provision.ProvisionPolicy.ExternalTicket.AppID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ExternalTicket.AppID)
+										next.Provision.ProvisionPolicy.ExternalTicket.ConnectorID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ExternalTicket.ConnectorID)
+										next.Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
+										next.Provision.ProvisionPolicy.ExternalTicket.Instructions = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.ExternalTicket.Instructions)
+									}
+									if nextItem.Provision.ProvisionPolicy.Manual == nil {
+										next.Provision.ProvisionPolicy.Manual = nil
+									} else {
+										next.Provision.ProvisionPolicy.Manual = &tfTypes.ManualProvision{}
+										if nextItem.Provision.ProvisionPolicy.Manual.Assignee == nil {
+											next.Provision.ProvisionPolicy.Manual.Assignee = nil
+										} else {
+											next.Provision.ProvisionPolicy.Manual.Assignee = &tfTypes.ProvisionerAssignment{}
+											if nextItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners == nil {
+												next.Provision.ProvisionPolicy.Manual.Assignee.AppOwners = nil
+											} else {
+												next.Provision.ProvisionPolicy.Manual.Assignee.AppOwners = &tfTypes.AppOwnerProvisioner{}
+												next.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment)
+												if nextItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
+													next.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
+													for _, v := range nextItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
+														next.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = append(next.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													next.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = nil
+												}
+											}
+											if nextItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners == nil {
+												next.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners = nil
+											} else {
+												next.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners = &tfTypes.EntitlementOwnerProvisioner{}
+												next.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment)
+												if nextItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
+													next.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
+													for _, v := range nextItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
+														next.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = append(next.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													next.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = nil
+												}
+											}
+											if nextItem.Provision.ProvisionPolicy.Manual.Assignee.Expression == nil {
+												next.Provision.ProvisionPolicy.Manual.Assignee.Expression = nil
+											} else {
+												next.Provision.ProvisionPolicy.Manual.Assignee.Expression = &tfTypes.ExpressionProvisioner{}
+												next.Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment)
+												if nextItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions != nil {
+													next.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions))
+													for _, v := range nextItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions {
+														next.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = append(next.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions, types.StringValue(v))
+													}
+												} else {
+													next.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = nil
+												}
+												if nextItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
+													next.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds))
+													for _, v := range nextItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds {
+														next.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = append(next.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													next.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = nil
+												}
+											}
+											if nextItem.Provision.ProvisionPolicy.Manual.Assignee.Group == nil {
+												next.Provision.ProvisionPolicy.Manual.Assignee.Group = nil
+											} else {
+												next.Provision.ProvisionPolicy.Manual.Assignee.Group = &tfTypes.GroupProvisioner{}
+												next.Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment)
+												next.Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID)
+												next.Provision.ProvisionPolicy.Manual.Assignee.Group.AppID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Group.AppID)
+												if nextItem.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
+													next.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds))
+													for _, v := range nextItem.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds {
+														next.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = append(next.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													next.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = nil
+												}
+											}
+											if nextItem.Provision.ProvisionPolicy.Manual.Assignee.Manager == nil {
+												next.Provision.ProvisionPolicy.Manual.Assignee.Manager = nil
+											} else {
+												next.Provision.ProvisionPolicy.Manual.Assignee.Manager = &tfTypes.ManagerProvisioner{}
+												next.Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment)
+												if nextItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
+													next.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds))
+													for _, v := range nextItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds {
+														next.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = append(next.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													next.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = nil
+												}
+											}
+											if nextItem.Provision.ProvisionPolicy.Manual.Assignee.Users == nil {
+												next.Provision.ProvisionPolicy.Manual.Assignee.Users = nil
+											} else {
+												next.Provision.ProvisionPolicy.Manual.Assignee.Users = &tfTypes.UserProvisioner{}
+												next.Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment = types.BoolPointerValue(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment)
+												if nextItem.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds != nil {
+													next.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds))
+													for _, v := range nextItem.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds {
+														next.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = append(next.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds, types.StringValue(v))
+													}
+												} else {
+													next.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = nil
+												}
+											}
+										}
+										next.Provision.ProvisionPolicy.Manual.Instructions = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Manual.Instructions)
+										if nextItem.Provision.ProvisionPolicy.Manual.UserIds != nil {
+											next.Provision.ProvisionPolicy.Manual.UserIds = make([]types.String, 0, len(nextItem.Provision.ProvisionPolicy.Manual.UserIds))
+											for _, v := range nextItem.Provision.ProvisionPolicy.Manual.UserIds {
+												next.Provision.ProvisionPolicy.Manual.UserIds = append(next.Provision.ProvisionPolicy.Manual.UserIds, types.StringValue(v))
+											}
+										} else {
+											next.Provision.ProvisionPolicy.Manual.UserIds = nil
+										}
+									}
+									if nextItem.Provision.ProvisionPolicy.MultiStep == nil {
+										next.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
+									} else {
+										multiStepResult2, _ := json.Marshal(nextItem.Provision.ProvisionPolicy.MultiStep)
+										next.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult2))
+									}
+									if nextItem.Provision.ProvisionPolicy.Unconfigured == nil {
+										next.Provision.ProvisionPolicy.Unconfigured = nil
+									} else {
+										next.Provision.ProvisionPolicy.Unconfigured = &tfTypes.UnconfiguredProvision{}
+									}
+									if nextItem.Provision.ProvisionPolicy.Webhook == nil {
+										next.Provision.ProvisionPolicy.Webhook = nil
+									} else {
+										next.Provision.ProvisionPolicy.Webhook = &tfTypes.WebhookProvision{}
+										next.Provision.ProvisionPolicy.Webhook.WebhookID = types.StringPointerValue(nextItem.Provision.ProvisionPolicy.Webhook.WebhookID)
+									}
+								}
+								if nextItem.Provision.ProvisionTarget == nil {
+									next.Provision.ProvisionTarget = nil
+								} else {
+									next.Provision.ProvisionTarget = &tfTypes.ProvisionTarget{}
+									next.Provision.ProvisionTarget.AppEntitlementID = types.StringPointerValue(nextItem.Provision.ProvisionTarget.AppEntitlementID)
+									next.Provision.ProvisionTarget.AppID = types.StringPointerValue(nextItem.Provision.ProvisionTarget.AppID)
+									next.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(nextItem.Provision.ProvisionTarget.AppUserID)
+									next.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(nextItem.Provision.ProvisionTarget.GrantDuration)
+								}
+							}
+							if nextItem.Reject == nil {
+								next.Reject = nil
+							} else {
+								next.Reject = &tfTypes.Reject{}
+								next.Reject.RejectMessage = types.StringPointerValue(nextItem.Reject.RejectMessage)
+							}
+							if nextItem.Wait == nil {
+								next.Wait = nil
+							} else {
+								next.Wait = &tfTypes.Wait{}
+								next.Wait.CommentOnFirstWait = types.StringPointerValue(nextItem.Wait.CommentOnFirstWait)
+								next.Wait.CommentOnTimeout = types.StringPointerValue(nextItem.Wait.CommentOnTimeout)
+								if nextItem.Wait.Condition == nil {
+									next.Wait.Condition = nil
+								} else {
+									next.Wait.Condition = &tfTypes.WaitCondition{}
+									next.Wait.Condition.Condition = types.StringPointerValue(nextItem.Wait.Condition.Condition)
+								}
+								if nextItem.Wait.Duration == nil {
+									next.Wait.Duration = nil
+								} else {
+									next.Wait.Duration = &tfTypes.WaitDuration{}
+									next.Wait.Duration.Duration = types.StringPointerValue(nextItem.Wait.Duration.Duration)
+								}
+								next.Wait.Name = types.StringPointerValue(nextItem.Wait.Name)
+								next.Wait.TimeoutDuration = types.StringPointerValue(nextItem.Wait.TimeoutDuration)
+								if nextItem.Wait.UntilTime == nil {
+									next.Wait.UntilTime = nil
+								} else {
+									next.Wait.UntilTime = &tfTypes.WaitUntilTime{}
+									next.Wait.UntilTime.Hours = types.Int64PointerValue(nextItem.Wait.UntilTime.Hours)
+									next.Wait.UntilTime.Minutes = types.Int64PointerValue(nextItem.Wait.UntilTime.Minutes)
+									next.Wait.UntilTime.Timezone = types.StringPointerValue(nextItem.Wait.UntilTime.Timezone)
+								}
+							}
+
+							r.TaskView.Task.Policy.Next = append(r.TaskView.Task.Policy.Next, next)
+						}
+					} else {
+						r.TaskView.Task.Policy.Next = nil
+					}
+					if resp.TaskView.Task.Policy.Policy == nil {
+						r.TaskView.Task.Policy.Policy = nil
+					} else {
+						r.TaskView.Task.Policy.Policy = &tfTypes.Policy{}
+						if len(resp.TaskView.Task.Policy.Policy.Annotations) > 0 {
+							r.TaskView.Task.Policy.Policy.Annotations = make(map[string]types.String, len(resp.TaskView.Task.Policy.Policy.Annotations))
+							for key4, value4 := range resp.TaskView.Task.Policy.Policy.Annotations {
+								r.TaskView.Task.Policy.Policy.Annotations[key4] = types.StringValue(value4)
+							}
+						}
+						r.TaskView.Task.Policy.Policy.BaselinePolicyID = types.StringPointerValue(resp.TaskView.Task.Policy.Policy.BaselinePolicyID)
+						r.TaskView.Task.Policy.Policy.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Policy.CreatedAt))
+						r.TaskView.Task.Policy.Policy.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Policy.DeletedAt))
+						r.TaskView.Task.Policy.Policy.Description = types.StringPointerValue(resp.TaskView.Task.Policy.Policy.Description)
+						r.TaskView.Task.Policy.Policy.DisplayName = types.StringPointerValue(resp.TaskView.Task.Policy.Policy.DisplayName)
+						r.TaskView.Task.Policy.Policy.ID = types.StringPointerValue(resp.TaskView.Task.Policy.Policy.ID)
+						if len(resp.TaskView.Task.Policy.Policy.PolicySteps) > 0 {
+							r.TaskView.Task.Policy.Policy.PolicySteps = make(map[string]tfTypes.PolicySteps, len(resp.TaskView.Task.Policy.Policy.PolicySteps))
+							for policyStepsKey, policyStepsValue := range resp.TaskView.Task.Policy.Policy.PolicySteps {
+								var policyStepsResult tfTypes.PolicySteps
+								if policyStepsValue.Steps != nil {
+									policyStepsResult.Steps = []tfTypes.PolicyStep{}
+
+									for _, stepsItem := range policyStepsValue.Steps {
+										var steps tfTypes.PolicyStep
+
+										if stepsItem.Accept == nil {
+											steps.Accept = nil
+										} else {
+											steps.Accept = &tfTypes.Accept{}
+											steps.Accept.AcceptMessage = types.StringPointerValue(stepsItem.Accept.AcceptMessage)
+										}
+										if stepsItem.Action == nil {
+											steps.Action = nil
+										} else {
+											steps.Action = &tfTypes.Action{}
+											if stepsItem.Action.Automation == nil {
+												steps.Action.Automation = nil
+											} else {
+												steps.Action.Automation = &tfTypes.ActionTargetAutomation{}
+												steps.Action.Automation.AutomationTemplateID = types.StringPointerValue(stepsItem.Action.Automation.AutomationTemplateID)
+											}
+											if stepsItem.Action.BatonResourceAction == nil {
+												steps.Action.BatonResourceAction = nil
+											} else {
+												steps.Action.BatonResourceAction = &tfTypes.ActionTargetBatonResourceAction{}
+												steps.Action.BatonResourceAction.BatonResourceActionID = types.StringPointerValue(stepsItem.Action.BatonResourceAction.BatonResourceActionID)
+											}
+											if stepsItem.Action.ClientIDApproval == nil {
+												steps.Action.ClientIDApproval = nil
+											} else {
+												steps.Action.ClientIDApproval = &tfTypes.ActionTargetClientIDApproval{}
+											}
+										}
+										if stepsItem.Approval == nil {
+											steps.Approval = nil
+										} else {
+											steps.Approval = &tfTypes.Approval{}
+											if stepsItem.Approval.Agent == nil {
+												steps.Approval.Agent = nil
+											} else {
+												steps.Approval.Agent = &tfTypes.AgentApproval{}
+												if stepsItem.Approval.Agent.AgentFailureAction != nil {
+													steps.Approval.Agent.AgentFailureAction = types.StringValue(string(*stepsItem.Approval.Agent.AgentFailureAction))
+												} else {
+													steps.Approval.Agent.AgentFailureAction = types.StringNull()
+												}
+												if stepsItem.Approval.Agent.AgentMode != nil {
+													steps.Approval.Agent.AgentMode = types.StringValue(string(*stepsItem.Approval.Agent.AgentMode))
+												} else {
+													steps.Approval.Agent.AgentMode = types.StringNull()
+												}
+												steps.Approval.Agent.AgentUserID = types.StringPointerValue(stepsItem.Approval.Agent.AgentUserID)
+												steps.Approval.Agent.Instructions = types.StringPointerValue(stepsItem.Approval.Agent.Instructions)
+												if stepsItem.Approval.Agent.PolicyIds != nil {
+													steps.Approval.Agent.PolicyIds = make([]types.String, 0, len(stepsItem.Approval.Agent.PolicyIds))
+													for _, v := range stepsItem.Approval.Agent.PolicyIds {
+														steps.Approval.Agent.PolicyIds = append(steps.Approval.Agent.PolicyIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Agent.PolicyIds = nil
+												}
+												if stepsItem.Approval.Agent.ReassignToUserIds != nil {
+													steps.Approval.Agent.ReassignToUserIds = make([]types.String, 0, len(stepsItem.Approval.Agent.ReassignToUserIds))
+													for _, v := range stepsItem.Approval.Agent.ReassignToUserIds {
+														steps.Approval.Agent.ReassignToUserIds = append(steps.Approval.Agent.ReassignToUserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Agent.ReassignToUserIds = nil
+												}
+											}
+											steps.Approval.AllowDelegation = types.BoolPointerValue(stepsItem.Approval.AllowDelegation)
+											if stepsItem.Approval.AllowedReassignees != nil {
+												steps.Approval.AllowedReassignees = make([]types.String, 0, len(stepsItem.Approval.AllowedReassignees))
+												for _, v := range stepsItem.Approval.AllowedReassignees {
+													steps.Approval.AllowedReassignees = append(steps.Approval.AllowedReassignees, types.StringValue(v))
+												}
+											} else {
+												steps.Approval.AllowedReassignees = nil
+											}
+											steps.Approval.AllowReassignment = types.BoolPointerValue(stepsItem.Approval.AllowReassignment)
+											if stepsItem.Approval.AppOwners == nil {
+												steps.Approval.AppOwners = nil
+											} else {
+												steps.Approval.AppOwners = &tfTypes.AppOwnerApproval{}
+												steps.Approval.AppOwners.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.AppOwners.AllowSelfApproval)
+												steps.Approval.AppOwners.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.AppOwners.RequireDistinctApprovers)
+											}
+											steps.Approval.Assigned = types.BoolPointerValue(stepsItem.Approval.Assigned)
+											if stepsItem.Approval.EntitlementOwners == nil {
+												steps.Approval.EntitlementOwners = nil
+											} else {
+												steps.Approval.EntitlementOwners = &tfTypes.EntitlementOwnerApproval{}
+												steps.Approval.EntitlementOwners.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.EntitlementOwners.AllowSelfApproval)
+												steps.Approval.EntitlementOwners.Fallback = types.BoolPointerValue(stepsItem.Approval.EntitlementOwners.Fallback)
+												if stepsItem.Approval.EntitlementOwners.FallbackGroupIds != nil {
+													steps.Approval.EntitlementOwners.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem18 := range stepsItem.Approval.EntitlementOwners.FallbackGroupIds {
+														var fallbackGroupIds18 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds18.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem18.AppEntitlementID)
+														fallbackGroupIds18.AppID = types.StringPointerValue(fallbackGroupIdsItem18.AppID)
+
+														steps.Approval.EntitlementOwners.FallbackGroupIds = append(steps.Approval.EntitlementOwners.FallbackGroupIds, fallbackGroupIds18)
+													}
+												} else {
+													steps.Approval.EntitlementOwners.FallbackGroupIds = nil
+												}
+												if stepsItem.Approval.EntitlementOwners.FallbackUserIds != nil {
+													steps.Approval.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.EntitlementOwners.FallbackUserIds))
+													for _, v := range stepsItem.Approval.EntitlementOwners.FallbackUserIds {
+														steps.Approval.EntitlementOwners.FallbackUserIds = append(steps.Approval.EntitlementOwners.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.EntitlementOwners.FallbackUserIds = nil
+												}
+												steps.Approval.EntitlementOwners.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.EntitlementOwners.IsGroupFallbackEnabled)
+												steps.Approval.EntitlementOwners.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.EntitlementOwners.RequireDistinctApprovers)
+											}
+											if stepsItem.Approval.Escalation == nil {
+												steps.Approval.Escalation = nil
+											} else {
+												steps.Approval.Escalation = &tfTypes.Escalation{}
+												if stepsItem.Approval.Escalation.CancelTicket == nil {
+													steps.Approval.Escalation.CancelTicket = nil
+												} else {
+													steps.Approval.Escalation.CancelTicket = &tfTypes.CancelTicket{}
+												}
+												steps.Approval.Escalation.EscalationComment = types.StringPointerValue(stepsItem.Approval.Escalation.EscalationComment)
+												steps.Approval.Escalation.Expiration = types.StringPointerValue(stepsItem.Approval.Escalation.Expiration)
+												if stepsItem.Approval.Escalation.ReassignToApprovers == nil {
+													steps.Approval.Escalation.ReassignToApprovers = nil
+												} else {
+													steps.Approval.Escalation.ReassignToApprovers = &tfTypes.ReassignToApprovers{}
+													if stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds != nil {
+														steps.Approval.Escalation.ReassignToApprovers.ApproverIds = make([]types.String, 0, len(stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds))
+														for _, v := range stepsItem.Approval.Escalation.ReassignToApprovers.ApproverIds {
+															steps.Approval.Escalation.ReassignToApprovers.ApproverIds = append(steps.Approval.Escalation.ReassignToApprovers.ApproverIds, types.StringValue(v))
+														}
+													} else {
+														steps.Approval.Escalation.ReassignToApprovers.ApproverIds = nil
+													}
+												}
+												if stepsItem.Approval.Escalation.ReplacePolicy == nil {
+													steps.Approval.Escalation.ReplacePolicy = nil
+												} else {
+													steps.Approval.Escalation.ReplacePolicy = &tfTypes.ReplacePolicy{}
+													steps.Approval.Escalation.ReplacePolicy.PolicyID = types.StringPointerValue(stepsItem.Approval.Escalation.ReplacePolicy.PolicyID)
+												}
+												if stepsItem.Approval.Escalation.SkipStep == nil {
+													steps.Approval.Escalation.SkipStep = nil
+												} else {
+													steps.Approval.Escalation.SkipStep = &tfTypes.SkipStep{}
+												}
+											}
+											steps.Approval.EscalationEnabled = types.BoolPointerValue(stepsItem.Approval.EscalationEnabled)
+											if stepsItem.Approval.Expression == nil {
+												steps.Approval.Expression = nil
+											} else {
+												steps.Approval.Expression = &tfTypes.ExpressionApproval{}
+												steps.Approval.Expression.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.Expression.AllowSelfApproval)
+												if stepsItem.Approval.Expression.AssignedUserIds != nil {
+													steps.Approval.Expression.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.Expression.AssignedUserIds))
+													for _, v := range stepsItem.Approval.Expression.AssignedUserIds {
+														steps.Approval.Expression.AssignedUserIds = append(steps.Approval.Expression.AssignedUserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Expression.AssignedUserIds = nil
+												}
+												if stepsItem.Approval.Expression.Expressions != nil {
+													steps.Approval.Expression.Expressions = make([]types.String, 0, len(stepsItem.Approval.Expression.Expressions))
+													for _, v := range stepsItem.Approval.Expression.Expressions {
+														steps.Approval.Expression.Expressions = append(steps.Approval.Expression.Expressions, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Expression.Expressions = nil
+												}
+												steps.Approval.Expression.Fallback = types.BoolPointerValue(stepsItem.Approval.Expression.Fallback)
+												if stepsItem.Approval.Expression.FallbackGroupIds != nil {
+													steps.Approval.Expression.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem19 := range stepsItem.Approval.Expression.FallbackGroupIds {
+														var fallbackGroupIds19 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds19.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem19.AppEntitlementID)
+														fallbackGroupIds19.AppID = types.StringPointerValue(fallbackGroupIdsItem19.AppID)
+
+														steps.Approval.Expression.FallbackGroupIds = append(steps.Approval.Expression.FallbackGroupIds, fallbackGroupIds19)
+													}
+												} else {
+													steps.Approval.Expression.FallbackGroupIds = nil
+												}
+												if stepsItem.Approval.Expression.FallbackUserIds != nil {
+													steps.Approval.Expression.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.Expression.FallbackUserIds))
+													for _, v := range stepsItem.Approval.Expression.FallbackUserIds {
+														steps.Approval.Expression.FallbackUserIds = append(steps.Approval.Expression.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Expression.FallbackUserIds = nil
+												}
+												steps.Approval.Expression.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.Expression.IsGroupFallbackEnabled)
+												steps.Approval.Expression.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.Expression.RequireDistinctApprovers)
+											}
+											if stepsItem.Approval.Group == nil {
+												steps.Approval.Group = nil
+											} else {
+												steps.Approval.Group = &tfTypes.AppGroupApproval{}
+												steps.Approval.Group.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.Group.AllowSelfApproval)
+												steps.Approval.Group.AppGroupID = types.StringPointerValue(stepsItem.Approval.Group.AppGroupID)
+												steps.Approval.Group.AppID = types.StringPointerValue(stepsItem.Approval.Group.AppID)
+												steps.Approval.Group.Fallback = types.BoolPointerValue(stepsItem.Approval.Group.Fallback)
+												if stepsItem.Approval.Group.FallbackGroupIds != nil {
+													steps.Approval.Group.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem20 := range stepsItem.Approval.Group.FallbackGroupIds {
+														var fallbackGroupIds20 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds20.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem20.AppEntitlementID)
+														fallbackGroupIds20.AppID = types.StringPointerValue(fallbackGroupIdsItem20.AppID)
+
+														steps.Approval.Group.FallbackGroupIds = append(steps.Approval.Group.FallbackGroupIds, fallbackGroupIds20)
+													}
+												} else {
+													steps.Approval.Group.FallbackGroupIds = nil
+												}
+												if stepsItem.Approval.Group.FallbackUserIds != nil {
+													steps.Approval.Group.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.Group.FallbackUserIds))
+													for _, v := range stepsItem.Approval.Group.FallbackUserIds {
+														steps.Approval.Group.FallbackUserIds = append(steps.Approval.Group.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Group.FallbackUserIds = nil
+												}
+												steps.Approval.Group.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.Group.IsGroupFallbackEnabled)
+												steps.Approval.Group.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.Group.RequireDistinctApprovers)
+											}
+											if stepsItem.Approval.Manager == nil {
+												steps.Approval.Manager = nil
+											} else {
+												steps.Approval.Manager = &tfTypes.ManagerApproval{}
+												steps.Approval.Manager.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.Manager.AllowSelfApproval)
+												if stepsItem.Approval.Manager.AssignedUserIds != nil {
+													steps.Approval.Manager.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.Manager.AssignedUserIds))
+													for _, v := range stepsItem.Approval.Manager.AssignedUserIds {
+														steps.Approval.Manager.AssignedUserIds = append(steps.Approval.Manager.AssignedUserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Manager.AssignedUserIds = nil
+												}
+												steps.Approval.Manager.Fallback = types.BoolPointerValue(stepsItem.Approval.Manager.Fallback)
+												if stepsItem.Approval.Manager.FallbackGroupIds != nil {
+													steps.Approval.Manager.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem21 := range stepsItem.Approval.Manager.FallbackGroupIds {
+														var fallbackGroupIds21 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds21.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem21.AppEntitlementID)
+														fallbackGroupIds21.AppID = types.StringPointerValue(fallbackGroupIdsItem21.AppID)
+
+														steps.Approval.Manager.FallbackGroupIds = append(steps.Approval.Manager.FallbackGroupIds, fallbackGroupIds21)
+													}
+												} else {
+													steps.Approval.Manager.FallbackGroupIds = nil
+												}
+												if stepsItem.Approval.Manager.FallbackUserIds != nil {
+													steps.Approval.Manager.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.Manager.FallbackUserIds))
+													for _, v := range stepsItem.Approval.Manager.FallbackUserIds {
+														steps.Approval.Manager.FallbackUserIds = append(steps.Approval.Manager.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Manager.FallbackUserIds = nil
+												}
+												steps.Approval.Manager.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.Manager.IsGroupFallbackEnabled)
+												steps.Approval.Manager.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.Manager.RequireDistinctApprovers)
+											}
+											steps.Approval.RequireApprovalReason = types.BoolPointerValue(stepsItem.Approval.RequireApprovalReason)
+											steps.Approval.RequireDenialReason = types.BoolPointerValue(stepsItem.Approval.RequireDenialReason)
+											steps.Approval.RequireReassignmentReason = types.BoolPointerValue(stepsItem.Approval.RequireReassignmentReason)
+											steps.Approval.RequiresStepUpProviderID = types.StringPointerValue(stepsItem.Approval.RequiresStepUpProviderID)
+											if stepsItem.Approval.ResourceOwners == nil {
+												steps.Approval.ResourceOwners = nil
+											} else {
+												steps.Approval.ResourceOwners = &tfTypes.ResourceOwnerApproval{}
+												steps.Approval.ResourceOwners.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.ResourceOwners.AllowSelfApproval)
+												steps.Approval.ResourceOwners.Fallback = types.BoolPointerValue(stepsItem.Approval.ResourceOwners.Fallback)
+												if stepsItem.Approval.ResourceOwners.FallbackGroupIds != nil {
+													steps.Approval.ResourceOwners.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem22 := range stepsItem.Approval.ResourceOwners.FallbackGroupIds {
+														var fallbackGroupIds22 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds22.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem22.AppEntitlementID)
+														fallbackGroupIds22.AppID = types.StringPointerValue(fallbackGroupIdsItem22.AppID)
+
+														steps.Approval.ResourceOwners.FallbackGroupIds = append(steps.Approval.ResourceOwners.FallbackGroupIds, fallbackGroupIds22)
+													}
+												} else {
+													steps.Approval.ResourceOwners.FallbackGroupIds = nil
+												}
+												if stepsItem.Approval.ResourceOwners.FallbackUserIds != nil {
+													steps.Approval.ResourceOwners.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.ResourceOwners.FallbackUserIds))
+													for _, v := range stepsItem.Approval.ResourceOwners.FallbackUserIds {
+														steps.Approval.ResourceOwners.FallbackUserIds = append(steps.Approval.ResourceOwners.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.ResourceOwners.FallbackUserIds = nil
+												}
+												steps.Approval.ResourceOwners.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.ResourceOwners.IsGroupFallbackEnabled)
+												steps.Approval.ResourceOwners.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.ResourceOwners.RequireDistinctApprovers)
+											}
+											if stepsItem.Approval.Self == nil {
+												steps.Approval.Self = nil
+											} else {
+												steps.Approval.Self = &tfTypes.SelfApproval{}
+												if stepsItem.Approval.Self.AssignedUserIds != nil {
+													steps.Approval.Self.AssignedUserIds = make([]types.String, 0, len(stepsItem.Approval.Self.AssignedUserIds))
+													for _, v := range stepsItem.Approval.Self.AssignedUserIds {
+														steps.Approval.Self.AssignedUserIds = append(steps.Approval.Self.AssignedUserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Self.AssignedUserIds = nil
+												}
+												steps.Approval.Self.Fallback = types.BoolPointerValue(stepsItem.Approval.Self.Fallback)
+												if stepsItem.Approval.Self.FallbackGroupIds != nil {
+													steps.Approval.Self.FallbackGroupIds = []tfTypes.AppEntitlementReference{}
+
+													for _, fallbackGroupIdsItem23 := range stepsItem.Approval.Self.FallbackGroupIds {
+														var fallbackGroupIds23 tfTypes.AppEntitlementReference
+
+														fallbackGroupIds23.AppEntitlementID = types.StringPointerValue(fallbackGroupIdsItem23.AppEntitlementID)
+														fallbackGroupIds23.AppID = types.StringPointerValue(fallbackGroupIdsItem23.AppID)
+
+														steps.Approval.Self.FallbackGroupIds = append(steps.Approval.Self.FallbackGroupIds, fallbackGroupIds23)
+													}
+												} else {
+													steps.Approval.Self.FallbackGroupIds = nil
+												}
+												if stepsItem.Approval.Self.FallbackUserIds != nil {
+													steps.Approval.Self.FallbackUserIds = make([]types.String, 0, len(stepsItem.Approval.Self.FallbackUserIds))
+													for _, v := range stepsItem.Approval.Self.FallbackUserIds {
+														steps.Approval.Self.FallbackUserIds = append(steps.Approval.Self.FallbackUserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Self.FallbackUserIds = nil
+												}
+												steps.Approval.Self.IsGroupFallbackEnabled = types.BoolPointerValue(stepsItem.Approval.Self.IsGroupFallbackEnabled)
+											}
+											if stepsItem.Approval.Users == nil {
+												steps.Approval.Users = nil
+											} else {
+												steps.Approval.Users = &tfTypes.UserApproval{}
+												steps.Approval.Users.AllowSelfApproval = types.BoolPointerValue(stepsItem.Approval.Users.AllowSelfApproval)
+												steps.Approval.Users.RequireDistinctApprovers = types.BoolPointerValue(stepsItem.Approval.Users.RequireDistinctApprovers)
+												if stepsItem.Approval.Users.UserIds != nil {
+													steps.Approval.Users.UserIds = make([]types.String, 0, len(stepsItem.Approval.Users.UserIds))
+													for _, v := range stepsItem.Approval.Users.UserIds {
+														steps.Approval.Users.UserIds = append(steps.Approval.Users.UserIds, types.StringValue(v))
+													}
+												} else {
+													steps.Approval.Users.UserIds = nil
+												}
+											}
+											if stepsItem.Approval.Webhook == nil {
+												steps.Approval.Webhook = nil
+											} else {
+												steps.Approval.Webhook = &tfTypes.WebhookApproval{}
+												steps.Approval.Webhook.WebhookID = types.StringPointerValue(stepsItem.Approval.Webhook.WebhookID)
+											}
+										}
+										if stepsItem.Form == nil {
+											steps.Form = jsontypes.NewNormalizedNull()
+										} else {
+											formResult1, _ := json.Marshal(stepsItem.Form)
+											steps.Form = jsontypes.NewNormalizedValue(string(formResult1))
+										}
+										if stepsItem.Provision == nil {
+											steps.Provision = nil
+										} else {
+											steps.Provision = &tfTypes.Provision{}
+											steps.Provision.Assigned = types.BoolPointerValue(stepsItem.Provision.Assigned)
+											if stepsItem.Provision.ProvisionPolicy == nil {
+												steps.Provision.ProvisionPolicy = nil
+											} else {
+												steps.Provision.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+												if stepsItem.Provision.ProvisionPolicy.Action == nil {
+													steps.Provision.ProvisionPolicy.Action = nil
+												} else {
+													steps.Provision.ProvisionPolicy.Action = &tfTypes.ActionProvision{}
+													steps.Provision.ProvisionPolicy.Action.ActionName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Action.ActionName)
+													steps.Provision.ProvisionPolicy.Action.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Action.AppID)
+													steps.Provision.ProvisionPolicy.Action.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Action.ConnectorID)
+													steps.Provision.ProvisionPolicy.Action.DisplayName = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Action.DisplayName)
+												}
+												if stepsItem.Provision.ProvisionPolicy.Connector == nil {
+													steps.Provision.ProvisionPolicy.Connector = nil
+												} else {
+													steps.Provision.ProvisionPolicy.Connector = &tfTypes.ConnectorProvision{}
+													if stepsItem.Provision.ProvisionPolicy.Connector.Account == nil {
+														steps.Provision.ProvisionPolicy.Connector.Account = nil
+													} else {
+														steps.Provision.ProvisionPolicy.Connector.Account = &tfTypes.AccountProvision{}
+														if stepsItem.Provision.ProvisionPolicy.Connector.Account.Config == nil {
+															steps.Provision.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedNull()
+														} else {
+															configResult3, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.Connector.Account.Config)
+															steps.Provision.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedValue(string(configResult3))
+														}
+														steps.Provision.ProvisionPolicy.Connector.Account.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Connector.Account.ConnectorID)
+														if stepsItem.Provision.ProvisionPolicy.Connector.Account.DoNotSave == nil {
+															steps.Provision.ProvisionPolicy.Connector.Account.DoNotSave = nil
+														} else {
+															steps.Provision.ProvisionPolicy.Connector.Account.DoNotSave = &tfTypes.DoNotSave{}
+														}
+														if stepsItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault == nil {
+															steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault = nil
+														} else {
+															steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault = &tfTypes.SaveToVault{}
+															if stepsItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+																steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds))
+																for _, v := range stepsItem.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds {
+																	steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = append(steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds, types.StringValue(v))
+																}
+															} else {
+																steps.Provision.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = nil
+															}
+														}
+														steps.Provision.ProvisionPolicy.Connector.Account.SchemaID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Connector.Account.SchemaID)
+													}
+													if stepsItem.Provision.ProvisionPolicy.Connector.DefaultBehavior == nil {
+														steps.Provision.ProvisionPolicy.Connector.DefaultBehavior = nil
+													} else {
+														steps.Provision.ProvisionPolicy.Connector.DefaultBehavior = &tfTypes.DefaultBehavior{}
+														steps.Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID)
+													}
+													if stepsItem.Provision.ProvisionPolicy.Connector.DeleteAccount == nil {
+														steps.Provision.ProvisionPolicy.Connector.DeleteAccount = nil
+													} else {
+														steps.Provision.ProvisionPolicy.Connector.DeleteAccount = &tfTypes.DeleteAccount{}
+														steps.Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Connector.DeleteAccount.ConnectorID)
+													}
+												}
+												if stepsItem.Provision.ProvisionPolicy.Delegated == nil {
+													steps.Provision.ProvisionPolicy.Delegated = nil
+												} else {
+													steps.Provision.ProvisionPolicy.Delegated = &tfTypes.DelegatedProvision{}
+													steps.Provision.ProvisionPolicy.Delegated.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Delegated.AppID)
+													steps.Provision.ProvisionPolicy.Delegated.EntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Delegated.EntitlementID)
+												}
+												if stepsItem.Provision.ProvisionPolicy.DevicePlacement == nil {
+													steps.Provision.ProvisionPolicy.DevicePlacement = nil
+												} else {
+													steps.Provision.ProvisionPolicy.DevicePlacement = &tfTypes.DevicePlacementProvision{}
+													steps.Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.DevicePlacement.VaultBoundaryID)
+												}
+												if stepsItem.Provision.ProvisionPolicy.ExternalTicket == nil {
+													steps.Provision.ProvisionPolicy.ExternalTicket = nil
+												} else {
+													steps.Provision.ProvisionPolicy.ExternalTicket = &tfTypes.ExternalTicketProvision{}
+													steps.Provision.ProvisionPolicy.ExternalTicket.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicket.AppID)
+													steps.Provision.ProvisionPolicy.ExternalTicket.ConnectorID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicket.ConnectorID)
+													steps.Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
+													steps.Provision.ProvisionPolicy.ExternalTicket.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.ExternalTicket.Instructions)
+												}
+												if stepsItem.Provision.ProvisionPolicy.Manual == nil {
+													steps.Provision.ProvisionPolicy.Manual = nil
+												} else {
+													steps.Provision.ProvisionPolicy.Manual = &tfTypes.ManualProvision{}
+													if stepsItem.Provision.ProvisionPolicy.Manual.Assignee == nil {
+														steps.Provision.ProvisionPolicy.Manual.Assignee = nil
+													} else {
+														steps.Provision.ProvisionPolicy.Manual.Assignee = &tfTypes.ProvisionerAssignment{}
+														if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners == nil {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners = nil
+														} else {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners = &tfTypes.AppOwnerProvisioner{}
+															steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment)
+															if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
+																for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
+																	steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds, types.StringValue(v))
+																}
+															} else {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = nil
+															}
+														}
+														if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners == nil {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners = nil
+														} else {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners = &tfTypes.EntitlementOwnerProvisioner{}
+															steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment)
+															if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
+																for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
+																	steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds, types.StringValue(v))
+																}
+															} else {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = nil
+															}
+														}
+														if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression == nil {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Expression = nil
+														} else {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Expression = &tfTypes.ExpressionProvisioner{}
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment)
+															if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions != nil {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions))
+																for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions {
+																	steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = append(steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions, types.StringValue(v))
+																}
+															} else {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.Expressions = nil
+															}
+															if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds))
+																for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds {
+																	steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds, types.StringValue(v))
+																}
+															} else {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = nil
+															}
+														}
+														if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group == nil {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Group = nil
+														} else {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Group = &tfTypes.GroupProvisioner{}
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment)
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.AppGroupID)
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Group.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.AppID)
+															if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds))
+																for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds {
+																	steps.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds, types.StringValue(v))
+																}
+															} else {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = nil
+															}
+														}
+														if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Manager == nil {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Manager = nil
+														} else {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Manager = &tfTypes.ManagerProvisioner{}
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment)
+															if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds))
+																for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds {
+																	steps.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds, types.StringValue(v))
+																}
+															} else {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = nil
+															}
+														}
+														if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Users == nil {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Users = nil
+														} else {
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Users = &tfTypes.UserProvisioner{}
+															steps.Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment = types.BoolPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment)
+															if stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds != nil {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds))
+																for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds {
+																	steps.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = append(steps.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds, types.StringValue(v))
+																}
+															} else {
+																steps.Provision.ProvisionPolicy.Manual.Assignee.Users.UserIds = nil
+															}
+														}
+													}
+													steps.Provision.ProvisionPolicy.Manual.Instructions = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Manual.Instructions)
+													if stepsItem.Provision.ProvisionPolicy.Manual.UserIds != nil {
+														steps.Provision.ProvisionPolicy.Manual.UserIds = make([]types.String, 0, len(stepsItem.Provision.ProvisionPolicy.Manual.UserIds))
+														for _, v := range stepsItem.Provision.ProvisionPolicy.Manual.UserIds {
+															steps.Provision.ProvisionPolicy.Manual.UserIds = append(steps.Provision.ProvisionPolicy.Manual.UserIds, types.StringValue(v))
+														}
+													} else {
+														steps.Provision.ProvisionPolicy.Manual.UserIds = nil
+													}
+												}
+												if stepsItem.Provision.ProvisionPolicy.MultiStep == nil {
+													steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
+												} else {
+													multiStepResult3, _ := json.Marshal(stepsItem.Provision.ProvisionPolicy.MultiStep)
+													steps.Provision.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult3))
+												}
+												if stepsItem.Provision.ProvisionPolicy.Unconfigured == nil {
+													steps.Provision.ProvisionPolicy.Unconfigured = nil
+												} else {
+													steps.Provision.ProvisionPolicy.Unconfigured = &tfTypes.UnconfiguredProvision{}
+												}
+												if stepsItem.Provision.ProvisionPolicy.Webhook == nil {
+													steps.Provision.ProvisionPolicy.Webhook = nil
+												} else {
+													steps.Provision.ProvisionPolicy.Webhook = &tfTypes.WebhookProvision{}
+													steps.Provision.ProvisionPolicy.Webhook.WebhookID = types.StringPointerValue(stepsItem.Provision.ProvisionPolicy.Webhook.WebhookID)
+												}
+											}
+											if stepsItem.Provision.ProvisionTarget == nil {
+												steps.Provision.ProvisionTarget = nil
+											} else {
+												steps.Provision.ProvisionTarget = &tfTypes.ProvisionTarget{}
+												steps.Provision.ProvisionTarget.AppEntitlementID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppEntitlementID)
+												steps.Provision.ProvisionTarget.AppID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppID)
+												steps.Provision.ProvisionTarget.AppUserID = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.AppUserID)
+												steps.Provision.ProvisionTarget.GrantDuration = types.StringPointerValue(stepsItem.Provision.ProvisionTarget.GrantDuration)
+											}
+										}
+										if stepsItem.Reject == nil {
+											steps.Reject = nil
+										} else {
+											steps.Reject = &tfTypes.Reject{}
+											steps.Reject.RejectMessage = types.StringPointerValue(stepsItem.Reject.RejectMessage)
+										}
+										if stepsItem.Wait == nil {
+											steps.Wait = nil
+										} else {
+											steps.Wait = &tfTypes.Wait{}
+											steps.Wait.CommentOnFirstWait = types.StringPointerValue(stepsItem.Wait.CommentOnFirstWait)
+											steps.Wait.CommentOnTimeout = types.StringPointerValue(stepsItem.Wait.CommentOnTimeout)
+											if stepsItem.Wait.Condition == nil {
+												steps.Wait.Condition = nil
+											} else {
+												steps.Wait.Condition = &tfTypes.WaitCondition{}
+												steps.Wait.Condition.Condition = types.StringPointerValue(stepsItem.Wait.Condition.Condition)
+											}
+											if stepsItem.Wait.Duration == nil {
+												steps.Wait.Duration = nil
+											} else {
+												steps.Wait.Duration = &tfTypes.WaitDuration{}
+												steps.Wait.Duration.Duration = types.StringPointerValue(stepsItem.Wait.Duration.Duration)
+											}
+											steps.Wait.Name = types.StringPointerValue(stepsItem.Wait.Name)
+											steps.Wait.TimeoutDuration = types.StringPointerValue(stepsItem.Wait.TimeoutDuration)
+											if stepsItem.Wait.UntilTime == nil {
+												steps.Wait.UntilTime = nil
+											} else {
+												steps.Wait.UntilTime = &tfTypes.WaitUntilTime{}
+												steps.Wait.UntilTime.Hours = types.Int64PointerValue(stepsItem.Wait.UntilTime.Hours)
+												steps.Wait.UntilTime.Minutes = types.Int64PointerValue(stepsItem.Wait.UntilTime.Minutes)
+												steps.Wait.UntilTime.Timezone = types.StringPointerValue(stepsItem.Wait.UntilTime.Timezone)
+											}
+										}
+
+										policyStepsResult.Steps = append(policyStepsResult.Steps, steps)
+									}
+								} else {
+									policyStepsResult.Steps = nil
+								}
+
+								r.TaskView.Task.Policy.Policy.PolicySteps[policyStepsKey] = policyStepsResult
+							}
+						}
+						if resp.TaskView.Task.Policy.Policy.PolicyType != nil {
+							r.TaskView.Task.Policy.Policy.PolicyType = types.StringValue(string(*resp.TaskView.Task.Policy.Policy.PolicyType))
+						} else {
+							r.TaskView.Task.Policy.Policy.PolicyType = types.StringNull()
+						}
+						if resp.TaskView.Task.Policy.Policy.PostActions != nil {
+							r.TaskView.Task.Policy.Policy.PostActions = []tfTypes.PolicyPostActions{}
+
+							for _, postActionsItem := range resp.TaskView.Task.Policy.Policy.PostActions {
+								var postActions tfTypes.PolicyPostActions
+
+								postActions.CertifyRemediateImmediately = types.BoolPointerValue(postActionsItem.CertifyRemediateImmediately)
+
+								r.TaskView.Task.Policy.Policy.PostActions = append(r.TaskView.Task.Policy.Policy.PostActions, postActions)
+							}
+						} else {
+							r.TaskView.Task.Policy.Policy.PostActions = nil
+						}
+						r.TaskView.Task.Policy.Policy.ReassignTasksToDelegates = types.BoolPointerValue(resp.TaskView.Task.Policy.Policy.ReassignTasksToDelegates)
+						if resp.TaskView.Task.Policy.Policy.Rules != nil {
+							r.TaskView.Task.Policy.Policy.Rules = []tfTypes.Rule{}
+
+							for _, rulesItem := range resp.TaskView.Task.Policy.Policy.Rules {
+								var rules tfTypes.Rule
+
+								rules.Condition = types.StringPointerValue(rulesItem.Condition)
+								rules.PolicyID = types.StringPointerValue(rulesItem.PolicyID)
+								rules.PolicyKey = types.StringPointerValue(rulesItem.PolicyKey)
+								rules.StepKey = types.StringPointerValue(rulesItem.StepKey)
+
+								r.TaskView.Task.Policy.Policy.Rules = append(r.TaskView.Task.Policy.Policy.Rules, rules)
+							}
+						} else {
+							r.TaskView.Task.Policy.Policy.Rules = nil
+						}
+						if resp.TaskView.Task.Policy.Policy.Scope == nil {
+							r.TaskView.Task.Policy.Policy.Scope = nil
+						} else {
+							r.TaskView.Task.Policy.Policy.Scope = &tfTypes.PolicyScope{}
+							r.TaskView.Task.Policy.Policy.Scope.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.Policy.Policy.Scope.AppEntitlementID)
+							r.TaskView.Task.Policy.Policy.Scope.AppID = types.StringPointerValue(resp.TaskView.Task.Policy.Policy.Scope.AppID)
+							if resp.TaskView.Task.Policy.Policy.Scope.Slot != nil {
+								r.TaskView.Task.Policy.Policy.Scope.Slot = types.StringValue(string(*resp.TaskView.Task.Policy.Policy.Scope.Slot))
+							} else {
+								r.TaskView.Task.Policy.Policy.Scope.Slot = types.StringNull()
+							}
+						}
+						r.TaskView.Task.Policy.Policy.SystemBuiltin = types.BoolPointerValue(resp.TaskView.Task.Policy.Policy.SystemBuiltin)
+						r.TaskView.Task.Policy.Policy.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Policy.Policy.UpdatedAt))
+					}
 				}
+				r.TaskView.Task.PolicyGenerationID = types.StringPointerValue(resp.TaskView.Task.PolicyGenerationID)
 				if resp.TaskView.Task.Processing != nil {
 					r.TaskView.Task.Processing = types.StringValue(string(*resp.TaskView.Task.Processing))
 				} else {
@@ -4033,362 +4554,18 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 				} else {
 					r.TaskView.Task.Recommendation = types.StringNull()
 				}
-				if resp.TaskView.Task.RequestSchemaForm == nil {
-					r.TaskView.Task.RequestSchemaForm = nil
-				} else {
-					r.TaskView.Task.RequestSchemaForm = &tfTypes.RequestSchemaForm{}
-					r.TaskView.Task.RequestSchemaForm.Description = types.StringPointerValue(resp.TaskView.Task.RequestSchemaForm.Description)
-					if resp.TaskView.Task.RequestSchemaForm.FieldGroups != nil {
-						r.TaskView.Task.RequestSchemaForm.FieldGroups = []tfTypes.FormFieldGroup{}
-
-						for _, fieldGroupsItem2 := range resp.TaskView.Task.RequestSchemaForm.FieldGroups {
-							var fieldGroups2 tfTypes.FormFieldGroup
-
-							fieldGroups2.Default = types.BoolPointerValue(fieldGroupsItem2.Default)
-							fieldGroups2.DisplayName = types.StringPointerValue(fieldGroupsItem2.DisplayName)
-							if fieldGroupsItem2.Fields != nil {
-								fieldGroups2.Fields = make([]types.String, 0, len(fieldGroupsItem2.Fields))
-								for _, v := range fieldGroupsItem2.Fields {
-									fieldGroups2.Fields = append(fieldGroups2.Fields, types.StringValue(v))
-								}
-							} else {
-								fieldGroups2.Fields = nil
-							}
-							fieldGroups2.HelpText = types.StringPointerValue(fieldGroupsItem2.HelpText)
-							fieldGroups2.Name = types.StringPointerValue(fieldGroupsItem2.Name)
-
-							r.TaskView.Task.RequestSchemaForm.FieldGroups = append(r.TaskView.Task.RequestSchemaForm.FieldGroups, fieldGroups2)
-						}
-					} else {
-						r.TaskView.Task.RequestSchemaForm.FieldGroups = nil
-					}
-					if resp.TaskView.Task.RequestSchemaForm.FieldRelationships != nil {
-						r.TaskView.Task.RequestSchemaForm.FieldRelationships = []tfTypes.FieldRelationship{}
-
-						for _, fieldRelationshipsItem2 := range resp.TaskView.Task.RequestSchemaForm.FieldRelationships {
-							var fieldRelationships2 tfTypes.FieldRelationship
-
-							if fieldRelationshipsItem2.AtLeastOne == nil {
-								fieldRelationships2.AtLeastOne = nil
-							} else {
-								fieldRelationships2.AtLeastOne = &tfTypes.AtLeastOne{}
-							}
-							if fieldRelationshipsItem2.DependentOn == nil {
-								fieldRelationships2.DependentOn = nil
-							} else {
-								fieldRelationships2.DependentOn = &tfTypes.DependentOn{}
-								if fieldRelationshipsItem2.DependentOn.DependencyFieldNames != nil {
-									fieldRelationships2.DependentOn.DependencyFieldNames = make([]types.String, 0, len(fieldRelationshipsItem2.DependentOn.DependencyFieldNames))
-									for _, v := range fieldRelationshipsItem2.DependentOn.DependencyFieldNames {
-										fieldRelationships2.DependentOn.DependencyFieldNames = append(fieldRelationships2.DependentOn.DependencyFieldNames, types.StringValue(v))
-									}
-								} else {
-									fieldRelationships2.DependentOn.DependencyFieldNames = nil
-								}
-							}
-							if fieldRelationshipsItem2.FieldNames != nil {
-								fieldRelationships2.FieldNames = make([]types.String, 0, len(fieldRelationshipsItem2.FieldNames))
-								for _, v := range fieldRelationshipsItem2.FieldNames {
-									fieldRelationships2.FieldNames = append(fieldRelationships2.FieldNames, types.StringValue(v))
-								}
-							} else {
-								fieldRelationships2.FieldNames = nil
-							}
-							if fieldRelationshipsItem2.MutuallyExclusive == nil {
-								fieldRelationships2.MutuallyExclusive = nil
-							} else {
-								fieldRelationships2.MutuallyExclusive = &tfTypes.MutuallyExclusive{}
-							}
-							if fieldRelationshipsItem2.RequiredTogether == nil {
-								fieldRelationships2.RequiredTogether = nil
-							} else {
-								fieldRelationships2.RequiredTogether = &tfTypes.RequiredTogether{}
-							}
-
-							r.TaskView.Task.RequestSchemaForm.FieldRelationships = append(r.TaskView.Task.RequestSchemaForm.FieldRelationships, fieldRelationships2)
-						}
-					} else {
-						r.TaskView.Task.RequestSchemaForm.FieldRelationships = nil
-					}
-					if resp.TaskView.Task.RequestSchemaForm.Fields != nil {
-						r.TaskView.Task.RequestSchemaForm.Fields = []tfTypes.FormField{}
-
-						for _, fieldsItem2 := range resp.TaskView.Task.RequestSchemaForm.Fields {
-							var fields2 tfTypes.FormField
-
-							if fieldsItem2.AdminProviderConfig == nil {
-								fields2.AdminProviderConfig = nil
-							} else {
-								fields2.AdminProviderConfig = &tfTypes.AdminProviderConfig{}
-								fields2.AdminProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem2.AdminProviderConfig.DefaultValueCel)
-								fields2.AdminProviderConfig.ShowToUser = types.BoolPointerValue(fieldsItem2.AdminProviderConfig.ShowToUser)
-							}
-							if fieldsItem2.BoolField == nil {
-								fields2.BoolField = nil
-							} else {
-								fields2.BoolField = &tfTypes.BoolField{}
-								if fieldsItem2.BoolField.BoolRules == nil {
-									fields2.BoolField.BoolRules = nil
-								} else {
-									fields2.BoolField.BoolRules = &tfTypes.BoolRules{}
-									fields2.BoolField.BoolRules.Const = types.BoolPointerValue(fieldsItem2.BoolField.BoolRules.Const)
-								}
-								if fieldsItem2.BoolField.CheckboxField == nil {
-									fields2.BoolField.CheckboxField = nil
-								} else {
-									fields2.BoolField.CheckboxField = &tfTypes.CheckboxField{}
-								}
-								fields2.BoolField.DefaultValue = types.BoolPointerValue(fieldsItem2.BoolField.DefaultValue)
-								if fieldsItem2.BoolField.ToggleField == nil {
-									fields2.BoolField.ToggleField = nil
-								} else {
-									fields2.BoolField.ToggleField = &tfTypes.ToggleField{}
-								}
-							}
-							fields2.Description = types.StringPointerValue(fieldsItem2.Description)
-							fields2.DisplayName = types.StringPointerValue(fieldsItem2.DisplayName)
-							if fieldsItem2.FileField == nil {
-								fields2.FileField = nil
-							} else {
-								fields2.FileField = &tfTypes.FileField{}
-								if fieldsItem2.FileField.AcceptedFileTypes != nil {
-									fields2.FileField.AcceptedFileTypes = make([]types.String, 0, len(fieldsItem2.FileField.AcceptedFileTypes))
-									for _, v := range fieldsItem2.FileField.AcceptedFileTypes {
-										fields2.FileField.AcceptedFileTypes = append(fields2.FileField.AcceptedFileTypes, types.StringValue(v))
-									}
-								} else {
-									fields2.FileField.AcceptedFileTypes = nil
-								}
-								if fieldsItem2.FileField.FileInputField == nil {
-									fields2.FileField.FileInputField = nil
-								} else {
-									fields2.FileField.FileInputField = &tfTypes.FileInputField{}
-								}
-								fields2.FileField.MaxFileSize = types.StringPointerValue(fieldsItem2.FileField.MaxFileSize)
-							}
-							if fieldsItem2.FormStringField == nil {
-								fields2.FormStringField = nil
-							} else {
-								fields2.FormStringField = &tfTypes.FormStringField{}
-								fields2.FormStringField.DefaultValue = types.StringPointerValue(fieldsItem2.FormStringField.DefaultValue)
-								if fieldsItem2.FormStringField.PasswordField == nil {
-									fields2.FormStringField.PasswordField = nil
-								} else {
-									fields2.FormStringField.PasswordField = &tfTypes.PasswordField{}
-								}
-								if fieldsItem2.FormStringField.PickerField == nil {
-									fields2.FormStringField.PickerField = nil
-								} else {
-									fields2.FormStringField.PickerField = &tfTypes.PickerField{}
-									if fieldsItem2.FormStringField.PickerField.AppResourceFilter == nil {
-										fields2.FormStringField.PickerField.AppResourceFilter = nil
-									} else {
-										fields2.FormStringField.PickerField.AppResourceFilter = &tfTypes.AppResourceFilter{}
-										fields2.FormStringField.PickerField.AppResourceFilter.AppID = types.StringPointerValue(fieldsItem2.FormStringField.PickerField.AppResourceFilter.AppID)
-										fields2.FormStringField.PickerField.AppResourceFilter.ResourceTypeID = types.StringPointerValue(fieldsItem2.FormStringField.PickerField.AppResourceFilter.ResourceTypeID)
-									}
-									if fieldsItem2.FormStringField.PickerField.AppUserFilter == nil {
-										fields2.FormStringField.PickerField.AppUserFilter = nil
-									} else {
-										fields2.FormStringField.PickerField.AppUserFilter = &tfTypes.AppUserFilter{}
-										fields2.FormStringField.PickerField.AppUserFilter.AppID = types.StringPointerValue(fieldsItem2.FormStringField.PickerField.AppUserFilter.AppID)
-									}
-									if fieldsItem2.FormStringField.PickerField.C1UserFilter == nil {
-										fields2.FormStringField.PickerField.C1UserFilter = nil
-									} else {
-										fields2.FormStringField.PickerField.C1UserFilter = &tfTypes.C1UserFilter{}
-									}
-								}
-								fields2.FormStringField.Placeholder = types.StringPointerValue(fieldsItem2.FormStringField.Placeholder)
-								if fieldsItem2.FormStringField.SelectField == nil {
-									fields2.FormStringField.SelectField = nil
-								} else {
-									fields2.FormStringField.SelectField = &tfTypes.SelectField{}
-									if fieldsItem2.FormStringField.SelectField.Options != nil {
-										fields2.FormStringField.SelectField.Options = []tfTypes.SelectOption{}
-
-										for _, optionsVarItem2 := range fieldsItem2.FormStringField.SelectField.Options {
-											var optionsVar2 tfTypes.SelectOption
-
-											optionsVar2.Description = types.StringPointerValue(optionsVarItem2.Description)
-											optionsVar2.DisplayName = types.StringPointerValue(optionsVarItem2.DisplayName)
-											optionsVar2.Value = types.StringPointerValue(optionsVarItem2.Value)
-
-											fields2.FormStringField.SelectField.Options = append(fields2.FormStringField.SelectField.Options, optionsVar2)
-										}
-									} else {
-										fields2.FormStringField.SelectField.Options = nil
-									}
-									if fieldsItem2.FormStringField.SelectField.Type != nil {
-										fields2.FormStringField.SelectField.Type = types.StringValue(string(*fieldsItem2.FormStringField.SelectField.Type))
-									} else {
-										fields2.FormStringField.SelectField.Type = types.StringNull()
-									}
-								}
-								if fieldsItem2.FormStringField.StringRules == nil {
-									fields2.FormStringField.StringRules = nil
-								} else {
-									fields2.FormStringField.StringRules = &tfTypes.StringRules{}
-									fields2.FormStringField.StringRules.Address = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Address)
-									fields2.FormStringField.StringRules.Const = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Const)
-									fields2.FormStringField.StringRules.Contains = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Contains)
-									fields2.FormStringField.StringRules.Email = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Email)
-									fields2.FormStringField.StringRules.Hostname = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Hostname)
-									fields2.FormStringField.StringRules.IgnoreEmpty = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.IgnoreEmpty)
-									if fieldsItem2.FormStringField.StringRules.In != nil {
-										fields2.FormStringField.StringRules.In = make([]types.String, 0, len(fieldsItem2.FormStringField.StringRules.In))
-										for _, v := range fieldsItem2.FormStringField.StringRules.In {
-											fields2.FormStringField.StringRules.In = append(fields2.FormStringField.StringRules.In, types.StringValue(v))
-										}
-									} else {
-										fields2.FormStringField.StringRules.In = nil
-									}
-									fields2.FormStringField.StringRules.IP = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.IP)
-									fields2.FormStringField.StringRules.Ipv4 = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Ipv4)
-									fields2.FormStringField.StringRules.Ipv6 = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Ipv6)
-									fields2.FormStringField.StringRules.LenBytes = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.LenBytes)
-									fields2.FormStringField.StringRules.Length = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Length)
-									fields2.FormStringField.StringRules.MaxBytes = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.MaxBytes)
-									fields2.FormStringField.StringRules.MaxLen = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.MaxLen)
-									fields2.FormStringField.StringRules.MinBytes = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.MinBytes)
-									fields2.FormStringField.StringRules.MinLen = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.MinLen)
-									fields2.FormStringField.StringRules.NotContains = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.NotContains)
-									if fieldsItem2.FormStringField.StringRules.NotIn != nil {
-										fields2.FormStringField.StringRules.NotIn = make([]types.String, 0, len(fieldsItem2.FormStringField.StringRules.NotIn))
-										for _, v := range fieldsItem2.FormStringField.StringRules.NotIn {
-											fields2.FormStringField.StringRules.NotIn = append(fields2.FormStringField.StringRules.NotIn, types.StringValue(v))
-										}
-									} else {
-										fields2.FormStringField.StringRules.NotIn = nil
-									}
-									fields2.FormStringField.StringRules.Pattern = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Pattern)
-									fields2.FormStringField.StringRules.Prefix = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Prefix)
-									fields2.FormStringField.StringRules.Strict = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.Strict)
-									fields2.FormStringField.StringRules.Suffix = types.StringPointerValue(fieldsItem2.FormStringField.StringRules.Suffix)
-									fields2.FormStringField.StringRules.URI = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.URI)
-									fields2.FormStringField.StringRules.URIRef = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.URIRef)
-									fields2.FormStringField.StringRules.UUID = types.BoolPointerValue(fieldsItem2.FormStringField.StringRules.UUID)
-									if fieldsItem2.FormStringField.StringRules.WellKnownRegex != nil {
-										fields2.FormStringField.StringRules.WellKnownRegex = types.StringValue(string(*fieldsItem2.FormStringField.StringRules.WellKnownRegex))
-									} else {
-										fields2.FormStringField.StringRules.WellKnownRegex = types.StringNull()
-									}
-								}
-								if fieldsItem2.FormStringField.TextField == nil {
-									fields2.FormStringField.TextField = nil
-								} else {
-									fields2.FormStringField.TextField = &tfTypes.TextField{}
-									fields2.FormStringField.TextField.Multiline = types.BoolPointerValue(fieldsItem2.FormStringField.TextField.Multiline)
-									fields2.FormStringField.TextField.Suffix = types.StringPointerValue(fieldsItem2.FormStringField.TextField.Suffix)
-								}
-							}
-							if fieldsItem2.FormStringMapField == nil {
-								fields2.FormStringMapField = nil
-							} else {
-								fields2.FormStringMapField = &tfTypes.FormStringMapField{}
-								if len(fieldsItem2.FormStringMapField.DefaultValue) > 0 {
-									fields2.FormStringMapField.DefaultValue = make(map[string]types.String, len(fieldsItem2.FormStringMapField.DefaultValue))
-									for key3, value3 := range fieldsItem2.FormStringMapField.DefaultValue {
-										fields2.FormStringMapField.DefaultValue[key3] = types.StringValue(value3)
-									}
-								}
-								if fieldsItem2.FormStringMapField.StringMapRules == nil {
-									fields2.FormStringMapField.StringMapRules = nil
-								} else {
-									fields2.FormStringMapField.StringMapRules = &tfTypes.StringMapRules{}
-									fields2.FormStringMapField.StringMapRules.IsRequired = types.BoolPointerValue(fieldsItem2.FormStringMapField.StringMapRules.IsRequired)
-									fields2.FormStringMapField.StringMapRules.ValidateEmpty = types.BoolPointerValue(fieldsItem2.FormStringMapField.StringMapRules.ValidateEmpty)
-								}
-							}
-							if fieldsItem2.Int64Field == nil {
-								fields2.Int64Field = nil
-							} else {
-								fields2.Int64Field = &tfTypes.Int64Field{}
-								fields2.Int64Field.DefaultValue = types.StringPointerValue(fieldsItem2.Int64Field.DefaultValue)
-								if fieldsItem2.Int64Field.Int64Rules == nil {
-									fields2.Int64Field.Int64Rules = nil
-								} else {
-									fields2.Int64Field.Int64Rules = &tfTypes.Int64Rules{}
-									fields2.Int64Field.Int64Rules.Const = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Const)
-									fields2.Int64Field.Int64Rules.Gt = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Gt)
-									fields2.Int64Field.Int64Rules.Gte = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Gte)
-									fields2.Int64Field.Int64Rules.IgnoreEmpty = types.BoolPointerValue(fieldsItem2.Int64Field.Int64Rules.IgnoreEmpty)
-									if fieldsItem2.Int64Field.Int64Rules.In != nil {
-										fields2.Int64Field.Int64Rules.In = make([]types.String, 0, len(fieldsItem2.Int64Field.Int64Rules.In))
-										for _, v := range fieldsItem2.Int64Field.Int64Rules.In {
-											fields2.Int64Field.Int64Rules.In = append(fields2.Int64Field.Int64Rules.In, types.StringValue(v))
-										}
-									} else {
-										fields2.Int64Field.Int64Rules.In = nil
-									}
-									fields2.Int64Field.Int64Rules.Lt = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Lt)
-									fields2.Int64Field.Int64Rules.Lte = types.StringPointerValue(fieldsItem2.Int64Field.Int64Rules.Lte)
-									if fieldsItem2.Int64Field.Int64Rules.NotIn != nil {
-										fields2.Int64Field.Int64Rules.NotIn = make([]types.String, 0, len(fieldsItem2.Int64Field.Int64Rules.NotIn))
-										for _, v := range fieldsItem2.Int64Field.Int64Rules.NotIn {
-											fields2.Int64Field.Int64Rules.NotIn = append(fields2.Int64Field.Int64Rules.NotIn, types.StringValue(v))
-										}
-									} else {
-										fields2.Int64Field.Int64Rules.NotIn = nil
-									}
-								}
-								if fieldsItem2.Int64Field.NumberField == nil {
-									fields2.Int64Field.NumberField = nil
-								} else {
-									fields2.Int64Field.NumberField = &tfTypes.NumberField{}
-									fields2.Int64Field.NumberField.MaxValue = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.MaxValue)
-									fields2.Int64Field.NumberField.MinValue = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.MinValue)
-									fields2.Int64Field.NumberField.Step = types.StringPointerValue(fieldsItem2.Int64Field.NumberField.Step)
-								}
-								fields2.Int64Field.Placeholder = types.StringPointerValue(fieldsItem2.Int64Field.Placeholder)
-							}
-							fields2.Name = types.StringPointerValue(fieldsItem2.Name)
-							if fieldsItem2.Oauth2Field == nil {
-								fields2.Oauth2Field = nil
-							} else {
-								fields2.Oauth2Field = &tfTypes.Oauth2Field{}
-								if fieldsItem2.Oauth2Field.Oauth2FieldView == nil {
-									fields2.Oauth2Field.Oauth2FieldView = nil
-								} else {
-									fields2.Oauth2Field.Oauth2FieldView = &tfTypes.Oauth2FieldView{}
-								}
-							}
-							fields2.ReadOnly = types.BoolPointerValue(fieldsItem2.ReadOnly)
-							fields2.Required = types.BoolPointerValue(fieldsItem2.Required)
-							if fieldsItem2.SharedProviderConfig == nil {
-								fields2.SharedProviderConfig = nil
-							} else {
-								fields2.SharedProviderConfig = &tfTypes.SharedProviderConfig{}
-								fields2.SharedProviderConfig.DefaultValueCel = types.StringPointerValue(fieldsItem2.SharedProviderConfig.DefaultValueCel)
-								fields2.SharedProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem2.SharedProviderConfig.InputTransformationCel)
-								fields2.SharedProviderConfig.LockDefaultValues = types.BoolPointerValue(fieldsItem2.SharedProviderConfig.LockDefaultValues)
-							}
-							if fieldsItem2.UserProviderConfig == nil {
-								fields2.UserProviderConfig = nil
-							} else {
-								fields2.UserProviderConfig = &tfTypes.UserProviderConfig{}
-								fields2.UserProviderConfig.InputTransformationCel = types.StringPointerValue(fieldsItem2.UserProviderConfig.InputTransformationCel)
-							}
-
-							r.TaskView.Task.RequestSchemaForm.Fields = append(r.TaskView.Task.RequestSchemaForm.Fields, fields2)
-						}
-					} else {
-						r.TaskView.Task.RequestSchemaForm.Fields = nil
-					}
-					r.TaskView.Task.RequestSchemaForm.Name = types.StringPointerValue(resp.TaskView.Task.RequestSchemaForm.Name)
-				}
 				if resp.TaskView.Task.RevocationTargets != nil {
 					r.TaskView.Task.RevocationTargets = []tfTypes.TaskRevocationTarget{}
 
 					for _, revocationTargetsItem := range resp.TaskView.Task.RevocationTargets {
 						var revocationTargets tfTypes.TaskRevocationTarget
 
-						if revocationTargetsItem.AppEntitlementRef == nil {
-							revocationTargets.AppEntitlementRef = nil
+						if revocationTargetsItem.EntitlementRef == nil {
+							revocationTargets.EntitlementRef = nil
 						} else {
-							revocationTargets.AppEntitlementRef = &tfTypes.AppEntitlementRef{}
-							revocationTargets.AppEntitlementRef.AppID = types.StringPointerValue(revocationTargetsItem.AppEntitlementRef.AppID)
-							revocationTargets.AppEntitlementRef.ID = types.StringPointerValue(revocationTargetsItem.AppEntitlementRef.ID)
+							revocationTargets.EntitlementRef = &tfTypes.AppEntitlementRef{}
+							revocationTargets.EntitlementRef.AppID = types.StringPointerValue(revocationTargetsItem.EntitlementRef.AppID)
+							revocationTargets.EntitlementRef.ID = types.StringPointerValue(revocationTargetsItem.EntitlementRef.ID)
 						}
 
 						r.TaskView.Task.RevocationTargets = append(r.TaskView.Task.RevocationTargets, revocationTargets)
@@ -4409,173 +4586,262 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 				} else {
 					r.TaskView.Task.StepApproverIds = nil
 				}
-				if resp.TaskView.Task.TaskType == nil {
-					r.TaskView.Task.TaskType = nil
+				if resp.TaskView.Task.Type == nil {
+					r.TaskView.Task.Type = nil
 				} else {
-					r.TaskView.Task.TaskType = &tfTypes.TaskType{}
-					if resp.TaskView.Task.TaskType.TaskTypeAction == nil {
-						r.TaskView.Task.TaskType.TaskTypeAction = nil
+					r.TaskView.Task.Type = &tfTypes.TaskType{}
+					if resp.TaskView.Task.Type.Action == nil {
+						r.TaskView.Task.Type.Action = nil
 					} else {
-						r.TaskView.Task.TaskType.TaskTypeAction = &tfTypes.TaskTypeAction{}
-						r.TaskView.Task.TaskType.TaskTypeAction.ActionID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ActionID)
-						r.TaskView.Task.TaskType.TaskTypeAction.DisplayName = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.DisplayName)
-						if resp.TaskView.Task.TaskType.TaskTypeAction.FormValues == nil {
-							r.TaskView.Task.TaskType.TaskTypeAction.FormValues = nil
+						r.TaskView.Task.Type.Action = &tfTypes.TaskTypeAction{}
+						r.TaskView.Task.Type.Action.ActionID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ActionID)
+						if resp.TaskView.Task.Type.Action.ActionInstance == nil {
+							r.TaskView.Task.Type.Action.ActionInstance = nil
 						} else {
-							r.TaskView.Task.TaskType.TaskTypeAction.FormValues = &tfTypes.FormValues{}
-						}
-						if resp.TaskView.Task.TaskType.TaskTypeAction.Outcome != nil {
-							r.TaskView.Task.TaskType.TaskTypeAction.Outcome = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeAction.Outcome))
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeAction.Outcome = types.StringNull()
-						}
-						r.TaskView.Task.TaskType.TaskTypeAction.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeAction.OutcomeTime))
-						if resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole == nil {
-							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole = nil
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole = &tfTypes.ScopeRole{}
-							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.AppID)
-							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.GrantDuration = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.GrantDuration)
-							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.RoleResourceID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.RoleResourceID)
-							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.RoleResourceTypeID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.RoleResourceTypeID)
-							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.ScopeResourceID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.ScopeResourceID)
-							r.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.ScopeResourceTypeID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.ScopeRole.ScopeResourceTypeID)
-						}
-						if resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance == nil {
-							r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance = nil
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance = &tfTypes.TaskActionInstance{}
-							if resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef == nil {
-								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef = nil
+							r.TaskView.Task.Type.Action.ActionInstance = &tfTypes.TaskActionInstance{}
+							if resp.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef == nil {
+								r.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef = nil
 							} else {
-								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef = &tfTypes.ConnectorActionRef{}
-								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.AppID)
-								r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.ConnectorID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.ConnectorID)
-								if resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.Operation != nil {
-									r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.Operation = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.Operation))
+								r.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef = &tfTypes.BatonResourceActionRef{}
+								r.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef.AppID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef.AppID)
+								r.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef.BatonActionDisplayName = types.StringPointerValue(resp.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef.BatonActionDisplayName)
+								r.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef.BatonActionName = types.StringPointerValue(resp.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef.BatonActionName)
+								r.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef.ConnectorID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef.ConnectorID)
+								r.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef.ResourceTypeID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ActionInstance.BatonResourceActionRef.ResourceTypeID)
+							}
+							if resp.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef == nil {
+								r.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef = nil
+							} else {
+								r.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef = &tfTypes.ConnectorActionRef{}
+								r.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef.AppID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef.AppID)
+								r.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef.ConnectorID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef.ConnectorID)
+								if resp.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef.Operation != nil {
+									r.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef.Operation = types.StringValue(string(*resp.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef.Operation))
 								} else {
-									r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.ConnectorActionRef.Operation = types.StringNull()
+									r.TaskView.Task.Type.Action.ActionInstance.ConnectorActionRef.Operation = types.StringNull()
 								}
 							}
-							r.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.DisplayName = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeAction.TaskActionInstance.DisplayName)
+							r.TaskView.Task.Type.Action.ActionInstance.DisplayName = types.StringPointerValue(resp.TaskView.Task.Type.Action.ActionInstance.DisplayName)
 						}
-						if resp.TaskView.Task.TaskType.TaskTypeAction.Type != nil {
-							r.TaskView.Task.TaskType.TaskTypeAction.Type = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeAction.Type))
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeAction.Type = types.StringNull()
-						}
-					}
-					if resp.TaskView.Task.TaskType.TaskTypeCertify == nil {
-						r.TaskView.Task.TaskType.TaskTypeCertify = nil
-					} else {
-						r.TaskView.Task.TaskType.TaskTypeCertify = &tfTypes.TaskTypeCertify{}
-						r.TaskView.Task.TaskType.TaskTypeCertify.AccessReviewID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AccessReviewID)
-						r.TaskView.Task.TaskType.TaskTypeCertify.AccessReviewSelection = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AccessReviewSelection)
-						r.TaskView.Task.TaskType.TaskTypeCertify.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AppEntitlementID)
-						r.TaskView.Task.TaskType.TaskTypeCertify.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AppID)
-						r.TaskView.Task.TaskType.TaskTypeCertify.AppUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.AppUserID)
-						r.TaskView.Task.TaskType.TaskTypeCertify.IdentityUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeCertify.IdentityUserID)
-						if resp.TaskView.Task.TaskType.TaskTypeCertify.Outcome != nil {
-							r.TaskView.Task.TaskType.TaskTypeCertify.Outcome = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeCertify.Outcome))
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeCertify.Outcome = types.StringNull()
-						}
-						r.TaskView.Task.TaskType.TaskTypeCertify.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeCertify.OutcomeTime))
-					}
-					if resp.TaskView.Task.TaskType.TaskTypeFinding == nil {
-						r.TaskView.Task.TaskType.TaskTypeFinding = nil
-					} else {
-						r.TaskView.Task.TaskType.TaskTypeFinding = &tfTypes.TaskTypeFinding{}
-						r.TaskView.Task.TaskType.TaskTypeFinding.FindingID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeFinding.FindingID)
-						r.TaskView.Task.TaskType.TaskTypeFinding.FindingType = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeFinding.FindingType)
-						if resp.TaskView.Task.TaskType.TaskTypeFinding.Outcome != nil {
-							r.TaskView.Task.TaskType.TaskTypeFinding.Outcome = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeFinding.Outcome))
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeFinding.Outcome = types.StringNull()
-						}
-						r.TaskView.Task.TaskType.TaskTypeFinding.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeFinding.OutcomeTime))
-					}
-					if resp.TaskView.Task.TaskType.TaskTypeGrant == nil {
-						r.TaskView.Task.TaskType.TaskTypeGrant = nil
-					} else {
-						r.TaskView.Task.TaskType.TaskTypeGrant = &tfTypes.TaskTypeGrant{}
-						r.TaskView.Task.TaskType.TaskTypeGrant.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.AppEntitlementID)
-						r.TaskView.Task.TaskType.TaskTypeGrant.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.AppID)
-						r.TaskView.Task.TaskType.TaskTypeGrant.AppUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.AppUserID)
-						r.TaskView.Task.TaskType.TaskTypeGrant.GrantDuration = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.GrantDuration)
-						r.TaskView.Task.TaskType.TaskTypeGrant.IdentityUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.IdentityUserID)
-						if resp.TaskView.Task.TaskType.TaskTypeGrant.Outcome != nil {
-							r.TaskView.Task.TaskType.TaskTypeGrant.Outcome = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeGrant.Outcome))
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeGrant.Outcome = types.StringNull()
-						}
-						r.TaskView.Task.TaskType.TaskTypeGrant.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeGrant.OutcomeTime))
-						if resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource == nil {
-							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource = nil
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource = &tfTypes.TaskGrantSource{}
-							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.ConversationID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.ConversationID)
-							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.ExternalURL = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.ExternalURL)
-							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.IntegrationID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.IntegrationID)
-							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.IsExtension = types.BoolPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.IsExtension)
-							r.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.RequestID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeGrant.TaskGrantSource.RequestID)
-						}
-					}
-					if resp.TaskView.Task.TaskType.TaskTypeOffboarding == nil {
-						r.TaskView.Task.TaskType.TaskTypeOffboarding = nil
-					} else {
-						r.TaskView.Task.TaskType.TaskTypeOffboarding = &tfTypes.TaskTypeOffboarding{}
-						if resp.TaskView.Task.TaskType.TaskTypeOffboarding.Outcome != nil {
-							r.TaskView.Task.TaskType.TaskTypeOffboarding.Outcome = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeOffboarding.Outcome))
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeOffboarding.Outcome = types.StringNull()
-						}
-						r.TaskView.Task.TaskType.TaskTypeOffboarding.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeOffboarding.OutcomeTime))
-						r.TaskView.Task.TaskType.TaskTypeOffboarding.SubjectUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeOffboarding.SubjectUserID)
-					}
-					if resp.TaskView.Task.TaskType.TaskTypeRevoke == nil {
-						r.TaskView.Task.TaskType.TaskTypeRevoke = nil
-					} else {
-						r.TaskView.Task.TaskType.TaskTypeRevoke = &tfTypes.TaskTypeRevoke{}
-						r.TaskView.Task.TaskType.TaskTypeRevoke.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.AppEntitlementID)
-						r.TaskView.Task.TaskType.TaskTypeRevoke.AppID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.AppID)
-						r.TaskView.Task.TaskType.TaskTypeRevoke.AppUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.AppUserID)
-						r.TaskView.Task.TaskType.TaskTypeRevoke.IdentityUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.IdentityUserID)
-						if resp.TaskView.Task.TaskType.TaskTypeRevoke.Outcome != nil {
-							r.TaskView.Task.TaskType.TaskTypeRevoke.Outcome = types.StringValue(string(*resp.TaskView.Task.TaskType.TaskTypeRevoke.Outcome))
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeRevoke.Outcome = types.StringNull()
-						}
-						r.TaskView.Task.TaskType.TaskTypeRevoke.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeRevoke.OutcomeTime))
-						if resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource == nil {
-							r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource = nil
-						} else {
-							r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource = &tfTypes.TaskRevokeSource{}
-							if resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceExpired == nil {
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceExpired = nil
-							} else {
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceExpired = &tfTypes.TaskRevokeSourceExpired{}
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceExpired.ExpiredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceExpired.ExpiredAt))
+						if resp.TaskView.Task.Type.Action.CreatedAppEntitlementIds != nil {
+							r.TaskView.Task.Type.Action.CreatedAppEntitlementIds = make([]types.String, 0, len(resp.TaskView.Task.Type.Action.CreatedAppEntitlementIds))
+							for _, v := range resp.TaskView.Task.Type.Action.CreatedAppEntitlementIds {
+								r.TaskView.Task.Type.Action.CreatedAppEntitlementIds = append(r.TaskView.Task.Type.Action.CreatedAppEntitlementIds, types.StringValue(v))
 							}
-							if resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceNonUsage == nil {
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceNonUsage = nil
+						} else {
+							r.TaskView.Task.Type.Action.CreatedAppEntitlementIds = nil
+						}
+						r.TaskView.Task.Type.Action.CreatedAppResourceID = types.StringPointerValue(resp.TaskView.Task.Type.Action.CreatedAppResourceID)
+						r.TaskView.Task.Type.Action.CreatedAppResourceTypeID = types.StringPointerValue(resp.TaskView.Task.Type.Action.CreatedAppResourceTypeID)
+						r.TaskView.Task.Type.Action.DisplayName = types.StringPointerValue(resp.TaskView.Task.Type.Action.DisplayName)
+						if resp.TaskView.Task.Type.Action.Finding == nil {
+							r.TaskView.Task.Type.Action.Finding = nil
+						} else {
+							r.TaskView.Task.Type.Action.Finding = &tfTypes.FindingTarget{}
+							r.TaskView.Task.Type.Action.Finding.FindingID = types.StringPointerValue(resp.TaskView.Task.Type.Action.Finding.FindingID)
+							r.TaskView.Task.Type.Action.Finding.FindingType = types.StringPointerValue(resp.TaskView.Task.Type.Action.Finding.FindingType)
+						}
+						if resp.TaskView.Task.Type.Action.FormValues == nil {
+							r.TaskView.Task.Type.Action.FormValues = nil
+						} else {
+							r.TaskView.Task.Type.Action.FormValues = &tfTypes.FormValues{}
+						}
+						if resp.TaskView.Task.Type.Action.Outcome != nil {
+							r.TaskView.Task.Type.Action.Outcome = types.StringValue(string(*resp.TaskView.Task.Type.Action.Outcome))
+						} else {
+							r.TaskView.Task.Type.Action.Outcome = types.StringNull()
+						}
+						r.TaskView.Task.Type.Action.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Type.Action.OutcomeTime))
+						if resp.TaskView.Task.Type.Action.ScopeRole == nil {
+							r.TaskView.Task.Type.Action.ScopeRole = nil
+						} else {
+							r.TaskView.Task.Type.Action.ScopeRole = &tfTypes.ScopeRole{}
+							r.TaskView.Task.Type.Action.ScopeRole.AppID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ScopeRole.AppID)
+							r.TaskView.Task.Type.Action.ScopeRole.GrantDuration = types.StringPointerValue(resp.TaskView.Task.Type.Action.ScopeRole.GrantDuration)
+							r.TaskView.Task.Type.Action.ScopeRole.RoleResourceID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ScopeRole.RoleResourceID)
+							r.TaskView.Task.Type.Action.ScopeRole.RoleResourceTypeID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ScopeRole.RoleResourceTypeID)
+							r.TaskView.Task.Type.Action.ScopeRole.ScopeResourceID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ScopeRole.ScopeResourceID)
+							r.TaskView.Task.Type.Action.ScopeRole.ScopeResourceTypeID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ScopeRole.ScopeResourceTypeID)
+						}
+						if resp.TaskView.Task.Type.Action.ToolCall == nil {
+							r.TaskView.Task.Type.Action.ToolCall = nil
+						} else {
+							r.TaskView.Task.Type.Action.ToolCall = &tfTypes.GatedToolCallTarget{}
+							r.TaskView.Task.Type.Action.ToolCall.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ToolCall.AppEntitlementID)
+							r.TaskView.Task.Type.Action.ToolCall.AppID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ToolCall.AppID)
+							r.TaskView.Task.Type.Action.ToolCall.CallerKind = types.StringPointerValue(resp.TaskView.Task.Type.Action.ToolCall.CallerKind)
+							r.TaskView.Task.Type.Action.ToolCall.ConnectorID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ToolCall.ConnectorID)
+							r.TaskView.Task.Type.Action.ToolCall.GateID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ToolCall.GateID)
+							r.TaskView.Task.Type.Action.ToolCall.InputSizeBytes = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.TaskView.Task.Type.Action.ToolCall.InputSizeBytes))
+							r.TaskView.Task.Type.Action.ToolCall.ToolError = types.StringPointerValue(resp.TaskView.Task.Type.Action.ToolCall.ToolError)
+							r.TaskView.Task.Type.Action.ToolCall.ToolID = types.StringPointerValue(resp.TaskView.Task.Type.Action.ToolCall.ToolID)
+							if resp.TaskView.Task.Type.Action.ToolCall.ToolInput == nil {
+								r.TaskView.Task.Type.Action.ToolCall.ToolInput = nil
 							} else {
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceNonUsage = &tfTypes.TaskRevokeSourceNonUsage{}
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceNonUsage.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceNonUsage.ExpiresAt))
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceNonUsage.LastLogin = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceNonUsage.LastLogin))
+								r.TaskView.Task.Type.Action.ToolCall.ToolInput = &tfTypes.ToolInput{}
 							}
-							if resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceRequest == nil {
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceRequest = nil
-							} else {
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceRequest = &tfTypes.TaskRevokeSourceRequest{}
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceRequest.RequestUserID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceRequest.RequestUserID)
+							r.TaskView.Task.Type.Action.ToolCall.ToolKind = types.StringPointerValue(resp.TaskView.Task.Type.Action.ToolCall.ToolKind)
+							r.TaskView.Task.Type.Action.ToolCall.ToolName = types.StringPointerValue(resp.TaskView.Task.Type.Action.ToolCall.ToolName)
+							if resp.TaskView.Task.Type.Action.ToolCall.ToolOutput != nil {
+								r.TaskView.Task.Type.Action.ToolCall.ToolOutput = &tfTypes.ToolOutput{}
+								if resp.TaskView.Task.Type.Action.ToolCall.ToolOutput.Str != nil {
+									r.TaskView.Task.Type.Action.ToolCall.ToolOutput.Str = types.StringPointerValue(resp.TaskView.Task.Type.Action.ToolCall.ToolOutput.Str)
+								}
+								if resp.TaskView.Task.Type.Action.ToolCall.ToolOutput.Number != nil {
+									r.TaskView.Task.Type.Action.ToolCall.ToolOutput.Number = types.Float64PointerValue(resp.TaskView.Task.Type.Action.ToolCall.ToolOutput.Number)
+								}
+								if resp.TaskView.Task.Type.Action.ToolCall.ToolOutput.ArrayOfAny != nil {
+									r.TaskView.Task.Type.Action.ToolCall.ToolOutput.ArrayOfAny = make([]jsontypes.Normalized, 0, len(resp.TaskView.Task.Type.Action.ToolCall.ToolOutput.ArrayOfAny))
+									for _, arrayOfAnyItem := range resp.TaskView.Task.Type.Action.ToolCall.ToolOutput.ArrayOfAny {
+										var arrayOfAny jsontypes.Normalized
+
+										arrayOfAnyResult, _ := json.Marshal(arrayOfAnyItem)
+										arrayOfAny = jsontypes.NewNormalizedValue(string(arrayOfAnyResult))
+
+										r.TaskView.Task.Type.Action.ToolCall.ToolOutput.ArrayOfAny = append(r.TaskView.Task.Type.Action.ToolCall.ToolOutput.ArrayOfAny, arrayOfAny)
+									}
+								}
+								if resp.TaskView.Task.Type.Action.ToolCall.ToolOutput.Boolean != nil {
+									r.TaskView.Task.Type.Action.ToolCall.ToolOutput.Boolean = types.BoolPointerValue(resp.TaskView.Task.Type.Action.ToolCall.ToolOutput.Boolean)
+								}
+								if resp.TaskView.Task.Type.Action.ToolCall.ToolOutput.Three != nil {
+									r.TaskView.Task.Type.Action.ToolCall.ToolOutput.Three = &tfTypes.Three{}
+								}
 							}
-							if resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceReview == nil {
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceReview = nil
+						}
+						if resp.TaskView.Task.Type.Action.Type != nil {
+							r.TaskView.Task.Type.Action.Type = types.StringValue(string(*resp.TaskView.Task.Type.Action.Type))
+						} else {
+							r.TaskView.Task.Type.Action.Type = types.StringNull()
+						}
+					}
+					if resp.TaskView.Task.Type.Certify == nil {
+						r.TaskView.Task.Type.Certify = nil
+					} else {
+						r.TaskView.Task.Type.Certify = &tfTypes.TaskTypeCertify{}
+						r.TaskView.Task.Type.Certify.AccessReviewID = types.StringPointerValue(resp.TaskView.Task.Type.Certify.AccessReviewID)
+						r.TaskView.Task.Type.Certify.AccessReviewSelection = types.StringPointerValue(resp.TaskView.Task.Type.Certify.AccessReviewSelection)
+						r.TaskView.Task.Type.Certify.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.Type.Certify.AppEntitlementID)
+						r.TaskView.Task.Type.Certify.AppID = types.StringPointerValue(resp.TaskView.Task.Type.Certify.AppID)
+						r.TaskView.Task.Type.Certify.AppUserID = types.StringPointerValue(resp.TaskView.Task.Type.Certify.AppUserID)
+						r.TaskView.Task.Type.Certify.IdentityUserID = types.StringPointerValue(resp.TaskView.Task.Type.Certify.IdentityUserID)
+						if resp.TaskView.Task.Type.Certify.Outcome != nil {
+							r.TaskView.Task.Type.Certify.Outcome = types.StringValue(string(*resp.TaskView.Task.Type.Certify.Outcome))
+						} else {
+							r.TaskView.Task.Type.Certify.Outcome = types.StringNull()
+						}
+						r.TaskView.Task.Type.Certify.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Type.Certify.OutcomeTime))
+						if resp.TaskView.Task.Type.Certify.Resource == nil {
+							r.TaskView.Task.Type.Certify.Resource = nil
+						} else {
+							r.TaskView.Task.Type.Certify.Resource = &tfTypes.AppResourceRef{}
+							r.TaskView.Task.Type.Certify.Resource.AppID = types.StringPointerValue(resp.TaskView.Task.Type.Certify.Resource.AppID)
+							r.TaskView.Task.Type.Certify.Resource.AppResourceTypeID = types.StringPointerValue(resp.TaskView.Task.Type.Certify.Resource.AppResourceTypeID)
+							r.TaskView.Task.Type.Certify.Resource.ID = types.StringPointerValue(resp.TaskView.Task.Type.Certify.Resource.ID)
+						}
+					}
+					if resp.TaskView.Task.Type.Finding == nil {
+						r.TaskView.Task.Type.Finding = nil
+					} else {
+						r.TaskView.Task.Type.Finding = &tfTypes.TaskTypeFinding{}
+						r.TaskView.Task.Type.Finding.FindingID = types.StringPointerValue(resp.TaskView.Task.Type.Finding.FindingID)
+						r.TaskView.Task.Type.Finding.FindingType = types.StringPointerValue(resp.TaskView.Task.Type.Finding.FindingType)
+						if resp.TaskView.Task.Type.Finding.Outcome != nil {
+							r.TaskView.Task.Type.Finding.Outcome = types.StringValue(string(*resp.TaskView.Task.Type.Finding.Outcome))
+						} else {
+							r.TaskView.Task.Type.Finding.Outcome = types.StringNull()
+						}
+						r.TaskView.Task.Type.Finding.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Type.Finding.OutcomeTime))
+					}
+					if resp.TaskView.Task.Type.Grant == nil {
+						r.TaskView.Task.Type.Grant = nil
+					} else {
+						r.TaskView.Task.Type.Grant = &tfTypes.TaskTypeGrant{}
+						r.TaskView.Task.Type.Grant.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.Type.Grant.AppEntitlementID)
+						r.TaskView.Task.Type.Grant.AppID = types.StringPointerValue(resp.TaskView.Task.Type.Grant.AppID)
+						r.TaskView.Task.Type.Grant.AppUserID = types.StringPointerValue(resp.TaskView.Task.Type.Grant.AppUserID)
+						r.TaskView.Task.Type.Grant.GrantDuration = types.StringPointerValue(resp.TaskView.Task.Type.Grant.GrantDuration)
+						r.TaskView.Task.Type.Grant.IdentityUserID = types.StringPointerValue(resp.TaskView.Task.Type.Grant.IdentityUserID)
+						if resp.TaskView.Task.Type.Grant.Outcome != nil {
+							r.TaskView.Task.Type.Grant.Outcome = types.StringValue(string(*resp.TaskView.Task.Type.Grant.Outcome))
+						} else {
+							r.TaskView.Task.Type.Grant.Outcome = types.StringNull()
+						}
+						r.TaskView.Task.Type.Grant.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Type.Grant.OutcomeTime))
+						if resp.TaskView.Task.Type.Grant.Source == nil {
+							r.TaskView.Task.Type.Grant.Source = nil
+						} else {
+							r.TaskView.Task.Type.Grant.Source = &tfTypes.TaskGrantSource{}
+							r.TaskView.Task.Type.Grant.Source.ConversationID = types.StringPointerValue(resp.TaskView.Task.Type.Grant.Source.ConversationID)
+							r.TaskView.Task.Type.Grant.Source.ExternalURL = types.StringPointerValue(resp.TaskView.Task.Type.Grant.Source.ExternalURL)
+							r.TaskView.Task.Type.Grant.Source.IntegrationID = types.StringPointerValue(resp.TaskView.Task.Type.Grant.Source.IntegrationID)
+							r.TaskView.Task.Type.Grant.Source.IsExtension = types.BoolPointerValue(resp.TaskView.Task.Type.Grant.Source.IsExtension)
+							r.TaskView.Task.Type.Grant.Source.RequestID = types.StringPointerValue(resp.TaskView.Task.Type.Grant.Source.RequestID)
+						}
+					}
+					if resp.TaskView.Task.Type.Offboarding == nil {
+						r.TaskView.Task.Type.Offboarding = nil
+					} else {
+						r.TaskView.Task.Type.Offboarding = &tfTypes.TaskTypeOffboarding{}
+						if resp.TaskView.Task.Type.Offboarding.Outcome != nil {
+							r.TaskView.Task.Type.Offboarding.Outcome = types.StringValue(string(*resp.TaskView.Task.Type.Offboarding.Outcome))
+						} else {
+							r.TaskView.Task.Type.Offboarding.Outcome = types.StringNull()
+						}
+						r.TaskView.Task.Type.Offboarding.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Type.Offboarding.OutcomeTime))
+						r.TaskView.Task.Type.Offboarding.SubjectUserID = types.StringPointerValue(resp.TaskView.Task.Type.Offboarding.SubjectUserID)
+					}
+					if resp.TaskView.Task.Type.Revoke == nil {
+						r.TaskView.Task.Type.Revoke = nil
+					} else {
+						r.TaskView.Task.Type.Revoke = &tfTypes.TaskTypeRevoke{}
+						r.TaskView.Task.Type.Revoke.AppEntitlementID = types.StringPointerValue(resp.TaskView.Task.Type.Revoke.AppEntitlementID)
+						r.TaskView.Task.Type.Revoke.AppID = types.StringPointerValue(resp.TaskView.Task.Type.Revoke.AppID)
+						r.TaskView.Task.Type.Revoke.AppUserID = types.StringPointerValue(resp.TaskView.Task.Type.Revoke.AppUserID)
+						r.TaskView.Task.Type.Revoke.IdentityUserID = types.StringPointerValue(resp.TaskView.Task.Type.Revoke.IdentityUserID)
+						if resp.TaskView.Task.Type.Revoke.Outcome != nil {
+							r.TaskView.Task.Type.Revoke.Outcome = types.StringValue(string(*resp.TaskView.Task.Type.Revoke.Outcome))
+						} else {
+							r.TaskView.Task.Type.Revoke.Outcome = types.StringNull()
+						}
+						r.TaskView.Task.Type.Revoke.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Type.Revoke.OutcomeTime))
+						if resp.TaskView.Task.Type.Revoke.Resource == nil {
+							r.TaskView.Task.Type.Revoke.Resource = nil
+						} else {
+							r.TaskView.Task.Type.Revoke.Resource = &tfTypes.AppResourceRef{}
+							r.TaskView.Task.Type.Revoke.Resource.AppID = types.StringPointerValue(resp.TaskView.Task.Type.Revoke.Resource.AppID)
+							r.TaskView.Task.Type.Revoke.Resource.AppResourceTypeID = types.StringPointerValue(resp.TaskView.Task.Type.Revoke.Resource.AppResourceTypeID)
+							r.TaskView.Task.Type.Revoke.Resource.ID = types.StringPointerValue(resp.TaskView.Task.Type.Revoke.Resource.ID)
+						}
+						if resp.TaskView.Task.Type.Revoke.Source == nil {
+							r.TaskView.Task.Type.Revoke.Source = nil
+						} else {
+							r.TaskView.Task.Type.Revoke.Source = &tfTypes.TaskRevokeSource{}
+							if resp.TaskView.Task.Type.Revoke.Source.Expired == nil {
+								r.TaskView.Task.Type.Revoke.Source.Expired = nil
 							} else {
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceReview = &tfTypes.TaskRevokeSourceReview{}
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceReview.AccessReviewID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceReview.AccessReviewID)
-								r.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceReview.CertTicketID = types.StringPointerValue(resp.TaskView.Task.TaskType.TaskTypeRevoke.TaskRevokeSource.TaskRevokeSourceReview.CertTicketID)
+								r.TaskView.Task.Type.Revoke.Source.Expired = &tfTypes.TaskRevokeSourceExpired{}
+								r.TaskView.Task.Type.Revoke.Source.Expired.ExpiredAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Type.Revoke.Source.Expired.ExpiredAt))
+							}
+							if resp.TaskView.Task.Type.Revoke.Source.NonUsage == nil {
+								r.TaskView.Task.Type.Revoke.Source.NonUsage = nil
+							} else {
+								r.TaskView.Task.Type.Revoke.Source.NonUsage = &tfTypes.TaskRevokeSourceNonUsage{}
+								r.TaskView.Task.Type.Revoke.Source.NonUsage.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Type.Revoke.Source.NonUsage.ExpiresAt))
+								r.TaskView.Task.Type.Revoke.Source.NonUsage.LastLogin = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Type.Revoke.Source.NonUsage.LastLogin))
+							}
+							if resp.TaskView.Task.Type.Revoke.Source.Request == nil {
+								r.TaskView.Task.Type.Revoke.Source.Request = nil
+							} else {
+								r.TaskView.Task.Type.Revoke.Source.Request = &tfTypes.TaskRevokeSourceRequest{}
+								r.TaskView.Task.Type.Revoke.Source.Request.RequestUserID = types.StringPointerValue(resp.TaskView.Task.Type.Revoke.Source.Request.RequestUserID)
+							}
+							if resp.TaskView.Task.Type.Revoke.Source.Review == nil {
+								r.TaskView.Task.Type.Revoke.Source.Review = nil
+							} else {
+								r.TaskView.Task.Type.Revoke.Source.Review = &tfTypes.TaskRevokeSourceReview{}
+								r.TaskView.Task.Type.Revoke.Source.Review.AccessReviewID = types.StringPointerValue(resp.TaskView.Task.Type.Revoke.Source.Review.AccessReviewID)
+								r.TaskView.Task.Type.Revoke.Source.Review.CertTicketID = types.StringPointerValue(resp.TaskView.Task.Type.Revoke.Source.Review.CertTicketID)
 							}
 						}
 					}
@@ -4633,39 +4899,39 @@ func (r *TaskGrantResourceModel) ToSharedTaskServiceCreateGrantRequest(ctx conte
 	if r.RequestData != nil {
 		requestData = &shared.RequestData{}
 	}
-	var taskGrantSource *shared.TaskGrantSource
-	if r.TaskGrantSource != nil {
+	var source *shared.TaskGrantSource
+	if r.Source != nil {
 		conversationID := new(string)
-		if !r.TaskGrantSource.ConversationID.IsUnknown() && !r.TaskGrantSource.ConversationID.IsNull() {
-			*conversationID = r.TaskGrantSource.ConversationID.ValueString()
+		if !r.Source.ConversationID.IsUnknown() && !r.Source.ConversationID.IsNull() {
+			*conversationID = r.Source.ConversationID.ValueString()
 		} else {
 			conversationID = nil
 		}
 		externalURL := new(string)
-		if !r.TaskGrantSource.ExternalURL.IsUnknown() && !r.TaskGrantSource.ExternalURL.IsNull() {
-			*externalURL = r.TaskGrantSource.ExternalURL.ValueString()
+		if !r.Source.ExternalURL.IsUnknown() && !r.Source.ExternalURL.IsNull() {
+			*externalURL = r.Source.ExternalURL.ValueString()
 		} else {
 			externalURL = nil
 		}
 		integrationID := new(string)
-		if !r.TaskGrantSource.IntegrationID.IsUnknown() && !r.TaskGrantSource.IntegrationID.IsNull() {
-			*integrationID = r.TaskGrantSource.IntegrationID.ValueString()
+		if !r.Source.IntegrationID.IsUnknown() && !r.Source.IntegrationID.IsNull() {
+			*integrationID = r.Source.IntegrationID.ValueString()
 		} else {
 			integrationID = nil
 		}
 		isExtension := new(bool)
-		if !r.TaskGrantSource.IsExtension.IsUnknown() && !r.TaskGrantSource.IsExtension.IsNull() {
-			*isExtension = r.TaskGrantSource.IsExtension.ValueBool()
+		if !r.Source.IsExtension.IsUnknown() && !r.Source.IsExtension.IsNull() {
+			*isExtension = r.Source.IsExtension.ValueBool()
 		} else {
 			isExtension = nil
 		}
 		requestID := new(string)
-		if !r.TaskGrantSource.RequestID.IsUnknown() && !r.TaskGrantSource.RequestID.IsNull() {
-			*requestID = r.TaskGrantSource.RequestID.ValueString()
+		if !r.Source.RequestID.IsUnknown() && !r.Source.RequestID.IsNull() {
+			*requestID = r.Source.RequestID.ValueString()
 		} else {
 			requestID = nil
 		}
-		taskGrantSource = &shared.TaskGrantSource{
+		source = &shared.TaskGrantSource{
 			ConversationID: conversationID,
 			ExternalURL:    externalURL,
 			IntegrationID:  integrationID,
@@ -4682,7 +4948,7 @@ func (r *TaskGrantResourceModel) ToSharedTaskServiceCreateGrantRequest(ctx conte
 		GrantDuration:    grantDuration,
 		IdentityUserID:   identityUserID,
 		RequestData:      requestData,
-		TaskGrantSource:  taskGrantSource,
+		Source:           source,
 	}
 
 	return &out, diags

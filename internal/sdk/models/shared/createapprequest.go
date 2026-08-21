@@ -38,7 +38,7 @@ type CreateAppRequest struct {
 	//  Well-known keys: `managed_by`, `iac_workspace`,
 	//  `iac_resource_address`, `iac_tool_version`.
 	Annotations map[string]string `json:"annotations,omitempty"`
-	// Sets entitlement owners on the app.
+	// Initial entitlement owners for ordinary API creation. Requests with `match_baton_ref` must leave this empty; Terraform manages owners with `conductorone_app_owner_entitlement`.
 	AppEntitlementOwnerRefs []AppEntitlementRef `json:"appEntitlementOwnerRefs,omitempty"`
 	// Creates the app with this certify policy.
 	CertifyPolicyID *string `json:"certifyPolicyId,omitempty"`
@@ -51,10 +51,11 @@ type CreateAppRequest struct {
 	// Define the app user identity matching strategy for this app.
 	IdentityMatching *CreateAppRequestIdentityMatching `json:"identityMatching,omitempty"`
 	// Instructions shown to users in the access request form when requesting access for this app.
-	Instructions *string `json:"instructions,omitempty"`
+	Instructions  *string           `json:"instructions,omitempty"`
+	MatchBatonRef *AppMatchBatonRef `json:"matchBatonRef,omitempty"`
 	// Creates the app with this monthly cost per seat.
 	MonthlyCostUsd *int `json:"monthlyCostUsd,omitempty"`
-	// Creates the app with this array of user owners.
+	// Initial user owners for ordinary API creation. Requests with `match_baton_ref` must leave this empty; Terraform manages owners with `conductorone_app_owner_user`.
 	Owners []string `json:"owners,omitempty"`
 	// Creates the app with this revoke policy.
 	RevokePolicyID *string `json:"revokePolicyId,omitempty"`
@@ -116,6 +117,13 @@ func (c *CreateAppRequest) GetInstructions() *string {
 		return nil
 	}
 	return c.Instructions
+}
+
+func (c *CreateAppRequest) GetMatchBatonRef() *AppMatchBatonRef {
+	if c == nil {
+		return nil
+	}
+	return c.MatchBatonRef
 }
 
 func (c *CreateAppRequest) GetMonthlyCostUsd() *int {

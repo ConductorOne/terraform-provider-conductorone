@@ -4,9 +4,6 @@ package shared
 
 // The LocalDirectoryConfigServiceUpdateRequest message.
 type LocalDirectoryConfigServiceUpdateRequest struct {
-	// LocalDirectoryConfig is the public representation of a C1-managed local
-	//  directory configuration. The underlying directory infrastructure is provided
-	//  by the linked App (identified by app_id).
 	LocalDirectoryConfig *LocalDirectoryConfigInput `json:"localDirectoryConfig,omitempty"`
 	UpdateMask           *string                    `json:"updateMask,omitempty"`
 }

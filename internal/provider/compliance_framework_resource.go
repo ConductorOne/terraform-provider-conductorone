@@ -139,7 +139,7 @@ func (r *ComplianceFrameworkResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreateComplianceFrameworkAttributeValueResponse(ctx, res.CreateComplianceFrameworkAttributeValueResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.CreateComplianceFrameworkAttributeValueResponse.Value)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -203,7 +203,7 @@ func (r *ComplianceFrameworkResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedGetComplianceFrameworkAttributeValueResponse(ctx, res.GetComplianceFrameworkAttributeValueResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAttributeValue(ctx, res.GetComplianceFrameworkAttributeValueResponse.Value)...)
 
 	if resp.Diagnostics.HasError() {
 		return

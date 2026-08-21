@@ -9,8 +9,7 @@ package shared
 //   - path
 //   - call
 type DynamicBool struct {
-	// FunctionCall represents a client-side function invocation.
-	FunctionCall *FunctionCall `json:"call,omitempty"`
+	Call *FunctionCall `json:"call,omitempty"`
 	// The literal field.
 	// This field is part of the `value` oneof.
 	// See the documentation for `c1.api.a2ui.v1.DynamicBool` for more details.
@@ -21,11 +20,11 @@ type DynamicBool struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (d *DynamicBool) GetFunctionCall() *FunctionCall {
+func (d *DynamicBool) GetCall() *FunctionCall {
 	if d == nil {
 		return nil
 	}
-	return d.FunctionCall
+	return d.Call
 }
 
 func (d *DynamicBool) GetLiteral() *bool {

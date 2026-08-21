@@ -2,23 +2,23 @@
 
 package shared
 
-// StatusFilter - Optional filter by invitation status.
-type StatusFilter string
+// LocalUserInvitationServiceSearchRequestStatusFilter - Optional filter by invitation status.
+type LocalUserInvitationServiceSearchRequestStatusFilter string
 
 const (
-	StatusFilterLocalInvitationStatusUnspecified StatusFilter = "LOCAL_INVITATION_STATUS_UNSPECIFIED"
-	StatusFilterLocalInvitationStatusPending     StatusFilter = "LOCAL_INVITATION_STATUS_PENDING"
-	StatusFilterLocalInvitationStatusAccepted    StatusFilter = "LOCAL_INVITATION_STATUS_ACCEPTED"
-	StatusFilterLocalInvitationStatusRevoked     StatusFilter = "LOCAL_INVITATION_STATUS_REVOKED"
-	StatusFilterLocalInvitationStatusExpired     StatusFilter = "LOCAL_INVITATION_STATUS_EXPIRED"
+	LocalUserInvitationServiceSearchRequestStatusFilterLocalInvitationStatusUnspecified LocalUserInvitationServiceSearchRequestStatusFilter = "LOCAL_INVITATION_STATUS_UNSPECIFIED"
+	LocalUserInvitationServiceSearchRequestStatusFilterLocalInvitationStatusPending     LocalUserInvitationServiceSearchRequestStatusFilter = "LOCAL_INVITATION_STATUS_PENDING"
+	LocalUserInvitationServiceSearchRequestStatusFilterLocalInvitationStatusAccepted    LocalUserInvitationServiceSearchRequestStatusFilter = "LOCAL_INVITATION_STATUS_ACCEPTED"
+	LocalUserInvitationServiceSearchRequestStatusFilterLocalInvitationStatusRevoked     LocalUserInvitationServiceSearchRequestStatusFilter = "LOCAL_INVITATION_STATUS_REVOKED"
+	LocalUserInvitationServiceSearchRequestStatusFilterLocalInvitationStatusExpired     LocalUserInvitationServiceSearchRequestStatusFilter = "LOCAL_INVITATION_STATUS_EXPIRED"
 )
 
-func (e StatusFilter) ToPointer() *StatusFilter {
+func (e LocalUserInvitationServiceSearchRequestStatusFilter) ToPointer() *LocalUserInvitationServiceSearchRequestStatusFilter {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *StatusFilter) IsExact() bool {
+func (e *LocalUserInvitationServiceSearchRequestStatusFilter) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "LOCAL_INVITATION_STATUS_UNSPECIFIED", "LOCAL_INVITATION_STATUS_PENDING", "LOCAL_INVITATION_STATUS_ACCEPTED", "LOCAL_INVITATION_STATUS_REVOKED", "LOCAL_INVITATION_STATUS_EXPIRED":
@@ -37,7 +37,7 @@ type LocalUserInvitationServiceSearchRequest struct {
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
 	// Optional filter by invitation status.
-	StatusFilter *StatusFilter `json:"statusFilter,omitempty"`
+	StatusFilter *LocalUserInvitationServiceSearchRequestStatusFilter `json:"statusFilter,omitempty"`
 }
 
 func (l *LocalUserInvitationServiceSearchRequest) GetDirectoryAppID() *string {
@@ -61,7 +61,7 @@ func (l *LocalUserInvitationServiceSearchRequest) GetPageToken() *string {
 	return l.PageToken
 }
 
-func (l *LocalUserInvitationServiceSearchRequest) GetStatusFilter() *StatusFilter {
+func (l *LocalUserInvitationServiceSearchRequest) GetStatusFilter() *LocalUserInvitationServiceSearchRequestStatusFilter {
 	if l == nil {
 		return nil
 	}

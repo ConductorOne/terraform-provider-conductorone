@@ -4,7 +4,6 @@ package shared
 
 // The UpdateContactsRequest message.
 type UpdateContactsRequest struct {
-	// Contacts represents the contact configuration for an organization.
 	Contacts   *ContactsInput `json:"contacts,omitempty"`
 	UpdateMask *string        `json:"updateMask,omitempty"`
 }

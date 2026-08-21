@@ -15,4 +15,9 @@ data "conductorone_policy" "my_policy" {
       id = "...my_id..."
     }
   ]
+  scope_app_entitlement_id = "...my_scope_app_entitlement_id..."
+  scope_app_id             = "...my_scope_app_id..."
+  scope_object_type        = "POLICY_SCOPE_OBJECT_TYPE_APP"
+  scope_slot               = "POLICY_SCOPE_SLOT_EMERGENCY"
+  scope_view               = "POLICY_SCOPE_VIEW_SCOPED"
 }

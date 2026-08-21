@@ -10,6 +10,8 @@ type UserAttributeMappingSource struct {
 	AppUserID *string `json:"appUserId,omitempty"`
 	// The appUserProfileAttributeKey field.
 	AppUserProfileAttributeKey *string `json:"appUserProfileAttributeKey,omitempty"`
+	// Lower number = higher precedence; sources[0] is the winning source.
+	Priority *int64 `json:"priority,omitempty"`
 	// The userAttributeMappingId field.
 	UserAttributeMappingID *string `json:"userAttributeMappingId,omitempty"`
 	// The value field.
@@ -35,6 +37,13 @@ func (u *UserAttributeMappingSource) GetAppUserProfileAttributeKey() *string {
 		return nil
 	}
 	return u.AppUserProfileAttributeKey
+}
+
+func (u *UserAttributeMappingSource) GetPriority() *int64 {
+	if u == nil {
+		return nil
+	}
+	return u.Priority
 }
 
 func (u *UserAttributeMappingSource) GetUserAttributeMappingID() *string {

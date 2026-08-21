@@ -9,12 +9,6 @@ import (
 
 // ConnectorOwnerEntitlement represents an entitlement ownership source for a connector.
 type ConnectorOwnerEntitlement struct {
-	// The app entitlement represents one permission in a downstream App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.
-	//
-	// This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
-	//   - durationUnset
-	//   - durationGrant
-	//
 	AppEntitlement *AppEntitlement `json:"appEntitlement,omitempty"`
 	// The appId field.
 	AppID *string `json:"appId,omitempty"`

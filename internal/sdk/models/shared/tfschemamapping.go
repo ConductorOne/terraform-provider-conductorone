@@ -11,8 +11,6 @@ package shared
 //   - resource
 //   - dataSource
 type TFSchemaMapping struct {
-	// Data-source-specific schema metadata. Reserved for future use; empty
-	//  in v1.
 	DataSource *DataSource `json:"dataSource,omitempty"`
 	// Per-attribute mapping. Order matches the provider schema; preserve
 	//  it when emitting for stable output.
@@ -38,8 +36,7 @@ type TFSchemaMapping struct {
 	//  with no composite-key consumers (User, Policy, App today)
 	//  ship an empty list.
 	RefererShapes []CompositeKeyFieldSet `json:"refererShapes,omitempty"`
-	// Resource-specific schema metadata.
-	Resource *Resource `json:"resource,omitempty"`
+	Resource      *Resource              `json:"resource,omitempty"`
 	// The Terraform type identifier — the string immediately after the
 	//  `resource` or `data` keyword in HCL (e.g. "conductorone_app").
 	TfTypeName *string `json:"tfTypeName,omitempty"`

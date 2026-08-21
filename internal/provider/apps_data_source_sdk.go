@@ -40,6 +40,7 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 					list.AppUserMapper = nil
 				} else {
 					list.AppUserMapper = &tfTypes.AppUserMapper{}
+					list.AppUserMapper.AppID = types.StringPointerValue(listItem.AppUserMapper.AppID)
 					if listItem.AppUserMapper.MappingCases != nil {
 						if list.AppUserMapper.MappingCases == nil {
 							list.AppUserMapper.MappingCases = []tfTypes.AppUserMapperMatchCase{}
@@ -48,7 +49,9 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 						for _, mappingCasesItem := range listItem.AppUserMapper.MappingCases {
 							var mappingCases tfTypes.AppUserMapperMatchCase
 
+							mappingCases.AppID = types.StringPointerValue(mappingCasesItem.AppID)
 							mappingCases.AppUserKeyCel = types.StringPointerValue(mappingCasesItem.AppUserKeyCel)
+							mappingCases.CaseIndex = types.Int64PointerValue(mappingCasesItem.CaseIndex)
 							mappingCases.UserKeyCel = types.StringPointerValue(mappingCasesItem.UserKeyCel)
 
 							list.AppUserMapper.MappingCases = append(list.AppUserMapper.MappingCases, mappingCases)
@@ -75,8 +78,17 @@ func (r *AppsDataSourceModel) RefreshFromSharedSearchAppsResponse(ctx context.Co
 				list.Instructions = types.StringPointerValue(listItem.Instructions)
 				list.IsDirectory = types.BoolPointerValue(listItem.IsDirectory)
 				list.IsManuallyManaged = types.BoolPointerValue(listItem.IsManuallyManaged)
+				if listItem.MatchBatonRef == nil {
+					list.MatchBatonRef = nil
+				} else {
+					list.MatchBatonRef = &tfTypes.AppMatchBatonRef{}
+					list.MatchBatonRef.AppID = types.StringValue(listItem.MatchBatonRef.AppID)
+					list.MatchBatonRef.ConnectorID = types.StringValue(listItem.MatchBatonRef.ConnectorID)
+					list.MatchBatonRef.ExternalID = types.StringValue(listItem.MatchBatonRef.ExternalID)
+				}
 				list.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(listItem.MonthlyCostUsd))
 				list.ParentAppID = types.StringPointerValue(listItem.ParentAppID)
+				list.RevokeGrantSources = types.BoolPointerValue(listItem.RevokeGrantSources)
 				list.RevokePolicyID = types.StringPointerValue(listItem.RevokePolicyID)
 				list.StrictAccessEntitlementProvisioning = types.BoolPointerValue(listItem.StrictAccessEntitlementProvisioning)
 				list.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.UpdatedAt))

@@ -21,45 +21,32 @@ package shared
 type Field struct {
 	// Optional. Additional placeholder text for the field
 	//  In cases where a single placeholder is not enough to describe the field
-	AdditionalPlaceholder *string `json:"additionalPlaceholder,omitempty"`
-	// The CheckboxField message.
-	ConnectorCheckboxField *ConnectorCheckboxField `json:"checkbox,omitempty"`
+	AdditionalPlaceholder *string                 `json:"additionalPlaceholder,omitempty"`
+	Checkbox              *ConnectorCheckboxField `json:"checkbox,omitempty"`
 	// The dependsOnFields field.
 	DependsOnFields []string `json:"dependsOnFields,omitempty"`
 	// Human-readable label for this Field
 	DisplayName *string `json:"displayName,omitempty"`
 	// empty or https URL
-	HelpURL *string `json:"helpUrl,omitempty"`
-	// The ImportField message.
-	ImportField *ImportField `json:"import,omitempty"`
-	// The KeyValueField message.
-	KeyValueField *KeyValueField `json:"keyValue,omitempty"`
+	HelpURL  *string        `json:"helpUrl,omitempty"`
+	Import   *ImportField   `json:"import,omitempty"`
+	KeyValue *KeyValueField `json:"keyValue,omitempty"`
 	// Must not start with `C1_` and match [a-zA-Z0-9_]{2,64}.  Must be unique within a connector.
-	Name *string `json:"name,omitempty"`
-	// The OAuth2Field message.
-	OAuth2Field *OAuth2Field1 `json:"oauth2,omitempty"`
-	// The OptionsField message.
-	OptionsField *OptionsField `json:"options,omitempty"`
+	Name    *string       `json:"name,omitempty"`
+	Oauth2  *OAuth2Field1 `json:"oauth2,omitempty"`
+	Options *OptionsField `json:"options,omitempty"`
 	// The placeholder field.
 	Placeholder *string `json:"placeholder,omitempty"`
 	// The postCreate field.
-	PostCreate *bool `json:"postCreate,omitempty"`
-	// The RandomStringField message.
-	RandomStringField *RandomStringField `json:"random,omitempty"`
-	// The ReadOnlyField message.
-	ReadOnlyField *ReadOnlyField `json:"readOnly,omitempty"`
-	// The RotatableSecretField message.
-	RotatableSecretField *RotatableSecretField `json:"secret,omitempty"`
-	// The SelectField message.
-	ConnectorSelectField *ConnectorSelectField `json:"select,omitempty"`
-	// The StringField message.
-	StringField *StringField `json:"str,omitempty"`
-	// The StringListField message.
-	StringListField *StringListField `json:"strList,omitempty"`
-	// The StringMapField message.
-	StringMapField *StringMapField `json:"stringMap,omitempty"`
-	// The TextField message.
-	ConnectorTextField *ConnectorTextField `json:"text,omitempty"`
+	PostCreate *bool                 `json:"postCreate,omitempty"`
+	Random     *RandomStringField    `json:"random,omitempty"`
+	ReadOnly   *ReadOnlyField        `json:"readOnly,omitempty"`
+	Secret     *RotatableSecretField `json:"secret,omitempty"`
+	Select     *ConnectorSelectField `json:"select,omitempty"`
+	Str        *StringField          `json:"str,omitempty"`
+	StrList    *StringListField      `json:"strList,omitempty"`
+	StringMap  *StringMapField       `json:"stringMap,omitempty"`
+	Text       *ConnectorTextField   `json:"text,omitempty"`
 }
 
 func (f *Field) GetAdditionalPlaceholder() *string {
@@ -69,11 +56,11 @@ func (f *Field) GetAdditionalPlaceholder() *string {
 	return f.AdditionalPlaceholder
 }
 
-func (f *Field) GetConnectorCheckboxField() *ConnectorCheckboxField {
+func (f *Field) GetCheckbox() *ConnectorCheckboxField {
 	if f == nil {
 		return nil
 	}
-	return f.ConnectorCheckboxField
+	return f.Checkbox
 }
 
 func (f *Field) GetDependsOnFields() []string {
@@ -97,18 +84,18 @@ func (f *Field) GetHelpURL() *string {
 	return f.HelpURL
 }
 
-func (f *Field) GetImportField() *ImportField {
+func (f *Field) GetImport() *ImportField {
 	if f == nil {
 		return nil
 	}
-	return f.ImportField
+	return f.Import
 }
 
-func (f *Field) GetKeyValueField() *KeyValueField {
+func (f *Field) GetKeyValue() *KeyValueField {
 	if f == nil {
 		return nil
 	}
-	return f.KeyValueField
+	return f.KeyValue
 }
 
 func (f *Field) GetName() *string {
@@ -118,18 +105,18 @@ func (f *Field) GetName() *string {
 	return f.Name
 }
 
-func (f *Field) GetOAuth2Field() *OAuth2Field1 {
+func (f *Field) GetOauth2() *OAuth2Field1 {
 	if f == nil {
 		return nil
 	}
-	return f.OAuth2Field
+	return f.Oauth2
 }
 
-func (f *Field) GetOptionsField() *OptionsField {
+func (f *Field) GetOptions() *OptionsField {
 	if f == nil {
 		return nil
 	}
-	return f.OptionsField
+	return f.Options
 }
 
 func (f *Field) GetPlaceholder() *string {
@@ -146,58 +133,58 @@ func (f *Field) GetPostCreate() *bool {
 	return f.PostCreate
 }
 
-func (f *Field) GetRandomStringField() *RandomStringField {
+func (f *Field) GetRandom() *RandomStringField {
 	if f == nil {
 		return nil
 	}
-	return f.RandomStringField
+	return f.Random
 }
 
-func (f *Field) GetReadOnlyField() *ReadOnlyField {
+func (f *Field) GetReadOnly() *ReadOnlyField {
 	if f == nil {
 		return nil
 	}
-	return f.ReadOnlyField
+	return f.ReadOnly
 }
 
-func (f *Field) GetRotatableSecretField() *RotatableSecretField {
+func (f *Field) GetSecret() *RotatableSecretField {
 	if f == nil {
 		return nil
 	}
-	return f.RotatableSecretField
+	return f.Secret
 }
 
-func (f *Field) GetConnectorSelectField() *ConnectorSelectField {
+func (f *Field) GetSelect() *ConnectorSelectField {
 	if f == nil {
 		return nil
 	}
-	return f.ConnectorSelectField
+	return f.Select
 }
 
-func (f *Field) GetStringField() *StringField {
+func (f *Field) GetStr() *StringField {
 	if f == nil {
 		return nil
 	}
-	return f.StringField
+	return f.Str
 }
 
-func (f *Field) GetStringListField() *StringListField {
+func (f *Field) GetStrList() *StringListField {
 	if f == nil {
 		return nil
 	}
-	return f.StringListField
+	return f.StrList
 }
 
-func (f *Field) GetStringMapField() *StringMapField {
+func (f *Field) GetStringMap() *StringMapField {
 	if f == nil {
 		return nil
 	}
-	return f.StringMapField
+	return f.StringMap
 }
 
-func (f *Field) GetConnectorTextField() *ConnectorTextField {
+func (f *Field) GetText() *ConnectorTextField {
 	if f == nil {
 		return nil
 	}
-	return f.ConnectorTextField
+	return f.Text
 }

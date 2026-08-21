@@ -7,8 +7,10 @@ import (
 	"fmt"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/validators"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -29,14 +31,20 @@ type AppResourcesDataSource struct {
 
 // AppResourcesDataSourceModel describes the data model.
 type AppResourcesDataSourceModel struct {
+	AgentStatuses                  []types.String                               `tfsdk:"agent_statuses"`
 	AppID                          types.String                                 `tfsdk:"app_id"`
+	AppIds                         []types.String                               `tfsdk:"app_ids"`
 	AppUserIds                     []types.String                               `tfsdk:"app_user_ids"`
+	CredentialTypes                []types.String                               `tfsdk:"credential_types"`
+	Direction                      types.String                                 `tfsdk:"direction"`
+	ExcludeDeletedApps             types.Bool                                   `tfsdk:"exclude_deleted_apps"`
 	ExcludeDeletedResourceBindings types.Bool                                   `tfsdk:"exclude_deleted_resource_bindings"`
 	ExcludeResourceIds             []types.String                               `tfsdk:"exclude_resource_ids"`
 	ExcludeResourceTypeTraitIds    []types.String                               `tfsdk:"exclude_resource_type_trait_ids"`
 	Expanded                       []tfTypes.SearchAppResourcesResponseExpanded `tfsdk:"expanded"`
 	List                           []tfTypes.AppResourceView                    `tfsdk:"list"`
 	NextPageToken                  types.String                                 `tfsdk:"next_page_token"`
+	NhiTypes                       []types.String                               `tfsdk:"nhi_types"`
 	OwnerUserIds                   []types.String                               `tfsdk:"owner_user_ids"`
 	PageSize                       types.Int32                                  `tfsdk:"page_size"`
 	PageToken                      types.String                                 `tfsdk:"page_token"`
@@ -45,6 +53,10 @@ type AppResourcesDataSourceModel struct {
 	ResourceIds                    []types.String                               `tfsdk:"resource_ids"`
 	ResourceTypeIds                []types.String                               `tfsdk:"resource_type_ids"`
 	ResourceTypeTraitIds           []types.String                               `tfsdk:"resource_type_trait_ids"`
+	SecretAging                    *tfTypes.SecretAgingFilter                   `tfsdk:"secret_aging"`
+	SortField                      types.String                                 `tfsdk:"sort_field"`
+	UnownedOnly                    types.Bool                                   `tfsdk:"unowned_only"`
+	WithOpenFindings               types.Bool                                   `tfsdk:"with_open_findings"`
 }
 
 // Metadata returns the data source type name.
@@ -58,14 +70,47 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 		MarkdownDescription: "AppResources DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"agent_statuses": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Restrict the search to AI-agent resources with one of the given agent` + "\n" +
+					` lifecycle statuses (READY, DISABLED, DELETED). When empty, agent status is` + "\n" +
+					` not used as a filter.`,
+			},
 			"app_id": schema.StringAttribute{
 				Optional:    true,
 				Description: `The app ID to restrict the search to.`,
+			},
+			"app_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `A list of app IDs to restrict the search to. Mirrors the singular app_id;` + "\n" +
+					` both fold into the same filter, so callers may set either or both.`,
 			},
 			"app_user_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A list of app user IDs to restrict the search by.`,
+			},
+			"credential_types": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Restrict the search to resources whose credential material spine (K1) matches` + "\n" +
+					` one of the given CredentialType values. Applies to resources with a` + "\n" +
+					` secret_trait. When empty, credential_type is not used as a filter.`,
+			},
+			"direction": schema.StringAttribute{
+				Optional: true,
+				MarkdownDescription: `Direction to sort in. Unspecified falls back to ASC when sort_field is set.` + "\n" +
+					` No defined_only validation here: protoc-gen-validate mis-resolves the` + "\n" +
+					` cross-package enum name map to this file's c1.models.app.v1 import alias` + "\n" +
+					` instead of c1.api.search.v1, which fails to compile. The query builder` + "\n" +
+					` already treats any unrecognized value as ASC, so this is safe to omit.` + "\n" +
+					`possible known values include one of ["SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC"]`,
+			},
+			"exclude_deleted_apps": schema.BoolAttribute{
+				Optional:    true,
+				Description: `When true, excludes resources belonging to soft-deleted apps.`,
 			},
 			"exclude_deleted_resource_bindings": schema.BoolAttribute{
 				Optional:    true,
@@ -92,29 +137,6 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"actor_object_permissions": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"delete": schema.BoolAttribute{
-									Computed:    true,
-									Description: `The delete field.`,
-								},
-								"edit": schema.BoolAttribute{
-									Computed:    true,
-									Description: `The edit field.`,
-								},
-								"extra": schema.MapAttribute{
-									Computed:    true,
-									ElementType: types.BoolType,
-									Description: `The extra field.`,
-								},
-								"read": schema.BoolAttribute{
-									Computed:    true,
-									Description: `The read field.`,
-								},
-							},
-							Description: `The ActorObjectPermissions message.`,
-						},
 						"app_resource": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
@@ -122,6 +144,21 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 									Computed: true,
 									MarkdownDescription: `The access config ID for this resource. May be empty.` + "\n" +
 										` Must be one of the builtin access config IDs or empty.`,
+								},
+								"agent_trait": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"identity_app_user_id": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `The C1 app user ID of the service-account identity this agent authenticates as.` + "\n" +
+												` Empty if the backing identity has not yet been resolved.`,
+										},
+										"status": schema.StringAttribute{
+											Computed:    true,
+											Description: `The agent's lifecycle status (READY, DISABLED, DELETED).`,
+										},
+									},
+									Description: `AgentTrait carries metadata for AI-agent resources surfaced in the Inventory.`,
 								},
 								"annotations": schema.MapAttribute{
 									Computed:    true,
@@ -179,6 +216,17 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 									Computed:    true,
 									Description: `The matchBatonId field.`,
 								},
+								"nhi_detail": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `Axis-2 detail refining nhi_type (e.g. "aws.role.lambda"). Read-only;` + "\n" +
+										` translated from the model.`,
+								},
+								"nhi_type": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `The NHI classification (K3 spine) for this resource. Populated for` + "\n" +
+										` non-human-identity resources; UNSPECIFIED for everything else. Mirrors` + "\n" +
+										` agent_trait: read-only and translated from the model enum at the API boundary.`,
+								},
 								"parent_app_resource_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The parent resource id, if this resource is a child of another resource.`,
@@ -193,6 +241,18 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 								"secret_trait": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
+										"created_by_app_user_id": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `The AppUser id that created this credential. Read-only; resolved from` + "\n" +
+												` the model during uplift. Distinct from identity_app_user_id (the` + "\n" +
+												` holder) and from the resource's Owner (a separate assignment, not` + "\n" +
+												` part of this message).`,
+										},
+										"credential_detail": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `Platform-specific credential subtype detail, finer than credential_type` + "\n" +
+												` (e.g. "GCP service-account key"). Read-only; translated from the model.`,
+										},
 										"identity_app_user_id": schema.StringAttribute{
 											Computed:    true,
 											Description: `The identityAppUserId field.`,
@@ -218,6 +278,32 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 								`This message contains a oneof named metadata. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - secretTrait`,
 						},
+						"object_permissions": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"delete": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The delete field.`,
+								},
+								"edit": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The edit field.`,
+								},
+								"extra": schema.MapAttribute{
+									Computed:    true,
+									ElementType: types.BoolType,
+									Description: `The extra field.`,
+								},
+								"read": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The read field.`,
+								},
+							},
+							MarkdownDescription: `Legacy: do not use for new objects. Retained only for the existing` + "\n" +
+								` AppResource / AppEntitlement / access-review consumers, which will migrate to` + "\n" +
+								` c1.api.authorization.v1.ActorObjectPermissions in IGA-2331. New object views` + "\n" +
+								` should reference c1.api.authorization.v1.ActorObjectPermissions instead.`,
+						},
 					},
 				},
 				Description: `The list of app resource results.`,
@@ -226,10 +312,19 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 				Computed:    true,
 				Description: `The token for fetching the next page of results.`,
 			},
+			"nhi_types": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Restrict the search to resources whose NHI classification spine (K3) is one` + "\n" +
+					` of the given NhiType values. When empty, nhi_type is not used as a filter.`,
+			},
 			"owner_user_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `A list of C1 user IDs to filter resources by ownership.`,
+				MarkdownDescription: `A list of C1 user IDs to filter resources by ownership. The sentinel` + "\n" +
+					` value "none" matches resources with no owner. Mutually exclusive with` + "\n" +
+					` unowned_only — combine "none" with real owner IDs instead of setting` + "\n" +
+					` unowned_only alongside them.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,
@@ -277,6 +372,66 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `A list of resource type trait IDs to restrict the search by.`,
+			},
+			"secret_aging": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"last_used_after": schema.StringAttribute{
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"last_used_before": schema.StringAttribute{
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"secret_created_after": schema.StringAttribute{
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"secret_created_before": schema.StringAttribute{
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"secret_expires_after": schema.StringAttribute{
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"secret_expires_before": schema.StringAttribute{
+						Optional: true,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+				},
+				MarkdownDescription: `SecretAgingFilter restricts a resource search to secrets (credential_type != 0)` + "\n" +
+					` whose secret-trait timestamps fall in the given half-open ranges. Each bound is` + "\n" +
+					` optional; leave one unset for an open-ended range. All set bounds are ANDed.` + "\n" +
+					` Callers pass absolute timestamps (computed against their reference "now").`,
+			},
+			"sort_field": schema.StringAttribute{
+				Optional:    true,
+				Description: `Column to sort by. Unspecified (0) keeps the server's default order (app, then display name). possible known values include one of ["APP_RESOURCE_SORT_FIELD_UNSPECIFIED", "APP_RESOURCE_SORT_FIELD_SECRET_CREATED_AT", "APP_RESOURCE_SORT_FIELD_SECRET_EXPIRES_AT", "APP_RESOURCE_SORT_FIELD_LAST_USED_AT"]`,
+			},
+			"unowned_only": schema.BoolAttribute{
+				Optional: true,
+				MarkdownDescription: `When true, restrict results to resources with no ownership-v2 primary-role` + "\n" +
+					` owner. Mutually exclusive with owner_user_ids — use owner_user_ids:` + "\n" +
+					` ["none"] instead if you also need to combine it with real owner IDs.`,
+			},
+			"with_open_findings": schema.BoolAttribute{
+				Optional: true,
+				MarkdownDescription: `When true, restrict results to resources that have at least one open finding` + "\n" +
+					` (index-backed EXISTS semi-join). When false/unset, results are unfiltered.`,
 			},
 		},
 	}

@@ -7,8 +7,8 @@ import (
 )
 
 type Int64Field struct {
-	Int64Rules   *Int64Rules  `tfsdk:"int64_rules"`
-	NumberField  *NumberField `tfsdk:"number_field"`
 	DefaultValue types.String `tfsdk:"default_value"`
+	NumberField  *NumberField `tfsdk:"number_field"`
 	Placeholder  types.String `tfsdk:"placeholder"`
+	Rules        *Int64Rules  `tfsdk:"rules"`
 }

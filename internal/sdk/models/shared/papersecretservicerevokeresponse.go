@@ -4,14 +4,12 @@ package shared
 
 // The PaperSecretServiceRevokeResponse message.
 type PaperSecretServiceRevokeResponse struct {
-	// PaperSecret is the API view of a secret (combines Vault + PaperVault fields).
-	//  The vault_id is the primary identifier (Vault.id).
-	PaperSecret *PaperSecret `json:"secret,omitempty"`
+	Secret *PaperSecret `json:"secret,omitempty"`
 }
 
-func (p *PaperSecretServiceRevokeResponse) GetPaperSecret() *PaperSecret {
+func (p *PaperSecretServiceRevokeResponse) GetSecret() *PaperSecret {
 	if p == nil {
 		return nil
 	}
-	return p.PaperSecret
+	return p.Secret
 }

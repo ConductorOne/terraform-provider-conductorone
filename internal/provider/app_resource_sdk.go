@@ -33,13 +33,16 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 			r.AppUserMapper = nil
 		} else {
 			r.AppUserMapper = &tfTypes.AppUserMapper{}
+			r.AppUserMapper.AppID = types.StringPointerValue(resp.AppUserMapper.AppID)
 			if resp.AppUserMapper.MappingCases != nil {
 				r.AppUserMapper.MappingCases = []tfTypes.AppUserMapperMatchCase{}
 
 				for _, mappingCasesItem := range resp.AppUserMapper.MappingCases {
 					var mappingCases tfTypes.AppUserMapperMatchCase
 
+					mappingCases.AppID = types.StringPointerValue(mappingCasesItem.AppID)
 					mappingCases.AppUserKeyCel = types.StringPointerValue(mappingCasesItem.AppUserKeyCel)
+					mappingCases.CaseIndex = types.Int64PointerValue(mappingCasesItem.CaseIndex)
 					mappingCases.UserKeyCel = types.StringPointerValue(mappingCasesItem.UserKeyCel)
 
 					r.AppUserMapper.MappingCases = append(r.AppUserMapper.MappingCases, mappingCases)
@@ -66,8 +69,17 @@ func (r *AppResourceModel) RefreshFromSharedApp(ctx context.Context, resp *share
 		r.Instructions = types.StringPointerValue(resp.Instructions)
 		r.IsDirectory = types.BoolPointerValue(resp.IsDirectory)
 		r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
+		if resp.MatchBatonRef == nil {
+			r.MatchBatonRef = nil
+		} else {
+			r.MatchBatonRef = &tfTypes.AppMatchBatonRef{}
+			r.MatchBatonRef.AppID = types.StringValue(resp.MatchBatonRef.AppID)
+			r.MatchBatonRef.ConnectorID = types.StringValue(resp.MatchBatonRef.ConnectorID)
+			r.MatchBatonRef.ExternalID = types.StringValue(resp.MatchBatonRef.ExternalID)
+		}
 		r.MonthlyCostUsd = types.Int32PointerValue(typeconvert.IntPointerToInt32Pointer(resp.MonthlyCostUsd))
 		r.ParentAppID = types.StringPointerValue(resp.ParentAppID)
+		r.RevokeGrantSources = types.BoolPointerValue(resp.RevokeGrantSources)
 		r.RevokePolicyID = types.StringPointerValue(resp.RevokePolicyID)
 		r.StrictAccessEntitlementProvisioning = types.BoolPointerValue(resp.StrictAccessEntitlementProvisioning)
 		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
@@ -185,11 +197,11 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 
 		annotations[annotationsKey] = annotationsInst
 	}
-	var appUserMapper *shared.AppUserMapper
+	var appUserMapper *shared.AppUserMapperInput
 	if r.AppUserMapper != nil {
-		var mappingCases []shared.AppUserMapperMatchCase
+		var mappingCases []shared.AppUserMapperMatchCaseInput
 		if r.AppUserMapper.MappingCases != nil {
-			mappingCases = make([]shared.AppUserMapperMatchCase, 0, len(r.AppUserMapper.MappingCases))
+			mappingCases = make([]shared.AppUserMapperMatchCaseInput, 0, len(r.AppUserMapper.MappingCases))
 			for mappingCasesIndex := range r.AppUserMapper.MappingCases {
 				appUserKeyCel := new(string)
 				if !r.AppUserMapper.MappingCases[mappingCasesIndex].AppUserKeyCel.IsUnknown() && !r.AppUserMapper.MappingCases[mappingCasesIndex].AppUserKeyCel.IsNull() {
@@ -203,13 +215,13 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 				} else {
 					userKeyCel = nil
 				}
-				mappingCases = append(mappingCases, shared.AppUserMapperMatchCase{
+				mappingCases = append(mappingCases, shared.AppUserMapperMatchCaseInput{
 					AppUserKeyCel: appUserKeyCel,
 					UserKeyCel:    userKeyCel,
 				})
 			}
 		}
-		appUserMapper = &shared.AppUserMapper{
+		appUserMapper = &shared.AppUserMapperInput{
 			MappingCases: mappingCases,
 		}
 	}
@@ -273,11 +285,34 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 	} else {
 		isManuallyManaged = nil
 	}
+	var matchBatonRef *shared.AppMatchBatonRef
+	if r.MatchBatonRef != nil {
+		var appID string
+		appID = r.MatchBatonRef.AppID.ValueString()
+
+		var connectorID string
+		connectorID = r.MatchBatonRef.ConnectorID.ValueString()
+
+		var externalID string
+		externalID = r.MatchBatonRef.ExternalID.ValueString()
+
+		matchBatonRef = &shared.AppMatchBatonRef{
+			AppID:       appID,
+			ConnectorID: connectorID,
+			ExternalID:  externalID,
+		}
+	}
 	monthlyCostUsd := new(int)
 	if !r.MonthlyCostUsd.IsUnknown() && !r.MonthlyCostUsd.IsNull() {
 		*monthlyCostUsd = int(r.MonthlyCostUsd.ValueInt32())
 	} else {
 		monthlyCostUsd = nil
+	}
+	revokeGrantSources := new(bool)
+	if !r.RevokeGrantSources.IsUnknown() && !r.RevokeGrantSources.IsNull() {
+		*revokeGrantSources = r.RevokeGrantSources.ValueBool()
+	} else {
+		revokeGrantSources = nil
 	}
 	revokePolicyID := new(string)
 	if !r.RevokePolicyID.IsUnknown() && !r.RevokePolicyID.IsNull() {
@@ -305,7 +340,9 @@ func (r *AppResourceModel) ToSharedAppInput(ctx context.Context) (*shared.AppInp
 		IdentityMatching:                    identityMatching,
 		Instructions:                        instructions,
 		IsManuallyManaged:                   isManuallyManaged,
+		MatchBatonRef:                       matchBatonRef,
 		MonthlyCostUsd:                      monthlyCostUsd,
+		RevokeGrantSources:                  revokeGrantSources,
 		RevokePolicyID:                      revokePolicyID,
 		StrictAccessEntitlementProvisioning: strictAccessEntitlementProvisioning,
 	}
@@ -378,6 +415,23 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 	} else {
 		instructions = nil
 	}
+	var matchBatonRef *shared.AppMatchBatonRef
+	if r.MatchBatonRef != nil {
+		var appId1 string
+		appId1 = r.MatchBatonRef.AppID.ValueString()
+
+		var connectorID string
+		connectorID = r.MatchBatonRef.ConnectorID.ValueString()
+
+		var externalID string
+		externalID = r.MatchBatonRef.ExternalID.ValueString()
+
+		matchBatonRef = &shared.AppMatchBatonRef{
+			AppID:       appId1,
+			ConnectorID: connectorID,
+			ExternalID:  externalID,
+		}
+	}
 	monthlyCostUsd := new(int)
 	if !r.MonthlyCostUsd.IsUnknown() && !r.MonthlyCostUsd.IsNull() {
 		*monthlyCostUsd = int(r.MonthlyCostUsd.ValueInt32())
@@ -405,6 +459,7 @@ func (r *AppResourceModel) ToSharedCreateAppRequest(ctx context.Context) (*share
 		GrantPolicyID:                       grantPolicyID,
 		IdentityMatching:                    identityMatching,
 		Instructions:                        instructions,
+		MatchBatonRef:                       matchBatonRef,
 		MonthlyCostUsd:                      monthlyCostUsd,
 		RevokePolicyID:                      revokePolicyID,
 		StrictAccessEntitlementProvisioning: strictAccessEntitlementProvisioning,

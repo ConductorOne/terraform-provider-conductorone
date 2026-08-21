@@ -7,12 +7,13 @@ import (
 )
 
 type ProvisionPolicy struct {
-	ActionProvision         *ActionProvision         `tfsdk:"action_provision"`
-	ConnectorProvision      *ConnectorProvision      `tfsdk:"connector_provision"`
-	DelegatedProvision      *DelegatedProvision      `tfsdk:"delegated_provision"`
-	ExternalTicketProvision *ExternalTicketProvision `tfsdk:"external_ticket_provision"`
-	ManualProvision         *ManualProvision         `tfsdk:"manual_provision"`
-	MultiStep               jsontypes.Normalized     `tfsdk:"multi_step"`
-	UnconfiguredProvision   *UnconfiguredProvision   `tfsdk:"unconfigured_provision"`
-	WebhookProvision        *WebhookProvision        `tfsdk:"webhook_provision"`
+	Action          *ActionProvision          `tfsdk:"action"`
+	Connector       *ConnectorProvision       `tfsdk:"connector"`
+	Delegated       *DelegatedProvision       `tfsdk:"delegated"`
+	DevicePlacement *DevicePlacementProvision `tfsdk:"device_placement"`
+	ExternalTicket  *ExternalTicketProvision  `tfsdk:"external_ticket"`
+	Manual          *ManualProvision          `tfsdk:"manual"`
+	MultiStep       jsontypes.Normalized      `tfsdk:"multi_step"`
+	Unconfigured    *UnconfiguredProvision    `tfsdk:"unconfigured"`
+	Webhook         *WebhookProvision         `tfsdk:"webhook"`
 }

@@ -98,13 +98,25 @@ func (r *AppsDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						"app_user_mapper": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The app this mapper belongs to.`,
+								},
 								"mapping_cases": schema.ListNestedAttribute{
 									Computed: true,
 									NestedObject: schema.NestedAttributeObject{
 										Attributes: map[string]schema.Attribute{
+											"app_id": schema.StringAttribute{
+												Computed:    true,
+												Description: `The app this match case belongs to.`,
+											},
 											"app_user_key_cel": schema.StringAttribute{
 												Computed:    true,
 												Description: `CEL expression evaluated against an AppUser to produce match key(s).`,
+											},
+											"case_index": schema.Int64Attribute{
+												Computed:    true,
+												Description: `The ordered index of this match case within the mapper.`,
 											},
 											"user_key_cel": schema.StringAttribute{
 												Computed:    true,
@@ -171,6 +183,25 @@ func (r *AppsDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							Computed:    true,
 							Description: `The isManuallyManaged field.`,
 						},
+						"match_baton_ref": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `Application that owns the connector.`,
+								},
+								"connector_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `Connector that discovers the application.`,
+								},
+								"external_id": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `Canonical connector-v2 application resource ID in` + "\n" +
+										` ` + "`" + `<resource_type>::<resource_id>` + "`" + ` form (for example, ` + "`" + `app::0oa123` + "`" + `).`,
+								},
+							},
+							Description: `AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift.`,
+						},
 						"monthly_cost_usd": schema.Int32Attribute{
 							Computed:    true,
 							Description: `The cost of an app per-seat, so that total cost can be calculated by the grant count.`,
@@ -178,6 +209,10 @@ func (r *AppsDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						"parent_app_id": schema.StringAttribute{
 							Computed:    true,
 							Description: `The ID of the app that created this app, if any.`,
+						},
+						"revoke_grant_sources": schema.BoolAttribute{
+							Computed:    true,
+							Description: `When enabled, revoking a grant also revokes the grants that source it.`,
 						},
 						"revoke_policy_id": schema.StringAttribute{
 							Computed:    true,

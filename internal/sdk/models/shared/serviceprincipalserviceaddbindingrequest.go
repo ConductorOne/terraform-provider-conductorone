@@ -5,15 +5,8 @@ package shared
 // The ServicePrincipalServiceAddBindingRequest message.
 type ServicePrincipalServiceAddBindingRequest struct {
 	// The servicePrincipalId field.
-	ServicePrincipalID *string `json:"servicePrincipalId,omitempty"`
-	// ServicePrincipalBindingSubject identifies the entity that is bound to a
-	//  service principal. Open-ended oneof so future subject kinds (workflows,
-	//  connectors, etc.) can be added without changing the RPC shape.
-	//
-	// This message contains a oneof named kind. Only a single field of the following list may be set at a time:
-	//   - functionId
-	//
-	ServicePrincipalBindingSubject *ServicePrincipalBindingSubject `json:"subject,omitempty"`
+	ServicePrincipalID *string                         `json:"servicePrincipalId,omitempty"`
+	Subject            *ServicePrincipalBindingSubject `json:"subject,omitempty"`
 }
 
 func (s *ServicePrincipalServiceAddBindingRequest) GetServicePrincipalID() *string {
@@ -23,9 +16,9 @@ func (s *ServicePrincipalServiceAddBindingRequest) GetServicePrincipalID() *stri
 	return s.ServicePrincipalID
 }
 
-func (s *ServicePrincipalServiceAddBindingRequest) GetServicePrincipalBindingSubject() *ServicePrincipalBindingSubject {
+func (s *ServicePrincipalServiceAddBindingRequest) GetSubject() *ServicePrincipalBindingSubject {
 	if s == nil {
 		return nil
 	}
-	return s.ServicePrincipalBindingSubject
+	return s.Subject
 }

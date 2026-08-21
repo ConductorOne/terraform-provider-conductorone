@@ -82,11 +82,13 @@ data "conductorone_app" "my_app" {
 - `instructions` (String) If you add instructions here, they will be shown to users in the access request form when requesting access for this app.
 - `is_directory` (Boolean) Specifies if the app is a directory.
 - `is_manually_managed` (Boolean) The isManuallyManaged field.
+- `match_baton_ref` (Attributes) AppMatchBatonRef identifies the connector application that should adopt a manually-created application during uplift. (see [below for nested schema](#nestedatt--match_baton_ref))
 - `monthly_cost_usd` (Number) The cost of an app per-seat, so that total cost can be calculated by the grant count.
 - `next_page_token` (String) The nextPageToken is shown for the next page if the number of results is larger than the max page size.
  The server returns one page of results and the nextPageToken until all results are retreived.
  To retrieve the next page, use the same request and append a pageToken field with the value of nextPageToken shown on the previous page.
 - `parent_app_id` (String) The ID of the app that created this app, if any.
+- `revoke_grant_sources` (Boolean) When enabled, revoking a grant also revokes the grants that source it.
 - `revoke_policy_id` (String) The ID of the Revoke Policy associated with this App.
 - `strict_access_entitlement_provisioning` (Boolean) The strictAccessEntitlementProvisioning field.
 - `updated_at` (String)
@@ -105,6 +107,7 @@ Optional:
 
 Read-Only:
 
+- `app_id` (String) The app this mapper belongs to.
 - `mapping_cases` (Attributes List) Ordered list of match cases. Each case defines a pair of CEL key extractors. (see [below for nested schema](#nestedatt--app_user_mapper--mapping_cases))
 
 <a id="nestedatt--app_user_mapper--mapping_cases"></a>
@@ -112,5 +115,19 @@ Read-Only:
 
 Read-Only:
 
+- `app_id` (String) The app this match case belongs to.
 - `app_user_key_cel` (String) CEL expression evaluated against an AppUser to produce match key(s).
+- `case_index` (Number) The ordered index of this match case within the mapper.
 - `user_key_cel` (String) CEL expression evaluated against a User to produce match key(s).
+
+
+
+<a id="nestedatt--match_baton_ref"></a>
+### Nested Schema for `match_baton_ref`
+
+Read-Only:
+
+- `app_id` (String) Application that owns the connector.
+- `connector_id` (String) Connector that discovers the application.
+- `external_id` (String) Canonical connector-v2 application resource ID in
+ `<resource_type>::<resource_id>` form (for example, `app::0oa123`).

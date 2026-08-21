@@ -13,19 +13,15 @@ type TaskAuditConnectorActionResult struct {
 	// The appEntitlementId field.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
 	// The appId field.
-	AppID *string `json:"appId,omitempty"`
-	// The TaskAuditCancelledResult message.
-	TaskAuditCancelledResult *TaskAuditCancelledResult `json:"cancelled,omitempty"`
+	AppID     *string                   `json:"appId,omitempty"`
+	Cancelled *TaskAuditCancelledResult `json:"cancelled,omitempty"`
 	// The connectorActionId field.
 	ConnectorActionID *string `json:"connectorActionId,omitempty"`
 	// The connectorId field.
-	ConnectorID *string `json:"connectorId,omitempty"`
-	// The TaskAuditErrorResult message.
-	TaskAuditErrorResult *TaskAuditErrorResult `json:"error,omitempty"`
-	// The TaskAuditPendingResult message.
-	TaskAuditPendingResult *TaskAuditPendingResult `json:"pending,omitempty"`
-	// The TaskAuditSuccessResult message.
-	TaskAuditSuccessResult *TaskAuditSuccessResult `json:"success,omitempty"`
+	ConnectorID *string                 `json:"connectorId,omitempty"`
+	Error       *TaskAuditErrorResult   `json:"error,omitempty"`
+	Pending     *TaskAuditPendingResult `json:"pending,omitempty"`
+	Success     *TaskAuditSuccessResult `json:"success,omitempty"`
 }
 
 func (t *TaskAuditConnectorActionResult) GetAppEntitlementID() *string {
@@ -42,11 +38,11 @@ func (t *TaskAuditConnectorActionResult) GetAppID() *string {
 	return t.AppID
 }
 
-func (t *TaskAuditConnectorActionResult) GetTaskAuditCancelledResult() *TaskAuditCancelledResult {
+func (t *TaskAuditConnectorActionResult) GetCancelled() *TaskAuditCancelledResult {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditCancelledResult
+	return t.Cancelled
 }
 
 func (t *TaskAuditConnectorActionResult) GetConnectorActionID() *string {
@@ -63,23 +59,23 @@ func (t *TaskAuditConnectorActionResult) GetConnectorID() *string {
 	return t.ConnectorID
 }
 
-func (t *TaskAuditConnectorActionResult) GetTaskAuditErrorResult() *TaskAuditErrorResult {
+func (t *TaskAuditConnectorActionResult) GetError() *TaskAuditErrorResult {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditErrorResult
+	return t.Error
 }
 
-func (t *TaskAuditConnectorActionResult) GetTaskAuditPendingResult() *TaskAuditPendingResult {
+func (t *TaskAuditConnectorActionResult) GetPending() *TaskAuditPendingResult {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditPendingResult
+	return t.Pending
 }
 
-func (t *TaskAuditConnectorActionResult) GetTaskAuditSuccessResult() *TaskAuditSuccessResult {
+func (t *TaskAuditConnectorActionResult) GetSuccess() *TaskAuditSuccessResult {
 	if t == nil {
 		return nil
 	}
-	return t.TaskAuditSuccessResult
+	return t.Success
 }

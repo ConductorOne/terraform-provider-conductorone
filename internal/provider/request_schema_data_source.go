@@ -131,7 +131,7 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"admin_provider_config": schema.SingleNestedAttribute{
+						"admin_config": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
 								"default_value_cel": schema.StringAttribute{
@@ -148,7 +148,15 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 						"bool_field": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
-								"bool_rules": schema.SingleNestedAttribute{
+								"checkbox_field": schema.SingleNestedAttribute{
+									Computed:    true,
+									Description: `The CheckboxField message.`,
+								},
+								"default_value": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The defaultValue field.`,
+								},
+								"rules": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"const": schema.BoolAttribute{
@@ -157,14 +165,6 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 										},
 									},
 									Description: `BoolRules describes the constraints applied to ` + "`" + `bool` + "`" + ` values`,
-								},
-								"checkbox_field": schema.SingleNestedAttribute{
-									Computed:    true,
-									Description: `The CheckboxField message.`,
-								},
-								"default_value": schema.BoolAttribute{
-									Computed:    true,
-									Description: `The defaultValue field.`,
 								},
 								"toggle_field": schema.SingleNestedAttribute{
 									Computed:    true,
@@ -207,9 +207,171 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
 								`  - fileInputField`,
 						},
-						"form_string_field": schema.SingleNestedAttribute{
+						"int64_field": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
+								"default_value": schema.StringAttribute{
+									Computed:    true,
+									Description: `The defaultValue field.`,
+								},
+								"number_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"max_value": schema.StringAttribute{
+											Computed:    true,
+											Description: `The maxValue field.`,
+										},
+										"min_value": schema.StringAttribute{
+											Computed:    true,
+											Description: `The minValue field.`,
+										},
+										"step": schema.StringAttribute{
+											Computed:    true,
+											Description: `The step field.`,
+										},
+									},
+									Description: `The NumberField message.`,
+								},
+								"placeholder": schema.StringAttribute{
+									Computed:    true,
+									Description: `The placeholder field.`,
+								},
+								"rules": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"const": schema.StringAttribute{
+											Computed:    true,
+											Description: `Const specifies that this field must be exactly the specified value`,
+										},
+										"gt": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `Gt specifies that this field must be greater than the specified value,` + "\n" +
+												` exclusive. If the value of Gt is larger than a specified Lt or Lte, the` + "\n" +
+												` range is reversed.`,
+										},
+										"gte": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `Gte specifies that this field must be greater than or equal to the` + "\n" +
+												` specified value, inclusive. If the value of Gte is larger than a` + "\n" +
+												` specified Lt or Lte, the range is reversed.`,
+										},
+										"ignore_empty": schema.BoolAttribute{
+											Computed: true,
+											MarkdownDescription: `IgnoreEmpty specifies that the validation rules of this field should be` + "\n" +
+												` evaluated only if the field is not empty`,
+										},
+										"in": schema.ListAttribute{
+											Computed:    true,
+											ElementType: types.StringType,
+											MarkdownDescription: `In specifies that this field must be equal to one of the specified` + "\n" +
+												` values`,
+										},
+										"lt": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `Lt specifies that this field must be less than the specified value,` + "\n" +
+												` exclusive`,
+										},
+										"lte": schema.StringAttribute{
+											Computed: true,
+											MarkdownDescription: `Lte specifies that this field must be less than or equal to the` + "\n" +
+												` specified value, inclusive`,
+										},
+										"not_in": schema.ListAttribute{
+											Computed:    true,
+											ElementType: types.StringType,
+											MarkdownDescription: `NotIn specifies that this field cannot be equal to one of the specified` + "\n" +
+												` values`,
+										},
+									},
+									Description: `Int64Rules describes the constraints applied to ` + "`" + `int64` + "`" + ` values`,
+								},
+							},
+							MarkdownDescription: `The Int64Field message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - numberField`,
+						},
+						"name": schema.StringAttribute{
+							Computed:    true,
+							Description: `The name field.`,
+						},
+						"oauth2_field": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"oauth2_field_view": schema.SingleNestedAttribute{
+									Computed:    true,
+									Description: `The Oauth2FieldView message.`,
+								},
+							},
+							MarkdownDescription: `The Oauth2Field message.` + "\n" +
+								`` + "\n" +
+								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
+								`  - oauth2FieldView`,
+						},
+						"read_only": schema.BoolAttribute{
+							Computed:    true,
+							Description: `When true, this field is displayed to the user but cannot be edited.`,
+						},
+						"required": schema.BoolAttribute{
+							Computed:    true,
+							Description: `The required field.`,
+						},
+						"shared_config": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"default_value_cel": schema.StringAttribute{
+									Computed:    true,
+									Description: `The defaultValueCel field.`,
+								},
+								"input_transformation_cel": schema.StringAttribute{
+									Computed:    true,
+									Description: `The inputTransformationCel field.`,
+								},
+								"lock_default_values": schema.BoolAttribute{
+									Computed:    true,
+									Description: `The lockDefaultValues field.`,
+								},
+							},
+							Description: `The SharedProviderConfig message.`,
+						},
+						"string_field": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"date_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"default_to_today": schema.BoolAttribute{
+											Computed:    true,
+											Description: `Default the field to the render date when the StringField has no default_value.`,
+										},
+										"max_date": schema.StringAttribute{
+											Computed:    true,
+											Description: `Latest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.`,
+										},
+										"max_days_from_today": schema.Int32Attribute{
+											Computed: true,
+											MarkdownDescription: `Latest selectable date expressed as an offset in days from the date the` + "\n" +
+												` form is rendered; negative is in the past. Set this to 365 to cap a date at` + "\n" +
+												` one year out. When both are set, the earlier of this and max_date applies.` + "\n" +
+												` Enforcement is one day slack in each direction: the picker anchors today at` + "\n" +
+												` the submitter's local midnight and the server anchors in UTC, so 365 admits` + "\n" +
+												` 366 days rather than reject a date the picker itself offered.`,
+										},
+										"min_date": schema.StringAttribute{
+											Computed:    true,
+											Description: `Earliest selectable date, inclusive, as "YYYY-MM-DD". Empty means unbounded.`,
+										},
+										"min_days_from_today": schema.Int32Attribute{
+											Computed: true,
+											MarkdownDescription: `Earliest selectable date expressed as an offset in days from the date the` + "\n" +
+												` form is rendered; negative is in the past. Prefer this over min_date for a` + "\n" +
+												` rolling window, which would otherwise go stale. When both are set, the` + "\n" +
+												` later of the two applies.`,
+										},
+									},
+									MarkdownDescription: `DateField renders a date picker. The value is an ISO-8601 calendar date` + "\n" +
+										` ("YYYY-MM-DD") stored in the enclosing StringField's string value.`,
+								},
 								"default_value": schema.StringAttribute{
 									Computed:    true,
 									Description: `The defaultValue field.`,
@@ -221,7 +383,39 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								"picker_field": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
-										"app_resource_filter": schema.SingleNestedAttribute{
+										"app_user_picker": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"app_id": schema.StringAttribute{
+													Computed:    true,
+													Description: `The appId field.`,
+												},
+											},
+											Description: `The AppUserFilter message.`,
+										},
+										"c1_user_picker": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"exclude_user_ids": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													Description: `Remove these users from the selectable set, after user_ids is applied.`,
+												},
+												"include_deactivated": schema.BoolAttribute{
+													Computed:    true,
+													Description: `Make deactivated and deleted users selectable. Defaults to enabled-only.`,
+												},
+												"user_ids": schema.ListAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Restrict the selectable set to these users. Empty means every user is selectable.` + "\n" +
+														` Capped at the number of refs SearchUsers accepts in one request.`,
+												},
+											},
+											MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
+												` This is distinct from AppUserFilter which selects accounts within a connected app.`,
+										},
+										"resource_picker": schema.SingleNestedAttribute{
 											Computed: true,
 											Attributes: map[string]schema.Attribute{
 												"app_id": schema.StringAttribute{
@@ -235,21 +429,6 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 											},
 											Description: `The AppResourceFilter message.`,
 										},
-										"app_user_filter": schema.SingleNestedAttribute{
-											Computed: true,
-											Attributes: map[string]schema.Attribute{
-												"app_id": schema.StringAttribute{
-													Computed:    true,
-													Description: `The appId field.`,
-												},
-											},
-											Description: `The AppUserFilter message.`,
-										},
-										"c1_user_filter": schema.SingleNestedAttribute{
-											Computed: true,
-											MarkdownDescription: `C1UserFilter is used to configure a picker for selecting ConductorOne users.` + "\n" +
-												` This is distinct from AppUserFilter which selects accounts within a connected app.`,
-										},
 									},
 									MarkdownDescription: `The PickerField message.` + "\n" +
 										`` + "\n" +
@@ -262,37 +441,7 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 									Computed:    true,
 									Description: `The placeholder field.`,
 								},
-								"select_field": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"options": schema.ListNestedAttribute{
-											Computed: true,
-											NestedObject: schema.NestedAttributeObject{
-												Attributes: map[string]schema.Attribute{
-													"description": schema.StringAttribute{
-														Computed:    true,
-														Description: `Used for type BUTTONS`,
-													},
-													"display_name": schema.StringAttribute{
-														Computed:    true,
-														Description: `The displayName field.`,
-													},
-													"value": schema.StringAttribute{
-														Computed:    true,
-														Description: `The value field.`,
-													},
-												},
-											},
-											Description: `The options field.`,
-										},
-										"type": schema.StringAttribute{
-											Computed:    true,
-											Description: `The type field.`,
-										},
-									},
-									Description: `The SelectField message.`,
-								},
-								"string_rules": schema.SingleNestedAttribute{
+								"rules": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"address": schema.BoolAttribute{
@@ -468,6 +617,36 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 										`  - uuid` + "\n" +
 										`  - wellKnownRegex`,
 								},
+								"select_field": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"options": schema.ListNestedAttribute{
+											Computed: true,
+											NestedObject: schema.NestedAttributeObject{
+												Attributes: map[string]schema.Attribute{
+													"description": schema.StringAttribute{
+														Computed:    true,
+														Description: `Used for type BUTTONS`,
+													},
+													"display_name": schema.StringAttribute{
+														Computed:    true,
+														Description: `The displayName field.`,
+													},
+													"value": schema.StringAttribute{
+														Computed:    true,
+														Description: `The value field.`,
+													},
+												},
+											},
+											Description: `The options field.`,
+										},
+										"type": schema.StringAttribute{
+											Computed:    true,
+											Description: `The type field.`,
+										},
+									},
+									Description: `The SelectField message.`,
+								},
 								"text_field": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
@@ -489,9 +668,10 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 								`  - textField` + "\n" +
 								`  - passwordField` + "\n" +
 								`  - selectField` + "\n" +
-								`  - pickerField`,
+								`  - pickerField` + "\n" +
+								`  - dateField`,
 						},
-						"form_string_map_field": schema.SingleNestedAttribute{
+						"string_map_field": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
 								"default_value": schema.MapAttribute{
@@ -499,7 +679,7 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 									ElementType: types.StringType,
 									Description: `The defaultValue field.`,
 								},
-								"string_map_rules": schema.SingleNestedAttribute{
+								"rules": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"is_required": schema.BoolAttribute{
@@ -516,134 +696,7 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 							},
 							Description: `The StringMapField message.`,
 						},
-						"int64_field": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"default_value": schema.StringAttribute{
-									Computed:    true,
-									Description: `The defaultValue field.`,
-								},
-								"int64_rules": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"const": schema.StringAttribute{
-											Computed:    true,
-											Description: `Const specifies that this field must be exactly the specified value`,
-										},
-										"gt": schema.StringAttribute{
-											Computed: true,
-											MarkdownDescription: `Gt specifies that this field must be greater than the specified value,` + "\n" +
-												` exclusive. If the value of Gt is larger than a specified Lt or Lte, the` + "\n" +
-												` range is reversed.`,
-										},
-										"gte": schema.StringAttribute{
-											Computed: true,
-											MarkdownDescription: `Gte specifies that this field must be greater than or equal to the` + "\n" +
-												` specified value, inclusive. If the value of Gte is larger than a` + "\n" +
-												` specified Lt or Lte, the range is reversed.`,
-										},
-										"ignore_empty": schema.BoolAttribute{
-											Computed: true,
-											MarkdownDescription: `IgnoreEmpty specifies that the validation rules of this field should be` + "\n" +
-												` evaluated only if the field is not empty`,
-										},
-										"in": schema.ListAttribute{
-											Computed:    true,
-											ElementType: types.StringType,
-											MarkdownDescription: `In specifies that this field must be equal to one of the specified` + "\n" +
-												` values`,
-										},
-										"lt": schema.StringAttribute{
-											Computed: true,
-											MarkdownDescription: `Lt specifies that this field must be less than the specified value,` + "\n" +
-												` exclusive`,
-										},
-										"lte": schema.StringAttribute{
-											Computed: true,
-											MarkdownDescription: `Lte specifies that this field must be less than or equal to the` + "\n" +
-												` specified value, inclusive`,
-										},
-										"not_in": schema.ListAttribute{
-											Computed:    true,
-											ElementType: types.StringType,
-											MarkdownDescription: `NotIn specifies that this field cannot be equal to one of the specified` + "\n" +
-												` values`,
-										},
-									},
-									Description: `Int64Rules describes the constraints applied to ` + "`" + `int64` + "`" + ` values`,
-								},
-								"number_field": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"max_value": schema.StringAttribute{
-											Computed:    true,
-											Description: `The maxValue field.`,
-										},
-										"min_value": schema.StringAttribute{
-											Computed:    true,
-											Description: `The minValue field.`,
-										},
-										"step": schema.StringAttribute{
-											Computed:    true,
-											Description: `The step field.`,
-										},
-									},
-									Description: `The NumberField message.`,
-								},
-								"placeholder": schema.StringAttribute{
-									Computed:    true,
-									Description: `The placeholder field.`,
-								},
-							},
-							MarkdownDescription: `The Int64Field message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - numberField`,
-						},
-						"name": schema.StringAttribute{
-							Computed:    true,
-							Description: `The name field.`,
-						},
-						"oauth2_field": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"oauth2_field_view": schema.SingleNestedAttribute{
-									Computed:    true,
-									Description: `The Oauth2FieldView message.`,
-								},
-							},
-							MarkdownDescription: `The Oauth2Field message.` + "\n" +
-								`` + "\n" +
-								`This message contains a oneof named view. Only a single field of the following list may be set at a time:` + "\n" +
-								`  - oauth2FieldView`,
-						},
-						"read_only": schema.BoolAttribute{
-							Computed:    true,
-							Description: `When true, this field is displayed to the user but cannot be edited.`,
-						},
-						"required": schema.BoolAttribute{
-							Computed:    true,
-							Description: `The required field.`,
-						},
-						"shared_provider_config": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"default_value_cel": schema.StringAttribute{
-									Computed:    true,
-									Description: `The defaultValueCel field.`,
-								},
-								"input_transformation_cel": schema.StringAttribute{
-									Computed:    true,
-									Description: `The inputTransformationCel field.`,
-								},
-								"lock_default_values": schema.BoolAttribute{
-									Computed:    true,
-									Description: `The lockDefaultValues field.`,
-								},
-							},
-							Description: `The SharedProviderConfig message.`,
-						},
-						"user_provider_config": schema.SingleNestedAttribute{
+						"user_config": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
 								"input_transformation_cel": schema.StringAttribute{

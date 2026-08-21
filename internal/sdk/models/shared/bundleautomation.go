@@ -13,10 +13,8 @@ import (
 //   - entitlements
 //   - cel
 type BundleAutomation struct {
-	// The BundleAutomationRuleCEL message.
-	BundleAutomationRuleCEL *BundleAutomationRuleCEL `json:"cel,omitempty"`
-	// The BundleAutomationCircuitBreaker message.
-	BundleAutomationCircuitBreaker *BundleAutomationCircuitBreaker `json:"circuitBreaker,omitempty"`
+	Cel            *BundleAutomationRuleCEL        `json:"cel,omitempty"`
+	CircuitBreaker *BundleAutomationCircuitBreaker `json:"circuitBreaker,omitempty"`
 	// The createTasks field.
 	CreateTasks *bool      `json:"createTasks,omitempty"`
 	CreatedAt   *time.Time `json:"createdAt,omitempty"`
@@ -27,16 +25,14 @@ type BundleAutomation struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// When true, the circuit breaker is evaluated even on profiles below the
 	//  tenant min-members floor.
-	EnforceOnSmallProfiles *bool `json:"enforceOnSmallProfiles,omitempty"`
-	// The BundleAutomationRuleEntitlement message.
-	BundleAutomationRuleEntitlement *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
+	EnforceOnSmallProfiles *bool                            `json:"enforceOnSmallProfiles,omitempty"`
+	Entitlements           *BundleAutomationRuleEntitlement `json:"entitlements,omitempty"`
 	// Per-automation override for the removed-members percent that trips the
 	//  circuit breaker (1-100). 0 / unset means the tenant default applies.
 	RemovedMembersThresholdPercent *string `json:"removedMembersThresholdPercent,omitempty"`
 	// The requestCatalogId field.
-	RequestCatalogID *string `json:"requestCatalogId,omitempty"`
-	// The BundleAutomationLastRunState message.
-	BundleAutomationLastRunState *BundleAutomationLastRunState `json:"state,omitempty"`
+	RequestCatalogID *string                       `json:"requestCatalogId,omitempty"`
+	State            *BundleAutomationLastRunState `json:"state,omitempty"`
 	// The tenantId field.
 	TenantID  *string    `json:"tenantId,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -53,18 +49,18 @@ func (b *BundleAutomation) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (b *BundleAutomation) GetBundleAutomationRuleCEL() *BundleAutomationRuleCEL {
+func (b *BundleAutomation) GetCel() *BundleAutomationRuleCEL {
 	if b == nil {
 		return nil
 	}
-	return b.BundleAutomationRuleCEL
+	return b.Cel
 }
 
-func (b *BundleAutomation) GetBundleAutomationCircuitBreaker() *BundleAutomationCircuitBreaker {
+func (b *BundleAutomation) GetCircuitBreaker() *BundleAutomationCircuitBreaker {
 	if b == nil {
 		return nil
 	}
-	return b.BundleAutomationCircuitBreaker
+	return b.CircuitBreaker
 }
 
 func (b *BundleAutomation) GetCreateTasks() *bool {
@@ -109,11 +105,11 @@ func (b *BundleAutomation) GetEnforceOnSmallProfiles() *bool {
 	return b.EnforceOnSmallProfiles
 }
 
-func (b *BundleAutomation) GetBundleAutomationRuleEntitlement() *BundleAutomationRuleEntitlement {
+func (b *BundleAutomation) GetEntitlements() *BundleAutomationRuleEntitlement {
 	if b == nil {
 		return nil
 	}
-	return b.BundleAutomationRuleEntitlement
+	return b.Entitlements
 }
 
 func (b *BundleAutomation) GetRemovedMembersThresholdPercent() *string {
@@ -130,11 +126,11 @@ func (b *BundleAutomation) GetRequestCatalogID() *string {
 	return b.RequestCatalogID
 }
 
-func (b *BundleAutomation) GetBundleAutomationLastRunState() *BundleAutomationLastRunState {
+func (b *BundleAutomation) GetState() *BundleAutomationLastRunState {
 	if b == nil {
 		return nil
 	}
-	return b.BundleAutomationLastRunState
+	return b.State
 }
 
 func (b *BundleAutomation) GetTenantID() *string {

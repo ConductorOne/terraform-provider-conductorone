@@ -29,20 +29,20 @@ type BundleAutomationDataSource struct {
 
 // BundleAutomationDataSourceModel describes the data model.
 type BundleAutomationDataSourceModel struct {
-	BundleAutomationCircuitBreaker  *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"bundle_automation_circuit_breaker"`
-	BundleAutomationLastRunState    *tfTypes.BundleAutomationLastRunState    `tfsdk:"bundle_automation_last_run_state"`
-	BundleAutomationRuleCEL         *tfTypes.BundleAutomationRuleCEL         `tfsdk:"bundle_automation_rule_cel"`
-	BundleAutomationRuleEntitlement *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"bundle_automation_rule_entitlement"`
-	CreatedAt                       types.String                             `tfsdk:"created_at"`
-	CreateTasks                     types.Bool                               `tfsdk:"create_tasks"`
-	DeletedAt                       types.String                             `tfsdk:"deleted_at"`
-	DisableCircuitBreaker           types.Bool                               `tfsdk:"disable_circuit_breaker"`
-	Enabled                         types.Bool                               `tfsdk:"enabled"`
-	EnforceOnSmallProfiles          types.Bool                               `tfsdk:"enforce_on_small_profiles"`
-	RemovedMembersThresholdPercent  types.String                             `tfsdk:"removed_members_threshold_percent"`
-	RequestCatalogID                types.String                             `tfsdk:"request_catalog_id"`
-	TenantID                        types.String                             `tfsdk:"tenant_id"`
-	UpdatedAt                       types.String                             `tfsdk:"updated_at"`
+	Cel                            *tfTypes.BundleAutomationRuleCEL         `tfsdk:"cel"`
+	CircuitBreaker                 *tfTypes.BundleAutomationCircuitBreaker  `tfsdk:"circuit_breaker"`
+	CreatedAt                      types.String                             `tfsdk:"created_at"`
+	CreateTasks                    types.Bool                               `tfsdk:"create_tasks"`
+	DeletedAt                      types.String                             `tfsdk:"deleted_at"`
+	DisableCircuitBreaker          types.Bool                               `tfsdk:"disable_circuit_breaker"`
+	Enabled                        types.Bool                               `tfsdk:"enabled"`
+	EnforceOnSmallProfiles         types.Bool                               `tfsdk:"enforce_on_small_profiles"`
+	Entitlements                   *tfTypes.BundleAutomationRuleEntitlement `tfsdk:"entitlements"`
+	RemovedMembersThresholdPercent types.String                             `tfsdk:"removed_members_threshold_percent"`
+	RequestCatalogID               types.String                             `tfsdk:"request_catalog_id"`
+	State                          *tfTypes.BundleAutomationLastRunState    `tfsdk:"state"`
+	TenantID                       types.String                             `tfsdk:"tenant_id"`
+	UpdatedAt                      types.String                             `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -56,7 +56,17 @@ func (r *BundleAutomationDataSource) Schema(ctx context.Context, req datasource.
 		MarkdownDescription: "BundleAutomation DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"bundle_automation_circuit_breaker": schema.SingleNestedAttribute{
+			"cel": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"expression": schema.StringAttribute{
+						Computed:    true,
+						Description: `The expression field.`,
+					},
+				},
+				Description: `The BundleAutomationRuleCEL message.`,
+			},
+			"circuit_breaker": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"removed_members_threshold_percentage": schema.StringAttribute{
@@ -83,10 +93,64 @@ func (r *BundleAutomationDataSource) Schema(ctx context.Context, req datasource.
 				},
 				Description: `The BundleAutomationCircuitBreaker message.`,
 			},
-			"bundle_automation_last_run_state": schema.SingleNestedAttribute{
+			"create_tasks": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The createTasks field.`,
+			},
+			"created_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"deleted_at": schema.StringAttribute{
+				Computed: true,
+			},
+			"disable_circuit_breaker": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The disableCircuitBreaker field.`,
+			},
+			"enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The enabled field.`,
+			},
+			"enforce_on_small_profiles": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `When true, the circuit breaker is evaluated even on profiles below the` + "\n" +
+					` tenant min-members floor.`,
+			},
+			"entitlements": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
-					"bundle_automation_cel_evaluation_state": schema.SingleNestedAttribute{
+					"entitlement_refs": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"app_id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The appId field.`,
+								},
+								"id": schema.StringAttribute{
+									Computed:    true,
+									Description: `The id field.`,
+								},
+							},
+						},
+						Description: `The entitlementRefs field.`,
+					},
+				},
+				Description: `The BundleAutomationRuleEntitlement message.`,
+			},
+			"removed_members_threshold_percent": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `Per-automation override for the removed-members percent that trips the` + "\n" +
+					` circuit breaker (1-100). 0 / unset means the tenant default applies.`,
+			},
+			"request_catalog_id": schema.StringAttribute{
+				Required:    true,
+				Description: `The requestCatalogId field.`,
+			},
+			"state": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"cel_evaluation": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"error_message": schema.StringAttribute{
@@ -120,70 +184,6 @@ func (r *BundleAutomationDataSource) Schema(ctx context.Context, req datasource.
 					},
 				},
 				Description: `The BundleAutomationLastRunState message.`,
-			},
-			"bundle_automation_rule_cel": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"expression": schema.StringAttribute{
-						Computed:    true,
-						Description: `The expression field.`,
-					},
-				},
-				Description: `The BundleAutomationRuleCEL message.`,
-			},
-			"bundle_automation_rule_entitlement": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"entitlement_refs": schema.ListNestedAttribute{
-						Computed: true,
-						NestedObject: schema.NestedAttributeObject{
-							Attributes: map[string]schema.Attribute{
-								"app_id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The appId field.`,
-								},
-								"id": schema.StringAttribute{
-									Computed:    true,
-									Description: `The id field.`,
-								},
-							},
-						},
-						Description: `The entitlementRefs field.`,
-					},
-				},
-				Description: `The BundleAutomationRuleEntitlement message.`,
-			},
-			"create_tasks": schema.BoolAttribute{
-				Computed:    true,
-				Description: `The createTasks field.`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"deleted_at": schema.StringAttribute{
-				Computed: true,
-			},
-			"disable_circuit_breaker": schema.BoolAttribute{
-				Computed:    true,
-				Description: `The disableCircuitBreaker field.`,
-			},
-			"enabled": schema.BoolAttribute{
-				Computed:    true,
-				Description: `The enabled field.`,
-			},
-			"enforce_on_small_profiles": schema.BoolAttribute{
-				Computed: true,
-				MarkdownDescription: `When true, the circuit breaker is evaluated even on profiles below the` + "\n" +
-					` tenant min-members floor.`,
-			},
-			"removed_members_threshold_percent": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `Per-automation override for the removed-members percent that trips the` + "\n" +
-					` circuit breaker (1-100). 0 / unset means the tenant default applies.`,
-			},
-			"request_catalog_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The requestCatalogId field.`,
 			},
 			"tenant_id": schema.StringAttribute{
 				Computed:    true,

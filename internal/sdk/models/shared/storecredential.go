@@ -65,9 +65,11 @@ type StoreCredential struct {
 	LabelCel *string `json:"labelCel,omitempty"`
 	// Maximum number of views (0 = unlimited, default 1) (Paper Vault only)
 	MaxViews *int64 `json:"maxViews,omitempty"`
-	// CEL expression resolving to the C1 user ID of the recipient (SSO_INTERNAL / App Vault)
+	// CEL expression resolving to one or more recipient C1 user IDs — a string or list<string>,
+	//  e.g. '["u1","u2"]' (SSO_INTERNAL / App Vault). App Vault accepts a single user only.
 	RecipientCel *string `json:"recipientCel,omitempty"`
-	// CEL expression resolving to a recipient email address (Paper Vault + VERIFY_EMAIL only)
+	// CEL expression resolving to one or more recipient email addresses — a string or list<string>,
+	//  e.g. '["a@x.com","b@x.com"]' (Paper Vault + VERIFY_EMAIL only).
 	RecipientEmailCel *string `json:"recipientEmailCel,omitempty"`
 	TTL               *string `json:"ttl,omitempty"`
 	// Vault type selector (default: PAPER_VAULT for backward compatibility)

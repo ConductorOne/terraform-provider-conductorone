@@ -57,7 +57,7 @@ func (e *Origin) IsExact() bool {
 	return false
 }
 
-type Profile struct {
+type UserProfile struct {
 }
 
 // UserStatus1 - The status of the user in the system.
@@ -158,8 +158,8 @@ type User struct {
 	// A list of objects mapped based on managerId attribute mappings configured in the system.
 	ManagerSources []UserAttributeMappingSource `json:"managerSources,omitempty"`
 	// The origin of the user, describing who owns the user's lifecycle.
-	Origin  *Origin  `json:"origin,omitempty"`
-	Profile *Profile `json:"profile,omitempty"`
+	Origin  *Origin      `json:"origin,omitempty"`
+	Profile *UserProfile `json:"profile,omitempty"`
 	// A list of unique identifiers that maps to ConductorOne's user roles let you assign users permissions tailored to the work they do in the software.
 	RoleIds []string `json:"roleIds,omitempty"`
 	// The status of the user in the system.
@@ -354,7 +354,7 @@ func (u *User) GetOrigin() *Origin {
 	return u.Origin
 }
 
-func (u *User) GetProfile() *Profile {
+func (u *User) GetProfile() *UserProfile {
 	if u == nil {
 		return nil
 	}
