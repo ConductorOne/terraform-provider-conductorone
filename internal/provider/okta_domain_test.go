@@ -150,3 +150,20 @@ func TestOktaDomainPlanMatchesState(t *testing.T) {
 		t.Errorf("planned %q != outbound %q; plan-vs-state would mismatch", planned, *outbound)
 	}
 }
+
+// TestOktaDomainReplanNoPerpetualDiff models the existing-resource re-plan
+// scenario: config holds the raw admin domain, state holds the server-
+// normalized value. Re-planning must produce a plan equal to state, otherwise
+// Terraform would show a perpetual diff on every plan.
+func TestOktaDomainReplanNoPerpetualDiff(t *testing.T) {
+	cfg := types.StringValue("integrator-3535680-admin.okta.com")
+	state := types.StringValue(normalizeOktaDomain(cfg.ValueString())) // server-normalized state
+
+	req := planmodifier.StringRequest{ConfigValue: cfg}
+	resp := &planmodifier.StringResponse{}
+	oktaDomainPlanModifier{}.PlanModifyString(context.Background(), req, resp)
+
+	if !resp.PlanValue.Equal(state) {
+		t.Errorf("re-plan %q != state %q; perpetual diff", resp.PlanValue.ValueString(), state.ValueString())
+	}
+}
