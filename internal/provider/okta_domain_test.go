@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -165,5 +167,39 @@ func TestOktaDomainReplanNoPerpetualDiff(t *testing.T) {
 
 	if !resp.PlanValue.Equal(state) {
 		t.Errorf("re-plan %q != state %q; perpetual diff", resp.PlanValue.ValueString(), state.ValueString())
+	}
+}
+
+// TestRefreshSetsDomainFromServerResponse verifies both refresh paths
+// (RefreshFromGetResponse and RefreshFromCreateResponse) set the domain from
+// the server response (normalized), so the applied state value matches the
+// normalized planned value.
+func TestRefreshSetsDomainFromServerResponse(t *testing.T) {
+	serverConfig := map[string]interface{}{
+		"configuration": map[string]interface{}{
+			"okta_v2_domain": map[string]interface{}{"stringValue": "integrator-3535680.okta.com"},
+		},
+	}
+	resp := &shared.Connector{
+		Config: &shared.Config{
+			AtType:               sdk.String(envConfigType),
+			AdditionalProperties: serverConfig,
+		},
+	}
+
+	for _, tc := range []struct {
+		name string
+		run  func(*IntegrationOktaV2ResourceModel)
+	}{
+		{"RefreshFromGetResponse", func(r *IntegrationOktaV2ResourceModel) { r.RefreshFromGetResponse(resp) }},
+		{"RefreshFromCreateResponse", func(r *IntegrationOktaV2ResourceModel) { r.RefreshFromCreateResponse(resp) }},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			r := IntegrationOktaV2ResourceModel{OktaV2Domain: types.StringValue("integrator-3535680-admin.okta.com")}
+			tc.run(&r)
+			if got := r.OktaV2Domain.ValueString(); got != "integrator-3535680.okta.com" {
+				t.Errorf("%s domain = %q, want %q", tc.name, got, "integrator-3535680.okta.com")
+			}
+		})
 	}
 }
