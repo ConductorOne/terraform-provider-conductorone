@@ -170,35 +170,74 @@ func TestOktaDomainReplanNoPerpetualDiff(t *testing.T) {
 	}
 }
 
-// TestRefreshSetsDomainFromServerResponse verifies both refresh paths
-// (RefreshFromGetResponse and RefreshFromCreateResponse) set the domain from
-// the server response (normalized), so the applied state value matches the
-// normalized planned value.
+// TestRefreshSetsDomainFromServerResponse verifies every refresh path
+// (RefreshFromGetResponse and RefreshFromCreateResponse) of all 4 Okta
+// resources sets the domain from the server response (normalized), so the
+// applied state value matches the normalized planned value.
 func TestRefreshSetsDomainFromServerResponse(t *testing.T) {
-	serverConfig := map[string]interface{}{
-		"configuration": map[string]interface{}{
-			"okta_v2_domain": map[string]interface{}{"stringValue": "integrator-3535680.okta.com"},
-		},
-	}
-	resp := &shared.Connector{
-		Config: &shared.Config{
-			AtType:               sdk.String(envConfigType),
-			AdditionalProperties: serverConfig,
-		},
+	mkResp := func(key string) *shared.Connector {
+		return &shared.Connector{
+			Config: &shared.Config{
+				AtType: sdk.String(envConfigType),
+				AdditionalProperties: map[string]interface{}{
+					"configuration": map[string]interface{}{
+						key: map[string]interface{}{"stringValue": "integrator-3535680.okta.com"},
+					},
+				},
+			},
+		}
 	}
 
-	for _, tc := range []struct {
+	tests := []struct {
 		name string
-		run  func(*IntegrationOktaV2ResourceModel)
+		key  string
+		run  func(*shared.Connector) string
 	}{
-		{"RefreshFromGetResponse", func(r *IntegrationOktaV2ResourceModel) { r.RefreshFromGetResponse(resp) }},
-		{"RefreshFromCreateResponse", func(r *IntegrationOktaV2ResourceModel) { r.RefreshFromCreateResponse(resp) }},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
+		{"okta get", "okta_domain", func(c *shared.Connector) string {
+			r := IntegrationOktaResourceModel{OktaDomain: types.StringValue("integrator-3535680-admin.okta.com")}
+			r.RefreshFromGetResponse(c)
+			return r.OktaDomain.ValueString()
+		}},
+		{"okta create", "okta_domain", func(c *shared.Connector) string {
+			r := IntegrationOktaResourceModel{OktaDomain: types.StringValue("integrator-3535680-admin.okta.com")}
+			r.RefreshFromCreateResponse(c)
+			return r.OktaDomain.ValueString()
+		}},
+		{"okta_v2 get", "okta_v2_domain", func(c *shared.Connector) string {
 			r := IntegrationOktaV2ResourceModel{OktaV2Domain: types.StringValue("integrator-3535680-admin.okta.com")}
-			tc.run(&r)
-			if got := r.OktaV2Domain.ValueString(); got != "integrator-3535680.okta.com" {
-				t.Errorf("%s domain = %q, want %q", tc.name, got, "integrator-3535680.okta.com")
+			r.RefreshFromGetResponse(c)
+			return r.OktaV2Domain.ValueString()
+		}},
+		{"okta_v2 create", "okta_v2_domain", func(c *shared.Connector) string {
+			r := IntegrationOktaV2ResourceModel{OktaV2Domain: types.StringValue("integrator-3535680-admin.okta.com")}
+			r.RefreshFromCreateResponse(c)
+			return r.OktaV2Domain.ValueString()
+		}},
+		{"okta_ciam get", "okta_ciam_domain", func(c *shared.Connector) string {
+			r := IntegrationOktaCiamResourceModel{OktaCiamDomain: types.StringValue("integrator-3535680-admin.okta.com")}
+			r.RefreshFromGetResponse(c)
+			return r.OktaCiamDomain.ValueString()
+		}},
+		{"okta_ciam create", "okta_ciam_domain", func(c *shared.Connector) string {
+			r := IntegrationOktaCiamResourceModel{OktaCiamDomain: types.StringValue("integrator-3535680-admin.okta.com")}
+			r.RefreshFromCreateResponse(c)
+			return r.OktaCiamDomain.ValueString()
+		}},
+		{"okta_aws_federation get", "okta_aws_federation_domain", func(c *shared.Connector) string {
+			r := IntegrationOktaAwsFederationResourceModel{OktaAwsFederationDomain: types.StringValue("integrator-3535680-admin.okta.com")}
+			r.RefreshFromGetResponse(c)
+			return r.OktaAwsFederationDomain.ValueString()
+		}},
+		{"okta_aws_federation create", "okta_aws_federation_domain", func(c *shared.Connector) string {
+			r := IntegrationOktaAwsFederationResourceModel{OktaAwsFederationDomain: types.StringValue("integrator-3535680-admin.okta.com")}
+			r.RefreshFromCreateResponse(c)
+			return r.OktaAwsFederationDomain.ValueString()
+		}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.run(mkResp(tt.key)); got != "integrator-3535680.okta.com" {
+				t.Errorf("%s domain = %q, want %q", tt.name, got, "integrator-3535680.okta.com")
 			}
 		})
 	}
