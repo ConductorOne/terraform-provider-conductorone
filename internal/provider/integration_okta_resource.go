@@ -98,6 +98,9 @@ func (r *IntegrationOktaResource) Schema(ctx context.Context, req resource.Schem
 			"okta_domain": &schema.StringAttribute{
 				Optional:    true,
 				Description: `Okta domain`,
+				PlanModifiers: []planmodifier.String{
+					normalizeOktaDomainPlanModifier(),
+				},
 			},
 			"okta_api_key": &schema.StringAttribute{
 				Optional:    true,
