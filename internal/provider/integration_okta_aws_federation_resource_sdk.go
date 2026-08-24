@@ -183,7 +183,7 @@ func (r *IntegrationOktaAwsFederationResourceModel) RefreshFromGetResponse(resp 
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if val, ok := getStringValue(values, "okta_aws_federation_domain"); ok {
-					r.OktaAwsFederationDomain = types.StringValue(val)
+					r.OktaAwsFederationDomain = types.StringValue(normalizeOktaDomain(val))
 				}
 
 				if val, ok := getStringValue(values, "okta_aws_federation_aws_okta_app_id"); ok {
@@ -244,7 +244,7 @@ func (r *IntegrationOktaAwsFederationResourceModel) RefreshFromCreateResponse(re
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if val, ok := getStringValue(values, "okta_aws_federation_domain"); ok {
-					r.OktaAwsFederationDomain = types.StringValue(val)
+					r.OktaAwsFederationDomain = types.StringValue(normalizeOktaDomain(val))
 				}
 
 				if val, ok := getStringValue(values, "okta_aws_federation_aws_okta_app_id"); ok {

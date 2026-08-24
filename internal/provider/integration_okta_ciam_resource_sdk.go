@@ -176,7 +176,7 @@ func (r *IntegrationOktaCiamResourceModel) RefreshFromGetResponse(resp *shared.C
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if val, ok := getStringValue(values, "okta_ciam_domain"); ok {
-					r.OktaCiamDomain = types.StringValue(val)
+					r.OktaCiamDomain = types.StringValue(normalizeOktaDomain(val))
 				}
 
 				if val, ok := getStringValue(values, "okta_ciam_email_domains"); ok {
@@ -227,7 +227,7 @@ func (r *IntegrationOktaCiamResourceModel) RefreshFromCreateResponse(resp *share
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if val, ok := getStringValue(values, "okta_ciam_domain"); ok {
-					r.OktaCiamDomain = types.StringValue(val)
+					r.OktaCiamDomain = types.StringValue(normalizeOktaDomain(val))
 				}
 
 				if val, ok := getStringValue(values, "okta_ciam_email_domains"); ok {

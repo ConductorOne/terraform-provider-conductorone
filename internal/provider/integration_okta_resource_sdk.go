@@ -189,7 +189,7 @@ func (r *IntegrationOktaResourceModel) RefreshFromGetResponse(resp *shared.Conne
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if val, ok := getStringValue(values, "okta_domain"); ok {
-					r.OktaDomain = types.StringValue(val)
+					r.OktaDomain = types.StringValue(normalizeOktaDomain(val))
 				}
 
 				if _, ok := configValues["okta_dont_sync_inactive_apps"]; ok {
@@ -264,7 +264,7 @@ func (r *IntegrationOktaResourceModel) RefreshFromCreateResponse(resp *shared.Co
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
 				if val, ok := getStringValue(values, "okta_domain"); ok {
-					r.OktaDomain = types.StringValue(val)
+					r.OktaDomain = types.StringValue(normalizeOktaDomain(val))
 				}
 
 				if _, ok := configValues["okta_dont_sync_inactive_apps"]; ok {
