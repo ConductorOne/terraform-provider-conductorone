@@ -68,4 +68,14 @@ func TestNormalizeOktaDomainPlanModifier(t *testing.T) {
 	if !resp.PlanValue.IsNull() {
 		t.Errorf("plan modifier changed a null plan value to %q", resp.PlanValue.ValueString())
 	}
+
+	// An unknown planned value is left untouched (unknown-propagation contract).
+	req = planmodifier.StringRequest{
+		PlanValue: types.StringUnknown(),
+	}
+	resp = &planmodifier.StringResponse{PlanValue: types.StringUnknown()}
+	mod.PlanModifyString(context.Background(), req, resp)
+	if !resp.PlanValue.IsUnknown() {
+		t.Errorf("plan modifier changed an unknown plan value to %q", resp.PlanValue.ValueString())
+	}
 }
