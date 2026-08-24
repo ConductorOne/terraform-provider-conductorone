@@ -2,8 +2,11 @@ package provider
 
 import (
 	"context"
+	"reflect"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -84,5 +87,66 @@ func TestPopulateConfigNormalizesDomain(t *testing.T) {
 	}
 	if *got != "integrator-3535680.okta.com" {
 		t.Errorf("populateConfig domain = %q, want %q", *got, "integrator-3535680.okta.com")
+	}
+}
+
+// TestOktaDomainAttributesHavePlanModifier guards the schema wiring: if the
+// oktaDomainPlanModifier is ever dropped from one of the 4 domain attributes,
+// the "inconsistent result after apply" bug silently returns. This test fails
+// if any attribute loses the modifier.
+func TestOktaDomainAttributesHavePlanModifier(t *testing.T) {
+	resources := []struct {
+		name string
+		new  func() resource.Resource
+		attr string
+	}{
+		{"okta", NewIntegrationOktaResource, "okta_domain"},
+		{"okta_v2", NewIntegrationOktaV2Resource, "okta_v2_domain"},
+		{"okta_ciam", NewIntegrationOktaCiamResource, "okta_ciam_domain"},
+		{"okta_aws_federation", NewIntegrationOktaAwsFederationResource, "okta_aws_federation_domain"},
+	}
+	want := reflect.TypeOf(oktaDomainPlanModifier{})
+	for _, rc := range resources {
+		t.Run(rc.name, func(t *testing.T) {
+			resp := &resource.SchemaResponse{}
+			rc.new().Schema(context.Background(), resource.SchemaRequest{}, resp)
+			if resp.Diagnostics.HasError() {
+				t.Fatalf("building %s schema: %v", rc.name, resp.Diagnostics)
+			}
+			attr, ok := resp.Schema.Attributes[rc.attr].(*schema.StringAttribute)
+			if !ok {
+				t.Fatalf("%s has type %T, want *schema.StringAttribute", rc.attr, resp.Schema.Attributes[rc.attr])
+			}
+			for _, modifier := range attr.PlanModifiers {
+				if reflect.TypeOf(modifier) == want {
+					return
+				}
+			}
+			t.Fatalf("%s does not have oktaDomainPlanModifier: %#v", rc.attr, attr.PlanModifiers)
+		})
+	}
+}
+
+// TestOktaDomainPlanMatchesState asserts the plan-vs-state invariant: the
+// planned value (plan modifier) and the outbound value (populateConfig, which
+// the server stores and returns as state) must agree, so Terraform's strict
+// plan-vs-state equality check passes for an admin-domain config.
+func TestOktaDomainPlanMatchesState(t *testing.T) {
+	cfg := types.StringValue("integrator-3535680-admin.okta.com")
+
+	req := planmodifier.StringRequest{ConfigValue: cfg}
+	resp := &planmodifier.StringResponse{}
+	oktaDomainPlanModifier{}.PlanModifyString(context.Background(), req, resp)
+	planned := resp.PlanValue.ValueString()
+
+	r := IntegrationOktaV2ResourceModel{OktaV2Domain: cfg}
+	config := r.populateConfig()
+	outbound, ok := config["okta_v2_domain"].(*string)
+	if !ok || outbound == nil {
+		t.Fatalf("config[okta_v2_domain] = %#v, want *string", config["okta_v2_domain"])
+	}
+
+	if planned != *outbound {
+		t.Errorf("planned %q != outbound %q; plan-vs-state would mismatch", planned, *outbound)
 	}
 }
