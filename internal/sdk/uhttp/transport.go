@@ -6,6 +6,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -152,37 +153,36 @@ func (uts *tokenSourceTripper) RoundTrip(req *http.Request) (*http.Response, err
 	return uts.next.RoundTrip(req)
 }
 
-// retryTripper retries requests that receive HTTP 429 (Too Many Requests).
-// It respects the Retry-After header if present, falling back to exponential
-// backoff. Context cancellation is honored during the wait.
+// retryTripper retries idempotent requests that receive HTTP 429, HTTP 5xx, or
+// transport errors. It respects the Retry-After header if present, falling back
+// to exponential backoff. Context cancellation is honored during the wait.
 type retryTripper struct {
 	next       http.RoundTripper
 	maxRetries int
 }
 
 func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	if isRetryableRequest(req) {
+		if err := makeRequestBodyReplayable(req); err != nil {
+			return nil, err
+		}
+	}
+
 	for attempt := 0; ; attempt++ {
-		// Re-create the request body for retries.
-		if attempt > 0 {
-			if req.Body != nil && req.GetBody == nil {
-				return nil, fmt.Errorf("cannot retry request: body is not replayable")
+		if attempt > 0 && req.GetBody != nil {
+			body, err := req.GetBody()
+			if err != nil {
+				return nil, err
 			}
-			if req.GetBody != nil {
-				body, err := req.GetBody()
-				if err != nil {
-					return nil, err
-				}
-				req.Body = body
-			}
+			req.Body = body
 		}
 
 		resp, err := rt.next.RoundTrip(req)
-		if err != nil {
-			return nil, err
+		if !shouldRetry(req, resp, err) || attempt >= rt.maxRetries {
+			return resp, err
 		}
-
-		if resp.StatusCode != http.StatusTooManyRequests || attempt >= rt.maxRetries {
-			return resp, nil
+		if err := req.Context().Err(); err != nil {
+			return nil, err
 		}
 
 		wait := retryAfterDuration(resp)
@@ -194,7 +194,10 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 			}
 		}
 
-		resp.Body.Close()
+		if resp != nil && resp.Body != nil {
+			_, _ = io.Copy(io.Discard, resp.Body)
+			_ = resp.Body.Close()
+		}
 
 		select {
 		case <-req.Context().Done():
@@ -204,9 +207,54 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 }
 
+func makeRequestBodyReplayable(req *http.Request) error {
+	if req.Body == nil || req.GetBody != nil {
+		return nil
+	}
+
+	body, err := io.ReadAll(req.Body)
+	if err != nil {
+		return fmt.Errorf("read request body: %w", err)
+	}
+	if err := req.Body.Close(); err != nil {
+		return fmt.Errorf("close request body: %w", err)
+	}
+
+	req.GetBody = func() (io.ReadCloser, error) {
+		return io.NopCloser(bytes.NewReader(body)), nil
+	}
+	req.Body, err = req.GetBody()
+	if err != nil {
+		return fmt.Errorf("replay request body: %w", err)
+	}
+	return nil
+}
+
+func shouldRetry(req *http.Request, resp *http.Response, err error) bool {
+	if !isRetryableRequest(req) {
+		return false
+	}
+	if err != nil {
+		return true
+	}
+	return resp != nil && (resp.StatusCode == http.StatusTooManyRequests || resp.StatusCode >= http.StatusInternalServerError)
+}
+
+func isRetryableRequest(req *http.Request) bool {
+	switch req.Method {
+	case http.MethodDelete, http.MethodGet, http.MethodHead, http.MethodOptions, http.MethodPut:
+		return true
+	default:
+		return false
+	}
+}
+
 // retryAfterDuration parses the Retry-After header from an HTTP response.
 // Returns 0 if the header is missing or unparseable.
 func retryAfterDuration(resp *http.Response) time.Duration {
+	if resp == nil {
+		return 0
+	}
 	val := resp.Header.Get("Retry-After")
 	if val == "" {
 		return 0
