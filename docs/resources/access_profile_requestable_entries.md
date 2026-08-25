@@ -9,9 +9,9 @@ description: |-
 
 AccessProfileRequestableEntries Resource
 
-This resource allows you to manage requestable entitlements for a specific request access profile in ConductorOne.
-When creating a `access_profile_requestable_entries` resource you must provide a `access_profile_id`, and specify the `app_id` and `id` of at least one app entitlement.
-The entitlements you define here will be requestable by users who have access to the specified access profile.
+This resource manages the requestable entitlements declared by this block for a specific access profile in ConductorOne.
+Multiple `access_profile_requestable_entries` resources can target the same `catalog_id`; each manages only its declared entitlements.
+Specify the `app_id` and `id` for every entitlement that this resource should make requestable.
 
 ## Example Usage
 
@@ -61,7 +61,7 @@ Requires replacement if changed.
 <a id="nestedatt--app_entitlements"></a>
 ### Nested Schema for `app_entitlements`
 
-Optional:
+Required:
 
 - `app_id` (String) The appId field.
 - `id` (String) The id field.
