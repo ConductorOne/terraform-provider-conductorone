@@ -11,9 +11,7 @@ func normalizeOktaDomain(domain string) string {
 		return ""
 	}
 	hostname, suffix, hasSuffix := strings.Cut(domain, ".")
-	if strings.HasSuffix(hostname, "-admin") {
-		hostname = strings.TrimSuffix(hostname, "-admin")
-	}
+	hostname = strings.TrimSuffix(hostname, "-admin")
 	if hasSuffix {
 		return hostname + "." + suffix
 	}
