@@ -77,18 +77,45 @@ func TestOktaDomainPlanModifier(t *testing.T) {
 }
 
 // TestPopulateConfigNormalizesDomain verifies the production create/update
-// path emits the normalized domain into the config map sent to the API.
+// path emits the normalized domain into the config map sent to the API, for
+// all 4 Okta resources. Each row seeds the model with the raw admin domain and
+// asserts the outbound config value is the normalized form, so reverting the
+// normalizeOktaDomain call in any one of the 4 populateConfig() methods fails
+// that row.
 func TestPopulateConfigNormalizesDomain(t *testing.T) {
-	r := IntegrationOktaV2ResourceModel{
-		OktaV2Domain: types.StringValue("integrator-3535680-admin.okta.com"),
+	tests := []struct {
+		name string
+		key  string
+		run  func() map[string]interface{}
+	}{
+		{"okta", "okta_domain", func() map[string]interface{} {
+			r := IntegrationOktaResourceModel{OktaDomain: types.StringValue("integrator-3535680-admin.okta.com")}
+			return r.populateConfig()
+		}},
+		{"okta_v2", "okta_v2_domain", func() map[string]interface{} {
+			r := IntegrationOktaV2ResourceModel{OktaV2Domain: types.StringValue("integrator-3535680-admin.okta.com")}
+			return r.populateConfig()
+		}},
+		{"okta_ciam", "okta_ciam_domain", func() map[string]interface{} {
+			r := IntegrationOktaCiamResourceModel{OktaCiamDomain: types.StringValue("integrator-3535680-admin.okta.com")}
+			return r.populateConfig()
+		}},
+		{"okta_aws_federation", "okta_aws_federation_domain", func() map[string]interface{} {
+			r := IntegrationOktaAwsFederationResourceModel{OktaAwsFederationDomain: types.StringValue("integrator-3535680-admin.okta.com")}
+			return r.populateConfig()
+		}},
 	}
-	config := r.populateConfig()
-	got, ok := config["okta_v2_domain"].(*string)
-	if !ok || got == nil {
-		t.Fatalf("config[okta_v2_domain] = %#v, want *string", config["okta_v2_domain"])
-	}
-	if *got != "integrator-3535680.okta.com" {
-		t.Errorf("populateConfig domain = %q, want %q", *got, "integrator-3535680.okta.com")
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			config := tt.run()
+			got, ok := config[tt.key].(*string)
+			if !ok || got == nil {
+				t.Fatalf("config[%s] = %#v, want *string", tt.key, config[tt.key])
+			}
+			if *got != "integrator-3535680.okta.com" {
+				t.Errorf("populateConfig domain = %q, want %q", *got, "integrator-3535680.okta.com")
+			}
+		})
 	}
 }
 
