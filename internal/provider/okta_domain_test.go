@@ -4,6 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -24,7 +26,7 @@ func TestNormalizeOktaDomain(t *testing.T) {
 		{"admin in middle of hostname unchanged", "foo-admin-bar.okta.com", "foo-admin-bar.okta.com"},
 		{"admin suffix oktapreview tld", "tenant-admin.oktapreview.com", "tenant.oktapreview.com"},
 		{"admin suffix okta-emea tld", "tenant-admin.okta-emea.com", "tenant.okta-emea.com"},
-				{"double admin suffix", "tenant-admin-admin.okta.com", "tenant.okta.com"},
+		{"double admin suffix", "tenant-admin-admin.okta.com", "tenant.okta.com"},
 		{"admin in non-first component unchanged", "tenant.okta-admin.com", "tenant.okta-admin.com"},
 		{"uppercase admin suffix unchanged", "Tenant-ADMIN.okta.com", "Tenant-ADMIN.okta.com"},
 		{"leading whitespace preserved", " tenant-admin.okta.com", " tenant.okta.com"},
@@ -86,12 +88,55 @@ func TestOktaDomainPlanModifier(t *testing.T) {
 
 	t.Run("normalizes prior-state admin domain on replan", func(t *testing.T) {
 		// Historical-state convergence: a pre-existing connector whose state
-		// holds the admin form must plan to the normalized value.
-		req := planmodifier.StringRequest{PlanValue: types.StringValue("tenant-admin.okta.com")}
+		// holds the admin form must plan to the normalized value. The plan
+		// value comes from config (admin form); the modifier must normalize it
+		// so plan == state after the corrective apply.
+		req := planmodifier.StringRequest{
+			PlanValue:  types.StringValue("tenant-admin.okta.com"),
+			StateValue: types.StringValue("tenant-admin.okta.com"),
+		}
 		resp := &planmodifier.StringResponse{}
 		m.PlanModifyString(ctx, req, resp)
 		if got, want := resp.PlanValue.ValueString(), "tenant.okta.com"; got != want {
 			t.Errorf("PlanModifyString = %q, want %q", got, want)
 		}
 	})
+}
+
+func TestOktaDomainAttributesHavePlanModifier(t *testing.T) {
+	ctx := context.Background()
+	resources := []struct {
+		name     string
+		schema   func(context.Context, resource.SchemaRequest, *resource.SchemaResponse)
+		attrName string
+	}{
+		{"okta", (&IntegrationOktaResource{}).Schema, "okta_domain"},
+		{"okta_v2", (&IntegrationOktaV2Resource{}).Schema, "okta_v2_domain"},
+		{"okta_ciam", (&IntegrationOktaCiamResource{}).Schema, "okta_ciam_domain"},
+		{"okta_aws_federation", (&IntegrationOktaAwsFederationResource{}).Schema, "okta_aws_federation_domain"},
+	}
+	for _, tt := range resources {
+		t.Run(tt.name, func(t *testing.T) {
+			req := resource.SchemaRequest{}
+			resp := &resource.SchemaResponse{}
+			tt.schema(ctx, req, resp)
+			attr, ok := resp.Schema.Attributes[tt.attrName]
+			if !ok {
+				t.Fatalf("schema missing attribute %q", tt.attrName)
+			}
+			strAttr, ok := attr.(*schema.StringAttribute)
+			if !ok {
+				t.Fatalf("attribute %q is not a StringAttribute", tt.attrName)
+			}
+			found := false
+			for _, pm := range strAttr.PlanModifiers {
+				if _, ok := pm.(oktaDomainPlanModifier); ok {
+					found = true
+				}
+			}
+			if !found {
+				t.Errorf("attribute %q missing oktaDomainPlanModifier in PlanModifiers", tt.attrName)
+			}
+		})
+	}
 }
