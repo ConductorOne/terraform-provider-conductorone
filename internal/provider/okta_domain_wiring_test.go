@@ -51,6 +51,41 @@ func TestPopulateConfigNormalizesOktaDomain(t *testing.T) {
 	}
 }
 
+func TestRefreshFromCreateResponseNormalizesOktaDomain(t *testing.T) {
+	tests := []struct {
+		name  string
+		check func() string
+	}{
+		{"okta", func() string {
+			m := IntegrationOktaResourceModel{}
+			m.RefreshFromCreateResponse(connectorWithDomain("okta_domain", "tenant-admin.okta.com"))
+			return m.OktaDomain.ValueString()
+		}},
+		{"okta_v2", func() string {
+			m := IntegrationOktaV2ResourceModel{}
+			m.RefreshFromCreateResponse(connectorWithDomain("okta_v2_domain", "tenant-admin.okta.com"))
+			return m.OktaV2Domain.ValueString()
+		}},
+		{"okta_ciam", func() string {
+			m := IntegrationOktaCiamResourceModel{}
+			m.RefreshFromCreateResponse(connectorWithDomain("okta_ciam_domain", "tenant-admin.okta.com"))
+			return m.OktaCiamDomain.ValueString()
+		}},
+		{"okta_aws_federation", func() string {
+			m := IntegrationOktaAwsFederationResourceModel{}
+			m.RefreshFromCreateResponse(connectorWithDomain("okta_aws_federation_domain", "tenant-admin.okta.com"))
+			return m.OktaAwsFederationDomain.ValueString()
+		}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.check(); got != "tenant.okta.com" {
+				t.Errorf("RefreshFromCreateResponse normalized domain = %q, want %q", got, "tenant.okta.com")
+			}
+		})
+	}
+}
+
 func TestRefreshFromGetResponseNormalizesOktaDomain(t *testing.T) {
 	tests := []struct {
 		name  string

@@ -1,6 +1,12 @@
 package provider
 
-import "testing"
+import (
+	"context"
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
 
 func TestNormalizeOktaDomain(t *testing.T) {
 	tests := []struct {
@@ -18,6 +24,7 @@ func TestNormalizeOktaDomain(t *testing.T) {
 		{"admin in middle of hostname unchanged", "foo-admin-bar.okta.com", "foo-admin-bar.okta.com"},
 		{"admin suffix oktapreview tld", "tenant-admin.oktapreview.com", "tenant.oktapreview.com"},
 		{"admin suffix okta-emea tld", "tenant-admin.okta-emea.com", "tenant.okta-emea.com"},
+				{"double admin suffix", "tenant-admin-admin.okta.com", "tenant.okta.com"},
 		{"admin in non-first component unchanged", "tenant.okta-admin.com", "tenant.okta-admin.com"},
 		{"uppercase admin suffix unchanged", "Tenant-ADMIN.okta.com", "Tenant-ADMIN.okta.com"},
 		{"leading whitespace preserved", " tenant-admin.okta.com", " tenant.okta.com"},
@@ -35,4 +42,56 @@ func TestNormalizeOktaDomain(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestOktaDomainPlanModifier(t *testing.T) {
+	ctx := context.Background()
+	m := oktaDomainPlanModifier{}
+
+	t.Run("normalizes known admin domain", func(t *testing.T) {
+		req := planmodifier.StringRequest{PlanValue: types.StringValue("tenant-admin.okta.com")}
+		resp := &planmodifier.StringResponse{}
+		m.PlanModifyString(ctx, req, resp)
+		if got, want := resp.PlanValue.ValueString(), "tenant.okta.com"; got != want {
+			t.Errorf("PlanModifyString = %q, want %q", got, want)
+		}
+	})
+
+	t.Run("leaves already-normalized value unchanged", func(t *testing.T) {
+		req := planmodifier.StringRequest{PlanValue: types.StringValue("tenant.okta.com")}
+		resp := &planmodifier.StringResponse{}
+		m.PlanModifyString(ctx, req, resp)
+		if got, want := resp.PlanValue.ValueString(), "tenant.okta.com"; got != want {
+			t.Errorf("PlanModifyString = %q, want %q", got, want)
+		}
+	})
+
+	t.Run("passes through null", func(t *testing.T) {
+		req := planmodifier.StringRequest{PlanValue: types.StringNull()}
+		resp := &planmodifier.StringResponse{}
+		m.PlanModifyString(ctx, req, resp)
+		if !resp.PlanValue.IsNull() {
+			t.Errorf("PlanModifyString(null) = %v, want null", resp.PlanValue)
+		}
+	})
+
+	t.Run("passes through unknown", func(t *testing.T) {
+		req := planmodifier.StringRequest{PlanValue: types.StringUnknown()}
+		resp := &planmodifier.StringResponse{}
+		m.PlanModifyString(ctx, req, resp)
+		if !resp.PlanValue.IsUnknown() {
+			t.Errorf("PlanModifyString(unknown) = %v, want unknown", resp.PlanValue)
+		}
+	})
+
+	t.Run("normalizes prior-state admin domain on replan", func(t *testing.T) {
+		// Historical-state convergence: a pre-existing connector whose state
+		// holds the admin form must plan to the normalized value.
+		req := planmodifier.StringRequest{PlanValue: types.StringValue("tenant-admin.okta.com")}
+		resp := &planmodifier.StringResponse{}
+		m.PlanModifyString(ctx, req, resp)
+		if got, want := resp.PlanValue.ValueString(), "tenant.okta.com"; got != want {
+			t.Errorf("PlanModifyString = %q, want %q", got, want)
+		}
+	})
 }
