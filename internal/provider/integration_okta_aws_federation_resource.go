@@ -97,6 +97,9 @@ func (r *IntegrationOktaAwsFederationResource) Schema(ctx context.Context, req r
 			"okta_aws_federation_domain": &schema.StringAttribute{
 				Optional:    true,
 				Description: `Okta domain`,
+				PlanModifiers: []planmodifier.String{
+					normalizeOktaDomainPlanModifier(),
+				},
 			},
 			"okta_aws_federation_api_token": &schema.StringAttribute{
 				Optional:    true,
