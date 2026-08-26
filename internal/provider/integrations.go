@@ -122,6 +122,7 @@ func getIntegrationResources() []func() resource.Resource {
 		NewIntegrationSumoLogicResource,
 		NewIntegrationTableauResource,
 		NewIntegrationTailscaleResource,
+		NewIntegrationTailscaleV2Resource,
 		NewIntegrationTeamcityResource,
 		NewIntegrationTemporalCloudResource,
 		NewIntegrationTenableVmResource,
