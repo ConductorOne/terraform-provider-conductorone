@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
@@ -272,7 +273,11 @@ func (r *UsersDataSourceModel) RefreshFromSharedSearchUsersResponse(ctx context.
 					if listItem.User.Profile == nil {
 						list.User.Profile = nil
 					} else {
-						list.User.Profile = &tfTypes.UserProfile{}
+						profile := tfTypes.UserProfile(make(map[string]types.String, len(*listItem.User.Profile)))
+						for key, value := range *listItem.User.Profile {
+							profile[key] = types.StringValue(fmt.Sprintf("%v", value))
+						}
+						list.User.Profile = &profile
 					}
 					if listItem.User.RoleIds != nil {
 						if list.User.RoleIds == nil {

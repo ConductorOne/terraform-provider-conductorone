@@ -37,6 +37,26 @@ func TestAccDataSourceUserProfile(t *testing.T) {
 					}),
 				),
 			},
+			{
+				Config: providerConfig + fmt.Sprintf(`
+				data "conductorone_users" "profile_test" {
+					email = %q
+				}
+				`, email),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrSet("data.conductorone_users.profile_test", "list.0.user.id"),
+					resource.TestCheckResourceAttrWith("data.conductorone_users.profile_test", "list.0.user.profile", func(value string) error {
+						var profile map[string]interface{}
+						if err := json.Unmarshal([]byte(value), &profile); err != nil {
+							return fmt.Errorf("profile is not a JSON object: %w (value: %s)", err, value)
+						}
+						if len(profile) == 0 {
+							return fmt.Errorf("profile is empty: %s", value)
+						}
+						return nil
+					}),
+				),
+			},
 		},
 	})
 }

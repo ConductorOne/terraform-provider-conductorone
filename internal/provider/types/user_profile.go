@@ -2,5 +2,8 @@
 
 package types
 
-type UserProfile struct {
-}
+import (
+	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
+type UserProfile map[string]types.String
