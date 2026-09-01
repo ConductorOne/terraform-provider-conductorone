@@ -26,6 +26,40 @@ func (e *RequestCatalogManagementServiceCreateRequestEnrollmentBehavior) IsExact
 	return false
 }
 
+// RequestCatalogManagementServiceCreateRequestType - The type of access profile to create. Leave unset for
+//
+//	REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE, which is what every profile
+//	created before this field existed is. Setting it requires the
+//	ACCESS_PROFILE_TYPES feature.
+//
+//	PROFILE is rejected rather than resolved: it is deprecated, has no stored
+//	counterpart, and shares wire number 2 with the stored BUNDLE, so honoring
+//	it would silently persist a type the caller did not ask for.
+type RequestCatalogManagementServiceCreateRequestType string
+
+const (
+	RequestCatalogManagementServiceCreateRequestTypeRequestCatalogTypeUnspecified      RequestCatalogManagementServiceCreateRequestType = "REQUEST_CATALOG_TYPE_UNSPECIFIED"
+	RequestCatalogManagementServiceCreateRequestTypeRequestCatalogTypeCatalog          RequestCatalogManagementServiceCreateRequestType = "REQUEST_CATALOG_TYPE_CATALOG"
+	RequestCatalogManagementServiceCreateRequestTypeRequestCatalogTypeProfile          RequestCatalogManagementServiceCreateRequestType = "REQUEST_CATALOG_TYPE_PROFILE"
+	RequestCatalogManagementServiceCreateRequestTypeRequestCatalogTypeCatalogAndBundle RequestCatalogManagementServiceCreateRequestType = "REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE"
+	RequestCatalogManagementServiceCreateRequestTypeRequestCatalogTypeBundle           RequestCatalogManagementServiceCreateRequestType = "REQUEST_CATALOG_TYPE_BUNDLE"
+)
+
+func (e RequestCatalogManagementServiceCreateRequestType) ToPointer() *RequestCatalogManagementServiceCreateRequestType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCatalogManagementServiceCreateRequestType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REQUEST_CATALOG_TYPE_UNSPECIFIED", "REQUEST_CATALOG_TYPE_CATALOG", "REQUEST_CATALOG_TYPE_PROFILE", "REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE", "REQUEST_CATALOG_TYPE_BUNDLE":
+			return true
+		}
+	}
+	return false
+}
+
 // RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior - Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
 type RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior string
 
@@ -96,6 +130,15 @@ type RequestCatalogManagementServiceCreateRequest struct {
 	Published *bool `json:"published,omitempty"`
 	// Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
 	RequestBundle *bool `json:"requestBundle,omitempty"`
+	// The type of access profile to create. Leave unset for
+	//  REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE, which is what every profile
+	//  created before this field existed is. Setting it requires the
+	//  ACCESS_PROFILE_TYPES feature.
+	//
+	//  PROFILE is rejected rather than resolved: it is deprecated, has no stored
+	//  counterpart, and shares wire number 2 with the stored BUNDLE, so honoring
+	//  it would silently persist a type the caller did not ask for.
+	Type *RequestCatalogManagementServiceCreateRequestType `json:"type,omitempty"`
 	// Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
 	UnenrollmentBehavior *RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
 	// Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
@@ -144,6 +187,13 @@ func (r *RequestCatalogManagementServiceCreateRequest) GetRequestBundle() *bool 
 		return nil
 	}
 	return r.RequestBundle
+}
+
+func (r *RequestCatalogManagementServiceCreateRequest) GetType() *RequestCatalogManagementServiceCreateRequestType {
+	if r == nil {
+		return nil
+	}
+	return r.Type
 }
 
 func (r *RequestCatalogManagementServiceCreateRequest) GetUnenrollmentBehavior() *RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior {

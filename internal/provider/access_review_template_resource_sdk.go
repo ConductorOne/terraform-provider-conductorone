@@ -147,6 +147,13 @@ func (r *AccessReviewTemplateResourceModel) RefreshFromSharedAccessReviewTemplat
 			}
 		}
 		r.IsCampaignScheduleEnabled = types.BoolPointerValue(resp.IsCampaignScheduleEnabled)
+		if resp.MsTeamsChannel == nil {
+			r.MsTeamsChannel = nil
+		} else {
+			r.MsTeamsChannel = &tfTypes.MSTeamsChannel{}
+			r.MsTeamsChannel.ChannelName = types.StringPointerValue(resp.MsTeamsChannel.ChannelName)
+			r.MsTeamsChannel.ExternalDirectoryID = types.StringPointerValue(resp.MsTeamsChannel.ExternalDirectoryID)
+		}
 		r.NextScheduledCampaignAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextScheduledCampaignAt))
 		if resp.NotificationConfig == nil {
 			r.NotificationConfig = nil
@@ -765,6 +772,25 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 	} else {
 		isCampaignScheduleEnabled = nil
 	}
+	var msTeamsChannel *shared.MSTeamsChannel
+	if r.MsTeamsChannel != nil {
+		channelName := new(string)
+		if !r.MsTeamsChannel.ChannelName.IsUnknown() && !r.MsTeamsChannel.ChannelName.IsNull() {
+			*channelName = r.MsTeamsChannel.ChannelName.ValueString()
+		} else {
+			channelName = nil
+		}
+		externalDirectoryID := new(string)
+		if !r.MsTeamsChannel.ExternalDirectoryID.IsUnknown() && !r.MsTeamsChannel.ExternalDirectoryID.IsNull() {
+			*externalDirectoryID = r.MsTeamsChannel.ExternalDirectoryID.ValueString()
+		} else {
+			externalDirectoryID = nil
+		}
+		msTeamsChannel = &shared.MSTeamsChannel{
+			ChannelName:         channelName,
+			ExternalDirectoryID: externalDirectoryID,
+		}
+	}
 	nextScheduledCampaignAt := new(time.Time)
 	if !r.NextScheduledCampaignAt.IsUnknown() && !r.NextScheduledCampaignAt.IsNull() {
 		*nextScheduledCampaignAt, _ = time.Parse(time.RFC3339Nano, r.NextScheduledCampaignAt.ValueString())
@@ -1305,6 +1331,7 @@ func (r *AccessReviewTemplateResourceModel) ToSharedAccessReviewTemplateInput(ct
 		ID:                             id,
 		InclusionScope:                 inclusionScope,
 		IsCampaignScheduleEnabled:      isCampaignScheduleEnabled,
+		MsTeamsChannel:                 msTeamsChannel,
 		NextScheduledCampaignAt:        nextScheduledCampaignAt,
 		NotificationConfig:             notificationConfig,
 		Occurrences:                    occurrences,

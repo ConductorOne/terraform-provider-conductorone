@@ -17,6 +17,7 @@ type RequestCatalog struct {
 	ID                              types.String            `tfsdk:"id"`
 	Published                       types.Bool              `tfsdk:"published"`
 	RequestBundle                   types.Bool              `tfsdk:"request_bundle"`
+	Type                            types.String            `tfsdk:"type"`
 	UnenrollmentBehavior            types.String            `tfsdk:"unenrollment_behavior"`
 	UnenrollmentEntitlementBehavior types.String            `tfsdk:"unenrollment_entitlement_behavior"`
 	UpdatedAt                       types.String            `tfsdk:"updated_at"`

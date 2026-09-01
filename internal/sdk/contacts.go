@@ -31,7 +31,9 @@ func newContacts(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, ho
 }
 
 // GetContacts - Get Contacts
-// Invokes the c1.api.settings.v1.ContactsService.GetContacts method.
+// GetContacts returns the organization's security, billing, and operations
+//
+//	contact email addresses.
 func (s *Contacts) GetContacts(ctx context.Context, opts ...operations.Option) (*operations.C1APISettingsV1ContactsServiceGetContactsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -161,7 +163,11 @@ func (s *Contacts) GetContacts(ctx context.Context, opts ...operations.Option) (
 }
 
 // UpdateContacts - Update Contacts
-// Invokes the c1.api.settings.v1.ContactsService.UpdateContacts method.
+// UpdateContacts updates the organization's security, billing, and
+//
+//	operations contact email addresses. If update_mask is set, only the
+//	selected fields are changed; otherwise all contact fields are replaced
+//	with the values in the request.
 func (s *Contacts) UpdateContacts(ctx context.Context, request *shared.UpdateContactsRequest, opts ...operations.Option) (*operations.C1APISettingsV1ContactsServiceUpdateContactsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

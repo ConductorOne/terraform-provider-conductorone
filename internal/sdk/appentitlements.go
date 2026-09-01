@@ -30,7 +30,11 @@ func newAppEntitlements(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfigurat
 }
 
 // List
-// List app entitlements associated with an app.
+// List app entitlements associated with an app. Query parameters are
+//
+//	accepted in snake_case (page_size, page_token, app_user_id) and, as a
+//	compatibility shim, their camelCase equivalents (pageSize, pageToken,
+//	appUserId).
 func (s *AppEntitlements) List(ctx context.Context, request operations.C1APIAppV1AppEntitlementsListRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -302,6 +306,8 @@ func (s *AppEntitlements) Create(ctx context.Context, request operations.C1APIAp
 
 // AddManuallyManagedMembers - Add Manually Managed Members
 // Add users as manually managed members of an app entitlement. These memberships are tracked directly by ConductorOne rather than synced from the app.
+//
+//	Adding members to an access profile's enrollment entitlement requires the JML feature; without it the request fails with a failed-precondition error.
 func (s *AppEntitlements) AddManuallyManagedMembers(ctx context.Context, request operations.C1APIAppV1AppEntitlementsAddManuallyManagedMembersRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsAddManuallyManagedMembersResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -1393,6 +1399,8 @@ func (s *AppEntitlements) UpdateAutomation(ctx context.Context, request operatio
 //	removal behavior applies. When the SSO provider feature is enabled, an SSO
 //	application's sign-in entitlement removes only direct manual access and
 //	preserves independent requested, connector, and group-derived access.
+//	Removing a member from an access profile requires the JML feature; without
+//	it the request fails with a failed-precondition error.
 func (s *AppEntitlements) RemoveEntitlementMembership(ctx context.Context, request operations.C1APIAppV1AppEntitlementsRemoveEntitlementMembershipRequest, opts ...operations.Option) (*operations.C1APIAppV1AppEntitlementsRemoveEntitlementMembershipResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

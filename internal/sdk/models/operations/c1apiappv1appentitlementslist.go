@@ -9,8 +9,10 @@ import (
 
 type C1APIAppV1AppEntitlementsListRequest struct {
 	AppID     string  `pathParam:"style=simple,explode=false,name=app_id"`
+	AppUserID *string `queryParam:"style=form,explode=true,name=app_user_id"`
 	PageSize  *int    `queryParam:"style=form,explode=true,name=page_size"`
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
+	Q         *string `queryParam:"style=form,explode=true,name=q"`
 }
 
 func (c *C1APIAppV1AppEntitlementsListRequest) GetAppID() string {
@@ -18,6 +20,13 @@ func (c *C1APIAppV1AppEntitlementsListRequest) GetAppID() string {
 		return ""
 	}
 	return c.AppID
+}
+
+func (c *C1APIAppV1AppEntitlementsListRequest) GetAppUserID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AppUserID
 }
 
 func (c *C1APIAppV1AppEntitlementsListRequest) GetPageSize() *int {
@@ -32,6 +41,13 @@ func (c *C1APIAppV1AppEntitlementsListRequest) GetPageToken() *string {
 		return nil
 	}
 	return c.PageToken
+}
+
+func (c *C1APIAppV1AppEntitlementsListRequest) GetQ() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Q
 }
 
 // #region class-body-c1apiappv1appentitlementslistrequest

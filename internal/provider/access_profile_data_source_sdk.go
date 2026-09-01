@@ -34,6 +34,11 @@ func (r *AccessProfileDataSourceModel) RefreshFromSharedRequestCatalog(ctx conte
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Published = types.BoolPointerValue(resp.Published)
 		r.RequestBundle = types.BoolPointerValue(resp.RequestBundle)
+		if resp.Type != nil {
+			r.Type = types.StringValue(string(*resp.Type))
+		} else {
+			r.Type = types.StringNull()
+		}
 		if resp.UnenrollmentBehavior != nil {
 			r.UnenrollmentBehavior = types.StringValue(string(*resp.UnenrollmentBehavior))
 		} else {

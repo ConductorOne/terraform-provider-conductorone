@@ -2441,6 +2441,7 @@ components:
                             - ACCESS_REVIEW_REPORT_COLUMN_SUBMISSIONS
                             - ACCESS_REVIEW_REPORT_COLUMN_EXTERNAL_TICKET
                             - ACCESS_REVIEW_REPORT_COLUMN_EXTERNAL_TICKET_STATUS
+                            - ACCESS_REVIEW_REPORT_COLUMN_SUBJECT_USERNAME
                         type: string
                         x-speakeasy-unknown-values: allow
                     type:
@@ -3041,6 +3042,7 @@ components:
 
                 This message contains a oneof named slack_channel_details. Only a single field of the following list may be set at a time:
                   - slackChannel
+                  - msTeamsChannel
             properties:
                 accessReviewDuration:
                     format: duration
@@ -3139,6 +3141,10 @@ components:
                 isCampaignScheduleEnabled:
                     description: Whether automatic campaign creation on the recurrence schedule is enabled.
                     type: boolean
+                msTeamsChannel:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.accessreview.v1.MSTeamsChannel'
+                        - type: "null"
                 nextScheduledCampaignAt:
                     format: date-time
                     type:
@@ -3845,6 +3851,18 @@ components:
             title: Included User Attribute Values
             type: object
             x-speakeasy-name-override: IncludedUserAttributeValues
+        c1.api.accessreview.v1.MSTeamsChannel:
+            description: The MSTeamsChannel message.
+            properties:
+                channelName:
+                    description: The channelName field.
+                    type: string
+                externalDirectoryId:
+                    description: The externalDirectoryId field.
+                    type: string
+            title: Ms Teams Channel
+            type: object
+            x-speakeasy-name-override: MSTeamsChannel
         c1.api.accessreview.v1.MultiAppEntitlement:
             description: The MultiAppEntitlement message.
             properties:
@@ -3906,7 +3924,9 @@ components:
                         - string
                         - "null"
                 frequency:
-                    description: The frequency field.
+                    description: |-
+                        Frequency of the recurrence: FREQUENCY_DAILY, FREQUENCY_WEEKLY, FREQUENCY_MONTHLY, or FREQUENCY_YEARLY.
+                         Use FREQUENCY_NONE for a non-recurring schedule.
                     enum:
                         - FREQUENCY_UNSPECIFIED
                         - FREQUENCY_NONE
@@ -3934,6 +3954,8 @@ components:
                     type:
                         - string
                         - "null"
+            required:
+                - frequency
             title: Recurrence Rule
             type: object
             x-speakeasy-name-override: RecurrenceRule
@@ -5861,6 +5883,18 @@ components:
         c1.api.ai_governance.v1.MCPServerServiceRegisterRequestInput:
             description: MCPServerServiceRegisterRequest creates a new MCP server (Connector + config).
             properties:
+                accessProfileIds:
+                    description: |-
+                        Optional access profiles (request catalogs) the server should be requestable
+                         through. Register creates the server's "All approved tools" toolset empty and adds
+                         its entitlement to each profile, so members can request the server before discovery
+                         has found a single tool; the sync later adopts the same toolset and fills it. Empty
+                         skips both steps.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
                 acknowledgedFindingIds:
                     description: |-
                         finding_ids from the diagnostic the admin acknowledged. Each must cover a
@@ -5965,6 +5999,13 @@ components:
         c1.api.ai_governance.v1.MCPServerServiceRegisterResponse:
             description: MCPServerServiceRegisterResponse returns the newly created MCP server.
             properties:
+                accessProfilesAttached:
+                    description: |-
+                        Whether the "All approved tools" toolset reached every profile in
+                         access_profile_ids. False means the server registered but the attach failed
+                         afterwards, and the profiles have to be wired from the server page. Always true
+                         when access_profile_ids was empty, since there was nothing to attach.
+                    type: boolean
                 mcpServer:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.ai_governance.v1.MCPServerView'
@@ -6269,6 +6310,13 @@ components:
                     description: Endpoint URL for external MCP servers. Read-only.
                     readOnly: true
                     type: string
+                endpointUrlLocked:
+                    description: |-
+                        Whether the endpoint URL is immutable. True once the connector has
+                         completed its first successful sync; the URL cannot be changed after
+                         that point. Read-only.
+                    readOnly: true
+                    type: boolean
                 lastCalledAt:
                     format: date-time
                     readOnly: true
@@ -20382,6 +20430,43 @@ components:
             title: Bulk Reopen Action
             type: object
             x-speakeasy-name-override: BulkReopenAction
+        c1.api.finding.v1.BulkReprocessAction:
+            description: |-
+                BulkReprocessAction re-evaluates eligible findings against transformation
+                 and routing rules using each finding's original detector-created state
+                 (original severity, original annotations) rather than any rule-mutated
+                 current state.
+
+                 `override_human_edits` chooses how far re-derivation goes for
+                 human-attributed edits:
+
+                   - Open findings are re-derived and re-routed in both modes.
+                   - Findings parked by a rule (snoozed, suppressed, or risk-accepted by a
+                     routing rule with no subsequent human action) are released to open,
+                     re-derived, and re-routed in both modes.
+                   - Findings parked by a person re-derive their content in both modes, but
+                     the state is only released, and a human severity override only cleared,
+                     when `override_human_edits` is true.
+                   - Findings in progress re-derive their content and keep both their state
+                     and any linked ticket in both modes.
+                   - Resolved, archived, and deleted findings are skipped in both modes.
+
+                 Assigned owners and ticket links are never touched; rules do not derive them.
+            properties:
+                overrideHumanEdits:
+                    description: |-
+                        When false (the default), a person's parked state and severity override
+                         survive the re-derivation. When true, reprocessing additionally releases
+                         findings a person parked and clears human severity overrides.
+                    type: boolean
+                runDispatchers:
+                    description: |-
+                        When true, matched rules may re-send notification dispatches for
+                         findings your team may have already seen. Off by default.
+                    type: boolean
+            title: Bulk Reprocess Action
+            type: object
+            x-speakeasy-name-override: BulkReprocessAction
         c1.api.finding.v1.BulkSnoozeAction:
             description: The BulkSnoozeAction message.
             properties:
@@ -20422,6 +20507,7 @@ components:
                   - unsuppress
                   - assignOwner
                   - reopen
+                  - reprocess
             properties:
                 acceptRisk:
                     oneOf:
@@ -20441,6 +20527,10 @@ components:
                 reopen:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.finding.v1.BulkReopenAction'
+                        - type: "null"
+                reprocess:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.finding.v1.BulkReprocessAction'
                         - type: "null"
                 searchRequest:
                     oneOf:
@@ -20478,6 +20568,41 @@ components:
             title: Connector Anomaly Detection Disabled Type
             type: object
             x-speakeasy-name-override: ConnectorAnomalyDetectionDisabledType
+        c1.api.finding.v1.ConnectorSyncFailingEvidence:
+            description: |-
+                ConnectorSyncFailingEvidence describes the failure streak behind a
+                 CONNECTOR_SYNC_FAILING finding, refreshed on every re-observation.
+            properties:
+                consecutiveFailureCount:
+                    description: The consecutiveFailureCount field.
+                    format: uint32
+                    type: integer
+                lastFailedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                lastSyncLifecycleId:
+                    description: |-
+                        Id of the newest failing sync run, not a copy of its error text -- see the
+                         c1models message for why the error itself is deliberately not carried here.
+                    type: string
+                streakStartedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+            title: Connector Sync Failing Evidence
+            type: object
+            x-speakeasy-name-override: ConnectorSyncFailingEvidence
+        c1.api.finding.v1.ConnectorSyncFailingType:
+            description: |-
+                ConnectorSyncFailingType: a connector's completed sync runs have ended in
+                 error for at least two consecutive runs, with no intervening success.
+                 Target: ConnectorTarget.
+            title: Connector Sync Failing Type
+            type: object
+            x-speakeasy-name-override: ConnectorSyncFailingType
         c1.api.finding.v1.ConnectorTarget:
             description: ConnectorTarget points at the connector that produced this finding.
             properties:
@@ -20823,9 +20948,9 @@ components:
         c1.api.finding.v1.DeactivatedOwnerType:
             description: |-
                 DeactivatedOwnerType: the human responsible for a target -- either the
-                 AppUser's own correlated identity, or the ownership_v2-assigned owner of an
-                 AppResource/service-account AppUser -- is deactivated. Target: AppUserTarget
-                 or AppResourceTarget.
+                 AppUser's own correlated identity, an ownership_v2-assigned owner, or a
+                 secret's run-as identity is deactivated. Target: AppUserTarget or
+                 AppResourceTarget.
             properties:
                 source:
                     description: The source field.
@@ -20833,6 +20958,7 @@ components:
                         - DEACTIVATED_OWNER_SOURCE_UNSPECIFIED
                         - DEACTIVATED_OWNER_SOURCE_IDENTITY_CORRELATION
                         - DEACTIVATED_OWNER_SOURCE_OWNERSHIP_ASSIGNED
+                        - DEACTIVATED_OWNER_SOURCE_SECRET_RUN_AS_IDENTITY
                     type: string
                     x-speakeasy-unknown-values: allow
             title: Deactivated Owner Type
@@ -20961,6 +21087,7 @@ components:
                   - credentialPubliclyExposed
                   - decoyPubliclyExposed
                   - credentialExpiring
+                  - connectorSyncFailing
 
 
                 This message contains a oneof named target. Only a single field of the following list may be set at a time:
@@ -20980,6 +21107,7 @@ components:
                   - credentialPubliclyExposedEvidence
                   - decoyPubliclyExposedEvidence
                   - credentialExpiringEvidence
+                  - connectorSyncFailingEvidence
             properties:
                 annotations:
                     additionalProperties:
@@ -21016,6 +21144,14 @@ components:
                 connectorAnomalyDetectionDisabled:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.finding.v1.ConnectorAnomalyDetectionDisabledType'
+                        - type: "null"
+                connectorSyncFailing:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.finding.v1.ConnectorSyncFailingType'
+                        - type: "null"
+                connectorSyncFailingEvidence:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.finding.v1.ConnectorSyncFailingEvidence'
                         - type: "null"
                 connectorTarget:
                     oneOf:
@@ -21209,7 +21345,10 @@ components:
                     type: string
                     x-speakeasy-unknown-values: allow
                 stateUpdatedById:
-                    description: The stateUpdatedById field.
+                    description: |-
+                        The human who authored the CURRENT state. Empty when a routing rule or the
+                         system authored it, so do not read a populated value as "this finding has a
+                         human owner" -- read it as "a human set the state it is in right now".
                     type: string
                 suppressReason:
                     description: The suppressReason field.
@@ -21319,6 +21458,8 @@ components:
                         - FINDING_AUDIT_EVENT_TYPE_EVIDENCE_UPDATED
                         - FINDING_AUDIT_EVENT_TYPE_ROUTING_EVALUATED
                         - FINDING_AUDIT_EVENT_TYPE_TRANSFORMED
+                        - FINDING_AUDIT_EVENT_TYPE_REPROCESS_REQUESTED
+                        - FINDING_AUDIT_EVENT_TYPE_REPROCESS_COMPLETED
                     type: string
                     x-speakeasy-unknown-values: allow
                 findingId:
@@ -21395,6 +21536,8 @@ components:
                             - FINDING_AUDIT_EVENT_TYPE_EVIDENCE_UPDATED
                             - FINDING_AUDIT_EVENT_TYPE_ROUTING_EVALUATED
                             - FINDING_AUDIT_EVENT_TYPE_TRANSFORMED
+                            - FINDING_AUDIT_EVENT_TYPE_REPROCESS_REQUESTED
+                            - FINDING_AUDIT_EVENT_TYPE_REPROCESS_COMPLETED
                         type: string
                         x-speakeasy-unknown-values: allow
                     type:
@@ -21677,6 +21820,7 @@ components:
                         - FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED
                         - FINDING_TYPE_DECOY_PUBLICLY_EXPOSED
                         - FINDING_TYPE_CREDENTIAL_EXPIRING
+                        - FINDING_TYPE_CONNECTOR_SYNC_FAILING
                     type: string
                     x-speakeasy-unknown-values: allow
                 id:
@@ -21834,6 +21978,7 @@ components:
                             - FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED
                             - FINDING_TYPE_DECOY_PUBLICLY_EXPOSED
                             - FINDING_TYPE_CREDENTIAL_EXPIRING
+                            - FINDING_TYPE_CONNECTOR_SYNC_FAILING
                         type: string
                         x-speakeasy-unknown-values: allow
                     type:
@@ -21993,6 +22138,7 @@ components:
                         - FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED
                         - FINDING_TYPE_DECOY_PUBLICLY_EXPOSED
                         - FINDING_TYPE_CREDENTIAL_EXPIRING
+                        - FINDING_TYPE_CONNECTOR_SYNC_FAILING
                     type: string
                     x-speakeasy-unknown-values: allow
             title: Finding Settings Entry
@@ -22074,6 +22220,7 @@ components:
                         - FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED
                         - FINDING_TYPE_DECOY_PUBLICLY_EXPOSED
                         - FINDING_TYPE_CREDENTIAL_EXPIRING
+                        - FINDING_TYPE_CONNECTOR_SYNC_FAILING
                     type: string
                     x-speakeasy-unknown-values: allow
                 id:
@@ -22126,6 +22273,7 @@ components:
                         - FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED
                         - FINDING_TYPE_DECOY_PUBLICLY_EXPOSED
                         - FINDING_TYPE_CREDENTIAL_EXPIRING
+                        - FINDING_TYPE_CONNECTOR_SYNC_FAILING
                     type: string
                     x-speakeasy-unknown-values: allow
             title: Finding Type Setting
@@ -24000,6 +24148,938 @@ components:
             title: Functions Service Update Function Response
             type: object
             x-speakeasy-name-override: FunctionsServiceUpdateFunctionResponse
+        c1.api.funds.v1.AppCap:
+            description: AppCap is one app's tenant-wide ceiling as the API renders it.
+            properties:
+                appId:
+                    description: The C1 App the spend is attributed to.
+                    type: string
+                controls:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendControls'
+                        - type: "null"
+                createdAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                tenantId:
+                    description: The tenantId field.
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+            title: App Cap
+            type: object
+            x-speakeasy-name-override: AppCap
+        c1.api.funds.v1.AppCapHistoryEntry:
+            description: The AppCapHistoryEntry message.
+            properties:
+                metadata:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.history.v1.HistoryEntryMetadata'
+                        - type: "null"
+                snapshot:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.AppCap'
+                        - type: "null"
+            title: App Cap History Entry
+            type: object
+            x-speakeasy-name-override: AppCapHistoryEntry
+        c1.api.funds.v1.AppCapServiceDeleteRequestInput:
+            description: The AppCapServiceDeleteRequest message.
+            title: App Cap Service Delete Request
+            type: object
+            x-speakeasy-name-override: AppCapServiceDeleteRequest
+        c1.api.funds.v1.AppCapServiceDeleteResponse:
+            description: The AppCapServiceDeleteResponse message.
+            title: App Cap Service Delete Response
+            type: object
+            x-speakeasy-name-override: AppCapServiceDeleteResponse
+        c1.api.funds.v1.AppCapServiceGetResponse:
+            description: The AppCapServiceGetResponse message.
+            properties:
+                cap:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.AppCap'
+                        - type: "null"
+            title: App Cap Service Get Response
+            type: object
+            x-speakeasy-name-override: AppCapServiceGetResponse
+        c1.api.funds.v1.AppCapServiceListHistoryResponse:
+            description: The AppCapServiceListHistoryResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.funds.v1.AppCapHistoryEntry'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: App Cap Service List History Response
+            type: object
+            x-speakeasy-name-override: AppCapServiceListHistoryResponse
+        c1.api.funds.v1.AppCapServiceListResponse:
+            description: The AppCapServiceListResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.funds.v1.AppCap'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: App Cap Service List Response
+            type: object
+            x-speakeasy-name-override: AppCapServiceListResponse
+        c1.api.funds.v1.AppCapServiceSetLimitRequestInput:
+            description: The AppCapServiceSetLimitRequest message.
+            properties:
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                period:
+                    description: Optional period override. Only valid together with the limit it denominates.
+                    enum:
+                        - PERIOD_KIND_UNSPECIFIED
+                        - PERIOD_KIND_DAILY
+                        - PERIOD_KIND_WEEKLY
+                        - PERIOD_KIND_MONTHLY
+                        - PERIOD_KIND_QUARTERLY
+                        - PERIOD_KIND_YEARLY
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: App Cap Service Set Limit Request
+            type: object
+            x-speakeasy-name-override: AppCapServiceSetLimitRequest
+        c1.api.funds.v1.AppCapServiceSetLimitResponse:
+            description: The AppCapServiceSetLimitResponse message.
+            properties:
+                cap:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.AppCap'
+                        - type: "null"
+            title: App Cap Service Set Limit Response
+            type: object
+            x-speakeasy-name-override: AppCapServiceSetLimitResponse
+        c1.api.funds.v1.AppCapServiceSuspendRequestInput:
+            description: The AppCapServiceSuspendRequest message.
+            properties:
+                reason:
+                    description: The reason field.
+                    type: string
+            title: App Cap Service Suspend Request
+            type: object
+            x-speakeasy-name-override: AppCapServiceSuspendRequest
+        c1.api.funds.v1.AppCapServiceSuspendResponse:
+            description: The AppCapServiceSuspendResponse message.
+            properties:
+                cap:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.AppCap'
+                        - type: "null"
+            title: App Cap Service Suspend Response
+            type: object
+            x-speakeasy-name-override: AppCapServiceSuspendResponse
+        c1.api.funds.v1.AppCapServiceUnsuspendRequestInput:
+            description: The AppCapServiceUnsuspendRequest message.
+            title: App Cap Service Unsuspend Request
+            type: object
+            x-speakeasy-name-override: AppCapServiceUnsuspendRequest
+        c1.api.funds.v1.AppCapServiceUnsuspendResponse:
+            description: The AppCapServiceUnsuspendResponse message.
+            properties:
+                cap:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.AppCap'
+                        - type: "null"
+            title: App Cap Service Unsuspend Response
+            type: object
+            x-speakeasy-name-override: AppCapServiceUnsuspendResponse
+        c1.api.funds.v1.FundAssignment:
+            description: FundAssignment is one principal's fund exception as the API renders it.
+            properties:
+                controls:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendControls'
+                        - type: "null"
+                createdAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                tenantId:
+                    description: The tenantId field.
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                userId:
+                    description: Canonical c1.models.user.v2.User id, every UserType.
+                    type: string
+            title: Fund Assignment
+            type: object
+            x-speakeasy-name-override: FundAssignment
+        c1.api.funds.v1.FundAssignmentHistoryEntry:
+            description: The FundAssignmentHistoryEntry message.
+            properties:
+                metadata:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.history.v1.HistoryEntryMetadata'
+                        - type: "null"
+                snapshot:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundAssignment'
+                        - type: "null"
+            title: Fund Assignment History Entry
+            type: object
+            x-speakeasy-name-override: FundAssignmentHistoryEntry
+        c1.api.funds.v1.FundAssignmentServiceClearExtensionRequestInput:
+            description: The FundAssignmentServiceClearExtensionRequest message.
+            title: Fund Assignment Service Clear Extension Request
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceClearExtensionRequest
+        c1.api.funds.v1.FundAssignmentServiceClearExtensionResponse:
+            description: The FundAssignmentServiceClearExtensionResponse message.
+            properties:
+                assignment:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundAssignment'
+                        - type: "null"
+            title: Fund Assignment Service Clear Extension Response
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceClearExtensionResponse
+        c1.api.funds.v1.FundAssignmentServiceDeleteRequestInput:
+            description: The FundAssignmentServiceDeleteRequest message.
+            title: Fund Assignment Service Delete Request
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceDeleteRequest
+        c1.api.funds.v1.FundAssignmentServiceDeleteResponse:
+            description: The FundAssignmentServiceDeleteResponse message.
+            title: Fund Assignment Service Delete Response
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceDeleteResponse
+        c1.api.funds.v1.FundAssignmentServiceGetResponse:
+            description: The FundAssignmentServiceGetResponse message.
+            properties:
+                assignment:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundAssignment'
+                        - type: "null"
+            title: Fund Assignment Service Get Response
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceGetResponse
+        c1.api.funds.v1.FundAssignmentServiceGrantExtensionRequestInput:
+            description: The FundAssignmentServiceGrantExtensionRequest message.
+            properties:
+                expiresAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                reason:
+                    description: 'Subject-visible: "why do I have this bump".'
+                    type: string
+            title: Fund Assignment Service Grant Extension Request
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceGrantExtensionRequest
+        c1.api.funds.v1.FundAssignmentServiceGrantExtensionResponse:
+            description: The FundAssignmentServiceGrantExtensionResponse message.
+            properties:
+                assignment:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundAssignment'
+                        - type: "null"
+            title: Fund Assignment Service Grant Extension Response
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceGrantExtensionResponse
+        c1.api.funds.v1.FundAssignmentServiceListHistoryResponse:
+            description: The FundAssignmentServiceListHistoryResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentHistoryEntry'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: Fund Assignment Service List History Response
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceListHistoryResponse
+        c1.api.funds.v1.FundAssignmentServiceSearchRequest:
+            description: The FundAssignmentServiceSearchRequest message.
+            properties:
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    type: string
+                userIds:
+                    description: Restrict to these subjects; empty returns every assignment in the tenant.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+            title: Fund Assignment Service Search Request
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceSearchRequest
+        c1.api.funds.v1.FundAssignmentServiceSearchResponse:
+            description: The FundAssignmentServiceSearchResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.funds.v1.FundAssignment'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: Fund Assignment Service Search Response
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceSearchResponse
+        c1.api.funds.v1.FundAssignmentServiceSetLimitRequestInput:
+            description: The FundAssignmentServiceSetLimitRequest message.
+            properties:
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                period:
+                    description: Optional period override. Only valid together with the limit it denominates.
+                    enum:
+                        - PERIOD_KIND_UNSPECIFIED
+                        - PERIOD_KIND_DAILY
+                        - PERIOD_KIND_WEEKLY
+                        - PERIOD_KIND_MONTHLY
+                        - PERIOD_KIND_QUARTERLY
+                        - PERIOD_KIND_YEARLY
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Fund Assignment Service Set Limit Request
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceSetLimitRequest
+        c1.api.funds.v1.FundAssignmentServiceSetLimitResponse:
+            description: The FundAssignmentServiceSetLimitResponse message.
+            properties:
+                assignment:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundAssignment'
+                        - type: "null"
+            title: Fund Assignment Service Set Limit Response
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceSetLimitResponse
+        c1.api.funds.v1.FundAssignmentServiceSuspendRequestInput:
+            description: The FundAssignmentServiceSuspendRequest message.
+            properties:
+                reason:
+                    description: The reason field.
+                    type: string
+            title: Fund Assignment Service Suspend Request
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceSuspendRequest
+        c1.api.funds.v1.FundAssignmentServiceSuspendResponse:
+            description: The FundAssignmentServiceSuspendResponse message.
+            properties:
+                assignment:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundAssignment'
+                        - type: "null"
+            title: Fund Assignment Service Suspend Response
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceSuspendResponse
+        c1.api.funds.v1.FundAssignmentServiceUnsuspendRequestInput:
+            description: The FundAssignmentServiceUnsuspendRequest message.
+            title: Fund Assignment Service Unsuspend Request
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceUnsuspendRequest
+        c1.api.funds.v1.FundAssignmentServiceUnsuspendResponse:
+            description: The FundAssignmentServiceUnsuspendResponse message.
+            properties:
+                assignment:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundAssignment'
+                        - type: "null"
+            title: Fund Assignment Service Unsuspend Response
+            type: object
+            x-speakeasy-name-override: FundAssignmentServiceUnsuspendResponse
+        c1.api.funds.v1.FundPolicy:
+            description: |-
+                FundPolicy is the tenant's fund policy as the API renders it. Every field is
+                 server-owned on the way out; requests name the fields they change rather than
+                 sending this message back.
+            properties:
+                createdAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                currencyCode:
+                    description: ISO 4217. Set at Create and immutable thereafter.
+                    type: string
+                defaultLimit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                orgCeiling:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendControls'
+                        - type: "null"
+                period:
+                    description: The root period every amount in the tenant is denominated in.
+                    enum:
+                        - PERIOD_KIND_UNSPECIFIED
+                        - PERIOD_KIND_DAILY
+                        - PERIOD_KIND_WEEKLY
+                        - PERIOD_KIND_MONTHLY
+                        - PERIOD_KIND_QUARTERLY
+                        - PERIOD_KIND_YEARLY
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                tenantId:
+                    description: The tenantId field.
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+            title: Fund Policy
+            type: object
+            x-speakeasy-name-override: FundPolicy
+        c1.api.funds.v1.FundPolicyHistoryEntry:
+            description: The FundPolicyHistoryEntry message.
+            properties:
+                metadata:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.history.v1.HistoryEntryMetadata'
+                        - type: "null"
+                snapshot:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundPolicy'
+                        - type: "null"
+            title: Fund Policy History Entry
+            type: object
+            x-speakeasy-name-override: FundPolicyHistoryEntry
+        c1.api.funds.v1.FundPolicyServiceCreateRequest:
+            description: The FundPolicyServiceCreateRequest message.
+            properties:
+                currencyCode:
+                    description: ISO 4217. Immutable once set.
+                    type: string
+                defaultLimit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                period:
+                    description: The period field.
+                    enum:
+                        - PERIOD_KIND_UNSPECIFIED
+                        - PERIOD_KIND_DAILY
+                        - PERIOD_KIND_WEEKLY
+                        - PERIOD_KIND_MONTHLY
+                        - PERIOD_KIND_QUARTERLY
+                        - PERIOD_KIND_YEARLY
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Fund Policy Service Create Request
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceCreateRequest
+        c1.api.funds.v1.FundPolicyServiceCreateResponse:
+            description: The FundPolicyServiceCreateResponse message.
+            properties:
+                policy:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundPolicy'
+                        - type: "null"
+            title: Fund Policy Service Create Response
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceCreateResponse
+        c1.api.funds.v1.FundPolicyServiceDeleteRequest:
+            description: The FundPolicyServiceDeleteRequest message.
+            title: Fund Policy Service Delete Request
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceDeleteRequest
+        c1.api.funds.v1.FundPolicyServiceDeleteResponse:
+            description: The FundPolicyServiceDeleteResponse message.
+            title: Fund Policy Service Delete Response
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceDeleteResponse
+        c1.api.funds.v1.FundPolicyServiceFreezeTenantRequest:
+            description: The FundPolicyServiceFreezeTenantRequest message.
+            properties:
+                reason:
+                    description: The reason field.
+                    type: string
+            title: Fund Policy Service Freeze Tenant Request
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceFreezeTenantRequest
+        c1.api.funds.v1.FundPolicyServiceFreezeTenantResponse:
+            description: The FundPolicyServiceFreezeTenantResponse message.
+            properties:
+                policy:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundPolicy'
+                        - type: "null"
+            title: Fund Policy Service Freeze Tenant Response
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceFreezeTenantResponse
+        c1.api.funds.v1.FundPolicyServiceGetResponse:
+            description: The FundPolicyServiceGetResponse message.
+            properties:
+                policy:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundPolicy'
+                        - type: "null"
+            title: Fund Policy Service Get Response
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceGetResponse
+        c1.api.funds.v1.FundPolicyServiceListHistoryResponse:
+            description: The FundPolicyServiceListHistoryResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyHistoryEntry'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: Fund Policy Service List History Response
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceListHistoryResponse
+        c1.api.funds.v1.FundPolicyServiceSetOrgCeilingRequest:
+            description: The FundPolicyServiceSetOrgCeilingRequest message.
+            properties:
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                period:
+                    description: Optional period override for the ceiling. Only valid together with limit.
+                    enum:
+                        - PERIOD_KIND_UNSPECIFIED
+                        - PERIOD_KIND_DAILY
+                        - PERIOD_KIND_WEEKLY
+                        - PERIOD_KIND_MONTHLY
+                        - PERIOD_KIND_QUARTERLY
+                        - PERIOD_KIND_YEARLY
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Fund Policy Service Set Org Ceiling Request
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceSetOrgCeilingRequest
+        c1.api.funds.v1.FundPolicyServiceSetOrgCeilingResponse:
+            description: The FundPolicyServiceSetOrgCeilingResponse message.
+            properties:
+                policy:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundPolicy'
+                        - type: "null"
+            title: Fund Policy Service Set Org Ceiling Response
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceSetOrgCeilingResponse
+        c1.api.funds.v1.FundPolicyServiceUnfreezeTenantRequest:
+            description: The FundPolicyServiceUnfreezeTenantRequest message.
+            title: Fund Policy Service Unfreeze Tenant Request
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceUnfreezeTenantRequest
+        c1.api.funds.v1.FundPolicyServiceUnfreezeTenantResponse:
+            description: The FundPolicyServiceUnfreezeTenantResponse message.
+            properties:
+                policy:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundPolicy'
+                        - type: "null"
+            title: Fund Policy Service Unfreeze Tenant Response
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceUnfreezeTenantResponse
+        c1.api.funds.v1.FundPolicyServiceUpdateRequest:
+            description: The FundPolicyServiceUpdateRequest message.
+            properties:
+                policy:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundPolicy'
+                        - type: "null"
+                updateMask:
+                    type:
+                        - string
+                        - "null"
+            title: Fund Policy Service Update Request
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceUpdateRequest
+        c1.api.funds.v1.FundPolicyServiceUpdateResponse:
+            description: The FundPolicyServiceUpdateResponse message.
+            properties:
+                policy:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundPolicy'
+                        - type: "null"
+            title: Fund Policy Service Update Response
+            type: object
+            x-speakeasy-name-override: FundPolicyServiceUpdateResponse
+        c1.api.funds.v1.FundRule:
+            description: FundRule is one group grant as the API renders it.
+            properties:
+                createdAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                displayName:
+                    description: |-
+                        Admin-facing label, so a rule list reads as policy rather than as ids.
+                         Bounded on the message rather than only on Create: Update carries a whole
+                         FundRule, and this is the column the mirror's full-text and btree indexes
+                         are built on.
+                    type: string
+                grant:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                groupRef:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                        - type: "null"
+                reason:
+                    description: Why this cohort is funded. Subject-visible where a grant is explained.
+                    type: string
+                ruleId:
+                    description: The ruleId field.
+                    type: string
+                tenantId:
+                    description: The tenantId field.
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+            title: Fund Rule
+            type: object
+            x-speakeasy-name-override: FundRule
+        c1.api.funds.v1.FundRuleHistoryEntry:
+            description: The FundRuleHistoryEntry message.
+            properties:
+                metadata:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.history.v1.HistoryEntryMetadata'
+                        - type: "null"
+                snapshot:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundRule'
+                        - type: "null"
+            title: Fund Rule History Entry
+            type: object
+            x-speakeasy-name-override: FundRuleHistoryEntry
+        c1.api.funds.v1.FundRuleServiceCreateRequest:
+            description: The FundRuleServiceCreateRequest message.
+            properties:
+                displayName:
+                    description: The displayName field.
+                    type: string
+                grant:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                groupRef:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementRef'
+                        - type: "null"
+                reason:
+                    description: The reason field.
+                    type: string
+            title: Fund Rule Service Create Request
+            type: object
+            x-speakeasy-name-override: FundRuleServiceCreateRequest
+        c1.api.funds.v1.FundRuleServiceCreateResponse:
+            description: The FundRuleServiceCreateResponse message.
+            properties:
+                rule:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundRule'
+                        - type: "null"
+            title: Fund Rule Service Create Response
+            type: object
+            x-speakeasy-name-override: FundRuleServiceCreateResponse
+        c1.api.funds.v1.FundRuleServiceDeleteRequestInput:
+            description: The FundRuleServiceDeleteRequest message.
+            title: Fund Rule Service Delete Request
+            type: object
+            x-speakeasy-name-override: FundRuleServiceDeleteRequest
+        c1.api.funds.v1.FundRuleServiceDeleteResponse:
+            description: The FundRuleServiceDeleteResponse message.
+            title: Fund Rule Service Delete Response
+            type: object
+            x-speakeasy-name-override: FundRuleServiceDeleteResponse
+        c1.api.funds.v1.FundRuleServiceGetResponse:
+            description: The FundRuleServiceGetResponse message.
+            properties:
+                rule:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundRule'
+                        - type: "null"
+            title: Fund Rule Service Get Response
+            type: object
+            x-speakeasy-name-override: FundRuleServiceGetResponse
+        c1.api.funds.v1.FundRuleServiceListHistoryResponse:
+            description: The FundRuleServiceListHistoryResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.funds.v1.FundRuleHistoryEntry'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: Fund Rule Service List History Response
+            type: object
+            x-speakeasy-name-override: FundRuleServiceListHistoryResponse
+        c1.api.funds.v1.FundRuleServiceListResponse:
+            description: The FundRuleServiceListResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.funds.v1.FundRule'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: Fund Rule Service List Response
+            type: object
+            x-speakeasy-name-override: FundRuleServiceListResponse
+        c1.api.funds.v1.FundRuleServiceSearchRequest:
+            description: The FundRuleServiceSearchRequest message.
+            properties:
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    type: string
+                query:
+                    description: Case-insensitive search over the rule display name; empty returns all.
+                    type: string
+            title: Fund Rule Service Search Request
+            type: object
+            x-speakeasy-name-override: FundRuleServiceSearchRequest
+        c1.api.funds.v1.FundRuleServiceSearchResponse:
+            description: The FundRuleServiceSearchResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.funds.v1.FundRule'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: Fund Rule Service Search Response
+            type: object
+            x-speakeasy-name-override: FundRuleServiceSearchResponse
+        c1.api.funds.v1.FundRuleServiceUpdateRequestInput:
+            description: The FundRuleServiceUpdateRequest message.
+            properties:
+                rule:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundRule'
+                        - type: "null"
+                updateMask:
+                    type:
+                        - string
+                        - "null"
+            title: Fund Rule Service Update Request
+            type: object
+            x-speakeasy-name-override: FundRuleServiceUpdateRequest
+        c1.api.funds.v1.FundRuleServiceUpdateResponse:
+            description: The FundRuleServiceUpdateResponse message.
+            properties:
+                rule:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.FundRule'
+                        - type: "null"
+            title: Fund Rule Service Update Response
+            type: object
+            x-speakeasy-name-override: FundRuleServiceUpdateResponse
+        c1.api.funds.v1.MyFundLimit:
+            description: |-
+                MyFundLimit is one of the caller's own per-app limits. It carries no user id:
+                 it is always the caller's.
+            properties:
+                appId:
+                    description: The C1 App this limit applies to.
+                    type: string
+                controls:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendControls'
+                        - type: "null"
+                createdAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                updatedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+            title: My Fund Limit
+            type: object
+            x-speakeasy-name-override: MyFundLimit
+        c1.api.funds.v1.MyFundLimitHistoryEntry:
+            description: The MyFundLimitHistoryEntry message.
+            properties:
+                metadata:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.history.v1.HistoryEntryMetadata'
+                        - type: "null"
+                snapshot:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimit'
+                        - type: "null"
+            title: My Fund Limit History Entry
+            type: object
+            x-speakeasy-name-override: MyFundLimitHistoryEntry
+        c1.api.funds.v1.MyFundLimitsServiceDeleteRequestInput:
+            description: The MyFundLimitsServiceDeleteRequest message.
+            title: My Fund Limits Service Delete Request
+            type: object
+            x-speakeasy-name-override: MyFundLimitsServiceDeleteRequest
+        c1.api.funds.v1.MyFundLimitsServiceDeleteResponse:
+            description: The MyFundLimitsServiceDeleteResponse message.
+            title: My Fund Limits Service Delete Response
+            type: object
+            x-speakeasy-name-override: MyFundLimitsServiceDeleteResponse
+        c1.api.funds.v1.MyFundLimitsServiceListHistoryResponse:
+            description: The MyFundLimitsServiceListHistoryResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitHistoryEntry'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: My Fund Limits Service List History Response
+            type: object
+            x-speakeasy-name-override: MyFundLimitsServiceListHistoryResponse
+        c1.api.funds.v1.MyFundLimitsServiceListResponse:
+            description: The MyFundLimitsServiceListResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimit'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: My Fund Limits Service List Response
+            type: object
+            x-speakeasy-name-override: MyFundLimitsServiceListResponse
+        c1.api.funds.v1.MyFundLimitsServicePauseRequestInput:
+            description: The MyFundLimitsServicePauseRequest message.
+            properties:
+                reason:
+                    description: The reason field.
+                    type: string
+            title: My Fund Limits Service Pause Request
+            type: object
+            x-speakeasy-name-override: MyFundLimitsServicePauseRequest
+        c1.api.funds.v1.MyFundLimitsServicePauseResponse:
+            description: The MyFundLimitsServicePauseResponse message.
+            properties:
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimit'
+                        - type: "null"
+            title: My Fund Limits Service Pause Response
+            type: object
+            x-speakeasy-name-override: MyFundLimitsServicePauseResponse
+        c1.api.funds.v1.MyFundLimitsServiceResumeRequestInput:
+            description: The MyFundLimitsServiceResumeRequest message.
+            title: My Fund Limits Service Resume Request
+            type: object
+            x-speakeasy-name-override: MyFundLimitsServiceResumeRequest
+        c1.api.funds.v1.MyFundLimitsServiceResumeResponse:
+            description: The MyFundLimitsServiceResumeResponse message.
+            properties:
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimit'
+                        - type: "null"
+            title: My Fund Limits Service Resume Response
+            type: object
+            x-speakeasy-name-override: MyFundLimitsServiceResumeResponse
+        c1.api.funds.v1.MyFundLimitsServiceSetLimitRequestInput:
+            description: The MyFundLimitsServiceSetLimitRequest message.
+            properties:
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                period:
+                    description: Optional period override. Only valid together with the limit it denominates.
+                    enum:
+                        - PERIOD_KIND_UNSPECIFIED
+                        - PERIOD_KIND_DAILY
+                        - PERIOD_KIND_WEEKLY
+                        - PERIOD_KIND_MONTHLY
+                        - PERIOD_KIND_QUARTERLY
+                        - PERIOD_KIND_YEARLY
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: My Fund Limits Service Set Limit Request
+            type: object
+            x-speakeasy-name-override: MyFundLimitsServiceSetLimitRequest
+        c1.api.funds.v1.MyFundLimitsServiceSetLimitResponse:
+            description: The MyFundLimitsServiceSetLimitResponse message.
+            properties:
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimit'
+                        - type: "null"
+            title: My Fund Limits Service Set Limit Response
+            type: object
+            x-speakeasy-name-override: MyFundLimitsServiceSetLimitResponse
         c1.api.history.v1.HistoryActor:
             description: |-
                 HistoryActor is a typed reference to whoever performed the change.
@@ -30319,6 +31399,20 @@ components:
                 requestBundle:
                     description: Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
                     type: boolean
+                type:
+                    description: |-
+                        The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile
+                         created before the type was recorded; UNSPECIFIED only for a tenant whose
+                         backfill has not been run.
+                    enum:
+                        - REQUEST_CATALOG_TYPE_UNSPECIFIED
+                        - REQUEST_CATALOG_TYPE_CATALOG
+                        - REQUEST_CATALOG_TYPE_PROFILE
+                        - REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE
+                        - REQUEST_CATALOG_TYPE_BUNDLE
+                    readOnly: true
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 unenrollmentBehavior:
                     description: Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
                     enum:
@@ -30455,6 +31549,24 @@ components:
                 requestBundle:
                     description: Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
                     type: boolean
+                type:
+                    description: |-
+                        The type of access profile to create. Leave unset for
+                         REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE, which is what every profile
+                         created before this field existed is. Setting it requires the
+                         ACCESS_PROFILE_TYPES feature.
+
+                         PROFILE is rejected rather than resolved: it is deprecated, has no stored
+                         counterpart, and shares wire number 2 with the stored BUNDLE, so honoring
+                         it would silently persist a type the caller did not ask for.
+                    enum:
+                        - REQUEST_CATALOG_TYPE_UNSPECIFIED
+                        - REQUEST_CATALOG_TYPE_CATALOG
+                        - REQUEST_CATALOG_TYPE_PROFILE
+                        - REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE
+                        - REQUEST_CATALOG_TYPE_BUNDLE
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 unenrollmentBehavior:
                     description: Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
                     enum:
@@ -31055,17 +32167,69 @@ components:
             type: object
             x-speakeasy-name-override: CustomAnalysisResultView
         c1.api.role_mining_management.v1.EntitlementRef:
-            description: EntitlementRef identifies an entitlement by app and entitlement ID.
+            description: EntitlementRef identifies an entitlement by application and entitlement ID.
             properties:
                 appId:
-                    description: The appId field.
+                    description: Application that owns the entitlement.
                     type: string
                 entitlementId:
-                    description: The entitlementId field.
+                    description: Entitlement within the application.
                     type: string
             title: Entitlement Ref
             type: object
             x-speakeasy-name-override: EntitlementRef
+        c1.api.role_mining_management.v1.EvaluateEntitlementSelectionRequestInput:
+            description: |-
+                EvaluateEntitlementSelectionRequest selects analyzed entitlements using an
+                 inclusive coverage cutoff plus optional manual overrides.
+            properties:
+                explicitlyExcluded:
+                    description: Analyzed entitlements to exclude when they meet the cutoff.
+                    items:
+                        $ref: '#/components/schemas/c1.api.role_mining_management.v1.EntitlementRef'
+                    type:
+                        - array
+                        - "null"
+                explicitlyIncluded:
+                    description: Analyzed entitlements to include even when they fall below the cutoff.
+                    items:
+                        $ref: '#/components/schemas/c1.api.role_mining_management.v1.EntitlementRef'
+                    type:
+                        - array
+                        - "null"
+                includeFacets:
+                    description: Whether to return profile attribute facets for exact holders.
+                    type: boolean
+                minimumCoverageBasisPoints:
+                    description: Inclusive minimum entitlement coverage in basis points, where 8000 is 80%.
+                    format: int32
+                    type: integer
+            title: Evaluate Entitlement Selection Request
+            type: object
+            x-speakeasy-name-override: EvaluateEntitlementSelectionRequest
+        c1.api.role_mining_management.v1.EvaluateEntitlementSelectionResponse:
+            description: |-
+                EvaluateEntitlementSelectionResponse contains the exact impact of the
+                 resolved entitlement selection.
+            properties:
+                coreHolderFacets:
+                    description: Profile attribute facets narrowed to users who hold every selected entitlement.
+                    items:
+                        $ref: '#/components/schemas/c1.mcp.role_mining.v1.AttributeFacet'
+                    type:
+                        - array
+                        - "null"
+                selectedEntitlementCount:
+                    description: Number of entitlements in the resolved selection.
+                    format: int32
+                    type: integer
+                usersWithAllEntitlements:
+                    description: Exact number of cohort users who hold every selected entitlement.
+                    format: int32
+                    type: integer
+            title: Evaluate Entitlement Selection Response
+            type: object
+            x-speakeasy-name-override: EvaluateEntitlementSelectionResponse
         c1.api.role_mining_management.v1.GetCustomAnalysisResultResponse:
             description: The GetCustomAnalysisResultResponse message.
             properties:
@@ -31084,6 +32248,13 @@ components:
                     description: The cohortSize field.
                     format: int32
                     type: integer
+                cutoffImpactPoints:
+                    description: Exact holder counts at each distinct inclusive entitlement coverage cutoff.
+                    items:
+                        $ref: '#/components/schemas/c1.mcp.role_mining.v1.EntitlementCutoffImpactPoint'
+                    type:
+                        - array
+                        - "null"
                 entitlements:
                     description: Entitlement coverage results.
                     items:
@@ -31454,7 +32625,10 @@ components:
                         - array
                         - "null"
                 selectedEntitlements:
-                    description: Optional list of entitlements to compute per-user coverage for.
+                    deprecated: true
+                    description: |-
+                        Deprecated. This endpoint no longer computes per-user coverage and
+                         ignores this field.
                     items:
                         $ref: '#/components/schemas/c1.api.role_mining_management.v1.EntitlementRef'
                     type:
@@ -31477,7 +32651,10 @@ components:
                     description: Token to retrieve the next page of results, empty if no more results.
                     type: string
                 usersWithCoverage:
-                    description: Per-user coverage counts, populated when selected_entitlements is non-empty.
+                    deprecated: true
+                    description: |-
+                        Deprecated. This endpoint no longer computes per-user coverage; this
+                         list is always empty.
                     items:
                         $ref: '#/components/schemas/c1.api.role_mining_management.v1.CohortUserWithCoverage'
                     type:
@@ -34109,6 +35286,14 @@ components:
         c1.api.settings.v1.RequestSettings:
             description: RequestSettings holds tenant-wide configuration for the access-request flow.
             properties:
+                maxBulkEntitlementSelection:
+                    description: |-
+                        MaxBulkEntitlementSelection caps the number of entitlements a requester
+                         may select in a single bulk access request. Reads always return the
+                         effective value — an unset (0) value is presented as the system default of
+                         10. Writing 0 resets the field to unset in storage. Maximum 100.
+                    format: int32
+                    type: integer
                 skipJustification:
                     description: |-
                         When true, request surfaces (webapp, Slack, MS Teams) skip prompting the
@@ -39102,6 +40287,12 @@ components:
                         When true, only comment events are returned, so a page of page_size holds
                          page_size comments rather than a mix of comments and state-change events.
                     type: boolean
+                excludeComments:
+                    description: |-
+                        When true, comment events are excluded from the response and the count, so
+                         a page of page_size holds page_size non-comment events. Mutually exclusive
+                         with comments_only.
+                    type: boolean
                 newestFirst:
                     description: |-
                         When true, events are returned newest-first (descending created_at) instead
@@ -39140,6 +40331,20 @@ components:
                 nextPageToken:
                     description: A pagination token to retrieve the next page of results.
                     type: string
+                totalCount:
+                    description: |-
+                        The total number of audit events the list returns for this request:
+                         comment events when comments_only is true, non-comment events when
+                         exclude_comments is true, all events otherwise. This is an upper bound:
+                         a small number of internal-only events (e.g. connector-action results
+                         with no pending reason) are omitted from list, so the count can exceed
+                         the rows reachable by paging. Only returned for the first page (a request
+                         with no page_token). Unset when the request filters by refs (the count is
+                         undefined for ref lookups) or when the count could not be computed.
+                    format: int64
+                    type:
+                        - string
+                        - "null"
             title: Task Audit List Response
             type: object
             x-speakeasy-name-override: TaskAuditListResponse
@@ -40079,6 +41284,9 @@ components:
         c1.api.task.v1.TaskAuditWebhookSuccess:
             description: The TaskAuditWebhookSuccess message.
             properties:
+                comment:
+                    description: Optional comment supplied by the provisioning callback.
+                    type: string
                 webhookId:
                     description: The webhookId field.
                     type: string
@@ -43783,6 +44991,26 @@ components:
             title: Entitlement Cluster
             type: object
             x-speakeasy-name-override: EntitlementCluster
+        c1.mcp.role_mining.v1.EntitlementCutoffImpactPoint:
+            description: |-
+                EntitlementCutoffImpactPoint reports the exact effect of an inclusive
+                 entitlement coverage cutoff on the analyzed cohort.
+            properties:
+                entitlementCount:
+                    description: Number of analyzed entitlements included at this cutoff.
+                    format: int32
+                    type: integer
+                minimumCoverageBasisPoints:
+                    description: Inclusive minimum entitlement coverage in basis points, where 8000 is 80%.
+                    format: int32
+                    type: integer
+                usersWithAllEntitlements:
+                    description: Exact number of cohort users who hold every included entitlement.
+                    format: int32
+                    type: integer
+            title: Entitlement Cutoff Impact Point
+            type: object
+            x-speakeasy-name-override: EntitlementCutoffImpactPoint
         c1.mcp.role_mining.v1.ProfileFilter:
             description: |-
                 ProfileFilter defines a filter on a user profile attribute.
@@ -43801,6 +45029,166 @@ components:
             title: Profile Filter
             type: object
             x-speakeasy-name-override: ProfileFilter
+        c1.models.funds.v1.Money:
+            description: |-
+                Money is wire-compatible with google.type.Money field-for-field, so the public
+                 API converts with a field copy. Declared here rather than imported because
+                 protoc-gen-pgdb mirrors a nested message by calling its generated DBReflect,
+                 which only exists for messages this repo generates.
+            properties:
+                currencyCode:
+                    description: ISO 4217 currency code. Must equal the tenant's FundPolicy.currency_code.
+                    type: string
+                nanos:
+                    description: |-
+                        Nano-unit remainder, 0 <= nanos < 10^9. Non-negative for the same reason
+                         as units, which also keeps the (units, nanos) pair unambiguous.
+                    format: int32
+                    type: integer
+                units:
+                    description: |-
+                        Non-negative — grants, never debts — and bounded so units * 10^9 + nanos
+                         always fits int64. Without the ceiling a large value wraps positive and
+                         installs a limit nobody granted. The pair check spans two fields, so
+                         pkg/funds re-checks it on every conversion.
+                    format: int64
+                    type: string
+            title: Money
+            type: object
+            x-speakeasy-name-override: Money
+        c1.models.funds.v1.SpendControls:
+            description: |-
+                SpendControls is the one control shape carried by every authority scope.
+                 Per-row resolution, identical everywhere: suspension present -> deny;
+                 unexpired extension -> extension.limit; limit present -> limit;
+                 otherwise this row states no opinion and resolution falls through.
+
+                 Not a oneof: two transitions need the losing field to survive. Unsuspending
+                 restores the limit it froze, and a lapsed extension falls back to its base
+                 rather than to the next layer. Pinned by
+                 TestControlsCoPresenceSurvivesEveryTransition in pkg/funds.
+            properties:
+                extension:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendExtension'
+                        - type: "null"
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                period:
+                    description: |-
+                        Only valid together with limit: a period without its amount would
+                         reinterpret some other layer's number in a cadence that layer never
+                         agreed to.
+                    enum:
+                        - PERIOD_KIND_UNSPECIFIED
+                        - PERIOD_KIND_DAILY
+                        - PERIOD_KIND_WEEKLY
+                        - PERIOD_KIND_MONTHLY
+                        - PERIOD_KIND_QUARTERLY
+                        - PERIOD_KIND_YEARLY
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                suspension:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendSuspension'
+                        - type: "null"
+            title: Spend Controls
+            type: object
+            x-speakeasy-name-override: SpendControls
+        c1.models.funds.v1.SpendExtension:
+            description: |-
+                SpendExtension replaces the row's total with a temporary one until
+                 expires_at. It never changes the period, and it never expresses a refusal —
+                 a temporary refusal is a SpendSuspension.
+            properties:
+                expiresAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - type: "null"
+                reason:
+                    description: |-
+                        Subject-visible: "why do I have this bump". Mutation rationale rides the
+                         history change_reason annotation instead.
+                    type: string
+            title: Spend Extension
+            type: object
+            x-speakeasy-name-override: SpendExtension
+        c1.models.funds.v1.SpendLimit:
+            description: |
+                SpendLimit is the three-way behavior fork. Which arms are legal depends on the
+                 scope carrying it; pkg/funds enforces that matrix, not the schema, because one
+                 SpendControls shape is shared by every scope.
+
+                This message contains a oneof named kind. Only a single field of the following list may be set at a time:
+                  - unlimited
+                  - amount
+                  - blocked
+            properties:
+                amount:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimitAmount'
+                        - type: "null"
+                blocked:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimitBlocked'
+                        - type: "null"
+                unlimited:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimitUnlimited'
+                        - type: "null"
+            title: Spend Limit
+            type: object
+            x-speakeasy-name-override: SpendLimit
+        c1.models.funds.v1.SpendLimitAmount:
+            description: SpendLimitAmount caps spend at money per resolved period.
+            properties:
+                money:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.models.funds.v1.Money'
+                        - type: "null"
+            title: Spend Limit Amount
+            type: object
+            x-speakeasy-name-override: SpendLimitAmount
+        c1.models.funds.v1.SpendLimitBlocked:
+            description: |-
+                SpendLimitBlocked refuses supply at this scope. Distinct from suspension:
+                 blocked is a stated policy posture, suspension is a reversible freeze that
+                 preserves the numbers underneath it.
+            title: Spend Limit Blocked
+            type: object
+            x-speakeasy-name-override: SpendLimitBlocked
+        c1.models.funds.v1.SpendLimitUnlimited:
+            description: |-
+                SpendLimitUnlimited is a tracking limit: full accounting, no admission
+                 condition. The maximum element, so an unlimited default makes grant rules
+                 no-ops.
+            title: Spend Limit Unlimited
+            type: object
+            x-speakeasy-name-override: SpendLimitUnlimited
+        c1.models.funds.v1.SpendSuspension:
+            description: |-
+                SpendSuspension freezes a scope without erasing the limit it must restore
+                 on unsuspend, which is why it lives beside the SpendLimit oneof rather than
+                 inside it.
+            properties:
+                reason:
+                    description: The reason field.
+                    type: string
+                suspendedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+            title: Spend Suspension
+            type: object
+            x-speakeasy-name-override: SpendSuspension
         c1.webhooks.v1.Body:
             description: The Body message.
             properties:
@@ -48124,7 +49512,9 @@ paths:
             x-speakeasy-name-override: Create
     /api/v1/apps/{app_id}/entitlement_configuration_rules:
         get:
-            description: Invokes the c1.api.app.v1.AppEntitlementRoutingRuleService.ListAppEntitlementRoutingRules method.
+            description: |-
+                ListAppEntitlementRoutingRules returns an application's entitlement
+                 configuration rules in evaluation order, by priority then by ID.
             operationId: c1.api.app.v1.AppEntitlementRoutingRuleService.ListAppEntitlementRoutingRules
             parameters:
                 - in: path
@@ -48146,7 +49536,11 @@ paths:
             x-speakeasy-group: AppEntitlementRoutingRule
             x-speakeasy-name-override: ListAppEntitlementRoutingRules
         post:
-            description: Invokes the c1.api.app.v1.AppEntitlementRoutingRuleService.CreateAppEntitlementRoutingRule method.
+            description: |-
+                CreateAppEntitlementRoutingRule creates an entitlement configuration rule
+                 for an application. Rules are evaluated in priority order and the first
+                 rule whose condition matches supplies the entitlement's request settings.
+                 An app can have at most 5 rules.
             operationId: c1.api.app.v1.AppEntitlementRoutingRuleService.CreateAppEntitlementRoutingRule
             parameters:
                 - in: path
@@ -48174,7 +49568,9 @@ paths:
             x-speakeasy-name-override: CreateAppEntitlementRoutingRule
     /api/v1/apps/{app_id}/entitlement_configuration_rules/{id}:
         delete:
-            description: Invokes the c1.api.app.v1.AppEntitlementRoutingRuleService.DeleteAppEntitlementRoutingRule method.
+            description: |-
+                DeleteAppEntitlementRoutingRule deletes an entitlement configuration rule
+                 by ID.
             operationId: c1.api.app.v1.AppEntitlementRoutingRuleService.DeleteAppEntitlementRoutingRule
             parameters:
                 - in: path
@@ -48207,7 +49603,9 @@ paths:
             x-speakeasy-group: AppEntitlementRoutingRule
             x-speakeasy-name-override: DeleteAppEntitlementRoutingRule
         get:
-            description: Invokes the c1.api.app.v1.AppEntitlementRoutingRuleService.GetAppEntitlementRoutingRule method.
+            description: |-
+                GetAppEntitlementRoutingRule returns a single entitlement configuration
+                 rule by ID.
             operationId: c1.api.app.v1.AppEntitlementRoutingRuleService.GetAppEntitlementRoutingRule
             parameters:
                 - in: path
@@ -48303,7 +49701,11 @@ paths:
             x-speakeasy-name-override: ReorderAppEntitlementRoutingRules
     /api/v1/apps/{app_id}/entitlements:
         get:
-            description: List app entitlements associated with an app.
+            description: |-
+                List app entitlements associated with an app. Query parameters are
+                 accepted in snake_case (page_size, page_token, app_user_id) and, as a
+                 compatibility shim, their camelCase equivalents (pageSize, pageToken,
+                 appUserId).
             operationId: c1.api.app.v1.AppEntitlements.List
             parameters:
                 - in: path
@@ -48311,6 +49713,11 @@ paths:
                   required: true
                   schema:
                     description: The appId field.
+                    type: string
+                - in: query
+                  name: app_user_id
+                  schema:
+                    description: Filter to entitlements granted to the given app user.
                     type: string
                 - in: query
                   name: page_size
@@ -48322,6 +49729,11 @@ paths:
                   name: page_token
                   schema:
                     description: The pageToken field.
+                    type: string
+                - in: query
+                  name: q
+                  schema:
+                    description: Fuzzy search on display name and description.
                     type: string
             responses:
                 "200":
@@ -48368,7 +49780,9 @@ paths:
             x-speakeasy-name-override: Create
     /api/v1/apps/{app_id}/entitlements/{app_entitlement_id}/add-manual-user:
         post:
-            description: Add users as manually managed members of an app entitlement. These memberships are tracked directly by ConductorOne rather than synced from the app.
+            description: |-
+                Add users as manually managed members of an app entitlement. These memberships are tracked directly by ConductorOne rather than synced from the app.
+                 Adding members to an access profile's enrollment entitlement requires the JML feature; without it the request fails with a failed-precondition error.
             operationId: c1.api.app.v1.AppEntitlements.AddManuallyManagedMembers
             parameters:
                 - in: path
@@ -48696,6 +50110,8 @@ paths:
                  removal behavior applies. When the SSO provider feature is enabled, an SSO
                  application's sign-in entitlement removes only direct manual access and
                  preserves independent requested, connector, and group-derived access.
+                 Removing a member from an access profile requires the JML feature; without
+                 it the request fails with a failed-precondition error.
             operationId: c1.api.app.v1.AppEntitlements.RemoveEntitlementMembership
             parameters:
                 - in: path
@@ -55326,6 +56742,1042 @@ paths:
             x-speakeasy-group: Functions
             x-speakeasy-name-override: UpdateFunction
             x-stability-level: draft
+    /api/v1/funds/app-caps:
+        get:
+            description: |-
+                List every capped app in the tenant. Cardinality is the tenant's installed
+                 App count, so this is one runtime-plane query.
+            operationId: c1.api.funds.v1.AppCapService.List
+            parameters:
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceListResponse'
+                    description: Successful response
+            summary: List
+            tags:
+                - Fund App Caps
+            x-speakeasy-group: AppCap
+            x-speakeasy-name-override: List
+    /api/v1/funds/app-caps/{app_id}:
+        delete:
+            description: Delete the cap entirely. The app is no longer bounded tenant-wide.
+            operationId: c1.api.funds.v1.AppCapService.Delete
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceDeleteRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceDeleteResponse'
+                    description: Successful response
+            summary: Delete
+            tags:
+                - Fund App Caps
+            x-speakeasy-group: AppCap
+            x-speakeasy-name-override: Delete
+        get:
+            description: |-
+                Get returns the tenant's ceiling for one app, together with any suspension
+                 acting as that app's kill switch. An app with no cap is not found, meaning
+                 nothing bounds it beyond the fund the spender already has.
+            operationId: c1.api.funds.v1.AppCapService.Get
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Fund App Caps
+            x-speakeasy-group: AppCap
+            x-speakeasy-name-override: Get
+    /api/v1/funds/app-caps/{app_id}/history:
+        get:
+            description: |-
+                List the change history for one app's cap, newest first. Admin-tier per the
+                 object-history convention. A cap cleared down to nothing is deleted, and its
+                 history is where the kill switch that preceded the delete is still readable.
+            operationId: c1.api.funds.v1.AppCapService.ListHistory
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceListHistoryResponse'
+                    description: Successful response
+            summary: List History
+            tags:
+                - Fund App Caps
+            x-speakeasy-group: AppCap
+            x-speakeasy-name-override: ListHistory
+    /api/v1/funds/app-caps/{app_id}/limit:
+        post:
+            description: |-
+                Set the app's tenant-wide ceiling, creating the cap if absent. Leaves any
+                 suspension in place.
+            operationId: c1.api.funds.v1.AppCapService.SetLimit
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceSetLimitRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceSetLimitResponse'
+                    description: Successful response
+            summary: Set Limit
+            tags:
+                - Fund App Caps
+            x-speakeasy-group: AppCap
+            x-speakeasy-name-override: SetLimit
+    /api/v1/funds/app-caps/{app_id}/suspension:
+        delete:
+            description: Bring the app back, restoring the cap it froze.
+            operationId: c1.api.funds.v1.AppCapService.Unsuspend
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceUnsuspendRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceUnsuspendResponse'
+                    description: Successful response
+            summary: Unsuspend
+            tags:
+                - Fund App Caps
+            x-speakeasy-group: AppCap
+            x-speakeasy-name-override: Unsuspend
+        post:
+            description: |-
+                Kill the app tenant-wide. The cap amount underneath is preserved and
+                 restored by Unsuspend.
+            operationId: c1.api.funds.v1.AppCapService.Suspend
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceSuspendRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.AppCapServiceSuspendResponse'
+                    description: Successful response
+            summary: Suspend
+            tags:
+                - Fund App Caps
+            x-speakeasy-group: AppCap
+            x-speakeasy-name-override: Suspend
+    /api/v1/funds/assignments/{user_id}:
+        delete:
+            description: |-
+                Delete the whole assignment. The subject falls back to the rules and the
+                 tenant default.
+            operationId: c1.api.funds.v1.FundAssignmentService.Delete
+            parameters:
+                - in: path
+                  name: user_id
+                  required: true
+                  schema:
+                    description: The userId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceDeleteRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceDeleteResponse'
+                    description: Successful response
+            summary: Delete
+            tags:
+                - Fund Assignments
+            x-speakeasy-group: FundAssignment
+            x-speakeasy-name-override: Delete
+        get:
+            description: |-
+                Get returns one subject's exception: their own limit, any extension
+                 running on top of it, and any suspension. A subject with no exception is
+                 not found rather than reported at the tenant default, because no row is
+                 what "this subject is governed by the layers above" looks like.
+            operationId: c1.api.funds.v1.FundAssignmentService.Get
+            parameters:
+                - in: path
+                  name: user_id
+                  required: true
+                  schema:
+                    description: The userId field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Fund Assignments
+            x-speakeasy-group: FundAssignment
+            x-speakeasy-name-override: Get
+    /api/v1/funds/assignments/{user_id}/extension:
+        delete:
+            description: Revoke the extension early. The base limit underneath is untouched.
+            operationId: c1.api.funds.v1.FundAssignmentService.ClearExtension
+            parameters:
+                - in: path
+                  name: user_id
+                  required: true
+                  schema:
+                    description: The userId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceClearExtensionRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceClearExtensionResponse'
+                    description: Successful response
+            summary: Clear Extension
+            tags:
+                - Fund Assignments
+            x-speakeasy-group: FundAssignment
+            x-speakeasy-name-override: ClearExtension
+        post:
+            description: |-
+                Grant a temporary total until expires_at. Never changes the period, and
+                 never expresses a refusal — a temporary refusal is a suspension.
+            operationId: c1.api.funds.v1.FundAssignmentService.GrantExtension
+            parameters:
+                - in: path
+                  name: user_id
+                  required: true
+                  schema:
+                    description: The userId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceGrantExtensionRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceGrantExtensionResponse'
+                    description: Successful response
+            summary: Grant Extension
+            tags:
+                - Fund Assignments
+            x-speakeasy-group: FundAssignment
+            x-speakeasy-name-override: GrantExtension
+    /api/v1/funds/assignments/{user_id}/history:
+        get:
+            description: List the change history for one subject's assignment, newest first.
+            operationId: c1.api.funds.v1.FundAssignmentService.ListHistory
+            parameters:
+                - in: path
+                  name: user_id
+                  required: true
+                  schema:
+                    description: The userId field.
+                    type: string
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceListHistoryResponse'
+                    description: Successful response
+            summary: List History
+            tags:
+                - Fund Assignments
+            x-speakeasy-group: FundAssignment
+            x-speakeasy-name-override: ListHistory
+    /api/v1/funds/assignments/{user_id}/limit:
+        post:
+            description: |-
+                Set the subject's base limit, creating the assignment if absent. Leaves any
+                 extension and any suspension in place.
+            operationId: c1.api.funds.v1.FundAssignmentService.SetLimit
+            parameters:
+                - in: path
+                  name: user_id
+                  required: true
+                  schema:
+                    description: The userId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceSetLimitRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceSetLimitResponse'
+                    description: Successful response
+            summary: Set Limit
+            tags:
+                - Fund Assignments
+            x-speakeasy-group: FundAssignment
+            x-speakeasy-name-override: SetLimit
+    /api/v1/funds/assignments/{user_id}/suspension:
+        delete:
+            description: Lift the suspension, restoring the numbers it froze.
+            operationId: c1.api.funds.v1.FundAssignmentService.Unsuspend
+            parameters:
+                - in: path
+                  name: user_id
+                  required: true
+                  schema:
+                    description: The userId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceUnsuspendRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceUnsuspendResponse'
+                    description: Successful response
+            summary: Unsuspend
+            tags:
+                - Fund Assignments
+            x-speakeasy-group: FundAssignment
+            x-speakeasy-name-override: Unsuspend
+        post:
+            description: |-
+                Freeze the subject's fund. The limit and any extension underneath are
+                 preserved and restored by Unsuspend.
+            operationId: c1.api.funds.v1.FundAssignmentService.Suspend
+            parameters:
+                - in: path
+                  name: user_id
+                  required: true
+                  schema:
+                    description: The userId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceSuspendRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceSuspendResponse'
+                    description: Successful response
+            summary: Suspend
+            tags:
+                - Fund Assignments
+            x-speakeasy-group: FundAssignment
+            x-speakeasy-name-override: Suspend
+    /api/v1/funds/assignments/search:
+        post:
+            description: |-
+                Search the tenant's assignments. Reads the Postgres mirror: the runtime
+                 row is keyed on (tenant, user), so there is no cross-subject query on the
+                 runtime plane at all.
+            operationId: c1.api.funds.v1.FundAssignmentService.Search
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceSearchRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundAssignmentServiceSearchResponse'
+                    description: Successful response
+            summary: Search
+            tags:
+                - Fund Assignments
+            x-speakeasy-group: FundAssignment
+            x-speakeasy-name-override: Search
+    /api/v1/funds/my/app-limits:
+        get:
+            description: List the caller's own per-app limits.
+            operationId: c1.api.funds.v1.MyFundLimitsService.List
+            parameters:
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitsServiceListResponse'
+                    description: Successful response
+            summary: List
+            tags:
+                - My Fund Limits
+            x-speakeasy-group: MyFundLimits
+            x-speakeasy-name-override: List
+    /api/v1/funds/my/app-limits/{app_id}:
+        delete:
+            description: |-
+                Remove the caller's limit on this app entirely. The app is then bounded
+                 only by the fund and by any tenant-wide cap.
+            operationId: c1.api.funds.v1.MyFundLimitsService.Delete
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitsServiceDeleteRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitsServiceDeleteResponse'
+                    description: Successful response
+            summary: Delete
+            tags:
+                - My Fund Limits
+            x-speakeasy-group: MyFundLimits
+            x-speakeasy-name-override: Delete
+    /api/v1/funds/my/app-limits/{app_id}/history:
+        get:
+            description: |-
+                List the change history for one of the caller's own per-app limits, newest
+                 first. Removing the last control deletes the row, so this is where a subject
+                 reads back the pause they lifted and when they lifted it.
+
+                 VIEWER, not the OWNER the two admin-plane history RPCs use. This service
+                 carries no user id in any request, so it can only ever return the caller's
+                 own rows: gating it at OWNER would put an owner role in front of the
+                 caller's own data and still return nothing but that. An admin auditing
+                 another subject's app limits needs an admin-plane read, which this service
+                 is not and deliberately does not become.
+            operationId: c1.api.funds.v1.MyFundLimitsService.ListHistory
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitsServiceListHistoryResponse'
+                    description: Successful response
+            summary: List History
+            tags:
+                - My Fund Limits
+            x-speakeasy-group: MyFundLimits
+            x-speakeasy-name-override: ListHistory
+    /api/v1/funds/my/app-limits/{app_id}/limit:
+        post:
+            description: Cap what one app may take from the caller's own fund. Amount arm only.
+            operationId: c1.api.funds.v1.MyFundLimitsService.SetLimit
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitsServiceSetLimitRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitsServiceSetLimitResponse'
+                    description: Successful response
+            summary: Set Limit
+            tags:
+                - My Fund Limits
+            x-speakeasy-group: MyFundLimits
+            x-speakeasy-name-override: SetLimit
+    /api/v1/funds/my/app-limits/{app_id}/suspension:
+        delete:
+            description: Un-pause the app, restoring the limit it froze.
+            operationId: c1.api.funds.v1.MyFundLimitsService.Resume
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitsServiceResumeRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitsServiceResumeResponse'
+                    description: Successful response
+            summary: Resume
+            tags:
+                - My Fund Limits
+            x-speakeasy-group: MyFundLimits
+            x-speakeasy-name-override: Resume
+        post:
+            description: |-
+                Pause one app on the caller's own fund. The limit underneath is preserved
+                 and restored by Resume. Denials name this as paused by you.
+            operationId: c1.api.funds.v1.MyFundLimitsService.Pause
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitsServicePauseRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.MyFundLimitsServicePauseResponse'
+                    description: Successful response
+            summary: Pause
+            tags:
+                - My Fund Limits
+            x-speakeasy-group: MyFundLimits
+            x-speakeasy-name-override: Pause
+    /api/v1/funds/policy:
+        delete:
+            description: |-
+                Delete the tenant's fund policy, opting the tenant back out of spend
+                 governance. Rules, assignments and app caps are left in place and go
+                 dormant; a later Create restores every one of them.
+            operationId: c1.api.funds.v1.FundPolicyService.Delete
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceDeleteRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceDeleteResponse'
+                    description: Successful response
+            summary: Delete
+            tags:
+                - Fund Policy
+            x-speakeasy-group: FundPolicy
+            x-speakeasy-name-override: Delete
+        get:
+            description: |-
+                Get the tenant's fund policy. An absent policy in the response means the
+                 tenant has not opted in to spend governance, which is an ordinary state
+                 rather than an error.
+            operationId: c1.api.funds.v1.FundPolicyService.Get
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Fund Policy
+            x-speakeasy-group: FundPolicy
+            x-speakeasy-name-override: Get
+        post:
+            description: |-
+                Create the tenant's fund policy, opting the tenant in to spend governance.
+                 default_limit is required: a tenant states its posture explicitly, and
+                 there is no implicit default anywhere in the write path.
+            operationId: c1.api.funds.v1.FundPolicyService.Create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceCreateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceCreateResponse'
+                    description: Successful response
+            summary: Create
+            tags:
+                - Fund Policy
+            x-speakeasy-group: FundPolicy
+            x-speakeasy-name-override: Create
+    /api/v1/funds/policy/ceiling/limit:
+        post:
+            description: |-
+                Set the org-wide ceiling: the bound on the tenant's total regardless of
+                 what any principal was granted. Amount arm only. Clears the ceiling when
+                 limit is absent.
+            operationId: c1.api.funds.v1.FundPolicyService.SetOrgCeiling
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceSetOrgCeilingRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceSetOrgCeilingResponse'
+                    description: Successful response
+            summary: Set Org Ceiling
+            tags:
+                - Fund Policy
+            x-speakeasy-group: FundPolicy
+            x-speakeasy-name-override: SetOrgCeiling
+    /api/v1/funds/policy/ceiling/suspension:
+        delete:
+            description: Lift the tenant freeze, restoring the ceiling it froze.
+            operationId: c1.api.funds.v1.FundPolicyService.UnfreezeTenant
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceUnfreezeTenantRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceUnfreezeTenantResponse'
+                    description: Successful response
+            summary: Unfreeze Tenant
+            tags:
+                - Fund Policy
+            x-speakeasy-group: FundPolicy
+            x-speakeasy-name-override: UnfreezeTenant
+        post:
+            description: |-
+                Freeze the whole tenant. The ceiling amount underneath is preserved and
+                 restored by Unfreeze.
+            operationId: c1.api.funds.v1.FundPolicyService.FreezeTenant
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceFreezeTenantRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceFreezeTenantResponse'
+                    description: Successful response
+            summary: Freeze Tenant
+            tags:
+                - Fund Policy
+            x-speakeasy-group: FundPolicy
+            x-speakeasy-name-override: FreezeTenant
+    /api/v1/funds/policy/history:
+        get:
+            description: |-
+                List the change history for the fund policy, newest first. Admin-tier per
+                 the object-history convention.
+            operationId: c1.api.funds.v1.FundPolicyService.ListHistory
+            parameters:
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceListHistoryResponse'
+                    description: Successful response
+            summary: List History
+            tags:
+                - Fund Policy
+            x-speakeasy-group: FundPolicy
+            x-speakeasy-name-override: ListHistory
+    /api/v1/funds/policy/update:
+        post:
+            description: |-
+                Update the period or the default limit. currency_code is immutable after
+                 Create and update_mask rejects it: an amount denominated in a currency the
+                 policy no longer names faults the acquire path rather than denying it.
+            operationId: c1.api.funds.v1.FundPolicyService.Update
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceUpdateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundPolicyServiceUpdateResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - Fund Policy
+            x-speakeasy-group: FundPolicy
+            x-speakeasy-name-override: Update
+    /api/v1/funds/rules:
+        get:
+            description: |-
+                List every rule in the tenant. Reads the runtime plane: rule cardinality
+                 is the tenant's rule count, so this is the same one-partition read
+                 resolution does.
+            operationId: c1.api.funds.v1.FundRuleService.List
+            parameters:
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceListResponse'
+                    description: Successful response
+            summary: List
+            tags:
+                - Fund Rules
+            x-speakeasy-group: FundRule
+            x-speakeasy-name-override: List
+        post:
+            description: |-
+                Create funds a group. The group is an AppEntitlement, so membership
+                 resolves through that entitlement's bindings on every acquire rather than
+                 being captured here. Creating the tenant's first rule is what turns group
+                 resolution on for that tenant.
+            operationId: c1.api.funds.v1.FundRuleService.Create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceCreateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceCreateResponse'
+                    description: Successful response
+            summary: Create
+            tags:
+                - Fund Rules
+            x-speakeasy-group: FundRule
+            x-speakeasy-name-override: Create
+    /api/v1/funds/rules/{rule_id}:
+        delete:
+            description: |-
+                Delete withdraws a group grant. The cohort keeps whatever the tenant
+                 default and any other rule matching them still allow, so this narrows their
+                 fund rather than necessarily cutting it off. The rule's history survives.
+            operationId: c1.api.funds.v1.FundRuleService.Delete
+            parameters:
+                - in: path
+                  name: rule_id
+                  required: true
+                  schema:
+                    description: The ruleId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceDeleteRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceDeleteResponse'
+                    description: Successful response
+            summary: Delete
+            tags:
+                - Fund Rules
+            x-speakeasy-group: FundRule
+            x-speakeasy-name-override: Delete
+        get:
+            description: |-
+                Get returns one rule: the group it funds, the grant it carries, and the
+                 label and reason an admin reads it by. A deleted rule is not found.
+            operationId: c1.api.funds.v1.FundRuleService.Get
+            parameters:
+                - in: path
+                  name: rule_id
+                  required: true
+                  schema:
+                    description: The ruleId field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Fund Rules
+            x-speakeasy-group: FundRule
+            x-speakeasy-name-override: Get
+        post:
+            description: |-
+                Update replaces the group, grant, label or reason on one rule, whichever
+                 the field mask names. The new grant governs the next acquire; spend already
+                 accounted for against the old one is not revisited.
+            operationId: c1.api.funds.v1.FundRuleService.Update
+            parameters:
+                - in: path
+                  name: rule_id
+                  required: true
+                  schema:
+                    description: The ruleId field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceUpdateRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceUpdateResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - Fund Rules
+            x-speakeasy-group: FundRule
+            x-speakeasy-name-override: Update
+    /api/v1/funds/rules/{rule_id}/history:
+        get:
+            description: |-
+                List the change history for one rule, newest first. Admin-tier per the
+                 object-history convention. A deleted rule keeps its history: the delete is
+                 the last entry, and the one before it is the rule as it last stood.
+            operationId: c1.api.funds.v1.FundRuleService.ListHistory
+            parameters:
+                - in: path
+                  name: rule_id
+                  required: true
+                  schema:
+                    description: The ruleId field.
+                    type: string
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceListHistoryResponse'
+                    description: Successful response
+            summary: List History
+            tags:
+                - Fund Rules
+            x-speakeasy-group: FundRule
+            x-speakeasy-name-override: ListHistory
+    /api/v1/funds/rules/search:
+        post:
+            description: Search rules by display name. Reads the Postgres mirror.
+            operationId: c1.api.funds.v1.FundRuleService.Search
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceSearchRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.funds.v1.FundRuleServiceSearchResponse'
+                    description: Successful response
+            summary: Search
+            tags:
+                - Fund Rules
+            x-speakeasy-group: FundRule
+            x-speakeasy-name-override: Search
     /api/v1/grants/feed:
         post:
             description: Search a chronological feed of grant and revoke events, filtered by app user, entitlement, or time range.
@@ -55349,7 +57801,7 @@ paths:
             x-speakeasy-name-override: SearchGrantFeed
     /api/v1/hooks:
         get:
-            description: Invokes the c1.api.hooks.v1.HooksService.List method.
+            description: List returns all hooks for the tenant, paginated.
             operationId: c1.api.hooks.v1.HooksService.List
             parameters:
                 - in: query
@@ -55376,7 +57828,10 @@ paths:
             x-speakeasy-group: Hooks
             x-speakeasy-name-override: List
         post:
-            description: Invokes the c1.api.hooks.v1.HooksService.Create method.
+            description: |-
+                Create creates a hook. The hook fires on the configured event, optionally
+                 filtered by a CEL expression. Creating a Patch tool input hook requires the
+                 preview feature to be enabled for the tenant.
             operationId: c1.api.hooks.v1.HooksService.Create
             requestBody:
                 content:
@@ -55397,7 +57852,9 @@ paths:
             x-speakeasy-name-override: Create
     /api/v1/hooks/{id}:
         delete:
-            description: Invokes the c1.api.hooks.v1.HooksService.Delete method.
+            description: |-
+                Delete removes a hook by ID. A hook referenced by a guardrail rule cannot
+                 be deleted until the reference is removed.
             operationId: c1.api.hooks.v1.HooksService.Delete
             parameters:
                 - in: path
@@ -55424,7 +57881,7 @@ paths:
             x-speakeasy-group: Hooks
             x-speakeasy-name-override: Delete
         get:
-            description: Invokes the c1.api.hooks.v1.HooksService.Get method.
+            description: Get returns a hook by ID.
             operationId: c1.api.hooks.v1.HooksService.Get
             parameters:
                 - in: path
@@ -55446,7 +57903,10 @@ paths:
             x-speakeasy-group: Hooks
             x-speakeasy-name-override: Get
         post:
-            description: Invokes the c1.api.hooks.v1.HooksService.Update method.
+            description: |-
+                Update modifies a hook's display name, description, event, filter, priority,
+                 or configuration. A hook referenced by a guardrail rule cannot stop being
+                 managed by guardrails until the reference is removed.
             operationId: c1.api.hooks.v1.HooksService.Update
             parameters:
                 - in: path
@@ -56065,7 +58525,9 @@ paths:
             x-speakeasy-name-override: RevokeBridgeCredential
     /api/v1/llm-gateway/keys:
         get:
-            description: Invokes the c1.api.llm_gateway.v1.GatewayKeyService.List method.
+            description: |-
+                List returns the tenant's LLM gateway API keys. Only key metadata and a
+                 key prefix are returned, never the full key.
             operationId: c1.api.llm_gateway.v1.GatewayKeyService.List
             responses:
                 "200":
@@ -56080,7 +58542,9 @@ paths:
             x-speakeasy-group: GatewayKey
             x-speakeasy-name-override: List
         post:
-            description: Invokes the c1.api.llm_gateway.v1.GatewayKeyService.Mint method.
+            description: |-
+                Mint creates a new LLM gateway API key. The key value is shown only in
+                 this response and cannot be retrieved again; store it immediately.
             operationId: c1.api.llm_gateway.v1.GatewayKeyService.Mint
             requestBody:
                 content:
@@ -56101,7 +58565,9 @@ paths:
             x-speakeasy-name-override: Mint
     /api/v1/llm-gateway/keys/{id}:
         delete:
-            description: Invokes the c1.api.llm_gateway.v1.GatewayKeyService.Revoke method.
+            description: |-
+                Revoke revokes an LLM gateway API key by ID. The key immediately stops
+                 authenticating gateway requests.
             operationId: c1.api.llm_gateway.v1.GatewayKeyService.Revoke
             parameters:
                 - in: path
@@ -56129,7 +58595,7 @@ paths:
             x-speakeasy-name-override: Revoke
     /api/v1/llm-gateway/provider-credentials/{slot_id}:
         delete:
-            description: Invokes the c1.api.llm_gateway.v1.ProviderCredentialService.Clear method.
+            description: Clear deletes the provider credential stored in the given slot.
             operationId: c1.api.llm_gateway.v1.ProviderCredentialService.Clear
             parameters:
                 - in: path
@@ -56156,7 +58622,11 @@ paths:
             x-speakeasy-group: ProviderCredential
             x-speakeasy-name-override: Clear
         get:
-            description: Invokes the c1.api.llm_gateway.v1.ProviderCredentialService.Get method.
+            description: |-
+                Get returns metadata for the provider credential in the given slot. The
+                 stored API key is never returned. Returns an empty response if no
+                 credential has ever been set for the slot; a cleared slot returns
+                 FAILED_PRECONDITION.
             operationId: c1.api.llm_gateway.v1.ProviderCredentialService.Get
             parameters:
                 - in: path
@@ -56178,7 +58648,10 @@ paths:
             x-speakeasy-group: ProviderCredential
             x-speakeasy-name-override: Get
         put:
-            description: Invokes the c1.api.llm_gateway.v1.ProviderCredentialService.Set method.
+            description: |-
+                Set stores or replaces the provider API key used by the LLM gateway for
+                 the given slot. The API key is stored encrypted and is never returned by
+                 the API.
             operationId: c1.api.llm_gateway.v1.ProviderCredentialService.Set
             parameters:
                 - in: path
@@ -56981,7 +59454,10 @@ paths:
             x-speakeasy-name-override: Save
     /api/v1/reporting/reports/{id}:
         delete:
-            description: Invokes the c1.api.reporting.v1.ReportingService.Delete method.
+            description: |-
+                Delete removes a report by ID. The report's saved program is removed with
+                 it, so the report can no longer be re-run. Only the report's creator can
+                 delete it.
             operationId: c1.api.reporting.v1.ReportingService.Delete
             parameters:
                 - in: path
@@ -57008,7 +59484,9 @@ paths:
             x-speakeasy-group: Reporting
             x-speakeasy-name-override: Delete
         get:
-            description: Invokes the c1.api.reporting.v1.ReportingService.Get method.
+            description: |-
+                Get returns a report by ID, including its latest run and latest successful
+                 run. Reports are visible only to the user who created them.
             operationId: c1.api.reporting.v1.ReportingService.Get
             parameters:
                 - in: path
@@ -57030,7 +59508,9 @@ paths:
             x-speakeasy-group: Reporting
             x-speakeasy-name-override: Get
         post:
-            description: Invokes the c1.api.reporting.v1.ReportingService.Update method.
+            description: |-
+                Update modifies a report's display name, prompt, or parameter values.
+                 Only the report's creator can update it.
             operationId: c1.api.reporting.v1.ReportingService.Update
             parameters:
                 - in: path
@@ -57385,9 +59865,45 @@ paths:
                 - Role Mining
             x-speakeasy-group: RoleMiningManagement
             x-speakeasy-name-override: ListCustomAnalysisResults
+    /api/v1/role-mining/custom-analysis/{analysis_id}/evaluate-entitlement-selection:
+        post:
+            description: |-
+                Evaluate the exact cohort impact of an entitlement cutoff and manual overrides.
+                 The analysis determines the eligible entitlements and cohort definition.
+            operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.EvaluateEntitlementSelection
+            parameters:
+                - in: path
+                  name: analysis_id
+                  required: true
+                  schema:
+                    description: Custom analysis whose cohort and entitlement results define the selection.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.role_mining_management.v1.EvaluateEntitlementSelectionRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.role_mining_management.v1.EvaluateEntitlementSelectionResponse'
+                    description: |-
+                        EvaluateEntitlementSelectionResponse contains the exact impact of the
+                         resolved entitlement selection.
+            summary: Evaluate Entitlement Selection
+            tags:
+                - Role Mining
+            x-speakeasy-group: RoleMiningManagement
+            x-speakeasy-name-override: EvaluateEntitlementSelection
     /api/v1/role-mining/custom-analysis/{id}:
         get:
-            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.GetCustomAnalysisResult method.
+            description: |-
+                GetCustomAnalysisResult returns the status and results of a custom cohort
+                 analysis started with TriggerCustomAnalysis, including entitlement
+                 coverage, entitlement clusters, attribute facets, and cutoff impact
+                 points. Requires the agentic role mining feature.
             operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.GetCustomAnalysisResult
             parameters:
                 - in: path
@@ -57410,7 +59926,11 @@ paths:
             x-speakeasy-name-override: GetCustomAnalysisResult
     /api/v1/role-mining/custom-analysis/trigger:
         post:
-            description: Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.TriggerCustomAnalysis method.
+            description: |-
+                TriggerCustomAnalysis starts an asynchronous custom cohort analysis defined
+                 by the given profile filters and returns the ID of the analysis result.
+                 Requires the agentic role mining feature. Poll GetCustomAnalysisResult
+                 until the analysis completes.
             operationId: c1.api.role_mining_management.v1.RoleMiningManagementService.TriggerCustomAnalysis
             requestBody:
                 content:
@@ -58083,7 +60603,9 @@ paths:
             x-speakeasy-name-override: SearchReachableResourcesForUser
     /api/v1/search/hooks:
         post:
-            description: Invokes the c1.api.hooks.v1.HooksSearch.Search method.
+            description: |-
+                Search returns hooks for the tenant, paginated. Setting query or refs
+                 returns UNIMPLEMENTED; filtering is not yet supported.
             operationId: c1.api.hooks.v1.HooksSearch.Search
             requestBody:
                 content:
@@ -60046,7 +62568,9 @@ paths:
             x-speakeasy-name-override: Get
     /api/v1/settings/contacts:
         get:
-            description: Invokes the c1.api.settings.v1.ContactsService.GetContacts method.
+            description: |-
+                GetContacts returns the organization's security, billing, and operations
+                 contact email addresses.
             operationId: c1.api.settings.v1.ContactsService.GetContacts
             responses:
                 "200":
@@ -60061,7 +62585,11 @@ paths:
             x-speakeasy-group: Contacts
             x-speakeasy-name-override: GetContacts
         post:
-            description: Invokes the c1.api.settings.v1.ContactsService.UpdateContacts method.
+            description: |-
+                UpdateContacts updates the organization's security, billing, and
+                 operations contact email addresses. If update_mask is set, only the
+                 selected fields are changed; otherwise all contact fields are replaced
+                 with the values in the request.
             operationId: c1.api.settings.v1.ContactsService.UpdateContacts
             requestBody:
                 content:

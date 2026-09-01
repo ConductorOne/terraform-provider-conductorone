@@ -146,6 +146,13 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 			}
 		}
 		r.IsCampaignScheduleEnabled = types.BoolPointerValue(resp.IsCampaignScheduleEnabled)
+		if resp.MsTeamsChannel == nil {
+			r.MsTeamsChannel = nil
+		} else {
+			r.MsTeamsChannel = &tfTypes.MSTeamsChannel{}
+			r.MsTeamsChannel.ChannelName = types.StringPointerValue(resp.MsTeamsChannel.ChannelName)
+			r.MsTeamsChannel.ExternalDirectoryID = types.StringPointerValue(resp.MsTeamsChannel.ExternalDirectoryID)
+		}
 		r.NextScheduledCampaignAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextScheduledCampaignAt))
 		if resp.NotificationConfig == nil {
 			r.NotificationConfig = nil

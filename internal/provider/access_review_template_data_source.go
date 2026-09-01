@@ -46,6 +46,7 @@ type AccessReviewTemplateDataSourceModel struct {
 	ID                             types.String                        `tfsdk:"id"`
 	InclusionScope                 *tfTypes.AccessReviewInclusionScope `tfsdk:"inclusion_scope"`
 	IsCampaignScheduleEnabled      types.Bool                          `tfsdk:"is_campaign_schedule_enabled"`
+	MsTeamsChannel                 *tfTypes.MSTeamsChannel             `tfsdk:"ms_teams_channel"`
 	NextScheduledCampaignAt        types.String                        `tfsdk:"next_scheduled_campaign_at"`
 	NotificationConfig             *tfTypes.NotificationConfig         `tfsdk:"notification_config"`
 	Occurrences                    types.Int32                         `tfsdk:"occurrences"`
@@ -229,6 +230,20 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 				Computed:    true,
 				Description: `Whether automatic campaign creation on the recurrence schedule is enabled.`,
 			},
+			"ms_teams_channel": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"channel_name": schema.StringAttribute{
+						Computed:    true,
+						Description: `The channelName field.`,
+					},
+					"external_directory_id": schema.StringAttribute{
+						Computed:    true,
+						Description: `The externalDirectoryId field.`,
+					},
+				},
+				Description: `The MSTeamsChannel message.`,
+			},
 			"next_scheduled_campaign_at": schema.StringAttribute{
 				Computed: true,
 			},
@@ -265,8 +280,9 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 						Computed: true,
 					},
 					"frequency": schema.StringAttribute{
-						Computed:    true,
-						Description: `The frequency field.`,
+						Computed: true,
+						MarkdownDescription: `Frequency of the recurrence: FREQUENCY_DAILY, FREQUENCY_WEEKLY, FREQUENCY_MONTHLY, or FREQUENCY_YEARLY.` + "\n" +
+							` Use FREQUENCY_NONE for a non-recurring schedule.`,
 					},
 					"interval": schema.Int32Attribute{
 						Computed:    true,

@@ -34,6 +34,11 @@ func (r *AccessProfileResourceModel) RefreshFromSharedRequestCatalog(ctx context
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Published = types.BoolPointerValue(resp.Published)
 		r.RequestBundle = types.BoolPointerValue(resp.RequestBundle)
+		if resp.Type != nil {
+			r.Type = types.StringValue(string(*resp.Type))
+		} else {
+			r.Type = types.StringNull()
+		}
 		if resp.UnenrollmentBehavior != nil {
 			r.UnenrollmentBehavior = types.StringValue(string(*resp.UnenrollmentBehavior))
 		} else {
@@ -256,6 +261,12 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 	} else {
 		requestBundle = nil
 	}
+	typeVar := new(shared.RequestCatalogManagementServiceCreateRequestType)
+	if !r.Type.IsUnknown() && !r.Type.IsNull() {
+		*typeVar = shared.RequestCatalogManagementServiceCreateRequestType(r.Type.ValueString())
+	} else {
+		typeVar = nil
+	}
 	unenrollmentBehavior := new(shared.RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior)
 	if !r.UnenrollmentBehavior.IsUnknown() && !r.UnenrollmentBehavior.IsNull() {
 		*unenrollmentBehavior = shared.RequestCatalogManagementServiceCreateRequestUnenrollmentBehavior(r.UnenrollmentBehavior.ValueString())
@@ -281,6 +292,7 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceCrea
 		EnrollmentBehavior:              enrollmentBehavior,
 		Published:                       published,
 		RequestBundle:                   requestBundle,
+		Type:                            typeVar,
 		UnenrollmentBehavior:            unenrollmentBehavior,
 		UnenrollmentEntitlementBehavior: unenrollmentEntitlementBehavior,
 		VisibleToEveryone:               visibleToEveryone,

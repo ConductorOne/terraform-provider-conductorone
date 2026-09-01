@@ -40,6 +40,7 @@ type AccessProfileDataSourceModel struct {
 	ID                              types.String                                                 `tfsdk:"id"`
 	Published                       types.Bool                                                   `tfsdk:"published"`
 	RequestBundle                   types.Bool                                                   `tfsdk:"request_bundle"`
+	Type                            types.String                                                 `tfsdk:"type"`
 	UnenrollmentBehavior            types.String                                                 `tfsdk:"unenrollment_behavior"`
 	UnenrollmentEntitlementBehavior types.String                                                 `tfsdk:"unenrollment_entitlement_behavior"`
 	UpdatedAt                       types.String                                                 `tfsdk:"updated_at"`
@@ -109,6 +110,12 @@ func (r *AccessProfileDataSource) Schema(ctx context.Context, req datasource.Sch
 			"request_bundle": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.`,
+			},
+			"type": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile` + "\n" +
+					` created before the type was recorded; UNSPECIFIED only for a tenant whose` + "\n" +
+					` backfill has not been run.`,
 			},
 			"unenrollment_behavior": schema.StringAttribute{
 				Computed:    true,

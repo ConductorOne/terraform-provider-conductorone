@@ -110,6 +110,11 @@ type ConductoroneAPI struct {
 	Functions                            *Functions
 	FunctionsInvocation                  *FunctionsInvocation
 	FunctionsInvocationSearch            *FunctionsInvocationSearch
+	AppCap                               *AppCap
+	FundAssignment                       *FundAssignment
+	MyFundLimits                         *MyFundLimits
+	FundPolicy                           *FundPolicy
+	FundRule                             *FundRule
 	Hooks                                *Hooks
 	PersonalClient                       *PersonalClient
 	PersonalDevice                       *PersonalDevice
@@ -272,9 +277,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk := &ConductoroneAPI{
-		SDKVersion: "1.5.0",
+		SDKVersion: "1.5.1",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 1.5.0 2.882.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 1.5.1 2.882.0 0.1.0-alpha github.com/conductorone/terraform-provider-conductorone/internal/sdk",
 			ServerList: ServerList,
 			ServerVariables: []map[string]string{
 				{
@@ -359,6 +364,11 @@ func New(opts ...SDKOption) *ConductoroneAPI {
 	sdk.Functions = newFunctions(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FunctionsInvocation = newFunctionsInvocation(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.FunctionsInvocationSearch = newFunctionsInvocationSearch(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.AppCap = newAppCap(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.FundAssignment = newFundAssignment(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.MyFundLimits = newMyFundLimits(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.FundPolicy = newFundPolicy(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.FundRule = newFundRule(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Hooks = newHooks(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PersonalClient = newPersonalClient(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PersonalDevice = newPersonalDevice(sdk, sdk.sdkConfiguration, sdk.hooks)

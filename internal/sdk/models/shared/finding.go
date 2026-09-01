@@ -101,6 +101,7 @@ func (e *FindingState) IsExact() bool {
 //   - credentialPubliclyExposed
 //   - decoyPubliclyExposed
 //   - credentialExpiring
+//   - connectorSyncFailing
 //
 // This message contains a oneof named target. Only a single field of the following list may be set at a time:
 //   - identityUserTarget
@@ -118,6 +119,7 @@ func (e *FindingState) IsExact() bool {
 //   - credentialPubliclyExposedEvidence
 //   - decoyPubliclyExposedEvidence
 //   - credentialExpiringEvidence
+//   - connectorSyncFailingEvidence
 type Finding struct {
 	// Bounded key/value metadata bag. Limits: ≤16 entries; keys 1-128 chars
 	//  matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0-256 chars; total
@@ -131,6 +133,8 @@ type Finding struct {
 	AssignedOwner                     *FindingOwnerRef                       `json:"assignedOwner,omitempty"`
 	ComputedOwner                     *FindingOwnerRef                       `json:"computedOwner,omitempty"`
 	ConnectorAnomalyDetectionDisabled *ConnectorAnomalyDetectionDisabledType `json:"connectorAnomalyDetectionDisabled,omitempty"`
+	ConnectorSyncFailing              *ConnectorSyncFailingType              `json:"connectorSyncFailing,omitempty"`
+	ConnectorSyncFailingEvidence      *ConnectorSyncFailingEvidence          `json:"connectorSyncFailingEvidence,omitempty"`
 	ConnectorTarget                   *ConnectorTarget                       `json:"connectorTarget,omitempty"`
 	CreatedAt                         *time.Time                             `json:"createdAt,omitempty"`
 	CredentialExpiring                *CredentialExpiringType                `json:"credentialExpiring,omitempty"`
@@ -190,7 +194,9 @@ type Finding struct {
 	SourceKind *SourceKind `json:"sourceKind,omitempty"`
 	// The state field.
 	State *FindingState `json:"state,omitempty"`
-	// The stateUpdatedById field.
+	// The human who authored the CURRENT state. Empty when a routing rule or the
+	//  system authored it, so do not read a populated value as "this finding has a
+	//  human owner" -- read it as "a human set the state it is in right now".
 	StateUpdatedByID *string `json:"stateUpdatedById,omitempty"`
 	// The suppressReason field.
 	SuppressReason *string `json:"suppressReason,omitempty"`
@@ -260,6 +266,20 @@ func (f *Finding) GetConnectorAnomalyDetectionDisabled() *ConnectorAnomalyDetect
 		return nil
 	}
 	return f.ConnectorAnomalyDetectionDisabled
+}
+
+func (f *Finding) GetConnectorSyncFailing() *ConnectorSyncFailingType {
+	if f == nil {
+		return nil
+	}
+	return f.ConnectorSyncFailing
+}
+
+func (f *Finding) GetConnectorSyncFailingEvidence() *ConnectorSyncFailingEvidence {
+	if f == nil {
+		return nil
+	}
+	return f.ConnectorSyncFailingEvidence
 }
 
 func (f *Finding) GetConnectorTarget() *ConnectorTarget {

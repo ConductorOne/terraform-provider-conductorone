@@ -7,6 +7,10 @@ type TaskAuditListRequest struct {
 	// When true, only comment events are returned, so a page of page_size holds
 	//  page_size comments rather than a mix of comments and state-change events.
 	CommentsOnly *bool `json:"commentsOnly,omitempty"`
+	// When true, comment events are excluded from the response and the count, so
+	//  a page of page_size holds page_size non-comment events. Mutually exclusive
+	//  with comments_only.
+	ExcludeComments *bool `json:"excludeComments,omitempty"`
 	// When true, events are returned newest-first (descending created_at) instead
 	//  of the default chronological (ascending) order.
 	NewestFirst *bool `json:"newestFirst,omitempty"`
@@ -25,6 +29,13 @@ func (t *TaskAuditListRequest) GetCommentsOnly() *bool {
 		return nil
 	}
 	return t.CommentsOnly
+}
+
+func (t *TaskAuditListRequest) GetExcludeComments() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.ExcludeComments
 }
 
 func (t *TaskAuditListRequest) GetNewestFirst() *bool {

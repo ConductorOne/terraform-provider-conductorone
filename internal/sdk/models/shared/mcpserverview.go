@@ -271,8 +271,12 @@ type MCPServerView struct {
 	// Admin-provided display name.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Endpoint URL for external MCP servers. Read-only.
-	EndpointURL  *string    `json:"endpointUrl,omitempty"`
-	LastCalledAt *time.Time `json:"lastCalledAt,omitempty"`
+	EndpointURL *string `json:"endpointUrl,omitempty"`
+	// Whether the endpoint URL is immutable. True once the connector has
+	//  completed its first successful sync; the URL cannot be changed after
+	//  that point. Read-only.
+	EndpointURLLocked *bool      `json:"endpointUrlLocked,omitempty"`
+	LastCalledAt      *time.Time `json:"lastCalledAt,omitempty"`
 	// Opaque catalog entry ID for hosted MCP servers (27-character KSUID).
 	//  Obtain valid IDs from the ListCatalog or GetCatalog RPCs.
 	McpServerCatalogID *string `json:"mcpServerCatalogId,omitempty"`
@@ -515,6 +519,13 @@ func (m *MCPServerView) GetEndpointURL() *string {
 		return nil
 	}
 	return m.EndpointURL
+}
+
+func (m *MCPServerView) GetEndpointURLLocked() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.EndpointURLLocked
 }
 
 func (m *MCPServerView) GetLastCalledAt() *time.Time {

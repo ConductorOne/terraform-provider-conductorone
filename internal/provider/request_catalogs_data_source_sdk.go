@@ -49,6 +49,11 @@ func (r *RequestCatalogsDataSourceModel) RefreshFromSharedRequestCatalogManageme
 					list.RequestCatalog.ID = types.StringPointerValue(listItem.RequestCatalog.ID)
 					list.RequestCatalog.Published = types.BoolPointerValue(listItem.RequestCatalog.Published)
 					list.RequestCatalog.RequestBundle = types.BoolPointerValue(listItem.RequestCatalog.RequestBundle)
+					if listItem.RequestCatalog.Type != nil {
+						list.RequestCatalog.Type = types.StringValue(string(*listItem.RequestCatalog.Type))
+					} else {
+						list.RequestCatalog.Type = types.StringNull()
+					}
 					if listItem.RequestCatalog.UnenrollmentBehavior != nil {
 						list.RequestCatalog.UnenrollmentBehavior = types.StringValue(string(*listItem.RequestCatalog.UnenrollmentBehavior))
 					} else {

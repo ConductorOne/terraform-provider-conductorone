@@ -8,7 +8,10 @@ type SearchCohortUsersResponse struct {
 	List []User `json:"list,omitempty"`
 	// Token to retrieve the next page of results, empty if no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
-	// Per-user coverage counts, populated when selected_entitlements is non-empty.
+	// Deprecated. This endpoint no longer computes per-user coverage; this
+	//  list is always empty.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	UsersWithCoverage []CohortUserWithCoverage `json:"usersWithCoverage,omitempty"`
 }
 

@@ -5,11 +5,14 @@ package provider
 import (
 	"context"
 	"fmt"
+	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
@@ -41,6 +44,7 @@ type AccessProfileResourceModel struct {
 	ID                              types.String                                                 `tfsdk:"id"`
 	Published                       types.Bool                                                   `tfsdk:"published"`
 	RequestBundle                   types.Bool                                                   `tfsdk:"request_bundle"`
+	Type                            types.String                                                 `tfsdk:"type"`
 	UnenrollmentBehavior            types.String                                                 `tfsdk:"unenrollment_behavior"`
 	UnenrollmentEntitlementBehavior types.String                                                 `tfsdk:"unenrollment_entitlement_behavior"`
 	UpdatedAt                       types.String                                                 `tfsdk:"updated_at"`
@@ -109,6 +113,23 @@ func (r *AccessProfileResource) Schema(ctx context.Context, req resource.SchemaR
 				Computed:    true,
 				Optional:    true,
 				Description: `Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.`,
+			},
+			"type": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				MarkdownDescription: `The type of access profile to create. Leave unset for` + "\n" +
+					` REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE, which is what every profile` + "\n" +
+					` created before this field existed is. Setting it requires the` + "\n" +
+					` ACCESS_PROFILE_TYPES feature.` + "\n" +
+					`` + "\n" +
+					` PROFILE is rejected rather than resolved: it is deprecated, has no stored` + "\n" +
+					` counterpart, and shares wire number 2 with the stored BUNDLE, so honoring` + "\n" +
+					` it would silently persist a type the caller did not ask for.` + "\n" +
+					`possible known values include one of ["REQUEST_CATALOG_TYPE_UNSPECIFIED", "REQUEST_CATALOG_TYPE_CATALOG", "REQUEST_CATALOG_TYPE_PROFILE", "REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE", "REQUEST_CATALOG_TYPE_BUNDLE"]; Requires replacement if changed.`,
 			},
 			"unenrollment_behavior": schema.StringAttribute{
 				Computed:    true,

@@ -11,12 +11,14 @@ package shared
 //   - unsuppress
 //   - assignOwner
 //   - reopen
+//   - reprocess
 type BulkUpdateFindingStateRequest struct {
 	AcceptRisk  *BulkAcceptRiskAction  `json:"acceptRisk,omitempty"`
 	AssignOwner *BulkAssignOwnerAction `json:"assignOwner,omitempty"`
 	// By-ID mode: specify individual finding refs.
 	Refs          []FindingRef          `json:"refs,omitempty"`
 	Reopen        *BulkReopenAction     `json:"reopen,omitempty"`
+	Reprocess     *BulkReprocessAction  `json:"reprocess,omitempty"`
 	SearchRequest *FindingSearchRequest `json:"searchRequest,omitempty"`
 	Snooze        *BulkSnoozeAction     `json:"snooze,omitempty"`
 	Suppress      *BulkSuppressAction   `json:"suppress,omitempty"`
@@ -49,6 +51,13 @@ func (b *BulkUpdateFindingStateRequest) GetReopen() *BulkReopenAction {
 		return nil
 	}
 	return b.Reopen
+}
+
+func (b *BulkUpdateFindingStateRequest) GetReprocess() *BulkReprocessAction {
+	if b == nil {
+		return nil
+	}
+	return b.Reprocess
 }
 
 func (b *BulkUpdateFindingStateRequest) GetSearchRequest() *FindingSearchRequest {

@@ -54,6 +54,12 @@ func (e *MCPServerServiceRegisterRequestServerType) IsExact() bool {
 
 // MCPServerServiceRegisterRequest creates a new MCP server (Connector + config).
 type MCPServerServiceRegisterRequest struct {
+	// Optional access profiles (request catalogs) the server should be requestable
+	//  through. Register creates the server's "All approved tools" toolset empty and adds
+	//  its entitlement to each profile, so members can request the server before discovery
+	//  has found a single tool; the sync later adopts the same toolset and fills it. Empty
+	//  skips both steps.
+	AccessProfileIds []string `json:"accessProfileIds,omitempty"`
 	// finding_ids from the diagnostic the admin acknowledged. Each must cover a
 	//  blocking-relaxable finding on oauth_diagnostic_id.
 	AcknowledgedFindingIds    []string                   `json:"acknowledgedFindingIds,omitempty"`
@@ -104,6 +110,13 @@ type MCPServerServiceRegisterRequest struct {
 	Tunneled *bool `json:"tunneled,omitempty"`
 	// Integration owners for the MCP server connector.
 	UserIds []string `json:"userIds,omitempty"`
+}
+
+func (m *MCPServerServiceRegisterRequest) GetAccessProfileIds() []string {
+	if m == nil {
+		return nil
+	}
+	return m.AccessProfileIds
 }
 
 func (m *MCPServerServiceRegisterRequest) GetAcknowledgedFindingIds() []string {
