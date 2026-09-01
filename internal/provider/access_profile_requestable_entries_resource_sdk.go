@@ -4,31 +4,16 @@ package provider
 
 import (
 	"context"
-	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/operations"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 func (r *AccessProfileRequestableEntriesResourceModel) RefreshFromSharedRequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse(ctx context.Context, resp *shared.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.AppEntitlements != nil {
-			r.AppEntitlements = []tfTypes.AppEntitlementRef{}
-
-			for _, appEntitlementsItem := range resp.AppEntitlements {
-				var appEntitlements tfTypes.AppEntitlementRef
-
-				appEntitlements.AppID = types.StringPointerValue(appEntitlementsItem.AppID)
-				appEntitlements.ID = types.StringPointerValue(appEntitlementsItem.ID)
-
-				r.AppEntitlements = append(r.AppEntitlements, appEntitlements)
-			}
-		} else {
-			r.AppEntitlements = nil
-		}
+		r.AppEntitlements = managedAppEntitlementRefs(r.AppEntitlements, resp.AppEntitlements)
 	}
 
 	return diags
