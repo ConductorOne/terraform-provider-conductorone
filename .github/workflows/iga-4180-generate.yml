@@ -1,0 +1,38 @@
+name: IGA-4180 provider generation
+
+on:
+  push:
+    branches:
+      - alex.tebbs/IGA-4180/access-profile-types
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Install pinned Speakeasy CLI
+        env:
+          VERSION: 1.762.0
+        run: curl -fsSL https://go.speakeasy.com/cli-install.sh | sh
+      - name: Regenerate provider
+        env:
+          SPEAKEASY_API_KEY: ${{ secrets.SPEAKEASY_API_KEY }}
+        run: make gen
+      - name: Commit generated output
+        run: |
+          git config user.name "c1-squire-dev[bot]"
+          git config user.email "c1-squire-dev[bot]@users.noreply.github.com"
+          git add --all
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: regenerate provider v1.6.0" -m "Co-authored-by: c1-squire-dev[bot] <c1-squire-dev[bot]@users.noreply.github.com>"
+          git push origin "HEAD:${{ github.ref_name }}"
