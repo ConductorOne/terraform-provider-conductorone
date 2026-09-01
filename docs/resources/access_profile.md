@@ -9,10 +9,17 @@ description: |-
 
 AccessProfile Resource
 
-This resource allows you to configure a Request Access Profile instance in ConductorOne.
-When creating a Request Access Profile you must provide a display name. Optionally, you can configure if the access profile is published, visible to everyone, and provide a description.
-You can then configure exactly who should be able to see the access profile, and what entitlements should be requestable with the `access_profile_visibility_bindings_resource`
-and `access_profile_entitlement_bindings_resource` resources.
+This resource configures an access profile in ConductorOne. `display_name` is required.
+
+Set `type` to one of the supported create-time values:
+
+- `REQUEST_CATALOG_TYPE_CATALOG` — **Requestable**. Supports publishing, visibility settings, requestable entries, and visibility bindings. `request_bundle = true` and bundle automation are rejected.
+- `REQUEST_CATALOG_TYPE_BUNDLE` — **Birthright**. Supports bundle automation and may retain visibility settings while unpublished. Publishing, requestable entries, visibility bindings, and `request_bundle = true` are rejected.
+- `REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE` — **Blended**. Supports both Requestable and Birthright settings.
+
+Omitting `type` preserves the legacy Blended behavior. Read and import populate the stored type in state. Changing a configured type replaces the access profile because the API accepts type only during creation. Do not configure the deprecated `REQUEST_CATALOG_TYPE_PROFILE` value; the API rejects it. `REQUEST_CATALOG_TYPE_UNSPECIFIED` is reserved for profiles whose type backfill has not completed.
+
+Use `conductorone_access_profile_visibility_bindings` and the requestable-entry resources only with Requestable or Blended profiles. Use `conductorone_bundle_automation` only with Birthright or Blended profiles. The API returns an error naming the incompatible setting and profile type when these combinations are invalid. Existing invalid settings can be corrected in place by disabling publishing, profile-bundle requests, or automation without changing `type`.
 
 ## Example Usage
 
@@ -26,6 +33,7 @@ resource "conductorone_access_profile" "my_access_profile" {
   enrollment_behavior               = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED"
   published                         = false
   request_bundle                    = false
+  type                              = "REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE"
   unenrollment_behavior             = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED"
   unenrollment_entitlement_behavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS"
   visible_to_everyone               = false
@@ -53,6 +61,15 @@ resource "conductorone_access_profile" "my_access_profile" {
 - `enrollment_behavior` (String) Defines how to handle the request policies of the entitlements in the catalog during enrollment. possible known values include one of ["REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_BYPASS_ENTITLEMENT_REQUEST_POLICY", "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_ENFORCE_ENTITLEMENT_REQUEST_POLICY"]
 - `published` (Boolean) Whether or not the new catalog should be created as published.
 - `request_bundle` (Boolean) Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
+- `type` (String) The type of access profile to create. Leave unset for
+ REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE, which is what every profile
+ created before this field existed is. Setting it requires the
+ ACCESS_PROFILE_TYPES feature.
+
+ PROFILE is rejected rather than resolved: it is deprecated, has no stored
+ counterpart, and shares wire number 2 with the stored BUNDLE, so honoring
+ it would silently persist a type the caller did not ask for.
+possible known values include one of ["REQUEST_CATALOG_TYPE_UNSPECIFIED", "REQUEST_CATALOG_TYPE_CATALOG", "REQUEST_CATALOG_TYPE_PROFILE", "REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE", "REQUEST_CATALOG_TYPE_BUNDLE"]; Requires replacement if changed.
 - `unenrollment_behavior` (String) Defines how to handle the revocation of the entitlements in the catalog during unenrollment. possible known values include one of ["REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_LEAVE_ACCESS_AS_IS", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_ALL", "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_REVOKE_UNJUSTIFIED"]
 - `unenrollment_entitlement_behavior` (String) Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment. possible known values include one of ["REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_UNSPECIFIED", "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS", "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_ENFORCE"]
 - `visible_to_everyone` (Boolean) Whether or not the new catalog is visible to everyone by default.
