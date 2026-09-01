@@ -115,6 +115,7 @@ func (e *AccessReviewTemplateScopeType) IsExact() bool {
 //
 // This message contains a oneof named slack_channel_details. Only a single field of the following list may be set at a time:
 //   - slackChannel
+//   - msTeamsChannel
 type AccessReviewTemplate struct {
 	AccessReviewDuration *string `json:"accessReviewDuration,omitempty"`
 	// The accuracyIssueAction field.
@@ -154,6 +155,7 @@ type AccessReviewTemplate struct {
 	InclusionScope *AccessReviewInclusionScope `json:"inclusionScope,omitempty"`
 	// Whether automatic campaign creation on the recurrence schedule is enabled.
 	IsCampaignScheduleEnabled *bool               `json:"isCampaignScheduleEnabled,omitempty"`
+	MsTeamsChannel            *MSTeamsChannel     `json:"msTeamsChannel,omitempty"`
 	NextScheduledCampaignAt   *time.Time          `json:"nextScheduledCampaignAt,omitempty"`
 	NotificationConfig        *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The number of campaigns that have been created from this template.
@@ -304,6 +306,13 @@ func (a *AccessReviewTemplate) GetIsCampaignScheduleEnabled() *bool {
 	return a.IsCampaignScheduleEnabled
 }
 
+func (a *AccessReviewTemplate) GetMsTeamsChannel() *MSTeamsChannel {
+	if a == nil {
+		return nil
+	}
+	return a.MsTeamsChannel
+}
+
 func (a *AccessReviewTemplate) GetNextScheduledCampaignAt() *time.Time {
 	if a == nil {
 		return nil
@@ -401,6 +410,7 @@ func (a *AccessReviewTemplate) GetUsePolicyOverride() *bool {
 //
 // This message contains a oneof named slack_channel_details. Only a single field of the following list may be set at a time:
 //   - slackChannel
+//   - msTeamsChannel
 type AccessReviewTemplateInput struct {
 	AccessReviewDuration *string `json:"accessReviewDuration,omitempty"`
 	// The accuracyIssueAction field.
@@ -438,6 +448,7 @@ type AccessReviewTemplateInput struct {
 	InclusionScope *AccessReviewInclusionScope `json:"inclusionScope,omitempty"`
 	// Whether automatic campaign creation on the recurrence schedule is enabled.
 	IsCampaignScheduleEnabled *bool               `json:"isCampaignScheduleEnabled,omitempty"`
+	MsTeamsChannel            *MSTeamsChannel     `json:"msTeamsChannel,omitempty"`
 	NextScheduledCampaignAt   *time.Time          `json:"nextScheduledCampaignAt,omitempty"`
 	NotificationConfig        *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The number of campaigns that have been created from this template.
@@ -571,6 +582,13 @@ func (a *AccessReviewTemplateInput) GetIsCampaignScheduleEnabled() *bool {
 		return nil
 	}
 	return a.IsCampaignScheduleEnabled
+}
+
+func (a *AccessReviewTemplateInput) GetMsTeamsChannel() *MSTeamsChannel {
+	if a == nil {
+		return nil
+	}
+	return a.MsTeamsChannel
 }
 
 func (a *AccessReviewTemplateInput) GetNextScheduledCampaignAt() *time.Time {

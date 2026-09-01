@@ -270,6 +270,7 @@ This message contains a oneof named excluded_apps_and_resources_scope. Only a si
 - `created_at` (String)
 - `id` (String) The unique identifier of this template.
 - `inclusion_scope` (Attributes) The AccessReviewInclusionScope message. (see [below for nested schema](#nestedatt--inclusion_scope))
+- `ms_teams_channel` (Attributes) The MSTeamsChannel message. (see [below for nested schema](#nestedatt--ms_teams_channel))
 - `next_scheduled_campaign_at` (String)
 - `occurrences` (Number) The number of campaigns that have been created from this template.
 - `slack_channel` (Attributes) The SlackChannel message. (see [below for nested schema](#nestedatt--slack_channel))
@@ -317,7 +318,9 @@ Optional:
 Optional:
 
 - `end_date` (String)
-- `frequency` (String) The frequency field. possible known values include one of ["FREQUENCY_UNSPECIFIED", "FREQUENCY_NONE", "FREQUENCY_DAILY", "FREQUENCY_WEEKLY", "FREQUENCY_MONTHLY", "FREQUENCY_YEARLY"]
+- `frequency` (String) Frequency of the recurrence: FREQUENCY_DAILY, FREQUENCY_WEEKLY, FREQUENCY_MONTHLY, or FREQUENCY_YEARLY.
+ Use FREQUENCY_NONE for a non-recurring schedule.
+possible known values include one of ["FREQUENCY_UNSPECIFIED", "FREQUENCY_NONE", "FREQUENCY_DAILY", "FREQUENCY_WEEKLY", "FREQUENCY_MONTHLY", "FREQUENCY_YEARLY"]
 - `interval` (Number) The interval field.
 - `occurrences` (Number) The occurrences field.
 This field is part of the `end_condition` oneof.
@@ -580,6 +583,15 @@ Read-Only:
 - `value` (String) The value field.
 
 
+
+
+<a id="nestedatt--ms_teams_channel"></a>
+### Nested Schema for `ms_teams_channel`
+
+Read-Only:
+
+- `channel_name` (String) The channelName field.
+- `external_directory_id` (String) The externalDirectoryId field.
 
 
 <a id="nestedatt--slack_channel"></a>

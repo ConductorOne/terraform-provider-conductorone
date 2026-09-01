@@ -31,7 +31,7 @@ func newHooks(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, hooks
 }
 
 // List
-// Invokes the c1.api.hooks.v1.HooksService.List method.
+// List returns all hooks for the tenant, paginated.
 func (s *Hooks) List(ctx context.Context, request operations.C1APIHooksV1HooksServiceListRequest, opts ...operations.Option) (*operations.C1APIHooksV1HooksServiceListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -165,7 +165,10 @@ func (s *Hooks) List(ctx context.Context, request operations.C1APIHooksV1HooksSe
 }
 
 // Create
-// Invokes the c1.api.hooks.v1.HooksService.Create method.
+// Create creates a hook. The hook fires on the configured event, optionally
+//
+//	filtered by a CEL expression. Creating a Patch tool input hook requires the
+//	preview feature to be enabled for the tenant.
 func (s *Hooks) Create(ctx context.Context, request *shared.HooksServiceCreateRequest, opts ...operations.Option) (*operations.C1APIHooksV1HooksServiceCreateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -302,7 +305,9 @@ func (s *Hooks) Create(ctx context.Context, request *shared.HooksServiceCreateRe
 }
 
 // Delete
-// Invokes the c1.api.hooks.v1.HooksService.Delete method.
+// Delete removes a hook by ID. A hook referenced by a guardrail rule cannot
+//
+//	be deleted until the reference is removed.
 func (s *Hooks) Delete(ctx context.Context, request operations.C1APIHooksV1HooksServiceDeleteRequest, opts ...operations.Option) (*operations.C1APIHooksV1HooksServiceDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -439,7 +444,7 @@ func (s *Hooks) Delete(ctx context.Context, request operations.C1APIHooksV1Hooks
 }
 
 // Get
-// Invokes the c1.api.hooks.v1.HooksService.Get method.
+// Get returns a hook by ID.
 func (s *Hooks) Get(ctx context.Context, request operations.C1APIHooksV1HooksServiceGetRequest, opts ...operations.Option) (*operations.C1APIHooksV1HooksServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -569,7 +574,10 @@ func (s *Hooks) Get(ctx context.Context, request operations.C1APIHooksV1HooksSer
 }
 
 // Update
-// Invokes the c1.api.hooks.v1.HooksService.Update method.
+// Update modifies a hook's display name, description, event, filter, priority,
+//
+//	or configuration. A hook referenced by a guardrail rule cannot stop being
+//	managed by guardrails until the reference is removed.
 func (s *Hooks) Update(ctx context.Context, request operations.C1APIHooksV1HooksServiceUpdateRequest, opts ...operations.Option) (*operations.C1APIHooksV1HooksServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

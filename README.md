@@ -63,20 +63,26 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_app_owner_entitlement](docs/resources/app_owner_entitlement.md)
 * [conductorone_app_owner_user](docs/resources/app_owner_user.md)
 * [conductorone_app_resource_owner](docs/resources/app_resource_owner.md)
+* [conductorone_app_resource_owner_entitlement](docs/resources/app_resource_owner_entitlement.md)
+* [conductorone_app_resource_owner_user](docs/resources/app_resource_owner_user.md)
 * [conductorone_automation](docs/resources/automation.md)
 * [conductorone_bundle_automation](docs/resources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/resources/compliance_framework.md)
 * [conductorone_connector_credential](docs/resources/connector_credential.md)
 * [conductorone_connector_owner_entitlement](docs/resources/connector_owner_entitlement.md)
 * [conductorone_connector_owner_user](docs/resources/connector_owner_user.md)
+* [conductorone_credential_inventory_policy](docs/resources/credential_inventory_policy.md)
 * [conductorone_custom_app_entitlement](docs/resources/custom_app_entitlement.md)
 * [conductorone_directory](docs/resources/directory.md)
 * [conductorone_function](docs/resources/function.md)
 * [conductorone_function_tag](docs/resources/function_tag.md)
 * [conductorone_policy](docs/resources/policy.md)
+* [conductorone_recovery_policy](docs/resources/recovery_policy.md)
 * [conductorone_request_schema_entitlement_binding](docs/resources/request_schema_entitlement_binding.md)
 * [conductorone_request_schema](docs/resources/request_schema.md)
 * [conductorone_risk_level](docs/resources/risk_level.md)
+* [conductorone_session_policy](docs/resources/session_policy.md)
+* [conductorone_sign_in_policy](docs/resources/sign_in_policy.md)
 * [conductorone_task_grant](docs/resources/task_grant.md)
 * [conductorone_task_offboarding](docs/resources/task_offboarding.md)
 * [conductorone_task_revoke](docs/resources/task_revoke.md)
@@ -111,6 +117,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_app_entitlement_owner_user](docs/data-sources/app_entitlement_owner_user.md)
 * [conductorone_app_owner_entitlement](docs/data-sources/app_owner_entitlement.md)
 * [conductorone_app_owner_user](docs/data-sources/app_owner_user.md)
+* [conductorone_app_resource_owner_entitlement](docs/data-sources/app_resource_owner_entitlement.md)
+* [conductorone_app_resource_owner_user](docs/data-sources/app_resource_owner_user.md)
 * [conductorone_apps](docs/data-sources/apps.md)
 * [conductorone_bundle_automation](docs/data-sources/bundle_automation.md)
 * [conductorone_compliance_framework](docs/data-sources/compliance_framework.md)
@@ -118,6 +126,7 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_connector_credential](docs/data-sources/connector_credential.md)
 * [conductorone_connector_owner_entitlement](docs/data-sources/connector_owner_entitlement.md)
 * [conductorone_connector_owner_user](docs/data-sources/connector_owner_user.md)
+* [conductorone_credential_inventory_policy](docs/data-sources/credential_inventory_policy.md)
 * [conductorone_directories](docs/data-sources/directories.md)
 * [conductorone_directory](docs/data-sources/directory.md)
 * [conductorone_function](docs/data-sources/function.md)
@@ -125,6 +134,7 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_org_domains](docs/data-sources/org_domains.md)
 * [conductorone_policies](docs/data-sources/policies.md)
 * [conductorone_policy](docs/data-sources/policy.md)
+* [conductorone_recovery_policy](docs/data-sources/recovery_policy.md)
 * [conductorone_request_catalogs](docs/data-sources/request_catalogs.md)
 * [conductorone_request_schema_entitlement_binding](docs/data-sources/request_schema_entitlement_binding.md)
 * [conductorone_request_schema](docs/data-sources/request_schema.md)
@@ -132,6 +142,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_risk_levels](docs/data-sources/risk_levels.md)
 * [conductorone_role](docs/data-sources/role.md)
 * [conductorone_roles](docs/data-sources/roles.md)
+* [conductorone_session_policy](docs/data-sources/session_policy.md)
+* [conductorone_sign_in_policy](docs/data-sources/sign_in_policy.md)
 * [conductorone_user](docs/data-sources/user.md)
 * [conductorone_users](docs/data-sources/users.md)
 * [conductorone_webhook](docs/data-sources/webhook.md)
@@ -214,7 +226,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.5.1"
+      version = "1.6.0"
     }
   }
 }

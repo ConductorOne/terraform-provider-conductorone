@@ -567,8 +567,151 @@ func (s *RoleMiningManagement) ListCustomAnalysisResults(ctx context.Context, op
 
 }
 
+// EvaluateEntitlementSelection - Evaluate Entitlement Selection
+// Evaluate the exact cohort impact of an entitlement cutoff and manual overrides.
+//
+//	The analysis determines the eligible entitlements and cohort definition.
+func (s *RoleMiningManagement) EvaluateEntitlementSelection(ctx context.Context, request operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceEvaluateEntitlementSelectionRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceEvaluateEntitlementSelectionResponse, error) {
+	o := operations.Options{}
+	supportedOptions := []string{
+		operations.SupportedOptionTimeout,
+	}
+
+	for _, opt := range opts {
+		if err := opt(&o, supportedOptions...); err != nil {
+			return nil, fmt.Errorf("error applying option: %w", err)
+		}
+	}
+
+	var baseURL string
+	if o.ServerURL == nil {
+		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
+	} else {
+		baseURL = *o.ServerURL
+	}
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/role-mining/custom-analysis/{analysis_id}/evaluate-entitlement-selection", request, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		SDK:              s.rootSDK,
+		SDKConfiguration: s.sdkConfiguration,
+		BaseURL:          baseURL,
+		Context:          ctx,
+		OperationID:      "c1.api.role_mining_management.v1.RoleMiningManagementService.EvaluateEntitlementSelection",
+		OAuth2Scopes:     nil,
+		SecuritySource:   s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "EvaluateEntitlementSelectionRequest", "json", `request:"mediaType=application/json"`)
+	if err != nil {
+		return nil, err
+	}
+
+	timeout := o.Timeout
+	if timeout == nil {
+		timeout = s.sdkConfiguration.Timeout
+	}
+
+	if timeout != nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "POST", opURL, bodyReader)
+	if err != nil {
+		return nil, fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
+
+	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
+		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
+	}
+
+	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
+	if err != nil || httpRes == nil {
+		if err != nil {
+			err = fmt.Errorf("error sending request: %w", err)
+		} else {
+			err = fmt.Errorf("error sending request: no response")
+		}
+
+		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
+		return nil, err
+	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
+		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
+		if err != nil {
+			return nil, err
+		} else if _httpRes != nil {
+			httpRes = _httpRes
+		}
+	} else {
+		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	res := &operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceEvaluateEntitlementSelectionResponse{
+		StatusCode:  httpRes.StatusCode,
+		ContentType: httpRes.Header.Get("Content-Type"),
+		RawResponse: httpRes,
+	}
+
+	switch {
+	case httpRes.StatusCode == 200:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.EvaluateEntitlementSelectionResponse
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.EvaluateEntitlementSelectionResponse = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
+	}
+
+	return res, nil
+
+}
+
 // GetCustomAnalysisResult - Get Custom Analysis Result
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.GetCustomAnalysisResult method.
+// GetCustomAnalysisResult returns the status and results of a custom cohort
+//
+//	analysis started with TriggerCustomAnalysis, including entitlement
+//	coverage, entitlement clusters, attribute facets, and cutoff impact
+//	points. Requires the agentic role mining feature.
 func (s *RoleMiningManagement) GetCustomAnalysisResult(ctx context.Context, request operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceGetCustomAnalysisResultRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceGetCustomAnalysisResultResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -698,7 +841,11 @@ func (s *RoleMiningManagement) GetCustomAnalysisResult(ctx context.Context, requ
 }
 
 // TriggerCustomAnalysis - Trigger Custom Analysis
-// Invokes the c1.api.role_mining_management.v1.RoleMiningManagementService.TriggerCustomAnalysis method.
+// TriggerCustomAnalysis starts an asynchronous custom cohort analysis defined
+//
+//	by the given profile filters and returns the ID of the analysis result.
+//	Requires the agentic role mining feature. Poll GetCustomAnalysisResult
+//	until the analysis completes.
 func (s *RoleMiningManagement) TriggerCustomAnalysis(ctx context.Context, request *shared.TriggerCustomAnalysisRequest, opts ...operations.Option) (*operations.C1APIRoleMiningManagementV1RoleMiningManagementServiceTriggerCustomAnalysisResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

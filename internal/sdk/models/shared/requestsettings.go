@@ -4,9 +4,21 @@ package shared
 
 // RequestSettings holds tenant-wide configuration for the access-request flow.
 type RequestSettings struct {
+	// MaxBulkEntitlementSelection caps the number of entitlements a requester
+	//  may select in a single bulk access request. Reads always return the
+	//  effective value — an unset (0) value is presented as the system default of
+	//  10. Writing 0 resets the field to unset in storage. Maximum 100.
+	MaxBulkEntitlementSelection *int `json:"maxBulkEntitlementSelection,omitempty"`
 	// When true, request surfaces (webapp, Slack, MS Teams) skip prompting the
 	//  requester for a justification.
 	SkipJustification *bool `json:"skipJustification,omitempty"`
+}
+
+func (r *RequestSettings) GetMaxBulkEntitlementSelection() *int {
+	if r == nil {
+		return nil
+	}
+	return r.MaxBulkEntitlementSelection
 }
 
 func (r *RequestSettings) GetSkipJustification() *bool {

@@ -306,7 +306,10 @@ func (s *Reporting) Save(ctx context.Context, request *shared.ReportingServiceSa
 }
 
 // Delete
-// Invokes the c1.api.reporting.v1.ReportingService.Delete method.
+// Delete removes a report by ID. The report's saved program is removed with
+//
+//	it, so the report can no longer be re-run. Only the report's creator can
+//	delete it.
 func (s *Reporting) Delete(ctx context.Context, request operations.C1APIReportingV1ReportingServiceDeleteRequest, opts ...operations.Option) (*operations.C1APIReportingV1ReportingServiceDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -443,7 +446,9 @@ func (s *Reporting) Delete(ctx context.Context, request operations.C1APIReportin
 }
 
 // Get
-// Invokes the c1.api.reporting.v1.ReportingService.Get method.
+// Get returns a report by ID, including its latest run and latest successful
+//
+//	run. Reports are visible only to the user who created them.
 func (s *Reporting) Get(ctx context.Context, request operations.C1APIReportingV1ReportingServiceGetRequest, opts ...operations.Option) (*operations.C1APIReportingV1ReportingServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -573,7 +578,9 @@ func (s *Reporting) Get(ctx context.Context, request operations.C1APIReportingV1
 }
 
 // Update
-// Invokes the c1.api.reporting.v1.ReportingService.Update method.
+// Update modifies a report's display name, prompt, or parameter values.
+//
+//	Only the report's creator can update it.
 func (s *Reporting) Update(ctx context.Context, request operations.C1APIReportingV1ReportingServiceUpdateRequest, opts ...operations.Option) (*operations.C1APIReportingV1ReportingServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

@@ -2,11 +2,11 @@
 
 package shared
 
-// EntitlementRef identifies an entitlement by app and entitlement ID.
+// EntitlementRef identifies an entitlement by application and entitlement ID.
 type EntitlementRef struct {
-	// The appId field.
+	// Application that owns the entitlement.
 	AppID *string `json:"appId,omitempty"`
-	// The entitlementId field.
+	// Entitlement within the application.
 	EntitlementID *string `json:"entitlementId,omitempty"`
 }
 

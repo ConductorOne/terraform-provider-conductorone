@@ -36,6 +36,10 @@ actions:
   - target: $..deletedAt
     update:
       x-speakeasy-soft-delete-property: true
+  # Keep the v1.5.0 Terraform contract: existing recurrence_rule blocks may
+  # omit frequency, and the API continues to accept the enum zero value.
+  - target: $["components"]["schemas"]["c1.api.accessreview.v1.RecurrenceRule"]["required"][?(@ == "frequency")]
+    remove: true
   - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["durationUnset"]
     update:
       x-speakeasy-terraform-plan-only: true
@@ -608,6 +612,14 @@ actions:
   - target: $["components"]["schemas"]["c1.api.attribute.v1.DeleteRiskLevelAttributeValueRequestInput"]
     update:
       x-speakeasy-terraform-ignore: true
+  # Access profile type is selected only during creation. The API reports the
+  # stored type on reads but does not accept it in updates.
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalog"]["properties"]["type"]
+    update:
+      x-speakeasy-param-force-new: true
+  - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceCreateRequest"]["properties"]["type"]
+    update:
+      example: REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE
   - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalogManagementServiceListAllEntitlementIdsPerCatalogResponse"]["properties"]["refs"]
     update:
       x-speakeasy-name-override: app_entitlements

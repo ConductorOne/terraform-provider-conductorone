@@ -31,7 +31,9 @@ func newHooksSearch(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration,
 }
 
 // Search
-// Invokes the c1.api.hooks.v1.HooksSearch.Search method.
+// Search returns hooks for the tenant, paginated. Setting query or refs
+//
+//	returns UNIMPLEMENTED; filtering is not yet supported.
 func (s *HooksSearch) Search(ctx context.Context, request *shared.HooksSearchRequest, opts ...operations.Option) (*operations.C1APIHooksV1HooksSearchSearchResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

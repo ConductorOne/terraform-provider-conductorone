@@ -35,6 +35,8 @@ type GetCustomAnalysisResultResponse struct {
 	Clusters []EntitlementCluster `json:"clusters,omitempty"`
 	// The cohortSize field.
 	CohortSize *int `json:"cohortSize,omitempty"`
+	// Exact holder counts at each distinct inclusive entitlement coverage cutoff.
+	CutoffImpactPoints []EntitlementCutoffImpactPoint `json:"cutoffImpactPoints,omitempty"`
 	// Entitlement coverage results.
 	Entitlements []CohortEntitlement `json:"entitlements,omitempty"`
 	// The errorMessage field.
@@ -68,6 +70,13 @@ func (g *GetCustomAnalysisResultResponse) GetCohortSize() *int {
 		return nil
 	}
 	return g.CohortSize
+}
+
+func (g *GetCustomAnalysisResultResponse) GetCutoffImpactPoints() []EntitlementCutoffImpactPoint {
+	if g == nil {
+		return nil
+	}
+	return g.CutoffImpactPoints
 }
 
 func (g *GetCustomAnalysisResultResponse) GetEntitlements() []CohortEntitlement {

@@ -7,6 +7,7 @@ resource "conductorone_access_profile" "my_access_profile" {
   enrollment_behavior               = "REQUEST_CATALOG_ENROLLMENT_BEHAVIOR_UNSPECIFIED"
   published                         = false
   request_bundle                    = false
+  type                              = "REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE"
   unenrollment_behavior             = "REQUEST_CATALOG_UNENROLLMENT_BEHAVIOR_UNSPECIFIED"
   unenrollment_entitlement_behavior = "REQUEST_CATALOG_UNENROLLMENT_ENTITLEMENT_BEHAVIOR_BYPASS"
   visible_to_everyone               = false
