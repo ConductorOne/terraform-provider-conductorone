@@ -9,10 +9,17 @@ description: |-
 
 {{ .Description | trimspace }}
 
-This resource allows you to configure a Request Access Profile instance in ConductorOne.
-When creating a Request Access Profile you must provide a display name. Optionally, you can configure if the access profile is published, visible to everyone, and provide a description.
-You can then configure exactly who should be able to see the access profile, and what entitlements should be requestable with the `access_profile_visibility_bindings_resource`
-and `access_profile_entitlement_bindings_resource` resources.
+This resource configures an access profile in ConductorOne. `display_name` is required.
+
+Set `type` to one of the supported create-time values:
+
+- `REQUEST_CATALOG_TYPE_CATALOG` — **Requestable**. Supports publishing, visibility settings, requestable entries, and visibility bindings. `request_bundle = true` and bundle automation are rejected.
+- `REQUEST_CATALOG_TYPE_BUNDLE` — **Birthright**. Supports bundle automation and may retain visibility settings while unpublished. Publishing, requestable entries, visibility bindings, and `request_bundle = true` are rejected.
+- `REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE` — **Blended**. Supports both Requestable and Birthright settings.
+
+Omitting `type` preserves the legacy Blended behavior. Read and import populate the stored type in state. Changing a configured type replaces the access profile because the API accepts type only during creation. Do not configure the deprecated `REQUEST_CATALOG_TYPE_PROFILE` value; the API rejects it. `REQUEST_CATALOG_TYPE_UNSPECIFIED` is reserved for profiles whose type backfill has not completed.
+
+Use `conductorone_access_profile_visibility_bindings` and the requestable-entry resources only with Requestable or Blended profiles. Use `conductorone_bundle_automation` only with Birthright or Blended profiles. The API returns an error naming the incompatible setting and profile type when these combinations are invalid. Existing invalid settings can be corrected in place by disabling publishing, profile-bundle requests, or automation without changing `type`.
 
 ## Example Usage
 
