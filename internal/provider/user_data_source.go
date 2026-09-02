@@ -517,8 +517,9 @@ func (r *UserDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Optional:    true,
 				Description: `The pageToken field.`,
 			},
-			"profile": schema.SingleNestedAttribute{
-				Computed: true,
+			"profile": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
 			},
 			"query": schema.StringAttribute{
 				Optional:    true,
