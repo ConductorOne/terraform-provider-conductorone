@@ -49,6 +49,9 @@ terraform:
     - importAlias: AppEntitlement
       importLocation: /conductorone/internal/provider/app_entitlement_resource.go
       resource: AppEntitlement
+    - importAlias: MCPServer
+      importLocation: /conductorone/internal/provider/mcp_server_resource.go
+      resource: MCPServer
   allowUnknownFieldsInWeakUnions: false
   author: conductorone
   baseErrorName: ConductoroneAPIError
