@@ -17,6 +17,18 @@ actions:
   - target: $["components"]["schemas"]["c1.api.app.v1.DeleteAutomationRequestInput"]
     update:
       x-speakeasy-terraform-ignore: true
+  - target: $["paths"]["/api/v1/apps/{app_id}/mcp_servers"]["post"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["paths"]["/api/v1/apps/{app_id}/mcp_servers/{connector_id}"]["get"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["paths"]["/api/v1/apps/{app_id}/mcp_servers/{connector_id}"]["post"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  - target: $["paths"]["/api/v1/apps/{app_id}/mcp_servers/{connector_id}"]["delete"]
+    update:
+      x-speakeasy-terraform-ignore: true
   - target: $["components"]["schemas"]["c1.api.app.v1.ConnectorServiceCreateRequestInput"]["properties"]["config"]["properties"]
     update:
       '@type':
