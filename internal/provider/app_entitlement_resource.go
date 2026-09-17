@@ -46,7 +46,7 @@ type AppEntitlementResourceModel struct {
 	CreatedAt                      types.String                                      `tfsdk:"created_at"`
 	DefaultValuesApplied           types.Bool                                        `tfsdk:"default_values_applied"`
 	DeletedAt                      types.String                                      `tfsdk:"-"`
-	DeprovisionerPolicy            *tfTypes.AppEntitlementResourceProvisionPolicy            `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
+	DeprovisionerPolicy            *tfTypes.AppEntitlementResourceProvisionPolicy    `tfsdk:"deprovisioner_policy" tfPlanOnly:"true"`
 	Description                    types.String                                      `tfsdk:"description"`
 	DisplayName                    types.String                                      `tfsdk:"display_name"`
 	DurationGrant                  types.String                                      `tfsdk:"duration_grant" tfPlanOnly:"true"`
@@ -61,7 +61,7 @@ type AppEntitlementResourceModel struct {
 	IsManuallyManaged              types.Bool                                        `tfsdk:"is_manually_managed"`
 	MatchBatonID                   types.String                                      `tfsdk:"match_baton_id"`
 	OverrideAccessRequestsDefaults types.Bool                                        `tfsdk:"override_access_requests_defaults"`
-	ProvisionPolicy                *tfTypes.AppEntitlementResourceProvisionPolicy            `tfsdk:"provision_policy" tfPlanOnly:"true"`
+	ProvisionPolicy                *tfTypes.AppEntitlementResourceProvisionPolicy    `tfsdk:"provision_policy" tfPlanOnly:"true"`
 	Purpose                        types.String                                      `tfsdk:"purpose"`
 	RequestSchemaID                types.String                                      `tfsdk:"request_schema_id"`
 	RevokePolicyID                 types.String                                      `tfsdk:"revoke_policy_id"`
