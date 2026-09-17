@@ -166,11 +166,14 @@ func (r *IntegrationVictoropsResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "victorops-api-id"); ok {
-					r.VictoropsApiId = types.StringValue(val)
+				if _, ok := configValues["victorops-api-id"]; ok {
+					if val, ok := getStringValue(values, "victorops-api-id"); ok {
+						r.VictoropsApiId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -213,11 +216,14 @@ func (r *IntegrationVictoropsResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "victorops-api-id"); ok {
-					r.VictoropsApiId = types.StringValue(val)
+				if _, ok := configValues["victorops-api-id"]; ok {
+					if val, ok := getStringValue(values, "victorops-api-id"); ok {
+						r.VictoropsApiId = types.StringValue(val)
+					}
 				}
 
 			}

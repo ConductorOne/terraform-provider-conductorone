@@ -175,23 +175,28 @@ func (r *IntegrationPercipioResourceModel) RefreshFromGetResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "percipio_organization_id"); ok {
-					r.PercipioOrganizationId = types.StringValue(val)
+				if _, ok := configValues["percipio_organization_id"]; ok {
+					if val, ok := getStringValue(values, "percipio_organization_id"); ok {
+						r.PercipioOrganizationId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "percipio_course_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["percipio_course_ids"]; ok {
+					if val, ok := getStringValue(values, "percipio_course_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.PercipioCourseIds = valLists
 					}
-					r.PercipioCourseIds = valLists
 				}
 
 			}
@@ -234,23 +239,28 @@ func (r *IntegrationPercipioResourceModel) RefreshFromCreateResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "percipio_organization_id"); ok {
-					r.PercipioOrganizationId = types.StringValue(val)
+				if _, ok := configValues["percipio_organization_id"]; ok {
+					if val, ok := getStringValue(values, "percipio_organization_id"); ok {
+						r.PercipioOrganizationId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "percipio_course_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["percipio_course_ids"]; ok {
+					if val, ok := getStringValue(values, "percipio_course_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.PercipioCourseIds = valLists
 					}
-					r.PercipioCourseIds = valLists
 				}
 
 			}

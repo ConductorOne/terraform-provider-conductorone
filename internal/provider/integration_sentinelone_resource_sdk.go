@@ -166,11 +166,14 @@ func (r *IntegrationSentineloneResourceModel) RefreshFromGetResponse(resp *share
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "sentinelone_base_url"); ok {
-					r.SentineloneBaseUrl = types.StringValue(val)
+				if _, ok := configValues["sentinelone_base_url"]; ok {
+					if val, ok := getStringValue(values, "sentinelone_base_url"); ok {
+						r.SentineloneBaseUrl = types.StringValue(val)
+					}
 				}
 
 			}
@@ -213,11 +216,14 @@ func (r *IntegrationSentineloneResourceModel) RefreshFromCreateResponse(resp *sh
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "sentinelone_base_url"); ok {
-					r.SentineloneBaseUrl = types.StringValue(val)
+				if _, ok := configValues["sentinelone_base_url"]; ok {
+					if val, ok := getStringValue(values, "sentinelone_base_url"); ok {
+						r.SentineloneBaseUrl = types.StringValue(val)
+					}
 				}
 
 			}

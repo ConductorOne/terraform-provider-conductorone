@@ -192,8 +192,10 @@ func (r *IntegrationAsanaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 					}
 				}
 
-				if val, ok := getStringValue(values, "asana_default_workspace"); ok {
-					r.AsanaDefaultWorkspace = types.StringValue(val)
+				if _, ok := configValues["asana_default_workspace"]; ok {
+					if val, ok := getStringValue(values, "asana_default_workspace"); ok {
+						r.AsanaDefaultWorkspace = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["asana_use_scim_api"]; ok {
@@ -259,8 +261,10 @@ func (r *IntegrationAsanaResourceModel) RefreshFromCreateResponse(resp *shared.C
 					}
 				}
 
-				if val, ok := getStringValue(values, "asana_default_workspace"); ok {
-					r.AsanaDefaultWorkspace = types.StringValue(val)
+				if _, ok := configValues["asana_default_workspace"]; ok {
+					if val, ok := getStringValue(values, "asana_default_workspace"); ok {
+						r.AsanaDefaultWorkspace = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["asana_use_scim_api"]; ok {

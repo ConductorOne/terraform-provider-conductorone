@@ -206,12 +206,16 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromGetResponse(res
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "azure-client-id"); ok {
-					r.AzureClientId = types.StringValue(val)
+				if _, ok := configValues["azure-client-id"]; ok {
+					if val, ok := getStringValue(values, "azure-client-id"); ok {
+						r.AzureClientId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "azure-tenant-id"); ok {
-					r.AzureTenantId = types.StringValue(val)
+				if _, ok := configValues["azure-tenant-id"]; ok {
+					if val, ok := getStringValue(values, "azure-tenant-id"); ok {
+						r.AzureTenantId = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["mailboxSettings"]; ok {
@@ -232,8 +236,10 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromGetResponse(res
 					}
 				}
 
-				if val, ok := getStringValue(values, "graph-domain"); ok {
-					r.GraphDomain = types.StringValue(val)
+				if _, ok := configValues["graph-domain"]; ok {
+					if val, ok := getStringValue(values, "graph-domain"); ok {
+						r.GraphDomain = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["skip-unused-roles"]; ok {
@@ -298,12 +304,16 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromCreateResponse(
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "azure-client-id"); ok {
-					r.AzureClientId = types.StringValue(val)
+				if _, ok := configValues["azure-client-id"]; ok {
+					if val, ok := getStringValue(values, "azure-client-id"); ok {
+						r.AzureClientId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "azure-tenant-id"); ok {
-					r.AzureTenantId = types.StringValue(val)
+				if _, ok := configValues["azure-tenant-id"]; ok {
+					if val, ok := getStringValue(values, "azure-tenant-id"); ok {
+						r.AzureTenantId = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["mailboxSettings"]; ok {
@@ -324,8 +334,10 @@ func (r *IntegrationAzureInfrastructureResourceModel) RefreshFromCreateResponse(
 					}
 				}
 
-				if val, ok := getStringValue(values, "graph-domain"); ok {
-					r.GraphDomain = types.StringValue(val)
+				if _, ok := configValues["graph-domain"]; ok {
+					if val, ok := getStringValue(values, "graph-domain"); ok {
+						r.GraphDomain = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["skip-unused-roles"]; ok {

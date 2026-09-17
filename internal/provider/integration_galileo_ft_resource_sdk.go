@@ -178,19 +178,26 @@ func (r *IntegrationGalileoFtResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "galileoft_provider_id"); ok {
-					r.GalileoftProviderId = types.StringValue(val)
+				if _, ok := configValues["galileoft_provider_id"]; ok {
+					if val, ok := getStringValue(values, "galileoft_provider_id"); ok {
+						r.GalileoftProviderId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "galileoft_api_login"); ok {
-					r.GalileoftApiLogin = types.StringValue(val)
+				if _, ok := configValues["galileoft_api_login"]; ok {
+					if val, ok := getStringValue(values, "galileoft_api_login"); ok {
+						r.GalileoftApiLogin = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "galileoft_hostname"); ok {
-					r.GalileoftHostname = types.StringValue(val)
+				if _, ok := configValues["galileoft_hostname"]; ok {
+					if val, ok := getStringValue(values, "galileoft_hostname"); ok {
+						r.GalileoftHostname = types.StringValue(val)
+					}
 				}
 
 			}
@@ -233,19 +240,26 @@ func (r *IntegrationGalileoFtResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "galileoft_provider_id"); ok {
-					r.GalileoftProviderId = types.StringValue(val)
+				if _, ok := configValues["galileoft_provider_id"]; ok {
+					if val, ok := getStringValue(values, "galileoft_provider_id"); ok {
+						r.GalileoftProviderId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "galileoft_api_login"); ok {
-					r.GalileoftApiLogin = types.StringValue(val)
+				if _, ok := configValues["galileoft_api_login"]; ok {
+					if val, ok := getStringValue(values, "galileoft_api_login"); ok {
+						r.GalileoftApiLogin = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "galileoft_hostname"); ok {
-					r.GalileoftHostname = types.StringValue(val)
+				if _, ok := configValues["galileoft_hostname"]; ok {
+					if val, ok := getStringValue(values, "galileoft_hostname"); ok {
+						r.GalileoftHostname = types.StringValue(val)
+					}
 				}
 
 			}

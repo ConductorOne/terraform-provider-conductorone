@@ -172,15 +172,20 @@ func (r *IntegrationCoupaResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "coupa-domain"); ok {
-					r.CoupaDomain = types.StringValue(val)
+				if _, ok := configValues["coupa-domain"]; ok {
+					if val, ok := getStringValue(values, "coupa-domain"); ok {
+						r.CoupaDomain = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
-					r.Oauth2ClientCredGrantClientId = types.StringValue(val)
+				if _, ok := configValues["oauth2_client_cred_grant_client_id"]; ok {
+					if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
+						r.Oauth2ClientCredGrantClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -223,15 +228,20 @@ func (r *IntegrationCoupaResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "coupa-domain"); ok {
-					r.CoupaDomain = types.StringValue(val)
+				if _, ok := configValues["coupa-domain"]; ok {
+					if val, ok := getStringValue(values, "coupa-domain"); ok {
+						r.CoupaDomain = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
-					r.Oauth2ClientCredGrantClientId = types.StringValue(val)
+				if _, ok := configValues["oauth2_client_cred_grant_client_id"]; ok {
+					if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
+						r.Oauth2ClientCredGrantClientId = types.StringValue(val)
+					}
 				}
 
 			}

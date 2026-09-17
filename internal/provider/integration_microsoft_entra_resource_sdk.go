@@ -68,7 +68,12 @@ func (r *IntegrationMicrosoftEntraResourceModel) ToUpdateSDKType() (*shared.Conn
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -151,7 +156,12 @@ func (r *IntegrationMicrosoftEntraResourceModel) getConfig() (map[string]interfa
 	for key, configValue := range configValues {
 		configOut[key] = ""
 		if configValue != nil {
-			configOut[key] = makeStringValue(configValue)
+			mv := makeMapValue(configValue)
+			if mv != nil {
+				configOut[key] = mv
+			} else {
+				configOut[key] = makeStringValue(configValue)
+			}
 			configSet = true
 		}
 	}
@@ -215,9 +225,11 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "entra_tenant_id"); ok {
-							attributeTypes["entra_tenant_id"] = types.StringType
-							attributeValues["entra_tenant_id"] = types.StringValue(val)
+						if _, ok := configValues["entra_tenant_id"]; ok {
+							if val, ok := getStringValue(values, "entra_tenant_id"); ok {
+								attributeTypes["entra_tenant_id"] = types.StringType
+								attributeValues["entra_tenant_id"] = types.StringValue(val)
+							}
 						}
 						if _, ok := configValues["entra_skip_ad_groups"]; ok {
 							if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
@@ -232,9 +244,11 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 							attributeValues["entra_skip_ad_groups"] = types.BoolNull()
 						}
 
-						if val, ok := getStringValue(values, "entra_graph_domain"); ok {
-							attributeTypes["entra_graph_domain"] = types.StringType
-							attributeValues["entra_graph_domain"] = types.StringValue(val)
+						if _, ok := configValues["entra_graph_domain"]; ok {
+							if val, ok := getStringValue(values, "entra_graph_domain"); ok {
+								attributeTypes["entra_graph_domain"] = types.StringType
+								attributeValues["entra_graph_domain"] = types.StringValue(val)
+							}
 						}
 						if _, ok := configValues["entra_sign_in_activity"]; ok {
 							if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
@@ -272,6 +286,18 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 							attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
 							attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
 						}
+						if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
+							if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+									attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+							attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
+						}
 						r.EntraGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
 				}
@@ -281,14 +307,18 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "entra_tenant_id"); ok {
-							attributeTypes["entra_tenant_id"] = types.StringType
-							attributeValues["entra_tenant_id"] = types.StringValue(val)
+						if _, ok := configValues["entra_tenant_id"]; ok {
+							if val, ok := getStringValue(values, "entra_tenant_id"); ok {
+								attributeTypes["entra_tenant_id"] = types.StringType
+								attributeValues["entra_tenant_id"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "entra_client_id"); ok {
-							attributeTypes["entra_client_id"] = types.StringType
-							attributeValues["entra_client_id"] = types.StringValue(val)
+						if _, ok := configValues["entra_client_id"]; ok {
+							if val, ok := getStringValue(values, "entra_client_id"); ok {
+								attributeTypes["entra_client_id"] = types.StringType
+								attributeValues["entra_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["entra_client_secret"] = types.StringType
@@ -310,9 +340,11 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 							attributeValues["entra_skip_ad_groups"] = types.BoolNull()
 						}
 
-						if val, ok := getStringValue(values, "entra_graph_domain"); ok {
-							attributeTypes["entra_graph_domain"] = types.StringType
-							attributeValues["entra_graph_domain"] = types.StringValue(val)
+						if _, ok := configValues["entra_graph_domain"]; ok {
+							if val, ok := getStringValue(values, "entra_graph_domain"); ok {
+								attributeTypes["entra_graph_domain"] = types.StringType
+								attributeValues["entra_graph_domain"] = types.StringValue(val)
+							}
 						}
 						if _, ok := configValues["entra_sign_in_activity"]; ok {
 							if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
@@ -349,6 +381,18 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromGetResponse(resp *sh
 						} else {
 							attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
 							attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
+							if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+									attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+							attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
 						}
 						r.EntraGroupClientSecret = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
@@ -403,9 +447,11 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "entra_tenant_id"); ok {
-							attributeTypes["entra_tenant_id"] = types.StringType
-							attributeValues["entra_tenant_id"] = types.StringValue(val)
+						if _, ok := configValues["entra_tenant_id"]; ok {
+							if val, ok := getStringValue(values, "entra_tenant_id"); ok {
+								attributeTypes["entra_tenant_id"] = types.StringType
+								attributeValues["entra_tenant_id"] = types.StringValue(val)
+							}
 						}
 						if _, ok := configValues["entra_skip_ad_groups"]; ok {
 							if val, ok := getStringValue(values, "entra_skip_ad_groups"); ok {
@@ -420,9 +466,11 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 							attributeValues["entra_skip_ad_groups"] = types.BoolNull()
 						}
 
-						if val, ok := getStringValue(values, "entra_graph_domain"); ok {
-							attributeTypes["entra_graph_domain"] = types.StringType
-							attributeValues["entra_graph_domain"] = types.StringValue(val)
+						if _, ok := configValues["entra_graph_domain"]; ok {
+							if val, ok := getStringValue(values, "entra_graph_domain"); ok {
+								attributeTypes["entra_graph_domain"] = types.StringType
+								attributeValues["entra_graph_domain"] = types.StringValue(val)
+							}
 						}
 						if _, ok := configValues["entra_sign_in_activity"]; ok {
 							if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
@@ -460,6 +508,18 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 							attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
 							attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
 						}
+						if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
+							if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+									attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+							attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
+						}
 						r.EntraGroupOauth = types.ObjectValueMust(attributeTypes, attributeValues)
 					}
 				}
@@ -469,14 +529,18 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "entra_tenant_id"); ok {
-							attributeTypes["entra_tenant_id"] = types.StringType
-							attributeValues["entra_tenant_id"] = types.StringValue(val)
+						if _, ok := configValues["entra_tenant_id"]; ok {
+							if val, ok := getStringValue(values, "entra_tenant_id"); ok {
+								attributeTypes["entra_tenant_id"] = types.StringType
+								attributeValues["entra_tenant_id"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "entra_client_id"); ok {
-							attributeTypes["entra_client_id"] = types.StringType
-							attributeValues["entra_client_id"] = types.StringValue(val)
+						if _, ok := configValues["entra_client_id"]; ok {
+							if val, ok := getStringValue(values, "entra_client_id"); ok {
+								attributeTypes["entra_client_id"] = types.StringType
+								attributeValues["entra_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["entra_client_secret"] = types.StringType
@@ -498,9 +562,11 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 							attributeValues["entra_skip_ad_groups"] = types.BoolNull()
 						}
 
-						if val, ok := getStringValue(values, "entra_graph_domain"); ok {
-							attributeTypes["entra_graph_domain"] = types.StringType
-							attributeValues["entra_graph_domain"] = types.StringValue(val)
+						if _, ok := configValues["entra_graph_domain"]; ok {
+							if val, ok := getStringValue(values, "entra_graph_domain"); ok {
+								attributeTypes["entra_graph_domain"] = types.StringType
+								attributeValues["entra_graph_domain"] = types.StringValue(val)
+							}
 						}
 						if _, ok := configValues["entra_sign_in_activity"]; ok {
 							if val, ok := getStringValue(values, "entra_sign_in_activity"); ok {
@@ -537,6 +603,18 @@ func (r *IntegrationMicrosoftEntraResourceModel) RefreshFromCreateResponse(resp 
 						} else {
 							attributeTypes["entra_disable_audit_log_feed"] = types.BoolType
 							attributeValues["entra_disable_audit_log_feed"] = types.BoolNull()
+						}
+						if _, ok := configValues["entra_on_premises_extension_attributes"]; ok {
+							if val, ok := getStringValue(values, "entra_on_premises_extension_attributes"); ok {
+								bv, err := strconv.ParseBool(val)
+								if err == nil {
+									attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+									attributeValues["entra_on_premises_extension_attributes"] = types.BoolValue(bv)
+								}
+							}
+						} else {
+							attributeTypes["entra_on_premises_extension_attributes"] = types.BoolType
+							attributeValues["entra_on_premises_extension_attributes"] = types.BoolNull()
 						}
 						r.EntraGroupClientSecret = types.ObjectValueMust(attributeTypes, attributeValues)
 					}

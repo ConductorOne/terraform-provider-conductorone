@@ -172,15 +172,20 @@ func (r *IntegrationBoxResourceModel) RefreshFromGetResponse(resp *shared.Connec
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "box_client_id"); ok {
-					r.BoxClientId = types.StringValue(val)
+				if _, ok := configValues["box_client_id"]; ok {
+					if val, ok := getStringValue(values, "box_client_id"); ok {
+						r.BoxClientId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "box_enterprise_id"); ok {
-					r.BoxEnterpriseId = types.StringValue(val)
+				if _, ok := configValues["box_enterprise_id"]; ok {
+					if val, ok := getStringValue(values, "box_enterprise_id"); ok {
+						r.BoxEnterpriseId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -223,15 +228,20 @@ func (r *IntegrationBoxResourceModel) RefreshFromCreateResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "box_client_id"); ok {
-					r.BoxClientId = types.StringValue(val)
+				if _, ok := configValues["box_client_id"]; ok {
+					if val, ok := getStringValue(values, "box_client_id"); ok {
+						r.BoxClientId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "box_enterprise_id"); ok {
-					r.BoxEnterpriseId = types.StringValue(val)
+				if _, ok := configValues["box_enterprise_id"]; ok {
+					if val, ok := getStringValue(values, "box_enterprise_id"); ok {
+						r.BoxEnterpriseId = types.StringValue(val)
+					}
 				}
 
 			}

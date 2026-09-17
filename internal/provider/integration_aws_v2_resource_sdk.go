@@ -206,12 +206,16 @@ func (r *IntegrationAwsV2ResourceModel) RefreshFromGetResponse(resp *shared.Conn
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "aws_external_id"); ok {
-					r.AwsExternalId = types.StringValue(val)
+				if _, ok := configValues["aws_external_id"]; ok {
+					if val, ok := getStringValue(values, "aws_external_id"); ok {
+						r.AwsExternalId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "aws_role_arn"); ok {
-					r.AwsRoleArn = types.StringValue(val)
+				if _, ok := configValues["aws_role_arn"]; ok {
+					if val, ok := getStringValue(values, "aws_role_arn"); ok {
+						r.AwsRoleArn = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["aws_orgs_enable"]; ok {
@@ -232,8 +236,10 @@ func (r *IntegrationAwsV2ResourceModel) RefreshFromGetResponse(resp *shared.Conn
 					}
 				}
 
-				if val, ok := getStringValue(values, "aws_sso_region"); ok {
-					r.AwsSsoRegion = types.StringValue(val)
+				if _, ok := configValues["aws_sso_region"]; ok {
+					if val, ok := getStringValue(values, "aws_sso_region"); ok {
+						r.AwsSsoRegion = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["aws_sso_scim_enable"]; ok {
@@ -245,8 +251,10 @@ func (r *IntegrationAwsV2ResourceModel) RefreshFromGetResponse(resp *shared.Conn
 					}
 				}
 
-				if val, ok := getStringValue(values, "aws_sso_scim_endpoint"); ok {
-					r.AwsSsoScimEndpoint = types.StringValue(val)
+				if _, ok := configValues["aws_sso_scim_endpoint"]; ok {
+					if val, ok := getStringValue(values, "aws_sso_scim_endpoint"); ok {
+						r.AwsSsoScimEndpoint = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["aws_sync_secrets"]; ok {
@@ -302,12 +310,16 @@ func (r *IntegrationAwsV2ResourceModel) RefreshFromCreateResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "aws_external_id"); ok {
-					r.AwsExternalId = types.StringValue(val)
+				if _, ok := configValues["aws_external_id"]; ok {
+					if val, ok := getStringValue(values, "aws_external_id"); ok {
+						r.AwsExternalId = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "aws_role_arn"); ok {
-					r.AwsRoleArn = types.StringValue(val)
+				if _, ok := configValues["aws_role_arn"]; ok {
+					if val, ok := getStringValue(values, "aws_role_arn"); ok {
+						r.AwsRoleArn = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["aws_orgs_enable"]; ok {
@@ -328,8 +340,10 @@ func (r *IntegrationAwsV2ResourceModel) RefreshFromCreateResponse(resp *shared.C
 					}
 				}
 
-				if val, ok := getStringValue(values, "aws_sso_region"); ok {
-					r.AwsSsoRegion = types.StringValue(val)
+				if _, ok := configValues["aws_sso_region"]; ok {
+					if val, ok := getStringValue(values, "aws_sso_region"); ok {
+						r.AwsSsoRegion = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["aws_sso_scim_enable"]; ok {
@@ -341,8 +355,10 @@ func (r *IntegrationAwsV2ResourceModel) RefreshFromCreateResponse(resp *shared.C
 					}
 				}
 
-				if val, ok := getStringValue(values, "aws_sso_scim_endpoint"); ok {
-					r.AwsSsoScimEndpoint = types.StringValue(val)
+				if _, ok := configValues["aws_sso_scim_endpoint"]; ok {
+					if val, ok := getStringValue(values, "aws_sso_scim_endpoint"); ok {
+						r.AwsSsoScimEndpoint = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["aws_sync_secrets"]; ok {

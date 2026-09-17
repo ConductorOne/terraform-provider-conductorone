@@ -229,52 +229,68 @@ func (r *IntegrationWizQueryResourceModel) RefreshFromGetResponse(resp *shared.C
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "wiz_client_id"); ok {
-					r.WizClientId = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "endpoint_url"); ok {
-					r.EndpointUrl = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "auth_url"); ok {
-					r.AuthUrl = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "audience"); ok {
-					r.Audience = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "project_id"); ok {
-					r.ProjectId = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "resource_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
+				if _, ok := configValues["wiz_client_id"]; ok {
+					if val, ok := getStringValue(values, "wiz_client_id"); ok {
+						r.WizClientId = types.StringValue(val)
 					}
-					r.ResourceIds = valLists
 				}
 
-				if val, ok := getStringValue(values, "resource_tags"); ok {
-					r.ResourceTags = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "resource_types"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
+				if _, ok := configValues["endpoint_url"]; ok {
+					if val, ok := getStringValue(values, "endpoint_url"); ok {
+						r.EndpointUrl = types.StringValue(val)
 					}
-					r.ResourceTypes = valLists
+				}
+
+				if _, ok := configValues["auth_url"]; ok {
+					if val, ok := getStringValue(values, "auth_url"); ok {
+						r.AuthUrl = types.StringValue(val)
+					}
+				}
+
+				if _, ok := configValues["audience"]; ok {
+					if val, ok := getStringValue(values, "audience"); ok {
+						r.Audience = types.StringValue(val)
+					}
+				}
+
+				if _, ok := configValues["project_id"]; ok {
+					if val, ok := getStringValue(values, "project_id"); ok {
+						r.ProjectId = types.StringValue(val)
+					}
+				}
+
+				if _, ok := configValues["resource_ids"]; ok {
+					if val, ok := getStringValue(values, "resource_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.ResourceIds = valLists
+					}
+				}
+
+				if _, ok := configValues["resource_tags"]; ok {
+					if val, ok := getStringValue(values, "resource_tags"); ok {
+						r.ResourceTags = types.StringValue(val)
+					}
+				}
+
+				if _, ok := configValues["resource_types"]; ok {
+					if val, ok := getStringValue(values, "resource_types"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.ResourceTypes = valLists
+					}
 				}
 
 				if _, ok := configValues["enable_sync_identities"]; ok {
@@ -339,52 +355,68 @@ func (r *IntegrationWizQueryResourceModel) RefreshFromCreateResponse(resp *share
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "wiz_client_id"); ok {
-					r.WizClientId = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "endpoint_url"); ok {
-					r.EndpointUrl = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "auth_url"); ok {
-					r.AuthUrl = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "audience"); ok {
-					r.Audience = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "project_id"); ok {
-					r.ProjectId = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "resource_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
+				if _, ok := configValues["wiz_client_id"]; ok {
+					if val, ok := getStringValue(values, "wiz_client_id"); ok {
+						r.WizClientId = types.StringValue(val)
 					}
-					r.ResourceIds = valLists
 				}
 
-				if val, ok := getStringValue(values, "resource_tags"); ok {
-					r.ResourceTags = types.StringValue(val)
-				}
-
-				if val, ok := getStringValue(values, "resource_types"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
-						}
+				if _, ok := configValues["endpoint_url"]; ok {
+					if val, ok := getStringValue(values, "endpoint_url"); ok {
+						r.EndpointUrl = types.StringValue(val)
 					}
-					r.ResourceTypes = valLists
+				}
+
+				if _, ok := configValues["auth_url"]; ok {
+					if val, ok := getStringValue(values, "auth_url"); ok {
+						r.AuthUrl = types.StringValue(val)
+					}
+				}
+
+				if _, ok := configValues["audience"]; ok {
+					if val, ok := getStringValue(values, "audience"); ok {
+						r.Audience = types.StringValue(val)
+					}
+				}
+
+				if _, ok := configValues["project_id"]; ok {
+					if val, ok := getStringValue(values, "project_id"); ok {
+						r.ProjectId = types.StringValue(val)
+					}
+				}
+
+				if _, ok := configValues["resource_ids"]; ok {
+					if val, ok := getStringValue(values, "resource_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.ResourceIds = valLists
+					}
+				}
+
+				if _, ok := configValues["resource_tags"]; ok {
+					if val, ok := getStringValue(values, "resource_tags"); ok {
+						r.ResourceTags = types.StringValue(val)
+					}
+				}
+
+				if _, ok := configValues["resource_types"]; ok {
+					if val, ok := getStringValue(values, "resource_types"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
+						}
+						r.ResourceTypes = valLists
+					}
 				}
 
 				if _, ok := configValues["enable_sync_identities"]; ok {

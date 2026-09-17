@@ -178,19 +178,26 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromGetResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "snowflake_account"); ok {
-					r.SnowflakeAccount = types.StringValue(val)
+				if _, ok := configValues["snowflake_account"]; ok {
+					if val, ok := getStringValue(values, "snowflake_account"); ok {
+						r.SnowflakeAccount = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "snowflake_username"); ok {
-					r.SnowflakeUsername = types.StringValue(val)
+				if _, ok := configValues["snowflake_username"]; ok {
+					if val, ok := getStringValue(values, "snowflake_username"); ok {
+						r.SnowflakeUsername = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "snowflake_user_role"); ok {
-					r.SnowflakeUserRole = types.StringValue(val)
+				if _, ok := configValues["snowflake_user_role"]; ok {
+					if val, ok := getStringValue(values, "snowflake_user_role"); ok {
+						r.SnowflakeUserRole = types.StringValue(val)
+					}
 				}
 
 			}
@@ -233,19 +240,26 @@ func (r *IntegrationSnowflakeResourceModel) RefreshFromCreateResponse(resp *shar
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "snowflake_account"); ok {
-					r.SnowflakeAccount = types.StringValue(val)
+				if _, ok := configValues["snowflake_account"]; ok {
+					if val, ok := getStringValue(values, "snowflake_account"); ok {
+						r.SnowflakeAccount = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "snowflake_username"); ok {
-					r.SnowflakeUsername = types.StringValue(val)
+				if _, ok := configValues["snowflake_username"]; ok {
+					if val, ok := getStringValue(values, "snowflake_username"); ok {
+						r.SnowflakeUsername = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "snowflake_user_role"); ok {
-					r.SnowflakeUserRole = types.StringValue(val)
+				if _, ok := configValues["snowflake_user_role"]; ok {
+					if val, ok := getStringValue(values, "snowflake_user_role"); ok {
+						r.SnowflakeUserRole = types.StringValue(val)
+					}
 				}
 
 			}
