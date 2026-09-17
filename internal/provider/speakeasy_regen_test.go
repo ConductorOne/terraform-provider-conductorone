@@ -52,11 +52,8 @@ func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 	content := string(data)
 
 	// Fields annotated with x-speakeasy-terraform-plan-only: true in overlay.yaml.
-	// provision_policy used to be carried by a post-regen patch that forced
-	// Computed: true (patches/06, removed for IGA-4347); the generator now emits
-	// Computed on it because the entity read/update model provides the value, and
-	// TestCustomAppEntitlementProvisionPolicySchema locks that invariant.
 	planOnlyFields := []string{
+		"provision_policy",
 		"duration_grant",
 		"duration_unset",
 	}

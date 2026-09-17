@@ -10,93 +10,6 @@ import (
 type AppEntitlementDurationUnset struct {
 }
 
-// AppEntitlementProvisionPolicy - ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-//
-// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-//   - connector
-//   - manual
-//   - delegated
-//   - webhook
-//   - multiStep
-//   - externalTicket
-//   - unconfigured
-//   - action
-//   - devicePlacement
-type AppEntitlementProvisionPolicy struct {
-	Action          *ActionProvision          `json:"action,omitempty"`
-	Connector       *ConnectorProvision       `json:"connector,omitempty"`
-	Delegated       *DelegatedProvision       `json:"delegated,omitempty"`
-	DevicePlacement *DevicePlacementProvision `json:"devicePlacement,omitempty"`
-	ExternalTicket  *ExternalTicketProvision  `json:"externalTicket,omitempty"`
-	Manual          *ManualProvision          `json:"manual,omitempty"`
-	MultiStep       any                       `json:"multiStep,omitempty"`
-	Unconfigured    *UnconfiguredProvision    `json:"unconfigured,omitempty"`
-	Webhook         *WebhookProvision         `json:"webhook,omitempty"`
-}
-
-func (a *AppEntitlementProvisionPolicy) GetAction() *ActionProvision {
-	if a == nil {
-		return nil
-	}
-	return a.Action
-}
-
-func (a *AppEntitlementProvisionPolicy) GetConnector() *ConnectorProvision {
-	if a == nil {
-		return nil
-	}
-	return a.Connector
-}
-
-func (a *AppEntitlementProvisionPolicy) GetDelegated() *DelegatedProvision {
-	if a == nil {
-		return nil
-	}
-	return a.Delegated
-}
-
-func (a *AppEntitlementProvisionPolicy) GetDevicePlacement() *DevicePlacementProvision {
-	if a == nil {
-		return nil
-	}
-	return a.DevicePlacement
-}
-
-func (a *AppEntitlementProvisionPolicy) GetExternalTicket() *ExternalTicketProvision {
-	if a == nil {
-		return nil
-	}
-	return a.ExternalTicket
-}
-
-func (a *AppEntitlementProvisionPolicy) GetManual() *ManualProvision {
-	if a == nil {
-		return nil
-	}
-	return a.Manual
-}
-
-func (a *AppEntitlementProvisionPolicy) GetMultiStep() any {
-	if a == nil {
-		return nil
-	}
-	return a.MultiStep
-}
-
-func (a *AppEntitlementProvisionPolicy) GetUnconfigured() *UnconfiguredProvision {
-	if a == nil {
-		return nil
-	}
-	return a.Unconfigured
-}
-
-func (a *AppEntitlementProvisionPolicy) GetWebhook() *WebhookProvision {
-	if a == nil {
-		return nil
-	}
-	return a.Webhook
-}
-
 // Purpose - The purpose of this entitlement (e.g., assignment, permission, ownership).
 type Purpose string
 
@@ -266,8 +179,8 @@ type AppEntitlement struct {
 	// An identifier used to match this entitlement to a connector-synced entitlement during sync.
 	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// Flag to indicate if the app-level access request settings have been overridden for the entitlement
-	OverrideAccessRequestsDefaults *bool                          `json:"overrideAccessRequestsDefaults,omitempty"`
-	ProvisionPolicy                *AppEntitlementProvisionPolicy `json:"provisionerPolicy,omitempty"`
+	OverrideAccessRequestsDefaults *bool            `json:"overrideAccessRequestsDefaults,omitempty"`
+	ProvisionerPolicy              *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The purpose of this entitlement (e.g., assignment, permission, ownership).
 	Purpose *Purpose `json:"purpose,omitempty"`
 	// The ID of the request schema associated with this app entitlement.
@@ -465,11 +378,11 @@ func (a *AppEntitlement) GetOverrideAccessRequestsDefaults() *bool {
 	return a.OverrideAccessRequestsDefaults
 }
 
-func (a *AppEntitlement) GetProvisionPolicy() *AppEntitlementProvisionPolicy {
+func (a *AppEntitlement) GetProvisionerPolicy() *ProvisionPolicy {
 	if a == nil {
 		return nil
 	}
-	return a.ProvisionPolicy
+	return a.ProvisionerPolicy
 }
 
 func (a *AppEntitlement) GetPurpose() *Purpose {
@@ -581,8 +494,8 @@ type AppEntitlementInput struct {
 	// An identifier used to match this entitlement to a connector-synced entitlement during sync.
 	MatchBatonID *string `json:"matchBatonId,omitempty"`
 	// Flag to indicate if the app-level access request settings have been overridden for the entitlement
-	OverrideAccessRequestsDefaults *bool                          `json:"overrideAccessRequestsDefaults,omitempty"`
-	ProvisionPolicy                *AppEntitlementProvisionPolicy `json:"provisionerPolicy,omitempty"`
+	OverrideAccessRequestsDefaults *bool            `json:"overrideAccessRequestsDefaults,omitempty"`
+	ProvisionerPolicy              *ProvisionPolicy `json:"provisionerPolicy,omitempty"`
 	// The purpose of this entitlement (e.g., assignment, permission, ownership).
 	Purpose *Purpose `json:"purpose,omitempty"`
 	// The ID of the request schema associated with this app entitlement.
@@ -724,11 +637,11 @@ func (a *AppEntitlementInput) GetOverrideAccessRequestsDefaults() *bool {
 	return a.OverrideAccessRequestsDefaults
 }
 
-func (a *AppEntitlementInput) GetProvisionPolicy() *AppEntitlementProvisionPolicy {
+func (a *AppEntitlementInput) GetProvisionerPolicy() *ProvisionPolicy {
 	if a == nil {
 		return nil
 	}
-	return a.ProvisionPolicy
+	return a.ProvisionerPolicy
 }
 
 func (a *AppEntitlementInput) GetPurpose() *Purpose {

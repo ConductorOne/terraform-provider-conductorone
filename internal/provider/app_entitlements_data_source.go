@@ -652,7 +652,7 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 									Computed:    true,
 									Description: `Flag to indicate if the app-level access request settings have been overridden for the entitlement`,
 								},
-								"provision_policy": schema.SingleNestedAttribute{
+								"provisioner_policy": schema.SingleNestedAttribute{
 									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"action": schema.SingleNestedAttribute{
