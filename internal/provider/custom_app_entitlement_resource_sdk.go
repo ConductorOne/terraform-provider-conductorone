@@ -272,218 +272,218 @@ func (r *CustomAppEntitlementResourceModel) RefreshFromSharedAppEntitlement(ctx 
 		r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
 		r.OverrideAccessRequestsDefaults = types.BoolPointerValue(resp.OverrideAccessRequestsDefaults)
-		if resp.ProvisionerPolicy == nil {
-			r.ProvisionerPolicy = nil
+		if resp.ProvisionPolicy == nil {
+			r.ProvisionPolicy = nil
 		} else {
-			r.ProvisionerPolicy = &tfTypes.ProvisionPolicy{}
-			if resp.ProvisionerPolicy.Action == nil {
-				r.ProvisionerPolicy.Action = nil
+			r.ProvisionPolicy = &tfTypes.ProvisionPolicy{}
+			if resp.ProvisionPolicy.Action == nil {
+				r.ProvisionPolicy.Action = nil
 			} else {
-				r.ProvisionerPolicy.Action = &tfTypes.ActionProvision{}
-				r.ProvisionerPolicy.Action.ActionName = types.StringPointerValue(resp.ProvisionerPolicy.Action.ActionName)
-				r.ProvisionerPolicy.Action.AppID = types.StringPointerValue(resp.ProvisionerPolicy.Action.AppID)
-				r.ProvisionerPolicy.Action.ConnectorID = types.StringPointerValue(resp.ProvisionerPolicy.Action.ConnectorID)
-				r.ProvisionerPolicy.Action.DisplayName = types.StringPointerValue(resp.ProvisionerPolicy.Action.DisplayName)
+				r.ProvisionPolicy.Action = &tfTypes.ActionProvision{}
+				r.ProvisionPolicy.Action.ActionName = types.StringPointerValue(resp.ProvisionPolicy.Action.ActionName)
+				r.ProvisionPolicy.Action.AppID = types.StringPointerValue(resp.ProvisionPolicy.Action.AppID)
+				r.ProvisionPolicy.Action.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.Action.ConnectorID)
+				r.ProvisionPolicy.Action.DisplayName = types.StringPointerValue(resp.ProvisionPolicy.Action.DisplayName)
 			}
-			if resp.ProvisionerPolicy.Connector == nil {
-				r.ProvisionerPolicy.Connector = nil
+			if resp.ProvisionPolicy.Connector == nil {
+				r.ProvisionPolicy.Connector = nil
 			} else {
-				r.ProvisionerPolicy.Connector = &tfTypes.ConnectorProvision{}
-				if resp.ProvisionerPolicy.Connector.Account == nil {
-					r.ProvisionerPolicy.Connector.Account = nil
+				r.ProvisionPolicy.Connector = &tfTypes.ConnectorProvision{}
+				if resp.ProvisionPolicy.Connector.Account == nil {
+					r.ProvisionPolicy.Connector.Account = nil
 				} else {
-					r.ProvisionerPolicy.Connector.Account = &tfTypes.AccountProvision{}
-					if resp.ProvisionerPolicy.Connector.Account.Config == nil {
-						r.ProvisionerPolicy.Connector.Account.Config = jsontypes.NewNormalizedNull()
+					r.ProvisionPolicy.Connector.Account = &tfTypes.AccountProvision{}
+					if resp.ProvisionPolicy.Connector.Account.Config == nil {
+						r.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedNull()
 					} else {
-						configResult1, _ := json.Marshal(resp.ProvisionerPolicy.Connector.Account.Config)
-						r.ProvisionerPolicy.Connector.Account.Config = jsontypes.NewNormalizedValue(string(configResult1))
+						configResult1, _ := json.Marshal(resp.ProvisionPolicy.Connector.Account.Config)
+						r.ProvisionPolicy.Connector.Account.Config = jsontypes.NewNormalizedValue(string(configResult1))
 					}
-					r.ProvisionerPolicy.Connector.Account.ConnectorID = types.StringPointerValue(resp.ProvisionerPolicy.Connector.Account.ConnectorID)
-					if resp.ProvisionerPolicy.Connector.Account.DoNotSave == nil {
-						r.ProvisionerPolicy.Connector.Account.DoNotSave = nil
+					r.ProvisionPolicy.Connector.Account.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.Connector.Account.ConnectorID)
+					if resp.ProvisionPolicy.Connector.Account.DoNotSave == nil {
+						r.ProvisionPolicy.Connector.Account.DoNotSave = nil
 					} else {
-						r.ProvisionerPolicy.Connector.Account.DoNotSave = &tfTypes.DoNotSave{}
+						r.ProvisionPolicy.Connector.Account.DoNotSave = &tfTypes.DoNotSave{}
 					}
-					if resp.ProvisionerPolicy.Connector.Account.SaveToVault == nil {
-						r.ProvisionerPolicy.Connector.Account.SaveToVault = nil
+					if resp.ProvisionPolicy.Connector.Account.SaveToVault == nil {
+						r.ProvisionPolicy.Connector.Account.SaveToVault = nil
 					} else {
-						r.ProvisionerPolicy.Connector.Account.SaveToVault = &tfTypes.SaveToVault{}
-						if resp.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds != nil {
-							r.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds))
-							for _, v := range resp.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds {
-								r.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds = append(r.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds, types.StringValue(v))
+						r.ProvisionPolicy.Connector.Account.SaveToVault = &tfTypes.SaveToVault{}
+						if resp.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+							r.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = make([]types.String, 0, len(resp.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds))
+							for _, v := range resp.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds {
+								r.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = append(r.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds, types.StringValue(v))
 							}
 						} else {
-							r.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds = nil
+							r.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds = nil
 						}
 					}
-					r.ProvisionerPolicy.Connector.Account.SchemaID = types.StringPointerValue(resp.ProvisionerPolicy.Connector.Account.SchemaID)
+					r.ProvisionPolicy.Connector.Account.SchemaID = types.StringPointerValue(resp.ProvisionPolicy.Connector.Account.SchemaID)
 				}
-				if resp.ProvisionerPolicy.Connector.DefaultBehavior == nil {
-					r.ProvisionerPolicy.Connector.DefaultBehavior = nil
+				if resp.ProvisionPolicy.Connector.DefaultBehavior == nil {
+					r.ProvisionPolicy.Connector.DefaultBehavior = nil
 				} else {
-					r.ProvisionerPolicy.Connector.DefaultBehavior = &tfTypes.DefaultBehavior{}
-					r.ProvisionerPolicy.Connector.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.ProvisionerPolicy.Connector.DefaultBehavior.ConnectorID)
+					r.ProvisionPolicy.Connector.DefaultBehavior = &tfTypes.DefaultBehavior{}
+					r.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID)
 				}
-				if resp.ProvisionerPolicy.Connector.DeleteAccount == nil {
-					r.ProvisionerPolicy.Connector.DeleteAccount = nil
+				if resp.ProvisionPolicy.Connector.DeleteAccount == nil {
+					r.ProvisionPolicy.Connector.DeleteAccount = nil
 				} else {
-					r.ProvisionerPolicy.Connector.DeleteAccount = &tfTypes.DeleteAccount{}
-					r.ProvisionerPolicy.Connector.DeleteAccount.ConnectorID = types.StringPointerValue(resp.ProvisionerPolicy.Connector.DeleteAccount.ConnectorID)
-				}
-			}
-			if resp.ProvisionerPolicy.Delegated == nil {
-				r.ProvisionerPolicy.Delegated = nil
-			} else {
-				r.ProvisionerPolicy.Delegated = &tfTypes.DelegatedProvision{}
-				r.ProvisionerPolicy.Delegated.AppID = types.StringPointerValue(resp.ProvisionerPolicy.Delegated.AppID)
-				r.ProvisionerPolicy.Delegated.EntitlementID = types.StringPointerValue(resp.ProvisionerPolicy.Delegated.EntitlementID)
-			}
-			if resp.ProvisionerPolicy.DevicePlacement == nil {
-				r.ProvisionerPolicy.DevicePlacement = nil
-			} else {
-				r.ProvisionerPolicy.DevicePlacement = &tfTypes.DevicePlacementProvision{}
-				r.ProvisionerPolicy.DevicePlacement.VaultBoundaryID = types.StringPointerValue(resp.ProvisionerPolicy.DevicePlacement.VaultBoundaryID)
-			}
-			if resp.ProvisionerPolicy.ExternalTicket == nil {
-				r.ProvisionerPolicy.ExternalTicket = nil
-			} else {
-				r.ProvisionerPolicy.ExternalTicket = &tfTypes.ExternalTicketProvision{}
-				r.ProvisionerPolicy.ExternalTicket.AppID = types.StringPointerValue(resp.ProvisionerPolicy.ExternalTicket.AppID)
-				r.ProvisionerPolicy.ExternalTicket.ConnectorID = types.StringPointerValue(resp.ProvisionerPolicy.ExternalTicket.ConnectorID)
-				r.ProvisionerPolicy.ExternalTicket.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.ProvisionerPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
-				r.ProvisionerPolicy.ExternalTicket.Instructions = types.StringPointerValue(resp.ProvisionerPolicy.ExternalTicket.Instructions)
-			}
-			if resp.ProvisionerPolicy.Manual == nil {
-				r.ProvisionerPolicy.Manual = nil
-			} else {
-				r.ProvisionerPolicy.Manual = &tfTypes.ManualProvision{}
-				if resp.ProvisionerPolicy.Manual.Assignee == nil {
-					r.ProvisionerPolicy.Manual.Assignee = nil
-				} else {
-					r.ProvisionerPolicy.Manual.Assignee = &tfTypes.ProvisionerAssignment{}
-					if resp.ProvisionerPolicy.Manual.Assignee.AppOwners == nil {
-						r.ProvisionerPolicy.Manual.Assignee.AppOwners = nil
-					} else {
-						r.ProvisionerPolicy.Manual.Assignee.AppOwners = &tfTypes.AppOwnerProvisioner{}
-						r.ProvisionerPolicy.Manual.Assignee.AppOwners.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.AppOwners.AllowReassignment)
-						if resp.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
-							r.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
-								r.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds = append(r.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds, types.StringValue(v))
-							}
-						} else {
-							r.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds = nil
-						}
-					}
-					if resp.ProvisionerPolicy.Manual.Assignee.EntitlementOwners == nil {
-						r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners = nil
-					} else {
-						r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners = &tfTypes.EntitlementOwnerProvisioner{}
-						r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment)
-						if resp.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
-							r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
-								r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = append(r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds, types.StringValue(v))
-							}
-						} else {
-							r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = nil
-						}
-					}
-					if resp.ProvisionerPolicy.Manual.Assignee.Expression == nil {
-						r.ProvisionerPolicy.Manual.Assignee.Expression = nil
-					} else {
-						r.ProvisionerPolicy.Manual.Assignee.Expression = &tfTypes.ExpressionProvisioner{}
-						r.ProvisionerPolicy.Manual.Assignee.Expression.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Expression.AllowReassignment)
-						if resp.ProvisionerPolicy.Manual.Assignee.Expression.Expressions != nil {
-							r.ProvisionerPolicy.Manual.Assignee.Expression.Expressions = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.Expression.Expressions))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.Expression.Expressions {
-								r.ProvisionerPolicy.Manual.Assignee.Expression.Expressions = append(r.ProvisionerPolicy.Manual.Assignee.Expression.Expressions, types.StringValue(v))
-							}
-						} else {
-							r.ProvisionerPolicy.Manual.Assignee.Expression.Expressions = nil
-						}
-						if resp.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
-							r.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds {
-								r.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds = append(r.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds, types.StringValue(v))
-							}
-						} else {
-							r.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds = nil
-						}
-					}
-					if resp.ProvisionerPolicy.Manual.Assignee.Group == nil {
-						r.ProvisionerPolicy.Manual.Assignee.Group = nil
-					} else {
-						r.ProvisionerPolicy.Manual.Assignee.Group = &tfTypes.GroupProvisioner{}
-						r.ProvisionerPolicy.Manual.Assignee.Group.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Group.AllowReassignment)
-						r.ProvisionerPolicy.Manual.Assignee.Group.AppGroupID = types.StringPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Group.AppGroupID)
-						r.ProvisionerPolicy.Manual.Assignee.Group.AppID = types.StringPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Group.AppID)
-						if resp.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
-							r.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds {
-								r.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds = append(r.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds, types.StringValue(v))
-							}
-						} else {
-							r.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds = nil
-						}
-					}
-					if resp.ProvisionerPolicy.Manual.Assignee.Manager == nil {
-						r.ProvisionerPolicy.Manual.Assignee.Manager = nil
-					} else {
-						r.ProvisionerPolicy.Manual.Assignee.Manager = &tfTypes.ManagerProvisioner{}
-						r.ProvisionerPolicy.Manual.Assignee.Manager.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Manager.AllowReassignment)
-						if resp.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
-							r.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds {
-								r.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds = append(r.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds, types.StringValue(v))
-							}
-						} else {
-							r.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds = nil
-						}
-					}
-					if resp.ProvisionerPolicy.Manual.Assignee.Users == nil {
-						r.ProvisionerPolicy.Manual.Assignee.Users = nil
-					} else {
-						r.ProvisionerPolicy.Manual.Assignee.Users = &tfTypes.UserProvisioner{}
-						r.ProvisionerPolicy.Manual.Assignee.Users.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Users.AllowReassignment)
-						if resp.ProvisionerPolicy.Manual.Assignee.Users.UserIds != nil {
-							r.ProvisionerPolicy.Manual.Assignee.Users.UserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.Users.UserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.Users.UserIds {
-								r.ProvisionerPolicy.Manual.Assignee.Users.UserIds = append(r.ProvisionerPolicy.Manual.Assignee.Users.UserIds, types.StringValue(v))
-							}
-						} else {
-							r.ProvisionerPolicy.Manual.Assignee.Users.UserIds = nil
-						}
-					}
-				}
-				r.ProvisionerPolicy.Manual.Instructions = types.StringPointerValue(resp.ProvisionerPolicy.Manual.Instructions)
-				if resp.ProvisionerPolicy.Manual.UserIds != nil {
-					r.ProvisionerPolicy.Manual.UserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.UserIds))
-					for _, v := range resp.ProvisionerPolicy.Manual.UserIds {
-						r.ProvisionerPolicy.Manual.UserIds = append(r.ProvisionerPolicy.Manual.UserIds, types.StringValue(v))
-					}
-				} else {
-					r.ProvisionerPolicy.Manual.UserIds = nil
+					r.ProvisionPolicy.Connector.DeleteAccount = &tfTypes.DeleteAccount{}
+					r.ProvisionPolicy.Connector.DeleteAccount.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.Connector.DeleteAccount.ConnectorID)
 				}
 			}
-			if resp.ProvisionerPolicy.MultiStep == nil {
-				r.ProvisionerPolicy.MultiStep = jsontypes.NewNormalizedNull()
+			if resp.ProvisionPolicy.Delegated == nil {
+				r.ProvisionPolicy.Delegated = nil
 			} else {
-				multiStepResult1, _ := json.Marshal(resp.ProvisionerPolicy.MultiStep)
-				r.ProvisionerPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
+				r.ProvisionPolicy.Delegated = &tfTypes.DelegatedProvision{}
+				r.ProvisionPolicy.Delegated.AppID = types.StringPointerValue(resp.ProvisionPolicy.Delegated.AppID)
+				r.ProvisionPolicy.Delegated.EntitlementID = types.StringPointerValue(resp.ProvisionPolicy.Delegated.EntitlementID)
 			}
-			if resp.ProvisionerPolicy.Unconfigured == nil {
-				r.ProvisionerPolicy.Unconfigured = nil
+			if resp.ProvisionPolicy.DevicePlacement == nil {
+				r.ProvisionPolicy.DevicePlacement = nil
 			} else {
-				r.ProvisionerPolicy.Unconfigured = &tfTypes.UnconfiguredProvision{}
+				r.ProvisionPolicy.DevicePlacement = &tfTypes.DevicePlacementProvision{}
+				r.ProvisionPolicy.DevicePlacement.VaultBoundaryID = types.StringPointerValue(resp.ProvisionPolicy.DevicePlacement.VaultBoundaryID)
 			}
-			if resp.ProvisionerPolicy.Webhook == nil {
-				r.ProvisionerPolicy.Webhook = nil
+			if resp.ProvisionPolicy.ExternalTicket == nil {
+				r.ProvisionPolicy.ExternalTicket = nil
 			} else {
-				r.ProvisionerPolicy.Webhook = &tfTypes.WebhookProvision{}
-				r.ProvisionerPolicy.Webhook.WebhookID = types.StringPointerValue(resp.ProvisionerPolicy.Webhook.WebhookID)
+				r.ProvisionPolicy.ExternalTicket = &tfTypes.ExternalTicketProvision{}
+				r.ProvisionPolicy.ExternalTicket.AppID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicket.AppID)
+				r.ProvisionPolicy.ExternalTicket.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicket.ConnectorID)
+				r.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
+				r.ProvisionPolicy.ExternalTicket.Instructions = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicket.Instructions)
+			}
+			if resp.ProvisionPolicy.Manual == nil {
+				r.ProvisionPolicy.Manual = nil
+			} else {
+				r.ProvisionPolicy.Manual = &tfTypes.ManualProvision{}
+				if resp.ProvisionPolicy.Manual.Assignee == nil {
+					r.ProvisionPolicy.Manual.Assignee = nil
+				} else {
+					r.ProvisionPolicy.Manual.Assignee = &tfTypes.ProvisionerAssignment{}
+					if resp.ProvisionPolicy.Manual.Assignee.AppOwners == nil {
+						r.ProvisionPolicy.Manual.Assignee.AppOwners = nil
+					} else {
+						r.ProvisionPolicy.Manual.Assignee.AppOwners = &tfTypes.AppOwnerProvisioner{}
+						r.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment)
+						if resp.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
+							r.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
+								r.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = append(r.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds, types.StringValue(v))
+							}
+						} else {
+							r.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds = nil
+						}
+					}
+					if resp.ProvisionPolicy.Manual.Assignee.EntitlementOwners == nil {
+						r.ProvisionPolicy.Manual.Assignee.EntitlementOwners = nil
+					} else {
+						r.ProvisionPolicy.Manual.Assignee.EntitlementOwners = &tfTypes.EntitlementOwnerProvisioner{}
+						r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment)
+						if resp.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
+							r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
+								r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = append(r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds, types.StringValue(v))
+							}
+						} else {
+							r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds = nil
+						}
+					}
+					if resp.ProvisionPolicy.Manual.Assignee.Expression == nil {
+						r.ProvisionPolicy.Manual.Assignee.Expression = nil
+					} else {
+						r.ProvisionPolicy.Manual.Assignee.Expression = &tfTypes.ExpressionProvisioner{}
+						r.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment)
+						if resp.ProvisionPolicy.Manual.Assignee.Expression.Expressions != nil {
+							r.ProvisionPolicy.Manual.Assignee.Expression.Expressions = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.Expression.Expressions))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.Expression.Expressions {
+								r.ProvisionPolicy.Manual.Assignee.Expression.Expressions = append(r.ProvisionPolicy.Manual.Assignee.Expression.Expressions, types.StringValue(v))
+							}
+						} else {
+							r.ProvisionPolicy.Manual.Assignee.Expression.Expressions = nil
+						}
+						if resp.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
+							r.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds {
+								r.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = append(r.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds, types.StringValue(v))
+							}
+						} else {
+							r.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds = nil
+						}
+					}
+					if resp.ProvisionPolicy.Manual.Assignee.Group == nil {
+						r.ProvisionPolicy.Manual.Assignee.Group = nil
+					} else {
+						r.ProvisionPolicy.Manual.Assignee.Group = &tfTypes.GroupProvisioner{}
+						r.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment)
+						r.ProvisionPolicy.Manual.Assignee.Group.AppGroupID = types.StringPointerValue(resp.ProvisionPolicy.Manual.Assignee.Group.AppGroupID)
+						r.ProvisionPolicy.Manual.Assignee.Group.AppID = types.StringPointerValue(resp.ProvisionPolicy.Manual.Assignee.Group.AppID)
+						if resp.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
+							r.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds {
+								r.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = append(r.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds, types.StringValue(v))
+							}
+						} else {
+							r.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds = nil
+						}
+					}
+					if resp.ProvisionPolicy.Manual.Assignee.Manager == nil {
+						r.ProvisionPolicy.Manual.Assignee.Manager = nil
+					} else {
+						r.ProvisionPolicy.Manual.Assignee.Manager = &tfTypes.ManagerProvisioner{}
+						r.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment)
+						if resp.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
+							r.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds {
+								r.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = append(r.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds, types.StringValue(v))
+							}
+						} else {
+							r.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds = nil
+						}
+					}
+					if resp.ProvisionPolicy.Manual.Assignee.Users == nil {
+						r.ProvisionPolicy.Manual.Assignee.Users = nil
+					} else {
+						r.ProvisionPolicy.Manual.Assignee.Users = &tfTypes.UserProvisioner{}
+						r.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment)
+						if resp.ProvisionPolicy.Manual.Assignee.Users.UserIds != nil {
+							r.ProvisionPolicy.Manual.Assignee.Users.UserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.Users.UserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.Users.UserIds {
+								r.ProvisionPolicy.Manual.Assignee.Users.UserIds = append(r.ProvisionPolicy.Manual.Assignee.Users.UserIds, types.StringValue(v))
+							}
+						} else {
+							r.ProvisionPolicy.Manual.Assignee.Users.UserIds = nil
+						}
+					}
+				}
+				r.ProvisionPolicy.Manual.Instructions = types.StringPointerValue(resp.ProvisionPolicy.Manual.Instructions)
+				if resp.ProvisionPolicy.Manual.UserIds != nil {
+					r.ProvisionPolicy.Manual.UserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.UserIds))
+					for _, v := range resp.ProvisionPolicy.Manual.UserIds {
+						r.ProvisionPolicy.Manual.UserIds = append(r.ProvisionPolicy.Manual.UserIds, types.StringValue(v))
+					}
+				} else {
+					r.ProvisionPolicy.Manual.UserIds = nil
+				}
+			}
+			if resp.ProvisionPolicy.MultiStep == nil {
+				r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
+			} else {
+				multiStepResult1, _ := json.Marshal(resp.ProvisionPolicy.MultiStep)
+				r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
+			}
+			if resp.ProvisionPolicy.Unconfigured == nil {
+				r.ProvisionPolicy.Unconfigured = nil
+			} else {
+				r.ProvisionPolicy.Unconfigured = &tfTypes.UnconfiguredProvision{}
+			}
+			if resp.ProvisionPolicy.Webhook == nil {
+				r.ProvisionPolicy.Webhook = nil
+			} else {
+				r.ProvisionPolicy.Webhook = &tfTypes.WebhookProvision{}
+				r.ProvisionPolicy.Webhook.WebhookID = types.StringPointerValue(resp.ProvisionPolicy.Webhook.WebhookID)
 			}
 		}
 		if resp.Purpose != nil {
@@ -787,31 +787,31 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 	} else {
 		overrideAccessRequestsDefaults = nil
 	}
-	var provisionerPolicy *shared.ProvisionPolicy
-	if r.ProvisionerPolicy != nil {
+	var provisionPolicy *shared.AppEntitlementProvisionPolicy
+	if r.ProvisionPolicy != nil {
 		var action *shared.ActionProvision
-		if r.ProvisionerPolicy.Action != nil {
+		if r.ProvisionPolicy.Action != nil {
 			actionName := new(string)
-			if !r.ProvisionerPolicy.Action.ActionName.IsUnknown() && !r.ProvisionerPolicy.Action.ActionName.IsNull() {
-				*actionName = r.ProvisionerPolicy.Action.ActionName.ValueString()
+			if !r.ProvisionPolicy.Action.ActionName.IsUnknown() && !r.ProvisionPolicy.Action.ActionName.IsNull() {
+				*actionName = r.ProvisionPolicy.Action.ActionName.ValueString()
 			} else {
 				actionName = nil
 			}
 			appId1 := new(string)
-			if !r.ProvisionerPolicy.Action.AppID.IsUnknown() && !r.ProvisionerPolicy.Action.AppID.IsNull() {
-				*appId1 = r.ProvisionerPolicy.Action.AppID.ValueString()
+			if !r.ProvisionPolicy.Action.AppID.IsUnknown() && !r.ProvisionPolicy.Action.AppID.IsNull() {
+				*appId1 = r.ProvisionPolicy.Action.AppID.ValueString()
 			} else {
 				appId1 = nil
 			}
 			connectorID := new(string)
-			if !r.ProvisionerPolicy.Action.ConnectorID.IsUnknown() && !r.ProvisionerPolicy.Action.ConnectorID.IsNull() {
-				*connectorID = r.ProvisionerPolicy.Action.ConnectorID.ValueString()
+			if !r.ProvisionPolicy.Action.ConnectorID.IsUnknown() && !r.ProvisionPolicy.Action.ConnectorID.IsNull() {
+				*connectorID = r.ProvisionPolicy.Action.ConnectorID.ValueString()
 			} else {
 				connectorID = nil
 			}
 			displayName1 := new(string)
-			if !r.ProvisionerPolicy.Action.DisplayName.IsUnknown() && !r.ProvisionerPolicy.Action.DisplayName.IsNull() {
-				*displayName1 = r.ProvisionerPolicy.Action.DisplayName.ValueString()
+			if !r.ProvisionPolicy.Action.DisplayName.IsUnknown() && !r.ProvisionPolicy.Action.DisplayName.IsNull() {
+				*displayName1 = r.ProvisionPolicy.Action.DisplayName.ValueString()
 			} else {
 				displayName1 = nil
 			}
@@ -823,30 +823,30 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 		}
 		var connector *shared.ConnectorProvision
-		if r.ProvisionerPolicy.Connector != nil {
+		if r.ProvisionPolicy.Connector != nil {
 			var account *shared.AccountProvision
-			if r.ProvisionerPolicy.Connector.Account != nil {
+			if r.ProvisionPolicy.Connector.Account != nil {
 				var config interface{}
-				if !r.ProvisionerPolicy.Connector.Account.Config.IsUnknown() && !r.ProvisionerPolicy.Connector.Account.Config.IsNull() {
-					_ = json.Unmarshal([]byte(r.ProvisionerPolicy.Connector.Account.Config.ValueString()), &config)
+				if !r.ProvisionPolicy.Connector.Account.Config.IsUnknown() && !r.ProvisionPolicy.Connector.Account.Config.IsNull() {
+					_ = json.Unmarshal([]byte(r.ProvisionPolicy.Connector.Account.Config.ValueString()), &config)
 				}
 				connectorId1 := new(string)
-				if !r.ProvisionerPolicy.Connector.Account.ConnectorID.IsUnknown() && !r.ProvisionerPolicy.Connector.Account.ConnectorID.IsNull() {
-					*connectorId1 = r.ProvisionerPolicy.Connector.Account.ConnectorID.ValueString()
+				if !r.ProvisionPolicy.Connector.Account.ConnectorID.IsUnknown() && !r.ProvisionPolicy.Connector.Account.ConnectorID.IsNull() {
+					*connectorId1 = r.ProvisionPolicy.Connector.Account.ConnectorID.ValueString()
 				} else {
 					connectorId1 = nil
 				}
 				var doNotSave *shared.DoNotSave
-				if r.ProvisionerPolicy.Connector.Account.DoNotSave != nil {
+				if r.ProvisionPolicy.Connector.Account.DoNotSave != nil {
 					doNotSave = &shared.DoNotSave{}
 				}
 				var saveToVault *shared.SaveToVault
-				if r.ProvisionerPolicy.Connector.Account.SaveToVault != nil {
+				if r.ProvisionPolicy.Connector.Account.SaveToVault != nil {
 					var vaultIds []string
-					if r.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds != nil {
-						vaultIds = make([]string, 0, len(r.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds))
-						for vaultIdsIndex := range r.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds {
-							vaultIds = append(vaultIds, r.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds[vaultIdsIndex].ValueString())
+					if r.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+						vaultIds = make([]string, 0, len(r.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds))
+						for vaultIdsIndex := range r.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds {
+							vaultIds = append(vaultIds, r.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds[vaultIdsIndex].ValueString())
 						}
 					}
 					saveToVault = &shared.SaveToVault{
@@ -854,8 +854,8 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 					}
 				}
 				schemaID := new(string)
-				if !r.ProvisionerPolicy.Connector.Account.SchemaID.IsUnknown() && !r.ProvisionerPolicy.Connector.Account.SchemaID.IsNull() {
-					*schemaID = r.ProvisionerPolicy.Connector.Account.SchemaID.ValueString()
+				if !r.ProvisionPolicy.Connector.Account.SchemaID.IsUnknown() && !r.ProvisionPolicy.Connector.Account.SchemaID.IsNull() {
+					*schemaID = r.ProvisionPolicy.Connector.Account.SchemaID.ValueString()
 				} else {
 					schemaID = nil
 				}
@@ -868,10 +868,10 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 				}
 			}
 			var defaultBehavior *shared.DefaultBehavior
-			if r.ProvisionerPolicy.Connector.DefaultBehavior != nil {
+			if r.ProvisionPolicy.Connector.DefaultBehavior != nil {
 				connectorId2 := new(string)
-				if !r.ProvisionerPolicy.Connector.DefaultBehavior.ConnectorID.IsUnknown() && !r.ProvisionerPolicy.Connector.DefaultBehavior.ConnectorID.IsNull() {
-					*connectorId2 = r.ProvisionerPolicy.Connector.DefaultBehavior.ConnectorID.ValueString()
+				if !r.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID.IsUnknown() && !r.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID.IsNull() {
+					*connectorId2 = r.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID.ValueString()
 				} else {
 					connectorId2 = nil
 				}
@@ -880,10 +880,10 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 				}
 			}
 			var deleteAccount *shared.DeleteAccount
-			if r.ProvisionerPolicy.Connector.DeleteAccount != nil {
+			if r.ProvisionPolicy.Connector.DeleteAccount != nil {
 				connectorId3 := new(string)
-				if !r.ProvisionerPolicy.Connector.DeleteAccount.ConnectorID.IsUnknown() && !r.ProvisionerPolicy.Connector.DeleteAccount.ConnectorID.IsNull() {
-					*connectorId3 = r.ProvisionerPolicy.Connector.DeleteAccount.ConnectorID.ValueString()
+				if !r.ProvisionPolicy.Connector.DeleteAccount.ConnectorID.IsUnknown() && !r.ProvisionPolicy.Connector.DeleteAccount.ConnectorID.IsNull() {
+					*connectorId3 = r.ProvisionPolicy.Connector.DeleteAccount.ConnectorID.ValueString()
 				} else {
 					connectorId3 = nil
 				}
@@ -898,16 +898,16 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 		}
 		var delegated *shared.DelegatedProvision
-		if r.ProvisionerPolicy.Delegated != nil {
+		if r.ProvisionPolicy.Delegated != nil {
 			appId2 := new(string)
-			if !r.ProvisionerPolicy.Delegated.AppID.IsUnknown() && !r.ProvisionerPolicy.Delegated.AppID.IsNull() {
-				*appId2 = r.ProvisionerPolicy.Delegated.AppID.ValueString()
+			if !r.ProvisionPolicy.Delegated.AppID.IsUnknown() && !r.ProvisionPolicy.Delegated.AppID.IsNull() {
+				*appId2 = r.ProvisionPolicy.Delegated.AppID.ValueString()
 			} else {
 				appId2 = nil
 			}
 			entitlementID := new(string)
-			if !r.ProvisionerPolicy.Delegated.EntitlementID.IsUnknown() && !r.ProvisionerPolicy.Delegated.EntitlementID.IsNull() {
-				*entitlementID = r.ProvisionerPolicy.Delegated.EntitlementID.ValueString()
+			if !r.ProvisionPolicy.Delegated.EntitlementID.IsUnknown() && !r.ProvisionPolicy.Delegated.EntitlementID.IsNull() {
+				*entitlementID = r.ProvisionPolicy.Delegated.EntitlementID.ValueString()
 			} else {
 				entitlementID = nil
 			}
@@ -917,10 +917,10 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 		}
 		var devicePlacement *shared.DevicePlacementProvision
-		if r.ProvisionerPolicy.DevicePlacement != nil {
+		if r.ProvisionPolicy.DevicePlacement != nil {
 			vaultBoundaryID := new(string)
-			if !r.ProvisionerPolicy.DevicePlacement.VaultBoundaryID.IsUnknown() && !r.ProvisionerPolicy.DevicePlacement.VaultBoundaryID.IsNull() {
-				*vaultBoundaryID = r.ProvisionerPolicy.DevicePlacement.VaultBoundaryID.ValueString()
+			if !r.ProvisionPolicy.DevicePlacement.VaultBoundaryID.IsUnknown() && !r.ProvisionPolicy.DevicePlacement.VaultBoundaryID.IsNull() {
+				*vaultBoundaryID = r.ProvisionPolicy.DevicePlacement.VaultBoundaryID.ValueString()
 			} else {
 				vaultBoundaryID = nil
 			}
@@ -929,28 +929,28 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 		}
 		var externalTicket *shared.ExternalTicketProvision
-		if r.ProvisionerPolicy.ExternalTicket != nil {
+		if r.ProvisionPolicy.ExternalTicket != nil {
 			appId3 := new(string)
-			if !r.ProvisionerPolicy.ExternalTicket.AppID.IsUnknown() && !r.ProvisionerPolicy.ExternalTicket.AppID.IsNull() {
-				*appId3 = r.ProvisionerPolicy.ExternalTicket.AppID.ValueString()
+			if !r.ProvisionPolicy.ExternalTicket.AppID.IsUnknown() && !r.ProvisionPolicy.ExternalTicket.AppID.IsNull() {
+				*appId3 = r.ProvisionPolicy.ExternalTicket.AppID.ValueString()
 			} else {
 				appId3 = nil
 			}
 			connectorId4 := new(string)
-			if !r.ProvisionerPolicy.ExternalTicket.ConnectorID.IsUnknown() && !r.ProvisionerPolicy.ExternalTicket.ConnectorID.IsNull() {
-				*connectorId4 = r.ProvisionerPolicy.ExternalTicket.ConnectorID.ValueString()
+			if !r.ProvisionPolicy.ExternalTicket.ConnectorID.IsUnknown() && !r.ProvisionPolicy.ExternalTicket.ConnectorID.IsNull() {
+				*connectorId4 = r.ProvisionPolicy.ExternalTicket.ConnectorID.ValueString()
 			} else {
 				connectorId4 = nil
 			}
 			externalTicketProvisionerConfigID := new(string)
-			if !r.ProvisionerPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.IsUnknown() && !r.ProvisionerPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.IsNull() {
-				*externalTicketProvisionerConfigID = r.ProvisionerPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.ValueString()
+			if !r.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.IsUnknown() && !r.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.IsNull() {
+				*externalTicketProvisionerConfigID = r.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID.ValueString()
 			} else {
 				externalTicketProvisionerConfigID = nil
 			}
 			instructions := new(string)
-			if !r.ProvisionerPolicy.ExternalTicket.Instructions.IsUnknown() && !r.ProvisionerPolicy.ExternalTicket.Instructions.IsNull() {
-				*instructions = r.ProvisionerPolicy.ExternalTicket.Instructions.ValueString()
+			if !r.ProvisionPolicy.ExternalTicket.Instructions.IsUnknown() && !r.ProvisionPolicy.ExternalTicket.Instructions.IsNull() {
+				*instructions = r.ProvisionPolicy.ExternalTicket.Instructions.ValueString()
 			} else {
 				instructions = nil
 			}
@@ -962,22 +962,22 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 		}
 		var manual *shared.ManualProvision
-		if r.ProvisionerPolicy.Manual != nil {
+		if r.ProvisionPolicy.Manual != nil {
 			var assignee *shared.ProvisionerAssignment
-			if r.ProvisionerPolicy.Manual.Assignee != nil {
+			if r.ProvisionPolicy.Manual.Assignee != nil {
 				var appOwners *shared.AppOwnerProvisioner
-				if r.ProvisionerPolicy.Manual.Assignee.AppOwners != nil {
+				if r.ProvisionPolicy.Manual.Assignee.AppOwners != nil {
 					allowReassignment := new(bool)
-					if !r.ProvisionerPolicy.Manual.Assignee.AppOwners.AllowReassignment.IsUnknown() && !r.ProvisionerPolicy.Manual.Assignee.AppOwners.AllowReassignment.IsNull() {
-						*allowReassignment = r.ProvisionerPolicy.Manual.Assignee.AppOwners.AllowReassignment.ValueBool()
+					if !r.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment.IsUnknown() && !r.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment.IsNull() {
+						*allowReassignment = r.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment.ValueBool()
 					} else {
 						allowReassignment = nil
 					}
 					var fallbackUserIds []string
-					if r.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
-						fallbackUserIds = make([]string, 0, len(r.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
-						for fallbackUserIdsIndex := range r.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
-							fallbackUserIds = append(fallbackUserIds, r.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds[fallbackUserIdsIndex].ValueString())
+					if r.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
+						fallbackUserIds = make([]string, 0, len(r.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
+						for fallbackUserIdsIndex := range r.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
+							fallbackUserIds = append(fallbackUserIds, r.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds[fallbackUserIdsIndex].ValueString())
 						}
 					}
 					appOwners = &shared.AppOwnerProvisioner{
@@ -986,18 +986,18 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 					}
 				}
 				var entitlementOwners *shared.EntitlementOwnerProvisioner
-				if r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners != nil {
+				if r.ProvisionPolicy.Manual.Assignee.EntitlementOwners != nil {
 					allowReassignment1 := new(bool)
-					if !r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.IsUnknown() && !r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.IsNull() {
-						*allowReassignment1 = r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.ValueBool()
+					if !r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.IsUnknown() && !r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.IsNull() {
+						*allowReassignment1 = r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment.ValueBool()
 					} else {
 						allowReassignment1 = nil
 					}
 					var fallbackUserIds1 []string
-					if r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
-						fallbackUserIds1 = make([]string, 0, len(r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
-						for fallbackUserIdsIndex1 := range r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
-							fallbackUserIds1 = append(fallbackUserIds1, r.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds[fallbackUserIdsIndex1].ValueString())
+					if r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
+						fallbackUserIds1 = make([]string, 0, len(r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
+						for fallbackUserIdsIndex1 := range r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
+							fallbackUserIds1 = append(fallbackUserIds1, r.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds[fallbackUserIdsIndex1].ValueString())
 						}
 					}
 					entitlementOwners = &shared.EntitlementOwnerProvisioner{
@@ -1006,25 +1006,25 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 					}
 				}
 				var expression *shared.ExpressionProvisioner
-				if r.ProvisionerPolicy.Manual.Assignee.Expression != nil {
+				if r.ProvisionPolicy.Manual.Assignee.Expression != nil {
 					allowReassignment2 := new(bool)
-					if !r.ProvisionerPolicy.Manual.Assignee.Expression.AllowReassignment.IsUnknown() && !r.ProvisionerPolicy.Manual.Assignee.Expression.AllowReassignment.IsNull() {
-						*allowReassignment2 = r.ProvisionerPolicy.Manual.Assignee.Expression.AllowReassignment.ValueBool()
+					if !r.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment.IsUnknown() && !r.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment.IsNull() {
+						*allowReassignment2 = r.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment.ValueBool()
 					} else {
 						allowReassignment2 = nil
 					}
 					var expressions []string
-					if r.ProvisionerPolicy.Manual.Assignee.Expression.Expressions != nil {
-						expressions = make([]string, 0, len(r.ProvisionerPolicy.Manual.Assignee.Expression.Expressions))
-						for expressionsIndex := range r.ProvisionerPolicy.Manual.Assignee.Expression.Expressions {
-							expressions = append(expressions, r.ProvisionerPolicy.Manual.Assignee.Expression.Expressions[expressionsIndex].ValueString())
+					if r.ProvisionPolicy.Manual.Assignee.Expression.Expressions != nil {
+						expressions = make([]string, 0, len(r.ProvisionPolicy.Manual.Assignee.Expression.Expressions))
+						for expressionsIndex := range r.ProvisionPolicy.Manual.Assignee.Expression.Expressions {
+							expressions = append(expressions, r.ProvisionPolicy.Manual.Assignee.Expression.Expressions[expressionsIndex].ValueString())
 						}
 					}
 					var fallbackUserIds2 []string
-					if r.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
-						fallbackUserIds2 = make([]string, 0, len(r.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds))
-						for fallbackUserIdsIndex2 := range r.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds {
-							fallbackUserIds2 = append(fallbackUserIds2, r.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds[fallbackUserIdsIndex2].ValueString())
+					if r.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
+						fallbackUserIds2 = make([]string, 0, len(r.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds))
+						for fallbackUserIdsIndex2 := range r.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds {
+							fallbackUserIds2 = append(fallbackUserIds2, r.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds[fallbackUserIdsIndex2].ValueString())
 						}
 					}
 					expression = &shared.ExpressionProvisioner{
@@ -1034,30 +1034,30 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 					}
 				}
 				var group *shared.GroupProvisioner
-				if r.ProvisionerPolicy.Manual.Assignee.Group != nil {
+				if r.ProvisionPolicy.Manual.Assignee.Group != nil {
 					allowReassignment3 := new(bool)
-					if !r.ProvisionerPolicy.Manual.Assignee.Group.AllowReassignment.IsUnknown() && !r.ProvisionerPolicy.Manual.Assignee.Group.AllowReassignment.IsNull() {
-						*allowReassignment3 = r.ProvisionerPolicy.Manual.Assignee.Group.AllowReassignment.ValueBool()
+					if !r.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment.IsUnknown() && !r.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment.IsNull() {
+						*allowReassignment3 = r.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment.ValueBool()
 					} else {
 						allowReassignment3 = nil
 					}
 					appGroupID := new(string)
-					if !r.ProvisionerPolicy.Manual.Assignee.Group.AppGroupID.IsUnknown() && !r.ProvisionerPolicy.Manual.Assignee.Group.AppGroupID.IsNull() {
-						*appGroupID = r.ProvisionerPolicy.Manual.Assignee.Group.AppGroupID.ValueString()
+					if !r.ProvisionPolicy.Manual.Assignee.Group.AppGroupID.IsUnknown() && !r.ProvisionPolicy.Manual.Assignee.Group.AppGroupID.IsNull() {
+						*appGroupID = r.ProvisionPolicy.Manual.Assignee.Group.AppGroupID.ValueString()
 					} else {
 						appGroupID = nil
 					}
 					appId4 := new(string)
-					if !r.ProvisionerPolicy.Manual.Assignee.Group.AppID.IsUnknown() && !r.ProvisionerPolicy.Manual.Assignee.Group.AppID.IsNull() {
-						*appId4 = r.ProvisionerPolicy.Manual.Assignee.Group.AppID.ValueString()
+					if !r.ProvisionPolicy.Manual.Assignee.Group.AppID.IsUnknown() && !r.ProvisionPolicy.Manual.Assignee.Group.AppID.IsNull() {
+						*appId4 = r.ProvisionPolicy.Manual.Assignee.Group.AppID.ValueString()
 					} else {
 						appId4 = nil
 					}
 					var fallbackUserIds3 []string
-					if r.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
-						fallbackUserIds3 = make([]string, 0, len(r.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds))
-						for fallbackUserIdsIndex3 := range r.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds {
-							fallbackUserIds3 = append(fallbackUserIds3, r.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds[fallbackUserIdsIndex3].ValueString())
+					if r.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
+						fallbackUserIds3 = make([]string, 0, len(r.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds))
+						for fallbackUserIdsIndex3 := range r.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds {
+							fallbackUserIds3 = append(fallbackUserIds3, r.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds[fallbackUserIdsIndex3].ValueString())
 						}
 					}
 					group = &shared.GroupProvisioner{
@@ -1068,18 +1068,18 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 					}
 				}
 				var manager *shared.ManagerProvisioner
-				if r.ProvisionerPolicy.Manual.Assignee.Manager != nil {
+				if r.ProvisionPolicy.Manual.Assignee.Manager != nil {
 					allowReassignment4 := new(bool)
-					if !r.ProvisionerPolicy.Manual.Assignee.Manager.AllowReassignment.IsUnknown() && !r.ProvisionerPolicy.Manual.Assignee.Manager.AllowReassignment.IsNull() {
-						*allowReassignment4 = r.ProvisionerPolicy.Manual.Assignee.Manager.AllowReassignment.ValueBool()
+					if !r.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment.IsUnknown() && !r.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment.IsNull() {
+						*allowReassignment4 = r.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment.ValueBool()
 					} else {
 						allowReassignment4 = nil
 					}
 					var fallbackUserIds4 []string
-					if r.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
-						fallbackUserIds4 = make([]string, 0, len(r.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds))
-						for fallbackUserIdsIndex4 := range r.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds {
-							fallbackUserIds4 = append(fallbackUserIds4, r.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds[fallbackUserIdsIndex4].ValueString())
+					if r.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
+						fallbackUserIds4 = make([]string, 0, len(r.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds))
+						for fallbackUserIdsIndex4 := range r.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds {
+							fallbackUserIds4 = append(fallbackUserIds4, r.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds[fallbackUserIdsIndex4].ValueString())
 						}
 					}
 					manager = &shared.ManagerProvisioner{
@@ -1088,18 +1088,18 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 					}
 				}
 				var users *shared.UserProvisioner
-				if r.ProvisionerPolicy.Manual.Assignee.Users != nil {
+				if r.ProvisionPolicy.Manual.Assignee.Users != nil {
 					allowReassignment5 := new(bool)
-					if !r.ProvisionerPolicy.Manual.Assignee.Users.AllowReassignment.IsUnknown() && !r.ProvisionerPolicy.Manual.Assignee.Users.AllowReassignment.IsNull() {
-						*allowReassignment5 = r.ProvisionerPolicy.Manual.Assignee.Users.AllowReassignment.ValueBool()
+					if !r.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment.IsUnknown() && !r.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment.IsNull() {
+						*allowReassignment5 = r.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment.ValueBool()
 					} else {
 						allowReassignment5 = nil
 					}
 					var userIds []string
-					if r.ProvisionerPolicy.Manual.Assignee.Users.UserIds != nil {
-						userIds = make([]string, 0, len(r.ProvisionerPolicy.Manual.Assignee.Users.UserIds))
-						for userIdsIndex := range r.ProvisionerPolicy.Manual.Assignee.Users.UserIds {
-							userIds = append(userIds, r.ProvisionerPolicy.Manual.Assignee.Users.UserIds[userIdsIndex].ValueString())
+					if r.ProvisionPolicy.Manual.Assignee.Users.UserIds != nil {
+						userIds = make([]string, 0, len(r.ProvisionPolicy.Manual.Assignee.Users.UserIds))
+						for userIdsIndex := range r.ProvisionPolicy.Manual.Assignee.Users.UserIds {
+							userIds = append(userIds, r.ProvisionPolicy.Manual.Assignee.Users.UserIds[userIdsIndex].ValueString())
 						}
 					}
 					users = &shared.UserProvisioner{
@@ -1117,16 +1117,16 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 				}
 			}
 			instructions1 := new(string)
-			if !r.ProvisionerPolicy.Manual.Instructions.IsUnknown() && !r.ProvisionerPolicy.Manual.Instructions.IsNull() {
-				*instructions1 = r.ProvisionerPolicy.Manual.Instructions.ValueString()
+			if !r.ProvisionPolicy.Manual.Instructions.IsUnknown() && !r.ProvisionPolicy.Manual.Instructions.IsNull() {
+				*instructions1 = r.ProvisionPolicy.Manual.Instructions.ValueString()
 			} else {
 				instructions1 = nil
 			}
 			var userIds1 []string
-			if r.ProvisionerPolicy.Manual.UserIds != nil {
-				userIds1 = make([]string, 0, len(r.ProvisionerPolicy.Manual.UserIds))
-				for userIdsIndex1 := range r.ProvisionerPolicy.Manual.UserIds {
-					userIds1 = append(userIds1, r.ProvisionerPolicy.Manual.UserIds[userIdsIndex1].ValueString())
+			if r.ProvisionPolicy.Manual.UserIds != nil {
+				userIds1 = make([]string, 0, len(r.ProvisionPolicy.Manual.UserIds))
+				for userIdsIndex1 := range r.ProvisionPolicy.Manual.UserIds {
+					userIds1 = append(userIds1, r.ProvisionPolicy.Manual.UserIds[userIdsIndex1].ValueString())
 				}
 			}
 			manual = &shared.ManualProvision{
@@ -1136,18 +1136,18 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 			}
 		}
 		var multiStep interface{}
-		if !r.ProvisionerPolicy.MultiStep.IsUnknown() && !r.ProvisionerPolicy.MultiStep.IsNull() {
-			_ = json.Unmarshal([]byte(r.ProvisionerPolicy.MultiStep.ValueString()), &multiStep)
+		if !r.ProvisionPolicy.MultiStep.IsUnknown() && !r.ProvisionPolicy.MultiStep.IsNull() {
+			_ = json.Unmarshal([]byte(r.ProvisionPolicy.MultiStep.ValueString()), &multiStep)
 		}
 		var unconfigured *shared.UnconfiguredProvision
-		if r.ProvisionerPolicy.Unconfigured != nil {
+		if r.ProvisionPolicy.Unconfigured != nil {
 			unconfigured = &shared.UnconfiguredProvision{}
 		}
 		var webhook *shared.WebhookProvision
-		if r.ProvisionerPolicy.Webhook != nil {
+		if r.ProvisionPolicy.Webhook != nil {
 			webhookID := new(string)
-			if !r.ProvisionerPolicy.Webhook.WebhookID.IsUnknown() && !r.ProvisionerPolicy.Webhook.WebhookID.IsNull() {
-				*webhookID = r.ProvisionerPolicy.Webhook.WebhookID.ValueString()
+			if !r.ProvisionPolicy.Webhook.WebhookID.IsUnknown() && !r.ProvisionPolicy.Webhook.WebhookID.IsNull() {
+				*webhookID = r.ProvisionPolicy.Webhook.WebhookID.ValueString()
 			} else {
 				webhookID = nil
 			}
@@ -1155,7 +1155,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 				WebhookID: webhookID,
 			}
 		}
-		provisionerPolicy = &shared.ProvisionPolicy{
+		provisionPolicy = &shared.AppEntitlementProvisionPolicy{
 			Action:          action,
 			Connector:       connector,
 			Delegated:       delegated,
@@ -1603,7 +1603,7 @@ func (r *CustomAppEntitlementResourceModel) ToSharedAppEntitlementInput(ctx cont
 		IsManuallyManaged:              isManuallyManaged,
 		MatchBatonID:                   matchBatonID,
 		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
-		ProvisionerPolicy:              provisionerPolicy,
+		ProvisionPolicy:                provisionPolicy,
 		Purpose:                        purpose,
 		RequestSchemaID:                requestSchemaID,
 		RevokePolicyID:                 revokePolicyID,

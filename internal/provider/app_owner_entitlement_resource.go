@@ -475,7 +475,7 @@ func (r *AppOwnerEntitlementResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Description: `Flag to indicate if the app-level access request settings have been overridden for the entitlement`,
 					},
-					"provisioner_policy": schema.SingleNestedAttribute{
+					"provision_policy": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"action": schema.SingleNestedAttribute{
