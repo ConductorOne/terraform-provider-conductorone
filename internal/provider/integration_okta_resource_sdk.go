@@ -91,7 +91,7 @@ func (r *IntegrationOktaResourceModel) populateConfig() map[string]interface{} {
 
 	oktaDomain := new(string)
 	if !r.OktaDomain.IsUnknown() && !r.OktaDomain.IsNull() {
-		*oktaDomain = r.OktaDomain.ValueString()
+		*oktaDomain = normalizeOktaDomain(r.OktaDomain.ValueString())
 		configValues["okta_domain"] = oktaDomain
 	}
 

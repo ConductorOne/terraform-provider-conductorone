@@ -91,7 +91,7 @@ func (r *IntegrationOktaCiamResourceModel) populateConfig() map[string]interface
 
 	oktaCiamDomain := new(string)
 	if !r.OktaCiamDomain.IsUnknown() && !r.OktaCiamDomain.IsNull() {
-		*oktaCiamDomain = r.OktaCiamDomain.ValueString()
+		*oktaCiamDomain = normalizeOktaDomain(r.OktaCiamDomain.ValueString())
 		configValues["okta_ciam_domain"] = oktaCiamDomain
 	}
 

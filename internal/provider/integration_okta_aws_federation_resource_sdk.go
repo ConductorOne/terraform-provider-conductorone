@@ -91,7 +91,7 @@ func (r *IntegrationOktaAwsFederationResourceModel) populateConfig() map[string]
 
 	oktaAwsFederationDomain := new(string)
 	if !r.OktaAwsFederationDomain.IsUnknown() && !r.OktaAwsFederationDomain.IsNull() {
-		*oktaAwsFederationDomain = r.OktaAwsFederationDomain.ValueString()
+		*oktaAwsFederationDomain = normalizeOktaDomain(r.OktaAwsFederationDomain.ValueString())
 		configValues["okta_aws_federation_domain"] = oktaAwsFederationDomain
 	}
 
