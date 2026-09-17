@@ -112,7 +112,7 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 	} else {
 		overrideAccessRequestsDefaults = nil
 	}
-	var provisionPolicy *shared.ProvisionPolicy
+	var provisionPolicy *shared.AppEntitlementProvisionPolicy
 	if r.ProvisionPolicy != nil {
 		var actionProvision *shared.ActionProvision
 		if r.ProvisionPolicy.ActionProvision != nil {
@@ -461,7 +461,7 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 				WebhookID: webhookID,
 			}
 		}
-		provisionPolicy = &shared.ProvisionPolicy{
+		provisionPolicy = &shared.AppEntitlementProvisionPolicy{
 			Action:         actionProvision,
 			Connector:      connectorProvision,
 			Delegated:      delegatedProvision,
@@ -886,7 +886,7 @@ func (r *AppEntitlementResourceModel) ToUpdateSDKType() *shared.AppEntitlementIn
 		IsManuallyManaged:              isManuallyManaged,
 		MatchBatonID:                   matchBatonID,
 		OverrideAccessRequestsDefaults: overrideAccessRequestsDefaults,
-		ProvisionerPolicy:              provisionPolicy,
+		ProvisionPolicy:                provisionPolicy,
 		Purpose:                        purpose,
 		RequestSchemaID:                requestSchemaID,
 		RevokePolicyID:                 revokePolicyID,
@@ -918,7 +918,7 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 		if resp.DeprovisionerPolicy == nil {
 			r.DeprovisionerPolicy = nil
 		} else {
-			r.DeprovisionerPolicy = &tfTypes.AppEntitlementProvisionPolicy{}
+			r.DeprovisionerPolicy = &tfTypes.AppEntitlementResourceProvisionPolicy{}
 			if resp.DeprovisionerPolicy.Action == nil {
 				r.DeprovisionerPolicy.ActionProvision = nil
 			} else {
@@ -1135,177 +1135,177 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 		r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
 		r.OverrideAccessRequestsDefaults = types.BoolPointerValue(resp.OverrideAccessRequestsDefaults)
-		if resp.ProvisionerPolicy == nil {
+		if resp.ProvisionPolicy == nil {
 			r.ProvisionPolicy = nil
 		} else {
-			r.ProvisionPolicy = &tfTypes.AppEntitlementProvisionPolicy{}
-			if resp.ProvisionerPolicy.Action == nil {
+			r.ProvisionPolicy = &tfTypes.AppEntitlementResourceProvisionPolicy{}
+			if resp.ProvisionPolicy.Action == nil {
 				r.ProvisionPolicy.ActionProvision = nil
 			} else {
 				r.ProvisionPolicy.ActionProvision = &tfTypes.ActionProvision{}
-				r.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(resp.ProvisionerPolicy.Action.ActionName)
-				r.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(resp.ProvisionerPolicy.Action.AppID)
-				r.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(resp.ProvisionerPolicy.Action.ConnectorID)
+				r.ProvisionPolicy.ActionProvision.ActionName = types.StringPointerValue(resp.ProvisionPolicy.Action.ActionName)
+				r.ProvisionPolicy.ActionProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.Action.AppID)
+				r.ProvisionPolicy.ActionProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.Action.ConnectorID)
 			}
-			if resp.ProvisionerPolicy.Connector == nil {
+			if resp.ProvisionPolicy.Connector == nil {
 				r.ProvisionPolicy.ConnectorProvision = nil
 			} else {
 				r.ProvisionPolicy.ConnectorProvision = &tfTypes.AppEntitlementConnectorProvision{}
-				if resp.ProvisionerPolicy.Connector.Account == nil {
+				if resp.ProvisionPolicy.Connector.Account == nil {
 					r.ProvisionPolicy.ConnectorProvision.AccountProvision = nil
 				} else {
 					r.ProvisionPolicy.ConnectorProvision.AccountProvision = &tfTypes.AccountProvision{}
-					if resp.ProvisionerPolicy.Connector.Account.Config == nil {
+					if resp.ProvisionPolicy.Connector.Account.Config == nil {
 						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedNull()
 					} else {
-						configResult1, _ := json.Marshal(resp.ProvisionerPolicy.Connector.Account.Config)
+						configResult1, _ := json.Marshal(resp.ProvisionPolicy.Connector.Account.Config)
 						r.ProvisionPolicy.ConnectorProvision.AccountProvision.Config = jsontypes.NewNormalizedValue(string(configResult1))
 					}
-					r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.ProvisionerPolicy.Connector.Account.ConnectorID)
-					if resp.ProvisionerPolicy.Connector.Account.DoNotSave == nil {
+					r.ProvisionPolicy.ConnectorProvision.AccountProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.Connector.Account.ConnectorID)
+					if resp.ProvisionPolicy.Connector.Account.DoNotSave == nil {
 						r.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = nil
 					} else {
 						r.ProvisionPolicy.ConnectorProvision.AccountProvision.DoNotSave = &tfTypes.DoNotSave{}
 					}
-					if resp.ProvisionerPolicy.Connector.Account.SaveToVault == nil {
+					if resp.ProvisionPolicy.Connector.Account.SaveToVault == nil {
 						r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = nil
 					} else {
 						r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault = &tfTypes.SaveToVault{}
-						if resp.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds != nil {
-							r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds))
-							for _, v := range resp.ProvisionerPolicy.Connector.Account.SaveToVault.VaultIds {
+						if resp.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds != nil {
+							r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = make([]types.String, 0, len(resp.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds))
+							for _, v := range resp.ProvisionPolicy.Connector.Account.SaveToVault.VaultIds {
 								r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds = append(r.ProvisionPolicy.ConnectorProvision.AccountProvision.SaveToVault.VaultIds, types.StringValue(v))
 							}
 						}
 					}
-					r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.ProvisionerPolicy.Connector.Account.SchemaID)
+					r.ProvisionPolicy.ConnectorProvision.AccountProvision.SchemaID = types.StringPointerValue(resp.ProvisionPolicy.Connector.Account.SchemaID)
 				}
-				if resp.ProvisionerPolicy.Connector.DefaultBehavior == nil {
+				if resp.ProvisionPolicy.Connector.DefaultBehavior == nil {
 					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior = nil
 				} else {
 					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior = &tfTypes.DefaultBehavior{}
-					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.ProvisionerPolicy.Connector.DefaultBehavior.ConnectorID)
+					r.ProvisionPolicy.ConnectorProvision.DefaultBehavior.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.Connector.DefaultBehavior.ConnectorID)
 				}
-				if resp.ProvisionerPolicy.Connector.DeleteAccount == nil {
+				if resp.ProvisionPolicy.Connector.DeleteAccount == nil {
 					r.ProvisionPolicy.ConnectorProvision.DeleteAccount = nil
 				} else {
 					r.ProvisionPolicy.ConnectorProvision.DeleteAccount = &tfTypes.DeleteAccount{}
-					r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(resp.ProvisionerPolicy.Connector.DeleteAccount.ConnectorID)
+					r.ProvisionPolicy.ConnectorProvision.DeleteAccount.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.Connector.DeleteAccount.ConnectorID)
 				}
 			}
-			if resp.ProvisionerPolicy.Delegated == nil {
+			if resp.ProvisionPolicy.Delegated == nil {
 				r.ProvisionPolicy.DelegatedProvision = nil
 			} else {
 				r.ProvisionPolicy.DelegatedProvision = &tfTypes.DelegatedProvision{}
-				r.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.ProvisionerPolicy.Delegated.AppID)
-				r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.ProvisionerPolicy.Delegated.EntitlementID)
+				r.ProvisionPolicy.DelegatedProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.Delegated.AppID)
+				r.ProvisionPolicy.DelegatedProvision.EntitlementID = types.StringPointerValue(resp.ProvisionPolicy.Delegated.EntitlementID)
 			}
-			if resp.ProvisionerPolicy.ExternalTicket == nil {
+			if resp.ProvisionPolicy.ExternalTicket == nil {
 				r.ProvisionPolicy.ExternalTicketProvision = nil
 			} else {
 				r.ProvisionPolicy.ExternalTicketProvision = &tfTypes.ExternalTicketProvision{}
-				r.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(resp.ProvisionerPolicy.ExternalTicket.AppID)
-				r.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(resp.ProvisionerPolicy.ExternalTicket.ConnectorID)
-				r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.ProvisionerPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
-				r.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(resp.ProvisionerPolicy.ExternalTicket.Instructions)
+				r.ProvisionPolicy.ExternalTicketProvision.AppID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicket.AppID)
+				r.ProvisionPolicy.ExternalTicketProvision.ConnectorID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicket.ConnectorID)
+				r.ProvisionPolicy.ExternalTicketProvision.ExternalTicketProvisionerConfigID = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicket.ExternalTicketProvisionerConfigID)
+				r.ProvisionPolicy.ExternalTicketProvision.Instructions = types.StringPointerValue(resp.ProvisionPolicy.ExternalTicket.Instructions)
 			}
-			if resp.ProvisionerPolicy.Manual == nil {
+			if resp.ProvisionPolicy.Manual == nil {
 				r.ProvisionPolicy.ManualProvision = nil
 			} else {
 				r.ProvisionPolicy.ManualProvision = &tfTypes.AppEntitlementManualProvision{}
-				r.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(resp.ProvisionerPolicy.Manual.Instructions)
-				if resp.ProvisionerPolicy.Manual.Assignee == nil {
+				r.ProvisionPolicy.ManualProvision.Instructions = types.StringPointerValue(resp.ProvisionPolicy.Manual.Instructions)
+				if resp.ProvisionPolicy.Manual.Assignee == nil {
 					r.ProvisionPolicy.ManualProvision.ProvisionerAssignment = nil
 				} else {
 					r.ProvisionPolicy.ManualProvision.ProvisionerAssignment = &tfTypes.AppEntitlementProvisionerAssignment{}
-					if resp.ProvisionerPolicy.Manual.Assignee.AppOwners == nil {
+					if resp.ProvisionPolicy.Manual.Assignee.AppOwners == nil {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = nil
 					} else {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner = &tfTypes.AppOwnerProvisioner{}
-						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.AppOwners.AllowReassignment)
-						if resp.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
-							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
+						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.AppOwners.AllowReassignment)
+						if resp.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds != nil {
+							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.AppOwners.FallbackUserIds {
 								r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = append(r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 							}
 						} else {
 							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.AppOwnerProvisioner.FallbackUserIds = nil
 						}
 					}
-					if resp.ProvisionerPolicy.Manual.Assignee.EntitlementOwners == nil {
+					if resp.ProvisionPolicy.Manual.Assignee.EntitlementOwners == nil {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = nil
 					} else {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner = &tfTypes.EntitlementOwnerProvisioner{}
-						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment)
-						if resp.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
-							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
+						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.EntitlementOwners.AllowReassignment)
+						if resp.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds != nil {
+							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.EntitlementOwners.FallbackUserIds {
 								r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = append(r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds, types.StringValue(v))
 							}
 						} else {
 							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.EntitlementOwnerProvisioner.FallbackUserIds = nil
 						}
 					}
-					if resp.ProvisionerPolicy.Manual.Assignee.Expression == nil {
+					if resp.ProvisionPolicy.Manual.Assignee.Expression == nil {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = nil
 					} else {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner = &tfTypes.ExpressionProvisioner{}
-						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Expression.AllowReassignment)
-						if resp.ProvisionerPolicy.Manual.Assignee.Expression.Expressions != nil {
-							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.Expression.Expressions))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.Expression.Expressions {
+						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.Expression.AllowReassignment)
+						if resp.ProvisionPolicy.Manual.Assignee.Expression.Expressions != nil {
+							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.Expression.Expressions))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.Expression.Expressions {
 								r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = append(r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions, types.StringValue(v))
 							}
 						} else {
 							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.Expressions = nil
 						}
-						if resp.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
-							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.Expression.FallbackUserIds {
+						if resp.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds != nil {
+							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.Expression.FallbackUserIds {
 								r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = append(r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds, types.StringValue(v))
 							}
 						} else {
 							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ExpressionProvisioner.FallbackUserIds = nil
 						}
 					}
-					if resp.ProvisionerPolicy.Manual.Assignee.Group == nil {
+					if resp.ProvisionPolicy.Manual.Assignee.Group == nil {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = nil
 					} else {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner = &tfTypes.GroupProvisioner{}
-						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Group.AllowReassignment)
-						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Group.AppGroupID)
-						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Group.AppID)
-						if resp.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
-							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.Group.FallbackUserIds {
+						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.Group.AllowReassignment)
+						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppGroupID = types.StringPointerValue(resp.ProvisionPolicy.Manual.Assignee.Group.AppGroupID)
+						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.AppID = types.StringPointerValue(resp.ProvisionPolicy.Manual.Assignee.Group.AppID)
+						if resp.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds != nil {
+							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.Group.FallbackUserIds {
 								r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = append(r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds, types.StringValue(v))
 							}
 						} else {
 							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.GroupProvisioner.FallbackUserIds = nil
 						}
 					}
-					if resp.ProvisionerPolicy.Manual.Assignee.Manager == nil {
+					if resp.ProvisionPolicy.Manual.Assignee.Manager == nil {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = nil
 					} else {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner = &tfTypes.ManagerProvisioner{}
-						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Manager.AllowReassignment)
-						if resp.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
-							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.Manager.FallbackUserIds {
+						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.Manager.AllowReassignment)
+						if resp.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds != nil {
+							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.Manager.FallbackUserIds {
 								r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = append(r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds, types.StringValue(v))
 							}
 						} else {
 							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.ManagerProvisioner.FallbackUserIds = nil
 						}
 					}
-					if resp.ProvisionerPolicy.Manual.Assignee.Users == nil {
+					if resp.ProvisionPolicy.Manual.Assignee.Users == nil {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = nil
 					} else {
 						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner = &tfTypes.UserProvisioner{}
-						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionerPolicy.Manual.Assignee.Users.AllowReassignment)
-						if resp.ProvisionerPolicy.Manual.Assignee.Users.UserIds != nil {
-							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.Assignee.Users.UserIds))
-							for _, v := range resp.ProvisionerPolicy.Manual.Assignee.Users.UserIds {
+						r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.AllowReassignment = types.BoolPointerValue(resp.ProvisionPolicy.Manual.Assignee.Users.AllowReassignment)
+						if resp.ProvisionPolicy.Manual.Assignee.Users.UserIds != nil {
+							r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.Assignee.Users.UserIds))
+							for _, v := range resp.ProvisionPolicy.Manual.Assignee.Users.UserIds {
 								r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds = append(r.ProvisionPolicy.ManualProvision.ProvisionerAssignment.UserProvisioner.UserIds, types.StringValue(v))
 							}
 						} else {
@@ -1313,29 +1313,29 @@ func (r *AppEntitlementResourceModel) RefreshFromGetResponse(resp *shared.AppEnt
 						}
 					}
 				}
-				if resp.ProvisionerPolicy.Manual.UserIds != nil {
-					r.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(resp.ProvisionerPolicy.Manual.UserIds))
-					for _, v := range resp.ProvisionerPolicy.Manual.UserIds {
+				if resp.ProvisionPolicy.Manual.UserIds != nil {
+					r.ProvisionPolicy.ManualProvision.UserIds = make([]types.String, 0, len(resp.ProvisionPolicy.Manual.UserIds))
+					for _, v := range resp.ProvisionPolicy.Manual.UserIds {
 						r.ProvisionPolicy.ManualProvision.UserIds = append(r.ProvisionPolicy.ManualProvision.UserIds, types.StringValue(v))
 					}
 				}
 			}
-			if resp.ProvisionerPolicy.MultiStep == nil {
+			if resp.ProvisionPolicy.MultiStep == nil {
 				r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedNull()
 			} else {
-				multiStepResult1, _ := json.Marshal(resp.ProvisionerPolicy.MultiStep)
+				multiStepResult1, _ := json.Marshal(resp.ProvisionPolicy.MultiStep)
 				r.ProvisionPolicy.MultiStep = jsontypes.NewNormalizedValue(string(multiStepResult1))
 			}
-			if resp.ProvisionerPolicy.Unconfigured == nil {
+			if resp.ProvisionPolicy.Unconfigured == nil {
 				r.ProvisionPolicy.UnconfiguredProvision = nil
 			} else {
 				r.ProvisionPolicy.UnconfiguredProvision = &tfTypes.UnconfiguredProvision{}
 			}
-			if resp.ProvisionerPolicy.Webhook == nil {
+			if resp.ProvisionPolicy.Webhook == nil {
 				r.ProvisionPolicy.WebhookProvision = nil
 			} else {
 				r.ProvisionPolicy.WebhookProvision = &tfTypes.WebhookProvision{}
-				r.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(resp.ProvisionerPolicy.Webhook.WebhookID)
+				r.ProvisionPolicy.WebhookProvision.WebhookID = types.StringPointerValue(resp.ProvisionPolicy.Webhook.WebhookID)
 			}
 		}
 		if resp.Purpose != nil {

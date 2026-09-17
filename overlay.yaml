@@ -54,6 +54,14 @@ actions:
         allOf:
           - $ref: '#/components/schemas/c1.api.policy.v1.ProvisionPolicy'
           - x-speakeasy-name-override: deprovisionerPolicy
+  # IGA-4347: AppEntitlement.provisionerPolicy carries the read/update policy,
+  # while CreateAppEntitlementRequestInput.provisionPolicy carries the create
+  # policy. Present both as one Terraform attribute `provision_policy` so a
+  # configured policy reaches create AND update; the JSON wire property name
+  # stays `provisionerPolicy` on the entity.
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["provisionerPolicy"]
+    update:
+      x-speakeasy-name-override: provisionPolicy
   - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["appResourceTypeId"]
     update:
       x-speakeasy-param-force-new: true

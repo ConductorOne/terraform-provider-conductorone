@@ -5,7 +5,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AppEntitlementProvisionPolicy struct {
+type AppEntitlementResourceProvisionPolicy struct {
 	ActionProvision         *ActionProvision                  `tfsdk:"action_provision"`
 	ConnectorProvision      *AppEntitlementConnectorProvision `tfsdk:"connector_provision"`
 	DelegatedProvision      *DelegatedProvision               `tfsdk:"delegated_provision"`
