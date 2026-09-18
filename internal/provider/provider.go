@@ -186,7 +186,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewAccessReviewTemplateSetupResource,
 		NewAppResource,
 		NewAppEntitlementResource,
-		NewMCPServerResource,
+		NewMCPSourceResource,
 		NewAppEntitlementProxyBindingResource,
 		NewAppResourceResource,
 		NewAppResourceTypeResource,
