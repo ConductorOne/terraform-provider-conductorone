@@ -22,18 +22,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-var _ resource.Resource = &MCPServerResource{}
-var _ resource.ResourceWithImportState = &MCPServerResource{}
+var _ resource.Resource = &MCPSourceResource{}
+var _ resource.ResourceWithImportState = &MCPSourceResource{}
 
-func NewMCPServerResource() resource.Resource {
-	return &MCPServerResource{}
+func NewMCPSourceResource() resource.Resource {
+	return &MCPSourceResource{}
 }
 
-type MCPServerResource struct {
+type MCPSourceResource struct {
 	client *sdk.ConductoroneAPI
 }
 
-type MCPServerResourceModel struct {
+type MCPSourceResourceModel struct {
 	AppID               types.String         `tfsdk:"app_id"`
 	ConnectorID         types.String         `tfsdk:"connector_id"`
 	DataSensitivity     types.String         `tfsdk:"data_sensitivity"`
@@ -44,28 +44,28 @@ type MCPServerResourceModel struct {
 	HostedCatalogID     types.String         `tfsdk:"hosted_catalog_id"`
 	HostedConfig        jsontypes.Normalized `tfsdk:"hosted_config"`
 	RequireToolApproval types.Bool           `tfsdk:"require_tool_approval"`
-	ServerType          types.String         `tfsdk:"server_type"`
+	SourceType          types.String         `tfsdk:"source_type"`
 	ToolPrefix          types.String         `tfsdk:"tool_prefix"`
 }
 
-func (r *MCPServerResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mcp_server"
+func (r *MCPSourceResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_mcp_source"
 }
 
-func (r *MCPServerResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *MCPSourceResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "MCP server resource.",
+		MarkdownDescription: "MCP source resource.",
 		Attributes: map[string]schema.Attribute{
 			"app_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-				Description: "ID of the existing app that owns the MCP server.",
+				Description: "ID of the existing app that owns the MCP source.",
 			},
 			"connector_id": schema.StringAttribute{
 				Computed:    true,
-				Description: "Connector ID of the registered MCP server.",
+				Description: "Connector ID of the registered MCP source.",
 			},
 			"data_sensitivity": schema.StringAttribute{
 				Optional: true,
@@ -93,7 +93,7 @@ func (r *MCPServerResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				CustomType:  jsontypes.NormalizedType{},
 				Optional:    true,
 				Sensitive:   true,
-				Description: "JSON configuration for an external server, excluding url. It contains exactly one auth configuration.",
+				Description: "JSON configuration for an external MCP source, excluding url. It contains exactly one auth configuration.",
 			},
 			"external_url": schema.StringAttribute{
 				Optional: true,
@@ -101,7 +101,7 @@ func (r *MCPServerResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: "HTTPS endpoint for an external MCP server. Changing it replaces the server.",
+				Description: "HTTPS endpoint for an external MCP source. Changing it replaces the source.",
 			},
 			"hosted_catalog_id": schema.StringAttribute{
 				Optional: true,
@@ -109,20 +109,20 @@ func (r *MCPServerResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: "Catalog entry ID for a hosted MCP server. Changing it replaces the server.",
+				Description: "Catalog entry ID for a hosted MCP source. Changing it replaces the source.",
 			},
 			"hosted_config": schema.StringAttribute{
 				CustomType:  jsontypes.NormalizedType{},
 				Optional:    true,
 				Sensitive:   true,
-				Description: "JSON configuration for a hosted server, excluding mcpServerCatalogId. It contains exactly one auth configuration.",
+				Description: "JSON configuration for a hosted MCP source, excluding mcpServerCatalogId. It contains exactly one auth configuration.",
 			},
 			"require_tool_approval": schema.BoolAttribute{
 				Optional:    true,
 				Computed:    true,
-				Description: "Whether users must enable server tools. When omitted, the server inherits the tenant setting.",
+				Description: "Whether users must enable source tools. When omitted, the source inherits the tenant setting.",
 			},
-			"server_type": schema.StringAttribute{
+			"source_type": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -130,7 +130,7 @@ func (r *MCPServerResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				Validators: []validator.String{
 					stringvalidator.OneOf("MCP_SERVER_TYPE_HOSTED", "MCP_SERVER_TYPE_EXTERNAL"),
 				},
-				Description: "Whether the server is hosted by C1 or is an external endpoint.",
+				Description: "Whether C1 hosts the source or the source uses an external endpoint.",
 			},
 			"tool_prefix": schema.StringAttribute{
 				Optional:    true,
@@ -141,7 +141,7 @@ func (r *MCPServerResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 	}
 }
 
-func (r *MCPServerResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *MCPSourceResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -155,16 +155,16 @@ func (r *MCPServerResource) Configure(_ context.Context, req resource.ConfigureR
 	r.client = client
 }
 
-func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data MCPServerResourceModel
+func (r *MCPSourceResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data MCPSourceResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	registration, err := buildMCPServerRegistration(&data)
+	registration, err := buildMCPSourceRegistration(&data)
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid MCP server configuration", err.Error())
+		resp.Diagnostics.AddError("Invalid MCP source configuration", err.Error())
 		return
 	}
 
@@ -173,20 +173,20 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		MCPServerServiceRegisterRequest: registration,
 	})
 	if err != nil {
-		resp.Diagnostics.AddError("Failed to register MCP server", err.Error())
+		resp.Diagnostics.AddError("Failed to register MCP source", err.Error())
 		return
 	}
 	if res == nil || res.StatusCode != 200 || res.MCPServerServiceRegisterResponse == nil || res.MCPServerServiceRegisterResponse.McpServer == nil {
-		resp.Diagnostics.AddError("Unexpected MCP server registration response", "The API did not return a registered MCP server.")
+		resp.Diagnostics.AddError("Unexpected MCP source registration response", "The API did not return a registered MCP source.")
 		return
 	}
 
-	applyMCPServerView(&data, res.MCPServerServiceRegisterResponse.McpServer)
+	applyMCPSourceView(&data, res.MCPServerServiceRegisterResponse.McpServer)
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data MCPServerResourceModel
+func (r *MCPSourceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data MCPSourceResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -194,7 +194,7 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 
 	missing, err := r.refresh(ctx, &data)
 	if err != nil {
-		resp.Diagnostics.AddError("Failed to read MCP server", err.Error())
+		resp.Diagnostics.AddError("Failed to read MCP source", err.Error())
 		return
 	}
 	if missing {
@@ -205,18 +205,18 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan MCPServerResourceModel
-	var state MCPServerResourceModel
+func (r *MCPSourceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan MCPSourceResourceModel
+	var state MCPSourceResourceModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	metadata, err := buildMCPServerMetadataUpdate(&plan)
+	metadata, err := buildMCPSourceMetadataUpdate(&plan)
 	if err != nil {
-		resp.Diagnostics.AddError("Invalid MCP server metadata", err.Error())
+		resp.Diagnostics.AddError("Invalid MCP source metadata", err.Error())
 		return
 	}
 	metadataResult, err := r.client.MCPServer.Update(ctx, operations.C1APIAiGovernanceV1MCPServerServiceUpdateRequest{
@@ -225,20 +225,20 @@ func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateReque
 		MCPServerServiceUpdateRequest: metadata,
 	})
 	if err != nil {
-		resp.Diagnostics.AddError("Failed to update MCP server metadata", err.Error())
+		resp.Diagnostics.AddError("Failed to update MCP source metadata", err.Error())
 		return
 	}
 	if metadataResult == nil || metadataResult.StatusCode != 200 || metadataResult.MCPServerServiceUpdateResponse == nil || metadataResult.MCPServerServiceUpdateResponse.McpServer == nil {
-		resp.Diagnostics.AddError("Unexpected MCP server metadata response", "The API did not return an updated MCP server.")
+		resp.Diagnostics.AddError("Unexpected MCP source metadata response", "The API did not return an updated MCP source.")
 		return
 	}
 
-	applyMCPServerView(&plan, metadataResult.MCPServerServiceUpdateResponse.McpServer)
+	applyMCPSourceView(&plan, metadataResult.MCPServerServiceUpdateResponse.McpServer)
 
-	if mcpServerConfigChanged(plan.HostedConfig, state.HostedConfig) || mcpServerConfigChanged(plan.ExternalConfig, state.ExternalConfig) {
-		credentials, err := buildMCPServerCredentialsUpdate(&plan)
+	if mcpSourceConfigChanged(plan.HostedConfig, state.HostedConfig) || mcpSourceConfigChanged(plan.ExternalConfig, state.ExternalConfig) {
+		credentials, err := buildMCPSourceCredentialsUpdate(&plan)
 		if err != nil {
-			resp.Diagnostics.AddError("Invalid MCP server credentials configuration", err.Error())
+			resp.Diagnostics.AddError("Invalid MCP source credentials configuration", err.Error())
 			return
 		}
 		credentialsResult, err := r.client.MCPServer.UpdateCredentials(ctx, operations.C1APIAiGovernanceV1MCPServerServiceUpdateCredentialsRequest{
@@ -247,22 +247,22 @@ func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateReque
 			MCPServerServiceUpdateCredentialsRequest: credentials,
 		})
 		if err != nil {
-			resp.Diagnostics.AddError("Failed to update MCP server credentials", err.Error())
+			resp.Diagnostics.AddError("Failed to update MCP source credentials", err.Error())
 			return
 		}
 		if credentialsResult == nil || credentialsResult.StatusCode != 200 || credentialsResult.MCPServerServiceUpdateCredentialsResponse == nil || credentialsResult.MCPServerServiceUpdateCredentialsResponse.McpServer == nil {
-			resp.Diagnostics.AddError("Unexpected MCP server credentials response", "The API did not return an updated MCP server.")
+			resp.Diagnostics.AddError("Unexpected MCP source credentials response", "The API did not return an updated MCP source.")
 			return
 		}
 
-		applyMCPServerView(&plan, credentialsResult.MCPServerServiceUpdateCredentialsResponse.McpServer)
+		applyMCPSourceView(&plan, credentialsResult.MCPServerServiceUpdateCredentialsResponse.McpServer)
 	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
-func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data MCPServerResourceModel
+func (r *MCPSourceResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data MCPSourceResourceModel
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 	if resp.Diagnostics.HasError() {
 		return
@@ -273,15 +273,15 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 		ConnectorID: data.ConnectorID.ValueString(),
 	})
 	if err != nil {
-		resp.Diagnostics.AddError("Failed to delete MCP server", err.Error())
+		resp.Diagnostics.AddError("Failed to delete MCP source", err.Error())
 		return
 	}
 	if res == nil || (res.StatusCode != 200 && res.StatusCode != 404) {
-		resp.Diagnostics.AddError("Unexpected MCP server deletion response", "The API did not confirm deletion of the MCP server.")
+		resp.Diagnostics.AddError("Unexpected MCP source deletion response", "The API did not confirm deletion of the MCP source.")
 	}
 }
 
-func (r *MCPServerResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *MCPSourceResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	var identity struct {
 		AppID       string `json:"app_id"`
 		ConnectorID string `json:"connector_id"`
@@ -289,18 +289,18 @@ func (r *MCPServerResource) ImportState(ctx context.Context, req resource.Import
 	dec := json.NewDecoder(bytes.NewBufferString(req.ID))
 	dec.DisallowUnknownFields()
 	if err := dec.Decode(&identity); err != nil {
-		resp.Diagnostics.AddError("Invalid MCP server import ID", `The import ID must be a JSON object: {"app_id":"...","connector_id":"..."}.`)
+		resp.Diagnostics.AddError("Invalid MCP source import ID", `The import ID must be a JSON object: {"app_id":"...","connector_id":"..."}.`)
 		return
 	}
 	if identity.AppID == "" || identity.ConnectorID == "" {
-		resp.Diagnostics.AddError("Invalid MCP server import ID", `The import ID must include non-empty "app_id" and "connector_id" fields.`)
+		resp.Diagnostics.AddError("Invalid MCP source import ID", `The import ID must include non-empty "app_id" and "connector_id" fields.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("app_id"), identity.AppID)...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("connector_id"), identity.ConnectorID)...)
 }
 
-func (r *MCPServerResource) refresh(ctx context.Context, data *MCPServerResourceModel) (bool, error) {
+func (r *MCPSourceResource) refresh(ctx context.Context, data *MCPSourceResourceModel) (bool, error) {
 	res, err := r.client.MCPServer.Get(ctx, operations.C1APIAiGovernanceV1MCPServerServiceGetRequest{
 		AppID:       data.AppID.ValueString(),
 		ConnectorID: data.ConnectorID.ValueString(),
@@ -318,20 +318,20 @@ func (r *MCPServerResource) refresh(ctx context.Context, data *MCPServerResource
 		return false, fmt.Errorf("API returned status %d", res.StatusCode)
 	}
 	if res.MCPServerServiceGetResponse == nil || res.MCPServerServiceGetResponse.McpServer == nil {
-		return false, fmt.Errorf("API returned a response without an MCP server")
+		return false, fmt.Errorf("API returned a response without an MCP source")
 	}
 
-	applyMCPServerView(data, res.MCPServerServiceGetResponse.McpServer)
+	applyMCPSourceView(data, res.MCPServerServiceGetResponse.McpServer)
 	return false, nil
 }
 
-func buildMCPServerRegistration(data *MCPServerResourceModel) (*shared.MCPServerServiceRegisterRequest, error) {
-	hosted, external, err := mcpServerConfigs(data)
+func buildMCPSourceRegistration(data *MCPSourceResourceModel) (*shared.MCPServerServiceRegisterRequest, error) {
+	hosted, external, err := mcpSourceConfigs(data)
 	if err != nil {
 		return nil, err
 	}
 
-	serverType := shared.MCPServerServiceRegisterRequestServerType(data.ServerType.ValueString())
+	serverType := shared.MCPServerServiceRegisterRequestServerType(data.SourceType.ValueString())
 	request := &shared.MCPServerServiceRegisterRequest{
 		DisplayName:    data.DisplayName.ValueStringPointer(),
 		ExternalConfig: external,
@@ -351,7 +351,7 @@ func buildMCPServerRegistration(data *MCPServerResourceModel) (*shared.MCPServer
 	return request, nil
 }
 
-func buildMCPServerMetadataUpdate(data *MCPServerResourceModel) (*shared.MCPServerServiceUpdateRequest, error) {
+func buildMCPSourceMetadataUpdate(data *MCPSourceResourceModel) (*shared.MCPServerServiceUpdateRequest, error) {
 	if data.DisplayName.IsNull() || data.DisplayName.IsUnknown() {
 		return nil, fmt.Errorf("display_name is required")
 	}
@@ -383,25 +383,25 @@ func buildMCPServerMetadataUpdate(data *MCPServerResourceModel) (*shared.MCPServ
 	return &shared.MCPServerServiceUpdateRequest{McpServer: mcpServer, UpdateMask: &updateMask}, nil
 }
 
-func buildMCPServerCredentialsUpdate(data *MCPServerResourceModel) (*shared.MCPServerServiceUpdateCredentialsRequest, error) {
-	hosted, external, err := mcpServerConfigs(data)
+func buildMCPSourceCredentialsUpdate(data *MCPSourceResourceModel) (*shared.MCPServerServiceUpdateCredentialsRequest, error) {
+	hosted, external, err := mcpSourceConfigs(data)
 	if err != nil {
 		return nil, err
 	}
 	return &shared.MCPServerServiceUpdateCredentialsRequest{HostedConfig: hosted, ExternalConfig: external}, nil
 }
 
-func mcpServerConfigs(data *MCPServerResourceModel) (*shared.MCPServerHostedConfig, *shared.MCPServerExternalConfig, error) {
-	switch data.ServerType.ValueString() {
+func mcpSourceConfigs(data *MCPSourceResourceModel) (*shared.MCPServerHostedConfig, *shared.MCPServerExternalConfig, error) {
+	switch data.SourceType.ValueString() {
 	case "MCP_SERVER_TYPE_HOSTED":
 		if data.HostedCatalogID.IsNull() || data.HostedCatalogID.IsUnknown() || data.HostedCatalogID.ValueString() == "" {
-			return nil, nil, fmt.Errorf("hosted_catalog_id is required for a hosted MCP server")
+			return nil, nil, fmt.Errorf("hosted_catalog_id is required for a hosted MCP source")
 		}
 		if data.HostedConfig.IsNull() || data.HostedConfig.IsUnknown() {
-			return nil, nil, fmt.Errorf("hosted_config is required for a hosted MCP server")
+			return nil, nil, fmt.Errorf("hosted_config is required for a hosted MCP source")
 		}
 		if (!data.ExternalConfig.IsNull() && !data.ExternalConfig.IsUnknown()) || (!data.ExternalURL.IsNull() && !data.ExternalURL.IsUnknown()) {
-			return nil, nil, fmt.Errorf("external_config and external_url are only valid for an external MCP server")
+			return nil, nil, fmt.Errorf("external_config and external_url are only valid for an external MCP source")
 		}
 		var config shared.MCPServerHostedConfig
 		if err := decodeMCPServerConfig(data.HostedConfig.ValueString(), &config); err != nil {
@@ -424,13 +424,13 @@ func mcpServerConfigs(data *MCPServerResourceModel) (*shared.MCPServerHostedConf
 		return &config, nil, nil
 	case "MCP_SERVER_TYPE_EXTERNAL":
 		if data.ExternalURL.IsNull() || data.ExternalURL.IsUnknown() || data.ExternalURL.ValueString() == "" {
-			return nil, nil, fmt.Errorf("external_url is required for an external MCP server")
+			return nil, nil, fmt.Errorf("external_url is required for an external MCP source")
 		}
 		if data.ExternalConfig.IsNull() || data.ExternalConfig.IsUnknown() {
-			return nil, nil, fmt.Errorf("external_config is required for an external MCP server")
+			return nil, nil, fmt.Errorf("external_config is required for an external MCP source")
 		}
 		if (!data.HostedConfig.IsNull() && !data.HostedConfig.IsUnknown()) || (!data.HostedCatalogID.IsNull() && !data.HostedCatalogID.IsUnknown()) {
-			return nil, nil, fmt.Errorf("hosted_config and hosted_catalog_id are only valid for a hosted MCP server")
+			return nil, nil, fmt.Errorf("hosted_config and hosted_catalog_id are only valid for a hosted MCP source")
 		}
 		var config shared.MCPServerExternalConfig
 		if err := decodeMCPServerConfig(data.ExternalConfig.ValueString(), &config); err != nil {
@@ -452,7 +452,7 @@ func mcpServerConfigs(data *MCPServerResourceModel) (*shared.MCPServerHostedConf
 		}
 		return nil, &config, nil
 	default:
-		return nil, nil, fmt.Errorf("server_type must be MCP_SERVER_TYPE_HOSTED or MCP_SERVER_TYPE_EXTERNAL")
+		return nil, nil, fmt.Errorf("source_type must be MCP_SERVER_TYPE_HOSTED or MCP_SERVER_TYPE_EXTERNAL")
 	}
 }
 
@@ -475,7 +475,7 @@ func decodeMCPServerConfig(input string, destination any) error {
 	return nil
 }
 
-func mcpServerConfigChanged(plan, state jsontypes.Normalized) bool {
+func mcpSourceConfigChanged(plan, state jsontypes.Normalized) bool {
 	if plan.IsNull() != state.IsNull() {
 		return true
 	}
@@ -485,7 +485,7 @@ func mcpServerConfigChanged(plan, state jsontypes.Normalized) bool {
 	return plan.ValueString() != state.ValueString()
 }
 
-func applyMCPServerView(data *MCPServerResourceModel, view *shared.MCPServerView) {
+func applyMCPSourceView(data *MCPSourceResourceModel, view *shared.MCPServerView) {
 	if view.AppID != nil {
 		data.AppID = types.StringPointerValue(view.AppID)
 	}
@@ -508,7 +508,7 @@ func applyMCPServerView(data *MCPServerResourceModel, view *shared.MCPServerView
 		data.HostedCatalogID = types.StringPointerValue(view.McpServerCatalogID)
 	}
 	if view.ServerType != nil {
-		data.ServerType = types.StringValue(string(*view.ServerType))
+		data.SourceType = types.StringValue(string(*view.ServerType))
 	}
 	if view.ToolPrefix != nil {
 		data.ToolPrefix = types.StringPointerValue(view.ToolPrefix)
