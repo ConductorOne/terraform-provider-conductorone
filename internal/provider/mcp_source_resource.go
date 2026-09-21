@@ -455,13 +455,13 @@ func mcpSourceConfigs(data *MCPSourceResourceModel) (*shared.MCPServerHostedConf
 		}
 		return nil, &config, nil
 	default:
-		return nil, nil, fmt.Errorf("source_type must be CATALOG or EXTERNAL")
+		return nil, nil, fmt.Errorf("source_type must be MCP_SERVER_TYPE_CATALOG or MCP_SERVER_TYPE_EXTERNAL")
 	}
 }
 
 const (
-	mcpSourceTypeCatalog  = "CATALOG"
-	mcpSourceTypeExternal = "EXTERNAL"
+	mcpSourceTypeCatalog  = "MCP_SERVER_TYPE_CATALOG"
+	mcpSourceTypeExternal = "MCP_SERVER_TYPE_EXTERNAL"
 )
 
 func mcpServerType(sourceType string) (shared.MCPServerServiceRegisterRequestServerType, error) {
@@ -471,7 +471,7 @@ func mcpServerType(sourceType string) (shared.MCPServerServiceRegisterRequestSer
 	case mcpSourceTypeExternal:
 		return shared.MCPServerServiceRegisterRequestServerTypeMcpServerTypeExternal, nil
 	default:
-		return "", fmt.Errorf("source_type must be CATALOG or EXTERNAL")
+		return "", fmt.Errorf("source_type must be MCP_SERVER_TYPE_CATALOG or MCP_SERVER_TYPE_EXTERNAL")
 	}
 }
 
