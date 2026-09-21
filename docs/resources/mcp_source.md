@@ -20,7 +20,7 @@ resource "conductorone_mcp_source" "catalog" {
   display_name = "...my_catalog_source_name..."
   source_type  = "MCP_SERVER_TYPE_CATALOG"
 
-  hosted_config = jsonencode({
+  catalog_config = jsonencode({
     none = {}
   })
 }
@@ -48,12 +48,12 @@ resource "conductorone_mcp_source" "external" {
 
 ### Optional
 
+- `catalog_config` (String, Sensitive) JSON configuration for a catalog MCP source, excluding mcpServerCatalogId. It contains exactly one auth configuration.
 - `catalog_id` (String) Catalog entry ID for a catalog MCP source. Changing it replaces the source.
 - `data_sensitivity` (String) Data sensitivity classification.
 - `description` (String) Admin-provided description.
 - `external_config` (String, Sensitive) JSON configuration for an external MCP source, excluding url. It contains exactly one auth configuration.
 - `external_url` (String) HTTPS endpoint for an external MCP source. Changing it replaces the source.
-- `hosted_config` (String, Sensitive) JSON configuration for a catalog MCP source, excluding mcpServerCatalogId. It contains exactly one auth configuration.
 - `require_tool_approval` (Boolean) Whether users must enable source tools. When omitted, the source inherits the tenant setting.
 - `tool_prefix` (String) Optional prefix for tool names exposed by C1.
 

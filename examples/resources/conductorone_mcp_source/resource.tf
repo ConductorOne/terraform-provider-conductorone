@@ -4,7 +4,7 @@ resource "conductorone_mcp_source" "catalog" {
   display_name = "...my_catalog_source_name..."
   source_type  = "MCP_SERVER_TYPE_CATALOG"
 
-  hosted_config = jsonencode({
+  catalog_config = jsonencode({
     none = {}
   })
 }

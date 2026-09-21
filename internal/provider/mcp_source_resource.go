@@ -42,7 +42,7 @@ type MCPSourceResourceModel struct {
 	ExternalConfig      jsontypes.Normalized `tfsdk:"external_config"`
 	ExternalURL         types.String         `tfsdk:"external_url"`
 	CatalogID           types.String         `tfsdk:"catalog_id"`
-	HostedConfig        jsontypes.Normalized `tfsdk:"hosted_config"`
+	CatalogConfig       jsontypes.Normalized `tfsdk:"catalog_config"`
 	RequireToolApproval types.Bool           `tfsdk:"require_tool_approval"`
 	SourceType          types.String         `tfsdk:"source_type"`
 	ToolPrefix          types.String         `tfsdk:"tool_prefix"`
@@ -111,7 +111,7 @@ func (r *MCPSourceResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				},
 				Description: "Catalog entry ID for a catalog MCP source. Changing it replaces the source.",
 			},
-			"hosted_config": schema.StringAttribute{
+			"catalog_config": schema.StringAttribute{
 				CustomType:  jsontypes.NormalizedType{},
 				Optional:    true,
 				Sensitive:   true,
@@ -235,7 +235,7 @@ func (r *MCPSourceResource) Update(ctx context.Context, req resource.UpdateReque
 
 	applyMCPSourceView(&plan, metadataResult.MCPServerServiceUpdateResponse.McpServer)
 
-	if mcpSourceConfigChanged(plan.HostedConfig, state.HostedConfig) || mcpSourceConfigChanged(plan.ExternalConfig, state.ExternalConfig) {
+	if mcpSourceConfigChanged(plan.CatalogConfig, state.CatalogConfig) || mcpSourceConfigChanged(plan.ExternalConfig, state.ExternalConfig) {
 		credentials, err := buildMCPSourceCredentialsUpdate(&plan)
 		if err != nil {
 			resp.Diagnostics.AddError("Invalid MCP source credentials configuration", err.Error())
@@ -400,21 +400,21 @@ func mcpSourceConfigs(data *MCPSourceResourceModel) (*shared.MCPServerHostedConf
 		if data.CatalogID.IsNull() || data.CatalogID.IsUnknown() || data.CatalogID.ValueString() == "" {
 			return nil, nil, fmt.Errorf("catalog_id is required for a catalog MCP source")
 		}
-		if data.HostedConfig.IsNull() || data.HostedConfig.IsUnknown() {
-			return nil, nil, fmt.Errorf("hosted_config is required for a catalog MCP source")
+		if data.CatalogConfig.IsNull() || data.CatalogConfig.IsUnknown() {
+			return nil, nil, fmt.Errorf("catalog_config is required for a catalog MCP source")
 		}
 		if (!data.ExternalConfig.IsNull() && !data.ExternalConfig.IsUnknown()) || (!data.ExternalURL.IsNull() && !data.ExternalURL.IsUnknown()) {
 			return nil, nil, fmt.Errorf("external_config and external_url are only valid for an external MCP source")
 		}
 		var config shared.MCPServerHostedConfig
-		if err := decodeMCPServerConfig(data.HostedConfig.ValueString(), &config); err != nil {
-			return nil, nil, fmt.Errorf("invalid hosted_config: %w", err)
+		if err := decodeMCPServerConfig(data.CatalogConfig.ValueString(), &config); err != nil {
+			return nil, nil, fmt.Errorf("invalid catalog_config: %w", err)
 		}
 		if config.McpServerCatalogID != nil {
-			return nil, nil, fmt.Errorf("hosted_config must not set mcpServerCatalogId; use catalog_id")
+			return nil, nil, fmt.Errorf("catalog_config must not set mcpServerCatalogId; use catalog_id")
 		}
 		if config.RequireToolApproval != nil {
-			return nil, nil, fmt.Errorf("hosted_config must not set requireToolApproval; use require_tool_approval")
+			return nil, nil, fmt.Errorf("catalog_config must not set requireToolApproval; use require_tool_approval")
 		}
 		config.McpServerCatalogID = data.CatalogID.ValueStringPointer()
 		if !data.RequireToolApproval.IsNull() && !data.RequireToolApproval.IsUnknown() {
@@ -432,8 +432,8 @@ func mcpSourceConfigs(data *MCPSourceResourceModel) (*shared.MCPServerHostedConf
 		if data.ExternalConfig.IsNull() || data.ExternalConfig.IsUnknown() {
 			return nil, nil, fmt.Errorf("external_config is required for an external MCP source")
 		}
-		if (!data.HostedConfig.IsNull() && !data.HostedConfig.IsUnknown()) || (!data.CatalogID.IsNull() && !data.CatalogID.IsUnknown()) {
-			return nil, nil, fmt.Errorf("hosted_config and catalog_id are only valid for a catalog MCP source")
+		if (!data.CatalogConfig.IsNull() && !data.CatalogConfig.IsUnknown()) || (!data.CatalogID.IsNull() && !data.CatalogID.IsUnknown()) {
+			return nil, nil, fmt.Errorf("catalog_config and catalog_id are only valid for a catalog MCP source")
 		}
 		var config shared.MCPServerExternalConfig
 		if err := decodeMCPServerConfig(data.ExternalConfig.ValueString(), &config); err != nil {
