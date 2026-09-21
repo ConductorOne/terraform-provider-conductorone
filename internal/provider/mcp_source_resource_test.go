@@ -223,7 +223,7 @@ resource "conductorone_mcp_source" "test" {
   display_name          = "Terraform MCP source"
   description           = "Terraform-managed external MCP source"
   external_config       = jsonencode({ none = {} })
-  source_type           = "EXTERNAL"
+  source_type           = "MCP_SERVER_TYPE_EXTERNAL"
   external_url          = "https://example.com/mcp"
   tool_prefix           = "terraform"
   require_tool_approval = true
@@ -250,7 +250,7 @@ resource "conductorone_mcp_source" "test" {
   display_name          = "Terraform MCP source updated"
   description           = "Updated Terraform-managed external MCP source"
   external_config       = jsonencode({ none = {} })
-  source_type           = "EXTERNAL"
+  source_type           = "MCP_SERVER_TYPE_EXTERNAL"
   external_url          = "https://example.com/mcp"
   tool_prefix           = "terraform-updated"
   require_tool_approval = false
