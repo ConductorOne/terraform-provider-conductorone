@@ -4,23 +4,24 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestBuildMCPSourceRegistrationHosted(t *testing.T) {
+func TestBuildMCPSourceRegistrationCatalog(t *testing.T) {
 	data := MCPSourceResourceModel{
 		AppID:               types.StringValue("app-id"),
 		DataSensitivity:     types.StringUnknown(),
 		Description:         types.StringUnknown(),
 		DisplayName:         types.StringValue("GitHub MCP"),
-		HostedCatalogID:     types.StringValue("catalog-id"),
+		CatalogID:           types.StringValue("catalog-id"),
 		HostedConfig:        jsontypes.NewNormalizedValue(`{"none":{}}`),
 		ExternalConfig:      jsontypes.NewNormalizedNull(),
 		ExternalURL:         types.StringUnknown(),
 		RequireToolApproval: types.BoolValue(true),
-		SourceType:          types.StringValue("MCP_SERVER_TYPE_HOSTED"),
+		SourceType:          types.StringValue(mcpSourceTypeCatalog),
 		ToolPrefix:          types.StringUnknown(),
 	}
 
@@ -29,10 +30,10 @@ func TestBuildMCPSourceRegistrationHosted(t *testing.T) {
 		t.Fatalf("buildMCPSourceRegistration() error = %v", err)
 	}
 	if request.ServerType == nil || string(*request.ServerType) != "MCP_SERVER_TYPE_HOSTED" {
-		t.Fatalf("source type = %v, want hosted", request.ServerType)
+		t.Fatalf("server type = %v, want hosted API server type", request.ServerType)
 	}
 	if request.HostedConfig == nil || request.HostedConfig.McpServerCatalogID == nil || *request.HostedConfig.McpServerCatalogID != "catalog-id" {
-		t.Fatalf("hosted catalog ID = %#v, want catalog-id", request.HostedConfig)
+		t.Fatalf("catalog ID = %#v, want catalog-id", request.HostedConfig)
 	}
 	if request.HostedConfig.None == nil {
 		t.Fatal("hosted auth config was not decoded")
@@ -52,12 +53,12 @@ func TestBuildMCPSourceRegistrationExternal(t *testing.T) {
 	data := MCPSourceResourceModel{
 		AppID:               types.StringValue("app-id"),
 		DisplayName:         types.StringValue("Partner MCP"),
-		HostedCatalogID:     types.StringUnknown(),
+		CatalogID:           types.StringUnknown(),
 		HostedConfig:        jsontypes.NewNormalizedNull(),
-		ExternalConfig:      jsontypes.NewNormalizedValue(`{"none":{},"transportType":"MCP_SERVER_TRANSPORT_TYPE_SSE"}`),
+		ExternalConfig:      jsontypes.NewNormalizedValue(`{"none":{}}`),
 		ExternalURL:         types.StringValue("https://mcp.example.com/sse"),
 		RequireToolApproval: types.BoolValue(true),
-		SourceType:          types.StringValue("MCP_SERVER_TYPE_EXTERNAL"),
+		SourceType:          types.StringValue(mcpSourceTypeExternal),
 	}
 
 	request, err := buildMCPSourceRegistration(&data)
@@ -78,15 +79,46 @@ func TestBuildMCPSourceRegistrationExternal(t *testing.T) {
 	}
 }
 
+func TestApplyMCPSourceViewMapsServerTypesToSourceTypes(t *testing.T) {
+	catalogServerType := shared.ServerTypeMcpServerTypeHosted
+	externalServerType := shared.ServerTypeMcpServerTypeExternal
+	catalogID := "catalog-id"
+
+	testCases := []struct {
+		name       string
+		serverType *shared.ServerType
+		want       string
+	}{
+		{name: "catalog", serverType: &catalogServerType, want: mcpSourceTypeCatalog},
+		{name: "external", serverType: &externalServerType, want: mcpSourceTypeExternal},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			data := MCPSourceResourceModel{}
+			applyMCPSourceView(&data, &shared.MCPServerView{
+				McpServerCatalogID: &catalogID,
+				ServerType:         testCase.serverType,
+			})
+			if data.SourceType.ValueString() != testCase.want {
+				t.Fatalf("source type = %q, want %q", data.SourceType.ValueString(), testCase.want)
+			}
+			if data.CatalogID.ValueString() != catalogID {
+				t.Fatalf("catalog ID = %q, want %q", data.CatalogID.ValueString(), catalogID)
+			}
+		})
+	}
+}
+
 func TestBuildMCPSourceRegistrationRejectsConfigurationOwnedByRootAttribute(t *testing.T) {
 	data := MCPSourceResourceModel{
-		AppID:           types.StringValue("app-id"),
-		DisplayName:     types.StringValue("Partner MCP"),
-		HostedCatalogID: types.StringNull(),
-		HostedConfig:    jsontypes.NewNormalizedNull(),
-		ExternalConfig:  jsontypes.NewNormalizedValue(`{"none":{},"url":"https://mcp.example.com/sse"}`),
-		ExternalURL:     types.StringValue("https://mcp.example.com/sse"),
-		SourceType:      types.StringValue("MCP_SERVER_TYPE_EXTERNAL"),
+		AppID:          types.StringValue("app-id"),
+		DisplayName:    types.StringValue("Partner MCP"),
+		CatalogID:      types.StringNull(),
+		HostedConfig:   jsontypes.NewNormalizedNull(),
+		ExternalConfig: jsontypes.NewNormalizedValue(`{"none":{},"url":"https://mcp.example.com/sse"}`),
+		ExternalURL:    types.StringValue("https://mcp.example.com/sse"),
+		SourceType:     types.StringValue(mcpSourceTypeExternal),
 	}
 
 	_, err := buildMCPSourceRegistration(&data)
@@ -97,13 +129,13 @@ func TestBuildMCPSourceRegistrationRejectsConfigurationOwnedByRootAttribute(t *t
 
 func TestBuildMCPSourceRegistrationRejectsToolEnablementInConfiguration(t *testing.T) {
 	data := MCPSourceResourceModel{
-		AppID:           types.StringValue("app-id"),
-		DisplayName:     types.StringValue("Partner MCP"),
-		HostedCatalogID: types.StringNull(),
-		HostedConfig:    jsontypes.NewNormalizedNull(),
-		ExternalConfig:  jsontypes.NewNormalizedValue(`{"none":{},"requireToolApproval":"OPTIONAL_BOOL_TRUE"}`),
-		ExternalURL:     types.StringValue("https://mcp.example.com/sse"),
-		SourceType:      types.StringValue("MCP_SERVER_TYPE_EXTERNAL"),
+		AppID:          types.StringValue("app-id"),
+		DisplayName:    types.StringValue("Partner MCP"),
+		CatalogID:      types.StringNull(),
+		HostedConfig:   jsontypes.NewNormalizedNull(),
+		ExternalConfig: jsontypes.NewNormalizedValue(`{"none":{},"requireToolApproval":"OPTIONAL_BOOL_TRUE"}`),
+		ExternalURL:    types.StringValue("https://mcp.example.com/sse"),
+		SourceType:     types.StringValue(mcpSourceTypeExternal),
 	}
 
 	_, err := buildMCPSourceRegistration(&data)
@@ -116,12 +148,12 @@ func TestBuildMCPSourceRegistrationOmitsInheritedToolEnablement(t *testing.T) {
 	data := MCPSourceResourceModel{
 		AppID:               types.StringValue("app-id"),
 		DisplayName:         types.StringValue("Partner MCP"),
-		HostedCatalogID:     types.StringUnknown(),
+		CatalogID:           types.StringUnknown(),
 		HostedConfig:        jsontypes.NewNormalizedNull(),
 		ExternalConfig:      jsontypes.NewNormalizedValue(`{"none":{}}`),
 		ExternalURL:         types.StringValue("https://mcp.example.com/sse"),
 		RequireToolApproval: types.BoolNull(),
-		SourceType:          types.StringValue("MCP_SERVER_TYPE_EXTERNAL"),
+		SourceType:          types.StringValue(mcpSourceTypeExternal),
 	}
 
 	request, err := buildMCPSourceRegistration(&data)
@@ -190,8 +222,8 @@ resource "conductorone_mcp_source" "test" {
   app_id                = conductorone_app.mcp.id
   display_name          = "Terraform MCP source"
   description           = "Terraform-managed external MCP source"
-  external_config       = jsonencode({ none = {}, transportType = "MCP_SERVER_TRANSPORT_TYPE_SSE" })
-  source_type           = "MCP_SERVER_TYPE_EXTERNAL"
+  external_config       = jsonencode({ none = {} })
+  source_type           = "EXTERNAL"
   external_url          = "https://example.com/mcp"
   tool_prefix           = "terraform"
   require_tool_approval = true
@@ -217,8 +249,8 @@ resource "conductorone_mcp_source" "test" {
   app_id                = conductorone_app.mcp.id
   display_name          = "Terraform MCP source updated"
   description           = "Updated Terraform-managed external MCP source"
-  external_config       = jsonencode({ none = {}, transportType = "MCP_SERVER_TRANSPORT_TYPE_SSE" })
-  source_type           = "MCP_SERVER_TYPE_EXTERNAL"
+  external_config       = jsonencode({ none = {} })
+  source_type           = "EXTERNAL"
   external_url          = "https://example.com/mcp"
   tool_prefix           = "terraform-updated"
   require_tool_approval = false

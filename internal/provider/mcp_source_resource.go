@@ -41,7 +41,7 @@ type MCPSourceResourceModel struct {
 	DisplayName         types.String         `tfsdk:"display_name"`
 	ExternalConfig      jsontypes.Normalized `tfsdk:"external_config"`
 	ExternalURL         types.String         `tfsdk:"external_url"`
-	HostedCatalogID     types.String         `tfsdk:"hosted_catalog_id"`
+	CatalogID           types.String         `tfsdk:"catalog_id"`
 	HostedConfig        jsontypes.Normalized `tfsdk:"hosted_config"`
 	RequireToolApproval types.Bool           `tfsdk:"require_tool_approval"`
 	SourceType          types.String         `tfsdk:"source_type"`
@@ -103,19 +103,19 @@ func (r *MCPSourceResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				},
 				Description: "HTTPS endpoint for an external MCP source. Changing it replaces the source.",
 			},
-			"hosted_catalog_id": schema.StringAttribute{
+			"catalog_id": schema.StringAttribute{
 				Optional: true,
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: "Catalog entry ID for a hosted MCP source. Changing it replaces the source.",
+				Description: "Catalog entry ID for a catalog MCP source. Changing it replaces the source.",
 			},
 			"hosted_config": schema.StringAttribute{
 				CustomType:  jsontypes.NormalizedType{},
 				Optional:    true,
 				Sensitive:   true,
-				Description: "JSON configuration for a hosted MCP source, excluding mcpServerCatalogId. It contains exactly one auth configuration.",
+				Description: "JSON configuration for a catalog MCP source, excluding mcpServerCatalogId. It contains exactly one auth configuration.",
 			},
 			"require_tool_approval": schema.BoolAttribute{
 				Optional:    true,
@@ -128,9 +128,9 @@ func (r *MCPSourceResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 					stringplanmodifier.RequiresReplace(),
 				},
 				Validators: []validator.String{
-					stringvalidator.OneOf("MCP_SERVER_TYPE_HOSTED", "MCP_SERVER_TYPE_EXTERNAL"),
+					stringvalidator.OneOf(mcpSourceTypeCatalog, mcpSourceTypeExternal),
 				},
-				Description: "Whether C1 hosts the source or the source uses an external endpoint.",
+				Description: "Whether the source uses a catalog entry or an external endpoint.",
 			},
 			"tool_prefix": schema.StringAttribute{
 				Optional:    true,
@@ -326,12 +326,15 @@ func (r *MCPSourceResource) refresh(ctx context.Context, data *MCPSourceResource
 }
 
 func buildMCPSourceRegistration(data *MCPSourceResourceModel) (*shared.MCPServerServiceRegisterRequest, error) {
+	serverType, err := mcpServerType(data.SourceType.ValueString())
+	if err != nil {
+		return nil, err
+	}
 	hosted, external, err := mcpSourceConfigs(data)
 	if err != nil {
 		return nil, err
 	}
 
-	serverType := shared.MCPServerServiceRegisterRequestServerType(data.SourceType.ValueString())
 	request := &shared.MCPServerServiceRegisterRequest{
 		DisplayName:    data.DisplayName.ValueStringPointer(),
 		ExternalConfig: external,
@@ -393,12 +396,12 @@ func buildMCPSourceCredentialsUpdate(data *MCPSourceResourceModel) (*shared.MCPS
 
 func mcpSourceConfigs(data *MCPSourceResourceModel) (*shared.MCPServerHostedConfig, *shared.MCPServerExternalConfig, error) {
 	switch data.SourceType.ValueString() {
-	case "MCP_SERVER_TYPE_HOSTED":
-		if data.HostedCatalogID.IsNull() || data.HostedCatalogID.IsUnknown() || data.HostedCatalogID.ValueString() == "" {
-			return nil, nil, fmt.Errorf("hosted_catalog_id is required for a hosted MCP source")
+	case mcpSourceTypeCatalog:
+		if data.CatalogID.IsNull() || data.CatalogID.IsUnknown() || data.CatalogID.ValueString() == "" {
+			return nil, nil, fmt.Errorf("catalog_id is required for a catalog MCP source")
 		}
 		if data.HostedConfig.IsNull() || data.HostedConfig.IsUnknown() {
-			return nil, nil, fmt.Errorf("hosted_config is required for a hosted MCP source")
+			return nil, nil, fmt.Errorf("hosted_config is required for a catalog MCP source")
 		}
 		if (!data.ExternalConfig.IsNull() && !data.ExternalConfig.IsUnknown()) || (!data.ExternalURL.IsNull() && !data.ExternalURL.IsUnknown()) {
 			return nil, nil, fmt.Errorf("external_config and external_url are only valid for an external MCP source")
@@ -408,12 +411,12 @@ func mcpSourceConfigs(data *MCPSourceResourceModel) (*shared.MCPServerHostedConf
 			return nil, nil, fmt.Errorf("invalid hosted_config: %w", err)
 		}
 		if config.McpServerCatalogID != nil {
-			return nil, nil, fmt.Errorf("hosted_config must not set mcpServerCatalogId; use hosted_catalog_id")
+			return nil, nil, fmt.Errorf("hosted_config must not set mcpServerCatalogId; use catalog_id")
 		}
 		if config.RequireToolApproval != nil {
 			return nil, nil, fmt.Errorf("hosted_config must not set requireToolApproval; use require_tool_approval")
 		}
-		config.McpServerCatalogID = data.HostedCatalogID.ValueStringPointer()
+		config.McpServerCatalogID = data.CatalogID.ValueStringPointer()
 		if !data.RequireToolApproval.IsNull() && !data.RequireToolApproval.IsUnknown() {
 			value := shared.MCPServerHostedConfigRequireToolApprovalOptionalBoolFalse
 			if data.RequireToolApproval.ValueBool() {
@@ -422,15 +425,15 @@ func mcpSourceConfigs(data *MCPSourceResourceModel) (*shared.MCPServerHostedConf
 			config.RequireToolApproval = &value
 		}
 		return &config, nil, nil
-	case "MCP_SERVER_TYPE_EXTERNAL":
+	case mcpSourceTypeExternal:
 		if data.ExternalURL.IsNull() || data.ExternalURL.IsUnknown() || data.ExternalURL.ValueString() == "" {
 			return nil, nil, fmt.Errorf("external_url is required for an external MCP source")
 		}
 		if data.ExternalConfig.IsNull() || data.ExternalConfig.IsUnknown() {
 			return nil, nil, fmt.Errorf("external_config is required for an external MCP source")
 		}
-		if (!data.HostedConfig.IsNull() && !data.HostedConfig.IsUnknown()) || (!data.HostedCatalogID.IsNull() && !data.HostedCatalogID.IsUnknown()) {
-			return nil, nil, fmt.Errorf("hosted_config and hosted_catalog_id are only valid for a hosted MCP source")
+		if (!data.HostedConfig.IsNull() && !data.HostedConfig.IsUnknown()) || (!data.CatalogID.IsNull() && !data.CatalogID.IsUnknown()) {
+			return nil, nil, fmt.Errorf("hosted_config and catalog_id are only valid for a catalog MCP source")
 		}
 		var config shared.MCPServerExternalConfig
 		if err := decodeMCPServerConfig(data.ExternalConfig.ValueString(), &config); err != nil {
@@ -452,7 +455,34 @@ func mcpSourceConfigs(data *MCPSourceResourceModel) (*shared.MCPServerHostedConf
 		}
 		return nil, &config, nil
 	default:
-		return nil, nil, fmt.Errorf("source_type must be MCP_SERVER_TYPE_HOSTED or MCP_SERVER_TYPE_EXTERNAL")
+		return nil, nil, fmt.Errorf("source_type must be CATALOG or EXTERNAL")
+	}
+}
+
+const (
+	mcpSourceTypeCatalog  = "CATALOG"
+	mcpSourceTypeExternal = "EXTERNAL"
+)
+
+func mcpServerType(sourceType string) (shared.MCPServerServiceRegisterRequestServerType, error) {
+	switch sourceType {
+	case mcpSourceTypeCatalog:
+		return shared.MCPServerServiceRegisterRequestServerTypeMcpServerTypeHosted, nil
+	case mcpSourceTypeExternal:
+		return shared.MCPServerServiceRegisterRequestServerTypeMcpServerTypeExternal, nil
+	default:
+		return "", fmt.Errorf("source_type must be CATALOG or EXTERNAL")
+	}
+}
+
+func sourceType(serverType shared.ServerType) (string, bool) {
+	switch serverType {
+	case shared.ServerTypeMcpServerTypeHosted:
+		return mcpSourceTypeCatalog, true
+	case shared.ServerTypeMcpServerTypeExternal:
+		return mcpSourceTypeExternal, true
+	default:
+		return "", false
 	}
 }
 
@@ -505,10 +535,12 @@ func applyMCPSourceView(data *MCPSourceResourceModel, view *shared.MCPServerView
 		data.ExternalURL = types.StringPointerValue(view.EndpointURL)
 	}
 	if view.McpServerCatalogID != nil {
-		data.HostedCatalogID = types.StringPointerValue(view.McpServerCatalogID)
+		data.CatalogID = types.StringPointerValue(view.McpServerCatalogID)
 	}
 	if view.ServerType != nil {
-		data.SourceType = types.StringValue(string(*view.ServerType))
+		if sourceType, ok := sourceType(*view.ServerType); ok {
+			data.SourceType = types.StringValue(sourceType)
+		}
 	}
 	if view.ToolPrefix != nil {
 		data.ToolPrefix = types.StringPointerValue(view.ToolPrefix)
