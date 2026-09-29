@@ -1,0 +1,67 @@
+Subject: [PATCH] Match the protected entitlement data source search model
+
+The singular data source retains its manually maintained search schema in .genignore.
+Keep its generated converter limited to fields that schema exposes; the plural
+data source exposes the additional filters from the current API.
+
+--- a/internal/provider/app_entitlement_data_source_sdk.go
++++ b/internal/provider/app_entitlement_data_source_sdk.go
+@@ -620,28 +620,6 @@
+ 			appIds = append(appIds, r.AppIds[appIdsIndex].ValueString())
+ 		}
+ 	}
+-	var appResourceTypeRefs []shared.ResourceTypeRef
+-	if r.AppResourceTypeRefs != nil {
+-		appResourceTypeRefs = make([]shared.ResourceTypeRef, 0, len(r.AppResourceTypeRefs))
+-		for appResourceTypeRefsIndex := range r.AppResourceTypeRefs {
+-			appID := new(string)
+-			if !r.AppResourceTypeRefs[appResourceTypeRefsIndex].AppID.IsUnknown() && !r.AppResourceTypeRefs[appResourceTypeRefsIndex].AppID.IsNull() {
+-				*appID = r.AppResourceTypeRefs[appResourceTypeRefsIndex].AppID.ValueString()
+-			} else {
+-				appID = nil
+-			}
+-			id := new(string)
+-			if !r.AppResourceTypeRefs[appResourceTypeRefsIndex].ID.IsUnknown() && !r.AppResourceTypeRefs[appResourceTypeRefsIndex].ID.IsNull() {
+-				*id = r.AppResourceTypeRefs[appResourceTypeRefsIndex].ID.ValueString()
+-			} else {
+-				id = nil
+-			}
+-			appResourceTypeRefs = append(appResourceTypeRefs, shared.ResourceTypeRef{
+-				AppID: appID,
+-				ID:    id,
+-			})
+-		}
+-	}
+ 	var appUserIds []string
+ 	if r.AppUserIds != nil {
+ 		appUserIds = make([]string, 0, len(r.AppUserIds))
+@@ -736,13 +714,6 @@
+ 	} else {
+ 		onlyGetExpiring = nil
+ 	}
+-	var ownerUserIds []string
+-	if r.OwnerUserIds != nil {
+-		ownerUserIds = make([]string, 0, len(r.OwnerUserIds))
+-		for ownerUserIdsIndex := range r.OwnerUserIds {
+-			ownerUserIds = append(ownerUserIds, r.OwnerUserIds[ownerUserIdsIndex].ValueString())
+-		}
+-	}
+ 	pageSize := new(int)
+ 	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
+ 		*pageSize = int(r.PageSize.ValueInt32())
+@@ -837,7 +808,6 @@
+ 		AccessReviewID:          accessReviewID,
+ 		Alias:                   alias,
+ 		AppIds:                  appIds,
+-		AppResourceTypeRefs:     appResourceTypeRefs,
+ 		AppUserIds:              appUserIds,
+ 		ComplianceFrameworkIds:  complianceFrameworkIds,
+ 		DisplayName:             displayName,
+@@ -850,7 +820,6 @@
+ 		IsAutomated:             isAutomated,
+ 		MembershipType:          membershipType,
+ 		OnlyGetExpiring:         onlyGetExpiring,
+-		OwnerUserIds:            ownerUserIds,
+ 		PageSize:                pageSize,
+ 		PolicyRefs:              policyRefs,
+ 		Query:                   query,
