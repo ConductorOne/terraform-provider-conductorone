@@ -14,6 +14,8 @@ import (
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
@@ -135,6 +137,79 @@ func mcpRecoveryModel(description, bearerToken string) MCPServerResourceModel {
 	}
 
 	return model
+}
+
+func TestMCPServerImportedEndpointAdoptsOriginalConfig(t *testing.T) {
+	ctx := context.Background()
+	server := httptest.NewServer(http.NotFoundHandler())
+	t.Cleanup(server.Close)
+	_, schemaResp := mcpRecoveryResource(t, server)
+	const endpoint = "https://fixture.example/mcp"
+
+	imported := mcpRecoveryModel("imported", "")
+	imported.EndpointURL = types.StringValue(endpoint)
+	imported.AuthMethod = types.StringValue("MCP_SERVER_AUTH_METHOD_BEARER_TOKEN")
+	state := mcpRecoveryState(t, ctx, schemaResp, &imported)
+
+	desired := mcpRecoveryModel("imported", "asserted-secret")
+	desired.ExternalConfig.URL = types.StringValue(endpoint)
+	plan := tfsdk.Plan{Schema: schemaResp.Schema}
+	if diags := plan.Set(ctx, &desired); diags.HasError() {
+		t.Fatal(diags)
+	}
+
+	modifier := mcpServerURLRequiresReplace()
+	response := &planmodifier.StringResponse{}
+	modifier.PlanModifyString(ctx, planmodifier.StringRequest{
+		State: state, Plan: plan, ConfigValue: types.StringValue(endpoint),
+		StateValue: types.StringNull(), PlanValue: types.StringValue(endpoint),
+	}, response)
+	if response.Diagnostics.HasError() || response.RequiresReplace {
+		t.Fatalf("matching imported URL requested replacement: %+v", response)
+	}
+
+	changed, diags := mcpServerCredentialsChanged(ctx, resource.UpdateRequest{State: state, Plan: plan})
+	if diags.HasError() || changed {
+		t.Fatalf("import adoption would replay unreadable credentials: changed=%t, diagnostics=%v", changed, diags)
+	}
+
+	response = &planmodifier.StringResponse{}
+	modifier.PlanModifyString(ctx, planmodifier.StringRequest{
+		State: state, Plan: plan, ConfigValue: types.StringValue("https://fixture.example/other"),
+		StateValue: types.StringNull(), PlanValue: types.StringValue("https://fixture.example/other"),
+	}, response)
+	if response.Diagnostics.HasError() || !response.RequiresReplace {
+		t.Fatalf("changed imported URL failed to request replacement: %+v", response)
+	}
+}
+
+func TestMCPServerOwningAppChangeRequiresReplacement(t *testing.T) {
+	ctx := context.Background()
+	server := httptest.NewServer(http.NotFoundHandler())
+	t.Cleanup(server.Close)
+	_, schemaResp := mcpRecoveryResource(t, server)
+	attribute, ok := schemaResp.Schema.Attributes["app_id"].(schema.StringAttribute)
+	if !ok || len(attribute.PlanModifiers) != 1 {
+		t.Fatal("app_id requires one replacement plan modifier")
+	}
+
+	before := mcpRecoveryModel("existing", "")
+	state := mcpRecoveryState(t, ctx, schemaResp, &before)
+	updated := before
+	updated.AppID = types.StringValue("different-app")
+	plan := tfsdk.Plan{Schema: schemaResp.Schema}
+	if diags := plan.Set(ctx, &updated); diags.HasError() {
+		t.Fatal(diags)
+	}
+
+	response := &planmodifier.StringResponse{}
+	attribute.PlanModifiers[0].PlanModifyString(ctx, planmodifier.StringRequest{
+		State: state, Plan: plan, ConfigValue: updated.AppID,
+		StateValue: before.AppID, PlanValue: updated.AppID,
+	}, response)
+	if response.Diagnostics.HasError() || !response.RequiresReplace {
+		t.Fatalf("app_id change failed to request replacement: %+v", response)
+	}
 }
 
 func TestMCPServerImportMetadataUpdateDoesNotRewriteCredentials(t *testing.T) {

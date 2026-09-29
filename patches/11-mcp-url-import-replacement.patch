@@ -1,0 +1,18 @@
+Subject: [PATCH] Preserve imported MCP endpoint identity
+
+The API exposes the endpoint URL after import even though sealed external
+configuration is absent from Terraform state. Use that readable endpoint to
+avoid replacing the same server when the original HCL is restored.
+
+diff --git a/internal/provider/mcp_server_resource.go b/internal/provider/mcp_server_resource.go
+--- a/internal/provider/mcp_server_resource.go
++++ b/internal/provider/mcp_server_resource.go
+@@ -464,7 +464,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
+ 					"url": schema.StringAttribute{
+ 						Optional: true,
+ 						PlanModifiers: []planmodifier.String{
+-							stringplanmodifier.RequiresReplaceIfConfigured(),
++							mcpServerURLRequiresReplace(),
+ 						},
+ 						Description: `The HTTP endpoint URL of the external MCP server (HTTPS required). Requires replacement if changed.`,
+ 					},

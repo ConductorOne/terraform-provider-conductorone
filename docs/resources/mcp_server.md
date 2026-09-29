@@ -162,7 +162,7 @@ resource "conductorone_mcp_server" "my_mcp_server" {
 
 ### Required
 
-- `app_id` (String) App identifier that owns this MCP server.
+- `app_id` (String) App identifier that owns this MCP server. Requires replacement if changed.
 
 ### Optional
 

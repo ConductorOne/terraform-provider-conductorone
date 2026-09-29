@@ -31,6 +31,19 @@ func mcpServerCredentialsChanged(ctx context.Context, req resource.UpdateRequest
 		return false, diags
 	}
 
+	if stateExternal == nil && planExternal != nil && stateHosted == nil && planHosted == nil {
+		var endpointURL, authMethod types.String
+		diags.Append(req.State.GetAttribute(ctx, path.Root("endpoint_url"), &endpointURL)...)
+		diags.Append(req.State.GetAttribute(ctx, path.Root("auth_method"), &authMethod)...)
+		if diags.HasError() {
+			return false, diags
+		}
+		if !endpointURL.IsNull() && !endpointURL.IsUnknown() && !planExternal.URL.IsNull() && !planExternal.URL.IsUnknown() &&
+			endpointURL.Equal(planExternal.URL) && mcpServerExternalAuthMatches(planExternal, authMethod) {
+			return false, diags
+		}
+	}
+
 	equal := reflect.DeepEqual(
 		mcpServerExternalConfigWithoutApproval(stateExternal),
 		mcpServerExternalConfigWithoutApproval(planExternal),
@@ -39,6 +52,27 @@ func mcpServerCredentialsChanged(ctx context.Context, req resource.UpdateRequest
 		mcpServerHostedConfigWithoutApproval(planHosted),
 	)
 	return !equal, diags
+}
+
+func mcpServerExternalAuthMatches(config *tfTypes.MCPServerExternalConfig, authMethod types.String) bool {
+	if config == nil || authMethod.IsNull() || authMethod.IsUnknown() {
+		return false
+	}
+	method := authMethod.ValueString()
+	switch {
+	case config.None != nil:
+		return method == "MCP_SERVER_AUTH_METHOD_NONE"
+	case config.BearerToken != nil:
+		return method == "MCP_SERVER_AUTH_METHOD_BEARER_TOKEN"
+	case config.BasicAuth != nil:
+		return method == "MCP_SERVER_AUTH_METHOD_BASIC_AUTH"
+	case config.CustomHeader != nil:
+		return method == "MCP_SERVER_AUTH_METHOD_CUSTOM_HEADER"
+	case config.Oauth2 != nil:
+		return method == "MCP_SERVER_AUTH_METHOD_OAUTH2"
+	default:
+		return false
+	}
 }
 
 func mcpServerExternalConfigWithoutApproval(config *tfTypes.MCPServerExternalConfig) *tfTypes.MCPServerExternalConfig {

@@ -148,7 +148,10 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 			},
 			"app_id": schema.StringAttribute{
 				Required:    true,
-				Description: `App identifier that owns this MCP server.`,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Description: `App identifier that owns this MCP server. Requires replacement if changed.`,
 			},
 			"app_managed_state_binding_ref": schema.SingleNestedAttribute{
 				Optional: true,
@@ -465,7 +468,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					"url": schema.StringAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							mcpServerURLRequiresReplace(),
 						},
 						Description: `The HTTP endpoint URL of the external MCP server (HTTPS required). Requires replacement if changed.`,
 					},

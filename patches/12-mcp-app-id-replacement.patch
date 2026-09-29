@@ -1,0 +1,18 @@
+Subject: [PATCH] Replace MCP server when owning app changes
+
+The API identifies an MCP server by its owning app and connector. Changing
+app_id must create a new server under the selected app.
+
+diff --git a/internal/provider/mcp_server_resource.go b/internal/provider/mcp_server_resource.go
+--- a/internal/provider/mcp_server_resource.go
++++ b/internal/provider/mcp_server_resource.go
+@@ -148,5 +148,8 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
+ 			},
+ 			"app_id": schema.StringAttribute{
+ 				Required:    true,
+-				Description: `App identifier that owns this MCP server.`,
++				PlanModifiers: []planmodifier.String{
++					stringplanmodifier.RequiresReplace(),
++				},
++				Description: `App identifier that owns this MCP server. Requires replacement if changed.`,
+ 			},
