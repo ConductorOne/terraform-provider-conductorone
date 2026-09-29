@@ -43,6 +43,9 @@ const (
 	FindingTypesFindingTypeDecoyPubliclyExposed              FindingTypes = "FINDING_TYPE_DECOY_PUBLICLY_EXPOSED"
 	FindingTypesFindingTypeCredentialExpiring                FindingTypes = "FINDING_TYPE_CREDENTIAL_EXPIRING"
 	FindingTypesFindingTypeConnectorSyncFailing              FindingTypes = "FINDING_TYPE_CONNECTOR_SYNC_FAILING"
+	FindingTypesFindingTypeShadowMcp                         FindingTypes = "FINDING_TYPE_SHADOW_MCP"
+	FindingTypesFindingTypeShadowApp                         FindingTypes = "FINDING_TYPE_SHADOW_APP"
+	FindingTypesFindingTypeMcpGatewayToolCallRisk            FindingTypes = "FINDING_TYPE_MCP_GATEWAY_TOOL_CALL_RISK"
 )
 
 func (e FindingTypes) ToPointer() *FindingTypes {
@@ -53,7 +56,7 @@ func (e FindingTypes) ToPointer() *FindingTypes {
 func (e *FindingTypes) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "FINDING_TYPE_UNSPECIFIED", "FINDING_TYPE_SIMILAR_USERNAME_MATCH", "FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION", "FINDING_TYPE_NHI_UNOWNED", "FINDING_TYPE_SERVICE_ACCOUNT_UNOWNED", "FINDING_TYPE_DECOY_CREDENTIAL_USED", "FINDING_TYPE_CUSTOM", "FINDING_TYPE_CONNECTOR_ANOMALY_DETECTION_DISABLED", "FINDING_TYPE_DEACTIVATED_OWNER", "FINDING_TYPE_UNUSED_SECRET", "FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED", "FINDING_TYPE_DECOY_PUBLICLY_EXPOSED", "FINDING_TYPE_CREDENTIAL_EXPIRING", "FINDING_TYPE_CONNECTOR_SYNC_FAILING":
+		case "FINDING_TYPE_UNSPECIFIED", "FINDING_TYPE_SIMILAR_USERNAME_MATCH", "FINDING_TYPE_SERVICE_ACCOUNT_MISCLASSIFICATION", "FINDING_TYPE_NHI_UNOWNED", "FINDING_TYPE_SERVICE_ACCOUNT_UNOWNED", "FINDING_TYPE_DECOY_CREDENTIAL_USED", "FINDING_TYPE_CUSTOM", "FINDING_TYPE_CONNECTOR_ANOMALY_DETECTION_DISABLED", "FINDING_TYPE_DEACTIVATED_OWNER", "FINDING_TYPE_UNUSED_SECRET", "FINDING_TYPE_CREDENTIAL_PUBLICLY_EXPOSED", "FINDING_TYPE_DECOY_PUBLICLY_EXPOSED", "FINDING_TYPE_CREDENTIAL_EXPIRING", "FINDING_TYPE_CONNECTOR_SYNC_FAILING", "FINDING_TYPE_SHADOW_MCP", "FINDING_TYPE_SHADOW_APP", "FINDING_TYPE_MCP_GATEWAY_TOOL_CALL_RISK":
 			return true
 		}
 	}
@@ -182,6 +185,11 @@ type FindingSearchRequest struct {
 	// Filter to findings whose target is an app user of these types (OR within
 	//  field). Empty = not applied.
 	AppUserTypes []FindingSearchRequestAppUserTypes `json:"appUserTypes,omitempty"`
+	// Filter by assignee identity-user IDs (OR within field). Matches findings
+	//  whose assignee_identity_user_id is in this list. The reserved
+	//  "unassigned" sentinel token selects findings with no assignee; real
+	//  identity-user IDs are exactly 27 alphanumerics so the token cannot collide.
+	AssigneeIdentityUserIds []string `json:"assigneeIdentityUserIds,omitempty"`
 	// Filter by connector IDs (OR within field). Matches findings whose
 	//  target.connector_target.connector_id is in this list.
 	ConnectorIds []string `json:"connectorIds,omitempty"`
@@ -193,19 +201,17 @@ type FindingSearchRequest struct {
 	DecoyIds []string `json:"decoyIds,omitempty"`
 	// Filter by finding type (OR within field).
 	FindingTypes []FindingTypes `json:"findingTypes,omitempty"`
-	// When true, includes findings with no effective identity-user owner. An
-	//  explicit predicate for direct API callers who prefer a bool over the
-	//  "unassigned" sentinel in owner_identity_user_ids; both signals are accepted.
+	// When true, includes findings with no assignee. An explicit predicate for
+	//  direct API callers who prefer a bool over the "unassigned" sentinel in
+	//  assignee_identity_user_ids; both signals are accepted.
 	IncludeUnassigned *bool `json:"includeUnassigned,omitempty"`
 	// Filter to findings whose target resource's nhi_type is one of these (OR
 	//  within field). Empty = not applied; pass all NhiType values to match any
 	//  nhi resource.
 	NhiTypes []NhiTypes `json:"nhiTypes,omitempty"`
-	// Filter by effective owner identity-user IDs (OR within field). Matches
-	//  findings whose effective owner (assigned_owner if set, else computed_owner)
-	//  resolves to an identity user in this list. The reserved "unassigned"
-	//  sentinel token selects findings with no effective identity-user owner; real
-	//  identity-user IDs are exactly 27 alphanumerics so the token cannot collide.
+	// Deprecated: use assignee_identity_user_ids instead.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	OwnerIdentityUserIds []string `json:"ownerIdentityUserIds,omitempty"`
 	// Maximum number of findings to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
@@ -270,6 +276,13 @@ func (f *FindingSearchRequest) GetAppUserTypes() []FindingSearchRequestAppUserTy
 		return nil
 	}
 	return f.AppUserTypes
+}
+
+func (f *FindingSearchRequest) GetAssigneeIdentityUserIds() []string {
+	if f == nil {
+		return nil
+	}
+	return f.AssigneeIdentityUserIds
 }
 
 func (f *FindingSearchRequest) GetConnectorIds() []string {

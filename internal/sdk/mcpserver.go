@@ -31,7 +31,7 @@ func newMCPServer(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, h
 }
 
 // List
-// List retrieves MCP servers for an app.
+// List retrieves MCP servers, optionally narrowed to an app.
 func (s *MCPServer) List(ctx context.Context, request operations.C1APIAiGovernanceV1MCPServerServiceListRequest, opts ...operations.Option) (*operations.C1APIAiGovernanceV1MCPServerServiceListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -432,6 +432,8 @@ func (s *MCPServer) Delete(ctx context.Context, request operations.C1APIAiGovern
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -562,6 +564,8 @@ func (s *MCPServer) Get(ctx context.Context, request operations.C1APIAiGovernanc
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {
@@ -849,12 +853,13 @@ func (s *MCPServer) UpdateCredentials(ctx context.Context, request operations.C1
 }
 
 // ResyncTools - Resync Tools
-// ResyncTools re-runs per-identity tool discovery for the calling user's
+// ResyncTools requests tool discovery for an external MCP server using the
 //
-//	own credential on a per-user MCP server, so a session opened before the
-//	user connected (or after their visible tools changed) doesn't have to
-//	wait for the next unrelated MCPTool/AppEntitlementUserBinding change to
-//	pick it up.
+//	caller's own credential for per-user servers, or the configured shared
+//	credential for callers with MCP management permission for the app.
+//	Requires external MCP discovery decoupling to be enabled for the tenant.
+//	Discovery runs asynchronously; accepting this request does not mean that
+//	tools have finished loading or grant the caller access to execute them.
 func (s *MCPServer) ResyncTools(ctx context.Context, request operations.C1APIAiGovernanceV1MCPServerServiceResyncToolsRequest, opts ...operations.Option) (*operations.C1APIAiGovernanceV1MCPServerServiceResyncToolsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

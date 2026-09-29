@@ -2,18 +2,24 @@
 
 package shared
 
-// ProgramRef points at a pinned, executable program.
+// ProgramRef identifies a report's own copy of an executable program.
 type ProgramRef struct {
-	// Code mode invokes by explicit commit, so the commit — not the function — is
-	//  what a refresh re-executes.
+	// The commitId field.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	CommitID *string `json:"commitId,omitempty"`
-	// A saved report owns its Function, so this is per-report rather than the
-	//  shared code-mode scratch function the program first ran on.
+	// Deprecated tombstones. Source-owned reports never populate Function or
+	//  commit identity; these declarations remain only because c1api forbids
+	//  deleting published fields.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	FunctionID *string `json:"functionId,omitempty"`
 	// The prompt this program was planned from. Report.prompt is editable and a
 	//  refresh never re-plans, so this is the only way to detect that a report's
 	//  question has drifted from the program answering it.
 	PlannedFromPrompt *string `json:"plannedFromPrompt,omitempty"`
+	// Identifies this durable source version. Minted for each save.
+	ProgramID *string `json:"programId,omitempty"`
 }
 
 func (p *ProgramRef) GetCommitID() *string {
@@ -35,4 +41,11 @@ func (p *ProgramRef) GetPlannedFromPrompt() *string {
 		return nil
 	}
 	return p.PlannedFromPrompt
+}
+
+func (p *ProgramRef) GetProgramID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ProgramID
 }

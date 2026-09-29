@@ -142,11 +142,11 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 			appUserIds = append(appUserIds, r.AppUserIds[appUserIdsIndex].ValueString())
 		}
 	}
-	var credentialTypes []shared.CredentialTypes
+	var credentialTypes []shared.SearchAppResourcesRequestCredentialTypes
 	if r.CredentialTypes != nil {
-		credentialTypes = make([]shared.CredentialTypes, 0, len(r.CredentialTypes))
+		credentialTypes = make([]shared.SearchAppResourcesRequestCredentialTypes, 0, len(r.CredentialTypes))
 		for _, credentialTypesItem := range r.CredentialTypes {
-			credentialTypes = append(credentialTypes, shared.CredentialTypes(credentialTypesItem.ValueString()))
+			credentialTypes = append(credentialTypes, shared.SearchAppResourcesRequestCredentialTypes(credentialTypesItem.ValueString()))
 		}
 	}
 	direction := new(shared.Direction)

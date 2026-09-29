@@ -57,6 +57,7 @@ const (
 	AppUserStatusesAppUserStatusEnabled     AppUserStatuses = "APP_USER_STATUS_ENABLED"
 	AppUserStatusesAppUserStatusDisabled    AppUserStatuses = "APP_USER_STATUS_DISABLED"
 	AppUserStatusesAppUserStatusDeleted     AppUserStatuses = "APP_USER_STATUS_DELETED"
+	AppUserStatusesAppUserStatusPending     AppUserStatuses = "APP_USER_STATUS_PENDING"
 )
 
 func (e AppUserStatuses) ToPointer() *AppUserStatuses {
@@ -67,7 +68,7 @@ func (e AppUserStatuses) ToPointer() *AppUserStatuses {
 func (e *AppUserStatuses) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "APP_USER_STATUS_UNSPECIFIED", "APP_USER_STATUS_ENABLED", "APP_USER_STATUS_DISABLED", "APP_USER_STATUS_DELETED":
+		case "APP_USER_STATUS_UNSPECIFIED", "APP_USER_STATUS_ENABLED", "APP_USER_STATUS_DISABLED", "APP_USER_STATUS_DELETED", "APP_USER_STATUS_PENDING":
 			return true
 		}
 	}

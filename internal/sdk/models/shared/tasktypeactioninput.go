@@ -8,11 +8,13 @@ package shared
 //   - scopeRole
 //   - toolCall
 //   - finding
+//   - credentialIssue
 type TaskTypeActionInput struct {
-	ActionInstance *TaskActionInstanceInput  `json:"actionInstance,omitempty"`
-	Finding        *FindingTargetInput       `json:"finding,omitempty"`
-	ScopeRole      *ScopeRoleInput           `json:"scopeRole,omitempty"`
-	ToolCall       *GatedToolCallTargetInput `json:"toolCall,omitempty"`
+	ActionInstance  *TaskActionInstanceInput    `json:"actionInstance,omitempty"`
+	CredentialIssue *CredentialIssueTargetInput `json:"credentialIssue,omitempty"`
+	Finding         *FindingTargetInput         `json:"finding,omitempty"`
+	ScopeRole       *ScopeRoleInput             `json:"scopeRole,omitempty"`
+	ToolCall        *GatedToolCallTargetInput   `json:"toolCall,omitempty"`
 }
 
 func (t *TaskTypeActionInput) GetActionInstance() *TaskActionInstanceInput {
@@ -20,6 +22,13 @@ func (t *TaskTypeActionInput) GetActionInstance() *TaskActionInstanceInput {
 		return nil
 	}
 	return t.ActionInstance
+}
+
+func (t *TaskTypeActionInput) GetCredentialIssue() *CredentialIssueTargetInput {
+	if t == nil {
+		return nil
+	}
+	return t.CredentialIssue
 }
 
 func (t *TaskTypeActionInput) GetFinding() *FindingTargetInput {

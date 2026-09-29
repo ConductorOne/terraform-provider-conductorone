@@ -4,6 +4,7 @@ package shared
 
 // The CreateAccessProfileFromCohortRequest message.
 type CreateAccessProfileFromCohortRequest struct {
+	AccessScope *AccessScope `json:"accessScope,omitempty"`
 	// Optional CEL expression for dynamic membership. When non-empty, used
 	//  instead of auto-generating from profile_filters.
 	CelExpression *string `json:"celExpression,omitempty"`
@@ -22,6 +23,13 @@ type CreateAccessProfileFromCohortRequest struct {
 	ProfileFilters []ProfileFilter `json:"profileFilters,omitempty"`
 	// Optional suggestion ID to mark as accepted after creating the profile.
 	SuggestionID *string `json:"suggestionId,omitempty"`
+}
+
+func (c *CreateAccessProfileFromCohortRequest) GetAccessScope() *AccessScope {
+	if c == nil {
+		return nil
+	}
+	return c.AccessScope
 }
 
 func (c *CreateAccessProfileFromCohortRequest) GetCelExpression() *string {

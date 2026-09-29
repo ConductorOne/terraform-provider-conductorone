@@ -8,6 +8,10 @@ type SearchCohortUsersResponse struct {
 	List []User `json:"list,omitempty"`
 	// Token to retrieve the next page of results, empty if no more results.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
+	// Best-effort current number of enabled users matching the cohort filters.
+	//  Directory updates may race the paged search. Present on the first page
+	//  only so subsequent pages do not repeat the count query.
+	TotalCount *string `json:"totalCount,omitempty"`
 	// Deprecated. This endpoint no longer computes per-user coverage; this
 	//  list is always empty.
 	//
@@ -27,6 +31,13 @@ func (s *SearchCohortUsersResponse) GetNextPageToken() *string {
 		return nil
 	}
 	return s.NextPageToken
+}
+
+func (s *SearchCohortUsersResponse) GetTotalCount() *string {
+	if s == nil {
+		return nil
+	}
+	return s.TotalCount
 }
 
 func (s *SearchCohortUsersResponse) GetUsersWithCoverage() []CohortUserWithCoverage {

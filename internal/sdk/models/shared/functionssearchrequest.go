@@ -8,6 +8,7 @@ const (
 	FunctionTypesFunctionTypeUnspecified FunctionTypes = "FUNCTION_TYPE_UNSPECIFIED"
 	FunctionTypesFunctionTypeAny         FunctionTypes = "FUNCTION_TYPE_ANY"
 	FunctionTypesFunctionTypeCodeMode    FunctionTypes = "FUNCTION_TYPE_CODE_MODE"
+	FunctionTypesFunctionTypeConnector   FunctionTypes = "FUNCTION_TYPE_CONNECTOR"
 )
 
 func (e FunctionTypes) ToPointer() *FunctionTypes {
@@ -18,7 +19,7 @@ func (e FunctionTypes) ToPointer() *FunctionTypes {
 func (e *FunctionTypes) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE":
+		case "FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE", "FUNCTION_TYPE_CONNECTOR":
 			return true
 		}
 	}
@@ -34,7 +35,8 @@ type FunctionsSearchRequest struct {
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
 	// The query field.
-	Query *string `json:"query,omitempty"`
+	Query       *string      `json:"query,omitempty"`
+	SortOptions *SortOptions `json:"sortOptions,omitempty"`
 }
 
 func (f *FunctionsSearchRequest) GetFunctionTypes() []FunctionTypes {
@@ -63,4 +65,11 @@ func (f *FunctionsSearchRequest) GetQuery() *string {
 		return nil
 	}
 	return f.Query
+}
+
+func (f *FunctionsSearchRequest) GetSortOptions() *SortOptions {
+	if f == nil {
+		return nil
+	}
+	return f.SortOptions
 }

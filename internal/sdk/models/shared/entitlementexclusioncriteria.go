@@ -8,8 +8,18 @@ type EntitlementExclusionCriteria struct {
 	ExcludedAppIds []string `json:"excludedAppIds,omitempty"`
 	// The excludedComplianceFrameworkIds field.
 	ExcludedComplianceFrameworkIds []string `json:"excludedComplianceFrameworkIds,omitempty"`
-	// The excludedResourceTypeIds field.
+	// Deprecated: matched by resource type display name, which collides across
+	//  apps/connectors. Not read by execution — replaced by
+	//  excluded_resource_type_refs. Kept only for wire compatibility with
+	//  existing stored rows; a criteria still carrying this without a ref
+	//  degrades to excluding the entire named app(s) rather than failing closed,
+	//  since the exclusion side warns instead of aborting the run.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ExcludedResourceTypeIds []string `json:"excludedResourceTypeIds,omitempty"`
+	// The only field that scopes resource types; excluded_resource_type_ids is
+	//  deprecated and ignored.
+	ExcludedResourceTypeRefs []ResourceTypeRef `json:"excludedResourceTypeRefs,omitempty"`
 	// The excludedRiskLevelIds field.
 	ExcludedRiskLevelIds []string `json:"excludedRiskLevelIds,omitempty"`
 }
@@ -33,6 +43,13 @@ func (e *EntitlementExclusionCriteria) GetExcludedResourceTypeIds() []string {
 		return nil
 	}
 	return e.ExcludedResourceTypeIds
+}
+
+func (e *EntitlementExclusionCriteria) GetExcludedResourceTypeRefs() []ResourceTypeRef {
+	if e == nil {
+		return nil
+	}
+	return e.ExcludedResourceTypeRefs
 }
 
 func (e *EntitlementExclusionCriteria) GetExcludedRiskLevelIds() []string {

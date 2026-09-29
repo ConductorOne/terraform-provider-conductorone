@@ -32,12 +32,39 @@ func (e *CustomAnalysisResultViewStatus) IsExact() bool {
 	return false
 }
 
+// TerminalReason - Structured terminal reason, unspecified for legacy results.
+type TerminalReason string
+
+const (
+	TerminalReasonCustomAnalysisTerminalReasonUnspecified TerminalReason = "CUSTOM_ANALYSIS_TERMINAL_REASON_UNSPECIFIED"
+	TerminalReasonCustomAnalysisTerminalReasonError       TerminalReason = "CUSTOM_ANALYSIS_TERMINAL_REASON_ERROR"
+	TerminalReasonCustomAnalysisTerminalReasonSuperseded  TerminalReason = "CUSTOM_ANALYSIS_TERMINAL_REASON_SUPERSEDED"
+)
+
+func (e TerminalReason) ToPointer() *TerminalReason {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TerminalReason) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CUSTOM_ANALYSIS_TERMINAL_REASON_UNSPECIFIED", "CUSTOM_ANALYSIS_TERMINAL_REASON_ERROR", "CUSTOM_ANALYSIS_TERMINAL_REASON_SUPERSEDED":
+			return true
+		}
+	}
+	return false
+}
+
 // CustomAnalysisResultView is a lightweight summary of a past custom analysis run.
 type CustomAnalysisResultView struct {
+	AccessScope *AccessScope `json:"accessScope,omitempty"`
 	// Number of users in the cohort.
 	CohortSize  *int       `json:"cohortSize,omitempty"`
 	CompletedAt *time.Time `json:"completedAt,omitempty"`
 	CreatedAt   *time.Time `json:"createdAt,omitempty"`
+	// User who created this analysis, empty for legacy results.
+	CreatedByUserID *string `json:"createdByUserId,omitempty"`
 	// Error message if the analysis failed, empty on success.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 	// Unique identifier for this custom analysis result.
@@ -48,6 +75,10 @@ type CustomAnalysisResultView struct {
 	Status *CustomAnalysisResultViewStatus `json:"status,omitempty"`
 	// Number of role suggestions generated.
 	SuggestionsGenerated *int `json:"suggestionsGenerated,omitempty"`
+	// Newer result that superseded this analysis, when applicable.
+	SupersededByResultID *string `json:"supersededByResultId,omitempty"`
+	// Structured terminal reason, unspecified for legacy results.
+	TerminalReason *TerminalReason `json:"terminalReason,omitempty"`
 }
 
 func (c CustomAnalysisResultView) MarshalJSON() ([]byte, error) {
@@ -59,6 +90,13 @@ func (c *CustomAnalysisResultView) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (c *CustomAnalysisResultView) GetAccessScope() *AccessScope {
+	if c == nil {
+		return nil
+	}
+	return c.AccessScope
 }
 
 func (c *CustomAnalysisResultView) GetCohortSize() *int {
@@ -80,6 +118,13 @@ func (c *CustomAnalysisResultView) GetCreatedAt() *time.Time {
 		return nil
 	}
 	return c.CreatedAt
+}
+
+func (c *CustomAnalysisResultView) GetCreatedByUserID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CreatedByUserID
 }
 
 func (c *CustomAnalysisResultView) GetErrorMessage() *string {
@@ -115,4 +160,18 @@ func (c *CustomAnalysisResultView) GetSuggestionsGenerated() *int {
 		return nil
 	}
 	return c.SuggestionsGenerated
+}
+
+func (c *CustomAnalysisResultView) GetSupersededByResultID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SupersededByResultID
+}
+
+func (c *CustomAnalysisResultView) GetTerminalReason() *TerminalReason {
+	if c == nil {
+		return nil
+	}
+	return c.TerminalReason
 }

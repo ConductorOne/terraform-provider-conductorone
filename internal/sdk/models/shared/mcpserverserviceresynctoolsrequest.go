@@ -2,8 +2,9 @@
 
 package shared
 
-// MCPServerServiceResyncToolsRequest re-runs tool discovery for the calling
+// MCPServerServiceResyncToolsRequest re-runs tool discovery for an external MCP
 //
-//	user's own credential on a per-user MCP server.
+//	server using the caller's own credential, or the configured shared credential
+//	when the caller has MCP management permission for the app.
 type MCPServerServiceResyncToolsRequest struct {
 }
