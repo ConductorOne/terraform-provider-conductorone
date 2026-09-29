@@ -2,7 +2,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
 	"reflect"
 	"strings"
 	"testing"
@@ -138,18 +137,28 @@ func TestAccessProfileTypeMappings(t *testing.T) {
 		}
 	})
 
-	t.Run("type is absent from update", func(t *testing.T) {
-		model := &AccessProfileResourceModel{Type: types.StringValue("REQUEST_CATALOG_TYPE_BUNDLE")}
+	t.Run("updates mask every mutable field without changing type", func(t *testing.T) {
+		model := &AccessProfileResourceModel{
+			Annotations: map[string]types.String{
+				"managed_by": types.StringValue("terraform"),
+			},
+			Type: types.StringValue("REQUEST_CATALOG_TYPE_BUNDLE"),
+		}
 		request, diags := model.ToSharedRequestCatalogManagementServiceUpdateRequest(ctx)
 		if diags.HasError() {
 			t.Fatalf("mapping update request: %v", diags)
 		}
-		body, err := json.Marshal(request)
-		if err != nil {
-			t.Fatalf("marshalling update request: %v", err)
+
+		const wantUpdateMask = "annotations,description,displayName,enrollmentBehavior,published,requestBundle," +
+			"unenrollmentBehavior,unenrollmentEntitlementBehavior,visibleToEveryone"
+		if request.UpdateMask == nil {
+			t.Fatal("update request must include a mask so metadata changes are applied")
 		}
-		if strings.Contains(string(body), `"type"`) {
-			t.Fatalf("update request unexpectedly contains type: %s", body)
+		if got := *request.UpdateMask; got != wantUpdateMask {
+			t.Errorf("update mask = %q, want %q", got, wantUpdateMask)
+		}
+		if strings.Contains(","+*request.UpdateMask+",", ",type,") {
+			t.Fatalf("update mask must not change configured type: %q", *request.UpdateMask)
 		}
 	})
 }
