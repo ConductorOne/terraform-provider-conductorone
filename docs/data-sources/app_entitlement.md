@@ -39,6 +39,12 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
   app_ids = [
     "..."
   ]
+  app_resource_type_refs = [
+    {
+      app_id = "...my_app_id..."
+      id     = "...my_id..."
+    }
+  ]
   app_user_ids = [
     "..."
   ]
@@ -68,8 +74,11 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
     "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER"
   ]
   only_get_expiring = true
-  page_size         = 5
-  page_token        = "...my_page_token..."
+  owner_user_ids = [
+    "..."
+  ]
+  page_size  = 5
+  page_token = "...my_page_token..."
   policy_refs = [
     {
       id = "...my_id..."

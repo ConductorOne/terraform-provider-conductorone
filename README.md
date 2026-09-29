@@ -76,6 +76,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_directory](docs/resources/directory.md)
 * [conductorone_function](docs/resources/function.md)
 * [conductorone_function_tag](docs/resources/function_tag.md)
+* [conductorone_go_link](docs/resources/go_link.md)
+* [conductorone_mcp_server](docs/resources/mcp_server.md)
 * [conductorone_policy](docs/resources/policy.md)
 * [conductorone_recovery_policy](docs/resources/recovery_policy.md)
 * [conductorone_request_schema_entitlement_binding](docs/resources/request_schema_entitlement_binding.md)
@@ -86,6 +88,7 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_task_grant](docs/resources/task_grant.md)
 * [conductorone_task_offboarding](docs/resources/task_offboarding.md)
 * [conductorone_task_revoke](docs/resources/task_revoke.md)
+* [conductorone_user_attribute_mapping](docs/resources/user_attribute_mapping.md)
 * [conductorone_vault](docs/resources/vault.md)
 * [conductorone_webhook](docs/resources/webhook.md)
 
@@ -131,6 +134,8 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_directory](docs/data-sources/directory.md)
 * [conductorone_function](docs/data-sources/function.md)
 * [conductorone_function_tag](docs/data-sources/function_tag.md)
+* [conductorone_go_link](docs/data-sources/go_link.md)
+* [conductorone_go_links](docs/data-sources/go_links.md)
 * [conductorone_org_domains](docs/data-sources/org_domains.md)
 * [conductorone_policies](docs/data-sources/policies.md)
 * [conductorone_policy](docs/data-sources/policy.md)
@@ -143,8 +148,11 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_role](docs/data-sources/role.md)
 * [conductorone_roles](docs/data-sources/roles.md)
 * [conductorone_session_policy](docs/data-sources/session_policy.md)
+* [conductorone_session_policy_user](docs/data-sources/session_policy_user.md)
 * [conductorone_sign_in_policy](docs/data-sources/sign_in_policy.md)
 * [conductorone_user](docs/data-sources/user.md)
+* [conductorone_user_attribute_mapping](docs/data-sources/user_attribute_mapping.md)
+* [conductorone_user_attribute_types](docs/data-sources/user_attribute_types.md)
 * [conductorone_users](docs/data-sources/users.md)
 * [conductorone_webhook](docs/data-sources/webhook.md)
 * [conductorone_webhooks](docs/data-sources/webhooks.md)
@@ -226,7 +234,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.6.0"
+      version = "1.6.1"
     }
   }
 }
