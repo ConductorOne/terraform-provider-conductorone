@@ -15,6 +15,12 @@ type mockTripper struct {
 	calls     int
 }
 
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripperFunc) RoundTrip(req *http.Request) (*http.Response, error) {
+	return f(req)
+}
+
 func (m *mockTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	if m.calls >= len(m.responses) {
 		return m.responses[len(m.responses)-1], nil
@@ -60,6 +66,27 @@ func TestRetryTripperRetriesOn429(t *testing.T) {
 	}
 	if mock.calls != 2 {
 		t.Errorf("expected 2 calls, got %d", mock.calls)
+	}
+}
+
+func TestRetryTripperRetriesEmptyBodyAfterTransportMutation(t *testing.T) {
+	calls := 0
+	rt := &retryTripper{next: roundTripperFunc(func(req *http.Request) (*http.Response, error) {
+		calls++
+		if calls == 1 {
+			req.Body = http.NoBody
+			return resp429("0"), nil
+		}
+		return resp200(), nil
+	}), maxRetries: 1}
+
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, "http://example.com", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp, err := rt.RoundTrip(req)
+	if err != nil || resp.StatusCode != http.StatusOK || calls != 2 {
+		t.Fatalf("empty-body GET retry: response=%v, error=%v, calls=%d", resp, err, calls)
 	}
 }
 

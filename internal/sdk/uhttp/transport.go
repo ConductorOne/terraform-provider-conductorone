@@ -164,7 +164,7 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	for attempt := 0; ; attempt++ {
 		// Re-create the request body for retries.
 		if attempt > 0 {
-			if req.Body != nil && req.GetBody == nil {
+			if req.Body != nil && req.Body != http.NoBody && req.GetBody == nil {
 				return nil, fmt.Errorf("cannot retry request: body is not replayable")
 			}
 			if req.GetBody != nil {
