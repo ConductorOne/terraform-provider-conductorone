@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"reflect"
 
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
@@ -73,6 +74,21 @@ func mcpServerExternalAuthMatches(config *tfTypes.MCPServerExternalConfig, authM
 	default:
 		return false
 	}
+}
+
+func mcpServerDiagnosticError(err error) string {
+	var apiError *sdkerrors.SDKError
+	if errors.As(err, &apiError) {
+		return fmt.Sprintf("%s: HTTP %d", apiError.Message, apiError.StatusCode)
+	}
+	return err.Error()
+}
+
+func mcpServerResponseStatus(response *http.Response) string {
+	if response == nil {
+		return "C1 returned no HTTP response"
+	}
+	return fmt.Sprintf("HTTP %d", response.StatusCode)
 }
 
 func mcpServerExternalConfigWithoutApproval(config *tfTypes.MCPServerExternalConfig) *tfTypes.MCPServerExternalConfig {

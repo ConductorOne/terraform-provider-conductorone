@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -11,6 +12,7 @@ import (
 
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
+	sdkerrors "github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/errors"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -209,6 +211,33 @@ func TestMCPServerOwningAppChangeRequiresReplacement(t *testing.T) {
 	}, response)
 	if response.Diagnostics.HasError() || !response.RequiresReplace {
 		t.Fatalf("app_id change failed to request replacement: %+v", response)
+	}
+}
+
+func TestMCPServerDiagnosticsOmitEchoedCredentials(t *testing.T) {
+	const synthetic = "synthetic-error-echo-secret"
+	apiError := sdkerrors.NewSDKError("validation failed", http.StatusBadRequest, synthetic, &http.Response{StatusCode: http.StatusBadRequest})
+	for _, err := range []error{apiError, fmt.Errorf("wrapped API error: %w", apiError)} {
+		message := mcpServerDiagnosticError(err)
+		if strings.Contains(message, synthetic) || !strings.Contains(message, "HTTP 400") {
+			t.Fatalf("unsafe MCP diagnostic %q", message)
+		}
+	}
+	if message := mcpServerResponseStatus(apiError.RawResponse); message != "HTTP 400" {
+		t.Fatalf("unsafe response status diagnostic %q", message)
+	}
+
+	ctx := context.Background()
+	server := httptest.NewServer(http.NotFoundHandler())
+	t.Cleanup(server.Close)
+	r, schemaResp := mcpRecoveryResource(t, server)
+	importResp := resource.ImportStateResponse{State: tfsdk.State{
+		Raw:    tftypes.NewValue(schemaResp.Schema.Type().TerraformType(ctx), tftypes.UnknownValue),
+		Schema: schemaResp.Schema,
+	}}
+	r.ImportState(ctx, resource.ImportStateRequest{ID: synthetic}, &importResp)
+	if !importResp.Diagnostics.HasError() || strings.Contains(fmt.Sprint(importResp.Diagnostics), synthetic) {
+		t.Fatalf("unsafe import diagnostic: %v", importResp.Diagnostics)
 	}
 }
 
