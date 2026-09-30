@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: d2cb90ffb75a558a45b07f47ba52f8eb
+  docChecksum: 409b1180319ea97da57f2f7ea62280b1
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.762.0
   generationVersion: 2.882.0
@@ -10,9 +10,9 @@ management:
   repoURL: https://github.com/ConductorOne/terraform-provider-conductorone.git
   installationURL: https://github.com/ConductorOne/terraform-provider-conductorone
 persistentEdits:
-  generation_id: a364042c-2e21-49d8-9acd-12a3a34e9686
-  pristine_commit_hash: 493d94f1b3d9be7c01951f1789e9cf34a847d2fa
-  pristine_tree_hash: 5a4bb14bffe4fabc2e5ed3b9c48904dc75c055b5
+  generation_id: bbd78b2e-b3e4-4c72-b934-503e224fe668
+  pristine_commit_hash: 8d82ed21c3a65d5020a71d890ce676a996906396
+  pristine_tree_hash: d348d56fe5d3be3a61b963a519c998bde7594f1a
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -679,8 +679,8 @@ trackedFiles:
     pristine_git_object: 48c044b8aeb30e13a2594bb2bd15387518e17266
   examples/resources/conductorone_mcp_server/resource.tf:
     id: 183c9c9e30cf
-    last_write_checksum: sha1:f56d1accad3086673a0ba2598793dd6f2ff7124d
-    pristine_git_object: 4200980d88e74fa7d66e6c3ea21b07f69f3927a4
+    last_write_checksum: sha1:8410fc2639807be8db783d377f60dc547ef1696f
+    pristine_git_object: 40f7e5b5393b74cd3bec05f84332bbfcb77fab2f
   examples/resources/conductorone_policy/import-by-string-id.tf:
     id: d0a33dc38baa
     last_write_checksum: sha1:d3a31cbd86233376540a6e19047c0e10470e63a4
@@ -1527,12 +1527,12 @@ trackedFiles:
     pristine_git_object: 59befe2154c19266e841da597211ea44802421aa
   internal/provider/mcp_server_resource.go:
     id: 3fd81138cd74
-    last_write_checksum: sha1:38a60a8509ac6e95313cdf566e1d5e4515e8a4d8
-    pristine_git_object: 4f4c1f9fd0d2b02e2b016256e9d0a696b1a993b2
+    last_write_checksum: sha1:cbb616ea26dc96ec90f02baec9201869b7ab86b5
+    pristine_git_object: 0d242612c8549dc5b50868ba648843f1873a88ef
   internal/provider/mcp_server_resource_sdk.go:
     id: a3a495fdbe7f
-    last_write_checksum: sha1:500064a1270045725581987751f9bd63aaaa152f
-    pristine_git_object: b184cfbc410dd55fbf0e6321dee148ff11ce23ed
+    last_write_checksum: sha1:62745e8ae6acfab27d7e59e549d6a8b384853c62
+    pristine_git_object: ae456a83f97f814e73bc8e0fee33973e04b4da2c
   internal/provider/orgdomains_data_source.go:
     id: 368b831b28a8
     last_write_checksum: sha1:c5591e55e8d53a816ea897f60f82545b5e734f6d
