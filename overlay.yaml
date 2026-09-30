@@ -809,3 +809,7 @@ actions:
   - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerAuthOAuth2"]["properties"]["tokenEndpointAuthMethod"]
     update:
       x-speakeasy-terraform-ignore: true
+  # This resource registers under an existing app, which rejects integration owners.
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerServiceRegisterRequestInput"]["properties"]["userIds"]
+    update:
+      x-speakeasy-terraform-ignore: true

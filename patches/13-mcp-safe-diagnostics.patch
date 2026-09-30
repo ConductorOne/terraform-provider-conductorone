@@ -1,0 +1,142 @@
+Subject: [PATCH] Keep MCP diagnostics free of API response bodies
+
+Error responses can contain credentials. Report status and operation context
+while preserving recovery guidance and known IDs.
+
+--- a/internal/provider/mcp_server_resource.go
++++ b/internal/provider/mcp_server_resource.go
+@@ -1037,9 +1037,9 @@
+ 	}
+ 	res, err := r.client.MCPServer.Register(ctx, *request)
+ 	if err != nil {
+-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
++		resp.Diagnostics.AddError("Failed to register MCP server", mcpServerDiagnosticError(err))
+ 		if res != nil && res.RawResponse != nil {
+-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
++			resp.Diagnostics.AddError("unexpected http request/response", mcpServerResponseStatus(res.RawResponse))
+ 		}
+ 		addMCPServerUnknownCreateOutcomeDiagnostic(resp, data, err)
+ 		return
+@@ -1050,12 +1050,12 @@
+ 		return
+ 	}
+ 	if res.StatusCode != 200 {
+-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
++		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), mcpServerResponseStatus(res.RawResponse))
+ 		addMCPServerUnknownCreateOutcomeDiagnostic(resp, data, nil)
+ 		return
+ 	}
+ 	if !(res.MCPServerServiceRegisterResponse != nil) {
+-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
++		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", mcpServerResponseStatus(res.RawResponse))
+ 		addMCPServerUnknownCreateOutcomeDiagnostic(resp, data, nil)
+ 		return
+ 	}
+@@ -1107,9 +1107,9 @@
+ 	}
+ 	res, err := r.client.MCPServer.Get(ctx, *request)
+ 	if err != nil {
+-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
++		resp.Diagnostics.AddError("Failed to read MCP server", mcpServerDiagnosticError(err))
+ 		if res != nil && res.RawResponse != nil {
+-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
++			resp.Diagnostics.AddError("unexpected http request/response", mcpServerResponseStatus(res.RawResponse))
+ 		}
+ 		return
+ 	}
+@@ -1122,11 +1122,11 @@
+ 		return
+ 	}
+ 	if res.StatusCode != 200 {
+-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
++		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), mcpServerResponseStatus(res.RawResponse))
+ 		return
+ 	}
+ 	if !(res.MCPServerServiceGetResponse != nil) {
+-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
++		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", mcpServerResponseStatus(res.RawResponse))
+ 		return
+ 	}
+ 	resp.Diagnostics.Append(data.RefreshFromSharedMCPServerServiceGetResponse(ctx, res.MCPServerServiceGetResponse)...)
+@@ -1173,9 +1173,9 @@
+ 	}
+ 	res, err := r.client.MCPServer.Update(ctx, *request)
+ 	if err != nil {
+-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
++		resp.Diagnostics.AddError("Failed to update metadata for MCP server", mcpServerDiagnosticError(err))
+ 		if res != nil && res.RawResponse != nil {
+-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
++			resp.Diagnostics.AddError("unexpected http request/response", mcpServerResponseStatus(res.RawResponse))
+ 		}
+ 		return
+ 	}
+@@ -1184,11 +1184,11 @@
+ 		return
+ 	}
+ 	if res.StatusCode != 200 {
+-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
++		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), mcpServerResponseStatus(res.RawResponse))
+ 		return
+ 	}
+ 	if !(res.MCPServerServiceUpdateResponse != nil) {
+-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
++		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", mcpServerResponseStatus(res.RawResponse))
+ 		return
+ 	}
+ 	resp.Diagnostics.Append(data.RefreshFromSharedMCPServerServiceUpdateResponse(ctx, res.MCPServerServiceUpdateResponse)...)
+@@ -1220,9 +1220,9 @@
+ 	}
+ 	res1, err := r.client.MCPServer.UpdateCredentials(ctx, *request1)
+ 	if err != nil {
+-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
++		resp.Diagnostics.AddError("Failed to update credentials for MCP server", mcpServerDiagnosticError(err))
+ 		if res1 != nil && res1.RawResponse != nil {
+-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
++			resp.Diagnostics.AddError("unexpected http request/response", mcpServerResponseStatus(res1.RawResponse))
+ 		}
+ 		return
+ 	}
+@@ -1231,11 +1231,11 @@
+ 		return
+ 	}
+ 	if res1.StatusCode != 200 {
+-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
++		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), mcpServerResponseStatus(res1.RawResponse))
+ 		return
+ 	}
+ 	if !(res1.MCPServerServiceUpdateCredentialsResponse != nil) {
+-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
++		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", mcpServerResponseStatus(res1.RawResponse))
+ 		return
+ 	}
+ 	resp.Diagnostics.Append(data.RefreshFromSharedMCPServerServiceUpdateCredentialsResponse(ctx, res1.MCPServerServiceUpdateCredentialsResponse)...)
+@@ -1282,9 +1282,9 @@
+ 	}
+ 	res, err := r.client.MCPServer.Delete(ctx, *request)
+ 	if err != nil {
+-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
++		resp.Diagnostics.AddError("Failed to delete MCP server", mcpServerDiagnosticError(err))
+ 		if res != nil && res.RawResponse != nil {
+-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
++			resp.Diagnostics.AddError("unexpected http request/response", mcpServerResponseStatus(res.RawResponse))
+ 		}
+ 		return
+ 	}
+@@ -1296,7 +1296,7 @@
+ 	case 200, 404:
+ 		break
+ 	default:
+-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
++		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), mcpServerResponseStatus(res.RawResponse))
+ 		return
+ 	}
+ 
+@@ -1311,7 +1311,7 @@
+ 	}
+ 
+ 	if err := dec.Decode(&data); err != nil {
+-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"app_id": "...", "connector_id": "..."}': `+err.Error())
++		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"app_id": "...", "connector_id": "..."}': `+"Malformed import identifier.")
+ 		return
+ 	}
+ 
