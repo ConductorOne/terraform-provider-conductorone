@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"reflect"
 
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
@@ -39,6 +40,28 @@ func mcpServerCredentialsChanged(ctx context.Context, req resource.UpdateRequest
 		mcpServerHostedConfigWithoutApproval(planHosted),
 	)
 	return !equal, diags
+}
+
+// SDK and transport errors can contain response bodies or credential-bearing URLs.
+func mcpServerDiagnosticError(err error) string {
+	var apiError *sdkerrors.SDKError
+	if errors.As(err, &apiError) {
+		return fmt.Sprintf("HTTP %d. Response details omitted to protect credentials.", apiError.StatusCode)
+	}
+	if errors.Is(err, context.Canceled) {
+		return "The request was canceled."
+	}
+	if errors.Is(err, context.DeadlineExceeded) {
+		return "The request deadline was exceeded."
+	}
+	return "The request failed. Error details omitted to protect credentials."
+}
+
+func mcpServerResponseStatus(response *http.Response) string {
+	if response == nil {
+		return "C1 returned no HTTP response."
+	}
+	return fmt.Sprintf("HTTP %d. Response details omitted to protect credentials.", response.StatusCode)
 }
 
 func mcpServerExternalConfigWithoutApproval(config *tfTypes.MCPServerExternalConfig) *tfTypes.MCPServerExternalConfig {
