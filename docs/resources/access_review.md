@@ -38,7 +38,7 @@ resource "conductorone_access_review" "my_access_review" {
         "APP_USER_TYPE_USER"
       ]
       app_user_statuses = [
-        "APP_USER_STATUS_DELETED"
+        "APP_USER_STATUS_DISABLED"
       ]
       no_account_owner = false
     }

@@ -7,21 +7,12 @@ type ReportingServiceSaveRequest struct {
 	// The conversation and surface are both required to address a rendered
 	//  surface; neither identifies one alone.
 	ConversationID *string `json:"conversationId,omitempty"`
-	// Optional user-facing context for a new report. Rejected while applying an
-	//  edit, where metadata remains unchanged.
-	Description *string `json:"description,omitempty"`
-	// Required for a new report and rejected when report_id is set.
+	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Required with report_id. A stale source version is rejected rather than
-	//  silently overwriting a newer edit.
-	ExpectedProgramID *string `json:"expectedProgramId,omitempty"`
-	// The question this surface answered. Used only when creating a report;
-	//  applying an edit preserves the report's canonical question and records the
-	//  incremental instruction on the immutable run.
+	// The question this surface answered. The surface records its program but not
+	//  the words behind it, so the caller supplies them; without it the report has
+	//  nothing to compare against when deciding its program has gone stale.
 	Prompt *string `json:"prompt,omitempty"`
-	// Empty creates a report. Set to apply the validated edit surface to an
-	//  existing report without changing its identity or history.
-	ReportID *string `json:"reportId,omitempty"`
 	// The surfaceId field.
 	SurfaceID *string `json:"surfaceId,omitempty"`
 }
@@ -33,13 +24,6 @@ func (r *ReportingServiceSaveRequest) GetConversationID() *string {
 	return r.ConversationID
 }
 
-func (r *ReportingServiceSaveRequest) GetDescription() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Description
-}
-
 func (r *ReportingServiceSaveRequest) GetDisplayName() *string {
 	if r == nil {
 		return nil
@@ -47,25 +31,11 @@ func (r *ReportingServiceSaveRequest) GetDisplayName() *string {
 	return r.DisplayName
 }
 
-func (r *ReportingServiceSaveRequest) GetExpectedProgramID() *string {
-	if r == nil {
-		return nil
-	}
-	return r.ExpectedProgramID
-}
-
 func (r *ReportingServiceSaveRequest) GetPrompt() *string {
 	if r == nil {
 		return nil
 	}
 	return r.Prompt
-}
-
-func (r *ReportingServiceSaveRequest) GetReportID() *string {
-	if r == nil {
-		return nil
-	}
-	return r.ReportID
 }
 
 func (r *ReportingServiceSaveRequest) GetSurfaceID() *string {

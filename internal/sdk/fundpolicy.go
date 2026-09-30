@@ -31,10 +31,10 @@ func newFundPolicy(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, 
 }
 
 // Delete
-// Delete the tenant's fund policy. Refused while spend governance is enabled
+// Delete the tenant's fund policy, opting the tenant back out of spend
 //
-//	because enabled inference requires this row. Disable governance and drain
-//	in-flight leases before calling Delete.
+//	governance. Rules, assignments and app caps are left in place and go
+//	dormant; a later Create restores every one of them.
 func (s *FundPolicy) Delete(ctx context.Context, request *shared.FundPolicyServiceDeleteRequest, opts ...operations.Option) (*operations.C1APIFundsV1FundPolicyServiceDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -171,9 +171,10 @@ func (s *FundPolicy) Delete(ctx context.Context, request *shared.FundPolicyServi
 }
 
 // Get
-// Get the tenant's fund policy. An absent policy is a configuration state
+// Get the tenant's fund policy. An absent policy in the response means the
 //
-//	that prevents enabled metered inference from serving traffic.
+//	tenant has not opted in to spend governance, which is an ordinary state
+//	rather than an error.
 func (s *FundPolicy) Get(ctx context.Context, opts ...operations.Option) (*operations.C1APIFundsV1FundPolicyServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -303,10 +304,10 @@ func (s *FundPolicy) Get(ctx context.Context, opts ...operations.Option) (*opera
 }
 
 // Create
-// Create the tenant's fund policy. default_limit is required: a tenant
+// Create the tenant's fund policy, opting the tenant in to spend governance.
 //
-//	states its posture explicitly, and there is no implicit default anywhere
-//	in the write path.
+//	default_limit is required: a tenant states its posture explicitly, and
+//	there is no implicit default anywhere in the write path.
 func (s *FundPolicy) Create(ctx context.Context, request *shared.FundPolicyServiceCreateRequest, opts ...operations.Option) (*operations.C1APIFundsV1FundPolicyServiceCreateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -445,8 +446,8 @@ func (s *FundPolicy) Create(ctx context.Context, request *shared.FundPolicyServi
 // SetOrgCeiling - Set Org Ceiling
 // Set the org-wide ceiling: the bound on the tenant's total regardless of
 //
-//	what any principal was granted. Amount arm only. An absent limit clears
-//	the ceiling only after spend governance is disabled.
+//	what any principal was granted. Amount arm only. Clears the ceiling when
+//	limit is absent.
 func (s *FundPolicy) SetOrgCeiling(ctx context.Context, request *shared.FundPolicyServiceSetOrgCeilingRequest, opts ...operations.Option) (*operations.C1APIFundsV1FundPolicyServiceSetOrgCeilingResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -995,9 +996,10 @@ func (s *FundPolicy) ListHistory(ctx context.Context, request operations.C1APIFu
 }
 
 // Update
-// Update the period or the default limit. currency_code is fixed to USD at
+// Update the period or the default limit. currency_code is immutable after
 //
-//	Create and immutable thereafter; update_mask rejects it.
+//	Create and update_mask rejects it: an amount denominated in a currency the
+//	policy no longer names faults the acquire path rather than denying it.
 func (s *FundPolicy) Update(ctx context.Context, request *shared.FundPolicyServiceUpdateRequest, opts ...operations.Option) (*operations.C1APIFundsV1FundPolicyServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

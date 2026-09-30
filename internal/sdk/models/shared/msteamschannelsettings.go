@@ -13,7 +13,6 @@ type MSTeamsChannelSettings struct {
 	// The enabled field.
 	Enabled        *bool                     `json:"enabled,omitempty"`
 	ExpiringAccess *ExpiringAccessPreference `json:"expiringAccess,omitempty"`
-	Findings       *FindingsPreference       `json:"findings,omitempty"`
 	// The isConfigured field.
 	IsConfigured        *bool                          `json:"isConfigured,omitempty"`
 	ProvisioningRequest *ProvisioningRequestPreference `json:"provisioningRequest,omitempty"`
@@ -77,13 +76,6 @@ func (m *MSTeamsChannelSettings) GetExpiringAccess() *ExpiringAccessPreference {
 		return nil
 	}
 	return m.ExpiringAccess
-}
-
-func (m *MSTeamsChannelSettings) GetFindings() *FindingsPreference {
-	if m == nil {
-		return nil
-	}
-	return m.Findings
 }
 
 func (m *MSTeamsChannelSettings) GetIsConfigured() *bool {

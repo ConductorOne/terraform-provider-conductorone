@@ -35,12 +35,6 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	Alias *string `json:"alias,omitempty"`
 	// Search for app entitlements contained in any of these apps.
 	AppIds []string `json:"appIds,omitempty"`
-	// Search for app entitlements whose resource type matches any of these real
-	//  (app_id, id) AppResourceType pairs — unlike resource_type_ids, which
-	//  matches by name and can't distinguish two apps' same-named or
-	//  system-wide-shared-id resource types (e.g. Credential). Takes precedence
-	//  over resource_type_ids when set.
-	AppResourceTypeRefs []ResourceTypeRef `json:"appResourceTypeRefs,omitempty"`
 	// Search for app entitlements that are granted to any of these app user ids.
 	AppUserIds []string `json:"appUserIds,omitempty"`
 	// Search for app entitlements that are part of these compliance frameworks.
@@ -65,9 +59,6 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	MembershipType []MembershipType `json:"membershipType,omitempty"`
 	// If true, restrict results to entitlements that have at least one expiring grant.
 	OnlyGetExpiring *bool `json:"onlyGetExpiring,omitempty"`
-	// Filter by users that have an explicit ownership binding to the entitlement.
-	//  This filter applies to every caller, including administrators.
-	OwnerUserIds []string `json:"ownerUserIds,omitempty"`
 	// The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
@@ -111,13 +102,6 @@ func (a *AppEntitlementSearchServiceSearchRequest) GetAppIds() []string {
 		return nil
 	}
 	return a.AppIds
-}
-
-func (a *AppEntitlementSearchServiceSearchRequest) GetAppResourceTypeRefs() []ResourceTypeRef {
-	if a == nil {
-		return nil
-	}
-	return a.AppResourceTypeRefs
 }
 
 func (a *AppEntitlementSearchServiceSearchRequest) GetAppUserIds() []string {
@@ -202,13 +186,6 @@ func (a *AppEntitlementSearchServiceSearchRequest) GetOnlyGetExpiring() *bool {
 		return nil
 	}
 	return a.OnlyGetExpiring
-}
-
-func (a *AppEntitlementSearchServiceSearchRequest) GetOwnerUserIds() []string {
-	if a == nil {
-		return nil
-	}
-	return a.OwnerUserIds
 }
 
 func (a *AppEntitlementSearchServiceSearchRequest) GetPageSize() *int {

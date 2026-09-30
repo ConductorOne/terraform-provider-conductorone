@@ -7,21 +7,21 @@ import (
 	"time"
 )
 
-// AppEntitlementUserBindingFeedEventType - The eventType field.
-type AppEntitlementUserBindingFeedEventType string
+// EventType - The eventType field.
+type EventType string
 
 const (
-	AppEntitlementUserBindingFeedEventTypeGrantEventTypeUnspecified AppEntitlementUserBindingFeedEventType = "GRANT_EVENT_TYPE_UNSPECIFIED"
-	AppEntitlementUserBindingFeedEventTypeGrantEventTypeAdded       AppEntitlementUserBindingFeedEventType = "GRANT_EVENT_TYPE_ADDED"
-	AppEntitlementUserBindingFeedEventTypeGrantEventTypeRemoved     AppEntitlementUserBindingFeedEventType = "GRANT_EVENT_TYPE_REMOVED"
+	EventTypeGrantEventTypeUnspecified EventType = "GRANT_EVENT_TYPE_UNSPECIFIED"
+	EventTypeGrantEventTypeAdded       EventType = "GRANT_EVENT_TYPE_ADDED"
+	EventTypeGrantEventTypeRemoved     EventType = "GRANT_EVENT_TYPE_REMOVED"
 )
 
-func (e AppEntitlementUserBindingFeedEventType) ToPointer() *AppEntitlementUserBindingFeedEventType {
+func (e EventType) ToPointer() *EventType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *AppEntitlementUserBindingFeedEventType) IsExact() bool {
+func (e *EventType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "GRANT_EVENT_TYPE_UNSPECIFIED", "GRANT_EVENT_TYPE_ADDED", "GRANT_EVENT_TYPE_REMOVED":
@@ -41,7 +41,7 @@ type AppEntitlementUserBindingFeed struct {
 	AppUserID *string    `json:"appUserId,omitempty"`
 	Date      *time.Time `json:"date,omitempty"`
 	// The eventType field.
-	EventType *AppEntitlementUserBindingFeedEventType `json:"eventType,omitempty"`
+	EventType *EventType `json:"eventType,omitempty"`
 	// The ticketId field.
 	TicketID *string `json:"ticketId,omitempty"`
 }
@@ -85,7 +85,7 @@ func (a *AppEntitlementUserBindingFeed) GetDate() *time.Time {
 	return a.Date
 }
 
-func (a *AppEntitlementUserBindingFeed) GetEventType() *AppEntitlementUserBindingFeedEventType {
+func (a *AppEntitlementUserBindingFeed) GetEventType() *EventType {
 	if a == nil {
 		return nil
 	}

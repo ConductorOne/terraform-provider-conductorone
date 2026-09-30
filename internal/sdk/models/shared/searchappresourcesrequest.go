@@ -26,21 +26,21 @@ func (e *AgentStatuses) IsExact() bool {
 	return false
 }
 
-type SearchAppResourcesRequestCredentialTypes string
+type CredentialTypes string
 
 const (
-	SearchAppResourcesRequestCredentialTypesCredentialTypeUnspecified   SearchAppResourcesRequestCredentialTypes = "CREDENTIAL_TYPE_UNSPECIFIED"
-	SearchAppResourcesRequestCredentialTypesCredentialTypeStaticSecret  SearchAppResourcesRequestCredentialTypes = "CREDENTIAL_TYPE_STATIC_SECRET"
-	SearchAppResourcesRequestCredentialTypesCredentialTypeAsymmetricKey SearchAppResourcesRequestCredentialTypes = "CREDENTIAL_TYPE_ASYMMETRIC_KEY"
-	SearchAppResourcesRequestCredentialTypesCredentialTypeCertificate   SearchAppResourcesRequestCredentialTypes = "CREDENTIAL_TYPE_CERTIFICATE"
+	CredentialTypesCredentialTypeUnspecified   CredentialTypes = "CREDENTIAL_TYPE_UNSPECIFIED"
+	CredentialTypesCredentialTypeStaticSecret  CredentialTypes = "CREDENTIAL_TYPE_STATIC_SECRET"
+	CredentialTypesCredentialTypeAsymmetricKey CredentialTypes = "CREDENTIAL_TYPE_ASYMMETRIC_KEY"
+	CredentialTypesCredentialTypeCertificate   CredentialTypes = "CREDENTIAL_TYPE_CERTIFICATE"
 )
 
-func (e SearchAppResourcesRequestCredentialTypes) ToPointer() *SearchAppResourcesRequestCredentialTypes {
+func (e CredentialTypes) ToPointer() *CredentialTypes {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SearchAppResourcesRequestCredentialTypes) IsExact() bool {
+func (e *CredentialTypes) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "CREDENTIAL_TYPE_UNSPECIFIED", "CREDENTIAL_TYPE_STATIC_SECRET", "CREDENTIAL_TYPE_ASYMMETRIC_KEY", "CREDENTIAL_TYPE_CERTIFICATE":
@@ -144,7 +144,7 @@ type SearchAppResourcesRequest struct {
 	// Restrict the search to resources whose credential material spine (K1) matches
 	//  one of the given CredentialType values. Applies to resources with a
 	//  secret_trait. When empty, credential_type is not used as a filter.
-	CredentialTypes []SearchAppResourcesRequestCredentialTypes `json:"credentialTypes,omitempty"`
+	CredentialTypes []CredentialTypes `json:"credentialTypes,omitempty"`
 	// Direction to sort in. Unspecified falls back to ASC when sort_field is set.
 	//  No defined_only validation here: protoc-gen-validate mis-resolves the
 	//  cross-package enum name map to this file's c1.models.app.v1 import alias
@@ -221,7 +221,7 @@ func (s *SearchAppResourcesRequest) GetAppUserIds() []string {
 	return s.AppUserIds
 }
 
-func (s *SearchAppResourcesRequest) GetCredentialTypes() []SearchAppResourcesRequestCredentialTypes {
+func (s *SearchAppResourcesRequest) GetCredentialTypes() []CredentialTypes {
 	if s == nil {
 		return nil
 	}

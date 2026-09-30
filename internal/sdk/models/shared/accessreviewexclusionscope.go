@@ -9,7 +9,6 @@ const (
 	AccessReviewExclusionScopeAppUserStatusesAppUserStatusEnabled     AccessReviewExclusionScopeAppUserStatuses = "APP_USER_STATUS_ENABLED"
 	AccessReviewExclusionScopeAppUserStatusesAppUserStatusDisabled    AccessReviewExclusionScopeAppUserStatuses = "APP_USER_STATUS_DISABLED"
 	AccessReviewExclusionScopeAppUserStatusesAppUserStatusDeleted     AccessReviewExclusionScopeAppUserStatuses = "APP_USER_STATUS_DELETED"
-	AccessReviewExclusionScopeAppUserStatusesAppUserStatusPending     AccessReviewExclusionScopeAppUserStatuses = "APP_USER_STATUS_PENDING"
 )
 
 func (e AccessReviewExclusionScopeAppUserStatuses) ToPointer() *AccessReviewExclusionScopeAppUserStatuses {
@@ -20,7 +19,7 @@ func (e AccessReviewExclusionScopeAppUserStatuses) ToPointer() *AccessReviewExcl
 func (e *AccessReviewExclusionScopeAppUserStatuses) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "APP_USER_STATUS_UNSPECIFIED", "APP_USER_STATUS_ENABLED", "APP_USER_STATUS_DISABLED", "APP_USER_STATUS_DELETED", "APP_USER_STATUS_PENDING":
+		case "APP_USER_STATUS_UNSPECIFIED", "APP_USER_STATUS_ENABLED", "APP_USER_STATUS_DISABLED", "APP_USER_STATUS_DELETED":
 			return true
 		}
 	}

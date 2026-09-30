@@ -2,26 +2,26 @@
 
 package shared
 
-// SSFReceiverEventSearchServiceSearchRequestOutcome - Restricts results to events with this processing outcome. Optional.
-type SSFReceiverEventSearchServiceSearchRequestOutcome string
+// Outcome - Restricts results to events with this processing outcome. Optional.
+type Outcome string
 
 const (
-	SSFReceiverEventSearchServiceSearchRequestOutcomeSsfEventOutcomeUnspecified         SSFReceiverEventSearchServiceSearchRequestOutcome = "SSF_EVENT_OUTCOME_UNSPECIFIED"
-	SSFReceiverEventSearchServiceSearchRequestOutcomeSsfEventOutcomeSessionsRevoked     SSFReceiverEventSearchServiceSearchRequestOutcome = "SSF_EVENT_OUTCOME_SESSIONS_REVOKED"
-	SSFReceiverEventSearchServiceSearchRequestOutcomeSsfEventOutcomeLogged              SSFReceiverEventSearchServiceSearchRequestOutcome = "SSF_EVENT_OUTCOME_LOGGED"
-	SSFReceiverEventSearchServiceSearchRequestOutcomeSsfEventOutcomePrincipalNotFound   SSFReceiverEventSearchServiceSearchRequestOutcome = "SSF_EVENT_OUTCOME_PRINCIPAL_NOT_FOUND"
-	SSFReceiverEventSearchServiceSearchRequestOutcomeSsfEventOutcomeVerified            SSFReceiverEventSearchServiceSearchRequestOutcome = "SSF_EVENT_OUTCOME_VERIFIED"
-	SSFReceiverEventSearchServiceSearchRequestOutcomeSsfEventOutcomeStreamStatusUpdated SSFReceiverEventSearchServiceSearchRequestOutcome = "SSF_EVENT_OUTCOME_STREAM_STATUS_UPDATED"
-	SSFReceiverEventSearchServiceSearchRequestOutcomeSsfEventOutcomeUnrecognized        SSFReceiverEventSearchServiceSearchRequestOutcome = "SSF_EVENT_OUTCOME_UNRECOGNIZED"
-	SSFReceiverEventSearchServiceSearchRequestOutcomeSsfEventOutcomeError               SSFReceiverEventSearchServiceSearchRequestOutcome = "SSF_EVENT_OUTCOME_ERROR"
+	OutcomeSsfEventOutcomeUnspecified         Outcome = "SSF_EVENT_OUTCOME_UNSPECIFIED"
+	OutcomeSsfEventOutcomeSessionsRevoked     Outcome = "SSF_EVENT_OUTCOME_SESSIONS_REVOKED"
+	OutcomeSsfEventOutcomeLogged              Outcome = "SSF_EVENT_OUTCOME_LOGGED"
+	OutcomeSsfEventOutcomePrincipalNotFound   Outcome = "SSF_EVENT_OUTCOME_PRINCIPAL_NOT_FOUND"
+	OutcomeSsfEventOutcomeVerified            Outcome = "SSF_EVENT_OUTCOME_VERIFIED"
+	OutcomeSsfEventOutcomeStreamStatusUpdated Outcome = "SSF_EVENT_OUTCOME_STREAM_STATUS_UPDATED"
+	OutcomeSsfEventOutcomeUnrecognized        Outcome = "SSF_EVENT_OUTCOME_UNRECOGNIZED"
+	OutcomeSsfEventOutcomeError               Outcome = "SSF_EVENT_OUTCOME_ERROR"
 )
 
-func (e SSFReceiverEventSearchServiceSearchRequestOutcome) ToPointer() *SSFReceiverEventSearchServiceSearchRequestOutcome {
+func (e Outcome) ToPointer() *Outcome {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *SSFReceiverEventSearchServiceSearchRequestOutcome) IsExact() bool {
+func (e *Outcome) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "SSF_EVENT_OUTCOME_UNSPECIFIED", "SSF_EVENT_OUTCOME_SESSIONS_REVOKED", "SSF_EVENT_OUTCOME_LOGGED", "SSF_EVENT_OUTCOME_PRINCIPAL_NOT_FOUND", "SSF_EVENT_OUTCOME_VERIFIED", "SSF_EVENT_OUTCOME_STREAM_STATUS_UPDATED", "SSF_EVENT_OUTCOME_UNRECOGNIZED", "SSF_EVENT_OUTCOME_ERROR":
@@ -38,7 +38,7 @@ type SSFReceiverEventSearchServiceSearchRequest struct {
 	// Restricts results to events matched to this ConductorOne user ID. Optional.
 	MatchedUserID *string `json:"matchedUserId,omitempty"`
 	// Restricts results to events with this processing outcome. Optional.
-	Outcome *SSFReceiverEventSearchServiceSearchRequestOutcome `json:"outcome,omitempty"`
+	Outcome *Outcome `json:"outcome,omitempty"`
 	// Maximum number of events to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
 	// Token from a previous SearchResponse to fetch the next page of results.
@@ -63,7 +63,7 @@ func (s *SSFReceiverEventSearchServiceSearchRequest) GetMatchedUserID() *string 
 	return s.MatchedUserID
 }
 
-func (s *SSFReceiverEventSearchServiceSearchRequest) GetOutcome() *SSFReceiverEventSearchServiceSearchRequestOutcome {
+func (s *SSFReceiverEventSearchServiceSearchRequest) GetOutcome() *Outcome {
 	if s == nil {
 		return nil
 	}

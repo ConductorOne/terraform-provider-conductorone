@@ -4,17 +4,7 @@ package shared
 
 // The BulkAssignOwnerAction message.
 type BulkAssignOwnerAction struct {
-	// Empty is allowed: rpc.go falls back to the deprecated owner field's
-	//  identity_user_id arm when this is unset.
-	AssigneeIdentityUserID *string          `json:"assigneeIdentityUserId,omitempty"`
-	Owner                  *FindingOwnerRef `json:"owner,omitempty"`
-}
-
-func (b *BulkAssignOwnerAction) GetAssigneeIdentityUserID() *string {
-	if b == nil {
-		return nil
-	}
-	return b.AssigneeIdentityUserID
+	Owner *FindingOwnerRef `json:"owner,omitempty"`
 }
 
 func (b *BulkAssignOwnerAction) GetOwner() *FindingOwnerRef {

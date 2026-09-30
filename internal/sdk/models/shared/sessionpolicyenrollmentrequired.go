@@ -2,26 +2,26 @@
 
 package shared
 
-type CredentialTypes string
+type SessionPolicyEnrollmentRequiredCredentialTypes string
 
 const (
-	CredentialTypesCredentialTypeUnspecified        CredentialTypes = "CREDENTIAL_TYPE_UNSPECIFIED"
-	CredentialTypesCredentialTypePasskey            CredentialTypes = "CREDENTIAL_TYPE_PASSKEY"
-	CredentialTypesCredentialTypePassword           CredentialTypes = "CREDENTIAL_TYPE_PASSWORD"
-	CredentialTypesCredentialTypeTotp               CredentialTypes = "CREDENTIAL_TYPE_TOTP"
-	CredentialTypesCredentialTypeEmailOtp           CredentialTypes = "CREDENTIAL_TYPE_EMAIL_OTP"
-	CredentialTypesCredentialTypeRecoveryCode       CredentialTypes = "CREDENTIAL_TYPE_RECOVERY_CODE"
-	CredentialTypesCredentialTypeDelegatedGoogle    CredentialTypes = "CREDENTIAL_TYPE_DELEGATED_GOOGLE"
-	CredentialTypesCredentialTypeDelegatedMicrosoft CredentialTypes = "CREDENTIAL_TYPE_DELEGATED_MICROSOFT"
-	CredentialTypesCredentialTypeUpstreamIdp        CredentialTypes = "CREDENTIAL_TYPE_UPSTREAM_IDP"
+	SessionPolicyEnrollmentRequiredCredentialTypesCredentialTypeUnspecified        SessionPolicyEnrollmentRequiredCredentialTypes = "CREDENTIAL_TYPE_UNSPECIFIED"
+	SessionPolicyEnrollmentRequiredCredentialTypesCredentialTypePasskey            SessionPolicyEnrollmentRequiredCredentialTypes = "CREDENTIAL_TYPE_PASSKEY"
+	SessionPolicyEnrollmentRequiredCredentialTypesCredentialTypePassword           SessionPolicyEnrollmentRequiredCredentialTypes = "CREDENTIAL_TYPE_PASSWORD"
+	SessionPolicyEnrollmentRequiredCredentialTypesCredentialTypeTotp               SessionPolicyEnrollmentRequiredCredentialTypes = "CREDENTIAL_TYPE_TOTP"
+	SessionPolicyEnrollmentRequiredCredentialTypesCredentialTypeEmailOtp           SessionPolicyEnrollmentRequiredCredentialTypes = "CREDENTIAL_TYPE_EMAIL_OTP"
+	SessionPolicyEnrollmentRequiredCredentialTypesCredentialTypeRecoveryCode       SessionPolicyEnrollmentRequiredCredentialTypes = "CREDENTIAL_TYPE_RECOVERY_CODE"
+	SessionPolicyEnrollmentRequiredCredentialTypesCredentialTypeDelegatedGoogle    SessionPolicyEnrollmentRequiredCredentialTypes = "CREDENTIAL_TYPE_DELEGATED_GOOGLE"
+	SessionPolicyEnrollmentRequiredCredentialTypesCredentialTypeDelegatedMicrosoft SessionPolicyEnrollmentRequiredCredentialTypes = "CREDENTIAL_TYPE_DELEGATED_MICROSOFT"
+	SessionPolicyEnrollmentRequiredCredentialTypesCredentialTypeUpstreamIdp        SessionPolicyEnrollmentRequiredCredentialTypes = "CREDENTIAL_TYPE_UPSTREAM_IDP"
 )
 
-func (e CredentialTypes) ToPointer() *CredentialTypes {
+func (e SessionPolicyEnrollmentRequiredCredentialTypes) ToPointer() *SessionPolicyEnrollmentRequiredCredentialTypes {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *CredentialTypes) IsExact() bool {
+func (e *SessionPolicyEnrollmentRequiredCredentialTypes) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "CREDENTIAL_TYPE_UNSPECIFIED", "CREDENTIAL_TYPE_PASSKEY", "CREDENTIAL_TYPE_PASSWORD", "CREDENTIAL_TYPE_TOTP", "CREDENTIAL_TYPE_EMAIL_OTP", "CREDENTIAL_TYPE_RECOVERY_CODE", "CREDENTIAL_TYPE_DELEGATED_GOOGLE", "CREDENTIAL_TYPE_DELEGATED_MICROSOFT", "CREDENTIAL_TYPE_UPSTREAM_IDP":
@@ -34,10 +34,10 @@ func (e *CredentialTypes) IsExact() bool {
 // SessionPolicyEnrollmentRequired - EnrollmentRequired tells the user to enroll a credential before continuing.
 type SessionPolicyEnrollmentRequired struct {
 	// The credentialTypes field.
-	CredentialTypes []CredentialTypes `json:"credentialTypes,omitempty"`
+	CredentialTypes []SessionPolicyEnrollmentRequiredCredentialTypes `json:"credentialTypes,omitempty"`
 }
 
-func (s *SessionPolicyEnrollmentRequired) GetCredentialTypes() []CredentialTypes {
+func (s *SessionPolicyEnrollmentRequired) GetCredentialTypes() []SessionPolicyEnrollmentRequiredCredentialTypes {
 	if s == nil {
 		return nil
 	}

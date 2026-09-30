@@ -2,15 +2,15 @@
 
 package shared
 
-type AutomationContextContext struct {
+type Context struct {
 }
 
 // The AutomationContext message.
 type AutomationContext struct {
-	Context *AutomationContextContext `json:"context,omitempty"`
+	Context *Context `json:"context,omitempty"`
 }
 
-func (a *AutomationContext) GetContext() *AutomationContextContext {
+func (a *AutomationContext) GetContext() *Context {
 	if a == nil {
 		return nil
 	}

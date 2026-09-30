@@ -8,11 +8,11 @@ type TaskServiceCreateRevokeRequest struct {
 	AppEntitlementID string `json:"appEntitlementId"`
 	// The ID of the app associated with the entitlement.
 	AppID string `json:"appId"`
-	// The application account ID whose access is being revoked. Required unless identityUserId is set. If both are supplied, the account must belong to that user.
+	// The ID of the app user to revoke access from. This field and identityUserId cannot both be set for a given request.
 	AppUserID *string `json:"appUserId,omitempty"`
 	// The description of the request.
 	Description *string `json:"description,omitempty"`
-	// The C1 user ID whose access is being revoked. Required unless appUserId is set. If both are supplied, the account must belong to this user.
+	// The ID of the user associated with the app user we are revoking access from. This field cannot be set if appUserID is also set.
 	IdentityUserID *string `json:"identityUserId,omitempty"`
 }
 

@@ -7,10 +7,10 @@ import (
 	"time"
 )
 
-type ReportParameterSchema struct {
+type ParameterSchema struct {
 }
 
-type ReportParameterValues struct {
+type ParameterValues struct {
 }
 
 // Report is a saved report: the question, the program that answers it, and the
@@ -21,21 +21,18 @@ type Report struct {
 	// The createdByUserId field.
 	CreatedByUserID *string    `json:"createdByUserId,omitempty"`
 	DeletedAt       *time.Time `json:"deletedAt,omitempty"`
-	// The description field.
-	Description *string `json:"description,omitempty"`
 	// The displayName field.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
 	// Separate pointers: the last attempt may have failed while callers still need
 	//  the last renderable result.
-	LatestRunID      *string    `json:"latestRunId,omitempty"`
-	LatestRunSummary *ReportRun `json:"latestRunSummary,omitempty"`
+	LatestRunID *string `json:"latestRunId,omitempty"`
 	// The latestSuccessfulRunId field.
-	LatestSuccessfulRunID *string                `json:"latestSuccessfulRunId,omitempty"`
-	ParameterSchema       *ReportParameterSchema `json:"parameterSchema,omitempty"`
-	ParameterValues       *ReportParameterValues `json:"parameterValues,omitempty"`
-	Program               *ProgramRef            `json:"program,omitempty"`
+	LatestSuccessfulRunID *string          `json:"latestSuccessfulRunId,omitempty"`
+	ParameterSchema       *ParameterSchema `json:"parameterSchema,omitempty"`
+	ParameterValues       *ParameterValues `json:"parameterValues,omitempty"`
+	Program               *ProgramRef      `json:"program,omitempty"`
 	// The editable natural-language question. Only a re-plan reads this.
 	Prompt *string `json:"prompt,omitempty"`
 	// The tenantId field.
@@ -75,13 +72,6 @@ func (r *Report) GetDeletedAt() *time.Time {
 	return r.DeletedAt
 }
 
-func (r *Report) GetDescription() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Description
-}
-
 func (r *Report) GetDisplayName() *string {
 	if r == nil {
 		return nil
@@ -103,13 +93,6 @@ func (r *Report) GetLatestRunID() *string {
 	return r.LatestRunID
 }
 
-func (r *Report) GetLatestRunSummary() *ReportRun {
-	if r == nil {
-		return nil
-	}
-	return r.LatestRunSummary
-}
-
 func (r *Report) GetLatestSuccessfulRunID() *string {
 	if r == nil {
 		return nil
@@ -117,14 +100,14 @@ func (r *Report) GetLatestSuccessfulRunID() *string {
 	return r.LatestSuccessfulRunID
 }
 
-func (r *Report) GetParameterSchema() *ReportParameterSchema {
+func (r *Report) GetParameterSchema() *ParameterSchema {
 	if r == nil {
 		return nil
 	}
 	return r.ParameterSchema
 }
 
-func (r *Report) GetParameterValues() *ReportParameterValues {
+func (r *Report) GetParameterValues() *ParameterValues {
 	if r == nil {
 		return nil
 	}

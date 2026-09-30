@@ -34,8 +34,7 @@ func (e *EnrollmentBehavior) IsExact() bool {
 // RequestCatalogType - The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile
 //
 //	created before the type was recorded; UNSPECIFIED only for a tenant whose
-//	backfill has not been run. Updates require the access profile types feature
-//	and an update mask containing "type".
+//	backfill has not been run.
 type RequestCatalogType string
 
 const (
@@ -139,8 +138,7 @@ type RequestCatalog struct {
 	RequestBundle *bool `json:"requestBundle,omitempty"`
 	// The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile
 	//  created before the type was recorded; UNSPECIFIED only for a tenant whose
-	//  backfill has not been run. Updates require the access profile types feature
-	//  and an update mask containing "type".
+	//  backfill has not been run.
 	Type *RequestCatalogType `json:"type,omitempty"`
 	// Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
 	UnenrollmentBehavior *UnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
@@ -292,11 +290,6 @@ type RequestCatalogInput struct {
 	Published *bool `json:"published,omitempty"`
 	// Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
 	RequestBundle *bool `json:"requestBundle,omitempty"`
-	// The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile
-	//  created before the type was recorded; UNSPECIFIED only for a tenant whose
-	//  backfill has not been run. Updates require the access profile types feature
-	//  and an update mask containing "type".
-	Type *RequestCatalogType `json:"type,omitempty"`
 	// Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
 	UnenrollmentBehavior *UnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
 	// Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
@@ -359,13 +352,6 @@ func (r *RequestCatalogInput) GetRequestBundle() *bool {
 		return nil
 	}
 	return r.RequestBundle
-}
-
-func (r *RequestCatalogInput) GetType() *RequestCatalogType {
-	if r == nil {
-		return nil
-	}
-	return r.Type
 }
 
 func (r *RequestCatalogInput) GetUnenrollmentBehavior() *UnenrollmentBehavior {

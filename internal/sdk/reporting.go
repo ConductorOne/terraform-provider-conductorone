@@ -31,9 +31,7 @@ func newReporting(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, h
 }
 
 // List
-// List returns every report in the tenant, newest first, each carrying the
-//
-//	user who saved it. It is not filtered by author.
+// List returns reports created by the caller, newest first.
 func (s *Reporting) List(ctx context.Context, request operations.C1APIReportingV1ReportingServiceListRequest, opts ...operations.Option) (*operations.C1APIReportingV1ReportingServiceListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -167,7 +165,7 @@ func (s *Reporting) List(ctx context.Context, request operations.C1APIReportingV
 }
 
 // Save
-// Save copies the program behind an already-rendered reporting surface into
+// Save promotes the program behind an already-rendered reporting surface into
 //
 //	a report. The caller identifies the surface; the server resolves which
 //	program produced it. There is no create-from-prompt: the prompt has already
@@ -310,9 +308,8 @@ func (s *Reporting) Save(ctx context.Context, request *shared.ReportingServiceSa
 // Delete
 // Delete removes a report by ID. The report's saved program is removed with
 //
-//	it, so the report can no longer be re-run. Any caller holding this
-//	permission may delete any report in the tenant; the read-only
-//	administrator's role does not carry it.
+//	it, so the report can no longer be re-run. Only the report's creator can
+//	delete it.
 func (s *Reporting) Delete(ctx context.Context, request operations.C1APIReportingV1ReportingServiceDeleteRequest, opts ...operations.Option) (*operations.C1APIReportingV1ReportingServiceDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -451,8 +448,7 @@ func (s *Reporting) Delete(ctx context.Context, request operations.C1APIReportin
 // Get
 // Get returns a report by ID, including its latest run and latest successful
 //
-//	run. Reports are not scoped by author: reaching this service is the scope,
-//	and only tenant administrators hold its roles.
+//	run. Reports are visible only to the user who created them.
 func (s *Reporting) Get(ctx context.Context, request operations.C1APIReportingV1ReportingServiceGetRequest, opts ...operations.Option) (*operations.C1APIReportingV1ReportingServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -582,10 +578,9 @@ func (s *Reporting) Get(ctx context.Context, request operations.C1APIReportingV1
 }
 
 // Update
-// Update modifies a report's display name, prompt, or parameter values. Any
+// Update modifies a report's display name, prompt, or parameter values.
 //
-//	caller holding this permission may update any report in the tenant; the
-//	read-only administrator's role does not carry it.
+//	Only the report's creator can update it.
 func (s *Reporting) Update(ctx context.Context, request operations.C1APIReportingV1ReportingServiceUpdateRequest, opts ...operations.Option) (*operations.C1APIReportingV1ReportingServiceUpdateResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -702,143 +697,6 @@ func (s *Reporting) Update(ctx context.Context, request operations.C1APIReportin
 			}
 
 			res.ReportingServiceUpdateResponse = &out
-		default:
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
-		}
-	default:
-		rawBody, err := utils.ConsumeRawBody(httpRes)
-		if err != nil {
-			return nil, err
-		}
-		return nil, errors.NewSDKError("unknown status code returned", httpRes.StatusCode, string(rawBody), httpRes)
-	}
-
-	return res, nil
-
-}
-
-// GetProgram - Get Program
-// GetProgram returns the report's current durable source without attaching it
-//
-//	to the notification-driven report response. Scoped like Get: any caller who
-//	may reach this service.
-func (s *Reporting) GetProgram(ctx context.Context, request operations.C1APIReportingV1ReportingServiceGetProgramRequest, opts ...operations.Option) (*operations.C1APIReportingV1ReportingServiceGetProgramResponse, error) {
-	o := operations.Options{}
-	supportedOptions := []string{
-		operations.SupportedOptionTimeout,
-	}
-
-	for _, opt := range opts {
-		if err := opt(&o, supportedOptions...); err != nil {
-			return nil, fmt.Errorf("error applying option: %w", err)
-		}
-	}
-
-	var baseURL string
-	if o.ServerURL == nil {
-		baseURL = utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	} else {
-		baseURL = *o.ServerURL
-	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/api/v1/reporting/reports/{id}/program", request, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error generating URL: %w", err)
-	}
-
-	hookCtx := hooks.HookContext{
-		SDK:              s.rootSDK,
-		SDKConfiguration: s.sdkConfiguration,
-		BaseURL:          baseURL,
-		Context:          ctx,
-		OperationID:      "c1.api.reporting.v1.ReportingService.GetProgram",
-		OAuth2Scopes:     nil,
-		SecuritySource:   s.sdkConfiguration.Security,
-	}
-
-	timeout := o.Timeout
-	if timeout == nil {
-		timeout = s.sdkConfiguration.Timeout
-	}
-
-	if timeout != nil {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(ctx, *timeout)
-		defer cancel()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, "GET", opURL, nil)
-	if err != nil {
-		return nil, fmt.Errorf("error creating request: %w", err)
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-
-	if err := utils.PopulateQueryParams(ctx, req, request, nil, nil); err != nil {
-		return nil, fmt.Errorf("error populating query params: %w", err)
-	}
-
-	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
-		return nil, err
-	}
-
-	for k, v := range o.SetHeaders {
-		req.Header.Set(k, v)
-	}
-
-	req, err = s.hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
-	if err != nil {
-		return nil, err
-	}
-
-	httpRes, err := s.sdkConfiguration.Client.Do(req)
-	if err != nil || httpRes == nil {
-		if err != nil {
-			err = fmt.Errorf("error sending request: %w", err)
-		} else {
-			err = fmt.Errorf("error sending request: no response")
-		}
-
-		_, err = s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
-		return nil, err
-	} else if utils.MatchStatusCodes([]string{}, httpRes.StatusCode) {
-		_httpRes, err := s.hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, httpRes, nil)
-		if err != nil {
-			return nil, err
-		} else if _httpRes != nil {
-			httpRes = _httpRes
-		}
-	} else {
-		httpRes, err = s.hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	res := &operations.C1APIReportingV1ReportingServiceGetProgramResponse{
-		StatusCode:  httpRes.StatusCode,
-		ContentType: httpRes.Header.Get("Content-Type"),
-		RawResponse: httpRes,
-	}
-
-	switch {
-	case httpRes.StatusCode == 200:
-		switch {
-		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
-			rawBody, err := utils.ConsumeRawBody(httpRes)
-			if err != nil {
-				return nil, err
-			}
-
-			var out shared.ReportingServiceGetProgramResponse
-			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
-				return nil, err
-			}
-
-			res.ReportingServiceGetProgramResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

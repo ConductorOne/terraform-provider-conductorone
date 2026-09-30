@@ -7,8 +7,7 @@ package shared
 // This message contains a oneof named schedule. Only a single field of the following list may be set at a time:
 //   - cron
 type UpdateConnectorScheduleRequest struct {
-	Cron          *ConnectorScheduleCron `json:"cron,omitempty"`
-	Justification *ChangeJustification   `json:"justification,omitempty"`
+	Cron *ConnectorScheduleCron `json:"cron,omitempty"`
 }
 
 func (u *UpdateConnectorScheduleRequest) GetCron() *ConnectorScheduleCron {
@@ -16,11 +15,4 @@ func (u *UpdateConnectorScheduleRequest) GetCron() *ConnectorScheduleCron {
 		return nil
 	}
 	return u.Cron
-}
-
-func (u *UpdateConnectorScheduleRequest) GetJustification() *ChangeJustification {
-	if u == nil {
-		return nil
-	}
-	return u.Justification
 }

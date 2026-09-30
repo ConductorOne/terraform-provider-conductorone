@@ -15,7 +15,6 @@ type MyFundLimit struct {
 	AppID     *string        `json:"appId,omitempty"`
 	Controls  *SpendControls `json:"controls,omitempty"`
 	CreatedAt *time.Time     `json:"createdAt,omitempty"`
-	DeletedAt *time.Time     `json:"deletedAt,omitempty"`
 	UpdatedAt *time.Time     `json:"updatedAt,omitempty"`
 }
 
@@ -49,13 +48,6 @@ func (m *MyFundLimit) GetCreatedAt() *time.Time {
 		return nil
 	}
 	return m.CreatedAt
-}
-
-func (m *MyFundLimit) GetDeletedAt() *time.Time {
-	if m == nil {
-		return nil
-	}
-	return m.DeletedAt
 }
 
 func (m *MyFundLimit) GetUpdatedAt() *time.Time {

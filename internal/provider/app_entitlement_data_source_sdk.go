@@ -671,21 +671,21 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	if r.ExcludedEntitlementRefs != nil {
 		excludedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.ExcludedEntitlementRefs))
 		for excludedEntitlementRefsIndex := range r.ExcludedEntitlementRefs {
-			appId1 := new(string)
+			appID := new(string)
 			if !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.IsUnknown() && !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.IsNull() {
-				*appId1 = r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.ValueString()
+				*appID = r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.ValueString()
 			} else {
-				appId1 = nil
+				appID = nil
 			}
-			id1 := new(string)
+			id := new(string)
 			if !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.IsUnknown() && !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.IsNull() {
-				*id1 = r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.ValueString()
+				*id = r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.ValueString()
 			} else {
-				id1 = nil
+				id = nil
 			}
 			excludedEntitlementRefs = append(excludedEntitlementRefs, shared.AppEntitlementRef{
-				AppID: appId1,
-				ID:    id1,
+				AppID: appID,
+				ID:    id,
 			})
 		}
 	}
@@ -724,14 +724,14 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	if r.PolicyRefs != nil {
 		policyRefs = make([]shared.PolicyRef, 0, len(r.PolicyRefs))
 		for policyRefsIndex := range r.PolicyRefs {
-			id2 := new(string)
+			id1 := new(string)
 			if !r.PolicyRefs[policyRefsIndex].ID.IsUnknown() && !r.PolicyRefs[policyRefsIndex].ID.IsNull() {
-				*id2 = r.PolicyRefs[policyRefsIndex].ID.ValueString()
+				*id1 = r.PolicyRefs[policyRefsIndex].ID.ValueString()
 			} else {
-				id2 = nil
+				id1 = nil
 			}
 			policyRefs = append(policyRefs, shared.PolicyRef{
-				ID: id2,
+				ID: id1,
 			})
 		}
 	}
@@ -745,21 +745,21 @@ func (r *AppEntitlementDataSourceModel) ToSharedAppEntitlementSearchServiceSearc
 	if r.Refs != nil {
 		refs = make([]shared.AppEntitlementRef, 0, len(r.Refs))
 		for refsIndex := range r.Refs {
-			appId2 := new(string)
+			appId1 := new(string)
 			if !r.Refs[refsIndex].AppID.IsUnknown() && !r.Refs[refsIndex].AppID.IsNull() {
-				*appId2 = r.Refs[refsIndex].AppID.ValueString()
+				*appId1 = r.Refs[refsIndex].AppID.ValueString()
 			} else {
-				appId2 = nil
+				appId1 = nil
 			}
-			id3 := new(string)
+			id2 := new(string)
 			if !r.Refs[refsIndex].ID.IsUnknown() && !r.Refs[refsIndex].ID.IsNull() {
-				*id3 = r.Refs[refsIndex].ID.ValueString()
+				*id2 = r.Refs[refsIndex].ID.ValueString()
 			} else {
-				id3 = nil
+				id2 = nil
 			}
 			refs = append(refs, shared.AppEntitlementRef{
-				AppID: appId2,
-				ID:    id3,
+				AppID: appId1,
+				ID:    id2,
 			})
 		}
 	}

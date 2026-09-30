@@ -4,16 +4,8 @@ package shared
 
 // The TriggerCustomAnalysisRequest message.
 type TriggerCustomAnalysisRequest struct {
-	AccessScope *AccessScope `json:"accessScope,omitempty"`
 	// The profileFilters field.
 	ProfileFilters []ProfileFilter `json:"profileFilters,omitempty"`
-}
-
-func (t *TriggerCustomAnalysisRequest) GetAccessScope() *AccessScope {
-	if t == nil {
-		return nil
-	}
-	return t.AccessScope
 }
 
 func (t *TriggerCustomAnalysisRequest) GetProfileFilters() []ProfileFilter {

@@ -2,10 +2,5 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type PasswordField struct {
-	Multiline types.Bool `tfsdk:"multiline"`
 }

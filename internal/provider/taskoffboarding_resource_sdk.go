@@ -324,7 +324,6 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 									fields.StringField.PasswordField = nil
 								} else {
 									fields.StringField.PasswordField = &tfTypes.PasswordField{}
-									fields.StringField.PasswordField.Multiline = types.BoolPointerValue(fieldsItem.StringField.PasswordField.Multiline)
 								}
 								if fieldsItem.StringField.PickerField == nil {
 									fields.StringField.PickerField = nil
@@ -1265,7 +1264,6 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 												fields1.StringField.PasswordField = nil
 											} else {
 												fields1.StringField.PasswordField = &tfTypes.PasswordField{}
-												fields1.StringField.PasswordField.Multiline = types.BoolPointerValue(fieldsItem1.StringField.PasswordField.Multiline)
 											}
 											if fieldsItem1.StringField.PickerField == nil {
 												fields1.StringField.PickerField = nil
@@ -2603,7 +2601,6 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 													fields2.StringField.PasswordField = nil
 												} else {
 													fields2.StringField.PasswordField = &tfTypes.PasswordField{}
-													fields2.StringField.PasswordField.Multiline = types.BoolPointerValue(fieldsItem2.StringField.PasswordField.Multiline)
 												}
 												if fieldsItem2.StringField.PickerField == nil {
 													fields2.StringField.PickerField = nil
@@ -4636,25 +4633,6 @@ func (r *TaskOffboardingResourceModel) RefreshFromSharedTaskServiceCreateOffboar
 						}
 						r.TaskView.Task.Type.Action.CreatedAppResourceID = types.StringPointerValue(resp.TaskView.Task.Type.Action.CreatedAppResourceID)
 						r.TaskView.Task.Type.Action.CreatedAppResourceTypeID = types.StringPointerValue(resp.TaskView.Task.Type.Action.CreatedAppResourceTypeID)
-						if resp.TaskView.Task.Type.Action.CredentialIssue == nil {
-							r.TaskView.Task.Type.Action.CredentialIssue = nil
-						} else {
-							r.TaskView.Task.Type.Action.CredentialIssue = &tfTypes.CredentialIssueTarget{}
-							r.TaskView.Task.Type.Action.CredentialIssue.Duration = types.StringPointerValue(resp.TaskView.Task.Type.Action.CredentialIssue.Duration)
-							r.TaskView.Task.Type.Action.CredentialIssue.IdentityAppUserID = types.StringPointerValue(resp.TaskView.Task.Type.Action.CredentialIssue.IdentityAppUserID)
-							r.TaskView.Task.Type.Action.CredentialIssue.IdentityResourceID = types.StringPointerValue(resp.TaskView.Task.Type.Action.CredentialIssue.IdentityResourceID)
-							r.TaskView.Task.Type.Action.CredentialIssue.IdentityUserID = types.StringPointerValue(resp.TaskView.Task.Type.Action.CredentialIssue.IdentityUserID)
-							r.TaskView.Task.Type.Action.CredentialIssue.OfferingID = types.StringPointerValue(resp.TaskView.Task.Type.Action.CredentialIssue.OfferingID)
-							r.TaskView.Task.Type.Action.CredentialIssue.RequestCatalogID = types.StringPointerValue(resp.TaskView.Task.Type.Action.CredentialIssue.RequestCatalogID)
-							if resp.TaskView.Task.Type.Action.CredentialIssue.Scopes != nil {
-								r.TaskView.Task.Type.Action.CredentialIssue.Scopes = make([]types.String, 0, len(resp.TaskView.Task.Type.Action.CredentialIssue.Scopes))
-								for _, v := range resp.TaskView.Task.Type.Action.CredentialIssue.Scopes {
-									r.TaskView.Task.Type.Action.CredentialIssue.Scopes = append(r.TaskView.Task.Type.Action.CredentialIssue.Scopes, types.StringValue(v))
-								}
-							} else {
-								r.TaskView.Task.Type.Action.CredentialIssue.Scopes = nil
-							}
-						}
 						r.TaskView.Task.Type.Action.DisplayName = types.StringPointerValue(resp.TaskView.Task.Type.Action.DisplayName)
 						if resp.TaskView.Task.Type.Action.Finding == nil {
 							r.TaskView.Task.Type.Action.Finding = nil

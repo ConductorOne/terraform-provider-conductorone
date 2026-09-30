@@ -13,7 +13,6 @@ import (
 func (r *FunctionDataSourceModel) RefreshFromSharedFunction(ctx context.Context, resp *shared.Function) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	r.BrowserEnabled = types.BoolPointerValue(resp.BrowserEnabled)
 	r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 	r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 	r.Description = types.StringPointerValue(resp.Description)
@@ -121,31 +120,11 @@ func (r *FunctionDataSourceModel) ToSharedFunctionsSearchRequest(ctx context.Con
 	} else {
 		query = nil
 	}
-	var sortOptions *shared.SortOptions
-	if r.SortOptions != nil {
-		descending := new(bool)
-		if !r.SortOptions.Descending.IsUnknown() && !r.SortOptions.Descending.IsNull() {
-			*descending = r.SortOptions.Descending.ValueBool()
-		} else {
-			descending = nil
-		}
-		orderBy := new(string)
-		if !r.SortOptions.OrderBy.IsUnknown() && !r.SortOptions.OrderBy.IsNull() {
-			*orderBy = r.SortOptions.OrderBy.ValueString()
-		} else {
-			orderBy = nil
-		}
-		sortOptions = &shared.SortOptions{
-			Descending: descending,
-			OrderBy:    orderBy,
-		}
-	}
 	out := shared.FunctionsSearchRequest{
 		FunctionTypes: functionTypes,
 		PageSize:      pageSize,
 		PageToken:     pageToken,
 		Query:         query,
-		SortOptions:   sortOptions,
 	}
 
 	return &out, diags

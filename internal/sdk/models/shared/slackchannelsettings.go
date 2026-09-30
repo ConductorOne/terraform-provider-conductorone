@@ -13,7 +13,6 @@ type SlackChannelSettings struct {
 	// The enabled field.
 	Enabled        *bool                     `json:"enabled,omitempty"`
 	ExpiringAccess *ExpiringAccessPreference `json:"expiringAccess,omitempty"`
-	Findings       *FindingsPreference       `json:"findings,omitempty"`
 	// The isConfigured field.
 	IsConfigured        *bool                          `json:"isConfigured,omitempty"`
 	ProvisioningRequest *ProvisioningRequestPreference `json:"provisioningRequest,omitempty"`
@@ -77,13 +76,6 @@ func (s *SlackChannelSettings) GetExpiringAccess() *ExpiringAccessPreference {
 		return nil
 	}
 	return s.ExpiringAccess
-}
-
-func (s *SlackChannelSettings) GetFindings() *FindingsPreference {
-	if s == nil {
-		return nil
-	}
-	return s.Findings
 }
 
 func (s *SlackChannelSettings) GetIsConfigured() *bool {

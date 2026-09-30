@@ -189,12 +189,6 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 	} else {
 		requestBundle = nil
 	}
-	typeVar := new(shared.RequestCatalogType)
-	if !r.Type.IsUnknown() && !r.Type.IsNull() {
-		*typeVar = shared.RequestCatalogType(r.Type.ValueString())
-	} else {
-		typeVar = nil
-	}
 	unenrollmentBehavior := new(shared.UnenrollmentBehavior)
 	if !r.UnenrollmentBehavior.IsUnknown() && !r.UnenrollmentBehavior.IsNull() {
 		*unenrollmentBehavior = shared.UnenrollmentBehavior(r.UnenrollmentBehavior.ValueString())
@@ -222,7 +216,6 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogInput(ctx context.Con
 		ID:                              id,
 		Published:                       published,
 		RequestBundle:                   requestBundle,
-		Type:                            typeVar,
 		UnenrollmentBehavior:            unenrollmentBehavior,
 		UnenrollmentEntitlementBehavior: unenrollmentEntitlementBehavior,
 		VisibleToEveryone:               visibleToEveryone,
@@ -326,11 +319,8 @@ func (r *AccessProfileResourceModel) ToSharedRequestCatalogManagementServiceUpda
 		return nil, diags
 	}
 
-	updateMask := "annotations,description,displayName,enrollmentBehavior,published,requestBundle," +
-		"unenrollmentBehavior,unenrollmentEntitlementBehavior,visibleToEveryone"
 	out := shared.RequestCatalogManagementServiceUpdateRequest{
-		Catalog:    catalog,
-		UpdateMask: &updateMask,
+		Catalog: catalog,
 	}
 
 	return &out, diags

@@ -4,17 +4,15 @@ package shared
 
 // FindingTransform is a single mutation applied to a finding by a matched
 //
-//	transformation rule. Structured ops are the authoring surface; a future
-//	raw-CEL arm continues numbering at 104.
+//	transformation rule. Structured ops are the v1 authoring surface; a future
+//	raw-CEL arm continues numbering at 103.
 //
 // This message contains a oneof named kind. Only a single field of the following list may be set at a time:
 //   - setSeverity
 //   - setTags
 //   - removeTags
-//   - setAssignee
 type FindingTransform struct {
 	RemoveTags  *RemoveTags  `json:"removeTags,omitempty"`
-	SetAssignee *SetAssignee `json:"setAssignee,omitempty"`
 	SetSeverity *SetSeverity `json:"setSeverity,omitempty"`
 	SetTags     *SetTags     `json:"setTags,omitempty"`
 }
@@ -24,13 +22,6 @@ func (f *FindingTransform) GetRemoveTags() *RemoveTags {
 		return nil
 	}
 	return f.RemoveTags
-}
-
-func (f *FindingTransform) GetSetAssignee() *SetAssignee {
-	if f == nil {
-		return nil
-	}
-	return f.SetAssignee
 }
 
 func (f *FindingTransform) GetSetSeverity() *SetSeverity {

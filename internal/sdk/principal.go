@@ -1373,12 +1373,17 @@ func (s *Principal) UpdateCredential(ctx context.Context, request operations.C1A
 }
 
 // AddBinding - Add Binding
-// AddBinding associates a tenant-scoped subject with an existing service
+// AddBinding links a tenant-scoped subject (a function today; future kinds
 //
-//	principal. Subjects support zero-to-many bindings; the same pair is
-//	idempotent and a soft-deleted pair is restored. Associations do not define
-//	runtime identity selection. Requires SERVICE_PRINCIPALS and the subject's
-//	feature flag, plus existing service-principal and subject permissions.
+//	tomorrow) to a service principal. Outbound c1-api calls made on the
+//	subject's behalf can then be minted as user:<service_principal_id> via
+//	an RFC 8693 token-exchange (act-as) flow. Many-aware: a subject may
+//	hold multiple bindings at the storage layer. Idempotent on
+//	(subject, service_principal_id) — adds the row if missing,
+//	resurrects it if soft-deleted, no-op if already active. Consumers
+//	that need 0-or-1 cardinality (Functions today) enforce it
+//	client-side via ListBindings + DeleteBinding. Requires the
+//	SERVICE_PRINCIPALS feature flag.
 func (s *Principal) AddBinding(ctx context.Context, request *shared.ServicePrincipalServiceAddBindingRequest, opts ...operations.Option) (*operations.C1APIServicePrincipalV1ServicePrincipalServiceAddBindingResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

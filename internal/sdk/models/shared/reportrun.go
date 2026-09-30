@@ -10,40 +10,7 @@ import (
 type Lineage struct {
 }
 
-type ParameterSchema struct {
-}
-
-type ParameterValues struct {
-}
-
-// Phase - Durable execution progress and milestone timestamps. Pending refreshes
-//
-//	expose their current phase; terminal runs retain timings for analysis.
-type Phase string
-
-const (
-	PhaseReportRunPhaseUnspecified      Phase = "REPORT_RUN_PHASE_UNSPECIFIED"
-	PhaseReportRunPhaseRequested        Phase = "REPORT_RUN_PHASE_REQUESTED"
-	PhaseReportRunPhasePreparingScratch Phase = "REPORT_RUN_PHASE_PREPARING_SCRATCH"
-	PhaseReportRunPhaseRunningFunction  Phase = "REPORT_RUN_PHASE_RUNNING_FUNCTION"
-	PhaseReportRunPhaseFinalizingOutput Phase = "REPORT_RUN_PHASE_FINALIZING_OUTPUT"
-	PhaseReportRunPhaseSucceeded        Phase = "REPORT_RUN_PHASE_SUCCEEDED"
-	PhaseReportRunPhaseFailed           Phase = "REPORT_RUN_PHASE_FAILED"
-)
-
-func (e Phase) ToPointer() *Phase {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Phase) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "REPORT_RUN_PHASE_UNSPECIFIED", "REPORT_RUN_PHASE_REQUESTED", "REPORT_RUN_PHASE_PREPARING_SCRATCH", "REPORT_RUN_PHASE_RUNNING_FUNCTION", "REPORT_RUN_PHASE_FINALIZING_OUTPUT", "REPORT_RUN_PHASE_SUCCEEDED", "REPORT_RUN_PHASE_FAILED":
-			return true
-		}
-	}
-	return false
+type ReportRunParameterValues struct {
 }
 
 // ReportRunStatus - The status field.
@@ -76,52 +43,39 @@ func (e *ReportRunStatus) IsExact() bool {
 type ReportRun struct {
 	// The artifactUrl field.
 	ArtifactURL *string `json:"artifactUrl,omitempty"`
-	// Historical source-surface address. New runs render from surface_snapshot
-	//  without a live A2UI address and leave these empty.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	// Where the output came from, kept for provenance rather than to read it back:
+	//  the surface itself is in surface_snapshot. Both are required to address a
+	//  surface, and a headless refresh has neither.
 	ConversationID *string    `json:"conversationId,omitempty"`
 	CreatedAt      *time.Time `json:"createdAt,omitempty"`
 	DeletedAt      *time.Time `json:"deletedAt,omitempty"`
-	// The immutable user instruction that produced an applied edit. Empty for
-	//  an initial save and for headless refreshes.
-	EditInstruction *string `json:"editInstruction,omitempty"`
 	// The error field.
-	Error        *string    `json:"error,omitempty"`
-	ExpiresAt    *time.Time `json:"expiresAt,omitempty"`
-	FinalizingAt *time.Time `json:"finalizingAt,omitempty"`
-	FinishedAt   *time.Time `json:"finishedAt,omitempty"`
+	Error     *string    `json:"error,omitempty"`
+	ExpiresAt *time.Time `json:"expiresAt,omitempty"`
 	// KSUID, so runs sort by time.
 	ID *string `json:"id,omitempty"`
 	// Not a live join: the originating code-mode invocation is archived at the
 	//  code-mode retention cutoff.
-	InvocationID    *string          `json:"invocationId,omitempty"`
-	Lineage         *Lineage         `json:"lineage,omitempty"`
-	ParameterSchema *ParameterSchema `json:"parameterSchema,omitempty"`
-	ParameterValues *ParameterValues `json:"parameterValues,omitempty"`
-	// Durable execution progress and milestone timestamps. Pending refreshes
-	//  expose their current phase; terminal runs retain timings for analysis.
-	Phase       *Phase      `json:"phase,omitempty"`
-	PreparingAt *time.Time  `json:"preparingAt,omitempty"`
-	Program     *ProgramRef `json:"program,omitempty"`
+	InvocationID    *string                   `json:"invocationId,omitempty"`
+	Lineage         *Lineage                  `json:"lineage,omitempty"`
+	ParameterValues *ReportRunParameterValues `json:"parameterValues,omitempty"`
+	Program         *ProgramRef               `json:"program,omitempty"`
 	// The reportId field.
-	ReportID    *string    `json:"reportId,omitempty"`
-	RequestedAt *time.Time `json:"requestedAt,omitempty"`
+	ReportID *string `json:"reportId,omitempty"`
 	// Copied from the invocation's user_id, which is archived at the code-mode
 	//  retention cutoff. Not Report.created_by_user_id — a refresh may execute as a
 	//  different principal than the report's owner.
-	RunByUserID *string    `json:"runByUserId,omitempty"`
-	RunningAt   *time.Time `json:"runningAt,omitempty"`
-	// Retired copied provenance. GetRunProvenance derives provenance from the
-	//  durable surface and program snapshots for both saved and refreshed runs.
+	RunByUserID *string `json:"runByUserId,omitempty"`
+	// Never written: for a run saved out of a conversation, provenance is read back
+	//  through A2UIService.GetSurfaceProvenance, which reads the surface's own
+	//  components. A headless refresh has no conversation or surface to ask about,
+	//  and how such a run reports what it read is still open.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	Sources []ReportSource `json:"sources,omitempty"`
 	// The status field.
 	Status *ReportRunStatus `json:"status,omitempty"`
 	// The surfaceId field.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	SurfaceID       *string      `json:"surfaceId,omitempty"`
 	SurfaceSnapshot *A2UISurface `json:"surfaceSnapshot,omitempty"`
 	// The tenantId field.
@@ -170,13 +124,6 @@ func (r *ReportRun) GetDeletedAt() *time.Time {
 	return r.DeletedAt
 }
 
-func (r *ReportRun) GetEditInstruction() *string {
-	if r == nil {
-		return nil
-	}
-	return r.EditInstruction
-}
-
 func (r *ReportRun) GetError() *string {
 	if r == nil {
 		return nil
@@ -189,20 +136,6 @@ func (r *ReportRun) GetExpiresAt() *time.Time {
 		return nil
 	}
 	return r.ExpiresAt
-}
-
-func (r *ReportRun) GetFinalizingAt() *time.Time {
-	if r == nil {
-		return nil
-	}
-	return r.FinalizingAt
-}
-
-func (r *ReportRun) GetFinishedAt() *time.Time {
-	if r == nil {
-		return nil
-	}
-	return r.FinishedAt
 }
 
 func (r *ReportRun) GetID() *string {
@@ -226,32 +159,11 @@ func (r *ReportRun) GetLineage() *Lineage {
 	return r.Lineage
 }
 
-func (r *ReportRun) GetParameterSchema() *ParameterSchema {
-	if r == nil {
-		return nil
-	}
-	return r.ParameterSchema
-}
-
-func (r *ReportRun) GetParameterValues() *ParameterValues {
+func (r *ReportRun) GetParameterValues() *ReportRunParameterValues {
 	if r == nil {
 		return nil
 	}
 	return r.ParameterValues
-}
-
-func (r *ReportRun) GetPhase() *Phase {
-	if r == nil {
-		return nil
-	}
-	return r.Phase
-}
-
-func (r *ReportRun) GetPreparingAt() *time.Time {
-	if r == nil {
-		return nil
-	}
-	return r.PreparingAt
 }
 
 func (r *ReportRun) GetProgram() *ProgramRef {
@@ -268,25 +180,11 @@ func (r *ReportRun) GetReportID() *string {
 	return r.ReportID
 }
 
-func (r *ReportRun) GetRequestedAt() *time.Time {
-	if r == nil {
-		return nil
-	}
-	return r.RequestedAt
-}
-
 func (r *ReportRun) GetRunByUserID() *string {
 	if r == nil {
 		return nil
 	}
 	return r.RunByUserID
-}
-
-func (r *ReportRun) GetRunningAt() *time.Time {
-	if r == nil {
-		return nil
-	}
-	return r.RunningAt
 }
 
 func (r *ReportRun) GetSources() []ReportSource {

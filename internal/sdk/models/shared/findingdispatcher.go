@@ -37,10 +37,7 @@ func (e *TierOverride) IsExact() bool {
 //   - webhook
 //   - notify
 type FindingDispatcher struct {
-	// Deprecated: never rendered anywhere. Still accepted and round-tripped so a
-	//  stored label is not destroyed.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	// Human-facing label. Optional.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Per-dispatcher kill switch.
 	Enabled        *bool                     `json:"enabled,omitempty"`

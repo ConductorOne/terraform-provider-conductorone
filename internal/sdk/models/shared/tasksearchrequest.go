@@ -157,6 +157,8 @@ func (e *GrantOutcomes) IsExact() bool {
 }
 
 // PendingActionFilter - Filter tasks by pending action status. Only applies when exactly one access_review_id is specified.
+//
+//	Requires the REVIEWS_PENDING_ACTIONS feature flag to be enabled.
 type PendingActionFilter string
 
 const (
@@ -351,6 +353,7 @@ type TaskSearchRequest struct {
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
 	// Filter tasks by pending action status. Only applies when exactly one access_review_id is specified.
+	//  Requires the REVIEWS_PENDING_ACTIONS feature flag to be enabled.
 	PendingActionFilter *PendingActionFilter `json:"pendingActionFilter,omitempty"`
 	// Search tasks that were acted on by any of these users.
 	PreviouslyActedOnIds []string `json:"previouslyActedOnIds,omitempty"`

@@ -7,9 +7,8 @@ import (
 )
 
 type EntitlementInclusionCriteria struct {
-	AppIds                 []types.String    `tfsdk:"app_ids"`
-	ComplianceFrameworkIds []types.String    `tfsdk:"compliance_framework_ids"`
-	ResourceTypeIds        []types.String    `tfsdk:"resource_type_ids"`
-	ResourceTypeRefs       []ResourceTypeRef `tfsdk:"resource_type_refs"`
-	RiskLevelIds           []types.String    `tfsdk:"risk_level_ids"`
+	AppIds                 []types.String `tfsdk:"app_ids"`
+	ComplianceFrameworkIds []types.String `tfsdk:"compliance_framework_ids"`
+	ResourceTypeIds        []types.String `tfsdk:"resource_type_ids"`
+	RiskLevelIds           []types.String `tfsdk:"risk_level_ids"`
 }

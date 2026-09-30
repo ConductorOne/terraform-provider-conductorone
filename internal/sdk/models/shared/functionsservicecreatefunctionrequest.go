@@ -11,7 +11,6 @@ const (
 	FunctionsServiceCreateFunctionRequestFunctionTypeFunctionTypeUnspecified FunctionsServiceCreateFunctionRequestFunctionType = "FUNCTION_TYPE_UNSPECIFIED"
 	FunctionsServiceCreateFunctionRequestFunctionTypeFunctionTypeAny         FunctionsServiceCreateFunctionRequestFunctionType = "FUNCTION_TYPE_ANY"
 	FunctionsServiceCreateFunctionRequestFunctionTypeFunctionTypeCodeMode    FunctionsServiceCreateFunctionRequestFunctionType = "FUNCTION_TYPE_CODE_MODE"
-	FunctionsServiceCreateFunctionRequestFunctionTypeFunctionTypeConnector   FunctionsServiceCreateFunctionRequestFunctionType = "FUNCTION_TYPE_CONNECTOR"
 )
 
 func (e FunctionsServiceCreateFunctionRequestFunctionType) ToPointer() *FunctionsServiceCreateFunctionRequestFunctionType {
@@ -22,7 +21,7 @@ func (e FunctionsServiceCreateFunctionRequestFunctionType) ToPointer() *Function
 func (e *FunctionsServiceCreateFunctionRequestFunctionType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE", "FUNCTION_TYPE_CONNECTOR":
+		case "FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE":
 			return true
 		}
 	}
@@ -31,10 +30,6 @@ func (e *FunctionsServiceCreateFunctionRequestFunctionType) IsExact() bool {
 
 // The FunctionsServiceCreateFunctionRequest message.
 type FunctionsServiceCreateFunctionRequest struct {
-	// browser_enabled creates the function as browser-capable. See
-	//  Function.browser_enabled. Rejected on FUNCTION_TYPE_ANY: browser
-	//  support is code-mode-only today.
-	BrowserEnabled *bool `json:"browserEnabled,omitempty"`
 	// The commit message describing the initial code submission.
 	CommitMessage *string `json:"commitMessage,omitempty"`
 	// A description of what the function does.
@@ -58,13 +53,6 @@ type FunctionsServiceCreateFunctionRequest struct {
 	//
 	//  The handler MUST return a JSON object — not a primitive, array, or null.
 	InitialContent map[string]string `json:"initialContent,omitempty"`
-}
-
-func (f *FunctionsServiceCreateFunctionRequest) GetBrowserEnabled() *bool {
-	if f == nil {
-		return nil
-	}
-	return f.BrowserEnabled
 }
 
 func (f *FunctionsServiceCreateFunctionRequest) GetCommitMessage() *string {

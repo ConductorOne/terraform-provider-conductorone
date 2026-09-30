@@ -4,20 +4,10 @@ package shared
 
 // The ReportingServiceGetRunProvenanceResponse message.
 type ReportingServiceGetRunProvenanceResponse struct {
-	// The immutable user instruction that produced an applied edit.
-	EditInstruction *string `json:"editInstruction,omitempty"`
 	// The programCommitId field.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ProgramCommitID *string `json:"programCommitId,omitempty"`
-	// Deprecated tombstones. Source-owned reports never populate Function or
-	//  commit identity; these declarations remain only because c1api forbids
-	//  deleting published fields.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	// The programFunctionId field.
 	ProgramFunctionID *string `json:"programFunctionId,omitempty"`
-	// The durable source version this run pinned.
-	ProgramID *string `json:"programId,omitempty"`
 	// The parameters this run was bound to, as JSON. "{}" for a program that
 	//  takes none — a real answer, distinct from absent.
 	ProgramInput *string `json:"programInput,omitempty"`
@@ -33,13 +23,6 @@ type ReportingServiceGetRunProvenanceResponse struct {
 	StepsAvailable *bool `json:"stepsAvailable,omitempty"`
 }
 
-func (r *ReportingServiceGetRunProvenanceResponse) GetEditInstruction() *string {
-	if r == nil {
-		return nil
-	}
-	return r.EditInstruction
-}
-
 func (r *ReportingServiceGetRunProvenanceResponse) GetProgramCommitID() *string {
 	if r == nil {
 		return nil
@@ -52,13 +35,6 @@ func (r *ReportingServiceGetRunProvenanceResponse) GetProgramFunctionID() *strin
 		return nil
 	}
 	return r.ProgramFunctionID
-}
-
-func (r *ReportingServiceGetRunProvenanceResponse) GetProgramID() *string {
-	if r == nil {
-		return nil
-	}
-	return r.ProgramID
 }
 
 func (r *ReportingServiceGetRunProvenanceResponse) GetProgramInput() *string {

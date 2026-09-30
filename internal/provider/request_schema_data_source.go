@@ -377,14 +377,7 @@ func (r *RequestSchemaDataSource) Schema(ctx context.Context, req datasource.Sch
 									Description: `The defaultValue field.`,
 								},
 								"password_field": schema.SingleNestedAttribute{
-									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"multiline": schema.BoolAttribute{
-											Computed: true,
-											MarkdownDescription: `Render the masked input as a multiline textarea, for secrets that span` + "\n" +
-												` lines such as a PEM-encoded key.`,
-										},
-									},
+									Computed:    true,
 									Description: `The PasswordField message.`,
 								},
 								"picker_field": schema.SingleNestedAttribute{

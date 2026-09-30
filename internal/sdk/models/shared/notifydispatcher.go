@@ -2,12 +2,7 @@
 
 package shared
 
-// DetailLevel - Deprecated: no longer honored. Every finding notification renders full
-//
-//	detail. Still accepted and round-tripped so a stored value is not
-//	destroyed.
-//
-// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+// DetailLevel - How much the notification reveals. Defaults to SUMMARY.
 type DetailLevel string
 
 const (
@@ -38,17 +33,10 @@ func (e *DetailLevel) IsExact() bool {
 //	settings), slack_channel posts to one channel.
 type NotifyDispatcher struct {
 	Audience *FindingAudience `json:"audience,omitempty"`
-	// Deprecated: no longer honored. Grouping is owned by notifications_v2, which
-	//  batches finding notifications on its shared debounce window. Still accepted
-	//  and round-tripped so a stored value is not destroyed.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	// Wait-group window in seconds; 0 sends immediately. A quiet-period length,
+	//  not a fixed delay — the batcher slides it forward on each arrival.
 	BatchWindowSeconds *int64 `json:"batchWindowSeconds,omitempty"`
-	// Deprecated: no longer honored. Every finding notification renders full
-	//  detail. Still accepted and round-tripped so a stored value is not
-	//  destroyed.
-	//
-	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	// How much the notification reveals. Defaults to SUMMARY.
 	DetailLevel  *DetailLevel        `json:"detailLevel,omitempty"`
 	SlackChannel *SlackChannelTarget `json:"slackChannel,omitempty"`
 }

@@ -15,7 +15,6 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.BrowserEnabled = types.BoolPointerValue(resp.BrowserEnabled)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)
@@ -168,12 +167,6 @@ func (r *FunctionResourceModel) ToOperationsC1APIFunctionsV1FunctionsServiceGetF
 func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*shared.FunctionInput, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	browserEnabled := new(bool)
-	if !r.BrowserEnabled.IsUnknown() && !r.BrowserEnabled.IsNull() {
-		*browserEnabled = r.BrowserEnabled.ValueBool()
-	} else {
-		browserEnabled = nil
-	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -244,7 +237,6 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 		secret[secretKey] = secretInst
 	}
 	out := shared.FunctionInput{
-		BrowserEnabled:           browserEnabled,
 		Description:              description,
 		DisplayName:              displayName,
 		FunctionType:             functionType,
@@ -264,12 +256,6 @@ func (r *FunctionResourceModel) ToSharedFunctionInput(ctx context.Context) (*sha
 func (r *FunctionResourceModel) ToSharedFunctionsServiceCreateFunctionRequest(ctx context.Context) (*shared.FunctionsServiceCreateFunctionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	browserEnabled := new(bool)
-	if !r.BrowserEnabled.IsUnknown() && !r.BrowserEnabled.IsNull() {
-		*browserEnabled = r.BrowserEnabled.ValueBool()
-	} else {
-		browserEnabled = nil
-	}
 	commitMessage := new(string)
 	if !r.CommitMessage.IsUnknown() && !r.CommitMessage.IsNull() {
 		*commitMessage = r.CommitMessage.ValueString()
@@ -302,7 +288,6 @@ func (r *FunctionResourceModel) ToSharedFunctionsServiceCreateFunctionRequest(ct
 		initialContent[initialContentKey] = initialContentInst
 	}
 	out := shared.FunctionsServiceCreateFunctionRequest{
-		BrowserEnabled: browserEnabled,
 		CommitMessage:  commitMessage,
 		Description:    description,
 		DisplayName:    displayName,

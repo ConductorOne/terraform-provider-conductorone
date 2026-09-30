@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/internal/utils"
-	"time"
-)
-
 // GetCustomAnalysisResultResponseStatus - The status field.
 type GetCustomAnalysisResultResponseStatus string
 
@@ -32,43 +27,14 @@ func (e *GetCustomAnalysisResultResponseStatus) IsExact() bool {
 	return false
 }
 
-// GetCustomAnalysisResultResponseTerminalReason - Structured terminal reason, unspecified for legacy results.
-type GetCustomAnalysisResultResponseTerminalReason string
-
-const (
-	GetCustomAnalysisResultResponseTerminalReasonCustomAnalysisTerminalReasonUnspecified GetCustomAnalysisResultResponseTerminalReason = "CUSTOM_ANALYSIS_TERMINAL_REASON_UNSPECIFIED"
-	GetCustomAnalysisResultResponseTerminalReasonCustomAnalysisTerminalReasonError       GetCustomAnalysisResultResponseTerminalReason = "CUSTOM_ANALYSIS_TERMINAL_REASON_ERROR"
-	GetCustomAnalysisResultResponseTerminalReasonCustomAnalysisTerminalReasonSuperseded  GetCustomAnalysisResultResponseTerminalReason = "CUSTOM_ANALYSIS_TERMINAL_REASON_SUPERSEDED"
-)
-
-func (e GetCustomAnalysisResultResponseTerminalReason) ToPointer() *GetCustomAnalysisResultResponseTerminalReason {
-	return &e
-}
-
-// IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *GetCustomAnalysisResultResponseTerminalReason) IsExact() bool {
-	if e != nil {
-		switch *e {
-		case "CUSTOM_ANALYSIS_TERMINAL_REASON_UNSPECIFIED", "CUSTOM_ANALYSIS_TERMINAL_REASON_ERROR", "CUSTOM_ANALYSIS_TERMINAL_REASON_SUPERSEDED":
-			return true
-		}
-	}
-	return false
-}
-
 // The GetCustomAnalysisResultResponse message.
 type GetCustomAnalysisResultResponse struct {
-	AccessScope *AccessScope `json:"accessScope,omitempty"`
 	// The appsAnalyzed field.
 	AppsAnalyzed *int `json:"appsAnalyzed,omitempty"`
 	// Cluster results.
 	Clusters []EntitlementCluster `json:"clusters,omitempty"`
 	// The cohortSize field.
-	CohortSize  *int       `json:"cohortSize,omitempty"`
-	CompletedAt *time.Time `json:"completedAt,omitempty"`
-	CreatedAt   *time.Time `json:"createdAt,omitempty"`
-	// User who created this analysis, empty for legacy results.
-	CreatedByUserID *string `json:"createdByUserId,omitempty"`
+	CohortSize *int `json:"cohortSize,omitempty"`
 	// Exact holder counts at each distinct inclusive entitlement coverage cutoff.
 	CutoffImpactPoints []EntitlementCutoffImpactPoint `json:"cutoffImpactPoints,omitempty"`
 	// Entitlement coverage results.
@@ -81,34 +47,8 @@ type GetCustomAnalysisResultResponse struct {
 	Facets []AttributeFacet `json:"facets,omitempty"`
 	// The id field.
 	ID *string `json:"id,omitempty"`
-	// Cohort filters this analysis ran with, echoed back so an exact-ID restore
-	//  is self-contained.
-	ProfileFilters []ProfileFilter `json:"profileFilters,omitempty"`
 	// The status field.
 	Status *GetCustomAnalysisResultResponseStatus `json:"status,omitempty"`
-	// Newer result that superseded this analysis, when applicable.
-	SupersededByResultID *string `json:"supersededByResultId,omitempty"`
-	// Structured terminal reason, unspecified for legacy results.
-	TerminalReason *GetCustomAnalysisResultResponseTerminalReason `json:"terminalReason,omitempty"`
-	UpdatedAt      *time.Time                                     `json:"updatedAt,omitempty"`
-}
-
-func (g GetCustomAnalysisResultResponse) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(g, "", false)
-}
-
-func (g *GetCustomAnalysisResultResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (g *GetCustomAnalysisResultResponse) GetAccessScope() *AccessScope {
-	if g == nil {
-		return nil
-	}
-	return g.AccessScope
 }
 
 func (g *GetCustomAnalysisResultResponse) GetAppsAnalyzed() *int {
@@ -130,27 +70,6 @@ func (g *GetCustomAnalysisResultResponse) GetCohortSize() *int {
 		return nil
 	}
 	return g.CohortSize
-}
-
-func (g *GetCustomAnalysisResultResponse) GetCompletedAt() *time.Time {
-	if g == nil {
-		return nil
-	}
-	return g.CompletedAt
-}
-
-func (g *GetCustomAnalysisResultResponse) GetCreatedAt() *time.Time {
-	if g == nil {
-		return nil
-	}
-	return g.CreatedAt
-}
-
-func (g *GetCustomAnalysisResultResponse) GetCreatedByUserID() *string {
-	if g == nil {
-		return nil
-	}
-	return g.CreatedByUserID
 }
 
 func (g *GetCustomAnalysisResultResponse) GetCutoffImpactPoints() []EntitlementCutoffImpactPoint {
@@ -195,37 +114,9 @@ func (g *GetCustomAnalysisResultResponse) GetID() *string {
 	return g.ID
 }
 
-func (g *GetCustomAnalysisResultResponse) GetProfileFilters() []ProfileFilter {
-	if g == nil {
-		return nil
-	}
-	return g.ProfileFilters
-}
-
 func (g *GetCustomAnalysisResultResponse) GetStatus() *GetCustomAnalysisResultResponseStatus {
 	if g == nil {
 		return nil
 	}
 	return g.Status
-}
-
-func (g *GetCustomAnalysisResultResponse) GetSupersededByResultID() *string {
-	if g == nil {
-		return nil
-	}
-	return g.SupersededByResultID
-}
-
-func (g *GetCustomAnalysisResultResponse) GetTerminalReason() *GetCustomAnalysisResultResponseTerminalReason {
-	if g == nil {
-		return nil
-	}
-	return g.TerminalReason
-}
-
-func (g *GetCustomAnalysisResultResponse) GetUpdatedAt() *time.Time {
-	if g == nil {
-		return nil
-	}
-	return g.UpdatedAt
 }

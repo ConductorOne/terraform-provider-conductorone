@@ -9,7 +9,6 @@ const (
 	AccessReviewScopeAppUserStatusesAppUserStatusEnabled     AccessReviewScopeAppUserStatuses = "APP_USER_STATUS_ENABLED"
 	AccessReviewScopeAppUserStatusesAppUserStatusDisabled    AccessReviewScopeAppUserStatuses = "APP_USER_STATUS_DISABLED"
 	AccessReviewScopeAppUserStatusesAppUserStatusDeleted     AccessReviewScopeAppUserStatuses = "APP_USER_STATUS_DELETED"
-	AccessReviewScopeAppUserStatusesAppUserStatusPending     AccessReviewScopeAppUserStatuses = "APP_USER_STATUS_PENDING"
 )
 
 func (e AccessReviewScopeAppUserStatuses) ToPointer() *AccessReviewScopeAppUserStatuses {
@@ -20,7 +19,7 @@ func (e AccessReviewScopeAppUserStatuses) ToPointer() *AccessReviewScopeAppUserS
 func (e *AccessReviewScopeAppUserStatuses) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "APP_USER_STATUS_UNSPECIFIED", "APP_USER_STATUS_ENABLED", "APP_USER_STATUS_DISABLED", "APP_USER_STATUS_DELETED", "APP_USER_STATUS_PENDING":
+		case "APP_USER_STATUS_UNSPECIFIED", "APP_USER_STATUS_ENABLED", "APP_USER_STATUS_DISABLED", "APP_USER_STATUS_DELETED":
 			return true
 		}
 	}

@@ -9,24 +9,12 @@ type ReportingServiceUpdateRequestParameterValues struct {
 //
 //	At least one must be set.
 type ReportingServiceUpdateRequest struct {
-	// The description field.
-	Description *string `json:"description,omitempty"`
 	// The displayName field.
-	DisplayName *string `json:"displayName,omitempty"`
-	// Required with parameter_values. Prevents values prepared for one source
-	//  version from being installed after an assistant edit advances the report.
-	ExpectedProgramID *string                                       `json:"expectedProgramId,omitempty"`
-	ParameterValues   *ReportingServiceUpdateRequestParameterValues `json:"parameterValues,omitempty"`
+	DisplayName     *string                                       `json:"displayName,omitempty"`
+	ParameterValues *ReportingServiceUpdateRequestParameterValues `json:"parameterValues,omitempty"`
 	// Editing this does not re-plan, so it may drift from
 	//  program.planned_from_prompt — that drift is how a stale report is detected.
 	Prompt *string `json:"prompt,omitempty"`
-}
-
-func (r *ReportingServiceUpdateRequest) GetDescription() *string {
-	if r == nil {
-		return nil
-	}
-	return r.Description
 }
 
 func (r *ReportingServiceUpdateRequest) GetDisplayName() *string {
@@ -34,13 +22,6 @@ func (r *ReportingServiceUpdateRequest) GetDisplayName() *string {
 		return nil
 	}
 	return r.DisplayName
-}
-
-func (r *ReportingServiceUpdateRequest) GetExpectedProgramID() *string {
-	if r == nil {
-		return nil
-	}
-	return r.ExpectedProgramID
 }
 
 func (r *ReportingServiceUpdateRequest) GetParameterValues() *ReportingServiceUpdateRequestParameterValues {

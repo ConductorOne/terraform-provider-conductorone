@@ -5,38 +5,36 @@ package shared
 type AccessReviewReportColumnConfigColumns string
 
 const (
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnUnspecified               AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_UNSPECIFIED"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnEmployeeID                AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYEE_ID"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnJobTitle                  AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_JOB_TITLE"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnDepartment                AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_DEPARTMENT"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnEmploymentStatus          AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYMENT_STATUS"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnEmploymentType            AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYMENT_TYPE"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnManager                   AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_MANAGER"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnTask                      AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_TASK"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnAccount                   AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnUserName                  AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_USER_NAME"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnIdentityType              AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_IDENTITY_TYPE"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnAccountOwner              AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT_OWNER"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnAccountOwnerEmail         AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT_OWNER_EMAIL"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnApplication               AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_APPLICATION"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnResource                  AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_RESOURCE"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnResourceType              AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_RESOURCE_TYPE"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnEntitlement               AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ENTITLEMENT"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnDescription               AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_DESCRIPTION"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnCertificationPolicy       AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_CERTIFICATION_POLICY"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnAssignedTo                AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ASSIGNED_TO"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnReassignments             AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_REASSIGNMENTS"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnCertifiers                AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_CERTIFIERS"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnDecisions                 AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_DECISIONS"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnResolvedOn                AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_RESOLVED_ON"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnComments                  AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_COMMENTS"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnLastLogin                 AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_LAST_LOGIN"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnSubmissions               AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_SUBMISSIONS"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnExternalTicket            AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_EXTERNAL_TICKET"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnExternalTicketStatus      AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_EXTERNAL_TICKET_STATUS"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnSubjectUsername           AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_SUBJECT_USERNAME"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnAppAccountStatus          AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_APP_ACCOUNT_STATUS"
-	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnAccountOwnerAccountStatus AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT_OWNER_ACCOUNT_STATUS"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnUnspecified          AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_UNSPECIFIED"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnEmployeeID           AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYEE_ID"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnJobTitle             AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_JOB_TITLE"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnDepartment           AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_DEPARTMENT"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnEmploymentStatus     AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYMENT_STATUS"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnEmploymentType       AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYMENT_TYPE"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnManager              AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_MANAGER"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnTask                 AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_TASK"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnAccount              AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnUserName             AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_USER_NAME"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnIdentityType         AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_IDENTITY_TYPE"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnAccountOwner         AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT_OWNER"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnAccountOwnerEmail    AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT_OWNER_EMAIL"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnApplication          AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_APPLICATION"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnResource             AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_RESOURCE"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnResourceType         AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_RESOURCE_TYPE"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnEntitlement          AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ENTITLEMENT"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnDescription          AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_DESCRIPTION"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnCertificationPolicy  AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_CERTIFICATION_POLICY"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnAssignedTo           AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_ASSIGNED_TO"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnReassignments        AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_REASSIGNMENTS"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnCertifiers           AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_CERTIFIERS"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnDecisions            AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_DECISIONS"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnResolvedOn           AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_RESOLVED_ON"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnComments             AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_COMMENTS"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnLastLogin            AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_LAST_LOGIN"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnSubmissions          AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_SUBMISSIONS"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnExternalTicket       AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_EXTERNAL_TICKET"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnExternalTicketStatus AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_EXTERNAL_TICKET_STATUS"
+	AccessReviewReportColumnConfigColumnsAccessReviewReportColumnSubjectUsername      AccessReviewReportColumnConfigColumns = "ACCESS_REVIEW_REPORT_COLUMN_SUBJECT_USERNAME"
 )
 
 func (e AccessReviewReportColumnConfigColumns) ToPointer() *AccessReviewReportColumnConfigColumns {
@@ -47,7 +45,7 @@ func (e AccessReviewReportColumnConfigColumns) ToPointer() *AccessReviewReportCo
 func (e *AccessReviewReportColumnConfigColumns) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "ACCESS_REVIEW_REPORT_COLUMN_UNSPECIFIED", "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYEE_ID", "ACCESS_REVIEW_REPORT_COLUMN_JOB_TITLE", "ACCESS_REVIEW_REPORT_COLUMN_DEPARTMENT", "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYMENT_STATUS", "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYMENT_TYPE", "ACCESS_REVIEW_REPORT_COLUMN_MANAGER", "ACCESS_REVIEW_REPORT_COLUMN_TASK", "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT", "ACCESS_REVIEW_REPORT_COLUMN_USER_NAME", "ACCESS_REVIEW_REPORT_COLUMN_IDENTITY_TYPE", "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT_OWNER", "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT_OWNER_EMAIL", "ACCESS_REVIEW_REPORT_COLUMN_APPLICATION", "ACCESS_REVIEW_REPORT_COLUMN_RESOURCE", "ACCESS_REVIEW_REPORT_COLUMN_RESOURCE_TYPE", "ACCESS_REVIEW_REPORT_COLUMN_ENTITLEMENT", "ACCESS_REVIEW_REPORT_COLUMN_DESCRIPTION", "ACCESS_REVIEW_REPORT_COLUMN_CERTIFICATION_POLICY", "ACCESS_REVIEW_REPORT_COLUMN_ASSIGNED_TO", "ACCESS_REVIEW_REPORT_COLUMN_REASSIGNMENTS", "ACCESS_REVIEW_REPORT_COLUMN_CERTIFIERS", "ACCESS_REVIEW_REPORT_COLUMN_DECISIONS", "ACCESS_REVIEW_REPORT_COLUMN_RESOLVED_ON", "ACCESS_REVIEW_REPORT_COLUMN_COMMENTS", "ACCESS_REVIEW_REPORT_COLUMN_LAST_LOGIN", "ACCESS_REVIEW_REPORT_COLUMN_SUBMISSIONS", "ACCESS_REVIEW_REPORT_COLUMN_EXTERNAL_TICKET", "ACCESS_REVIEW_REPORT_COLUMN_EXTERNAL_TICKET_STATUS", "ACCESS_REVIEW_REPORT_COLUMN_SUBJECT_USERNAME", "ACCESS_REVIEW_REPORT_COLUMN_APP_ACCOUNT_STATUS", "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT_OWNER_ACCOUNT_STATUS":
+		case "ACCESS_REVIEW_REPORT_COLUMN_UNSPECIFIED", "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYEE_ID", "ACCESS_REVIEW_REPORT_COLUMN_JOB_TITLE", "ACCESS_REVIEW_REPORT_COLUMN_DEPARTMENT", "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYMENT_STATUS", "ACCESS_REVIEW_REPORT_COLUMN_EMPLOYMENT_TYPE", "ACCESS_REVIEW_REPORT_COLUMN_MANAGER", "ACCESS_REVIEW_REPORT_COLUMN_TASK", "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT", "ACCESS_REVIEW_REPORT_COLUMN_USER_NAME", "ACCESS_REVIEW_REPORT_COLUMN_IDENTITY_TYPE", "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT_OWNER", "ACCESS_REVIEW_REPORT_COLUMN_ACCOUNT_OWNER_EMAIL", "ACCESS_REVIEW_REPORT_COLUMN_APPLICATION", "ACCESS_REVIEW_REPORT_COLUMN_RESOURCE", "ACCESS_REVIEW_REPORT_COLUMN_RESOURCE_TYPE", "ACCESS_REVIEW_REPORT_COLUMN_ENTITLEMENT", "ACCESS_REVIEW_REPORT_COLUMN_DESCRIPTION", "ACCESS_REVIEW_REPORT_COLUMN_CERTIFICATION_POLICY", "ACCESS_REVIEW_REPORT_COLUMN_ASSIGNED_TO", "ACCESS_REVIEW_REPORT_COLUMN_REASSIGNMENTS", "ACCESS_REVIEW_REPORT_COLUMN_CERTIFIERS", "ACCESS_REVIEW_REPORT_COLUMN_DECISIONS", "ACCESS_REVIEW_REPORT_COLUMN_RESOLVED_ON", "ACCESS_REVIEW_REPORT_COLUMN_COMMENTS", "ACCESS_REVIEW_REPORT_COLUMN_LAST_LOGIN", "ACCESS_REVIEW_REPORT_COLUMN_SUBMISSIONS", "ACCESS_REVIEW_REPORT_COLUMN_EXTERNAL_TICKET", "ACCESS_REVIEW_REPORT_COLUMN_EXTERNAL_TICKET_STATUS", "ACCESS_REVIEW_REPORT_COLUMN_SUBJECT_USERNAME":
 			return true
 		}
 	}

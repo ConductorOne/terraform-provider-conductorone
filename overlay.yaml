@@ -46,9 +46,6 @@ actions:
   - target: $["components"]["schemas"]["c1.api.user.v1.User"]
     update:
       x-speakeasy-entity: User
-  - target: $["components"]["schemas"]["c1.api.user.v1.UserAttributeMapping"]
-    update:
-      x-speakeasy-entity: UserAttributeMapping
   - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]["deprovisionerPolicy"]
     remove: true
   - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["properties"]
@@ -445,13 +442,6 @@ actions:
   - target: $["components"]["schemas"]["c1.api.policy.v1.MultiStep"]
     update:
       x-speakeasy-type-override: any
-  - target: $["components"]["schemas"]["c1.api.golink.v1.GoLink"]
-    update:
-      x-speakeasy-entity: GoLink
-  # Chooser options contain GoLinkTarget recursively; keep the chooser payload unstructured.
-  - target: $["components"]["schemas"]["c1.api.golink.v1.GoLinkChooserTarget"]
-    update:
-      x-speakeasy-type-override: any
   - target: $["components"]["schemas"]["c1.api.policy.v1.ConnectorProvision.AccountProvision"]["properties"]["config"]
     update:
       x-speakeasy-type-override: any
@@ -622,8 +612,8 @@ actions:
   - target: $["components"]["schemas"]["c1.api.attribute.v1.DeleteRiskLevelAttributeValueRequestInput"]
     update:
       x-speakeasy-terraform-ignore: true
-  # Terraform replaces access profiles when their configured type changes.
-  # Normal updates mask mutable fields and preserve the stored type.
+  # Access profile type is selected only during creation. The API reports the
+  # stored type on reads but does not accept it in updates.
   - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalog"]["properties"]["type"]
     update:
       x-speakeasy-param-force-new: true
