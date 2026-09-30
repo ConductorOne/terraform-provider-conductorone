@@ -105,7 +105,6 @@ type MCPServerResourceModel struct {
 	TunnelPath                          types.String                           `tfsdk:"tunnel_path"`
 	TunnelServiceName                   types.String                           `tfsdk:"tunnel_service_name"`
 	UpdatedAt                           types.String                           `tfsdk:"updated_at"`
-	UserIds                             []types.String                         `tfsdk:"user_ids"`
 }
 
 func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -147,8 +146,11 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					`Requires replacement if changed.`,
 			},
 			"app_id": schema.StringAttribute{
-				Required:    true,
-				Description: `App identifier that owns this MCP server.`,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Description: `App identifier that owns this MCP server. Requires replacement if changed.`,
 			},
 			"app_managed_state_binding_ref": schema.SingleNestedAttribute{
 				Optional: true,
@@ -985,14 +987,6 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 			},
-			"user_ids": schema.ListAttribute{
-				Optional: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				ElementType: types.StringType,
-				Description: `Integration owners for the MCP server connector. Requires replacement if changed.`,
-			},
 		},
 	}
 }
@@ -1043,9 +1037,9 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 	}
 	res, err := r.client.MCPServer.Register(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("Failed to register MCP server", mcpServerDiagnosticError(err))
 		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+			resp.Diagnostics.AddError("unexpected http request/response", mcpServerResponseStatus(res.RawResponse))
 		}
 		addMCPServerUnknownCreateOutcomeDiagnostic(resp, data, err)
 		return
@@ -1056,12 +1050,12 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), mcpServerResponseStatus(res.RawResponse))
 		addMCPServerUnknownCreateOutcomeDiagnostic(resp, data, nil)
 		return
 	}
 	if !(res.MCPServerServiceRegisterResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", mcpServerResponseStatus(res.RawResponse))
 		addMCPServerUnknownCreateOutcomeDiagnostic(resp, data, nil)
 		return
 	}
@@ -1113,9 +1107,9 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 	}
 	res, err := r.client.MCPServer.Get(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("Failed to read MCP server", mcpServerDiagnosticError(err))
 		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+			resp.Diagnostics.AddError("unexpected http request/response", mcpServerResponseStatus(res.RawResponse))
 		}
 		return
 	}
@@ -1128,11 +1122,11 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), mcpServerResponseStatus(res.RawResponse))
 		return
 	}
 	if !(res.MCPServerServiceGetResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", mcpServerResponseStatus(res.RawResponse))
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedMCPServerServiceGetResponse(ctx, res.MCPServerServiceGetResponse)...)
@@ -1179,9 +1173,9 @@ func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateReque
 	}
 	res, err := r.client.MCPServer.Update(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("Failed to update metadata for MCP server", mcpServerDiagnosticError(err))
 		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+			resp.Diagnostics.AddError("unexpected http request/response", mcpServerResponseStatus(res.RawResponse))
 		}
 		return
 	}
@@ -1190,11 +1184,11 @@ func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), mcpServerResponseStatus(res.RawResponse))
 		return
 	}
 	if !(res.MCPServerServiceUpdateResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", mcpServerResponseStatus(res.RawResponse))
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedMCPServerServiceUpdateResponse(ctx, res.MCPServerServiceUpdateResponse)...)
@@ -1226,9 +1220,9 @@ func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateReque
 	}
 	res1, err := r.client.MCPServer.UpdateCredentials(ctx, *request1)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("Failed to update credentials for MCP server", mcpServerDiagnosticError(err))
 		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+			resp.Diagnostics.AddError("unexpected http request/response", mcpServerResponseStatus(res1.RawResponse))
 		}
 		return
 	}
@@ -1237,11 +1231,11 @@ func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateReque
 		return
 	}
 	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), mcpServerResponseStatus(res1.RawResponse))
 		return
 	}
 	if !(res1.MCPServerServiceUpdateCredentialsResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", mcpServerResponseStatus(res1.RawResponse))
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedMCPServerServiceUpdateCredentialsResponse(ctx, res1.MCPServerServiceUpdateCredentialsResponse)...)
@@ -1288,9 +1282,9 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 	}
 	res, err := r.client.MCPServer.Delete(ctx, *request)
 	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		resp.Diagnostics.AddError("Failed to delete MCP server", mcpServerDiagnosticError(err))
 		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+			resp.Diagnostics.AddError("unexpected http request/response", mcpServerResponseStatus(res.RawResponse))
 		}
 		return
 	}
@@ -1302,7 +1296,7 @@ func (r *MCPServerResource) Delete(ctx context.Context, req resource.DeleteReque
 	case 200, 404:
 		break
 	default:
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), mcpServerResponseStatus(res.RawResponse))
 		return
 	}
 
@@ -1317,7 +1311,7 @@ func (r *MCPServerResource) ImportState(ctx context.Context, req resource.Import
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"app_id": "...", "connector_id": "..."}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"app_id": "...", "connector_id": "..."}': `+"Malformed import identifier.")
 		return
 	}
 

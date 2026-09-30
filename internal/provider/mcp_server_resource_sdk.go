@@ -925,13 +925,6 @@ func (r *MCPServerResourceModel) ToSharedMCPServerServiceRegisterRequest(ctx con
 	} else {
 		tunneled = nil
 	}
-	var userIds []string
-	if r.UserIds != nil {
-		userIds = make([]string, 0, len(r.UserIds))
-		for userIdsIndex := range r.UserIds {
-			userIds = append(userIds, r.UserIds[userIdsIndex].ValueString())
-		}
-	}
 	out := shared.MCPServerServiceRegisterRequest{
 		AccessProfileIds:          accessProfileIds,
 		AcknowledgedFindingIds:    acknowledgedFindingIds,
@@ -948,7 +941,6 @@ func (r *MCPServerResourceModel) ToSharedMCPServerServiceRegisterRequest(ctx con
 		TunnelPath:                tunnelPath,
 		TunnelServiceName:         tunnelServiceName,
 		Tunneled:                  tunneled,
-		UserIds:                   userIds,
 	}
 
 	return &out, diags
