@@ -151,9 +151,6 @@ resource "conductorone_mcp_server" "my_mcp_server" {
   tunnel_path         = "...my_tunnel_path..."
   tunnel_service_name = "...my_tunnel_service_name..."
   tunneled            = false
-  user_ids = [
-    "..."
-  ]
 }
 ```
 
@@ -162,7 +159,7 @@ resource "conductorone_mcp_server" "my_mcp_server" {
 
 ### Required
 
-- `app_id` (String) App identifier that owns this MCP server.
+- `app_id` (String) App identifier that owns this MCP server. Requires replacement if changed.
 
 ### Optional
 
@@ -233,7 +230,6 @@ Requires replacement if changed.
 - `tunneled` (Boolean) Whether the MCP server is reached over a tunnel to a private appliance
  instead of a public URL.
 Requires replacement if changed.
-- `user_ids` (List of String) Integration owners for the MCP server connector. Requires replacement if changed.
 
 ### Read-Only
 
