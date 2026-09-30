@@ -759,3 +759,57 @@ actions:
       x-speakeasy-terraform-ignore: true
 
   
+  # Redact credential values while keeping surrounding configuration visible.
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerAuthBasicAuth"]["properties"]["password"]
+    update:
+      x-speakeasy-param-sensitive: true
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerAuthBearerToken"]["properties"]["token"]
+    update:
+      x-speakeasy-param-sensitive: true
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerAuthCustomHeader"]["properties"]["headerValue"]
+    update:
+      x-speakeasy-param-sensitive: true
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerAuthOAuth2"]["properties"]["clientSecret"]
+    update:
+      x-speakeasy-param-sensitive: true
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerAuthOAuth2"]["properties"]["jwtPrivateKey"]
+    update:
+      x-speakeasy-param-sensitive: true
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerAuthGoogleServiceAccount"]["properties"]["credentialsJson"]
+    update:
+      x-speakeasy-param-sensitive: true
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerAuthAWSSigV4"]["properties"]["secretAccessKey"]
+    update:
+      x-speakeasy-param-sensitive: true
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerAuthAWSSigV4"]["properties"]["sessionToken"]
+    update:
+      x-speakeasy-param-sensitive: true
+  # The catalog determines which dynamic configuration values contain secrets.
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerHostedConfig"]["properties"]["configFields"]
+    update:
+      x-speakeasy-param-sensitive: true
+  # Registration-only identity changes require a new server.
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerView"]["properties"]["serverType"]
+    update:
+      x-speakeasy-param-force-new: true
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerServiceRegisterRequestInput"]["properties"]["serverType"]
+    update:
+      x-speakeasy-param-force-new: true
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerHostedConfig"]["properties"]["mcpServerCatalogId"]
+    update:
+      x-speakeasy-param-force-new: true
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerHostedConfig"]["properties"]["sourceAppId"]
+    update:
+      x-speakeasy-param-force-new: true
+  # Synced tools and credentials are bound to the original external endpoint.
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerExternalConfig"]["properties"]["url"]
+    update:
+      x-speakeasy-param-force-new: true
+  # The server-owned auth method is exposed by the computed view attribute.
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerAuthOAuth2"]["properties"]["tokenEndpointAuthMethod"]
+    update:
+      x-speakeasy-terraform-ignore: true
+  # This resource registers under an existing app, which rejects integration owners.
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerServiceRegisterRequestInput"]["properties"]["userIds"]
+    update:
+      x-speakeasy-terraform-ignore: true

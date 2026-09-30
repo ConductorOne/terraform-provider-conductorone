@@ -5761,6 +5761,7 @@ components:
             description: MCPServerServiceDeleteRequest soft-deletes an MCP server.
             title: Mcp Server Service Delete Request
             type: object
+            x-speakeasy-entity: MCP Server
             x-speakeasy-name-override: MCPServerServiceDeleteRequest
         c1.api.ai_governance.v1.MCPServerServiceDeleteResponse:
             description: MCPServerServiceDeleteResponse confirms deletion.
@@ -5995,6 +5996,7 @@ components:
                         - "null"
             title: Mcp Server Service Register Request
             type: object
+            x-speakeasy-entity: MCP Server
             x-speakeasy-name-override: MCPServerServiceRegisterRequest
         c1.api.ai_governance.v1.MCPServerServiceRegisterResponse:
             description: MCPServerServiceRegisterResponse returns the newly created MCP server.
@@ -6563,6 +6565,7 @@ components:
                         - "null"
             title: Mcp Server View
             type: object
+            x-speakeasy-entity: MCP Server
             x-speakeasy-name-override: MCPServerView
         c1.api.ai_governance.v1.MCPTool:
             description: MCPTool represents metadata about individual tools discovered from an MCP server.
@@ -50789,6 +50792,10 @@ paths:
             summary: Register
             tags:
                 - MCP Servers
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: MCP Server#create
             x-speakeasy-group: MCPServer
             x-speakeasy-name-override: Register
     /api/v1/apps/{app_id}/mcp_servers/{connector_id}:
@@ -50826,6 +50833,10 @@ paths:
             summary: Delete
             tags:
                 - MCP Servers
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: MCP Server#delete
             x-speakeasy-group: MCPServer
             x-speakeasy-name-override: Delete
         get:
@@ -50854,6 +50865,11 @@ paths:
             summary: Get
             tags:
                 - MCP Servers
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-datasource: null
+                terraform-resource: MCP Server#read
             x-speakeasy-group: MCPServer
             x-speakeasy-name-override: Get
         post:
@@ -50887,6 +50903,10 @@ paths:
             summary: Update
             tags:
                 - MCP Servers
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: MCP Server#update
             x-speakeasy-group: MCPServer
             x-speakeasy-name-override: Update
     /api/v1/apps/{app_id}/mcp_servers/{connector_id}/credentials:
@@ -50921,6 +50941,10 @@ paths:
             summary: Update Credentials
             tags:
                 - MCP Servers
+            x-speakeasy-entity-missing-codes:
+                - 404
+            x-speakeasy-entity-operation:
+                terraform-resource: MCP Server#update#2
             x-speakeasy-group: MCPServer
             x-speakeasy-name-override: UpdateCredentials
     /api/v1/apps/{app_id}/mcp_servers/{connector_id}/resync_tools:

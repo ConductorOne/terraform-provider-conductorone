@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 2767d769b2b5835a51f13b2faed4c629
+  docChecksum: 409b1180319ea97da57f2f7ea62280b1
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.762.0
   generationVersion: 2.882.0
@@ -10,9 +10,9 @@ management:
   repoURL: https://github.com/ConductorOne/terraform-provider-conductorone.git
   installationURL: https://github.com/ConductorOne/terraform-provider-conductorone
 persistentEdits:
-  generation_id: 50b2ac21-824d-4903-8637-462da687527b
-  pristine_commit_hash: 289e822d0421896402cd960f54e8a959d1c4990f
-  pristine_tree_hash: 6c855eb155ffac7d1877ac244933e7c8d4c0cc53
+  generation_id: bbd78b2e-b3e4-4c72-b934-503e224fe668
+  pristine_commit_hash: 8d82ed21c3a65d5020a71d890ce676a996906396
+  pristine_tree_hash: d348d56fe5d3be3a61b963a519c998bde7594f1a
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -669,6 +669,18 @@ trackedFiles:
     id: ae025418b4c0
     last_write_checksum: sha1:c9c2ae1b4effeea65dfa4f179ba2c851b5ad4380
     pristine_git_object: 52695f90aa24327b882c76a5458b1342d154245f
+  examples/resources/conductorone_mcp_server/import-by-string-id.tf:
+    id: bbcba63d76cf
+    last_write_checksum: sha1:6dd64a66b5afcaa3ece38367a735000b5eab6902
+    pristine_git_object: 81f75bc9fe3cba455ee43a0752a305e3ee954c8d
+  examples/resources/conductorone_mcp_server/import.sh:
+    id: fd90b97efb09
+    last_write_checksum: sha1:86fe6cf41fd503a0612d067f080f6e19d50c1035
+    pristine_git_object: 48c044b8aeb30e13a2594bb2bd15387518e17266
+  examples/resources/conductorone_mcp_server/resource.tf:
+    id: 183c9c9e30cf
+    last_write_checksum: sha1:8410fc2639807be8db783d377f60dc547ef1696f
+    pristine_git_object: 40f7e5b5393b74cd3bec05f84332bbfcb77fab2f
   examples/resources/conductorone_policy/import-by-string-id.tf:
     id: d0a33dc38baa
     last_write_checksum: sha1:d3a31cbd86233376540a6e19047c0e10470e63a4
@@ -1513,6 +1525,14 @@ trackedFiles:
     id: 2c0d6918aef5
     last_write_checksum: sha1:8898ae0794d4f16b3db2f183a0ab4ce75295f515
     pristine_git_object: 59befe2154c19266e841da597211ea44802421aa
+  internal/provider/mcp_server_resource.go:
+    id: 3fd81138cd74
+    last_write_checksum: sha1:cbb616ea26dc96ec90f02baec9201869b7ab86b5
+    pristine_git_object: 0d242612c8549dc5b50868ba648843f1873a88ef
+  internal/provider/mcp_server_resource_sdk.go:
+    id: a3a495fdbe7f
+    last_write_checksum: sha1:62745e8ae6acfab27d7e59e549d6a8b384853c62
+    pristine_git_object: ae456a83f97f814e73bc8e0fee33973e04b4da2c
   internal/provider/orgdomains_data_source.go:
     id: 368b831b28a8
     last_write_checksum: sha1:c5591e55e8d53a816ea897f60f82545b5e734f6d
@@ -2021,6 +2041,10 @@ trackedFiles:
     id: 66c51bd30279
     last_write_checksum: sha1:3d5e0edc457624cf5faea30ad183078c42c2a5dd
     pristine_git_object: 0e09ea6bd6cdaf0780fff61c3b5e9e8ac12e22cd
+  internal/provider/types/app_managed_state_binding_ref.go:
+    id: b6146c5ced62
+    last_write_checksum: sha1:e3b37bd44d3ec741302329eb1117535552b870e2
+    pristine_git_object: c70b40d602eaa533a1b0716b0d266d369c2e80e9
   internal/provider/types/app_match_baton_ref.go:
     id: d08ff0e86558
     last_write_checksum: sha1:f2716fbf63ce1620102de1329896068172490b1d
@@ -2705,6 +2729,46 @@ trackedFiles:
     id: 68bf5688e7a5
     last_write_checksum: sha1:1c2fec86151d2dfd1d93adcddf2a4691c0404b84
     pristine_git_object: 70cae21834fa7d20edcf935ca7e84905983e07c0
+  internal/provider/types/mcp_server_auth_aws_sig_v4.go:
+    id: 57bc525d9f52
+    last_write_checksum: sha1:df581f7844de12f70fc49b9f336cc2f0d497b177
+    pristine_git_object: 419ff3b11e2e8d66347a44d9c29a3dcb06c52362
+  internal/provider/types/mcp_server_auth_basic_auth.go:
+    id: 8f04e4672e79
+    last_write_checksum: sha1:ebce6a766a2c824ca2c39764feecf899e5b1210f
+    pristine_git_object: b20cbe966d4f47d4bcaf3c06dfd780211fcf2fd6
+  internal/provider/types/mcp_server_auth_bearer_token.go:
+    id: 0713b26c5837
+    last_write_checksum: sha1:f5156f5990b3a936967b25a80da0106daa376971
+    pristine_git_object: 6435838a1770a5f4d678f95895d59a9df6b15526
+  internal/provider/types/mcp_server_auth_custom_header.go:
+    id: 7e0c683fb7f4
+    last_write_checksum: sha1:d31b83b3ba295f90053b9878ce96942dc2f6dd14
+    pristine_git_object: e2a46d5e45b4c4073b9277185bc3b0f9cccc269b
+  internal/provider/types/mcp_server_auth_google_service_account.go:
+    id: bde934840911
+    last_write_checksum: sha1:765f766302454098659d7f6f6615de4f5a74defa
+    pristine_git_object: 959f18812940d476f47d07c49703739f979c5dfc
+  internal/provider/types/mcp_server_auth_none.go:
+    id: cdf7039e1d7f
+    last_write_checksum: sha1:a33daad01df66677742c48cba124835164c243b5
+    pristine_git_object: 5f353e9d1e8463a86df95ff555a7ec80caefbc11
+  internal/provider/types/mcp_server_auth_o_auth2.go:
+    id: a3ce1cd16c19
+    last_write_checksum: sha1:bafe585d7882e48c20d42c59c0d7ab540c711da2
+    pristine_git_object: 1c4265bc1a3c3dc9efb83045c6839dff9122e2a1
+  internal/provider/types/mcp_server_external_config.go:
+    id: 795bb7ab17e1
+    last_write_checksum: sha1:042dc82bd63719fc29006053bb6db534f251a9fa
+    pristine_git_object: b968a258e95826d2ec4b146ab60fbd034080f649
+  internal/provider/types/mcp_server_hosted_config.go:
+    id: d83a47e5c1c5
+    last_write_checksum: sha1:043d65f4fc7315e5bad7ddcd9a534286e2e33a89
+    pristine_git_object: 86c6381b45c4959077c36f27bdc26b2ad483c315
+  internal/provider/types/mcp_server_service_delete_request.go:
+    id: aa9f319dbb60
+    last_write_checksum: sha1:325e403ff13b8e00ea96656387a9405edcf2bb42
+    pristine_git_object: 80579dde06187ce9d6f1bf3d38ae9cdba416710b
   internal/provider/types/ms_teams_channel.go:
     id: b3c9eca2d7c6
     last_write_checksum: sha1:90da4d259f9038c5f08a80c246fa542651b4faa7
@@ -3811,8 +3875,8 @@ trackedFiles:
     pristine_git_object: 0d7346bed2997a9617a74784d67004789269aad6
   internal/sdk/mcpserver.go:
     id: 53492d38f2a0
-    last_write_checksum: sha1:56b32ba7470ebc7ce44615f0d62f989bf99dda4b
-    pristine_git_object: 109d68b77a0547131d97053c66cdf1f9a60a486c
+    last_write_checksum: sha1:5458aacc9593438b1e7c5b01f00b757030178f7c
+    pristine_git_object: c0597a359a9323d68d67c1765d0443c5949ed6c6
   internal/sdk/mcptool.go:
     id: 48e3191498f4
     last_write_checksum: sha1:422f260f18cc62214ab33bd543dfc6c8df840c3f
