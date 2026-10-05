@@ -38,7 +38,7 @@ resource "conductorone_access_review" "my_access_review" {
         "APP_USER_TYPE_USER"
       ]
       app_user_statuses = [
-        "APP_USER_STATUS_DISABLED"
+        "APP_USER_STATUS_DELETED"
       ]
       no_account_owner = false
     }
@@ -208,6 +208,7 @@ This message contains a oneof named excluded_apps_and_resources_scope. Only a si
 - `bindings` (Attributes) The BindingObjectSetup message. (see [below for nested schema](#nestedatt--bindings))
 - `campaign_health` (Attributes) Campaign health snapshot. Read-only; updated by backend maintenance processors. (see [below for nested schema](#nestedatt--campaign_health))
 - `campaign_insights` (Attributes) AI-generated campaign insights (markdown). Read-only; set by backend when campaign is closed. (see [below for nested schema](#nestedatt--campaign_insights))
+- `campaign_schedule` (Attributes) When a template's campaigns open and close. One timezone governs both times. (see [below for nested schema](#nestedatt--campaign_schedule))
 - `closed_at` (String)
 - `column_config` (Attributes) Configuration for which columns are visible in the reviewer task list. (see [below for nested schema](#nestedatt--column_config))
 - `connector_sources_frozen_at` (String)
@@ -472,6 +473,39 @@ Read-Only:
 Read-Only:
 
 - `markdown` (String) The markdown field.
+
+
+<a id="nestedatt--campaign_schedule"></a>
+### Nested Schema for `campaign_schedule`
+
+Read-Only:
+
+- `end_time` (Attributes) Time of day, in the timezone of the CampaignSchedule that holds it. (see [below for nested schema](#nestedatt--campaign_schedule--end_time))
+- `start_time` (Attributes) Time of day, in the timezone of the CampaignSchedule that holds it. (see [below for nested schema](#nestedatt--campaign_schedule--start_time))
+- `timezone` (String) IANA timezone name (e.g. "America/Los_Angeles", "UTC"). Required whenever
+ this message is present: a stored schedule with no zone is indistinguishable
+ from a record that predates the message, so the times below would be
+ silently discarded. Omit the whole message to keep the legacy schedule.
+ Enforced on post-merge state rather than here, so a field-mask update
+ targeting only a nested time still works.
+
+<a id="nestedatt--campaign_schedule--end_time"></a>
+### Nested Schema for `campaign_schedule.end_time`
+
+Read-Only:
+
+- `hours` (Number) The hours field.
+- `minutes` (Number) The minutes field.
+
+
+<a id="nestedatt--campaign_schedule--start_time"></a>
+### Nested Schema for `campaign_schedule.start_time`
+
+Read-Only:
+
+- `hours` (Number) The hours field.
+- `minutes` (Number) The minutes field.
+
 
 
 <a id="nestedatt--column_config"></a>

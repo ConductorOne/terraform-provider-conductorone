@@ -109,6 +109,12 @@ resource "conductorone_automation" "my_automation" {
           excluded_resource_type_ids = [
             "..."
           ]
+          excluded_resource_type_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
           excluded_risk_level_ids = [
             "..."
           ]
@@ -143,6 +149,12 @@ resource "conductorone_automation" "my_automation" {
           ]
           resource_type_ids = [
             "..."
+          ]
+          resource_type_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
           ]
           risk_level_ids = [
             "..."
@@ -475,6 +487,12 @@ resource "conductorone_automation" "my_automation" {
           excluded_resource_type_ids = [
             "..."
           ]
+          excluded_resource_type_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
           excluded_risk_level_ids = [
             "..."
           ]
@@ -509,6 +527,12 @@ resource "conductorone_automation" "my_automation" {
           ]
           resource_type_ids = [
             "..."
+          ]
+          resource_type_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
           ]
           risk_level_ids = [
             "..."
@@ -783,6 +807,12 @@ resource "conductorone_automation" "my_automation" {
             resource_type_ids = [
               "..."
             ]
+            resource_type_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
             risk_level_ids = [
               "..."
             ]
@@ -822,6 +852,12 @@ resource "conductorone_automation" "my_automation" {
             ]
             resource_type_ids = [
               "..."
+            ]
+            resource_type_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
             ]
             risk_level_ids = [
               "..."
@@ -960,6 +996,12 @@ resource "conductorone_automation" "my_automation" {
             resource_type_ids = [
               "..."
             ]
+            resource_type_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
             risk_level_ids = [
               "..."
             ]
@@ -999,6 +1041,12 @@ resource "conductorone_automation" "my_automation" {
             ]
             resource_type_ids = [
               "..."
+            ]
+            resource_type_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
             ]
             risk_level_ids = [
               "..."
@@ -1445,8 +1493,24 @@ Optional:
 
 - `excluded_app_ids` (List of String) The excludedAppIds field.
 - `excluded_compliance_framework_ids` (List of String) The excludedComplianceFrameworkIds field.
-- `excluded_resource_type_ids` (List of String) The excludedResourceTypeIds field.
+- `excluded_resource_type_ids` (List of String, Deprecated) Deprecated: matched by resource type display name, which collides across
+ apps/connectors. Not read by execution — replaced by
+ excluded_resource_type_refs. Kept only for wire compatibility with
+ existing stored rows; a criteria still carrying this without a ref
+ degrades to excluding the entire named app(s) rather than failing closed,
+ since the exclusion side warns instead of aborting the run.
+- `excluded_resource_type_refs` (Attributes List) The only field that scopes resource types; excluded_resource_type_ids is
+ deprecated and ignored. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--exclusion_criteria--excluded_resource_type_refs))
 - `excluded_risk_level_ids` (List of String) The excludedRiskLevelIds field.
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--exclusion_criteria--excluded_resource_type_refs"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.exclusion_criteria.excluded_resource_type_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--automation_steps--create_revoke_tasks_v2--exclusion_list"></a>
@@ -1493,8 +1557,22 @@ Optional:
 
 - `app_ids` (List of String) The appIds field.
 - `compliance_framework_ids` (List of String) The complianceFrameworkIds field.
-- `resource_type_ids` (List of String) The resourceTypeIds field.
+- `resource_type_ids` (List of String, Deprecated) Deprecated: matched by resource type display name, which collides across
+ apps/connectors. Not read by execution — replaced by resource_type_refs.
+ Kept only for wire compatibility with existing stored rows; a criteria
+ still carrying this without a ref fails closed at execution time.
+- `resource_type_refs` (Attributes List) The only field that scopes resource types; resource_type_ids is deprecated
+ and ignored. (see [below for nested schema](#nestedatt--automation_steps--create_revoke_tasks_v2--inclusion_criteria--resource_type_refs))
 - `risk_level_ids` (List of String) The riskLevelIds field.
+
+<a id="nestedatt--automation_steps--create_revoke_tasks_v2--inclusion_criteria--resource_type_refs"></a>
+### Nested Schema for `automation_steps.create_revoke_tasks_v2.inclusion_criteria.resource_type_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--automation_steps--create_revoke_tasks_v2--inclusion_list"></a>
@@ -2317,8 +2395,24 @@ Optional:
 
 - `excluded_app_ids` (List of String) The excludedAppIds field.
 - `excluded_compliance_framework_ids` (List of String) The excludedComplianceFrameworkIds field.
-- `excluded_resource_type_ids` (List of String) The excludedResourceTypeIds field.
+- `excluded_resource_type_ids` (List of String, Deprecated) Deprecated: matched by resource type display name, which collides across
+ apps/connectors. Not read by execution — replaced by
+ excluded_resource_type_refs. Kept only for wire compatibility with
+ existing stored rows; a criteria still carrying this without a ref
+ degrades to excluding the entire named app(s) rather than failing closed,
+ since the exclusion side warns instead of aborting the run.
+- `excluded_resource_type_refs` (Attributes List) The only field that scopes resource types; excluded_resource_type_ids is
+ deprecated and ignored. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--exclusion_criteria--excluded_resource_type_refs))
 - `excluded_risk_level_ids` (List of String) The excludedRiskLevelIds field.
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--exclusion_criteria--excluded_resource_type_refs"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.exclusion_criteria.excluded_resource_type_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--exclusion_list"></a>
@@ -2365,8 +2459,22 @@ Optional:
 
 - `app_ids` (List of String) The appIds field.
 - `compliance_framework_ids` (List of String) The complianceFrameworkIds field.
-- `resource_type_ids` (List of String) The resourceTypeIds field.
+- `resource_type_ids` (List of String, Deprecated) Deprecated: matched by resource type display name, which collides across
+ apps/connectors. Not read by execution — replaced by resource_type_refs.
+ Kept only for wire compatibility with existing stored rows; a criteria
+ still carrying this without a ref fails closed at execution time.
+- `resource_type_refs` (Attributes List) The only field that scopes resource types; resource_type_ids is deprecated
+ and ignored. (see [below for nested schema](#nestedatt--draft_automation_steps--create_revoke_tasks_v2--inclusion_criteria--resource_type_refs))
 - `risk_level_ids` (List of String) The riskLevelIds field.
+
+<a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--inclusion_criteria--resource_type_refs"></a>
+### Nested Schema for `draft_automation_steps.create_revoke_tasks_v2.inclusion_criteria.resource_type_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--draft_automation_steps--create_revoke_tasks_v2--inclusion_list"></a>
@@ -3012,8 +3120,22 @@ Optional:
 
 - `app_ids` (List of String) The appIds field.
 - `compliance_framework_ids` (List of String) The complianceFrameworkIds field.
-- `resource_type_ids` (List of String) The resourceTypeIds field.
+- `resource_type_ids` (List of String, Deprecated) Deprecated: matched by resource type display name, which collides across
+ apps/connectors. Not read by execution — replaced by resource_type_refs.
+ Kept only for wire compatibility with existing stored rows; a criteria
+ still carrying this without a ref fails closed at execution time.
+- `resource_type_refs` (Attributes List) The only field that scopes resource types; resource_type_ids is deprecated
+ and ignored. (see [below for nested schema](#nestedatt--draft_triggers--grant_deleted--grant_trigger_filter--inclusion_criteria--resource_type_refs))
 - `risk_level_ids` (List of String) The riskLevelIds field.
+
+<a id="nestedatt--draft_triggers--grant_deleted--grant_trigger_filter--inclusion_criteria--resource_type_refs"></a>
+### Nested Schema for `draft_triggers.grant_deleted.grant_trigger_filter.inclusion_criteria.resource_type_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--draft_triggers--grant_deleted--grant_trigger_filter--inclusion_list"></a>
@@ -3097,8 +3219,22 @@ Optional:
 
 - `app_ids` (List of String) The appIds field.
 - `compliance_framework_ids` (List of String) The complianceFrameworkIds field.
-- `resource_type_ids` (List of String) The resourceTypeIds field.
+- `resource_type_ids` (List of String, Deprecated) Deprecated: matched by resource type display name, which collides across
+ apps/connectors. Not read by execution — replaced by resource_type_refs.
+ Kept only for wire compatibility with existing stored rows; a criteria
+ still carrying this without a ref fails closed at execution time.
+- `resource_type_refs` (Attributes List) The only field that scopes resource types; resource_type_ids is deprecated
+ and ignored. (see [below for nested schema](#nestedatt--draft_triggers--grant_found--grant_trigger_filter--inclusion_criteria--resource_type_refs))
 - `risk_level_ids` (List of String) The riskLevelIds field.
+
+<a id="nestedatt--draft_triggers--grant_found--grant_trigger_filter--inclusion_criteria--resource_type_refs"></a>
+### Nested Schema for `draft_triggers.grant_found.grant_trigger_filter.inclusion_criteria.resource_type_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--draft_triggers--grant_found--grant_trigger_filter--inclusion_list"></a>
@@ -3415,8 +3551,22 @@ Optional:
 
 - `app_ids` (List of String) The appIds field.
 - `compliance_framework_ids` (List of String) The complianceFrameworkIds field.
-- `resource_type_ids` (List of String) The resourceTypeIds field.
+- `resource_type_ids` (List of String, Deprecated) Deprecated: matched by resource type display name, which collides across
+ apps/connectors. Not read by execution — replaced by resource_type_refs.
+ Kept only for wire compatibility with existing stored rows; a criteria
+ still carrying this without a ref fails closed at execution time.
+- `resource_type_refs` (Attributes List) The only field that scopes resource types; resource_type_ids is deprecated
+ and ignored. (see [below for nested schema](#nestedatt--triggers--grant_deleted--grant_trigger_filter--inclusion_criteria--resource_type_refs))
 - `risk_level_ids` (List of String) The riskLevelIds field.
+
+<a id="nestedatt--triggers--grant_deleted--grant_trigger_filter--inclusion_criteria--resource_type_refs"></a>
+### Nested Schema for `triggers.grant_deleted.grant_trigger_filter.inclusion_criteria.resource_type_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--triggers--grant_deleted--grant_trigger_filter--inclusion_list"></a>
@@ -3500,8 +3650,22 @@ Optional:
 
 - `app_ids` (List of String) The appIds field.
 - `compliance_framework_ids` (List of String) The complianceFrameworkIds field.
-- `resource_type_ids` (List of String) The resourceTypeIds field.
+- `resource_type_ids` (List of String, Deprecated) Deprecated: matched by resource type display name, which collides across
+ apps/connectors. Not read by execution — replaced by resource_type_refs.
+ Kept only for wire compatibility with existing stored rows; a criteria
+ still carrying this without a ref fails closed at execution time.
+- `resource_type_refs` (Attributes List) The only field that scopes resource types; resource_type_ids is deprecated
+ and ignored. (see [below for nested schema](#nestedatt--triggers--grant_found--grant_trigger_filter--inclusion_criteria--resource_type_refs))
 - `risk_level_ids` (List of String) The riskLevelIds field.
+
+<a id="nestedatt--triggers--grant_found--grant_trigger_filter--inclusion_criteria--resource_type_refs"></a>
+### Nested Schema for `triggers.grant_found.grant_trigger_filter.inclusion_criteria.resource_type_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--triggers--grant_found--grant_trigger_filter--inclusion_list"></a>

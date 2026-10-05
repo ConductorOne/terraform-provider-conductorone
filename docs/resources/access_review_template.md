@@ -25,12 +25,12 @@ resource "conductorone_access_review_template" "my_access_review_template" {
   auto_start_campaign  = true
   column_config = {
     columns = [
-      "ACCESS_REVIEW_TASK_COLUMN_RISK_LEVEL"
+      "ACCESS_REVIEW_TASK_COLUMN_COMPLIANCE_FRAMEWORK"
     ]
     ordered_columns = [
       {
         app_user_attribute_key = "...my_app_user_attribute_key..."
-        builtin                = "ACCESS_REVIEW_TASK_COLUMN_INSIGHTS"
+        builtin                = "ACCESS_REVIEW_TASK_COLUMN_RECOMMENDATION"
       }
     ]
   }
@@ -267,6 +267,7 @@ This message contains a oneof named excluded_apps_and_resources_scope. Only a si
 
 ### Read-Only
 
+- `campaign_schedule` (Attributes) When a template's campaigns open and close. One timezone governs both times. (see [below for nested schema](#nestedatt--campaign_schedule))
 - `created_at` (String)
 - `id` (String) The unique identifier of this template.
 - `inclusion_scope` (Attributes) The AccessReviewInclusionScope message. (see [below for nested schema](#nestedatt--inclusion_scope))
@@ -298,7 +299,7 @@ See the documentation for `c1.api.accessreview.v1.AccessReviewTaskColumnRef` for
 - `builtin` (String) The builtin field.
 This field is part of the `column` oneof.
 See the documentation for `c1.api.accessreview.v1.AccessReviewTaskColumnRef` for more details.
-possible known values include one of ["ACCESS_REVIEW_TASK_COLUMN_UNSPECIFIED", "ACCESS_REVIEW_TASK_COLUMN_VIEW_LINK", "ACCESS_REVIEW_TASK_COLUMN_CURRENT_STATE", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT_OWNER", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT_DESCRIPTION", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_TYPE", "ACCESS_REVIEW_TASK_COLUMN_INSIGHTS", "ACCESS_REVIEW_TASK_COLUMN_RECOMMENDATION", "ACCESS_REVIEW_TASK_COLUMN_ASSIGNED_TO", "ACCESS_REVIEW_TASK_COLUMN_STATUS", "ACCESS_REVIEW_TASK_COLUMN_APP", "ACCESS_REVIEW_TASK_COLUMN_DUE", "ACCESS_REVIEW_TASK_COLUMN_PROJECT", "ACCESS_REVIEW_TASK_COLUMN_CREATED_ON", "ACCESS_REVIEW_TASK_COLUMN_TASK_AGE", "ACCESS_REVIEW_TASK_COLUMN_RESOLVED_ON", "ACCESS_REVIEW_TASK_COLUMN_ENROLLMENT_STATUS", "ACCESS_REVIEW_TASK_COLUMN_INHERITED_FROM", "ACCESS_REVIEW_TASK_COLUMN_DEPARTMENT", "ACCESS_REVIEW_TASK_COLUMN_JOB_TITLE", "ACCESS_REVIEW_TASK_COLUMN_CREATED_BY", "ACCESS_REVIEW_TASK_COLUMN_LAST_LOGIN", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_PARENT", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_CHILDREN", "ACCESS_REVIEW_TASK_COLUMN_APP_USER_USERNAME", "ACCESS_REVIEW_TASK_COLUMN_ACCESS_HOLDER_TYPE", "ACCESS_REVIEW_TASK_COLUMN_RISK_LEVEL", "ACCESS_REVIEW_TASK_COLUMN_COMPLIANCE_FRAMEWORK"]
+possible known values include one of ["ACCESS_REVIEW_TASK_COLUMN_UNSPECIFIED", "ACCESS_REVIEW_TASK_COLUMN_VIEW_LINK", "ACCESS_REVIEW_TASK_COLUMN_CURRENT_STATE", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT_OWNER", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT_DESCRIPTION", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_TYPE", "ACCESS_REVIEW_TASK_COLUMN_INSIGHTS", "ACCESS_REVIEW_TASK_COLUMN_RECOMMENDATION", "ACCESS_REVIEW_TASK_COLUMN_ASSIGNED_TO", "ACCESS_REVIEW_TASK_COLUMN_STATUS", "ACCESS_REVIEW_TASK_COLUMN_APP", "ACCESS_REVIEW_TASK_COLUMN_DUE", "ACCESS_REVIEW_TASK_COLUMN_PROJECT", "ACCESS_REVIEW_TASK_COLUMN_CREATED_ON", "ACCESS_REVIEW_TASK_COLUMN_TASK_AGE", "ACCESS_REVIEW_TASK_COLUMN_RESOLVED_ON", "ACCESS_REVIEW_TASK_COLUMN_ENROLLMENT_STATUS", "ACCESS_REVIEW_TASK_COLUMN_INHERITED_FROM", "ACCESS_REVIEW_TASK_COLUMN_DEPARTMENT", "ACCESS_REVIEW_TASK_COLUMN_JOB_TITLE", "ACCESS_REVIEW_TASK_COLUMN_CREATED_BY", "ACCESS_REVIEW_TASK_COLUMN_LAST_LOGIN", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_PARENT", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_CHILDREN", "ACCESS_REVIEW_TASK_COLUMN_APP_USER_USERNAME", "ACCESS_REVIEW_TASK_COLUMN_ACCESS_HOLDER_TYPE", "ACCESS_REVIEW_TASK_COLUMN_RISK_LEVEL", "ACCESS_REVIEW_TASK_COLUMN_COMPLIANCE_FRAMEWORK", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_DESCRIPTION"]
 
 
 
@@ -553,6 +554,39 @@ Optional:
 - `require_signature` (Boolean) The requireSignature field.
 - `step_up_provider_id` (String) The stepUpProviderId field.
 - `tsp_url` (String) The tspUrl field.
+
+
+<a id="nestedatt--campaign_schedule"></a>
+### Nested Schema for `campaign_schedule`
+
+Read-Only:
+
+- `end_time` (Attributes) Time of day, in the timezone of the CampaignSchedule that holds it. (see [below for nested schema](#nestedatt--campaign_schedule--end_time))
+- `start_time` (Attributes) Time of day, in the timezone of the CampaignSchedule that holds it. (see [below for nested schema](#nestedatt--campaign_schedule--start_time))
+- `timezone` (String) IANA timezone name (e.g. "America/Los_Angeles", "UTC"). Required whenever
+ this message is present: a stored schedule with no zone is indistinguishable
+ from a record that predates the message, so the times below would be
+ silently discarded. Omit the whole message to keep the legacy schedule.
+ Enforced on post-merge state rather than here, so a field-mask update
+ targeting only a nested time still works.
+
+<a id="nestedatt--campaign_schedule--end_time"></a>
+### Nested Schema for `campaign_schedule.end_time`
+
+Read-Only:
+
+- `hours` (Number) The hours field.
+- `minutes` (Number) The minutes field.
+
+
+<a id="nestedatt--campaign_schedule--start_time"></a>
+### Nested Schema for `campaign_schedule.start_time`
+
+Read-Only:
+
+- `hours` (Number) The hours field.
+- `minutes` (Number) The minutes field.
+
 
 
 <a id="nestedatt--inclusion_scope"></a>

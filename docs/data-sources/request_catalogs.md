@@ -70,7 +70,8 @@ Read-Only:
 - `request_bundle` (Boolean) Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
 - `type` (String) The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile
  created before the type was recorded; UNSPECIFIED only for a tenant whose
- backfill has not been run.
+ backfill has not been run. Updates require the access profile types feature
+ and an update mask containing "type".
 - `unenrollment_behavior` (String) Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
 - `unenrollment_entitlement_behavior` (String) Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
 - `updated_at` (String)
