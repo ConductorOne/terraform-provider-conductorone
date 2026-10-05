@@ -19,6 +19,7 @@ const (
 	WebhookInstanceStateWebhookStateProcessResponse WebhookInstanceState = "WEBHOOK_STATE_PROCESS_RESPONSE"
 	WebhookInstanceStateWebhookStateSuccess         WebhookInstanceState = "WEBHOOK_STATE_SUCCESS"
 	WebhookInstanceStateWebhookStateFatalError      WebhookInstanceState = "WEBHOOK_STATE_FATAL_ERROR"
+	WebhookInstanceStateWebhookStateCanceled        WebhookInstanceState = "WEBHOOK_STATE_CANCELED"
 )
 
 func (e WebhookInstanceState) ToPointer() *WebhookInstanceState {
@@ -29,7 +30,7 @@ func (e WebhookInstanceState) ToPointer() *WebhookInstanceState {
 func (e *WebhookInstanceState) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "WEBHOOK_STATE_UNSPECIFIED", "WEBHOOK_STATE_PENDING", "WEBHOOK_STATE_RUNNING", "WEBHOOK_STATE_ERROR", "WEBHOOK_STATE_WAITING_CALLBACK", "WEBHOOK_STATE_PROCESS_RESPONSE", "WEBHOOK_STATE_SUCCESS", "WEBHOOK_STATE_FATAL_ERROR":
+		case "WEBHOOK_STATE_UNSPECIFIED", "WEBHOOK_STATE_PENDING", "WEBHOOK_STATE_RUNNING", "WEBHOOK_STATE_ERROR", "WEBHOOK_STATE_WAITING_CALLBACK", "WEBHOOK_STATE_PROCESS_RESPONSE", "WEBHOOK_STATE_SUCCESS", "WEBHOOK_STATE_FATAL_ERROR", "WEBHOOK_STATE_CANCELED":
 			return true
 		}
 	}
@@ -49,8 +50,12 @@ type WebhookInstance struct {
 	Source          *WebhookSource `json:"source,omitempty"`
 	Spec            *WebhookSpec   `json:"spec,omitempty"`
 	// The state field.
-	State     *WebhookInstanceState `json:"state,omitempty"`
-	UpdatedAt *time.Time            `json:"updatedAt,omitempty"`
+	State *WebhookInstanceState `json:"state,omitempty"`
+	// Why the task step that triggered this webhook stopped owning it, if it did.
+	//  Set on any instance that was abandoned rather than run to its own
+	//  conclusion; empty otherwise.
+	SupersededReason *string    `json:"supersededReason,omitempty"`
+	UpdatedAt        *time.Time `json:"updatedAt,omitempty"`
 	// The webhookId field.
 	WebhookID *string `json:"webhookId,omitempty"`
 }
@@ -127,6 +132,13 @@ func (w *WebhookInstance) GetState() *WebhookInstanceState {
 		return nil
 	}
 	return w.State
+}
+
+func (w *WebhookInstance) GetSupersededReason() *string {
+	if w == nil {
+		return nil
+	}
+	return w.SupersededReason
 }
 
 func (w *WebhookInstance) GetUpdatedAt() *time.Time {

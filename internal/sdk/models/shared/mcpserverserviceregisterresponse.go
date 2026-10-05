@@ -4,10 +4,10 @@ package shared
 
 // MCPServerServiceRegisterResponse returns the newly created MCP server.
 type MCPServerServiceRegisterResponse struct {
-	// Whether the "All approved tools" toolset reached every profile in
-	//  access_profile_ids. False means the server registered but the attach failed
+	// Whether the selected system toolset reached every profile in
+	//  the request access profiles. False means the server registered but the attach failed
 	//  afterwards, and the profiles have to be wired from the server page. Always true
-	//  when access_profile_ids was empty, since there was nothing to attach.
+	//  when no request access profiles were supplied, since there was nothing to attach.
 	AccessProfilesAttached *bool          `json:"accessProfilesAttached,omitempty"`
 	McpServer              *MCPServerView `json:"mcpServer,omitempty"`
 }

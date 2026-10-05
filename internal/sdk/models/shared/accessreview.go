@@ -193,6 +193,7 @@ type AccessReview struct {
 	Bindings                 *BindingObjectSetup       `json:"bindings,omitempty"`
 	CampaignHealth           *CampaignHealthSnapshot   `json:"campaignHealth,omitempty"`
 	CampaignInsights         *CampaignInsights         `json:"campaignInsights,omitempty"`
+	CampaignSchedule         *CampaignSchedule         `json:"campaignSchedule,omitempty"`
 	ClosedAt                 *time.Time                `json:"closedAt,omitempty"`
 	ColumnConfig             *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	CompletionDate           *time.Time                `json:"completionDate,omitempty"`
@@ -323,6 +324,13 @@ func (a *AccessReview) GetCampaignInsights() *CampaignInsights {
 		return nil
 	}
 	return a.CampaignInsights
+}
+
+func (a *AccessReview) GetCampaignSchedule() *CampaignSchedule {
+	if a == nil {
+		return nil
+	}
+	return a.CampaignSchedule
 }
 
 func (a *AccessReview) GetClosedAt() *time.Time {
@@ -574,6 +582,7 @@ type AccessReviewInput struct {
 	Bindings                 *BindingObjectSetup       `json:"bindings,omitempty"`
 	CampaignHealth           *CampaignHealthSnapshot   `json:"campaignHealth,omitempty"`
 	CampaignInsights         *CampaignInsights         `json:"campaignInsights,omitempty"`
+	CampaignSchedule         *CampaignSchedule         `json:"campaignSchedule,omitempty"`
 	ClosedAt                 *time.Time                `json:"closedAt,omitempty"`
 	ColumnConfig             *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	CompletionDate           *time.Time                `json:"completionDate,omitempty"`
@@ -699,6 +708,13 @@ func (a *AccessReviewInput) GetCampaignInsights() *CampaignInsights {
 		return nil
 	}
 	return a.CampaignInsights
+}
+
+func (a *AccessReviewInput) GetCampaignSchedule() *CampaignSchedule {
+	if a == nil {
+		return nil
+	}
+	return a.CampaignSchedule
 }
 
 func (a *AccessReviewInput) GetClosedAt() *time.Time {

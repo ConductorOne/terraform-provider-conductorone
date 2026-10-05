@@ -2,22 +2,22 @@
 
 package shared
 
-// Channel - Release channel for this catalog entry.
-type Channel string
+// MCPServerCatalogEntryChannel - Release channel for this catalog entry.
+type MCPServerCatalogEntryChannel string
 
 const (
-	ChannelMcpServerCatalogChannelUnspecified Channel = "MCP_SERVER_CATALOG_CHANNEL_UNSPECIFIED"
-	ChannelMcpServerCatalogChannelStable      Channel = "MCP_SERVER_CATALOG_CHANNEL_STABLE"
-	ChannelMcpServerCatalogChannelBeta        Channel = "MCP_SERVER_CATALOG_CHANNEL_BETA"
-	ChannelMcpServerCatalogChannelAlpha       Channel = "MCP_SERVER_CATALOG_CHANNEL_ALPHA"
+	MCPServerCatalogEntryChannelMcpServerCatalogChannelUnspecified MCPServerCatalogEntryChannel = "MCP_SERVER_CATALOG_CHANNEL_UNSPECIFIED"
+	MCPServerCatalogEntryChannelMcpServerCatalogChannelStable      MCPServerCatalogEntryChannel = "MCP_SERVER_CATALOG_CHANNEL_STABLE"
+	MCPServerCatalogEntryChannelMcpServerCatalogChannelBeta        MCPServerCatalogEntryChannel = "MCP_SERVER_CATALOG_CHANNEL_BETA"
+	MCPServerCatalogEntryChannelMcpServerCatalogChannelAlpha       MCPServerCatalogEntryChannel = "MCP_SERVER_CATALOG_CHANNEL_ALPHA"
 )
 
-func (e Channel) ToPointer() *Channel {
+func (e MCPServerCatalogEntryChannel) ToPointer() *MCPServerCatalogEntryChannel {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Channel) IsExact() bool {
+func (e *MCPServerCatalogEntryChannel) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "MCP_SERVER_CATALOG_CHANNEL_UNSPECIFIED", "MCP_SERVER_CATALOG_CHANNEL_STABLE", "MCP_SERVER_CATALOG_CHANNEL_BETA", "MCP_SERVER_CATALOG_CHANNEL_ALPHA":
@@ -146,8 +146,10 @@ type MCPServerCatalogEntry struct {
 	//  endpoint. Empty when the impl declares no base URL.
 	BaseURL *string `json:"baseUrl,omitempty"`
 	// Release channel for this catalog entry.
-	Channel      *Channel                      `json:"channel,omitempty"`
+	Channel      *MCPServerCatalogEntryChannel `json:"channel,omitempty"`
 	ConfigSchema *MCPServerCatalogConfigSchema `json:"configSchema,omitempty"`
+	// Connection type declared by the catalog impl (for example, "mcp").
+	ConnectType *string `json:"connectType,omitempty"`
 	// Deprecated: read auth_modes instead.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -213,7 +215,7 @@ func (m *MCPServerCatalogEntry) GetBaseURL() *string {
 	return m.BaseURL
 }
 
-func (m *MCPServerCatalogEntry) GetChannel() *Channel {
+func (m *MCPServerCatalogEntry) GetChannel() *MCPServerCatalogEntryChannel {
 	if m == nil {
 		return nil
 	}
@@ -225,6 +227,13 @@ func (m *MCPServerCatalogEntry) GetConfigSchema() *MCPServerCatalogConfigSchema 
 		return nil
 	}
 	return m.ConfigSchema
+}
+
+func (m *MCPServerCatalogEntry) GetConnectType() *string {
+	if m == nil {
+		return nil
+	}
+	return m.ConnectType
 }
 
 func (m *MCPServerCatalogEntry) GetDefaultAuthMethod() *DefaultAuthMethod {

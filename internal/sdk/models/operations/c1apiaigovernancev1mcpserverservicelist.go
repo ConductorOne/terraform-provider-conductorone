@@ -11,6 +11,7 @@ type C1APIAiGovernanceV1MCPServerServiceListRequest struct {
 	AppID     string  `pathParam:"style=simple,explode=false,name=app_id"`
 	PageSize  *int    `queryParam:"style=form,explode=true,name=page_size"`
 	PageToken *string `queryParam:"style=form,explode=true,name=page_token"`
+	Query     *string `queryParam:"style=form,explode=true,name=query"`
 }
 
 func (c *C1APIAiGovernanceV1MCPServerServiceListRequest) GetAppID() string {
@@ -32,6 +33,13 @@ func (c *C1APIAiGovernanceV1MCPServerServiceListRequest) GetPageToken() *string 
 		return nil
 	}
 	return c.PageToken
+}
+
+func (c *C1APIAiGovernanceV1MCPServerServiceListRequest) GetQuery() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Query
 }
 
 // #region class-body-c1apiaigovernancev1mcpserverservicelistrequest

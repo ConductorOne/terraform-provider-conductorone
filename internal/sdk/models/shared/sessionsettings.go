@@ -34,10 +34,13 @@ type SessionSettings struct {
 	// Policy for metadata document client_id URLs.
 	ClientIDMetadataDocumentPolicy *ClientIDMetadataDocumentPolicy `json:"clientIdMetadataDocumentPolicy,omitempty"`
 	ConnectorSource                *CIDRRestriction                `json:"connectorSource,omitempty"`
-	ExternalClientSource           *CIDRRestriction                `json:"externalClientSource,omitempty"`
+	// Whether a browser session ends after idle_timeout without user activity.
+	EnableIdleTimeout    *bool            `json:"enableIdleTimeout,omitempty"`
+	ExternalClientSource *CIDRRestriction `json:"externalClientSource,omitempty"`
 	// Enable external client registration (OAuth 2.0 DCR) for MCP clients
 	//  like Claude Desktop, Cursor, and other AI assistants.
 	ExternalClientsEnabled *bool            `json:"externalClientsEnabled,omitempty"`
+	IdleTimeout            *string          `json:"idleTimeout,omitempty"`
 	MaxSessionLength       *string          `json:"maxSessionLength,omitempty"`
 	PccAdminSource         *CIDRRestriction `json:"pccAdminSource,omitempty"`
 	PccUserSource          *CIDRRestriction `json:"pccUserSource,omitempty"`
@@ -66,6 +69,13 @@ func (s *SessionSettings) GetConnectorSource() *CIDRRestriction {
 	return s.ConnectorSource
 }
 
+func (s *SessionSettings) GetEnableIdleTimeout() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.EnableIdleTimeout
+}
+
 func (s *SessionSettings) GetExternalClientSource() *CIDRRestriction {
 	if s == nil {
 		return nil
@@ -78,6 +88,13 @@ func (s *SessionSettings) GetExternalClientsEnabled() *bool {
 		return nil
 	}
 	return s.ExternalClientsEnabled
+}
+
+func (s *SessionSettings) GetIdleTimeout() *string {
+	if s == nil {
+		return nil
+	}
+	return s.IdleTimeout
 }
 
 func (s *SessionSettings) GetMaxSessionLength() *string {

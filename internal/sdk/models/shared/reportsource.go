@@ -4,9 +4,9 @@ package shared
 
 // ReportSource is one provenance entry: what a run read to produce its numbers.
 //
-//	Retired: a run saved out of a conversation records the surface it came from,
-//	and provenance is read back through A2UIService.GetSurfaceProvenance rather
-//	than copied here. Kept because a published message may not be deleted.
+//	Retired: ReportingService.GetRunProvenance derives provenance from the
+//	durable surface and program snapshots rather than this copied list. Kept
+//	because a published message may not be deleted.
 //
 // Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type ReportSource struct {

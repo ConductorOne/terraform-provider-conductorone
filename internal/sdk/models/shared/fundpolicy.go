@@ -46,6 +46,8 @@ type FundPolicy struct {
 	OrgCeiling   *SpendControls `json:"orgCeiling,omitempty"`
 	// The root period every amount in the tenant is denominated in.
 	Period *FundPolicyPeriod `json:"period,omitempty"`
+	// Explicit approval policy for scoped spending changes. Empty disables requests.
+	SpendRemedyRequestPolicyID *string `json:"spendRemedyRequestPolicyId,omitempty"`
 	// The tenantId field.
 	TenantID  *string    `json:"tenantId,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -95,6 +97,13 @@ func (f *FundPolicy) GetPeriod() *FundPolicyPeriod {
 		return nil
 	}
 	return f.Period
+}
+
+func (f *FundPolicy) GetSpendRemedyRequestPolicyID() *string {
+	if f == nil {
+		return nil
+	}
+	return f.SpendRemedyRequestPolicyID
 }
 
 func (f *FundPolicy) GetTenantID() *string {

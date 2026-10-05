@@ -49,6 +49,26 @@ func (r *AccessReviewDataSourceModel) RefreshFromSharedAccessReview(ctx context.
 			r.CampaignInsights = &tfTypes.CampaignInsights{}
 			r.CampaignInsights.Markdown = types.StringPointerValue(resp.CampaignInsights.Markdown)
 		}
+		if resp.CampaignSchedule == nil {
+			r.CampaignSchedule = nil
+		} else {
+			r.CampaignSchedule = &tfTypes.CampaignSchedule{}
+			if resp.CampaignSchedule.EndTime == nil {
+				r.CampaignSchedule.EndTime = nil
+			} else {
+				r.CampaignSchedule.EndTime = &tfTypes.CampaignScheduleTime{}
+				r.CampaignSchedule.EndTime.Hours = types.Int64PointerValue(resp.CampaignSchedule.EndTime.Hours)
+				r.CampaignSchedule.EndTime.Minutes = types.Int64PointerValue(resp.CampaignSchedule.EndTime.Minutes)
+			}
+			if resp.CampaignSchedule.StartTime == nil {
+				r.CampaignSchedule.StartTime = nil
+			} else {
+				r.CampaignSchedule.StartTime = &tfTypes.CampaignScheduleTime{}
+				r.CampaignSchedule.StartTime.Hours = types.Int64PointerValue(resp.CampaignSchedule.StartTime.Hours)
+				r.CampaignSchedule.StartTime.Minutes = types.Int64PointerValue(resp.CampaignSchedule.StartTime.Minutes)
+			}
+			r.CampaignSchedule.Timezone = types.StringPointerValue(resp.CampaignSchedule.Timezone)
+		}
 		r.ClosedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ClosedAt))
 		if resp.ColumnConfig == nil {
 			r.ColumnConfig = nil

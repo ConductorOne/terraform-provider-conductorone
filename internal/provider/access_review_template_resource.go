@@ -42,6 +42,7 @@ type AccessReviewTemplateResourceModel struct {
 	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
 	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
+	CampaignSchedule               *tfTypes.CampaignSchedule           `tfsdk:"campaign_schedule"`
 	ColumnConfig                   *tfTypes.AccessReviewColumnConfig   `tfsdk:"column_config"`
 	CreatedAt                      types.String                        `tfsdk:"created_at"`
 	DefaultView                    types.String                        `tfsdk:"default_view"`
@@ -119,6 +120,49 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 				Optional:    true,
 				Description: `The autoStartCampaign field.`,
 			},
+			"campaign_schedule": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"end_time": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"hours": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The hours field.`,
+							},
+							"minutes": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The minutes field.`,
+							},
+						},
+						Description: `Time of day, in the timezone of the CampaignSchedule that holds it.`,
+					},
+					"start_time": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"hours": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The hours field.`,
+							},
+							"minutes": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The minutes field.`,
+							},
+						},
+						Description: `Time of day, in the timezone of the CampaignSchedule that holds it.`,
+					},
+					"timezone": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `IANA timezone name (e.g. "America/Los_Angeles", "UTC"). Required whenever` + "\n" +
+							` this message is present: a stored schedule with no zone is indistinguishable` + "\n" +
+							` from a record that predates the message, so the times below would be` + "\n" +
+							` silently discarded. Omit the whole message to keep the legacy schedule.` + "\n" +
+							` Enforced on post-merge state rather than here, so a field-mask update` + "\n" +
+							` targeting only a nested time still works.`,
+					},
+				},
+				Description: `When a template's campaigns open and close. One timezone governs both times.`,
+			},
 			"column_config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -152,7 +196,7 @@ func (r *AccessReviewTemplateResource) Schema(ctx context.Context, req resource.
 									MarkdownDescription: `The builtin field.` + "\n" +
 										`This field is part of the ` + "`" + `column` + "`" + ` oneof.` + "\n" +
 										`See the documentation for ` + "`" + `c1.api.accessreview.v1.AccessReviewTaskColumnRef` + "`" + ` for more details.` + "\n" +
-										`possible known values include one of ["ACCESS_REVIEW_TASK_COLUMN_UNSPECIFIED", "ACCESS_REVIEW_TASK_COLUMN_VIEW_LINK", "ACCESS_REVIEW_TASK_COLUMN_CURRENT_STATE", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT_OWNER", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT_DESCRIPTION", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_TYPE", "ACCESS_REVIEW_TASK_COLUMN_INSIGHTS", "ACCESS_REVIEW_TASK_COLUMN_RECOMMENDATION", "ACCESS_REVIEW_TASK_COLUMN_ASSIGNED_TO", "ACCESS_REVIEW_TASK_COLUMN_STATUS", "ACCESS_REVIEW_TASK_COLUMN_APP", "ACCESS_REVIEW_TASK_COLUMN_DUE", "ACCESS_REVIEW_TASK_COLUMN_PROJECT", "ACCESS_REVIEW_TASK_COLUMN_CREATED_ON", "ACCESS_REVIEW_TASK_COLUMN_TASK_AGE", "ACCESS_REVIEW_TASK_COLUMN_RESOLVED_ON", "ACCESS_REVIEW_TASK_COLUMN_ENROLLMENT_STATUS", "ACCESS_REVIEW_TASK_COLUMN_INHERITED_FROM", "ACCESS_REVIEW_TASK_COLUMN_DEPARTMENT", "ACCESS_REVIEW_TASK_COLUMN_JOB_TITLE", "ACCESS_REVIEW_TASK_COLUMN_CREATED_BY", "ACCESS_REVIEW_TASK_COLUMN_LAST_LOGIN", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_PARENT", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_CHILDREN", "ACCESS_REVIEW_TASK_COLUMN_APP_USER_USERNAME", "ACCESS_REVIEW_TASK_COLUMN_ACCESS_HOLDER_TYPE", "ACCESS_REVIEW_TASK_COLUMN_RISK_LEVEL", "ACCESS_REVIEW_TASK_COLUMN_COMPLIANCE_FRAMEWORK"]`,
+										`possible known values include one of ["ACCESS_REVIEW_TASK_COLUMN_UNSPECIFIED", "ACCESS_REVIEW_TASK_COLUMN_VIEW_LINK", "ACCESS_REVIEW_TASK_COLUMN_CURRENT_STATE", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT", "ACCESS_REVIEW_TASK_COLUMN_ACCOUNT_OWNER", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT", "ACCESS_REVIEW_TASK_COLUMN_ENTITLEMENT_DESCRIPTION", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_TYPE", "ACCESS_REVIEW_TASK_COLUMN_INSIGHTS", "ACCESS_REVIEW_TASK_COLUMN_RECOMMENDATION", "ACCESS_REVIEW_TASK_COLUMN_ASSIGNED_TO", "ACCESS_REVIEW_TASK_COLUMN_STATUS", "ACCESS_REVIEW_TASK_COLUMN_APP", "ACCESS_REVIEW_TASK_COLUMN_DUE", "ACCESS_REVIEW_TASK_COLUMN_PROJECT", "ACCESS_REVIEW_TASK_COLUMN_CREATED_ON", "ACCESS_REVIEW_TASK_COLUMN_TASK_AGE", "ACCESS_REVIEW_TASK_COLUMN_RESOLVED_ON", "ACCESS_REVIEW_TASK_COLUMN_ENROLLMENT_STATUS", "ACCESS_REVIEW_TASK_COLUMN_INHERITED_FROM", "ACCESS_REVIEW_TASK_COLUMN_DEPARTMENT", "ACCESS_REVIEW_TASK_COLUMN_JOB_TITLE", "ACCESS_REVIEW_TASK_COLUMN_CREATED_BY", "ACCESS_REVIEW_TASK_COLUMN_LAST_LOGIN", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_PARENT", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_CHILDREN", "ACCESS_REVIEW_TASK_COLUMN_APP_USER_USERNAME", "ACCESS_REVIEW_TASK_COLUMN_ACCESS_HOLDER_TYPE", "ACCESS_REVIEW_TASK_COLUMN_RISK_LEVEL", "ACCESS_REVIEW_TASK_COLUMN_COMPLIANCE_FRAMEWORK", "ACCESS_REVIEW_TASK_COLUMN_RESOURCE_DESCRIPTION"]`,
 								},
 							},
 						},

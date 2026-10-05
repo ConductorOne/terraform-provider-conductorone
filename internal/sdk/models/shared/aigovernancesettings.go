@@ -147,6 +147,14 @@ type AIGovernanceSettings struct {
 	//  Defaults to false, so the judge runs by default.
 	UntrustedJudgeDisable *bool      `json:"untrustedJudgeDisable,omitempty"`
 	UpdatedAt             *time.Time `json:"updatedAt,omitempty"`
+	// User attribute that names a cost center on the C1 Gateway attribution
+	//  dashboards, using the same values as usage_attribution_team_attribute.
+	//  Empty leaves usage without a cost center.
+	UsageAttributionCostCenterAttribute *string `json:"usageAttributionCostCenterAttribute,omitempty"`
+	// User attribute that names a team on the C1 Gateway attribution dashboards:
+	//  department, job_title, employment_type, employment_status, or
+	//  profile.<key> for a directory profile attribute. Empty uses department.
+	UsageAttributionTeamAttribute *string `json:"usageAttributionTeamAttribute,omitempty"`
 }
 
 func (a AIGovernanceSettings) MarshalJSON() ([]byte, error) {
@@ -270,4 +278,18 @@ func (a *AIGovernanceSettings) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return a.UpdatedAt
+}
+
+func (a *AIGovernanceSettings) GetUsageAttributionCostCenterAttribute() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UsageAttributionCostCenterAttribute
+}
+
+func (a *AIGovernanceSettings) GetUsageAttributionTeamAttribute() *string {
+	if a == nil {
+		return nil
+	}
+	return a.UsageAttributionTeamAttribute
 }

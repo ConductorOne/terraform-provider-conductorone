@@ -139,6 +139,7 @@ type AccessReviewTemplate struct {
 	// Auto-start configuration
 	//  next_scheduled_campaign_at will be used as the scheduled start date
 	AutoStartCampaign *bool                     `json:"autoStartCampaign,omitempty"`
+	CampaignSchedule  *CampaignSchedule         `json:"campaignSchedule,omitempty"`
 	ColumnConfig      *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	CreatedAt         *time.Time                `json:"createdAt,omitempty"`
 	// The defaultView field.
@@ -234,6 +235,13 @@ func (a *AccessReviewTemplate) GetAutoStartCampaign() *bool {
 		return nil
 	}
 	return a.AutoStartCampaign
+}
+
+func (a *AccessReviewTemplate) GetCampaignSchedule() *CampaignSchedule {
+	if a == nil {
+		return nil
+	}
+	return a.CampaignSchedule
 }
 
 func (a *AccessReviewTemplate) GetColumnConfig() *AccessReviewColumnConfig {
@@ -434,6 +442,7 @@ type AccessReviewTemplateInput struct {
 	// Auto-start configuration
 	//  next_scheduled_campaign_at will be used as the scheduled start date
 	AutoStartCampaign *bool                     `json:"autoStartCampaign,omitempty"`
+	CampaignSchedule  *CampaignSchedule         `json:"campaignSchedule,omitempty"`
 	ColumnConfig      *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	// The defaultView field.
 	DefaultView *AccessReviewTemplateDefaultView `json:"defaultView,omitempty"`
@@ -526,6 +535,13 @@ func (a *AccessReviewTemplateInput) GetAutoStartCampaign() *bool {
 		return nil
 	}
 	return a.AutoStartCampaign
+}
+
+func (a *AccessReviewTemplateInput) GetCampaignSchedule() *CampaignSchedule {
+	if a == nil {
+		return nil
+	}
+	return a.CampaignSchedule
 }
 
 func (a *AccessReviewTemplateInput) GetColumnConfig() *AccessReviewColumnConfig {

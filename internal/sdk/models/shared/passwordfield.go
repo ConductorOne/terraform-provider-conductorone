@@ -4,4 +4,14 @@ package shared
 
 // The PasswordField message.
 type PasswordField struct {
+	// Render the masked input as a multiline textarea, for secrets that span
+	//  lines such as a PEM-encoded key.
+	Multiline *bool `json:"multiline,omitempty"`
+}
+
+func (p *PasswordField) GetMultiline() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.Multiline
 }

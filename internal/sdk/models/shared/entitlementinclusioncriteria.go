@@ -8,8 +8,16 @@ type EntitlementInclusionCriteria struct {
 	AppIds []string `json:"appIds,omitempty"`
 	// The complianceFrameworkIds field.
 	ComplianceFrameworkIds []string `json:"complianceFrameworkIds,omitempty"`
-	// The resourceTypeIds field.
+	// Deprecated: matched by resource type display name, which collides across
+	//  apps/connectors. Not read by execution — replaced by resource_type_refs.
+	//  Kept only for wire compatibility with existing stored rows; a criteria
+	//  still carrying this without a ref fails closed at execution time.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ResourceTypeIds []string `json:"resourceTypeIds,omitempty"`
+	// The only field that scopes resource types; resource_type_ids is deprecated
+	//  and ignored.
+	ResourceTypeRefs []ResourceTypeRef `json:"resourceTypeRefs,omitempty"`
 	// The riskLevelIds field.
 	RiskLevelIds []string `json:"riskLevelIds,omitempty"`
 }
@@ -33,6 +41,13 @@ func (e *EntitlementInclusionCriteria) GetResourceTypeIds() []string {
 		return nil
 	}
 	return e.ResourceTypeIds
+}
+
+func (e *EntitlementInclusionCriteria) GetResourceTypeRefs() []ResourceTypeRef {
+	if e == nil {
+		return nil
+	}
+	return e.ResourceTypeRefs
 }
 
 func (e *EntitlementInclusionCriteria) GetRiskLevelIds() []string {

@@ -7,7 +7,8 @@ package shared
 //	a tenant-level provider and defines a CEL condition for claim matching.
 type WorkloadFederationTrustInput struct {
 	// IP allowlist for token exchange requests matching this trust.
-	AllowSourceCidrs []string `json:"allowSourceCidrs,omitempty"`
+	AllowSourceCidrs []string            `json:"allowSourceCidrs,omitempty"`
+	C1EdgeService    *C1EdgeServiceInput `json:"c1EdgeService,omitempty"`
 	// CEL expression evaluated against JWT claims. Must return bool.
 	//  Example: claims.sub.startsWith("repo:acme/infra:") && claims.environment == "production"
 	ConditionExpression *string `json:"conditionExpression,omitempty"`
@@ -31,6 +32,13 @@ func (w *WorkloadFederationTrustInput) GetAllowSourceCidrs() []string {
 		return nil
 	}
 	return w.AllowSourceCidrs
+}
+
+func (w *WorkloadFederationTrustInput) GetC1EdgeService() *C1EdgeServiceInput {
+	if w == nil {
+		return nil
+	}
+	return w.C1EdgeService
 }
 
 func (w *WorkloadFederationTrustInput) GetConditionExpression() *string {
