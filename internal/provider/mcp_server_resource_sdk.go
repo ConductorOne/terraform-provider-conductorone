@@ -518,9 +518,9 @@ func (r *MCPServerResourceModel) ToSharedMCPServerServiceRegisterRequest(ctx con
 			} else {
 				jwtSubject = nil
 			}
-			mode := new(shared.Mode)
+			mode := new(shared.MCPServerAuthOAuth2Mode)
 			if !r.ExternalConfig.Oauth2.Mode.IsUnknown() && !r.ExternalConfig.Oauth2.Mode.IsNull() {
-				*mode = shared.Mode(r.ExternalConfig.Oauth2.Mode.ValueString())
+				*mode = shared.MCPServerAuthOAuth2Mode(r.ExternalConfig.Oauth2.Mode.ValueString())
 			} else {
 				mode = nil
 			}
@@ -798,9 +798,9 @@ func (r *MCPServerResourceModel) ToSharedMCPServerServiceRegisterRequest(ctx con
 			} else {
 				jwtSubject1 = nil
 			}
-			mode1 := new(shared.Mode)
+			mode1 := new(shared.MCPServerAuthOAuth2Mode)
 			if !r.HostedConfig.Oauth2.Mode.IsUnknown() && !r.HostedConfig.Oauth2.Mode.IsNull() {
-				*mode1 = shared.Mode(r.HostedConfig.Oauth2.Mode.ValueString())
+				*mode1 = shared.MCPServerAuthOAuth2Mode(r.HostedConfig.Oauth2.Mode.ValueString())
 			} else {
 				mode1 = nil
 			}
@@ -1082,9 +1082,9 @@ func (r *MCPServerResourceModel) ToSharedMCPServerServiceUpdateCredentialsReques
 			} else {
 				jwtSubject = nil
 			}
-			mode := new(shared.Mode)
+			mode := new(shared.MCPServerAuthOAuth2Mode)
 			if !r.ExternalConfig.Oauth2.Mode.IsUnknown() && !r.ExternalConfig.Oauth2.Mode.IsNull() {
-				*mode = shared.Mode(r.ExternalConfig.Oauth2.Mode.ValueString())
+				*mode = shared.MCPServerAuthOAuth2Mode(r.ExternalConfig.Oauth2.Mode.ValueString())
 			} else {
 				mode = nil
 			}
@@ -1362,9 +1362,9 @@ func (r *MCPServerResourceModel) ToSharedMCPServerServiceUpdateCredentialsReques
 			} else {
 				jwtSubject1 = nil
 			}
-			mode1 := new(shared.Mode)
+			mode1 := new(shared.MCPServerAuthOAuth2Mode)
 			if !r.HostedConfig.Oauth2.Mode.IsUnknown() && !r.HostedConfig.Oauth2.Mode.IsNull() {
-				*mode1 = shared.Mode(r.HostedConfig.Oauth2.Mode.ValueString())
+				*mode1 = shared.MCPServerAuthOAuth2Mode(r.HostedConfig.Oauth2.Mode.ValueString())
 			} else {
 				mode1 = nil
 			}

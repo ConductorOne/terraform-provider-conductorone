@@ -120,20 +120,18 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				ElementType: types.StringType,
-				MarkdownDescription: `Optional access profiles (request catalogs) the server should be requestable` + "\n" +
-					` through. Register creates the server's "All approved tools" toolset empty and adds` + "\n" +
-					` its entitlement to each profile, so members can request the server before discovery` + "\n" +
-					` has found a single tool; the sync later adopts the same toolset and fills it. Empty` + "\n" +
-					` skips both steps.` + "\n" +
+				ElementType:        types.StringType,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				MarkdownDescription: `Deprecated: use access_provisioning.request. Retained for older clients;` + "\n" +
+					` used when access_provisioning.request is absent.` + "\n" +
 					`Requires replacement if changed.`,
 			},
 			"access_profiles_attached": schema.BoolAttribute{
 				Computed: true,
-				MarkdownDescription: `Whether the "All approved tools" toolset reached every profile in` + "\n" +
-					` access_profile_ids. False means the server registered but the attach failed` + "\n" +
+				MarkdownDescription: `Whether the selected system toolset reached every profile in` + "\n" +
+					` the request access profiles. False means the server registered but the attach failed` + "\n" +
 					` afterwards, and the profiles have to be wired from the server page. Always true` + "\n" +
-					` when access_profile_ids was empty, since there was nothing to attach.`,
+					` when no request access profiles were supplied, since there was nothing to attach.`,
 			},
 			"acknowledged_finding_ids": schema.ListAttribute{
 				Optional: true,
@@ -448,7 +446,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					},
 					"require_tool_approval": schema.StringAttribute{
 						Optional: true,
-						MarkdownDescription: `Optional per-server override for tool auto-approval. Omit to leave the existing override unmanaged.` + "\n" +
+						MarkdownDescription: `Optional per-server tool-approval override for registrations without a saved access level. Omit to leave the existing override unmanaged.` + "\n" +
 							`Set OPTIONAL_BOOL_UNSPECIFIED to clear the override and use the tenant default.` + "\n" +
 							`possible known values include one of ["OPTIONAL_BOOL_UNSPECIFIED", "OPTIONAL_BOOL_TRUE", "OPTIONAL_BOOL_FALSE"]`,
 					},
@@ -715,7 +713,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					},
 					"require_tool_approval": schema.StringAttribute{
 						Optional: true,
-						MarkdownDescription: `Optional per-server override for tool auto-approval. Omit to leave the existing override unmanaged.` + "\n" +
+						MarkdownDescription: `Optional per-server tool-approval override for registrations without a saved access level. Omit to leave the existing override unmanaged.` + "\n" +
 							`Set OPTIONAL_BOOL_UNSPECIFIED to clear the override and use the tenant default.` + "\n" +
 							`possible known values include one of ["OPTIONAL_BOOL_UNSPECIFIED", "OPTIONAL_BOOL_TRUE", "OPTIONAL_BOOL_FALSE"]`,
 					},
@@ -891,8 +889,9 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				Description: `OAuth2 token URL. Read-only; derived from stored config.`,
 			},
 			"require_tool_approval": schema.StringAttribute{
-				Computed:    true,
-				Description: `Per-server override for tool auto-approval.`,
+				Computed: true,
+				MarkdownDescription: `Per-server override for tool approval on MCP servers without a saved` + "\n" +
+					` registration access level. UNSPECIFIED inherits the tenant setting.`,
 			},
 			"server_type": schema.StringAttribute{
 				Computed: true,

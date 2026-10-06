@@ -2,6 +2,60 @@
 
 package shared
 
+// AccessLevel - Unspecified defaults to read-only access.
+type AccessLevel string
+
+const (
+	AccessLevelMcpSystemToolsetUnspecified AccessLevel = "MCP_SYSTEM_TOOLSET_UNSPECIFIED"
+	AccessLevelMcpSystemToolsetRead        AccessLevel = "MCP_SYSTEM_TOOLSET_READ"
+	AccessLevelMcpSystemToolsetAllApproved AccessLevel = "MCP_SYSTEM_TOOLSET_ALL_APPROVED"
+	AccessLevelMcpSystemToolsetCustom      AccessLevel = "MCP_SYSTEM_TOOLSET_CUSTOM"
+)
+
+func (e AccessLevel) ToPointer() *AccessLevel {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessLevel) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "MCP_SYSTEM_TOOLSET_UNSPECIFIED", "MCP_SYSTEM_TOOLSET_READ", "MCP_SYSTEM_TOOLSET_ALL_APPROVED", "MCP_SYSTEM_TOOLSET_CUSTOM":
+			return true
+		}
+	}
+	return false
+}
+
+// MCPAccessProvisioningConfig selects a shared toolset and how users receive access.
+type MCPAccessProvisioningConfig struct {
+	// Unspecified defaults to read-only access.
+	AccessLevel *AccessLevel                    `json:"accessLevel,omitempty"`
+	Automatic   *MCPAutomaticAccessProvisioning `json:"automatic,omitempty"`
+	Request     *MCPRequestAccessProvisioning   `json:"request,omitempty"`
+}
+
+func (m *MCPAccessProvisioningConfig) GetAccessLevel() *AccessLevel {
+	if m == nil {
+		return nil
+	}
+	return m.AccessLevel
+}
+
+func (m *MCPAccessProvisioningConfig) GetAutomatic() *MCPAutomaticAccessProvisioning {
+	if m == nil {
+		return nil
+	}
+	return m.Automatic
+}
+
+func (m *MCPAccessProvisioningConfig) GetRequest() *MCPRequestAccessProvisioning {
+	if m == nil {
+		return nil
+	}
+	return m.Request
+}
+
 // MCPServerServiceRegisterRequestDataSensitivity - Data sensitivity classification.
 type MCPServerServiceRegisterRequestDataSensitivity string
 
