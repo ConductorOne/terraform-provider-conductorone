@@ -612,8 +612,8 @@ actions:
   - target: $["components"]["schemas"]["c1.api.attribute.v1.DeleteRiskLevelAttributeValueRequestInput"]
     update:
       x-speakeasy-terraform-ignore: true
-  # Access profile type is selected only during creation. The API reports the
-  # stored type on reads but does not accept it in updates.
+  # Terraform selects access profile type during creation; configured changes
+  # require replacement. Patch 09 omits the stored type from update requests.
   - target: $["components"]["schemas"]["c1.api.requestcatalog.v1.RequestCatalog"]["properties"]["type"]
     update:
       x-speakeasy-param-force-new: true
@@ -758,4 +758,23 @@ actions:
     update:
       x-speakeasy-terraform-ignore: true
 
-  
+  # These API families remain SDK-only until their Terraform lifecycles are validated.
+  # MCP resource registration and configuration are maintained in PR #265.
+  - target: $["paths"]["/api/v1/apps/{app_id}/mcp_servers"][*]["x-speakeasy-entity-operation"]
+    remove: true
+  - target: $["paths"]["/api/v1/apps/{app_id}/mcp_servers/{connector_id}"][*]["x-speakeasy-entity-operation"]
+    remove: true
+  - target: $["paths"]["/api/v1/apps/{app_id}/mcp_servers/{connector_id}/credentials"][*]["x-speakeasy-entity-operation"]
+    remove: true
+  - target: $["paths"]["/api/v1/golinks"][*]["x-speakeasy-entity-operation"]
+    remove: true
+  - target: $["paths"]["/api/v1/golinks/{id}"][*]["x-speakeasy-entity-operation"]
+    remove: true
+  - target: $["paths"]["/api/v1/session-policies/{id}/users/search"][*]["x-speakeasy-entity-operation"]
+    remove: true
+  - target: $["paths"]["/api/v1/user-attribute-mappings"][*]["x-speakeasy-entity-operation"]
+    remove: true
+  - target: $["paths"]["/api/v1/user-attribute-mappings/{id}"][*]["x-speakeasy-entity-operation"]
+    remove: true
+  - target: $["paths"]["/api/v1/user-attribute-types"][*]["x-speakeasy-entity-operation"]
+    remove: true

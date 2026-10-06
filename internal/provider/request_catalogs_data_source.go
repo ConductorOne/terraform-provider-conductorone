@@ -111,7 +111,8 @@ func (r *RequestCatalogsDataSource) Schema(ctx context.Context, req datasource.S
 									Computed: true,
 									MarkdownDescription: `The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile` + "\n" +
 										` created before the type was recorded; UNSPECIFIED only for a tenant whose` + "\n" +
-										` backfill has not been run.`,
+										` backfill has not been run. Updates require the access profile types feature` + "\n" +
+										` and an update mask containing "type".`,
 								},
 								"unenrollment_behavior": schema.StringAttribute{
 									Computed:    true,

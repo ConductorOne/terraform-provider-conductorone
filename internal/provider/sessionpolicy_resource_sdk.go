@@ -402,11 +402,11 @@ func (r *SessionPolicyResourceModel) ToSharedSessionPolicyInput(ctx context.Cont
 		}
 		var enrollmentRequired *shared.SessionPolicyEnrollmentRequired
 		if r.ContinuousDefaultOutcome.EnrollmentRequired != nil {
-			var credentialTypes []shared.SessionPolicyEnrollmentRequiredCredentialTypes
+			var credentialTypes []shared.CredentialTypes
 			if r.ContinuousDefaultOutcome.EnrollmentRequired.CredentialTypes != nil {
-				credentialTypes = make([]shared.SessionPolicyEnrollmentRequiredCredentialTypes, 0, len(r.ContinuousDefaultOutcome.EnrollmentRequired.CredentialTypes))
+				credentialTypes = make([]shared.CredentialTypes, 0, len(r.ContinuousDefaultOutcome.EnrollmentRequired.CredentialTypes))
 				for _, credentialTypesItem := range r.ContinuousDefaultOutcome.EnrollmentRequired.CredentialTypes {
-					credentialTypes = append(credentialTypes, shared.SessionPolicyEnrollmentRequiredCredentialTypes(credentialTypesItem.ValueString()))
+					credentialTypes = append(credentialTypes, shared.CredentialTypes(credentialTypesItem.ValueString()))
 				}
 			}
 			enrollmentRequired = &shared.SessionPolicyEnrollmentRequired{
@@ -524,11 +524,11 @@ func (r *SessionPolicyResourceModel) ToSharedSessionPolicyInput(ctx context.Cont
 				}
 				var enrollmentRequired1 *shared.SessionPolicyEnrollmentRequired
 				if r.ContinuousRules[continuousRulesIndex].Outcome.EnrollmentRequired != nil {
-					var credentialTypes1 []shared.SessionPolicyEnrollmentRequiredCredentialTypes
+					var credentialTypes1 []shared.CredentialTypes
 					if r.ContinuousRules[continuousRulesIndex].Outcome.EnrollmentRequired.CredentialTypes != nil {
-						credentialTypes1 = make([]shared.SessionPolicyEnrollmentRequiredCredentialTypes, 0, len(r.ContinuousRules[continuousRulesIndex].Outcome.EnrollmentRequired.CredentialTypes))
+						credentialTypes1 = make([]shared.CredentialTypes, 0, len(r.ContinuousRules[continuousRulesIndex].Outcome.EnrollmentRequired.CredentialTypes))
 						for _, credentialTypesItem1 := range r.ContinuousRules[continuousRulesIndex].Outcome.EnrollmentRequired.CredentialTypes {
-							credentialTypes1 = append(credentialTypes1, shared.SessionPolicyEnrollmentRequiredCredentialTypes(credentialTypesItem1.ValueString()))
+							credentialTypes1 = append(credentialTypes1, shared.CredentialTypes(credentialTypesItem1.ValueString()))
 						}
 					}
 					enrollmentRequired1 = &shared.SessionPolicyEnrollmentRequired{
@@ -781,11 +781,11 @@ func (r *SessionPolicyResourceModel) ToSharedSessionPolicyServiceCreateRequest(c
 		}
 		var enrollmentRequired *shared.SessionPolicyEnrollmentRequired
 		if r.ContinuousDefaultOutcome.EnrollmentRequired != nil {
-			var credentialTypes []shared.SessionPolicyEnrollmentRequiredCredentialTypes
+			var credentialTypes []shared.CredentialTypes
 			if r.ContinuousDefaultOutcome.EnrollmentRequired.CredentialTypes != nil {
-				credentialTypes = make([]shared.SessionPolicyEnrollmentRequiredCredentialTypes, 0, len(r.ContinuousDefaultOutcome.EnrollmentRequired.CredentialTypes))
+				credentialTypes = make([]shared.CredentialTypes, 0, len(r.ContinuousDefaultOutcome.EnrollmentRequired.CredentialTypes))
 				for _, credentialTypesItem := range r.ContinuousDefaultOutcome.EnrollmentRequired.CredentialTypes {
-					credentialTypes = append(credentialTypes, shared.SessionPolicyEnrollmentRequiredCredentialTypes(credentialTypesItem.ValueString()))
+					credentialTypes = append(credentialTypes, shared.CredentialTypes(credentialTypesItem.ValueString()))
 				}
 			}
 			enrollmentRequired = &shared.SessionPolicyEnrollmentRequired{
@@ -903,11 +903,11 @@ func (r *SessionPolicyResourceModel) ToSharedSessionPolicyServiceCreateRequest(c
 				}
 				var enrollmentRequired1 *shared.SessionPolicyEnrollmentRequired
 				if r.ContinuousRules[continuousRulesIndex].Outcome.EnrollmentRequired != nil {
-					var credentialTypes1 []shared.SessionPolicyEnrollmentRequiredCredentialTypes
+					var credentialTypes1 []shared.CredentialTypes
 					if r.ContinuousRules[continuousRulesIndex].Outcome.EnrollmentRequired.CredentialTypes != nil {
-						credentialTypes1 = make([]shared.SessionPolicyEnrollmentRequiredCredentialTypes, 0, len(r.ContinuousRules[continuousRulesIndex].Outcome.EnrollmentRequired.CredentialTypes))
+						credentialTypes1 = make([]shared.CredentialTypes, 0, len(r.ContinuousRules[continuousRulesIndex].Outcome.EnrollmentRequired.CredentialTypes))
 						for _, credentialTypesItem1 := range r.ContinuousRules[continuousRulesIndex].Outcome.EnrollmentRequired.CredentialTypes {
-							credentialTypes1 = append(credentialTypes1, shared.SessionPolicyEnrollmentRequiredCredentialTypes(credentialTypesItem1.ValueString()))
+							credentialTypes1 = append(credentialTypes1, shared.CredentialTypes(credentialTypesItem1.ValueString()))
 						}
 					}
 					enrollmentRequired1 = &shared.SessionPolicyEnrollmentRequired{

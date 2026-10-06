@@ -2,12 +2,12 @@
 
 package shared
 
-// GetTenantDefaultsResponse contains the tenant-default subset of AI governance
+// GetTenantDefaultsResponse contains tenant defaults used by
 //
-//	settings applied to newly registered MCP servers and tools.
+//	legacy MCP servers.
 type GetTenantDefaultsResponse struct {
-	// Whether newly discovered tools require admin approval before they can be
-	//  granted or invoked.
+	// Whether newly discovered tools require approval on MCP servers without a
+	//  saved registration access level, unless overridden by the per-server setting.
 	RequireToolApproval *bool `json:"requireToolApproval,omitempty"`
 }
 

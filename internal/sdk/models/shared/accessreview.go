@@ -117,6 +117,7 @@ const (
 	AccessReviewScopeTypeAccessReviewScopeTypeByResource        AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 	AccessReviewScopeTypeAccessReviewScopeTypeByInheritance     AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"
 	AccessReviewScopeTypeAccessReviewScopeTypeByUsers           AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"
+	AccessReviewScopeTypeAccessReviewScopeTypeByAccessProfiles  AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES"
 )
 
 func (e AccessReviewScopeType) ToPointer() *AccessReviewScopeType {
@@ -127,7 +128,7 @@ func (e AccessReviewScopeType) ToPointer() *AccessReviewScopeType {
 func (e *AccessReviewScopeType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS":
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES":
 			return true
 		}
 	}
@@ -193,6 +194,7 @@ type AccessReview struct {
 	Bindings                 *BindingObjectSetup       `json:"bindings,omitempty"`
 	CampaignHealth           *CampaignHealthSnapshot   `json:"campaignHealth,omitempty"`
 	CampaignInsights         *CampaignInsights         `json:"campaignInsights,omitempty"`
+	CampaignSchedule         *CampaignSchedule         `json:"campaignSchedule,omitempty"`
 	ClosedAt                 *time.Time                `json:"closedAt,omitempty"`
 	ColumnConfig             *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	CompletionDate           *time.Time                `json:"completionDate,omitempty"`
@@ -323,6 +325,13 @@ func (a *AccessReview) GetCampaignInsights() *CampaignInsights {
 		return nil
 	}
 	return a.CampaignInsights
+}
+
+func (a *AccessReview) GetCampaignSchedule() *CampaignSchedule {
+	if a == nil {
+		return nil
+	}
+	return a.CampaignSchedule
 }
 
 func (a *AccessReview) GetClosedAt() *time.Time {
@@ -574,6 +583,7 @@ type AccessReviewInput struct {
 	Bindings                 *BindingObjectSetup       `json:"bindings,omitempty"`
 	CampaignHealth           *CampaignHealthSnapshot   `json:"campaignHealth,omitempty"`
 	CampaignInsights         *CampaignInsights         `json:"campaignInsights,omitempty"`
+	CampaignSchedule         *CampaignSchedule         `json:"campaignSchedule,omitempty"`
 	ClosedAt                 *time.Time                `json:"closedAt,omitempty"`
 	ColumnConfig             *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	CompletionDate           *time.Time                `json:"completionDate,omitempty"`
@@ -699,6 +709,13 @@ func (a *AccessReviewInput) GetCampaignInsights() *CampaignInsights {
 		return nil
 	}
 	return a.CampaignInsights
+}
+
+func (a *AccessReviewInput) GetCampaignSchedule() *CampaignSchedule {
+	if a == nil {
+		return nil
+	}
+	return a.CampaignSchedule
 }
 
 func (a *AccessReviewInput) GetClosedAt() *time.Time {

@@ -2,9 +2,9 @@
 
 package shared
 
-// MCPServerExternalConfigRequireToolApproval - Optional per-server override for tool auto-approval. See
+// MCPServerExternalConfigRequireToolApproval - Optional per-server override for tool approval when registering without an
 //
-//	MCPServerView.require_tool_approval for semantics.
+//	access level. See MCPServerView.require_tool_approval for semantics.
 type MCPServerExternalConfigRequireToolApproval string
 
 const (
@@ -96,8 +96,8 @@ type MCPServerExternalConfig struct {
 	CustomHeader *MCPServerAuthCustomHeader `json:"customHeader,omitempty"`
 	None         *MCPServerAuthNone         `json:"none,omitempty"`
 	Oauth2       *MCPServerAuthOAuth2       `json:"oauth2,omitempty"`
-	// Optional per-server override for tool auto-approval. See
-	//  MCPServerView.require_tool_approval for semantics.
+	// Optional per-server override for tool approval when registering without an
+	//  access level. See MCPServerView.require_tool_approval for semantics.
 	RequireToolApproval *MCPServerExternalConfigRequireToolApproval `json:"requireToolApproval,omitempty"`
 	// Token sharing model. SHARED = admin authorizes once; PER_USER = each user
 	//  authenticates independently. PER_USER is supported for OAuth2

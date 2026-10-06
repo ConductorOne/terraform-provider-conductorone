@@ -33,6 +33,7 @@ type AppEntitlementsDataSourceModel struct {
 	AccessReviewID          types.String                 `tfsdk:"access_review_id"`
 	Alias                   types.String                 `tfsdk:"alias"`
 	AppIds                  []types.String               `tfsdk:"app_ids"`
+	AppResourceTypeRefs     []tfTypes.ResourceTypeRef    `tfsdk:"app_resource_type_refs"`
 	AppUserIds              []types.String               `tfsdk:"app_user_ids"`
 	ComplianceFrameworkIds  []types.String               `tfsdk:"compliance_framework_ids"`
 	DisplayName             types.String                 `tfsdk:"display_name"`
@@ -48,6 +49,7 @@ type AppEntitlementsDataSourceModel struct {
 	MembershipType          []types.String               `tfsdk:"membership_type"`
 	NextPageToken           types.String                 `tfsdk:"next_page_token"`
 	OnlyGetExpiring         types.Bool                   `tfsdk:"only_get_expiring"`
+	OwnerUserIds            []types.String               `tfsdk:"owner_user_ids"`
 	PageSize                types.Int32                  `tfsdk:"page_size"`
 	PageToken               types.String                 `tfsdk:"page_token"`
 	PolicyRefs              []tfTypes.PolicyRef          `tfsdk:"policy_refs"`
@@ -84,6 +86,26 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Search for app entitlements contained in any of these apps.`,
+			},
+			"app_resource_type_refs": schema.ListNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"app_id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The appId field.`,
+						},
+						"id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The id field.`,
+						},
+					},
+				},
+				MarkdownDescription: `Search for app entitlements whose resource type matches any of these real` + "\n" +
+					` (app_id, id) AppResourceType pairs — unlike resource_type_ids, which` + "\n" +
+					` matches by name and can't distinguish two apps' same-named or` + "\n" +
+					` system-wide-shared-id resource types (e.g. Credential). Takes precedence` + "\n" +
+					` over resource_type_ids when set.`,
 			},
 			"app_user_ids": schema.ListAttribute{
 				Optional:    true,
@@ -1040,6 +1062,12 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 			"only_get_expiring": schema.BoolAttribute{
 				Optional:    true,
 				Description: `If true, restrict results to entitlements that have at least one expiring grant.`,
+			},
+			"owner_user_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Filter by users that have an explicit ownership binding to the entitlement.` + "\n" +
+					` This filter applies to every caller, including administrators.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,

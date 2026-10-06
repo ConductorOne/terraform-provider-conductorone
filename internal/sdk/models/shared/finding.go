@@ -102,6 +102,10 @@ func (e *FindingState) IsExact() bool {
 //   - decoyPubliclyExposed
 //   - credentialExpiring
 //   - connectorSyncFailing
+//   - shadowMcp
+//   - shadowApp
+//   - mcpGatewayToolCallRisk
+//   - edgeFinding
 //
 // This message contains a oneof named target. Only a single field of the following list may be set at a time:
 //   - identityUserTarget
@@ -110,6 +114,7 @@ func (e *FindingState) IsExact() bool {
 //   - appResourceTarget
 //   - tenantTarget
 //   - connectorTarget
+//   - usageResourceTarget
 //
 // This message contains a oneof named evidence. Only a single field of the following list may be set at a time:
 //   - similarUsernameMatchEvidence
@@ -120,6 +125,9 @@ func (e *FindingState) IsExact() bool {
 //   - decoyPubliclyExposedEvidence
 //   - credentialExpiringEvidence
 //   - connectorSyncFailingEvidence
+//   - shadowMcpEvidence
+//   - mcpGatewayToolCallRiskEvidence
+//   - edgeFindingEvidence
 type Finding struct {
 	// Bounded key/value metadata bag. Limits: ≤16 entries; keys 1-128 chars
 	//  matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0-256 chars; total
@@ -127,10 +135,12 @@ type Finding struct {
 	//  (and settable) via CEL as both finding.annotations and finding.custom_tags.
 	Annotations map[string]string `json:"annotations,omitempty"`
 	// The appId field.
-	AppID                             *string                                `json:"appId,omitempty"`
-	AppResourceTarget                 *AppResourceTarget                     `json:"appResourceTarget,omitempty"`
-	AppUserTarget                     *AppUserTarget                         `json:"appUserTarget,omitempty"`
-	AssignedOwner                     *FindingOwnerRef                       `json:"assignedOwner,omitempty"`
+	AppID             *string            `json:"appId,omitempty"`
+	AppResourceTarget *AppResourceTarget `json:"appResourceTarget,omitempty"`
+	AppUserTarget     *AppUserTarget     `json:"appUserTarget,omitempty"`
+	AssignedOwner     *FindingOwnerRef   `json:"assignedOwner,omitempty"`
+	// Identity user this finding is assigned to. Empty when unassigned.
+	AssigneeIdentityUserID            *string                                `json:"assigneeIdentityUserId,omitempty"`
 	ComputedOwner                     *FindingOwnerRef                       `json:"computedOwner,omitempty"`
 	ConnectorAnomalyDetectionDisabled *ConnectorAnomalyDetectionDisabledType `json:"connectorAnomalyDetectionDisabled,omitempty"`
 	ConnectorSyncFailing              *ConnectorSyncFailingType              `json:"connectorSyncFailing,omitempty"`
@@ -159,16 +169,21 @@ type Finding struct {
 	//  clients can roundtrip it. Empty for detector findings.
 	DedupKeyParts []string `json:"dedupKeyParts,omitempty"`
 	// User-authored finding body (markdown by convention). Set for custom findings.
-	Description *string `json:"description,omitempty"`
+	Description         *string              `json:"description,omitempty"`
+	EdgeFinding         *EdgeFindingType     `json:"edgeFinding,omitempty"`
+	EdgeFindingEvidence *EdgeFindingEvidence `json:"edgeFindingEvidence,omitempty"`
 	// The fingerprint field.
 	Fingerprint     *string    `json:"fingerprint,omitempty"`
 	FirstObservedAt *time.Time `json:"firstObservedAt,omitempty"`
 	// The id field.
-	ID                 *string             `json:"id,omitempty"`
-	IdentityUserTarget *IdentityUserTarget `json:"identityUserTarget,omitempty"`
-	LastAppearedAt     *time.Time          `json:"lastAppearedAt,omitempty"`
-	LastObservedAt     *time.Time          `json:"lastObservedAt,omitempty"`
-	NhiUnowned         *NhiUnownedType     `json:"nhiUnowned,omitempty"`
+	ID                             *string                         `json:"id,omitempty"`
+	IdentityUserTarget             *IdentityUserTarget             `json:"identityUserTarget,omitempty"`
+	LastAppearedAt                 *time.Time                      `json:"lastAppearedAt,omitempty"`
+	LastObservedAt                 *time.Time                      `json:"lastObservedAt,omitempty"`
+	McpGatewayToolCallRisk         *McpGatewayToolCallRiskType     `json:"mcpGatewayToolCallRisk,omitempty"`
+	McpGatewayToolCallRiskEvidence *McpGatewayToolCallRiskEvidence `json:"mcpGatewayToolCallRiskEvidence,omitempty"`
+	NhiUnowned                     *NhiUnownedType                 `json:"nhiUnowned,omitempty"`
+	ObjectPermissions              *UserActorObjectPermissions     `json:"objectPermissions,omitempty"`
 	// The recurrenceCount field.
 	RecurrenceCount *int64 `json:"recurrenceCount,omitempty"`
 	// The remediationDescription field.
@@ -183,6 +198,9 @@ type Finding struct {
 	ServiceAccountUnowned                   *ServiceAccountUnownedType               `json:"serviceAccountUnowned,omitempty"`
 	// The severity field.
 	Severity                     *FindingSeverity              `json:"severity,omitempty"`
+	ShadowApp                    *ShadowAppType                `json:"shadowApp,omitempty"`
+	ShadowMcp                    *ShadowMcpType                `json:"shadowMcp,omitempty"`
+	ShadowMcpEvidence            *ShadowMcpEvidence            `json:"shadowMcpEvidence,omitempty"`
 	SimilarUsernameMatch         *SimilarUsernameMatchType     `json:"similarUsernameMatch,omitempty"`
 	SimilarUsernameMatchEvidence *SimilarUsernameMatchEvidence `json:"similarUsernameMatchEvidence,omitempty"`
 	// The snoozeReason field.
@@ -206,6 +224,7 @@ type Finding struct {
 	UnusedSecret         *UnusedSecretType     `json:"unusedSecret,omitempty"`
 	UnusedSecretEvidence *UnusedSecretEvidence `json:"unusedSecretEvidence,omitempty"`
 	UpdatedAt            *time.Time            `json:"updatedAt,omitempty"`
+	UsageResourceTarget  *UsageResourceRef     `json:"usageResourceTarget,omitempty"`
 }
 
 func (f Finding) MarshalJSON() ([]byte, error) {
@@ -252,6 +271,13 @@ func (f *Finding) GetAssignedOwner() *FindingOwnerRef {
 		return nil
 	}
 	return f.AssignedOwner
+}
+
+func (f *Finding) GetAssigneeIdentityUserID() *string {
+	if f == nil {
+		return nil
+	}
+	return f.AssigneeIdentityUserID
 }
 
 func (f *Finding) GetComputedOwner() *FindingOwnerRef {
@@ -401,6 +427,20 @@ func (f *Finding) GetDescription() *string {
 	return f.Description
 }
 
+func (f *Finding) GetEdgeFinding() *EdgeFindingType {
+	if f == nil {
+		return nil
+	}
+	return f.EdgeFinding
+}
+
+func (f *Finding) GetEdgeFindingEvidence() *EdgeFindingEvidence {
+	if f == nil {
+		return nil
+	}
+	return f.EdgeFindingEvidence
+}
+
 func (f *Finding) GetFingerprint() *string {
 	if f == nil {
 		return nil
@@ -443,11 +483,32 @@ func (f *Finding) GetLastObservedAt() *time.Time {
 	return f.LastObservedAt
 }
 
+func (f *Finding) GetMcpGatewayToolCallRisk() *McpGatewayToolCallRiskType {
+	if f == nil {
+		return nil
+	}
+	return f.McpGatewayToolCallRisk
+}
+
+func (f *Finding) GetMcpGatewayToolCallRiskEvidence() *McpGatewayToolCallRiskEvidence {
+	if f == nil {
+		return nil
+	}
+	return f.McpGatewayToolCallRiskEvidence
+}
+
 func (f *Finding) GetNhiUnowned() *NhiUnownedType {
 	if f == nil {
 		return nil
 	}
 	return f.NhiUnowned
+}
+
+func (f *Finding) GetObjectPermissions() *UserActorObjectPermissions {
+	if f == nil {
+		return nil
+	}
+	return f.ObjectPermissions
 }
 
 func (f *Finding) GetRecurrenceCount() *int64 {
@@ -518,6 +579,27 @@ func (f *Finding) GetSeverity() *FindingSeverity {
 		return nil
 	}
 	return f.Severity
+}
+
+func (f *Finding) GetShadowApp() *ShadowAppType {
+	if f == nil {
+		return nil
+	}
+	return f.ShadowApp
+}
+
+func (f *Finding) GetShadowMcp() *ShadowMcpType {
+	if f == nil {
+		return nil
+	}
+	return f.ShadowMcp
+}
+
+func (f *Finding) GetShadowMcpEvidence() *ShadowMcpEvidence {
+	if f == nil {
+		return nil
+	}
+	return f.ShadowMcpEvidence
 }
 
 func (f *Finding) GetSimilarUsernameMatch() *SimilarUsernameMatchType {
@@ -616,4 +698,11 @@ func (f *Finding) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return f.UpdatedAt
+}
+
+func (f *Finding) GetUsageResourceTarget() *UsageResourceRef {
+	if f == nil {
+		return nil
+	}
+	return f.UsageResourceTarget
 }

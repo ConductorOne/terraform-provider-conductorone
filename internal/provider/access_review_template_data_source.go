@@ -36,6 +36,7 @@ type AccessReviewTemplateDataSourceModel struct {
 	AutoCloseDecision              types.String                        `tfsdk:"auto_close_decision"`
 	AutoGenerateReport             types.Bool                          `tfsdk:"auto_generate_report"`
 	AutoStartCampaign              types.Bool                          `tfsdk:"auto_start_campaign"`
+	CampaignSchedule               *tfTypes.CampaignSchedule           `tfsdk:"campaign_schedule"`
 	ColumnConfig                   *tfTypes.AccessReviewColumnConfig   `tfsdk:"column_config"`
 	CreatedAt                      types.String                        `tfsdk:"created_at"`
 	DefaultView                    types.String                        `tfsdk:"default_view"`
@@ -109,6 +110,49 @@ func (r *AccessReviewTemplateDataSource) Schema(ctx context.Context, req datasou
 				Computed: true,
 				MarkdownDescription: `Auto-start configuration` + "\n" +
 					` next_scheduled_campaign_at will be used as the scheduled start date`,
+			},
+			"campaign_schedule": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"end_time": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"hours": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The hours field.`,
+							},
+							"minutes": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The minutes field.`,
+							},
+						},
+						Description: `Time of day, in the timezone of the CampaignSchedule that holds it.`,
+					},
+					"start_time": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"hours": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The hours field.`,
+							},
+							"minutes": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The minutes field.`,
+							},
+						},
+						Description: `Time of day, in the timezone of the CampaignSchedule that holds it.`,
+					},
+					"timezone": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `IANA timezone name (e.g. "America/Los_Angeles", "UTC"). Required whenever` + "\n" +
+							` this message is present: a stored schedule with no zone is indistinguishable` + "\n" +
+							` from a record that predates the message, so the times below would be` + "\n" +
+							` silently discarded. Omit the whole message to keep the legacy schedule.` + "\n" +
+							` Enforced on post-merge state rather than here, so a field-mask update` + "\n" +
+							` targeting only a nested time still works.`,
+					},
+				},
+				Description: `When a template's campaigns open and close. One timezone governs both times.`,
 			},
 			"column_config": schema.SingleNestedAttribute{
 				Computed: true,

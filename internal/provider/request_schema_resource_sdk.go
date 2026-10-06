@@ -251,6 +251,7 @@ func (r *RequestSchemaResourceModel) RefreshFromSharedRequestSchemaForm(ctx cont
 						fields.StringField.PasswordField = nil
 					} else {
 						fields.StringField.PasswordField = &tfTypes.PasswordField{}
+						fields.StringField.PasswordField.Multiline = types.BoolPointerValue(fieldsItem.StringField.PasswordField.Multiline)
 					}
 					if fieldsItem.StringField.PickerField == nil {
 						fields.StringField.PickerField = nil
@@ -961,7 +962,15 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaForm(ctx context.Conte
 				}
 				var passwordField *shared.PasswordField
 				if r.Fields[fieldsIndex1].StringField.PasswordField != nil {
-					passwordField = &shared.PasswordField{}
+					multiline := new(bool)
+					if !r.Fields[fieldsIndex1].StringField.PasswordField.Multiline.IsUnknown() && !r.Fields[fieldsIndex1].StringField.PasswordField.Multiline.IsNull() {
+						*multiline = r.Fields[fieldsIndex1].StringField.PasswordField.Multiline.ValueBool()
+					} else {
+						multiline = nil
+					}
+					passwordField = &shared.PasswordField{
+						Multiline: multiline,
+					}
 				}
 				var pickerField *shared.PickerField
 				if r.Fields[fieldsIndex1].StringField.PickerField != nil {
@@ -1269,11 +1278,11 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaForm(ctx context.Conte
 				}
 				var textField *shared.TextField
 				if r.Fields[fieldsIndex1].StringField.TextField != nil {
-					multiline := new(bool)
+					multiline1 := new(bool)
 					if !r.Fields[fieldsIndex1].StringField.TextField.Multiline.IsUnknown() && !r.Fields[fieldsIndex1].StringField.TextField.Multiline.IsNull() {
-						*multiline = r.Fields[fieldsIndex1].StringField.TextField.Multiline.ValueBool()
+						*multiline1 = r.Fields[fieldsIndex1].StringField.TextField.Multiline.ValueBool()
 					} else {
-						multiline = nil
+						multiline1 = nil
 					}
 					suffix1 := new(string)
 					if !r.Fields[fieldsIndex1].StringField.TextField.Suffix.IsUnknown() && !r.Fields[fieldsIndex1].StringField.TextField.Suffix.IsNull() {
@@ -1282,7 +1291,7 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaForm(ctx context.Conte
 						suffix1 = nil
 					}
 					textField = &shared.TextField{
-						Multiline: multiline,
+						Multiline: multiline1,
 						Suffix:    suffix1,
 					}
 				}
@@ -1778,7 +1787,15 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 				}
 				var passwordField *shared.PasswordField
 				if r.Fields[fieldsIndex1].StringField.PasswordField != nil {
-					passwordField = &shared.PasswordField{}
+					multiline := new(bool)
+					if !r.Fields[fieldsIndex1].StringField.PasswordField.Multiline.IsUnknown() && !r.Fields[fieldsIndex1].StringField.PasswordField.Multiline.IsNull() {
+						*multiline = r.Fields[fieldsIndex1].StringField.PasswordField.Multiline.ValueBool()
+					} else {
+						multiline = nil
+					}
+					passwordField = &shared.PasswordField{
+						Multiline: multiline,
+					}
 				}
 				var pickerField *shared.PickerField
 				if r.Fields[fieldsIndex1].StringField.PickerField != nil {
@@ -2086,11 +2103,11 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 				}
 				var textField *shared.TextField
 				if r.Fields[fieldsIndex1].StringField.TextField != nil {
-					multiline := new(bool)
+					multiline1 := new(bool)
 					if !r.Fields[fieldsIndex1].StringField.TextField.Multiline.IsUnknown() && !r.Fields[fieldsIndex1].StringField.TextField.Multiline.IsNull() {
-						*multiline = r.Fields[fieldsIndex1].StringField.TextField.Multiline.ValueBool()
+						*multiline1 = r.Fields[fieldsIndex1].StringField.TextField.Multiline.ValueBool()
 					} else {
-						multiline = nil
+						multiline1 = nil
 					}
 					suffix1 := new(string)
 					if !r.Fields[fieldsIndex1].StringField.TextField.Suffix.IsUnknown() && !r.Fields[fieldsIndex1].StringField.TextField.Suffix.IsNull() {
@@ -2099,7 +2116,7 @@ func (r *RequestSchemaResourceModel) ToSharedRequestSchemaServiceCreateRequest(c
 						suffix1 = nil
 					}
 					textField = &shared.TextField{
-						Multiline: multiline,
+						Multiline: multiline1,
 						Suffix:    suffix1,
 					}
 				}

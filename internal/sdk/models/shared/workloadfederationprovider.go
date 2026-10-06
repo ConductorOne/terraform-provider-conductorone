@@ -20,6 +20,7 @@ const (
 	WellKnownProviderWellKnownWorkloadProviderHcpTerraform   WellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM"
 	WellKnownProviderWellKnownWorkloadProviderAwsIamOutbound WellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND"
 	WellKnownProviderWellKnownWorkloadProviderSpiffe         WellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE"
+	WellKnownProviderWellKnownWorkloadProviderC1Edge         WellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_C1_EDGE"
 )
 
 func (e WellKnownProvider) ToPointer() *WellKnownProvider {
@@ -30,7 +31,7 @@ func (e WellKnownProvider) ToPointer() *WellKnownProvider {
 func (e *WellKnownProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED", "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM", "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS", "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI", "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM", "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND", "WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE":
+		case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED", "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM", "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS", "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI", "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM", "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND", "WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE", "WELL_KNOWN_WORKLOAD_PROVIDER_C1_EDGE":
 			return true
 		}
 	}
@@ -52,8 +53,10 @@ func (e *WellKnownProvider) IsExact() bool {
 // This message contains a oneof named settings. Only a single field of the following list may be set at a time:
 //   - oidc
 //   - spiffe
+//   - c1Edge
 type WorkloadFederationProvider struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	C1Edge    *C1EdgeSettings `json:"c1Edge,omitempty"`
+	CreatedAt *time.Time      `json:"createdAt,omitempty"`
 	// A description of what this provider is for.
 	Description *string `json:"description,omitempty"`
 	// Whether the provider is disabled. Disabled providers reject all token exchanges.
@@ -82,6 +85,13 @@ func (w *WorkloadFederationProvider) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (w *WorkloadFederationProvider) GetC1Edge() *C1EdgeSettings {
+	if w == nil {
+		return nil
+	}
+	return w.C1Edge
 }
 
 func (w *WorkloadFederationProvider) GetCreatedAt() *time.Time {

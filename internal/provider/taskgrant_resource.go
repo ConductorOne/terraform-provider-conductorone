@@ -78,7 +78,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The ID of the app user to grant access for. This field and identityUserId cannot both be set for a given request. Requires replacement if changed.`,
+				Description: `The application account ID receiving access. Required unless identityUserId is set. If both are supplied, the account must belong to that user. Requires replacement if changed.`,
 			},
 			"description": schema.StringAttribute{
 				Optional: true,
@@ -113,7 +113,7 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The ID of the user associated with the app user we are granting access for. This field cannot be set if appUserID is also set. Requires replacement if changed.`,
+				Description: `The C1 user ID receiving access. Required unless appUserId is set. If both are supplied, the account must belong to this user. Requires replacement if changed.`,
 			},
 			"request_data": schema.SingleNestedAttribute{
 				Optional: true,
@@ -689,7 +689,14 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 															Description: `The defaultValue field.`,
 														},
 														"password_field": schema.SingleNestedAttribute{
-															Computed:    true,
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"multiline": schema.BoolAttribute{
+																	Computed: true,
+																	MarkdownDescription: `Render the masked input as a multiline textarea, for secrets that span` + "\n" +
+																		` lines such as a PEM-encoded key.`,
+																},
+															},
 															Description: `The PasswordField message.`,
 														},
 														"picker_field": schema.SingleNestedAttribute{
@@ -2244,7 +2251,14 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																					Description: `The defaultValue field.`,
 																				},
 																				"password_field": schema.SingleNestedAttribute{
-																					Computed:    true,
+																					Computed: true,
+																					Attributes: map[string]schema.Attribute{
+																						"multiline": schema.BoolAttribute{
+																							Computed: true,
+																							MarkdownDescription: `Render the masked input as a multiline textarea, for secrets that span` + "\n" +
+																								` lines such as a PEM-encoded key.`,
+																						},
+																					},
 																					Description: `The PasswordField message.`,
 																				},
 																				"picker_field": schema.SingleNestedAttribute{
@@ -4504,7 +4518,14 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 																						Description: `The defaultValue field.`,
 																					},
 																					"password_field": schema.SingleNestedAttribute{
-																						Computed:    true,
+																						Computed: true,
+																						Attributes: map[string]schema.Attribute{
+																							"multiline": schema.BoolAttribute{
+																								Computed: true,
+																								MarkdownDescription: `Render the masked input as a multiline textarea, for secrets that span` + "\n" +
+																									` lines such as a PEM-encoded key.`,
+																							},
+																						},
 																						Description: `The PasswordField message.`,
 																					},
 																					"picker_field": schema.SingleNestedAttribute{
@@ -7713,6 +7734,41 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 												Computed:    true,
 												Description: `The resource type ID of the materialized AppResource.`,
 											},
+											"credential_issue": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"duration": schema.StringAttribute{
+														Computed: true,
+													},
+													"identity_app_user_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The app user tying the recipient to the connector identity.`,
+													},
+													"identity_resource_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The connector-side identity the credential is minted against.`,
+													},
+													"identity_user_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The user who receives the credential and may open its delivery vault.`,
+													},
+													"offering_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The offering the requester selected.`,
+													},
+													"request_catalog_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The Access Profile that published it.`,
+													},
+													"scopes": schema.ListAttribute{
+														Computed:    true,
+														ElementType: types.StringType,
+														Description: `Provider permissions approved for this credential.`,
+													},
+												},
+												MarkdownDescription: `CredentialIssueTarget describes one approved credential request: who receives` + "\n" +
+													` the credential, the terms asked for, and the offering it came from.`,
+											},
 											"display_name": schema.StringAttribute{
 												Computed: true,
 												MarkdownDescription: `Display label captured on the action snapshot at ticket-creation time.` + "\n" +
@@ -7750,6 +7806,10 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 													"app_id": schema.StringAttribute{
 														Computed:    true,
 														Description: `The IaaS/sparse-ACL app the (scope, role) pair lives on.`,
+													},
+													"app_user_id": schema.StringAttribute{
+														Computed:    true,
+														Description: `The appUserId field.`,
 													},
 													"grant_duration": schema.StringAttribute{
 														Computed: true,
@@ -7856,7 +7916,8 @@ func (r *TaskGrantResource) Schema(ctx context.Context, req resource.SchemaReque
 											`This message contains a oneof named target_object. Only a single field of the following list may be set at a time:` + "\n" +
 											`  - scopeRole` + "\n" +
 											`  - toolCall` + "\n" +
-											`  - finding`,
+											`  - finding` + "\n" +
+											`  - credentialIssue`,
 									},
 									"certify": schema.SingleNestedAttribute{
 										Computed: true,

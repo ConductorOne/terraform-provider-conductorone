@@ -430,10 +430,39 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `The excludedComplianceFrameworkIds field.`,
 										},
 										"excluded_resource_type_ids": schema.ListAttribute{
-											Computed:    true,
-											Optional:    true,
-											ElementType: types.StringType,
-											Description: `The excludedResourceTypeIds field.`,
+											Computed:           true,
+											Optional:           true,
+											ElementType:        types.StringType,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											MarkdownDescription: `Deprecated: matched by resource type display name, which collides across` + "\n" +
+												` apps/connectors. Not read by execution — replaced by` + "\n" +
+												` excluded_resource_type_refs. Kept only for wire compatibility with` + "\n" +
+												` existing stored rows; a criteria still carrying this without a ref` + "\n" +
+												` degrades to excluding the entire named app(s) rather than failing closed,` + "\n" +
+												` since the exclusion side warns instead of aborting the run.`,
+										},
+										"excluded_resource_type_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											MarkdownDescription: `The only field that scopes resource types; excluded_resource_type_ids is` + "\n" +
+												` deprecated and ignored.`,
 										},
 										"excluded_risk_level_ids": schema.ListAttribute{
 											Computed:    true,
@@ -528,10 +557,37 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `The complianceFrameworkIds field.`,
 										},
 										"resource_type_ids": schema.ListAttribute{
-											Computed:    true,
-											Optional:    true,
-											ElementType: types.StringType,
-											Description: `The resourceTypeIds field.`,
+											Computed:           true,
+											Optional:           true,
+											ElementType:        types.StringType,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											MarkdownDescription: `Deprecated: matched by resource type display name, which collides across` + "\n" +
+												` apps/connectors. Not read by execution — replaced by resource_type_refs.` + "\n" +
+												` Kept only for wire compatibility with existing stored rows; a criteria` + "\n" +
+												` still carrying this without a ref fails closed at execution time.`,
+										},
+										"resource_type_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											MarkdownDescription: `The only field that scopes resource types; resource_type_ids is deprecated` + "\n" +
+												` and ignored.`,
 										},
 										"risk_level_ids": schema.ListAttribute{
 											Computed:    true,
@@ -1929,10 +1985,39 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `The excludedComplianceFrameworkIds field.`,
 										},
 										"excluded_resource_type_ids": schema.ListAttribute{
-											Computed:    true,
-											Optional:    true,
-											ElementType: types.StringType,
-											Description: `The excludedResourceTypeIds field.`,
+											Computed:           true,
+											Optional:           true,
+											ElementType:        types.StringType,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											MarkdownDescription: `Deprecated: matched by resource type display name, which collides across` + "\n" +
+												` apps/connectors. Not read by execution — replaced by` + "\n" +
+												` excluded_resource_type_refs. Kept only for wire compatibility with` + "\n" +
+												` existing stored rows; a criteria still carrying this without a ref` + "\n" +
+												` degrades to excluding the entire named app(s) rather than failing closed,` + "\n" +
+												` since the exclusion side warns instead of aborting the run.`,
+										},
+										"excluded_resource_type_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											MarkdownDescription: `The only field that scopes resource types; excluded_resource_type_ids is` + "\n" +
+												` deprecated and ignored.`,
 										},
 										"excluded_risk_level_ids": schema.ListAttribute{
 											Computed:    true,
@@ -2027,10 +2112,37 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `The complianceFrameworkIds field.`,
 										},
 										"resource_type_ids": schema.ListAttribute{
-											Computed:    true,
-											Optional:    true,
-											ElementType: types.StringType,
-											Description: `The resourceTypeIds field.`,
+											Computed:           true,
+											Optional:           true,
+											ElementType:        types.StringType,
+											DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+											MarkdownDescription: `Deprecated: matched by resource type display name, which collides across` + "\n" +
+												` apps/connectors. Not read by execution — replaced by resource_type_refs.` + "\n" +
+												` Kept only for wire compatibility with existing stored rows; a criteria` + "\n" +
+												` still carrying this without a ref fails closed at execution time.`,
+										},
+										"resource_type_refs": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"app_id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The appId field.`,
+													},
+													"id": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The id field.`,
+													},
+												},
+											},
+											MarkdownDescription: `The only field that scopes resource types; resource_type_ids is deprecated` + "\n" +
+												` and ignored.`,
 										},
 										"risk_level_ids": schema.ListAttribute{
 											Computed:    true,
@@ -3191,10 +3303,37 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 													Description: `The complianceFrameworkIds field.`,
 												},
 												"resource_type_ids": schema.ListAttribute{
-													Computed:    true,
-													Optional:    true,
-													ElementType: types.StringType,
-													Description: `The resourceTypeIds field.`,
+													Computed:           true,
+													Optional:           true,
+													ElementType:        types.StringType,
+													DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+													MarkdownDescription: `Deprecated: matched by resource type display name, which collides across` + "\n" +
+														` apps/connectors. Not read by execution — replaced by resource_type_refs.` + "\n" +
+														` Kept only for wire compatibility with existing stored rows; a criteria` + "\n" +
+														` still carrying this without a ref fails closed at execution time.`,
+												},
+												"resource_type_refs": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"app_id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The appId field.`,
+															},
+															"id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The id field.`,
+															},
+														},
+													},
+													MarkdownDescription: `The only field that scopes resource types; resource_type_ids is deprecated` + "\n" +
+														` and ignored.`,
 												},
 												"risk_level_ids": schema.ListAttribute{
 													Computed:    true,
@@ -3322,10 +3461,37 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 													Description: `The complianceFrameworkIds field.`,
 												},
 												"resource_type_ids": schema.ListAttribute{
-													Computed:    true,
-													Optional:    true,
-													ElementType: types.StringType,
-													Description: `The resourceTypeIds field.`,
+													Computed:           true,
+													Optional:           true,
+													ElementType:        types.StringType,
+													DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+													MarkdownDescription: `Deprecated: matched by resource type display name, which collides across` + "\n" +
+														` apps/connectors. Not read by execution — replaced by resource_type_refs.` + "\n" +
+														` Kept only for wire compatibility with existing stored rows; a criteria` + "\n" +
+														` still carrying this without a ref fails closed at execution time.`,
+												},
+												"resource_type_refs": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"app_id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The appId field.`,
+															},
+															"id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The id field.`,
+															},
+														},
+													},
+													MarkdownDescription: `The only field that scopes resource types; resource_type_ids is deprecated` + "\n" +
+														` and ignored.`,
 												},
 												"risk_level_ids": schema.ListAttribute{
 													Computed:    true,
@@ -3878,10 +4044,37 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 													Description: `The complianceFrameworkIds field.`,
 												},
 												"resource_type_ids": schema.ListAttribute{
-													Computed:    true,
-													Optional:    true,
-													ElementType: types.StringType,
-													Description: `The resourceTypeIds field.`,
+													Computed:           true,
+													Optional:           true,
+													ElementType:        types.StringType,
+													DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+													MarkdownDescription: `Deprecated: matched by resource type display name, which collides across` + "\n" +
+														` apps/connectors. Not read by execution — replaced by resource_type_refs.` + "\n" +
+														` Kept only for wire compatibility with existing stored rows; a criteria` + "\n" +
+														` still carrying this without a ref fails closed at execution time.`,
+												},
+												"resource_type_refs": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"app_id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The appId field.`,
+															},
+															"id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The id field.`,
+															},
+														},
+													},
+													MarkdownDescription: `The only field that scopes resource types; resource_type_ids is deprecated` + "\n" +
+														` and ignored.`,
 												},
 												"risk_level_ids": schema.ListAttribute{
 													Computed:    true,
@@ -4009,10 +4202,37 @@ func (r *AutomationResource) Schema(ctx context.Context, req resource.SchemaRequ
 													Description: `The complianceFrameworkIds field.`,
 												},
 												"resource_type_ids": schema.ListAttribute{
-													Computed:    true,
-													Optional:    true,
-													ElementType: types.StringType,
-													Description: `The resourceTypeIds field.`,
+													Computed:           true,
+													Optional:           true,
+													ElementType:        types.StringType,
+													DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+													MarkdownDescription: `Deprecated: matched by resource type display name, which collides across` + "\n" +
+														` apps/connectors. Not read by execution — replaced by resource_type_refs.` + "\n" +
+														` Kept only for wire compatibility with existing stored rows; a criteria` + "\n" +
+														` still carrying this without a ref fails closed at execution time.`,
+												},
+												"resource_type_refs": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"app_id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The appId field.`,
+															},
+															"id": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `The id field.`,
+															},
+														},
+													},
+													MarkdownDescription: `The only field that scopes resource types; resource_type_ids is deprecated` + "\n" +
+														` and ignored.`,
 												},
 												"risk_level_ids": schema.ListAttribute{
 													Computed:    true,

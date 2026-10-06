@@ -6,8 +6,9 @@ package shared
 type ConnectorActionRefOperation string
 
 const (
-	ConnectorActionRefOperationOperationUnspecified ConnectorActionRefOperation = "OPERATION_UNSPECIFIED"
-	ConnectorActionRefOperationOperationGrant       ConnectorActionRefOperation = "OPERATION_GRANT"
+	ConnectorActionRefOperationOperationUnspecified     ConnectorActionRefOperation = "OPERATION_UNSPECIFIED"
+	ConnectorActionRefOperationOperationGrant           ConnectorActionRefOperation = "OPERATION_GRANT"
+	ConnectorActionRefOperationOperationIssueCredential ConnectorActionRefOperation = "OPERATION_ISSUE_CREDENTIAL"
 )
 
 func (e ConnectorActionRefOperation) ToPointer() *ConnectorActionRefOperation {
@@ -18,7 +19,7 @@ func (e ConnectorActionRefOperation) ToPointer() *ConnectorActionRefOperation {
 func (e *ConnectorActionRefOperation) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "OPERATION_UNSPECIFIED", "OPERATION_GRANT":
+		case "OPERATION_UNSPECIFIED", "OPERATION_GRANT", "OPERATION_ISSUE_CREDENTIAL":
 			return true
 		}
 	}

@@ -12,7 +12,8 @@ import (
 //	a tenant-level provider and defines a CEL condition for claim matching.
 type WorkloadFederationTrust struct {
 	// IP allowlist for token exchange requests matching this trust.
-	AllowSourceCidrs []string `json:"allowSourceCidrs,omitempty"`
+	AllowSourceCidrs []string       `json:"allowSourceCidrs,omitempty"`
+	C1EdgeService    *C1EdgeService `json:"c1EdgeService,omitempty"`
 	// The full client ID of the trust (e.g., "clever-fox-42195@acme.conductorone.com/wfe").
 	//  Used as the client_id parameter in RFC 8693 token exchange requests.
 	ClientID *string `json:"clientId,omitempty"`
@@ -56,6 +57,13 @@ func (w *WorkloadFederationTrust) GetAllowSourceCidrs() []string {
 		return nil
 	}
 	return w.AllowSourceCidrs
+}
+
+func (w *WorkloadFederationTrust) GetC1EdgeService() *C1EdgeService {
+	if w == nil {
+		return nil
+	}
+	return w.C1EdgeService
 }
 
 func (w *WorkloadFederationTrust) GetClientID() *string {
