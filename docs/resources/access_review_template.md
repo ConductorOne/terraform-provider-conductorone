@@ -261,7 +261,7 @@ This message contains a oneof named resource_scope. Only a single field of the f
 This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
   - excludedSpecificResources
   - excludedResourceTypeSelections (see [below for nested schema](#nestedatt--scope))
-- `scope_type` (String) The scopeType field. possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"]
+- `scope_type` (String) The scopeType field. possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES"]
 - `signature_config` (Attributes) Signature configuration for access review submissions (see [below for nested schema](#nestedatt--signature_config))
 - `use_policy_override` (Boolean) The usePolicyOverride field.
 
