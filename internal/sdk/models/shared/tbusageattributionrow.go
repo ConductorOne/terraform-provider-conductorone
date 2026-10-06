@@ -18,8 +18,26 @@ type TBUsageAttributionRow struct {
 	//  average input per observed attempt. Missing usage or an unpriced model
 	//  makes this a lower bound, not an invoiced amount.
 	CostNanoUsd *string `json:"costNanoUsd,omitempty"`
+	// Logical requests denied by policy, counted in request_count. Set for the
+	//  logical-request dimensions (not PROVIDER, MODEL or CALL_ROLE).
+	DeniedRequestCount *string `json:"deniedRequestCount,omitempty"`
 	// PROVIDER and MODEL values include only provider-reported per-attempt usage.
 	InputTokens *string `json:"inputTokens,omitempty"`
+	// Judge (call_role auxiliary) provider attempts that reached a provider on
+	//  behalf of this group's requests. Only set for the USER and ROUTE
+	//  dimensions. Judge usage is extra usage on top of the answer: it is never
+	//  included in input_tokens, output_tokens or cost_nano_usd above.
+	JudgeAttemptCount *string `json:"judgeAttemptCount,omitempty"`
+	// List-price estimate of the observed judge usage, in nano-USD; a lower
+	//  bound when the judge model is unpriced or an attempt reported no usage.
+	JudgeCostNanoUsd *string `json:"judgeCostNanoUsd,omitempty"`
+	// Provider-reported judge usage; judge attempts with no reported usage are
+	//  not counted here and make the judge totals a lower bound.
+	JudgeInputTokens *string `json:"judgeInputTokens,omitempty"`
+	// Judge attempts that reported no token usage.
+	JudgeMissingUsageCount *string `json:"judgeMissingUsageCount,omitempty"`
+	// The judgeOutputTokens field.
+	JudgeOutputTokens *string `json:"judgeOutputTokens,omitempty"`
 	// Provider attempts with contact started but no observed token usage.
 	//  Their cost is unknown even when the model has a list price.
 	MissingUsageCallCount *string `json:"missingUsageCallCount,omitempty"`
@@ -31,6 +49,11 @@ type TBUsageAttributionRow struct {
 	// Logical root requests except for PROVIDER and MODEL, where this counts
 	//  contacted provider attempts.
 	RequestCount *string `json:"requestCount,omitempty"`
+	// Provider attempts beyond the first for the same request and call role,
+	//  ranked by event time rather than by the logged attempt ordinal. A judge
+	//  attempt followed by its answer attempt is not a retry. Only set for the
+	//  CALL_ROLE dimension.
+	RetryAttemptCount *string `json:"retryAttemptCount,omitempty"`
 	// Observed requests or provider attempts whose model has no list price.
 	UnpricedRequestCount *string `json:"unpricedRequestCount,omitempty"`
 }
@@ -63,11 +86,53 @@ func (t *TBUsageAttributionRow) GetCostNanoUsd() *string {
 	return t.CostNanoUsd
 }
 
+func (t *TBUsageAttributionRow) GetDeniedRequestCount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.DeniedRequestCount
+}
+
 func (t *TBUsageAttributionRow) GetInputTokens() *string {
 	if t == nil {
 		return nil
 	}
 	return t.InputTokens
+}
+
+func (t *TBUsageAttributionRow) GetJudgeAttemptCount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.JudgeAttemptCount
+}
+
+func (t *TBUsageAttributionRow) GetJudgeCostNanoUsd() *string {
+	if t == nil {
+		return nil
+	}
+	return t.JudgeCostNanoUsd
+}
+
+func (t *TBUsageAttributionRow) GetJudgeInputTokens() *string {
+	if t == nil {
+		return nil
+	}
+	return t.JudgeInputTokens
+}
+
+func (t *TBUsageAttributionRow) GetJudgeMissingUsageCount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.JudgeMissingUsageCount
+}
+
+func (t *TBUsageAttributionRow) GetJudgeOutputTokens() *string {
+	if t == nil {
+		return nil
+	}
+	return t.JudgeOutputTokens
 }
 
 func (t *TBUsageAttributionRow) GetMissingUsageCallCount() *string {
@@ -96,6 +161,13 @@ func (t *TBUsageAttributionRow) GetRequestCount() *string {
 		return nil
 	}
 	return t.RequestCount
+}
+
+func (t *TBUsageAttributionRow) GetRetryAttemptCount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.RetryAttemptCount
 }
 
 func (t *TBUsageAttributionRow) GetUnpricedRequestCount() *string {

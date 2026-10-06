@@ -59,6 +59,7 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 					list.AppResource.ExternalID = types.StringPointerValue(listItem.AppResource.ExternalID)
 					list.AppResource.GrantCount = types.StringPointerValue(listItem.AppResource.GrantCount)
 					list.AppResource.ID = types.StringPointerValue(listItem.AppResource.ID)
+					list.AppResource.IsManuallyManaged = types.BoolPointerValue(listItem.AppResource.IsManuallyManaged)
 					list.AppResource.MatchBatonID = types.StringPointerValue(listItem.AppResource.MatchBatonID)
 					list.AppResource.NhiDetail = types.StringPointerValue(listItem.AppResource.NhiDetail)
 					if listItem.AppResource.NhiType != nil {

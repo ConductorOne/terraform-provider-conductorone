@@ -9,6 +9,7 @@ const (
 	AccessLevelMcpSystemToolsetUnspecified AccessLevel = "MCP_SYSTEM_TOOLSET_UNSPECIFIED"
 	AccessLevelMcpSystemToolsetRead        AccessLevel = "MCP_SYSTEM_TOOLSET_READ"
 	AccessLevelMcpSystemToolsetAllApproved AccessLevel = "MCP_SYSTEM_TOOLSET_ALL_APPROVED"
+	AccessLevelMcpSystemToolsetCustom      AccessLevel = "MCP_SYSTEM_TOOLSET_CUSTOM"
 )
 
 func (e AccessLevel) ToPointer() *AccessLevel {
@@ -19,7 +20,7 @@ func (e AccessLevel) ToPointer() *AccessLevel {
 func (e *AccessLevel) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "MCP_SYSTEM_TOOLSET_UNSPECIFIED", "MCP_SYSTEM_TOOLSET_READ", "MCP_SYSTEM_TOOLSET_ALL_APPROVED":
+		case "MCP_SYSTEM_TOOLSET_UNSPECIFIED", "MCP_SYSTEM_TOOLSET_READ", "MCP_SYSTEM_TOOLSET_ALL_APPROVED", "MCP_SYSTEM_TOOLSET_CUSTOM":
 			return true
 		}
 	}

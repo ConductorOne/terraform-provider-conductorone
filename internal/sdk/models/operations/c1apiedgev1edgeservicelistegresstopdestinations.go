@@ -13,9 +13,10 @@ import (
 type Verdict string
 
 const (
-	VerdictTbTrafficOutcomeUnspecified Verdict = "TB_TRAFFIC_OUTCOME_UNSPECIFIED"
-	VerdictTbTrafficOutcomeAllowed     Verdict = "TB_TRAFFIC_OUTCOME_ALLOWED"
-	VerdictTbTrafficOutcomeDenied      Verdict = "TB_TRAFFIC_OUTCOME_DENIED"
+	VerdictTbTrafficOutcomeUnspecified  Verdict = "TB_TRAFFIC_OUTCOME_UNSPECIFIED"
+	VerdictTbTrafficOutcomeAllowed      Verdict = "TB_TRAFFIC_OUTCOME_ALLOWED"
+	VerdictTbTrafficOutcomeDenied       Verdict = "TB_TRAFFIC_OUTCOME_DENIED"
+	VerdictTbTrafficOutcomeAuthRejected Verdict = "TB_TRAFFIC_OUTCOME_AUTH_REJECTED"
 )
 
 func (e Verdict) ToPointer() *Verdict {
@@ -26,7 +27,7 @@ func (e Verdict) ToPointer() *Verdict {
 func (e *Verdict) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "TB_TRAFFIC_OUTCOME_UNSPECIFIED", "TB_TRAFFIC_OUTCOME_ALLOWED", "TB_TRAFFIC_OUTCOME_DENIED":
+		case "TB_TRAFFIC_OUTCOME_UNSPECIFIED", "TB_TRAFFIC_OUTCOME_ALLOWED", "TB_TRAFFIC_OUTCOME_DENIED", "TB_TRAFFIC_OUTCOME_AUTH_REJECTED":
 			return true
 		}
 	}

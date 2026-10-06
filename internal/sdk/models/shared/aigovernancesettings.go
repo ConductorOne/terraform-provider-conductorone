@@ -130,8 +130,8 @@ type AIGovernanceSettings struct {
 	//  remains exposed. Incapable clients (e.g. SERVICE, EPHEMERAL) see the
 	//  normal tool set regardless. Defaults to false.
 	PreferCodeModeOverDirectTools *bool `json:"preferCodeModeOverDirectTools,omitempty"`
-	// When true, newly discovered tools start in a pending state and must be
-	//  approved by an admin before they can be granted or invoked.
+	// Require approval for newly discovered tools on MCP servers without a saved
+	//  registration access level, unless overridden by the per-server setting.
 	RequireToolApproval *bool `json:"requireToolApproval,omitempty"`
 	// When true, MCP discovery surfaces tools the caller could request (no
 	//  active grant, but reachable through a request catalog) alongside granted

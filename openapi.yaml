@@ -2133,6 +2133,7 @@ components:
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_USERS
+                        - ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES
                     type: string
                     x-speakeasy-unknown-values: allow
                 scopeV2:
@@ -2240,6 +2241,29 @@ components:
             title: Access Review Add Campaign Entitlements Response
             type: object
             x-speakeasy-name-override: AccessReviewAddCampaignEntitlementsResponse
+        c1.api.accessreview.v1.AccessReviewAddTemplateEntitlementsRequestInput:
+            description: The AccessReviewAddTemplateEntitlementsRequest message.
+            properties:
+                entitlements:
+                    description: The entitlements to add. Entitlements that are already selected are skipped.
+                    items:
+                        $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlementInput'
+                    type:
+                        - array
+                        - "null"
+            title: Access Review Add Template Entitlements Request
+            type: object
+            x-speakeasy-name-override: AccessReviewAddTemplateEntitlementsRequest
+        c1.api.accessreview.v1.AccessReviewAddTemplateEntitlementsResponse:
+            description: The AccessReviewAddTemplateEntitlementsResponse message.
+            properties:
+                entitlementCount:
+                    description: The total number of entitlements selected for the template after this call.
+                    format: int32
+                    type: integer
+            title: Access Review Add Template Entitlements Response
+            type: object
+            x-speakeasy-name-override: AccessReviewAddTemplateEntitlementsResponse
         c1.api.accessreview.v1.AccessReviewColumnConfig:
             description: Configuration for which columns are visible in the reviewer task list.
             properties:
@@ -2441,6 +2465,33 @@ components:
             title: Access Review Remove Campaign Entitlements Response
             type: object
             x-speakeasy-name-override: AccessReviewRemoveCampaignEntitlementsResponse
+        c1.api.accessreview.v1.AccessReviewRemoveTemplateEntitlementsRequestInput:
+            description: The AccessReviewRemoveTemplateEntitlementsRequest message.
+            properties:
+                entitlements:
+                    description: The entitlements to remove. Entitlements that are not selected are ignored.
+                    items:
+                        $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlementInput'
+                    type:
+                        - array
+                        - "null"
+            title: Access Review Remove Template Entitlements Request
+            type: object
+            x-speakeasy-name-override: AccessReviewRemoveTemplateEntitlementsRequest
+        c1.api.accessreview.v1.AccessReviewRemoveTemplateEntitlementsResponse:
+            description: The AccessReviewRemoveTemplateEntitlementsResponse message.
+            properties:
+                entitlementCount:
+                    description: The total number of entitlements selected for the template after this call.
+                    format: int32
+                    type: integer
+                removedCount:
+                    description: The number of entitlements from the request that were selected and are now removed.
+                    format: int32
+                    type: integer
+            title: Access Review Remove Template Entitlements Response
+            type: object
+            x-speakeasy-name-override: AccessReviewRemoveTemplateEntitlementsResponse
         c1.api.accessreview.v1.AccessReviewReport:
             description: The AccessReviewReport message.
             properties:
@@ -2759,6 +2810,7 @@ components:
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_USERS
+                        - ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES
                     type: string
                     x-speakeasy-unknown-values: allow
                 scopeV2:
@@ -3277,6 +3329,7 @@ components:
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_USERS
+                        - ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES
                     type: string
                     x-speakeasy-unknown-values: allow
                 signatureConfig:
@@ -3415,6 +3468,7 @@ components:
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE
                         - ACCESS_REVIEW_SCOPE_TYPE_BY_USERS
+                        - ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES
                     type: string
                     x-speakeasy-unknown-values: allow
                 signatureConfig:
@@ -4354,8 +4408,8 @@ components:
                     type: boolean
                 requireToolApproval:
                     description: |-
-                        When true, newly discovered tools start in a pending state and must be
-                         approved by an admin before they can be granted or invoked.
+                        Require approval for newly discovered tools on MCP servers without a saved
+                         registration access level, unless overridden by the per-server setting.
                     type: boolean
                 surfaceRequestableTools:
                     description: |-
@@ -4963,13 +5017,13 @@ components:
             x-speakeasy-name-override: GetClassifierTemplateResponse
         c1.api.ai_governance.v1.GetTenantDefaultsResponse:
             description: |-
-                GetTenantDefaultsResponse contains the tenant-default subset of AI governance
-                 settings applied to newly registered MCP servers and tools.
+                GetTenantDefaultsResponse contains tenant defaults used by
+                 legacy MCP servers.
             properties:
                 requireToolApproval:
                     description: |-
-                        Whether newly discovered tools require admin approval before they can be
-                         granted or invoked.
+                        Whether newly discovered tools require approval on MCP servers without a
+                         saved registration access level, unless overridden by the per-server setting.
                     type: boolean
             title: Get Tenant Defaults Response
             type: object
@@ -5572,6 +5626,7 @@ components:
                         - MCP_SYSTEM_TOOLSET_UNSPECIFIED
                         - MCP_SYSTEM_TOOLSET_READ
                         - MCP_SYSTEM_TOOLSET_ALL_APPROVED
+                        - MCP_SYSTEM_TOOLSET_CUSTOM
                     type: string
                     x-speakeasy-unknown-values: allow
                 automatic:
@@ -6510,8 +6565,8 @@ components:
                         - type: "null"
                 requireToolApproval:
                     description: |-
-                        Optional per-server override for tool auto-approval. See
-                         MCPServerView.require_tool_approval for semantics.
+                        Optional per-server override for tool approval when registering without an
+                         access level. See MCPServerView.require_tool_approval for semantics.
                     enum:
                         - OPTIONAL_BOOL_UNSPECIFIED
                         - OPTIONAL_BOOL_TRUE
@@ -6599,8 +6654,8 @@ components:
                         - type: "null"
                 requireToolApproval:
                     description: |-
-                        Optional per-server override for tool auto-approval. See
-                         MCPServerView.require_tool_approval for semantics.
+                        Optional per-server override for tool approval when registering without an
+                         access level. See MCPServerView.require_tool_approval for semantics.
                     enum:
                         - OPTIONAL_BOOL_UNSPECIFIED
                         - OPTIONAL_BOOL_TRUE
@@ -7375,7 +7430,9 @@ components:
                     readOnly: true
                     type: string
                 requireToolApproval:
-                    description: Per-server override for tool auto-approval.
+                    description: |-
+                        Per-server override for tool approval on MCP servers without a saved
+                         registration access level. UNSPECIFIED inherits the tenant setting.
                     enum:
                         - OPTIONAL_BOOL_UNSPECIFIED
                         - OPTIONAL_BOOL_TRUE
@@ -10763,6 +10820,12 @@ components:
                 id:
                     description: The id of the resource.
                     type: string
+                isManuallyManaged:
+                    description: |-
+                        Whether the resource was created manually in ConductorOne rather than synced from a connector.
+                         Only manually created resources can be deleted in ConductorOne.
+                    readOnly: true
+                    type: boolean
                 matchBatonId:
                     description: The matchBatonId field.
                     type: string
@@ -22983,6 +23046,78 @@ components:
             title: Edge Credential Injection
             type: object
             x-speakeasy-name-override: EdgeCredentialInjection
+        c1.api.edge.v1.EdgeEgressHostChange:
+            description: |-
+                EdgeEgressHostChange compares one host's verdict under the saved rules
+                 with its verdict under the proposed rules.
+            properties:
+                after:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressHostVerdict'
+                        - type: "null"
+                before:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressHostVerdict'
+                        - type: "null"
+                deciderChanged:
+                    description: |-
+                        A different rule decides the host after the change, compared by rule
+                         content since indexes shift, or only one side has a deciding rule.
+                    type: boolean
+                verdictChanged:
+                    description: after.allowed differs from before.allowed.
+                    type: boolean
+            title: Edge Egress Host Change
+            type: object
+            x-speakeasy-name-override: EdgeEgressHostChange
+        c1.api.edge.v1.EdgeEgressHostVerdict:
+            description: |-
+                EdgeEgressHostVerdict is the rule step's verdict for one host, plus Time
+                 Bandit's SSRF floor for IP literals. The mode (observe or enforce) and
+                 content inspection are not part of it.
+            properties:
+                allowed:
+                    description: The allowed field.
+                    type: boolean
+                canonicalHost:
+                    description: |-
+                        The host after canonicalization; empty when it could not be
+                         canonicalized.
+                    type: string
+                host:
+                    description: The host as requested.
+                    type: string
+                hostError:
+                    description: |-
+                        Why the host cannot be evaluated; set only with
+                         EDGE_EGRESS_EVALUATION_OUTCOME_INVALID_HOST.
+                    type: string
+                matchedRuleIndex:
+                    description: Zero-based index of the deciding rule, or -1 when no rule decided.
+                    format: int32
+                    type: integer
+                outcome:
+                    description: The outcome field.
+                    enum:
+                        - EDGE_EGRESS_EVALUATION_OUTCOME_UNSPECIFIED
+                        - EDGE_EGRESS_EVALUATION_OUTCOME_NOT_RESTRICTED
+                        - EDGE_EGRESS_EVALUATION_OUTCOME_MATCHED_RULE
+                        - EDGE_EGRESS_EVALUATION_OUTCOME_DEFAULT_DENY
+                        - EDGE_EGRESS_EVALUATION_OUTCOME_INVALID_HOST
+                        - EDGE_EGRESS_EVALUATION_OUTCOME_UNRESOLVED_DENY_RULE
+                        - EDGE_EGRESS_EVALUATION_OUTCOME_SSRF_BLOCKED
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                ruleMatches:
+                    description: Every rule whose pattern matches the host, in rule order.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRuleMatch'
+                    type:
+                        - array
+                        - "null"
+            title: Edge Egress Host Verdict
+            type: object
+            x-speakeasy-name-override: EdgeEgressHostVerdict
         c1.api.edge.v1.EdgeEgressPrincipal:
             description: |
                 EdgeEgressPrincipal is the caller a rule matches against. Exactly one arm
@@ -23107,6 +23242,84 @@ components:
             title: Edge Egress Rule
             type: object
             x-speakeasy-name-override: EdgeEgressRule
+        c1.api.edge.v1.EdgeEgressRuleList:
+            description: EdgeEgressRuleList wraps a rule list so an empty list is distinct from none.
+            properties:
+                rules:
+                    description: The rules field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRule'
+                    type:
+                        - array
+                        - "null"
+            title: Edge Egress Rule List
+            type: object
+            x-speakeasy-name-override: EdgeEgressRuleList
+        c1.api.edge.v1.EdgeEgressRuleListCheck:
+            description: EdgeEgressRuleListCheck is Update's save-time verdict on a rule list.
+            properties:
+                problems:
+                    description: |-
+                        Every problem Update would reject the list for, in rule order; empty when
+                         valid. Update itself reports only the first.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRuleProblem'
+                    type:
+                        - array
+                        - "null"
+                valid:
+                    description: The valid field.
+                    type: boolean
+            title: Edge Egress Rule List Check
+            type: object
+            x-speakeasy-name-override: EdgeEgressRuleListCheck
+        c1.api.edge.v1.EdgeEgressRuleMatch:
+            description: EdgeEgressRuleMatch is one rule whose pattern matches an evaluated host.
+            properties:
+                principalMatch:
+                    description: The principalMatch field.
+                    enum:
+                        - EDGE_EGRESS_PRINCIPAL_MATCH_UNSPECIFIED
+                        - EDGE_EGRESS_PRINCIPAL_MATCH_MATCHES
+                        - EDGE_EGRESS_PRINCIPAL_MATCH_DOES_NOT_MATCH
+                        - EDGE_EGRESS_PRINCIPAL_MATCH_UNKNOWN
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                ruleIndex:
+                    description: The ruleIndex field.
+                    format: int32
+                    type: integer
+                shadowed:
+                    description: |-
+                        An earlier rule already decided this host for this caller, so this one
+                         never applies. Set only with EDGE_EGRESS_PRINCIPAL_MATCH_MATCHES.
+                    type: boolean
+            title: Edge Egress Rule Match
+            type: object
+            x-speakeasy-name-override: EdgeEgressRuleMatch
+        c1.api.edge.v1.EdgeEgressRuleProblem:
+            description: EdgeEgressRuleProblem is one reason Update would reject a rule list.
+            properties:
+                kind:
+                    description: The kind field.
+                    enum:
+                        - EDGE_EGRESS_RULE_PROBLEM_KIND_UNSPECIFIED
+                        - EDGE_EGRESS_RULE_PROBLEM_KIND_TOO_MANY_RULES
+                        - EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_PATTERN
+                        - EDGE_EGRESS_RULE_PROBLEM_KIND_UNKNOWN_ENTITLEMENT
+                        - EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_BODY_LIMIT
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                message:
+                    description: The same text Update returns for this problem.
+                    type: string
+                ruleIndex:
+                    description: Zero-based rule index, or -1 for a problem with the whole list.
+                    format: int32
+                    type: integer
+            title: Edge Egress Rule Problem
+            type: object
+            x-speakeasy-name-override: EdgeEgressRuleProblem
         c1.api.edge.v1.EdgeInferenceCatalogEntry:
             description: EdgeInferenceCatalogEntry is a provider that Edge inference routes can target.
             properties:
@@ -23671,6 +23884,16 @@ components:
             title: Edge Service Delete Response
             type: object
             x-speakeasy-name-override: EdgeServiceDeleteResponse
+        c1.api.edge.v1.EdgeServiceGetAuditInclusionProofResponse:
+            description: The EdgeServiceGetAuditInclusionProofResponse message.
+            properties:
+                proof:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.TBAuditInclusionProof'
+                        - type: "null"
+            title: Edge Service Get Audit Inclusion Proof Response
+            type: object
+            x-speakeasy-name-override: EdgeServiceGetAuditInclusionProofResponse
         c1.api.edge.v1.EdgeServiceGetEgressTrafficEventResponse:
             description: The EdgeServiceGetEgressTrafficEventResponse message.
             properties:
@@ -23857,6 +24080,14 @@ components:
         c1.api.edge.v1.EdgeServiceGetInferenceUsageSummaryResponse:
             description: The EdgeServiceGetInferenceUsageSummaryResponse message.
             properties:
+                authRejectedCount:
+                    description: See TBUsageSummary.auth_rejected_count and auth_rejected_total.
+                    format: uint64
+                    type: string
+                authRejectedTotal:
+                    description: The authRejectedTotal field.
+                    format: uint64
+                    type: string
                 modelBreakdown:
                     description: The modelBreakdown field.
                     items:
@@ -23897,6 +24128,14 @@ components:
         c1.api.edge.v1.EdgeServiceGetInferenceUsageSummaryRollupResponse:
             description: The EdgeServiceGetInferenceUsageSummaryRollupResponse message.
             properties:
+                authRejectedCount:
+                    description: See TBUsageSummary.auth_rejected_count and auth_rejected_total.
+                    format: uint64
+                    type: string
+                authRejectedTotal:
+                    description: The authRejectedTotal field.
+                    format: uint64
+                    type: string
                 edgeCount:
                     description: |-
                         Number of authorized Edges included. Zero means the caller manages no
@@ -23950,6 +24189,35 @@ components:
             title: Edge Service Get Response
             type: object
             x-speakeasy-name-override: EdgeServiceGetResponse
+        c1.api.edge.v1.EdgeServiceListAuditAttestationKeysResponse:
+            description: The EdgeServiceListAuditAttestationKeysResponse message.
+            properties:
+                keys:
+                    description: The keys field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.TBAuditAttestationKey'
+                    type:
+                        - array
+                        - "null"
+            title: Edge Service List Audit Attestation Keys Response
+            type: object
+            x-speakeasy-name-override: EdgeServiceListAuditAttestationKeysResponse
+        c1.api.edge.v1.EdgeServiceListAuditAttestationManifestsResponse:
+            description: The EdgeServiceListAuditAttestationManifestsResponse message.
+            properties:
+                manifests:
+                    description: The manifests field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.TBAuditAttestationManifest'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: Edge Service List Audit Attestation Manifests Response
+            type: object
+            x-speakeasy-name-override: EdgeServiceListAuditAttestationManifestsResponse
         c1.api.edge.v1.EdgeServiceListEdgesRollupResponse:
             description: The EdgeServiceListEdgesRollupResponse message.
             properties:
@@ -24173,6 +24441,22 @@ components:
             title: Edge Service List Response
             type: object
             x-speakeasy-name-override: EdgeServiceListResponse
+        c1.api.edge.v1.EdgeServiceListUnattributedInferenceTrafficEventsResponse:
+            description: The EdgeServiceListUnattributedInferenceTrafficEventsResponse message.
+            properties:
+                events:
+                    description: The events field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.TBTrafficEvent'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: Edge Service List Unattributed Inference Traffic Events Response
+            type: object
+            x-speakeasy-name-override: EdgeServiceListUnattributedInferenceTrafficEventsResponse
         c1.api.edge.v1.EdgeServiceListUsableEdgesResponse:
             description: EdgeServiceListUsableEdgesResponse contains currently authorized connection targets.
             properties:
@@ -24191,6 +24475,145 @@ components:
             title: Edge Service List Usable Edges Response
             type: object
             x-speakeasy-name-override: EdgeServiceListUsableEdgesResponse
+        c1.api.edge.v1.EdgeServicePreviewEgressHostDecisionRequestInput:
+            description: |-
+                EdgeServicePreviewEgressHostDecisionRequest asks what blocking or allowing
+                 one host for every user would do. Nothing is saved.
+            properties:
+                draftRules:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRuleList'
+                        - type: "null"
+                effect:
+                    description: The effect field.
+                    enum:
+                        - EDGE_EGRESS_EFFECT_UNSPECIFIED
+                        - EDGE_EGRESS_EFFECT_ALLOW
+                        - EDGE_EGRESS_EFFECT_DENY
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                host:
+                    description: The host to block or allow.
+                    type: string
+            title: Edge Service Preview Egress Host Decision Request
+            type: object
+            x-speakeasy-name-override: EdgeServicePreviewEgressHostDecisionRequest
+        c1.api.edge.v1.EdgeServicePreviewEgressHostDecisionResponse:
+            description: |-
+                EdgeServicePreviewEgressHostDecisionResponse reports what the decision
+                 would do and the rule list that results.
+            properties:
+                after:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressHostVerdict'
+                        - type: "null"
+                before:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressHostVerdict'
+                        - type: "null"
+                canonicalHost:
+                    description: The host after canonicalization; the new rule's endpoint_pattern.
+                    type: string
+                check:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRuleListCheck'
+                        - type: "null"
+                newRuleIndex:
+                    description: |-
+                        Zero-based index of the new rule in resulting_rules, or -1 when no rule
+                         was added.
+                    format: int32
+                    type: integer
+                overridesRuleIndex:
+                    description: |-
+                        The rule the new one is placed before because it also matches the host,
+                         as an index in resulting_rules, or -1.
+                    format: int32
+                    type: integer
+                replacedEffect:
+                    description: |-
+                        The effect of an every-user rule for exactly this host that the decision
+                         replaced, or unspecified when none was.
+                    enum:
+                        - EDGE_EGRESS_EFFECT_UNSPECIFIED
+                        - EDGE_EGRESS_EFFECT_ALLOW
+                        - EDGE_EGRESS_EFFECT_DENY
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                resultingRules:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRuleList'
+                        - type: "null"
+                startsDefaultDeny:
+                    description: |-
+                        The Edge never configured egress rules, so saving resulting_rules switches
+                         it to denying every host no rule allows.
+                    type: boolean
+                status:
+                    description: The status field.
+                    enum:
+                        - STATUS_UNSPECIFIED
+                        - STATUS_READY
+                        - STATUS_ALREADY_DECIDED
+                        - STATUS_INVALID_HOST
+                        - STATUS_SSRF_BLOCKED
+                        - STATUS_UNRESOLVED_DENY_RULE
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Edge Service Preview Egress Host Decision Response
+            type: object
+            x-speakeasy-name-override: EdgeServicePreviewEgressHostDecisionResponse
+        c1.api.edge.v1.EdgeServicePreviewEgressRulesUpdateRequestInput:
+            description: |-
+                EdgeServicePreviewEgressRulesUpdateRequest asks what saving a rule list
+                 would do: whether Update accepts it, and how each host's verdict changes.
+                 Nothing is saved.
+            properties:
+                hosts:
+                    description: |-
+                        Hosts to compare before and after, in the order results are returned.
+                         Empty runs only the save check.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+                principalUserId:
+                    description: |-
+                        The C1 user to evaluate as. Empty: rules naming a user or an entitlement
+                         report EDGE_EGRESS_PRINCIPAL_MATCH_UNKNOWN and never decide the verdict.
+                    type: string
+                proposedRules:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRuleList'
+                        - type: "null"
+            title: Edge Service Preview Egress Rules Update Request
+            type: object
+            x-speakeasy-name-override: EdgeServicePreviewEgressRulesUpdateRequest
+        c1.api.edge.v1.EdgeServicePreviewEgressRulesUpdateResponse:
+            description: |-
+                EdgeServicePreviewEgressRulesUpdateResponse reports the save check and each
+                 host's verdict before and after the change.
+            properties:
+                check:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRuleListCheck'
+                        - type: "null"
+                results:
+                    description: One result per requested host, in request order.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressHostChange'
+                    type:
+                        - array
+                        - "null"
+                startsDefaultDeny:
+                    description: |-
+                        The Edge never configured egress rules, so saving any list, even an
+                         empty one, switches it to denying every host no rule allows.
+                    type: boolean
+            title: Edge Service Preview Egress Rules Update Response
+            type: object
+            x-speakeasy-name-override: EdgeServicePreviewEgressRulesUpdateResponse
         c1.api.edge.v1.EdgeServiceUpdateRequestInput:
             description: |-
                 EdgeServiceUpdateRequest updates an existing Edge via update_mask. Editable
@@ -24233,6 +24656,115 @@ components:
             title: Edge Token Resources
             type: object
             x-speakeasy-name-override: EdgeTokenResources
+        c1.api.edge.v1.TBAuditAttestationKey:
+            description: TBAuditAttestationKey is a trusted manifest signing key.
+            properties:
+                keyId:
+                    description: First 16 bytes of the SHA-256 of the raw public key, hex.
+                    type: string
+                publicKey:
+                    description: Raw Ed25519 public key, 32 bytes, hex.
+                    type: string
+                status:
+                    description: The status field.
+                    enum:
+                        - TB_AUDIT_ATTESTATION_KEY_STATUS_UNSPECIFIED
+                        - TB_AUDIT_ATTESTATION_KEY_STATUS_CURRENT
+                        - TB_AUDIT_ATTESTATION_KEY_STATUS_PREVIOUS
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Tb Audit Attestation Key
+            type: object
+            x-speakeasy-name-override: TBAuditAttestationKey
+        c1.api.edge.v1.TBAuditAttestationManifest:
+            description: |-
+                TBAuditAttestationManifest is one signed batch manifest of the tenant's
+                 tamper-evident audit log (Time Bandit warehouse attestation). It carries only
+                 the manifest's signed fields, so an auditor can rebuild the signed bytes and
+                 verify the Ed25519 signature offline with the key listed under key_id.
+            properties:
+                batchId:
+                    description: The batchId field.
+                    type: string
+                canon:
+                    description: |-
+                        Canonicalization of the row bytes the leaves hash, for example
+                         tb-audit-canon-ch-v1.
+                    type: string
+                chainSeq:
+                    description: Zero-based, contiguous position of this batch in its chain.
+                    format: uint64
+                    type: string
+                firstEventTime:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                instanceId:
+                    description: The instanceId field.
+                    type: string
+                keyId:
+                    description: The keyId field.
+                    type: string
+                lastEventTime:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                originId:
+                    description: The chain is (tenant_id, origin_id, instance_id).
+                    type: string
+                prevRoot:
+                    description: The previous batch's root in this chain, or 64 zeros for the first.
+                    type: string
+                root:
+                    description: RFC 6962 Merkle root of the batch, hex.
+                    type: string
+                rowCount:
+                    description: The rowCount field.
+                    format: uint64
+                    type: string
+                signature:
+                    description: Ed25519 signature over the domain-separated manifest encoding, hex.
+                    type: string
+                tenantId:
+                    description: The tenantId field.
+                    type: string
+                version:
+                    description: The version field.
+                    format: uint32
+                    type: integer
+            title: Tb Audit Attestation Manifest
+            type: object
+            x-speakeasy-name-override: TBAuditAttestationManifest
+        c1.api.edge.v1.TBAuditInclusionProof:
+            description: |-
+                TBAuditInclusionProof proves one audit row belongs to a signed batch. The
+                 service checks the path against the manifest root before returning it. It
+                 carries no row content: auditors verify the row against leaf_hash offline
+                 with `tb audit verify-proof`.
+            properties:
+                leafHash:
+                    description: The row's stored RFC 6962 leaf hash, hex.
+                    type: string
+                leafIndex:
+                    description: Index of the row's leaf in its batch.
+                    format: uint64
+                    type: string
+                manifest:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.TBAuditAttestationManifest'
+                        - type: "null"
+                path:
+                    description: RFC 6962 audit path, leaf to root, hex.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+            title: Tb Audit Inclusion Proof
+            type: object
+            x-speakeasy-name-override: TBAuditInclusionProof
         c1.api.edge.v1.TBEgressDenialGroup:
             description: TBEgressDenialGroup is one group of ListEgressDenialSummary.
             properties:
@@ -24471,6 +25003,40 @@ components:
                          bills once per attempt.
                     format: uint64
                     type: string
+                authRejectionReason:
+                    description: |-
+                        Why authentication rejected the request. Set only when outcome is
+                         AUTH_REJECTED.
+                    enum:
+                        - TB_AUTH_REJECTION_REASON_UNSPECIFIED
+                        - TB_AUTH_REJECTION_REASON_MISSING_CREDENTIAL
+                        - TB_AUTH_REJECTION_REASON_INVALID_TOKEN
+                        - TB_AUTH_REJECTION_REASON_EXPIRED_TOKEN
+                        - TB_AUTH_REJECTION_REASON_UNKNOWN_TENANT
+                        - TB_AUTH_REJECTION_REASON_AUDIENCE_MISMATCH
+                        - TB_AUTH_REJECTION_REASON_INSUFFICIENT_SCOPE
+                        - TB_AUTH_REJECTION_REASON_INVALID_PROOF
+                        - TB_AUTH_REJECTION_REASON_CREDENTIAL_UNAVAILABLE
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                authRejectionSourceClass:
+                    description: Set only when outcome is AUTH_REJECTED. Class of the peer address.
+                    enum:
+                        - TB_AUTH_REJECTION_SOURCE_CLASS_UNSPECIFIED
+                        - TB_AUTH_REJECTION_SOURCE_CLASS_LOOPBACK
+                        - TB_AUTH_REJECTION_SOURCE_CLASS_PRIVATE
+                        - TB_AUTH_REJECTION_SOURCE_CLASS_PUBLIC
+                        - TB_AUTH_REJECTION_SOURCE_CLASS_UNKNOWN
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                authRejectionSuppressedCount:
+                    description: |-
+                        Set only when outcome is AUTH_REJECTED. Rejections Time Bandit's rate
+                         limiter dropped since the previous emitted row of the same bucket (scope,
+                         source class and reason). The total number of rejections is the sum of
+                         1 + auth_rejection_suppressed_count over the rows.
+                    format: uint64
+                    type: string
                 cacheReadTokens:
                     description: The cacheReadTokens field.
                     format: uint64
@@ -24626,6 +25192,7 @@ components:
                         - TB_TRAFFIC_OUTCOME_UNSPECIFIED
                         - TB_TRAFFIC_OUTCOME_ALLOWED
                         - TB_TRAFFIC_OUTCOME_DENIED
+                        - TB_TRAFFIC_OUTCOME_AUTH_REJECTED
                     type: string
                     x-speakeasy-unknown-values: allow
                 outputTokens:
@@ -24804,8 +25371,42 @@ components:
                          makes this a lower bound, not an invoiced amount.
                     format: int64
                     type: string
+                deniedRequestCount:
+                    description: |-
+                        Logical requests denied by policy, counted in request_count. Set for the
+                         logical-request dimensions (not PROVIDER, MODEL or CALL_ROLE).
+                    format: uint64
+                    type: string
                 inputTokens:
                     description: PROVIDER and MODEL values include only provider-reported per-attempt usage.
+                    format: uint64
+                    type: string
+                judgeAttemptCount:
+                    description: |-
+                        Judge (call_role auxiliary) provider attempts that reached a provider on
+                         behalf of this group's requests. Only set for the USER and ROUTE
+                         dimensions. Judge usage is extra usage on top of the answer: it is never
+                         included in input_tokens, output_tokens or cost_nano_usd above.
+                    format: uint64
+                    type: string
+                judgeCostNanoUsd:
+                    description: |-
+                        List-price estimate of the observed judge usage, in nano-USD; a lower
+                         bound when the judge model is unpriced or an attempt reported no usage.
+                    format: int64
+                    type: string
+                judgeInputTokens:
+                    description: |-
+                        Provider-reported judge usage; judge attempts with no reported usage are
+                         not counted here and make the judge totals a lower bound.
+                    format: uint64
+                    type: string
+                judgeMissingUsageCount:
+                    description: Judge attempts that reported no token usage.
+                    format: uint64
+                    type: string
+                judgeOutputTokens:
+                    description: The judgeOutputTokens field.
                     format: uint64
                     type: string
                 missingUsageCallCount:
@@ -24831,6 +25432,14 @@ components:
                     description: |-
                         Logical root requests except for PROVIDER and MODEL, where this counts
                          contacted provider attempts.
+                    format: uint64
+                    type: string
+                retryAttemptCount:
+                    description: |-
+                        Provider attempts beyond the first for the same request and call role,
+                         ranked by event time rather than by the logged attempt ordinal. A judge
+                         attempt followed by its answer attempt is not a retry. Only set for the
+                         CALL_ROLE dimension.
                     format: uint64
                     type: string
                 unpricedRequestCount:
@@ -57252,6 +57861,75 @@ paths:
             x-speakeasy-group: AccessReviewTemplate
             x-speakeasy-name-override: Create
             x-stability-level: draft
+    /api/v1/access_review_template/{access_review_template_id}/entitlements/add:
+        post:
+            description: |-
+                AddTemplateEntitlements adds entitlements to an access review template's selection without
+                 replacing existing selections or their policies. For large selections, send chunks of at most
+                 200 entitlements and wait for each call to finish before sending the next. Entitlements that
+                 are already selected are skipped, so retrying a chunk is safe. If the template has no apps and
+                 resources scope yet, it is set to the selected entitlements. The per-campaign entitlement quota
+                 applies to the total selection. To change user, account or grant scope afterwards, send the
+                 template from AccessReviewTemplateService.Get to AccessReviewTemplateService.Update with
+                 update_mask scope rather than using SetScopeAndEntitlements, which would replace the whole selection.
+            operationId: c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlementService.AddTemplateEntitlements
+            parameters:
+                - in: path
+                  name: access_review_template_id
+                  required: true
+                  schema:
+                    description: The ID of the access review template to add entitlements to.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewAddTemplateEntitlementsRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewAddTemplateEntitlementsResponse'
+                    description: Successful response
+            summary: Add Template Entitlements
+            tags:
+                - Access Review Templates
+            x-speakeasy-group: AccessReviewTemplateSetupEntitlement
+            x-speakeasy-name-override: AddTemplateEntitlements
+            x-stability-level: draft
+    /api/v1/access_review_template/{access_review_template_id}/entitlements/remove:
+        post:
+            description: |-
+                RemoveTemplateEntitlements removes entitlements from an access review template's selection
+                 without changing other selections or their policies. Entitlements that are not selected are
+                 ignored, so retrying a chunk is safe. Send at most 200 entitlements per call.
+            operationId: c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlementService.RemoveTemplateEntitlements
+            parameters:
+                - in: path
+                  name: access_review_template_id
+                  required: true
+                  schema:
+                    description: The ID of the access review template to remove entitlements from.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewRemoveTemplateEntitlementsRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.accessreview.v1.AccessReviewRemoveTemplateEntitlementsResponse'
+                    description: Successful response
+            summary: Remove Template Entitlements
+            tags:
+                - Access Review Templates
+            x-speakeasy-group: AccessReviewTemplateSetupEntitlement
+            x-speakeasy-name-override: RemoveTemplateEntitlements
+            x-stability-level: draft
     /api/v1/access_review_template/{access_review_template_id}/scope_and_entitlements:
         get:
             description: GetScopeAndEntitlements retrieves the current scope configuration and selected entitlements for an access review template.
@@ -57282,7 +57960,9 @@ paths:
             x-speakeasy-name-override: GetScopeAndEntitlements
             x-stability-level: stable
         post:
-            description: SetScopeAndEntitlements replaces the scope configuration and selected entitlements for an access review template.
+            description: |-
+                SetScopeAndEntitlements replaces the scope configuration and selected entitlements for an access review template.
+                 Each call replaces the whole selection. To build a large selection, use AddTemplateEntitlements in chunks instead.
             operationId: c1.api.accessreview.v1.AccessReviewTemplateSetupEntitlementService.SetScopeAndEntitlements
             parameters:
                 - in: path
@@ -59836,6 +60516,83 @@ paths:
                 - Edge
             x-speakeasy-group: Edge
             x-speakeasy-name-override: Update
+    /api/v1/apps/{app_id}/edges/{id}/egress-rules/preview-host-decision:
+        post:
+            description: |-
+                PreviewEgressHostDecision reports what blocking or allowing one host for
+                 every user would do, and the rule list that results. Nothing is saved.
+            operationId: c1.api.edge.v1.EdgeService.PreviewEgressHostDecision
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.edge.v1.EdgeServicePreviewEgressHostDecisionRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.edge.v1.EdgeServicePreviewEgressHostDecisionResponse'
+                    description: |-
+                        EdgeServicePreviewEgressHostDecisionResponse reports what the decision
+                         would do and the rule list that results.
+            summary: Preview Egress Host Decision
+            tags:
+                - Edge
+            x-speakeasy-group: Edge
+            x-speakeasy-name-override: PreviewEgressHostDecision
+    /api/v1/apps/{app_id}/edges/{id}/egress-rules/preview-update:
+        post:
+            description: |-
+                PreviewEgressRulesUpdate checks a proposed egress rule list as Update
+                 would and compares each host's verdict under the saved rules with its
+                 verdict under the proposed rules. Nothing is saved.
+            operationId: c1.api.edge.v1.EdgeService.PreviewEgressRulesUpdate
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.edge.v1.EdgeServicePreviewEgressRulesUpdateRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.edge.v1.EdgeServicePreviewEgressRulesUpdateResponse'
+                    description: |-
+                        EdgeServicePreviewEgressRulesUpdateResponse reports the save check and each
+                         host's verdict before and after the change.
+            summary: Preview Egress Rules Update
+            tags:
+                - Edge
+            x-speakeasy-group: Edge
+            x-speakeasy-name-override: PreviewEgressRulesUpdate
     /api/v1/apps/{app_id}/edges/{id}/egress/denial-summary:
         get:
             description: Groups denied and would-deny egress flows for this Edge by destination, caller, outcome and reason.
@@ -59948,6 +60705,8 @@ paths:
                         - TB_USAGE_ATTRIBUTION_DIMENSION_USER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_MODEL
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE
                     type: string
                     x-speakeasy-unknown-values: allow
                 - in: query
@@ -60069,6 +60828,7 @@ paths:
                         - TB_TRAFFIC_OUTCOME_UNSPECIFIED
                         - TB_TRAFFIC_OUTCOME_ALLOWED
                         - TB_TRAFFIC_OUTCOME_DENIED
+                        - TB_TRAFFIC_OUTCOME_AUTH_REJECTED
                     type: string
                     x-speakeasy-unknown-values: allow
             responses:
@@ -60123,6 +60883,8 @@ paths:
                         - TB_USAGE_ATTRIBUTION_DIMENSION_USER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_MODEL
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE
                     type: string
                     x-speakeasy-unknown-values: allow
                 - in: query
@@ -60200,6 +60962,8 @@ paths:
                         - TB_USAGE_ATTRIBUTION_DIMENSION_USER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_MODEL
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE
                     type: string
                     x-speakeasy-unknown-values: allow
                 - in: query
@@ -60325,6 +61089,8 @@ paths:
                         - TB_USAGE_ATTRIBUTION_DIMENSION_USER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_MODEL
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE
                     type: string
                     x-speakeasy-unknown-values: allow
                 - in: query
@@ -60402,6 +61168,8 @@ paths:
                         - TB_USAGE_ATTRIBUTION_DIMENSION_USER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_MODEL
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE
                     type: string
                     x-speakeasy-unknown-values: allow
                 - in: query
@@ -60479,6 +61247,8 @@ paths:
                         - TB_USAGE_ATTRIBUTION_DIMENSION_USER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_MODEL
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE
                     type: string
                     x-speakeasy-unknown-values: allow
                 - in: query
@@ -60556,6 +61326,8 @@ paths:
                         - TB_USAGE_ATTRIBUTION_DIMENSION_USER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_MODEL
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE
                     type: string
                     x-speakeasy-unknown-values: allow
                 - in: query
@@ -60633,6 +61405,8 @@ paths:
                         - TB_USAGE_ATTRIBUTION_DIMENSION_USER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_MODEL
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE
                     type: string
                     x-speakeasy-unknown-values: allow
                 - in: query
@@ -67668,6 +68442,103 @@ paths:
                 terraform-resource: Directory#update
             x-speakeasy-group: Directory
             x-speakeasy-name-override: Update
+    /api/v1/edges/audit_attestation/keys:
+        get:
+            description: Lists the public keys that sign audit manifests, for offline verification.
+            operationId: c1.api.edge.v1.EdgeService.ListAuditAttestationKeys
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.edge.v1.EdgeServiceListAuditAttestationKeysResponse'
+                    description: Successful response
+            summary: List Audit Attestation Keys
+            tags:
+                - Edge
+            x-speakeasy-group: Edge
+            x-speakeasy-name-override: ListAuditAttestationKeys
+    /api/v1/edges/audit_attestation/manifests:
+        get:
+            description: |-
+                Lists the signed attestation manifests of the caller's own tenant, which
+                 chain the audit log into a tamper-evident sequence. Tenant-level: only the
+                 roles that hold EdgeService:owner (Super Administrator, AI Governance
+                 Administrator). Fails with FAILED_PRECONDITION when the warehouse has no attestation.
+            operationId: c1.api.edge.v1.EdgeService.ListAuditAttestationManifests
+            parameters:
+                - in: query
+                  name: audit_origin_id
+                  schema:
+                    description: The auditOriginId field.
+                    type: string
+                - in: query
+                  name: audit_origin_instance_id
+                  schema:
+                    description: The auditOriginInstanceId field.
+                    type: string
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    type: string
+                - in: query
+                  name: since
+                  schema:
+                    description: |-
+                        Keep manifests whose event-time span overlaps [since, until] (unix
+                         seconds). Zero leaves that side unbounded.
+                    format: int64
+                    type: string
+                - in: query
+                  name: until
+                  schema:
+                    description: The until field.
+                    format: int64
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.edge.v1.EdgeServiceListAuditAttestationManifestsResponse'
+                    description: Successful response
+            summary: List Audit Attestation Manifests
+            tags:
+                - Edge
+            x-speakeasy-group: Edge
+            x-speakeasy-name-override: ListAuditAttestationManifests
+    /api/v1/edges/audit_attestation/proofs/{event_id}:
+        get:
+            description: |-
+                Returns the checked inclusion proof of one audit event of the caller's
+                 own tenant. An event outside the tenant is NOT_FOUND, like a missing one.
+            operationId: c1.api.edge.v1.EdgeService.GetAuditInclusionProof
+            parameters:
+                - in: path
+                  name: event_id
+                  required: true
+                  schema:
+                    description: The eventId field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.edge.v1.EdgeServiceGetAuditInclusionProofResponse'
+                    description: Successful response
+            summary: Get Audit Inclusion Proof
+            tags:
+                - Edge
+            x-speakeasy-group: Edge
+            x-speakeasy-name-override: GetAuditInclusionProof
     /api/v1/edges/egress/top-agents:
         get:
             description: Lists agents ranked by MCP request count across the Edges the caller manages.
@@ -67852,6 +68723,8 @@ paths:
                         - TB_USAGE_ATTRIBUTION_DIMENSION_USER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER
                         - TB_USAGE_ATTRIBUTION_DIMENSION_MODEL
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE
+                        - TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE
                     type: string
                     x-speakeasy-unknown-values: allow
                 - in: query
@@ -67902,6 +68775,67 @@ paths:
                 - Edge
             x-speakeasy-group: Edge
             x-speakeasy-name-override: ListEdgesRollup
+    /api/v1/edges/unattributed_inference/traffic:
+        get:
+            description: |-
+                Lists auth-rejected inference requests that Time Bandit could not
+                 attribute to a single Edge, for the whole tenant. Rejections that resolve
+                 to exactly one Edge appear in that Edge's own inference traffic instead.
+                 Tenant-level data: restricted to the roles that hold EdgeService:owner
+                 (Super Administrator, AI Governance Administrator), not Edge or app owners.
+            operationId: c1.api.edge.v1.EdgeService.ListUnattributedInferenceTrafficEvents
+            parameters:
+                - in: query
+                  name: auth_rejection_reason
+                  schema:
+                    description: Keeps only rejections with this reason. Unset keeps all.
+                    enum:
+                        - TB_AUTH_REJECTION_REASON_UNSPECIFIED
+                        - TB_AUTH_REJECTION_REASON_MISSING_CREDENTIAL
+                        - TB_AUTH_REJECTION_REASON_INVALID_TOKEN
+                        - TB_AUTH_REJECTION_REASON_EXPIRED_TOKEN
+                        - TB_AUTH_REJECTION_REASON_UNKNOWN_TENANT
+                        - TB_AUTH_REJECTION_REASON_AUDIENCE_MISMATCH
+                        - TB_AUTH_REJECTION_REASON_INSUFFICIENT_SCOPE
+                        - TB_AUTH_REJECTION_REASON_INVALID_PROOF
+                        - TB_AUTH_REJECTION_REASON_CREDENTIAL_UNAVAILABLE
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                - in: query
+                  name: page_size
+                  schema:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                - in: query
+                  name: page_token
+                  schema:
+                    description: The pageToken field.
+                    type: string
+                - in: query
+                  name: since
+                  schema:
+                    description: The since field.
+                    format: int64
+                    type: string
+                - in: query
+                  name: until
+                  schema:
+                    description: The until field.
+                    format: int64
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.edge.v1.EdgeServiceListUnattributedInferenceTrafficEventsResponse'
+                    description: Successful response
+            summary: List Unattributed Inference Traffic Events
+            tags:
+                - Edge
+            x-speakeasy-group: Edge
+            x-speakeasy-name-override: ListUnattributedInferenceTrafficEvents
     /api/v1/edges/usable:
         get:
             description: |-
@@ -75592,8 +76526,8 @@ paths:
             description: |-
                 Get the tenant's AI governance settings — the controls behind the admin
                  /admin/settings/ai-governance page. Returns the full AIGovernanceSettings:
-                 allowed MCP client types, default client lifecycle, require_tool_approval,
-                 default tool classification, audit verbosity, auto-discovery toggle +
+                 allowed MCP client types, default client lifecycle, default tool
+                 classification, audit verbosity, auto-discovery toggle +
                  interval, prefer_code_mode_over_direct_tools, surface_requestable_tools,
                  and untrusted_judge_disable.
             operationId: c1.api.ai_governance.v1.AIGovernanceSettingsService.Get
@@ -75612,8 +76546,8 @@ paths:
         post:
             description: |-
                 Update the tenant's AI governance settings. Requires update_mask listing
-                 which fields to apply (e.g. require_tool_approval,
-                 default_tool_classification, audit_verbosity, auto_discovery_enabled,
+                 which fields to apply (e.g. default_tool_classification,
+                 audit_verbosity, auto_discovery_enabled,
                  discovery_interval, prefer_code_mode_over_direct_tools,
                  surface_requestable_tools, untrusted_judge_disable, allowed_client_types,
                  default_client_lifecycle).
@@ -75699,10 +76633,7 @@ paths:
             x-speakeasy-name-override: ListHistory
     /api/v1/settings/ai-governance/tenant-defaults:
         get:
-            description: |-
-                Get the tenant-default subset of AI governance settings. Currently returns
-                 only require_tool_approval — the default applied to newly registered MCP
-                 servers/tools. Use Get for the full settings object.
+            description: Get the legacy tenant-default subset of AI governance settings.
             operationId: c1.api.ai_governance.v1.AIGovernanceSettingsService.GetTenantDefaults
             responses:
                 "200":
@@ -75711,8 +76642,8 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/c1.api.ai_governance.v1.GetTenantDefaultsResponse'
                     description: |-
-                        GetTenantDefaultsResponse contains the tenant-default subset of AI governance
-                         settings applied to newly registered MCP servers and tools.
+                        GetTenantDefaultsResponse contains tenant defaults used by
+                         legacy MCP servers.
             summary: Get Tenant Defaults
             tags:
                 - AI Governance Settings

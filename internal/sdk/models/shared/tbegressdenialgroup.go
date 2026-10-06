@@ -7,24 +7,24 @@ import (
 	"time"
 )
 
-// Outcome - DENIED, WOULD_DENY or ALLOWED. A flow an observe-mode Edge's policy
+// TBEgressDenialGroupOutcome - DENIED, WOULD_DENY or ALLOWED. A flow an observe-mode Edge's policy
 //
 //	denied but a later check also denied is DENIED.
-type Outcome string
+type TBEgressDenialGroupOutcome string
 
 const (
-	OutcomeTbEgressFlowOutcomeUnspecified Outcome = "TB_EGRESS_FLOW_OUTCOME_UNSPECIFIED"
-	OutcomeTbEgressFlowOutcomeDenied      Outcome = "TB_EGRESS_FLOW_OUTCOME_DENIED"
-	OutcomeTbEgressFlowOutcomeWouldDeny   Outcome = "TB_EGRESS_FLOW_OUTCOME_WOULD_DENY"
-	OutcomeTbEgressFlowOutcomeAllowed     Outcome = "TB_EGRESS_FLOW_OUTCOME_ALLOWED"
+	TBEgressDenialGroupOutcomeTbEgressFlowOutcomeUnspecified TBEgressDenialGroupOutcome = "TB_EGRESS_FLOW_OUTCOME_UNSPECIFIED"
+	TBEgressDenialGroupOutcomeTbEgressFlowOutcomeDenied      TBEgressDenialGroupOutcome = "TB_EGRESS_FLOW_OUTCOME_DENIED"
+	TBEgressDenialGroupOutcomeTbEgressFlowOutcomeWouldDeny   TBEgressDenialGroupOutcome = "TB_EGRESS_FLOW_OUTCOME_WOULD_DENY"
+	TBEgressDenialGroupOutcomeTbEgressFlowOutcomeAllowed     TBEgressDenialGroupOutcome = "TB_EGRESS_FLOW_OUTCOME_ALLOWED"
 )
 
-func (e Outcome) ToPointer() *Outcome {
+func (e TBEgressDenialGroupOutcome) ToPointer() *TBEgressDenialGroupOutcome {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Outcome) IsExact() bool {
+func (e *TBEgressDenialGroupOutcome) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "TB_EGRESS_FLOW_OUTCOME_UNSPECIFIED", "TB_EGRESS_FLOW_OUTCOME_DENIED", "TB_EGRESS_FLOW_OUTCOME_WOULD_DENY", "TB_EGRESS_FLOW_OUTCOME_ALLOWED":
@@ -48,7 +48,7 @@ type TBEgressDenialGroup struct {
 	LastSeen            *time.Time `json:"lastSeen,omitempty"`
 	// DENIED, WOULD_DENY or ALLOWED. A flow an observe-mode Edge's policy
 	//  denied but a later check also denied is DENIED.
-	Outcome *Outcome `json:"outcome,omitempty"`
+	Outcome *TBEgressDenialGroupOutcome `json:"outcome,omitempty"`
 	// The C1 user source_principal resolves to; see TBTrafficEvent.
 	PrincipalUserID *string `json:"principalUserId,omitempty"`
 	// The flow's denial family: rule_deny, ssrf, body_cap, encoding,
@@ -118,7 +118,7 @@ func (t *TBEgressDenialGroup) GetLastSeen() *time.Time {
 	return t.LastSeen
 }
 
-func (t *TBEgressDenialGroup) GetOutcome() *Outcome {
+func (t *TBEgressDenialGroup) GetOutcome() *TBEgressDenialGroupOutcome {
 	if t == nil {
 		return nil
 	}

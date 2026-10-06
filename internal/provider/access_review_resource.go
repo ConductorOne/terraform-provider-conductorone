@@ -532,7 +532,7 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			"scope_type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The type of scoping method for the campaign (e.g., by entitlements, by access conflicts, or by resource). possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"]`,
+				Description: `The type of scoping method for the campaign (e.g., by entitlements, by access conflicts, or by resource). possible known values include one of ["ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES"]`,
 			},
 			"scope_v2": schema.SingleNestedAttribute{
 				Computed: true,

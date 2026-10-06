@@ -117,6 +117,7 @@ const (
 	AccessReviewScopeTypeAccessReviewScopeTypeByResource        AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 	AccessReviewScopeTypeAccessReviewScopeTypeByInheritance     AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"
 	AccessReviewScopeTypeAccessReviewScopeTypeByUsers           AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"
+	AccessReviewScopeTypeAccessReviewScopeTypeByAccessProfiles  AccessReviewScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES"
 )
 
 func (e AccessReviewScopeType) ToPointer() *AccessReviewScopeType {
@@ -127,7 +128,7 @@ func (e AccessReviewScopeType) ToPointer() *AccessReviewScopeType {
 func (e *AccessReviewScopeType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS":
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES":
 			return true
 		}
 	}

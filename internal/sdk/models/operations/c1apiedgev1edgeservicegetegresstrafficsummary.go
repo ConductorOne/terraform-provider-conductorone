@@ -43,6 +43,8 @@ const (
 	C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimensionTbUsageAttributionDimensionUser        C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimension = "TB_USAGE_ATTRIBUTION_DIMENSION_USER"
 	C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimensionTbUsageAttributionDimensionProvider    C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimension = "TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER"
 	C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimensionTbUsageAttributionDimensionModel       C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimension = "TB_USAGE_ATTRIBUTION_DIMENSION_MODEL"
+	C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimensionTbUsageAttributionDimensionRoute       C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimension = "TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE"
+	C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimensionTbUsageAttributionDimensionCallRole    C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimension = "TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE"
 )
 
 func (e C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimension) ToPointer() *C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimension {
@@ -53,7 +55,7 @@ func (e C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimension) ToPoin
 func (e *C1APIEdgeV1EdgeServiceGetEgressTrafficSummaryQueryParamDimension) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "TB_USAGE_ATTRIBUTION_DIMENSION_UNSPECIFIED", "TB_USAGE_ATTRIBUTION_DIMENSION_TEAM", "TB_USAGE_ATTRIBUTION_DIMENSION_APPLICATION", "TB_USAGE_ATTRIBUTION_DIMENSION_AGENT", "TB_USAGE_ATTRIBUTION_DIMENSION_COST_CENTER", "TB_USAGE_ATTRIBUTION_DIMENSION_USER", "TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER", "TB_USAGE_ATTRIBUTION_DIMENSION_MODEL":
+		case "TB_USAGE_ATTRIBUTION_DIMENSION_UNSPECIFIED", "TB_USAGE_ATTRIBUTION_DIMENSION_TEAM", "TB_USAGE_ATTRIBUTION_DIMENSION_APPLICATION", "TB_USAGE_ATTRIBUTION_DIMENSION_AGENT", "TB_USAGE_ATTRIBUTION_DIMENSION_COST_CENTER", "TB_USAGE_ATTRIBUTION_DIMENSION_USER", "TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER", "TB_USAGE_ATTRIBUTION_DIMENSION_MODEL", "TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE", "TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE":
 			return true
 		}
 	}

@@ -4,6 +4,10 @@ package shared
 
 // The EdgeServiceGetInferenceUsageSummaryRollupResponse message.
 type EdgeServiceGetInferenceUsageSummaryRollupResponse struct {
+	// See TBUsageSummary.auth_rejected_count and auth_rejected_total.
+	AuthRejectedCount *string `json:"authRejectedCount,omitempty"`
+	// The authRejectedTotal field.
+	AuthRejectedTotal *string `json:"authRejectedTotal,omitempty"`
 	// Number of authorized Edges included. Zero means the caller manages no
 	//  Edges, as distinct from Edges that have no traffic yet.
 	EdgeCount *int64 `json:"edgeCount,omitempty"`
@@ -21,6 +25,20 @@ type EdgeServiceGetInferenceUsageSummaryRollupResponse struct {
 	TotalOutputTokens *string `json:"totalOutputTokens,omitempty"`
 	// The totalRequests field.
 	TotalRequests *string `json:"totalRequests,omitempty"`
+}
+
+func (e *EdgeServiceGetInferenceUsageSummaryRollupResponse) GetAuthRejectedCount() *string {
+	if e == nil {
+		return nil
+	}
+	return e.AuthRejectedCount
+}
+
+func (e *EdgeServiceGetInferenceUsageSummaryRollupResponse) GetAuthRejectedTotal() *string {
+	if e == nil {
+		return nil
+	}
+	return e.AuthRejectedTotal
 }
 
 func (e *EdgeServiceGetInferenceUsageSummaryRollupResponse) GetEdgeCount() *int64 {

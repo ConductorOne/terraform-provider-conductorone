@@ -14,8 +14,8 @@ type C1APIAIGovernanceV1AIGovernanceSettingsServiceGetTenantDefaultsResponse str
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// GetTenantDefaultsResponse contains the tenant-default subset of AI governance
-	//  settings applied to newly registered MCP servers and tools.
+	// GetTenantDefaultsResponse contains tenant defaults used by
+	//  legacy MCP servers.
 	GetTenantDefaultsResponse *shared.GetTenantDefaultsResponse
 }
 

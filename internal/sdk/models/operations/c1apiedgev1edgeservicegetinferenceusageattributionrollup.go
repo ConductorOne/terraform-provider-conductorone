@@ -19,6 +19,8 @@ const (
 	C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimensionTbUsageAttributionDimensionUser        C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimension = "TB_USAGE_ATTRIBUTION_DIMENSION_USER"
 	C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimensionTbUsageAttributionDimensionProvider    C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimension = "TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER"
 	C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimensionTbUsageAttributionDimensionModel       C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimension = "TB_USAGE_ATTRIBUTION_DIMENSION_MODEL"
+	C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimensionTbUsageAttributionDimensionRoute       C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimension = "TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE"
+	C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimensionTbUsageAttributionDimensionCallRole    C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimension = "TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE"
 )
 
 func (e C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimension) ToPointer() *C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimension {
@@ -29,7 +31,7 @@ func (e C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimens
 func (e *C1APIEdgeV1EdgeServiceGetInferenceUsageAttributionRollupQueryParamDimension) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "TB_USAGE_ATTRIBUTION_DIMENSION_UNSPECIFIED", "TB_USAGE_ATTRIBUTION_DIMENSION_TEAM", "TB_USAGE_ATTRIBUTION_DIMENSION_APPLICATION", "TB_USAGE_ATTRIBUTION_DIMENSION_AGENT", "TB_USAGE_ATTRIBUTION_DIMENSION_COST_CENTER", "TB_USAGE_ATTRIBUTION_DIMENSION_USER", "TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER", "TB_USAGE_ATTRIBUTION_DIMENSION_MODEL":
+		case "TB_USAGE_ATTRIBUTION_DIMENSION_UNSPECIFIED", "TB_USAGE_ATTRIBUTION_DIMENSION_TEAM", "TB_USAGE_ATTRIBUTION_DIMENSION_APPLICATION", "TB_USAGE_ATTRIBUTION_DIMENSION_AGENT", "TB_USAGE_ATTRIBUTION_DIMENSION_COST_CENTER", "TB_USAGE_ATTRIBUTION_DIMENSION_USER", "TB_USAGE_ATTRIBUTION_DIMENSION_PROVIDER", "TB_USAGE_ATTRIBUTION_DIMENSION_MODEL", "TB_USAGE_ATTRIBUTION_DIMENSION_ROUTE", "TB_USAGE_ATTRIBUTION_DIMENSION_CALL_ROLE":
 			return true
 		}
 	}

@@ -7,6 +7,64 @@ import (
 	"time"
 )
 
+// AuthRejectionReason - Why authentication rejected the request. Set only when outcome is
+//
+//	AUTH_REJECTED.
+type AuthRejectionReason string
+
+const (
+	AuthRejectionReasonTbAuthRejectionReasonUnspecified           AuthRejectionReason = "TB_AUTH_REJECTION_REASON_UNSPECIFIED"
+	AuthRejectionReasonTbAuthRejectionReasonMissingCredential     AuthRejectionReason = "TB_AUTH_REJECTION_REASON_MISSING_CREDENTIAL"
+	AuthRejectionReasonTbAuthRejectionReasonInvalidToken          AuthRejectionReason = "TB_AUTH_REJECTION_REASON_INVALID_TOKEN"
+	AuthRejectionReasonTbAuthRejectionReasonExpiredToken          AuthRejectionReason = "TB_AUTH_REJECTION_REASON_EXPIRED_TOKEN"
+	AuthRejectionReasonTbAuthRejectionReasonUnknownTenant         AuthRejectionReason = "TB_AUTH_REJECTION_REASON_UNKNOWN_TENANT"
+	AuthRejectionReasonTbAuthRejectionReasonAudienceMismatch      AuthRejectionReason = "TB_AUTH_REJECTION_REASON_AUDIENCE_MISMATCH"
+	AuthRejectionReasonTbAuthRejectionReasonInsufficientScope     AuthRejectionReason = "TB_AUTH_REJECTION_REASON_INSUFFICIENT_SCOPE"
+	AuthRejectionReasonTbAuthRejectionReasonInvalidProof          AuthRejectionReason = "TB_AUTH_REJECTION_REASON_INVALID_PROOF"
+	AuthRejectionReasonTbAuthRejectionReasonCredentialUnavailable AuthRejectionReason = "TB_AUTH_REJECTION_REASON_CREDENTIAL_UNAVAILABLE"
+)
+
+func (e AuthRejectionReason) ToPointer() *AuthRejectionReason {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthRejectionReason) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TB_AUTH_REJECTION_REASON_UNSPECIFIED", "TB_AUTH_REJECTION_REASON_MISSING_CREDENTIAL", "TB_AUTH_REJECTION_REASON_INVALID_TOKEN", "TB_AUTH_REJECTION_REASON_EXPIRED_TOKEN", "TB_AUTH_REJECTION_REASON_UNKNOWN_TENANT", "TB_AUTH_REJECTION_REASON_AUDIENCE_MISMATCH", "TB_AUTH_REJECTION_REASON_INSUFFICIENT_SCOPE", "TB_AUTH_REJECTION_REASON_INVALID_PROOF", "TB_AUTH_REJECTION_REASON_CREDENTIAL_UNAVAILABLE":
+			return true
+		}
+	}
+	return false
+}
+
+// AuthRejectionSourceClass - Set only when outcome is AUTH_REJECTED. Class of the peer address.
+type AuthRejectionSourceClass string
+
+const (
+	AuthRejectionSourceClassTbAuthRejectionSourceClassUnspecified AuthRejectionSourceClass = "TB_AUTH_REJECTION_SOURCE_CLASS_UNSPECIFIED"
+	AuthRejectionSourceClassTbAuthRejectionSourceClassLoopback    AuthRejectionSourceClass = "TB_AUTH_REJECTION_SOURCE_CLASS_LOOPBACK"
+	AuthRejectionSourceClassTbAuthRejectionSourceClassPrivate     AuthRejectionSourceClass = "TB_AUTH_REJECTION_SOURCE_CLASS_PRIVATE"
+	AuthRejectionSourceClassTbAuthRejectionSourceClassPublic      AuthRejectionSourceClass = "TB_AUTH_REJECTION_SOURCE_CLASS_PUBLIC"
+	AuthRejectionSourceClassTbAuthRejectionSourceClassUnknown     AuthRejectionSourceClass = "TB_AUTH_REJECTION_SOURCE_CLASS_UNKNOWN"
+)
+
+func (e AuthRejectionSourceClass) ToPointer() *AuthRejectionSourceClass {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthRejectionSourceClass) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TB_AUTH_REJECTION_SOURCE_CLASS_UNSPECIFIED", "TB_AUTH_REJECTION_SOURCE_CLASS_LOOPBACK", "TB_AUTH_REJECTION_SOURCE_CLASS_PRIVATE", "TB_AUTH_REJECTION_SOURCE_CLASS_PUBLIC", "TB_AUTH_REJECTION_SOURCE_CLASS_UNKNOWN":
+			return true
+		}
+	}
+	return false
+}
+
 // Capability - The capability field.
 type Capability string
 
@@ -89,9 +147,10 @@ func (e *JudgeOutcome) IsExact() bool {
 type TBTrafficEventOutcome string
 
 const (
-	TBTrafficEventOutcomeTbTrafficOutcomeUnspecified TBTrafficEventOutcome = "TB_TRAFFIC_OUTCOME_UNSPECIFIED"
-	TBTrafficEventOutcomeTbTrafficOutcomeAllowed     TBTrafficEventOutcome = "TB_TRAFFIC_OUTCOME_ALLOWED"
-	TBTrafficEventOutcomeTbTrafficOutcomeDenied      TBTrafficEventOutcome = "TB_TRAFFIC_OUTCOME_DENIED"
+	TBTrafficEventOutcomeTbTrafficOutcomeUnspecified  TBTrafficEventOutcome = "TB_TRAFFIC_OUTCOME_UNSPECIFIED"
+	TBTrafficEventOutcomeTbTrafficOutcomeAllowed      TBTrafficEventOutcome = "TB_TRAFFIC_OUTCOME_ALLOWED"
+	TBTrafficEventOutcomeTbTrafficOutcomeDenied       TBTrafficEventOutcome = "TB_TRAFFIC_OUTCOME_DENIED"
+	TBTrafficEventOutcomeTbTrafficOutcomeAuthRejected TBTrafficEventOutcome = "TB_TRAFFIC_OUTCOME_AUTH_REJECTED"
 )
 
 func (e TBTrafficEventOutcome) ToPointer() *TBTrafficEventOutcome {
@@ -102,7 +161,7 @@ func (e TBTrafficEventOutcome) ToPointer() *TBTrafficEventOutcome {
 func (e *TBTrafficEventOutcome) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "TB_TRAFFIC_OUTCOME_UNSPECIFIED", "TB_TRAFFIC_OUTCOME_ALLOWED", "TB_TRAFFIC_OUTCOME_DENIED":
+		case "TB_TRAFFIC_OUTCOME_UNSPECIFIED", "TB_TRAFFIC_OUTCOME_ALLOWED", "TB_TRAFFIC_OUTCOME_DENIED", "TB_TRAFFIC_OUTCOME_AUTH_REJECTED":
 			return true
 		}
 	}
@@ -125,6 +184,16 @@ type TBTrafficEvent struct {
 	// One-based provider attempt; 0 on the listener-flow row. A retried call
 	//  bills once per attempt.
 	AttemptOrdinal *string `json:"attemptOrdinal,omitempty"`
+	// Why authentication rejected the request. Set only when outcome is
+	//  AUTH_REJECTED.
+	AuthRejectionReason *AuthRejectionReason `json:"authRejectionReason,omitempty"`
+	// Set only when outcome is AUTH_REJECTED. Class of the peer address.
+	AuthRejectionSourceClass *AuthRejectionSourceClass `json:"authRejectionSourceClass,omitempty"`
+	// Set only when outcome is AUTH_REJECTED. Rejections Time Bandit's rate
+	//  limiter dropped since the previous emitted row of the same bucket (scope,
+	//  source class and reason). The total number of rejections is the sum of
+	//  1 + auth_rejection_suppressed_count over the rows.
+	AuthRejectionSuppressedCount *string `json:"authRejectionSuppressedCount,omitempty"`
 	// The cacheReadTokens field.
 	CacheReadTokens *string `json:"cacheReadTokens,omitempty"`
 	// The cacheWriteTokens field.
@@ -273,6 +342,27 @@ func (t *TBTrafficEvent) GetAttemptOrdinal() *string {
 		return nil
 	}
 	return t.AttemptOrdinal
+}
+
+func (t *TBTrafficEvent) GetAuthRejectionReason() *AuthRejectionReason {
+	if t == nil {
+		return nil
+	}
+	return t.AuthRejectionReason
+}
+
+func (t *TBTrafficEvent) GetAuthRejectionSourceClass() *AuthRejectionSourceClass {
+	if t == nil {
+		return nil
+	}
+	return t.AuthRejectionSourceClass
+}
+
+func (t *TBTrafficEvent) GetAuthRejectionSuppressedCount() *string {
+	if t == nil {
+		return nil
+	}
+	return t.AuthRejectionSuppressedCount
 }
 
 func (t *TBTrafficEvent) GetCacheReadTokens() *string {

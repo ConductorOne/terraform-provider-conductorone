@@ -4,6 +4,10 @@ package shared
 
 // The EdgeServiceGetInferenceUsageSummaryResponse message.
 type EdgeServiceGetInferenceUsageSummaryResponse struct {
+	// See TBUsageSummary.auth_rejected_count and auth_rejected_total.
+	AuthRejectedCount *string `json:"authRejectedCount,omitempty"`
+	// The authRejectedTotal field.
+	AuthRejectedTotal *string `json:"authRejectedTotal,omitempty"`
 	// The modelBreakdown field.
 	ModelBreakdown []TBUsageModelBreakdown `json:"modelBreakdown,omitempty"`
 	// The series field.
@@ -18,6 +22,20 @@ type EdgeServiceGetInferenceUsageSummaryResponse struct {
 	TotalOutputTokens *string `json:"totalOutputTokens,omitempty"`
 	// The totalRequests field.
 	TotalRequests *string `json:"totalRequests,omitempty"`
+}
+
+func (e *EdgeServiceGetInferenceUsageSummaryResponse) GetAuthRejectedCount() *string {
+	if e == nil {
+		return nil
+	}
+	return e.AuthRejectedCount
+}
+
+func (e *EdgeServiceGetInferenceUsageSummaryResponse) GetAuthRejectedTotal() *string {
+	if e == nil {
+		return nil
+	}
+	return e.AuthRejectedTotal
 }
 
 func (e *EdgeServiceGetInferenceUsageSummaryResponse) GetModelBreakdown() []TBUsageModelBreakdown {
