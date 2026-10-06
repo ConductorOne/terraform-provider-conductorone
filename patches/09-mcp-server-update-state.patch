@@ -20,9 +20,9 @@ protected by .genignore.
  					},
  					"require_tool_approval": schema.StringAttribute{
  						Optional: true,
--						MarkdownDescription: `Optional per-server override for tool auto-approval. See` + "\n" +
--							` MCPServerView.require_tool_approval for semantics.` + "\n" +
-+						MarkdownDescription: `Optional per-server override for tool auto-approval. Omit to leave the existing override unmanaged.` + "\n" +
+-						MarkdownDescription: `Optional per-server override for tool approval when registering without an` + "\n" +
+-							` access level. See MCPServerView.require_tool_approval for semantics.` + "\n" +
++						MarkdownDescription: `Optional per-server tool-approval override for registrations without a saved access level. Omit to leave the existing override unmanaged.` + "\n" +
 +							`Set OPTIONAL_BOOL_UNSPECIFIED to clear the override and use the tenant default.` + "\n" +
  							`possible known values include one of ["OPTIONAL_BOOL_UNSPECIFIED", "OPTIONAL_BOOL_TRUE", "OPTIONAL_BOOL_FALSE"]`,
  					},
@@ -31,9 +31,9 @@ protected by .genignore.
  					},
  					"require_tool_approval": schema.StringAttribute{
  						Optional: true,
--						MarkdownDescription: `Optional per-server override for tool auto-approval. See` + "\n" +
--							` MCPServerView.require_tool_approval for semantics.` + "\n" +
-+						MarkdownDescription: `Optional per-server override for tool auto-approval. Omit to leave the existing override unmanaged.` + "\n" +
+-						MarkdownDescription: `Optional per-server override for tool approval when registering without an` + "\n" +
+-							` access level. See MCPServerView.require_tool_approval for semantics.` + "\n" +
++						MarkdownDescription: `Optional per-server tool-approval override for registrations without a saved access level. Omit to leave the existing override unmanaged.` + "\n" +
 +							`Set OPTIONAL_BOOL_UNSPECIFIED to clear the override and use the tenant default.` + "\n" +
  							`possible known values include one of ["OPTIONAL_BOOL_UNSPECIFIED", "OPTIONAL_BOOL_TRUE", "OPTIONAL_BOOL_FALSE"]`,
  					},

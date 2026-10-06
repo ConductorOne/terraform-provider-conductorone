@@ -825,3 +825,7 @@ actions:
   - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerServiceRegisterRequestInput"]["properties"]["userIds"]
     update:
       x-speakeasy-terraform-ignore: true
+  # Access-profile IDs define this resource's registration access.
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerServiceRegisterRequestInput"]["properties"]["accessProvisioning"]
+    update:
+      x-speakeasy-terraform-ignore: true
