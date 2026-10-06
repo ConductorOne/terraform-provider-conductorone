@@ -76,6 +76,7 @@ For an example of how to implement this, refer to the [c1TokenSource.Token()](ht
 * [conductorone_directory](docs/resources/directory.md)
 * [conductorone_function](docs/resources/function.md)
 * [conductorone_function_tag](docs/resources/function_tag.md)
+* [conductorone_mcp_server](docs/resources/mcp_server.md)
 * [conductorone_policy](docs/resources/policy.md)
 * [conductorone_recovery_policy](docs/resources/recovery_policy.md)
 * [conductorone_request_schema_entitlement_binding](docs/resources/request_schema_entitlement_binding.md)
