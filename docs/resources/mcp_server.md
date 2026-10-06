@@ -163,11 +163,8 @@ resource "conductorone_mcp_server" "my_mcp_server" {
 
 ### Optional
 
-- `access_profile_ids` (List of String) Optional access profiles (request catalogs) the server should be requestable
- through. Register creates the server's "All approved tools" toolset empty and adds
- its entitlement to each profile, so members can request the server before discovery
- has found a single tool; the sync later adopts the same toolset and fills it. Empty
- skips both steps.
+- `access_profile_ids` (List of String, Deprecated) Deprecated: use access_provisioning.request. Retained for older clients;
+ used when access_provisioning.request is absent.
 Requires replacement if changed.
 - `acknowledged_finding_ids` (List of String) finding_ids from the diagnostic the admin acknowledged. Each must cover a
  blocking-relaxable finding on oauth_diagnostic_id.
@@ -233,10 +230,10 @@ Requires replacement if changed.
 
 ### Read-Only
 
-- `access_profiles_attached` (Boolean) Whether the "All approved tools" toolset reached every profile in
- access_profile_ids. False means the server registered but the attach failed
+- `access_profiles_attached` (Boolean) Whether the selected system toolset reached every profile in
+ the request access profiles. False means the server registered but the attach failed
  afterwards, and the profiles have to be wired from the server page. Always true
- when access_profile_ids was empty, since there was nothing to attach.
+ when no request access profiles were supplied, since there was nothing to attach.
 - `auth_method` (String) Authentication method in use. Read-only; derived from stored config.
 - `aws_access_key_id` (String) AWS SigV4 access key ID (the public half of the credential pair).
  Read-only; derived from stored config. Surfaced so the edit form can
@@ -320,7 +317,8 @@ Requires replacement if changed.
  ("none" for public PKCE-only clients). Read-only; server-set from the DCR
  result. Empty for manual / non-DCR servers.
 - `oauth2_token_url` (String) OAuth2 token URL. Read-only; derived from stored config.
-- `require_tool_approval` (String) Per-server override for tool auto-approval.
+- `require_tool_approval` (String) Per-server override for tool approval on MCP servers without a saved
+ registration access level. UNSPECIFIED inherits the tenant setting.
 - `source_app_id` (String) Source app ID (hosted servers only).
 - `token_sharing` (String) Token sharing model in use. Read-only; derived from stored config.
  For rows stored under the legacy SERVICE/PASSTHROUGH OAuth2 modes,
@@ -352,7 +350,7 @@ Optional:
 - `custom_header` (Attributes) MCPServerAuthCustomHeader provides custom header authentication. (see [below for nested schema](#nestedatt--external_config--custom_header))
 - `none` (Attributes) MCPServerAuthNone indicates no authentication is required. (see [below for nested schema](#nestedatt--external_config--none))
 - `oauth2` (Attributes) MCPServerAuthOAuth2 provides OAuth2 client credentials or JWT Bearer authentication. (see [below for nested schema](#nestedatt--external_config--oauth2))
-- `require_tool_approval` (String) Optional per-server override for tool auto-approval. Omit to leave the existing override unmanaged.
+- `require_tool_approval` (String) Optional per-server tool-approval override for registrations without a saved access level. Omit to leave the existing override unmanaged.
 Set OPTIONAL_BOOL_UNSPECIFIED to clear the override and use the tenant default.
 possible known values include one of ["OPTIONAL_BOOL_UNSPECIFIED", "OPTIONAL_BOOL_TRUE", "OPTIONAL_BOOL_FALSE"]
 - `token_sharing` (String) Token sharing model. SHARED = admin authorizes once; PER_USER = each user
@@ -480,7 +478,7 @@ Optional:
 Requires replacement if changed.
 - `none` (Attributes) MCPServerAuthNone indicates no authentication is required. (see [below for nested schema](#nestedatt--hosted_config--none))
 - `oauth2` (Attributes) MCPServerAuthOAuth2 provides OAuth2 client credentials or JWT Bearer authentication. (see [below for nested schema](#nestedatt--hosted_config--oauth2))
-- `require_tool_approval` (String) Optional per-server override for tool auto-approval. Omit to leave the existing override unmanaged.
+- `require_tool_approval` (String) Optional per-server tool-approval override for registrations without a saved access level. Omit to leave the existing override unmanaged.
 Set OPTIONAL_BOOL_UNSPECIFIED to clear the override and use the tenant default.
 possible known values include one of ["OPTIONAL_BOOL_UNSPECIFIED", "OPTIONAL_BOOL_TRUE", "OPTIONAL_BOOL_FALSE"]
 - `source_app_id` (String) Source app ID (optional, for connector-backed servers). Requires replacement if changed.
