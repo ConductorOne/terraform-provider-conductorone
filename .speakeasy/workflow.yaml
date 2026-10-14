@@ -6,6 +6,7 @@ sources:
             - location: ./openapi.yaml
         overlays:
             - location: ./overlay.yaml
+            - location: ./projection.overlay.yaml
         registry:
             location: registry.speakeasyapi.dev/conductor-one/conductorone/my-source
 targets:

@@ -55,7 +55,9 @@ gen:
 	COMBINED="combined_$$DATE.yaml"; \
 	trap 'rm -f $$COMBINED' EXIT; \
 	curl -sSL -o openapi.yaml https://insulator.conductor.one/api/v1/openapi.yaml && \
-	speakeasy overlay apply -s openapi.yaml -o overlay.yaml >> $$COMBINED && \
+	speakeasy overlay apply -s openapi.yaml -o overlay.yaml > $$COMBINED.0 && \
+	speakeasy overlay apply -s $$COMBINED.0 -o projection.overlay.yaml > $$COMBINED && \
+	rm -f $$COMBINED.0 && \
 	speakeasy generate sdk -s $$COMBINED -o . -l terraform -d
 	$(MAKE) apply-patches
 	$(MAKE) vendor

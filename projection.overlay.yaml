@@ -1,0 +1,251 @@
+# INTERIM: hand-maintained stand-in for the Terraform entity projection that the
+# apigw tfoverlay CLI will emit once it is wired into this build. It splits
+# AppEntitlement into two Terraform entities: the existing App Entitlement keeps
+# its operations, and Custom App Entitlement gets cloned schemas so its writable
+# provision_policy no longer collides with the shared provisionerPolicy name.
+# Applied after overlay.yaml and before `speakeasy generate`. Delete this file
+# when the generated overlay replaces it.
+overlay: 1.0.0
+info:
+  title: Interim Terraform entity projection
+  version: 0.0.0
+actions:
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]["x-speakeasy-entity"]
+    remove: true
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement"]
+    update:
+      x-speakeasy-entity: App Entitlement
+  - target: $["components"]["schemas"]
+    update:
+      c1.api.app.v1.AppEntitlement.tf.CustomAppEntitlement:
+        description: "The app entitlement represents one permission in a downstream\
+          \ App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.\n\
+          \nThis message contains a oneof named max_grant_duration. Only a single\
+          \ field of the following list may be set at a time:\n  - durationUnset\n\
+          \  - durationGrant\n"
+        properties:
+          alias:
+            description: The alias of the app entitlement used by Cone. Also exact-match
+              queryable.
+            type: string
+          annotations:
+            additionalProperties:
+              type: string
+            description: "Bounded key/value metadata bag for IaC marking and customer\
+              \ tags.\n See .rfcs/object-annotations.md §2. Limits: ≤16 entries; keys\
+              \ 1–128\n chars matching ^[A-Za-z][A-Za-z0-9._/-]{0,127}$; values 0–256\
+              \ chars\n URL-safe ASCII; total serialized ≤ 4096 bytes. Keys matching\
+              \ ^c1/\n are reserved.\n\n Well-known keys: `managed_by`, `iac_workspace`,\n\
+              \ `iac_resource_address`, `iac_tool_version`."
+            type: object
+            x-speakeasy-terraform-plan-modifier:
+              imports:
+                - github.com/conductorone/terraform-provider-conductorone/internal/annotations
+              schemaDefinition: annotations.PlanModifier()
+          appId:
+            description: The ID of the app that is associated with the app entitlement.
+            type: string
+          appResourceId:
+            description: The ID of the app resource that is associated with the app
+              entitlement
+            type: string
+            x-speakeasy-param-force-new: true
+          appResourceTypeId:
+            description: The ID of the app resource type that is associated with the
+              app entitlement
+            type: string
+            x-speakeasy-param-force-new: true
+          certifyPolicyId:
+            description: The ID of the policy that will be used for certify tickets
+              related to the app entitlement.
+            type: string
+          complianceFrameworkValueIds:
+            description: The IDs of different compliance frameworks associated with
+              this app entitlement ex (SOX, HIPAA, PCI, etc.)
+            items:
+              type: string
+            type:
+              - array
+              - 'null'
+          createdAt:
+            format: date-time
+            readOnly: true
+            type:
+              - string
+              - 'null'
+          defaultValuesApplied:
+            description: Flag to indicate if app-level access request defaults have
+              been applied to the entitlement
+            type: boolean
+          deletedAt:
+            format: date-time
+            readOnly: true
+            type:
+              - string
+              - 'null'
+            x-speakeasy-soft-delete-property: true
+          description:
+            description: The description of the app entitlement.
+            type: string
+          displayName:
+            description: The display name of the app entitlement.
+            type: string
+          durationGrant:
+            format: duration
+            type:
+              - string
+              - 'null'
+            x-speakeasy-terraform-plan-only: true
+            x-speakeasy-conflicts-with:
+              - durationUnset
+          durationUnset:
+            type:
+              - object
+              - 'null'
+            x-speakeasy-terraform-plan-only: true
+            x-speakeasy-conflicts-with:
+              - durationGrant
+          emergencyGrantEnabled:
+            description: This enables tasks to be created in an emergency and use
+              a selected emergency access policy.
+            type: boolean
+          emergencyGrantPolicyId:
+            description: The ID of the policy that will be used for emergency access
+              grant tasks.
+            type: string
+          externalId:
+            description: "The upstream product's native external ID for this entitlement\
+              \ (e.g. an Okta group ID).\n Populated from the connector's external\
+              \ ID during sync."
+            readOnly: true
+            type: string
+          grantCount:
+            description: The amount of grants open for this entitlement
+            format: int64
+            readOnly: true
+            type: string
+          grantPolicyId:
+            description: The ID of the policy that will be used for grant tickets
+              related to the app entitlement.
+            type: string
+          id:
+            description: The unique ID for the App Entitlement.
+            readOnly: true
+            type: string
+            x-speakeasy-param-suppress-computed-diff: allow
+          isAutomationEnabled:
+            description: Flag to indicate whether automation (for adding users to
+              entitlement based on rules) has been enabled.
+            readOnly: true
+            type: boolean
+          isManuallyManaged:
+            description: Flag to indicate if the app entitlement is manually managed.
+            type: boolean
+          matchBatonId:
+            description: An identifier used to match this entitlement to a connector-synced
+              entitlement during sync.
+            type: string
+          overrideAccessRequestsDefaults:
+            description: Flag to indicate if the app-level access request settings
+              have been overridden for the entitlement
+            type: boolean
+          provisionerPolicy:
+            oneOf:
+              - $ref: '#/components/schemas/c1.api.policy.v1.ProvisionPolicy'
+              - type: 'null'
+            x-speakeasy-name-override: provisionPolicy
+          purpose:
+            description: The purpose of this entitlement (e.g., assignment, permission,
+              ownership).
+            enum:
+              - APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED
+              - APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT
+              - APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION
+              - APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP
+            type: string
+            x-speakeasy-unknown-values: allow
+          requestSchemaId:
+            description: The ID of the request schema associated with this app entitlement.
+            type: string
+          revokePolicyId:
+            description: The ID of the policy that will be used for revoke tickets
+              related to the app entitlement
+            type: string
+          riskLevelValueId:
+            description: The ID of the risk level assigned to this entitlement.
+            type: string
+          slug:
+            description: The slug is displayed as an oval next to the name in the
+              frontend of C1, it tells you what permission the entitlement grants.
+              See https://www.conductorone.com/docs/product/admin/entitlements/
+            type: string
+          sourceConnectorIds:
+            additionalProperties:
+              type: string
+            description: Map to tell us which connector the entitlement came from.
+            type: object
+          systemBuiltin:
+            description: This field indicates if this is a system builtin entitlement.
+            readOnly: true
+            type: boolean
+          updatedAt:
+            format: date-time
+            readOnly: true
+            type:
+              - string
+              - 'null'
+          userEditedMask:
+            type:
+              - string
+              - 'null'
+            x-speakeasy-ignore: true
+          deprovisionerPolicy:
+            allOf:
+              - $ref: '#/components/schemas/c1.api.policy.v1.ProvisionPolicy'
+              - x-speakeasy-name-override: deprovisionerPolicy
+        title: App Entitlement
+        type: object
+        x-speakeasy-entity: Custom App Entitlement
+        x-speakeasy-name-override: AppEntitlementCustomAppEntitlement
+      c1.api.app.v1.AppEntitlementView.tf.CustomAppEntitlement:
+        description: The app entitlement view contains the serialized app entitlement
+          and paths to objects referenced by the app entitlement.
+        properties:
+          appEntitlement:
+            oneOf:
+              - $ref: '#/components/schemas/c1.api.app.v1.AppEntitlement.tf.CustomAppEntitlement'
+              - type: 'null'
+          appPath:
+            description: JSONPATH expression indicating the location of the App object
+              in the  array.
+            type: string
+            x-speakeasy-ignore: true
+          appResourcePath:
+            description: JSONPATH expression indicating the location of the App Resource
+              Type object in the expanded array.
+            type: string
+            x-speakeasy-ignore: true
+          appResourceTypePath:
+            description: JSONPATH expression indicating the location of the App Resource
+              object in the  array.
+            type: string
+            x-speakeasy-ignore: true
+          objectPermissions:
+            oneOf:
+              - $ref: '#/components/schemas/c1.api.iam.v1.ActorObjectPermissions'
+              - type: 'null'
+        title: App Entitlement View
+        type: object
+        x-speakeasy-name-override: AppEntitlementViewCustomAppEntitlement
+  - target: $["components"]["schemas"]["c1.api.app.v1.GetAppEntitlementResponse"]["properties"]["appEntitlementView"]["oneOf"][0]
+    update:
+      $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementView.tf.CustomAppEntitlement'
+  - target: $["components"]["schemas"]["c1.api.app.v1.CreateAppEntitlementResponse"]["properties"]["appEntitlementView"]["oneOf"][0]
+    update:
+      $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementView.tf.CustomAppEntitlement'
+  - target: $["components"]["schemas"]["c1.api.app.v1.UpdateAppEntitlementResponse"]["properties"]["appEntitlementView"]["oneOf"][0]
+    update:
+      $ref: '#/components/schemas/c1.api.app.v1.AppEntitlementView.tf.CustomAppEntitlement'
+  - target: $["components"]["schemas"]["c1.api.app.v1.UpdateAppEntitlementRequestInput"]["properties"]["entitlement"]["oneOf"][0]
+    update:
+      $ref: '#/components/schemas/c1.api.app.v1.AppEntitlement.tf.CustomAppEntitlement'
