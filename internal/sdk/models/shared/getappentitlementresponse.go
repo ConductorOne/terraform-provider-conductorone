@@ -8,12 +8,12 @@ type GetAppEntitlementResponseExpanded struct {
 
 // GetAppEntitlementResponse - The get app entitlement response returns an entitlement view containing paths in the expanded array for the objects expanded as indicated by the expand mask in the request.
 type GetAppEntitlementResponse struct {
-	AppEntitlementView *AppEntitlementView `json:"appEntitlementView,omitempty"`
+	AppEntitlementView *AppEntitlementViewCustomAppEntitlement `json:"appEntitlementView,omitempty"`
 	// List of serialized related objects.
 	Expanded []GetAppEntitlementResponseExpanded `json:"expanded,omitempty"`
 }
 
-func (g *GetAppEntitlementResponse) GetAppEntitlementView() *AppEntitlementView {
+func (g *GetAppEntitlementResponse) GetAppEntitlementView() *AppEntitlementViewCustomAppEntitlement {
 	if g == nil {
 		return nil
 	}

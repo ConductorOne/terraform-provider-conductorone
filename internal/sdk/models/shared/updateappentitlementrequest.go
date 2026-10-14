@@ -4,13 +4,13 @@ package shared
 
 // The UpdateAppEntitlementRequest message contains the app entitlement and the fields to be updated.
 type UpdateAppEntitlementRequest struct {
-	Entitlement *AppEntitlementInput `json:"entitlement,omitempty"`
+	Entitlement *AppEntitlementCustomAppEntitlementInput `json:"entitlement,omitempty"`
 	// Flag to indicate that access request defaults, if any are applied to these entitlements, should be overridden.
 	OverrideAccessRequestsDefaults *bool   `json:"overrideAccessRequestsDefaults,omitempty"`
 	UpdateMask                     *string `json:"updateMask,omitempty"`
 }
 
-func (u *UpdateAppEntitlementRequest) GetEntitlement() *AppEntitlementInput {
+func (u *UpdateAppEntitlementRequest) GetEntitlement() *AppEntitlementCustomAppEntitlementInput {
 	if u == nil {
 		return nil
 	}

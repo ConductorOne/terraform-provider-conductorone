@@ -8,12 +8,12 @@ type UpdateAppEntitlementResponseExpanded struct {
 
 // The UpdateAppEntitlementResponse message.
 type UpdateAppEntitlementResponse struct {
-	AppEntitlementView *AppEntitlementView `json:"appEntitlementView,omitempty"`
+	AppEntitlementView *AppEntitlementViewCustomAppEntitlement `json:"appEntitlementView,omitempty"`
 	// List of related objects
 	Expanded []UpdateAppEntitlementResponseExpanded `json:"expanded,omitempty"`
 }
 
-func (u *UpdateAppEntitlementResponse) GetAppEntitlementView() *AppEntitlementView {
+func (u *UpdateAppEntitlementResponse) GetAppEntitlementView() *AppEntitlementViewCustomAppEntitlement {
 	if u == nil {
 		return nil
 	}
