@@ -17,4 +17,3 @@ overlay.yaml
 /internal/provider/*_test.go
 /internal/provider/integration_*
 /internal/provider/integrations.go
-/internal/provider/custom_app_entitlement_provisioner_alias.go

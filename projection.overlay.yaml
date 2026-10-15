@@ -249,3 +249,20 @@ actions:
   - target: $["components"]["schemas"]["c1.api.app.v1.UpdateAppEntitlementRequestInput"]["properties"]["entitlement"]["oneOf"][0]
     update:
       $ref: '#/components/schemas/c1.api.app.v1.AppEntitlement.tf.CustomAppEntitlement'
+  # Deprecated read-only mirror of provision_policy under its old name,
+  # provisioner_policy. The API has no such field: the SDK hook in
+  # internal/sdk/internal/hooks/provisioner_policy_mirror.go copies
+  # provisionerPolicy into it on every create, get and update response. When C1
+  # serves the projection, a Terraform-scoped property patch scoped to Custom App
+  # Entitlement must carry this property.
+  - target: $["components"]["schemas"]["c1.api.app.v1.AppEntitlement.tf.CustomAppEntitlement"]["properties"]
+    update:
+      provisionerPolicyDeprecated:
+        oneOf:
+          - $ref: '#/components/schemas/c1.api.policy.v1.ProvisionPolicy'
+          - type: 'null'
+        description: Deprecated copy of `provision_policy`.
+        readOnly: true
+        deprecated: true
+        x-speakeasy-deprecation-message: Use provision_policy instead. provisioner_policy is a read-only copy of provision_policy.
+        x-speakeasy-name-override: provisionerPolicy
