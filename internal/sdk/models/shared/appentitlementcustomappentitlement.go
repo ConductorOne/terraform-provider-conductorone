@@ -209,6 +209,93 @@ func (a *AppEntitlementCustomAppEntitlementDeprovisionerPolicy) GetWebhook() *We
 	return a.Webhook
 }
 
+// ProvisionerPolicyProvisionPolicy - ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
+//
+// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+//   - connector
+//   - manual
+//   - delegated
+//   - webhook
+//   - multiStep
+//   - externalTicket
+//   - unconfigured
+//   - action
+//   - devicePlacement
+type ProvisionerPolicyProvisionPolicy struct {
+	Action          *ActionProvision          `json:"action,omitempty"`
+	Connector       *ConnectorProvision       `json:"connector,omitempty"`
+	Delegated       *DelegatedProvision       `json:"delegated,omitempty"`
+	DevicePlacement *DevicePlacementProvision `json:"devicePlacement,omitempty"`
+	ExternalTicket  *ExternalTicketProvision  `json:"externalTicket,omitempty"`
+	Manual          *ManualProvision          `json:"manual,omitempty"`
+	MultiStep       any                       `json:"multiStep,omitempty"`
+	Unconfigured    *UnconfiguredProvision    `json:"unconfigured,omitempty"`
+	Webhook         *WebhookProvision         `json:"webhook,omitempty"`
+}
+
+func (p *ProvisionerPolicyProvisionPolicy) GetAction() *ActionProvision {
+	if p == nil {
+		return nil
+	}
+	return p.Action
+}
+
+func (p *ProvisionerPolicyProvisionPolicy) GetConnector() *ConnectorProvision {
+	if p == nil {
+		return nil
+	}
+	return p.Connector
+}
+
+func (p *ProvisionerPolicyProvisionPolicy) GetDelegated() *DelegatedProvision {
+	if p == nil {
+		return nil
+	}
+	return p.Delegated
+}
+
+func (p *ProvisionerPolicyProvisionPolicy) GetDevicePlacement() *DevicePlacementProvision {
+	if p == nil {
+		return nil
+	}
+	return p.DevicePlacement
+}
+
+func (p *ProvisionerPolicyProvisionPolicy) GetExternalTicket() *ExternalTicketProvision {
+	if p == nil {
+		return nil
+	}
+	return p.ExternalTicket
+}
+
+func (p *ProvisionerPolicyProvisionPolicy) GetManual() *ManualProvision {
+	if p == nil {
+		return nil
+	}
+	return p.Manual
+}
+
+func (p *ProvisionerPolicyProvisionPolicy) GetMultiStep() any {
+	if p == nil {
+		return nil
+	}
+	return p.MultiStep
+}
+
+func (p *ProvisionerPolicyProvisionPolicy) GetUnconfigured() *UnconfiguredProvision {
+	if p == nil {
+		return nil
+	}
+	return p.Unconfigured
+}
+
+func (p *ProvisionerPolicyProvisionPolicy) GetWebhook() *WebhookProvision {
+	if p == nil {
+		return nil
+	}
+	return p.Webhook
+}
+
 // AppEntitlementCustomAppEntitlement - The app entitlement represents one permission in a downstream App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.
 //
 // This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
@@ -284,6 +371,10 @@ type AppEntitlementCustomAppEntitlement struct {
 	SystemBuiltin       *bool                                                  `json:"systemBuiltin,omitempty"`
 	UpdatedAt           *time.Time                                             `json:"updatedAt,omitempty"`
 	DeprovisionerPolicy *AppEntitlementCustomAppEntitlementDeprovisionerPolicy `json:"deprovisionerPolicy,omitempty"`
+	// Deprecated copy of `provision_policy`.
+	//
+	// Deprecated: Use provision_policy instead. provisioner_policy is a read-only copy of provision_policy..
+	ProvisionerPolicy *ProvisionerPolicyProvisionPolicy `json:"provisionerPolicyDeprecated,omitempty"`
 }
 
 func (a AppEntitlementCustomAppEntitlement) MarshalJSON() ([]byte, error) {
@@ -533,6 +624,13 @@ func (a *AppEntitlementCustomAppEntitlement) GetDeprovisionerPolicy() *AppEntitl
 		return nil
 	}
 	return a.DeprovisionerPolicy
+}
+
+func (a *AppEntitlementCustomAppEntitlement) GetProvisionerPolicy() *ProvisionerPolicyProvisionPolicy {
+	if a == nil {
+		return nil
+	}
+	return a.ProvisionerPolicy
 }
 
 // AppEntitlementCustomAppEntitlementInput - The app entitlement represents one permission in a downstream App (SAAS) that can be granted. For example, GitHub Read vs GitHub Write.

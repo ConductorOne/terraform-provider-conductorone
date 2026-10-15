@@ -22,7 +22,7 @@ terraform {
   required_providers {
     conductorone = {
       source  = "conductorone/conductorone"
-      version = "1.7.2"
+      version = "1.7.3"
     }
   }
 }

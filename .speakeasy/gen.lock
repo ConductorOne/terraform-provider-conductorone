@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: f6c7e98eaf04231702bd183d72ef593f
+  docChecksum: 1c73ce837d86e3a4cb60c9c17c0731cb
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.762.0
   generationVersion: 2.882.0
-  releaseVersion: 1.7.2
-  configChecksum: 179557f933eef0f7f9e8b21403c6a145
+  releaseVersion: 1.7.3
+  configChecksum: b53517d12af9d8282451d6ea449f4fda
   repoURL: https://github.com/ConductorOne/terraform-provider-conductorone.git
   installationURL: https://github.com/ConductorOne/terraform-provider-conductorone
 persistentEdits:
-  generation_id: 70874c1a-a35e-4b5f-9c47-a4ac0a39a3ae
-  pristine_commit_hash: 4d36365ae90c16ef70013123816acd3a5057070a
-  pristine_tree_hash: 6c0d5e22a84f6c9864b73eb39ddd1ba0234f2ae1
+  generation_id: b8937922-d946-4144-adbc-84815698d0ea
+  pristine_commit_hash: 95ee2b9e3915fc34a97a776c5dca6fcf4dd16c71
+  pristine_tree_hash: fd55f386a58a67bbfa7c80086ac203470e415dd9
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -271,8 +271,8 @@ trackedFiles:
     pristine_git_object: cbbe422a1a74c6c026e9648210d723901bd6aaf2
   examples/provider/provider.tf:
     id: 954e955c0240
-    last_write_checksum: sha1:f9179503e616e49238765a95f76e2c314440e3d9
-    pristine_git_object: f67c954873f1dd10366fde7a24db131ecb651ae7
+    last_write_checksum: sha1:f19651a8e33d24ec062b0cf6544e6921a0b5a66f
+    pristine_git_object: 5911431239613756c62fc00293f1a8dac88d7727
   examples/resources/conductorone_access_conflict/import-by-string-id.tf:
     id: 75fb8f5a6d65
     last_write_checksum: sha1:82d79ecc5a7d6ab27f4f9f9234e220e0e9f65914
@@ -1455,12 +1455,12 @@ trackedFiles:
     pristine_git_object: 7f6e24c0682f5812c0961e4264cb97b11b367392
   internal/provider/custom_app_entitlement_resource.go:
     id: bab234df09e6
-    last_write_checksum: sha1:fc8d014d73fe79f5e4aa714999a0353c7a7a0f95
-    pristine_git_object: b504c6bc2416709925dbcea8b82d56b33b23f4a9
+    last_write_checksum: sha1:dd58552a3f6e1e1311f72bf2811438cff831daef
+    pristine_git_object: 76b7a89ed8fd199cd3d4afe36340527d92d50c7e
   internal/provider/custom_app_entitlement_resource_sdk.go:
     id: 53c53ab8bec5
-    last_write_checksum: sha1:84fe3da379381cf6c96fd2c79c7b807febd76dc4
-    pristine_git_object: 94d439f6492c1c16eb1eb977cf1a2b9721a0bdae
+    last_write_checksum: sha1:df4c44f6699efae4245be575838ad4cc11f5db7f
+    pristine_git_object: 18bbec6f11b4d00a572dfa4150d0f36eeaffb678
   internal/provider/directories_data_source.go:
     id: f7b2ab12f39f
     last_write_checksum: sha1:95529999df6447c68d93e5c6be9822cafc67dfb7
@@ -2853,6 +2853,10 @@ trackedFiles:
     id: 6dc59cb1fa56
     last_write_checksum: sha1:c8e2fdc97d381a1eddfc96ced7ca57fe2a7247f0
     pristine_git_object: f6d1c568377680f8ca222f0ec78ecd93a21635f3
+  internal/provider/types/provisioner_policy_provision_policy.go:
+    id: 9c75744a3e06
+    last_write_checksum: sha1:d90e72370a314e37c64c95a99922e7dd3358b14d
+    pristine_git_object: ad3554dde8a6e7312c7902ce4de47e5e1ceee24a
   internal/provider/types/reassign_action.go:
     id: 9f4bedd268ad
     last_write_checksum: sha1:f9b8288ed1acbb6e0ac1acfbedee9a6bd47deb90
@@ -3663,8 +3667,8 @@ trackedFiles:
     pristine_git_object: 3f89d82797cb518cb4b887f72eb2914c1dc597b7
   internal/sdk/conductoroneapi.go:
     id: 84087b0a6f93
-    last_write_checksum: sha1:909a01020a8533832fdc70be7c3d885d9b86bc04
-    pristine_git_object: ea9b675c66b144e93d9610ce79630539875af761
+    last_write_checksum: sha1:222dec44aefd40534c2735e4146789d1aff5127d
+    pristine_git_object: 53346553f890432c59143bf0f7adb9e258d009a5
   internal/sdk/connector.go:
     id: 41e2af88fe9e
     last_write_checksum: sha1:bc8f8808941bbcc8c589245ff8967c2ec35df524
@@ -7763,8 +7767,8 @@ trackedFiles:
     pristine_git_object: 91f5d9a066aba93ce2840d2bdb5046f3f42e92ec
   internal/sdk/models/shared/appentitlementcustomappentitlement.go:
     id: a96ddb69f7e4
-    last_write_checksum: sha1:0f863740cc914409c6a334f4bd7761de0a73eaf3
-    pristine_git_object: 6f68a1fde84ff17b5ac69a4503ffb1a1b1395534
+    last_write_checksum: sha1:767282b95017f713b81c8f2f705c8bc75509c9c5
+    pristine_git_object: 39c6523070ff9cf81ec0e056f249ab67f07122df
   internal/sdk/models/shared/appentitlementexpandmask.go:
     id: fdfd7581db9d
     last_write_checksum: sha1:b4d82257882ad3504165f89e963b651a29d030e7
