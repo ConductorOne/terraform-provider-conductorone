@@ -42,8 +42,10 @@ func TestPaginationUsesAssignment(t *testing.T) {
 // fields, causing perpetual diffs. Upstream fix shipped in v1.678.1 via
 // speakeasy-api/speakeasy#1770, which switched the implementation to an
 // attribute-defined plan modifier (UseConfigValue) instead of `Computed: true`.
-// Either pattern is acceptable for our purposes — both prevent the perpetual
-// diff. The test fails only if neither is present.
+// Either pattern is accepted by this test, but note that UseConfigValue() only
+// prevents drift when the API returns null for unconfigured fields. If the API
+// always returns a non-null value (e.g. duration_unset returns {}), only
+// Computed: true prevents the drift. The test fails if neither is present.
 func TestPlanOnlyFieldsAreComputed(t *testing.T) {
 	data, err := os.ReadFile("custom_app_entitlement_resource.go")
 	if err != nil {
