@@ -15,8 +15,6 @@ import (
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 )
 
-const multiStepJSON = `{"provisionSteps":[{"delegated":{"appId":"app2","entitlementId":"ent2"}}]}`
-
 func delegatedPolicy() *tfTypes.AppEntitlementProvisionPolicy {
 	return &tfTypes.AppEntitlementProvisionPolicy{
 		DelegatedProvision: &tfTypes.DelegatedProvision{
