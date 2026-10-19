@@ -12,8 +12,6 @@ import (
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 )
 
-const multiStepJSON = `{"provisionSteps":[{"delegated":{"appId":"app2","entitlementId":"ent2"}}]}`
-
 func emptyCustomPolicy() *tfTypes.ProvisionPolicy {
 	return &tfTypes.ProvisionPolicy{MultiStep: jsontypes.NewNormalizedNull()}
 }
@@ -54,22 +52,22 @@ func twoArmCustomDeprovisionerPolicy() *tfTypes.CreateAppEntitlementRequestDepro
 	return p
 }
 
-func TestSelectedPolicyArm(t *testing.T) {
+func TestSelectedCustomAppEntitlementPolicyArm(t *testing.T) {
 	tests := []struct {
 		name    string
 		policy  *tfTypes.ProvisionPolicy
-		want    policyArm
+		want    string
 		wantErr bool
 	}{
-		{"nil", nil, policyArmNone, false},
-		{"zero arms", emptyCustomPolicy(), policyArmNone, false},
-		{"delegated", delegatedCustomPolicy(), policyArmDelegated, false},
-		{"multi_step", multiStepCustomPolicy(), policyArmMultiStep, false},
-		{"two arms", twoArmCustomPolicy(), policyArmNone, true},
+		{"nil", nil, "", false},
+		{"zero arms", emptyCustomPolicy(), "", false},
+		{"delegated", delegatedCustomPolicy(), "delegated", false},
+		{"multi_step", multiStepCustomPolicy(), "multi_step", false},
+		{"two arms", twoArmCustomPolicy(), "", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, diags := selectedPolicyArm("provision_policy", tt.policy)
+			got, diags := selectedOneofArm("provision_policy", customAppEntitlementPolicyArms(tt.policy))
 			if tt.wantErr {
 				if !diags.HasError() {
 					t.Fatalf("expected error, got arm %q", got)
@@ -86,9 +84,9 @@ func TestSelectedPolicyArm(t *testing.T) {
 	}
 }
 
-func TestKeepOnlyPolicyArm(t *testing.T) {
+func TestKeepOnlyCustomAppEntitlementPolicyArm(t *testing.T) {
 	p := twoArmCustomPolicy()
-	keepOnlyPolicyArm(p, policyArmDelegated)
+	keepOnlyOneofArm(customAppEntitlementPolicyArms(p), "delegated")
 	if p.Delegated == nil {
 		t.Fatal("delegated arm should be kept")
 	}
@@ -97,7 +95,7 @@ func TestKeepOnlyPolicyArm(t *testing.T) {
 	}
 
 	p = twoArmCustomPolicy()
-	keepOnlyPolicyArm(p, policyArmMultiStep)
+	keepOnlyOneofArm(customAppEntitlementPolicyArms(p), "multi_step")
 	if p.Delegated != nil {
 		t.Fatal("delegated arm should be nil")
 	}
@@ -107,13 +105,13 @@ func TestKeepOnlyPolicyArm(t *testing.T) {
 
 	// empty keep leaves the policy untouched
 	p = twoArmCustomPolicy()
-	keepOnlyPolicyArm(p, policyArmNone)
+	keepOnlyOneofArm(customAppEntitlementPolicyArms(p), "")
 	if p.Delegated == nil || p.MultiStep.IsNull() {
 		t.Fatal("empty keep should leave the policy untouched")
 	}
 
 	// nil policy is a no-op
-	keepOnlyPolicyArm(nil, policyArmDelegated)
+	keepOnlyOneofArm(customAppEntitlementPolicyArms(nil), "delegated")
 }
 
 func testCustomConfig(t *testing.T, model *CustomAppEntitlementResourceModel) tfsdk.Config {
