@@ -16,16 +16,16 @@ import (
 type policyArm string
 
 const (
-	policyArmNone           policyArm = ""
-	policyArmAction         policyArm = "action"
-	policyArmConnector      policyArm = "connector"
-	policyArmDelegated      policyArm = "delegated"
+	policyArmNone            policyArm = ""
+	policyArmAction          policyArm = "action"
+	policyArmConnector       policyArm = "connector"
+	policyArmDelegated       policyArm = "delegated"
 	policyArmDevicePlacement policyArm = "device_placement"
-	policyArmExternalTicket policyArm = "external_ticket"
-	policyArmManual         policyArm = "manual"
-	policyArmMultiStep      policyArm = "multi_step"
-	policyArmUnconfigured   policyArm = "unconfigured"
-	policyArmWebhook        policyArm = "webhook"
+	policyArmExternalTicket  policyArm = "external_ticket"
+	policyArmManual          policyArm = "manual"
+	policyArmMultiStep       policyArm = "multi_step"
+	policyArmUnconfigured    policyArm = "unconfigured"
+	policyArmWebhook         policyArm = "webhook"
 )
 
 // pruneCustomAppEntitlementPolicyOneofs narrows provision_policy and
