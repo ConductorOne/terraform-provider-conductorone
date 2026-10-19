@@ -5,10 +5,14 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/logging"
 )
 
 type mockTripper struct {
@@ -266,6 +270,77 @@ func TestRetryTripperDoesNotRetryUnsafeRequests(t *testing.T) {
 	if mock.calls != 1 {
 		t.Errorf("expected 1 call for POST, got %d", mock.calls)
 	}
+}
+
+func TestRetryTripperRetriesUnsafeRequestsOn429(t *testing.T) {
+	for _, method := range []string{http.MethodPost, http.MethodPatch} {
+		t.Run(method, func(t *testing.T) {
+			var bodies []string
+			mock := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+				body, err := io.ReadAll(req.Body)
+				if err != nil {
+					return nil, err
+				}
+				bodies = append(bodies, string(body))
+				if len(bodies) == 1 {
+					return resp429("1"), nil
+				}
+				return resp200(), nil
+			})
+			rt := &retryTripper{next: mock, maxRetries: 3}
+
+			req, _ := http.NewRequestWithContext(context.Background(), method, "http://example.com", nil)
+			req.Body = io.NopCloser(strings.NewReader(`{"query":"x"}`))
+			resp, err := rt.RoundTrip(req)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if resp.StatusCode != http.StatusOK {
+				t.Errorf("expected 200, got %d", resp.StatusCode)
+			}
+			if len(bodies) != 2 || bodies[0] != bodies[1] || bodies[1] != `{"query":"x"}` {
+				t.Errorf("expected the same body on both attempts, got %q", bodies)
+			}
+		})
+	}
+}
+
+// The provider wraps the transport in Terraform's logging transport, whose
+// httputil.DumpRequestOut call replaces a nil GET body with http.NoBody and
+// leaves GetBody unset.
+func TestRetryTripperRetriesGetBehindLoggingTransport(t *testing.T) {
+	var hits int32
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if atomic.AddInt32(&hits, 1) == 1 {
+			w.Header().Set("Retry-After", "1")
+			w.WriteHeader(http.StatusTooManyRequests)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer srv.Close()
+
+	client := &http.Client{
+		Transport: logging.NewSubsystemLoggingHTTPTransport(subsystem, &retryTripper{next: http.DefaultTransport, maxRetries: 3}),
+	}
+	req, _ := http.NewRequestWithContext(context.Background(), http.MethodGet, srv.URL, nil)
+	resp, err := client.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("expected 200, got %d", resp.StatusCode)
+	}
+	if got := atomic.LoadInt32(&hits); got != 2 {
+		t.Errorf("expected 2 requests, got %d", got)
+	}
+}
+
+type roundTripFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
+	return f(req)
 }
 
 func TestRetryTripperRespectsContextCancellation(t *testing.T) {

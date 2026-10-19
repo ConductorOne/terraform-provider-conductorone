@@ -153,19 +153,20 @@ func (uts *tokenSourceTripper) RoundTrip(req *http.Request) (*http.Response, err
 	return uts.next.RoundTrip(req)
 }
 
-// retryTripper retries idempotent requests that receive HTTP 429, HTTP 5xx, or
-// transport errors. It respects the Retry-After header if present, falling back
-// to exponential backoff. Context cancellation is honored during the wait.
+// retryTripper retries any request that receives HTTP 429, and idempotent
+// requests that receive HTTP 5xx or transport errors. A 429 means the server
+// rejected the request before acting on it, so retrying is safe for every
+// method, including the POST-based search APIs. It respects the Retry-After
+// header if present, falling back to exponential backoff. Context cancellation
+// is honored during the wait.
 type retryTripper struct {
 	next       http.RoundTripper
 	maxRetries int
 }
 
 func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
-	if isRetryableRequest(req) {
-		if err := makeRequestBodyReplayable(req); err != nil {
-			return nil, err
-		}
+	if err := makeRequestBodyReplayable(req); err != nil {
+		return nil, err
 	}
 
 	for attempt := 0; ; attempt++ {
@@ -231,16 +232,19 @@ func makeRequestBodyReplayable(req *http.Request) error {
 }
 
 func shouldRetry(req *http.Request, resp *http.Response, err error) bool {
-	if !isRetryableRequest(req) {
+	if err == nil && resp != nil && resp.StatusCode == http.StatusTooManyRequests {
+		return true
+	}
+	if !isIdempotentRequest(req) {
 		return false
 	}
 	if err != nil {
 		return true
 	}
-	return resp != nil && (resp.StatusCode == http.StatusTooManyRequests || resp.StatusCode >= http.StatusInternalServerError)
+	return resp != nil && resp.StatusCode >= http.StatusInternalServerError
 }
 
-func isRetryableRequest(req *http.Request) bool {
+func isIdempotentRequest(req *http.Request) bool {
 	switch req.Method {
 	case http.MethodDelete, http.MethodGet, http.MethodHead, http.MethodOptions, http.MethodPut:
 		return true
