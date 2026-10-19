@@ -124,7 +124,7 @@ resource "conductorone_request_schema" "my_request_schema" {
         }
         default_value = "...my_default_value..."
         password_field = {
-          # ...
+          multiline = false
         }
         picker_field = {
           app_user_picker = {
@@ -484,6 +484,11 @@ Optional:
 
 <a id="nestedatt--fields--string_field--password_field"></a>
 ### Nested Schema for `fields.string_field.password_field`
+
+Optional:
+
+- `multiline` (Boolean) Render the masked input as a multiline textarea, for secrets that span
+ lines such as a PEM-encoded key.
 
 
 <a id="nestedatt--fields--string_field--picker_field"></a>

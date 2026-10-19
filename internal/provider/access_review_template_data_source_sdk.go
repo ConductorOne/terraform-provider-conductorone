@@ -36,6 +36,26 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 		}
 		r.AutoGenerateReport = types.BoolPointerValue(resp.AutoGenerateReport)
 		r.AutoStartCampaign = types.BoolPointerValue(resp.AutoStartCampaign)
+		if resp.CampaignSchedule == nil {
+			r.CampaignSchedule = nil
+		} else {
+			r.CampaignSchedule = &tfTypes.CampaignSchedule{}
+			if resp.CampaignSchedule.EndTime == nil {
+				r.CampaignSchedule.EndTime = nil
+			} else {
+				r.CampaignSchedule.EndTime = &tfTypes.CampaignScheduleTime{}
+				r.CampaignSchedule.EndTime.Hours = types.Int64PointerValue(resp.CampaignSchedule.EndTime.Hours)
+				r.CampaignSchedule.EndTime.Minutes = types.Int64PointerValue(resp.CampaignSchedule.EndTime.Minutes)
+			}
+			if resp.CampaignSchedule.StartTime == nil {
+				r.CampaignSchedule.StartTime = nil
+			} else {
+				r.CampaignSchedule.StartTime = &tfTypes.CampaignScheduleTime{}
+				r.CampaignSchedule.StartTime.Hours = types.Int64PointerValue(resp.CampaignSchedule.StartTime.Hours)
+				r.CampaignSchedule.StartTime.Minutes = types.Int64PointerValue(resp.CampaignSchedule.StartTime.Minutes)
+			}
+			r.CampaignSchedule.Timezone = types.StringPointerValue(resp.CampaignSchedule.Timezone)
+		}
 		if resp.ColumnConfig == nil {
 			r.ColumnConfig = nil
 		} else {
@@ -146,6 +166,13 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 			}
 		}
 		r.IsCampaignScheduleEnabled = types.BoolPointerValue(resp.IsCampaignScheduleEnabled)
+		if resp.MsTeamsChannel == nil {
+			r.MsTeamsChannel = nil
+		} else {
+			r.MsTeamsChannel = &tfTypes.MSTeamsChannel{}
+			r.MsTeamsChannel.ChannelName = types.StringPointerValue(resp.MsTeamsChannel.ChannelName)
+			r.MsTeamsChannel.ExternalDirectoryID = types.StringPointerValue(resp.MsTeamsChannel.ExternalDirectoryID)
+		}
 		r.NextScheduledCampaignAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.NextScheduledCampaignAt))
 		if resp.NotificationConfig == nil {
 			r.NotificationConfig = nil

@@ -17,6 +17,7 @@ type AccessReview struct {
 	Bindings                       *BindingObjectSetup         `tfsdk:"bindings"`
 	CampaignHealth                 *CampaignHealthSnapshot     `tfsdk:"campaign_health"`
 	CampaignInsights               *CampaignInsights           `tfsdk:"campaign_insights"`
+	CampaignSchedule               *CampaignSchedule           `tfsdk:"campaign_schedule"`
 	ClosedAt                       types.String                `tfsdk:"closed_at"`
 	ColumnConfig                   *AccessReviewColumnConfig   `tfsdk:"column_config"`
 	CompletionDate                 types.String                `tfsdk:"completion_date"`

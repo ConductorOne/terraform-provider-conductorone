@@ -107,6 +107,13 @@ func (r *RequestCatalogsDataSource) Schema(ctx context.Context, req datasource.S
 									Computed:    true,
 									Description: `Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.`,
 								},
+								"type": schema.StringAttribute{
+									Computed: true,
+									MarkdownDescription: `The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile` + "\n" +
+										` created before the type was recorded; UNSPECIFIED only for a tenant whose` + "\n" +
+										` backfill has not been run. Updates require the access profile types feature` + "\n" +
+										` and an update mask containing "type".`,
+								},
 								"unenrollment_behavior": schema.StringAttribute{
 									Computed:    true,
 									Description: `Defines how to handle the revocation of the entitlements in the catalog during unenrollment.`,

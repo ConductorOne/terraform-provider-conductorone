@@ -63,6 +63,8 @@ resource "conductorone_app_resource" "my_app_resource" {
 - `extra` (Map of Boolean) The extra field.
 - `grant_count` (String) The number of grants to this resource.
 - `id` (String) The id of the resource.
+- `is_manually_managed` (Boolean) Whether the resource was created manually in ConductorOne rather than synced from a connector.
+ Only manually created resources can be deleted in ConductorOne.
 - `nhi_detail` (String) Axis-2 detail refining nhi_type (e.g. "aws.role.lambda"). Read-only;
  translated from the model.
 - `nhi_type` (String) The NHI classification (K3 spine) for this resource. Populated for

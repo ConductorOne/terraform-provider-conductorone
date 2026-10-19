@@ -10,12 +10,12 @@ resource "conductorone_access_review_template" "my_access_review_template" {
   auto_start_campaign  = true
   column_config = {
     columns = [
-      "ACCESS_REVIEW_TASK_COLUMN_RISK_LEVEL"
+      "ACCESS_REVIEW_TASK_COLUMN_COMPLIANCE_FRAMEWORK"
     ]
     ordered_columns = [
       {
         app_user_attribute_key = "...my_app_user_attribute_key..."
-        builtin                = "ACCESS_REVIEW_TASK_COLUMN_INSIGHTS"
+        builtin                = "ACCESS_REVIEW_TASK_COLUMN_RECOMMENDATION"
       }
     ]
   }

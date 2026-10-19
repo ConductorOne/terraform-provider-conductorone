@@ -63,6 +63,26 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 						list.AccessReview.CampaignInsights = &tfTypes.CampaignInsights{}
 						list.AccessReview.CampaignInsights.Markdown = types.StringPointerValue(listItem.AccessReview.CampaignInsights.Markdown)
 					}
+					if listItem.AccessReview.CampaignSchedule == nil {
+						list.AccessReview.CampaignSchedule = nil
+					} else {
+						list.AccessReview.CampaignSchedule = &tfTypes.CampaignSchedule{}
+						if listItem.AccessReview.CampaignSchedule.EndTime == nil {
+							list.AccessReview.CampaignSchedule.EndTime = nil
+						} else {
+							list.AccessReview.CampaignSchedule.EndTime = &tfTypes.CampaignScheduleTime{}
+							list.AccessReview.CampaignSchedule.EndTime.Hours = types.Int64PointerValue(listItem.AccessReview.CampaignSchedule.EndTime.Hours)
+							list.AccessReview.CampaignSchedule.EndTime.Minutes = types.Int64PointerValue(listItem.AccessReview.CampaignSchedule.EndTime.Minutes)
+						}
+						if listItem.AccessReview.CampaignSchedule.StartTime == nil {
+							list.AccessReview.CampaignSchedule.StartTime = nil
+						} else {
+							list.AccessReview.CampaignSchedule.StartTime = &tfTypes.CampaignScheduleTime{}
+							list.AccessReview.CampaignSchedule.StartTime.Hours = types.Int64PointerValue(listItem.AccessReview.CampaignSchedule.StartTime.Hours)
+							list.AccessReview.CampaignSchedule.StartTime.Minutes = types.Int64PointerValue(listItem.AccessReview.CampaignSchedule.StartTime.Minutes)
+						}
+						list.AccessReview.CampaignSchedule.Timezone = types.StringPointerValue(listItem.AccessReview.CampaignSchedule.Timezone)
+					}
 					list.AccessReview.ClosedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(listItem.AccessReview.ClosedAt))
 					if listItem.AccessReview.ColumnConfig == nil {
 						list.AccessReview.ColumnConfig = nil

@@ -7,8 +7,8 @@ type PromoteAppManagedStateBindingRequest struct {
 	// Entitlements to assign as owners of the new application.
 	AppEntitlementOwnerRefs []AppEntitlementRef               `json:"appEntitlementOwnerRefs,omitempty"`
 	ExpandMask              *AppManagedStateBindingExpandMask `json:"expandMask,omitempty"`
-	// User IDs to assign as owners of the new application.
-	//  If omitted, the application inherits the owners of the source connector application.
+	// User IDs to assign as owners of the new application. If both user and entitlement owners are omitted,
+	//  the application inherits the direct user and entitlement owners of the source connector application.
 	UserIds []string `json:"userIds,omitempty"`
 }
 

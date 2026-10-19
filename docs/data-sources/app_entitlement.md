@@ -39,6 +39,12 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
   app_ids = [
     "..."
   ]
+  app_resource_type_refs = [
+    {
+      app_id = "...my_app_id..."
+      id     = "...my_id..."
+    }
+  ]
   app_user_ids = [
     "..."
   ]
@@ -68,8 +74,11 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
     "APP_ENTITLEMENT_MEMBERSHIP_TYPE_OWNER"
   ]
   only_get_expiring = true
-  page_size         = 5
-  page_token        = "...my_page_token..."
+  owner_user_ids = [
+    "..."
+  ]
+  page_size  = 5
+  page_token = "...my_page_token..."
   policy_refs = [
     {
       id = "...my_id..."
@@ -109,6 +118,11 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
 - `access_review_id` (String) Search for app entitlements that are being reviewed as part of this access review campaign.
 - `alias` (String) The alias of the app entitlement used by Cone. Also exact-match queryable.
 - `app_ids` (List of String) Search for app entitlements contained in any of these apps.
+- `app_resource_type_refs` (Attributes List) Search for app entitlements whose resource type matches any of these real
+ (app_id, id) AppResourceType pairs — unlike resource_type_ids, which
+ matches by name and can't distinguish two apps' same-named or
+ system-wide-shared-id resource types (e.g. Credential). Takes precedence
+ over resource_type_ids when set. (see [below for nested schema](#nestedatt--app_resource_type_refs))
 - `app_user_ids` (List of String) Search for app entitlements that are granted to any of these app user ids.
 - `compliance_framework_ids` (List of String) Search for app entitlements that are part of these compliance frameworks.
 - `display_name` (String) The display name of the category.
@@ -121,6 +135,8 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
 - `is_automated` (Boolean) If true, restrict results to entitlements that have an automation rule configured.
 - `membership_type` (List of String) Filter results to entitlements where the user has any of these membership types (e.g., member, owner, admin).
 - `only_get_expiring` (Boolean) If true, restrict results to entitlements that have at least one expiring grant.
+- `owner_user_ids` (List of String) Filter by users that have an explicit ownership binding to the entitlement.
+ This filter applies to every caller, including administrators.
 - `page_size` (Number) The pageSize where 0 <= pageSize <= 100. Values < 10 will be set to 10. A value of 0 returns the default page size (currently 25)
 - `page_token` (String) The pageToken field.
 - `policy_refs` (Attributes List) Search for app entitlements that use any of these policies. (see [below for nested schema](#nestedatt--policy_refs))
@@ -208,6 +224,15 @@ This message contains a oneof named typ. Only a single field of the following li
 - `to` (String) The ending value of the range.
 - `updated_at` (String)
 - `value` (String) The value of this facet.
+
+<a id="nestedatt--app_resource_type_refs"></a>
+### Nested Schema for `app_resource_type_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 <a id="nestedatt--excluded_entitlement_refs"></a>
 ### Nested Schema for `excluded_entitlement_refs`

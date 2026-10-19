@@ -7,7 +7,9 @@ import (
 	"time"
 )
 
-// Frequency - The frequency field.
+// Frequency of the recurrence: FREQUENCY_DAILY, FREQUENCY_WEEKLY, FREQUENCY_MONTHLY, or FREQUENCY_YEARLY.
+//
+//	Use FREQUENCY_NONE for a non-recurring schedule.
 type Frequency string
 
 const (
@@ -41,7 +43,8 @@ func (e *Frequency) IsExact() bool {
 //   - occurrences
 type RecurrenceRule struct {
 	EndDate *time.Time `json:"endDate,omitempty"`
-	// The frequency field.
+	// Frequency of the recurrence: FREQUENCY_DAILY, FREQUENCY_WEEKLY, FREQUENCY_MONTHLY, or FREQUENCY_YEARLY.
+	//  Use FREQUENCY_NONE for a non-recurring schedule.
 	Frequency *Frequency `json:"frequency,omitempty"`
 	// The interval field.
 	Interval *int `json:"interval,omitempty"`

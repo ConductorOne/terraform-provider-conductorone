@@ -250,6 +250,7 @@ func (r *RequestSchemaDataSourceModel) RefreshFromSharedRequestSchemaForm(ctx co
 						fields.StringField.PasswordField = nil
 					} else {
 						fields.StringField.PasswordField = &tfTypes.PasswordField{}
+						fields.StringField.PasswordField.Multiline = types.BoolPointerValue(fieldsItem.StringField.PasswordField.Multiline)
 					}
 					if fieldsItem.StringField.PickerField == nil {
 						fields.StringField.PickerField = nil

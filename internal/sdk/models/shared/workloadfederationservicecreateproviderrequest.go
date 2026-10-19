@@ -17,6 +17,7 @@ const (
 	WorkloadFederationServiceCreateProviderRequestWellKnownProviderWellKnownWorkloadProviderHcpTerraform   WorkloadFederationServiceCreateProviderRequestWellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM"
 	WorkloadFederationServiceCreateProviderRequestWellKnownProviderWellKnownWorkloadProviderAwsIamOutbound WorkloadFederationServiceCreateProviderRequestWellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND"
 	WorkloadFederationServiceCreateProviderRequestWellKnownProviderWellKnownWorkloadProviderSpiffe         WorkloadFederationServiceCreateProviderRequestWellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE"
+	WorkloadFederationServiceCreateProviderRequestWellKnownProviderWellKnownWorkloadProviderC1Edge         WorkloadFederationServiceCreateProviderRequestWellKnownProvider = "WELL_KNOWN_WORKLOAD_PROVIDER_C1_EDGE"
 )
 
 func (e WorkloadFederationServiceCreateProviderRequestWellKnownProvider) ToPointer() *WorkloadFederationServiceCreateProviderRequestWellKnownProvider {
@@ -27,7 +28,7 @@ func (e WorkloadFederationServiceCreateProviderRequestWellKnownProvider) ToPoint
 func (e *WorkloadFederationServiceCreateProviderRequestWellKnownProvider) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED", "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM", "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS", "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI", "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM", "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND", "WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE":
+		case "WELL_KNOWN_WORKLOAD_PROVIDER_UNSPECIFIED", "WELL_KNOWN_WORKLOAD_PROVIDER_CUSTOM", "WELL_KNOWN_WORKLOAD_PROVIDER_GITHUB_ACTIONS", "WELL_KNOWN_WORKLOAD_PROVIDER_GITLAB_CI", "WELL_KNOWN_WORKLOAD_PROVIDER_HCP_TERRAFORM", "WELL_KNOWN_WORKLOAD_PROVIDER_AWS_IAM_OUTBOUND", "WELL_KNOWN_WORKLOAD_PROVIDER_SPIFFE", "WELL_KNOWN_WORKLOAD_PROVIDER_C1_EDGE":
 			return true
 		}
 	}

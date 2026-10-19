@@ -4,7 +4,19 @@ package shared
 
 // MCPServerServiceRegisterResponse returns the newly created MCP server.
 type MCPServerServiceRegisterResponse struct {
-	McpServer *MCPServerView `json:"mcpServer,omitempty"`
+	// Whether the selected system toolset reached every profile in
+	//  the request access profiles. False means the server registered but the attach failed
+	//  afterwards, and the profiles have to be wired from the server page. Always true
+	//  when no request access profiles were supplied, since there was nothing to attach.
+	AccessProfilesAttached *bool          `json:"accessProfilesAttached,omitempty"`
+	McpServer              *MCPServerView `json:"mcpServer,omitempty"`
+}
+
+func (m *MCPServerServiceRegisterResponse) GetAccessProfilesAttached() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.AccessProfilesAttached
 }
 
 func (m *MCPServerServiceRegisterResponse) GetMcpServer() *MCPServerView {

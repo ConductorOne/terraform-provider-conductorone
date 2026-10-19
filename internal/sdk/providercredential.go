@@ -30,7 +30,7 @@ func newProviderCredential(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfigu
 }
 
 // Clear
-// Invokes the c1.api.llm_gateway.v1.ProviderCredentialService.Clear method.
+// Clear deletes the provider credential stored in the given slot.
 func (s *ProviderCredential) Clear(ctx context.Context, request operations.C1APILlmGatewayV1ProviderCredentialServiceClearRequest, opts ...operations.Option) (*operations.C1APILlmGatewayV1ProviderCredentialServiceClearResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -167,7 +167,11 @@ func (s *ProviderCredential) Clear(ctx context.Context, request operations.C1API
 }
 
 // Get
-// Invokes the c1.api.llm_gateway.v1.ProviderCredentialService.Get method.
+// Get returns metadata for the provider credential in the given slot. The
+//
+//	stored API key is never returned. Returns an empty response if no
+//	credential has ever been set for the slot; a cleared slot returns
+//	FAILED_PRECONDITION.
 func (s *ProviderCredential) Get(ctx context.Context, request operations.C1APILlmGatewayV1ProviderCredentialServiceGetRequest, opts ...operations.Option) (*operations.C1APILlmGatewayV1ProviderCredentialServiceGetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -297,7 +301,10 @@ func (s *ProviderCredential) Get(ctx context.Context, request operations.C1APILl
 }
 
 // Set
-// Invokes the c1.api.llm_gateway.v1.ProviderCredentialService.Set method.
+// Set stores or replaces the provider API key used by the LLM gateway for
+//
+//	the given slot. The API key is stored encrypted and is never returned by
+//	the API.
 func (s *ProviderCredential) Set(ctx context.Context, request operations.C1APILlmGatewayV1ProviderCredentialServiceSetRequest, opts ...operations.Option) (*operations.C1APILlmGatewayV1ProviderCredentialServiceSetResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

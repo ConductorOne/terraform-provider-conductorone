@@ -7,8 +7,9 @@ import (
 )
 
 type EntitlementExclusionCriteria struct {
-	ExcludedAppIds                 []types.String `tfsdk:"excluded_app_ids"`
-	ExcludedComplianceFrameworkIds []types.String `tfsdk:"excluded_compliance_framework_ids"`
-	ExcludedResourceTypeIds        []types.String `tfsdk:"excluded_resource_type_ids"`
-	ExcludedRiskLevelIds           []types.String `tfsdk:"excluded_risk_level_ids"`
+	ExcludedAppIds                 []types.String    `tfsdk:"excluded_app_ids"`
+	ExcludedComplianceFrameworkIds []types.String    `tfsdk:"excluded_compliance_framework_ids"`
+	ExcludedResourceTypeIds        []types.String    `tfsdk:"excluded_resource_type_ids"`
+	ExcludedResourceTypeRefs       []ResourceTypeRef `tfsdk:"excluded_resource_type_refs"`
+	ExcludedRiskLevelIds           []types.String    `tfsdk:"excluded_risk_level_ids"`
 }

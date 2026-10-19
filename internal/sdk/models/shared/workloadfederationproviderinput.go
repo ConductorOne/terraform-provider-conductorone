@@ -17,7 +17,9 @@ package shared
 // This message contains a oneof named settings. Only a single field of the following list may be set at a time:
 //   - oidc
 //   - spiffe
+//   - c1Edge
 type WorkloadFederationProviderInput struct {
+	C1Edge *C1EdgeSettings `json:"c1Edge,omitempty"`
 	// A description of what this provider is for.
 	Description *string `json:"description,omitempty"`
 	// Whether the provider is disabled. Disabled providers reject all token exchanges.
@@ -26,6 +28,13 @@ type WorkloadFederationProviderInput struct {
 	DisplayName *string         `json:"displayName,omitempty"`
 	Oidc        *OIDCSettings   `json:"oidc,omitempty"`
 	Spiffe      *SPIFFESettings `json:"spiffe,omitempty"`
+}
+
+func (w *WorkloadFederationProviderInput) GetC1Edge() *C1EdgeSettings {
+	if w == nil {
+		return nil
+	}
+	return w.C1Edge
 }
 
 func (w *WorkloadFederationProviderInput) GetDescription() *string {

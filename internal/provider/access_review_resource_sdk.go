@@ -50,6 +50,26 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 			r.CampaignInsights = &tfTypes.CampaignInsights{}
 			r.CampaignInsights.Markdown = types.StringPointerValue(resp.CampaignInsights.Markdown)
 		}
+		if resp.CampaignSchedule == nil {
+			r.CampaignSchedule = nil
+		} else {
+			r.CampaignSchedule = &tfTypes.CampaignSchedule{}
+			if resp.CampaignSchedule.EndTime == nil {
+				r.CampaignSchedule.EndTime = nil
+			} else {
+				r.CampaignSchedule.EndTime = &tfTypes.CampaignScheduleTime{}
+				r.CampaignSchedule.EndTime.Hours = types.Int64PointerValue(resp.CampaignSchedule.EndTime.Hours)
+				r.CampaignSchedule.EndTime.Minutes = types.Int64PointerValue(resp.CampaignSchedule.EndTime.Minutes)
+			}
+			if resp.CampaignSchedule.StartTime == nil {
+				r.CampaignSchedule.StartTime = nil
+			} else {
+				r.CampaignSchedule.StartTime = &tfTypes.CampaignScheduleTime{}
+				r.CampaignSchedule.StartTime.Hours = types.Int64PointerValue(resp.CampaignSchedule.StartTime.Hours)
+				r.CampaignSchedule.StartTime.Minutes = types.Int64PointerValue(resp.CampaignSchedule.StartTime.Minutes)
+			}
+			r.CampaignSchedule.Timezone = types.StringPointerValue(resp.CampaignSchedule.Timezone)
+		}
 		r.ClosedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ClosedAt))
 		if resp.ColumnConfig == nil {
 			r.ColumnConfig = nil
@@ -789,6 +809,58 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 		}
 		campaignInsights = &shared.CampaignInsights{
 			Markdown: markdown,
+		}
+	}
+	var campaignSchedule *shared.CampaignSchedule
+	if r.CampaignSchedule != nil {
+		var endTime *shared.CampaignScheduleTime
+		if r.CampaignSchedule.EndTime != nil {
+			hours := new(int64)
+			if !r.CampaignSchedule.EndTime.Hours.IsUnknown() && !r.CampaignSchedule.EndTime.Hours.IsNull() {
+				*hours = r.CampaignSchedule.EndTime.Hours.ValueInt64()
+			} else {
+				hours = nil
+			}
+			minutes := new(int64)
+			if !r.CampaignSchedule.EndTime.Minutes.IsUnknown() && !r.CampaignSchedule.EndTime.Minutes.IsNull() {
+				*minutes = r.CampaignSchedule.EndTime.Minutes.ValueInt64()
+			} else {
+				minutes = nil
+			}
+			endTime = &shared.CampaignScheduleTime{
+				Hours:   hours,
+				Minutes: minutes,
+			}
+		}
+		var startTime *shared.CampaignScheduleTime
+		if r.CampaignSchedule.StartTime != nil {
+			hours1 := new(int64)
+			if !r.CampaignSchedule.StartTime.Hours.IsUnknown() && !r.CampaignSchedule.StartTime.Hours.IsNull() {
+				*hours1 = r.CampaignSchedule.StartTime.Hours.ValueInt64()
+			} else {
+				hours1 = nil
+			}
+			minutes1 := new(int64)
+			if !r.CampaignSchedule.StartTime.Minutes.IsUnknown() && !r.CampaignSchedule.StartTime.Minutes.IsNull() {
+				*minutes1 = r.CampaignSchedule.StartTime.Minutes.ValueInt64()
+			} else {
+				minutes1 = nil
+			}
+			startTime = &shared.CampaignScheduleTime{
+				Hours:   hours1,
+				Minutes: minutes1,
+			}
+		}
+		timezone := new(string)
+		if !r.CampaignSchedule.Timezone.IsUnknown() && !r.CampaignSchedule.Timezone.IsNull() {
+			*timezone = r.CampaignSchedule.Timezone.ValueString()
+		} else {
+			timezone = nil
+		}
+		campaignSchedule = &shared.CampaignSchedule{
+			EndTime:   endTime,
+			StartTime: startTime,
+			Timezone:  timezone,
 		}
 	}
 	closedAt := new(time.Time)
@@ -1558,6 +1630,7 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 		Bindings:                       bindings,
 		CampaignHealth:                 campaignHealth,
 		CampaignInsights:               campaignInsights,
+		CampaignSchedule:               campaignSchedule,
 		ClosedAt:                       closedAt,
 		ColumnConfig:                   columnConfig,
 		CompletionDate:                 completionDate,

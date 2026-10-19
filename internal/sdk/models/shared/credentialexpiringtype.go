@@ -2,21 +2,32 @@
 
 package shared
 
-// CredentialExpiringType - CredentialExpiringType: a ConductorOne-managed credential is inside the
+// CredentialExpiringType - CredentialExpiringType: a credential is inside the detector's expiry
 //
-//	detector's expiry warning window, or already past it. Dedup is
-//	(credential arm, credential_id). Target: IdentityUserTarget -- the identity
-//	holding the credential.
+//	warning window, or already past it. Covers both ConductorOne-managed
+//	credentials and connector-synced secret-trait AppResources. Dedup is
+//	(credential arm, credential_id/target triple). Target: IdentityUserTarget
+//	for a service-principal credential, or AppResourceTarget for a
+//	connector-synced secret.
 //
 // This message contains a oneof named credential. Only a single field of the following list may be set at a time:
 //   - userClientId
+//   - appResourceSecret
 type CredentialExpiringType struct {
+	AppResourceSecret *AppResourceTarget `json:"appResourceSecret,omitempty"`
 	// The credentialDisplayName field.
 	CredentialDisplayName *string `json:"credentialDisplayName,omitempty"`
 	// Service-principal credential.
 	// This field is part of the `credential` oneof.
 	// See the documentation for `c1.api.finding.v1.CredentialExpiringType` for more details.
 	UserClientID *string `json:"userClientId,omitempty"`
+}
+
+func (c *CredentialExpiringType) GetAppResourceSecret() *AppResourceTarget {
+	if c == nil {
+		return nil
+	}
+	return c.AppResourceSecret
 }
 
 func (c *CredentialExpiringType) GetCredentialDisplayName() *string {

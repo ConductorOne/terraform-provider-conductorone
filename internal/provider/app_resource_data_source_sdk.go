@@ -43,6 +43,7 @@ func (r *AppResourceDataSourceModel) RefreshFromSharedAppResource(ctx context.Co
 		r.ExternalID = types.StringPointerValue(resp.ExternalID)
 		r.GrantCount = types.StringPointerValue(resp.GrantCount)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.IsManuallyManaged = types.BoolPointerValue(resp.IsManuallyManaged)
 		r.MatchBatonID = types.StringPointerValue(resp.MatchBatonID)
 		r.NhiDetail = types.StringPointerValue(resp.NhiDetail)
 		if resp.NhiType != nil {
