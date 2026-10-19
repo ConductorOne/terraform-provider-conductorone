@@ -361,6 +361,17 @@ func TestRetryTripperRespectsContextCancellation(t *testing.T) {
 	}
 }
 
+func TestWithJitterStaysWithinBounds(t *testing.T) {
+	for _, wait := range []time.Duration{0, time.Nanosecond, time.Second, maxRetryWait} {
+		for range 1000 {
+			got := withJitter(wait)
+			if got < wait || got > wait+wait/2 {
+				t.Fatalf("withJitter(%v) = %v, want within [%v, %v]", wait, got, wait, wait+wait/2)
+			}
+		}
+	}
+}
+
 func TestRetryAfterDuration(t *testing.T) {
 	tests := []struct {
 		name     string

@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand/v2"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -194,6 +195,7 @@ func (rt *retryTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 				wait = maxRetryWait
 			}
 		}
+		wait = withJitter(wait)
 
 		if resp != nil && resp.Body != nil {
 			_, _ = io.Copy(io.Discard, resp.Body)
@@ -251,6 +253,16 @@ func isIdempotentRequest(req *http.Request) bool {
 	default:
 		return false
 	}
+}
+
+// withJitter adds up to half of wait on top of it, so parallel Terraform
+// operations throttled together do not all retry at the same instant. It never
+// shortens wait, which may be the server's Retry-After.
+func withJitter(wait time.Duration) time.Duration {
+	if wait <= 0 {
+		return wait
+	}
+	return wait + rand.N(wait/2+1)
 }
 
 // retryAfterDuration parses the Retry-After header from an HTTP response.
