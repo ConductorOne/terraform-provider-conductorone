@@ -1188,7 +1188,7 @@ C1ApiAiGovernanceV1McpServerServiceListResponse (ContentType: string, StatusCode
     TokenSharing (enum: MCP_SERVER_TOKEN_SHARING_UNSPECIFIED, MCP_SERVER_TOKEN_SHARING_SHARED, MCP_SERVER_TOKEN_SHARING_PER_USER)
     TransportType (enum: MCP_SERVER_TRANSPORT_TYPE_UNSPECIFIED, MCP_SERVER_TRANSPORT_TYPE_STREAMABLE_HTTP, MCP_SERVER_TRANSPORT_TYPE_SSE)
 C1ApiAiGovernanceV1McpServerServiceRegisterRequest (app_id: string, MCPServerServiceRegisterRequest: MCPServerServiceRegisterRequest)
- McpServerServiceRegisterRequest (accessProfileIds: array, accessProvisioning: MCPAccessProvisioningConfig, acknowledgedFindingIds: array ...)
+ McpServerServiceRegisterRequest (accessProfileIds: array, accessProvisioning: class, acknowledgedFindingIds: array ...)
   McpAccessProvisioningConfig (accessLevel: enum, automatic: MCPAutomaticAccessProvisioning, request: MCPRequestAccessProvisioning)
    AccessLevel (enum: MCP_SYSTEM_TOOLSET_UNSPECIFIED, MCP_SYSTEM_TOOLSET_READ, MCP_SYSTEM_TOOLSET_ALL_APPROVED ...)
    McpAutomaticAccessProvisioning (enabled: boolean)

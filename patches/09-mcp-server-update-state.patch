@@ -1,0 +1,153 @@
+Subject: [PATCH] Preserve MCP metadata, credentials, and recovery state
+
+Supply the metadata field mask, route configured approval overrides through
+Update, and reconcile API approval values after generated plan restoration.
+Omitted approval stays unmanaged; explicit UNSPECIFIED clears the override.
+
+Avoid calling UpdateCredentials when only metadata changes, including after an
+import where C1 intentionally withholds sealed credentials. Keep the prior
+state on a failed second update so Terraform can converge through the known
+app and connector identifiers. Registration response loss has no safe retry:
+there is no caller-supplied connector ID or idempotency key, so surface an
+explicit import recovery path instead.
+
+The handwritten mcp_server_approval.go and mcp_server_recovery.go helpers are
+protected by .genignore.
+
+--- a/internal/provider/mcp_server_resource.go
++++ b/internal/provider/mcp_server_resource.go
+@@ -447,8 +447,8 @@
+ 					},
+ 					"require_tool_approval": schema.StringAttribute{
+ 						Optional: true,
+-						MarkdownDescription: `Optional per-server override for tool approval when registering without an` + "\n" +
+-							` access level. See MCPServerView.require_tool_approval for semantics.` + "\n" +
++						MarkdownDescription: `Optional per-server tool-approval override for registrations without a saved access level. Omit to leave the existing override unmanaged.` + "\n" +
++							`Set OPTIONAL_BOOL_UNSPECIFIED to clear the override and use the tenant default.` + "\n" +
+ 							`possible known values include one of ["OPTIONAL_BOOL_UNSPECIFIED", "OPTIONAL_BOOL_TRUE", "OPTIONAL_BOOL_FALSE"]`,
+ 					},
+ 					"token_sharing": schema.StringAttribute{
+@@ -704,8 +704,8 @@
+ 					},
+ 					"require_tool_approval": schema.StringAttribute{
+ 						Optional: true,
+-						MarkdownDescription: `Optional per-server override for tool approval when registering without an` + "\n" +
+-							` access level. See MCPServerView.require_tool_approval for semantics.` + "\n" +
++						MarkdownDescription: `Optional per-server tool-approval override for registrations without a saved access level. Omit to leave the existing override unmanaged.` + "\n" +
++							`Set OPTIONAL_BOOL_UNSPECIFIED to clear the override and use the tenant default.` + "\n" +
+ 							`possible known values include one of ["OPTIONAL_BOOL_UNSPECIFIED", "OPTIONAL_BOOL_TRUE", "OPTIONAL_BOOL_FALSE"]`,
+ 					},
+ 					"source_app_id": schema.StringAttribute{
+@@ -1042,8 +1042,9 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+ 	if err != nil {
+ 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+ 		if res != nil && res.RawResponse != nil {
+ 			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+ 		}
++		addMCPServerUnknownCreateOutcomeDiagnostic(resp, data, err)
+ 		return
+ 	}
+ 	if res == nil {
+@@ -1050,4 +1051,5 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+ 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
++		addMCPServerUnknownCreateOutcomeDiagnostic(resp, data, nil)
+ 		return
+ 	}
+ 	if res.StatusCode != 200 {
+@@ -1057,8 +1059,10 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+ 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
++		addMCPServerUnknownCreateOutcomeDiagnostic(resp, data, nil)
+ 		return
+ 	}
+ 	if !(res.MCPServerServiceRegisterResponse != nil) {
+ 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
++		addMCPServerUnknownCreateOutcomeDiagnostic(resp, data, nil)
+ 		return
+ 	}
+ 	resp.Diagnostics.Append(data.RefreshFromSharedMCPServerServiceRegisterResponse(ctx, res.MCPServerServiceRegisterResponse)...)
+@@ -1065,8 +1070,14 @@ func (r *MCPServerResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
++		addMCPServerCreatedStateRecoveryDiagnostic(resp, data)
+ 		return
+ 	}
+ 
++	data.refreshToolApproval(res.MCPServerServiceRegisterResponse.McpServer)
++
+ 	// Save updated data into Terraform state
+ 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
++	if resp.Diagnostics.HasError() {
++		addMCPServerCreatedStateRecoveryDiagnostic(resp, data)
++	}
+ }
+ 
+ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+@@ -1115,6 +1121,8 @@ func (r *MCPServerResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+ 		return
+ 	}
+ 
++	data.refreshToolApproval(res.MCPServerServiceGetResponse.McpServer)
++
+ 	// Save updated data into Terraform state
+ 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+ }
+@@ -1146,6 +1154,16 @@ func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+ 		return
+ 	}
+ 
++	// Preserve known identity and sealed state if the credential endpoint fails.
++	resp.State = req.State
++
++	credentialsChanged, credentialsChangedDiags := mcpServerCredentialsChanged(ctx, req)
++	resp.Diagnostics.Append(credentialsChangedDiags...)
++
++	if resp.Diagnostics.HasError() {
++		return
++	}
++
+ 	merge(ctx, req, resp, &data)
+ 	if resp.Diagnostics.HasError() {
+ 		return
+@@ -1188,5 +1204,15 @@ func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+ 		return
+ 	}
++
++	data.refreshToolApproval(res.MCPServerServiceUpdateResponse.McpServer)
++
++	if !credentialsChanged {
++		// Imported resources cannot read sealed credentials. A metadata-only
++		// update must leave that independently managed configuration untouched.
++		resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
++		return
++	}
++
+ 	request1, request1Diags := data.ToOperationsC1APIAiGovernanceV1MCPServerServiceUpdateCredentialsRequest(ctx)
+ 	resp.Diagnostics.Append(request1Diags...)
+ 
+@@ -1208,6 +1233,8 @@ func (r *MCPServerResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+ 		return
+ 	}
+ 
++	data.refreshToolApproval(res1.MCPServerServiceUpdateCredentialsResponse.McpServer)
++
+ 	// Save updated data into Terraform state
+ 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+ }
+--- a/internal/provider/mcp_server_resource_sdk.go
++++ b/internal/provider/mcp_server_resource_sdk.go
+@@ -1501,8 +1501,16 @@
+ 		return nil, diags
+ 	}
+ 
++	updateMask := "displayName,description,dataSensitivity,toolPrefix"
++	mcpServer.RequireToolApproval = nil
++	if approval := r.configuredToolApproval(); approval != nil && !approval.IsNull() && !approval.IsUnknown() {
++		value := shared.RequireToolApproval(approval.ValueString())
++		mcpServer.RequireToolApproval = &value
++		updateMask += ",requireToolApproval"
++	}
+ 	out := shared.MCPServerServiceUpdateRequest{
+-		McpServer: mcpServer,
++		McpServer:  mcpServer,
++		UpdateMask: &updateMask,
+ 	}
+ 
+ 	return &out, diags

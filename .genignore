@@ -17,3 +17,5 @@ overlay.yaml
 /internal/provider/*_test.go
 /internal/provider/integration_*
 /internal/provider/integrations.go
+/internal/provider/mcp_server_approval.go
+/internal/provider/mcp_server_recovery.go

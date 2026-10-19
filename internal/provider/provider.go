@@ -199,6 +199,7 @@ func (p *ConductoroneProvider) Resources(ctx context.Context) []func() resource.
 		NewConnectorOwnerUserResource,
 		NewConnectorCredentialResource,
 		NewCustomAppEntitlementResource,
+		NewMCPServerResource,
 		NewPolicyResource,
 		NewWebhookResource,
 		NewComplianceFrameworkResource,
