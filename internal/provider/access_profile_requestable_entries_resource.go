@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -45,6 +46,7 @@ func (r *AccessProfileRequestableEntriesResource) Metadata(ctx context.Context, 
 
 func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Version:             1,
 		MarkdownDescription: "AccessProfileRequestableEntries Resource",
 		Attributes: map[string]schema.Attribute{
 			"app_entitlements": schema.ListNestedAttribute{
@@ -56,13 +58,11 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 					},
 					Attributes: map[string]schema.Attribute{
 						"app_id": schema.StringAttribute{
-							Computed:    true,
-							Optional:    true,
+							Required:    true,
 							Description: `The appId field.`,
 						},
 						"id": schema.StringAttribute{
-							Computed:    true,
-							Optional:    true,
+							Required:    true,
 							Description: `The id field.`,
 						},
 					},
@@ -71,6 +71,9 @@ func (r *AccessProfileRequestableEntriesResource) Schema(ctx context.Context, re
 			},
 			"catalog_id": schema.StringAttribute{
 				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 			},
 			"create_requests": schema.BoolAttribute{
 				Optional: true,
@@ -219,54 +222,97 @@ func (r *AccessProfileRequestableEntriesResource) Read(ctx context.Context, req 
 }
 
 func (r *AccessProfileRequestableEntriesResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *AccessProfileRequestableEntriesResourceModel
+	var state types.Object
 	var plan types.Object
+
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	merge(ctx, req, resp, &data)
+	var current *AccessProfileRequestableEntriesResourceModel
+	resp.Diagnostics.Append(state.As(ctx, &current, basetypes.ObjectAsOptions{
+		UnhandledNullAsEmpty:    true,
+		UnhandledUnknownAsEmpty: true,
+	})...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	request, requestDiags := data.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceUpdateAppEntitlementsRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
+	var desired *AccessProfileRequestableEntriesResourceModel
+	resp.Diagnostics.Append(plan.As(ctx, &desired, basetypes.ObjectAsOptions{
+		UnhandledNullAsEmpty:    true,
+		UnhandledUnknownAsEmpty: true,
+	})...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.RequestCatalogManagement.UpdateAppEntitlements(ctx, *request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+
+	toAdd, toRemove := appEntitlementRefDifference(current.AppEntitlements, desired.AppEntitlements)
+	if len(toAdd) > 0 {
+		add := *desired
+		add.AppEntitlements = toAdd
+		request, requestDiags := add.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceAddAppEntitlementsRequest(ctx)
+		resp.Diagnostics.Append(requestDiags...)
+		if resp.Diagnostics.HasError() {
+			return
 		}
-		return
-	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
-		return
-	}
-	if !(res.RequestCatalogManagementServiceUpdateAppEntitlementsResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
-		return
+		res, err := r.client.RequestCatalogManagement.AddAppEntitlements(ctx, *request)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			if res != nil && res.RawResponse != nil {
+				resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+			}
+			return
+		}
+		if res == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+			return
+		}
+		if res.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+			return
+		}
+		if res.RequestCatalogManagementServiceAddAppEntitlementsResponse == nil {
+			resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+			return
+		}
 	}
 
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
+	if len(toRemove) > 0 {
+		remove := *current
+		remove.AppEntitlements = toRemove
+		request, requestDiags := remove.ToOperationsC1APIRequestcatalogV1RequestCatalogManagementServiceRemoveAppEntitlementsRequest(ctx)
+		resp.Diagnostics.Append(requestDiags...)
+		if resp.Diagnostics.HasError() {
+			return
+		}
+		res, err := r.client.RequestCatalogManagement.RemoveAppEntitlements(ctx, *request)
+		if err != nil {
+			resp.Diagnostics.AddError("failure to invoke API", err.Error())
+			if res != nil && res.RawResponse != nil {
+				resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+			}
+			return
+		}
+		if res == nil {
+			resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+			return
+		}
+		if res.StatusCode != 200 {
+			resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+			return
+		}
 	}
 
 	// Save updated data into Terraform state
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &desired)...)
 }
 
 func (r *AccessProfileRequestableEntriesResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {

@@ -2,12 +2,17 @@ package uhttp
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/logging"
 )
 
 type mockTripper struct {
@@ -42,6 +47,50 @@ func resp200() *http.Response {
 		Header:     http.Header{},
 		Body:       io.NopCloser(strings.NewReader("ok")),
 	}
+}
+
+type errorThenSuccessTripper struct {
+	calls int
+}
+
+func (m *errorThenSuccessTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	m.calls++
+	if m.calls == 1 {
+		return nil, errors.New("connection reset")
+	}
+	return resp200(), nil
+}
+
+type bodyRecordingTripper struct {
+	calls  int
+	bodies []string
+}
+
+func (m *bodyRecordingTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	body, err := io.ReadAll(req.Body)
+	if err != nil {
+		return nil, err
+	}
+	m.calls++
+	m.bodies = append(m.bodies, string(body))
+	if m.calls == 1 {
+		return &http.Response{
+			StatusCode: http.StatusServiceUnavailable,
+			Header:     http.Header{},
+			Body:       io.NopCloser(strings.NewReader("")),
+		}, nil
+	}
+	return resp200(), nil
+}
+
+type unexpectedEOFBody struct{}
+
+func (unexpectedEOFBody) Read([]byte) (int, error) {
+	return 0, io.ErrUnexpectedEOF
+}
+
+func (unexpectedEOFBody) Close() error {
+	return nil
 }
 
 func TestRetryTripperRetriesOn429(t *testing.T) {
@@ -80,10 +129,62 @@ func TestRetryTripperStopsAtMaxRetries(t *testing.T) {
 	}
 }
 
-func TestRetryTripperPassesThroughNon429(t *testing.T) {
+func TestRetryTripperRetriesOn5xx(t *testing.T) {
+	mock := &mockTripper{
+		responses: []*http.Response{
+			{
+				StatusCode: http.StatusServiceUnavailable,
+				Header:     http.Header{},
+				Body:       io.NopCloser(strings.NewReader("")),
+			},
+			resp200(),
+		},
+	}
+	rt := &retryTripper{next: mock, maxRetries: 3}
+
+	req, _ := http.NewRequestWithContext(context.Background(), "GET", "http://example.com", nil)
+	resp, err := rt.RoundTrip(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("expected 200, got %d", resp.StatusCode)
+	}
+	if mock.calls != 2 {
+		t.Errorf("expected 2 calls, got %d", mock.calls)
+	}
+}
+
+func TestRetryTripperRetriesWhenResponseDrainFails(t *testing.T) {
+	mock := &mockTripper{
+		responses: []*http.Response{
+			{
+				StatusCode: http.StatusServiceUnavailable,
+				Header:     http.Header{},
+				Body:       unexpectedEOFBody{},
+			},
+			resp200(),
+		},
+	}
+	rt := &retryTripper{next: mock, maxRetries: 3}
+
+	req, _ := http.NewRequestWithContext(context.Background(), "GET", "http://example.com", nil)
+	resp, err := rt.RoundTrip(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("expected 200, got %d", resp.StatusCode)
+	}
+	if mock.calls != 2 {
+		t.Errorf("expected 2 calls, got %d", mock.calls)
+	}
+}
+
+func TestRetryTripperPassesThroughNonRetryableStatus(t *testing.T) {
 	mock := &mockTripper{
 		responses: []*http.Response{{
-			StatusCode: http.StatusInternalServerError,
+			StatusCode: http.StatusNotFound,
 			Header:     http.Header{},
 			Body:       io.NopCloser(strings.NewReader("")),
 		}},
@@ -95,12 +196,151 @@ func TestRetryTripperPassesThroughNon429(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if resp.StatusCode != http.StatusInternalServerError {
-		t.Errorf("expected 500, got %d", resp.StatusCode)
+	if resp.StatusCode != http.StatusNotFound {
+		t.Errorf("expected 404, got %d", resp.StatusCode)
 	}
 	if mock.calls != 1 {
-		t.Errorf("expected 1 call (no retry for 500), got %d", mock.calls)
+		t.Errorf("expected 1 call for 404, got %d", mock.calls)
 	}
+}
+
+func TestRetryTripperRetriesTransportErrors(t *testing.T) {
+	mock := &errorThenSuccessTripper{}
+	rt := &retryTripper{next: mock, maxRetries: 3}
+
+	req, _ := http.NewRequestWithContext(context.Background(), "GET", "http://example.com", nil)
+	resp, err := rt.RoundTrip(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("expected 200, got %d", resp.StatusCode)
+	}
+	if mock.calls != 2 {
+		t.Errorf("expected 2 calls, got %d", mock.calls)
+	}
+}
+
+func TestRetryTripperRetriesNonReplayableRequestBody(t *testing.T) {
+	mock := &bodyRecordingTripper{}
+	rt := &retryTripper{next: mock, maxRetries: 3}
+
+	req, _ := http.NewRequestWithContext(
+		context.Background(),
+		http.MethodPut,
+		"http://example.com",
+		io.NopCloser(strings.NewReader("payload")),
+	)
+	resp, err := rt.RoundTrip(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("expected 200, got %d", resp.StatusCode)
+	}
+	if req.GetBody == nil {
+		t.Fatal("expected request body to be replayable")
+	}
+	if got, want := strings.Join(mock.bodies, ","), "payload,payload"; got != want {
+		t.Errorf("expected %q, got %q", want, got)
+	}
+}
+
+func TestRetryTripperDoesNotRetryUnsafeRequests(t *testing.T) {
+	mock := &mockTripper{
+		responses: []*http.Response{
+			{
+				StatusCode: http.StatusServiceUnavailable,
+				Header:     http.Header{},
+				Body:       io.NopCloser(strings.NewReader("")),
+			},
+			resp200(),
+		},
+	}
+	rt := &retryTripper{next: mock, maxRetries: 3}
+
+	req, _ := http.NewRequestWithContext(context.Background(), http.MethodPost, "http://example.com", nil)
+	resp, err := rt.RoundTrip(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusServiceUnavailable {
+		t.Errorf("expected 503, got %d", resp.StatusCode)
+	}
+	if mock.calls != 1 {
+		t.Errorf("expected 1 call for POST, got %d", mock.calls)
+	}
+}
+
+func TestRetryTripperRetriesUnsafeRequestsOn429(t *testing.T) {
+	for _, method := range []string{http.MethodPost, http.MethodPatch} {
+		t.Run(method, func(t *testing.T) {
+			var bodies []string
+			mock := roundTripFunc(func(req *http.Request) (*http.Response, error) {
+				body, err := io.ReadAll(req.Body)
+				if err != nil {
+					return nil, err
+				}
+				bodies = append(bodies, string(body))
+				if len(bodies) == 1 {
+					return resp429("1"), nil
+				}
+				return resp200(), nil
+			})
+			rt := &retryTripper{next: mock, maxRetries: 3}
+
+			req, _ := http.NewRequestWithContext(context.Background(), method, "http://example.com", nil)
+			req.Body = io.NopCloser(strings.NewReader(`{"query":"x"}`))
+			resp, err := rt.RoundTrip(req)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if resp.StatusCode != http.StatusOK {
+				t.Errorf("expected 200, got %d", resp.StatusCode)
+			}
+			if len(bodies) != 2 || bodies[0] != bodies[1] || bodies[1] != `{"query":"x"}` {
+				t.Errorf("expected the same body on both attempts, got %q", bodies)
+			}
+		})
+	}
+}
+
+// The provider wraps the transport in Terraform's logging transport, whose
+// httputil.DumpRequestOut call replaces a nil GET body with http.NoBody and
+// leaves GetBody unset.
+func TestRetryTripperRetriesGetBehindLoggingTransport(t *testing.T) {
+	var hits int32
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if atomic.AddInt32(&hits, 1) == 1 {
+			w.Header().Set("Retry-After", "1")
+			w.WriteHeader(http.StatusTooManyRequests)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer srv.Close()
+
+	client := &http.Client{
+		Transport: logging.NewSubsystemLoggingHTTPTransport(subsystem, &retryTripper{next: http.DefaultTransport, maxRetries: 3}),
+	}
+	req, _ := http.NewRequestWithContext(context.Background(), http.MethodGet, srv.URL, nil)
+	resp, err := client.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("expected 200, got %d", resp.StatusCode)
+	}
+	if got := atomic.LoadInt32(&hits); got != 2 {
+		t.Errorf("expected 2 requests, got %d", got)
+	}
+}
+
+type roundTripFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
+	return f(req)
 }
 
 func TestRetryTripperRespectsContextCancellation(t *testing.T) {
@@ -118,6 +358,17 @@ func TestRetryTripperRespectsContextCancellation(t *testing.T) {
 	_, err := rt.RoundTrip(req)
 	if err == nil {
 		t.Fatal("expected context cancellation error, got nil")
+	}
+}
+
+func TestWithJitterStaysWithinBounds(t *testing.T) {
+	for _, wait := range []time.Duration{0, time.Nanosecond, time.Second, maxRetryWait} {
+		for range 1000 {
+			got := withJitter(wait)
+			if got < wait || got > wait+wait/2 {
+				t.Fatalf("withJitter(%v) = %v, want within [%v, %v]", wait, got, wait, wait+wait/2)
+			}
+		}
 	}
 }
 
