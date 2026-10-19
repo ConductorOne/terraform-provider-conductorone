@@ -9,12 +9,32 @@ package shared
 //
 // This message contains a oneof named kind. Only a single field of the following list may be set at a time:
 //   - functionId
+//   - ssoApplication
+//   - authzenServer
+//   - edge
 type ServicePrincipalBindingSubject struct {
+	AuthzenServer *AuthzenServerRef `json:"authzenServer,omitempty"`
+	Edge          *EdgeRef          `json:"edge,omitempty"`
 	// Function ID. The function authenticates outbound c1-api calls as
 	//  user:<service_principal_id> instead of function:<function_id>.
 	// This field is part of the `kind` oneof.
 	// See the documentation for `c1.api.service_principal.v1.ServicePrincipalBindingSubject` for more details.
-	FunctionID *string `json:"functionId,omitempty"`
+	FunctionID     *string            `json:"functionId,omitempty"`
+	SsoApplication *SSOApplicationRef `json:"ssoApplication,omitempty"`
+}
+
+func (s *ServicePrincipalBindingSubject) GetAuthzenServer() *AuthzenServerRef {
+	if s == nil {
+		return nil
+	}
+	return s.AuthzenServer
+}
+
+func (s *ServicePrincipalBindingSubject) GetEdge() *EdgeRef {
+	if s == nil {
+		return nil
+	}
+	return s.Edge
 }
 
 func (s *ServicePrincipalBindingSubject) GetFunctionID() *string {
@@ -22,4 +42,11 @@ func (s *ServicePrincipalBindingSubject) GetFunctionID() *string {
 		return nil
 	}
 	return s.FunctionID
+}
+
+func (s *ServicePrincipalBindingSubject) GetSsoApplication() *SSOApplicationRef {
+	if s == nil {
+		return nil
+	}
+	return s.SsoApplication
 }

@@ -31,7 +31,9 @@ func newGatewayKey(rootSDK *ConductoroneAPI, sdkConfig config.SDKConfiguration, 
 }
 
 // List
-// Invokes the c1.api.llm_gateway.v1.GatewayKeyService.List method.
+// List returns the tenant's LLM gateway API keys. Only key metadata and a
+//
+//	key prefix are returned, never the full key.
 func (s *GatewayKey) List(ctx context.Context, opts ...operations.Option) (*operations.C1APILlmGatewayV1GatewayKeyServiceListResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -161,7 +163,9 @@ func (s *GatewayKey) List(ctx context.Context, opts ...operations.Option) (*oper
 }
 
 // Mint
-// Invokes the c1.api.llm_gateway.v1.GatewayKeyService.Mint method.
+// Mint creates a new LLM gateway API key. The key value is shown only in
+//
+//	this response and cannot be retrieved again; store it immediately.
 func (s *GatewayKey) Mint(ctx context.Context, request *shared.MintGatewayKeyRequest, opts ...operations.Option) (*operations.C1APILlmGatewayV1GatewayKeyServiceMintResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -298,7 +302,9 @@ func (s *GatewayKey) Mint(ctx context.Context, request *shared.MintGatewayKeyReq
 }
 
 // Revoke
-// Invokes the c1.api.llm_gateway.v1.GatewayKeyService.Revoke method.
+// Revoke revokes an LLM gateway API key by ID. The key immediately stops
+//
+//	authenticating gateway requests.
 func (s *GatewayKey) Revoke(ctx context.Context, request operations.C1APILlmGatewayV1GatewayKeyServiceRevokeRequest, opts ...operations.Option) (*operations.C1APILlmGatewayV1GatewayKeyServiceRevokeResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

@@ -10,6 +10,12 @@ type AttributeFacet struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// The values field.
 	Values []RoleMiningAttributeValue `json:"values,omitempty"`
+	// True when values is a legacy bounded preview rather than the complete
+	//  value set. Clients must not treat a truncated preview as exhaustive.
+	ValuesTruncated *bool `json:"valuesTruncated,omitempty"`
+	// True when the legacy preview could not be loaded. The attribute remains
+	//  valid and value discovery may be retried independently.
+	ValuesUnavailable *bool `json:"valuesUnavailable,omitempty"`
 }
 
 func (a *AttributeFacet) GetAttribute() *string {
@@ -31,4 +37,18 @@ func (a *AttributeFacet) GetValues() []RoleMiningAttributeValue {
 		return nil
 	}
 	return a.Values
+}
+
+func (a *AttributeFacet) GetValuesTruncated() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ValuesTruncated
+}
+
+func (a *AttributeFacet) GetValuesUnavailable() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ValuesUnavailable
 }

@@ -30,25 +30,25 @@ func (e *ClientIDMode) IsExact() bool {
 	return false
 }
 
-// Mode - OAuth2 mode.
-type Mode string
+// MCPServerAuthOAuth2Mode - OAuth2 mode.
+type MCPServerAuthOAuth2Mode string
 
 const (
-	ModeMcpServerAuthOauth2ModeUnspecified          Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_UNSPECIFIED"
-	ModeMcpServerAuthOauth2ModeService              Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_SERVICE"
-	ModeMcpServerAuthOauth2ModePassthrough          Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_PASSTHROUGH"
-	ModeMcpServerAuthOauth2ModeClientCredentials    Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_CLIENT_CREDENTIALS"
-	ModeMcpServerAuthOauth2ModeJwtBearer            Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_JWT_BEARER"
-	ModeMcpServerAuthOauth2ModeGoogleServiceAccount Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_GOOGLE_SERVICE_ACCOUNT"
-	ModeMcpServerAuthOauth2ModeAuthorizationCode    Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_AUTHORIZATION_CODE"
+	MCPServerAuthOAuth2ModeMcpServerAuthOauth2ModeUnspecified          MCPServerAuthOAuth2Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_UNSPECIFIED"
+	MCPServerAuthOAuth2ModeMcpServerAuthOauth2ModeService              MCPServerAuthOAuth2Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_SERVICE"
+	MCPServerAuthOAuth2ModeMcpServerAuthOauth2ModePassthrough          MCPServerAuthOAuth2Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_PASSTHROUGH"
+	MCPServerAuthOAuth2ModeMcpServerAuthOauth2ModeClientCredentials    MCPServerAuthOAuth2Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_CLIENT_CREDENTIALS"
+	MCPServerAuthOAuth2ModeMcpServerAuthOauth2ModeJwtBearer            MCPServerAuthOAuth2Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_JWT_BEARER"
+	MCPServerAuthOAuth2ModeMcpServerAuthOauth2ModeGoogleServiceAccount MCPServerAuthOAuth2Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_GOOGLE_SERVICE_ACCOUNT"
+	MCPServerAuthOAuth2ModeMcpServerAuthOauth2ModeAuthorizationCode    MCPServerAuthOAuth2Mode = "MCP_SERVER_AUTH_OAUTH2_MODE_AUTHORIZATION_CODE"
 )
 
-func (e Mode) ToPointer() *Mode {
+func (e MCPServerAuthOAuth2Mode) ToPointer() *MCPServerAuthOAuth2Mode {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Mode) IsExact() bool {
+func (e *MCPServerAuthOAuth2Mode) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "MCP_SERVER_AUTH_OAUTH2_MODE_UNSPECIFIED", "MCP_SERVER_AUTH_OAUTH2_MODE_SERVICE", "MCP_SERVER_AUTH_OAUTH2_MODE_PASSTHROUGH", "MCP_SERVER_AUTH_OAUTH2_MODE_CLIENT_CREDENTIALS", "MCP_SERVER_AUTH_OAUTH2_MODE_JWT_BEARER", "MCP_SERVER_AUTH_OAUTH2_MODE_GOOGLE_SERVICE_ACCOUNT", "MCP_SERVER_AUTH_OAUTH2_MODE_AUTHORIZATION_CODE":
@@ -103,7 +103,7 @@ type MCPServerAuthOAuth2 struct {
 	// Optional subject for domain-wide delegation.
 	JwtSubject *string `json:"jwtSubject,omitempty"`
 	// OAuth2 mode.
-	Mode *Mode `json:"mode,omitempty"`
+	Mode *MCPServerAuthOAuth2Mode `json:"mode,omitempty"`
 	// PKCE behavior for authorization_code mode: "discover" (or empty),
 	//  "s256", or "disabled". Inherited from MCPServerCatalogAuthMode.pkce.
 	Pkce *string `json:"pkce,omitempty"`
@@ -117,9 +117,10 @@ type MCPServerAuthOAuth2 struct {
 	//  Discover. Capped at 256 because providers like Salesforce return ~36;
 	//  256 leaves headroom without inviting abuse.
 	ScopesSupported []string `json:"scopesSupported,omitempty"`
-	// RFC 7591 token_endpoint_auth_method the authorization server assigned.
-	//  Read-only / ignored on write: server-set from the DCR result, never copied
-	//  from the API request into the stored model. Surfaced for display only.
+	// RFC 7591 token_endpoint_auth_method. For DCR/CIMD client_id_mode this is
+	//  server-set from the registration result and input is ignored. For a MANUAL
+	//  client_id_mode, "none" may be set on write to declare a pre-registered
+	//  public client (PKCE-only, no client_secret); any other value is rejected.
 	TokenEndpointAuthMethod *string `json:"tokenEndpointAuthMethod,omitempty"`
 	// OAuth2 token endpoint URL. Required for all modes when creating or
 	//  rotating; uses ignore_empty so partial UpdateCredentials calls that omit
@@ -211,7 +212,7 @@ func (m *MCPServerAuthOAuth2) GetJwtSubject() *string {
 	return m.JwtSubject
 }
 
-func (m *MCPServerAuthOAuth2) GetMode() *Mode {
+func (m *MCPServerAuthOAuth2) GetMode() *MCPServerAuthOAuth2Mode {
 	if m == nil {
 		return nil
 	}

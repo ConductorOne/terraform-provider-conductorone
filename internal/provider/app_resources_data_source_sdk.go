@@ -59,6 +59,7 @@ func (r *AppResourcesDataSourceModel) RefreshFromSharedSearchAppResourcesRespons
 					list.AppResource.ExternalID = types.StringPointerValue(listItem.AppResource.ExternalID)
 					list.AppResource.GrantCount = types.StringPointerValue(listItem.AppResource.GrantCount)
 					list.AppResource.ID = types.StringPointerValue(listItem.AppResource.ID)
+					list.AppResource.IsManuallyManaged = types.BoolPointerValue(listItem.AppResource.IsManuallyManaged)
 					list.AppResource.MatchBatonID = types.StringPointerValue(listItem.AppResource.MatchBatonID)
 					list.AppResource.NhiDetail = types.StringPointerValue(listItem.AppResource.NhiDetail)
 					if listItem.AppResource.NhiType != nil {
@@ -142,11 +143,11 @@ func (r *AppResourcesDataSourceModel) ToSharedSearchAppResourcesRequest(ctx cont
 			appUserIds = append(appUserIds, r.AppUserIds[appUserIdsIndex].ValueString())
 		}
 	}
-	var credentialTypes []shared.CredentialTypes
+	var credentialTypes []shared.SearchAppResourcesRequestCredentialTypes
 	if r.CredentialTypes != nil {
-		credentialTypes = make([]shared.CredentialTypes, 0, len(r.CredentialTypes))
+		credentialTypes = make([]shared.SearchAppResourcesRequestCredentialTypes, 0, len(r.CredentialTypes))
 		for _, credentialTypesItem := range r.CredentialTypes {
-			credentialTypes = append(credentialTypes, shared.CredentialTypes(credentialTypesItem.ValueString()))
+			credentialTypes = append(credentialTypes, shared.SearchAppResourcesRequestCredentialTypes(credentialTypesItem.ValueString()))
 		}
 	}
 	direction := new(shared.Direction)

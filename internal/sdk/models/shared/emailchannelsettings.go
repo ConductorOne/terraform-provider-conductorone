@@ -13,6 +13,7 @@ type EmailChannelSettings struct {
 	// The enabled field.
 	Enabled             *bool                          `json:"enabled,omitempty"`
 	ExpiringAccess      *ExpiringAccessPreference      `json:"expiringAccess,omitempty"`
+	Findings            *FindingsPreference            `json:"findings,omitempty"`
 	ProvisioningRequest *ProvisioningRequestPreference `json:"provisioningRequest,omitempty"`
 	RequestCreated      *RequestCreatedPreference      `json:"requestCreated,omitempty"`
 	Reviews             *ReviewsPreference             `json:"reviews,omitempty"`
@@ -74,6 +75,13 @@ func (e *EmailChannelSettings) GetExpiringAccess() *ExpiringAccessPreference {
 		return nil
 	}
 	return e.ExpiringAccess
+}
+
+func (e *EmailChannelSettings) GetFindings() *FindingsPreference {
+	if e == nil {
+		return nil
+	}
+	return e.Findings
 }
 
 func (e *EmailChannelSettings) GetProvisioningRequest() *ProvisioningRequestPreference {

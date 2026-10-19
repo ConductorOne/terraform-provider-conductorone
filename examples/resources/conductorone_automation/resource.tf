@@ -94,6 +94,12 @@ resource "conductorone_automation" "my_automation" {
           excluded_resource_type_ids = [
             "..."
           ]
+          excluded_resource_type_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
           excluded_risk_level_ids = [
             "..."
           ]
@@ -128,6 +134,12 @@ resource "conductorone_automation" "my_automation" {
           ]
           resource_type_ids = [
             "..."
+          ]
+          resource_type_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
           ]
           risk_level_ids = [
             "..."
@@ -460,6 +472,12 @@ resource "conductorone_automation" "my_automation" {
           excluded_resource_type_ids = [
             "..."
           ]
+          excluded_resource_type_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
+          ]
           excluded_risk_level_ids = [
             "..."
           ]
@@ -494,6 +512,12 @@ resource "conductorone_automation" "my_automation" {
           ]
           resource_type_ids = [
             "..."
+          ]
+          resource_type_refs = [
+            {
+              app_id = "...my_app_id..."
+              id     = "...my_id..."
+            }
           ]
           risk_level_ids = [
             "..."
@@ -768,6 +792,12 @@ resource "conductorone_automation" "my_automation" {
             resource_type_ids = [
               "..."
             ]
+            resource_type_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
             risk_level_ids = [
               "..."
             ]
@@ -807,6 +837,12 @@ resource "conductorone_automation" "my_automation" {
             ]
             resource_type_ids = [
               "..."
+            ]
+            resource_type_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
             ]
             risk_level_ids = [
               "..."
@@ -945,6 +981,12 @@ resource "conductorone_automation" "my_automation" {
             resource_type_ids = [
               "..."
             ]
+            resource_type_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
+            ]
             risk_level_ids = [
               "..."
             ]
@@ -984,6 +1026,12 @@ resource "conductorone_automation" "my_automation" {
             ]
             resource_type_ids = [
               "..."
+            ]
+            resource_type_refs = [
+              {
+                app_id = "...my_app_id..."
+                id     = "...my_id..."
+              }
             ]
             risk_level_ids = [
               "..."

@@ -107,7 +107,7 @@ resource "conductorone_request_schema" "my_request_schema" {
         }
         default_value = "...my_default_value..."
         password_field = {
-          # ...
+          multiline = false
         }
         picker_field = {
           app_user_picker = {

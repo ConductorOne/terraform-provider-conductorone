@@ -19,6 +19,7 @@ type AppResource struct {
 	ExternalID              types.String            `tfsdk:"external_id"`
 	GrantCount              types.String            `tfsdk:"grant_count"`
 	ID                      types.String            `tfsdk:"id"`
+	IsManuallyManaged       types.Bool              `tfsdk:"is_manually_managed"`
 	MatchBatonID            types.String            `tfsdk:"match_baton_id"`
 	NhiDetail               types.String            `tfsdk:"nhi_detail"`
 	NhiType                 types.String            `tfsdk:"nhi_type"`

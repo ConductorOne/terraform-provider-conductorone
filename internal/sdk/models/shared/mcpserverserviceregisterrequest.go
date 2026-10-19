@@ -54,6 +54,12 @@ func (e *MCPServerServiceRegisterRequestServerType) IsExact() bool {
 
 // MCPServerServiceRegisterRequest creates a new MCP server (Connector + config).
 type MCPServerServiceRegisterRequest struct {
+	// Deprecated: use access_provisioning.request. Retained for older clients;
+	//  used when access_provisioning.request is absent.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	AccessProfileIds   []string                     `json:"accessProfileIds,omitempty"`
+	AccessProvisioning *MCPAccessProvisioningConfig `json:"accessProvisioning,omitempty"`
 	// finding_ids from the diagnostic the admin acknowledged. Each must cover a
 	//  blocking-relaxable finding on oauth_diagnostic_id.
 	AcknowledgedFindingIds    []string                   `json:"acknowledgedFindingIds,omitempty"`
@@ -104,6 +110,20 @@ type MCPServerServiceRegisterRequest struct {
 	Tunneled *bool `json:"tunneled,omitempty"`
 	// Integration owners for the MCP server connector.
 	UserIds []string `json:"userIds,omitempty"`
+}
+
+func (m *MCPServerServiceRegisterRequest) GetAccessProfileIds() []string {
+	if m == nil {
+		return nil
+	}
+	return m.AccessProfileIds
+}
+
+func (m *MCPServerServiceRegisterRequest) GetAccessProvisioning() *MCPAccessProvisioningConfig {
+	if m == nil {
+		return nil
+	}
+	return m.AccessProvisioning
 }
 
 func (m *MCPServerServiceRegisterRequest) GetAcknowledgedFindingIds() []string {

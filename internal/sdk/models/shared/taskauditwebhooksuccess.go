@@ -4,6 +4,8 @@ package shared
 
 // The TaskAuditWebhookSuccess message.
 type TaskAuditWebhookSuccess struct {
+	// Optional comment supplied by the provisioning callback.
+	Comment *string `json:"comment,omitempty"`
 	// The webhookId field.
 	WebhookID *string `json:"webhookId,omitempty"`
 	// The webhookInstanceId field.
@@ -12,6 +14,13 @@ type TaskAuditWebhookSuccess struct {
 	WebhookName *string `json:"webhookName,omitempty"`
 	// The webhookUrl field.
 	WebhookURL *string `json:"webhookUrl,omitempty"`
+}
+
+func (t *TaskAuditWebhookSuccess) GetComment() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Comment
 }
 
 func (t *TaskAuditWebhookSuccess) GetWebhookID() *string {

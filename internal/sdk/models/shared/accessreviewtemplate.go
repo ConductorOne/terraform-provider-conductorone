@@ -92,6 +92,7 @@ const (
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByResource        AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE"
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByInheritance     AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE"
 	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByUsers           AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS"
+	AccessReviewTemplateScopeTypeAccessReviewScopeTypeByAccessProfiles  AccessReviewTemplateScopeType = "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES"
 )
 
 func (e AccessReviewTemplateScopeType) ToPointer() *AccessReviewTemplateScopeType {
@@ -102,7 +103,7 @@ func (e AccessReviewTemplateScopeType) ToPointer() *AccessReviewTemplateScopeTyp
 func (e *AccessReviewTemplateScopeType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS":
+		case "ACCESS_REVIEW_SCOPE_TYPE_UNSPECIFIED", "ACCESS_REVIEW_SCOPE_TYPE_BY_ENTITLEMENTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_CONFLICTS", "ACCESS_REVIEW_SCOPE_TYPE_BY_RESOURCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_INHERITANCE", "ACCESS_REVIEW_SCOPE_TYPE_BY_USERS", "ACCESS_REVIEW_SCOPE_TYPE_BY_ACCESS_PROFILES":
 			return true
 		}
 	}
@@ -115,6 +116,7 @@ func (e *AccessReviewTemplateScopeType) IsExact() bool {
 //
 // This message contains a oneof named slack_channel_details. Only a single field of the following list may be set at a time:
 //   - slackChannel
+//   - msTeamsChannel
 type AccessReviewTemplate struct {
 	AccessReviewDuration *string `json:"accessReviewDuration,omitempty"`
 	// The accuracyIssueAction field.
@@ -138,6 +140,7 @@ type AccessReviewTemplate struct {
 	// Auto-start configuration
 	//  next_scheduled_campaign_at will be used as the scheduled start date
 	AutoStartCampaign *bool                     `json:"autoStartCampaign,omitempty"`
+	CampaignSchedule  *CampaignSchedule         `json:"campaignSchedule,omitempty"`
 	ColumnConfig      *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	CreatedAt         *time.Time                `json:"createdAt,omitempty"`
 	// The defaultView field.
@@ -154,6 +157,7 @@ type AccessReviewTemplate struct {
 	InclusionScope *AccessReviewInclusionScope `json:"inclusionScope,omitempty"`
 	// Whether automatic campaign creation on the recurrence schedule is enabled.
 	IsCampaignScheduleEnabled *bool               `json:"isCampaignScheduleEnabled,omitempty"`
+	MsTeamsChannel            *MSTeamsChannel     `json:"msTeamsChannel,omitempty"`
 	NextScheduledCampaignAt   *time.Time          `json:"nextScheduledCampaignAt,omitempty"`
 	NotificationConfig        *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The number of campaigns that have been created from this template.
@@ -234,6 +238,13 @@ func (a *AccessReviewTemplate) GetAutoStartCampaign() *bool {
 	return a.AutoStartCampaign
 }
 
+func (a *AccessReviewTemplate) GetCampaignSchedule() *CampaignSchedule {
+	if a == nil {
+		return nil
+	}
+	return a.CampaignSchedule
+}
+
 func (a *AccessReviewTemplate) GetColumnConfig() *AccessReviewColumnConfig {
 	if a == nil {
 		return nil
@@ -302,6 +313,13 @@ func (a *AccessReviewTemplate) GetIsCampaignScheduleEnabled() *bool {
 		return nil
 	}
 	return a.IsCampaignScheduleEnabled
+}
+
+func (a *AccessReviewTemplate) GetMsTeamsChannel() *MSTeamsChannel {
+	if a == nil {
+		return nil
+	}
+	return a.MsTeamsChannel
 }
 
 func (a *AccessReviewTemplate) GetNextScheduledCampaignAt() *time.Time {
@@ -401,6 +419,7 @@ func (a *AccessReviewTemplate) GetUsePolicyOverride() *bool {
 //
 // This message contains a oneof named slack_channel_details. Only a single field of the following list may be set at a time:
 //   - slackChannel
+//   - msTeamsChannel
 type AccessReviewTemplateInput struct {
 	AccessReviewDuration *string `json:"accessReviewDuration,omitempty"`
 	// The accuracyIssueAction field.
@@ -424,6 +443,7 @@ type AccessReviewTemplateInput struct {
 	// Auto-start configuration
 	//  next_scheduled_campaign_at will be used as the scheduled start date
 	AutoStartCampaign *bool                     `json:"autoStartCampaign,omitempty"`
+	CampaignSchedule  *CampaignSchedule         `json:"campaignSchedule,omitempty"`
 	ColumnConfig      *AccessReviewColumnConfig `json:"columnConfig,omitempty"`
 	// The defaultView field.
 	DefaultView *AccessReviewTemplateDefaultView `json:"defaultView,omitempty"`
@@ -438,6 +458,7 @@ type AccessReviewTemplateInput struct {
 	InclusionScope *AccessReviewInclusionScope `json:"inclusionScope,omitempty"`
 	// Whether automatic campaign creation on the recurrence schedule is enabled.
 	IsCampaignScheduleEnabled *bool               `json:"isCampaignScheduleEnabled,omitempty"`
+	MsTeamsChannel            *MSTeamsChannel     `json:"msTeamsChannel,omitempty"`
 	NextScheduledCampaignAt   *time.Time          `json:"nextScheduledCampaignAt,omitempty"`
 	NotificationConfig        *NotificationConfig `json:"notificationConfig,omitempty"`
 	// The number of campaigns that have been created from this template.
@@ -517,6 +538,13 @@ func (a *AccessReviewTemplateInput) GetAutoStartCampaign() *bool {
 	return a.AutoStartCampaign
 }
 
+func (a *AccessReviewTemplateInput) GetCampaignSchedule() *CampaignSchedule {
+	if a == nil {
+		return nil
+	}
+	return a.CampaignSchedule
+}
+
 func (a *AccessReviewTemplateInput) GetColumnConfig() *AccessReviewColumnConfig {
 	if a == nil {
 		return nil
@@ -571,6 +599,13 @@ func (a *AccessReviewTemplateInput) GetIsCampaignScheduleEnabled() *bool {
 		return nil
 	}
 	return a.IsCampaignScheduleEnabled
+}
+
+func (a *AccessReviewTemplateInput) GetMsTeamsChannel() *MSTeamsChannel {
+	if a == nil {
+		return nil
+	}
+	return a.MsTeamsChannel
 }
 
 func (a *AccessReviewTemplateInput) GetNextScheduledCampaignAt() *time.Time {

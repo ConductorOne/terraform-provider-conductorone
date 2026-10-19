@@ -115,7 +115,9 @@ func (e *Oauth2Mode) IsExact() bool {
 	return false
 }
 
-// RequireToolApproval - Per-server override for tool auto-approval.
+// RequireToolApproval - Per-server override for tool approval on MCP servers without a saved
+//
+//	registration access level. UNSPECIFIED inherits the tenant setting.
 type RequireToolApproval string
 
 const (
@@ -271,8 +273,12 @@ type MCPServerView struct {
 	// Admin-provided display name.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Endpoint URL for external MCP servers. Read-only.
-	EndpointURL  *string    `json:"endpointUrl,omitempty"`
-	LastCalledAt *time.Time `json:"lastCalledAt,omitempty"`
+	EndpointURL *string `json:"endpointUrl,omitempty"`
+	// Whether the endpoint URL is immutable. True once the connector has
+	//  completed its first successful sync; the URL cannot be changed after
+	//  that point. Read-only.
+	EndpointURLLocked *bool      `json:"endpointUrlLocked,omitempty"`
+	LastCalledAt      *time.Time `json:"lastCalledAt,omitempty"`
 	// Opaque catalog entry ID for hosted MCP servers (27-character KSUID).
 	//  Obtain valid IDs from the ListCatalog or GetCatalog RPCs.
 	McpServerCatalogID *string `json:"mcpServerCatalogId,omitempty"`
@@ -342,7 +348,8 @@ type MCPServerView struct {
 	Oauth2TokenEndpointAuthMethod *string `json:"oauth2TokenEndpointAuthMethod,omitempty"`
 	// OAuth2 token URL. Read-only; derived from stored config.
 	Oauth2TokenURL *string `json:"oauth2TokenUrl,omitempty"`
-	// Per-server override for tool auto-approval.
+	// Per-server override for tool approval on MCP servers without a saved
+	//  registration access level. UNSPECIFIED inherits the tenant setting.
 	RequireToolApproval *RequireToolApproval `json:"requireToolApproval,omitempty"`
 	// Whether this is a hosted MCP server.
 	ServerType *ServerType `json:"serverType,omitempty"`
@@ -515,6 +522,13 @@ func (m *MCPServerView) GetEndpointURL() *string {
 		return nil
 	}
 	return m.EndpointURL
+}
+
+func (m *MCPServerView) GetEndpointURLLocked() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.EndpointURLLocked
 }
 
 func (m *MCPServerView) GetLastCalledAt() *time.Time {
@@ -793,7 +807,8 @@ type MCPServerViewInput struct {
 	// Opaque catalog entry ID for hosted MCP servers (27-character KSUID).
 	//  Obtain valid IDs from the ListCatalog or GetCatalog RPCs.
 	McpServerCatalogID *string `json:"mcpServerCatalogId,omitempty"`
-	// Per-server override for tool auto-approval.
+	// Per-server override for tool approval on MCP servers without a saved
+	//  registration access level. UNSPECIFIED inherits the tenant setting.
 	RequireToolApproval *RequireToolApproval `json:"requireToolApproval,omitempty"`
 	// Whether this is a hosted MCP server.
 	ServerType *ServerType `json:"serverType,omitempty"`

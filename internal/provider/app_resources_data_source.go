@@ -212,6 +212,11 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 									Computed:    true,
 									Description: `The id of the resource.`,
 								},
+								"is_manually_managed": schema.BoolAttribute{
+									Computed: true,
+									MarkdownDescription: `Whether the resource was created manually in ConductorOne rather than synced from a connector.` + "\n" +
+										` Only manually created resources can be deleted in ConductorOne.`,
+								},
 								"match_baton_id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The matchBatonId field.`,

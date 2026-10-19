@@ -4,14 +4,25 @@ package shared
 
 // The SearchCohortUsersRequest message.
 type SearchCohortUsersRequest struct {
+	AccessScope *AccessScope `json:"accessScope,omitempty"`
 	// Maximum number of users to return per page.
 	PageSize *int `json:"pageSize,omitempty"`
 	// Pagination token from a previous response.
 	PageToken *string `json:"pageToken,omitempty"`
 	// Additional profile filters to narrow the cohort user search.
 	ProfileFilters []ProfileFilter `json:"profileFilters,omitempty"`
-	// Optional list of entitlements to compute per-user coverage for.
+	// Deprecated. This endpoint no longer computes per-user coverage and
+	//  ignores this field.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	SelectedEntitlements []EntitlementRef `json:"selectedEntitlements,omitempty"`
+}
+
+func (s *SearchCohortUsersRequest) GetAccessScope() *AccessScope {
+	if s == nil {
+		return nil
+	}
+	return s.AccessScope
 }
 
 func (s *SearchCohortUsersRequest) GetPageSize() *int {

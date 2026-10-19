@@ -37,6 +37,7 @@ type AppEntitlementDataSourceModel struct {
 	AppIds                         []types.String                       `tfsdk:"app_ids"`
 	AppResourceID                  types.String                         `tfsdk:"app_resource_id"`
 	AppResourceTypeID              types.String                         `tfsdk:"app_resource_type_id"`
+	AppResourceTypeRefs            []tfTypes.ResourceTypeRef            `tfsdk:"app_resource_type_refs"`
 	AppUserIds                     []types.String                       `tfsdk:"app_user_ids"`
 	CertifyPolicyID                types.String                         `tfsdk:"certify_policy_id"`
 	ComplianceFrameworkIds         []types.String                       `tfsdk:"compliance_framework_ids"`
@@ -75,6 +76,7 @@ type AppEntitlementDataSourceModel struct {
 	NextPageToken                  types.String                         `tfsdk:"next_page_token"`
 	OnlyGetExpiring                types.Bool                           `tfsdk:"only_get_expiring"`
 	OverrideAccessRequestsDefaults types.Bool                           `tfsdk:"override_access_requests_defaults"`
+	OwnerUserIds                   []types.String                       `tfsdk:"owner_user_ids"`
 	PageSize                       types.Int32                          `tfsdk:"page_size"`
 	PageToken                      types.String                         `tfsdk:"page_token"`
 	Param                          types.String                         `tfsdk:"param"`
@@ -149,6 +151,26 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"app_resource_type_id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The ID of the app resource type that is associated with the app entitlement`,
+			},
+			"app_resource_type_refs": schema.ListNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"app_id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The appId field.`,
+						},
+						"id": schema.StringAttribute{
+							Optional:    true,
+							Description: `The id field.`,
+						},
+					},
+				},
+				MarkdownDescription: `Search for app entitlements whose resource type matches any of these real` + "\n" +
+					` (app_id, id) AppResourceType pairs — unlike resource_type_ids, which` + "\n" +
+					` matches by name and can't distinguish two apps' same-named or` + "\n" +
+					` system-wide-shared-id resource types (e.g. Credential). Takes precedence` + "\n" +
+					` over resource_type_ids when set.`,
 			},
 			"app_user_ids": schema.ListAttribute{
 				Optional:    true,
@@ -622,6 +644,12 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 			"override_access_requests_defaults": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Flag to indicate if the app-level access request settings have been overridden for the entitlement`,
+			},
+			"owner_user_ids": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Filter by users that have an explicit ownership binding to the entitlement.` + "\n" +
+					` This filter applies to every caller, including administrators.`,
 			},
 			"page_size": schema.Int32Attribute{
 				Optional:    true,

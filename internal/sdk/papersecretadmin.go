@@ -308,9 +308,9 @@ func (s *PaperSecretAdmin) SearchAuditEvents(ctx context.Context, request *share
 
 }
 
-// Revoke
-// Revoke allows admin to revoke any secret (not just their own).
-func (s *PaperSecretAdmin) Revoke(ctx context.Context, request operations.C1APISecretsV1PaperSecretAdminServiceRevokeRequest, opts ...operations.Option) (*operations.C1APISecretsV1PaperSecretAdminServiceRevokeResponse, error) {
+// Delete
+// Delete allows an admin to delete any Paper Vault.
+func (s *PaperSecretAdmin) Delete(ctx context.Context, request operations.C1APISecretsV1PaperSecretAdminServiceDeleteRequest, opts ...operations.Option) (*operations.C1APISecretsV1PaperSecretAdminServiceDeleteResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -338,11 +338,11 @@ func (s *PaperSecretAdmin) Revoke(ctx context.Context, request operations.C1APIS
 		SDKConfiguration: s.sdkConfiguration,
 		BaseURL:          baseURL,
 		Context:          ctx,
-		OperationID:      "c1.api.secrets.v1.PaperSecretAdminService.Revoke",
+		OperationID:      "c1.api.secrets.v1.PaperSecretAdminService.Delete",
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PaperSecretAdminServiceRevokeRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PaperSecretAdminServiceDeleteRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -405,7 +405,7 @@ func (s *PaperSecretAdmin) Revoke(ctx context.Context, request operations.C1APIS
 		}
 	}
 
-	res := &operations.C1APISecretsV1PaperSecretAdminServiceRevokeResponse{
+	res := &operations.C1APISecretsV1PaperSecretAdminServiceDeleteResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
@@ -420,12 +420,12 @@ func (s *PaperSecretAdmin) Revoke(ctx context.Context, request operations.C1APIS
 				return nil, err
 			}
 
-			var out shared.PaperSecretAdminServiceRevokeResponse
+			var out shared.PaperSecretAdminServiceDeleteResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.PaperSecretAdminServiceRevokeResponse = &out
+			res.PaperSecretAdminServiceDeleteResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

@@ -14,6 +14,7 @@ const (
 	FunctionTypeFunctionTypeUnspecified FunctionType = "FUNCTION_TYPE_UNSPECIFIED"
 	FunctionTypeFunctionTypeAny         FunctionType = "FUNCTION_TYPE_ANY"
 	FunctionTypeFunctionTypeCodeMode    FunctionType = "FUNCTION_TYPE_CODE_MODE"
+	FunctionTypeFunctionTypeConnector   FunctionType = "FUNCTION_TYPE_CONNECTOR"
 )
 
 func (e FunctionType) ToPointer() *FunctionType {
@@ -24,7 +25,7 @@ func (e FunctionType) ToPointer() *FunctionType {
 func (e *FunctionType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE":
+		case "FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE", "FUNCTION_TYPE_CONNECTOR":
 			return true
 		}
 	}
@@ -33,8 +34,20 @@ func (e *FunctionType) IsExact() bool {
 
 // Function represents a customer-provided code extension in the API
 type Function struct {
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
-	DeletedAt *time.Time `json:"deletedAt,omitempty"`
+	// browser_enabled marks the function as browser-capable: the executor
+	//  supervises a headless Chromium plus a default-deny egress proxy and
+	//  exposes CDP on loopback to the function's sandbox. Toggling it changes
+	//  the deployed image contents and executor arguments, so an update that
+	//  touches it triggers a redeployment, same as secrets or the outbound
+	//  network allowlist.
+	//
+	//  Scope today: code-mode functions only. Regular (ANY) functions run
+	//  pre-compiled binaries and the executor's compiled path has no browser
+	//  support; setting this on FUNCTION_TYPE_ANY is rejected. Connector-type
+	//  functions may join code-mode in the future.
+	BrowserEnabled *bool      `json:"browserEnabled,omitempty"`
+	CreatedAt      *time.Time `json:"createdAt,omitempty"`
+	DeletedAt      *time.Time `json:"deletedAt,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
@@ -93,6 +106,13 @@ func (f *Function) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (f *Function) GetBrowserEnabled() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.BrowserEnabled
 }
 
 func (f *Function) GetCreatedAt() *time.Time {
@@ -216,6 +236,18 @@ func (f *Function) GetWorkflowTemplateRefs() []string {
 
 // FunctionInput - Function represents a customer-provided code extension in the API
 type FunctionInput struct {
+	// browser_enabled marks the function as browser-capable: the executor
+	//  supervises a headless Chromium plus a default-deny egress proxy and
+	//  exposes CDP on loopback to the function's sandbox. Toggling it changes
+	//  the deployed image contents and executor arguments, so an update that
+	//  touches it triggers a redeployment, same as secrets or the outbound
+	//  network allowlist.
+	//
+	//  Scope today: code-mode functions only. Regular (ANY) functions run
+	//  pre-compiled binaries and the executor's compiled path has no browser
+	//  support; setting this on FUNCTION_TYPE_ANY is rejected. Connector-type
+	//  functions may join code-mode in the future.
+	BrowserEnabled *bool `json:"browserEnabled,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
@@ -247,6 +279,13 @@ type FunctionInput struct {
 	ScopedRoleIds []string `json:"scopedRoleIds,omitempty"`
 	// The secret field.
 	Secret map[string]string `json:"secret,omitempty"`
+}
+
+func (f *FunctionInput) GetBrowserEnabled() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.BrowserEnabled
 }
 
 func (f *FunctionInput) GetDescription() *string {

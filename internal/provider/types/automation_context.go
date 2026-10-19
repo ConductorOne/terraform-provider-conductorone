@@ -3,5 +3,5 @@
 package types
 
 type AutomationContext struct {
-	Context *Context `tfsdk:"context"`
+	Context *AutomationContextContext `tfsdk:"context"`
 }

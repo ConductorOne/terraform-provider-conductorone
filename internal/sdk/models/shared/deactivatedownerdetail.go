@@ -2,22 +2,22 @@
 
 package shared
 
-// Reason - The reason field.
-type Reason string
+// DeactivatedOwnerDetailReason - The reason field.
+type DeactivatedOwnerDetailReason string
 
 const (
-	ReasonDeactivatedOwnerReasonUnspecified        Reason = "DEACTIVATED_OWNER_REASON_UNSPECIFIED"
-	ReasonDeactivatedOwnerReasonUserDeleted        Reason = "DEACTIVATED_OWNER_REASON_USER_DELETED"
-	ReasonDeactivatedOwnerReasonUserDisabled       Reason = "DEACTIVATED_OWNER_REASON_USER_DISABLED"
-	ReasonDeactivatedOwnerReasonEmploymentInactive Reason = "DEACTIVATED_OWNER_REASON_EMPLOYMENT_INACTIVE"
+	DeactivatedOwnerDetailReasonDeactivatedOwnerReasonUnspecified        DeactivatedOwnerDetailReason = "DEACTIVATED_OWNER_REASON_UNSPECIFIED"
+	DeactivatedOwnerDetailReasonDeactivatedOwnerReasonUserDeleted        DeactivatedOwnerDetailReason = "DEACTIVATED_OWNER_REASON_USER_DELETED"
+	DeactivatedOwnerDetailReasonDeactivatedOwnerReasonUserDisabled       DeactivatedOwnerDetailReason = "DEACTIVATED_OWNER_REASON_USER_DISABLED"
+	DeactivatedOwnerDetailReasonDeactivatedOwnerReasonEmploymentInactive DeactivatedOwnerDetailReason = "DEACTIVATED_OWNER_REASON_EMPLOYMENT_INACTIVE"
 )
 
-func (e Reason) ToPointer() *Reason {
+func (e DeactivatedOwnerDetailReason) ToPointer() *DeactivatedOwnerDetailReason {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *Reason) IsExact() bool {
+func (e *DeactivatedOwnerDetailReason) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "DEACTIVATED_OWNER_REASON_UNSPECIFIED", "DEACTIVATED_OWNER_REASON_USER_DELETED", "DEACTIVATED_OWNER_REASON_USER_DISABLED", "DEACTIVATED_OWNER_REASON_EMPLOYMENT_INACTIVE":
@@ -33,12 +33,12 @@ func (e *Reason) IsExact() bool {
 //	can read as deactivated.
 type DeactivatedOwnerDetail struct {
 	// The reason field.
-	Reason *Reason `json:"reason,omitempty"`
+	Reason *DeactivatedOwnerDetailReason `json:"reason,omitempty"`
 	// The userId field.
 	UserID *string `json:"userId,omitempty"`
 }
 
-func (d *DeactivatedOwnerDetail) GetReason() *Reason {
+func (d *DeactivatedOwnerDetail) GetReason() *DeactivatedOwnerDetailReason {
 	if d == nil {
 		return nil
 	}

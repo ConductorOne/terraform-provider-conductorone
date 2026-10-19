@@ -32,21 +32,21 @@ func (e *SearchStepUpTransactionsRequestState) IsExact() bool {
 	return false
 }
 
-// TargetType - The targetType field.
-type TargetType string
+// SearchStepUpTransactionsRequestTargetType - The targetType field.
+type SearchStepUpTransactionsRequestTargetType string
 
 const (
-	TargetTypeTargetTypeUnspecified TargetType = "TARGET_TYPE_UNSPECIFIED"
-	TargetTypeTargetTypeTicket      TargetType = "TARGET_TYPE_TICKET"
-	TargetTypeTargetTypeTest        TargetType = "TARGET_TYPE_TEST"
+	SearchStepUpTransactionsRequestTargetTypeTargetTypeUnspecified SearchStepUpTransactionsRequestTargetType = "TARGET_TYPE_UNSPECIFIED"
+	SearchStepUpTransactionsRequestTargetTypeTargetTypeTicket      SearchStepUpTransactionsRequestTargetType = "TARGET_TYPE_TICKET"
+	SearchStepUpTransactionsRequestTargetTypeTargetTypeTest        SearchStepUpTransactionsRequestTargetType = "TARGET_TYPE_TEST"
 )
 
-func (e TargetType) ToPointer() *TargetType {
+func (e SearchStepUpTransactionsRequestTargetType) ToPointer() *SearchStepUpTransactionsRequestTargetType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *TargetType) IsExact() bool {
+func (e *SearchStepUpTransactionsRequestTargetType) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "TARGET_TYPE_UNSPECIFIED", "TARGET_TYPE_TICKET", "TARGET_TYPE_TEST":
@@ -69,7 +69,7 @@ type SearchStepUpTransactionsRequest struct {
 	// Filter by transaction state
 	State *SearchStepUpTransactionsRequestState `json:"state,omitempty"`
 	// The targetType field.
-	TargetType *TargetType `json:"targetType,omitempty"`
+	TargetType *SearchStepUpTransactionsRequestTargetType `json:"targetType,omitempty"`
 	// Filter by task ID (only applicable if target_type is TICKET)
 	TaskID *string `json:"taskId,omitempty"`
 	// Filter by user ID
@@ -129,7 +129,7 @@ func (s *SearchStepUpTransactionsRequest) GetState() *SearchStepUpTransactionsRe
 	return s.State
 }
 
-func (s *SearchStepUpTransactionsRequest) GetTargetType() *TargetType {
+func (s *SearchStepUpTransactionsRequest) GetTargetType() *SearchStepUpTransactionsRequestTargetType {
 	if s == nil {
 		return nil
 	}

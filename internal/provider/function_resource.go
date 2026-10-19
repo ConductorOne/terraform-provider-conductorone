@@ -33,6 +33,7 @@ type FunctionResource struct {
 // FunctionResourceModel describes the resource data model.
 type FunctionResourceModel struct {
 	Author                                types.String                                   `tfsdk:"author"`
+	BrowserEnabled                        types.Bool                                     `tfsdk:"browser_enabled"`
 	CommitMessage                         types.String                                   `tfsdk:"commit_message"`
 	CreatedAt                             types.String                                   `tfsdk:"created_at"`
 	DeletedAt                             types.String                                   `tfsdk:"-"`
@@ -69,6 +70,13 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:    true,
 				Description: `The author field.`,
 			},
+			"browser_enabled": schema.BoolAttribute{
+				Computed: true,
+				Optional: true,
+				MarkdownDescription: `browser_enabled creates the function as browser-capable. See` + "\n" +
+					` Function.browser_enabled. Rejected on FUNCTION_TYPE_ANY: browser` + "\n" +
+					` support is code-mode-only today.`,
+			},
 			"commit_message": schema.StringAttribute{
 				Optional:    true,
 				Description: `The commit message describing the initial code submission.`,
@@ -95,7 +103,7 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 				Optional: true,
 				MarkdownDescription: `The type of function to create. Use FUNCTION_TYPE_ANY for user functions —` + "\n" +
 					` that is the type the Functions UI lists. Do not use any other value.` + "\n" +
-					`possible known values include one of ["FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE"]`,
+					`possible known values include one of ["FUNCTION_TYPE_UNSPECIFIED", "FUNCTION_TYPE_ANY", "FUNCTION_TYPE_CODE_MODE", "FUNCTION_TYPE_CONNECTOR"]`,
 			},
 			"functions_service_delete_function_request": schema.SingleNestedAttribute{
 				Optional:    true,

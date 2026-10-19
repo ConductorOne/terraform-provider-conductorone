@@ -31,6 +31,36 @@ func (e *EnrollmentBehavior) IsExact() bool {
 	return false
 }
 
+// RequestCatalogType - The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile
+//
+//	created before the type was recorded; UNSPECIFIED only for a tenant whose
+//	backfill has not been run. Updates require the access profile types feature
+//	and an update mask containing "type".
+type RequestCatalogType string
+
+const (
+	RequestCatalogTypeRequestCatalogTypeUnspecified      RequestCatalogType = "REQUEST_CATALOG_TYPE_UNSPECIFIED"
+	RequestCatalogTypeRequestCatalogTypeCatalog          RequestCatalogType = "REQUEST_CATALOG_TYPE_CATALOG"
+	RequestCatalogTypeRequestCatalogTypeProfile          RequestCatalogType = "REQUEST_CATALOG_TYPE_PROFILE"
+	RequestCatalogTypeRequestCatalogTypeCatalogAndBundle RequestCatalogType = "REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE"
+	RequestCatalogTypeRequestCatalogTypeBundle           RequestCatalogType = "REQUEST_CATALOG_TYPE_BUNDLE"
+)
+
+func (e RequestCatalogType) ToPointer() *RequestCatalogType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCatalogType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "REQUEST_CATALOG_TYPE_UNSPECIFIED", "REQUEST_CATALOG_TYPE_CATALOG", "REQUEST_CATALOG_TYPE_PROFILE", "REQUEST_CATALOG_TYPE_CATALOG_AND_BUNDLE", "REQUEST_CATALOG_TYPE_BUNDLE":
+			return true
+		}
+	}
+	return false
+}
+
 // UnenrollmentBehavior - Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
 type UnenrollmentBehavior string
 
@@ -107,6 +137,11 @@ type RequestCatalog struct {
 	Published *bool `json:"published,omitempty"`
 	// Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
 	RequestBundle *bool `json:"requestBundle,omitempty"`
+	// The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile
+	//  created before the type was recorded; UNSPECIFIED only for a tenant whose
+	//  backfill has not been run. Updates require the access profile types feature
+	//  and an update mask containing "type".
+	Type *RequestCatalogType `json:"type,omitempty"`
 	// Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
 	UnenrollmentBehavior *UnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
 	// Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
@@ -197,6 +232,13 @@ func (r *RequestCatalog) GetRequestBundle() *bool {
 	return r.RequestBundle
 }
 
+func (r *RequestCatalog) GetType() *RequestCatalogType {
+	if r == nil {
+		return nil
+	}
+	return r.Type
+}
+
 func (r *RequestCatalog) GetUnenrollmentBehavior() *UnenrollmentBehavior {
 	if r == nil {
 		return nil
@@ -250,6 +292,11 @@ type RequestCatalogInput struct {
 	Published *bool `json:"published,omitempty"`
 	// Whether all the entitlements in the catalog can be requests at once. Your tenant must have the bundles feature to use this.
 	RequestBundle *bool `json:"requestBundle,omitempty"`
+	// The type of this access profile. Reports CATALOG_AND_BUNDLE for a profile
+	//  created before the type was recorded; UNSPECIFIED only for a tenant whose
+	//  backfill has not been run. Updates require the access profile types feature
+	//  and an update mask containing "type".
+	Type *RequestCatalogType `json:"type,omitempty"`
 	// Defines how to handle the revocation of the entitlements in the catalog during unenrollment.
 	UnenrollmentBehavior *UnenrollmentBehavior `json:"unenrollmentBehavior,omitempty"`
 	// Defines how to handle the revoke policies of the entitlements in the catalog during unenrollment.
@@ -312,6 +359,13 @@ func (r *RequestCatalogInput) GetRequestBundle() *bool {
 		return nil
 	}
 	return r.RequestBundle
+}
+
+func (r *RequestCatalogInput) GetType() *RequestCatalogType {
+	if r == nil {
+		return nil
+	}
+	return r.Type
 }
 
 func (r *RequestCatalogInput) GetUnenrollmentBehavior() *UnenrollmentBehavior {

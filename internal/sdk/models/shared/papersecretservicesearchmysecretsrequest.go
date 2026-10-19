@@ -2,7 +2,30 @@
 
 package shared
 
-// PaperSecretServiceSearchMySecretsRequestSecretType - Filter by secret type (optional)
+type AccessRelationships string
+
+const (
+	AccessRelationshipsPaperSecretAccessRelationshipUnspecified AccessRelationships = "PAPER_SECRET_ACCESS_RELATIONSHIP_UNSPECIFIED"
+	AccessRelationshipsPaperSecretAccessRelationshipCreator     AccessRelationships = "PAPER_SECRET_ACCESS_RELATIONSHIP_CREATOR"
+	AccessRelationshipsPaperSecretAccessRelationshipRecipient   AccessRelationships = "PAPER_SECRET_ACCESS_RELATIONSHIP_RECIPIENT"
+)
+
+func (e AccessRelationships) ToPointer() *AccessRelationships {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessRelationships) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PAPER_SECRET_ACCESS_RELATIONSHIP_UNSPECIFIED", "PAPER_SECRET_ACCESS_RELATIONSHIP_CREATOR", "PAPER_SECRET_ACCESS_RELATIONSHIP_RECIPIENT":
+			return true
+		}
+	}
+	return false
+}
+
+// PaperSecretServiceSearchMySecretsRequestSecretType - Filter by secret type. Unspecified returns all secret types.
 type PaperSecretServiceSearchMySecretsRequestSecretType string
 
 const (
@@ -26,7 +49,7 @@ func (e *PaperSecretServiceSearchMySecretsRequestSecretType) IsExact() bool {
 	return false
 }
 
-// PaperSecretServiceSearchMySecretsRequestSharingMode - Filter by sharing mode (optional)
+// PaperSecretServiceSearchMySecretsRequestSharingMode - Filter by sharing mode. Unspecified returns all sharing modes.
 type PaperSecretServiceSearchMySecretsRequestSharingMode string
 
 const (
@@ -106,20 +129,31 @@ func (e *PaperSecretServiceSearchMySecretsRequestStatuses) IsExact() bool {
 //
 //	Automatically scoped to current user.
 type PaperSecretServiceSearchMySecretsRequest struct {
+	// Restrict results by the authenticated user's relationship to the secret.
+	//  Empty preserves the historical creator-only behavior. When both values are
+	//  supplied, creator takes precedence for secrets shared with their creator.
+	AccessRelationships []AccessRelationships `json:"accessRelationships,omitempty"`
 	// The pageSize field.
 	PageSize *int `json:"pageSize,omitempty"`
 	// The pageToken field.
 	PageToken *string `json:"pageToken,omitempty"`
 	// Fuzzy search by display name
 	Query *string `json:"query,omitempty"`
-	// Filter by secret type (optional)
+	// Filter by secret type. Unspecified returns all secret types.
 	SecretType *PaperSecretServiceSearchMySecretsRequestSecretType `json:"secretType,omitempty"`
-	// Filter by sharing mode (optional)
+	// Filter by sharing mode. Unspecified returns all sharing modes.
 	SharingMode *PaperSecretServiceSearchMySecretsRequestSharingMode `json:"sharingMode,omitempty"`
 	// Sort order
 	SortBy *PaperSecretServiceSearchMySecretsRequestSortBy `json:"sortBy,omitempty"`
-	// Filter by status (optional)
+	// Filter by status. Empty returns all statuses.
 	Statuses []PaperSecretServiceSearchMySecretsRequestStatuses `json:"statuses,omitempty"`
+}
+
+func (p *PaperSecretServiceSearchMySecretsRequest) GetAccessRelationships() []AccessRelationships {
+	if p == nil {
+		return nil
+	}
+	return p.AccessRelationships
 }
 
 func (p *PaperSecretServiceSearchMySecretsRequest) GetPageSize() *int {

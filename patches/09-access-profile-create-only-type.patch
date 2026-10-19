@@ -1,0 +1,29 @@
+Subject: [PATCH] Keep access profile type creation-only in Terraform
+
+Configured access profile type changes require replacement. Omit the stored
+type from Terraform update requests while retaining the full SDK input model.
+TestAccessProfileTypeMappings covers create, read, and update behavior.
+
+--- a/internal/provider/access_profile_resource_sdk.go
++++ b/internal/provider/access_profile_resource_sdk.go
+@@ -189,12 +189,6 @@
+ 	} else {
+ 		requestBundle = nil
+ 	}
+-	typeVar := new(shared.RequestCatalogType)
+-	if !r.Type.IsUnknown() && !r.Type.IsNull() {
+-		*typeVar = shared.RequestCatalogType(r.Type.ValueString())
+-	} else {
+-		typeVar = nil
+-	}
+ 	unenrollmentBehavior := new(shared.UnenrollmentBehavior)
+ 	if !r.UnenrollmentBehavior.IsUnknown() && !r.UnenrollmentBehavior.IsNull() {
+ 		*unenrollmentBehavior = shared.UnenrollmentBehavior(r.UnenrollmentBehavior.ValueString())
+@@ -222,7 +216,6 @@
+ 		ID:                              id,
+ 		Published:                       published,
+ 		RequestBundle:                   requestBundle,
+-		Type:                            typeVar,
+ 		UnenrollmentBehavior:            unenrollmentBehavior,
+ 		UnenrollmentEntitlementBehavior: unenrollmentEntitlementBehavior,
+ 		VisibleToEveryone:               visibleToEveryone,

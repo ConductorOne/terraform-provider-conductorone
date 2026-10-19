@@ -671,6 +671,28 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 			appIds = append(appIds, r.AppIds[appIdsIndex].ValueString())
 		}
 	}
+	var appResourceTypeRefs []shared.ResourceTypeRef
+	if r.AppResourceTypeRefs != nil {
+		appResourceTypeRefs = make([]shared.ResourceTypeRef, 0, len(r.AppResourceTypeRefs))
+		for appResourceTypeRefsIndex := range r.AppResourceTypeRefs {
+			appID := new(string)
+			if !r.AppResourceTypeRefs[appResourceTypeRefsIndex].AppID.IsUnknown() && !r.AppResourceTypeRefs[appResourceTypeRefsIndex].AppID.IsNull() {
+				*appID = r.AppResourceTypeRefs[appResourceTypeRefsIndex].AppID.ValueString()
+			} else {
+				appID = nil
+			}
+			id := new(string)
+			if !r.AppResourceTypeRefs[appResourceTypeRefsIndex].ID.IsUnknown() && !r.AppResourceTypeRefs[appResourceTypeRefsIndex].ID.IsNull() {
+				*id = r.AppResourceTypeRefs[appResourceTypeRefsIndex].ID.ValueString()
+			} else {
+				id = nil
+			}
+			appResourceTypeRefs = append(appResourceTypeRefs, shared.ResourceTypeRef{
+				AppID: appID,
+				ID:    id,
+			})
+		}
+	}
 	var appUserIds []string
 	if r.AppUserIds != nil {
 		appUserIds = make([]string, 0, len(r.AppUserIds))
@@ -722,21 +744,21 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	if r.ExcludedEntitlementRefs != nil {
 		excludedEntitlementRefs = make([]shared.AppEntitlementRef, 0, len(r.ExcludedEntitlementRefs))
 		for excludedEntitlementRefsIndex := range r.ExcludedEntitlementRefs {
-			appID := new(string)
+			appId1 := new(string)
 			if !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.IsUnknown() && !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.IsNull() {
-				*appID = r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.ValueString()
+				*appId1 = r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].AppID.ValueString()
 			} else {
-				appID = nil
+				appId1 = nil
 			}
-			id := new(string)
+			id1 := new(string)
 			if !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.IsUnknown() && !r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.IsNull() {
-				*id = r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.ValueString()
+				*id1 = r.ExcludedEntitlementRefs[excludedEntitlementRefsIndex].ID.ValueString()
 			} else {
-				id = nil
+				id1 = nil
 			}
 			excludedEntitlementRefs = append(excludedEntitlementRefs, shared.AppEntitlementRef{
-				AppID: appID,
-				ID:    id,
+				AppID: appId1,
+				ID:    id1,
 			})
 		}
 	}
@@ -765,6 +787,13 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	} else {
 		onlyGetExpiring = nil
 	}
+	var ownerUserIds []string
+	if r.OwnerUserIds != nil {
+		ownerUserIds = make([]string, 0, len(r.OwnerUserIds))
+		for ownerUserIdsIndex := range r.OwnerUserIds {
+			ownerUserIds = append(ownerUserIds, r.OwnerUserIds[ownerUserIdsIndex].ValueString())
+		}
+	}
 	pageSize := new(int)
 	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
 		*pageSize = int(r.PageSize.ValueInt32())
@@ -775,14 +804,14 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	if r.PolicyRefs != nil {
 		policyRefs = make([]shared.PolicyRef, 0, len(r.PolicyRefs))
 		for policyRefsIndex := range r.PolicyRefs {
-			id1 := new(string)
+			id2 := new(string)
 			if !r.PolicyRefs[policyRefsIndex].ID.IsUnknown() && !r.PolicyRefs[policyRefsIndex].ID.IsNull() {
-				*id1 = r.PolicyRefs[policyRefsIndex].ID.ValueString()
+				*id2 = r.PolicyRefs[policyRefsIndex].ID.ValueString()
 			} else {
-				id1 = nil
+				id2 = nil
 			}
 			policyRefs = append(policyRefs, shared.PolicyRef{
-				ID: id1,
+				ID: id2,
 			})
 		}
 	}
@@ -796,21 +825,21 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	if r.Refs != nil {
 		refs = make([]shared.AppEntitlementRef, 0, len(r.Refs))
 		for refsIndex := range r.Refs {
-			appId1 := new(string)
+			appId2 := new(string)
 			if !r.Refs[refsIndex].AppID.IsUnknown() && !r.Refs[refsIndex].AppID.IsNull() {
-				*appId1 = r.Refs[refsIndex].AppID.ValueString()
+				*appId2 = r.Refs[refsIndex].AppID.ValueString()
 			} else {
-				appId1 = nil
+				appId2 = nil
 			}
-			id2 := new(string)
+			id3 := new(string)
 			if !r.Refs[refsIndex].ID.IsUnknown() && !r.Refs[refsIndex].ID.IsNull() {
-				*id2 = r.Refs[refsIndex].ID.ValueString()
+				*id3 = r.Refs[refsIndex].ID.ValueString()
 			} else {
-				id2 = nil
+				id3 = nil
 			}
 			refs = append(refs, shared.AppEntitlementRef{
-				AppID: appId1,
-				ID:    id2,
+				AppID: appId2,
+				ID:    id3,
 			})
 		}
 	}
@@ -859,6 +888,7 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 		AccessReviewID:          accessReviewID,
 		Alias:                   alias,
 		AppIds:                  appIds,
+		AppResourceTypeRefs:     appResourceTypeRefs,
 		AppUserIds:              appUserIds,
 		ComplianceFrameworkIds:  complianceFrameworkIds,
 		DisplayName:             displayName,
@@ -871,6 +901,7 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 		IsAutomated:             isAutomated,
 		MembershipType:          membershipType,
 		OnlyGetExpiring:         onlyGetExpiring,
+		OwnerUserIds:            ownerUserIds,
 		PageSize:                pageSize,
 		PolicyRefs:              policyRefs,
 		Query:                   query,

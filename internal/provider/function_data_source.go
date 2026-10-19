@@ -5,6 +5,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
@@ -28,6 +29,7 @@ type FunctionDataSource struct {
 
 // FunctionDataSourceModel describes the data model.
 type FunctionDataSourceModel struct {
+	BrowserEnabled           types.Bool              `tfsdk:"browser_enabled"`
 	CreatedAt                types.String            `tfsdk:"created_at"`
 	DeletedAt                types.String            `tfsdk:"deleted_at"`
 	Description              types.String            `tfsdk:"description"`
@@ -47,6 +49,7 @@ type FunctionDataSourceModel struct {
 	Query                    types.String            `tfsdk:"query"`
 	ScopedRoleIds            []types.String          `tfsdk:"scoped_role_ids"`
 	Secret                   map[string]types.String `tfsdk:"secret"`
+	SortOptions              *tfTypes.SortOptions    `tfsdk:"sort_options"`
 	UpdatedAt                types.String            `tfsdk:"updated_at"`
 	UseSpn                   types.Bool              `tfsdk:"use_spn"`
 	WorkflowTemplateRefs     []types.String          `tfsdk:"workflow_template_refs"`
@@ -63,6 +66,20 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 		MarkdownDescription: "Function DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"browser_enabled": schema.BoolAttribute{
+				Computed: true,
+				MarkdownDescription: `browser_enabled marks the function as browser-capable: the executor` + "\n" +
+					` supervises a headless Chromium plus a default-deny egress proxy and` + "\n" +
+					` exposes CDP on loopback to the function's sandbox. Toggling it changes` + "\n" +
+					` the deployed image contents and executor arguments, so an update that` + "\n" +
+					` touches it triggers a redeployment, same as secrets or the outbound` + "\n" +
+					` network allowlist.` + "\n" +
+					`` + "\n" +
+					` Scope today: code-mode functions only. Regular (ANY) functions run` + "\n" +
+					` pre-compiled binaries and the executor's compiled path has no browser` + "\n" +
+					` support; setting this on FUNCTION_TYPE_ANY is rejected. Connector-type` + "\n" +
+					` functions may join code-mode in the future.`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 			},
@@ -153,6 +170,20 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `The secret field.`,
+			},
+			"sort_options": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"descending": schema.BoolAttribute{
+						Optional:    true,
+						Description: `The descending field.`,
+					},
+					"order_by": schema.StringAttribute{
+						Optional:    true,
+						Description: `The orderBy field.`,
+					},
+				},
+				Description: `The SortOptions message.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

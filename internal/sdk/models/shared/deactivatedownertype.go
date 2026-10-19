@@ -9,6 +9,7 @@ const (
 	DeactivatedOwnerTypeSourceDeactivatedOwnerSourceUnspecified         DeactivatedOwnerTypeSource = "DEACTIVATED_OWNER_SOURCE_UNSPECIFIED"
 	DeactivatedOwnerTypeSourceDeactivatedOwnerSourceIdentityCorrelation DeactivatedOwnerTypeSource = "DEACTIVATED_OWNER_SOURCE_IDENTITY_CORRELATION"
 	DeactivatedOwnerTypeSourceDeactivatedOwnerSourceOwnershipAssigned   DeactivatedOwnerTypeSource = "DEACTIVATED_OWNER_SOURCE_OWNERSHIP_ASSIGNED"
+	DeactivatedOwnerTypeSourceDeactivatedOwnerSourceSecretRunAsIdentity DeactivatedOwnerTypeSource = "DEACTIVATED_OWNER_SOURCE_SECRET_RUN_AS_IDENTITY"
 )
 
 func (e DeactivatedOwnerTypeSource) ToPointer() *DeactivatedOwnerTypeSource {
@@ -19,7 +20,7 @@ func (e DeactivatedOwnerTypeSource) ToPointer() *DeactivatedOwnerTypeSource {
 func (e *DeactivatedOwnerTypeSource) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "DEACTIVATED_OWNER_SOURCE_UNSPECIFIED", "DEACTIVATED_OWNER_SOURCE_IDENTITY_CORRELATION", "DEACTIVATED_OWNER_SOURCE_OWNERSHIP_ASSIGNED":
+		case "DEACTIVATED_OWNER_SOURCE_UNSPECIFIED", "DEACTIVATED_OWNER_SOURCE_IDENTITY_CORRELATION", "DEACTIVATED_OWNER_SOURCE_OWNERSHIP_ASSIGNED", "DEACTIVATED_OWNER_SOURCE_SECRET_RUN_AS_IDENTITY":
 			return true
 		}
 	}
@@ -28,9 +29,9 @@ func (e *DeactivatedOwnerTypeSource) IsExact() bool {
 
 // DeactivatedOwnerType - DeactivatedOwnerType: the human responsible for a target -- either the
 //
-//	AppUser's own correlated identity, or the ownership_v2-assigned owner of an
-//	AppResource/service-account AppUser -- is deactivated. Target: AppUserTarget
-//	or AppResourceTarget.
+//	AppUser's own correlated identity, an ownership_v2-assigned owner, or a
+//	secret's run-as identity is deactivated. Target: AppUserTarget or
+//	AppResourceTarget.
 type DeactivatedOwnerType struct {
 	// The source field.
 	Source *DeactivatedOwnerTypeSource `json:"source,omitempty"`
