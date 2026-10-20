@@ -33,10 +33,16 @@ components:
                   - c1Chart
                   - c1MetricCards
                   - c1Table
+                  - c1AppUserPicker
+                  - c1CredentialOfferingPicker
             properties:
                 button:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.a2ui.v1.ButtonComponent'
+                        - type: "null"
+                c1AppUserPicker:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.a2ui.v1.C1AppUserPickerComponent'
                         - type: "null"
                 c1Chart:
                     oneOf:
@@ -57,6 +63,10 @@ components:
                 c1ConnectorSyncProgress:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.a2ui.v1.C1ConnectorSyncProgressComponent'
+                        - type: "null"
+                c1CredentialOfferingPicker:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.a2ui.v1.C1CredentialOfferingPickerComponent'
                         - type: "null"
                 c1DurationPicker:
                     oneOf:
@@ -696,6 +706,28 @@ components:
             title: Button Component
             type: object
             x-speakeasy-name-override: ButtonComponent
+        c1.api.a2ui.v1.C1AppUserPickerComponent:
+            description: C1AppUserPickerComponent selects one of the caller's own accounts (app users) within an app.
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                label:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.a2ui.v1.DynamicString'
+                        - type: "null"
+                required:
+                    description: |-
+                        Selection is mandatory. Server sets it only when the user has more than one
+                         eligible account; with none or one the picker isn't shown.
+                    type: boolean
+                value:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.a2ui.v1.DynamicString'
+                        - type: "null"
+            title: C 1 App User Picker Component
+            type: object
+            x-speakeasy-name-override: C1AppUserPickerComponent
         c1.api.a2ui.v1.C1ChartCategoricalData:
             description: C1ChartCategoricalData is (label, value) slices for part-to-whole charts.
             properties:
@@ -945,6 +977,28 @@ components:
             title: C 1 Connector Sync Progress Component
             type: object
             x-speakeasy-name-override: C1ConnectorSyncProgressComponent
+        c1.api.a2ui.v1.C1CredentialOfferingPickerComponent:
+            description: |-
+                C1CredentialOfferingPickerComponent selects one of the caller's requestable credential offerings.
+                 Writes the selected offering ref {id, appId, catalogId, displayName} to the value path.
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                label:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.a2ui.v1.DynamicString'
+                        - type: "null"
+                required:
+                    description: The required field.
+                    type: boolean
+                value:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.a2ui.v1.DynamicString'
+                        - type: "null"
+            title: C 1 Credential Offering Picker Component
+            type: object
+            x-speakeasy-name-override: C1CredentialOfferingPickerComponent
         c1.api.a2ui.v1.C1DurationPickerComponent:
             description: |-
                 C1DurationPickerComponent is the access-request duration picker (presets + custom with number/unit).
@@ -1963,6 +2017,21 @@ components:
             title: Slack Notifications
             type: object
             x-speakeasy-name-override: SlackNotifications
+        c1.api.accessreview.v1.AccessProfileReviewDimensions:
+            description: Review dimensions an access-profile campaign covers. At least one is expected.
+            properties:
+                composition:
+                    description: The composition field.
+                    type: boolean
+                membershipCriteria:
+                    description: The membershipCriteria field.
+                    type: boolean
+                membershipExceptions:
+                    description: The membershipExceptions field.
+                    type: boolean
+            title: Access Profile Review Dimensions
+            type: object
+            x-speakeasy-name-override: AccessProfileReviewDimensions
         c1.api.accessreview.v1.AccessReview:
             description: |
                 An access review campaign (also called a certification campaign) that verifies whether users still need their access entitlements.
@@ -2677,7 +2746,15 @@ components:
                 This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
                   - excludedSpecificResources
                   - excludedResourceTypeSelections
+
+
+                This message contains a oneof named access_profiles_scope. Only a single field of the following list may be set at a time:
+                  - specificAccessProfiles
             properties:
+                accessProfileReviewDimensions:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.accessreview.v1.AccessProfileReviewDimensions'
+                        - type: "null"
                 accountCelExpression:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.accessreview.v1.CelExpressionScope'
@@ -2754,6 +2831,10 @@ components:
                 specificAccessConflicts:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.accessreview.v1.SpecificAccessConflictsScope'
+                        - type: "null"
+                specificAccessProfiles:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.accessreview.v1.SpecificAccessProfilesScope'
                         - type: "null"
                 specificResources:
                     oneOf:
@@ -3785,12 +3866,26 @@ components:
             type: object
             x-speakeasy-name-override: AllUsersScope
         c1.api.accessreview.v1.AppSelectionCriteriaScope:
-            description: The AppSelectionCriteriaScope message.
+            description: Selects entitlements matching every set field; values within a field are alternatives.
             properties:
+                appIds:
+                    description: The appIds field.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
                 complianceFrameworkAttributeValueIds:
                     description: The complianceFrameworkAttributeValueIds field.
                     items:
                         type: string
+                    type:
+                        - array
+                        - "null"
+                resourceTypeRefs:
+                    description: The resourceTypeRefs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.ResourceTypeRef'
                     type:
                         - array
                         - "null"
@@ -3854,8 +3949,12 @@ components:
             type: object
             x-speakeasy-name-override: CampaignInsights
         c1.api.accessreview.v1.CampaignSchedule:
-            description: When a template's campaigns open and close. One timezone governs both times.
+            description: When a campaign is created, opened and closed. One timezone governs all three.
             properties:
+                autoStartTime:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.accessreview.v1.CampaignScheduleTime'
+                        - type: "null"
                 endTime:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.accessreview.v1.CampaignScheduleTime'
@@ -4268,6 +4367,13 @@ components:
             title: Specific Access Conflicts Scope
             type: object
             x-speakeasy-name-override: SpecificAccessConflictsScope
+        c1.api.accessreview.v1.SpecificAccessProfilesScope:
+            description: |-
+                Empty marker for access-profile scoping.
+                 Actual profile selections stored in separate rows keyed by access_review_id.
+            title: Specific Access Profiles Scope
+            type: object
+            x-speakeasy-name-override: SpecificAccessProfilesScope
         c1.api.accessreview.v1.SpecificResourcesScope:
             description: The SpecificResourcesScope message.
             title: Specific Resources Scope
@@ -5644,7 +5750,7 @@ components:
             description: MCPAutomaticAccessProvisioning enables system-managed birthright access.
             properties:
                 enabled:
-                    description: Requires AI Governance Preview. Membership automation also requires JML.
+                    description: Requires JML for membership automation.
                     type: boolean
             title: Mcp Automatic Access Provisioning
             type: object
@@ -6404,6 +6510,14 @@ components:
                     type:
                         - array
                         - "null"
+                authValidationUrl:
+                    description: |-
+                        Authentication validation endpoint declared by the catalog impl. Set only
+                         when the impl declares an endpoint that rejects invalid credentials.
+                         Hosted connection tests are offered only for connect_type "mcp" entries
+                         with this set. May be a ${VAR} template over config_schema fields, like
+                         base_url.
+                    type: string
                 baseUrl:
                     description: |-
                         Connection base URL declared by the impl. May be a ${VAR} template over
@@ -7023,10 +7137,9 @@ components:
             x-speakeasy-name-override: MCPServerServiceSearchWithToolCountResponse
         c1.api.ai_governance.v1.MCPServerServiceTestConnectionRequest:
             description: |-
-                MCPServerServiceTestConnectionRequest exercises an
-                 MCPServerExternalConfig against the upstream server and reports whether
-                 the supplied URL + transport + credentials accept a real MCP
-                 initialize + tools/list.
+                MCPServerServiceTestConnectionRequest exercises a configured external or
+                 hosted MCP server against the upstream and reports whether credentials accept
+                 a real initialize + tools/list round trip.
             properties:
                 appId:
                     description: |-
@@ -7042,6 +7155,10 @@ components:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.ai_governance.v1.MCPServerExternalConfig'
                         - type: "null"
+                hostedConfig:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.ai_governance.v1.MCPServerHostedConfig'
+                        - type: "null"
                 updateMask:
                     type:
                         - string
@@ -7052,6 +7169,13 @@ components:
         c1.api.ai_governance.v1.MCPServerServiceTestConnectionResponse:
             description: The MCPServerServiceTestConnectionResponse message.
             properties:
+                credentialVerified:
+                    description: |-
+                        True when the upstream accepted the supplied credentials. For hosted
+                         configurations that means the catalog entry's auth_validation_url
+                         answered an authenticated tools/list. Always false when the configuration
+                         carries no credential.
+                    type: boolean
                 failureReason:
                     description: |-
                         Sanitized, human-readable explanation of why the probe failed, set
@@ -7061,19 +7185,17 @@ components:
                     type: string
                 reachable:
                     description: |-
-                        True when the MCP initialize handshake AND a tools/list call both
-                         succeeded against the upstream with the supplied credentials. False
-                         when the probe ran but the upstream was unreachable or rejected the
-                         request — see failure_reason. Malformed requests (missing/invalid
-                         config, bad permissions) are returned as a gRPC error, not
-                         reachable=false.
+                        True when a connection test completes successfully: the upstream was
+                         contacted with the supplied credentials. For hosted configurations that
+                         is an authenticated MCP tools/list against the catalog entry's
+                         auth_validation_url.
                     type: boolean
                 toolCount:
                     description: |-
-                        Number of tools advertised by the upstream's tools/list response.
-                         Zero when reachable=false; can also legitimately be zero when the
-                         server is reachable but exposes no tools. int64 to match
-                         MCPServerSearchWithToolCountResult.tool_count.
+                        Number of tools exposed by the connection test. For external
+                         configurations, this is the upstream tools/list result. For hosted
+                         configurations, this is the catalog tool surface. Zero when
+                         reachable=false. int64 to match MCPServerSearchWithToolCountResult.tool_count.
                     format: int64
                     type: string
             title: Mcp Server Service Test Connection Response
@@ -8778,6 +8900,83 @@ components:
             title: Virtual Mcp Toolset Binding Service List Response
             type: object
             x-speakeasy-name-override: VirtualMCPToolsetBindingServiceListResponse
+        c1.api.api_key.v1.APIKey:
+            description: |
+                APIKey is one API key search result: a personal client or a service principal key.
+
+                This message contains a oneof named key. Only a single field of the following list may be set at a time:
+                  - personalClient
+                  - servicePrincipalKey
+            properties:
+                personalClient:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.iam.v1.PersonalClient'
+                        - type: "null"
+                servicePrincipalKey:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.api_key.v1.ServicePrincipalAPIKey'
+                        - type: "null"
+            title: Api Key
+            type: object
+            x-speakeasy-name-override: APIKey
+        c1.api.api_key.v1.APIKeySearchServiceSearchRequest:
+            description: The APIKeySearchServiceSearchRequest message.
+            properties:
+                pageSize:
+                    description: The maximum number of results to return per page.
+                    format: int32
+                    type: integer
+                pageToken:
+                    description: A pagination token returned from a previous Search call.
+                    type: string
+                query:
+                    description: A text query to filter API keys by display name.
+                    type: string
+                types:
+                    description: The key types to return. When empty, both types are returned.
+                    items:
+                        enum:
+                            - API_KEY_TYPE_UNSPECIFIED
+                            - API_KEY_TYPE_PERSONAL
+                            - API_KEY_TYPE_SERVICE_PRINCIPAL
+                        type: string
+                        x-speakeasy-unknown-values: allow
+                    type:
+                        - array
+                        - "null"
+            title: Api Key Search Service Search Request
+            type: object
+            x-speakeasy-name-override: APIKeySearchServiceSearchRequest
+        c1.api.api_key.v1.APIKeySearchServiceSearchResponse:
+            description: The APIKeySearchServiceSearchResponse message.
+            properties:
+                list:
+                    description: The list of API keys matching the search criteria.
+                    items:
+                        $ref: '#/components/schemas/c1.api.api_key.v1.APIKey'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: A token to retrieve the next page of results, or empty if there are no more results.
+                    type: string
+            title: Api Key Search Service Search Response
+            type: object
+            x-speakeasy-name-override: APIKeySearchServiceSearchResponse
+        c1.api.api_key.v1.ServicePrincipalAPIKey:
+            description: ServicePrincipalAPIKey is a service principal credential with the caller's permissions on its service principal.
+            properties:
+                credential:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.service_principal.v1.ServicePrincipalCredential'
+                        - type: "null"
+                objectPermissions:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.authorization.v1.ActorObjectPermissions'
+                        - type: "null"
+            title: Service Principal Api Key
+            type: object
+            x-speakeasy-name-override: ServicePrincipalAPIKey
         c1.api.app.v1.AddAppEntitlementOwnerRequestInput:
             description: The request message for adding an app entitlement owner.
             properties:
@@ -9041,6 +9240,18 @@ components:
                     type:
                         - array
                         - "null"
+                catalogMode:
+                    description: |-
+                        How the apply pass treats catalog (access profile) bindings on matched
+                         entitlements. UNSPECIFIED reads as legacy list management; UNMANAGED means
+                         the rule does not manage the list and only the app's default request
+                         catalog follows the self-service switch.
+                    enum:
+                        - APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_UNSPECIFIED
+                        - APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_MANAGED
+                        - APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_UNMANAGED
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 defaultsEnabled:
                     description: If true the app level request configuration will be applied to specified resource types.
                     type: boolean
@@ -9102,6 +9313,18 @@ components:
                     type:
                         - array
                         - "null"
+                catalogMode:
+                    description: |-
+                        How the apply pass treats catalog (access profile) bindings on matched
+                         entitlements. UNSPECIFIED reads as legacy list management; UNMANAGED means
+                         the rule does not manage the list and only the app's default request
+                         catalog follows the self-service switch.
+                    enum:
+                        - APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_UNSPECIFIED
+                        - APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_MANAGED
+                        - APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_UNMANAGED
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 defaultsEnabled:
                     description: If true the app level request configuration will be applied to specified resource types.
                     type: boolean
@@ -10033,6 +10256,13 @@ components:
                 displayName:
                     description: Filter results to entitlements with this exact display name.
                     type: string
+                entitlementSlugs:
+                    description: Filter for entitlements whose slug is in this list (e.g. "read_only")
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
                 excludeAppIds:
                     description: Exclude app entitlements from the results that are in these app IDs.
                     items:
@@ -10047,6 +10277,9 @@ components:
                     type:
                         - array
                         - "null"
+                excludeAutomationEnabled:
+                    description: Exclude app entitlements that have automation enabled.
+                    type: boolean
                 excludeImmutable:
                     description: If true, exclude immutable entitlements (e.g., system-managed entitlements that cannot be modified).
                     type: boolean
@@ -11160,6 +11393,19 @@ components:
             title: App Secret Admin Service Revoke Response
             type: object
             x-speakeasy-name-override: AppSecretAdminServiceRevokeResponse
+        c1.api.app.v1.AppSecretExpandMask:
+            description: The AppSecretExpandMask message.
+            properties:
+                paths:
+                    description: The paths field.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+            title: App Secret Expand Mask
+            type: object
+            x-speakeasy-name-override: AppSecretExpandMask
         c1.api.app.v1.AppSecretRef:
             description: The AppSecretRef message.
             properties:
@@ -11175,6 +11421,108 @@ components:
             title: App Secret Ref
             type: object
             x-speakeasy-name-override: AppSecretRef
+        c1.api.app.v1.AppSecretResource:
+            description: The AppSecretResource message.
+            properties:
+                appId:
+                    description: The app that this secret belongs to.
+                    type: string
+                appResourceTypeId:
+                    description: The secret type that this secret is.
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+                deletedAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+                displayName:
+                    description: The display name for this secret.
+                    type: string
+                id:
+                    description: The id of the secret.
+                    type: string
+                identityAppUserId:
+                    description: The ID of the user that is associated with the AppSecret.
+                    type: string
+                lastUsedAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+                secretCreatedAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+                secretExpiresAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+                updatedAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+            title: App Secret Resource
+            type: object
+            x-speakeasy-name-override: AppSecretResource
+        c1.api.app.v1.AppSecretResourceView:
+            description: |
+                The AppSecretResourceView message.
+
+                This message contains a oneof named destination. Only a single field of the following list may be set at a time:
+                  - paperVaultId
+                  - fullKnowledgeVaultId
+            properties:
+                alertCount:
+                    description: The alertCount field.
+                    format: int32
+                    type: integer
+                appPath:
+                    description: The appPath field.
+                    type: string
+                appSecret:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.app.v1.AppSecretResource'
+                        - type: "null"
+                credentialRevocation:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.app.v1.CredentialRevocation'
+                        - type: "null"
+                fullKnowledgeVaultId:
+                    description: |-
+                        The fullKnowledgeVaultId field.
+                        This field is part of the `destination` oneof.
+                        See the documentation for `c1.api.app.v1.AppSecretResourceView` for more details.
+                    type:
+                        - string
+                        - "null"
+                paperVaultId:
+                    description: |-
+                        The paperVaultId field.
+                        This field is part of the `destination` oneof.
+                        See the documentation for `c1.api.app.v1.AppSecretResourceView` for more details.
+                    type:
+                        - string
+                        - "null"
+                resourceTypePath:
+                    description: The resourceTypePath field.
+                    type: string
+            title: App Secret Resource View
+            type: object
+            x-speakeasy-name-override: AppSecretResourceView
         c1.api.app.v1.AppUsageControls:
             description: The AppUsageControls object describes some peripheral configuration for an app.
             properties:
@@ -12343,6 +12691,13 @@ components:
                     type:
                         - string
                         - "null"
+                errorKind:
+                    description: Classification of last_error. Unspecified when no classified error is present.
+                    enum:
+                        - ERROR_KIND_UNSPECIFIED
+                        - ERROR_KIND_AUTHORED_RUNTIME_SERVE_REFUSED
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 lastError:
                     description: The last error encountered by the connector.
                     type: string
@@ -12489,6 +12844,10 @@ components:
                     type:
                         - array
                         - "null"
+                deprovisionerPolicy:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.policy.v1.ProvisionPolicy'
+                        - type: "null"
                 description:
                     description: The description of the new entitlement.
                     type: string
@@ -13299,6 +13658,12 @@ components:
                     type:
                         - array
                         - "null"
+                maxRulesPerApp:
+                    description: |-
+                        The maximum number of routing rules this app may hold. Creating a rule
+                         fails once the app reaches this limit.
+                    format: int32
+                    type: integer
                 nextPageToken:
                     description: The nextPageToken field.
                     type: string
@@ -13923,12 +14288,7 @@ components:
                         - array
                         - "null"
                 direction:
-                    description: |-
-                        Direction to sort in. Unspecified falls back to ASC when sort_field is set.
-                         No defined_only validation here: protoc-gen-validate mis-resolves the
-                         cross-package enum name map to this file's c1.models.app.v1 import alias
-                         instead of c1.api.search.v1, which fails to compile. The query builder
-                         already treats any unrecognized value as ASC, so this is safe to omit.
+                    description: Direction to sort in. Unspecified falls back to ASC when sort_field is set.
                     enum:
                         - SORT_DIRECTION_UNSPECIFIED
                         - SORT_DIRECTION_ASC
@@ -14075,6 +14435,35 @@ components:
             title: Search App Resources Response
             type: object
             x-speakeasy-name-override: SearchAppResourcesResponse
+        c1.api.app.v1.SearchAppSecretsWithAlertCountResponse:
+            description: The SearchAppSecretsWithAlertCountResponse message.
+            properties:
+                expanded:
+                    description: The expanded field.
+                    items:
+                        additionalProperties: true
+                        description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+                        properties:
+                            '@type':
+                                description: The type of the serialized message.
+                                type: string
+                        type: object
+                    type:
+                        - array
+                        - "null"
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppSecretResourceView'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: Search App Secrets With Alert Count Response
+            type: object
+            x-speakeasy-name-override: SearchAppSecretsWithAlertCountResponse
         c1.api.app.v1.SearchAppsRequest:
             description: Search Apps by a few properties.
             properties:
@@ -14224,6 +14613,47 @@ components:
             title: Search Grant Feed Response
             type: object
             x-speakeasy-name-override: SearchGrantFeedResponse
+        c1.api.app.v1.SearchMyVendedCredentialsRequest:
+            description: |-
+                SearchMyVendedCredentialsRequest has the same filters as the general
+                 inventory search, but its distinct type carries the self-only permission.
+                 The server always scopes results to the signed-in requester's issuance
+                 tickets; callers cannot provide an identity-user filter.
+            properties:
+                appId:
+                    description: The appId field.
+                    type: string
+                expandMask:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.app.v1.AppSecretExpandMask'
+                        - type: "null"
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    type: string
+                query:
+                    description: The query field.
+                    type: string
+                refs:
+                    description: The refs field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.app.v1.AppSecretRef'
+                    type:
+                        - array
+                        - "null"
+                resourceTypeIds:
+                    description: The resourceTypeIds field.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+            title: Search My Vended Credentials Request
+            type: object
+            x-speakeasy-name-override: SearchMyVendedCredentialsRequest
         c1.api.app.v1.SearchPastGrantsRequest:
             description: The request message for searching historical grants.
             properties:
@@ -22883,6 +23313,22 @@ components:
             title: Agent Kind Count
             type: object
             x-speakeasy-name-override: AgentKindCount
+        c1.api.edge.v1.AuthzenRef:
+            description: |-
+                AuthzenRef names an AuthzenServer. An empty app_id means the Edge's own app
+                 for rules saved before cross-app references were supported.
+            properties:
+                appId:
+                    description: App that owns the AuthzenServer. Empty resolves to the Edge's app.
+                    type: string
+                serverId:
+                    description: |-
+                        ID of the AuthzenServer. It must exist in the target app and be in OBSERVE
+                         or ENFORCE mode.
+                    type: string
+            title: Authzen Ref
+            type: object
+            x-speakeasy-name-override: AuthzenRef
         c1.api.edge.v1.Edge:
             description: Edge is an application-owned configuration for egress and inference services.
             properties:
@@ -23019,6 +23465,21 @@ components:
             title: Edge
             type: object
             x-speakeasy-name-override: Edge
+        c1.api.edge.v1.EdgeCapabilitySummary:
+            description: EdgeCapabilitySummary describes the capability reports of a tenant's connected Edge processes.
+            properties:
+                lastReportedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                reportingProcesses:
+                    description: Edge processes with a live report.
+                    format: uint32
+                    type: integer
+            title: Edge Capability Summary
+            type: object
+            x-speakeasy-name-override: EdgeCapabilitySummary
         c1.api.edge.v1.EdgeCredentialInjection:
             description: EdgeCredentialInjection binds one C1 vault secret to one request header.
             properties:
@@ -23084,6 +23545,11 @@ components:
                         The host after canonicalization; empty when it could not be
                          canonicalized.
                     type: string
+                delegatedAuthzenServerId:
+                    description: |-
+                        The AuthzenServer that decides the host at request time, set only with
+                         EDGE_EGRESS_EVALUATION_OUTCOME_DELEGATED_TO_AUTHZEN.
+                    type: string
                 host:
                     description: The host as requested.
                     type: string
@@ -23106,6 +23572,7 @@ components:
                         - EDGE_EGRESS_EVALUATION_OUTCOME_INVALID_HOST
                         - EDGE_EGRESS_EVALUATION_OUTCOME_UNRESOLVED_DENY_RULE
                         - EDGE_EGRESS_EVALUATION_OUTCOME_SSRF_BLOCKED
+                        - EDGE_EGRESS_EVALUATION_OUTCOME_DELEGATED_TO_AUTHZEN
                     type: string
                     x-speakeasy-unknown-values: allow
                 ruleMatches:
@@ -23156,14 +23623,38 @@ components:
             type: object
             x-speakeasy-name-override: EdgeEgressPrincipal
         c1.api.edge.v1.EdgeEgressRule:
-            description: EdgeEgressRule is one ordered row of an Edge's egress access policy.
+            description: |
+                EdgeEgressRule is one ordered row of an Edge's egress access policy.
+
+                This message contains a oneof named pdp. Only a single field of the following list may be set at a time:
+                  - authzen
             properties:
+                allowEmptyEncodedBody:
+                    description: |-
+                        When true, a response or request whose declared Content-Encoding is a supported
+                         token (gzip, x-gzip, deflate, br, zstd) but whose body is empty or decodes to zero
+                         bytes is treated as an empty plaintext instead of failing closed. Off by default.
+                         Only meaningful on ALLOW rules.
+                    type: boolean
+                allowResponseDecodeRefusals:
+                    description: |-
+                        When true, a decode refusal raised while recursively decoding content nested inside a
+                         RESPONSE body (e.g. a gzip-looking byte run in a binary download that fails to inflate,
+                         an embedded encoding past the depth/size bounds) is recorded but does not by itself
+                         block the response. Confirmed findings (credentials, keys, PANs) still apply. Off by
+                         default. Only meaningful on ALLOW rules.
+                    type: boolean
+                authzen:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.AuthzenRef'
+                        - type: "null"
                 effect:
                     description: The effect field.
                     enum:
                         - EDGE_EGRESS_EFFECT_UNSPECIFIED
                         - EDGE_EGRESS_EFFECT_ALLOW
                         - EDGE_EGRESS_EFFECT_DENY
+                        - EDGE_EGRESS_EFFECT_AUTHZEN
                     type: string
                     x-speakeasy-unknown-values: allow
                 endpointPattern:
@@ -23242,6 +23733,46 @@ components:
             title: Edge Egress Rule
             type: object
             x-speakeasy-name-override: EdgeEgressRule
+        c1.api.edge.v1.EdgeEgressRuleEntitlementIssue:
+            description: |-
+                EdgeEgressRuleEntitlementIssue is one egress rule whose entitlement does not
+                 resolve.
+            properties:
+                cause:
+                    description: The cause field.
+                    enum:
+                        - EDGE_EGRESS_RULE_ENTITLEMENT_ISSUE_CAUSE_UNSPECIFIED
+                        - EDGE_EGRESS_RULE_ENTITLEMENT_ISSUE_CAUSE_DELETED
+                        - EDGE_EGRESS_RULE_ENTITLEMENT_ISSUE_CAUSE_MISSING
+                        - EDGE_EGRESS_RULE_ENTITLEMENT_ISSUE_CAUSE_OVER_CAP
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                deletedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                enforcement:
+                    description: What the Edge enforces for this rule.
+                    enum:
+                        - EDGE_EGRESS_RULE_ENTITLEMENT_ISSUE_ENFORCEMENT_UNSPECIFIED
+                        - EDGE_EGRESS_RULE_ENTITLEMENT_ISSUE_ENFORCEMENT_NOT_ENFORCED
+                        - EDGE_EGRESS_RULE_ENTITLEMENT_ISSUE_ENFORCEMENT_DENIES_EVERYONE
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                entitlementDisplayName:
+                    description: The entitlement's name, when its row could be read.
+                    type: string
+                entitlementId:
+                    description: The entitlementId field.
+                    type: string
+                ruleIndex:
+                    description: Zero-based index into the saved rules.
+                    format: int32
+                    type: integer
+            title: Edge Egress Rule Entitlement Issue
+            type: object
+            x-speakeasy-name-override: EdgeEgressRuleEntitlementIssue
         c1.api.edge.v1.EdgeEgressRuleList:
             description: EdgeEgressRuleList wraps a rule list so an empty list is distinct from none.
             properties:
@@ -23270,12 +23801,24 @@ components:
                 valid:
                     description: The valid field.
                     type: boolean
+                warnings:
+                    description: Things worth fixing that do not stop Update from saving the list.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRuleWarning'
+                    type:
+                        - array
+                        - "null"
             title: Edge Egress Rule List Check
             type: object
             x-speakeasy-name-override: EdgeEgressRuleListCheck
         c1.api.edge.v1.EdgeEgressRuleMatch:
             description: EdgeEgressRuleMatch is one rule whose pattern matches an evaluated host.
             properties:
+                entitlementOverCap:
+                    description: |-
+                        A Deny rule whose entitlement has more members than the Edge config
+                         carries; it applies to every user, so principal_match is MATCHES.
+                    type: boolean
                 principalMatch:
                     description: The principalMatch field.
                     enum:
@@ -23308,6 +23851,10 @@ components:
                         - EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_PATTERN
                         - EDGE_EGRESS_RULE_PROBLEM_KIND_UNKNOWN_ENTITLEMENT
                         - EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_BODY_LIMIT
+                        - EDGE_EGRESS_RULE_PROBLEM_KIND_AUTHZEN_SERVER_REQUIRED
+                        - EDGE_EGRESS_RULE_PROBLEM_KIND_UNEXPECTED_AUTHZEN_SERVER
+                        - EDGE_EGRESS_RULE_PROBLEM_KIND_UNKNOWN_AUTHZEN_SERVER
+                        - EDGE_EGRESS_RULE_PROBLEM_KIND_INACTIVE_AUTHZEN_SERVER
                     type: string
                     x-speakeasy-unknown-values: allow
                 message:
@@ -23320,6 +23867,38 @@ components:
             title: Edge Egress Rule Problem
             type: object
             x-speakeasy-name-override: EdgeEgressRuleProblem
+        c1.api.edge.v1.EdgeEgressRuleWarning:
+            description: EdgeEgressRuleWarning is one non-blocking concern about a rule list.
+            properties:
+                authzenServerId:
+                    description: The AuthzenServer an AUTHZEN rule names, for the AUTHZEN warning kinds.
+                    type: string
+                kind:
+                    description: The kind field.
+                    enum:
+                        - EDGE_EGRESS_RULE_WARNING_KIND_UNSPECIFIED
+                        - EDGE_EGRESS_RULE_WARNING_KIND_AUTHZEN_EVALUATE_GRANT_MISSING
+                        - EDGE_EGRESS_RULE_WARNING_KIND_AUTHZEN_NO_EDGE_PRINCIPAL
+                        - EDGE_EGRESS_RULE_WARNING_KIND_HOST_DECISION_BYPASSES_AUTHZEN_RULE
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                message:
+                    description: Human-readable explanation, including how to fix it.
+                    type: string
+                ruleIndex:
+                    description: Zero-based rule index, or -1 for a warning about the whole list.
+                    format: int32
+                    type: integer
+                servicePrincipalIds:
+                    description: The service principals bound to the Edge that lack the grant.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+            title: Edge Egress Rule Warning
+            type: object
+            x-speakeasy-name-override: EdgeEgressRuleWarning
         c1.api.edge.v1.EdgeInferenceCatalogEntry:
             description: EdgeInferenceCatalogEntry is a provider that Edge inference routes can target.
             properties:
@@ -23373,6 +23952,15 @@ components:
                 id:
                     description: Upstream model id to send.
                     type: string
+                supportedReasoningEfforts:
+                    description: |-
+                        Reasoning effort levels the model accepts (`none`, `minimal`, `low`, `medium`, `high`), lowest first.
+                         Empty means C1 does not know, so any level may be offered.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
             title: Edge Inference Catalog Model
             type: object
             x-speakeasy-name-override: EdgeInferenceCatalogModel
@@ -23381,6 +23969,9 @@ components:
                 EdgeInferenceCatalogVariant is one way to reach a provider: a provider profile with its native format,
                  destination, credential source and model id grammar.
             properties:
+                availabilityWarning:
+                    description: Set when only some connected Edge processes can serve the variant, as during a rollout.
+                    type: string
                 credentialRecipe:
                     description: Credential recipe for AWS variants; empty otherwise.
                     type: string
@@ -23392,6 +23983,13 @@ components:
                         - EDGE_INFERENCE_CREDENTIAL_SOURCE_AWS_WORKLOAD_IDENTITY
                     type: string
                     x-speakeasy-unknown-values: allow
+                defaultSupportedReasoningEfforts:
+                    description: Reasoning effort levels assumed for a model id that is not suggested, lowest first. Empty means unknown.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
                 destination:
                     description: Destination written to the target. AWS variants use a template with {region}.
                     type: string
@@ -23426,6 +24024,15 @@ components:
                     type:
                         - array
                         - "null"
+                unavailable:
+                    description: |-
+                        True when every Edge process this tenant has connected has reported that it cannot serve this variant. False,
+                         including when no Edge has reported, means the variant is offered as before. Region-scoped variants are not
+                         gated here because the region is chosen later.
+                    type: boolean
+                unavailableReason:
+                    description: Why the variant is unavailable. Set only with unavailable.
+                    type: string
                 upstreamPath:
                     description: The upstreamPath field.
                     type: string
@@ -23514,6 +24121,79 @@ components:
             title: Edge Inference Judge
             type: object
             x-speakeasy-name-override: EdgeInferenceJudge
+        c1.api.edge.v1.EdgeInferenceModelFamily:
+            description: EdgeInferenceModelFamily groups registered models, e.g. "Claude Opus".
+            properties:
+                family:
+                    description: Family name; models with no family are grouped under their own display name.
+                    type: string
+                models:
+                    description: The models field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeInferenceRegistryModel'
+                    type:
+                        - array
+                        - "null"
+            title: Edge Inference Model Family
+            type: object
+            x-speakeasy-name-override: EdgeInferenceModelFamily
+        c1.api.edge.v1.EdgeInferenceRegistryModel:
+            description: EdgeInferenceRegistryModel is a model C1 has registered for use.
+            properties:
+                contextWindowTokens:
+                    description: Zero when unknown.
+                    format: uint32
+                    type: integer
+                displayName:
+                    description: The displayName field.
+                    type: string
+                modelId:
+                    description: Registry model id, written to EdgeInferenceRoute.registry_model_id.
+                    type: string
+                routeId:
+                    description: 'Suggested route id: the model''s name in route id form.'
+                    type: string
+                serveOptions:
+                    description: Ways to serve the model, in C1's preferred order.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeInferenceServeOption'
+                    type:
+                        - array
+                        - "null"
+            title: Edge Inference Registry Model
+            type: object
+            x-speakeasy-name-override: EdgeInferenceRegistryModel
+        c1.api.edge.v1.EdgeInferenceRetry:
+            description: |-
+                Bounds the delay between provider attempts on one route. Only transient
+                 provider failures (rate limit, provider timeout, overload, a pre-response
+                 transport failure, a generic upstream error) ever wait; credential, policy,
+                 configuration and other 4xx rejections stay terminal.
+            properties:
+                baseMs:
+                    description: |-
+                        First backoff ceiling in milliseconds; doubles per consecutive transient
+                         failure in one provider traversal, up to the cap. Zero disables backoff.
+                    format: uint32
+                    type: integer
+                capMs:
+                    description: Largest delay in milliseconds, including a clamped provider Retry-After.
+                    format: uint32
+                    type: integer
+                jitter:
+                    description: |-
+                        Draw each delay uniformly from zero to the ceiling instead of waiting the
+                         ceiling exactly.
+                    type: boolean
+                maxSameTargetRetries:
+                    description: |-
+                        Extra attempts against the same target after a transient failure, before
+                         failing over. Each one spends one of the route's attempts.
+                    format: uint32
+                    type: integer
+            title: Edge Inference Retry
+            type: object
+            x-speakeasy-name-override: EdgeInferenceRetry
         c1.api.edge.v1.EdgeInferenceRoute:
             description: |-
                 EdgeInferenceRoute declares a caller-visible model selector and a bounded
@@ -23542,6 +24222,20 @@ components:
                         Deprecated setup-time pin. New writes must leave it empty; the runtime
                          resolves the active version of each target's Vault secret.
                     type: string
+                followedTier:
+                    description: |-
+                        C1 tier this route follows; UNSPECIFIED means it follows no tier. On write, a route that sets a tier must
+                         use the route_id c1-<tier>; the server replaces its targets and selection with the tier's current model,
+                         served through the providers this Edge already has credentials for, and also publishes that model's name
+                         as a second route. Clearing the tier (and publication) on a published route pins it to its current
+                         targets.
+                    enum:
+                        - EDGE_INFERENCE_TIER_UNSPECIFIED
+                        - EDGE_INFERENCE_TIER_FAST
+                        - EDGE_INFERENCE_TIER_BALANCED
+                        - EDGE_INFERENCE_TIER_BEST
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 nativeFormat:
                     description: Accepted native client request format; never inferred from caller headers.
                     enum:
@@ -23551,6 +24245,19 @@ components:
                         - EDGE_INFERENCE_NATIVE_FORMAT_ANTHROPIC_MESSAGES
                     type: string
                     x-speakeasy-unknown-values: allow
+                publication:
+                    description: |-
+                        Which C1-published route of a followed tier this is. Set by the server; send back the value you read.
+                         UNSPECIFIED for a tenant-authored route.
+                    enum:
+                        - EDGE_INFERENCE_ROUTE_PUBLICATION_UNSPECIFIED
+                        - EDGE_INFERENCE_ROUTE_PUBLICATION_TIER
+                        - EDGE_INFERENCE_ROUTE_PUBLICATION_MODEL_ALIAS
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                registryModelId:
+                    description: Registry model the route was built from; empty for a custom model.
+                    type: string
                 routeId:
                     description: |-
                         Tenant-owned route identifier, unique within the tenant. ListInferenceRoutes
@@ -23626,6 +24333,10 @@ components:
                     description: The recentWindow field.
                     format: uint32
                     type: integer
+                retry:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeInferenceRetry'
+                        - type: "null"
                 routeDeadlineMs:
                     description: The routeDeadlineMs field.
                     format: uint32
@@ -23656,6 +24367,35 @@ components:
             title: Edge Inference Selection
             type: object
             x-speakeasy-name-override: EdgeInferenceSelection
+        c1.api.edge.v1.EdgeInferenceServeOption:
+            description: |-
+                EdgeInferenceServeOption is one way an Edge can serve a registered model: a catalog variant and the exact
+                 upstream model id to send through it.
+            properties:
+                catalogEntryId:
+                    description: Catalog entry (provider) id.
+                    type: string
+                catalogVariantId:
+                    description: Catalog variant id within the entry.
+                    type: string
+                nativeFormat:
+                    description: Client format the option serves.
+                    enum:
+                        - EDGE_INFERENCE_NATIVE_FORMAT_UNSPECIFIED
+                        - EDGE_INFERENCE_NATIVE_FORMAT_OPENAI_RESPONSES
+                        - EDGE_INFERENCE_NATIVE_FORMAT_OPENAI_CHAT
+                        - EDGE_INFERENCE_NATIVE_FORMAT_ANTHROPIC_MESSAGES
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                region:
+                    description: AWS region the target uses; empty for API-key providers.
+                    type: string
+                upstreamModelId:
+                    description: Upstream model id to send.
+                    type: string
+            title: Edge Inference Serve Option
+            type: object
+            x-speakeasy-name-override: EdgeInferenceServeOption
         c1.api.edge.v1.EdgeInferenceStage:
             description: The EdgeInferenceStage message.
             properties:
@@ -23756,6 +24496,53 @@ components:
             title: Edge Inference Target
             type: object
             x-speakeasy-name-override: EdgeInferenceTarget
+        c1.api.edge.v1.EdgeInferenceTierOption:
+            description: EdgeInferenceTierOption is a C1 tier and the model it uses for the caller's tenant.
+            properties:
+                aliasRouteId:
+                    description: Route id published as the model alias.
+                    type: string
+                modelDisplayName:
+                    description: The modelDisplayName field.
+                    type: string
+                modelId:
+                    description: Registry model id the tier uses.
+                    type: string
+                routeId:
+                    description: Route id published for the tier, e.g. c1-fast.
+                    type: string
+                tier:
+                    description: The tier field.
+                    enum:
+                        - EDGE_INFERENCE_TIER_UNSPECIFIED
+                        - EDGE_INFERENCE_TIER_FAST
+                        - EDGE_INFERENCE_TIER_BALANCED
+                        - EDGE_INFERENCE_TIER_BEST
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Edge Inference Tier Option
+            type: object
+            x-speakeasy-name-override: EdgeInferenceTierOption
+        c1.api.edge.v1.EdgeInferenceUnservedTarget:
+            description: |-
+                EdgeInferenceUnservedTarget is a target of a configured inference route that connected Edge processes report
+                 they cannot serve.
+            properties:
+                partial:
+                    description: True when some connected Edge processes can still serve it.
+                    type: boolean
+                reason:
+                    description: The reason field.
+                    type: string
+                routeId:
+                    description: The routeId field.
+                    type: string
+                targetId:
+                    description: The targetId field.
+                    type: string
+            title: Edge Inference Unserved Target
+            type: object
+            x-speakeasy-name-override: EdgeInferenceUnservedTarget
         c1.api.edge.v1.EdgeRef:
             description: The EdgeRef message.
             properties:
@@ -24249,6 +25036,22 @@ components:
             title: Edge Service List Egress Denial Summary Response
             type: object
             x-speakeasy-name-override: EdgeServiceListEgressDenialSummaryResponse
+        c1.api.edge.v1.EdgeServiceListEgressRuleEntitlementIssuesResponse:
+            description: The EdgeServiceListEgressRuleEntitlementIssuesResponse message.
+            properties:
+                issues:
+                    description: |-
+                        One entry per saved Allow or Deny rule whose entitlement does not
+                         resolve, in rule order. Rules naming more distinct entitlements than the
+                         evaluation cap are not checked past it.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRuleEntitlementIssue'
+                    type:
+                        - array
+                        - "null"
+            title: Edge Service List Egress Rule Entitlement Issues Response
+            type: object
+            x-speakeasy-name-override: EdgeServiceListEgressRuleEntitlementIssuesResponse
         c1.api.edge.v1.EdgeServiceListEgressTopAgentsResponse:
             description: The EdgeServiceListEgressTopAgentsResponse message.
             properties:
@@ -24354,10 +25157,28 @@ components:
         c1.api.edge.v1.EdgeServiceListInferenceCatalogResponse:
             description: EdgeServiceListInferenceCatalogResponse contains every catalog entry.
             properties:
+                capabilitySummary:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeCapabilitySummary'
+                        - type: "null"
                 entries:
                     description: The entries field.
                     items:
                         $ref: '#/components/schemas/c1.api.edge.v1.EdgeInferenceCatalogEntry'
+                    type:
+                        - array
+                        - "null"
+                families:
+                    description: C1's registered models grouped by family, with the ways an Edge can serve each.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeInferenceModelFamily'
+                    type:
+                        - array
+                        - "null"
+                tiers:
+                    description: The model each C1 tier currently uses for the caller's tenant. A tier with no model is left out.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeInferenceTierOption'
                     type:
                         - array
                         - "null"
@@ -24369,10 +25190,21 @@ components:
                 EdgeServiceListInferenceRoutesResponse contains configured route metadata
                  for an application.
             properties:
+                capabilitySummary:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.edge.v1.EdgeCapabilitySummary'
+                        - type: "null"
                 routes:
                     description: The routes field.
                     items:
                         $ref: '#/components/schemas/c1.api.edge.v1.EdgeInferenceRouteOption'
+                    type:
+                        - array
+                        - "null"
+                unservedTargets:
+                    description: Targets of this app's routes that connected Edge processes cannot serve. Empty when none has reported.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeInferenceUnservedTarget'
                     type:
                         - array
                         - "null"
@@ -24490,6 +25322,7 @@ components:
                         - EDGE_EGRESS_EFFECT_UNSPECIFIED
                         - EDGE_EGRESS_EFFECT_ALLOW
                         - EDGE_EGRESS_EFFECT_DENY
+                        - EDGE_EGRESS_EFFECT_AUTHZEN
                     type: string
                     x-speakeasy-unknown-values: allow
                 host:
@@ -24538,6 +25371,7 @@ components:
                         - EDGE_EGRESS_EFFECT_UNSPECIFIED
                         - EDGE_EGRESS_EFFECT_ALLOW
                         - EDGE_EGRESS_EFFECT_DENY
+                        - EDGE_EGRESS_EFFECT_AUTHZEN
                     type: string
                     x-speakeasy-unknown-values: allow
                 resultingRules:
@@ -24560,6 +25394,15 @@ components:
                         - STATUS_UNRESOLVED_DENY_RULE
                     type: string
                     x-speakeasy-unknown-values: allow
+                warnings:
+                    description: |-
+                        Concerns about the decision that do not stop it from being saved, e.g. an
+                         Allow that goes before an AUTHZEN rule and so bypasses its server.
+                    items:
+                        $ref: '#/components/schemas/c1.api.edge.v1.EdgeEgressRuleWarning'
+                    type:
+                        - array
+                        - "null"
             title: Edge Service Preview Egress Host Decision Response
             type: object
             x-speakeasy-name-override: EdgeServicePreviewEgressHostDecisionResponse
@@ -25209,6 +26052,13 @@ components:
                     type:
                         - array
                         - "null"
+                policyVersion:
+                    description: |-
+                        The configuration version that decided the request: for a hosted Edge, the
+                         version C1 published for the Edge's configuration. An opaque digest, never
+                         comparable across planes. Empty when not recorded, including before
+                         authentication and on rows written before Time Bandit recorded it.
+                    type: string
                 principalUserId:
                     description: |-
                         The C1 user id source_principal resolves to, when it's an OIDC
@@ -25221,6 +26071,12 @@ components:
                          answered at all (100-599); 0 when there was none.
                     format: uint32
                     type: integer
+                reasonCode:
+                    description: |-
+                        Stable outcome code of the request: allowed, or the public error code the
+                         caller received. Set on request-level rows only; empty on provider-attempt
+                         rows and on rows written before Time Bandit recorded it.
+                    type: string
                 requestAuthority:
                     description: The requestAuthority field.
                     type: string
@@ -26784,6 +27640,7 @@ components:
                 This message contains a oneof named evidence. Only a single field of the following list may be set at a time:
                   - similarUsernameMatchEvidence
                   - serviceAccountMisclassificationEvidence
+                  - nhiUnownedEvidence
                   - deactivatedOwnerEvidence
                   - unusedSecretEvidence
                   - credentialPubliclyExposedEvidence
@@ -26961,6 +27818,10 @@ components:
                 nhiUnowned:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.finding.v1.NhiUnownedType'
+                        - type: "null"
+                nhiUnownedEvidence:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.finding.v1.NhiUnownedEvidence'
                         - type: "null"
                 objectPermissions:
                     oneOf:
@@ -28047,6 +28908,12 @@ components:
                         - FINDING_TYPE_EDGE
                     type: string
                     x-speakeasy-unknown-values: allow
+                hasRemediationPlaybook:
+                    deprecated: true
+                    description: |-
+                        Deprecated: always true, because remediation is available for all finding types.
+                         Kept for wire compatibility; clients should not gate on it.
+                    type: boolean
             title: Finding Type Setting
             type: object
             x-speakeasy-name-override: FindingTypeSetting
@@ -28250,6 +29117,26 @@ components:
             title: Mcp Gateway Tool Call Risk Type
             type: object
             x-speakeasy-name-override: McpGatewayToolCallRiskType
+        c1.api.finding.v1.NhiUnownedEvidence:
+            description: The NhiUnownedEvidence message.
+            properties:
+                checkedRoleSlug:
+                    description: The checkedRoleSlug field.
+                    type: string
+                ownerCount:
+                    description: The ownerCount field.
+                    format: uint32
+                    type: integer
+                suggestedOwners:
+                    description: The suggestedOwners field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.finding.v1.SuggestedOwner'
+                    type:
+                        - array
+                        - "null"
+            title: Nhi Unowned Evidence
+            type: object
+            x-speakeasy-name-override: NhiUnownedEvidence
         c1.api.finding.v1.NhiUnownedType:
             description: |-
                 NhiUnownedType: an AppResource with a non-human-identity type has no
@@ -28593,6 +29480,59 @@ components:
             title: Snooze Routing Action
             type: object
             x-speakeasy-name-override: SnoozeRoutingAction
+        c1.api.finding.v1.SuggestedOwner:
+            description: SuggestedOwner is a candidate owner for an unowned NHI.
+            properties:
+                confidencePercent:
+                    description: Max of reasons[].percent at detection time.
+                    format: uint32
+                    type: integer
+                reasons:
+                    description: The reasons field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.finding.v1.SuggestedOwnerReason'
+                    type:
+                        - array
+                        - "null"
+                userId:
+                    description: C1 User ID; readers resolve the name.
+                    type: string
+            title: Suggested Owner
+            type: object
+            x-speakeasy-name-override: SuggestedOwner
+        c1.api.finding.v1.SuggestedOwnerReason:
+            description: The SuggestedOwnerReason message.
+            properties:
+                denominator:
+                    description: The denominator field.
+                    format: uint32
+                    type: integer
+                kind:
+                    description: The kind field.
+                    enum:
+                        - SUGGESTED_OWNER_REASON_KIND_UNSPECIFIED
+                        - SUGGESTED_OWNER_REASON_KIND_CONNECTOR_REPORTED_OWNER
+                        - SUGGESTED_OWNER_REASON_KIND_GRANT_ON_RESOURCE
+                        - SUGGESTED_OWNER_REASON_KIND_CREDENTIAL_CREATOR
+                        - SUGGESTED_OWNER_REASON_KIND_SIBLING_NHI_OWNER
+                        - SUGGESTED_OWNER_REASON_KIND_APP_OWNER
+                        - SUGGESTED_OWNER_REASON_KIND_MANAGER_OF_INACTIVE_CANDIDATE
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                numerator:
+                    description: The numerator field.
+                    format: uint32
+                    type: integer
+                percent:
+                    description: 0..100, derived from numerator / denominator.
+                    format: uint32
+                    type: integer
+                relatedId:
+                    description: Entitlement, sibling resource or replaced user ID; never free text.
+                    type: string
+            title: Suggested Owner Reason
+            type: object
+            x-speakeasy-name-override: SuggestedOwnerReason
         c1.api.finding.v1.SuppressRoutingAction:
             description: The SuppressRoutingAction message.
             properties:
@@ -29530,6 +30470,23 @@ components:
                          support; setting this on FUNCTION_TYPE_ANY is rejected. Connector-type
                          functions may join code-mode in the future.
                     type: boolean
+                compileError:
+                    description: Compiler output when compile_status is FUNCTION_COMPILE_STATUS_FAILED.
+                    readOnly: true
+                    type: string
+                compileStatus:
+                    description: |-
+                        Compile state of the published commit for the function's current
+                         configuration. Populated by GetFunction only; unset in list responses.
+                    enum:
+                        - FUNCTION_COMPILE_STATUS_UNSPECIFIED
+                        - FUNCTION_COMPILE_STATUS_NOT_COMPILED
+                        - FUNCTION_COMPILE_STATUS_COMPILING
+                        - FUNCTION_COMPILE_STATUS_READY
+                        - FUNCTION_COMPILE_STATUS_FAILED
+                    readOnly: true
+                    type: string
+                    x-speakeasy-unknown-values: allow
                 createdAt:
                     format: date-time
                     readOnly: true
@@ -30282,6 +31239,36 @@ components:
             title: Functions Service Update Function Response
             type: object
             x-speakeasy-name-override: FunctionsServiceUpdateFunctionResponse
+        c1.api.funds.v1.AccountScope:
+            description: |
+                AccountScope identifies the tenant, user, application, or user-application
+                 account against which spending was admitted.
+
+                This message contains a oneof named kind. Only a single field of the following list may be set at a time:
+                  - tenant
+                  - subject
+                  - app
+                  - subjectApp
+            properties:
+                app:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.AppScope'
+                        - type: "null"
+                subject:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SubjectScope'
+                        - type: "null"
+                subjectApp:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SubjectAppScope'
+                        - type: "null"
+                tenant:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.funds.v1.TenantScope'
+                        - type: "null"
+            title: Account Scope
+            type: object
+            x-speakeasy-name-override: FundsAccountScope
         c1.api.funds.v1.AppCap:
             description: AppCap is one app's tenant-wide ceiling as the API renders it.
             properties:
@@ -30290,7 +31277,7 @@ components:
                     type: string
                 controls:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendControls'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendControls'
                         - type: "null"
                 createdAt:
                     format: date-time
@@ -30379,7 +31366,7 @@ components:
             properties:
                 limit:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendLimit'
                         - type: "null"
                 period:
                     description: Optional period override. Only valid together with the limit it denominates.
@@ -30439,12 +31426,21 @@ components:
             title: App Cap Service Unsuspend Response
             type: object
             x-speakeasy-name-override: AppCapServiceUnsuspendResponse
+        c1.api.funds.v1.AppScope:
+            description: AppScope identifies one application's account.
+            properties:
+                appId:
+                    description: Application ID of the account.
+                    type: string
+            title: App Scope
+            type: object
+            x-speakeasy-name-override: FundsAppScope
         c1.api.funds.v1.FundAssignment:
             description: FundAssignment is one principal's fund exception as the API renders it.
             properties:
                 controls:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendControls'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendControls'
                         - type: "null"
                 createdAt:
                     format: date-time
@@ -30524,7 +31520,7 @@ components:
                         - "null"
                 limit:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendLimit'
                         - type: "null"
                 reason:
                     description: 'Subject-visible: "why do I have this bump".'
@@ -30599,7 +31595,7 @@ components:
             properties:
                 limit:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendLimit'
                         - type: "null"
                 period:
                     description: Optional period override. Only valid together with the limit it denominates.
@@ -30675,11 +31671,11 @@ components:
                     type: string
                 defaultLimit:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendLimit'
                         - type: "null"
                 orgCeiling:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendControls'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendControls'
                         - type: "null"
                 period:
                     description: The root period every amount in the tenant is denominated in.
@@ -30730,7 +31726,7 @@ components:
                     type: string
                 defaultLimit:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendLimit'
                         - type: "null"
                 period:
                     description: The period field.
@@ -30819,7 +31815,7 @@ components:
             properties:
                 limit:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendLimit'
                         - type: "null"
                 period:
                     description: Optional period override for the ceiling. Only valid together with limit.
@@ -30901,7 +31897,7 @@ components:
                     type: string
                 grant:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendLimit'
                         - type: "null"
                 groupRef:
                     oneOf:
@@ -30946,7 +31942,7 @@ components:
                     type: string
                 grant:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendLimit'
                         - type: "null"
                 groupRef:
                     oneOf:
@@ -31103,7 +32099,7 @@ components:
                     type: string
                 controls:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendControls'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendControls'
                         - type: "null"
                 createdAt:
                     format: date-time
@@ -31233,7 +32229,7 @@ components:
             properties:
                 limit:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendLimit'
                         - type: "null"
                 period:
                     description: Optional period override. Only valid together with the limit it denominates.
@@ -31395,7 +32391,7 @@ components:
                     type: string
                 controls:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendControls'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendControls'
                         - type: "null"
                 createdAt:
                     format: date-time
@@ -31523,7 +32519,7 @@ components:
             properties:
                 limit:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.SpendLimit'
                         - type: "null"
                 period:
                     description: Optional period override. Only valid together with the limit it denominates.
@@ -31614,6 +32610,32 @@ components:
             title: Subject App Limit State Filter
             type: object
             x-speakeasy-name-override: SubjectAppLimitStateFilter
+        c1.api.funds.v1.SubjectAppScope:
+            description: SubjectAppScope identifies one user's account for an application.
+            properties:
+                appId:
+                    description: Application ID of the account.
+                    type: string
+                userId:
+                    description: User ID of the account owner.
+                    type: string
+            title: Subject App Scope
+            type: object
+            x-speakeasy-name-override: FundsSubjectAppScope
+        c1.api.funds.v1.SubjectScope:
+            description: SubjectScope identifies one user's account.
+            properties:
+                userId:
+                    description: User ID of the account owner.
+                    type: string
+            title: Subject Scope
+            type: object
+            x-speakeasy-name-override: FundsSubjectScope
+        c1.api.funds.v1.TenantScope:
+            description: TenantScope identifies the organization-wide account.
+            title: Tenant Scope
+            type: object
+            x-speakeasy-name-override: FundsTenantScope
         c1.api.golink.v1.GoLink:
             description: GoLink is the API representation of a short link.
             properties:
@@ -32055,7 +33077,7 @@ components:
         c1.api.history.v1.HistoryActor:
             description: |-
                 HistoryActor is a typed reference to whoever performed the change.
-                 kind mirrors the storage-model ActorKind enum; user_id is set when
+                 kind identifies the actor's service; user_id is set when
                  kind corresponds to a user principal (API / SUPPORT) so the frontend
                  can resolve the user via its own avatar / lookup hooks. Protos
                  reference objects by id; the frontend renders / caches itself.
@@ -32150,9 +33172,7 @@ components:
                         - array
                         - "null"
                 changeKind:
-                    description: |-
-                        Storage-model enum re-exported here for wire compatibility with the
-                         storage row. UNSPECIFIED should never appear on the wire.
+                    description: UNSPECIFIED should never appear on the wire.
                     enum:
                         - CHANGE_KIND_UNSPECIFIED
                         - CHANGE_KIND_CREATE
@@ -32918,6 +33938,11 @@ components:
             title: Announced Tunnel Service
             type: object
             x-speakeasy-name-override: AnnouncedTunnelService
+        c1.api.iam.v1.AnthropicCredentialFormat:
+            description: AnthropicCredentialFormat selects the Anthropic-compatible key family. It has no options yet.
+            title: Anthropic Credential Format
+            type: object
+            x-speakeasy-name-override: AnthropicCredentialFormat
         c1.api.iam.v1.ExternalClientInfo:
             description: |-
                 ExternalClientInfo provides information about an approved external client.
@@ -32933,6 +33958,7 @@ components:
                         - CLIENT_ID_TYPE_DCR
                         - CLIENT_ID_TYPE_METADATA_URL
                         - CLIENT_ID_TYPE_APP
+                        - CLIENT_ID_TYPE_STATIC
                     type: string
                     x-speakeasy-unknown-values: allow
                 clientIdUrl:
@@ -33065,6 +34091,206 @@ components:
             title: External Client Search Service Search Response
             type: object
             x-speakeasy-name-override: ExternalClientSearchServiceSearchResponse
+        c1.api.iam.v1.ExternalOAuthClientInfo:
+            description: ExternalOAuthClientInfo is the API representation of an ExternalOAuthClient.
+            properties:
+                authMethod:
+                    description: Token-endpoint authentication method. Populated for static clients.
+                    enum:
+                        - EXTERNAL_O_AUTH_CLIENT_AUTH_METHOD_UNSPECIFIED
+                        - EXTERNAL_O_AUTH_CLIENT_AUTH_METHOD_CLIENT_SECRET_BASIC
+                        - EXTERNAL_O_AUTH_CLIENT_AUTH_METHOD_CLIENT_SECRET_POST
+                        - EXTERNAL_O_AUTH_CLIENT_AUTH_METHOD_PRIVATE_KEY_JWT
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                clientId:
+                    description: The clientId field.
+                    type: string
+                clientIdType:
+                    description: The clientIdType field.
+                    enum:
+                        - CLIENT_ID_TYPE_UNSPECIFIED
+                        - CLIENT_ID_TYPE_DCR
+                        - CLIENT_ID_TYPE_METADATA_URL
+                        - CLIENT_ID_TYPE_APP
+                        - CLIENT_ID_TYPE_STATIC
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                clientIdUrl:
+                    description: The clientIdUrl field.
+                    type: string
+                clientName:
+                    description: The clientName field.
+                    type: string
+                createdAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                redirectUris:
+                    description: |-
+                        Registered redirect URIs. Populated for static clients; DCR/CIMD derive
+                         their redirect set from the registration or metadata document.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+                softwareId:
+                    description: DCR software_id from the client metadata document (empty for CIMD clients).
+                    type: string
+                updatedAt:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                verifiedDomain:
+                    description: Verified domain from client_id_url (e.g. "cursor.com"). Empty for DCR clients.
+                    type: string
+                wellKnownClient:
+                    description: The wellKnownClient field.
+                    enum:
+                        - WELL_KNOWN_CLIENT_UNSPECIFIED
+                        - WELL_KNOWN_CLIENT_UNKNOWN
+                        - WELL_KNOWN_CLIENT_CLAUDE_AI
+                        - WELL_KNOWN_CLIENT_CLAUDE_DESKTOP
+                        - WELL_KNOWN_CLIENT_CLAUDE_CODE
+                        - WELL_KNOWN_CLIENT_MCP_INSPECTOR
+                        - WELL_KNOWN_CLIENT_CHATGPT
+                        - WELL_KNOWN_CLIENT_VSCODE
+                        - WELL_KNOWN_CLIENT_CURSOR
+                        - WELL_KNOWN_CLIENT_WINDSURF
+                        - WELL_KNOWN_CLIENT_ZED
+                        - WELL_KNOWN_CLIENT_JETBRAINS
+                        - WELL_KNOWN_CLIENT_DOCKER_MCP_TOOLKIT
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: External O Auth Client Info
+            type: object
+            x-speakeasy-name-override: ExternalOAuthClientInfo
+        c1.api.iam.v1.ExternalOAuthClientServiceCreateRequest:
+            description: The ExternalOAuthClientServiceCreateRequest message.
+            properties:
+                authMethod:
+                    description: The authMethod field.
+                    enum:
+                        - EXTERNAL_O_AUTH_CLIENT_AUTH_METHOD_UNSPECIFIED
+                        - EXTERNAL_O_AUTH_CLIENT_AUTH_METHOD_CLIENT_SECRET_BASIC
+                        - EXTERNAL_O_AUTH_CLIENT_AUTH_METHOD_CLIENT_SECRET_POST
+                        - EXTERNAL_O_AUTH_CLIENT_AUTH_METHOD_PRIVATE_KEY_JWT
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                clientName:
+                    description: Operator-facing name shown on the consent screen and in the admin list.
+                    type: string
+                publicJwks:
+                    description: |-
+                        RFC 7517 JWK Set. Required when auth_method is PRIVATE_KEY_JWT and rejected
+                         otherwise.
+                    type: string
+                redirectUris:
+                    description: |-
+                        Exact redirect URIs the client may be sent to. Microsoft's fixed literal,
+                         for example, is registered here.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+            title: External O Auth Client Service Create Request
+            type: object
+            x-speakeasy-name-override: ExternalOAuthClientServiceCreateRequest
+        c1.api.iam.v1.ExternalOAuthClientServiceCreateResponse:
+            description: The ExternalOAuthClientServiceCreateResponse message.
+            properties:
+                client:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.iam.v1.ExternalOAuthClientInfo'
+                        - type: "null"
+                clientSecret:
+                    description: Revealed once. Empty for PRIVATE_KEY_JWT.
+                    type: string
+            title: External O Auth Client Service Create Response
+            type: object
+            x-speakeasy-name-override: ExternalOAuthClientServiceCreateResponse
+        c1.api.iam.v1.ExternalOAuthClientServiceRevokeRequest:
+            description: The ExternalOAuthClientServiceRevokeRequest message.
+            properties:
+                clientId:
+                    description: The clientId field.
+                    type: string
+            title: External O Auth Client Service Revoke Request
+            type: object
+            x-speakeasy-name-override: ExternalOAuthClientServiceRevokeRequest
+        c1.api.iam.v1.ExternalOAuthClientServiceRevokeResponse:
+            description: The ExternalOAuthClientServiceRevokeResponse message.
+            properties:
+                complete:
+                    description: |-
+                        False when grants remain to retire. The client is already revoked; call
+                         Revoke again to finish the sweep.
+                    type: boolean
+            title: External O Auth Client Service Revoke Response
+            type: object
+            x-speakeasy-name-override: ExternalOAuthClientServiceRevokeResponse
+        c1.api.iam.v1.ExternalOAuthClientServiceRotateSecretRequest:
+            description: The ExternalOAuthClientServiceRotateSecretRequest message.
+            properties:
+                clientId:
+                    description: The clientId field.
+                    type: string
+            title: External O Auth Client Service Rotate Secret Request
+            type: object
+            x-speakeasy-name-override: ExternalOAuthClientServiceRotateSecretRequest
+        c1.api.iam.v1.ExternalOAuthClientServiceRotateSecretResponse:
+            description: The ExternalOAuthClientServiceRotateSecretResponse message.
+            properties:
+                clientSecret:
+                    description: Revealed once, like Create.
+                    type: string
+            title: External O Auth Client Service Rotate Secret Response
+            type: object
+            x-speakeasy-name-override: ExternalOAuthClientServiceRotateSecretResponse
+        c1.api.iam.v1.ExternalOAuthClientServiceUpdateRequest:
+            description: The ExternalOAuthClientServiceUpdateRequest message.
+            properties:
+                clientId:
+                    description: The clientId field.
+                    type: string
+                clientName:
+                    description: Replacement display name shown on the consent screen and in the admin list.
+                    type: string
+                publicJwks:
+                    description: |-
+                        Replacement RFC 7517 JWK Set. Only accepted for a client that already
+                         authenticates with private_key_jwt.
+                    type: string
+                redirectUris:
+                    description: |-
+                        Replacement exact redirect set. A client always keeps at least one redirect
+                         URI.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+                updateMask:
+                    type:
+                        - string
+                        - "null"
+            title: External O Auth Client Service Update Request
+            type: object
+            x-speakeasy-name-override: ExternalOAuthClientServiceUpdateRequest
+        c1.api.iam.v1.ExternalOAuthClientServiceUpdateResponse:
+            description: The ExternalOAuthClientServiceUpdateResponse message.
+            properties:
+                client:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.iam.v1.ExternalOAuthClientInfo'
+                        - type: "null"
+            title: External O Auth Client Service Update Response
+            type: object
+            x-speakeasy-name-override: ExternalOAuthClientServiceUpdateResponse
         c1.api.iam.v1.GetRolesResponse:
             description: The GetRolesResponse message contains the retrieved role.
             properties:
@@ -33094,6 +34320,173 @@ components:
             title: List Roles Response
             type: object
             x-speakeasy-name-override: ListRolesResponse
+        c1.api.iam.v1.ModelAPIKey:
+            description: |
+                ModelAPIKey is returned by Get/List operations (metadata only, no secret).
+
+                This message contains a oneof named credential_format. Only a single field of the following list may be set at a time:
+                  - anthropic
+            properties:
+                anthropic:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.iam.v1.AnthropicCredentialFormat'
+                        - type: "null"
+                appId:
+                    description: The app this key is bound to.
+                    readOnly: true
+                    type: string
+                createdAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+                deletedAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+                displayName:
+                    description: The human-readable display name for this key.
+                    readOnly: true
+                    type: string
+                edgeId:
+                    description: The Edge inference route this key is bound to.
+                    readOnly: true
+                    type: string
+                expiresTime:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+                id:
+                    description: The unique ID of the model API key.
+                    readOnly: true
+                    type: string
+                lastUsedAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+                revokedAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+                scopeCeiling:
+                    description: The maximum scopes this key may use (intersection with live grants).
+                    items:
+                        type: string
+                    readOnly: true
+                    type:
+                        - array
+                        - "null"
+                updatedAt:
+                    format: date-time
+                    readOnly: true
+                    type:
+                        - string
+                        - "null"
+            title: Model Api Key
+            type: object
+            x-speakeasy-name-override: ModelAPIKey
+        c1.api.iam.v1.ModelAPIKeyServiceCreateRequest:
+            description: |
+                The ModelAPIKeyServiceCreateRequest message.
+
+                This message contains a oneof named credential_format. Only a single field of the following list may be set at a time:
+                  - anthropic
+            properties:
+                anthropic:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.iam.v1.AnthropicCredentialFormat'
+                        - type: "null"
+                appId:
+                    description: The app this key will access.
+                    type: string
+                displayName:
+                    description: Human-readable name for this key.
+                    type: string
+                edgeId:
+                    description: The Edge inference route for API calls with this key.
+                    type: string
+                expiresTime:
+                    format: date-time
+                    type:
+                        - string
+                        - "null"
+                scopeCeiling:
+                    description: Maximum scopes this key may use (must be subset of caller's grants and catalog).
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+            title: Model Api Key Service Create Request
+            type: object
+            x-speakeasy-name-override: ModelAPIKeyServiceCreateRequest
+        c1.api.iam.v1.ModelAPIKeyServiceCreateResponse:
+            description: The ModelAPIKeyServiceCreateResponse message.
+            properties:
+                bearerToken:
+                    description: |-
+                        The complete Bearer token for LLM API calls (only returned on Create, one-time reveal).
+                         Format: c1llm_{27-char-id}_{base64url-secret}
+                         This is the full authentication credential; store it securely and do not request it again.
+                    type: string
+                inferenceBaseUrl:
+                    description: The inference origin clients use as the API base URL. The key binding selects the Edge.
+                    type: string
+                key:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.iam.v1.ModelAPIKey'
+                        - type: "null"
+                resourceUri:
+                    description: The OAuth resource indicator for the Edge bound to this key.
+                    type: string
+            title: Model Api Key Service Create Response
+            type: object
+            x-speakeasy-name-override: ModelAPIKeyServiceCreateResponse
+        c1.api.iam.v1.ModelAPIKeyServiceGetResponse:
+            description: The ModelAPIKeyServiceGetResponse message.
+            properties:
+                key:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.iam.v1.ModelAPIKey'
+                        - type: "null"
+            title: Model Api Key Service Get Response
+            type: object
+            x-speakeasy-name-override: ModelAPIKeyServiceGetResponse
+        c1.api.iam.v1.ModelAPIKeyServiceListResponse:
+            description: The ModelAPIKeyServiceListResponse message.
+            properties:
+                keys:
+                    description: The requested model API keys (metadata only, no secrets).
+                    items:
+                        $ref: '#/components/schemas/c1.api.iam.v1.ModelAPIKey'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: Pagination token for the next page of results.
+                    type: string
+            title: Model Api Key Service List Response
+            type: object
+            x-speakeasy-name-override: ModelAPIKeyServiceListResponse
+        c1.api.iam.v1.ModelAPIKeyServiceRevokeRequestInput:
+            description: The ModelAPIKeyServiceRevokeRequest message.
+            title: Model Api Key Service Revoke Request
+            type: object
+            x-speakeasy-name-override: ModelAPIKeyServiceRevokeRequest
+        c1.api.iam.v1.ModelAPIKeyServiceRevokeResponse:
+            description: The ModelAPIKeyServiceRevokeResponse message.
+            title: Model Api Key Service Revoke Response
+            type: object
+            x-speakeasy-name-override: ModelAPIKeyServiceRevokeResponse
         c1.api.iam.v1.PersonalClient:
             description: The PersonalClient message contains information about a presonal client credential.
             properties:
@@ -34904,6 +36297,11 @@ components:
             title: Accept Instance
             type: object
             x-speakeasy-name-override: AcceptInstance
+        c1.api.policy.v1.AccessProfileOwnerApproval:
+            description: The AccessProfileOwnerApproval message.
+            title: Access Profile Owner Approval
+            type: object
+            x-speakeasy-name-override: AccessProfileOwnerApproval
         c1.api.policy.v1.Action:
             description: |
                 The Action message.
@@ -35090,6 +36488,13 @@ components:
                 batonActionInvocationId:
                     description: The batonActionInvocationId field.
                     type: string
+                partialResult:
+                    description: The created resource has unconfirmed requested effects.
+                    type: boolean
+                unaddedMemberCount:
+                    description: The unaddedMemberCount field.
+                    format: uint32
+                    type: integer
             title: Action Target Baton Resource Action Instance
             type: object
             x-speakeasy-name-override: ActionTargetBatonResourceActionInstance
@@ -35251,7 +36656,12 @@ components:
                   - webhook
                   - resourceOwners
                   - agent
+                  - accessProfileOwners
             properties:
+                accessProfileOwners:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.policy.v1.AccessProfileOwnerApproval'
+                        - type: "null"
                 agent:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.policy.v1.AgentApproval'
@@ -38394,6 +39804,55 @@ components:
             title: Create Bundle Automation Request
             type: object
             x-speakeasy-name-override: CreateBundleAutomationRequest
+        c1.api.requestcatalog.v1.CredentialOfferingView:
+            description: CredentialOfferingView is one connector credential kind published through an Access Profile.
+            properties:
+                allowedViews:
+                    description: The allowedViews field.
+                    format: int32
+                    type: integer
+                appId:
+                    description: The appId field.
+                    type: string
+                displayName:
+                    description: The displayName field.
+                    type: string
+                id:
+                    description: The id field.
+                    type: string
+                maxDuration:
+                    format: duration
+                    type:
+                        - string
+                        - "null"
+                requestCatalogId:
+                    description: |-
+                        The Access Profile that publishes this offering. An offering can be
+                         published through multiple profiles, so requests must retain this binding.
+                    type: string
+                requesterAccountSubject:
+                    description: |-
+                        True when the credential is issued for an account owned by the request
+                         recipient. Shared-account offerings never accept an account selection.
+                    type: boolean
+                requesterAppUserIds:
+                    description: |-
+                        Connector-compatible app accounts owned by the request recipient. This is
+                         populated only when the search has a target user. It never includes
+                         another user's app account.
+                    items:
+                        type: string
+                    type:
+                        - array
+                        - "null"
+                retrievalWindow:
+                    format: duration
+                    type:
+                        - string
+                        - "null"
+            title: Credential Offering View
+            type: object
+            x-speakeasy-name-override: CredentialOfferingView
         c1.api.requestcatalog.v1.DeleteBundleAutomationRequestInput:
             description: The request message for deleting a bundle automation from a catalog.
             title: Delete Bundle Automation Request
@@ -39278,6 +40737,44 @@ components:
             title: Scope With Roles
             type: object
             x-speakeasy-name-override: ScopeWithRoles
+        c1.api.requestcatalog.v1.SearchRequestableCredentialOfferingsRequest:
+            description: The SearchRequestableCredentialOfferingsRequest message.
+            properties:
+                appId:
+                    description: Limits the search to one app.
+                    type: string
+                pageSize:
+                    description: The pageSize field.
+                    format: int32
+                    type: integer
+                pageToken:
+                    description: The pageToken field.
+                    type: string
+                query:
+                    description: The query field.
+                    type: string
+                targetUserId:
+                    description: The user to search for. Defaults to the caller.
+                    type: string
+            title: Search Requestable Credential Offerings Request
+            type: object
+            x-speakeasy-name-override: SearchRequestableCredentialOfferingsRequest
+        c1.api.requestcatalog.v1.SearchRequestableCredentialOfferingsResponse:
+            description: The SearchRequestableCredentialOfferingsResponse message.
+            properties:
+                list:
+                    description: The list field.
+                    items:
+                        $ref: '#/components/schemas/c1.api.requestcatalog.v1.CredentialOfferingView'
+                    type:
+                        - array
+                        - "null"
+                nextPageToken:
+                    description: The nextPageToken field.
+                    type: string
+            title: Search Requestable Credential Offerings Response
+            type: object
+            x-speakeasy-name-override: SearchRequestableCredentialOfferingsResponse
         c1.api.requestcatalog.v1.SetBundleAutomationRequestInput:
             description: |
                 The request message for creating or updating a bundle automation rule on a catalog.
@@ -44211,6 +45708,26 @@ components:
             title: Step Up Required
             type: object
             x-speakeasy-name-override: StepUpRequired
+        c1.api.spendinsights.v1.AdmissionTrace:
+            description: AdmissionTrace records the bounded authority decision made during admission.
+            properties:
+                allocations:
+                    description: Per-scope limits resolved during admission.
+                    items:
+                        $ref: '#/components/schemas/c1.api.spendinsights.v1.TraceAllocation'
+                    type:
+                        - array
+                        - "null"
+                authorityRefs:
+                    description: Configurations read during admission.
+                    items:
+                        $ref: '#/components/schemas/c1.api.spendinsights.v1.AuthorityRef'
+                    type:
+                        - array
+                        - "null"
+            title: Admission Trace
+            type: object
+            x-speakeasy-name-override: AdmissionTrace
         c1.api.spendinsights.v1.AttributionCoverage:
             description: |-
                 AttributionCoverage explains gaps between settled spend and retained
@@ -44358,6 +45875,89 @@ components:
             title: Attribution Group
             type: object
             x-speakeasy-name-override: AttributionGroup
+        c1.api.spendinsights.v1.AuthorityRef:
+            description: AuthorityRef identifies a configuration and the revision admission read.
+            properties:
+                absent:
+                    description: Whether admission found no configuration of this kind.
+                    type: boolean
+                appEntitlementId:
+                    description: Application entitlement ID, for entitlement-binding authorities.
+                    type: string
+                appId:
+                    description: Application ID the configuration applies to.
+                    type: string
+                appUserId:
+                    description: Application user ID, for application-user authorities.
+                    type: string
+                kind:
+                    description: Type of configuration.
+                    enum:
+                        - AUTHORITY_KIND_UNSPECIFIED
+                        - AUTHORITY_KIND_FUND_POLICY
+                        - AUTHORITY_KIND_FUND_ASSIGNMENT
+                        - AUTHORITY_KIND_FUND_RULE
+                        - AUTHORITY_KIND_TENANT_APP_CAP
+                        - AUTHORITY_KIND_SUBJECT_APP_LIMIT
+                        - AUTHORITY_KIND_ENTITLEMENT_BINDING
+                        - AUTHORITY_KIND_APP_USER
+                        - AUTHORITY_KIND_USER
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                ruleId:
+                    description: Fund rule ID, for fund-rule authorities.
+                    type: string
+                userId:
+                    description: User ID the configuration applies to.
+                    type: string
+                version:
+                    description: Configuration revision read during admission.
+                    format: int64
+                    type: string
+            title: Authority Ref
+            type: object
+            x-speakeasy-name-override: AuthorityRef
+        c1.api.spendinsights.v1.ClawLLMRateSnapshot:
+            description: ClawLLMRateSnapshot records the exact price basis selected for a call.
+            properties:
+                asOf:
+                    description: Date the price basis took effect.
+                    type: string
+                cacheReadNanoPerMillionTokens:
+                    description: Cache-read token price, in nano-units per million tokens.
+                    format: int64
+                    type: string
+                cacheWriteNanoPerMillionTokens:
+                    description: Cache-write token price, in nano-units per million tokens.
+                    format: int64
+                    type: string
+                citation:
+                    description: Reference for the price basis.
+                    type: string
+                inputNanoPerMillionTokens:
+                    description: Input token price, in nano-units per million tokens.
+                    format: int64
+                    type: string
+                note:
+                    description: Operator note recorded with the price basis.
+                    type: string
+                outputNanoPerMillionTokens:
+                    description: Output token price, in nano-units per million tokens.
+                    format: int64
+                    type: string
+                source:
+                    description: Provenance of the recorded prices.
+                    enum:
+                        - CLAW_LLM_RATE_SOURCE_UNSPECIFIED
+                        - CLAW_LLM_RATE_SOURCE_LIST_PRICE
+                        - CLAW_LLM_RATE_SOURCE_NEGOTIATED
+                        - CLAW_LLM_RATE_SOURCE_OPERATOR_OVERRIDE
+                        - CLAW_LLM_RATE_SOURCE_CUSTOMER_SUPPLIED
+                    type: string
+                    x-speakeasy-unknown-values: allow
+            title: Claw Llm Rate Snapshot
+            type: object
+            x-speakeasy-name-override: ClawLLMRateSnapshot
         c1.api.spendinsights.v1.DenialEpisode:
             description: DenialEpisode represents repeated budget refusals for one scope and budget period.
             properties:
@@ -44436,12 +46036,12 @@ components:
                 reason:
                     description: Reason the calls were denied.
                     enum:
-                        - DENY_REASON_UNSPECIFIED
-                        - DENY_REASON_TENANT_FROZEN
-                        - DENY_REASON_SUSPENDED_BY_ADMIN
-                        - DENY_REASON_APP_SUSPENDED
-                        - DENY_REASON_APP_PAUSED_BY_YOU
-                        - DENY_REASON_NO_SUPPLY
+                        - SPEND_DENY_REASON_UNSPECIFIED
+                        - SPEND_DENY_REASON_TENANT_FROZEN
+                        - SPEND_DENY_REASON_SUSPENDED_BY_ADMIN
+                        - SPEND_DENY_REASON_APP_SUSPENDED
+                        - SPEND_DENY_REASON_APP_PAUSED_BY_YOU
+                        - SPEND_DENY_REASON_NO_SUPPLY
                     type: string
                     x-speakeasy-unknown-values: allow
                 requestTaskId:
@@ -44450,9 +46050,9 @@ components:
                 requestTaskState:
                     description: Current state of the associated access request task.
                     enum:
-                        - TICKET_STATE_UNSPECIFIED
-                        - TICKET_STATE_OPEN
-                        - TICKET_STATE_CLOSED
+                        - TASK_STATE_UNSPECIFIED
+                        - TASK_STATE_OPEN
+                        - TASK_STATE_CLOSED
                     type: string
                     x-speakeasy-unknown-values: allow
                 scopeAppId:
@@ -44461,11 +46061,11 @@ components:
                 scopeKind:
                     description: Budget scope that denied the calls.
                     enum:
-                        - SPEND_BLOCK_SCOPE_KIND_UNSPECIFIED
-                        - SPEND_BLOCK_SCOPE_KIND_TENANT
-                        - SPEND_BLOCK_SCOPE_KIND_SUBJECT
-                        - SPEND_BLOCK_SCOPE_KIND_APP
-                        - SPEND_BLOCK_SCOPE_KIND_SUBJECT_APP
+                        - SPEND_SCOPE_KIND_UNSPECIFIED
+                        - SPEND_SCOPE_KIND_TENANT
+                        - SPEND_SCOPE_KIND_SUBJECT
+                        - SPEND_SCOPE_KIND_APP
+                        - SPEND_SCOPE_KIND_SUBJECT_APP
                     type: string
                     x-speakeasy-unknown-values: allow
                 scopeUserId:
@@ -44525,11 +46125,11 @@ components:
                 scopeKind:
                     description: Optional budget scope to match.
                     enum:
-                        - SPEND_BLOCK_SCOPE_KIND_UNSPECIFIED
-                        - SPEND_BLOCK_SCOPE_KIND_TENANT
-                        - SPEND_BLOCK_SCOPE_KIND_SUBJECT
-                        - SPEND_BLOCK_SCOPE_KIND_APP
-                        - SPEND_BLOCK_SCOPE_KIND_SUBJECT_APP
+                        - SPEND_SCOPE_KIND_UNSPECIFIED
+                        - SPEND_SCOPE_KIND_TENANT
+                        - SPEND_SCOPE_KIND_SUBJECT
+                        - SPEND_SCOPE_KIND_APP
+                        - SPEND_SCOPE_KIND_SUBJECT_APP
                     type: string
                     x-speakeasy-unknown-values: allow
                 scopeUserId:
@@ -44584,7 +46184,7 @@ components:
                     type: boolean
                 authority:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.rrsp.v1.AuthorityRef'
+                        - $ref: '#/components/schemas/c1.api.spendinsights.v1.AuthorityRef'
                         - type: "null"
                 authorityFromExtension:
                     description: Whether an extension supplied the effective configuration.
@@ -44634,7 +46234,7 @@ components:
                     type: string
                 scope:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.AccountScope'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.AccountScope'
                         - type: "null"
                 tracking:
                     description: Whether this scope records spend without enforcing a finite limit.
@@ -44743,7 +46343,7 @@ components:
                         - type: "null"
                 historicalTrace:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.rrsp.v1.AdmissionTrace'
+                        - $ref: '#/components/schemas/c1.api.spendinsights.v1.AdmissionTrace'
                         - type: "null"
             title: Get Denial Response
             type: object
@@ -45012,7 +46612,7 @@ components:
                         - "null"
                 scope:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.AccountScope'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.AccountScope'
                         - type: "null"
             title: My Effective Scope
             type: object
@@ -45115,12 +46715,12 @@ components:
                 reason:
                     description: Reason the calls were denied.
                     enum:
-                        - DENY_REASON_UNSPECIFIED
-                        - DENY_REASON_TENANT_FROZEN
-                        - DENY_REASON_SUSPENDED_BY_ADMIN
-                        - DENY_REASON_APP_SUSPENDED
-                        - DENY_REASON_APP_PAUSED_BY_YOU
-                        - DENY_REASON_NO_SUPPLY
+                        - SPEND_DENY_REASON_UNSPECIFIED
+                        - SPEND_DENY_REASON_TENANT_FROZEN
+                        - SPEND_DENY_REASON_SUSPENDED_BY_ADMIN
+                        - SPEND_DENY_REASON_APP_SUSPENDED
+                        - SPEND_DENY_REASON_APP_PAUSED_BY_YOU
+                        - SPEND_DENY_REASON_NO_SUPPLY
                     type: string
                     x-speakeasy-unknown-values: allow
                 requestTaskId:
@@ -45128,7 +46728,7 @@ components:
                     type: string
                 scope:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.AccountScope'
+                        - $ref: '#/components/schemas/c1.api.funds.v1.AccountScope'
                         - type: "null"
                 state:
                     description: Whether this denial episode remains open.
@@ -45285,7 +46885,7 @@ components:
                     type: string
                 snapshot:
                     oneOf:
-                        - $ref: '#/components/schemas/c1.models.claw.v1.ClawLLMRateSnapshot'
+                        - $ref: '#/components/schemas/c1.api.spendinsights.v1.ClawLLMRateSnapshot'
                         - type: "null"
             title: Rate Basis Count
             type: object
@@ -45299,12 +46899,12 @@ components:
                 denialReason:
                     description: Reason spend is denied. Present only when state is DENIED.
                     enum:
-                        - DENY_REASON_UNSPECIFIED
-                        - DENY_REASON_TENANT_FROZEN
-                        - DENY_REASON_SUSPENDED_BY_ADMIN
-                        - DENY_REASON_APP_SUSPENDED
-                        - DENY_REASON_APP_PAUSED_BY_YOU
-                        - DENY_REASON_NO_SUPPLY
+                        - SPEND_DENY_REASON_UNSPECIFIED
+                        - SPEND_DENY_REASON_TENANT_FROZEN
+                        - SPEND_DENY_REASON_SUSPENDED_BY_ADMIN
+                        - SPEND_DENY_REASON_APP_SUSPENDED
+                        - SPEND_DENY_REASON_APP_PAUSED_BY_YOU
+                        - SPEND_DENY_REASON_NO_SUPPLY
                     type: string
                     x-speakeasy-unknown-values: allow
                 denialScopeName:
@@ -45330,6 +46930,40 @@ components:
             title: Resolve Effective Limits Response
             type: object
             x-speakeasy-name-override: ResolveEffectiveLimitsResponse
+        c1.api.spendinsights.v1.ResolvedAmount:
+            description: ResolvedAmount records the admitted nano-unit limit.
+            properties:
+                amountNano:
+                    description: Admitted limit, in nano-units.
+                    format: int64
+                    type: string
+            title: Resolved Amount
+            type: object
+            x-speakeasy-name-override: ResolvedAmount
+        c1.api.spendinsights.v1.ResolvedLimit:
+            description: |
+                ResolvedLimit records the historical limit of an admitted account.
+
+                This message contains a oneof named kind. Only a single field of the following list may be set at a time:
+                  - unlimited
+                  - amount
+            properties:
+                amount:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.spendinsights.v1.ResolvedAmount'
+                        - type: "null"
+                unlimited:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.spendinsights.v1.ResolvedUnlimited'
+                        - type: "null"
+            title: Resolved Limit
+            type: object
+            x-speakeasy-name-override: ResolvedLimit
+        c1.api.spendinsights.v1.ResolvedUnlimited:
+            description: ResolvedUnlimited records accounting without a finite admission limit.
+            title: Resolved Unlimited
+            type: object
+            x-speakeasy-name-override: ResolvedUnlimited
         c1.api.spendinsights.v1.RunRateForecast:
             description: |-
                 RunRateForecast describes expected spend through the end of the current
@@ -45525,6 +47159,34 @@ components:
             title: Token Economics
             type: object
             x-speakeasy-name-override: TokenEconomics
+        c1.api.spendinsights.v1.TraceAllocation:
+            description: TraceAllocation records one scope's historical limit and its source.
+            properties:
+                budgetKey:
+                    description: Stable identifier for the scope's budget account.
+                    type: string
+                limit:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.spendinsights.v1.ResolvedLimit'
+                        - type: "null"
+                period:
+                    description: Length of the budget period.
+                    enum:
+                        - PERIOD_KIND_UNSPECIFIED
+                        - PERIOD_KIND_DAILY
+                        - PERIOD_KIND_WEEKLY
+                        - PERIOD_KIND_MONTHLY
+                        - PERIOD_KIND_QUARTERLY
+                        - PERIOD_KIND_YEARLY
+                    type: string
+                    x-speakeasy-unknown-values: allow
+                source:
+                    oneOf:
+                        - $ref: '#/components/schemas/c1.api.spendinsights.v1.AuthorityRef'
+                        - type: "null"
+            title: Trace Allocation
+            type: object
+            x-speakeasy-name-override: TraceAllocation
         c1.api.spendinsights.v1.TrajectoryPoint:
             description: TrajectoryPoint represents settled spend for one UTC day.
             properties:
@@ -51167,6 +52829,7 @@ components:
                             - STEP_APPROVAL_TYPE_WEBHOOK
                             - STEP_APPROVAL_TYPE_RESOURCE_OWNERS
                             - STEP_APPROVAL_TYPE_AGENT
+                            - STEP_APPROVAL_TYPE_ACCESS_PROFILE_OWNERS
                         type: string
                         x-speakeasy-unknown-values: allow
                     type:
@@ -51726,6 +53389,10 @@ components:
                     type:
                         - string
                         - "null"
+                partialResult:
+                    description: The resource was created, but some requested effects remain unconfirmed.
+                    readOnly: true
+                    type: boolean
                 scopeRole:
                     oneOf:
                         - $ref: '#/components/schemas/c1.api.task.v1.ScopeRole'
@@ -51750,6 +53417,11 @@ components:
                     readOnly: true
                     type: string
                     x-speakeasy-unknown-values: allow
+                unaddedMemberCount:
+                    description: Selected members whose addition the connector could not confirm.
+                    format: uint32
+                    readOnly: true
+                    type: integer
             title: Task Type Action
             type: object
             x-speakeasy-name-override: TaskTypeAction
@@ -55112,418 +56784,6 @@ components:
             title: Resource Scope
             type: object
             x-speakeasy-name-override: ResourceScope
-        c1.models.claw.v1.ClawLLMRateSnapshot:
-            description: ClawLLMRateSnapshot is the exact price basis selected for one call.
-            properties:
-                asOf:
-                    description: The asOf field.
-                    type: string
-                cacheReadNanoPerMillionTokens:
-                    description: The cacheReadNanoPerMillionTokens field.
-                    format: int64
-                    type: string
-                cacheWriteNanoPerMillionTokens:
-                    description: The cacheWriteNanoPerMillionTokens field.
-                    format: int64
-                    type: string
-                citation:
-                    description: The citation field.
-                    type: string
-                inputNanoPerMillionTokens:
-                    description: The inputNanoPerMillionTokens field.
-                    format: int64
-                    type: string
-                note:
-                    description: The note field.
-                    type: string
-                outputNanoPerMillionTokens:
-                    description: The outputNanoPerMillionTokens field.
-                    format: int64
-                    type: string
-                source:
-                    description: The source field.
-                    enum:
-                        - CLAW_LLM_RATE_SOURCE_UNSPECIFIED
-                        - CLAW_LLM_RATE_SOURCE_LIST_PRICE
-                        - CLAW_LLM_RATE_SOURCE_NEGOTIATED
-                        - CLAW_LLM_RATE_SOURCE_OPERATOR_OVERRIDE
-                        - CLAW_LLM_RATE_SOURCE_CUSTOMER_SUPPLIED
-                    type: string
-                    x-speakeasy-unknown-values: allow
-            title: Claw Llm Rate Snapshot
-            type: object
-            x-speakeasy-name-override: ClawLLMRateSnapshot
-        c1.models.funds.v1.AccountScope:
-            description: |
-                AccountScope names one of the four accounting scopes a spend is admitted
-                 against. The arm is the scope kind — no separate kind enum to keep in step.
-
-                 It lives in funds/v1, not beside the ledger row that stores it, because both
-                 sides need the same declaration: resolution produces a scope, the ledger
-                 stores it on BudgetAccount, and the account key is derived from it.
-
-                This message contains a oneof named kind. Only a single field of the following list may be set at a time:
-                  - tenant
-                  - subject
-                  - app
-                  - subjectApp
-            properties:
-                app:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.AppScope'
-                        - type: "null"
-                subject:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SubjectScope'
-                        - type: "null"
-                subjectApp:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SubjectAppScope'
-                        - type: "null"
-                tenant:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.TenantScope'
-                        - type: "null"
-            title: Account Scope
-            type: object
-            x-speakeasy-name-override: AccountScope
-        c1.models.funds.v1.AppScope:
-            description: The AppScope message.
-            properties:
-                appId:
-                    description: The appId field.
-                    type: string
-            title: App Scope
-            type: object
-            x-speakeasy-name-override: AppScope
-        c1.models.funds.v1.Money:
-            description: |-
-                Money is wire-compatible with google.type.Money field-for-field, so the public
-                 API converts with a field copy. Declared here rather than imported because
-                 protoc-gen-pgdb mirrors a nested message by calling its generated DBReflect,
-                 which only exists for messages this repo generates.
-            properties:
-                currencyCode:
-                    description: ISO 4217 currency code. Must equal the tenant's FundPolicy.currency_code.
-                    type: string
-                nanos:
-                    description: |-
-                        Nano-unit remainder, 0 <= nanos < 10^9. Non-negative for the same reason
-                         as units, which also keeps the (units, nanos) pair unambiguous.
-                    format: int32
-                    type: integer
-                units:
-                    description: |-
-                        Non-negative — grants, never debts — and bounded so units * 10^9 + nanos
-                         always fits int64. Without the ceiling a large value wraps positive and
-                         installs a limit nobody granted. The pair check spans two fields, so
-                         pkg/funds re-checks it on every conversion.
-                    format: int64
-                    type: string
-            title: Money
-            type: object
-            x-speakeasy-name-override: Money
-        c1.models.funds.v1.SpendControls:
-            description: |-
-                SpendControls is the one control shape carried by every authority scope.
-                 Per-row resolution, identical everywhere: suspension present -> deny;
-                 unexpired extension -> extension.limit; limit present -> limit;
-                 otherwise this row states no opinion and resolution falls through.
-
-                 Not a oneof: two transitions need the losing field to survive. Unsuspending
-                 restores the limit it froze, and a lapsed extension falls back to its base
-                 rather than to the next layer. Pinned by
-                 TestControlsCoPresenceSurvivesEveryTransition in pkg/funds.
-            properties:
-                extension:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendExtension'
-                        - type: "null"
-                limit:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
-                        - type: "null"
-                period:
-                    description: |-
-                        Only valid together with limit: a period without its amount would
-                         reinterpret some other layer's number in a cadence that layer never
-                         agreed to.
-                    enum:
-                        - PERIOD_KIND_UNSPECIFIED
-                        - PERIOD_KIND_DAILY
-                        - PERIOD_KIND_WEEKLY
-                        - PERIOD_KIND_MONTHLY
-                        - PERIOD_KIND_QUARTERLY
-                        - PERIOD_KIND_YEARLY
-                    type: string
-                    x-speakeasy-unknown-values: allow
-                suspension:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendSuspension'
-                        - type: "null"
-            title: Spend Controls
-            type: object
-            x-speakeasy-name-override: SpendControls
-        c1.models.funds.v1.SpendExtension:
-            description: |-
-                SpendExtension replaces the row's total with a temporary one until
-                 expires_at. It never changes the period, and it never expresses a refusal —
-                 a temporary refusal is a SpendSuspension.
-            properties:
-                expiresAt:
-                    format: date-time
-                    type:
-                        - string
-                        - "null"
-                limit:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimit'
-                        - type: "null"
-                reason:
-                    description: |-
-                        Subject-visible: "why do I have this bump". Mutation rationale rides the
-                         history change_reason annotation instead.
-                    type: string
-            title: Spend Extension
-            type: object
-            x-speakeasy-name-override: SpendExtension
-        c1.models.funds.v1.SpendLimit:
-            description: |
-                SpendLimit is the three-way behavior fork. Which arms are legal depends on the
-                 scope carrying it; pkg/funds enforces that matrix, not the schema, because one
-                 SpendControls shape is shared by every scope.
-
-                This message contains a oneof named kind. Only a single field of the following list may be set at a time:
-                  - unlimited
-                  - amount
-                  - blocked
-            properties:
-                amount:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimitAmount'
-                        - type: "null"
-                blocked:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimitBlocked'
-                        - type: "null"
-                unlimited:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.SpendLimitUnlimited'
-                        - type: "null"
-            title: Spend Limit
-            type: object
-            x-speakeasy-name-override: SpendLimit
-        c1.models.funds.v1.SpendLimitAmount:
-            description: SpendLimitAmount caps spend at money per resolved period.
-            properties:
-                money:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.funds.v1.Money'
-                        - type: "null"
-            title: Spend Limit Amount
-            type: object
-            x-speakeasy-name-override: SpendLimitAmount
-        c1.models.funds.v1.SpendLimitBlocked:
-            description: |-
-                SpendLimitBlocked refuses supply at this scope. Distinct from suspension:
-                 blocked is a stated policy posture, suspension is a reversible freeze that
-                 preserves the numbers underneath it.
-            title: Spend Limit Blocked
-            type: object
-            x-speakeasy-name-override: SpendLimitBlocked
-        c1.models.funds.v1.SpendLimitUnlimited:
-            description: |-
-                SpendLimitUnlimited is a tracking limit: full accounting, no admission
-                 condition. The maximum element, so an unlimited default makes grant rules
-                 no-ops.
-            title: Spend Limit Unlimited
-            type: object
-            x-speakeasy-name-override: SpendLimitUnlimited
-        c1.models.funds.v1.SpendSuspension:
-            description: |-
-                SpendSuspension freezes a scope without erasing the limit it must restore
-                 on unsuspend, which is why it lives beside the SpendLimit oneof rather than
-                 inside it.
-            properties:
-                reason:
-                    description: The reason field.
-                    type: string
-                suspendedAt:
-                    format: date-time
-                    type:
-                        - string
-                        - "null"
-            title: Spend Suspension
-            type: object
-            x-speakeasy-name-override: SpendSuspension
-        c1.models.funds.v1.SubjectAppScope:
-            description: The SubjectAppScope message.
-            properties:
-                appId:
-                    description: The appId field.
-                    type: string
-                userId:
-                    description: The userId field.
-                    type: string
-            title: Subject App Scope
-            type: object
-            x-speakeasy-name-override: SubjectAppScope
-        c1.models.funds.v1.SubjectScope:
-            description: The SubjectScope message.
-            properties:
-                userId:
-                    description: Canonical c1.models.user.v2.User id, every UserType.
-                    type: string
-            title: Subject Scope
-            type: object
-            x-speakeasy-name-override: SubjectScope
-        c1.models.funds.v1.TenantScope:
-            description: The TenantScope message.
-            title: Tenant Scope
-            type: object
-            x-speakeasy-name-override: TenantScope
-        c1.models.rrsp.v1.AdmissionTrace:
-            description: |-
-                AdmissionTrace is the bounded authority decision committed with a
-                 reservation. It stores typed row references and resolved limits, never full
-                 authority rows. Relevant absences remain explicit because a row created
-                 between resolution and commit is the fail-open half of the pin set.
-
-                 Reservation.expires_at is the Dynamo TTL attribute, so this trace supports
-                 in-flight atomicity and bounded operational diagnosis only. The durable copy
-                 belongs on M2's per-call usage record.
-            properties:
-                allocations:
-                    description: The allocations field.
-                    items:
-                        $ref: '#/components/schemas/c1.models.rrsp.v1.TraceAllocation'
-                    type:
-                        - array
-                        - "null"
-                authorityRefs:
-                    description: |-
-                        Every row the decision depended on: policy, optional assignment/caps,
-                         winning rule, membership binding, and current user/app-user identities.
-                         Missing optional rows are present with absent=true and version=0.
-                    items:
-                        $ref: '#/components/schemas/c1.models.rrsp.v1.AuthorityRef'
-                    type:
-                        - array
-                        - "null"
-            title: Admission Trace
-            type: object
-            x-speakeasy-name-override: AdmissionTrace
-        c1.models.rrsp.v1.AuthorityRef:
-            description: |-
-                AuthorityRef identifies one authority row at the revision admission read.
-                 The reservation already carries tenant_id; the remaining fields are the
-                 row's typed primary-key components. Absent rows have version zero.
-            properties:
-                absent:
-                    description: The absent field.
-                    type: boolean
-                appEntitlementId:
-                    description: The appEntitlementId field.
-                    type: string
-                appId:
-                    description: The appId field.
-                    type: string
-                appUserId:
-                    description: The appUserId field.
-                    type: string
-                kind:
-                    description: The kind field.
-                    enum:
-                        - AUTHORITY_KIND_UNSPECIFIED
-                        - AUTHORITY_KIND_FUND_POLICY
-                        - AUTHORITY_KIND_FUND_ASSIGNMENT
-                        - AUTHORITY_KIND_FUND_RULE
-                        - AUTHORITY_KIND_TENANT_APP_CAP
-                        - AUTHORITY_KIND_SUBJECT_APP_LIMIT
-                        - AUTHORITY_KIND_ENTITLEMENT_BINDING
-                        - AUTHORITY_KIND_APP_USER
-                        - AUTHORITY_KIND_USER
-                    type: string
-                    x-speakeasy-unknown-values: allow
-                ruleId:
-                    description: The ruleId field.
-                    type: string
-                userId:
-                    description: The userId field.
-                    type: string
-                version:
-                    description: The version field.
-                    format: int64
-                    type: string
-            title: Authority Ref
-            type: object
-            x-speakeasy-name-override: AuthorityRef
-        c1.models.rrsp.v1.ResolvedAmount:
-            description: The ResolvedAmount message.
-            properties:
-                amountNano:
-                    description: The amountNano field.
-                    format: int64
-                    type: string
-            title: Resolved Amount
-            type: object
-            x-speakeasy-name-override: ResolvedAmount
-        c1.models.rrsp.v1.ResolvedLimit:
-            description: |
-                ResolvedLimit is funds.v1.SpendLimit minus `blocked` — a blocked scope fails
-                 closed during resolution and never creates an account — with Money flattened
-                 to nano.
-
-                This message contains a oneof named kind. Only a single field of the following list may be set at a time:
-                  - unlimited
-                  - amount
-            properties:
-                amount:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.rrsp.v1.ResolvedAmount'
-                        - type: "null"
-                unlimited:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.rrsp.v1.ResolvedUnlimited'
-                        - type: "null"
-            title: Resolved Limit
-            type: object
-            x-speakeasy-name-override: ResolvedLimit
-        c1.models.rrsp.v1.ResolvedUnlimited:
-            description: The ResolvedUnlimited message.
-            title: Resolved Unlimited
-            type: object
-            x-speakeasy-name-override: ResolvedUnlimited
-        c1.models.rrsp.v1.TraceAllocation:
-            description: |-
-                TraceAllocation records one admitted scope, the row that supplied its
-                 resolved limit, and the historical limit and period.
-            properties:
-                budgetKey:
-                    description: The budgetKey field.
-                    type: string
-                limit:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.rrsp.v1.ResolvedLimit'
-                        - type: "null"
-                period:
-                    description: The period field.
-                    enum:
-                        - PERIOD_KIND_UNSPECIFIED
-                        - PERIOD_KIND_DAILY
-                        - PERIOD_KIND_WEEKLY
-                        - PERIOD_KIND_MONTHLY
-                        - PERIOD_KIND_QUARTERLY
-                        - PERIOD_KIND_YEARLY
-                    type: string
-                    x-speakeasy-unknown-values: allow
-                source:
-                    oneOf:
-                        - $ref: '#/components/schemas/c1.models.rrsp.v1.AuthorityRef'
-                        - type: "null"
-            title: Trace Allocation
-            type: object
-            x-speakeasy-name-override: TraceAllocation
         c1.webhooks.v1.Body:
             description: The Body message.
             properties:
@@ -60516,6 +61776,38 @@ paths:
                 - Edge
             x-speakeasy-group: Edge
             x-speakeasy-name-override: Update
+    /api/v1/apps/{app_id}/edges/{id}/egress-rules/entitlement-issues:
+        get:
+            description: |-
+                ListEgressRuleEntitlementIssues reports each saved egress rule whose
+                 entitlement does not resolve, and what the Edge does with it instead.
+                 Nothing is saved.
+            operationId: c1.api.edge.v1.EdgeService.ListEgressRuleEntitlementIssues
+            parameters:
+                - in: path
+                  name: app_id
+                  required: true
+                  schema:
+                    description: The appId field.
+                    type: string
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The id field.
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.edge.v1.EdgeServiceListEgressRuleEntitlementIssuesResponse'
+                    description: Successful response
+            summary: List Egress Rule Entitlement Issues
+            tags:
+                - Edge
+            x-speakeasy-group: Edge
+            x-speakeasy-name-override: ListEgressRuleEntitlementIssues
     /api/v1/apps/{app_id}/edges/{id}/egress-rules/preview-host-decision:
         post:
             description: |-
@@ -68652,7 +69944,8 @@ paths:
         get:
             description: |-
                 ListInferenceCatalog returns the providers, variants and suggested models that inference routes can be built
-                 from. The catalog is defined in code and is the same for every tenant. The Edge feature is required.
+                 from, C1's registered models by family, and the model each C1 tier uses for the caller's tenant. The Edge
+                 feature is required.
             operationId: c1.api.edge.v1.EdgeService.ListInferenceCatalog
             responses:
                 "200":
@@ -71660,6 +72953,186 @@ paths:
                 - Hook
             x-speakeasy-group: Hooks
             x-speakeasy-name-override: Update
+    /api/v1/iam/external_oauth_clients:
+        post:
+            description: |-
+                Create provisions a durable static OAuth client for a pre-registered
+                 consumer, eligible for authorization_code + refresh_token only. A
+                 secret-based client's secret is returned once, on this response.
+            operationId: c1.api.iam.v1.ExternalOAuthClientService.Create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.iam.v1.ExternalOAuthClientServiceCreateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.iam.v1.ExternalOAuthClientServiceCreateResponse'
+                    description: Successful response
+            summary: Create
+            tags:
+                - External OAuth Client
+            x-speakeasy-group: ExternalOAuthClient
+            x-speakeasy-name-override: Create
+    /api/v1/iam/external_oauth_clients/revoke:
+        post:
+            description: |-
+                Revoke disables a static client, then revokes its users' grants. The row is
+                 kept for audit.
+            operationId: c1.api.iam.v1.ExternalOAuthClientService.Revoke
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.iam.v1.ExternalOAuthClientServiceRevokeRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.iam.v1.ExternalOAuthClientServiceRevokeResponse'
+                    description: Successful response
+            summary: Revoke
+            tags:
+                - External OAuth Client
+            x-speakeasy-group: ExternalOAuthClient
+            x-speakeasy-name-override: Revoke
+    /api/v1/iam/external_oauth_clients/rotate-secret:
+        post:
+            description: |-
+                RotateSecret issues a new client secret for a static client and returns it
+                 once. The client keeps its client_id, redirect URIs, and grants.
+            operationId: c1.api.iam.v1.ExternalOAuthClientService.RotateSecret
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.iam.v1.ExternalOAuthClientServiceRotateSecretRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.iam.v1.ExternalOAuthClientServiceRotateSecretResponse'
+                    description: Successful response
+            summary: Rotate Secret
+            tags:
+                - External OAuth Client
+            x-speakeasy-group: ExternalOAuthClient
+            x-speakeasy-name-override: RotateSecret
+    /api/v1/iam/external_oauth_clients/update:
+        post:
+            description: |-
+                Update edits a static client through an explicit field mask. client_id,
+                 client_id_type, and the auth method are immutable. Update never mints,
+                 clears, or returns secret material.
+            operationId: c1.api.iam.v1.ExternalOAuthClientService.Update
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.iam.v1.ExternalOAuthClientServiceUpdateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.iam.v1.ExternalOAuthClientServiceUpdateResponse'
+                    description: Successful response
+            summary: Update
+            tags:
+                - External OAuth Client
+            x-speakeasy-group: ExternalOAuthClient
+            x-speakeasy-name-override: Update
+    /api/v1/iam/model_api_keys:
+        get:
+            description: List returns all model API keys owned by the calling user.
+            operationId: c1.api.iam.v1.ModelAPIKeyService.List
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.iam.v1.ModelAPIKeyServiceListResponse'
+                    description: Successful response
+            summary: List
+            tags:
+                - Model API Key
+            x-speakeasy-group: ModelAPIKey
+            x-speakeasy-name-override: List
+        post:
+            description: Create generates a new model API key for the caller.
+            operationId: c1.api.iam.v1.ModelAPIKeyService.Create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.iam.v1.ModelAPIKeyServiceCreateRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.iam.v1.ModelAPIKeyServiceCreateResponse'
+                    description: Successful response
+            summary: Create
+            tags:
+                - Model API Key
+            x-speakeasy-group: ModelAPIKey
+            x-speakeasy-name-override: Create
+    /api/v1/iam/model_api_keys/{id}:
+        delete:
+            description: Revoke deactivates a model API key, preventing further use.
+            operationId: c1.api.iam.v1.ModelAPIKeyService.Revoke
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The unique ID of the model API key to revoke (27-character base62 identifier).
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.iam.v1.ModelAPIKeyServiceRevokeRequestInput'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.iam.v1.ModelAPIKeyServiceRevokeResponse'
+                    description: Successful response
+            summary: Revoke
+            tags:
+                - Model API Key
+            x-speakeasy-group: ModelAPIKey
+            x-speakeasy-name-override: Revoke
+        get:
+            description: Get retrieves a model API key by its ID (metadata only, no secret).
+            operationId: c1.api.iam.v1.ModelAPIKeyService.Get
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                    description: The unique ID of the model API key (27-character base62 identifier).
+                    type: string
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.iam.v1.ModelAPIKeyServiceGetResponse'
+                    description: Successful response
+            summary: Get
+            tags:
+                - Model API Key
+            x-speakeasy-group: ModelAPIKey
+            x-speakeasy-name-override: Get
     /api/v1/iam/personal_clients:
         get:
             description: List returns all personal client credentials owned by the calling user.
@@ -74009,6 +75482,31 @@ paths:
                 - Automations
             x-speakeasy-group: AutomationExecutionSearch
             x-speakeasy-name-override: SearchAllAutomationExecutions
+    /api/v1/search/app-secrets/my-vended-credentials:
+        post:
+            description: |-
+                Lists credentials C1 issued to the signed-in requester. This is separate
+                 from the general secret inventory because a connector can discover other
+                 secret resources on the same account.
+            operationId: c1.api.app.v1.AppSecretSearch.SearchMyVendedCredentials
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.app.v1.SearchMyVendedCredentialsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.app.v1.SearchAppSecretsWithAlertCountResponse'
+                    description: Successful response
+            summary: Search My Vended Credentials
+            tags:
+                - App Secrets
+            x-speakeasy-group: AppSecretSearch
+            x-speakeasy-name-override: SearchMyVendedCredentials
+            x-stability-level: beta
     /api/v1/search/app_resource_types:
         post:
             description: Search app resources based on filters specified in the request body.
@@ -74540,6 +76038,29 @@ paths:
                 - Hook
             x-speakeasy-group: HooksSearch
             x-speakeasy-name-override: Search
+    /api/v1/search/iam/api_keys:
+        post:
+            description: |-
+                Search finds personal client credentials and service principal credentials, with optional filtering by query text or key type.
+                 Request a modest page_size (≤25) to keep responses small.
+            operationId: c1.api.api_key.v1.APIKeySearchService.Search
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.api_key.v1.APIKeySearchServiceSearchRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.api_key.v1.APIKeySearchServiceSearchResponse'
+                    description: Successful response
+            summary: 'NOTE: Searches personal and service principal API keys'
+            tags:
+                - Personal Client
+            x-speakeasy-group: APIKeySearch
+            x-speakeasy-name-override: Search
     /api/v1/search/iam/external_clients:
         post:
             description: |-
@@ -74745,6 +76266,30 @@ paths:
                 terraform-resource: null
             x-speakeasy-group: RecoveryPolicy
             x-speakeasy-name-override: Search
+    /api/v1/search/request_catalog/credential_offerings:
+        post:
+            description: |-
+                SearchRequestableCredentialOfferings returns the credential offerings the target user can
+                 request, optionally limited to one app, ordered by display name then ids.
+            operationId: c1.api.requestcatalog.v1.RequestCatalogSearchService.SearchRequestableCredentialOfferings
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/c1.api.requestcatalog.v1.SearchRequestableCredentialOfferingsRequest'
+            responses:
+                "200":
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/c1.api.requestcatalog.v1.SearchRequestableCredentialOfferingsResponse'
+                    description: Successful response
+            summary: Search Requestable Credential Offerings
+            tags:
+                - Request Catalog
+            x-speakeasy-group: RequestCatalogSearch
+            x-speakeasy-name-override: SearchRequestableCredentialOfferings
+            x-stability-level: beta
     /api/v1/search/request_catalog/entitlements:
         post:
             description: |-
