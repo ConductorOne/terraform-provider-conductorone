@@ -1181,6 +1181,11 @@ func (r *AppEntitlementResource) Update(ctx context.Context, req resource.Update
 		return
 	}
 
+	resp.Diagnostics.Append(pruneAppEntitlementPolicyOneofs(ctx, req.Config, data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	cleanupDurationFields(ctx, req, resp, data)
 
 	var updateAppEntitlementRequest *shared.UpdateAppEntitlementRequest
