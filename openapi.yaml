@@ -11436,6 +11436,9 @@ components:
                     type:
                         - string
                         - "null"
+                createdByAppUserId:
+                    description: The ID of the app user that created the AppSecret. Distinct from identity_app_user_id, the current holder.
+                    type: string
                 deletedAt:
                     format: date-time
                     readOnly: true
@@ -20475,11 +20478,14 @@ components:
             description: The ConnectorAuthoringServiceActivateRevisionResponse message.
             properties:
                 activationEpoch:
-                    description: The activationEpoch field.
+                    description: Committed activation epoch, or 0 when requested but not active yet.
                     format: uint64
                     type: string
+                deploymentEventId:
+                    description: Non-empty while instance rotation is pending. Observe completion through GetInstallation.
+                    type: string
                 revisionId:
-                    description: The revisionId field.
+                    description: The requested revision; published only after cutover commits.
                     type: string
             title: Connector Authoring Service Activate Revision Response
             type: object
@@ -20515,11 +20521,14 @@ components:
             description: The ConnectorAuthoringServiceRollbackRevisionResponse message.
             properties:
                 activationEpoch:
-                    description: The activationEpoch field.
+                    description: Committed activation epoch, or 0 when requested but not active yet.
                     format: uint64
                     type: string
+                deploymentEventId:
+                    description: Non-empty while instance rotation is pending. Observe completion through GetInstallation.
+                    type: string
                 revisionId:
-                    description: The revision now published (the rollback target).
+                    description: The requested rollback target; published only after cutover commits.
                     type: string
             title: Connector Authoring Service Rollback Revision Response
             type: object

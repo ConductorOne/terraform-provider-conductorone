@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: d7d79ae7-a058-4cb5-862e-7ffd3269d83b
 management:
-  docChecksum: 97503e6b260d882665f211cdb516ea78
+  docChecksum: 409c303e9587870f6dac7b43882856e8
   docVersion: 0.1.0-alpha
   speakeasyVersion: 1.762.0
   generationVersion: 2.882.0
-  releaseVersion: 1.7.1
-  configChecksum: 89a700649da9941c205873c36efb4a7b
+  releaseVersion: 1.8.0
+  configChecksum: 3cdb1e146bcda6c8075c773c312ae677
   repoURL: https://github.com/ConductorOne/terraform-provider-conductorone.git
   installationURL: https://github.com/ConductorOne/terraform-provider-conductorone
 persistentEdits:
-  generation_id: c5ccd197-9cfe-42d7-b4ab-5916454fba0f
-  pristine_commit_hash: 56412f79957518ff2f80a0520e993820871179cc
-  pristine_tree_hash: ee71d90776f693adf209f29acc8efe0cb2d14e99
+  generation_id: 198f144e-b80c-4f92-9ff5-af9da4d04050
+  pristine_commit_hash: d6fffcc4acbd2a131465cc25995ac74b402c1297
+  pristine_tree_hash: 6d3a35c9a3dbbb9269c18ee3cb7ce2c1af66d23b
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -271,8 +271,8 @@ trackedFiles:
     pristine_git_object: cbbe422a1a74c6c026e9648210d723901bd6aaf2
   examples/provider/provider.tf:
     id: 954e955c0240
-    last_write_checksum: sha1:1768a5c1cc67be07ab2661bebd00ad23fca47eb7
-    pristine_git_object: bdbe43a77e5a3fb43cec8f8050bb999382236c91
+    last_write_checksum: sha1:a950a34179d5956f967bb2c32ded70aa273decad
+    pristine_git_object: 69e6ad4a475f2150d5e2a19995e5fdbc97f03f89
   examples/resources/conductorone_access_conflict/import-by-string-id.tf:
     id: 75fb8f5a6d65
     last_write_checksum: sha1:82d79ecc5a7d6ab27f4f9f9234e220e0e9f65914
@@ -3683,8 +3683,8 @@ trackedFiles:
     pristine_git_object: 3f89d82797cb518cb4b887f72eb2914c1dc597b7
   internal/sdk/conductoroneapi.go:
     id: 84087b0a6f93
-    last_write_checksum: sha1:efc34cfb78f4200b71134f8bcae0264657bf1dcd
-    pristine_git_object: eb72f8a17a62ea5ad7c33dd190f6c93788949319
+    last_write_checksum: sha1:ad0afc467d87820a8b9606d8dbff074356accc88
+    pristine_git_object: e5e21a5f597564e3c4ad6eccd7fc0a59d93775f9
   internal/sdk/connector.go:
     id: 41e2af88fe9e
     last_write_checksum: sha1:bc8f8808941bbcc8c589245ff8967c2ec35df524
@@ -8171,8 +8171,8 @@ trackedFiles:
     pristine_git_object: b86a262803774f605897f5f17dc0d076a4015883
   internal/sdk/models/shared/appsecretresource.go:
     id: 61ea0cbfb1ef
-    last_write_checksum: sha1:7372f78d12565b2ede78848cd588e291c022b272
-    pristine_git_object: aa042cf1725521b5846d6460755efcde87959ad2
+    last_write_checksum: sha1:377ff69fdd038787bc28794f8f003b6da1aeaa33
+    pristine_git_object: 0df132acd7eb052117beaac890e21460d0017d1d
   internal/sdk/models/shared/appsecretresourceview.go:
     id: 55e3035d20c6
     last_write_checksum: sha1:c2e28298698b76abea7f3bcc002a941cbaa0399d
@@ -9067,16 +9067,16 @@ trackedFiles:
     pristine_git_object: f1af30ab19d6f7d5786fcce243f88796ebaa17f7
   internal/sdk/models/shared/connectorauthoringserviceactivaterevisionresponse.go:
     id: e23fa8465650
-    last_write_checksum: sha1:f2f7ddbbc0e2cb308acb4703f1ef4e3e86b32fd9
-    pristine_git_object: f7a9e19c97c978c844fa426bcb9ca2623d7b513e
+    last_write_checksum: sha1:5f96bdebd0013aae62350929cd09fb7919655891
+    pristine_git_object: 5521d8390d08f1557c235684577e2bd5aa3359da
   internal/sdk/models/shared/connectorauthoringservicerollbackrevisionrequest.go:
     id: 57c263e09b05
     last_write_checksum: sha1:00d2c217ee76dbb26d9bab972e4d2f4354b96c55
     pristine_git_object: ace045aa321c72e5f36828d002b0a7796bd0592a
   internal/sdk/models/shared/connectorauthoringservicerollbackrevisionresponse.go:
     id: b546f10f9f58
-    last_write_checksum: sha1:8c584ca415c9d7feabe7ffd6a0decf44ec40cce7
-    pristine_git_object: 243c8b9fb1e0982fc0c91b1d2dbe79f2498daa11
+    last_write_checksum: sha1:795b751a43f10fe3fc44bb4e10f281fdefd5a521
+    pristine_git_object: 3ca7ca87ee465ae0972aab96d1f7ea293376d9bc
   internal/sdk/models/shared/connectorcatalogserviceconfigurationschemarequest.go:
     id: 4a20ebc5a6ba
     last_write_checksum: sha1:623fe20ff3d9dc4bdba78e0664edc19e943a8549

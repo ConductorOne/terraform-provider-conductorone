@@ -14,7 +14,9 @@ type AppSecretResource struct {
 	// The secret type that this secret is.
 	AppResourceTypeID *string    `json:"appResourceTypeId,omitempty"`
 	CreatedAt         *time.Time `json:"createdAt,omitempty"`
-	DeletedAt         *time.Time `json:"deletedAt,omitempty"`
+	// The ID of the app user that created the AppSecret. Distinct from identity_app_user_id, the current holder.
+	CreatedByAppUserID *string    `json:"createdByAppUserId,omitempty"`
+	DeletedAt          *time.Time `json:"deletedAt,omitempty"`
 	// The display name for this secret.
 	DisplayName *string `json:"displayName,omitempty"`
 	// The id of the secret.
@@ -57,6 +59,13 @@ func (a *AppSecretResource) GetCreatedAt() *time.Time {
 		return nil
 	}
 	return a.CreatedAt
+}
+
+func (a *AppSecretResource) GetCreatedByAppUserID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.CreatedByAppUserID
 }
 
 func (a *AppSecretResource) GetDeletedAt() *time.Time {

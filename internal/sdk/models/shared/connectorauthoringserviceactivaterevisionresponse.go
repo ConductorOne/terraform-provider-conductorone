@@ -4,9 +4,11 @@ package shared
 
 // The ConnectorAuthoringServiceActivateRevisionResponse message.
 type ConnectorAuthoringServiceActivateRevisionResponse struct {
-	// The activationEpoch field.
+	// Committed activation epoch, or 0 when requested but not active yet.
 	ActivationEpoch *string `json:"activationEpoch,omitempty"`
-	// The revisionId field.
+	// Non-empty while instance rotation is pending. Observe completion through GetInstallation.
+	DeploymentEventID *string `json:"deploymentEventId,omitempty"`
+	// The requested revision; published only after cutover commits.
 	RevisionID *string `json:"revisionId,omitempty"`
 }
 
@@ -15,6 +17,13 @@ func (c *ConnectorAuthoringServiceActivateRevisionResponse) GetActivationEpoch()
 		return nil
 	}
 	return c.ActivationEpoch
+}
+
+func (c *ConnectorAuthoringServiceActivateRevisionResponse) GetDeploymentEventID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.DeploymentEventID
 }
 
 func (c *ConnectorAuthoringServiceActivateRevisionResponse) GetRevisionID() *string {
