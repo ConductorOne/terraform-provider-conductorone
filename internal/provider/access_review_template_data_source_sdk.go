@@ -40,6 +40,13 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 			r.CampaignSchedule = nil
 		} else {
 			r.CampaignSchedule = &tfTypes.CampaignSchedule{}
+			if resp.CampaignSchedule.AutoStartTime == nil {
+				r.CampaignSchedule.AutoStartTime = nil
+			} else {
+				r.CampaignSchedule.AutoStartTime = &tfTypes.CampaignScheduleTime{}
+				r.CampaignSchedule.AutoStartTime.Hours = types.Int64PointerValue(resp.CampaignSchedule.AutoStartTime.Hours)
+				r.CampaignSchedule.AutoStartTime.Minutes = types.Int64PointerValue(resp.CampaignSchedule.AutoStartTime.Minutes)
+			}
 			if resp.CampaignSchedule.EndTime == nil {
 				r.CampaignSchedule.EndTime = nil
 			} else {
@@ -222,6 +229,14 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 			r.Scope = nil
 		} else {
 			r.Scope = &tfTypes.AccessReviewScopeV2{}
+			if resp.Scope.AccessProfileReviewDimensions == nil {
+				r.Scope.AccessProfileReviewDimensions = nil
+			} else {
+				r.Scope.AccessProfileReviewDimensions = &tfTypes.AccessProfileReviewDimensions{}
+				r.Scope.AccessProfileReviewDimensions.Composition = types.BoolPointerValue(resp.Scope.AccessProfileReviewDimensions.Composition)
+				r.Scope.AccessProfileReviewDimensions.MembershipCriteria = types.BoolPointerValue(resp.Scope.AccessProfileReviewDimensions.MembershipCriteria)
+				r.Scope.AccessProfileReviewDimensions.MembershipExceptions = types.BoolPointerValue(resp.Scope.AccessProfileReviewDimensions.MembershipExceptions)
+			}
 			if resp.Scope.AccountCelExpression == nil {
 				r.Scope.AccountCelExpression = nil
 			} else {
@@ -284,6 +299,14 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 				r.Scope.AppSelectionCriteria = nil
 			} else {
 				r.Scope.AppSelectionCriteria = &tfTypes.AppSelectionCriteriaScope{}
+				if resp.Scope.AppSelectionCriteria.AppIds != nil {
+					r.Scope.AppSelectionCriteria.AppIds = make([]types.String, 0, len(resp.Scope.AppSelectionCriteria.AppIds))
+					for _, v := range resp.Scope.AppSelectionCriteria.AppIds {
+						r.Scope.AppSelectionCriteria.AppIds = append(r.Scope.AppSelectionCriteria.AppIds, types.StringValue(v))
+					}
+				} else {
+					r.Scope.AppSelectionCriteria.AppIds = nil
+				}
 				if resp.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds != nil {
 					r.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = make([]types.String, 0, len(resp.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds))
 					for _, v := range resp.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds {
@@ -291,6 +314,20 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 					}
 				} else {
 					r.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = nil
+				}
+				if resp.Scope.AppSelectionCriteria.ResourceTypeRefs != nil {
+					r.Scope.AppSelectionCriteria.ResourceTypeRefs = []tfTypes.ResourceTypeRef{}
+
+					for _, resourceTypeRefsItem := range resp.Scope.AppSelectionCriteria.ResourceTypeRefs {
+						var resourceTypeRefs tfTypes.ResourceTypeRef
+
+						resourceTypeRefs.AppID = types.StringPointerValue(resourceTypeRefsItem.AppID)
+						resourceTypeRefs.ID = types.StringPointerValue(resourceTypeRefsItem.ID)
+
+						r.Scope.AppSelectionCriteria.ResourceTypeRefs = append(r.Scope.AppSelectionCriteria.ResourceTypeRefs, resourceTypeRefs)
+					}
+				} else {
+					r.Scope.AppSelectionCriteria.ResourceTypeRefs = nil
 				}
 				if resp.Scope.AppSelectionCriteria.RiskLevelAttributeValueIds != nil {
 					r.Scope.AppSelectionCriteria.RiskLevelAttributeValueIds = make([]types.String, 0, len(resp.Scope.AppSelectionCriteria.RiskLevelAttributeValueIds))
@@ -405,6 +442,11 @@ func (r *AccessReviewTemplateDataSourceModel) RefreshFromSharedAccessReviewTempl
 				r.Scope.SpecificAccessConflicts = nil
 			} else {
 				r.Scope.SpecificAccessConflicts = &tfTypes.SpecificAccessConflictsScope{}
+			}
+			if resp.Scope.SpecificAccessProfiles == nil {
+				r.Scope.SpecificAccessProfiles = nil
+			} else {
+				r.Scope.SpecificAccessProfiles = &tfTypes.SpecificAccessProfilesScope{}
 			}
 			if resp.Scope.SpecificResources == nil {
 				r.Scope.SpecificResources = nil

@@ -239,17 +239,18 @@ func (e *TaskSearchRequestSortBy) IsExact() bool {
 type StepApprovalTypes string
 
 const (
-	StepApprovalTypesStepApprovalTypeUnspecified       StepApprovalTypes = "STEP_APPROVAL_TYPE_UNSPECIFIED"
-	StepApprovalTypesStepApprovalTypeUsers             StepApprovalTypes = "STEP_APPROVAL_TYPE_USERS"
-	StepApprovalTypesStepApprovalTypeManager           StepApprovalTypes = "STEP_APPROVAL_TYPE_MANAGER"
-	StepApprovalTypesStepApprovalTypeAppOwners         StepApprovalTypes = "STEP_APPROVAL_TYPE_APP_OWNERS"
-	StepApprovalTypesStepApprovalTypeGroup             StepApprovalTypes = "STEP_APPROVAL_TYPE_GROUP"
-	StepApprovalTypesStepApprovalTypeSelf              StepApprovalTypes = "STEP_APPROVAL_TYPE_SELF"
-	StepApprovalTypesStepApprovalTypeEntitlementOwners StepApprovalTypes = "STEP_APPROVAL_TYPE_ENTITLEMENT_OWNERS"
-	StepApprovalTypesStepApprovalTypeExpression        StepApprovalTypes = "STEP_APPROVAL_TYPE_EXPRESSION"
-	StepApprovalTypesStepApprovalTypeWebhook           StepApprovalTypes = "STEP_APPROVAL_TYPE_WEBHOOK"
-	StepApprovalTypesStepApprovalTypeResourceOwners    StepApprovalTypes = "STEP_APPROVAL_TYPE_RESOURCE_OWNERS"
-	StepApprovalTypesStepApprovalTypeAgent             StepApprovalTypes = "STEP_APPROVAL_TYPE_AGENT"
+	StepApprovalTypesStepApprovalTypeUnspecified         StepApprovalTypes = "STEP_APPROVAL_TYPE_UNSPECIFIED"
+	StepApprovalTypesStepApprovalTypeUsers               StepApprovalTypes = "STEP_APPROVAL_TYPE_USERS"
+	StepApprovalTypesStepApprovalTypeManager             StepApprovalTypes = "STEP_APPROVAL_TYPE_MANAGER"
+	StepApprovalTypesStepApprovalTypeAppOwners           StepApprovalTypes = "STEP_APPROVAL_TYPE_APP_OWNERS"
+	StepApprovalTypesStepApprovalTypeGroup               StepApprovalTypes = "STEP_APPROVAL_TYPE_GROUP"
+	StepApprovalTypesStepApprovalTypeSelf                StepApprovalTypes = "STEP_APPROVAL_TYPE_SELF"
+	StepApprovalTypesStepApprovalTypeEntitlementOwners   StepApprovalTypes = "STEP_APPROVAL_TYPE_ENTITLEMENT_OWNERS"
+	StepApprovalTypesStepApprovalTypeExpression          StepApprovalTypes = "STEP_APPROVAL_TYPE_EXPRESSION"
+	StepApprovalTypesStepApprovalTypeWebhook             StepApprovalTypes = "STEP_APPROVAL_TYPE_WEBHOOK"
+	StepApprovalTypesStepApprovalTypeResourceOwners      StepApprovalTypes = "STEP_APPROVAL_TYPE_RESOURCE_OWNERS"
+	StepApprovalTypesStepApprovalTypeAgent               StepApprovalTypes = "STEP_APPROVAL_TYPE_AGENT"
+	StepApprovalTypesStepApprovalTypeAccessProfileOwners StepApprovalTypes = "STEP_APPROVAL_TYPE_ACCESS_PROFILE_OWNERS"
 )
 
 func (e StepApprovalTypes) ToPointer() *StepApprovalTypes {
@@ -260,7 +261,7 @@ func (e StepApprovalTypes) ToPointer() *StepApprovalTypes {
 func (e *StepApprovalTypes) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "STEP_APPROVAL_TYPE_UNSPECIFIED", "STEP_APPROVAL_TYPE_USERS", "STEP_APPROVAL_TYPE_MANAGER", "STEP_APPROVAL_TYPE_APP_OWNERS", "STEP_APPROVAL_TYPE_GROUP", "STEP_APPROVAL_TYPE_SELF", "STEP_APPROVAL_TYPE_ENTITLEMENT_OWNERS", "STEP_APPROVAL_TYPE_EXPRESSION", "STEP_APPROVAL_TYPE_WEBHOOK", "STEP_APPROVAL_TYPE_RESOURCE_OWNERS", "STEP_APPROVAL_TYPE_AGENT":
+		case "STEP_APPROVAL_TYPE_UNSPECIFIED", "STEP_APPROVAL_TYPE_USERS", "STEP_APPROVAL_TYPE_MANAGER", "STEP_APPROVAL_TYPE_APP_OWNERS", "STEP_APPROVAL_TYPE_GROUP", "STEP_APPROVAL_TYPE_SELF", "STEP_APPROVAL_TYPE_ENTITLEMENT_OWNERS", "STEP_APPROVAL_TYPE_EXPRESSION", "STEP_APPROVAL_TYPE_WEBHOOK", "STEP_APPROVAL_TYPE_RESOURCE_OWNERS", "STEP_APPROVAL_TYPE_AGENT", "STEP_APPROVAL_TYPE_ACCESS_PROFILE_OWNERS":
 			return true
 		}
 	}

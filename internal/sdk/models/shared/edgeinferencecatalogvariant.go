@@ -55,10 +55,14 @@ func (e *EdgeInferenceCatalogVariantNativeFormat) IsExact() bool {
 //
 //	destination, credential source and model id grammar.
 type EdgeInferenceCatalogVariant struct {
+	// Set when only some connected Edge processes can serve the variant, as during a rollout.
+	AvailabilityWarning *string `json:"availabilityWarning,omitempty"`
 	// Credential recipe for AWS variants; empty otherwise.
 	CredentialRecipe *string `json:"credentialRecipe,omitempty"`
 	// The credentialSource field.
 	CredentialSource *EdgeInferenceCatalogVariantCredentialSource `json:"credentialSource,omitempty"`
+	// Reasoning effort levels assumed for a model id that is not suggested, lowest first. Empty means unknown.
+	DefaultSupportedReasoningEfforts []string `json:"defaultSupportedReasoningEfforts,omitempty"`
 	// Destination written to the target. AWS variants use a template with {region}.
 	Destination *string `json:"destination,omitempty"`
 	// Human-readable variant name.
@@ -75,8 +79,21 @@ type EdgeInferenceCatalogVariant struct {
 	ProviderProfile *string `json:"providerProfile,omitempty"`
 	// The suggestedModels field.
 	SuggestedModels []EdgeInferenceCatalogModel `json:"suggestedModels,omitempty"`
+	// True when every Edge process this tenant has connected has reported that it cannot serve this variant. False,
+	//  including when no Edge has reported, means the variant is offered as before. Region-scoped variants are not
+	//  gated here because the region is chosen later.
+	Unavailable *bool `json:"unavailable,omitempty"`
+	// Why the variant is unavailable. Set only with unavailable.
+	UnavailableReason *string `json:"unavailableReason,omitempty"`
 	// The upstreamPath field.
 	UpstreamPath *string `json:"upstreamPath,omitempty"`
+}
+
+func (e *EdgeInferenceCatalogVariant) GetAvailabilityWarning() *string {
+	if e == nil {
+		return nil
+	}
+	return e.AvailabilityWarning
 }
 
 func (e *EdgeInferenceCatalogVariant) GetCredentialRecipe() *string {
@@ -91,6 +108,13 @@ func (e *EdgeInferenceCatalogVariant) GetCredentialSource() *EdgeInferenceCatalo
 		return nil
 	}
 	return e.CredentialSource
+}
+
+func (e *EdgeInferenceCatalogVariant) GetDefaultSupportedReasoningEfforts() []string {
+	if e == nil {
+		return nil
+	}
+	return e.DefaultSupportedReasoningEfforts
 }
 
 func (e *EdgeInferenceCatalogVariant) GetDestination() *string {
@@ -147,6 +171,20 @@ func (e *EdgeInferenceCatalogVariant) GetSuggestedModels() []EdgeInferenceCatalo
 		return nil
 	}
 	return e.SuggestedModels
+}
+
+func (e *EdgeInferenceCatalogVariant) GetUnavailable() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.Unavailable
+}
+
+func (e *EdgeInferenceCatalogVariant) GetUnavailableReason() *string {
+	if e == nil {
+		return nil
+	}
+	return e.UnavailableReason
 }
 
 func (e *EdgeInferenceCatalogVariant) GetUpstreamPath() *string {

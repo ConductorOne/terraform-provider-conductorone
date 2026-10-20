@@ -31,12 +31,12 @@ func (e *FundPolicyServiceSetOrgCeilingRequestPeriod) IsExact() bool {
 
 // The FundPolicyServiceSetOrgCeilingRequest message.
 type FundPolicyServiceSetOrgCeilingRequest struct {
-	Limit *SpendLimit `json:"limit,omitempty"`
+	Limit *FundsSpendLimit `json:"limit,omitempty"`
 	// Optional period override for the ceiling. Only valid together with limit.
 	Period *FundPolicyServiceSetOrgCeilingRequestPeriod `json:"period,omitempty"`
 }
 
-func (f *FundPolicyServiceSetOrgCeilingRequest) GetLimit() *SpendLimit {
+func (f *FundPolicyServiceSetOrgCeilingRequest) GetLimit() *FundsSpendLimit {
 	if f == nil {
 		return nil
 	}

@@ -6,8 +6,18 @@ package shared
 //
 //	for an application.
 type EdgeServiceListInferenceRoutesResponse struct {
+	CapabilitySummary *EdgeCapabilitySummary `json:"capabilitySummary,omitempty"`
 	// The routes field.
 	Routes []EdgeInferenceRouteOption `json:"routes,omitempty"`
+	// Targets of this app's routes that connected Edge processes cannot serve. Empty when none has reported.
+	UnservedTargets []EdgeInferenceUnservedTarget `json:"unservedTargets,omitempty"`
+}
+
+func (e *EdgeServiceListInferenceRoutesResponse) GetCapabilitySummary() *EdgeCapabilitySummary {
+	if e == nil {
+		return nil
+	}
+	return e.CapabilitySummary
 }
 
 func (e *EdgeServiceListInferenceRoutesResponse) GetRoutes() []EdgeInferenceRouteOption {
@@ -15,4 +25,11 @@ func (e *EdgeServiceListInferenceRoutesResponse) GetRoutes() []EdgeInferenceRout
 		return nil
 	}
 	return e.Routes
+}
+
+func (e *EdgeServiceListInferenceRoutesResponse) GetUnservedTargets() []EdgeInferenceUnservedTarget {
+	if e == nil {
+		return nil
+	}
+	return e.UnservedTargets
 }

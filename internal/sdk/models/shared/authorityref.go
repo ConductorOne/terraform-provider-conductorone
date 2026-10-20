@@ -2,7 +2,7 @@
 
 package shared
 
-// AuthorityRefKind - The kind field.
+// AuthorityRefKind - Type of configuration.
 type AuthorityRefKind string
 
 const (
@@ -32,26 +32,23 @@ func (e *AuthorityRefKind) IsExact() bool {
 	return false
 }
 
-// AuthorityRef identifies one authority row at the revision admission read.
-//
-//	The reservation already carries tenant_id; the remaining fields are the
-//	row's typed primary-key components. Absent rows have version zero.
+// AuthorityRef identifies a configuration and the revision admission read.
 type AuthorityRef struct {
-	// The absent field.
+	// Whether admission found no configuration of this kind.
 	Absent *bool `json:"absent,omitempty"`
-	// The appEntitlementId field.
+	// Application entitlement ID, for entitlement-binding authorities.
 	AppEntitlementID *string `json:"appEntitlementId,omitempty"`
-	// The appId field.
+	// Application ID the configuration applies to.
 	AppID *string `json:"appId,omitempty"`
-	// The appUserId field.
+	// Application user ID, for application-user authorities.
 	AppUserID *string `json:"appUserId,omitempty"`
-	// The kind field.
+	// Type of configuration.
 	Kind *AuthorityRefKind `json:"kind,omitempty"`
-	// The ruleId field.
+	// Fund rule ID, for fund-rule authorities.
 	RuleID *string `json:"ruleId,omitempty"`
-	// The userId field.
+	// User ID the configuration applies to.
 	UserID *string `json:"userId,omitempty"`
-	// The version field.
+	// Configuration revision read during admission.
 	Version *string `json:"version,omitempty"`
 }
 

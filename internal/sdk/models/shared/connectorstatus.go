@@ -7,6 +7,29 @@ import (
 	"time"
 )
 
+// ErrorKind - Classification of last_error. Unspecified when no classified error is present.
+type ErrorKind string
+
+const (
+	ErrorKindErrorKindUnspecified                 ErrorKind = "ERROR_KIND_UNSPECIFIED"
+	ErrorKindErrorKindAuthoredRuntimeServeRefused ErrorKind = "ERROR_KIND_AUTHORED_RUNTIME_SERVE_REFUSED"
+)
+
+func (e ErrorKind) ToPointer() *ErrorKind {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ErrorKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ERROR_KIND_UNSPECIFIED", "ERROR_KIND_AUTHORED_RUNTIME_SERVE_REFUSED":
+			return true
+		}
+	}
+	return false
+}
+
 // ConnectorStatusStatus - The status of the connector sync.
 type ConnectorStatusStatus string
 
@@ -36,6 +59,8 @@ func (e *ConnectorStatusStatus) IsExact() bool {
 // ConnectorStatus - The status field on the connector is used to track the status of the connectors sync, and when syncing last started, completed, or caused the connector to update.
 type ConnectorStatus struct {
 	CompletedAt *time.Time `json:"completedAt,omitempty"`
+	// Classification of last_error. Unspecified when no classified error is present.
+	ErrorKind *ErrorKind `json:"errorKind,omitempty"`
 	// The last error encountered by the connector.
 	LastError *string    `json:"lastError,omitempty"`
 	StartedAt *time.Time `json:"startedAt,omitempty"`
@@ -60,6 +85,13 @@ func (c *ConnectorStatus) GetCompletedAt() *time.Time {
 		return nil
 	}
 	return c.CompletedAt
+}
+
+func (c *ConnectorStatus) GetErrorKind() *ErrorKind {
+	if c == nil {
+		return nil
+	}
+	return c.ErrorKind
 }
 
 func (c *ConnectorStatus) GetLastError() *string {

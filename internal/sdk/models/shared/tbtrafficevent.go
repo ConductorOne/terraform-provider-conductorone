@@ -278,6 +278,11 @@ type TBTrafficEvent struct {
 	//  in the same order. Populated only when the request asked for it
 	//  (include_parsed_verdict_reasons); verdict_reasons itself is unchanged.
 	ParsedVerdictReasons []TBVerdictReason `json:"parsedVerdictReasons,omitempty"`
+	// The configuration version that decided the request: for a hosted Edge, the
+	//  version C1 published for the Edge's configuration. An opaque digest, never
+	//  comparable across planes. Empty when not recorded, including before
+	//  authentication and on rows written before Time Bandit recorded it.
+	PolicyVersion *string `json:"policyVersion,omitempty"`
 	// The C1 user id source_principal resolves to, when it's an OIDC
 	//  principal whose subject is a real C1 user; empty for a service/agent
 	//  principal or one c1 couldn't resolve to a user.
@@ -285,6 +290,10 @@ type TBTrafficEvent struct {
 	// The HTTP status the provider answered a failed attempt with, when it
 	//  answered at all (100-599); 0 when there was none.
 	ProviderStatus *int64 `json:"providerStatus,omitempty"`
+	// Stable outcome code of the request: allowed, or the public error code the
+	//  caller received. Set on request-level rows only; empty on provider-attempt
+	//  rows and on rows written before Time Bandit recorded it.
+	ReasonCode *string `json:"reasonCode,omitempty"`
 	// The requestAuthority field.
 	RequestAuthority *string `json:"requestAuthority,omitempty"`
 	// The output-token cap this provider attempt asked for; 0 when the request
@@ -589,6 +598,13 @@ func (t *TBTrafficEvent) GetParsedVerdictReasons() []TBVerdictReason {
 	return t.ParsedVerdictReasons
 }
 
+func (t *TBTrafficEvent) GetPolicyVersion() *string {
+	if t == nil {
+		return nil
+	}
+	return t.PolicyVersion
+}
+
 func (t *TBTrafficEvent) GetPrincipalUserID() *string {
 	if t == nil {
 		return nil
@@ -601,6 +617,13 @@ func (t *TBTrafficEvent) GetProviderStatus() *int64 {
 		return nil
 	}
 	return t.ProviderStatus
+}
+
+func (t *TBTrafficEvent) GetReasonCode() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ReasonCode
 }
 
 func (t *TBTrafficEvent) GetRequestAuthority() *string {

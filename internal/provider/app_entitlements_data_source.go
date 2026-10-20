@@ -30,37 +30,39 @@ type AppEntitlementsDataSource struct {
 
 // AppEntitlementsDataSourceModel describes the data model.
 type AppEntitlementsDataSourceModel struct {
-	AccessReviewID          types.String                 `tfsdk:"access_review_id"`
-	Alias                   types.String                 `tfsdk:"alias"`
-	AppIds                  []types.String               `tfsdk:"app_ids"`
-	AppResourceTypeRefs     []tfTypes.ResourceTypeRef    `tfsdk:"app_resource_type_refs"`
-	AppUserIds              []types.String               `tfsdk:"app_user_ids"`
-	ComplianceFrameworkIds  []types.String               `tfsdk:"compliance_framework_ids"`
-	DisplayName             types.String                 `tfsdk:"display_name"`
-	ExcludeAppIds           []types.String               `tfsdk:"exclude_app_ids"`
-	ExcludeAppUserIds       []types.String               `tfsdk:"exclude_app_user_ids"`
-	ExcludedEntitlementRefs []tfTypes.AppEntitlementRef  `tfsdk:"excluded_entitlement_refs"`
-	ExcludeImmutable        types.Bool                   `tfsdk:"exclude_immutable"`
-	ExcludeResourceTypeIds  []types.String               `tfsdk:"exclude_resource_type_ids"`
-	Facets                  *tfTypes.Facets              `tfsdk:"facets"`
-	IncludeDeleted          types.Bool                   `tfsdk:"include_deleted"`
-	IsAutomated             types.Bool                   `tfsdk:"is_automated"`
-	List                    []tfTypes.AppEntitlementView `tfsdk:"list"`
-	MembershipType          []types.String               `tfsdk:"membership_type"`
-	NextPageToken           types.String                 `tfsdk:"next_page_token"`
-	OnlyGetExpiring         types.Bool                   `tfsdk:"only_get_expiring"`
-	OwnerUserIds            []types.String               `tfsdk:"owner_user_ids"`
-	PageSize                types.Int32                  `tfsdk:"page_size"`
-	PageToken               types.String                 `tfsdk:"page_token"`
-	PolicyRefs              []tfTypes.PolicyRef          `tfsdk:"policy_refs"`
-	Query                   types.String                 `tfsdk:"query"`
-	Refs                    []tfTypes.AppEntitlementRef  `tfsdk:"refs"`
-	RequestSchemaIds        []types.String               `tfsdk:"request_schema_ids"`
-	ResourceIds             []types.String               `tfsdk:"resource_ids"`
-	ResourceTraitIds        []types.String               `tfsdk:"resource_trait_ids"`
-	ResourceTypeIds         []types.String               `tfsdk:"resource_type_ids"`
-	RiskLevelIds            []types.String               `tfsdk:"risk_level_ids"`
-	SourceConnectorID       types.String                 `tfsdk:"source_connector_id"`
+	AccessReviewID           types.String                 `tfsdk:"access_review_id"`
+	Alias                    types.String                 `tfsdk:"alias"`
+	AppIds                   []types.String               `tfsdk:"app_ids"`
+	AppResourceTypeRefs      []tfTypes.ResourceTypeRef    `tfsdk:"app_resource_type_refs"`
+	AppUserIds               []types.String               `tfsdk:"app_user_ids"`
+	ComplianceFrameworkIds   []types.String               `tfsdk:"compliance_framework_ids"`
+	DisplayName              types.String                 `tfsdk:"display_name"`
+	EntitlementSlugs         []types.String               `tfsdk:"entitlement_slugs"`
+	ExcludeAppIds            []types.String               `tfsdk:"exclude_app_ids"`
+	ExcludeAppUserIds        []types.String               `tfsdk:"exclude_app_user_ids"`
+	ExcludeAutomationEnabled types.Bool                   `tfsdk:"exclude_automation_enabled"`
+	ExcludedEntitlementRefs  []tfTypes.AppEntitlementRef  `tfsdk:"excluded_entitlement_refs"`
+	ExcludeImmutable         types.Bool                   `tfsdk:"exclude_immutable"`
+	ExcludeResourceTypeIds   []types.String               `tfsdk:"exclude_resource_type_ids"`
+	Facets                   *tfTypes.Facets              `tfsdk:"facets"`
+	IncludeDeleted           types.Bool                   `tfsdk:"include_deleted"`
+	IsAutomated              types.Bool                   `tfsdk:"is_automated"`
+	List                     []tfTypes.AppEntitlementView `tfsdk:"list"`
+	MembershipType           []types.String               `tfsdk:"membership_type"`
+	NextPageToken            types.String                 `tfsdk:"next_page_token"`
+	OnlyGetExpiring          types.Bool                   `tfsdk:"only_get_expiring"`
+	OwnerUserIds             []types.String               `tfsdk:"owner_user_ids"`
+	PageSize                 types.Int32                  `tfsdk:"page_size"`
+	PageToken                types.String                 `tfsdk:"page_token"`
+	PolicyRefs               []tfTypes.PolicyRef          `tfsdk:"policy_refs"`
+	Query                    types.String                 `tfsdk:"query"`
+	Refs                     []tfTypes.AppEntitlementRef  `tfsdk:"refs"`
+	RequestSchemaIds         []types.String               `tfsdk:"request_schema_ids"`
+	ResourceIds              []types.String               `tfsdk:"resource_ids"`
+	ResourceTraitIds         []types.String               `tfsdk:"resource_trait_ids"`
+	ResourceTypeIds          []types.String               `tfsdk:"resource_type_ids"`
+	RiskLevelIds             []types.String               `tfsdk:"risk_level_ids"`
+	SourceConnectorID        types.String                 `tfsdk:"source_connector_id"`
 }
 
 // Metadata returns the data source type name.
@@ -121,6 +123,11 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 				Optional:    true,
 				Description: `Filter results to entitlements with this exact display name.`,
 			},
+			"entitlement_slugs": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Filter for entitlements whose slug is in this list (e.g. "read_only")`,
+			},
 			"exclude_app_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
@@ -130,6 +137,10 @@ func (r *AppEntitlementsDataSource) Schema(ctx context.Context, req datasource.S
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Exclude entitlements from results that are granted to any of these app users.`,
+			},
+			"exclude_automation_enabled": schema.BoolAttribute{
+				Optional:    true,
+				Description: `Exclude app entitlements that have automation enabled.`,
 			},
 			"exclude_immutable": schema.BoolAttribute{
 				Optional:    true,

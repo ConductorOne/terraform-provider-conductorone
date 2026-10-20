@@ -7,7 +7,8 @@ import (
 )
 
 type CampaignSchedule struct {
-	EndTime   *CampaignScheduleTime `tfsdk:"end_time"`
-	StartTime *CampaignScheduleTime `tfsdk:"start_time"`
-	Timezone  types.String          `tfsdk:"timezone"`
+	AutoStartTime *CampaignScheduleTime `tfsdk:"auto_start_time"`
+	EndTime       *CampaignScheduleTime `tfsdk:"end_time"`
+	StartTime     *CampaignScheduleTime `tfsdk:"start_time"`
+	Timezone      types.String          `tfsdk:"timezone"`
 }

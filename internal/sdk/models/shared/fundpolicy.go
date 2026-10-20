@@ -41,9 +41,9 @@ func (e *FundPolicyPeriod) IsExact() bool {
 type FundPolicy struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// ISO 4217. Set at Create and immutable thereafter.
-	CurrencyCode *string        `json:"currencyCode,omitempty"`
-	DefaultLimit *SpendLimit    `json:"defaultLimit,omitempty"`
-	OrgCeiling   *SpendControls `json:"orgCeiling,omitempty"`
+	CurrencyCode *string             `json:"currencyCode,omitempty"`
+	DefaultLimit *FundsSpendLimit    `json:"defaultLimit,omitempty"`
+	OrgCeiling   *FundsSpendControls `json:"orgCeiling,omitempty"`
 	// The root period every amount in the tenant is denominated in.
 	Period *FundPolicyPeriod `json:"period,omitempty"`
 	// Explicit approval policy for scoped spending changes. Empty disables requests.
@@ -78,14 +78,14 @@ func (f *FundPolicy) GetCurrencyCode() *string {
 	return f.CurrencyCode
 }
 
-func (f *FundPolicy) GetDefaultLimit() *SpendLimit {
+func (f *FundPolicy) GetDefaultLimit() *FundsSpendLimit {
 	if f == nil {
 		return nil
 	}
 	return f.DefaultLimit
 }
 
-func (f *FundPolicy) GetOrgCeiling() *SpendControls {
+func (f *FundPolicy) GetOrgCeiling() *FundsSpendControls {
 	if f == nil {
 		return nil
 	}

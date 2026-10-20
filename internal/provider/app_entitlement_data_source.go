@@ -55,8 +55,10 @@ type AppEntitlementDataSourceModel struct {
 	Edit                           types.Bool                           `tfsdk:"edit"`
 	EmergencyGrantEnabled          types.Bool                           `tfsdk:"emergency_grant_enabled"`
 	EmergencyGrantPolicyID         types.String                         `tfsdk:"emergency_grant_policy_id"`
+	EntitlementSlugs               []types.String                       `tfsdk:"entitlement_slugs"`
 	ExcludeAppIds                  []types.String                       `tfsdk:"exclude_app_ids"`
 	ExcludeAppUserIds              []types.String                       `tfsdk:"exclude_app_user_ids"`
+	ExcludeAutomationEnabled       types.Bool                           `tfsdk:"exclude_automation_enabled"`
 	ExcludedEntitlementRefs        []tfTypes.AppEntitlementRef          `tfsdk:"excluded_entitlement_refs"`
 	ExcludeImmutable               types.Bool                           `tfsdk:"exclude_immutable"`
 	ExcludeResourceTypeIds         []types.String                       `tfsdk:"exclude_resource_type_ids"`
@@ -543,6 +545,11 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				Computed:    true,
 				Description: `The ID of the policy that will be used for emergency access grant tasks.`,
 			},
+			"entitlement_slugs": schema.ListAttribute{
+				Optional:    true,
+				ElementType: types.StringType,
+				Description: `Filter for entitlements whose slug is in this list (e.g. "read_only")`,
+			},
 			"exclude_app_ids": schema.ListAttribute{
 				Optional:    true,
 				ElementType: types.StringType,
@@ -552,6 +559,10 @@ func (r *AppEntitlementDataSource) Schema(ctx context.Context, req datasource.Sc
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Exclude entitlements from results that are granted to any of these app users.`,
+			},
+			"exclude_automation_enabled": schema.BoolAttribute{
+				Optional:    true,
+				Description: `Exclude app entitlements that have automation enabled.`,
 			},
 			"exclude_immutable": schema.BoolAttribute{
 				Optional:    true,

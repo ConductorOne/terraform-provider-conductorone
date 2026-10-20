@@ -2,11 +2,10 @@
 
 package shared
 
-// MCPServerServiceTestConnectionRequest exercises an
+// MCPServerServiceTestConnectionRequest exercises a configured external or
 //
-//	MCPServerExternalConfig against the upstream server and reports whether
-//	the supplied URL + transport + credentials accept a real MCP
-//	initialize + tools/list.
+//	hosted MCP server against the upstream and reports whether credentials accept
+//	a real initialize + tools/list round trip.
 type MCPServerServiceTestConnectionRequest struct {
 	// App ID of an existing external MCP connector. When set together with
 	//  connector_id, the request runs in edit mode (see above).
@@ -15,6 +14,7 @@ type MCPServerServiceTestConnectionRequest struct {
 	//  with app_id, the request runs in edit mode (see above).
 	ConnectorID    *string                  `json:"connectorId,omitempty"`
 	ExternalConfig *MCPServerExternalConfig `json:"externalConfig,omitempty"`
+	HostedConfig   *MCPServerHostedConfig   `json:"hostedConfig,omitempty"`
 	UpdateMask     *string                  `json:"updateMask,omitempty"`
 }
 
@@ -37,6 +37,13 @@ func (m *MCPServerServiceTestConnectionRequest) GetExternalConfig() *MCPServerEx
 		return nil
 	}
 	return m.ExternalConfig
+}
+
+func (m *MCPServerServiceTestConnectionRequest) GetHostedConfig() *MCPServerHostedConfig {
+	if m == nil {
+		return nil
+	}
+	return m.HostedConfig
 }
 
 func (m *MCPServerServiceTestConnectionRequest) GetUpdateMask() *string {

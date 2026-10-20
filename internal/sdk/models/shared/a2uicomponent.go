@@ -34,29 +34,33 @@ package shared
 //   - c1Chart
 //   - c1MetricCards
 //   - c1Table
+//   - c1AppUserPicker
+//   - c1CredentialOfferingPicker
 type A2UIComponent struct {
-	Button                  *ButtonComponent                  `json:"button,omitempty"`
-	C1Chart                 *C1ChartComponent                 `json:"c1Chart,omitempty"`
-	C1CodeBlock             *C1CodeBlockComponent             `json:"c1CodeBlock,omitempty"`
-	C1ConnectorConfigForm   *C1ConnectorConfigFormComponent   `json:"c1ConnectorConfigForm,omitempty"`
-	C1ConnectorSyncDetail   *C1ConnectorSyncDetailComponent   `json:"c1ConnectorSyncDetail,omitempty"`
-	C1ConnectorSyncProgress *C1ConnectorSyncProgressComponent `json:"c1ConnectorSyncProgress,omitempty"`
-	C1DurationPicker        *C1DurationPickerComponent        `json:"c1DurationPicker,omitempty"`
-	C1MetricCards           *C1MetricCardsComponent           `json:"c1MetricCards,omitempty"`
-	C1MsTeamsNotifications  *C1MSTeamsNotificationsComponent  `json:"c1MsTeamsNotifications,omitempty"`
-	C1OnboardingPlan        *C1OnboardingPlanComponent        `json:"c1OnboardingPlan,omitempty"`
-	C1OnboardingWelcome     *C1OnboardingWelcomeComponent     `json:"c1OnboardingWelcome,omitempty"`
-	C1ResourcePicker        *C1ResourcePickerComponent        `json:"c1ResourcePicker,omitempty"`
-	C1SlackNotifications    *C1SlackNotificationsComponent    `json:"c1SlackNotifications,omitempty"`
-	C1StatusIndicator       *C1StatusIndicatorComponent       `json:"c1StatusIndicator,omitempty"`
-	C1Table                 *C1TableComponent                 `json:"c1Table,omitempty"`
-	C1TodoList              *C1TodoListComponent              `json:"c1TodoList,omitempty"`
-	Card                    *CardComponent                    `json:"card,omitempty"`
-	CheckBox                *CheckBoxComponent                `json:"checkBox,omitempty"`
-	ChoicePicker            *ChoicePickerComponent            `json:"choicePicker,omitempty"`
-	Column                  *ColumnComponent                  `json:"column,omitempty"`
-	DateTimeInput           *DateTimeInputComponent           `json:"dateTimeInput,omitempty"`
-	Divider                 *DividerComponent                 `json:"divider,omitempty"`
+	Button                     *ButtonComponent                     `json:"button,omitempty"`
+	C1AppUserPicker            *C1AppUserPickerComponent            `json:"c1AppUserPicker,omitempty"`
+	C1Chart                    *C1ChartComponent                    `json:"c1Chart,omitempty"`
+	C1CodeBlock                *C1CodeBlockComponent                `json:"c1CodeBlock,omitempty"`
+	C1ConnectorConfigForm      *C1ConnectorConfigFormComponent      `json:"c1ConnectorConfigForm,omitempty"`
+	C1ConnectorSyncDetail      *C1ConnectorSyncDetailComponent      `json:"c1ConnectorSyncDetail,omitempty"`
+	C1ConnectorSyncProgress    *C1ConnectorSyncProgressComponent    `json:"c1ConnectorSyncProgress,omitempty"`
+	C1CredentialOfferingPicker *C1CredentialOfferingPickerComponent `json:"c1CredentialOfferingPicker,omitempty"`
+	C1DurationPicker           *C1DurationPickerComponent           `json:"c1DurationPicker,omitempty"`
+	C1MetricCards              *C1MetricCardsComponent              `json:"c1MetricCards,omitempty"`
+	C1MsTeamsNotifications     *C1MSTeamsNotificationsComponent     `json:"c1MsTeamsNotifications,omitempty"`
+	C1OnboardingPlan           *C1OnboardingPlanComponent           `json:"c1OnboardingPlan,omitempty"`
+	C1OnboardingWelcome        *C1OnboardingWelcomeComponent        `json:"c1OnboardingWelcome,omitempty"`
+	C1ResourcePicker           *C1ResourcePickerComponent           `json:"c1ResourcePicker,omitempty"`
+	C1SlackNotifications       *C1SlackNotificationsComponent       `json:"c1SlackNotifications,omitempty"`
+	C1StatusIndicator          *C1StatusIndicatorComponent          `json:"c1StatusIndicator,omitempty"`
+	C1Table                    *C1TableComponent                    `json:"c1Table,omitempty"`
+	C1TodoList                 *C1TodoListComponent                 `json:"c1TodoList,omitempty"`
+	Card                       *CardComponent                       `json:"card,omitempty"`
+	CheckBox                   *CheckBoxComponent                   `json:"checkBox,omitempty"`
+	ChoicePicker               *ChoicePickerComponent               `json:"choicePicker,omitempty"`
+	Column                     *ColumnComponent                     `json:"column,omitempty"`
+	DateTimeInput              *DateTimeInputComponent              `json:"dateTimeInput,omitempty"`
+	Divider                    *DividerComponent                    `json:"divider,omitempty"`
 	// The id field.
 	ID          *string               `json:"id,omitempty"`
 	ProgressBar *ProgressBarComponent `json:"progressBar,omitempty"`
@@ -73,6 +77,13 @@ func (a *A2UIComponent) GetButton() *ButtonComponent {
 		return nil
 	}
 	return a.Button
+}
+
+func (a *A2UIComponent) GetC1AppUserPicker() *C1AppUserPickerComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1AppUserPicker
 }
 
 func (a *A2UIComponent) GetC1Chart() *C1ChartComponent {
@@ -108,6 +119,13 @@ func (a *A2UIComponent) GetC1ConnectorSyncProgress() *C1ConnectorSyncProgressCom
 		return nil
 	}
 	return a.C1ConnectorSyncProgress
+}
+
+func (a *A2UIComponent) GetC1CredentialOfferingPicker() *C1CredentialOfferingPickerComponent {
+	if a == nil {
+		return nil
+	}
+	return a.C1CredentialOfferingPicker
 }
 
 func (a *A2UIComponent) GetC1DurationPicker() *C1DurationPickerComponent {

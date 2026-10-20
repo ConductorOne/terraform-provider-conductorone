@@ -11,12 +11,12 @@ import (
 type MySpendBlockReason string
 
 const (
-	MySpendBlockReasonDenyReasonUnspecified      MySpendBlockReason = "DENY_REASON_UNSPECIFIED"
-	MySpendBlockReasonDenyReasonTenantFrozen     MySpendBlockReason = "DENY_REASON_TENANT_FROZEN"
-	MySpendBlockReasonDenyReasonSuspendedByAdmin MySpendBlockReason = "DENY_REASON_SUSPENDED_BY_ADMIN"
-	MySpendBlockReasonDenyReasonAppSuspended     MySpendBlockReason = "DENY_REASON_APP_SUSPENDED"
-	MySpendBlockReasonDenyReasonAppPausedByYou   MySpendBlockReason = "DENY_REASON_APP_PAUSED_BY_YOU"
-	MySpendBlockReasonDenyReasonNoSupply         MySpendBlockReason = "DENY_REASON_NO_SUPPLY"
+	MySpendBlockReasonSpendDenyReasonUnspecified      MySpendBlockReason = "SPEND_DENY_REASON_UNSPECIFIED"
+	MySpendBlockReasonSpendDenyReasonTenantFrozen     MySpendBlockReason = "SPEND_DENY_REASON_TENANT_FROZEN"
+	MySpendBlockReasonSpendDenyReasonSuspendedByAdmin MySpendBlockReason = "SPEND_DENY_REASON_SUSPENDED_BY_ADMIN"
+	MySpendBlockReasonSpendDenyReasonAppSuspended     MySpendBlockReason = "SPEND_DENY_REASON_APP_SUSPENDED"
+	MySpendBlockReasonSpendDenyReasonAppPausedByYou   MySpendBlockReason = "SPEND_DENY_REASON_APP_PAUSED_BY_YOU"
+	MySpendBlockReasonSpendDenyReasonNoSupply         MySpendBlockReason = "SPEND_DENY_REASON_NO_SUPPLY"
 )
 
 func (e MySpendBlockReason) ToPointer() *MySpendBlockReason {
@@ -27,7 +27,7 @@ func (e MySpendBlockReason) ToPointer() *MySpendBlockReason {
 func (e *MySpendBlockReason) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "DENY_REASON_UNSPECIFIED", "DENY_REASON_TENANT_FROZEN", "DENY_REASON_SUSPENDED_BY_ADMIN", "DENY_REASON_APP_SUSPENDED", "DENY_REASON_APP_PAUSED_BY_YOU", "DENY_REASON_NO_SUPPLY":
+		case "SPEND_DENY_REASON_UNSPECIFIED", "SPEND_DENY_REASON_TENANT_FROZEN", "SPEND_DENY_REASON_SUSPENDED_BY_ADMIN", "SPEND_DENY_REASON_APP_SUSPENDED", "SPEND_DENY_REASON_APP_PAUSED_BY_YOU", "SPEND_DENY_REASON_NO_SUPPLY":
 			return true
 		}
 	}
@@ -84,8 +84,8 @@ type MySpendBlock struct {
 	// Reason the calls were denied.
 	Reason *MySpendBlockReason `json:"reason,omitempty"`
 	// Current access request task linked to this episode, when one exists.
-	RequestTaskID *string       `json:"requestTaskId,omitempty"`
-	Scope         *AccountScope `json:"scope,omitempty"`
+	RequestTaskID *string            `json:"requestTaskId,omitempty"`
+	Scope         *FundsAccountScope `json:"scope,omitempty"`
 	// Whether this denial episode remains open.
 	State *MySpendBlockState `json:"state,omitempty"`
 }
@@ -192,7 +192,7 @@ func (m *MySpendBlock) GetRequestTaskID() *string {
 	return m.RequestTaskID
 }
 
-func (m *MySpendBlock) GetScope() *AccountScope {
+func (m *MySpendBlock) GetScope() *FundsAccountScope {
 	if m == nil {
 		return nil
 	}

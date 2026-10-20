@@ -31,12 +31,12 @@ func (e *MyFundLimitsServiceSetLimitRequestPeriod) IsExact() bool {
 
 // The MyFundLimitsServiceSetLimitRequest message.
 type MyFundLimitsServiceSetLimitRequest struct {
-	Limit *SpendLimit `json:"limit,omitempty"`
+	Limit *FundsSpendLimit `json:"limit,omitempty"`
 	// Optional period override. Only valid together with the limit it denominates.
 	Period *MyFundLimitsServiceSetLimitRequestPeriod `json:"period,omitempty"`
 }
 
-func (m *MyFundLimitsServiceSetLimitRequest) GetLimit() *SpendLimit {
+func (m *MyFundLimitsServiceSetLimitRequest) GetLimit() *FundsSpendLimit {
 	if m == nil {
 		return nil
 	}

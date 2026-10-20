@@ -68,12 +68,12 @@ func (e *PeriodKind) IsExact() bool {
 type DenialEpisodeReason string
 
 const (
-	DenialEpisodeReasonDenyReasonUnspecified      DenialEpisodeReason = "DENY_REASON_UNSPECIFIED"
-	DenialEpisodeReasonDenyReasonTenantFrozen     DenialEpisodeReason = "DENY_REASON_TENANT_FROZEN"
-	DenialEpisodeReasonDenyReasonSuspendedByAdmin DenialEpisodeReason = "DENY_REASON_SUSPENDED_BY_ADMIN"
-	DenialEpisodeReasonDenyReasonAppSuspended     DenialEpisodeReason = "DENY_REASON_APP_SUSPENDED"
-	DenialEpisodeReasonDenyReasonAppPausedByYou   DenialEpisodeReason = "DENY_REASON_APP_PAUSED_BY_YOU"
-	DenialEpisodeReasonDenyReasonNoSupply         DenialEpisodeReason = "DENY_REASON_NO_SUPPLY"
+	DenialEpisodeReasonSpendDenyReasonUnspecified      DenialEpisodeReason = "SPEND_DENY_REASON_UNSPECIFIED"
+	DenialEpisodeReasonSpendDenyReasonTenantFrozen     DenialEpisodeReason = "SPEND_DENY_REASON_TENANT_FROZEN"
+	DenialEpisodeReasonSpendDenyReasonSuspendedByAdmin DenialEpisodeReason = "SPEND_DENY_REASON_SUSPENDED_BY_ADMIN"
+	DenialEpisodeReasonSpendDenyReasonAppSuspended     DenialEpisodeReason = "SPEND_DENY_REASON_APP_SUSPENDED"
+	DenialEpisodeReasonSpendDenyReasonAppPausedByYou   DenialEpisodeReason = "SPEND_DENY_REASON_APP_PAUSED_BY_YOU"
+	DenialEpisodeReasonSpendDenyReasonNoSupply         DenialEpisodeReason = "SPEND_DENY_REASON_NO_SUPPLY"
 )
 
 func (e DenialEpisodeReason) ToPointer() *DenialEpisodeReason {
@@ -84,7 +84,7 @@ func (e DenialEpisodeReason) ToPointer() *DenialEpisodeReason {
 func (e *DenialEpisodeReason) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "DENY_REASON_UNSPECIFIED", "DENY_REASON_TENANT_FROZEN", "DENY_REASON_SUSPENDED_BY_ADMIN", "DENY_REASON_APP_SUSPENDED", "DENY_REASON_APP_PAUSED_BY_YOU", "DENY_REASON_NO_SUPPLY":
+		case "SPEND_DENY_REASON_UNSPECIFIED", "SPEND_DENY_REASON_TENANT_FROZEN", "SPEND_DENY_REASON_SUSPENDED_BY_ADMIN", "SPEND_DENY_REASON_APP_SUSPENDED", "SPEND_DENY_REASON_APP_PAUSED_BY_YOU", "SPEND_DENY_REASON_NO_SUPPLY":
 			return true
 		}
 	}
@@ -95,9 +95,9 @@ func (e *DenialEpisodeReason) IsExact() bool {
 type RequestTaskState string
 
 const (
-	RequestTaskStateTicketStateUnspecified RequestTaskState = "TICKET_STATE_UNSPECIFIED"
-	RequestTaskStateTicketStateOpen        RequestTaskState = "TICKET_STATE_OPEN"
-	RequestTaskStateTicketStateClosed      RequestTaskState = "TICKET_STATE_CLOSED"
+	RequestTaskStateTaskStateUnspecified RequestTaskState = "TASK_STATE_UNSPECIFIED"
+	RequestTaskStateTaskStateOpen        RequestTaskState = "TASK_STATE_OPEN"
+	RequestTaskStateTaskStateClosed      RequestTaskState = "TASK_STATE_CLOSED"
 )
 
 func (e RequestTaskState) ToPointer() *RequestTaskState {
@@ -108,7 +108,7 @@ func (e RequestTaskState) ToPointer() *RequestTaskState {
 func (e *RequestTaskState) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "TICKET_STATE_UNSPECIFIED", "TICKET_STATE_OPEN", "TICKET_STATE_CLOSED":
+		case "TASK_STATE_UNSPECIFIED", "TASK_STATE_OPEN", "TASK_STATE_CLOSED":
 			return true
 		}
 	}
@@ -119,11 +119,11 @@ func (e *RequestTaskState) IsExact() bool {
 type ScopeKind string
 
 const (
-	ScopeKindSpendBlockScopeKindUnspecified ScopeKind = "SPEND_BLOCK_SCOPE_KIND_UNSPECIFIED"
-	ScopeKindSpendBlockScopeKindTenant      ScopeKind = "SPEND_BLOCK_SCOPE_KIND_TENANT"
-	ScopeKindSpendBlockScopeKindSubject     ScopeKind = "SPEND_BLOCK_SCOPE_KIND_SUBJECT"
-	ScopeKindSpendBlockScopeKindApp         ScopeKind = "SPEND_BLOCK_SCOPE_KIND_APP"
-	ScopeKindSpendBlockScopeKindSubjectApp  ScopeKind = "SPEND_BLOCK_SCOPE_KIND_SUBJECT_APP"
+	ScopeKindSpendScopeKindUnspecified ScopeKind = "SPEND_SCOPE_KIND_UNSPECIFIED"
+	ScopeKindSpendScopeKindTenant      ScopeKind = "SPEND_SCOPE_KIND_TENANT"
+	ScopeKindSpendScopeKindSubject     ScopeKind = "SPEND_SCOPE_KIND_SUBJECT"
+	ScopeKindSpendScopeKindApp         ScopeKind = "SPEND_SCOPE_KIND_APP"
+	ScopeKindSpendScopeKindSubjectApp  ScopeKind = "SPEND_SCOPE_KIND_SUBJECT_APP"
 )
 
 func (e ScopeKind) ToPointer() *ScopeKind {
@@ -134,7 +134,7 @@ func (e ScopeKind) ToPointer() *ScopeKind {
 func (e *ScopeKind) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "SPEND_BLOCK_SCOPE_KIND_UNSPECIFIED", "SPEND_BLOCK_SCOPE_KIND_TENANT", "SPEND_BLOCK_SCOPE_KIND_SUBJECT", "SPEND_BLOCK_SCOPE_KIND_APP", "SPEND_BLOCK_SCOPE_KIND_SUBJECT_APP":
+		case "SPEND_SCOPE_KIND_UNSPECIFIED", "SPEND_SCOPE_KIND_TENANT", "SPEND_SCOPE_KIND_SUBJECT", "SPEND_SCOPE_KIND_APP", "SPEND_SCOPE_KIND_SUBJECT_APP":
 			return true
 		}
 	}

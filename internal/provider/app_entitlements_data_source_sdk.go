@@ -713,6 +713,13 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 	} else {
 		displayName = nil
 	}
+	var entitlementSlugs []string
+	if r.EntitlementSlugs != nil {
+		entitlementSlugs = make([]string, 0, len(r.EntitlementSlugs))
+		for entitlementSlugsIndex := range r.EntitlementSlugs {
+			entitlementSlugs = append(entitlementSlugs, r.EntitlementSlugs[entitlementSlugsIndex].ValueString())
+		}
+	}
 	var excludeAppIds []string
 	if r.ExcludeAppIds != nil {
 		excludeAppIds = make([]string, 0, len(r.ExcludeAppIds))
@@ -726,6 +733,12 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 		for excludeAppUserIdsIndex := range r.ExcludeAppUserIds {
 			excludeAppUserIds = append(excludeAppUserIds, r.ExcludeAppUserIds[excludeAppUserIdsIndex].ValueString())
 		}
+	}
+	excludeAutomationEnabled := new(bool)
+	if !r.ExcludeAutomationEnabled.IsUnknown() && !r.ExcludeAutomationEnabled.IsNull() {
+		*excludeAutomationEnabled = r.ExcludeAutomationEnabled.ValueBool()
+	} else {
+		excludeAutomationEnabled = nil
 	}
 	excludeImmutable := new(bool)
 	if !r.ExcludeImmutable.IsUnknown() && !r.ExcludeImmutable.IsNull() {
@@ -885,33 +898,35 @@ func (r *AppEntitlementsDataSourceModel) ToSharedAppEntitlementSearchServiceSear
 		sourceConnectorID = nil
 	}
 	out := shared.AppEntitlementSearchServiceSearchRequest{
-		AccessReviewID:          accessReviewID,
-		Alias:                   alias,
-		AppIds:                  appIds,
-		AppResourceTypeRefs:     appResourceTypeRefs,
-		AppUserIds:              appUserIds,
-		ComplianceFrameworkIds:  complianceFrameworkIds,
-		DisplayName:             displayName,
-		ExcludeAppIds:           excludeAppIds,
-		ExcludeAppUserIds:       excludeAppUserIds,
-		ExcludeImmutable:        excludeImmutable,
-		ExcludeResourceTypeIds:  excludeResourceTypeIds,
-		ExcludedEntitlementRefs: excludedEntitlementRefs,
-		IncludeDeleted:          includeDeleted,
-		IsAutomated:             isAutomated,
-		MembershipType:          membershipType,
-		OnlyGetExpiring:         onlyGetExpiring,
-		OwnerUserIds:            ownerUserIds,
-		PageSize:                pageSize,
-		PolicyRefs:              policyRefs,
-		Query:                   query,
-		Refs:                    refs,
-		RequestSchemaIds:        requestSchemaIds,
-		ResourceIds:             resourceIds,
-		ResourceTraitIds:        resourceTraitIds,
-		ResourceTypeIds:         resourceTypeIds,
-		RiskLevelIds:            riskLevelIds,
-		SourceConnectorID:       sourceConnectorID,
+		AccessReviewID:           accessReviewID,
+		Alias:                    alias,
+		AppIds:                   appIds,
+		AppResourceTypeRefs:      appResourceTypeRefs,
+		AppUserIds:               appUserIds,
+		ComplianceFrameworkIds:   complianceFrameworkIds,
+		DisplayName:              displayName,
+		EntitlementSlugs:         entitlementSlugs,
+		ExcludeAppIds:            excludeAppIds,
+		ExcludeAppUserIds:        excludeAppUserIds,
+		ExcludeAutomationEnabled: excludeAutomationEnabled,
+		ExcludeImmutable:         excludeImmutable,
+		ExcludeResourceTypeIds:   excludeResourceTypeIds,
+		ExcludedEntitlementRefs:  excludedEntitlementRefs,
+		IncludeDeleted:           includeDeleted,
+		IsAutomated:              isAutomated,
+		MembershipType:           membershipType,
+		OnlyGetExpiring:          onlyGetExpiring,
+		OwnerUserIds:             ownerUserIds,
+		PageSize:                 pageSize,
+		PolicyRefs:               policyRefs,
+		Query:                    query,
+		Refs:                     refs,
+		RequestSchemaIds:         requestSchemaIds,
+		ResourceIds:              resourceIds,
+		ResourceTraitIds:         resourceTraitIds,
+		ResourceTypeIds:          resourceTypeIds,
+		RiskLevelIds:             riskLevelIds,
+		SourceConnectorID:        sourceConnectorID,
 	}
 
 	return &out, diags

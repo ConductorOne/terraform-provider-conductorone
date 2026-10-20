@@ -102,12 +102,7 @@ data "conductorone_app_resources" "my_app_resources" {
 - `credential_types` (List of String) Restrict the search to resources whose credential material spine (K1) matches
  one of the given CredentialType values. Applies to resources with a
  secret_trait. When empty, credential_type is not used as a filter.
-- `direction` (String) Direction to sort in. Unspecified falls back to ASC when sort_field is set.
- No defined_only validation here: protoc-gen-validate mis-resolves the
- cross-package enum name map to this file's c1.models.app.v1 import alias
- instead of c1.api.search.v1, which fails to compile. The query builder
- already treats any unrecognized value as ASC, so this is safe to omit.
-possible known values include one of ["SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC"]
+- `direction` (String) Direction to sort in. Unspecified falls back to ASC when sort_field is set. possible known values include one of ["SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC"]
 - `exclude_deleted_apps` (Boolean) When true, excludes resources belonging to soft-deleted apps.
 - `exclude_deleted_resource_bindings` (Boolean) If true, exclude resources whose bindings have been deleted.
 - `exclude_resource_ids` (List of String) A list of resource IDs to exclude from the search results.

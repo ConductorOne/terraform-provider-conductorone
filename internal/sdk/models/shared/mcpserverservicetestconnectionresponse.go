@@ -4,23 +4,33 @@ package shared
 
 // The MCPServerServiceTestConnectionResponse message.
 type MCPServerServiceTestConnectionResponse struct {
+	// True when the upstream accepted the supplied credentials. For hosted
+	//  configurations that means the catalog entry's auth_validation_url
+	//  answered an authenticated tools/list. Always false when the configuration
+	//  carries no credential.
+	CredentialVerified *bool `json:"credentialVerified,omitempty"`
 	// Sanitized, human-readable explanation of why the probe failed, set
 	//  only when reachable=false (e.g. "MCP server unreachable or rejected
 	//  the credentials (HTTP 401 Unauthorized)"). Empty when reachable=true.
 	//  Never contains raw upstream response bytes.
 	FailureReason *string `json:"failureReason,omitempty"`
-	// True when the MCP initialize handshake AND a tools/list call both
-	//  succeeded against the upstream with the supplied credentials. False
-	//  when the probe ran but the upstream was unreachable or rejected the
-	//  request — see failure_reason. Malformed requests (missing/invalid
-	//  config, bad permissions) are returned as a gRPC error, not
-	//  reachable=false.
+	// True when a connection test completes successfully: the upstream was
+	//  contacted with the supplied credentials. For hosted configurations that
+	//  is an authenticated MCP tools/list against the catalog entry's
+	//  auth_validation_url.
 	Reachable *bool `json:"reachable,omitempty"`
-	// Number of tools advertised by the upstream's tools/list response.
-	//  Zero when reachable=false; can also legitimately be zero when the
-	//  server is reachable but exposes no tools. int64 to match
-	//  MCPServerSearchWithToolCountResult.tool_count.
+	// Number of tools exposed by the connection test. For external
+	//  configurations, this is the upstream tools/list result. For hosted
+	//  configurations, this is the catalog tool surface. Zero when
+	//  reachable=false. int64 to match MCPServerSearchWithToolCountResult.tool_count.
 	ToolCount *string `json:"toolCount,omitempty"`
+}
+
+func (m *MCPServerServiceTestConnectionResponse) GetCredentialVerified() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.CredentialVerified
 }
 
 func (m *MCPServerServiceTestConnectionResponse) GetFailureReason() *string {

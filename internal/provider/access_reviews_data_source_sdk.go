@@ -67,6 +67,13 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 						list.AccessReview.CampaignSchedule = nil
 					} else {
 						list.AccessReview.CampaignSchedule = &tfTypes.CampaignSchedule{}
+						if listItem.AccessReview.CampaignSchedule.AutoStartTime == nil {
+							list.AccessReview.CampaignSchedule.AutoStartTime = nil
+						} else {
+							list.AccessReview.CampaignSchedule.AutoStartTime = &tfTypes.CampaignScheduleTime{}
+							list.AccessReview.CampaignSchedule.AutoStartTime.Hours = types.Int64PointerValue(listItem.AccessReview.CampaignSchedule.AutoStartTime.Hours)
+							list.AccessReview.CampaignSchedule.AutoStartTime.Minutes = types.Int64PointerValue(listItem.AccessReview.CampaignSchedule.AutoStartTime.Minutes)
+						}
 						if listItem.AccessReview.CampaignSchedule.EndTime == nil {
 							list.AccessReview.CampaignSchedule.EndTime = nil
 						} else {
@@ -324,6 +331,14 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 						list.AccessReview.ScopeV2 = nil
 					} else {
 						list.AccessReview.ScopeV2 = &tfTypes.AccessReviewScopeV2{}
+						if listItem.AccessReview.ScopeV2.AccessProfileReviewDimensions == nil {
+							list.AccessReview.ScopeV2.AccessProfileReviewDimensions = nil
+						} else {
+							list.AccessReview.ScopeV2.AccessProfileReviewDimensions = &tfTypes.AccessProfileReviewDimensions{}
+							list.AccessReview.ScopeV2.AccessProfileReviewDimensions.Composition = types.BoolPointerValue(listItem.AccessReview.ScopeV2.AccessProfileReviewDimensions.Composition)
+							list.AccessReview.ScopeV2.AccessProfileReviewDimensions.MembershipCriteria = types.BoolPointerValue(listItem.AccessReview.ScopeV2.AccessProfileReviewDimensions.MembershipCriteria)
+							list.AccessReview.ScopeV2.AccessProfileReviewDimensions.MembershipExceptions = types.BoolPointerValue(listItem.AccessReview.ScopeV2.AccessProfileReviewDimensions.MembershipExceptions)
+						}
 						if listItem.AccessReview.ScopeV2.AccountCelExpression == nil {
 							list.AccessReview.ScopeV2.AccountCelExpression = nil
 						} else {
@@ -386,6 +401,14 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 							list.AccessReview.ScopeV2.AppSelectionCriteria = nil
 						} else {
 							list.AccessReview.ScopeV2.AppSelectionCriteria = &tfTypes.AppSelectionCriteriaScope{}
+							if listItem.AccessReview.ScopeV2.AppSelectionCriteria.AppIds != nil {
+								list.AccessReview.ScopeV2.AppSelectionCriteria.AppIds = make([]types.String, 0, len(listItem.AccessReview.ScopeV2.AppSelectionCriteria.AppIds))
+								for _, v := range listItem.AccessReview.ScopeV2.AppSelectionCriteria.AppIds {
+									list.AccessReview.ScopeV2.AppSelectionCriteria.AppIds = append(list.AccessReview.ScopeV2.AppSelectionCriteria.AppIds, types.StringValue(v))
+								}
+							} else {
+								list.AccessReview.ScopeV2.AppSelectionCriteria.AppIds = nil
+							}
 							if listItem.AccessReview.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds != nil {
 								list.AccessReview.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = make([]types.String, 0, len(listItem.AccessReview.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds))
 								for _, v := range listItem.AccessReview.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds {
@@ -393,6 +416,20 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 								}
 							} else {
 								list.AccessReview.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = nil
+							}
+							if listItem.AccessReview.ScopeV2.AppSelectionCriteria.ResourceTypeRefs != nil {
+								list.AccessReview.ScopeV2.AppSelectionCriteria.ResourceTypeRefs = []tfTypes.ResourceTypeRef{}
+
+								for _, resourceTypeRefsItem := range listItem.AccessReview.ScopeV2.AppSelectionCriteria.ResourceTypeRefs {
+									var resourceTypeRefs tfTypes.ResourceTypeRef
+
+									resourceTypeRefs.AppID = types.StringPointerValue(resourceTypeRefsItem.AppID)
+									resourceTypeRefs.ID = types.StringPointerValue(resourceTypeRefsItem.ID)
+
+									list.AccessReview.ScopeV2.AppSelectionCriteria.ResourceTypeRefs = append(list.AccessReview.ScopeV2.AppSelectionCriteria.ResourceTypeRefs, resourceTypeRefs)
+								}
+							} else {
+								list.AccessReview.ScopeV2.AppSelectionCriteria.ResourceTypeRefs = nil
 							}
 							if listItem.AccessReview.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds != nil {
 								list.AccessReview.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds = make([]types.String, 0, len(listItem.AccessReview.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds))
@@ -507,6 +544,11 @@ func (r *AccessReviewsDataSourceModel) RefreshFromSharedAccessReviewServiceListR
 							list.AccessReview.ScopeV2.SpecificAccessConflicts = nil
 						} else {
 							list.AccessReview.ScopeV2.SpecificAccessConflicts = &tfTypes.SpecificAccessConflictsScope{}
+						}
+						if listItem.AccessReview.ScopeV2.SpecificAccessProfiles == nil {
+							list.AccessReview.ScopeV2.SpecificAccessProfiles = nil
+						} else {
+							list.AccessReview.ScopeV2.SpecificAccessProfiles = &tfTypes.SpecificAccessProfilesScope{}
 						}
 						if listItem.AccessReview.ScopeV2.SpecificResources == nil {
 							list.AccessReview.ScopeV2.SpecificResources = nil

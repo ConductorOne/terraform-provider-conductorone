@@ -140,6 +140,12 @@ type MCPServerCatalogEntry struct {
 	// Authentication methods this server supports. The first entry is the
 	//  catalog-prescribed default. Empty when the impl declares no auth.
 	AuthModes []MCPServerCatalogAuthMode `json:"authModes,omitempty"`
+	// Authentication validation endpoint declared by the catalog impl. Set only
+	//  when the impl declares an endpoint that rejects invalid credentials.
+	//  Hosted connection tests are offered only for connect_type "mcp" entries
+	//  with this set. May be a ${VAR} template over config_schema fields, like
+	//  base_url.
+	AuthValidationURL *string `json:"authValidationUrl,omitempty"`
 	// Connection base URL declared by the impl. May be a ${VAR} template over
 	//  config_schema fields (e.g. "https://${workspace}.app.n8n.cloud/mcp-server/http");
 	//  the UI substitutes the admin's config-field values to preview the resolved
@@ -206,6 +212,13 @@ func (m *MCPServerCatalogEntry) GetAuthModes() []MCPServerCatalogAuthMode {
 		return nil
 	}
 	return m.AuthModes
+}
+
+func (m *MCPServerCatalogEntry) GetAuthValidationURL() *string {
+	if m == nil {
+		return nil
+	}
+	return m.AuthValidationURL
 }
 
 func (m *MCPServerCatalogEntry) GetBaseURL() *string {

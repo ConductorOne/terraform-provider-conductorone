@@ -180,6 +180,11 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
+											"access_profile_owners": schema.SingleNestedAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `The AccessProfileOwnerApproval message.`,
+											},
 											"agent": schema.SingleNestedAttribute{
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
@@ -839,7 +844,8 @@ func (r *PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest,
 											`  - expression` + "\n" +
 											`  - webhook` + "\n" +
 											`  - resourceOwners` + "\n" +
-											`  - agent`,
+											`  - agent` + "\n" +
+											`  - accessProfileOwners`,
 										Validators: []validator.Object{
 											objectvalidator.ConflictsWith(path.Expressions{
 												path.MatchRelative().AtParent().AtName("accept"),
