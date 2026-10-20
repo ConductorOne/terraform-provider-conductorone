@@ -4,9 +4,11 @@ package shared
 
 // The ConnectorAuthoringServiceRollbackRevisionResponse message.
 type ConnectorAuthoringServiceRollbackRevisionResponse struct {
-	// The activationEpoch field.
+	// Committed activation epoch, or 0 when requested but not active yet.
 	ActivationEpoch *string `json:"activationEpoch,omitempty"`
-	// The revision now published (the rollback target).
+	// Non-empty while instance rotation is pending. Observe completion through GetInstallation.
+	DeploymentEventID *string `json:"deploymentEventId,omitempty"`
+	// The requested rollback target; published only after cutover commits.
 	RevisionID *string `json:"revisionId,omitempty"`
 }
 
@@ -15,6 +17,13 @@ func (c *ConnectorAuthoringServiceRollbackRevisionResponse) GetActivationEpoch()
 		return nil
 	}
 	return c.ActivationEpoch
+}
+
+func (c *ConnectorAuthoringServiceRollbackRevisionResponse) GetDeploymentEventID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.DeploymentEventID
 }
 
 func (c *ConnectorAuthoringServiceRollbackRevisionResponse) GetRevisionID() *string {

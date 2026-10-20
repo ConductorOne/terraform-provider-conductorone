@@ -9,6 +9,7 @@ const (
 	EdgeServicePreviewEgressHostDecisionRequestEffectEdgeEgressEffectUnspecified EdgeServicePreviewEgressHostDecisionRequestEffect = "EDGE_EGRESS_EFFECT_UNSPECIFIED"
 	EdgeServicePreviewEgressHostDecisionRequestEffectEdgeEgressEffectAllow       EdgeServicePreviewEgressHostDecisionRequestEffect = "EDGE_EGRESS_EFFECT_ALLOW"
 	EdgeServicePreviewEgressHostDecisionRequestEffectEdgeEgressEffectDeny        EdgeServicePreviewEgressHostDecisionRequestEffect = "EDGE_EGRESS_EFFECT_DENY"
+	EdgeServicePreviewEgressHostDecisionRequestEffectEdgeEgressEffectAuthzen     EdgeServicePreviewEgressHostDecisionRequestEffect = "EDGE_EGRESS_EFFECT_AUTHZEN"
 )
 
 func (e EdgeServicePreviewEgressHostDecisionRequestEffect) ToPointer() *EdgeServicePreviewEgressHostDecisionRequestEffect {
@@ -19,7 +20,7 @@ func (e EdgeServicePreviewEgressHostDecisionRequestEffect) ToPointer() *EdgeServ
 func (e *EdgeServicePreviewEgressHostDecisionRequestEffect) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "EDGE_EGRESS_EFFECT_UNSPECIFIED", "EDGE_EGRESS_EFFECT_ALLOW", "EDGE_EGRESS_EFFECT_DENY":
+		case "EDGE_EGRESS_EFFECT_UNSPECIFIED", "EDGE_EGRESS_EFFECT_ALLOW", "EDGE_EGRESS_EFFECT_DENY", "EDGE_EGRESS_EFFECT_AUTHZEN":
 			return true
 		}
 	}

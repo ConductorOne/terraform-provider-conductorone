@@ -2,10 +2,11 @@
 
 package shared
 
-// CampaignSchedule - When a template's campaigns open and close. One timezone governs both times.
+// CampaignSchedule - When a campaign is created, opened and closed. One timezone governs all three.
 type CampaignSchedule struct {
-	EndTime   *CampaignScheduleTime `json:"endTime,omitempty"`
-	StartTime *CampaignScheduleTime `json:"startTime,omitempty"`
+	AutoStartTime *CampaignScheduleTime `json:"autoStartTime,omitempty"`
+	EndTime       *CampaignScheduleTime `json:"endTime,omitempty"`
+	StartTime     *CampaignScheduleTime `json:"startTime,omitempty"`
 	// IANA timezone name (e.g. "America/Los_Angeles", "UTC"). Required whenever
 	//  this message is present: a stored schedule with no zone is indistinguishable
 	//  from a record that predates the message, so the times below would be
@@ -13,6 +14,13 @@ type CampaignSchedule struct {
 	//  Enforced on post-merge state rather than here, so a field-mask update
 	//  targeting only a nested time still works.
 	Timezone *string `json:"timezone,omitempty"`
+}
+
+func (c *CampaignSchedule) GetAutoStartTime() *CampaignScheduleTime {
+	if c == nil {
+		return nil
+	}
+	return c.AutoStartTime
 }
 
 func (c *CampaignSchedule) GetEndTime() *CampaignScheduleTime {

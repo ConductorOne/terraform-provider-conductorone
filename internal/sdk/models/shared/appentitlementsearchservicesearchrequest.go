@@ -47,10 +47,14 @@ type AppEntitlementSearchServiceSearchRequest struct {
 	ComplianceFrameworkIds []string `json:"complianceFrameworkIds,omitempty"`
 	// Filter results to entitlements with this exact display name.
 	DisplayName *string `json:"displayName,omitempty"`
+	// Filter for entitlements whose slug is in this list (e.g. "read_only")
+	EntitlementSlugs []string `json:"entitlementSlugs,omitempty"`
 	// Exclude app entitlements from the results that are in these app IDs.
 	ExcludeAppIds []string `json:"excludeAppIds,omitempty"`
 	// Exclude entitlements from results that are granted to any of these app users.
 	ExcludeAppUserIds []string `json:"excludeAppUserIds,omitempty"`
+	// Exclude app entitlements that have automation enabled.
+	ExcludeAutomationEnabled *bool `json:"excludeAutomationEnabled,omitempty"`
 	// If true, exclude immutable entitlements (e.g., system-managed entitlements that cannot be modified).
 	ExcludeImmutable *bool `json:"excludeImmutable,omitempty"`
 	// Exclude entitlements with any of these resource type IDs from results.
@@ -141,6 +145,13 @@ func (a *AppEntitlementSearchServiceSearchRequest) GetDisplayName() *string {
 	return a.DisplayName
 }
 
+func (a *AppEntitlementSearchServiceSearchRequest) GetEntitlementSlugs() []string {
+	if a == nil {
+		return nil
+	}
+	return a.EntitlementSlugs
+}
+
 func (a *AppEntitlementSearchServiceSearchRequest) GetExcludeAppIds() []string {
 	if a == nil {
 		return nil
@@ -153,6 +164,13 @@ func (a *AppEntitlementSearchServiceSearchRequest) GetExcludeAppUserIds() []stri
 		return nil
 	}
 	return a.ExcludeAppUserIds
+}
+
+func (a *AppEntitlementSearchServiceSearchRequest) GetExcludeAutomationEnabled() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ExcludeAutomationEnabled
 }
 
 func (a *AppEntitlementSearchServiceSearchRequest) GetExcludeImmutable() *bool {

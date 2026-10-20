@@ -35,6 +35,8 @@ type FunctionResourceModel struct {
 	Author                                types.String                                   `tfsdk:"author"`
 	BrowserEnabled                        types.Bool                                     `tfsdk:"browser_enabled"`
 	CommitMessage                         types.String                                   `tfsdk:"commit_message"`
+	CompileError                          types.String                                   `tfsdk:"compile_error"`
+	CompileStatus                         types.String                                   `tfsdk:"compile_status"`
 	CreatedAt                             types.String                                   `tfsdk:"created_at"`
 	DeletedAt                             types.String                                   `tfsdk:"-"`
 	Description                           types.String                                   `tfsdk:"description"`
@@ -80,6 +82,15 @@ func (r *FunctionResource) Schema(ctx context.Context, req resource.SchemaReques
 			"commit_message": schema.StringAttribute{
 				Optional:    true,
 				Description: `The commit message describing the initial code submission.`,
+			},
+			"compile_error": schema.StringAttribute{
+				Computed:    true,
+				Description: `Compiler output when compile_status is FUNCTION_COMPILE_STATUS_FAILED.`,
+			},
+			"compile_status": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `Compile state of the published commit for the function's current` + "\n" +
+					` configuration. Populated by GetFunction only; unset in list responses.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

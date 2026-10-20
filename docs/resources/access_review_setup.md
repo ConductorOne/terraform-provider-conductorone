@@ -27,6 +27,11 @@ resource "conductorone_access_review_setup" "my_access_review_setup" {
     ]
   }
   scope_v2 = {
+    access_profile_review_dimensions = {
+      composition           = false
+      membership_criteria   = true
+      membership_exceptions = true
+    }
     account_cel_expression = {
       expression = "...my_expression..."
     }
@@ -56,8 +61,17 @@ resource "conductorone_access_review_setup" "my_access_review_setup" {
       # ...
     }
     app_selection_criteria = {
+      app_ids = [
+        "..."
+      ]
       compliance_framework_attribute_value_ids = [
         "..."
+      ]
+      resource_type_refs = [
+        {
+          app_id = "...my_app_id..."
+          id     = "...my_id..."
+        }
       ]
       risk_level_attribute_value_ids = [
         "..."
@@ -108,6 +122,9 @@ resource "conductorone_access_review_setup" "my_access_review_setup" {
       ]
     }
     specific_access_conflicts = {
+      # ...
+    }
+    specific_access_profiles = {
       # ...
     }
     specific_resources = {
@@ -189,7 +206,11 @@ This message contains a oneof named resource_scope. Only a single field of the f
 
 This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
   - excludedSpecificResources
-  - excludedResourceTypeSelections (see [below for nested schema](#nestedatt--scope_v2))
+  - excludedResourceTypeSelections
+
+
+This message contains a oneof named access_profiles_scope. Only a single field of the following list may be set at a time:
+  - specificAccessProfiles (see [below for nested schema](#nestedatt--scope_v2))
 
 ### Read-Only
 
@@ -218,6 +239,7 @@ Optional:
 
 Optional:
 
+- `access_profile_review_dimensions` (Attributes) Review dimensions an access-profile campaign covers. At least one is expected. (see [below for nested schema](#nestedatt--scope_v2--access_profile_review_dimensions))
 - `account_cel_expression` (Attributes) The CelExpressionScope message. (see [below for nested schema](#nestedatt--scope_v2--account_cel_expression))
 - `account_criteria` (Attributes) The AccountCriteriaScope message. (see [below for nested schema](#nestedatt--scope_v2--account_criteria))
 - `all_access_conflicts` (Attributes) The AllAccessConflictsScope message. (see [below for nested schema](#nestedatt--scope_v2--all_access_conflicts))
@@ -225,7 +247,7 @@ Optional:
 - `all_grants` (Attributes) The AllGrantsScope message. (see [below for nested schema](#nestedatt--scope_v2--all_grants))
 - `all_users` (Attributes) The AllUsersScope message. (see [below for nested schema](#nestedatt--scope_v2--all_users))
 - `app_access` (Attributes) The ApplicationAccessScope message. (see [below for nested schema](#nestedatt--scope_v2--app_access))
-- `app_selection_criteria` (Attributes) The AppSelectionCriteriaScope message. (see [below for nested schema](#nestedatt--scope_v2--app_selection_criteria))
+- `app_selection_criteria` (Attributes) Selects entitlements matching every set field; values within a field are alternatives. (see [below for nested schema](#nestedatt--scope_v2--app_selection_criteria))
 - `cel_expression` (Attributes) The CelExpressionScope message. (see [below for nested schema](#nestedatt--scope_v2--cel_expression))
 - `excluded_resource_type_selections` (Attributes) The ResourceTypeSelectionScope message. (see [below for nested schema](#nestedatt--scope_v2--excluded_resource_type_selections))
 - `excluded_specific_resources` (Attributes) The SpecificResourcesScope message. (see [below for nested schema](#nestedatt--scope_v2--excluded_specific_resources))
@@ -243,8 +265,20 @@ This message contains a oneof named criteria_filter. Only a single field of the 
  May coexist with ResourceSelectionScope on the same campaign; prepare unions both. (see [below for nested schema](#nestedatt--scope_v2--scope_role_selection))
 - `selected_users` (Attributes) The SelectedUsersScope message. (see [below for nested schema](#nestedatt--scope_v2--selected_users))
 - `specific_access_conflicts` (Attributes) The SpecificAccessConflictsScope message. (see [below for nested schema](#nestedatt--scope_v2--specific_access_conflicts))
+- `specific_access_profiles` (Attributes) Empty marker for access-profile scoping.
+ Actual profile selections stored in separate rows keyed by access_review_id. (see [below for nested schema](#nestedatt--scope_v2--specific_access_profiles))
 - `specific_resources` (Attributes) The SpecificResourcesScope message. (see [below for nested schema](#nestedatt--scope_v2--specific_resources))
 - `user_criteria` (Attributes) The UserCriteriaScope message. (see [below for nested schema](#nestedatt--scope_v2--user_criteria))
+
+<a id="nestedatt--scope_v2--access_profile_review_dimensions"></a>
+### Nested Schema for `scope_v2.access_profile_review_dimensions`
+
+Optional:
+
+- `composition` (Boolean) The composition field.
+- `membership_criteria` (Boolean) The membershipCriteria field.
+- `membership_exceptions` (Boolean) The membershipExceptions field.
+
 
 <a id="nestedatt--scope_v2--account_cel_expression"></a>
 ### Nested Schema for `scope_v2.account_cel_expression`
@@ -290,8 +324,19 @@ Optional:
 
 Optional:
 
+- `app_ids` (List of String) The appIds field.
 - `compliance_framework_attribute_value_ids` (List of String) The complianceFrameworkAttributeValueIds field.
+- `resource_type_refs` (Attributes List) The resourceTypeRefs field. (see [below for nested schema](#nestedatt--scope_v2--app_selection_criteria--resource_type_refs))
 - `risk_level_attribute_value_ids` (List of String) The riskLevelAttributeValueIds field.
+
+<a id="nestedatt--scope_v2--app_selection_criteria--resource_type_refs"></a>
+### Nested Schema for `scope_v2.app_selection_criteria.resource_type_refs`
+
+Optional:
+
+- `app_id` (String) The appId field.
+- `id` (String) The id field.
+
 
 
 <a id="nestedatt--scope_v2--cel_expression"></a>
@@ -369,6 +414,10 @@ Optional:
 
 <a id="nestedatt--scope_v2--specific_access_conflicts"></a>
 ### Nested Schema for `scope_v2.specific_access_conflicts`
+
+
+<a id="nestedatt--scope_v2--specific_access_profiles"></a>
+### Nested Schema for `scope_v2.specific_access_profiles`
 
 
 <a id="nestedatt--scope_v2--specific_resources"></a>

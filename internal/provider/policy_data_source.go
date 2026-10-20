@@ -190,6 +190,10 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 									"approval": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
+											"access_profile_owners": schema.SingleNestedAttribute{
+												Computed:    true,
+												Description: `The AccessProfileOwnerApproval message.`,
+											},
 											"agent": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
@@ -645,7 +649,8 @@ func (r *PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 											`  - expression` + "\n" +
 											`  - webhook` + "\n" +
 											`  - resourceOwners` + "\n" +
-											`  - agent`,
+											`  - agent` + "\n" +
+											`  - accessProfileOwners`,
 									},
 									"form": schema.StringAttribute{
 										CustomType:  jsontypes.NormalizedType{},

@@ -2,6 +2,36 @@
 
 package shared
 
+// FollowedTier - C1 tier this route follows; UNSPECIFIED means it follows no tier. On write, a route that sets a tier must
+//
+//	use the route_id c1-<tier>; the server replaces its targets and selection with the tier's current model,
+//	served through the providers this Edge already has credentials for, and also publishes that model's name
+//	as a second route. Clearing the tier (and publication) on a published route pins it to its current
+//	targets.
+type FollowedTier string
+
+const (
+	FollowedTierEdgeInferenceTierUnspecified FollowedTier = "EDGE_INFERENCE_TIER_UNSPECIFIED"
+	FollowedTierEdgeInferenceTierFast        FollowedTier = "EDGE_INFERENCE_TIER_FAST"
+	FollowedTierEdgeInferenceTierBalanced    FollowedTier = "EDGE_INFERENCE_TIER_BALANCED"
+	FollowedTierEdgeInferenceTierBest        FollowedTier = "EDGE_INFERENCE_TIER_BEST"
+)
+
+func (e FollowedTier) ToPointer() *FollowedTier {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FollowedTier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "EDGE_INFERENCE_TIER_UNSPECIFIED", "EDGE_INFERENCE_TIER_FAST", "EDGE_INFERENCE_TIER_BALANCED", "EDGE_INFERENCE_TIER_BEST":
+			return true
+		}
+	}
+	return false
+}
+
 // NativeFormat - Accepted native client request format; never inferred from caller headers.
 type NativeFormat string
 
@@ -21,6 +51,32 @@ func (e *NativeFormat) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "EDGE_INFERENCE_NATIVE_FORMAT_UNSPECIFIED", "EDGE_INFERENCE_NATIVE_FORMAT_OPENAI_RESPONSES", "EDGE_INFERENCE_NATIVE_FORMAT_OPENAI_CHAT", "EDGE_INFERENCE_NATIVE_FORMAT_ANTHROPIC_MESSAGES":
+			return true
+		}
+	}
+	return false
+}
+
+// Publication - Which C1-published route of a followed tier this is. Set by the server; send back the value you read.
+//
+//	UNSPECIFIED for a tenant-authored route.
+type Publication string
+
+const (
+	PublicationEdgeInferenceRoutePublicationUnspecified Publication = "EDGE_INFERENCE_ROUTE_PUBLICATION_UNSPECIFIED"
+	PublicationEdgeInferenceRoutePublicationTier        Publication = "EDGE_INFERENCE_ROUTE_PUBLICATION_TIER"
+	PublicationEdgeInferenceRoutePublicationModelAlias  Publication = "EDGE_INFERENCE_ROUTE_PUBLICATION_MODEL_ALIAS"
+)
+
+func (e Publication) ToPointer() *Publication {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Publication) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "EDGE_INFERENCE_ROUTE_PUBLICATION_UNSPECIFIED", "EDGE_INFERENCE_ROUTE_PUBLICATION_TIER", "EDGE_INFERENCE_ROUTE_PUBLICATION_MODEL_ALIAS":
 			return true
 		}
 	}
@@ -47,8 +103,19 @@ type EdgeInferenceRoute struct {
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	ExpectedSecretVersion *string `json:"expectedSecretVersion,omitempty"`
+	// C1 tier this route follows; UNSPECIFIED means it follows no tier. On write, a route that sets a tier must
+	//  use the route_id c1-<tier>; the server replaces its targets and selection with the tier's current model,
+	//  served through the providers this Edge already has credentials for, and also publishes that model's name
+	//  as a second route. Clearing the tier (and publication) on a published route pins it to its current
+	//  targets.
+	FollowedTier *FollowedTier `json:"followedTier,omitempty"`
 	// Accepted native client request format; never inferred from caller headers.
 	NativeFormat *NativeFormat `json:"nativeFormat,omitempty"`
+	// Which C1-published route of a followed tier this is. Set by the server; send back the value you read.
+	//  UNSPECIFIED for a tenant-authored route.
+	Publication *Publication `json:"publication,omitempty"`
+	// Registry model the route was built from; empty for a custom model.
+	RegistryModelID *string `json:"registryModelId,omitempty"`
 	// Tenant-owned route identifier, unique within the tenant. ListInferenceRoutes
 	//  reports routes already configured for this application, not an allowlist.
 	RouteID *string `json:"routeId,omitempty"`
@@ -98,11 +165,32 @@ func (e *EdgeInferenceRoute) GetExpectedSecretVersion() *string {
 	return e.ExpectedSecretVersion
 }
 
+func (e *EdgeInferenceRoute) GetFollowedTier() *FollowedTier {
+	if e == nil {
+		return nil
+	}
+	return e.FollowedTier
+}
+
 func (e *EdgeInferenceRoute) GetNativeFormat() *NativeFormat {
 	if e == nil {
 		return nil
 	}
 	return e.NativeFormat
+}
+
+func (e *EdgeInferenceRoute) GetPublication() *Publication {
+	if e == nil {
+		return nil
+	}
+	return e.Publication
+}
+
+func (e *EdgeInferenceRoute) GetRegistryModelID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.RegistryModelID
 }
 
 func (e *EdgeInferenceRoute) GetRouteID() *string {

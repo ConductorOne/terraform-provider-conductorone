@@ -7,24 +7,25 @@ import (
 )
 
 type Approval struct {
-	Agent                     *AgentApproval            `tfsdk:"agent"`
-	AllowDelegation           types.Bool                `tfsdk:"allow_delegation"`
-	AllowReassignment         types.Bool                `tfsdk:"allow_reassignment"`
-	AllowedReassignees        []types.String            `tfsdk:"allowed_reassignees"`
-	AppOwners                 *AppOwnerApproval         `tfsdk:"app_owners"`
-	Assigned                  types.Bool                `tfsdk:"assigned"`
-	EntitlementOwners         *EntitlementOwnerApproval `tfsdk:"entitlement_owners"`
-	Escalation                *Escalation               `tfsdk:"escalation"`
-	EscalationEnabled         types.Bool                `tfsdk:"escalation_enabled"`
-	Expression                *ExpressionApproval       `tfsdk:"expression"`
-	Group                     *AppGroupApproval         `tfsdk:"group"`
-	Manager                   *ManagerApproval          `tfsdk:"manager"`
-	RequireApprovalReason     types.Bool                `tfsdk:"require_approval_reason"`
-	RequireDenialReason       types.Bool                `tfsdk:"require_denial_reason"`
-	RequireReassignmentReason types.Bool                `tfsdk:"require_reassignment_reason"`
-	RequiresStepUpProviderID  types.String              `tfsdk:"requires_step_up_provider_id"`
-	ResourceOwners            *ResourceOwnerApproval    `tfsdk:"resource_owners"`
-	Self                      *SelfApproval             `tfsdk:"self"`
-	Users                     *UserApproval             `tfsdk:"users"`
-	Webhook                   *WebhookApproval          `tfsdk:"webhook"`
+	AccessProfileOwners       *AccessProfileOwnerApproval `tfsdk:"access_profile_owners"`
+	Agent                     *AgentApproval              `tfsdk:"agent"`
+	AllowDelegation           types.Bool                  `tfsdk:"allow_delegation"`
+	AllowReassignment         types.Bool                  `tfsdk:"allow_reassignment"`
+	AllowedReassignees        []types.String              `tfsdk:"allowed_reassignees"`
+	AppOwners                 *AppOwnerApproval           `tfsdk:"app_owners"`
+	Assigned                  types.Bool                  `tfsdk:"assigned"`
+	EntitlementOwners         *EntitlementOwnerApproval   `tfsdk:"entitlement_owners"`
+	Escalation                *Escalation                 `tfsdk:"escalation"`
+	EscalationEnabled         types.Bool                  `tfsdk:"escalation_enabled"`
+	Expression                *ExpressionApproval         `tfsdk:"expression"`
+	Group                     *AppGroupApproval           `tfsdk:"group"`
+	Manager                   *ManagerApproval            `tfsdk:"manager"`
+	RequireApprovalReason     types.Bool                  `tfsdk:"require_approval_reason"`
+	RequireDenialReason       types.Bool                  `tfsdk:"require_denial_reason"`
+	RequireReassignmentReason types.Bool                  `tfsdk:"require_reassignment_reason"`
+	RequiresStepUpProviderID  types.String                `tfsdk:"requires_step_up_provider_id"`
+	ResourceOwners            *ResourceOwnerApproval      `tfsdk:"resource_owners"`
+	Self                      *SelfApproval               `tfsdk:"self"`
+	Users                     *UserApproval               `tfsdk:"users"`
+	Webhook                   *WebhookApproval            `tfsdk:"webhook"`
 }

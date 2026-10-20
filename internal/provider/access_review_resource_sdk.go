@@ -54,6 +54,13 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 			r.CampaignSchedule = nil
 		} else {
 			r.CampaignSchedule = &tfTypes.CampaignSchedule{}
+			if resp.CampaignSchedule.AutoStartTime == nil {
+				r.CampaignSchedule.AutoStartTime = nil
+			} else {
+				r.CampaignSchedule.AutoStartTime = &tfTypes.CampaignScheduleTime{}
+				r.CampaignSchedule.AutoStartTime.Hours = types.Int64PointerValue(resp.CampaignSchedule.AutoStartTime.Hours)
+				r.CampaignSchedule.AutoStartTime.Minutes = types.Int64PointerValue(resp.CampaignSchedule.AutoStartTime.Minutes)
+			}
 			if resp.CampaignSchedule.EndTime == nil {
 				r.CampaignSchedule.EndTime = nil
 			} else {
@@ -311,6 +318,14 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 			r.ScopeV2 = nil
 		} else {
 			r.ScopeV2 = &tfTypes.AccessReviewScopeV2{}
+			if resp.ScopeV2.AccessProfileReviewDimensions == nil {
+				r.ScopeV2.AccessProfileReviewDimensions = nil
+			} else {
+				r.ScopeV2.AccessProfileReviewDimensions = &tfTypes.AccessProfileReviewDimensions{}
+				r.ScopeV2.AccessProfileReviewDimensions.Composition = types.BoolPointerValue(resp.ScopeV2.AccessProfileReviewDimensions.Composition)
+				r.ScopeV2.AccessProfileReviewDimensions.MembershipCriteria = types.BoolPointerValue(resp.ScopeV2.AccessProfileReviewDimensions.MembershipCriteria)
+				r.ScopeV2.AccessProfileReviewDimensions.MembershipExceptions = types.BoolPointerValue(resp.ScopeV2.AccessProfileReviewDimensions.MembershipExceptions)
+			}
 			if resp.ScopeV2.AccountCelExpression == nil {
 				r.ScopeV2.AccountCelExpression = nil
 			} else {
@@ -373,6 +388,14 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 				r.ScopeV2.AppSelectionCriteria = nil
 			} else {
 				r.ScopeV2.AppSelectionCriteria = &tfTypes.AppSelectionCriteriaScope{}
+				if resp.ScopeV2.AppSelectionCriteria.AppIds != nil {
+					r.ScopeV2.AppSelectionCriteria.AppIds = make([]types.String, 0, len(resp.ScopeV2.AppSelectionCriteria.AppIds))
+					for _, v := range resp.ScopeV2.AppSelectionCriteria.AppIds {
+						r.ScopeV2.AppSelectionCriteria.AppIds = append(r.ScopeV2.AppSelectionCriteria.AppIds, types.StringValue(v))
+					}
+				} else {
+					r.ScopeV2.AppSelectionCriteria.AppIds = nil
+				}
 				if resp.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds != nil {
 					r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = make([]types.String, 0, len(resp.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds))
 					for _, v := range resp.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds {
@@ -380,6 +403,20 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 					}
 				} else {
 					r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = nil
+				}
+				if resp.ScopeV2.AppSelectionCriteria.ResourceTypeRefs != nil {
+					r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs = []tfTypes.ResourceTypeRef{}
+
+					for _, resourceTypeRefsItem := range resp.ScopeV2.AppSelectionCriteria.ResourceTypeRefs {
+						var resourceTypeRefs tfTypes.ResourceTypeRef
+
+						resourceTypeRefs.AppID = types.StringPointerValue(resourceTypeRefsItem.AppID)
+						resourceTypeRefs.ID = types.StringPointerValue(resourceTypeRefsItem.ID)
+
+						r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs = append(r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs, resourceTypeRefs)
+					}
+				} else {
+					r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs = nil
 				}
 				if resp.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds != nil {
 					r.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds = make([]types.String, 0, len(resp.ScopeV2.AppSelectionCriteria.RiskLevelAttributeValueIds))
@@ -494,6 +531,11 @@ func (r *AccessReviewResourceModel) RefreshFromSharedAccessReview(ctx context.Co
 				r.ScopeV2.SpecificAccessConflicts = nil
 			} else {
 				r.ScopeV2.SpecificAccessConflicts = &tfTypes.SpecificAccessConflictsScope{}
+			}
+			if resp.ScopeV2.SpecificAccessProfiles == nil {
+				r.ScopeV2.SpecificAccessProfiles = nil
+			} else {
+				r.ScopeV2.SpecificAccessProfiles = &tfTypes.SpecificAccessProfilesScope{}
 			}
 			if resp.ScopeV2.SpecificResources == nil {
 				r.ScopeV2.SpecificResources = nil
@@ -813,42 +855,61 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 	}
 	var campaignSchedule *shared.CampaignSchedule
 	if r.CampaignSchedule != nil {
-		var endTime *shared.CampaignScheduleTime
-		if r.CampaignSchedule.EndTime != nil {
+		var autoStartTime *shared.CampaignScheduleTime
+		if r.CampaignSchedule.AutoStartTime != nil {
 			hours := new(int64)
-			if !r.CampaignSchedule.EndTime.Hours.IsUnknown() && !r.CampaignSchedule.EndTime.Hours.IsNull() {
-				*hours = r.CampaignSchedule.EndTime.Hours.ValueInt64()
+			if !r.CampaignSchedule.AutoStartTime.Hours.IsUnknown() && !r.CampaignSchedule.AutoStartTime.Hours.IsNull() {
+				*hours = r.CampaignSchedule.AutoStartTime.Hours.ValueInt64()
 			} else {
 				hours = nil
 			}
 			minutes := new(int64)
-			if !r.CampaignSchedule.EndTime.Minutes.IsUnknown() && !r.CampaignSchedule.EndTime.Minutes.IsNull() {
-				*minutes = r.CampaignSchedule.EndTime.Minutes.ValueInt64()
+			if !r.CampaignSchedule.AutoStartTime.Minutes.IsUnknown() && !r.CampaignSchedule.AutoStartTime.Minutes.IsNull() {
+				*minutes = r.CampaignSchedule.AutoStartTime.Minutes.ValueInt64()
 			} else {
 				minutes = nil
 			}
-			endTime = &shared.CampaignScheduleTime{
+			autoStartTime = &shared.CampaignScheduleTime{
 				Hours:   hours,
 				Minutes: minutes,
 			}
 		}
-		var startTime *shared.CampaignScheduleTime
-		if r.CampaignSchedule.StartTime != nil {
+		var endTime *shared.CampaignScheduleTime
+		if r.CampaignSchedule.EndTime != nil {
 			hours1 := new(int64)
-			if !r.CampaignSchedule.StartTime.Hours.IsUnknown() && !r.CampaignSchedule.StartTime.Hours.IsNull() {
-				*hours1 = r.CampaignSchedule.StartTime.Hours.ValueInt64()
+			if !r.CampaignSchedule.EndTime.Hours.IsUnknown() && !r.CampaignSchedule.EndTime.Hours.IsNull() {
+				*hours1 = r.CampaignSchedule.EndTime.Hours.ValueInt64()
 			} else {
 				hours1 = nil
 			}
 			minutes1 := new(int64)
-			if !r.CampaignSchedule.StartTime.Minutes.IsUnknown() && !r.CampaignSchedule.StartTime.Minutes.IsNull() {
-				*minutes1 = r.CampaignSchedule.StartTime.Minutes.ValueInt64()
+			if !r.CampaignSchedule.EndTime.Minutes.IsUnknown() && !r.CampaignSchedule.EndTime.Minutes.IsNull() {
+				*minutes1 = r.CampaignSchedule.EndTime.Minutes.ValueInt64()
 			} else {
 				minutes1 = nil
 			}
-			startTime = &shared.CampaignScheduleTime{
+			endTime = &shared.CampaignScheduleTime{
 				Hours:   hours1,
 				Minutes: minutes1,
+			}
+		}
+		var startTime *shared.CampaignScheduleTime
+		if r.CampaignSchedule.StartTime != nil {
+			hours2 := new(int64)
+			if !r.CampaignSchedule.StartTime.Hours.IsUnknown() && !r.CampaignSchedule.StartTime.Hours.IsNull() {
+				*hours2 = r.CampaignSchedule.StartTime.Hours.ValueInt64()
+			} else {
+				hours2 = nil
+			}
+			minutes2 := new(int64)
+			if !r.CampaignSchedule.StartTime.Minutes.IsUnknown() && !r.CampaignSchedule.StartTime.Minutes.IsNull() {
+				*minutes2 = r.CampaignSchedule.StartTime.Minutes.ValueInt64()
+			} else {
+				minutes2 = nil
+			}
+			startTime = &shared.CampaignScheduleTime{
+				Hours:   hours2,
+				Minutes: minutes2,
 			}
 		}
 		timezone := new(string)
@@ -858,9 +919,10 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 			timezone = nil
 		}
 		campaignSchedule = &shared.CampaignSchedule{
-			EndTime:   endTime,
-			StartTime: startTime,
-			Timezone:  timezone,
+			AutoStartTime: autoStartTime,
+			EndTime:       endTime,
+			StartTime:     startTime,
+			Timezone:      timezone,
 		}
 	}
 	closedAt := new(time.Time)
@@ -1224,6 +1286,32 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 	}
 	var scopeV2 *shared.AccessReviewScopeV2
 	if r.ScopeV2 != nil {
+		var accessProfileReviewDimensions *shared.AccessProfileReviewDimensions
+		if r.ScopeV2.AccessProfileReviewDimensions != nil {
+			composition := new(bool)
+			if !r.ScopeV2.AccessProfileReviewDimensions.Composition.IsUnknown() && !r.ScopeV2.AccessProfileReviewDimensions.Composition.IsNull() {
+				*composition = r.ScopeV2.AccessProfileReviewDimensions.Composition.ValueBool()
+			} else {
+				composition = nil
+			}
+			membershipCriteria := new(bool)
+			if !r.ScopeV2.AccessProfileReviewDimensions.MembershipCriteria.IsUnknown() && !r.ScopeV2.AccessProfileReviewDimensions.MembershipCriteria.IsNull() {
+				*membershipCriteria = r.ScopeV2.AccessProfileReviewDimensions.MembershipCriteria.ValueBool()
+			} else {
+				membershipCriteria = nil
+			}
+			membershipExceptions := new(bool)
+			if !r.ScopeV2.AccessProfileReviewDimensions.MembershipExceptions.IsUnknown() && !r.ScopeV2.AccessProfileReviewDimensions.MembershipExceptions.IsNull() {
+				*membershipExceptions = r.ScopeV2.AccessProfileReviewDimensions.MembershipExceptions.ValueBool()
+			} else {
+				membershipExceptions = nil
+			}
+			accessProfileReviewDimensions = &shared.AccessProfileReviewDimensions{
+				Composition:          composition,
+				MembershipCriteria:   membershipCriteria,
+				MembershipExceptions: membershipExceptions,
+			}
+		}
 		var accountCelExpression *shared.CelExpressionScope
 		if r.ScopeV2.AccountCelExpression != nil {
 			expression := new(string)
@@ -1293,11 +1381,40 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 		}
 		var appSelectionCriteria *shared.AppSelectionCriteriaScope
 		if r.ScopeV2.AppSelectionCriteria != nil {
+			var appIds []string
+			if r.ScopeV2.AppSelectionCriteria.AppIds != nil {
+				appIds = make([]string, 0, len(r.ScopeV2.AppSelectionCriteria.AppIds))
+				for appIdsIndex := range r.ScopeV2.AppSelectionCriteria.AppIds {
+					appIds = append(appIds, r.ScopeV2.AppSelectionCriteria.AppIds[appIdsIndex].ValueString())
+				}
+			}
 			var complianceFrameworkAttributeValueIds []string
 			if r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds != nil {
 				complianceFrameworkAttributeValueIds = make([]string, 0, len(r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds))
 				for complianceFrameworkAttributeValueIdsIndex := range r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds {
 					complianceFrameworkAttributeValueIds = append(complianceFrameworkAttributeValueIds, r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds[complianceFrameworkAttributeValueIdsIndex].ValueString())
+				}
+			}
+			var resourceTypeRefs []shared.ResourceTypeRef
+			if r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs != nil {
+				resourceTypeRefs = make([]shared.ResourceTypeRef, 0, len(r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs))
+				for resourceTypeRefsIndex := range r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs {
+					appId3 := new(string)
+					if !r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].AppID.IsUnknown() && !r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].AppID.IsNull() {
+						*appId3 = r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].AppID.ValueString()
+					} else {
+						appId3 = nil
+					}
+					id1 := new(string)
+					if !r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].ID.IsUnknown() && !r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].ID.IsNull() {
+						*id1 = r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].ID.ValueString()
+					} else {
+						id1 = nil
+					}
+					resourceTypeRefs = append(resourceTypeRefs, shared.ResourceTypeRef{
+						AppID: appId3,
+						ID:    id1,
+					})
 				}
 			}
 			var riskLevelAttributeValueIds []string
@@ -1308,7 +1425,9 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 				}
 			}
 			appSelectionCriteria = &shared.AppSelectionCriteriaScope{
+				AppIds:                               appIds,
 				ComplianceFrameworkAttributeValueIds: complianceFrameworkAttributeValueIds,
+				ResourceTypeRefs:                     resourceTypeRefs,
 				RiskLevelAttributeValueIds:           riskLevelAttributeValueIds,
 			}
 		}
@@ -1456,6 +1575,10 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 		if r.ScopeV2.SpecificAccessConflicts != nil {
 			specificAccessConflicts = &shared.SpecificAccessConflictsScope{}
 		}
+		var specificAccessProfiles *shared.SpecificAccessProfilesScope
+		if r.ScopeV2.SpecificAccessProfiles != nil {
+			specificAccessProfiles = &shared.SpecificAccessProfilesScope{}
+		}
 		var specificResources *shared.SpecificResourcesScope
 		if r.ScopeV2.SpecificResources != nil {
 			specificResources = &shared.SpecificResourcesScope{}
@@ -1466,21 +1589,21 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 			if r.ScopeV2.UserCriteria.GroupAppEntitlementsRef != nil {
 				groupAppEntitlementsRef = make([]shared.AppEntitlementRef, 0, len(r.ScopeV2.UserCriteria.GroupAppEntitlementsRef))
 				for groupAppEntitlementsRefIndex := range r.ScopeV2.UserCriteria.GroupAppEntitlementsRef {
-					appId3 := new(string)
+					appId4 := new(string)
 					if !r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsUnknown() && !r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsNull() {
-						*appId3 = r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
+						*appId4 = r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
 					} else {
-						appId3 = nil
+						appId4 = nil
 					}
-					id1 := new(string)
+					id2 := new(string)
 					if !r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsUnknown() && !r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsNull() {
-						*id1 = r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.ValueString()
+						*id2 = r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.ValueString()
 					} else {
-						id1 = nil
+						id2 = nil
 					}
 					groupAppEntitlementsRef = append(groupAppEntitlementsRef, shared.AppEntitlementRef{
-						AppID: appId3,
-						ID:    id1,
+						AppID: appId4,
+						ID:    id2,
 					})
 				}
 			}
@@ -1528,6 +1651,7 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 			}
 		}
 		scopeV2 = &shared.AccessReviewScopeV2{
+			AccessProfileReviewDimensions:  accessProfileReviewDimensions,
 			AccountCelExpression:           accountCelExpression,
 			AccountCriteria:                accountCriteria,
 			AllAccessConflicts:             allAccessConflicts,
@@ -1546,6 +1670,7 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 			ScopeRoleSelection:             scopeRoleSelection,
 			SelectedUsers:                  selectedUsers,
 			SpecificAccessConflicts:        specificAccessConflicts,
+			SpecificAccessProfiles:         specificAccessProfiles,
 			SpecificResources:              specificResources,
 			UserCriteria:                   userCriteria,
 		}
@@ -1591,14 +1716,14 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewInput(ctx context.Contex
 	}
 	var singleApp *shared.SingleAppSetup
 	if r.SingleApp != nil {
-		appId4 := new(string)
+		appId5 := new(string)
 		if !r.SingleApp.AppID.IsUnknown() && !r.SingleApp.AppID.IsNull() {
-			*appId4 = r.SingleApp.AppID.ValueString()
+			*appId5 = r.SingleApp.AppID.ValueString()
 		} else {
-			appId4 = nil
+			appId5 = nil
 		}
 		singleApp = &shared.SingleAppSetup{
-			AppID: appId4,
+			AppID: appId5,
 		}
 	}
 	startedAt := new(time.Time)
@@ -1739,6 +1864,32 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 	}
 	var scopeV2 *shared.AccessReviewScopeV2
 	if r.ScopeV2 != nil {
+		var accessProfileReviewDimensions *shared.AccessProfileReviewDimensions
+		if r.ScopeV2.AccessProfileReviewDimensions != nil {
+			composition := new(bool)
+			if !r.ScopeV2.AccessProfileReviewDimensions.Composition.IsUnknown() && !r.ScopeV2.AccessProfileReviewDimensions.Composition.IsNull() {
+				*composition = r.ScopeV2.AccessProfileReviewDimensions.Composition.ValueBool()
+			} else {
+				composition = nil
+			}
+			membershipCriteria := new(bool)
+			if !r.ScopeV2.AccessProfileReviewDimensions.MembershipCriteria.IsUnknown() && !r.ScopeV2.AccessProfileReviewDimensions.MembershipCriteria.IsNull() {
+				*membershipCriteria = r.ScopeV2.AccessProfileReviewDimensions.MembershipCriteria.ValueBool()
+			} else {
+				membershipCriteria = nil
+			}
+			membershipExceptions := new(bool)
+			if !r.ScopeV2.AccessProfileReviewDimensions.MembershipExceptions.IsUnknown() && !r.ScopeV2.AccessProfileReviewDimensions.MembershipExceptions.IsNull() {
+				*membershipExceptions = r.ScopeV2.AccessProfileReviewDimensions.MembershipExceptions.ValueBool()
+			} else {
+				membershipExceptions = nil
+			}
+			accessProfileReviewDimensions = &shared.AccessProfileReviewDimensions{
+				Composition:          composition,
+				MembershipCriteria:   membershipCriteria,
+				MembershipExceptions: membershipExceptions,
+			}
+		}
 		var accountCelExpression *shared.CelExpressionScope
 		if r.ScopeV2.AccountCelExpression != nil {
 			expression := new(string)
@@ -1808,11 +1959,40 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 		}
 		var appSelectionCriteria *shared.AppSelectionCriteriaScope
 		if r.ScopeV2.AppSelectionCriteria != nil {
+			var appIds []string
+			if r.ScopeV2.AppSelectionCriteria.AppIds != nil {
+				appIds = make([]string, 0, len(r.ScopeV2.AppSelectionCriteria.AppIds))
+				for appIdsIndex := range r.ScopeV2.AppSelectionCriteria.AppIds {
+					appIds = append(appIds, r.ScopeV2.AppSelectionCriteria.AppIds[appIdsIndex].ValueString())
+				}
+			}
 			var complianceFrameworkAttributeValueIds []string
 			if r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds != nil {
 				complianceFrameworkAttributeValueIds = make([]string, 0, len(r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds))
 				for complianceFrameworkAttributeValueIdsIndex := range r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds {
 					complianceFrameworkAttributeValueIds = append(complianceFrameworkAttributeValueIds, r.ScopeV2.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds[complianceFrameworkAttributeValueIdsIndex].ValueString())
+				}
+			}
+			var resourceTypeRefs []shared.ResourceTypeRef
+			if r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs != nil {
+				resourceTypeRefs = make([]shared.ResourceTypeRef, 0, len(r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs))
+				for resourceTypeRefsIndex := range r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs {
+					appID := new(string)
+					if !r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].AppID.IsUnknown() && !r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].AppID.IsNull() {
+						*appID = r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].AppID.ValueString()
+					} else {
+						appID = nil
+					}
+					id := new(string)
+					if !r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].ID.IsUnknown() && !r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].ID.IsNull() {
+						*id = r.ScopeV2.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].ID.ValueString()
+					} else {
+						id = nil
+					}
+					resourceTypeRefs = append(resourceTypeRefs, shared.ResourceTypeRef{
+						AppID: appID,
+						ID:    id,
+					})
 				}
 			}
 			var riskLevelAttributeValueIds []string
@@ -1823,7 +2003,9 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 				}
 			}
 			appSelectionCriteria = &shared.AppSelectionCriteriaScope{
+				AppIds:                               appIds,
 				ComplianceFrameworkAttributeValueIds: complianceFrameworkAttributeValueIds,
+				ResourceTypeRefs:                     resourceTypeRefs,
 				RiskLevelAttributeValueIds:           riskLevelAttributeValueIds,
 			}
 		}
@@ -1971,6 +2153,10 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 		if r.ScopeV2.SpecificAccessConflicts != nil {
 			specificAccessConflicts = &shared.SpecificAccessConflictsScope{}
 		}
+		var specificAccessProfiles *shared.SpecificAccessProfilesScope
+		if r.ScopeV2.SpecificAccessProfiles != nil {
+			specificAccessProfiles = &shared.SpecificAccessProfilesScope{}
+		}
 		var specificResources *shared.SpecificResourcesScope
 		if r.ScopeV2.SpecificResources != nil {
 			specificResources = &shared.SpecificResourcesScope{}
@@ -1981,21 +2167,21 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 			if r.ScopeV2.UserCriteria.GroupAppEntitlementsRef != nil {
 				groupAppEntitlementsRef = make([]shared.AppEntitlementRef, 0, len(r.ScopeV2.UserCriteria.GroupAppEntitlementsRef))
 				for groupAppEntitlementsRefIndex := range r.ScopeV2.UserCriteria.GroupAppEntitlementsRef {
-					appID := new(string)
+					appId1 := new(string)
 					if !r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsUnknown() && !r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsNull() {
-						*appID = r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
+						*appId1 = r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
 					} else {
-						appID = nil
+						appId1 = nil
 					}
-					id := new(string)
+					id1 := new(string)
 					if !r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsUnknown() && !r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsNull() {
-						*id = r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.ValueString()
+						*id1 = r.ScopeV2.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.ValueString()
 					} else {
-						id = nil
+						id1 = nil
 					}
 					groupAppEntitlementsRef = append(groupAppEntitlementsRef, shared.AppEntitlementRef{
-						AppID: appID,
-						ID:    id,
+						AppID: appId1,
+						ID:    id1,
 					})
 				}
 			}
@@ -2043,6 +2229,7 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 			}
 		}
 		scopeV2 = &shared.AccessReviewScopeV2{
+			AccessProfileReviewDimensions:  accessProfileReviewDimensions,
 			AccountCelExpression:           accountCelExpression,
 			AccountCriteria:                accountCriteria,
 			AllAccessConflicts:             allAccessConflicts,
@@ -2061,6 +2248,7 @@ func (r *AccessReviewResourceModel) ToSharedAccessReviewServiceCreateRequest(ctx
 			ScopeRoleSelection:             scopeRoleSelection,
 			SelectedUsers:                  selectedUsers,
 			SpecificAccessConflicts:        specificAccessConflicts,
+			SpecificAccessProfiles:         specificAccessProfiles,
 			SpecificResources:              specificResources,
 			UserCriteria:                   userCriteria,
 		}

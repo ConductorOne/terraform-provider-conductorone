@@ -24,6 +24,9 @@ resource "conductorone_policy" "my_policy" {
             }
           }
           approval = {
+            access_profile_owners = {
+              # ...
+            }
             agent = {
               agent_failure_action = "APPROVAL_AGENT_FAILURE_ACTION_REASSIGN_TO_USERS"
               agent_mode           = "APPROVAL_AGENT_MODE_COMMENT_ONLY"

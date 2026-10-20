@@ -2,12 +2,23 @@
 
 package shared
 
-// The AppSelectionCriteriaScope message.
+// AppSelectionCriteriaScope - Selects entitlements matching every set field; values within a field are alternatives.
 type AppSelectionCriteriaScope struct {
+	// The appIds field.
+	AppIds []string `json:"appIds,omitempty"`
 	// The complianceFrameworkAttributeValueIds field.
 	ComplianceFrameworkAttributeValueIds []string `json:"complianceFrameworkAttributeValueIds,omitempty"`
+	// The resourceTypeRefs field.
+	ResourceTypeRefs []ResourceTypeRef `json:"resourceTypeRefs,omitempty"`
 	// The riskLevelAttributeValueIds field.
 	RiskLevelAttributeValueIds []string `json:"riskLevelAttributeValueIds,omitempty"`
+}
+
+func (a *AppSelectionCriteriaScope) GetAppIds() []string {
+	if a == nil {
+		return nil
+	}
+	return a.AppIds
 }
 
 func (a *AppSelectionCriteriaScope) GetComplianceFrameworkAttributeValueIds() []string {
@@ -15,6 +26,13 @@ func (a *AppSelectionCriteriaScope) GetComplianceFrameworkAttributeValueIds() []
 		return nil
 	}
 	return a.ComplianceFrameworkAttributeValueIds
+}
+
+func (a *AppSelectionCriteriaScope) GetResourceTypeRefs() []ResourceTypeRef {
+	if a == nil {
+		return nil
+	}
+	return a.ResourceTypeRefs
 }
 
 func (a *AppSelectionCriteriaScope) GetRiskLevelAttributeValueIds() []string {

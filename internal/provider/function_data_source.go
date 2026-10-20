@@ -30,6 +30,8 @@ type FunctionDataSource struct {
 // FunctionDataSourceModel describes the data model.
 type FunctionDataSourceModel struct {
 	BrowserEnabled           types.Bool              `tfsdk:"browser_enabled"`
+	CompileError             types.String            `tfsdk:"compile_error"`
+	CompileStatus            types.String            `tfsdk:"compile_status"`
 	CreatedAt                types.String            `tfsdk:"created_at"`
 	DeletedAt                types.String            `tfsdk:"deleted_at"`
 	Description              types.String            `tfsdk:"description"`
@@ -79,6 +81,15 @@ func (r *FunctionDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 					` pre-compiled binaries and the executor's compiled path has no browser` + "\n" +
 					` support; setting this on FUNCTION_TYPE_ANY is rejected. Connector-type` + "\n" +
 					` functions may join code-mode in the future.`,
+			},
+			"compile_error": schema.StringAttribute{
+				Computed:    true,
+				Description: `Compiler output when compile_status is FUNCTION_COMPILE_STATUS_FAILED.`,
+			},
+			"compile_status": schema.StringAttribute{
+				Computed: true,
+				MarkdownDescription: `Compile state of the published commit for the function's current` + "\n" +
+					` configuration. Populated by GetFunction only; unset in list responses.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,

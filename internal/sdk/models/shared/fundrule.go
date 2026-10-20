@@ -15,7 +15,7 @@ type FundRule struct {
 	//  FundRule, and this is the column the mirror's full-text and btree indexes
 	//  are built on.
 	DisplayName *string            `json:"displayName,omitempty"`
-	Grant       *SpendLimit        `json:"grant,omitempty"`
+	Grant       *FundsSpendLimit   `json:"grant,omitempty"`
 	GroupRef    *AppEntitlementRef `json:"groupRef,omitempty"`
 	// Why this cohort is funded. Subject-visible where a grant is explained.
 	Reason *string `json:"reason,omitempty"`
@@ -51,7 +51,7 @@ func (f *FundRule) GetDisplayName() *string {
 	return f.DisplayName
 }
 
-func (f *FundRule) GetGrant() *SpendLimit {
+func (f *FundRule) GetGrant() *FundsSpendLimit {
 	if f == nil {
 		return nil
 	}

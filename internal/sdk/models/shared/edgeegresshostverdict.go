@@ -13,6 +13,7 @@ const (
 	OutcomeEdgeEgressEvaluationOutcomeInvalidHost        Outcome = "EDGE_EGRESS_EVALUATION_OUTCOME_INVALID_HOST"
 	OutcomeEdgeEgressEvaluationOutcomeUnresolvedDenyRule Outcome = "EDGE_EGRESS_EVALUATION_OUTCOME_UNRESOLVED_DENY_RULE"
 	OutcomeEdgeEgressEvaluationOutcomeSsrfBlocked        Outcome = "EDGE_EGRESS_EVALUATION_OUTCOME_SSRF_BLOCKED"
+	OutcomeEdgeEgressEvaluationOutcomeDelegatedToAuthzen Outcome = "EDGE_EGRESS_EVALUATION_OUTCOME_DELEGATED_TO_AUTHZEN"
 )
 
 func (e Outcome) ToPointer() *Outcome {
@@ -23,7 +24,7 @@ func (e Outcome) ToPointer() *Outcome {
 func (e *Outcome) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "EDGE_EGRESS_EVALUATION_OUTCOME_UNSPECIFIED", "EDGE_EGRESS_EVALUATION_OUTCOME_NOT_RESTRICTED", "EDGE_EGRESS_EVALUATION_OUTCOME_MATCHED_RULE", "EDGE_EGRESS_EVALUATION_OUTCOME_DEFAULT_DENY", "EDGE_EGRESS_EVALUATION_OUTCOME_INVALID_HOST", "EDGE_EGRESS_EVALUATION_OUTCOME_UNRESOLVED_DENY_RULE", "EDGE_EGRESS_EVALUATION_OUTCOME_SSRF_BLOCKED":
+		case "EDGE_EGRESS_EVALUATION_OUTCOME_UNSPECIFIED", "EDGE_EGRESS_EVALUATION_OUTCOME_NOT_RESTRICTED", "EDGE_EGRESS_EVALUATION_OUTCOME_MATCHED_RULE", "EDGE_EGRESS_EVALUATION_OUTCOME_DEFAULT_DENY", "EDGE_EGRESS_EVALUATION_OUTCOME_INVALID_HOST", "EDGE_EGRESS_EVALUATION_OUTCOME_UNRESOLVED_DENY_RULE", "EDGE_EGRESS_EVALUATION_OUTCOME_SSRF_BLOCKED", "EDGE_EGRESS_EVALUATION_OUTCOME_DELEGATED_TO_AUTHZEN":
 			return true
 		}
 	}
@@ -40,6 +41,9 @@ type EdgeEgressHostVerdict struct {
 	// The host after canonicalization; empty when it could not be
 	//  canonicalized.
 	CanonicalHost *string `json:"canonicalHost,omitempty"`
+	// The AuthzenServer that decides the host at request time, set only with
+	//  EDGE_EGRESS_EVALUATION_OUTCOME_DELEGATED_TO_AUTHZEN.
+	DelegatedAuthzenServerID *string `json:"delegatedAuthzenServerId,omitempty"`
 	// The host as requested.
 	Host *string `json:"host,omitempty"`
 	// Why the host cannot be evaluated; set only with
@@ -65,6 +69,13 @@ func (e *EdgeEgressHostVerdict) GetCanonicalHost() *string {
 		return nil
 	}
 	return e.CanonicalHost
+}
+
+func (e *EdgeEgressHostVerdict) GetDelegatedAuthzenServerID() *string {
+	if e == nil {
+		return nil
+	}
+	return e.DelegatedAuthzenServerID
 }
 
 func (e *EdgeEgressHostVerdict) GetHost() *string {

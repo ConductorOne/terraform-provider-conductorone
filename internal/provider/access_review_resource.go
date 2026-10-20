@@ -157,6 +157,20 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 			"campaign_schedule": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"auto_start_time": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"hours": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The hours field.`,
+							},
+							"minutes": schema.Int64Attribute{
+								Computed:    true,
+								Description: `The minutes field.`,
+							},
+						},
+						Description: `Time of day, in the timezone of the CampaignSchedule that holds it.`,
+					},
 					"end_time": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -195,7 +209,7 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 							` targeting only a nested time still works.`,
 					},
 				},
-				Description: `When a template's campaigns open and close. One timezone governs both times.`,
+				Description: `When a campaign is created, opened and closed. One timezone governs all three.`,
 			},
 			"closed_at": schema.StringAttribute{
 				Computed: true,
@@ -538,6 +552,28 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"access_profile_review_dimensions": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"composition": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The composition field.`,
+							},
+							"membership_criteria": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The membershipCriteria field.`,
+							},
+							"membership_exceptions": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Description: `The membershipExceptions field.`,
+							},
+						},
+						Description: `Review dimensions an access-profile campaign covers. At least one is expected.`,
+					},
 					"account_cel_expression": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -608,11 +644,39 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"app_ids": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `The appIds field.`,
+							},
 							"compliance_framework_attribute_value_ids": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								Description: `The complianceFrameworkAttributeValueIds field.`,
+							},
+							"resource_type_refs": schema.ListNestedAttribute{
+								Computed: true,
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"app_id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The appId field.`,
+										},
+										"id": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The id field.`,
+										},
+									},
+								},
+								Description: `The resourceTypeRefs field.`,
 							},
 							"risk_level_attribute_value_ids": schema.ListAttribute{
 								Computed:    true,
@@ -621,7 +685,7 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 								Description: `The riskLevelAttributeValueIds field.`,
 							},
 						},
-						Description: `The AppSelectionCriteriaScope message.`,
+						Description: `Selects entitlements matching every set field; values within a field are alternatives.`,
 					},
 					"cel_expression": schema.SingleNestedAttribute{
 						Computed: true,
@@ -768,6 +832,12 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 						Optional:    true,
 						Description: `The SpecificAccessConflictsScope message.`,
 					},
+					"specific_access_profiles": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						MarkdownDescription: `Empty marker for access-profile scoping.` + "\n" +
+							` Actual profile selections stored in separate rows keyed by access_review_id.`,
+					},
 					"specific_resources": schema.SingleNestedAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -882,7 +952,11 @@ func (r *AccessReviewResource) Schema(ctx context.Context, req resource.SchemaRe
 					`` + "\n" +
 					`This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:` + "\n" +
 					`  - excludedSpecificResources` + "\n" +
-					`  - excludedResourceTypeSelections`,
+					`  - excludedResourceTypeSelections` + "\n" +
+					`` + "\n" +
+					`` + "\n" +
+					`This message contains a oneof named access_profiles_scope. Only a single field of the following list may be set at a time:` + "\n" +
+					`  - specificAccessProfiles`,
 			},
 			"scoping_version": schema.StringAttribute{
 				Computed:    true,

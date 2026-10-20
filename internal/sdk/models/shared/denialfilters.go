@@ -41,11 +41,11 @@ func (e *DenialFiltersAuthorityKind) IsExact() bool {
 type DenialFiltersScopeKind string
 
 const (
-	DenialFiltersScopeKindSpendBlockScopeKindUnspecified DenialFiltersScopeKind = "SPEND_BLOCK_SCOPE_KIND_UNSPECIFIED"
-	DenialFiltersScopeKindSpendBlockScopeKindTenant      DenialFiltersScopeKind = "SPEND_BLOCK_SCOPE_KIND_TENANT"
-	DenialFiltersScopeKindSpendBlockScopeKindSubject     DenialFiltersScopeKind = "SPEND_BLOCK_SCOPE_KIND_SUBJECT"
-	DenialFiltersScopeKindSpendBlockScopeKindApp         DenialFiltersScopeKind = "SPEND_BLOCK_SCOPE_KIND_APP"
-	DenialFiltersScopeKindSpendBlockScopeKindSubjectApp  DenialFiltersScopeKind = "SPEND_BLOCK_SCOPE_KIND_SUBJECT_APP"
+	DenialFiltersScopeKindSpendScopeKindUnspecified DenialFiltersScopeKind = "SPEND_SCOPE_KIND_UNSPECIFIED"
+	DenialFiltersScopeKindSpendScopeKindTenant      DenialFiltersScopeKind = "SPEND_SCOPE_KIND_TENANT"
+	DenialFiltersScopeKindSpendScopeKindSubject     DenialFiltersScopeKind = "SPEND_SCOPE_KIND_SUBJECT"
+	DenialFiltersScopeKindSpendScopeKindApp         DenialFiltersScopeKind = "SPEND_SCOPE_KIND_APP"
+	DenialFiltersScopeKindSpendScopeKindSubjectApp  DenialFiltersScopeKind = "SPEND_SCOPE_KIND_SUBJECT_APP"
 )
 
 func (e DenialFiltersScopeKind) ToPointer() *DenialFiltersScopeKind {
@@ -56,7 +56,7 @@ func (e DenialFiltersScopeKind) ToPointer() *DenialFiltersScopeKind {
 func (e *DenialFiltersScopeKind) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "SPEND_BLOCK_SCOPE_KIND_UNSPECIFIED", "SPEND_BLOCK_SCOPE_KIND_TENANT", "SPEND_BLOCK_SCOPE_KIND_SUBJECT", "SPEND_BLOCK_SCOPE_KIND_APP", "SPEND_BLOCK_SCOPE_KIND_SUBJECT_APP":
+		case "SPEND_SCOPE_KIND_UNSPECIFIED", "SPEND_SCOPE_KIND_TENANT", "SPEND_SCOPE_KIND_SUBJECT", "SPEND_SCOPE_KIND_APP", "SPEND_SCOPE_KIND_SUBJECT_APP":
 			return true
 		}
 	}

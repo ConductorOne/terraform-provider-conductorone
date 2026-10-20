@@ -81,6 +81,11 @@ func (r *PoliciesDataSourceModel) RefreshFromSharedSearchPoliciesResponse(ctx co
 									steps.Approval = nil
 								} else {
 									steps.Approval = &tfTypes.Approval{}
+									if stepsItem.Approval.AccessProfileOwners == nil {
+										steps.Approval.AccessProfileOwners = nil
+									} else {
+										steps.Approval.AccessProfileOwners = &tfTypes.AccessProfileOwnerApproval{}
+									}
 									if stepsItem.Approval.Agent == nil {
 										steps.Approval.Agent = nil
 									} else {

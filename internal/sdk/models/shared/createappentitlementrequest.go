@@ -30,6 +30,93 @@ func (e *CreateAppEntitlementRequestPurpose) IsExact() bool {
 	return false
 }
 
+// CreateAppEntitlementRequestDeprovisionerPolicy - ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
+//
+// This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+//   - connector
+//   - manual
+//   - delegated
+//   - webhook
+//   - multiStep
+//   - externalTicket
+//   - unconfigured
+//   - action
+//   - devicePlacement
+type CreateAppEntitlementRequestDeprovisionerPolicy struct {
+	Action          *ActionProvision          `json:"action,omitempty"`
+	Connector       *ConnectorProvision       `json:"connector,omitempty"`
+	Delegated       *DelegatedProvision       `json:"delegated,omitempty"`
+	DevicePlacement *DevicePlacementProvision `json:"devicePlacement,omitempty"`
+	ExternalTicket  *ExternalTicketProvision  `json:"externalTicket,omitempty"`
+	Manual          *ManualProvision          `json:"manual,omitempty"`
+	MultiStep       any                       `json:"multiStep,omitempty"`
+	Unconfigured    *UnconfiguredProvision    `json:"unconfigured,omitempty"`
+	Webhook         *WebhookProvision         `json:"webhook,omitempty"`
+}
+
+func (c *CreateAppEntitlementRequestDeprovisionerPolicy) GetAction() *ActionProvision {
+	if c == nil {
+		return nil
+	}
+	return c.Action
+}
+
+func (c *CreateAppEntitlementRequestDeprovisionerPolicy) GetConnector() *ConnectorProvision {
+	if c == nil {
+		return nil
+	}
+	return c.Connector
+}
+
+func (c *CreateAppEntitlementRequestDeprovisionerPolicy) GetDelegated() *DelegatedProvision {
+	if c == nil {
+		return nil
+	}
+	return c.Delegated
+}
+
+func (c *CreateAppEntitlementRequestDeprovisionerPolicy) GetDevicePlacement() *DevicePlacementProvision {
+	if c == nil {
+		return nil
+	}
+	return c.DevicePlacement
+}
+
+func (c *CreateAppEntitlementRequestDeprovisionerPolicy) GetExternalTicket() *ExternalTicketProvision {
+	if c == nil {
+		return nil
+	}
+	return c.ExternalTicket
+}
+
+func (c *CreateAppEntitlementRequestDeprovisionerPolicy) GetManual() *ManualProvision {
+	if c == nil {
+		return nil
+	}
+	return c.Manual
+}
+
+func (c *CreateAppEntitlementRequestDeprovisionerPolicy) GetMultiStep() any {
+	if c == nil {
+		return nil
+	}
+	return c.MultiStep
+}
+
+func (c *CreateAppEntitlementRequestDeprovisionerPolicy) GetUnconfigured() *UnconfiguredProvision {
+	if c == nil {
+		return nil
+	}
+	return c.Unconfigured
+}
+
+func (c *CreateAppEntitlementRequestDeprovisionerPolicy) GetWebhook() *WebhookProvision {
+	if c == nil {
+		return nil
+	}
+	return c.Webhook
+}
+
 // The CreateAppEntitlementRequest message.
 //
 // This message contains a oneof named max_grant_duration. Only a single field of the following list may be set at a time:
@@ -79,7 +166,8 @@ type CreateAppEntitlementRequest struct {
 	// The ID of the risk level to assign to this entitlement.
 	RiskLevelValueID *string `json:"riskLevelValueId,omitempty"`
 	// A short label describing the permission the entitlement grants (e.g., "Admin", "Read").
-	Slug *string `json:"slug,omitempty"`
+	Slug                *string                                         `json:"slug,omitempty"`
+	DeprovisionerPolicy *CreateAppEntitlementRequestDeprovisionerPolicy `json:"deprovisionerPolicy,omitempty"`
 }
 
 func (c *CreateAppEntitlementRequest) GetAlias() *string {
@@ -220,4 +308,11 @@ func (c *CreateAppEntitlementRequest) GetSlug() *string {
 		return nil
 	}
 	return c.Slug
+}
+
+func (c *CreateAppEntitlementRequest) GetDeprovisionerPolicy() *CreateAppEntitlementRequestDeprovisionerPolicy {
+	if c == nil {
+		return nil
+	}
+	return c.DeprovisionerPolicy
 }

@@ -10,6 +10,104 @@ resource "conductorone_custom_app_entitlement" "my_custom_app_entitlement" {
   compliance_framework_value_ids = [
     "..."
   ]
+  deprovisioner_policy = {
+    action = {
+      action_name  = "...my_action_name..."
+      app_id       = "...my_app_id..."
+      connector_id = "...my_connector_id..."
+      display_name = "...my_display_name..."
+    }
+    connector = {
+      account = {
+        config       = "{ \"see\": \"documentation\" }"
+        connector_id = "...my_connector_id..."
+        do_not_save = {
+          # ...
+        }
+        save_to_vault = {
+          vault_ids = [
+            "..."
+          ]
+        }
+        schema_id = "...my_schema_id..."
+      }
+      default_behavior = {
+        connector_id = "...my_connector_id..."
+      }
+      delete_account = {
+        connector_id = "...my_connector_id..."
+      }
+    }
+    delegated = {
+      app_id         = "...my_app_id..."
+      entitlement_id = "...my_entitlement_id..."
+    }
+    device_placement = {
+      vault_boundary_id = "...my_vault_boundary_id..."
+    }
+    external_ticket = {
+      app_id                                = "...my_app_id..."
+      connector_id                          = "...my_connector_id..."
+      external_ticket_provisioner_config_id = "...my_external_ticket_provisioner_config_id..."
+      instructions                          = "...my_instructions..."
+    }
+    manual = {
+      assignee = {
+        app_owners = {
+          allow_reassignment = false
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        entitlement_owners = {
+          allow_reassignment = false
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        expression = {
+          allow_reassignment = true
+          expressions = [
+            "..."
+          ]
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        group = {
+          allow_reassignment = true
+          app_group_id       = "...my_app_group_id..."
+          app_id             = "...my_app_id..."
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        manager = {
+          allow_reassignment = true
+          fallback_user_ids = [
+            "..."
+          ]
+        }
+        users = {
+          allow_reassignment = true
+          user_ids = [
+            "..."
+          ]
+        }
+      }
+      instructions = "...my_instructions..."
+      user_ids = [
+        "..."
+      ]
+    }
+    multi_step = "{ \"see\": \"documentation\" }"
+    unconfigured = {
+      # ...
+    }
+    webhook = {
+      webhook_id = "...my_webhook_id..."
+    }
+  }
   description    = "...my_description..."
   display_name   = "...my_display_name..."
   duration_grant = "...my_duration_grant..."

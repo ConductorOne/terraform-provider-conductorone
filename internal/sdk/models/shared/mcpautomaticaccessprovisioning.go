@@ -4,7 +4,7 @@ package shared
 
 // MCPAutomaticAccessProvisioning enables system-managed birthright access.
 type MCPAutomaticAccessProvisioning struct {
-	// Requires AI Governance Preview. Membership automation also requires JML.
+	// Requires JML for membership automation.
 	Enabled *bool `json:"enabled,omitempty"`
 }
 

@@ -10,6 +10,9 @@ type EdgeInferenceCatalogModel struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Upstream model id to send.
 	ID *string `json:"id,omitempty"`
+	// Reasoning effort levels the model accepts (`none`, `minimal`, `low`, `medium`, `high`), lowest first.
+	//  Empty means C1 does not know, so any level may be offered.
+	SupportedReasoningEfforts []string `json:"supportedReasoningEfforts,omitempty"`
 }
 
 func (e *EdgeInferenceCatalogModel) GetDisplayName() *string {
@@ -24,4 +27,11 @@ func (e *EdgeInferenceCatalogModel) GetID() *string {
 		return nil
 	}
 	return e.ID
+}
+
+func (e *EdgeInferenceCatalogModel) GetSupportedReasoningEfforts() []string {
+	if e == nil {
+		return nil
+	}
+	return e.SupportedReasoningEfforts
 }

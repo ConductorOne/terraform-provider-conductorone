@@ -63,7 +63,8 @@ type EdgeInferenceSelection struct {
 	// The pickerMode field.
 	PickerMode *PickerMode `json:"pickerMode,omitempty"`
 	// The recentWindow field.
-	RecentWindow *int64 `json:"recentWindow,omitempty"`
+	RecentWindow *int64              `json:"recentWindow,omitempty"`
+	Retry        *EdgeInferenceRetry `json:"retry,omitempty"`
 	// The routeDeadlineMs field.
 	RouteDeadlineMs *int64 `json:"routeDeadlineMs,omitempty"`
 	// The stages field.
@@ -114,6 +115,13 @@ func (e *EdgeInferenceSelection) GetRecentWindow() *int64 {
 		return nil
 	}
 	return e.RecentWindow
+}
+
+func (e *EdgeInferenceSelection) GetRetry() *EdgeInferenceRetry {
+	if e == nil {
+		return nil
+	}
+	return e.Retry
 }
 
 func (e *EdgeInferenceSelection) GetRouteDeadlineMs() *int64 {

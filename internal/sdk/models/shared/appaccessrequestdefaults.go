@@ -2,6 +2,34 @@
 
 package shared
 
+// CatalogMode - How the apply pass treats catalog (access profile) bindings on matched
+//
+//	entitlements. UNSPECIFIED reads as legacy list management; UNMANAGED means
+//	the rule does not manage the list and only the app's default request
+//	catalog follows the self-service switch.
+type CatalogMode string
+
+const (
+	CatalogModeAppAccessRequestDefaultsCatalogModeUnspecified CatalogMode = "APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_UNSPECIFIED"
+	CatalogModeAppAccessRequestDefaultsCatalogModeManaged     CatalogMode = "APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_MANAGED"
+	CatalogModeAppAccessRequestDefaultsCatalogModeUnmanaged   CatalogMode = "APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_UNMANAGED"
+)
+
+func (e CatalogMode) ToPointer() *CatalogMode {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CatalogMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_UNSPECIFIED", "APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_MANAGED", "APP_ACCESS_REQUEST_DEFAULTS_CATALOG_MODE_UNMANAGED":
+			return true
+		}
+	}
+	return false
+}
+
 type DurationUnset struct {
 }
 
@@ -43,6 +71,11 @@ type AppAccessRequestDefaults struct {
 	AppID *string `json:"appId,omitempty"`
 	// The request catalog ids for the app access request rule.
 	CatalogIds []string `json:"catalogIds,omitempty"`
+	// How the apply pass treats catalog (access profile) bindings on matched
+	//  entitlements. UNSPECIFIED reads as legacy list management; UNMANAGED means
+	//  the rule does not manage the list and only the app's default request
+	//  catalog follows the self-service switch.
+	CatalogMode *CatalogMode `json:"catalogMode,omitempty"`
 	// If true the app level request configuration will be applied to specified resource types.
 	DefaultsEnabled *bool          `json:"defaultsEnabled,omitempty"`
 	DurationGrant   *string        `json:"durationGrant,omitempty"`
@@ -73,6 +106,13 @@ func (a *AppAccessRequestDefaults) GetCatalogIds() []string {
 		return nil
 	}
 	return a.CatalogIds
+}
+
+func (a *AppAccessRequestDefaults) GetCatalogMode() *CatalogMode {
+	if a == nil {
+		return nil
+	}
+	return a.CatalogMode
 }
 
 func (a *AppAccessRequestDefaults) GetDefaultsEnabled() *bool {
@@ -146,6 +186,11 @@ func (a *AppAccessRequestDefaults) GetState() *AppAccessRequestDefaultsState {
 type AppAccessRequestDefaults1 struct {
 	// The request catalog ids for the app access request rule.
 	CatalogIds []string `json:"catalogIds,omitempty"`
+	// How the apply pass treats catalog (access profile) bindings on matched
+	//  entitlements. UNSPECIFIED reads as legacy list management; UNMANAGED means
+	//  the rule does not manage the list and only the app's default request
+	//  catalog follows the self-service switch.
+	CatalogMode *CatalogMode `json:"catalogMode,omitempty"`
 	// If true the app level request configuration will be applied to specified resource types.
 	DefaultsEnabled *bool          `json:"defaultsEnabled,omitempty"`
 	DurationGrant   *string        `json:"durationGrant,omitempty"`
@@ -169,6 +214,13 @@ func (a *AppAccessRequestDefaults1) GetCatalogIds() []string {
 		return nil
 	}
 	return a.CatalogIds
+}
+
+func (a *AppAccessRequestDefaults1) GetCatalogMode() *CatalogMode {
+	if a == nil {
+		return nil
+	}
+	return a.CatalogMode
 }
 
 func (a *AppAccessRequestDefaults1) GetDefaultsEnabled() *bool {
