@@ -103,11 +103,15 @@ type TaskTypeAction struct {
 	// The outcome field.
 	Outcome     *TaskTypeActionOutcome `json:"outcome,omitempty"`
 	OutcomeTime *time.Time             `json:"outcomeTime,omitempty"`
-	ScopeRole   *ScopeRole             `json:"scopeRole,omitempty"`
-	ToolCall    *GatedToolCallTarget   `json:"toolCall,omitempty"`
+	// The resource was created, but some requested effects remain unconfirmed.
+	PartialResult *bool                `json:"partialResult,omitempty"`
+	ScopeRole     *ScopeRole           `json:"scopeRole,omitempty"`
+	ToolCall      *GatedToolCallTarget `json:"toolCall,omitempty"`
 	// Flavor of action the ticket represents — mirrors the snapshot's
 	//  target_ref variant.
 	Type *TaskTypeActionType `json:"type,omitempty"`
+	// Selected members whose addition the connector could not confirm.
+	UnaddedMemberCount *int64 `json:"unaddedMemberCount,omitempty"`
 }
 
 func (t TaskTypeAction) MarshalJSON() ([]byte, error) {
@@ -198,6 +202,13 @@ func (t *TaskTypeAction) GetOutcomeTime() *time.Time {
 	return t.OutcomeTime
 }
 
+func (t *TaskTypeAction) GetPartialResult() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.PartialResult
+}
+
 func (t *TaskTypeAction) GetScopeRole() *ScopeRole {
 	if t == nil {
 		return nil
@@ -217,4 +228,11 @@ func (t *TaskTypeAction) GetType() *TaskTypeActionType {
 		return nil
 	}
 	return t.Type
+}
+
+func (t *TaskTypeAction) GetUnaddedMemberCount() *int64 {
+	if t == nil {
+		return nil
+	}
+	return t.UnaddedMemberCount
 }

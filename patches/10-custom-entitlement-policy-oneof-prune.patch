@@ -1,0 +1,20 @@
+Subject: [PATCH] Prune stale policy oneof arms on custom entitlement update
+
+The generated custom resource serializes every optional policy arm, and merge() keeps the prior-state arm next to the replacement, so switching arms sends two arms and the API rejects the body. Hook the hand-maintained pruneCustomAppEntitlementPolicyOneofs into Update after merge().
+
+diff --git a/internal/provider/custom_app_entitlement_resource.go b/internal/provider/custom_app_entitlement_resource.go
+index a10ec304..0c60bde4 100644
+--- a/internal/provider/custom_app_entitlement_resource.go
++++ b/internal/provider/custom_app_entitlement_resource.go
+@@ -1810,6 +1810,11 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
+ 		return
+ 	}
+ 
++	resp.Diagnostics.Append(pruneCustomAppEntitlementPolicyOneofs(ctx, req.Config, data)...)
++	if resp.Diagnostics.HasError() {
++		return
++	}
++
+ 	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsUpdateRequest(ctx)
+ 	resp.Diagnostics.Append(requestDiags...)
+ 

@@ -7,6 +7,34 @@ import (
 	"time"
 )
 
+// CompileStatus - Compile state of the published commit for the function's current
+//
+//	configuration. Populated by GetFunction only; unset in list responses.
+type CompileStatus string
+
+const (
+	CompileStatusFunctionCompileStatusUnspecified CompileStatus = "FUNCTION_COMPILE_STATUS_UNSPECIFIED"
+	CompileStatusFunctionCompileStatusNotCompiled CompileStatus = "FUNCTION_COMPILE_STATUS_NOT_COMPILED"
+	CompileStatusFunctionCompileStatusCompiling   CompileStatus = "FUNCTION_COMPILE_STATUS_COMPILING"
+	CompileStatusFunctionCompileStatusReady       CompileStatus = "FUNCTION_COMPILE_STATUS_READY"
+	CompileStatusFunctionCompileStatusFailed      CompileStatus = "FUNCTION_COMPILE_STATUS_FAILED"
+)
+
+func (e CompileStatus) ToPointer() *CompileStatus {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CompileStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "FUNCTION_COMPILE_STATUS_UNSPECIFIED", "FUNCTION_COMPILE_STATUS_NOT_COMPILED", "FUNCTION_COMPILE_STATUS_COMPILING", "FUNCTION_COMPILE_STATUS_READY", "FUNCTION_COMPILE_STATUS_FAILED":
+			return true
+		}
+	}
+	return false
+}
+
 // FunctionType - The functionType field.
 type FunctionType string
 
@@ -45,9 +73,14 @@ type Function struct {
 	//  pre-compiled binaries and the executor's compiled path has no browser
 	//  support; setting this on FUNCTION_TYPE_ANY is rejected. Connector-type
 	//  functions may join code-mode in the future.
-	BrowserEnabled *bool      `json:"browserEnabled,omitempty"`
-	CreatedAt      *time.Time `json:"createdAt,omitempty"`
-	DeletedAt      *time.Time `json:"deletedAt,omitempty"`
+	BrowserEnabled *bool `json:"browserEnabled,omitempty"`
+	// Compiler output when compile_status is FUNCTION_COMPILE_STATUS_FAILED.
+	CompileError *string `json:"compileError,omitempty"`
+	// Compile state of the published commit for the function's current
+	//  configuration. Populated by GetFunction only; unset in list responses.
+	CompileStatus *CompileStatus `json:"compileStatus,omitempty"`
+	CreatedAt     *time.Time     `json:"createdAt,omitempty"`
+	DeletedAt     *time.Time     `json:"deletedAt,omitempty"`
 	// The description field.
 	Description *string `json:"description,omitempty"`
 	// The displayName field.
@@ -113,6 +146,20 @@ func (f *Function) GetBrowserEnabled() *bool {
 		return nil
 	}
 	return f.BrowserEnabled
+}
+
+func (f *Function) GetCompileError() *string {
+	if f == nil {
+		return nil
+	}
+	return f.CompileError
+}
+
+func (f *Function) GetCompileStatus() *CompileStatus {
+	if f == nil {
+		return nil
+	}
+	return f.CompileStatus
 }
 
 func (f *Function) GetCreatedAt() *time.Time {

@@ -12,11 +12,11 @@ import (
 //	it is always the caller's.
 type MyFundLimit struct {
 	// The C1 App this limit applies to.
-	AppID     *string        `json:"appId,omitempty"`
-	Controls  *SpendControls `json:"controls,omitempty"`
-	CreatedAt *time.Time     `json:"createdAt,omitempty"`
-	DeletedAt *time.Time     `json:"deletedAt,omitempty"`
-	UpdatedAt *time.Time     `json:"updatedAt,omitempty"`
+	AppID     *string             `json:"appId,omitempty"`
+	Controls  *FundsSpendControls `json:"controls,omitempty"`
+	CreatedAt *time.Time          `json:"createdAt,omitempty"`
+	DeletedAt *time.Time          `json:"deletedAt,omitempty"`
+	UpdatedAt *time.Time          `json:"updatedAt,omitempty"`
 }
 
 func (m MyFundLimit) MarshalJSON() ([]byte, error) {
@@ -37,7 +37,7 @@ func (m *MyFundLimit) GetAppID() *string {
 	return m.AppID
 }
 
-func (m *MyFundLimit) GetControls() *SpendControls {
+func (m *MyFundLimit) GetControls() *FundsSpendControls {
 	if m == nil {
 		return nil
 	}

@@ -17,13 +17,17 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
     "..."
   ]
   display_name = "...my_display_name..."
+  entitlement_slugs = [
+    "..."
+  ]
   exclude_app_ids = [
     "..."
   ]
   exclude_app_user_ids = [
     "..."
   ]
-  exclude_immutable = true
+  exclude_automation_enabled = false
+  exclude_immutable          = true
   exclude_resource_type_ids = [
     "..."
   ]

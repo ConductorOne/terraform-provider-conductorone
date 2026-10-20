@@ -7,56 +7,57 @@ import (
 	"time"
 )
 
-// ClientIDType - How the client_id was established.
-type ClientIDType string
+// ExternalClientInfoClientIDType - How the client_id was established.
+type ExternalClientInfoClientIDType string
 
 const (
-	ClientIDTypeClientIDTypeUnspecified ClientIDType = "CLIENT_ID_TYPE_UNSPECIFIED"
-	ClientIDTypeClientIDTypeDcr         ClientIDType = "CLIENT_ID_TYPE_DCR"
-	ClientIDTypeClientIDTypeMetadataURL ClientIDType = "CLIENT_ID_TYPE_METADATA_URL"
-	ClientIDTypeClientIDTypeApp         ClientIDType = "CLIENT_ID_TYPE_APP"
+	ExternalClientInfoClientIDTypeClientIDTypeUnspecified ExternalClientInfoClientIDType = "CLIENT_ID_TYPE_UNSPECIFIED"
+	ExternalClientInfoClientIDTypeClientIDTypeDcr         ExternalClientInfoClientIDType = "CLIENT_ID_TYPE_DCR"
+	ExternalClientInfoClientIDTypeClientIDTypeMetadataURL ExternalClientInfoClientIDType = "CLIENT_ID_TYPE_METADATA_URL"
+	ExternalClientInfoClientIDTypeClientIDTypeApp         ExternalClientInfoClientIDType = "CLIENT_ID_TYPE_APP"
+	ExternalClientInfoClientIDTypeClientIDTypeStatic      ExternalClientInfoClientIDType = "CLIENT_ID_TYPE_STATIC"
 )
 
-func (e ClientIDType) ToPointer() *ClientIDType {
+func (e ExternalClientInfoClientIDType) ToPointer() *ExternalClientInfoClientIDType {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *ClientIDType) IsExact() bool {
+func (e *ExternalClientInfoClientIDType) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "CLIENT_ID_TYPE_UNSPECIFIED", "CLIENT_ID_TYPE_DCR", "CLIENT_ID_TYPE_METADATA_URL", "CLIENT_ID_TYPE_APP":
+		case "CLIENT_ID_TYPE_UNSPECIFIED", "CLIENT_ID_TYPE_DCR", "CLIENT_ID_TYPE_METADATA_URL", "CLIENT_ID_TYPE_APP", "CLIENT_ID_TYPE_STATIC":
 			return true
 		}
 	}
 	return false
 }
 
-// WellKnownClient - The wellKnownClient field.
-type WellKnownClient string
+// ExternalClientInfoWellKnownClient - The wellKnownClient field.
+type ExternalClientInfoWellKnownClient string
 
 const (
-	WellKnownClientWellKnownClientUnspecified      WellKnownClient = "WELL_KNOWN_CLIENT_UNSPECIFIED"
-	WellKnownClientWellKnownClientUnknown          WellKnownClient = "WELL_KNOWN_CLIENT_UNKNOWN"
-	WellKnownClientWellKnownClientClaudeAi         WellKnownClient = "WELL_KNOWN_CLIENT_CLAUDE_AI"
-	WellKnownClientWellKnownClientClaudeDesktop    WellKnownClient = "WELL_KNOWN_CLIENT_CLAUDE_DESKTOP"
-	WellKnownClientWellKnownClientClaudeCode       WellKnownClient = "WELL_KNOWN_CLIENT_CLAUDE_CODE"
-	WellKnownClientWellKnownClientMcpInspector     WellKnownClient = "WELL_KNOWN_CLIENT_MCP_INSPECTOR"
-	WellKnownClientWellKnownClientChatgpt          WellKnownClient = "WELL_KNOWN_CLIENT_CHATGPT"
-	WellKnownClientWellKnownClientVscode           WellKnownClient = "WELL_KNOWN_CLIENT_VSCODE"
-	WellKnownClientWellKnownClientCursor           WellKnownClient = "WELL_KNOWN_CLIENT_CURSOR"
-	WellKnownClientWellKnownClientWindsurf         WellKnownClient = "WELL_KNOWN_CLIENT_WINDSURF"
-	WellKnownClientWellKnownClientZed              WellKnownClient = "WELL_KNOWN_CLIENT_ZED"
-	WellKnownClientWellKnownClientJetbrains        WellKnownClient = "WELL_KNOWN_CLIENT_JETBRAINS"
-	WellKnownClientWellKnownClientDockerMcpToolkit WellKnownClient = "WELL_KNOWN_CLIENT_DOCKER_MCP_TOOLKIT"
+	ExternalClientInfoWellKnownClientWellKnownClientUnspecified      ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_UNSPECIFIED"
+	ExternalClientInfoWellKnownClientWellKnownClientUnknown          ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_UNKNOWN"
+	ExternalClientInfoWellKnownClientWellKnownClientClaudeAi         ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_CLAUDE_AI"
+	ExternalClientInfoWellKnownClientWellKnownClientClaudeDesktop    ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_CLAUDE_DESKTOP"
+	ExternalClientInfoWellKnownClientWellKnownClientClaudeCode       ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_CLAUDE_CODE"
+	ExternalClientInfoWellKnownClientWellKnownClientMcpInspector     ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_MCP_INSPECTOR"
+	ExternalClientInfoWellKnownClientWellKnownClientChatgpt          ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_CHATGPT"
+	ExternalClientInfoWellKnownClientWellKnownClientVscode           ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_VSCODE"
+	ExternalClientInfoWellKnownClientWellKnownClientCursor           ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_CURSOR"
+	ExternalClientInfoWellKnownClientWellKnownClientWindsurf         ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_WINDSURF"
+	ExternalClientInfoWellKnownClientWellKnownClientZed              ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_ZED"
+	ExternalClientInfoWellKnownClientWellKnownClientJetbrains        ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_JETBRAINS"
+	ExternalClientInfoWellKnownClientWellKnownClientDockerMcpToolkit ExternalClientInfoWellKnownClient = "WELL_KNOWN_CLIENT_DOCKER_MCP_TOOLKIT"
 )
 
-func (e WellKnownClient) ToPointer() *WellKnownClient {
+func (e ExternalClientInfoWellKnownClient) ToPointer() *ExternalClientInfoWellKnownClient {
 	return &e
 }
 
 // IsExact returns true if the value matches a known enum value, false otherwise.
-func (e *WellKnownClient) IsExact() bool {
+func (e *ExternalClientInfoWellKnownClient) IsExact() bool {
 	if e != nil {
 		switch *e {
 		case "WELL_KNOWN_CLIENT_UNSPECIFIED", "WELL_KNOWN_CLIENT_UNKNOWN", "WELL_KNOWN_CLIENT_CLAUDE_AI", "WELL_KNOWN_CLIENT_CLAUDE_DESKTOP", "WELL_KNOWN_CLIENT_CLAUDE_CODE", "WELL_KNOWN_CLIENT_MCP_INSPECTOR", "WELL_KNOWN_CLIENT_CHATGPT", "WELL_KNOWN_CLIENT_VSCODE", "WELL_KNOWN_CLIENT_CURSOR", "WELL_KNOWN_CLIENT_WINDSURF", "WELL_KNOWN_CLIENT_ZED", "WELL_KNOWN_CLIENT_JETBRAINS", "WELL_KNOWN_CLIENT_DOCKER_MCP_TOOLKIT":
@@ -73,7 +74,7 @@ type ExternalClientInfo struct {
 	// OAuth2 client ID - canonical identifier for this connection (globally unique per DCR)
 	ClientID *string `json:"clientId,omitempty"`
 	// How the client_id was established.
-	ClientIDType *ClientIDType `json:"clientIdType,omitempty"`
+	ClientIDType *ExternalClientInfoClientIDType `json:"clientIdType,omitempty"`
 	// Original CIMD metadata URL (e.g., "https://cursor.com/.well-known/oauth-client").
 	//  Empty for DCR clients.
 	ClientIDURL *string `json:"clientIdUrl,omitempty"`
@@ -93,7 +94,7 @@ type ExternalClientInfo struct {
 	//  Empty for DCR clients.
 	VerifiedDomain *string `json:"verifiedDomain,omitempty"`
 	// The wellKnownClient field.
-	WellKnownClient *WellKnownClient `json:"wellKnownClient,omitempty"`
+	WellKnownClient *ExternalClientInfoWellKnownClient `json:"wellKnownClient,omitempty"`
 }
 
 func (e ExternalClientInfo) MarshalJSON() ([]byte, error) {
@@ -114,7 +115,7 @@ func (e *ExternalClientInfo) GetClientID() *string {
 	return e.ClientID
 }
 
-func (e *ExternalClientInfo) GetClientIDType() *ClientIDType {
+func (e *ExternalClientInfo) GetClientIDType() *ExternalClientInfoClientIDType {
 	if e == nil {
 		return nil
 	}
@@ -184,7 +185,7 @@ func (e *ExternalClientInfo) GetVerifiedDomain() *string {
 	return e.VerifiedDomain
 }
 
-func (e *ExternalClientInfo) GetWellKnownClient() *WellKnownClient {
+func (e *ExternalClientInfo) GetWellKnownClient() *ExternalClientInfoWellKnownClient {
 	if e == nil {
 		return nil
 	}

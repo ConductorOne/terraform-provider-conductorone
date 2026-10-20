@@ -6,7 +6,7 @@ package shared
 type FundRuleServiceCreateRequest struct {
 	// The displayName field.
 	DisplayName *string            `json:"displayName,omitempty"`
-	Grant       *SpendLimit        `json:"grant,omitempty"`
+	Grant       *FundsSpendLimit   `json:"grant,omitempty"`
 	GroupRef    *AppEntitlementRef `json:"groupRef,omitempty"`
 	// The reason field.
 	Reason *string `json:"reason,omitempty"`
@@ -19,7 +19,7 @@ func (f *FundRuleServiceCreateRequest) GetDisplayName() *string {
 	return f.DisplayName
 }
 
-func (f *FundRuleServiceCreateRequest) GetGrant() *SpendLimit {
+func (f *FundRuleServiceCreateRequest) GetGrant() *FundsSpendLimit {
 	if f == nil {
 		return nil
 	}

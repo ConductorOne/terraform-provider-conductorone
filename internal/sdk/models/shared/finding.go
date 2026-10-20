@@ -119,6 +119,7 @@ func (e *FindingState) IsExact() bool {
 // This message contains a oneof named evidence. Only a single field of the following list may be set at a time:
 //   - similarUsernameMatchEvidence
 //   - serviceAccountMisclassificationEvidence
+//   - nhiUnownedEvidence
 //   - deactivatedOwnerEvidence
 //   - unusedSecretEvidence
 //   - credentialPubliclyExposedEvidence
@@ -183,6 +184,7 @@ type Finding struct {
 	McpGatewayToolCallRisk         *McpGatewayToolCallRiskType     `json:"mcpGatewayToolCallRisk,omitempty"`
 	McpGatewayToolCallRiskEvidence *McpGatewayToolCallRiskEvidence `json:"mcpGatewayToolCallRiskEvidence,omitempty"`
 	NhiUnowned                     *NhiUnownedType                 `json:"nhiUnowned,omitempty"`
+	NhiUnownedEvidence             *NhiUnownedEvidence             `json:"nhiUnownedEvidence,omitempty"`
 	ObjectPermissions              *UserActorObjectPermissions     `json:"objectPermissions,omitempty"`
 	// The recurrenceCount field.
 	RecurrenceCount *int64 `json:"recurrenceCount,omitempty"`
@@ -502,6 +504,13 @@ func (f *Finding) GetNhiUnowned() *NhiUnownedType {
 		return nil
 	}
 	return f.NhiUnowned
+}
+
+func (f *Finding) GetNhiUnownedEvidence() *NhiUnownedEvidence {
+	if f == nil {
+		return nil
+	}
+	return f.NhiUnownedEvidence
 }
 
 func (f *Finding) GetObjectPermissions() *UserActorObjectPermissions {

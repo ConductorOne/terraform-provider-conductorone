@@ -53,6 +53,11 @@ type FindingTypeSetting struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// The findingType field.
 	FindingType *FindingTypeSettingFindingType `json:"findingType,omitempty"`
+	// Deprecated: always true, because remediation is available for all finding types.
+	//  Kept for wire compatibility; clients should not gate on it.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	HasRemediationPlaybook *bool `json:"hasRemediationPlaybook,omitempty"`
 }
 
 func (f *FindingTypeSetting) GetEnabled() *bool {
@@ -67,4 +72,11 @@ func (f *FindingTypeSetting) GetFindingType() *FindingTypeSettingFindingType {
 		return nil
 	}
 	return f.FindingType
+}
+
+func (f *FindingTypeSetting) GetHasRemediationPlaybook() *bool {
+	if f == nil {
+		return nil
+	}
+	return f.HasRemediationPlaybook
 }

@@ -18,7 +18,9 @@ type TaskTypeAction struct {
 	FormValues               *FormValues            `tfsdk:"form_values"`
 	Outcome                  types.String           `tfsdk:"outcome"`
 	OutcomeTime              types.String           `tfsdk:"outcome_time"`
+	PartialResult            types.Bool             `tfsdk:"partial_result"`
 	ScopeRole                *ScopeRole             `tfsdk:"scope_role"`
 	ToolCall                 *GatedToolCallTarget   `tfsdk:"tool_call"`
 	Type                     types.String           `tfsdk:"type"`
+	UnaddedMemberCount       types.Int64            `tfsdk:"unadded_member_count"`
 }

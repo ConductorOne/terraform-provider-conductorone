@@ -52,13 +52,17 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
     "..."
   ]
   display_name = "...my_display_name..."
+  entitlement_slugs = [
+    "..."
+  ]
   exclude_app_ids = [
     "..."
   ]
   exclude_app_user_ids = [
     "..."
   ]
-  exclude_immutable = true
+  exclude_automation_enabled = false
+  exclude_immutable          = true
   exclude_resource_type_ids = [
     "..."
   ]
@@ -126,8 +130,10 @@ data "conductorone_app_entitlement" "my_app_entitlement" {
 - `app_user_ids` (List of String) Search for app entitlements that are granted to any of these app user ids.
 - `compliance_framework_ids` (List of String) Search for app entitlements that are part of these compliance frameworks.
 - `display_name` (String) The display name of the category.
+- `entitlement_slugs` (List of String) Filter for entitlements whose slug is in this list (e.g. "read_only")
 - `exclude_app_ids` (List of String) Exclude app entitlements from the results that are in these app IDs.
 - `exclude_app_user_ids` (List of String) Exclude entitlements from results that are granted to any of these app users.
+- `exclude_automation_enabled` (Boolean) Exclude app entitlements that have automation enabled.
 - `exclude_immutable` (Boolean) If true, exclude immutable entitlements (e.g., system-managed entitlements that cannot be modified).
 - `exclude_resource_type_ids` (List of String) Exclude entitlements with any of these resource type IDs from results.
 - `excluded_entitlement_refs` (Attributes List) Exclude these specific entitlements from results. (see [below for nested schema](#nestedatt--excluded_entitlement_refs))

@@ -55,6 +55,14 @@ func (r *AccessReviewTemplateSetupResourceModel) RefreshFromSharedAccessReviewTe
 			r.Scope = nil
 		} else {
 			r.Scope = &tfTypes.AccessReviewScopeV2{}
+			if resp.Scope.AccessProfileReviewDimensions == nil {
+				r.Scope.AccessProfileReviewDimensions = nil
+			} else {
+				r.Scope.AccessProfileReviewDimensions = &tfTypes.AccessProfileReviewDimensions{}
+				r.Scope.AccessProfileReviewDimensions.Composition = types.BoolPointerValue(resp.Scope.AccessProfileReviewDimensions.Composition)
+				r.Scope.AccessProfileReviewDimensions.MembershipCriteria = types.BoolPointerValue(resp.Scope.AccessProfileReviewDimensions.MembershipCriteria)
+				r.Scope.AccessProfileReviewDimensions.MembershipExceptions = types.BoolPointerValue(resp.Scope.AccessProfileReviewDimensions.MembershipExceptions)
+			}
 			if resp.Scope.AccountCelExpression == nil {
 				r.Scope.AccountCelExpression = nil
 			} else {
@@ -117,6 +125,14 @@ func (r *AccessReviewTemplateSetupResourceModel) RefreshFromSharedAccessReviewTe
 				r.Scope.AppSelectionCriteria = nil
 			} else {
 				r.Scope.AppSelectionCriteria = &tfTypes.AppSelectionCriteriaScope{}
+				if resp.Scope.AppSelectionCriteria.AppIds != nil {
+					r.Scope.AppSelectionCriteria.AppIds = make([]types.String, 0, len(resp.Scope.AppSelectionCriteria.AppIds))
+					for _, v := range resp.Scope.AppSelectionCriteria.AppIds {
+						r.Scope.AppSelectionCriteria.AppIds = append(r.Scope.AppSelectionCriteria.AppIds, types.StringValue(v))
+					}
+				} else {
+					r.Scope.AppSelectionCriteria.AppIds = nil
+				}
 				if resp.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds != nil {
 					r.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = make([]types.String, 0, len(resp.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds))
 					for _, v := range resp.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds {
@@ -124,6 +140,20 @@ func (r *AccessReviewTemplateSetupResourceModel) RefreshFromSharedAccessReviewTe
 					}
 				} else {
 					r.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds = nil
+				}
+				if resp.Scope.AppSelectionCriteria.ResourceTypeRefs != nil {
+					r.Scope.AppSelectionCriteria.ResourceTypeRefs = []tfTypes.ResourceTypeRef{}
+
+					for _, resourceTypeRefsItem := range resp.Scope.AppSelectionCriteria.ResourceTypeRefs {
+						var resourceTypeRefs tfTypes.ResourceTypeRef
+
+						resourceTypeRefs.AppID = types.StringPointerValue(resourceTypeRefsItem.AppID)
+						resourceTypeRefs.ID = types.StringPointerValue(resourceTypeRefsItem.ID)
+
+						r.Scope.AppSelectionCriteria.ResourceTypeRefs = append(r.Scope.AppSelectionCriteria.ResourceTypeRefs, resourceTypeRefs)
+					}
+				} else {
+					r.Scope.AppSelectionCriteria.ResourceTypeRefs = nil
 				}
 				if resp.Scope.AppSelectionCriteria.RiskLevelAttributeValueIds != nil {
 					r.Scope.AppSelectionCriteria.RiskLevelAttributeValueIds = make([]types.String, 0, len(resp.Scope.AppSelectionCriteria.RiskLevelAttributeValueIds))
@@ -238,6 +268,11 @@ func (r *AccessReviewTemplateSetupResourceModel) RefreshFromSharedAccessReviewTe
 				r.Scope.SpecificAccessConflicts = nil
 			} else {
 				r.Scope.SpecificAccessConflicts = &tfTypes.SpecificAccessConflictsScope{}
+			}
+			if resp.Scope.SpecificAccessProfiles == nil {
+				r.Scope.SpecificAccessProfiles = nil
+			} else {
+				r.Scope.SpecificAccessProfiles = &tfTypes.SpecificAccessProfilesScope{}
 			}
 			if resp.Scope.SpecificResources == nil {
 				r.Scope.SpecificResources = nil
@@ -380,6 +415,32 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 	}
 	var scope *shared.AccessReviewScopeV2
 	if r.Scope != nil {
+		var accessProfileReviewDimensions *shared.AccessProfileReviewDimensions
+		if r.Scope.AccessProfileReviewDimensions != nil {
+			composition := new(bool)
+			if !r.Scope.AccessProfileReviewDimensions.Composition.IsUnknown() && !r.Scope.AccessProfileReviewDimensions.Composition.IsNull() {
+				*composition = r.Scope.AccessProfileReviewDimensions.Composition.ValueBool()
+			} else {
+				composition = nil
+			}
+			membershipCriteria := new(bool)
+			if !r.Scope.AccessProfileReviewDimensions.MembershipCriteria.IsUnknown() && !r.Scope.AccessProfileReviewDimensions.MembershipCriteria.IsNull() {
+				*membershipCriteria = r.Scope.AccessProfileReviewDimensions.MembershipCriteria.ValueBool()
+			} else {
+				membershipCriteria = nil
+			}
+			membershipExceptions := new(bool)
+			if !r.Scope.AccessProfileReviewDimensions.MembershipExceptions.IsUnknown() && !r.Scope.AccessProfileReviewDimensions.MembershipExceptions.IsNull() {
+				*membershipExceptions = r.Scope.AccessProfileReviewDimensions.MembershipExceptions.ValueBool()
+			} else {
+				membershipExceptions = nil
+			}
+			accessProfileReviewDimensions = &shared.AccessProfileReviewDimensions{
+				Composition:          composition,
+				MembershipCriteria:   membershipCriteria,
+				MembershipExceptions: membershipExceptions,
+			}
+		}
 		var accountCelExpression *shared.CelExpressionScope
 		if r.Scope.AccountCelExpression != nil {
 			expression := new(string)
@@ -449,11 +510,40 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 		}
 		var appSelectionCriteria *shared.AppSelectionCriteriaScope
 		if r.Scope.AppSelectionCriteria != nil {
+			var appIds []string
+			if r.Scope.AppSelectionCriteria.AppIds != nil {
+				appIds = make([]string, 0, len(r.Scope.AppSelectionCriteria.AppIds))
+				for appIdsIndex := range r.Scope.AppSelectionCriteria.AppIds {
+					appIds = append(appIds, r.Scope.AppSelectionCriteria.AppIds[appIdsIndex].ValueString())
+				}
+			}
 			var complianceFrameworkAttributeValueIds []string
 			if r.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds != nil {
 				complianceFrameworkAttributeValueIds = make([]string, 0, len(r.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds))
 				for complianceFrameworkAttributeValueIdsIndex := range r.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds {
 					complianceFrameworkAttributeValueIds = append(complianceFrameworkAttributeValueIds, r.Scope.AppSelectionCriteria.ComplianceFrameworkAttributeValueIds[complianceFrameworkAttributeValueIdsIndex].ValueString())
+				}
+			}
+			var resourceTypeRefs []shared.ResourceTypeRef
+			if r.Scope.AppSelectionCriteria.ResourceTypeRefs != nil {
+				resourceTypeRefs = make([]shared.ResourceTypeRef, 0, len(r.Scope.AppSelectionCriteria.ResourceTypeRefs))
+				for resourceTypeRefsIndex := range r.Scope.AppSelectionCriteria.ResourceTypeRefs {
+					appId1 := new(string)
+					if !r.Scope.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].AppID.IsUnknown() && !r.Scope.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].AppID.IsNull() {
+						*appId1 = r.Scope.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].AppID.ValueString()
+					} else {
+						appId1 = nil
+					}
+					id := new(string)
+					if !r.Scope.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].ID.IsUnknown() && !r.Scope.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].ID.IsNull() {
+						*id = r.Scope.AppSelectionCriteria.ResourceTypeRefs[resourceTypeRefsIndex].ID.ValueString()
+					} else {
+						id = nil
+					}
+					resourceTypeRefs = append(resourceTypeRefs, shared.ResourceTypeRef{
+						AppID: appId1,
+						ID:    id,
+					})
 				}
 			}
 			var riskLevelAttributeValueIds []string
@@ -464,7 +554,9 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 				}
 			}
 			appSelectionCriteria = &shared.AppSelectionCriteriaScope{
+				AppIds:                               appIds,
 				ComplianceFrameworkAttributeValueIds: complianceFrameworkAttributeValueIds,
+				ResourceTypeRefs:                     resourceTypeRefs,
 				RiskLevelAttributeValueIds:           riskLevelAttributeValueIds,
 			}
 		}
@@ -612,6 +704,10 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 		if r.Scope.SpecificAccessConflicts != nil {
 			specificAccessConflicts = &shared.SpecificAccessConflictsScope{}
 		}
+		var specificAccessProfiles *shared.SpecificAccessProfilesScope
+		if r.Scope.SpecificAccessProfiles != nil {
+			specificAccessProfiles = &shared.SpecificAccessProfilesScope{}
+		}
 		var specificResources *shared.SpecificResourcesScope
 		if r.Scope.SpecificResources != nil {
 			specificResources = &shared.SpecificResourcesScope{}
@@ -622,21 +718,21 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 			if r.Scope.UserCriteria.GroupAppEntitlementsRef != nil {
 				groupAppEntitlementsRef = make([]shared.AppEntitlementRef, 0, len(r.Scope.UserCriteria.GroupAppEntitlementsRef))
 				for groupAppEntitlementsRefIndex := range r.Scope.UserCriteria.GroupAppEntitlementsRef {
-					appId1 := new(string)
+					appId2 := new(string)
 					if !r.Scope.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsUnknown() && !r.Scope.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.IsNull() {
-						*appId1 = r.Scope.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
+						*appId2 = r.Scope.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].AppID.ValueString()
 					} else {
-						appId1 = nil
+						appId2 = nil
 					}
-					id := new(string)
+					id1 := new(string)
 					if !r.Scope.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsUnknown() && !r.Scope.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.IsNull() {
-						*id = r.Scope.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.ValueString()
+						*id1 = r.Scope.UserCriteria.GroupAppEntitlementsRef[groupAppEntitlementsRefIndex].ID.ValueString()
 					} else {
-						id = nil
+						id1 = nil
 					}
 					groupAppEntitlementsRef = append(groupAppEntitlementsRef, shared.AppEntitlementRef{
-						AppID: appId1,
-						ID:    id,
+						AppID: appId2,
+						ID:    id1,
 					})
 				}
 			}
@@ -684,6 +780,7 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 			}
 		}
 		scope = &shared.AccessReviewScopeV2{
+			AccessProfileReviewDimensions:  accessProfileReviewDimensions,
 			AccountCelExpression:           accountCelExpression,
 			AccountCriteria:                accountCriteria,
 			AllAccessConflicts:             allAccessConflicts,
@@ -702,6 +799,7 @@ func (r *AccessReviewTemplateSetupResourceModel) ToSharedAccessReviewTemplateSet
 			ScopeRoleSelection:             scopeRoleSelection,
 			SelectedUsers:                  selectedUsers,
 			SpecificAccessConflicts:        specificAccessConflicts,
+			SpecificAccessProfiles:         specificAccessProfiles,
 			SpecificResources:              specificResources,
 			UserCriteria:                   userCriteria,
 		}

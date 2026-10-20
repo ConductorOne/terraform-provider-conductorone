@@ -2,7 +2,7 @@
 
 package shared
 
-// ClawLLMRateSnapshotSource - The source field.
+// ClawLLMRateSnapshotSource - Provenance of the recorded prices.
 type ClawLLMRateSnapshotSource string
 
 const (
@@ -28,23 +28,23 @@ func (e *ClawLLMRateSnapshotSource) IsExact() bool {
 	return false
 }
 
-// ClawLLMRateSnapshot is the exact price basis selected for one call.
+// ClawLLMRateSnapshot records the exact price basis selected for a call.
 type ClawLLMRateSnapshot struct {
-	// The asOf field.
+	// Date the price basis took effect.
 	AsOf *string `json:"asOf,omitempty"`
-	// The cacheReadNanoPerMillionTokens field.
+	// Cache-read token price, in nano-units per million tokens.
 	CacheReadNanoPerMillionTokens *string `json:"cacheReadNanoPerMillionTokens,omitempty"`
-	// The cacheWriteNanoPerMillionTokens field.
+	// Cache-write token price, in nano-units per million tokens.
 	CacheWriteNanoPerMillionTokens *string `json:"cacheWriteNanoPerMillionTokens,omitempty"`
-	// The citation field.
+	// Reference for the price basis.
 	Citation *string `json:"citation,omitempty"`
-	// The inputNanoPerMillionTokens field.
+	// Input token price, in nano-units per million tokens.
 	InputNanoPerMillionTokens *string `json:"inputNanoPerMillionTokens,omitempty"`
-	// The note field.
+	// Operator note recorded with the price basis.
 	Note *string `json:"note,omitempty"`
-	// The outputNanoPerMillionTokens field.
+	// Output token price, in nano-units per million tokens.
 	OutputNanoPerMillionTokens *string `json:"outputNanoPerMillionTokens,omitempty"`
-	// The source field.
+	// Provenance of the recorded prices.
 	Source *ClawLLMRateSnapshotSource `json:"source,omitempty"`
 }
 

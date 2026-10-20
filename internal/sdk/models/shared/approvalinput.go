@@ -15,8 +15,10 @@ package shared
 //   - webhook
 //   - resourceOwners
 //   - agent
+//   - accessProfileOwners
 type ApprovalInput struct {
-	Agent *AgentApproval `json:"agent,omitempty"`
+	AccessProfileOwners *AccessProfileOwnerApproval `json:"accessProfileOwners,omitempty"`
+	Agent               *AgentApproval              `json:"agent,omitempty"`
 	// Whether ticket delegation is allowed for this step.
 	AllowDelegation *bool `json:"allowDelegation,omitempty"`
 	// Configuration to allow reassignment by reviewers during this step.
@@ -44,6 +46,13 @@ type ApprovalInput struct {
 	Self                     *SelfApprovalInput     `json:"self,omitempty"`
 	Users                    *UserApproval          `json:"users,omitempty"`
 	Webhook                  *WebhookApproval       `json:"webhook,omitempty"`
+}
+
+func (a *ApprovalInput) GetAccessProfileOwners() *AccessProfileOwnerApproval {
+	if a == nil {
+		return nil
+	}
+	return a.AccessProfileOwners
 }
 
 func (a *ApprovalInput) GetAgent() *AgentApproval {

@@ -60,19 +60,23 @@ func (e *PrincipalTypeFilter) IsExact() bool {
 // This message contains a oneof named excluded_apps_and_resources_scope. Only a single field of the following list may be set at a time:
 //   - excludedSpecificResources
 //   - excludedResourceTypeSelections
+//
+// This message contains a oneof named access_profiles_scope. Only a single field of the following list may be set at a time:
+//   - specificAccessProfiles
 type AccessReviewScopeV2 struct {
-	AccountCelExpression           *CelExpressionScope         `json:"accountCelExpression,omitempty"`
-	AccountCriteria                *AccountCriteriaScope       `json:"accountCriteria,omitempty"`
-	AllAccessConflicts             *AllAccessConflictsScope    `json:"allAccessConflicts,omitempty"`
-	AllAccounts                    *AllAccountsScope           `json:"allAccounts,omitempty"`
-	AllGrants                      *AllGrantsScope             `json:"allGrants,omitempty"`
-	AllUsers                       *AllUsersScope              `json:"allUsers,omitempty"`
-	AppAccess                      *ApplicationAccessScope     `json:"appAccess,omitempty"`
-	AppSelectionCriteria           *AppSelectionCriteriaScope  `json:"appSelectionCriteria,omitempty"`
-	CelExpression                  *CelExpressionScope         `json:"celExpression,omitempty"`
-	ExcludedResourceTypeSelections *ResourceTypeSelectionScope `json:"excludedResourceTypeSelections,omitempty"`
-	ExcludedSpecificResources      *SpecificResourcesScope     `json:"excludedSpecificResources,omitempty"`
-	GrantsByCriteria               *GrantsByCriteriaScope      `json:"grantsByCriteria,omitempty"`
+	AccessProfileReviewDimensions  *AccessProfileReviewDimensions `json:"accessProfileReviewDimensions,omitempty"`
+	AccountCelExpression           *CelExpressionScope            `json:"accountCelExpression,omitempty"`
+	AccountCriteria                *AccountCriteriaScope          `json:"accountCriteria,omitempty"`
+	AllAccessConflicts             *AllAccessConflictsScope       `json:"allAccessConflicts,omitempty"`
+	AllAccounts                    *AllAccountsScope              `json:"allAccounts,omitempty"`
+	AllGrants                      *AllGrantsScope                `json:"allGrants,omitempty"`
+	AllUsers                       *AllUsersScope                 `json:"allUsers,omitempty"`
+	AppAccess                      *ApplicationAccessScope        `json:"appAccess,omitempty"`
+	AppSelectionCriteria           *AppSelectionCriteriaScope     `json:"appSelectionCriteria,omitempty"`
+	CelExpression                  *CelExpressionScope            `json:"celExpression,omitempty"`
+	ExcludedResourceTypeSelections *ResourceTypeSelectionScope    `json:"excludedResourceTypeSelections,omitempty"`
+	ExcludedSpecificResources      *SpecificResourcesScope        `json:"excludedSpecificResources,omitempty"`
+	GrantsByCriteria               *GrantsByCriteriaScope         `json:"grantsByCriteria,omitempty"`
 	// Filters principals included in the scope. Unspecified is treated as users.
 	PrincipalTypeFilter     *PrincipalTypeFilter          `json:"principalTypeFilter,omitempty"`
 	ResourceSelection       *ResourceSelectionScope       `json:"resourceSelection,omitempty"`
@@ -80,8 +84,16 @@ type AccessReviewScopeV2 struct {
 	ScopeRoleSelection      *ScopeRoleSelectionScope      `json:"scopeRoleSelection,omitempty"`
 	SelectedUsers           *SelectedUsersScope           `json:"selectedUsers,omitempty"`
 	SpecificAccessConflicts *SpecificAccessConflictsScope `json:"specificAccessConflicts,omitempty"`
+	SpecificAccessProfiles  *SpecificAccessProfilesScope  `json:"specificAccessProfiles,omitempty"`
 	SpecificResources       *SpecificResourcesScope       `json:"specificResources,omitempty"`
 	UserCriteria            *UserCriteriaScope            `json:"userCriteria,omitempty"`
+}
+
+func (a *AccessReviewScopeV2) GetAccessProfileReviewDimensions() *AccessProfileReviewDimensions {
+	if a == nil {
+		return nil
+	}
+	return a.AccessProfileReviewDimensions
 }
 
 func (a *AccessReviewScopeV2) GetAccountCelExpression() *CelExpressionScope {
@@ -208,6 +220,13 @@ func (a *AccessReviewScopeV2) GetSpecificAccessConflicts() *SpecificAccessConfli
 		return nil
 	}
 	return a.SpecificAccessConflicts
+}
+
+func (a *AccessReviewScopeV2) GetSpecificAccessProfiles() *SpecificAccessProfilesScope {
+	if a == nil {
+		return nil
+	}
+	return a.SpecificAccessProfiles
 }
 
 func (a *AccessReviewScopeV2) GetSpecificResources() *SpecificResourcesScope {

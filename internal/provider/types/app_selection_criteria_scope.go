@@ -7,6 +7,8 @@ import (
 )
 
 type AppSelectionCriteriaScope struct {
-	ComplianceFrameworkAttributeValueIds []types.String `tfsdk:"compliance_framework_attribute_value_ids"`
-	RiskLevelAttributeValueIds           []types.String `tfsdk:"risk_level_attribute_value_ids"`
+	AppIds                               []types.String    `tfsdk:"app_ids"`
+	ComplianceFrameworkAttributeValueIds []types.String    `tfsdk:"compliance_framework_attribute_value_ids"`
+	ResourceTypeRefs                     []ResourceTypeRef `tfsdk:"resource_type_refs"`
+	RiskLevelAttributeValueIds           []types.String    `tfsdk:"risk_level_attribute_value_ids"`
 }

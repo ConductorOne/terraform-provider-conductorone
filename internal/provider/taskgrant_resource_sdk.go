@@ -547,6 +547,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 							} else {
 								r.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance = &tfTypes.ActionTargetBatonResourceActionInstance{}
 								r.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance.BatonActionInvocationID = types.StringPointerValue(resp.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance.BatonActionInvocationID)
+								r.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance.PartialResult = types.BoolPointerValue(resp.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance.PartialResult)
+								r.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance.UnaddedMemberCount = types.Int64PointerValue(resp.TaskView.Task.Policy.Current.Action.BatonResourceActionInstance.UnaddedMemberCount)
 							}
 							if resp.TaskView.Task.Policy.Current.Action.Cancelled == nil {
 								r.TaskView.Task.Policy.Current.Action.Cancelled = nil
@@ -594,6 +596,11 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 								r.TaskView.Task.Policy.Current.Approval.Approval = nil
 							} else {
 								r.TaskView.Task.Policy.Current.Approval.Approval = &tfTypes.Approval{}
+								if resp.TaskView.Task.Policy.Current.Approval.Approval.AccessProfileOwners == nil {
+									r.TaskView.Task.Policy.Current.Approval.Approval.AccessProfileOwners = nil
+								} else {
+									r.TaskView.Task.Policy.Current.Approval.Approval.AccessProfileOwners = &tfTypes.AccessProfileOwnerApproval{}
+								}
 								if resp.TaskView.Task.Policy.Current.Approval.Approval.Agent == nil {
 									r.TaskView.Task.Policy.Current.Approval.Approval.Agent = nil
 								} else {
@@ -1885,6 +1892,8 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 								} else {
 									history.Action.BatonResourceActionInstance = &tfTypes.ActionTargetBatonResourceActionInstance{}
 									history.Action.BatonResourceActionInstance.BatonActionInvocationID = types.StringPointerValue(historyItem.Action.BatonResourceActionInstance.BatonActionInvocationID)
+									history.Action.BatonResourceActionInstance.PartialResult = types.BoolPointerValue(historyItem.Action.BatonResourceActionInstance.PartialResult)
+									history.Action.BatonResourceActionInstance.UnaddedMemberCount = types.Int64PointerValue(historyItem.Action.BatonResourceActionInstance.UnaddedMemberCount)
 								}
 								if historyItem.Action.Cancelled == nil {
 									history.Action.Cancelled = nil
@@ -1932,6 +1941,11 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 									history.Approval.Approval = nil
 								} else {
 									history.Approval.Approval = &tfTypes.Approval{}
+									if historyItem.Approval.Approval.AccessProfileOwners == nil {
+										history.Approval.Approval.AccessProfileOwners = nil
+									} else {
+										history.Approval.Approval.AccessProfileOwners = &tfTypes.AccessProfileOwnerApproval{}
+									}
 									if historyItem.Approval.Approval.Agent == nil {
 										history.Approval.Approval.Agent = nil
 									} else {
@@ -3217,6 +3231,11 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 								next.Approval = nil
 							} else {
 								next.Approval = &tfTypes.Approval{}
+								if nextItem.Approval.AccessProfileOwners == nil {
+									next.Approval.AccessProfileOwners = nil
+								} else {
+									next.Approval.AccessProfileOwners = &tfTypes.AccessProfileOwnerApproval{}
+								}
 								if nextItem.Approval.Agent == nil {
 									next.Approval.Agent = nil
 								} else {
@@ -3883,6 +3902,11 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 											steps.Approval = nil
 										} else {
 											steps.Approval = &tfTypes.Approval{}
+											if stepsItem.Approval.AccessProfileOwners == nil {
+												steps.Approval.AccessProfileOwners = nil
+											} else {
+												steps.Approval.AccessProfileOwners = &tfTypes.AccessProfileOwnerApproval{}
+											}
 											if stepsItem.Approval.Agent == nil {
 												steps.Approval.Agent = nil
 											} else {
@@ -4674,6 +4698,7 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 							r.TaskView.Task.Type.Action.Outcome = types.StringNull()
 						}
 						r.TaskView.Task.Type.Action.OutcomeTime = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.TaskView.Task.Type.Action.OutcomeTime))
+						r.TaskView.Task.Type.Action.PartialResult = types.BoolPointerValue(resp.TaskView.Task.Type.Action.PartialResult)
 						if resp.TaskView.Task.Type.Action.ScopeRole == nil {
 							r.TaskView.Task.Type.Action.ScopeRole = nil
 						} else {
@@ -4737,6 +4762,7 @@ func (r *TaskGrantResourceModel) RefreshFromSharedTaskServiceCreateGrantResponse
 						} else {
 							r.TaskView.Task.Type.Action.Type = types.StringNull()
 						}
+						r.TaskView.Task.Type.Action.UnaddedMemberCount = types.Int64PointerValue(resp.TaskView.Task.Type.Action.UnaddedMemberCount)
 					}
 					if resp.TaskView.Task.Type.Certify == nil {
 						r.TaskView.Task.Type.Certify = nil

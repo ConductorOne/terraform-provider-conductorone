@@ -6,12 +6,12 @@ package shared
 type DenialReason string
 
 const (
-	DenialReasonDenyReasonUnspecified      DenialReason = "DENY_REASON_UNSPECIFIED"
-	DenialReasonDenyReasonTenantFrozen     DenialReason = "DENY_REASON_TENANT_FROZEN"
-	DenialReasonDenyReasonSuspendedByAdmin DenialReason = "DENY_REASON_SUSPENDED_BY_ADMIN"
-	DenialReasonDenyReasonAppSuspended     DenialReason = "DENY_REASON_APP_SUSPENDED"
-	DenialReasonDenyReasonAppPausedByYou   DenialReason = "DENY_REASON_APP_PAUSED_BY_YOU"
-	DenialReasonDenyReasonNoSupply         DenialReason = "DENY_REASON_NO_SUPPLY"
+	DenialReasonSpendDenyReasonUnspecified      DenialReason = "SPEND_DENY_REASON_UNSPECIFIED"
+	DenialReasonSpendDenyReasonTenantFrozen     DenialReason = "SPEND_DENY_REASON_TENANT_FROZEN"
+	DenialReasonSpendDenyReasonSuspendedByAdmin DenialReason = "SPEND_DENY_REASON_SUSPENDED_BY_ADMIN"
+	DenialReasonSpendDenyReasonAppSuspended     DenialReason = "SPEND_DENY_REASON_APP_SUSPENDED"
+	DenialReasonSpendDenyReasonAppPausedByYou   DenialReason = "SPEND_DENY_REASON_APP_PAUSED_BY_YOU"
+	DenialReasonSpendDenyReasonNoSupply         DenialReason = "SPEND_DENY_REASON_NO_SUPPLY"
 )
 
 func (e DenialReason) ToPointer() *DenialReason {
@@ -22,7 +22,7 @@ func (e DenialReason) ToPointer() *DenialReason {
 func (e *DenialReason) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "DENY_REASON_UNSPECIFIED", "DENY_REASON_TENANT_FROZEN", "DENY_REASON_SUSPENDED_BY_ADMIN", "DENY_REASON_APP_SUSPENDED", "DENY_REASON_APP_PAUSED_BY_YOU", "DENY_REASON_NO_SUPPLY":
+		case "SPEND_DENY_REASON_UNSPECIFIED", "SPEND_DENY_REASON_TENANT_FROZEN", "SPEND_DENY_REASON_SUSPENDED_BY_ADMIN", "SPEND_DENY_REASON_APP_SUSPENDED", "SPEND_DENY_REASON_APP_PAUSED_BY_YOU", "SPEND_DENY_REASON_NO_SUPPLY":
 			return true
 		}
 	}

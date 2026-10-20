@@ -7,24 +7,26 @@ import (
 )
 
 type AccessReviewScopeV2 struct {
-	AccountCelExpression           *CelExpressionScope           `tfsdk:"account_cel_expression"`
-	AccountCriteria                *AccountCriteriaScope         `tfsdk:"account_criteria"`
-	AllAccessConflicts             *AllAccessConflictsScope      `tfsdk:"all_access_conflicts"`
-	AllAccounts                    *AllAccountsScope             `tfsdk:"all_accounts"`
-	AllGrants                      *AllGrantsScope               `tfsdk:"all_grants"`
-	AllUsers                       *AllUsersScope                `tfsdk:"all_users"`
-	AppAccess                      *ApplicationAccessScope       `tfsdk:"app_access"`
-	AppSelectionCriteria           *AppSelectionCriteriaScope    `tfsdk:"app_selection_criteria"`
-	CelExpression                  *CelExpressionScope           `tfsdk:"cel_expression"`
-	ExcludedResourceTypeSelections *ResourceTypeSelectionScope   `tfsdk:"excluded_resource_type_selections"`
-	ExcludedSpecificResources      *SpecificResourcesScope       `tfsdk:"excluded_specific_resources"`
-	GrantsByCriteria               *GrantsByCriteriaScope        `tfsdk:"grants_by_criteria"`
-	PrincipalTypeFilter            types.String                  `tfsdk:"principal_type_filter"`
-	ResourceSelection              *ResourceSelectionScope       `tfsdk:"resource_selection"`
-	ResourceTypeSelections         *ResourceTypeSelectionScope   `tfsdk:"resource_type_selections"`
-	ScopeRoleSelection             *ScopeRoleSelectionScope      `tfsdk:"scope_role_selection"`
-	SelectedUsers                  *SelectedUsersScope           `tfsdk:"selected_users"`
-	SpecificAccessConflicts        *SpecificAccessConflictsScope `tfsdk:"specific_access_conflicts"`
-	SpecificResources              *SpecificResourcesScope       `tfsdk:"specific_resources"`
-	UserCriteria                   *UserCriteriaScope            `tfsdk:"user_criteria"`
+	AccessProfileReviewDimensions  *AccessProfileReviewDimensions `tfsdk:"access_profile_review_dimensions"`
+	AccountCelExpression           *CelExpressionScope            `tfsdk:"account_cel_expression"`
+	AccountCriteria                *AccountCriteriaScope          `tfsdk:"account_criteria"`
+	AllAccessConflicts             *AllAccessConflictsScope       `tfsdk:"all_access_conflicts"`
+	AllAccounts                    *AllAccountsScope              `tfsdk:"all_accounts"`
+	AllGrants                      *AllGrantsScope                `tfsdk:"all_grants"`
+	AllUsers                       *AllUsersScope                 `tfsdk:"all_users"`
+	AppAccess                      *ApplicationAccessScope        `tfsdk:"app_access"`
+	AppSelectionCriteria           *AppSelectionCriteriaScope     `tfsdk:"app_selection_criteria"`
+	CelExpression                  *CelExpressionScope            `tfsdk:"cel_expression"`
+	ExcludedResourceTypeSelections *ResourceTypeSelectionScope    `tfsdk:"excluded_resource_type_selections"`
+	ExcludedSpecificResources      *SpecificResourcesScope        `tfsdk:"excluded_specific_resources"`
+	GrantsByCriteria               *GrantsByCriteriaScope         `tfsdk:"grants_by_criteria"`
+	PrincipalTypeFilter            types.String                   `tfsdk:"principal_type_filter"`
+	ResourceSelection              *ResourceSelectionScope        `tfsdk:"resource_selection"`
+	ResourceTypeSelections         *ResourceTypeSelectionScope    `tfsdk:"resource_type_selections"`
+	ScopeRoleSelection             *ScopeRoleSelectionScope       `tfsdk:"scope_role_selection"`
+	SelectedUsers                  *SelectedUsersScope            `tfsdk:"selected_users"`
+	SpecificAccessConflicts        *SpecificAccessConflictsScope  `tfsdk:"specific_access_conflicts"`
+	SpecificAccessProfiles         *SpecificAccessProfilesScope   `tfsdk:"specific_access_profiles"`
+	SpecificResources              *SpecificResourcesScope        `tfsdk:"specific_resources"`
+	UserCriteria                   *UserCriteriaScope             `tfsdk:"user_criteria"`
 }

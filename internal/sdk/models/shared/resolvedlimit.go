@@ -2,10 +2,7 @@
 
 package shared
 
-// ResolvedLimit is funds.v1.SpendLimit minus `blocked` — a blocked scope fails
-//
-//	closed during resolution and never creates an account — with Money flattened
-//	to nano.
+// ResolvedLimit records the historical limit of an admitted account.
 //
 // This message contains a oneof named kind. Only a single field of the following list may be set at a time:
 //   - unlimited

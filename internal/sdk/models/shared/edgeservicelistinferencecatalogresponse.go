@@ -4,8 +4,20 @@ package shared
 
 // EdgeServiceListInferenceCatalogResponse contains every catalog entry.
 type EdgeServiceListInferenceCatalogResponse struct {
+	CapabilitySummary *EdgeCapabilitySummary `json:"capabilitySummary,omitempty"`
 	// The entries field.
 	Entries []EdgeInferenceCatalogEntry `json:"entries,omitempty"`
+	// C1's registered models grouped by family, with the ways an Edge can serve each.
+	Families []EdgeInferenceModelFamily `json:"families,omitempty"`
+	// The model each C1 tier currently uses for the caller's tenant. A tier with no model is left out.
+	Tiers []EdgeInferenceTierOption `json:"tiers,omitempty"`
+}
+
+func (e *EdgeServiceListInferenceCatalogResponse) GetCapabilitySummary() *EdgeCapabilitySummary {
+	if e == nil {
+		return nil
+	}
+	return e.CapabilitySummary
 }
 
 func (e *EdgeServiceListInferenceCatalogResponse) GetEntries() []EdgeInferenceCatalogEntry {
@@ -13,4 +25,18 @@ func (e *EdgeServiceListInferenceCatalogResponse) GetEntries() []EdgeInferenceCa
 		return nil
 	}
 	return e.Entries
+}
+
+func (e *EdgeServiceListInferenceCatalogResponse) GetFamilies() []EdgeInferenceModelFamily {
+	if e == nil {
+		return nil
+	}
+	return e.Families
+}
+
+func (e *EdgeServiceListInferenceCatalogResponse) GetTiers() []EdgeInferenceTierOption {
+	if e == nil {
+		return nil
+	}
+	return e.Tiers
 }

@@ -9,6 +9,8 @@ type EdgeEgressRuleListCheck struct {
 	Problems []EdgeEgressRuleProblem `json:"problems,omitempty"`
 	// The valid field.
 	Valid *bool `json:"valid,omitempty"`
+	// Things worth fixing that do not stop Update from saving the list.
+	Warnings []EdgeEgressRuleWarning `json:"warnings,omitempty"`
 }
 
 func (e *EdgeEgressRuleListCheck) GetProblems() []EdgeEgressRuleProblem {
@@ -23,4 +25,11 @@ func (e *EdgeEgressRuleListCheck) GetValid() *bool {
 		return nil
 	}
 	return e.Valid
+}
+
+func (e *EdgeEgressRuleListCheck) GetWarnings() []EdgeEgressRuleWarning {
+	if e == nil {
+		return nil
+	}
+	return e.Warnings
 }

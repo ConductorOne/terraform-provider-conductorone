@@ -9,8 +9,8 @@ import (
 
 // FundAssignment is one principal's fund exception as the API renders it.
 type FundAssignment struct {
-	Controls  *SpendControls `json:"controls,omitempty"`
-	CreatedAt *time.Time     `json:"createdAt,omitempty"`
+	Controls  *FundsSpendControls `json:"controls,omitempty"`
+	CreatedAt *time.Time          `json:"createdAt,omitempty"`
 	// The tenantId field.
 	TenantID  *string    `json:"tenantId,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -29,7 +29,7 @@ func (f *FundAssignment) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (f *FundAssignment) GetControls() *SpendControls {
+func (f *FundAssignment) GetControls() *FundsSpendControls {
 	if f == nil {
 		return nil
 	}

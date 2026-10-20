@@ -11,6 +11,7 @@ const (
 	ReplacedEffectEdgeEgressEffectUnspecified ReplacedEffect = "EDGE_EGRESS_EFFECT_UNSPECIFIED"
 	ReplacedEffectEdgeEgressEffectAllow       ReplacedEffect = "EDGE_EGRESS_EFFECT_ALLOW"
 	ReplacedEffectEdgeEgressEffectDeny        ReplacedEffect = "EDGE_EGRESS_EFFECT_DENY"
+	ReplacedEffectEdgeEgressEffectAuthzen     ReplacedEffect = "EDGE_EGRESS_EFFECT_AUTHZEN"
 )
 
 func (e ReplacedEffect) ToPointer() *ReplacedEffect {
@@ -21,7 +22,7 @@ func (e ReplacedEffect) ToPointer() *ReplacedEffect {
 func (e *ReplacedEffect) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "EDGE_EGRESS_EFFECT_UNSPECIFIED", "EDGE_EGRESS_EFFECT_ALLOW", "EDGE_EGRESS_EFFECT_DENY":
+		case "EDGE_EGRESS_EFFECT_UNSPECIFIED", "EDGE_EGRESS_EFFECT_ALLOW", "EDGE_EGRESS_EFFECT_DENY", "EDGE_EGRESS_EFFECT_AUTHZEN":
 			return true
 		}
 	}
@@ -79,6 +80,9 @@ type EdgeServicePreviewEgressHostDecisionResponse struct {
 	StartsDefaultDeny *bool `json:"startsDefaultDeny,omitempty"`
 	// The status field.
 	Status *EdgeServicePreviewEgressHostDecisionResponseStatus `json:"status,omitempty"`
+	// Concerns about the decision that do not stop it from being saved, e.g. an
+	//  Allow that goes before an AUTHZEN rule and so bypasses its server.
+	Warnings []EdgeEgressRuleWarning `json:"warnings,omitempty"`
 }
 
 func (e *EdgeServicePreviewEgressHostDecisionResponse) GetAfter() *EdgeEgressHostVerdict {
@@ -149,4 +153,11 @@ func (e *EdgeServicePreviewEgressHostDecisionResponse) GetStatus() *EdgeServiceP
 		return nil
 	}
 	return e.Status
+}
+
+func (e *EdgeServicePreviewEgressHostDecisionResponse) GetWarnings() []EdgeEgressRuleWarning {
+	if e == nil {
+		return nil
+	}
+	return e.Warnings
 }

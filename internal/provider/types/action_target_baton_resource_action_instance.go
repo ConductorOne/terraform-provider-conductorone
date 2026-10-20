@@ -8,4 +8,6 @@ import (
 
 type ActionTargetBatonResourceActionInstance struct {
 	BatonActionInvocationID types.String `tfsdk:"baton_action_invocation_id"`
+	PartialResult           types.Bool   `tfsdk:"partial_result"`
+	UnaddedMemberCount      types.Int64  `tfsdk:"unadded_member_count"`
 }

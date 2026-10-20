@@ -6,6 +6,10 @@ package shared
 type ActionTargetBatonResourceActionInstance struct {
 	// The batonActionInvocationId field.
 	BatonActionInvocationID *string `json:"batonActionInvocationId,omitempty"`
+	// The created resource has unconfirmed requested effects.
+	PartialResult *bool `json:"partialResult,omitempty"`
+	// The unaddedMemberCount field.
+	UnaddedMemberCount *int64 `json:"unaddedMemberCount,omitempty"`
 }
 
 func (a *ActionTargetBatonResourceActionInstance) GetBatonActionInvocationID() *string {
@@ -13,4 +17,18 @@ func (a *ActionTargetBatonResourceActionInstance) GetBatonActionInvocationID() *
 		return nil
 	}
 	return a.BatonActionInvocationID
+}
+
+func (a *ActionTargetBatonResourceActionInstance) GetPartialResult() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.PartialResult
+}
+
+func (a *ActionTargetBatonResourceActionInstance) GetUnaddedMemberCount() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.UnaddedMemberCount
 }

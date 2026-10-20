@@ -102,6 +102,11 @@ func (r *PolicyResourceModel) RefreshFromSharedPolicy(ctx context.Context, resp 
 							steps.Approval = nil
 						} else {
 							steps.Approval = &tfTypes.Approval{}
+							if stepsItem.Approval.AccessProfileOwners == nil {
+								steps.Approval.AccessProfileOwners = nil
+							} else {
+								steps.Approval.AccessProfileOwners = &tfTypes.AccessProfileOwnerApproval{}
+							}
 							if stepsItem.Approval.Agent == nil {
 								steps.Approval.Agent = nil
 							} else {
@@ -911,6 +916,10 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 				}
 				var approval *shared.ApprovalInput
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval != nil {
+					var accessProfileOwners *shared.AccessProfileOwnerApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AccessProfileOwners != nil {
+						accessProfileOwners = &shared.AccessProfileOwnerApproval{}
+					}
 					var agent *shared.AgentApproval
 					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent != nil {
 						agentFailureAction := new(shared.AgentFailureAction)
@@ -1516,6 +1525,7 @@ func (r *PolicyResourceModel) ToSharedCreatePolicyRequest(ctx context.Context) (
 						}
 					}
 					approval = &shared.ApprovalInput{
+						AccessProfileOwners:       accessProfileOwners,
 						Agent:                     agent,
 						AllowDelegation:           allowDelegation,
 						AllowReassignment:         allowReassignment,
@@ -2279,6 +2289,10 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 				}
 				var approval *shared.ApprovalInput
 				if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval != nil {
+					var accessProfileOwners *shared.AccessProfileOwnerApproval
+					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.AccessProfileOwners != nil {
+						accessProfileOwners = &shared.AccessProfileOwnerApproval{}
+					}
 					var agent *shared.AgentApproval
 					if r.PolicySteps[policyStepsKey].Steps[stepsIndex].Approval.Agent != nil {
 						agentFailureAction := new(shared.AgentFailureAction)
@@ -2884,6 +2898,7 @@ func (r *PolicyResourceModel) ToSharedPolicyInput(ctx context.Context) (*shared.
 						}
 					}
 					approval = &shared.ApprovalInput{
+						AccessProfileOwners:       accessProfileOwners,
 						Agent:                     agent,
 						AllowDelegation:           allowDelegation,
 						AllowReassignment:         allowReassignment,

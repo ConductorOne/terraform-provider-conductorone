@@ -31,12 +31,12 @@ func (e *AppCapServiceSetLimitRequestPeriod) IsExact() bool {
 
 // The AppCapServiceSetLimitRequest message.
 type AppCapServiceSetLimitRequest struct {
-	Limit *SpendLimit `json:"limit,omitempty"`
+	Limit *FundsSpendLimit `json:"limit,omitempty"`
 	// Optional period override. Only valid together with the limit it denominates.
 	Period *AppCapServiceSetLimitRequestPeriod `json:"period,omitempty"`
 }
 
-func (a *AppCapServiceSetLimitRequest) GetLimit() *SpendLimit {
+func (a *AppCapServiceSetLimitRequest) GetLimit() *FundsSpendLimit {
 	if a == nil {
 		return nil
 	}

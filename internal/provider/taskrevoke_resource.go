@@ -1055,6 +1055,14 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																Computed:    true,
 																Description: `The batonActionInvocationId field.`,
 															},
+															"partial_result": schema.BoolAttribute{
+																Computed:    true,
+																Description: `The created resource has unconfirmed requested effects.`,
+															},
+															"unadded_member_count": schema.Int64Attribute{
+																Computed:    true,
+																Description: `The unaddedMemberCount field.`,
+															},
 														},
 														Description: `The ActionTargetBatonResourceActionInstance message.`,
 													},
@@ -1138,6 +1146,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 													"approval": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
+															"access_profile_owners": schema.SingleNestedAttribute{
+																Computed:    true,
+																Description: `The AccessProfileOwnerApproval message.`,
+															},
 															"agent": schema.SingleNestedAttribute{
 																Computed: true,
 																Attributes: map[string]schema.Attribute{
@@ -1593,7 +1605,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 															`  - expression` + "\n" +
 															`  - webhook` + "\n" +
 															`  - resourceOwners` + "\n" +
-															`  - agent`,
+															`  - agent` + "\n" +
+															`  - accessProfileOwners`,
 													},
 													"approved": schema.SingleNestedAttribute{
 														Computed: true,
@@ -3322,6 +3335,14 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																	Computed:    true,
 																	Description: `The batonActionInvocationId field.`,
 																},
+																"partial_result": schema.BoolAttribute{
+																	Computed:    true,
+																	Description: `The created resource has unconfirmed requested effects.`,
+																},
+																"unadded_member_count": schema.Int64Attribute{
+																	Computed:    true,
+																	Description: `The unaddedMemberCount field.`,
+																},
 															},
 															Description: `The ActionTargetBatonResourceActionInstance message.`,
 														},
@@ -3405,6 +3426,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 														"approval": schema.SingleNestedAttribute{
 															Computed: true,
 															Attributes: map[string]schema.Attribute{
+																"access_profile_owners": schema.SingleNestedAttribute{
+																	Computed:    true,
+																	Description: `The AccessProfileOwnerApproval message.`,
+																},
 																"agent": schema.SingleNestedAttribute{
 																	Computed: true,
 																	Attributes: map[string]schema.Attribute{
@@ -3860,7 +3885,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																`  - expression` + "\n" +
 																`  - webhook` + "\n" +
 																`  - resourceOwners` + "\n" +
-																`  - agent`,
+																`  - agent` + "\n" +
+																`  - accessProfileOwners`,
 														},
 														"approved": schema.SingleNestedAttribute{
 															Computed: true,
@@ -5563,6 +5589,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 												"approval": schema.SingleNestedAttribute{
 													Computed: true,
 													Attributes: map[string]schema.Attribute{
+														"access_profile_owners": schema.SingleNestedAttribute{
+															Computed:    true,
+															Description: `The AccessProfileOwnerApproval message.`,
+														},
 														"agent": schema.SingleNestedAttribute{
 															Computed: true,
 															Attributes: map[string]schema.Attribute{
@@ -6018,7 +6048,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 														`  - expression` + "\n" +
 														`  - webhook` + "\n" +
 														`  - resourceOwners` + "\n" +
-														`  - agent`,
+														`  - agent` + "\n" +
+														`  - accessProfileOwners`,
 												},
 												"form": schema.StringAttribute{
 													CustomType:  jsontypes.NormalizedType{},
@@ -6537,6 +6568,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																	"approval": schema.SingleNestedAttribute{
 																		Computed: true,
 																		Attributes: map[string]schema.Attribute{
+																			"access_profile_owners": schema.SingleNestedAttribute{
+																				Computed:    true,
+																				Description: `The AccessProfileOwnerApproval message.`,
+																			},
 																			"agent": schema.SingleNestedAttribute{
 																				Computed: true,
 																				Attributes: map[string]schema.Attribute{
@@ -6992,7 +7027,8 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 																			`  - expression` + "\n" +
 																			`  - webhook` + "\n" +
 																			`  - resourceOwners` + "\n" +
-																			`  - agent`,
+																			`  - agent` + "\n" +
+																			`  - accessProfileOwners`,
 																	},
 																	"form": schema.StringAttribute{
 																		CustomType:  jsontypes.NormalizedType{},
@@ -7729,6 +7765,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 											"outcome_time": schema.StringAttribute{
 												Computed: true,
 											},
+											"partial_result": schema.BoolAttribute{
+												Computed:    true,
+												Description: `The resource was created, but some requested effects remain unconfirmed.`,
+											},
 											"scope_role": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
@@ -7838,6 +7878,10 @@ func (r *TaskRevokeResource) Schema(ctx context.Context, req resource.SchemaRequ
 												Computed: true,
 												MarkdownDescription: `Flavor of action the ticket represents — mirrors the snapshot's` + "\n" +
 													` target_ref variant.`,
+											},
+											"unadded_member_count": schema.Int64Attribute{
+												Computed:    true,
+												Description: `Selected members whose addition the connector could not confirm.`,
 											},
 										},
 										MarkdownDescription: `The TaskTypeAction message.` + "\n" +

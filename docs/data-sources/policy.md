@@ -151,7 +151,8 @@ This message contains a oneof named typ. Only a single field of the following li
   - expression
   - webhook
   - resourceOwners
-  - agent (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
+  - agent
+  - accessProfileOwners (see [below for nested schema](#nestedatt--policy_steps--steps--approval))
 - `form` (String) Parsed as JSON.
 - `provision` (Attributes) The provision step references a provision policy for this step. (see [below for nested schema](#nestedatt--policy_steps--steps--provision))
 - `reject` (Attributes) This policy step indicates that a ticket should have a denied outcome. This is a terminal approval state and is used to explicitly define the end of approval steps. (see [below for nested schema](#nestedatt--policy_steps--steps--reject))
@@ -206,6 +207,7 @@ Read-Only:
 
 Read-Only:
 
+- `access_profile_owners` (Attributes) The AccessProfileOwnerApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--access_profile_owners))
 - `agent` (Attributes) The agent to assign the task to. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--agent))
 - `allow_delegation` (Boolean) Whether ticket delegation is allowed for this step.
 - `allow_reassignment` (Boolean) Configuration to allow reassignment by reviewers during this step.
@@ -233,6 +235,10 @@ This message contains a oneof named escalation_policy. Only a single field of th
 - `self` (Attributes) The self approval object describes the configuration of a policy step that needs to be approved by the target of the request. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--self))
 - `users` (Attributes) The user approval object describes the approval configuration of a policy step that needs to be approved by a specific list of users. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--users))
 - `webhook` (Attributes) The WebhookApproval message. (see [below for nested schema](#nestedatt--policy_steps--steps--approval--webhook))
+
+<a id="nestedatt--policy_steps--steps--approval--access_profile_owners"></a>
+### Nested Schema for `policy_steps.steps.approval.access_profile_owners`
+
 
 <a id="nestedatt--policy_steps--steps--approval--agent"></a>
 ### Nested Schema for `policy_steps.steps.approval.agent`
