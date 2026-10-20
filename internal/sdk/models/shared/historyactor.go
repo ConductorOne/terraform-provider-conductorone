@@ -33,7 +33,7 @@ func (e *HistoryActorKind) IsExact() bool {
 
 // HistoryActor is a typed reference to whoever performed the change.
 //
-//	kind mirrors the storage-model ActorKind enum; user_id is set when
+//	kind identifies the actor's service; user_id is set when
 //	kind corresponds to a user principal (API / SUPPORT) so the frontend
 //	can resolve the user via its own avatar / lookup hooks. Protos
 //	reference objects by id; the frontend renders / caches itself.

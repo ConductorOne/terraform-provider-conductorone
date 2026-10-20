@@ -56,8 +56,8 @@ type EffectiveScope struct {
 	// Spend headroom after settled and reserved spend.
 	RemainingNano *string `json:"remainingNano,omitempty"`
 	// Spend reserved by in-progress calls.
-	ReservedNano *string       `json:"reservedNano,omitempty"`
-	Scope        *AccountScope `json:"scope,omitempty"`
+	ReservedNano *string            `json:"reservedNano,omitempty"`
+	Scope        *FundsAccountScope `json:"scope,omitempty"`
 	// Whether this scope records spend without enforcing a finite limit.
 	Tracking *bool `json:"tracking,omitempty"`
 	// Settled plus reserved spend in the current budget period.
@@ -161,7 +161,7 @@ func (e *EffectiveScope) GetReservedNano() *string {
 	return e.ReservedNano
 }
 
-func (e *EffectiveScope) GetScope() *AccountScope {
+func (e *EffectiveScope) GetScope() *FundsAccountScope {
 	if e == nil {
 		return nil
 	}

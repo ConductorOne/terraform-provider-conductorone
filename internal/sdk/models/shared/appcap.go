@@ -10,9 +10,9 @@ import (
 // AppCap is one app's tenant-wide ceiling as the API renders it.
 type AppCap struct {
 	// The C1 App the spend is attributed to.
-	AppID     *string        `json:"appId,omitempty"`
-	Controls  *SpendControls `json:"controls,omitempty"`
-	CreatedAt *time.Time     `json:"createdAt,omitempty"`
+	AppID     *string             `json:"appId,omitempty"`
+	Controls  *FundsSpendControls `json:"controls,omitempty"`
+	CreatedAt *time.Time          `json:"createdAt,omitempty"`
 	// The tenantId field.
 	TenantID  *string    `json:"tenantId,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -36,7 +36,7 @@ func (a *AppCap) GetAppID() *string {
 	return a.AppID
 }
 
-func (a *AppCap) GetControls() *SpendControls {
+func (a *AppCap) GetControls() *FundsSpendControls {
 	if a == nil {
 		return nil
 	}

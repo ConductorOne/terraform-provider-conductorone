@@ -29,6 +29,9 @@ func (e *PrincipalMatch) IsExact() bool {
 
 // EdgeEgressRuleMatch is one rule whose pattern matches an evaluated host.
 type EdgeEgressRuleMatch struct {
+	// A Deny rule whose entitlement has more members than the Edge config
+	//  carries; it applies to every user, so principal_match is MATCHES.
+	EntitlementOverCap *bool `json:"entitlementOverCap,omitempty"`
 	// The principalMatch field.
 	PrincipalMatch *PrincipalMatch `json:"principalMatch,omitempty"`
 	// The ruleIndex field.
@@ -36,6 +39,13 @@ type EdgeEgressRuleMatch struct {
 	// An earlier rule already decided this host for this caller, so this one
 	//  never applies. Set only with EDGE_EGRESS_PRINCIPAL_MATCH_MATCHES.
 	Shadowed *bool `json:"shadowed,omitempty"`
+}
+
+func (e *EdgeEgressRuleMatch) GetEntitlementOverCap() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.EntitlementOverCap
 }
 
 func (e *EdgeEgressRuleMatch) GetPrincipalMatch() *PrincipalMatch {

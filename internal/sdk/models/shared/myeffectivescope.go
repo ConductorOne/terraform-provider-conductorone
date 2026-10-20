@@ -45,7 +45,7 @@ type MyEffectiveScope struct {
 	// Length of the current budget period.
 	PeriodKind  *MyEffectiveScopePeriodKind `json:"periodKind,omitempty"`
 	PeriodStart *time.Time                  `json:"periodStart,omitempty"`
-	Scope       *AccountScope               `json:"scope,omitempty"`
+	Scope       *FundsAccountScope          `json:"scope,omitempty"`
 }
 
 func (m MyEffectiveScope) MarshalJSON() ([]byte, error) {
@@ -94,7 +94,7 @@ func (m *MyEffectiveScope) GetPeriodStart() *time.Time {
 	return m.PeriodStart
 }
 
-func (m *MyEffectiveScope) GetScope() *AccountScope {
+func (m *MyEffectiveScope) GetScope() *FundsAccountScope {
 	if m == nil {
 		return nil
 	}

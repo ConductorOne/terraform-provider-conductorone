@@ -7,9 +7,7 @@ import (
 	"time"
 )
 
-// ChangeKind - Storage-model enum re-exported here for wire compatibility with the
-//
-//	storage row. UNSPECIFIED should never appear on the wire.
+// ChangeKind - UNSPECIFIED should never appear on the wire.
 type ChangeKind string
 
 const (
@@ -44,8 +42,7 @@ type HistoryEntryMetadata struct {
 	//  (for ticket_id, etc.) display_url resolved from tenant config.
 	//  Cap mirrors the per-object annotation ceiling (16).
 	Annotations []HistoryAnnotation `json:"annotations,omitempty"`
-	// Storage-model enum re-exported here for wire compatibility with the
-	//  storage row. UNSPECIFIED should never appear on the wire.
+	// UNSPECIFIED should never appear on the wire.
 	ChangeKind *ChangeKind `json:"changeKind,omitempty"`
 	CreatedAt  *time.Time  `json:"createdAt,omitempty"`
 	// KSUID. Same value as c1.models.history.v1.ObjectHistory.id.

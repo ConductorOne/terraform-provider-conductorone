@@ -6,6 +6,9 @@ package shared
 type ListAppEntitlementRoutingRulesResponse struct {
 	// The list field.
 	List []AppEntitlementRoutingRule `json:"list,omitempty"`
+	// The maximum number of routing rules this app may hold. Creating a rule
+	//  fails once the app reaches this limit.
+	MaxRulesPerApp *int `json:"maxRulesPerApp,omitempty"`
 	// The nextPageToken field.
 	NextPageToken *string `json:"nextPageToken,omitempty"`
 }
@@ -15,6 +18,13 @@ func (l *ListAppEntitlementRoutingRulesResponse) GetList() []AppEntitlementRouti
 		return nil
 	}
 	return l.List
+}
+
+func (l *ListAppEntitlementRoutingRulesResponse) GetMaxRulesPerApp() *int {
+	if l == nil {
+		return nil
+	}
+	return l.MaxRulesPerApp
 }
 
 func (l *ListAppEntitlementRoutingRulesResponse) GetNextPageToken() *string {

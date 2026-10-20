@@ -2,7 +2,7 @@
 
 package shared
 
-// TraceAllocationPeriod - The period field.
+// TraceAllocationPeriod - Length of the budget period.
 type TraceAllocationPeriod string
 
 const (
@@ -29,14 +29,12 @@ func (e *TraceAllocationPeriod) IsExact() bool {
 	return false
 }
 
-// TraceAllocation records one admitted scope, the row that supplied its
-//
-//	resolved limit, and the historical limit and period.
+// TraceAllocation records one scope's historical limit and its source.
 type TraceAllocation struct {
-	// The budgetKey field.
+	// Stable identifier for the scope's budget account.
 	BudgetKey *string        `json:"budgetKey,omitempty"`
 	Limit     *ResolvedLimit `json:"limit,omitempty"`
-	// The period field.
+	// Length of the budget period.
 	Period *TraceAllocationPeriod `json:"period,omitempty"`
 	Source *AuthorityRef          `json:"source,omitempty"`
 }

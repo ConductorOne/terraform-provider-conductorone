@@ -6,11 +6,15 @@ package shared
 type EdgeEgressRuleProblemKind string
 
 const (
-	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindUnspecified        EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_UNSPECIFIED"
-	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindTooManyRules       EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_TOO_MANY_RULES"
-	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindInvalidPattern     EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_PATTERN"
-	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindUnknownEntitlement EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_UNKNOWN_ENTITLEMENT"
-	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindInvalidBodyLimit   EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_BODY_LIMIT"
+	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindUnspecified             EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_UNSPECIFIED"
+	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindTooManyRules            EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_TOO_MANY_RULES"
+	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindInvalidPattern          EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_PATTERN"
+	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindUnknownEntitlement      EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_UNKNOWN_ENTITLEMENT"
+	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindInvalidBodyLimit        EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_BODY_LIMIT"
+	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindAuthzenServerRequired   EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_AUTHZEN_SERVER_REQUIRED"
+	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindUnexpectedAuthzenServer EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_UNEXPECTED_AUTHZEN_SERVER"
+	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindUnknownAuthzenServer    EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_UNKNOWN_AUTHZEN_SERVER"
+	EdgeEgressRuleProblemKindEdgeEgressRuleProblemKindInactiveAuthzenServer   EdgeEgressRuleProblemKind = "EDGE_EGRESS_RULE_PROBLEM_KIND_INACTIVE_AUTHZEN_SERVER"
 )
 
 func (e EdgeEgressRuleProblemKind) ToPointer() *EdgeEgressRuleProblemKind {
@@ -21,7 +25,7 @@ func (e EdgeEgressRuleProblemKind) ToPointer() *EdgeEgressRuleProblemKind {
 func (e *EdgeEgressRuleProblemKind) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "EDGE_EGRESS_RULE_PROBLEM_KIND_UNSPECIFIED", "EDGE_EGRESS_RULE_PROBLEM_KIND_TOO_MANY_RULES", "EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_PATTERN", "EDGE_EGRESS_RULE_PROBLEM_KIND_UNKNOWN_ENTITLEMENT", "EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_BODY_LIMIT":
+		case "EDGE_EGRESS_RULE_PROBLEM_KIND_UNSPECIFIED", "EDGE_EGRESS_RULE_PROBLEM_KIND_TOO_MANY_RULES", "EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_PATTERN", "EDGE_EGRESS_RULE_PROBLEM_KIND_UNKNOWN_ENTITLEMENT", "EDGE_EGRESS_RULE_PROBLEM_KIND_INVALID_BODY_LIMIT", "EDGE_EGRESS_RULE_PROBLEM_KIND_AUTHZEN_SERVER_REQUIRED", "EDGE_EGRESS_RULE_PROBLEM_KIND_UNEXPECTED_AUTHZEN_SERVER", "EDGE_EGRESS_RULE_PROBLEM_KIND_UNKNOWN_AUTHZEN_SERVER", "EDGE_EGRESS_RULE_PROBLEM_KIND_INACTIVE_AUTHZEN_SERVER":
 			return true
 		}
 	}

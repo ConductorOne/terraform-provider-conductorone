@@ -7,6 +7,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	speakeasy_boolplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/listplanmodifier"
 	speakeasy_objectplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/conductorone/terraform-provider-conductorone/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
@@ -43,46 +45,46 @@ type CustomAppEntitlementResource struct {
 
 // CustomAppEntitlementResourceModel describes the resource data model.
 type CustomAppEntitlementResourceModel struct {
-	Alias                          types.String                                      `tfsdk:"alias"`
-	Annotations                    map[string]types.String                           `tfsdk:"annotations"`
-	AppID                          types.String                                      `tfsdk:"app_id"`
-	AppResourceID                  types.String                                      `tfsdk:"app_resource_id"`
-	AppResourceTypeID              types.String                                      `tfsdk:"app_resource_type_id"`
-	CertifyPolicyID                types.String                                      `tfsdk:"certify_policy_id"`
-	ComplianceFrameworkValueIds    []types.String                                    `tfsdk:"compliance_framework_value_ids"`
-	CreatedAt                      types.String                                      `tfsdk:"created_at"`
-	DefaultValuesApplied           types.Bool                                        `tfsdk:"default_values_applied"`
-	Delete                         types.Bool                                        `tfsdk:"delete"`
-	DeletedAt                      types.String                                      `tfsdk:"-"`
-	DeprovisionerPolicy            *tfTypes.DeprovisionerPolicy                      `tfsdk:"deprovisioner_policy"`
-	Description                    types.String                                      `tfsdk:"description"`
-	DisplayName                    types.String                                      `tfsdk:"display_name"`
-	DurationGrant                  types.String                                      `tfsdk:"duration_grant"`
-	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset `tfsdk:"duration_unset"`
-	Edit                           types.Bool                                        `tfsdk:"edit"`
-	EmergencyGrantEnabled          types.Bool                                        `tfsdk:"emergency_grant_enabled"`
-	EmergencyGrantPolicyID         types.String                                      `tfsdk:"emergency_grant_policy_id"`
-	Expanded                       []tfTypes.GetAppEntitlementResponseExpanded       `tfsdk:"expanded"`
-	ExternalID                     types.String                                      `tfsdk:"external_id"`
-	Extra                          map[string]types.Bool                             `tfsdk:"extra"`
-	GrantCount                     types.String                                      `tfsdk:"grant_count"`
-	GrantPolicyID                  types.String                                      `tfsdk:"grant_policy_id"`
-	ID                             types.String                                      `tfsdk:"id"`
-	IsAutomationEnabled            types.Bool                                        `tfsdk:"is_automation_enabled"`
-	IsManuallyManaged              types.Bool                                        `tfsdk:"is_manually_managed"`
-	MatchBatonID                   types.String                                      `tfsdk:"match_baton_id"`
-	OverrideAccessRequestsDefaults types.Bool                                        `tfsdk:"override_access_requests_defaults"`
-	ProvisionerPolicy              *tfTypes.ProvisionPolicy                          `tfsdk:"provisioner_policy"`
-	ProvisionPolicy                *tfTypes.ProvisionPolicy                          `tfsdk:"provision_policy"`
-	Purpose                        types.String                                      `tfsdk:"purpose"`
-	Read                           types.Bool                                        `tfsdk:"read"`
-	RequestSchemaID                types.String                                      `tfsdk:"request_schema_id"`
-	RevokePolicyID                 types.String                                      `tfsdk:"revoke_policy_id"`
-	RiskLevelValueID               types.String                                      `tfsdk:"risk_level_value_id"`
-	Slug                           types.String                                      `tfsdk:"slug"`
-	SourceConnectorIds             map[string]types.String                           `tfsdk:"source_connector_ids"`
-	SystemBuiltin                  types.Bool                                        `tfsdk:"system_builtin"`
-	UpdatedAt                      types.String                                      `tfsdk:"updated_at"`
+	Alias                          types.String                                            `tfsdk:"alias"`
+	Annotations                    map[string]types.String                                 `tfsdk:"annotations"`
+	AppID                          types.String                                            `tfsdk:"app_id"`
+	AppResourceID                  types.String                                            `tfsdk:"app_resource_id"`
+	AppResourceTypeID              types.String                                            `tfsdk:"app_resource_type_id"`
+	CertifyPolicyID                types.String                                            `tfsdk:"certify_policy_id"`
+	ComplianceFrameworkValueIds    []types.String                                          `tfsdk:"compliance_framework_value_ids"`
+	CreatedAt                      types.String                                            `tfsdk:"created_at"`
+	DefaultValuesApplied           types.Bool                                              `tfsdk:"default_values_applied"`
+	Delete                         types.Bool                                              `tfsdk:"delete"`
+	DeletedAt                      types.String                                            `tfsdk:"-"`
+	DeprovisionerPolicy            *tfTypes.CreateAppEntitlementRequestDeprovisionerPolicy `tfsdk:"deprovisioner_policy"`
+	Description                    types.String                                            `tfsdk:"description"`
+	DisplayName                    types.String                                            `tfsdk:"display_name"`
+	DurationGrant                  types.String                                            `tfsdk:"duration_grant"`
+	DurationUnset                  *tfTypes.CreateAppEntitlementRequestDurationUnset       `tfsdk:"duration_unset"`
+	Edit                           types.Bool                                              `tfsdk:"edit"`
+	EmergencyGrantEnabled          types.Bool                                              `tfsdk:"emergency_grant_enabled"`
+	EmergencyGrantPolicyID         types.String                                            `tfsdk:"emergency_grant_policy_id"`
+	Expanded                       []tfTypes.GetAppEntitlementResponseExpanded             `tfsdk:"expanded"`
+	ExternalID                     types.String                                            `tfsdk:"external_id"`
+	Extra                          map[string]types.Bool                                   `tfsdk:"extra"`
+	GrantCount                     types.String                                            `tfsdk:"grant_count"`
+	GrantPolicyID                  types.String                                            `tfsdk:"grant_policy_id"`
+	ID                             types.String                                            `tfsdk:"id"`
+	IsAutomationEnabled            types.Bool                                              `tfsdk:"is_automation_enabled"`
+	IsManuallyManaged              types.Bool                                              `tfsdk:"is_manually_managed"`
+	MatchBatonID                   types.String                                            `tfsdk:"match_baton_id"`
+	OverrideAccessRequestsDefaults types.Bool                                              `tfsdk:"override_access_requests_defaults"`
+	ProvisionerPolicy              *tfTypes.ProvisionPolicy                                `tfsdk:"provisioner_policy"`
+	ProvisionPolicy                *tfTypes.ProvisionPolicy                                `tfsdk:"provision_policy"`
+	Purpose                        types.String                                            `tfsdk:"purpose"`
+	Read                           types.Bool                                              `tfsdk:"read"`
+	RequestSchemaID                types.String                                            `tfsdk:"request_schema_id"`
+	RevokePolicyID                 types.String                                            `tfsdk:"revoke_policy_id"`
+	RiskLevelValueID               types.String                                            `tfsdk:"risk_level_value_id"`
+	Slug                           types.String                                            `tfsdk:"slug"`
+	SourceConnectorIds             map[string]types.String                                 `tfsdk:"source_connector_ids"`
+	SystemBuiltin                  types.Bool                                              `tfsdk:"system_builtin"`
+	UpdatedAt                      types.String                                            `tfsdk:"updated_at"`
 }
 
 func (r *CustomAppEntitlementResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -157,53 +159,64 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			},
 			"deprovisioner_policy": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"action": schema.SingleNestedAttribute{
-						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"action_name": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The actionName field.`,
 							},
 							"app_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The appId field.`,
 							},
 							"connector_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The connectorId field.`,
 							},
 							"display_name": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The displayName field.`,
 							},
 						},
 						Description: `This provision step indicates that account lifecycle action should be called to provision this entitlement.`,
 					},
 					"connector": schema.SingleNestedAttribute{
-						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"account": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"config": schema.StringAttribute{
 										CustomType:  jsontypes.NormalizedType{},
 										Computed:    true,
+										Optional:    true,
 										Description: `Parsed as JSON.`,
 									},
 									"connector_id": schema.StringAttribute{
 										Computed:    true,
+										Optional:    true,
 										Description: `The connectorId field.`,
 									},
 									"do_not_save": schema.SingleNestedAttribute{
 										Computed:    true,
+										Optional:    true,
 										Description: `The DoNotSave message.`,
 									},
 									"save_to_vault": schema.SingleNestedAttribute{
 										Computed: true,
+										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"vault_ids": schema.ListAttribute{
 												Computed:    true,
+												Optional:    true,
 												ElementType: types.StringType,
 												Description: `The vaultIds field.`,
 											},
@@ -212,6 +225,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 									},
 									"schema_id": schema.StringAttribute{
 										Computed:    true,
+										Optional:    true,
 										Description: `The schemaId field.`,
 									},
 								},
@@ -223,9 +237,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							},
 							"default_behavior": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"connector_id": schema.StringAttribute{
 										Computed: true,
+										Optional: true,
 										MarkdownDescription: `this checks if the entitlement is enabled by provisioning in a specific connector` + "\n" +
 											` this can happen automatically and doesn't need any extra info`,
 									},
@@ -234,9 +250,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							},
 							"delete_account": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"connector_id": schema.StringAttribute{
 										Computed:    true,
+										Optional:    true,
 										Description: `The connectorId field.`,
 									},
 								},
@@ -249,68 +267,107 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							`  - defaultBehavior` + "\n" +
 							`  - account` + "\n" +
 							`  - deleteAccount`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("delegated"),
+								path.MatchRelative().AtParent().AtName("external_ticket"),
+								path.MatchRelative().AtParent().AtName("manual"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook"),
+							}...),
+						},
 					},
 					"delegated": schema.SingleNestedAttribute{
-						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The AppID of the entitlement to delegate provisioning to.`,
 							},
 							"entitlement_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The ID of the entitlement we are delegating provisioning to.`,
 							},
 						},
 						Description: `This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector"),
+								path.MatchRelative().AtParent().AtName("external_ticket"),
+								path.MatchRelative().AtParent().AtName("manual"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook"),
+							}...),
+						},
 					},
 					"device_placement": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"vault_boundary_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The vaultBoundaryId field.`,
 							},
 						},
 						Description: `This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable.`,
 					},
 					"external_ticket": schema.SingleNestedAttribute{
-						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The appId field.`,
 							},
 							"connector_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The connectorId field.`,
 							},
 							"external_ticket_provisioner_config_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The externalTicketProvisionerConfigId field.`,
 							},
 							"instructions": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 							},
 						},
 						Description: `This provision step indicates that we should check an external ticket to provision this entitlement`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector"),
+								path.MatchRelative().AtParent().AtName("delegated"),
+								path.MatchRelative().AtParent().AtName("manual"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook"),
+							}...),
+						},
 					},
 					"manual": schema.SingleNestedAttribute{
-						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"assignee": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"app_owners": schema.SingleNestedAttribute{
 										Computed: true,
+										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `Whether the provisioner can reassign the task.`,
 											},
 											"fallback_user_ids": schema.ListAttribute{
 												Computed:    true,
+												Optional:    true,
 												ElementType: types.StringType,
 												Description: `Fallback user IDs if no app owners are found.`,
 											},
@@ -319,13 +376,16 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 									},
 									"entitlement_owners": schema.SingleNestedAttribute{
 										Computed: true,
+										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `Whether the provisioner can reassign the task.`,
 											},
 											"fallback_user_ids": schema.ListAttribute{
 												Computed:    true,
+												Optional:    true,
 												ElementType: types.StringType,
 												Description: `Fallback user IDs if no entitlement owners are found.`,
 											},
@@ -334,18 +394,22 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 									},
 									"expression": schema.SingleNestedAttribute{
 										Computed: true,
+										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `Whether the provisioner can reassign the task.`,
 											},
 											"expressions": schema.ListAttribute{
 												Computed:    true,
+												Optional:    true,
 												ElementType: types.StringType,
 												Description: `The CEL expressions to evaluate.`,
 											},
 											"fallback_user_ids": schema.ListAttribute{
 												Computed:    true,
+												Optional:    true,
 												ElementType: types.StringType,
 												Description: `Fallback user IDs if expression evaluation yields no users.`,
 											},
@@ -354,21 +418,26 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 									},
 									"group": schema.SingleNestedAttribute{
 										Computed: true,
+										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `Whether the provisioner can reassign the task.`,
 											},
 											"app_group_id": schema.StringAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `The app group ID (entitlement ID).`,
 											},
 											"app_id": schema.StringAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `The app ID containing the group.`,
 											},
 											"fallback_user_ids": schema.ListAttribute{
 												Computed:    true,
+												Optional:    true,
 												ElementType: types.StringType,
 												Description: `Fallback user IDs if no group members are found.`,
 											},
@@ -377,13 +446,16 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 									},
 									"manager": schema.SingleNestedAttribute{
 										Computed: true,
+										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `Whether the provisioner can reassign the task.`,
 											},
 											"fallback_user_ids": schema.ListAttribute{
 												Computed:    true,
+												Optional:    true,
 												ElementType: types.StringType,
 												Description: `Fallback user IDs if no manager is found.`,
 											},
@@ -392,13 +464,16 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 									},
 									"users": schema.SingleNestedAttribute{
 										Computed: true,
+										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
 												Computed:    true,
+												Optional:    true,
 												Description: `Whether the provisioner can reassign the task.`,
 											},
 											"user_ids": schema.ListAttribute{
 												Computed:    true,
+												Optional:    true,
 												ElementType: types.StringType,
 												Description: `The user IDs to assign as provisioners.`,
 											},
@@ -418,35 +493,67 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 							},
 							"instructions": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `This field indicates a text body of instructions for the provisioner to indicate.`,
 							},
 							"user_ids": schema.ListAttribute{
 								Computed:    true,
+								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `An array of users that are required to provision during this step.` + "\n" +
 									` Deprecated: Use assignee field instead for dynamic provisioner assignment.`,
 							},
 						},
 						Description: `Manual provisioning indicates that a human must intervene for the provisioning of this step.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector"),
+								path.MatchRelative().AtParent().AtName("delegated"),
+								path.MatchRelative().AtParent().AtName("external_ticket"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+								path.MatchRelative().AtParent().AtName("webhook"),
+							}...),
+						},
 					},
 					"multi_step": schema.StringAttribute{
 						CustomType:  jsontypes.NormalizedType{},
 						Computed:    true,
+						Optional:    true,
 						Description: `Parsed as JSON.`,
+						Validators: []validator.String{
+							stringvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector"),
+								path.MatchRelative().AtParent().AtName("delegated"),
+								path.MatchRelative().AtParent().AtName("external_ticket"),
+								path.MatchRelative().AtParent().AtName("manual"),
+								path.MatchRelative().AtParent().AtName("webhook"),
+							}...),
+						},
 					},
 					"unconfigured": schema.SingleNestedAttribute{
 						Computed:    true,
+						Optional:    true,
 						Description: `The UnconfiguredProvision message.`,
 					},
 					"webhook": schema.SingleNestedAttribute{
-						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"webhook_id": schema.StringAttribute{
 								Computed:    true,
+								Optional:    true,
 								Description: `The ID of the webhook to call for provisioning.`,
 							},
 						},
 						Description: `This provision step indicates that a webhook should be called to provision this entitlement.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("connector"),
+								path.MatchRelative().AtParent().AtName("delegated"),
+								path.MatchRelative().AtParent().AtName("external_ticket"),
+								path.MatchRelative().AtParent().AtName("manual"),
+								path.MatchRelative().AtParent().AtName("multi_step"),
+							}...),
+						},
 					},
 				},
 				MarkdownDescription: `ProvisionPolicy is a oneOf that indicates how a provision step should be processed.` + "\n" +
@@ -572,30 +679,38 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 						Attributes: map[string]schema.Attribute{
 							"action_name": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The actionName field. Requires replacement if changed.`,
 							},
 							"app_id": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The appId field. Requires replacement if changed.`,
 							},
 							"connector_id": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The connectorId field. Requires replacement if changed.`,
 							},
 							"display_name": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The displayName field. Requires replacement if changed.`,
 							},
@@ -609,43 +724,55 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 						Attributes: map[string]schema.Attribute{
 							"account": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.Object{
 									objectplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 								},
 								Attributes: map[string]schema.Attribute{
 									"config": schema.StringAttribute{
 										CustomType: jsontypes.NormalizedType{},
+										Computed:   true,
 										Optional:   true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 										},
 										Description: `Requires replacement if changed.; Parsed as JSON.`,
 									},
 									"connector_id": schema.StringAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 										},
 										Description: `The connectorId field. Requires replacement if changed.`,
 									},
 									"do_not_save": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 										},
 										Description: `The DoNotSave message. Requires replacement if changed.`,
 									},
 									"save_to_vault": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 										},
 										Attributes: map[string]schema.Attribute{
 											"vault_ids": schema.ListAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.List{
 													listplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 												},
 												ElementType: types.StringType,
 												Description: `The vaultIds field. Requires replacement if changed.`,
@@ -654,9 +781,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 										Description: `The SaveToVault message. Requires replacement if changed.`,
 									},
 									"schema_id": schema.StringAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 										},
 										Description: `The schemaId field. Requires replacement if changed.`,
 									},
@@ -669,15 +798,19 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 									`Requires replacement if changed.`,
 							},
 							"default_behavior": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.Object{
 									objectplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 								},
 								Attributes: map[string]schema.Attribute{
 									"connector_id": schema.StringAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 										},
 										MarkdownDescription: `this checks if the entitlement is enabled by provisioning in a specific connector` + "\n" +
 											` this can happen automatically and doesn't need any extra info` + "\n" +
@@ -687,15 +820,19 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 								Description: `The DefaultBehavior message. Requires replacement if changed.`,
 							},
 							"delete_account": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.Object{
 									objectplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 								},
 								Attributes: map[string]schema.Attribute{
 									"connector_id": schema.StringAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 										},
 										Description: `The connectorId field. Requires replacement if changed.`,
 									},
@@ -727,16 +864,20 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The AppID of the entitlement to delegate provisioning to. Requires replacement if changed.`,
 							},
 							"entitlement_id": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The ID of the entitlement we are delegating provisioning to. Requires replacement if changed.`,
 							},
@@ -753,15 +894,19 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 					},
 					"device_placement": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 						},
 						Attributes: map[string]schema.Attribute{
 							"vault_boundary_id": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The vaultBoundaryId field. Requires replacement if changed.`,
 							},
@@ -775,30 +920,38 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 						Attributes: map[string]schema.Attribute{
 							"app_id": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The appId field. Requires replacement if changed.`,
 							},
 							"connector_id": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The connectorId field. Requires replacement if changed.`,
 							},
 							"external_ticket_provisioner_config_id": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The externalTicketProvisionerConfigId field. Requires replacement if changed.`,
 							},
 							"instructions": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `This field indicates a text body of instructions for the provisioner to indicate. Requires replacement if changed.`,
 							},
@@ -821,28 +974,36 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 						Attributes: map[string]schema.Attribute{
 							"assignee": schema.SingleNestedAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.Object{
 									objectplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 								},
 								Attributes: map[string]schema.Attribute{
 									"app_owners": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 										},
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.Bool{
 													boolplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 												},
 												Description: `Whether the provisioner can reassign the task. Requires replacement if changed.`,
 											},
 											"fallback_user_ids": schema.ListAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.List{
 													listplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 												},
 												ElementType: types.StringType,
 												Description: `Fallback user IDs if no app owners are found. Requires replacement if changed.`,
@@ -851,22 +1012,28 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 										Description: `AppOwnerProvisioner resolves to app owners. Requires replacement if changed.`,
 									},
 									"entitlement_owners": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 										},
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.Bool{
 													boolplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 												},
 												Description: `Whether the provisioner can reassign the task. Requires replacement if changed.`,
 											},
 											"fallback_user_ids": schema.ListAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.List{
 													listplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 												},
 												ElementType: types.StringType,
 												Description: `Fallback user IDs if no entitlement owners are found. Requires replacement if changed.`,
@@ -875,30 +1042,38 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 										Description: `EntitlementOwnerProvisioner resolves to entitlement owners. Requires replacement if changed.`,
 									},
 									"expression": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 										},
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.Bool{
 													boolplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 												},
 												Description: `Whether the provisioner can reassign the task. Requires replacement if changed.`,
 											},
 											"expressions": schema.ListAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.List{
 													listplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 												},
 												ElementType: types.StringType,
 												Description: `The CEL expressions to evaluate. Requires replacement if changed.`,
 											},
 											"fallback_user_ids": schema.ListAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.List{
 													listplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 												},
 												ElementType: types.StringType,
 												Description: `Fallback user IDs if expression evaluation yields no users. Requires replacement if changed.`,
@@ -907,36 +1082,46 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 										Description: `ExpressionProvisioner evaluates CEL expressions to determine provisioners. Requires replacement if changed.`,
 									},
 									"group": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 										},
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.Bool{
 													boolplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 												},
 												Description: `Whether the provisioner can reassign the task. Requires replacement if changed.`,
 											},
 											"app_group_id": schema.StringAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.String{
 													stringplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 												},
 												Description: `The app group ID (entitlement ID). Requires replacement if changed.`,
 											},
 											"app_id": schema.StringAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.String{
 													stringplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 												},
 												Description: `The app ID containing the group. Requires replacement if changed.`,
 											},
 											"fallback_user_ids": schema.ListAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.List{
 													listplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 												},
 												ElementType: types.StringType,
 												Description: `Fallback user IDs if no group members are found. Requires replacement if changed.`,
@@ -945,22 +1130,28 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 										Description: `GroupProvisioner resolves to members of a specific group. Requires replacement if changed.`,
 									},
 									"manager": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 										},
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.Bool{
 													boolplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 												},
 												Description: `Whether the provisioner can reassign the task. Requires replacement if changed.`,
 											},
 											"fallback_user_ids": schema.ListAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.List{
 													listplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 												},
 												ElementType: types.StringType,
 												Description: `Fallback user IDs if no manager is found. Requires replacement if changed.`,
@@ -969,22 +1160,28 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 										Description: `ManagerProvisioner resolves to the user's manager. Requires replacement if changed.`,
 									},
 									"users": schema.SingleNestedAttribute{
+										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 										},
 										Attributes: map[string]schema.Attribute{
 											"allow_reassignment": schema.BoolAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.Bool{
 													boolplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 												},
 												Description: `Whether the provisioner can reassign the task. Requires replacement if changed.`,
 											},
 											"user_ids": schema.ListAttribute{
+												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.List{
 													listplanmodifier.RequiresReplaceIfConfigured(),
+													speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 												},
 												ElementType: types.StringType,
 												Description: `The user IDs to assign as provisioners. Requires replacement if changed.`,
@@ -1005,16 +1202,20 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 									`Requires replacement if changed.`,
 							},
 							"instructions": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `This field indicates a text body of instructions for the provisioner to indicate. Requires replacement if changed.`,
 							},
 							"user_ids": schema.ListAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.List{
 									listplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 								},
 								ElementType: types.StringType,
 								MarkdownDescription: `An array of users that are required to provision during this step.` + "\n" +
@@ -1051,9 +1252,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 					},
 					"unconfigured": schema.SingleNestedAttribute{
+						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 						},
 						Description: `The UnconfiguredProvision message. Requires replacement if changed.`,
 					},
@@ -1064,9 +1267,11 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 						},
 						Attributes: map[string]schema.Attribute{
 							"webhook_id": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The ID of the webhook to call for provisioning. Requires replacement if changed.`,
 							},
@@ -1601,6 +1806,11 @@ func (r *CustomAppEntitlementResource) Update(ctx context.Context, req resource.
 	}
 
 	merge(ctx, req, resp, &data)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(pruneCustomAppEntitlementPolicyOneofs(ctx, req.Config, data)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}

@@ -100,13 +100,8 @@ func (r *AppResourcesDataSource) Schema(ctx context.Context, req datasource.Sche
 					` secret_trait. When empty, credential_type is not used as a filter.`,
 			},
 			"direction": schema.StringAttribute{
-				Optional: true,
-				MarkdownDescription: `Direction to sort in. Unspecified falls back to ASC when sort_field is set.` + "\n" +
-					` No defined_only validation here: protoc-gen-validate mis-resolves the` + "\n" +
-					` cross-package enum name map to this file's c1.models.app.v1 import alias` + "\n" +
-					` instead of c1.api.search.v1, which fails to compile. The query builder` + "\n" +
-					` already treats any unrecognized value as ASC, so this is safe to omit.` + "\n" +
-					`possible known values include one of ["SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC"]`,
+				Optional:    true,
+				Description: `Direction to sort in. Unspecified falls back to ASC when sort_field is set. possible known values include one of ["SORT_DIRECTION_UNSPECIFIED", "SORT_DIRECTION_ASC", "SORT_DIRECTION_DESC"]`,
 			},
 			"exclude_deleted_apps": schema.BoolAttribute{
 				Optional:    true,

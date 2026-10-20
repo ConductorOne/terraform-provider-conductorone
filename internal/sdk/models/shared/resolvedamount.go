@@ -2,9 +2,9 @@
 
 package shared
 
-// The ResolvedAmount message.
+// ResolvedAmount records the admitted nano-unit limit.
 type ResolvedAmount struct {
-	// The amountNano field.
+	// Admitted limit, in nano-units.
 	AmountNano *string `json:"amountNano,omitempty"`
 }
 

@@ -51,11 +51,6 @@ func (e *SearchAppResourcesRequestCredentialTypes) IsExact() bool {
 }
 
 // Direction to sort in. Unspecified falls back to ASC when sort_field is set.
-//
-//	No defined_only validation here: protoc-gen-validate mis-resolves the
-//	cross-package enum name map to this file's c1.models.app.v1 import alias
-//	instead of c1.api.search.v1, which fails to compile. The query builder
-//	already treats any unrecognized value as ASC, so this is safe to omit.
 type Direction string
 
 const (
@@ -146,10 +141,6 @@ type SearchAppResourcesRequest struct {
 	//  secret_trait. When empty, credential_type is not used as a filter.
 	CredentialTypes []SearchAppResourcesRequestCredentialTypes `json:"credentialTypes,omitempty"`
 	// Direction to sort in. Unspecified falls back to ASC when sort_field is set.
-	//  No defined_only validation here: protoc-gen-validate mis-resolves the
-	//  cross-package enum name map to this file's c1.models.app.v1 import alias
-	//  instead of c1.api.search.v1, which fails to compile. The query builder
-	//  already treats any unrecognized value as ASC, so this is safe to omit.
 	Direction *Direction `json:"direction,omitempty"`
 	// When true, excludes resources belonging to soft-deleted apps.
 	ExcludeDeletedApps *bool `json:"excludeDeletedApps,omitempty"`

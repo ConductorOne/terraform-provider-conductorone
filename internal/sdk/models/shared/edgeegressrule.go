@@ -9,6 +9,7 @@ const (
 	EffectEdgeEgressEffectUnspecified Effect = "EDGE_EGRESS_EFFECT_UNSPECIFIED"
 	EffectEdgeEgressEffectAllow       Effect = "EDGE_EGRESS_EFFECT_ALLOW"
 	EffectEdgeEgressEffectDeny        Effect = "EDGE_EGRESS_EFFECT_DENY"
+	EffectEdgeEgressEffectAuthzen     Effect = "EDGE_EGRESS_EFFECT_AUTHZEN"
 )
 
 func (e Effect) ToPointer() *Effect {
@@ -19,7 +20,7 @@ func (e Effect) ToPointer() *Effect {
 func (e *Effect) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "EDGE_EGRESS_EFFECT_UNSPECIFIED", "EDGE_EGRESS_EFFECT_ALLOW", "EDGE_EGRESS_EFFECT_DENY":
+		case "EDGE_EGRESS_EFFECT_UNSPECIFIED", "EDGE_EGRESS_EFFECT_ALLOW", "EDGE_EGRESS_EFFECT_DENY", "EDGE_EGRESS_EFFECT_AUTHZEN":
 			return true
 		}
 	}
@@ -79,7 +80,22 @@ func (e *ExemptResponseCredentialKinds) IsExact() bool {
 }
 
 // EdgeEgressRule is one ordered row of an Edge's egress access policy.
+//
+// This message contains a oneof named pdp. Only a single field of the following list may be set at a time:
+//   - authzen
 type EdgeEgressRule struct {
+	// When true, a response or request whose declared Content-Encoding is a supported
+	//  token (gzip, x-gzip, deflate, br, zstd) but whose body is empty or decodes to zero
+	//  bytes is treated as an empty plaintext instead of failing closed. Off by default.
+	//  Only meaningful on ALLOW rules.
+	AllowEmptyEncodedBody *bool `json:"allowEmptyEncodedBody,omitempty"`
+	// When true, a decode refusal raised while recursively decoding content nested inside a
+	//  RESPONSE body (e.g. a gzip-looking byte run in a binary download that fails to inflate,
+	//  an embedded encoding past the depth/size bounds) is recorded but does not by itself
+	//  block the response. Confirmed findings (credentials, keys, PANs) still apply. Off by
+	//  default. Only meaningful on ALLOW rules.
+	AllowResponseDecodeRefusals *bool       `json:"allowResponseDecodeRefusals,omitempty"`
+	Authzen                     *AuthzenRef `json:"authzen,omitempty"`
 	// The effect field.
 	Effect *Effect `json:"effect,omitempty"`
 	// Destination host to match: exact hostname, or a single leading "*."
@@ -117,6 +133,27 @@ type EdgeEgressRule struct {
 	//  truncated, decoded output over the inspection cap, and bodies over the wire cap
 	//  still fail closed. Off by default. Only meaningful on ALLOW rules.
 	SkipContentInspection *bool `json:"skipContentInspection,omitempty"`
+}
+
+func (e *EdgeEgressRule) GetAllowEmptyEncodedBody() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.AllowEmptyEncodedBody
+}
+
+func (e *EdgeEgressRule) GetAllowResponseDecodeRefusals() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.AllowResponseDecodeRefusals
+}
+
+func (e *EdgeEgressRule) GetAuthzen() *AuthzenRef {
+	if e == nil {
+		return nil
+	}
+	return e.Authzen
 }
 
 func (e *EdgeEgressRule) GetEffect() *Effect {

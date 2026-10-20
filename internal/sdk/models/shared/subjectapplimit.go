@@ -13,10 +13,10 @@ import (
 //	always the caller's.
 type SubjectAppLimit struct {
 	// The C1 App this limit applies to.
-	AppID     *string        `json:"appId,omitempty"`
-	Controls  *SpendControls `json:"controls,omitempty"`
-	CreatedAt *time.Time     `json:"createdAt,omitempty"`
-	DeletedAt *time.Time     `json:"deletedAt,omitempty"`
+	AppID     *string             `json:"appId,omitempty"`
+	Controls  *FundsSpendControls `json:"controls,omitempty"`
+	CreatedAt *time.Time          `json:"createdAt,omitempty"`
+	DeletedAt *time.Time          `json:"deletedAt,omitempty"`
 	// The tenantId field.
 	TenantID  *string    `json:"tenantId,omitempty"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
@@ -42,7 +42,7 @@ func (s *SubjectAppLimit) GetAppID() *string {
 	return s.AppID
 }
 
-func (s *SubjectAppLimit) GetControls() *SpendControls {
+func (s *SubjectAppLimit) GetControls() *FundsSpendControls {
 	if s == nil {
 		return nil
 	}

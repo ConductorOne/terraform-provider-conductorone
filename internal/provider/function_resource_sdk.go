@@ -16,6 +16,12 @@ func (r *FunctionResourceModel) RefreshFromSharedFunction(ctx context.Context, r
 
 	if resp != nil {
 		r.BrowserEnabled = types.BoolPointerValue(resp.BrowserEnabled)
+		r.CompileError = types.StringPointerValue(resp.CompileError)
+		if resp.CompileStatus != nil {
+			r.CompileStatus = types.StringValue(string(*resp.CompileStatus))
+		} else {
+			r.CompileStatus = types.StringNull()
+		}
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.DeletedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.DeletedAt))
 		r.Description = types.StringPointerValue(resp.Description)

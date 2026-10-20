@@ -12,6 +12,11 @@ resource "conductorone_access_review_template_setup" "my_access_review_template_
     ]
   }
   scope = {
+    access_profile_review_dimensions = {
+      composition           = true
+      membership_criteria   = false
+      membership_exceptions = true
+    }
     account_cel_expression = {
       expression = "...my_expression..."
     }
@@ -41,8 +46,17 @@ resource "conductorone_access_review_template_setup" "my_access_review_template_
       # ...
     }
     app_selection_criteria = {
+      app_ids = [
+        "..."
+      ]
       compliance_framework_attribute_value_ids = [
         "..."
+      ]
+      resource_type_refs = [
+        {
+          app_id = "...my_app_id..."
+          id     = "...my_id..."
+        }
       ]
       risk_level_attribute_value_ids = [
         "..."
@@ -93,6 +107,9 @@ resource "conductorone_access_review_template_setup" "my_access_review_template_
       ]
     }
     specific_access_conflicts = {
+      # ...
+    }
+    specific_access_profiles = {
       # ...
     }
     specific_resources = {

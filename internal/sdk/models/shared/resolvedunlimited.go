@@ -2,6 +2,6 @@
 
 package shared
 
-// The ResolvedUnlimited message.
+// ResolvedUnlimited records accounting without a finite admission limit.
 type ResolvedUnlimited struct {
 }

@@ -9,8 +9,8 @@ import (
 
 // The FundAssignmentServiceGrantExtensionRequest message.
 type FundAssignmentServiceGrantExtensionRequest struct {
-	ExpiresAt *time.Time  `json:"expiresAt,omitempty"`
-	Limit     *SpendLimit `json:"limit,omitempty"`
+	ExpiresAt *time.Time       `json:"expiresAt,omitempty"`
+	Limit     *FundsSpendLimit `json:"limit,omitempty"`
 	// Subject-visible: "why do I have this bump".
 	Reason *string `json:"reason,omitempty"`
 }
@@ -33,7 +33,7 @@ func (f *FundAssignmentServiceGrantExtensionRequest) GetExpiresAt() *time.Time {
 	return f.ExpiresAt
 }
 
-func (f *FundAssignmentServiceGrantExtensionRequest) GetLimit() *SpendLimit {
+func (f *FundAssignmentServiceGrantExtensionRequest) GetLimit() *FundsSpendLimit {
 	if f == nil {
 		return nil
 	}
