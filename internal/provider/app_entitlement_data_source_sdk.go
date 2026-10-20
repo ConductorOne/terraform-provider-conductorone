@@ -552,15 +552,12 @@ func (r *AppEntitlementDataSourceModel) RefreshFromSharedAppEntitlementSearchSer
 		if resp.Facets != nil {
 			r.Count = types.StringPointerValue(resp.Facets.Count)
 		}
-		if len(resp.List) == 0 {
-			diags.AddError("Unexpected response from API", "Missing response body array data.")
-			return diags
-		}
+		if len(resp.List) > 0 {
+			diags.Append(r.RefreshFromSharedAppEntitlementView(ctx, &resp.List[0])...)
 
-		diags.Append(r.RefreshFromSharedAppEntitlementView(ctx, &resp.List[0])...)
-
-		if diags.HasError() {
-			return diags
+			if diags.HasError() {
+				return diags
+			}
 		}
 
 		r.NextPageToken = types.StringPointerValue(resp.NextPageToken)
