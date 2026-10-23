@@ -175,23 +175,28 @@ func (r *IntegrationLitmosResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "litmos_source"); ok {
-					r.LitmosSource = types.StringValue(val)
+				if _, ok := configValues["litmos_source"]; ok {
+					if val, ok := getStringValue(values, "litmos_source"); ok {
+						r.LitmosSource = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "litmos_course_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["litmos_course_ids"]; ok {
+					if val, ok := getStringValue(values, "litmos_course_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.LitmosCourseIds = valLists
 					}
-					r.LitmosCourseIds = valLists
 				}
 
 			}
@@ -234,23 +239,28 @@ func (r *IntegrationLitmosResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "litmos_source"); ok {
-					r.LitmosSource = types.StringValue(val)
+				if _, ok := configValues["litmos_source"]; ok {
+					if val, ok := getStringValue(values, "litmos_source"); ok {
+						r.LitmosSource = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "litmos_course_ids"); ok {
-					var valLists []types.String
-					tmpList := strings.Split(val, ",")
-					for _, item := range tmpList {
-						item = strings.TrimSpace(item)
-						if item != "" {
-							valLists = append(valLists, types.StringValue(item))
+				if _, ok := configValues["litmos_course_ids"]; ok {
+					if val, ok := getStringValue(values, "litmos_course_ids"); ok {
+						var valLists []types.String
+						tmpList := strings.Split(val, ",")
+						for _, item := range tmpList {
+							item = strings.TrimSpace(item)
+							if item != "" {
+								valLists = append(valLists, types.StringValue(item))
+							}
 						}
+						r.LitmosCourseIds = valLists
 					}
-					r.LitmosCourseIds = valLists
 				}
 
 			}

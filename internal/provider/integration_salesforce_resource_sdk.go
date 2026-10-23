@@ -170,8 +170,10 @@ func (r *IntegrationSalesforceResourceModel) RefreshFromGetResponse(resp *shared
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
-					r.SalesforceInstanceUrl = types.StringValue(val)
+				if _, ok := configValues["salesforce_instance_url"]; ok {
+					if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+						r.SalesforceInstanceUrl = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["salesforce_username_for_email"]; ok {
@@ -227,8 +229,10 @@ func (r *IntegrationSalesforceResourceModel) RefreshFromCreateResponse(resp *sha
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
-					r.SalesforceInstanceUrl = types.StringValue(val)
+				if _, ok := configValues["salesforce_instance_url"]; ok {
+					if val, ok := getStringValue(values, "salesforce_instance_url"); ok {
+						r.SalesforceInstanceUrl = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["salesforce_username_for_email"]; ok {

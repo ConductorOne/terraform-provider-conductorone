@@ -166,11 +166,14 @@ func (r *IntegrationXsoarResourceModel) RefreshFromGetResponse(resp *shared.Conn
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "api_url"); ok {
-					r.ApiUrl = types.StringValue(val)
+				if _, ok := configValues["api_url"]; ok {
+					if val, ok := getStringValue(values, "api_url"); ok {
+						r.ApiUrl = types.StringValue(val)
+					}
 				}
 
 			}
@@ -213,11 +216,14 @@ func (r *IntegrationXsoarResourceModel) RefreshFromCreateResponse(resp *shared.C
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "api_url"); ok {
-					r.ApiUrl = types.StringValue(val)
+				if _, ok := configValues["api_url"]; ok {
+					if val, ok := getStringValue(values, "api_url"); ok {
+						r.ApiUrl = types.StringValue(val)
+					}
 				}
 
 			}

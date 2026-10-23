@@ -178,15 +178,20 @@ func (r *IntegrationConcurResourceModel) RefreshFromGetResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "concur_base_url"); ok {
-					r.ConcurBaseUrl = types.StringValue(val)
+				if _, ok := configValues["concur_base_url"]; ok {
+					if val, ok := getStringValue(values, "concur_base_url"); ok {
+						r.ConcurBaseUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "concur_client_id"); ok {
-					r.ConcurClientId = types.StringValue(val)
+				if _, ok := configValues["concur_client_id"]; ok {
+					if val, ok := getStringValue(values, "concur_client_id"); ok {
+						r.ConcurClientId = types.StringValue(val)
+					}
 				}
 
 			}
@@ -229,15 +234,20 @@ func (r *IntegrationConcurResourceModel) RefreshFromCreateResponse(resp *shared.
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "concur_base_url"); ok {
-					r.ConcurBaseUrl = types.StringValue(val)
+				if _, ok := configValues["concur_base_url"]; ok {
+					if val, ok := getStringValue(values, "concur_base_url"); ok {
+						r.ConcurBaseUrl = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "concur_client_id"); ok {
-					r.ConcurClientId = types.StringValue(val)
+				if _, ok := configValues["concur_client_id"]; ok {
+					if val, ok := getStringValue(values, "concur_client_id"); ok {
+						r.ConcurClientId = types.StringValue(val)
+					}
 				}
 
 			}

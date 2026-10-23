@@ -225,19 +225,25 @@ func (r *IntegrationAzureDevopsResourceModel) RefreshFromGetResponse(resp *share
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "organization_url"); ok {
-							attributeTypes["organization_url"] = types.StringType
-							attributeValues["organization_url"] = types.StringValue(val)
+						if _, ok := configValues["organization_url"]; ok {
+							if val, ok := getStringValue(values, "organization_url"); ok {
+								attributeTypes["organization_url"] = types.StringType
+								attributeValues["organization_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "azure_devops_tenant_id"); ok {
-							attributeTypes["azure_devops_tenant_id"] = types.StringType
-							attributeValues["azure_devops_tenant_id"] = types.StringValue(val)
+						if _, ok := configValues["azure_devops_tenant_id"]; ok {
+							if val, ok := getStringValue(values, "azure_devops_tenant_id"); ok {
+								attributeTypes["azure_devops_tenant_id"] = types.StringType
+								attributeValues["azure_devops_tenant_id"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
-							attributeTypes["oauth2_client_cred_grant_client_id"] = types.StringType
-							attributeValues["oauth2_client_cred_grant_client_id"] = types.StringValue(val)
+						if _, ok := configValues["oauth2_client_cred_grant_client_id"]; ok {
+							if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
+								attributeTypes["oauth2_client_cred_grant_client_id"] = types.StringType
+								attributeValues["oauth2_client_cred_grant_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["oauth2_client_cred_grant_client_secret"] = types.StringType
@@ -279,9 +285,11 @@ func (r *IntegrationAzureDevopsResourceModel) RefreshFromGetResponse(resp *share
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "organization_url"); ok {
-							attributeTypes["organization_url"] = types.StringType
-							attributeValues["organization_url"] = types.StringValue(val)
+						if _, ok := configValues["organization_url"]; ok {
+							if val, ok := getStringValue(values, "organization_url"); ok {
+								attributeTypes["organization_url"] = types.StringType
+								attributeValues["organization_url"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["personal_access_token"] = types.StringType
@@ -367,19 +375,25 @@ func (r *IntegrationAzureDevopsResourceModel) RefreshFromCreateResponse(resp *sh
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "organization_url"); ok {
-							attributeTypes["organization_url"] = types.StringType
-							attributeValues["organization_url"] = types.StringValue(val)
+						if _, ok := configValues["organization_url"]; ok {
+							if val, ok := getStringValue(values, "organization_url"); ok {
+								attributeTypes["organization_url"] = types.StringType
+								attributeValues["organization_url"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "azure_devops_tenant_id"); ok {
-							attributeTypes["azure_devops_tenant_id"] = types.StringType
-							attributeValues["azure_devops_tenant_id"] = types.StringValue(val)
+						if _, ok := configValues["azure_devops_tenant_id"]; ok {
+							if val, ok := getStringValue(values, "azure_devops_tenant_id"); ok {
+								attributeTypes["azure_devops_tenant_id"] = types.StringType
+								attributeValues["azure_devops_tenant_id"] = types.StringValue(val)
+							}
 						}
 
-						if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
-							attributeTypes["oauth2_client_cred_grant_client_id"] = types.StringType
-							attributeValues["oauth2_client_cred_grant_client_id"] = types.StringValue(val)
+						if _, ok := configValues["oauth2_client_cred_grant_client_id"]; ok {
+							if val, ok := getStringValue(values, "oauth2_client_cred_grant_client_id"); ok {
+								attributeTypes["oauth2_client_cred_grant_client_id"] = types.StringType
+								attributeValues["oauth2_client_cred_grant_client_id"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["oauth2_client_cred_grant_client_secret"] = types.StringType
@@ -421,9 +435,11 @@ func (r *IntegrationAzureDevopsResourceModel) RefreshFromCreateResponse(resp *sh
 						attributeTypes := make(map[string]attr.Type, len(values))
 						attributeValues := make(map[string]attr.Value, len(values))
 
-						if val, ok := getStringValue(values, "organization_url"); ok {
-							attributeTypes["organization_url"] = types.StringType
-							attributeValues["organization_url"] = types.StringValue(val)
+						if _, ok := configValues["organization_url"]; ok {
+							if val, ok := getStringValue(values, "organization_url"); ok {
+								attributeTypes["organization_url"] = types.StringType
+								attributeValues["organization_url"] = types.StringValue(val)
+							}
 						}
 
 						attributeTypes["personal_access_token"] = types.StringType

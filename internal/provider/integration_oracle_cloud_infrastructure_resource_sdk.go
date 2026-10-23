@@ -194,16 +194,22 @@ func (r *IntegrationOracleCloudInfrastructureResourceModel) RefreshFromGetRespon
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "tenancy-ocid"); ok {
-					r.TenancyOcid = types.StringValue(val)
+				if _, ok := configValues["tenancy-ocid"]; ok {
+					if val, ok := getStringValue(values, "tenancy-ocid"); ok {
+						r.TenancyOcid = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "user-ocid"); ok {
-					r.UserOcid = types.StringValue(val)
+				if _, ok := configValues["user-ocid"]; ok {
+					if val, ok := getStringValue(values, "user-ocid"); ok {
+						r.UserOcid = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "region"); ok {
-					r.Region = types.StringValue(val)
+				if _, ok := configValues["region"]; ok {
+					if val, ok := getStringValue(values, "region"); ok {
+						r.Region = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["sync-secrets"]; ok {
@@ -259,16 +265,22 @@ func (r *IntegrationOracleCloudInfrastructureResourceModel) RefreshFromCreateRes
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "tenancy-ocid"); ok {
-					r.TenancyOcid = types.StringValue(val)
+				if _, ok := configValues["tenancy-ocid"]; ok {
+					if val, ok := getStringValue(values, "tenancy-ocid"); ok {
+						r.TenancyOcid = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "user-ocid"); ok {
-					r.UserOcid = types.StringValue(val)
+				if _, ok := configValues["user-ocid"]; ok {
+					if val, ok := getStringValue(values, "user-ocid"); ok {
+						r.UserOcid = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "region"); ok {
-					r.Region = types.StringValue(val)
+				if _, ok := configValues["region"]; ok {
+					if val, ok := getStringValue(values, "region"); ok {
+						r.Region = types.StringValue(val)
+					}
 				}
 
 				if _, ok := configValues["sync-secrets"]; ok {

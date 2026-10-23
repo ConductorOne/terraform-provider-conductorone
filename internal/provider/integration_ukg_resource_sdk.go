@@ -178,19 +178,26 @@ func (r *IntegrationUkgResourceModel) RefreshFromGetResponse(resp *shared.Connec
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "ukg_customer_api_key"); ok {
-					r.UkgCustomerApiKey = types.StringValue(val)
+				if _, ok := configValues["ukg_customer_api_key"]; ok {
+					if val, ok := getStringValue(values, "ukg_customer_api_key"); ok {
+						r.UkgCustomerApiKey = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "ukg_username"); ok {
-					r.UkgUsername = types.StringValue(val)
+				if _, ok := configValues["ukg_username"]; ok {
+					if val, ok := getStringValue(values, "ukg_username"); ok {
+						r.UkgUsername = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "ukg_service_endpoint"); ok {
-					r.UkgServiceEndpoint = types.StringValue(val)
+				if _, ok := configValues["ukg_service_endpoint"]; ok {
+					if val, ok := getStringValue(values, "ukg_service_endpoint"); ok {
+						r.UkgServiceEndpoint = types.StringValue(val)
+					}
 				}
 
 			}
@@ -233,19 +240,26 @@ func (r *IntegrationUkgResourceModel) RefreshFromCreateResponse(resp *shared.Con
 		r.UserIds = append(r.UserIds, types.StringValue(v))
 	}
 
+	configValues := r.populateConfig()
 	if resp.Config != nil && *resp.Config.AtType == envConfigType {
 		if config, ok := resp.Config.AdditionalProperties.(map[string]interface{}); ok {
 			if values, ok := config["configuration"].(map[string]interface{}); ok {
-				if val, ok := getStringValue(values, "ukg_customer_api_key"); ok {
-					r.UkgCustomerApiKey = types.StringValue(val)
+				if _, ok := configValues["ukg_customer_api_key"]; ok {
+					if val, ok := getStringValue(values, "ukg_customer_api_key"); ok {
+						r.UkgCustomerApiKey = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "ukg_username"); ok {
-					r.UkgUsername = types.StringValue(val)
+				if _, ok := configValues["ukg_username"]; ok {
+					if val, ok := getStringValue(values, "ukg_username"); ok {
+						r.UkgUsername = types.StringValue(val)
+					}
 				}
 
-				if val, ok := getStringValue(values, "ukg_service_endpoint"); ok {
-					r.UkgServiceEndpoint = types.StringValue(val)
+				if _, ok := configValues["ukg_service_endpoint"]; ok {
+					if val, ok := getStringValue(values, "ukg_service_endpoint"); ok {
+						r.UkgServiceEndpoint = types.StringValue(val)
+					}
 				}
 
 			}
