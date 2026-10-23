@@ -41,3 +41,4 @@ jobs:
           CONDUCTORONE_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           CONDUCTORONE_CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CONDUCTORONE_SERVER_URL: ${{ secrets.SERVER_URL }}
+          CONDUCTORONE_TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}

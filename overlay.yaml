@@ -6,6 +6,9 @@ actions:
   - target: $..[?(@.additionalProperties == true)]
     update:
       additionalProperties: false
+  - target: $["components"]["schemas"]["c1.api.user.v1.User"]["properties"]["profile"]
+    update:
+      additionalProperties: true
   - target: $["components"]["schemas"]["c1.api.app.v1.Connector"]["properties"]["config"]
     update:
       additionalProperties: true

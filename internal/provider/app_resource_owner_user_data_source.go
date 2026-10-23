@@ -406,8 +406,9 @@ func (r *AppResourceOwnerUserDataSource) Schema(ctx context.Context, req datasou
 						Computed:    true,
 						Description: `The origin of the user, describing who owns the user's lifecycle.`,
 					},
-					"profile": schema.SingleNestedAttribute{
-						Computed: true,
+					"profile": schema.MapAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
 					},
 					"role_ids": schema.ListAttribute{
 						Computed:    true,

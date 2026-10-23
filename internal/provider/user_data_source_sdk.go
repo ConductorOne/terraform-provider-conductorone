@@ -4,6 +4,7 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"github.com/conductorone/terraform-provider-conductorone/internal/provider/typeconvert"
 	tfTypes "github.com/conductorone/terraform-provider-conductorone/internal/provider/types"
 	"github.com/conductorone/terraform-provider-conductorone/internal/sdk/models/shared"
@@ -263,7 +264,11 @@ func (r *UserDataSourceModel) RefreshFromSharedUser(ctx context.Context, resp *s
 		if resp.Profile == nil {
 			r.Profile = nil
 		} else {
-			r.Profile = &tfTypes.UserProfile{}
+			profile := tfTypes.UserProfile(make(map[string]types.String, len(*resp.Profile)))
+			for key, value := range *resp.Profile {
+				profile[key] = types.StringValue(fmt.Sprintf("%v", value))
+			}
+			r.Profile = &profile
 		}
 		if resp.RoleIds != nil {
 			if r.RoleIds == nil {
