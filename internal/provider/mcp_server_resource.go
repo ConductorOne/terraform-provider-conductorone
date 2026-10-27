@@ -15,8 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -117,7 +115,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 			"access_profile_ids": schema.ListAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
+					mcpServerRegistrationInputList(),
 				},
 				ElementType:        types.StringType,
 				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
@@ -135,7 +133,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 			"acknowledged_finding_ids": schema.ListAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
+					mcpServerRegistrationInputList(),
 				},
 				ElementType: types.StringType,
 				MarkdownDescription: `finding_ids from the diagnostic the admin acknowledged. Each must cover a` + "\n" +
@@ -152,27 +150,27 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 			"app_managed_state_binding_ref": schema.SingleNestedAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
+					mcpServerRegistrationInputObject(),
 				},
 				Attributes: map[string]schema.Attribute{
 					"app_id": schema.StringAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							mcpServerRegistrationInputString(),
 						},
 						Description: `ID of the application that owns the connector. Requires replacement if changed.`,
 					},
 					"resource_id": schema.StringAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							mcpServerRegistrationInputString(),
 						},
 						Description: `Resource ID of the discovered application. Requires replacement if changed.`,
 					},
 					"resource_type_id": schema.StringAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							mcpServerRegistrationInputString(),
 						},
 						Description: `ID of the resource type used for discovered applications. Requires replacement if changed.`,
 					},
@@ -464,7 +462,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					"url": schema.StringAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							mcpServerIdentityString("external_config", "endpoint_url"),
 						},
 						Description: `The HTTP endpoint URL of the external MCP server (HTTPS required). Requires replacement if changed.`,
 					},
@@ -591,7 +589,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					"mcp_server_catalog_id": schema.StringAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							mcpServerIdentityString("hosted_config", "mcp_server_catalog_id"),
 						},
 						MarkdownDescription: `Opaque catalog entry ID (27-character KSUID). Obtain valid IDs from the` + "\n" +
 							` ListCatalog or GetCatalog RPCs.` + "\n" +
@@ -719,7 +717,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 					"source_app_id": schema.StringAttribute{
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
+							mcpServerIdentityString("hosted_config", "source_app_id"),
 						},
 						Description: `Source app ID (optional, for connector-backed servers). Requires replacement if changed.`,
 					},
@@ -756,7 +754,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 			"oauth_diagnostic_id": schema.StringAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
+					mcpServerRegistrationInputString(),
 				},
 				MarkdownDescription: `When registering a DCR (client_id_mode=DCR) hosted server, the id of the` + "\n" +
 					` diagnostic returned by DiscoverMCPOAuthConfig that the admin reviewed. When` + "\n" +
@@ -944,7 +942,7 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 			"tunnel_path": schema.StringAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
+					mcpServerRegistrationInputString(),
 				},
 				MarkdownDescription: `Endpoint path on the appliance-side MCP server (e.g. "/sse", "/mcp").` + "\n" +
 					` Only used for EXTERNAL servers when tunneled == true: the service` + "\n" +

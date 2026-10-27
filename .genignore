@@ -19,4 +19,5 @@ overlay.yaml
 /internal/provider/integrations.go
 /internal/provider/mcp_server_approval.go
 /internal/provider/mcp_server_recovery.go
+/internal/provider/mcp_server_plan.go
 /examples/resources/conductorone_mcp_server/resource.tf

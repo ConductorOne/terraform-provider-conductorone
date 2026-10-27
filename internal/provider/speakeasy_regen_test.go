@@ -202,3 +202,28 @@ func TestAppEntitlementSDKMirrorsManualProvisionSchema(t *testing.T) {
 		}
 	}
 }
+
+// TestMCPServerImportReplacementModifiers verifies patches/14-mcp-import-replacement.patch.
+//
+// Speakeasy generates RequiresReplaceIfConfigured for MCP registration inputs.
+// Read cannot return them, so every import would otherwise plan a replacement.
+func TestMCPServerImportReplacementModifiers(t *testing.T) {
+	data, err := os.ReadFile("mcp_server_resource.go")
+	if err != nil {
+		t.Fatalf("reading mcp_server_resource.go: %v", err)
+	}
+	content := string(data)
+	markers := map[string]int{
+		`mcpServerIdentityString("external_config", "endpoint_url")`:        1,
+		`mcpServerIdentityString("hosted_config", "mcp_server_catalog_id")`: 1,
+		`mcpServerIdentityString("hosted_config", "source_app_id")`:         1,
+		"mcpServerRegistrationInputList()":                                  2,
+		"mcpServerRegistrationInputObject()":                                1,
+		"mcpServerRegistrationInputString()":                                5,
+	}
+	for marker, want := range markers {
+		if got := strings.Count(content, marker); got != want {
+			t.Errorf("%s appears %d times, want %d; apply patches/14-mcp-import-replacement.patch", marker, got, want)
+		}
+	}
+}
