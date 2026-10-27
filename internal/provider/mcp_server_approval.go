@@ -22,7 +22,8 @@ func (r *MCPServerResourceModel) refreshToolApproval(view *shared.MCPServerView)
 	if view == nil || approval == nil || approval.IsNull() || approval.IsUnknown() {
 		return
 	}
-	actual := types.StringNull()
+	// Proto3 JSON may omit the zero enum, which is UNSPECIFIED.
+	actual := types.StringValue(string(shared.RequireToolApprovalOptionalBoolUnspecified))
 	if view.RequireToolApproval != nil {
 		actual = types.StringValue(string(*view.RequireToolApproval))
 	}

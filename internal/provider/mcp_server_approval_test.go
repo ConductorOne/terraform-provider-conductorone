@@ -43,9 +43,12 @@ func mcpApprovalAPI(t *testing.T, initial string, ignoreUpdate bool) *httptest.S
 			}
 		}
 		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(map[string]any{"mcpServer": map[string]any{
-			"appId": "app", "connectorId": "connector", "requireToolApproval": approval,
-		}}); err != nil {
+		view := map[string]any{"appId": "app", "connectorId": "connector"}
+		// An empty approval models an API that omits the zero enum.
+		if approval != "" {
+			view["requireToolApproval"] = approval
+		}
+		if err := json.NewEncoder(w).Encode(map[string]any{"mcpServer": view}); err != nil {
 			t.Errorf("encode server response: %v", err)
 		}
 	}))
@@ -159,5 +162,30 @@ func TestMCPApprovalReadExposesDriftWithoutLosingSecret(t *testing.T) {
 	}
 	if !actual.ExternalConfig.BearerToken.Token.Equal(before.ExternalConfig.BearerToken.Token) {
 		t.Fatal("approval refresh lost the write-only bearer credential")
+	}
+}
+
+func TestMCPApprovalOmittedFieldMeansUnspecified(t *testing.T) {
+	ctx := context.Background()
+	server := mcpApprovalAPI(t, "", true)
+	r := &MCPServerResource{client: sdk.New(sdk.WithServerURL(server.URL))}
+	var schemaResp resource.SchemaResponse
+	r.Schema(ctx, resource.SchemaRequest{}, &schemaResp)
+	state := tfsdk.State{Schema: schemaResp.Schema}
+	before := mcpApprovalModel(true, types.StringValue("OPTIONAL_BOOL_UNSPECIFIED"))
+	if diags := state.Set(ctx, &before); diags.HasError() {
+		t.Fatal(diags)
+	}
+	response := resource.ReadResponse{State: tfsdk.State{Schema: schemaResp.Schema}}
+	r.Read(ctx, resource.ReadRequest{State: state}, &response)
+	if response.Diagnostics.HasError() {
+		t.Fatal(response.Diagnostics)
+	}
+	var actual MCPServerResourceModel
+	if diags := response.State.Get(ctx, &actual); diags.HasError() {
+		t.Fatal(diags)
+	}
+	if actual.HostedConfig.RequireToolApproval.ValueString() != "OPTIONAL_BOOL_UNSPECIFIED" {
+		t.Fatalf("approval state = %s, want OPTIONAL_BOOL_UNSPECIFIED", actual.HostedConfig.RequireToolApproval)
 	}
 }
