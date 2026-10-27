@@ -829,3 +829,7 @@ actions:
   - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerServiceRegisterRequestInput"]["properties"]["accessProvisioning"]
     update:
       x-speakeasy-terraform-ignore: true
+  # The delete request body has no fields; Terraform destroy needs no input.
+  - target: $["components"]["schemas"]["c1.api.ai_governance.v1.MCPServerServiceDeleteRequestInput"]
+    update:
+      x-speakeasy-terraform-ignore: true

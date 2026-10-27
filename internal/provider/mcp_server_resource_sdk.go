@@ -215,10 +215,13 @@ func (r *MCPServerResourceModel) ToOperationsC1APIAiGovernanceV1MCPServerService
 	var connectorID string
 	connectorID = r.ConnectorID.ValueString()
 
-	var mcpServerServiceDeleteRequest *shared.MCPServerServiceDeleteRequest
-	if r.MCPServerServiceDeleteRequest != nil {
-		mcpServerServiceDeleteRequest = &shared.MCPServerServiceDeleteRequest{}
+	mcpServerServiceDeleteRequest, mcpServerServiceDeleteRequestDiags := r.ToSharedMCPServerServiceDeleteRequest(ctx)
+	diags.Append(mcpServerServiceDeleteRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
 	}
+
 	out := operations.C1APIAiGovernanceV1MCPServerServiceDeleteRequest{
 		AppID:                         appID,
 		ConnectorID:                   connectorID,

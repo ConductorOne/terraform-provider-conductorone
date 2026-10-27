@@ -39,72 +39,71 @@ type MCPServerResource struct {
 
 // MCPServerResourceModel describes the resource data model.
 type MCPServerResourceModel struct {
-	AccessProfileIds                    []types.String                         `tfsdk:"access_profile_ids"`
-	AccessProfilesAttached              types.Bool                             `tfsdk:"access_profiles_attached"`
-	AcknowledgedFindingIds              []types.String                         `tfsdk:"acknowledged_finding_ids"`
-	AppID                               types.String                           `tfsdk:"app_id"`
-	AppManagedStateBindingRef           *tfTypes.AppManagedStateBindingRef     `tfsdk:"app_managed_state_binding_ref"`
-	AuthMethod                          types.String                           `tfsdk:"auth_method"`
-	AwsAccessKeyID                      types.String                           `tfsdk:"aws_access_key_id"`
-	AwsSecretAccessKeyConfigured        types.Bool                             `tfsdk:"aws_secret_access_key_configured"`
-	AwsSessionTokenConfigured           types.Bool                             `tfsdk:"aws_session_token_configured"`
-	BasicAuthPasswordConfigured         types.Bool                             `tfsdk:"basic_auth_password_configured"`
-	BasicAuthUsername                   types.String                           `tfsdk:"basic_auth_username"`
-	BearerTokenConfigured               types.Bool                             `tfsdk:"bearer_token_configured"`
-	ConfigFieldValues                   map[string]types.String                `tfsdk:"config_field_values"`
-	ConnectorID                         types.String                           `tfsdk:"connector_id"`
-	CreatedAt                           types.String                           `tfsdk:"created_at"`
-	CredentialsSetupURL                 types.String                           `tfsdk:"credentials_setup_url"`
-	CustomHeaderName                    types.String                           `tfsdk:"custom_header_name"`
-	CustomHeaderValueConfigured         types.Bool                             `tfsdk:"custom_header_value_configured"`
-	DataSensitivity                     types.String                           `tfsdk:"data_sensitivity"`
-	DefaultToolPrefix                   types.String                           `tfsdk:"default_tool_prefix"`
-	Description                         types.String                           `tfsdk:"description"`
-	DisplayName                         types.String                           `tfsdk:"display_name"`
-	EndpointURL                         types.String                           `tfsdk:"endpoint_url"`
-	EndpointURLLocked                   types.Bool                             `tfsdk:"endpoint_url_locked"`
-	ExternalConfig                      *tfTypes.MCPServerExternalConfig       `tfsdk:"external_config"`
-	HostedConfig                        *tfTypes.MCPServerHostedConfig         `tfsdk:"hosted_config"`
-	LastCalledAt                        types.String                           `tfsdk:"last_called_at"`
-	McpServerCatalogID                  types.String                           `tfsdk:"mcp_server_catalog_id"`
-	MCPServerServiceDeleteRequest       *tfTypes.MCPServerServiceDeleteRequest `tfsdk:"mcp_server_service_delete_request"`
-	Oauth2AuthorizeURL                  types.String                           `tfsdk:"oauth2_authorize_url"`
-	Oauth2ClientID                      types.String                           `tfsdk:"oauth2_client_id"`
-	Oauth2ClientIDMode                  types.String                           `tfsdk:"oauth2_client_id_mode"`
-	Oauth2ClientSecretExpiresAt         types.String                           `tfsdk:"oauth2_client_secret_expires_at"`
-	Oauth2CodeChallengeMethodsSupported []types.String                         `tfsdk:"oauth2_code_challenge_methods_supported"`
-	Oauth2CredentialsConfigured         types.Bool                             `tfsdk:"oauth2_credentials_configured"`
-	Oauth2ExtraAuthorizeParams          map[string]types.String                `tfsdk:"oauth2_extra_authorize_params"`
-	Oauth2ExtraTokenParams              map[string]types.String                `tfsdk:"oauth2_extra_token_params"`
-	Oauth2IssuerURL                     types.String                           `tfsdk:"oauth2_issuer_url"`
-	Oauth2JwtAudience                   types.String                           `tfsdk:"oauth2_jwt_audience"`
-	Oauth2JwtIssuer                     types.String                           `tfsdk:"oauth2_jwt_issuer"`
-	Oauth2JwtPrivateKeyConfigured       types.Bool                             `tfsdk:"oauth2_jwt_private_key_configured"`
-	Oauth2JwtSubject                    types.String                           `tfsdk:"oauth2_jwt_subject"`
-	Oauth2Mode                          types.String                           `tfsdk:"oauth2_mode"`
-	Oauth2Pkce                          types.String                           `tfsdk:"oauth2_pkce"`
-	Oauth2Scopes                        []types.String                         `tfsdk:"oauth2_scopes"`
-	Oauth2ScopesSupported               []types.String                         `tfsdk:"oauth2_scopes_supported"`
-	Oauth2ServiceAuthorized             types.Bool                             `tfsdk:"oauth2_service_authorized"`
-	Oauth2ServiceAuthorizedAsEmail      types.String                           `tfsdk:"oauth2_service_authorized_as_email"`
-	Oauth2ServiceAuthorizedAsName       types.String                           `tfsdk:"oauth2_service_authorized_as_name"`
-	Oauth2ServiceAuthorizedAt           types.String                           `tfsdk:"oauth2_service_authorized_at"`
-	Oauth2ServiceAuthorizedBy           types.String                           `tfsdk:"oauth2_service_authorized_by"`
-	Oauth2TokenEndpointAuthMethod       types.String                           `tfsdk:"oauth2_token_endpoint_auth_method"`
-	Oauth2TokenURL                      types.String                           `tfsdk:"oauth2_token_url"`
-	OauthDiagnosticID                   types.String                           `tfsdk:"oauth_diagnostic_id"`
-	RequireToolApproval                 types.String                           `tfsdk:"require_tool_approval"`
-	ServerType                          types.String                           `tfsdk:"server_type"`
-	SourceAppID                         types.String                           `tfsdk:"source_app_id"`
-	TokenSharing                        types.String                           `tfsdk:"token_sharing"`
-	ToolPrefix                          types.String                           `tfsdk:"tool_prefix"`
-	TransportType                       types.String                           `tfsdk:"transport_type"`
-	TunnelApplianceID                   types.String                           `tfsdk:"tunnel_appliance_id"`
-	TunnelBridgeID                      types.String                           `tfsdk:"tunnel_bridge_id"`
-	Tunneled                            types.Bool                             `tfsdk:"tunneled"`
-	TunnelPath                          types.String                           `tfsdk:"tunnel_path"`
-	TunnelServiceName                   types.String                           `tfsdk:"tunnel_service_name"`
-	UpdatedAt                           types.String                           `tfsdk:"updated_at"`
+	AccessProfileIds                    []types.String                     `tfsdk:"access_profile_ids"`
+	AccessProfilesAttached              types.Bool                         `tfsdk:"access_profiles_attached"`
+	AcknowledgedFindingIds              []types.String                     `tfsdk:"acknowledged_finding_ids"`
+	AppID                               types.String                       `tfsdk:"app_id"`
+	AppManagedStateBindingRef           *tfTypes.AppManagedStateBindingRef `tfsdk:"app_managed_state_binding_ref"`
+	AuthMethod                          types.String                       `tfsdk:"auth_method"`
+	AwsAccessKeyID                      types.String                       `tfsdk:"aws_access_key_id"`
+	AwsSecretAccessKeyConfigured        types.Bool                         `tfsdk:"aws_secret_access_key_configured"`
+	AwsSessionTokenConfigured           types.Bool                         `tfsdk:"aws_session_token_configured"`
+	BasicAuthPasswordConfigured         types.Bool                         `tfsdk:"basic_auth_password_configured"`
+	BasicAuthUsername                   types.String                       `tfsdk:"basic_auth_username"`
+	BearerTokenConfigured               types.Bool                         `tfsdk:"bearer_token_configured"`
+	ConfigFieldValues                   map[string]types.String            `tfsdk:"config_field_values"`
+	ConnectorID                         types.String                       `tfsdk:"connector_id"`
+	CreatedAt                           types.String                       `tfsdk:"created_at"`
+	CredentialsSetupURL                 types.String                       `tfsdk:"credentials_setup_url"`
+	CustomHeaderName                    types.String                       `tfsdk:"custom_header_name"`
+	CustomHeaderValueConfigured         types.Bool                         `tfsdk:"custom_header_value_configured"`
+	DataSensitivity                     types.String                       `tfsdk:"data_sensitivity"`
+	DefaultToolPrefix                   types.String                       `tfsdk:"default_tool_prefix"`
+	Description                         types.String                       `tfsdk:"description"`
+	DisplayName                         types.String                       `tfsdk:"display_name"`
+	EndpointURL                         types.String                       `tfsdk:"endpoint_url"`
+	EndpointURLLocked                   types.Bool                         `tfsdk:"endpoint_url_locked"`
+	ExternalConfig                      *tfTypes.MCPServerExternalConfig   `tfsdk:"external_config"`
+	HostedConfig                        *tfTypes.MCPServerHostedConfig     `tfsdk:"hosted_config"`
+	LastCalledAt                        types.String                       `tfsdk:"last_called_at"`
+	McpServerCatalogID                  types.String                       `tfsdk:"mcp_server_catalog_id"`
+	Oauth2AuthorizeURL                  types.String                       `tfsdk:"oauth2_authorize_url"`
+	Oauth2ClientID                      types.String                       `tfsdk:"oauth2_client_id"`
+	Oauth2ClientIDMode                  types.String                       `tfsdk:"oauth2_client_id_mode"`
+	Oauth2ClientSecretExpiresAt         types.String                       `tfsdk:"oauth2_client_secret_expires_at"`
+	Oauth2CodeChallengeMethodsSupported []types.String                     `tfsdk:"oauth2_code_challenge_methods_supported"`
+	Oauth2CredentialsConfigured         types.Bool                         `tfsdk:"oauth2_credentials_configured"`
+	Oauth2ExtraAuthorizeParams          map[string]types.String            `tfsdk:"oauth2_extra_authorize_params"`
+	Oauth2ExtraTokenParams              map[string]types.String            `tfsdk:"oauth2_extra_token_params"`
+	Oauth2IssuerURL                     types.String                       `tfsdk:"oauth2_issuer_url"`
+	Oauth2JwtAudience                   types.String                       `tfsdk:"oauth2_jwt_audience"`
+	Oauth2JwtIssuer                     types.String                       `tfsdk:"oauth2_jwt_issuer"`
+	Oauth2JwtPrivateKeyConfigured       types.Bool                         `tfsdk:"oauth2_jwt_private_key_configured"`
+	Oauth2JwtSubject                    types.String                       `tfsdk:"oauth2_jwt_subject"`
+	Oauth2Mode                          types.String                       `tfsdk:"oauth2_mode"`
+	Oauth2Pkce                          types.String                       `tfsdk:"oauth2_pkce"`
+	Oauth2Scopes                        []types.String                     `tfsdk:"oauth2_scopes"`
+	Oauth2ScopesSupported               []types.String                     `tfsdk:"oauth2_scopes_supported"`
+	Oauth2ServiceAuthorized             types.Bool                         `tfsdk:"oauth2_service_authorized"`
+	Oauth2ServiceAuthorizedAsEmail      types.String                       `tfsdk:"oauth2_service_authorized_as_email"`
+	Oauth2ServiceAuthorizedAsName       types.String                       `tfsdk:"oauth2_service_authorized_as_name"`
+	Oauth2ServiceAuthorizedAt           types.String                       `tfsdk:"oauth2_service_authorized_at"`
+	Oauth2ServiceAuthorizedBy           types.String                       `tfsdk:"oauth2_service_authorized_by"`
+	Oauth2TokenEndpointAuthMethod       types.String                       `tfsdk:"oauth2_token_endpoint_auth_method"`
+	Oauth2TokenURL                      types.String                       `tfsdk:"oauth2_token_url"`
+	OauthDiagnosticID                   types.String                       `tfsdk:"oauth_diagnostic_id"`
+	RequireToolApproval                 types.String                       `tfsdk:"require_tool_approval"`
+	ServerType                          types.String                       `tfsdk:"server_type"`
+	SourceAppID                         types.String                       `tfsdk:"source_app_id"`
+	TokenSharing                        types.String                       `tfsdk:"token_sharing"`
+	ToolPrefix                          types.String                       `tfsdk:"tool_prefix"`
+	TransportType                       types.String                       `tfsdk:"transport_type"`
+	TunnelApplianceID                   types.String                       `tfsdk:"tunnel_appliance_id"`
+	TunnelBridgeID                      types.String                       `tfsdk:"tunnel_bridge_id"`
+	Tunneled                            types.Bool                         `tfsdk:"tunneled"`
+	TunnelPath                          types.String                       `tfsdk:"tunnel_path"`
+	TunnelServiceName                   types.String                       `tfsdk:"tunnel_service_name"`
+	UpdatedAt                           types.String                       `tfsdk:"updated_at"`
 }
 
 func (r *MCPServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -753,10 +752,6 @@ func (r *MCPServerResource) Schema(ctx context.Context, req resource.SchemaReque
 				Computed: true,
 				MarkdownDescription: `Opaque catalog entry ID for hosted MCP servers (27-character KSUID).` + "\n" +
 					` Obtain valid IDs from the ListCatalog or GetCatalog RPCs.`,
-			},
-			"mcp_server_service_delete_request": schema.SingleNestedAttribute{
-				Optional:    true,
-				Description: `MCPServerServiceDeleteRequest soft-deletes an MCP server.`,
 			},
 			"oauth_diagnostic_id": schema.StringAttribute{
 				Optional: true,
