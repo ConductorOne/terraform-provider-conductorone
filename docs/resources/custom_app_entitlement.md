@@ -296,7 +296,25 @@ This message contains a oneof named typ. Only a single field of the following li
   - externalTicket
   - unconfigured
   - action
-  - devicePlacement (see [below for nested schema](#nestedatt--provision_policy))
+  - devicePlacement
+
+
+Configure either `provision_policy` or `provisioner_policy`, but not both. Both refer to the same provisioning policy. (see [below for nested schema](#nestedatt--provision_policy))
+- `provisioner_policy` (Attributes) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
+
+This message contains a oneof named typ. Only a single field of the following list may be set at a time:
+  - connector
+  - manual
+  - delegated
+  - webhook
+  - multiStep
+  - externalTicket
+  - unconfigured
+  - action
+  - devicePlacement
+
+
+Configure either `provision_policy` or `provisioner_policy`, but not both. Both refer to the same provisioning policy. (see [below for nested schema](#nestedatt--provisioner_policy))
 - `purpose` (String) The purpose of the entitlement (e.g., assignment, permission, ownership). possible known values include one of ["APP_ENTITLEMENT_PURPOSE_VALUE_UNSPECIFIED", "APP_ENTITLEMENT_PURPOSE_VALUE_ASSIGNMENT", "APP_ENTITLEMENT_PURPOSE_VALUE_PERMISSION", "APP_ENTITLEMENT_PURPOSE_VALUE_OWNERSHIP"]
 - `revoke_policy_id` (String) The ID of the policy to use for revoke request tasks.
 - `risk_level_value_id` (String) The ID of the risk level to assign to this entitlement.
@@ -316,18 +334,6 @@ This message contains a oneof named typ. Only a single field of the following li
 - `id` (String) The unique ID for the App Entitlement.
 - `is_automation_enabled` (Boolean) Flag to indicate whether automation (for adding users to entitlement based on rules) has been enabled.
 - `is_manually_managed` (Boolean) Flag to indicate if the app entitlement is manually managed.
-- `provisioner_policy` (Attributes, Deprecated) ProvisionPolicy is a oneOf that indicates how a provision step should be processed.
-
-This message contains a oneof named typ. Only a single field of the following list may be set at a time:
-  - connector
-  - manual
-  - delegated
-  - webhook
-  - multiStep
-  - externalTicket
-  - unconfigured
-  - action
-  - devicePlacement (see [below for nested schema](#nestedatt--provisioner_policy))
 - `read` (Boolean) The read field.
 - `request_schema_id` (String) The ID of the request schema associated with this app entitlement.
 - `source_connector_ids` (Map of String) Map to tell us which connector the entitlement came from.
@@ -770,14 +776,10 @@ Optional:
 
 
 
-<a id="nestedatt--expanded"></a>
-### Nested Schema for `expanded`
-
-
 <a id="nestedatt--provisioner_policy"></a>
 ### Nested Schema for `provisioner_policy`
 
-Read-Only:
+Optional:
 
 - `action` (Attributes) This provision step indicates that account lifecycle action should be called to provision this entitlement. (see [below for nested schema](#nestedatt--provisioner_policy--action))
 - `connector` (Attributes) Indicates that a connector should perform the provisioning. This object has no fields.
@@ -788,7 +790,7 @@ This message contains a oneof named provision_type. Only a single field of the f
   - deleteAccount (see [below for nested schema](#nestedatt--provisioner_policy--connector))
 - `delegated` (Attributes) This provision step indicates that we should delegate provisioning to the configuration of another app entitlement. This app entitlement does not have to be one from the same app, but MUST be configured as a proxy binding leading into this entitlement. (see [below for nested schema](#nestedatt--provisioner_policy--delegated))
 - `device_placement` (Attributes) This provision step is fulfilled by a Latchkey member device producing an MLS Welcome for the recipient. It has no assignee and no instructions because the step is not human-actionable. (see [below for nested schema](#nestedatt--provisioner_policy--device_placement))
-- `external_ticket` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement (see [below for nested schema](#nestedatt--provisioner_policy--external_ticket))
+- `external_ticket` (Attributes) This provision step indicates that we should check an external ticket to provision this entitlement. (see [below for nested schema](#nestedatt--provisioner_policy--external_ticket))
 - `manual` (Attributes) Manual provisioning indicates that a human must intervene for the provisioning of this step. (see [below for nested schema](#nestedatt--provisioner_policy--manual))
 - `multi_step` (String) Parsed as JSON.
 - `unconfigured` (Attributes) The UnconfiguredProvision message. (see [below for nested schema](#nestedatt--provisioner_policy--unconfigured))
@@ -797,7 +799,7 @@ This message contains a oneof named provision_type. Only a single field of the f
 <a id="nestedatt--provisioner_policy--action"></a>
 ### Nested Schema for `provisioner_policy.action`
 
-Read-Only:
+Optional:
 
 - `action_name` (String) The actionName field.
 - `app_id` (String) The appId field.
@@ -808,7 +810,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--connector"></a>
 ### Nested Schema for `provisioner_policy.connector`
 
-Read-Only:
+Optional:
 
 - `account` (Attributes) The AccountProvision message.
 
@@ -821,7 +823,7 @@ This message contains a oneof named storage_type. Only a single field of the fol
 <a id="nestedatt--provisioner_policy--connector--account"></a>
 ### Nested Schema for `provisioner_policy.connector.account`
 
-Read-Only:
+Optional:
 
 - `config` (String) Parsed as JSON.
 - `connector_id` (String) The connectorId field.
@@ -836,7 +838,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--connector--account--save_to_vault"></a>
 ### Nested Schema for `provisioner_policy.connector.account.save_to_vault`
 
-Read-Only:
+Optional:
 
 - `vault_ids` (List of String) The vaultIds field.
 
@@ -845,7 +847,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--connector--default_behavior"></a>
 ### Nested Schema for `provisioner_policy.connector.default_behavior`
 
-Read-Only:
+Optional:
 
 - `connector_id` (String) this checks if the entitlement is enabled by provisioning in a specific connector
  this can happen automatically and doesn't need any extra info
@@ -854,7 +856,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--connector--delete_account"></a>
 ### Nested Schema for `provisioner_policy.connector.delete_account`
 
-Read-Only:
+Optional:
 
 - `connector_id` (String) The connectorId field.
 
@@ -863,7 +865,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--delegated"></a>
 ### Nested Schema for `provisioner_policy.delegated`
 
-Read-Only:
+Optional:
 
 - `app_id` (String) The AppID of the entitlement to delegate provisioning to.
 - `entitlement_id` (String) The ID of the entitlement we are delegating provisioning to.
@@ -872,7 +874,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--device_placement"></a>
 ### Nested Schema for `provisioner_policy.device_placement`
 
-Read-Only:
+Optional:
 
 - `vault_boundary_id` (String) The vaultBoundaryId field.
 
@@ -880,7 +882,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--external_ticket"></a>
 ### Nested Schema for `provisioner_policy.external_ticket`
 
-Read-Only:
+Optional:
 
 - `app_id` (String) The appId field.
 - `connector_id` (String) The connectorId field.
@@ -891,7 +893,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--manual"></a>
 ### Nested Schema for `provisioner_policy.manual`
 
-Read-Only:
+Optional:
 
 - `assignee` (Attributes) ProvisionerAssignment defines how a provisioner is dynamically assigned.
 
@@ -909,7 +911,7 @@ This message contains a oneof named typ. Only a single field of the following li
 <a id="nestedatt--provisioner_policy--manual--assignee"></a>
 ### Nested Schema for `provisioner_policy.manual.assignee`
 
-Read-Only:
+Optional:
 
 - `app_owners` (Attributes) AppOwnerProvisioner resolves to app owners. (see [below for nested schema](#nestedatt--provisioner_policy--manual--assignee--app_owners))
 - `entitlement_owners` (Attributes) EntitlementOwnerProvisioner resolves to entitlement owners. (see [below for nested schema](#nestedatt--provisioner_policy--manual--assignee--entitlement_owners))
@@ -921,7 +923,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--manual--assignee--app_owners"></a>
 ### Nested Schema for `provisioner_policy.manual.assignee.app_owners`
 
-Read-Only:
+Optional:
 
 - `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
 - `fallback_user_ids` (List of String) Fallback user IDs if no app owners are found.
@@ -930,7 +932,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--manual--assignee--entitlement_owners"></a>
 ### Nested Schema for `provisioner_policy.manual.assignee.entitlement_owners`
 
-Read-Only:
+Optional:
 
 - `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
 - `fallback_user_ids` (List of String) Fallback user IDs if no entitlement owners are found.
@@ -939,7 +941,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--manual--assignee--expression"></a>
 ### Nested Schema for `provisioner_policy.manual.assignee.expression`
 
-Read-Only:
+Optional:
 
 - `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
 - `expressions` (List of String) The CEL expressions to evaluate.
@@ -949,7 +951,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--manual--assignee--group"></a>
 ### Nested Schema for `provisioner_policy.manual.assignee.group`
 
-Read-Only:
+Optional:
 
 - `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
 - `app_group_id` (String) The app group ID (entitlement ID).
@@ -960,7 +962,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--manual--assignee--manager"></a>
 ### Nested Schema for `provisioner_policy.manual.assignee.manager`
 
-Read-Only:
+Optional:
 
 - `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
 - `fallback_user_ids` (List of String) Fallback user IDs if no manager is found.
@@ -969,7 +971,7 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--manual--assignee--users"></a>
 ### Nested Schema for `provisioner_policy.manual.assignee.users`
 
-Read-Only:
+Optional:
 
 - `allow_reassignment` (Boolean) Whether the provisioner can reassign the task.
 - `user_ids` (List of String) The user IDs to assign as provisioners.
@@ -984,6 +986,11 @@ Read-Only:
 <a id="nestedatt--provisioner_policy--webhook"></a>
 ### Nested Schema for `provisioner_policy.webhook`
 
-Read-Only:
+Optional:
 
 - `webhook_id` (String) The ID of the webhook to call for provisioning.
+
+
+
+<a id="nestedatt--expanded"></a>
+### Nested Schema for `expanded`
