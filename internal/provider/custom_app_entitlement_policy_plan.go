@@ -50,7 +50,7 @@ func unchangedPolicyAliasPlan(config, plan, state tftypes.Value) (tftypes.Value,
 		}
 		old, _, err := tftypes.WalkAttributePath(state, p)
 		if err != nil {
-			return v, nil
+			return v, err
 		}
 		prior, ok := old.(tftypes.Value)
 		if !ok || !prior.IsKnown() || !prior.Type().Equal(v.Type()) {

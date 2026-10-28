@@ -11,7 +11,7 @@ Co-authored-by: c1-squire-dev[bot] <c1-squire-dev[bot]@users.noreply.github.com>
  			},
  		},
  	}
-+	configureCustomEntitlementPolicyAliases(&resp.Schema)
++	resp.Diagnostics.Append(configureCustomEntitlementPolicyAliases(&resp.Schema)...)
  }
  
  func (r *CustomAppEntitlementResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {

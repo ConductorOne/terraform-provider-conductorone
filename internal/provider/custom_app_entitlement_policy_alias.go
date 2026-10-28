@@ -15,8 +15,11 @@ import (
 
 // configureCustomEntitlementPolicyAliases gives both names the same configurable
 // schema. ConflictsWith inspects configuration, not the computed values in state.
-func configureCustomEntitlementPolicyAliases(s *schema.Schema) {
-	canonical := s.Attributes["provision_policy"].(schema.SingleNestedAttribute)
+func configureCustomEntitlementPolicyAliases(s *schema.Schema) diag.Diagnostics {
+	canonical, ok := s.Attributes["provision_policy"].(schema.SingleNestedAttribute)
+	if !ok {
+		return diag.Diagnostics{diag.NewErrorDiagnostic("Invalid policy schema", "The generated provision_policy attribute must be a single nested attribute.")}
+	}
 	canonical.PlanModifiers = append(canonical.PlanModifiers, objectplanmodifier.UseStateForUnknown())
 	canonical.Validators = append(canonical.Validators, objectvalidator.ConflictsWith(path.MatchRoot("provisioner_policy")))
 	s.Attributes["provision_policy"] = canonical
@@ -24,6 +27,7 @@ func configureCustomEntitlementPolicyAliases(s *schema.Schema) {
 	alias.Validators = []validator.Object{objectvalidator.ConflictsWith(path.MatchRoot("provision_policy"))}
 	alias.DeprecationMessage = ""
 	s.Attributes["provisioner_policy"] = alias
+	return nil
 }
 
 func selectedCustomPolicyAlias(ctx context.Context, config tfsdk.Config) (string, diag.Diagnostics) {
