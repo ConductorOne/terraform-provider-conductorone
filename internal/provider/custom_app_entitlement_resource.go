@@ -1576,7 +1576,7 @@ func (r *CustomAppEntitlementResource) Schema(ctx context.Context, req resource.
 			},
 		},
 	}
-	configureCustomEntitlementPolicyAliases(&resp.Schema)
+	resp.Diagnostics.Append(configureCustomEntitlementPolicyAliases(&resp.Schema)...)
 }
 
 func (r *CustomAppEntitlementResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
