@@ -28,7 +28,16 @@ func pruneCustomAppEntitlementPolicyOneofs(ctx context.Context, config tfsdk.Con
 		return diags
 	}
 
-	provision, provisionDiags := selectedOneofArm("provision_policy", customAppEntitlementPolicyArms(configured.ProvisionPolicy))
+	alias, aliasDiags := selectedCustomPolicyAlias(ctx, config)
+	diags.Append(aliasDiags...)
+	if diags.HasError() {
+		return diags
+	}
+	policy := configured.ProvisionPolicy
+	if alias == "provisioner_policy" {
+		policy = configured.ProvisionerPolicy
+	}
+	provision, provisionDiags := selectedOneofArm("provision_policy", customAppEntitlementPolicyArms(policy))
 	diags.Append(provisionDiags...)
 	deprovisioner, deprovisionerDiags := selectedOneofArm("deprovisioner_policy",
 		customAppEntitlementPolicyArms((*tfTypes.ProvisionPolicy)(configured.DeprovisionerPolicy)))
@@ -37,7 +46,11 @@ func pruneCustomAppEntitlementPolicyOneofs(ctx context.Context, config tfsdk.Con
 		return diags
 	}
 
-	keepOnlyOneofArm(customAppEntitlementPolicyArms(data.ProvisionPolicy), provision)
+	if alias == "provisioner_policy" {
+		keepOnlyOneofArm(customAppEntitlementPolicyArms(data.ProvisionerPolicy), provision)
+	} else {
+		keepOnlyOneofArm(customAppEntitlementPolicyArms(data.ProvisionPolicy), provision)
+	}
 	keepOnlyOneofArm(customAppEntitlementPolicyArms((*tfTypes.ProvisionPolicy)(data.DeprovisionerPolicy)), deprovisioner)
 	return diags
 }
