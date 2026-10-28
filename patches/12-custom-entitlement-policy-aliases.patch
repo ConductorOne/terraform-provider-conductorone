@@ -1,0 +1,55 @@
+Subject: [PATCH] Enable aliases for custom entitlement provisioning policy
+
+Wire the generated resource to hand-maintained alias schema, request selection,
+and refresh logic. Keep these hooks reproducible after provider regeneration.
+
+Co-authored-by: c1-squire-dev[bot] <c1-squire-dev[bot]@users.noreply.github.com>
+
+--- a/internal/provider/custom_app_entitlement_resource.go
++++ b/internal/provider/custom_app_entitlement_resource.go
+@@ -1576,6 +1576,7 @@
+ 			},
+ 		},
+ 	}
++	configureCustomEntitlementPolicyAliases(&resp.Schema)
+ }
+ 
+ func (r *CustomAppEntitlementResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+@@ -1616,7 +1617,13 @@
+ 		return
+ 	}
+ 
+-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsCreateRequest(ctx)
++	writeData := *data
++	resp.Diagnostics.Append(selectCustomEntitlementPolicyForWrite(ctx, req.Config, &writeData)...)
++	if resp.Diagnostics.HasError() {
++		return
++	}
++
++	request, requestDiags := writeData.ToOperationsC1APIAppV1AppEntitlementsCreateRequest(ctx)
+ 	resp.Diagnostics.Append(requestDiags...)
+ 
+ 	if resp.Diagnostics.HasError() {
+@@ -1707,6 +1714,7 @@
+ 		return
+ 	}
+ 	resp.Diagnostics.Append(data.RefreshFromSharedGetAppEntitlementResponse(ctx, res.GetAppEntitlementResponse)...)
++	syncCustomEntitlementPolicyAliases(data)
+ 
+ 	if resp.Diagnostics.HasError() {
+ 		return
+@@ -1740,7 +1748,13 @@
+ 		return
+ 	}
+ 
+-	request, requestDiags := data.ToOperationsC1APIAppV1AppEntitlementsUpdateRequest(ctx)
++	writeData := *data
++	resp.Diagnostics.Append(selectCustomEntitlementPolicyForWrite(ctx, req.Config, &writeData)...)
++	if resp.Diagnostics.HasError() {
++		return
++	}
++
++	request, requestDiags := writeData.ToOperationsC1APIAppV1AppEntitlementsUpdateRequest(ctx)
+ 	resp.Diagnostics.Append(requestDiags...)
+ 
+ 	if resp.Diagnostics.HasError() {

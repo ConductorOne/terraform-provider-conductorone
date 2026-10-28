@@ -16,9 +16,8 @@ import (
 )
 
 // These tests lock the IGA-4347 contract for conductorone_custom_app_entitlement:
-// one configured write source (`provision_policy`) that reaches the API, and the
-// pre-existing computed `provisioner_policy` retained as a deprecated read-only
-// mirror so no published attribute path is removed or renamed.
+// either policy alias can be configured, while existing attribute paths remain
+// available for prior state and references.
 
 func findAttribute(t *testing.T, attrs []*tfprotov6.SchemaAttribute, name string) *tfprotov6.SchemaAttribute {
 	t.Helper()
@@ -31,8 +30,7 @@ func findAttribute(t *testing.T, attrs []*tfprotov6.SchemaAttribute, name string
 }
 
 // TestCustomAppEntitlementProvisionPolicySchemaSurface locks the public schema:
-// the writable subtree no longer forces replacement, and the legacy computed
-// attribute keeps its path, its computed-only shape and gains a deprecation.
+// neither attribute was removed, and both aliases are optional and computed.
 func TestCustomAppEntitlementProvisionPolicySchemaSurface(t *testing.T) {
 	ctx := context.Background()
 	ps := providerserver.NewProtocol6(New("test")())()
@@ -56,12 +54,12 @@ func TestCustomAppEntitlementProvisionPolicySchemaSurface(t *testing.T) {
 	if !writable.Optional || !writable.Computed {
 		t.Errorf("provision_policy must stay Optional+Computed, got optional=%v computed=%v", writable.Optional, writable.Computed)
 	}
-	if legacy.Optional || legacy.Required || !legacy.Computed {
-		t.Errorf("legacy provisioner_policy must stay computed-only, got optional=%v required=%v computed=%v",
+	if !legacy.Optional || legacy.Required || !legacy.Computed {
+		t.Errorf("provisioner_policy must be optional and computed, got optional=%v required=%v computed=%v",
 			legacy.Optional, legacy.Required, legacy.Computed)
 	}
-	if !legacy.Deprecated {
-		t.Error("legacy provisioner_policy must be marked deprecated")
+	if legacy.Deprecated {
+		t.Error("provisioner_policy must not be deprecated")
 	}
 
 	// The maintained patch must keep the replacement modifiers out of the
